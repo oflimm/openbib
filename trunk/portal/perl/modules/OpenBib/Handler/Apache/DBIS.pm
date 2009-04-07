@@ -84,8 +84,13 @@ sub handler {
     my $action         = decode_utf8($query->param('action'))   || '';
     my $show_cloud     = decode_utf8($query->param('show_cloud'));
     my $notation       = decode_utf8($query->param('notation')) || '';
+    my $fs             = decode_utf8($query->param('fs'))       || '';
     my $stid           = decode_utf8($query->param('stid'))     || '';
 
+    my $access_green   = decode_utf8($query->param('access_green'))     || 0;
+    my $access_yellow  = decode_utf8($query->param('access_yellow'))    || 0;
+    my $access_red     = decode_utf8($query->param('access_red'))       || 0;
+    my $access_de      = decode_utf8($query->param('access_de'))        || 0;
     my $id             = decode_utf8($query->param('id'))       || undef;
     my $lett           = decode_utf8($query->param('lett'))     || '';
 
@@ -124,7 +129,18 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $dbis = new OpenBib::DBIS;
+    my $colors = $access_de + $access_green + $access_yellow*2 + $access_red*4 + $access_de*8;
+
+    if (!$colors){
+        $colors=$config->{dbis_colors};
+
+        $access_green  = ($config->{dbis_colors} / 1 >= 1)?1:0;
+        $access_yellow = ($config->{dbis_colors} / 2 >= 1)?1:0;
+        $access_red    = ($config->{dbis_colors} / 4 >= 1)?1:0;
+        $access_de     = ($config->{dbis_colors} / 8 >= 1)?1:0;
+    }
+    
+    my $dbis = new OpenBib::DBIS({colors => $colors });
     
     if ($action eq "show_subjects"){
         my $subjects_ref = $dbis->get_subjects();
@@ -133,6 +149,10 @@ sub handler {
             
         # TT-Data erzeugen
         my $ttdata={
+            access_green  => $access_green,
+            access_yellow => $access_yellow,
+            access_red    => $access_red,
+            access_de     => $access_de,
             show_cloud    => $show_cloud,
             subjects      => $subjects_ref,
             view          => $view,
@@ -152,6 +172,44 @@ sub handler {
             
         return OK;
     }
+    elsif ($action eq "search_dbs"){
+        if ($fs){
+            my $dbs_ref = $dbis->search_dbs({
+                fs       => $fs,
+                lett     => $lett,
+            });
+            
+            $logger->debug(YAML::Dump($dbs_ref));
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                access_green  => $access_green,
+                access_yellow => $access_yellow,
+                access_red    => $access_red,
+                access_de     => $access_de,
+                dbs           => $dbs_ref,
+                view          => $view,
+                stylesheet    => $stylesheet,
+                sessionID     => $session->{ID},
+                session       => $session,
+                useragent     => $useragent,
+                config        => $config,
+                msg           => $msg,
+            };
+            
+            $stid=~s/[^0-9]//g;
+            
+            my $templatename = ($stid)?"tt_dbis_searchdbs_".$stid."_tname":"tt_dbis_searchdbs_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            
+            return OK;
+        }
+        else {
+            OpenBib::Common::Util::print_warning($msg->maketext("Kein Suchbegriff vorhanden"),$r,$msg);                
+            return OK;
+        }       
+    }
     elsif ($action eq "show_dbs"){
         if ($notation){
             my $dbs_ref = $dbis->get_dbs({
@@ -163,6 +221,10 @@ sub handler {
             
             # TT-Data erzeugen
             my $ttdata={
+                access_green  => $access_green,
+                access_yellow => $access_yellow,
+                access_red    => $access_red,
+                access_de     => $access_de,
                 dbs           => $dbs_ref,
                 view          => $view,
                 stylesheet    => $stylesheet,
@@ -183,7 +245,8 @@ sub handler {
         }
         else {
             OpenBib::Common::Util::print_warning($msg->maketext("Keine Notation vorhanden"),$r,$msg);                
-        }       
+            return OK;
+        }
     }
     elsif ($action eq "show_dbinfo"){
         if ($id){
@@ -214,8 +277,9 @@ sub handler {
             return OK;
         }
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Keine Dbid vorhanden"),$r,$msg);                
-        }       
+            OpenBib::Common::Util::print_warning($msg->maketext("Keine Dbid vorhanden"),$r,$msg);
+            return OK;
+        }
     }
     elsif ($action eq "show_dbreadme"){
         if ($id){
@@ -255,8 +319,9 @@ sub handler {
             }
         }
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Keine Dbid vorhanden"),$r,$msg);                
-        }       
+            OpenBib::Common::Util::print_warning($msg->maketext("Keine Dbid vorhanden"),$r,$msg);
+            return OK;
+        }
     }
 
     OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);

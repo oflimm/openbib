@@ -84,8 +84,12 @@ sub handler {
     my $action         = decode_utf8($query->param('action'))   || '';
     my $show_cloud     = decode_utf8($query->param('show_cloud'));
     my $notation       = decode_utf8($query->param('notation')) || '';
+    my $fs             = decode_utf8($query->param('fs'))       || '';
     my $stid           = decode_utf8($query->param('stid'))     || '';
 
+    my $access_green   = decode_utf8($query->param('access_green'))     || 0;
+    my $access_yellow  = decode_utf8($query->param('access_yellow'))    || 0;
+    my $access_red     = decode_utf8($query->param('access_red'))       || 0;
     my $id             = decode_utf8($query->param('id'))       || undef;
     my $sc             = decode_utf8($query->param('sc'))       || '';
     my $lc             = decode_utf8($query->param('lc'))       || '';
@@ -122,7 +126,17 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $ezb = new OpenBib::EZB;
+    my $colors = $access_green + $access_yellow*2 + $access_red*4;
+
+    if (!$colors){
+        $colors=$config->{ezb_colors};
+
+        $access_green  = ($config->{ezb_colors} / 1 >= 1)?1:0;
+        $access_yellow = ($config->{ezb_colors} / 2 >= 1)?1:0;
+        $access_red    = ($config->{ezb_colors} / 4 >= 1)?1:0;
+    }
+    
+    my $ezb = new OpenBib::EZB({colors => $colors });
     
     if ($action eq "show_subjects"){
         my $subjects_ref = $ezb->get_subjects();
@@ -131,6 +145,9 @@ sub handler {
             
         # TT-Data erzeugen
         my $ttdata={
+            access_green  => $access_green,
+            access_yellow => $access_yellow,
+            access_red    => $access_red,
             show_cloud    => $show_cloud,
             subjects      => $subjects_ref,
             view          => $view,
@@ -150,6 +167,45 @@ sub handler {
             
         return OK;
     }
+    elsif ($action eq "search_journals"){
+        if ($fs){
+            my $journals_ref = $ezb->search_journals({
+                fs       => $fs,
+                sc       => $sc,
+                lc       => $lc,
+                sindex   => $sindex,
+            });
+            
+            $logger->debug(YAML::Dump($journals_ref));
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                access_green  => $access_green,
+                access_yellow => $access_yellow,
+                access_red    => $access_red,
+                journals      => $journals_ref,
+                view          => $view,
+                stylesheet    => $stylesheet,
+                sessionID     => $session->{ID},
+                session       => $session,
+                useragent     => $useragent,
+                config        => $config,
+                msg           => $msg,
+            };
+            
+            $stid=~s/[^0-9]//g;
+            
+            my $templatename = ($stid)?"tt_ezb_searchjournals_".$stid."_tname":"tt_ezb_searchjournals_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            
+            return OK;
+        }
+        else {
+            OpenBib::Common::Util::print_warning($msg->maketext("Kein Suchbegriff vorhanden"),$r,$msg);
+            return OK;
+        }       
+    }
     elsif ($action eq "show_journals"){
         if ($notation){
             my $journals_ref = $ezb->get_journals({
@@ -163,6 +219,9 @@ sub handler {
             
             # TT-Data erzeugen
             my $ttdata={
+                access_green  => $access_green,
+                access_yellow => $access_yellow,
+                access_red    => $access_red,
                 journals      => $journals_ref,
                 view          => $view,
                 stylesheet    => $stylesheet,
@@ -183,6 +242,7 @@ sub handler {
         }
         else {
             OpenBib::Common::Util::print_warning($msg->maketext("Keine Notation vorhanden"),$r,$msg);                
+            return OK;
         }       
     }
     elsif ($action eq "show_journalinfo"){
@@ -215,6 +275,7 @@ sub handler {
         }
         else {
             OpenBib::Common::Util::print_warning($msg->maketext("Keine Journalid vorhanden"),$r,$msg);                
+            return OK;
         }       
     }
     elsif ($action eq "show_journalreadme"){
@@ -255,7 +316,8 @@ sub handler {
             }
         }
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Keine Journalid vorhanden"),$r,$msg);                
+            OpenBib::Common::Util::print_warning($msg->maketext("Keine Journalid vorhanden"),$r,$msg);
+            return OK;
         }       
     }
 

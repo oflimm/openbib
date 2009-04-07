@@ -136,6 +136,9 @@ sub get_journals {
     my $notation = exists $arg_ref->{notation}
         ? $arg_ref->{notation}     : '';
 
+    my $fs       = exists $arg_ref->{fs}
+        ? $arg_ref->{fs}           : '';
+
     my $sc       = exists $arg_ref->{sc}
         ? $arg_ref->{sc}           : '';
     
@@ -149,7 +152,7 @@ sub get_journals {
     my $logger = get_logger();
 
     my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=$notation&colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&xmloutput=1";
-
+    
     my $titles_ref = [];
     
     $logger->debug("Request: $url");
@@ -220,17 +223,18 @@ sub get_journals {
     }
 
     my @nav_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list/navlist');
-    foreach my $this_node ($nav_nodes[0]->childNodes){
-        my $singlenav_ref = {} ;
-
-        $logger->debug($this_node->toString);
-        $singlenav_ref->{sc}   = $this_node->findvalue('@sc');
-        $singlenav_ref->{lc}   = $this_node->findvalue('@lc');
-        $singlenav_ref->{desc} = $this_node->textContent;
-
-        push @{$alphabetical_nav_ref}, $singlenav_ref if ($singlenav_ref->{desc} && $singlenav_ref->{desc} ne "\n");
+    if (@nav_nodes){
+        foreach my $this_node ($nav_nodes[0]->childNodes){
+            my $singlenav_ref = {} ;
+            
+            $logger->debug($this_node->toString);
+            $singlenav_ref->{sc}   = $this_node->findvalue('@sc');
+            $singlenav_ref->{lc}   = $this_node->findvalue('@lc');
+            $singlenav_ref->{desc} = $this_node->textContent;
+            
+            push @{$alphabetical_nav_ref}, $singlenav_ref if ($singlenav_ref->{desc} && $singlenav_ref->{desc} ne "\n");
+        }
     }
-
     my $journals_ref = [];
 
     foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list/alphabetical_order/journals/journal')) {
@@ -248,6 +252,133 @@ sub get_journals {
     return {
         nav            => $nav_ref,
         subject        => $subjectinfo_ref,
+        journals       => $journals_ref,
+        current_page   => $current_page_ref,
+        other_pages    => $alphabetical_nav_ref,
+    };
+}
+
+sub search_journals {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $fs       = exists $arg_ref->{fs}
+        ? $arg_ref->{fs}           : '';
+
+    my $sc       = exists $arg_ref->{sc}
+        ? $arg_ref->{sc}           : '';
+    
+    my $lc       = exists $arg_ref->{lc}
+        ? $arg_ref->{lc}           : '';
+
+    my $sindex   = exists $arg_ref->{sindex}
+        ? $arg_ref->{sindex}       : 0;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&jq_type1=KT&jq_term1=$fs&xmloutput=1";
+    
+    my $titles_ref = [];
+    
+    $logger->debug("Request: $url");
+
+    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+
+    $logger->debug("Response: $response");
+    
+    my $parser = XML::LibXML->new();
+    my $tree   = $parser->parse_string($response);
+    my $root   = $tree->getDocumentElement;
+
+    my $current_page_ref = {};
+    
+    foreach my $nav_node ($root->findnodes('/ezb_page/page_vars')) {        
+        $current_page_ref->{sc}   = $nav_node->findvalue('sc/@value');
+        $current_page_ref->{lc}   = $nav_node->findvalue('lc/@value');
+        $current_page_ref->{sindex}   = $nav_node->findvalue('sindex/@value');
+        $current_page_ref->{sindex}   = $nav_node->findvalue('sindex/@value');
+        $current_page_ref->{category} = $nav_node->findvalue('jq_type1/@value');
+        $current_page_ref->{term}     = $nav_node->findvalue('jq_term1/@value');
+        $current_page_ref->{hits_per_page}     = $nav_node->findvalue('hits_per_page/@value');
+    }
+
+    my $search_count = $root->findvalue('/ezb_page/ezb_alphabetical_list_searchresult/search_count');
+    
+    my $nav_ref = [];
+    
+    my @first_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/first_fifty');
+    if (@first_nodes){
+        foreach my $nav_node (@first_nodes){
+            my $current_nav_ref = {};
+            $current_nav_ref->{sc}     = $nav_node->findvalue('@sc');
+            $current_nav_ref->{lc}     = $nav_node->findvalue('@lc');
+            $current_nav_ref->{sindex} = $nav_node->findvalue('@sindex');
+            push @{$nav_ref}, $current_nav_ref;
+        }
+        push @{$nav_ref}, {
+            sc     => $current_page_ref->{sc},
+            lc     => $current_page_ref->{lc},
+            sindex => $current_page_ref->{sindex},
+        };
+
+    }
+    else {
+        push @{$nav_ref}, {
+            sc     => $current_page_ref->{sc},
+            lc     => $current_page_ref->{lc},
+            sindex => $current_page_ref->{sindex},
+        };
+    }
+
+    my @next_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/next_fifty');
+    if (@next_nodes){
+        foreach my $nav_node (@next_nodes){
+            my $current_nav_ref = {};
+            $current_nav_ref->{sc}     = $nav_node->findvalue('@sc');
+            $current_nav_ref->{lc}     = $nav_node->findvalue('@lc');
+            $current_nav_ref->{sindex} = $nav_node->findvalue('@sindex');
+            push @{$nav_ref}, $current_nav_ref;
+        }
+    }
+
+    my $alphabetical_nav_ref = [];
+
+    foreach my $nav_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/navlist/current_page')) {        
+        $current_page_ref->{desc}   = decode_utf8($nav_node->textContent);
+    }
+
+    my @nav_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/navlist');
+    if ( @nav_nodes){
+        foreach my $this_node ($nav_nodes[0]->childNodes){
+            my $singlenav_ref = {} ;
+            
+            $logger->debug($this_node->toString);
+            $singlenav_ref->{sc}   = $this_node->findvalue('@sc');
+            $singlenav_ref->{lc}   = $this_node->findvalue('@lc');
+            $singlenav_ref->{desc} = $this_node->textContent;
+            
+            push @{$alphabetical_nav_ref}, $singlenav_ref if ($singlenav_ref->{desc} && $singlenav_ref->{desc} ne "\n");
+        }
+    }
+
+    my $journals_ref = [];
+
+    foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/alphabetical_order/journals/journal')) {
+        
+        my $singlejournal_ref = {} ;
+        
+        $singlejournal_ref->{id}          = $journal_node->findvalue('@jourid');
+        $singlejournal_ref->{title}       = decode_utf8($journal_node->findvalue('title'));
+        $singlejournal_ref->{color}{code} = $journal_node->findvalue('journal_color/@color_code');
+        $singlejournal_ref->{color}{desc} = $journal_node->findvalue('journal_color/@color');
+
+        push @{$journals_ref}, $singlejournal_ref;
+    }
+
+    return {
+        search_count   => $search_count,
+        nav            => $nav_ref,
         journals       => $journals_ref,
         current_page   => $current_page_ref,
         other_pages    => $alphabetical_nav_ref,

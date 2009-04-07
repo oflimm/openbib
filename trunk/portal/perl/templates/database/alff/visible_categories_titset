@@ -9,6 +9,8 @@
 #
 # Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
 #
+# Anpassung: 2662 (Thumbnail) entfernt
+#
 #######################################################################
 -%]
 [%# Ausgabekategorien %]
@@ -105,10 +107,11 @@
                 'T0543', # msg.maketext("T0543") ISSN
                 'T0662', # msg.maketext("T0662") EDVurl
                 'T1664', # msg.maketext("T1664") Provenienz
+                #'T2662', # msg.maketext("T2662") USB EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
                 'E4120', # msg.maketext("E4120") Ebook-URL
-                'T4500', # msg.maketext("T4500") Nutzer-Tags
+                #'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung

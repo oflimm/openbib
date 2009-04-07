@@ -12,14 +12,41 @@
 #
 #######################################################################
 -%]
-[%- FOREACH record IN recordlist.get_records -%]
-[% record.to_endnote %]
-[%   IF show_bibsonomy %]
-</pre>
+[% IF NOT hide_options %]
+<div class="reuse_data" style="float:right; width: 30%"><!-- Begin Reuse -->
+
+<b>[% msg.maketext("Behalten Sie diese Liste") %]:</b><p/>
+
+<table>
+<tr>
+<th><img src="[% config.save_img %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;type=[% type %];show=[% show %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<th><img src="[% config.print_img %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;type=[% type %];show=[% show %]" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+</tr>
+<tr>
+<th><img src="[% config.mail_img %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;type=[% type %];show=[% show %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<th></th><td></td>
+</tr>
+</table>
+
 <p />
-<img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/>&nbsp;<a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
-<p />
-<p />
-<pre>
-[%   END %]
+
+<div class="headline">[% msg.maketext("Andere Formate") %]</div>
+
+<p>
+<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=short"[%- IF show == 'short' && type == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full" [%- IF show == 'full' && type == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=Text" [%- IF type == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=BibTeX" [%- IF type == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=EndNote" [%- IF type == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+</p>
+
+</div>
 [% END %]
+<div style="float:left; width: 65%;">
+
+<pre>
+[%- FOREACH record IN recordlist.load_full_records.get_records -%]
+[% record.to_endnote %]
+
+[% END %]
+</pre>
+</div>

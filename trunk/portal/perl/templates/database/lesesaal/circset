@@ -28,10 +28,7 @@
 
 [% IF Aquisition == 0 %]
 <table width="100%">
-<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
-<tr><td class="boxedclear">
-<table width="100%">
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH mex IN circset %]
 [%-
      IF     mex.Zweigstelle == 0 ;
@@ -40,7 +37,7 @@
            mex.Ausleihurl = "${mex.Ausleihurl}?Login=sisis&Query=0000=${normset.id}";
         END ;
 
-        IF mex.Signatur.match('^2[1-9]A') || mex.Signatur.match('3[0-3]A') ;
+        IF mex.Signatur.match('^2[2-9]A') || mex.Signatur.match('[3-9][0-9]A') ;
            IF mex.Status == "bestellbar" ;
               mex.Status = "<a href=\"http://www.ub.uni-koeln.de/service/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
            ELSIF mex.Status == "entliehen" ;
@@ -93,14 +90,12 @@
 </td></tr>
 [% END %]
 </table>
-</td></tr>
-</table>
 [% ELSIF Aquisition == 1 %]
 <table width="100%">
 <tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
 <tr><td class="boxedclear">
 <table width="100%">
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td><td width="110">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Erwerbungsstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 
 [% FOREACH mex IN circset ;
     IF mex.Ausleihurl ;

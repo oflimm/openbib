@@ -107,7 +107,7 @@
                 #'T2663', # msg.maketext("T2663") USB URLInfo
                 'T1600', # msg.maketext("T1600") Hinweis
                 #'E4100', # msg.maketext("E4100") Basisklassifikation
-                'T4500', # msg.maketext("T4500") Nutzer-Tags
+                #'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung

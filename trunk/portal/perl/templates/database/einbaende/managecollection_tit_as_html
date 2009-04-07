@@ -10,136 +10,473 @@
 # Ausgabe *eines* Merklisten-Items im HTML-Format *mit* Funktions-
 # elementen
 #
-# - Aenderung in zwei Abschnitte Titel-Daten und Einband-Daten
 #######################################################################
 -%]
-[% normset    = record.get_normdata %]
-[% mexnormset = record.get_mexdata %]
-[% circset    = record.get_circdata %]
-[%- isbn  = normset.${"T0540"}.first.content.replace('-','') -%]
-[%- dbdesc   = dbinfo.dbnames.${record.database}.full -%]
-[%- dburl    = dbinfo.urls.${record.database} -%]
+<p />
 
-<tr class="titlerow"><td><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" /></td><td>[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></td></tr>
-<tr><td>&nbsp;</td><td>
+<!-- Titlelist begins here -->
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[% msg.maketext("Merkliste") %]
+    </div>
+    <div class="hits">
+[% recordlist.get_size %]  [% msg.maketext("Titel") %]
+    </div>
+    <div class="navigation">
+[% IF show == 'short' %]<input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>[% END %]
+    </div>
+  </div>
+  <div class="rightoptions">
+[% IF NOT hide_options %]
+<div class="reuse_data"><!-- Begin Reuse -->
 
-<!-- Title begins here -->
-<table width="100%">
-<tr><th>[% msg.maketext("Titel-Daten") %]</th></tr>
-<tr><td class="boxedclear">
+<b>[% msg.maketext("Behalten Sie diese Liste") %]:</b><p/>
 
-<table cellpadding=2>
-<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
-<tr><td class="category">id</td><td>[% normset.id %]</td></tr>
-
-[% PROCESS common/subtemplate name="visible_categories_titset" %]
-
-[%-
-
-FOREACH category IN categories;
-    FOREACH item IN normset.$category;
-    content = item.content;
-
-    # Fehlerhafte Daten korrigieren
-    content = content.replace('&lt; */p&gt;','<p />');
-    content = content.replace('&lt;link&gt;','<a href="http://');
-    content = content.replace('&lt;/link&gt;','" target="_blank">Link</a>');
-    content = content.replace('&lt;.?siglink&gt;','');
-    content = content.replace('\x{96}','-');
-
-    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
-    # in Config.pm fuer die entsprechende Datenbank definiert
-    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
-    # kodiert.
-    thiscategory = category ;
-    IF config.categorymapping.$database.$category ;
-      thiscategory = "${category}-${normset.database}" ;
-    END;
-
--%]
-<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
-[%-
-   END;
-END;
--%]
+<table>
+<tr>
+<th><img src="[% config.save_img %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;type=[% type %];show=[% show %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<th><img src="[% config.print_img %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;type=[% type %];show=[% show %]" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+</tr>
+<tr>
+<th><img src="[% config.mail_img %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;type=[% type %];show=[% show %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<th></th><td></td>
+</tr>
 </table>
 
-[% IF mexnormset.size > 0 %]
+<p />
+
+<div class="headline">[% msg.maketext("Andere Formate") %]</div>
+
 <p>
-<table width="100%">
-<tr class="titlerow" align=center><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestand") %]</td></tr>
+<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=short"[%- IF show == 'short' && type == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full" [%- IF show == 'full' && type == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=Text" [%- IF type == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=BibTeX" [%- IF type == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=EndNote" [%- IF type == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+</p>
 
-[% FOREACH mex IN mexnormset %]
-<tr align=center><td><strong>[% mex.${"X4000"}.content.full %]</strong>
-</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
+[% IF show == 'short' %]
+<div class="litlists"><!-- Begin Litlist -->
+<div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="litlists_do"><!-- Begin Litlist do -->
+
+[% 
+   IF config.litlists ;
+
+      litlists = [] ;
+      IF user.ID ;
+          litlists = user.get_litlists();
+      END ;
+
+      IF litlists.size > 0 ;
+%]
+<p/>
+
+<table>
+<tr><td>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</td></tr>
+<tr><td><select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select></td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" /></div></td></tr>
+</table>
+[%    END %]
 [% END %]
-</table>
-[% END %]
+<p/>
 
-</td></tr>
+<table>
+<tr><td>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</td></tr>
+<tr><td><input type="text" name="title" /> <select name="littype"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> </td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_addlitlist" value="[% msg.maketext("Los") %]" /></div></td></tr>
 </table>
+</div>
+<p/>
+</div>
 
+
+[%# IF user.ID %]
+[% loginname = user.get_username %]
+<div class="tagging"><!-- Begin: Tagging -->
+<div class="headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
+<div id="tagging_do"><!-- Begin Tagging do -->
+<p/>
+[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags
+versehen: ") %]
 
 <table width="100%">
-<tr><th>[% msg.maketext("Einband-Daten") %]</th></tr>
-<tr><td class="boxedclear">
-
-<table cellpadding="2">
-<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
-<tr><td class="category">id</td><td>[% normset.id %]</td></tr>
-
-[% PROCESS common/subtemplate name="visible_categories_coverset" %]
-
-[%-
-
-FOREACH category IN categories;
-    FOREACH item IN normset.$category;
-    content = item.content;
-
-    # Fehlerhafte Daten korrigieren
-    content = content.replace('&lt; */p&gt;','<p />');
-    content = content.replace('&lt;link&gt;','<a href="http://');
-    content = content.replace('&lt;/link&gt;','" target="_blank">Link</a>');
-    content = content.replace('&lt;.?siglink&gt;','');
-    content = content.replace('\x{96}','-');
-
-    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
-    # in Config.pm fuer die entsprechende Datenbank definiert
-    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
-    # kodiert.
-    thiscategory = category ;
-    IF config.categorymapping.$database.$category ;
-      thiscategory = "${category}-${normset.database}" ;
-    END;
-
--%]
-<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
-[%-
-   END;
-END;
--%]
-</table>
-
-</td></tr>
-</table>
-
-
-[% IF circset.size > 0 %]
-<p>
-<table width="100%">
-<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
+<tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
 <table>
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Lokale Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Aktion") %]</td></tr>
-[% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><a TARGET=_blank href="[% mex.Ausleihurl %]">[% mex.Ausleihstring %]</a></td></tr>
-[% END %]
+<tr><td colspan="2"><input type="text"   name="tags"       value="" size="30" maxlength="200" id="inputfield"/></td></tr>
+<tr><td>[% msg.maketext("Typ:") %]&nbsp;<select name="tags_type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td><td><div class="cssbutton glass kug"><input type="submit" name="do_addtags" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div></td></tr>
 </table>
 </td></tr>
 </table>
+
+[% private_tags = user.get_private_tags({ loginname => loginname  }) %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Übernahme eigener Tags") %]</th></tr>
+<tr><td class="boxedclear">
+
+<!-- Beginn Tag-Cloud -->
+
+[%-   IF private_tags.size > 0 -%]
+<ol class="cloud">
+[%-     FOREACH thisitem IN private_tags -%]
+[%        item      = thisitem.name;
+          itemcount = thisitem.count;
+          classnr   = thisitem.class;
+          itemid    = thisitem.id;
+          itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% msg.maketext("[_1] Titel sind
+verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[%      END %]
+</ol>
+[%    ELSE %]
+[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
+[%    END %]
+
+</td></tr>
+</table>
+</div><!-- End: Tagging do -->
+</div><!-- End: Tagging -->
+[%# END %]
+
+</p>
+
+<p>
+<table>
+<tr><td><img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen") %]</td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_collection_delentry" value="[% msg.maketext("Los") %]" /></div></td></tr>
+</table>
+</p>
+
+[% END %]
+<p/>
+</div>
+[% END %]
+  </div>
+  <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[% IF show == 'short' %]
+[%- recordlist = recordlist.load_brief_records -%]
+[%- FOREACH record IN recordlist.get_records -%]
+[%- item = record.get_brief_normdata -%]
+[%# USE dumper;dumper.dump(item)%]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%-    order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
+[%- dbdesc   = dbinfo.dbnames.${item.database}.full -%]
+[%- dburl    = dbinfo.urls.${item.database} -%]
+    <div class="item">
+      <div class="numbering"><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" />&nbsp;[% loop.count+offset %]</div>
+      <div class="thumbnail">
+    [% IF (config.coverscans.all || config.coverscans.${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<br />[% msg.maketext("aus:") %]&nbsp;<i>
+[%-   IF dbinfo.use_libinfo.${record.database} %]
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.maxlength_dbname) %]</a></i>[%- IF item.popularity -%]&nbsp;(Popularit&auml;t: [% item.popularity %])[%- END -%]
+      </div>
+      <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
+      <div class="titleactions">
+<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/></a>
+&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %]&action=show;do_collection_delentry=1;titid=[% record.database %]:[% record.id %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+  </div>
+    </div>
+<!-- Ende einzelner Treffer -->
+[%- END -%]
+  </div>
+[% ELSE #full%]
+[%- FOREACH record IN recordlist.load_full_records.get_records -%]
+[% activefeed = config.get_activefeeds_of_db(record.database) %]
+[% database        = record.database %]
+[% normset         = record.get_normdata %]
+[% mexnormset      = record.get_mexdata %]
+[% circset         = record.get_circdata %] 
+[%- bibkey = record.to_bibkey -%]
+[%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
+
+<div class="fulltitle boxedclear"><!-- Begin Fulltitle -->
+<div class="details"><!-- Begin Details -->
+<!-- Title begins here -->
+<div class="images"><!-- Begin Images -->
+[% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]
+<p>
+<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.coverscans_full_exturl.replace('ISBNINHERE',isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>
+</p>
 [% END %]
 <p>
-<!-- Title ends here -->
-</td></tr>
-<tr><td></td><td></td></tr>
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+</p>
+<p>
+[%- IF bibkey -%]
+<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+[%- END -%]
+</p>
+</div><!-- End Images -->
+
+<div class="categories"><!-- Begin Categories -->
+[%# USE dumper;dumper.dump(normset)%]
+<table cellpadding="2">
+<tr><td class="category">id</td><td>[% record.id %]</td></tr>
+
+[%-
+
+globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE [ "T0100" "T0101" "T0103" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         wikicontent = content.split(', ').reverse.join(' ');
+         wikicontent = wikicontent.replace('¬','');
+
+         rssfeed = "" ;
+         IF activefeed.2 ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
+         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.wikipedia_img}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE [ "T0200" "T0201" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         rssfeed = "" ;
+         IF activefeed.3 ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglekor=${thisid}";
+         content   = "${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T0331";
+         content   = "<b>${content}</b>";
+
+    CASE "T0540";
+         content   = "<a class=\"isbn\" href=\"${config.redirect_loc}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.wikipedia_img}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${content}";
+
+    CASE "T0543";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+
+    CASE [ "T0662" "T2662" ];
+         thisindicator = item.indicator ;
+         thiscontent   = '' ;
+         IF category == 'T0662' ;
+           FOREACH thisitem IN normset.${"T0663"} ;
+             IF thisitem.indicator == thisindicator ;
+                thiscontent = thisitem.content ;
+             END ;
+           END ;
+         ELSIF category == 'T2662' ;
+           FOREACH thisitem IN normset.${"T2663"} ;
+             IF thisitem.indicator == thisindicator ;
+                thiscontent = thisitem.content ;
+             END ;
+           END ;
+         END ;
+         IF thiscontent ;
+            IF content.match('digitool.hbz-nrw.de') ;
+               thiscontent = "<img src=\"${config.pdf_img}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
+               content     = "${config.redirect_loc}/${sessionID}/500/${content}" ;
+            END ;
+            content   = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
+         ELSE ;
+            content   = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
+         END ;
+
+    CASE "E4100";
+         localurl    = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         bklookup    = config.load_bk ;
+         bkdesc      = bklookup.${content};
+         content     = "<a href=\"${localurl}\">${content}</a>";
+         IF bkdesc ;
+            content   = "${content} (${bkdesc})" ;
+         END ;
+
+    CASE "E4110";
+         thisindicator = item.indicator ;
+         thiscontent   = "<img src=\"${config.pdf_img}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
+         content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
+         content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
+
+    CASE "E4120";
+         thiscontent   = "Greifen Sie hier online auf den Volltext zu";
+	 content       = "${config.redirect_loc}/${sessionID}/503/${content}" ;
+	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
+
+    CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         rssfeed = "" ;
+         IF activefeed.4 ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
+         content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T0700";
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         rssfeed = "" ;
+         IF activefeed.5 ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglenot=${thisid}";
+         content   = " ${rssfeed}<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T1600";
+         IF content.match('Sie einen Bestellschein aus');
+             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" target=\"_blank\">Ortsleihe</a> schicken";
+         END;
+
+    CASE "T4500";
+         # Dummy-Eintrag, damit dieser Eintrag nicht vom higlightquery
+         # erwischt wird
+         content   = content ;
+
+    CASE "T5001";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+
+    CASE "T5002";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+
+   END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.categorymapping.${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+[%- IF bibkey -%]
+<tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
+[%- END -%]
+</table>
+
+</div><!-- End Categories -->
+</div><!-- End Details -->
+
+<div class="bottominfo"><!-- Begin Bottominfo -->
+
+[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+<p class="wikipediamashup">
+<img src="[% config.wikipedia_img %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
+[%-   IF normset.${"E4200"} %]
+[%-    FOREACH item IN normset.${"E4200"}-%]
+<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+[%-    END -%]
+[%-   END %]
+[%-   IF normset.${"E4201"} %]
+[%-     FOREACH item IN normset.${"E4201"}-%]
+<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normset.${"E4202"} %]
+[%-     FOREACH item IN normset.${"E4202"}-%]
+<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END -%]
+</p>
+[% END %]
+
+[% IF circset.size > 0 || mexnormset.size > 0 %]
+<p/>
+[% sysprofile %]
+[% IF circset.size > 0 %]
+
+<div id="circinfo"><!-- Begin Circulation -->
+[% PROCESS common/subtemplate name="circset" %]
+</div><!-- End Circulation -->
+[% ELSE %]
+[%   IF mexnormset.size > 0 %]
+<div id="mexinfo"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="mexset"%]
+</div><!-- End Bestand -->
+[%   END %]
+[% END %]
+[%- END -%]
+
+</div><!-- End: Bottom Info -->
+
+</div><!-- End Fulltitle -->
+
+[%- END -%]
+</div>
+
+[%- END -%]
+<!-- Titlelist ends here -->
+</form>

@@ -16,7 +16,7 @@
 
   <body>
 
-[% PROCESS common/subtemplate name="corporate_banner" %]
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %]
 
 <div id="maincontent">
 <br />
@@ -31,7 +31,7 @@
 
   <center>
     <p>
-      <a class="invisible" href="http://kug.ub.uni-koeln.de/" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="[% msg.maketext("Neue Sitzung beginnen?") %]" /></a>
+      <a class="invisible" href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=kugng" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="[% msg.maketext("Neue Sitzung beginnen?") %]" /></a>
     </p>
   </center>
 <br />

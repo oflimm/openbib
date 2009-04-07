@@ -28,6 +28,7 @@
 
 <div class="content">
 <p />
+
 <form method="get" action="[% config.search_loc %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
 <input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
@@ -43,47 +44,30 @@
 [%- IF query.param('searchtitofcnt')    -%]<input type="hidden" name="searchtitofcnt" value="[% query.param('searchtitofcnt') %]" />[% END %]
 [%- IF query.param('category')          -%]<input type="hidden" name="category" value="[% query.param('category') %]" />[% END %]
 
-<table width="100%">
-<tr><th>[% msg.maketext("Optionen") %]</th></tr>
-<tr><td class="boxed">
-<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="sorttype">
-  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person/Region") %]</option>
-  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel/Z&auml;hlung") %]</option>
-  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Fert.Jahr") %]</option>
-  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
-  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
-  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
-</select>&nbsp;
-<select name="sortorder">
-  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
-</select>
-<select name="sortall">
-  <option value="0" selected="selected">[% msg.maketext("pro Katalog") %]</option>
-</select>
-&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" /></td></tr></table><p />
-</form>
-<p />
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.search_loc %] 
 
-<form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="database"  value="[% database %]" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+</form>
 
 <p />
 
 <!-- Titlelist begins here -->
-<table width="100%">
-<tr><th>[% msg.maketext("Titelliste") %]</th></tr>
-<tr><td class="boxedclear">
-
 [%- dbdesc   = dbinfo.dbnames.${database}.full -%]
 [%- dburl    = dbinfo.urls.${database} -%]
-
-<table cellpadding="2">
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[%-   IF dbinfo.use_libinfo.${database} %]
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% database %];stid=60">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.maxlength_dbname) %]</a>
+    </div>
+    <div class="hits">
+[% recordlist.get_size %]  [% msg.maketext("Treffer") %]
+    </div>
 [% IF offset >= 0 && hitrange > 0 %]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></span></td><td align="left" colspan="2"><span class="rlhits"><strong>[% recordlist.get_size %]/[% hits %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3">
+    <div class="navigation">
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
 [%- IF navitem.active -%]
@@ -96,11 +80,10 @@
 [%- IF hits <= 1000 -%]
 <a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
 [%- END -%]
-</td><td align="left" colspan="2"></td><td></td></tr>
-[% ELSE %]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></span></td><td align="left" colspan="2"><span class="rlhits"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
-[% END %]
-
+    </div>
+[%-    END -%]
+  </div>
+  <div class="resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% listrow = 'listrow1' %]
 [% FOREACH record IN recordlist.get_records %]
 [%- item = record.get_brief_normdata -%]
@@ -123,13 +106,11 @@
 [%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
-
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
 [%- title = item.${'T0310'}.first.content -%]
 [%- END -%]
-
 [%# Einbeziehung der Zaehlfelder T5100 %]
 [%- IF title && item.${'T5100'}.first.content -%]
 [%-    order = item.${'T5100'}.first.content -%]
@@ -139,13 +120,10 @@
 [%-      title = "${order}. ${title}" -%]
 [%-    END -%]
 [%- END -%]
-
 [%# Verlage konstruieren %]
 [%- publisher = item.${'T0412'}.first.content -%]
-
 [%# Ejahr konstruieren %]
 [%- yearofpub = item.${'T0425'}.first.content -%]
-
 [%# Signaturen konstruieren %]
 [%- signaturen = [] -%]
 [%- FOREACH part IN item.${'X0014'} -%]
@@ -153,25 +131,30 @@
 [%- END -%]
 [%- signatur = signaturen.sort.unique.join(' ; ') -%]
 [%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
-
-<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
-
+    <div class="item">
+      <div class="numbering">[% loop.count+offset %]</div>
+      <div class="thumbnail">
+    [% IF (config.coverscans.all || config.coverscans.${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+[%- IF item.popularity -%]<br />(Popularit&auml;t: [% item.popularity %])[%- END -%]
+      </div>
+      <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
+      <div class="titleactions">
+<a class="collection" class="collection" href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/></a>
+      </div>
+    </div>
+<!-- Ende einzelner Treffer -->
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]
 [% listrow = 'listrow1' %]
 [% END %]
-
-[% END %]
-</table>
-
-</td></tr>
-</table>
+[%- END -%]
+  </div>
+</div>
 <!-- Titlelist ends here -->
-</form>
-
-<p />
 
 </div>
 <p />

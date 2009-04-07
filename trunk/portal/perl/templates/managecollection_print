@@ -18,7 +18,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "collection" %] 
 
 <div id="maincontent">
 
@@ -33,24 +33,15 @@
       <div class="content">
 	  <p />
 [% IF type == 'HTML' %]
-	  <table>
-[% PROCESS common/subtemplate name="managecollection_tit_as_html_simple" %]
-	  </table>
+[%   PROCESS common/subtemplate name="managecollection_tit_as_html_simple" hide_options=1 %]
 [% ELSIF type == 'Text' %]
-	  <pre>
-[% PROCESS common/subtemplate name="managecollection_tit_as_text" %]
-          </pre>
+[%   PROCESS common/subtemplate name="managecollection_tit_as_text" hide_options=1 %]
 [% ELSIF type == 'BibTeX' %]
-  	  <pre>
-[% PROCESS common/subtemplate name="managecollection_tit_as_bibtex" %]
-  	  </pre>
+[%   PROCESS common/subtemplate name="managecollection_tit_as_bibtex" hide_options=1 %]
 [% ELSIF type == 'EndNote' %]
-          <pre>
-[% PROCESS common/subtemplate name="managecollection_tit_as_endnote" %]
-          </pre>
+  [% PROCESS common/subtemplate name="managecollection_tit_as_endnote" hide_options=1 %]
 [% END %]
 
       </div>
 
-<p />
 [% PROCESS common/subtemplate name="std_footer" %]

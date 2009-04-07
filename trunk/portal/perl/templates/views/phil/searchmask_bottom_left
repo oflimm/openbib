@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchmask_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="newsflash" %]
+
+<h3><img style="vertical-align:bottom" src="[% config.info_img %]" alt="[% msg.maketext("Information") %]" />&nbsp;[% msg.maketext("Informatio") %]</h3>
+
+Recherchieren Sie in allen Katalogen der Philosophischen Fakult&auml;t

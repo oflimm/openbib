@@ -25,25 +25,14 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
-</ul>
-
-<div class="content">
-<p />
-
-<ul class="tabbingmenu">
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Sichten") %]">[% msg.maketext("Sichten") %]</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Spezialisierte KUG-Portale") %]">[% msg.maketext("Spezialisierte KUG-Portale") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% msg.maketext("Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an
 Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgew&auml;hlt
@@ -90,7 +79,5 @@ viewname %]</b>)
 [%- END -%]
 [% END %]
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

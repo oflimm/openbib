@@ -27,6 +27,13 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
    <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=41" title="[% msg.maketext("Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
 </ul>
 
@@ -72,7 +79,6 @@ die Literaturliste [% item %]">[% item %] ([% properties.itemcount %])</a></li>
 <p />
 
 </div>
-
-<p />
+</div>
 
 [% PROCESS common/subtemplate name="std_footer" %]

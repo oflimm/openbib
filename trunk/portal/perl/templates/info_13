@@ -22,19 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
-</ul>
-
-<div class="content">
-<p />
-
-<ul class="tabbingmenu">
    <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Sichten") %]">[% msg.maketext("Sichten") %]</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
@@ -42,15 +30,15 @@
 
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
-[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.litlists %]   <li><a [% IF active == 41 %]class="active"[% END %] href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
+[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.litlists %]   <li><a [% IF active == 41 %]class="active"[% END %] href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
    <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 </ul>
 
 <div class="content">
-<p />
 
+<div id="infobox">
 <table width="100%">
-<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% msg.maketext("W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
 <b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten
@@ -61,6 +49,10 @@ einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörig
 Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>") %]
 </td></tr>
 </table>
+</div>
+
+<div id="mainmatter">
+
 <p />
 
 [%
@@ -73,7 +65,7 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
   [%- IF category.nr >= 1 -%]
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
   [%- END -%]
-<tr class="titlerow"><td colspan="[% colspan %]" align="left"><b>[% category.desc %]</b></td></tr>
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><b>[% category.desc %]</b></td></tr>
 
   [%- FOREACH db = catdb -%]
     [%- IF db.category == category.short -%]
@@ -107,7 +99,5 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
 </div>
 </div>
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

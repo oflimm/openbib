@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 // Begin Togglen / Drilldown Personen
 // Bild setzen
-$("#dd_aut_[% database %]_toggle").html("<b>[<a href=\"#dd_aut_[% database %]_anchor\">Mehr</a>]</b>")
+$("#dd_aut_[% database %]_toggle").html("<b>[<a href=\"#dd_aut_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
 $("#dd_aut_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -15,7 +15,7 @@ $("#dd_aut_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Koerperschaften
 // Bild setzen
-$("#dd_kor_[% database %]_toggle").html("<b>[<a href=\"#dd_kor_[% database %]_anchor\">Mehr</a>]</b>")
+$("#dd_kor_[% database %]_toggle").html("<b>[<a href=\"#dd_kor_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
 $("#dd_kor_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -26,7 +26,7 @@ $("#dd_kor_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Schlagworte
 // Bild setzen
-$("#dd_swt_[% database %]_toggle").html("<b>[<a href=\"#dd_swt_[% database %]_anchor\">Mehr</a>]</b>")
+$("#dd_swt_[% database %]_toggle").html("<b>[<a href=\"#dd_swt_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
 $("#dd_swt_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -37,7 +37,7 @@ $("#dd_swt_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Systematik
 // Bild setzen
-$("#dd_not_[% database %]_toggle").html("<b>[<a href=\"#dd_not_[% database %]_anchor\">Mehr</a>]</b>")
+$("#dd_not_[% database %]_toggle").html("<b>[<a href=\"#dd_not_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
 $("#dd_not_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -48,7 +48,7 @@ $("#dd_not_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Jahr
 // Bild setzen
-$("#dd_year_[% database %]_toggle").html("<b>[<a href=\"#dd_year_[% database %]_anchor\">Mehr</a>]</b>")
+$("#dd_year_[% database %]_toggle").html("<b>[<a href=\"#dd_year_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
 $("#dd_year_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -59,7 +59,7 @@ $("#dd_year_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Medienart
 // Bild setzen
-$("#dd_mart_[% database %]_toggle").html("<b>[<a href=\"#dd_mart_[% database %]_anchor\">Mehr</a>]</b>")
+$("#dd_mart_[% database %]_toggle").html("<b>[<a href=\"#dd_mart_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
 $("#dd_mart_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -70,7 +70,7 @@ $("#dd_mart_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Sprache
 // Bild setzen
-$("#dd_spr_[% database %]_toggle").html("<b>[<a href=\"#dd_spr_[% database %]_anchor\">Mehr</a>]</b>")
+$("#dd_spr_[% database %]_toggle").html("<b>[<a href=\"#dd_spr_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
 $("#dd_spr_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -82,7 +82,7 @@ $("#dd_spr_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Katalog
 // Bild setzen
-$("#dd_db_[% database %]_toggle").html("<b>[<a href=\"#dd_db_[% database %]_anchor\">Mehr</a>]</b>")
+$("#dd_db_[% database %]_toggle").html("<b>[<a href=\"#dd_db_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
 $("#dd_db_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -96,10 +96,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 
 </script>
 [%# USE dumper;dumper.dump(searchquery)%]
-<table>
-<tr><th style="font-size:0.9em">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;</th></tr>
-<tr><td class="boxedclear" style="font-size:0.8em;">
-
+<div class="drilldown">
+<h2>[% msg.maketext("Treffermenge eingrenzen") %]</h2>
 <table>
 
 [% request_base = "sb=xapian;drilldown=1;dd_categorized=1;";
@@ -119,8 +117,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [%         IF combinedbs == 1 && category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th id="dd_db_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>
-<tr><td class="boxedclear">
+<tr><th class="headline" id="dd_db_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>
+<tr><td>
 [%             FOREACH termitem IN category_map.8 ;
                   LAST IF loop.count > 25 ;
 %]
@@ -140,8 +138,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [%         IF config.drilldown_option.categorized_aut && category_map.3.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th id="dd_aut_[% database %]_anchor">[% msg.maketext("nach Personen") %]</th></tr>
-<tr><td class="boxedclear">
+<tr><th class="headline" id="dd_aut_[% database %]_anchor">[% msg.maketext("nach Personen") %]</th></tr>
+<tr><td>
 [%             FOREACH termitem IN category_map.3 ;
                   LAST IF loop.count > 25 ;
 %]
@@ -161,8 +159,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [%         IF config.drilldown_option.categorized_kor && category_map.7.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th id="dd_kor_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</th></tr>
-<tr><td class="boxedclear">
+<tr><th class="headline" id="dd_kor_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</th></tr>
+<tr><td>
 [%             FOREACH termitem IN category_map.7 ;
                   LAST IF loop.count > 25 ;
 %]
@@ -182,8 +180,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [%         IF config.drilldown_option.categorized_swt && category_map.1.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th id="dd_swt_[% database %]_anchor">[% msg.maketext("nach Themen") %]</th></tr>
-<tr><td class="boxedclear">
+<tr><th class="headline" id="dd_swt_[% database %]_anchor">[% msg.maketext("nach Themen") %]</th></tr>
+<tr><td>
 [%             FOREACH termitem IN category_map.1 ;
                   LAST IF loop.count > 25 ;
 %]
@@ -203,8 +201,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [%         IF config.drilldown_option.categorized_not && category_map.2.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th id="dd_not_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</th></tr>
-<tr><td class="boxedclear">
+<tr><th class="headline" id="dd_not_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</th></tr>
+<tr><td>
 [%             FOREACH termitem IN category_map.2 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -224,8 +222,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [%         IF config.drilldown_option.categorized_year && category_map.5.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</th></tr>
-<tr><td class="boxedclear">
+<tr><th class="headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</th></tr>
+<tr><td>
 [%             FOREACH termitem IN category_map.5 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -245,8 +243,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [%         IF config.drilldown_option.categorized_mart && category_map.4.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th id="dd_mart_[% database %]_anchor">[% msg.maketext("nach Medienart") %]</th></tr>
-<tr><td class="boxedclear">
+<tr><th class="headline" id="dd_mart_[% database %]_anchor">[% msg.maketext("nach Medienart") %]</th></tr>
+<tr><td>
 [%             FOREACH termitem IN category_map.4 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -266,8 +264,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [%         IF config.drilldown_option.categorized_spr && category_map.6.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th id="dd_spr_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</th></tr>
-<tr><td class="boxedclear">
+<tr><th class="headline" id="dd_spr_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</th></tr>
+<tr><td>
 [%             FOREACH termitem IN category_map.6 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -287,6 +285,5 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [%        END %]
 </table>
 
-</td></tr>
-</table>
+</div>
 [%    END %]

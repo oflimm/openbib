@@ -1,10 +1,68 @@
+[% IF start %]
 <!-- Begin Template: corporate_banner -->
-	<div id="header">
-		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_siegel" target="_blank"></a>
-		<a href="http://www.uni-koeln.de" title="Startseite der Universität zu Köln" id="header_uni_schriftzug" target="_blank"><span>Universit&auml;t zu K&ouml;ln</span></a>
+	<div id="header2">
+		<div id="header_logo"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
 
-		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_schriftzug" target="_blank"><span>[% IF view %][% config.get_viewdesc_from_viewname(view) %][% ELSE %]K&ouml;lner Universit&auml;tsGesamtkatalog[% END %]</span></a>
-		<a href="http://www.uni-koeln.de" title="Startseite der Universit&auml;t zu Köln" id="header_uni_siegel" target="_blank"></a>
-
-        </div>
+                <div id="header_right"><a href="http://www.uni-koeln.de" title="Startseite der Universität zu Köln" id="header2_uni_schriftzug" target="_blank"><span>Universit&auml;t zu K&ouml;ln</span></a>
+		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header2_usb_schriftzug" target="_blank"><span>[% IF view %][% config.get_viewdesc_from_viewname(view) %][% ELSE %]K&ouml;lner Universit&auml;tsGesamtkatalog[% END %]</span></a>
+		<a href="http://www.uni-koeln.de" title="Startseite der Universit&auml;t zu Köln" id="header_uni_siegel_small" target="_blank"></a>
+                </div>
+       </div>
 <!-- End Template: corporate_banner -->
+[% ELSE %]
+<!-- Begin Template: corporate_banner -->
+[% IF user.is_authenticated %]
+[% autocompletion_type = user.get_autocompletion %]
+[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_all").autocomplete("[% config.connector_spellcheck_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_all").autocomplete("[% config.connector_livesearch_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[%   END %]
+[% END %]
+
+	<div id="header2">
+<form method="get" action="[% config.virtualsearch_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="hitrange"  value="50" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="sorttype"  value="author" />
+<input type="hidden" name="sortorder" value="up" />
+<input type="hidden" name="sb"        value="xapian" />
+<input type="hidden" name="st"        value="1" />
+[% IF config.drilldown %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.drilldown_option.cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.drilldown_option.categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
+<input type="hidden" name="autoplus"  value="0" />
+<input type="hidden" name="profil"  value="alldbs" />
+
+		<div id="header_logo"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
+                <div id="header_simplesearch">
+<table><tr><td><span class="bigtext">[% msg.maketext("Suche") %]</span>&nbsp;</td><td><input id="input_box_all" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></div>&nbsp;&nbsp;</td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td></tr></table>
+</div>
+</form>
+
+</div>
+<!-- End Template: corporate_banner -->
+[% END %]

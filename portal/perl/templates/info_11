@@ -22,8 +22,6 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
    <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
@@ -46,10 +44,10 @@
 <p />
 
 <table width="100%">
-<tr><th>Hinweis</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-W&auml;hlen Sie einen Katalog aus, um Informationen &uuml;ber dessen
-Nutzung zu erhalten.
+[% msg.maketext("W&auml;hlen Sie einen Katalog aus, um Informationen &uuml;ber dessen
+Nutzung zu erhalten.") %]
 </td></tr>
 </table>
 <p />
@@ -64,7 +62,7 @@ Nutzung zu erhalten.
   [%- IF category.nr >= 1 -%]
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
   [%- END -%]
-<tr class="titlerow"><td colspan="[% colspan %]" align="left"><b>[% category.desc %]</b></td></tr>
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><b>[% category.desc %]</b></td></tr>
 
   [%- FOREACH db = catdb -%]
     [%- IF db.category == category.short -%]
@@ -98,7 +96,5 @@ Nutzung zu erhalten.
 </div>
 </div>
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

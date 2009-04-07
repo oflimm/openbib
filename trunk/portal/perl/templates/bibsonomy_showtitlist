@@ -67,40 +67,67 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 
 <p/>
 [% IF posts.recordlist.size > 0 %]
-<table>
-[%- listrow = 'listrow1' -%]
+
+<!-- Titlelist begins here -->
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[% msg.maketext("Liste der Quellen") %]
+    </div>
+    <div class="hits">
+    </div>
+  </div>
+  <div class="resultitems fullwidth liststyle">
+[% listrow = 'listrow1' %]
 [%- FOREACH thistitle IN posts.recordlist -%]
 [%- record = thistitle.record -%]
 [% IF type == 'bibtex' %]
-<tr class="[% listrow %]"><td colspan="2"><span class="rlauthor">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="rltitle">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span><br />
-Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;[% msg.maketext("Nutzer") %]: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
-[% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar") %]</span><br/>(&nbsp;&nbsp;[% FOREACH dbname IN
-thistitle.local_dbs %]<a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050">[% dbinfo.dbnames.${dbname}.short %]</a>&nbsp;&nbsp;[% END %])<br/>[% ELSE %]<span
-style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!") %]</span><br/>[% END %]
-</td></tr>
+    <div class="item">
+      <div class="numbering">[% loop.count+start %]</div>
+      <div class="thumbnail">
+    [% IF (config.coverscans.all || config.coverscans.${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="rltitle">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span>
+<br/>[% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar") %]</span>[% ELSE %]<span
+style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!") %]</span>[% END %]
+      </div>
+      <div class="titlemark">
+[% IF thistitle.local_availability %]<span style="color:green">KUG-Titel: &nbsp;&nbsp;[% FOREACH dbname IN
+thistitle.local_dbs %]<a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050" title="[% dbinfo.dbnames.${dbname}.short %]">[% loop.count %]</a>&nbsp;&nbsp;[% END %][% END %]
+      </div>
+      <div class="titleactions">
+<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a>
+      </div>
+    </div>
 [% ELSIF type == 'bookmark' %]
-<tr class="[% listrow %]"><td colspan="2"><b><a href="[% record.${'url'} %]" target="_blank">[%
-record.${'title'} %]</a></b><br />
-[%- IF thistitle.${'desc'} -%][% thistitle.${'desc'} %]<br/>[%- END -%]
-[% msg.maketext("Tags") %]: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;Nutzer: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
-</td></tr>
-[% END %]
-
-[% IF listrow == 'listrow1' %]
-[% listrow = 'listrow2' %]
-[% ELSE %]
-[% listrow = 'listrow1' %]
-[% END %]
-
-[% END %]
-</table>
+    <div class="item">
+      <div class="numbering">[% loop.count+start %]</div>
+      <div class="thumbnail">
+    [% IF (config.coverscans.all || config.coverscans.${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<b><a href="[% record.${'url'} %]" target="_blank">[% record.${'title'} %]</a></b><br />
+[%- IF thistitle.${'desc'} -%][% thistitle.${'desc'} | truncate(400) %][%- END -%]
+      </div>
+      <div class="titlemark">
+      </div>
+      <div class="titleactions">
+<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a>
+      </div>
+    </div>
+[%-  END -%]
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->
 [% ELSE %]
 <h1>[% msg.maketext("Es sind keine Quellen verf&uuml;gbar.") %]</h1>
 [% END %]
 <p/>
 
 [% IF posts.next.start %]
-<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]start=[% posts.next.start %];end=[% posts.next.end %];type=[% type %]">Weiter</a>
+<img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]start=[% posts.next.start %];end=[% posts.next.end %];type=[% type %]">[% msg.maketext("Weiter") %]</a>
 [% END %]
 
 </div>

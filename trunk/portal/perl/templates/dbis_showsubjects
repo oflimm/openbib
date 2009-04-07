@@ -28,9 +28,10 @@
 
 [%# USE dumper; dumper.dump(subjects) %]
 
-<h3>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h3>
+<h1>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h1>
 <p/>
-<div class="boxed">
+<div class="left_side23">
+<div class="listoptions">
 <b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
@@ -64,7 +65,34 @@
 </ul>
 [% END %]
 <p/>
+</div>
+
+<div class="right_side13">
+<div class="boxedclear">
+<div class="headline">Suche nach Datenbanken</div>
+<p/>
+<form method="get" action="[% config.dbis_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="lett"      value="[% subject.lett %]" />
+<input type="hidden" name="action"    value="search_dbs" />
+
+<table>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_green_img %]" alt="green"/></td><td>frei im Web</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_yellow_img %]" alt="yellow"/></td><td>online im Hochschulnetz</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_red_img %]" alt="red"/></td><td>kostenpflichtiges Pay-per-Use-Angebot</td></tr>
+<tr><td><input type="checkbox" name="access_de" value="1" [%- IF access_de -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_de_img %]" alt="red"/></td><td>deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)</td></tr>
+</table>
+<p/>
+<table>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="fs" value="" size="18" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</form>
+</form>
+</div>
+</div>
 
 </div>
+
 
 [% PROCESS common/subtemplate name="std_footer" %]

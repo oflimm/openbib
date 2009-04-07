@@ -71,6 +71,7 @@ my $category_map_ref = {
     'DV-Ausstattung' => '210',
     'Art des Systems' => '220',
     'Online-Katalogisierung seit Erscheinungsjahr' => '230',
+    'Online-Katalogisierung seit Erwerbungsjahr' => '235',
     'Mitarbeit am KUG' => '240',
     'Sigel in ZDB' => '250',
 };

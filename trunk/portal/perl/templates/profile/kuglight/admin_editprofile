@@ -1,0 +1,79 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Profiles
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog-Profil bearbeiten' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="profiles" %] 
+
+<div class="content">
+
+<form method="get" action="[% config.admin_loc %]">
+<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<input type="hidden" name="profilename" value="[% profile.profilename %]" />
+<input type="hidden" name="do_editprofile" value="1" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Katalog-Profil bearbeiten") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
+
+<tr><td><span style="color:blue">[% profile.profilename %]</span></td><td><input type="text" name="description" value="[% profile.description %]" size="40" /></td>
+</tr>
+</table>
+<p />
+
+<p />
+<b>[% msg.maketext("Katalogauswahl zu diesem Profil") %]</b><br /><br />
+
+<select name="profiledb" multiple="multiple">
+
+[% FOREACH singledb IN dbnames %]
+
+<option value="[% singledb.dbname %]"
+
+[% FOREACH checkeddb IN profile.profiledbs %]
+
+[% IF singledb.dbname == checkeddb %]
+selected="selected"
+[% END %]
+
+[% END %]
+
+>[% singledb.dbname %]: [% singledb.description %]</option>
+
+[% END %]
+
+
+</select>
+
+
+<p />
+
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

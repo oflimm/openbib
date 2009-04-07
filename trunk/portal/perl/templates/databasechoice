@@ -31,7 +31,7 @@ function update_fak(yourform, checked, fak) {
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "databasechoice" %] 
 
 <div id="maincontent">
 
@@ -41,26 +41,20 @@ function update_fak(yourform, checked, fak) {
 
 <div class="content">
 
+<p/>
+
 <form method="post" action="[% config.databasechoice_loc %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="hitrange" value="-1" />
 <input type="hidden" name="view" value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel auswählen. Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer übergeordneten hellblau hinterlegten Kategorie, um alle zugeh&ouml;rigen Kataloge automatisch auszuwählen<p />
-Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge auswählen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre Suchbegriffe eingeben. Ihre gerade
-getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgewählt. Nun müssen Sie nur noch auf <b>In ausgewählten Katalogen suchen</b> klicken, um in den ausgewählten
-Datenbanken zu recherchieren.") %]
-</td></tr>
+<table>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_choose" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
 </table>
-<p />
-<input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
+
 <p />
 <table>
-<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
 
 [%- FOREACH category = config.orgunits -%]
 [%- is_empty = 1 ;
@@ -75,7 +69,7 @@ Datenbanken zu recherchieren.") %]
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
 [%- END -%]
 
-<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
 
 [%- FOREACH db = catdb -%]
 [%- IF db.category == category.short -%]
@@ -108,13 +102,12 @@ Datenbanken zu recherchieren.") %]
 [%- END -%]
 </table>
 <p />
-<input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
+<table>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_choose" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
+</table>
 </form>
 <p />
-
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]
 

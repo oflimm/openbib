@@ -51,12 +51,35 @@
 [% END %]
     </div>
   </div>
-  <div class="resultitems fullwidth">
+  <div class="resultdrilldown">
+    <div class="drilldown">
+
+       <div class="headline">Suche nach Zeitschriften</div>
+<form method="get" action="[% config.ezb_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="lett"      value="[% journals.current_page.lett %]" />
+<input type="hidden" name="action"    value="search_journals" />
+
+<table>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_green_img %]" alt="green"/></td><td>mit frei zugänglichen Volltextartikeln</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_yellow_img %]" alt="yellow"/></td><td>mit Volltextartikeln, die nur im Uni-Netz zugänglich sind</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_red_img %]" alt="red"/></td><td>ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)</td></tr>
+</table>
+<p/>
+<table>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="fs" value="" size="18" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</form>
+
+    </div>
+  </div>
+  <div class="resultitems">
 [%- FOREACH journal IN journals.journals -%]
     <div class="item">
       <div class="numbering">[% loop.count+journals.current_page.sindex %]</div>
-      <div class="thumbnail">
-<img src="/images/openbib/[%- IF journal.color.code == 1 -%]ezb_30x30_gruen2.gif[%- ELSIF journal.color.code == 2 -%]ezb_30x30_gelb2.gif[% ELSIF journal.color.code == 3 %]ezb_30x30_gruengelb.gif[% ELSIF journal.color.code == 4 %]ezb_30x30_rot12.gif[% ELSIF journal.color.code == 5 %]ezb_30x30_gruenrot.gif[% ELSIF journal.color.code == 6 %]ezb_30x30_gelbrot.gif[%- ELSE -%]ezb_30x30_alle.gif[%- END -%]" alt="[% journal.color.desc %]" />
+      <div class="dbis_availability">
+<img src="[%- IF journal.color.code == 1 -%][% config.dbis_green_img %][%- ELSIF journal.color.code == 2 -%][% config.dbis_yellow_img %][% ELSIF journal.color.code == 3 %][% config.dbis_green_yellow_img %][% ELSIF journal.color.code == 4 %][% config.dbis_red_img %][% ELSIF journal.color.code == 5 %][% config.dbis_green_green_red_img %][% ELSIF journal.color.code == 6 %][% config.dbis_yellow_red_img %][%- ELSE -%][% config.dbis_green_yellow_red_img %][%- END -%]" alt="[% journal.color.desc %]" />
       </div> 
       <div class="brieftitle">
 <a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalinfo;id=[% journal.id %]">[% journal.title %]</a>

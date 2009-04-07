@@ -1,0 +1,104 @@
+[%#-
+#######################################################################
+#
+# Templatename: ezb_showsubjects
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der EZB Hauptkategorien
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
+</ul>
+
+<div class="content">
+
+[%# USE dumper; dumper.dump(journals) %]
+
+
+<ul class="tabbingmenu">
+[% FOREACH navitem IN journals.other_pages %]
+  <li><a [% IF navitem.desc == journals.current_page.desc %]class="active" [% END %]href="[% config.ezb_loc %]?sessionID=[% sessionID %];bibid=[% config.ezb_bibid %];access_green=[% access_green %];access_yellow=[% access_yellow %];access_red=[% access_red %];lang=de;fs=[% journals.current_page.term %];sc=[% navitem.sc %];lc=[% navitem.lc %];action=search_journals">[% navitem.desc %]</a></li>
+[% END %]
+</ul>
+
+<div class="content">
+
+<!-- Titlelist begins here -->
+
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+Suchbegriff(e): [% journals.current_page.term %]
+    </div>
+    <div class="hits">
+[% journals.search_count %]&nbsp;[% msg.maketext("Treffer") %]
+    </div>
+    <div class="navigation">
+[% FOREACH thisnav IN journals.nav %]
+<a href="[% config.ezb_loc%]?sessionID=[% sessionID %];fs=[% journals.current_page.term %];sc=[% thisnav.sc %];lc=[% thisnav.lc %];sindex=[% thisnav.sindex %];action=search_journals">[[% thisnav.sindex+1 %] - [% thisnav.sindex+50 %]]</a> 
+[% END %]
+    </div>
+  </div>
+  <div class="resultdrilldown">
+    <div class="drilldown">
+
+       <div class="headline">Suche nach Zeitschriften</div>
+<form method="get" action="[% config.ezb_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="lett"      value="[% journals.current_page.lett %]" />
+<input type="hidden" name="action"    value="search_journals" />
+
+<table>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_green_img %]" alt="green"/></td><td>mit frei zugänglichen Volltextartikeln</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_yellow_img %]" alt="yellow"/></td><td>mit Volltextartikeln, die nur im Uni-Netz zugänglich sind</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_red_img %]" alt="red"/></td><td>ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)</td></tr>
+</table>
+<p/>
+<table>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="fs" value="" size="18" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</form>
+
+    </div>
+  </div>
+  <div class="resultitems">
+[%- FOREACH journal IN journals.journals -%]
+    <div class="item">
+      <div class="numbering">[% loop.count+journals.current_page.sindex %]</div>
+      <div class="dbis_availability">
+<img src="[%- IF journal.color.code == 1 -%][% config.dbis_green_img %][%- ELSIF journal.color.code == 2 -%][% config.dbis_yellow_img %][% ELSIF journal.color.code == 3 %][% config.dbis_green_yellow_img %][% ELSIF journal.color.code == 4 %][% config.dbis_red_img %][% ELSIF journal.color.code == 5 %][% config.dbis_green_green_red_img %][% ELSIF journal.color.code == 6 %][% config.dbis_yellow_red_img %][%- ELSE -%][% config.dbis_green_yellow_red_img %][%- END -%]" alt="[% journal.color.desc %]" />
+      </div> 
+      <div class="brieftitle">
+<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalinfo;id=[% journal.id %]">[% journal.title %]</a>
+      </div>
+      <div class="titlemark">
+[%- IF journal.color.code != 1 -%]<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalreadme;id=[% journal.id %]">[[% msg.maketext("ReadMe") %]]</a>[% END %]
+      </div>
+      <div class="titleactions">
+      </div>
+    </div>
+<!-- Ende einzelner Treffer -->
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

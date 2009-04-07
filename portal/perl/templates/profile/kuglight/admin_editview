@@ -1,0 +1,147 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - View bearbeiten' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="views" %] 
+
+<div class="content">
+
+<form method="get" action="[% config.admin_loc %]">
+<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<input type="hidden" name="viewname"    value="[% viewinfo.viewname %]" />
+<input type="hidden" name="do_editview" value="1" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("View bearbeiten") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
+
+<tr><td><span style="color:blue">[% viewinfo.viewname %]</span></td><td><input type="text" name="description" value="[% viewinfo.description %]" size="40" /></td>
+<td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview %]<option value="[% profile.profilename %]" [% IF viewinfo.profilename == profile.profilename %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td>
+<td><select
+name=active><option value="1" 
+[% IF active == 1 %]
+selected
+[% END %]
+>[% msg.maketext("Ja") %]</option><option value="0" 
+[% IF active == 0 %]
+selected
+[% END %]
+>[% msg.maketext("Nein") %]</option></select>
+</td></tr>
+</table>
+<p />
+
+<table>
+<tr><td>Besondere Start-Location</td><td><input type="text" name="viewstart_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
+<tr><td>Besondere Start-SubTemplateId</td><td><input type="text" name="viewstart_stid" value="[% viewinfo.start_stid %]" size="40" /></td></tr>
+</table>
+
+<p />
+<b>[% msg.maketext("Katalogauswahl zu diesem View") %]</b><br /><br />
+
+<select name="viewdb" multiple="multiple">
+
+[% FOREACH singledb IN dbnames %]
+
+<option value="[% singledb %]"
+
+[% FOREACH checkeddb IN viewinfo.viewdbs %]
+
+[% IF singledb == checkeddb %]
+selected="selected"
+[% END %]
+
+[% END %]
+
+>[% singledb %]: [% IF dbinfo.dbnames.${singledb}.short %][% dbinfo.dbnames.${singledb}.short %][% ELSE %][% dbinfo.dbnames.${singledb}.short %][% END %]</option>
+
+[% END %]
+
+
+</select>
+
+
+<p />
+
+<b>[% msg.maketext("RSS-Feed zu diesem View") %]</b><br /><br />
+
+<select name="rssfeeds" multiple="multiple">
+
+[% FOREACH singlefeed IN viewinfo.allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+
+<option value="[% feedid %]"
+
+[% IF viewinfo.viewrssfeed.${feedid} %]
+selected="selected"
+[% END %]
+
+
+>[% singlefeed.dbname %] / [% singlefeed.type %] /
+[%singlefeed.subtype %]</option>
+
+[% END %]
+
+
+</select>
+
+
+<p />
+
+<p />
+
+<b>[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</b><br /><br />
+
+<select name="primrssfeed">
+
+[% FOREACH singlefeed IN viewinfo.allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+
+<option value="[% feedid %]"
+
+[% IF viewinfo.primrssfeed.${feedid} %]
+selected="selected"
+[% END %]
+
+
+>[% singlefeed.dbname %] / [% singlefeed.type %] /
+[%singlefeed.subtype %]</option>
+
+[% END %]
+
+
+</select>
+
+
+<p />
+
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -17,7 +17,8 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
 
 <div id="maincontent">
 
@@ -27,18 +28,40 @@
 
 <p />
 
-<form method="get" action="[%config.litlists_loc %]">
+<form method="get" action="[% config.litlists_loc %]">
 <input type="hidden" name="action"     value="manage" />
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
 <input type="hidden" name="litlistid"  value="[% litlist.properties.id %]" />
 
+[% userrole = user.get_roles_of_user(litlist.properties.userid) %]
+
+[%# USE dumper;dumper.dump(litlist)%]
 <table width="100%">
 <tr><th>[% msg.maketext("Einstellungen &auml;ndern") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td></tr>
-<tr><td><input type="text" name="title" value="[% litlist.properties.title %]"/></td><td><select name="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select></td><td><input
-type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td>[%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]<td><b>[% msg.maketext("Offiziell") %]</b></td>[%- END -%]</tr>
+<tr><td><input type="text" name="title" value="[% litlist.properties.title %]" size="50"/></td><td><select name="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select></td>[%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]<td><select name="lecture"><option value="1" [% IF litlist.properties.lecture == 1%] selected="selected"[% END %]>[% msg.maketext("Ja") %]</option><option value="0"[% IF litlist.properties.lecture == 0 %] selected="selected"[% END %]>[% msg.maketext("Nein") %]</option></select></td>[%- END -%]<td><div class="cssbutton glass kug"><input type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
+<tr><td colspan="3"></td></tr>
+
+<tr><td colspan="3">Ordnen Sie Ihre Literaturliste thematisch ein</td></tr>
+<tr><td colspan="3">
+<select name="subjectids" multiple="multiple" size="5">
+
+[% FOREACH subject IN subjects %]
+<option value="[% subject.id %]"
+
+[% IF litlist.properties.subject_selected.${subject.id} %]
+selected="selected"
+[% END %]
+
+>[% subject.name %][% IF subject.description%] ([% subject.description %])[% END %]</option>
+
+[% END %]
+
+
+</select>
+</td></tr>
 </table>
 </td></tr>
 </table>
@@ -50,11 +73,10 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
 [%# USE dumper; dumper.dump(litlist)%]
 [% IF litlist.recordlist.get_size > 0 %]
 
-<!-- Titlelist begins here -->
-<table width="100%">
-<tr><th>[% msg.maketext("Literaturliste") %]:&nbsp;[% litlist.properties.title %]</th></tr>
-<tr><td class="boxedclear">
+[%- IF format == 'HTML' && show == 'short' -%]
+<div class="boxed">
 
+<!-- Titlelist begins here -->
 <form method="get" action="[% config.litlists_loc %]">
 <input type="hidden" name="sessionID"       value="[% sessionID %]" />
 <input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
@@ -62,45 +84,70 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
 <input type="hidden" name="do_showlitlist"  value="1" />
 <input type="hidden" name="action"          value="manage" />
 
-<table width="100%">
-<tr><th>[% msg.maketext("Optionen") %]</th></tr>
-<tr><td class="boxed">
-<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="sorttype">
-  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
-  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
-  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
-  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
-  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
-  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
-  <option value="tstamp"[%- IF query.param('sorttype') == 'tstamp' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Zeitstempel") %]</option>
-</select>&nbsp;
-<select name="sortorder">
-  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
-</select>
-&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.litlists_loc %]
 
-&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;
-
-<b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.listtype == 'cover' %]style="font-weight:bold"[% END %]><img style="vertical-align:bottom" src="[% config.liststyle_cover_img %]" />&nbsp;<a href="[% config.litlists_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=cover">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.listtype == 'list' %]style="font-weight:bold"[% END%]><img style="vertical-align:bottom" src="[% config.liststyle_list_img %]" />&nbsp;<a href="[% config.litlists_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=list">[% msg.maketext("Listen-Ansicht") %]</a></span>
-
-[% IF litlist.properties.type == 1 %]
-&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;
-
-<b>[% msg.maketext("PermaLink") %]:</b>&nbsp;<a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img style="vertical-align:bottom" src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
-[% END %]
-</td></tr></table><p />
 </form>
+</div>
+
+[% END %]
 <p />
 
-<table cellpadding="2">
+<!-- Titlelist begins here -->
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[% litlist.properties.title %]
+    </div>
+    <div class="hits">
+[% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
+    </div>
+[% IF offset >= 0 && hitrange > 0 %]
+    <div class="navigation">
+[%- FOREACH navitem IN nav -%]
+<a href="[% navitem.url %]">
+[%- IF navitem.active -%]
+<b>[ [% navitem.start %]-[% navitem.end %] ]</b>
+[%- ELSE -%]
+[ [% navitem.start %]-[% navitem.end %] ]
+[%- END -%]
+</a>&nbsp;
+[%- END -%]
+[%- IF hits <= 1000 -%]
+<a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
+[%- END -%]
+    </div>
+[%-    END -%]
+  </div>
+  <div class="rightoptions">
+[% IF NOT hide_options %]
+<div class="reuse_data"><!-- Begin Reuse -->
+
+[% IF litlist.properties.type == 1 %]
+<b>[% msg.maketext("Verweisen Sie auf diese Liste") %]:</b><p/>
+
+<table>
+<tr>
+<th><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
+<td><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
+</tr>
+</table>
+
+<p />
+[% END %]
+<div class="headline">[% msg.maketext("Andere Formate") %]</div>
+
+<p>
+<a href="[% config.listlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.listlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.listlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.listlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+</p>
+</div>
+</div>
+[% END %]
+  <div class="resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[% IF format == 'HTML' && show == 'short' %]
 
 [% listrow = 'listrow1' %]
 [% FOREACH record IN litlist.recordlist.get_records %]
 [% item = record.get_brief_normdata %]
-
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
@@ -120,13 +167,11 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
 [%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
-
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
 [%- title = item.${'T0310'}.first.content -%]
 [%- END -%]
-
 [%# Einbeziehung der Zaehlfelder T5100 %]
 [%- IF title && item.${'T5100'}.first.content -%]
 [%-    order = item.${'T5100'}.first.content -%]
@@ -136,13 +181,10 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
 [%-      title = "${order}. ${title}" -%]
 [%-    END -%]
 [%- END -%]
-
 [%# Verlage konstruieren %]
 [%- publisher = item.${'T0412'}.first.content -%]
-
 [%# Ejahr konstruieren %]
 [%- yearofpub = item.${'T0425'}.first.content -%]
-
 [%# Signaturen konstruieren %]
 [%- signaturen = [] -%]
 [%- FOREACH part IN item.${'X0014'} -%]
@@ -152,11 +194,26 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
 [%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
 [%- dbdesc   = dbinfo.dbnames.${item.database}.full -%]
 [%- dburl    = dbinfo.urls.${item.database} -%]
-
-<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${record.database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></i></td><td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td><td>[% record.tstamp %]</td><td><a href="[% config.litlists_loc %]?sessionID=[% sessionID
-%]&action=manage;litlistid=[% litlist.properties.id %];do_delentry=1;titid=[% item.id %];titdb=[% item.${"database"} %]"><b>[% msg.maketext("Entfernen") %]</b></a></td></tr>
-
+    <div class="item">
+      <div class="numbering">[% loop.count+offset %]</div>
+      <div class="thumbnail">
+    [% IF (config.coverscans.all || config.coverscans.${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<br />aus:&nbsp;<i>
+[%-   IF dbinfo.use_libinfo.${database} %]
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% database %];stid=60">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.maxlength_dbname) %]</a></i>[%- IF item.popularity -%]&nbsp;(Popularit&auml;t: [% item.popularity %])[%- END -%]
+      </div>
+      <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
+      <div class="titleactions">
+<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/></a>&nbsp;&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=manage;litlistid=[% litlist.properties.id %];do_delentry=1;titid=[% item.id %];titdb=[% item.${"database"} %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" /></a><p/>[% record.tstamp %]
+      </div>
+    </div>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]
@@ -164,24 +221,31 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% END %]
 
 [% END %]
-</table>
 
-</td></tr>
-</table>
+[% ELSIF format == 'HTML' && show == 'full' %]
+
+[% PROCESS common/subtemplate name="litlists_tit_as_html_full" %]
+
+[% ELSIF format == 'Text' %]
+
+[% PROCESS common/subtemplate name="litlists_tit_as_text" %]
+
+[% ELSIF format == 'BibTeX' %]
+
+[% PROCESS common/subtemplate name="litlists_tit_as_bibtex" %]
+
+[% ELSIF format == 'EndNote' %]
+
+[% PROCESS common/subtemplate name="litlists_tit_as_endnote" %]
+
+[%- END # Ende Endnote/Alles -%]
+
+</div>
+</div>
 <!-- Titlelist ends here -->
 
 [% END %]
 
-</td></tr>
-</table>
-
 </div>
-
-<p />
-
-
-</div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -215,6 +215,10 @@ image_root_path: /usr/share/images
 
 # Verwendete Funktionsbilder
 courses_img: /images/openbib/courses.png
+dbis_green_img: /images/openbib/dbis/z0.gif
+dbis_yellow_img: /images/openbib/dbis/z2.gif
+dbis_red_img: /images/openbib/dbis/z-ppu.gif
+dbis_yellow_red_img: /images/openbib/dbis/z5.gif
 delete_img: /images/openbib/cancel.png
 follow_img: /images/openbib/solidrightarrow.png
 info_img: /images/openbib/info.png
@@ -320,6 +324,7 @@ tt_dbis_showdbs_tname: dbis_showdbs
 tt_dbis_showdbinfo_tname: dbis_showdbinfo
 tt_dbis_showdbreadme_tname: dbis_showdbreadme
 tt_ezb_showsubjects_tname: ezb_showsubjects
+tt_ezb_searchjournals_tname: ezb_searchjournals
 tt_ezb_showjournals_tname: ezb_showjournals
 tt_ezb_showjournalinfo_tname: ezb_showjournalinfo
 tt_ezb_showjournalreadme_tname: ezb_showjournalreadme

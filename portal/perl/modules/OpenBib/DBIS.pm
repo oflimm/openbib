@@ -130,12 +130,12 @@ sub get_subjects {
     return $subjects_ref;
 }
 
-sub get_dbs {
+sub search_dbs {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $notation = exists $arg_ref->{notation}
-        ? $arg_ref->{notation}     : '';
+    my $fs       = exists $arg_ref->{fs}
+        ? $arg_ref->{fs}           : '';
 
     my $lett     = exists $arg_ref->{lett}
         ? $arg_ref->{lett}         : '';
@@ -152,8 +152,129 @@ sub get_dbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=usb_k&colors=63&ocolors=40&lett=f&gebiete=$notation&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
+    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=usb_k&colors=63&ocolors=40&lett=fs&Suchwort=$fs&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
+    
+    my $titles_ref = [];
+    
+    $logger->debug("Request: $url");
 
+    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+
+    $logger->debug("Response: $response");
+    
+    my $parser = XML::LibXML->new();
+    my $tree   = $parser->parse_string($response);
+    my $root   = $tree->getDocumentElement;
+
+    my $current_page_ref = {};
+
+    $current_page_ref->{term} = $fs;
+
+    foreach my $nav_node ($root->findnodes('/dbis_page/page_vars')) {
+        $current_page_ref->{lett}     = $nav_node->findvalue('lett');
+        $current_page_ref->{colors}   = $nav_node->findvalue('colors');
+        $current_page_ref->{ocolors}  = $nav_node->findvalue('ocolors');
+    }
+    
+    my $subjectinfo_ref = {};
+
+    $subjectinfo_ref->{notation} = $root->findvalue('/dbis_page/page_vars/gebiete');
+    $subjectinfo_ref->{desc}     = $root->findvalue('/dbis_page/headline');
+
+    my $access_info_ref = {};
+
+    my @access_info_nodes = $root->findnodes('/dbis_page/list_dbs/db_access_infos/db_access_info');
+
+    foreach my $access_info_node (@access_info_nodes){
+        my $id                              = $access_info_node->findvalue('@access_id');
+        $access_info_ref->{$id}{icon_url}   = $access_info_node->findvalue('@access_icon');
+        $access_info_ref->{$id}{desc_short} = $access_info_node->findvalue('db_access');
+        $access_info_ref->{$id}{desc}       = $access_info_node->findvalue('db_access_short_text');
+    }
+
+    my $db_type_ref = {};
+    my @db_type_nodes = $root->findnodes('/dbis_page/list_dbs/db_type_infos/db_type_info');
+    foreach my $db_type_node (@db_type_nodes){
+        my $id                          = $db_type_node->findvalue('@db_type_id');
+        $db_type_ref->{$id}{desc}       = $db_type_node->findvalue('db_type_long_text');
+        $db_type_ref->{$id}{desc_short} = $db_type_node->findvalue('db_type');
+        $db_type_ref->{$id}{desc}=~s/\|/<br\/>/g;
+    }
+
+    my $db_group_ref             = {};
+    my $have_group_ref           = {};
+    $db_group_ref->{group_order} = [];
+    
+    foreach my $db_group_node ($root->findnodes('/dbis_page/list_dbs/dbs')) {
+        my $db_type                 = $db_group_node->findvalue('@db_type_ref');
+        my $topdb                   = $db_group_node->findvalue('@top_db') || 0;
+
+        $db_type = "topdb" if (!$db_type && $topdb);
+        $db_type = "all" if (!$db_type && !$topdb);
+
+        push @{$db_group_ref->{group_order}}, $db_type unless $have_group_ref->{$db_type};
+        $have_group_ref->{$db_type} = 1;
+
+        $db_group_ref->{$db_type}{count} = decode_utf8($db_group_node->findvalue('@db_count'));
+        $db_group_ref->{$db_type}{dbs} = [];
+        
+        foreach my $db_node ($db_group_node->findnodes('db')) {
+            my $single_db_ref = {};
+
+            $single_db_ref->{id}       = $db_node->findvalue('@title_id');
+            $single_db_ref->{access}   = $db_node->findvalue('@access_ref');
+            my @types = split(" ",$db_node->findvalue('@db_type_refs'));
+
+            $single_db_ref->{db_types} = \@types;
+            $single_db_ref->{title}     = decode_utf8($db_node->textContent);
+
+            push @{$db_group_ref->{$db_type}{dbs}}, $single_db_ref;
+        }
+    }
+
+    return {
+        current_page   => $current_page_ref,
+        subject        => $subjectinfo_ref,
+        db_groups      => $db_group_ref,
+        access_info    => $access_info_ref,
+        db_type        => $db_type_ref,
+    };
+}
+
+sub get_dbs {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $notation = exists $arg_ref->{notation}
+        ? $arg_ref->{notation}     : '';
+
+    my $fs       = exists $arg_ref->{fs}
+        ? $arg_ref->{fs}           : '';
+
+    my $lett     = exists $arg_ref->{lett}
+        ? $arg_ref->{lett}         : '';
+    
+    my $sc       = exists $arg_ref->{sc}
+        ? $arg_ref->{sc}           : '';
+    
+    my $lc       = exists $arg_ref->{lc}
+        ? $arg_ref->{lc}           : '';
+
+    my $sindex   = exists $arg_ref->{sindex}
+        ? $arg_ref->{sindex}       : 0;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $url;
+
+    if ($notation){
+        $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=usb_k&colors=63&ocolors=40&lett=f&gebiete=$notation&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
+    }
+    else {
+        $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=usb_k&colors=63&ocolors=40&lett=fs&Suchwort=$fs&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
+    }
+    
     my $titles_ref = [];
     
     $logger->debug("Request: $url");

@@ -17,7 +17,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
 
 <div id="maincontent">
 
@@ -35,13 +35,13 @@
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% loginname %]</td>
 
 [% IF targettype == 'self' %]
-<td><form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="delaccount_ask" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
+<td><form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="delaccount_ask" /><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></div></form></td>
 [% END %]
 
 </tr>
 
 [% IF targettype == 'self' %]
-<tr><form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="changepw" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></form></tr>
+<tr><form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="changepw" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></div></td></form></tr>
 [% END %]
 
 </table>
@@ -149,9 +149,66 @@
 [%- IF userinfo.masktype == 'advanced' -%]
  selected="selected"
 [%- END -%]
->[% msg.maketext("Erweitere Recherchemaske") %]</option></select>&nbsp;&nbsp;<input type="submit" value="[% msg.maketext("Recherchemaske festlegen") %]" /></td></tr>
+>[% msg.maketext("Erweitere Recherchemaske") %]</option></select>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Art der Recherchemaske festlegen") %]" /></div></td></tr>
 </table>
 </form>
+</td></tr>
+</table>
+<p />
+<table>
+<tr><td valign="top">
+<table width="100%">
+<tr><th>[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</td></tr>
+<tr><td class="options">
+<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action"    value="changeautocompletion" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<table>
+<tr><td align="left"><select name="setautocompletion"><option value="livesearch"
+[%- IF userinfo.autocompletiontype == 'livesearch' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("LiveSearch") %]</option><option value="spelling"
+[%- IF userinfo.autocompletiontype == 'spelling' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Rechtschreibvorschläge") %]</option></select>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Art der Autovervollst&auml;ndigung festlegen") %]" /></div></td></tr>
+</table>
+</form>
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("LiveSearch") %]<!-- <span class="formInfo"><a href="/help/livesearch_[% qopts.l %].html?width=375" class="jTip" id="one" name="Ausgabe passender Personen und Schlagworte:"><img src="[% config.info_img %]" /></a></span>--></td></tr>
+<tr><td class="options">
+<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action"    value="changelivesearch" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<table>
+<tr><td align="right"><input type="checkbox" name="livesearch_exact" value="1" [% IF livesearch.exact %]checked="checked"[% END %]/></td><td>[% msg.maketext("Exakte Übereinstimmung des Begriffes") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="livesearch_fs" value="1" [% IF livesearch.fs %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="livesearch_verf" value="1" [% IF livesearch.verf %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Personen") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="livesearch_swt" value="1" [% IF livesearch.swt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Schlagworten") %]</td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
+</table>
+</form>
+</td></tr>
+</table>
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Rechtschreibvorschläge") %]</td></tr>
+<tr><td class="options">
+<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action"    value="changespelling" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<table>
+<tr><td align="right"><input type="checkbox" name="spelling_as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der Recherchemaske") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="spelling_resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] /></td><td>[% msg.maketext("In der Trefferliste") %]</td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
+</table>
+</form>
+</td></tr>
+</table>
 </td></tr>
 </table>
 <p />
@@ -167,7 +224,7 @@
 <tr><td>[% msg.maketext("BibSonomy-API-User") %]</td><td><input type="text" name="bibsonomy_user" value="[% bibsonomy.user %]"/></td></tr>
 <tr><td>[% msg.maketext("BibSonomy-API-Key") %]</td><td><input type="text" name="bibsonomy_key" value="[% bibsonomy.key %]"/></td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
-<tr><td colspan="2"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
+<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
 </table>
 </form>
 [%- IF bibsonomy.sync == "on" -%]
@@ -203,7 +260,7 @@
 <tr><td align="right"><input type="checkbox" name="showmart"      value="1" [% IF fieldchoice.mart %]checked="checked"[% END %] /></td><td>[% msg.maketext("Medienart") %]</td></tr>
 <tr><td align="right"><input type="checkbox" name="showejahr"     value="1" [% IF fieldchoice.ejahr %]checked="checked"[% END %] /></td><td>[% msg.maketext("Erscheinungsjahr") %]</td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
-<tr><td colspan="2"><input type="submit" value="[% msg.maketext("Suchfelder &auml;ndern") %]" /></td></tr>
+<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Suchfelder &auml;ndern") %]" /></div></td></tr>
 </table>
 </form>
 </td></tr>
@@ -216,7 +273,5 @@
 </table>
 
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

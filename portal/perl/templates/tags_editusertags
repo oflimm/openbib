@@ -44,7 +44,7 @@
 
 <table>
 <tr><td>Zu ersetzendes Tag</td><td></td><td>Neuer Tag-Name</td><td></td></tr>
-<tr><td><input type="text" name="oldtag" size="30" id="inputfield"></td><td>&rarr;</td><td><input type="text" name="newtag" size="30"></td><td>&nbsp;&nbsp;<input type="submit" name="do_change" value="&Auml;ndern"></td></tr>
+<tr><td><input type="text" name="oldtag" size="30" id="inputfield"></td><td>&rarr;</td><td><input type="text" name="newtag" size="30">&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_change" value="&Auml;ndern"></div></td></tr>
 </table>
 
 </form>

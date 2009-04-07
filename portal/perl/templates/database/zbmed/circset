@@ -13,10 +13,7 @@
 -%]
 
 <table width="100%">
-<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
-<tr><td class="boxedclear">
-<table width="100%">
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH mex IN circset %]
 [%- mex.Ausleihurl = "${mex.Ausleihurl}?Login=sisis&Query=0000=${normset.id}" -%]
 <tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
@@ -35,7 +32,5 @@
 [%   END %]
 </td></tr>
 [% END %]
-</table>
-</td></tr>
 </table>
 

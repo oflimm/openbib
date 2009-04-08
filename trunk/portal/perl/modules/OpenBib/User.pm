@@ -2010,6 +2010,10 @@ sub add_litlist {
     $result=$request->fetchrow_hashref;
     $litlistid = $result->{id};
 
+    unless (ref($subjectids_ref) eq 'ARRAY') {
+        $subjectids_ref = [ $subjectids_ref ];
+    }
+
     if (@{$subjectids_ref}){
         $request=$dbh->prepare("insert into litlist2subject (litlistid,subjectid) values (?,?)") or $logger->error($DBI::errstr);
 

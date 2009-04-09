@@ -122,8 +122,6 @@
 ../templates/database/edz/circset
 ../templates/database/edz/mexset
 ../templates/database/einbaende/drilldown_categorized
-../templates/database/einbaende/managecollection_tit_as_html
-../templates/database/einbaende/managecollection_tit_as_text
 ../templates/database/einbaende/search_showtitlist
 ../templates/database/einbaende/search_showtitlist_of_cnt
 ../templates/database/einbaende/search_showtitset
@@ -169,9 +167,6 @@
 ../templates/database/richter/visible_categories_titset
 ../templates/database/spoho/search_showtitset
 ../templates/database/umschlaege/drilldown_categorized
-../templates/database/umschlaege/managecollection_tit_as_html
-../templates/database/umschlaege/managecollection_tit_as_html.old
-../templates/database/umschlaege/managecollection_tit_as_text
 ../templates/database/umschlaege/search_showtitlist
 ../templates/database/umschlaege/search_showtitlist_of_cnt
 ../templates/database/umschlaege/search_showtitset
@@ -182,7 +177,6 @@
 ../templates/database/zbmed/circset
 ../templates/dbis_searchdbs
 ../templates/dbis_showdbinfo
-../templates/dbis_showdbreadme
 ../templates/dbis_showdbs
 ../templates/dbis_showsubjects
 ../templates/drilldown_categorized
@@ -191,9 +185,7 @@
 ../templates/externaljump
 ../templates/ezb_searchjournals
 ../templates/ezb_showjournalinfo
-../templates/ezb_showjournalreadme
 ../templates/ezb_showjournals
-../templates/ezb_showreadme
 ../templates/ezb_showsubjects
 ../templates/graph/daily/fulltitle
 ../templates/graph/daily/queries
@@ -369,7 +361,6 @@
 ../templates/profile/kuglight/database/umschlaege/virtualsearch_result_item
 ../templates/profile/kuglight/database/umschlaege/visible_categories_titset
 ../templates/profile/kuglight/dbis_showdbinfo
-../templates/profile/kuglight/dbis_showdbreadme
 ../templates/profile/kuglight/dbis_showdbs
 ../templates/profile/kuglight/dbis_showsubjects
 ../templates/profile/kuglight/drilldown_categorized
@@ -379,7 +370,6 @@
 ../templates/profile/kuglight/ezb_showjournalinfo
 ../templates/profile/kuglight/ezb_showjournalreadme
 ../templates/profile/kuglight/ezb_showjournals
-../templates/profile/kuglight/ezb_showreadme
 ../templates/profile/kuglight/ezb_showsubjects
 ../templates/profile/kuglight/info
 ../templates/profile/kuglight/info_1
@@ -465,7 +455,6 @@
 ../templates/profile/kuglight/select_queries
 ../templates/profile/kuglight/selfreg
 ../templates/profile/kuglight/selfreg_success
-../templates/profile/kuglight/spelling_suggestions
 ../templates/profile/kuglight/startopac
 ../templates/profile/kuglight/std_error
 ../templates/profile/kuglight/std_footer
@@ -869,7 +858,6 @@
 ../templates/select_queries
 ../templates/selfreg
 ../templates/selfreg_success
-../templates/spelling_suggestions
 ../templates/startopac
 ../templates/std_error
 ../templates/std_footer

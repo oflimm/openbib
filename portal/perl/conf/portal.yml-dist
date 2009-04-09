@@ -184,7 +184,10 @@ ezb_colors: 3
 dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
 
 dbis_bibid: usb_k
-dbis_colors: ''
+# 1 (frei) + 4 (Hochschulnetz online) + 8 (Hochschulnetz Citrix) + 32 (Hochschulnetz eingeschraenkt)
+dbis_colors: 45
+# 8 (Pay-per-use) + 32 (DFG Nationallizenz)
+dbis_ocolors: 32
 
 # Externer Link zur Cover-Scan Anreicherung (ISBNINHERE wird durch ISBN ersetzt)
 coverscans_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=55
@@ -219,13 +222,14 @@ dbis_green_img: /images/openbib/dbis/z0.gif
 dbis_yellow_img: /images/openbib/dbis/z2.gif
 dbis_red_img: /images/openbib/dbis/z-ppu.gif
 dbis_yellow_red_img: /images/openbib/dbis/z5.gif
+dbis_de_img: /images/openbib/dbis/z-de.gif
 delete_img: /images/openbib/cancel.png
 follow_img: /images/openbib/solidrightarrow.png
 info_img: /images/openbib/info.png
 help_img: /images/openbib/help.png
 hint_img: /images/openbib/hint.png
-lang_de_img: /images/openbib/de.png
-lang_en_img: /images/openbib/en.png
+lang_de_img: /images/openbib/de.gif
+lang_en_img: /images/openbib/en.gif
 listofinterest_img: /images/openbib/note.png
 liststyle_cover_img: /images/openbib/view_detailed.png
 liststyle_list_img: /images/openbib/view_text.png
@@ -248,6 +252,7 @@ search_img: /images/openbib/search.png
 share_img: /images/openbib/share.png
 toggle_show_img: /images/openbib/toggle_plus.png
 top20_img: /images/openbib/top20-12px.png
+thumbnail_img: /images/openbib/thumbnail.png
 tutorial_img: /images/openbib/tutorial.png
 wikipedia_img:  /images/openbib/wikipedia.png
 university_img:  /images/openbib/university.png
@@ -321,6 +326,7 @@ tt_error_tname: error
 tt_externaljump_tname: externaljump
 tt_dbis_showsubjects_tname: dbis_showsubjects
 tt_dbis_showdbs_tname: dbis_showdbs
+tt_dbis_searchdbs_tname: dbis_searchdbs
 tt_dbis_showdbinfo_tname: dbis_showdbinfo
 tt_dbis_showdbreadme_tname: dbis_showdbreadme
 tt_ezb_showsubjects_tname: ezb_showsubjects
@@ -355,6 +361,7 @@ tt_info_35_tname: info_35
 tt_info_3_tname: info_3
 tt_info_40_tname: info_40
 tt_info_41_tname: info_41
+tt_info_42_tname: info_42
 tt_info_50_tname: info_50
 tt_info_51_tname: info_51
 tt_info_52_tname: info_52

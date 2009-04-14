@@ -40,24 +40,9 @@
 <div class="details"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="images"><!-- Begin Images -->
-[% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]
-<p>
-<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.coverscans_full_exturl.replace('ISBNINHERE',isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>
-</p>
-[% END %]
-<p>
-<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
-</p>
-<p>
-[%- IF bibkey -%]
-<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
-[%- END -%]
-</p>
 </div><!-- End Images -->
 
 <div class="categories"><!-- Begin Categories -->
-
-[% PROCESS common/subtemplate name="visible_categories_titset" %]
 
 [%
   css_classes = [
@@ -99,13 +84,89 @@ END ;
 %]
 
 [% IF format == "full" %]
-<table cellpadding="2">
-<tr><td class="category">id</td><td>[% record.id %]</td></tr>
+<p>
+[% IF normset.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle|Werkzeug)',1) %]
+<!-- Title begins here -->
+<div class="headline">[% msg.maketext("Werkzeug-Daten") %]</div>
+
+<table cellpadding=2>
+<tr><td class="category">id</td><td>[% normset.id %]</td></tr>
+
+[% PROCESS common/subtemplate name="visible_categories_toolset" %]
 
 [%-
 
-globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-rswkswt_done      = {};
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE [ "T0100" "T0101" "T0102" "T0103" ];
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${item.id}";
+         content   = "<a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE [ "T0200" "T0201" ];
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
+         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T0331";
+         content   = "<b>${content}</b>";
+
+    CASE [ "T0662" "T2662" "T3001" "T3002" "T3003" ];
+         content   = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
+
+    CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
+         content   = " <a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a
+href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T0700";
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;notation=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${item.id}";
+         content   = " <a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T5001";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
+
+    CASE "T5002";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
+
+    END;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+    thiscategory = category ;
+    IF config.categorymapping.$database.$category ;
+      thiscategory = "${category}-${normset.database}" ;
+    END;
+
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
+</table>
+
+[% ELSE %]
+<!-- Title begins here -->
+<div class="headline">[% msg.maketext("Titel-Daten") %]</div>
+
+<table cellpadding=2>
+<tr><td class="category">id</td><td>[% normset.id %]</td></tr>
+
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
+[%-
 
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
@@ -114,160 +175,142 @@ FOREACH category IN categories;
     SWITCH category;
 
     CASE [ "T0100" "T0101" "T0103" ];
-         thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
-
-         wikicontent = content.split(', ').reverse.join(' ');
-         wikicontent = wikicontent.replace('¬','');
-
-         rssfeed = "" ;
-         IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
-         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.wikipedia_img}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${item.id}";
+         content   = "<a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
-         thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
-
-         rssfeed = "" ;
-         IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglekor=${thisid}";
-         content   = "${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
+         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0331";
-         content   = "<b>${highlightquery(searchquery,content)}</b>";
+         content   = "<b>${content}</b>";
 
-    CASE "T0540";
-         content   = "<a class=\"isbn\" href=\"${config.redirect_loc}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.wikipedia_img}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
-
-    CASE "T0543";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
-
-    CASE [ "T0662" "T2662" ];
-         thisindicator = item.indicator ;
-         thiscontent   = '' ;
-         IF category == 'T0662' ;
-           FOREACH thisitem IN normset.${"T0663"} ;
-             IF thisitem.indicator == thisindicator ;
-                thiscontent = thisitem.content ;
-             END ;
-           END ;
-         ELSIF category == 'T2662' ;
-           FOREACH thisitem IN normset.${"T2663"} ;
-             IF thisitem.indicator == thisindicator ;
-                thiscontent = thisitem.content ;
-             END ;
-           END ;
-         END ;
-         IF thiscontent ;
-            IF content.match('digitool.hbz-nrw.de') ;
-               thiscontent = "<img src=\"${config.pdf_img}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
-               content     = "${config.redirect_loc}/${sessionID}/500/${content}" ;
-            END ;
-            content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
-         ELSE ;
-            content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
-         END ;
-
-    CASE "E4100";
-         localurl    = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
-         bklookup    = config.load_bk ;
-         bkdesc      = bklookup.${content};
-         content     = "<a href=\"${localurl}\">${content}</a>";
-         IF bkdesc ;
-            content   = "${content} (${bkdesc})" ;
-         END ;
-
-    CASE "E4110";
-         thisindicator = item.indicator ;
-         thiscontent   = "<img src=\"${config.pdf_img}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
-         content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
-         content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
-
-    CASE "E4120";
-         thiscontent   = "Greifen Sie hier online auf den Volltext zu";
-	 content       = "${config.redirect_loc}/${sessionID}/503/${content}" ;
-	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
+    CASE [ "T0662" "T2662" "T3001" "T3002" "T3003" ];
+         content   = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
-         thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
-
-         NEXT IF rswkswt_done.${thisid} == 1;
-
-         rssfeed = "" ;
-         IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
-         content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
-         rswkswt_done.${thisid} = 1;
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
+         content   = " <a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a
+href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0700";
-         thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
-
-         rssfeed = "" ;
-         IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglenot=${thisid}";
-         content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
-
-    CASE "T1600";
-         IF content.match('Sie einen Bestellschein aus');
-             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" target=\"_blank\">Ortsleihe</a> schicken";
-         END;
-
-    CASE "T4500";
-         # Dummy-Eintrag, damit dieser Eintrag nicht vom higlightquery
-         # erwischt wird
-         content   = content ;
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;notation=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${item.id}";
+         content   = " <a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T5001";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
 
     CASE "T5002";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
 
-    CASE ;
-         content   = highlightquery(searchquery,item.content);
-   END;
+    END;
 
-   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
-   # in Config.pm fuer die entsprechende Datenbank definiert
-   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
-   # kodiert.
-   thiscategory = category ;
-   IF config.categorymapping.${record.database}.$category ;
-     thiscategory = "${category}-${record.database}" ;
-   END;
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+    thiscategory = category ;
+    IF config.categorymapping.$database.$category ;
+      thiscategory = "${category}-${normset.database}" ;
+    END;
 
 -%]
 <tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
-[%
+[%-
    END;
 END;
 -%]
-[%- IF bibkey -%]
-<tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
-[%- END -%]
 </table>
+
+<p />
+
+<div class="headline">[% msg.maketext("Einband-Daten") %]</div>
+
+<table cellpadding="2">
+<tr><td class="category">[% msg.maketext("Einband-Abbildungen") %]</td><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer" class="cssbutton glass kug"><span>[% msg.maketext("Anzeigen") %]</span></a></td></tr>
+
+[% PROCESS common/subtemplate name="visible_categories_coverset" %]
+
+[%-
+
+FOREACH category IN categories; 
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    # Fehlerhafte Daten korrigieren
+    content = content.replace('&lt; */p&gt;','<p />');
+    content = content.replace('&lt;link&gt;','<a href="http://');
+    content = content.replace('&lt;/link&gt;','" target="_blank">Link</a>');
+    content = content.replace('&lt;.?siglink&gt;','');
+    content = content.replace('\x{96}','-');
+   
+    SWITCH category;
+
+    CASE [ "T0100" "T0101" "T0103" ];
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${item.id}";
+         content   = "<a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE [ "T0200" "T0201" ];
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
+         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T0331";
+         content   = "<b>${content}</b>";
+
+    CASE [ "T0662" "T2662" "T3001" "T3002" "T3003" ];
+         content   = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
+
+    CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
+         content   = " <a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a
+href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T0700";
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;notation=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${item.id}";
+         content   = " <a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T5001";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
+
+    CASE "T5002";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
+
+    END;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+    thiscategory = category ;
+    IF config.categorymapping.$database.$category ;
+      thiscategory = "${category}-${normset.database}" ;
+    END;
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
+</table>
+
+<!-- Title ends here -->
+[% END %]
+<p>
+
 [% ELSIF format == "BibTeX" %]
 <div>
 <pre>

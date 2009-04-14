@@ -28,15 +28,6 @@
 
 <h1>[% dbs.subject.desc %]</h1>
 
-<table width="100%" cellpadding="2">
-<tr><th>[% msg.maketext("Zugriffsbedingungen") %]</th></tr>
-<tr><td class="boxedclear">
-[% FOREACH access IN dbs.access_info %]
-[% access_type = access.key %]
-<img src="[% dbs.access_info.${access_type}.icon_url %]" alt="[% dbs.access_info.${access_type}.desc %]" title="[% dbs.access_info.${access_type}.desc %]" />&nbsp;[% dbs.access_info.${access_type}.desc %]&nbsp;&nbsp; 
-[% END %]
-</td></tr>
-</table>
 <p />
 
 [%# USE dumper; dumper.dump(dbs) %]
@@ -57,12 +48,38 @@
 <span style="font-weight:normal">[% dbs.db_type.${group}.desc %]</span><br/>&nbsp;
     </div>
   </div>
-  <div class="resultitems fullwidth">
+  <div class="resultdrilldown">
+    <div class="drilldown">
+
+       <div class="headline">[% msg.maketext("Suche nach Datenbanken") %]</div>
+<form method="get" action="[% config.dbis_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="lett"      value="[% journals.current_page.lett %]" />
+<input type="hidden" name="action"    value="search_dbs" />
+
+<table>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_green_img %]" alt="green"/></td><td>[% msg.maketext("frei im Web") %]</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_yellow_img %]" alt="yellow"/></td><td>[% msg.maketext("online im Hochschulnetz") %]</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_red_img %]" alt="red"/></td><td>[% msg.maketext("kostenpflichtiges Pay-per-Use-Angebot") %]</td></tr>
+<tr><td><input type="checkbox" name="access_de" value="1" [%- IF access_de -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_de_img %]" alt="red"/></td><td>[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</td></tr>
+<tr><td colspan="3"></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="notation">[% IF dbs.subject.notation %]<option value="[% dbs.subject.notation %]">[% dbs.subject.desc.replace('Fachgebiet: ','') %]</option>[%- END -%]<option value="">[% msg.maketext("Alle Fachgebiete") %]</option></select></td></tr>
+</table>
+<p/>
+<table>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="fs" value="" size="18" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</form>
+
+    </div>
+  </div>
+  <div class="resultitems">
 [%- FOREACH db IN thisgroup.dbs -%]
     <div class="item">
       <div class="numbering">[% loop.count %]</div>
-      <div class="thumbnail">
-<img src="[% dbs.access_info.${db.access}.icon_url %]" alt="[% dbs.access_info.${db.access}.desc %]" title="[% dbs.access_info.${db.access}.desc %]" />
+      <div class="dbis_availability">
+         <img src="[%- IF db.access == "access_0" -%][% config.dbis_green_img %][%- ELSIF db.access == "access_2" -%][% config.dbis_yellow_img %][% ELSIF db.access == "access_3" %][% config.dbis_yellow_img %][% ELSIF db.access == "access_4" %][% config.dbis_red_img %][% ELSIF db.access == "access_5" %][% config.dbis_green_green_red_img %][% ELSIF db.access == "access_6" %][% config.dbis_yellow_red_img %][% ELSIF db.access == "access_500" %][% config.dbis_de_img %][%- ELSE -%][% config.dbis_green_yellow_red_img %][%- END -%]" alt="[% dbs.access_info.${db.access}.desc %]" title="[% dbs.access_info.${db.access}.desc %]" />
       </div> 
       <div class="brieftitle">
 <a href="[% config.dbis_loc %]?sessionID=[% sessionID %];action=show_dbinfo;id=[% db.id %]">[% db.title %]</a>

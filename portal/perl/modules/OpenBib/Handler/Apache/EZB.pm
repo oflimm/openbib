@@ -131,10 +131,16 @@ sub handler {
     if (!$colors){
         $colors=$config->{ezb_colors};
 
-        $access_green  = ($config->{ezb_colors} / 1 >= 1)?1:0;
-        $access_yellow = ($config->{ezb_colors} / 2 >= 1)?1:0;
-        $access_red    = ($config->{ezb_colors} / 4 >= 1)?1:0;
+        my $colors_mask  = dec2bin($colors);
+
+        $logger->debug("Access: mask($colors_mask)");
+        
+        $access_green  = ($colors_mask & 0b001)?1:0;
+        $access_yellow = ($colors_mask & 0b010)?1:0;
+        $access_red    = ($colors_mask & 0b100)?1:0;
     }
+
+    $logger->debug("Access: colors($colors) green($access_green) yellow($access_yellow) red($access_red)");
     
     my $ezb = new OpenBib::EZB({colors => $colors });
     
@@ -171,6 +177,7 @@ sub handler {
         if ($fs){
             my $journals_ref = $ezb->search_journals({
                 fs       => $fs,
+                notation => $notation,
                 sc       => $sc,
                 lc       => $lc,
                 sindex   => $sindex,
@@ -324,6 +331,15 @@ sub handler {
     OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
 
     return OK;
+}
+
+sub dec2bin {
+    my $str = unpack("B32", pack("N", shift));
+    $str =~ s/^0+(?=\d)//;   # strip leading zeroes
+    return $str;
+}
+sub bin2dec {
+    return unpack("N", pack("B32", substr("0" x 32 . shift, -32)));
 }
 
 1;

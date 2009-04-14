@@ -1182,6 +1182,8 @@ sub handler {
                                 templatename => $itemtemplatename,
                             });
 
+                            $logger->debug("Using Template $itemtemplatename");
+                            
                             my $itemtemplate = Template->new({
                                 LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                                     INCLUDE_PATH   => $config->{tt_include_path},
@@ -1191,7 +1193,7 @@ sub handler {
                                 #                ABSOLUTE       => 1,
                                 RECURSION      => 1,
                                 OUTPUT         => $r,
-                            });            
+                            });
                         
                             # TT-Data erzeugen
                             my $ttdata={

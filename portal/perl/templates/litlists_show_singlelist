@@ -48,14 +48,7 @@
 </form>
 [%- END -%]
 
-<div class="boxed">
-<b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
-[%- FOREACH subject IN litlist.properties.subjects-%]
-<a href="[% config.info_loc %]?sessionID=[% sessionID%];stid=54;id=[% subject.id %]">[% subject.name %]</a>&nbsp;&nbsp;
-[%- END-%]
-</div>
-
-<p />
+<p/>
 
 <!-- Titlelist begins here -->
 <div class="resultlist">
@@ -66,22 +59,16 @@
     <div class="hits">
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>
-[% IF offset >= 0 && hitrange > 0 %]
     <div class="navigation">
-[%- FOREACH navitem IN nav -%]
-<a href="[% navitem.url %]">
-[%- IF navitem.active -%]
-<b>[ [% navitem.start %]-[% navitem.end %] ]</b>
+<b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
+[%- IF litlist.properties.subjects.size -%]
+[%- FOREACH subject IN litlist.properties.subjects-%]
+<a href="[% config.info_loc %]?sessionID=[% sessionID%];stid=54;id=[% subject.id %]">[% subject.name %]</a>&nbsp;&nbsp;
+[%- END-%]
 [%- ELSE -%]
-[ [% navitem.start %]-[% navitem.end %] ]
-[%- END -%]
-</a>&nbsp;
-[%- END -%]
-[%- IF hits <= 1000 -%]
-<a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
-[%- END -%]
+[% msg.maketext("Keine") %]
+[%- END-%]
     </div>
-[%-    END -%]
   </div>
   <div class="rightoptions">
 [% IF NOT hide_options %]

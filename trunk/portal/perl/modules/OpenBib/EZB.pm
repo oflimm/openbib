@@ -67,7 +67,9 @@ sub new {
     my $self = { };
 
     bless ($self, $class);
-    
+
+    $logger->debug("Initializing with colors = $colors");
+
     $self->{bibid}      = (defined $bibid)?$bibid:(defined $config->{ezb_bibid})?$config->{ezb_bibid}:undef;
     $self->{colors}     = (defined $colors)?$colors:(defined $config->{ezb_colors})?$config->{ezb_colors}:undef;
     $self->{client_ip}  = (defined $client_ip )?$client_ip:undef;
@@ -265,6 +267,9 @@ sub search_journals {
     my $fs       = exists $arg_ref->{fs}
         ? $arg_ref->{fs}           : '';
 
+    my $notation = exists $arg_ref->{notation}
+        ? $arg_ref->{notation}     : '';
+
     my $sc       = exists $arg_ref->{sc}
         ? $arg_ref->{sc}           : '';
     
@@ -277,8 +282,8 @@ sub search_journals {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&jq_type1=KT&jq_term1=$fs&xmloutput=1";
-    
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&jq_type1=KT&jq_term1=$fs&Notations[]=$notation&xmloutput=1";
+#    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=KT&jq_term1=review&jq_bool2=AND&jq_not2=+&jq_type2=KS&jq_term2=&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&jq_bool4=AND&jq_not4=+&jq_type4=IS&jq_term4=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations[]=AZ&colors=3&xmloutput=1";
     my $titles_ref = [];
     
     $logger->debug("Request: $url");

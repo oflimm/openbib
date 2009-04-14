@@ -129,18 +129,29 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $colors = $access_de + $access_green + $access_yellow*2 + $access_red*4 + $access_de*8;
+    my $colors  = $access_green + $access_yellow*44;
+    my $ocolors = $access_red*8 + $access_de*32;
 
-    if (!$colors){
-        $colors=$config->{dbis_colors};
+    # Wenn keine Parameter uebergeben wurden, dann Defaults nehmen
+    if (!$colors && !$ocolors){
+        $logger->debug("Using defaults for color and ocolor");
 
-        $access_green  = ($config->{dbis_colors} / 1 >= 1)?1:0;
-        $access_yellow = ($config->{dbis_colors} / 2 >= 1)?1:0;
-        $access_red    = ($config->{dbis_colors} / 4 >= 1)?1:0;
-        $access_de     = ($config->{dbis_colors} / 8 >= 1)?1:0;
+        $colors  = $config->{dbis_colors};
+        $ocolors = $config->{dbis_ocolors};
+
+        my $colors_mask  = dec2bin($colors);
+        my $ocolors_mask = dec2bin($ocolors);
+        
+        $access_red    = ($ocolors_mask & 0b001000)?1:0;
+        $access_de     = ($ocolors_mask & 0b100000)?1:0;
+        $access_green  = ($colors_mask  & 0b000001)?1:0;
+        $access_yellow = ($colors_mask  & 0b101100)?1:0;
+    }
+    else {
+        $logger->debug("Using CGI values for color and ocolor");
     }
     
-    my $dbis = new OpenBib::DBIS({colors => $colors });
+    my $dbis = new OpenBib::DBIS({colors => $colors, ocolors => $ocolors });
     
     if ($action eq "show_subjects"){
         my $subjects_ref = $dbis->get_subjects();
@@ -176,6 +187,7 @@ sub handler {
         if ($fs){
             my $dbs_ref = $dbis->search_dbs({
                 fs       => $fs,
+                notation => $notation,
                 lett     => $lett,
             });
             
@@ -327,6 +339,15 @@ sub handler {
     OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
 
     return OK;
+}
+
+sub dec2bin {
+    my $str = unpack("B32", pack("N", shift));
+    $str =~ s/^0+(?=\d)//;   # strip leading zeroes
+    return $str;
+}
+sub bin2dec {
+    return unpack("N", pack("B32", substr("0" x 32 . shift, -32)));
 }
 
 1;

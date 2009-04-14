@@ -47,7 +47,7 @@ Suchbegriff(e): [% dbs.current_page.term %] / [%- IF group == "topdb" -%][% msg.
   <div class="resultdrilldown">
     <div class="drilldown">
 
-       <div class="headline">Suche nach Datenbanken</div>
+       <div class="headline">[% msg.maketext("Suche nach Datenbanken") %]</div>
 <form method="get" action="[% config.dbis_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />
@@ -55,10 +55,12 @@ Suchbegriff(e): [% dbs.current_page.term %] / [%- IF group == "topdb" -%][% msg.
 <input type="hidden" name="action"    value="search_dbs" />
 
 <table>
-<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_green_img %]" alt="green"/></td><td>frei im Web</td></tr>
-<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_yellow_img %]" alt="yellow"/></td><td>online im Hochschulnetz</td></tr>
-<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_red_img %]" alt="red"/></td><td>kostenpflichtiges Pay-per-Use-Angebot</td></tr>
-<tr><td><input type="checkbox" name="access_de" value="1" [%- IF access_de -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_de_img %]" alt="red"/></td><td>deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)</td></tr>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_green_img %]" alt="green"/></td><td>[% msg.maketext("frei im Web") %]</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_yellow_img %]" alt="yellow"/></td><td>[% msg.maketext("online im Hochschulnetz") %]</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_red_img %]" alt="red"/></td><td>[% msg.maketext("kostenpflichtiges Pay-per-Use-Angebot") %]</td></tr>
+<tr><td><input type="checkbox" name="access_de" value="1" [%- IF access_de -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_de_img %]" alt="red"/></td><td>[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</td></tr>
+<tr><td colspan="3"></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="notation"><option value="">[% msg.maketext("Alle Fachgebiete") %]</option></select></td></tr>
 </table>
 <p/>
 <table>

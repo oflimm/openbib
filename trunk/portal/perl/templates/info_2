@@ -32,8 +32,7 @@
 
 <p />
 
-<h1 id="kugv2.3">Neuerungen mit Version 2.3 (noch in Entwicklung, als
-Beta-Version <a href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=kugng" target="_blank">verf&uuml;gbar</a>)</h1>
+<h1 id="kugv2.3">Neuerungen mit Version 2.3 (Umstellung am 17.4.2009)</h1>
 
 <h2>&Uuml;berarbeitung von Nutzerf&uuml;hrung und Design</h2>
 
@@ -84,13 +83,13 @@ aufbereitet werden.
 
 <h2>Integration von EZB und DBIS</h2>
 
-<p>
-Sowohl die Elektronische ZeitschriftenBibliothek (EZB), als auch das
-Datenbank Informationssystem (DBIS), in denen eine Vielzahl freier und
-alle von der USB lizensierten Zeitschriften und Datenbanken
+<p> Sowohl die Elektronische ZeitschriftenBibliothek (EZB), als auch
+das Datenbank Informationssystem (DBIS), in denen eine Vielzahl freier
+und alle von der USB lizensierten Zeitschriften und Datenbanken
 nachgewiesen sind, sind nun voll in den KUG integriert und &uuml;ber
-die Einstiegsseite der einfachen Recherche sofort zugreifbar.
-</p>
+die Einstiegsseite der einfachen Recherche sofort zugreifbar. Der
+Zugriff kann sowohl &uuml;ber ein Bl&auml;ttern in Fachgruppen, wie
+auch eine direkte Recherche erfolgen. </p>
 
 <h2>Automatische Anreicherung mit Medientypen</h2>
 
@@ -107,7 +106,19 @@ Eingrenzung &uuml;ber Medientypen als Suchverfeinerung erm&ouml;glicht.
 <p>
 Der Nutzer kann seine Literaturlisten nun einem festen Satz an
 Themengebieten zuordnen und so auch f&uuml;r andere fachlich
-erschliessen.</p><p>[<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/3146/312/6/kugng/index.html" target="_blank">Beispiel</a>]
+erschliessen.</p>
+
+<p>[<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/3146/322/6/kug/index.html" target="_blank">Beispiel</a>]
+</p>
+
+<h2>Kennzeichnung offizieller Literaturlisten der Fachbereiche</h2>
+
+<p> Offizielle Literaturlisten der verschiedenen Fachbereiche
+k&ouml;nnen nun von den Dozenten und Bibliothekaren als solche
+kenntlich gemacht werden. Diese Literaturlisten sind an folgendem
+Symbol zu erkennen: <img src="[% config.university_img %]"/> </p>
+
+<p>[<a href="<p>[<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/3146/312/6/kugng/index.html" target="_blank">Beispiel</a>]
 </p>
 
 <h2>Allgemeiner thematischer Zugriff</h2>

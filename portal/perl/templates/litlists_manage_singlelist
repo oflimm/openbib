@@ -74,7 +74,6 @@ selected="selected"
 [% IF litlist.recordlist.get_size > 0 %]
 
 [%- IF format == 'HTML' && show == 'short' -%]
-<div class="boxed">
 
 <!-- Titlelist begins here -->
 <form method="get" action="[% config.litlists_loc %]">
@@ -87,7 +86,6 @@ selected="selected"
 [% PROCESS common/subtemplate name="titlist_options" this_loc=config.litlists_loc %]
 
 </form>
-</div>
 
 [% END %]
 <p />

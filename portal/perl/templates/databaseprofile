@@ -50,7 +50,7 @@ function update_fak(yourform, checked, fak) {
 <p />
 <table width="100%">
 <tr><th>[% msg.maketext("Profilmanagement") %]</th></tr>
-<tr><td class="boxed">
+<tr><td class="boxedclear">
 <table>
 <tr><td align="left"><input type="text" title="[% msg.maketext("Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein") %]" name="newprofile" value="[% profilname %]" size="30" maxlength="200" /></td><td align="left"><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Abspeicherung eines neuen oder bestehenden Profils") %]" name="do_saveprofile" value="[% msg.maketext("Profil speichern") %]" /></div></td><td></td><td width="90%">&nbsp;</td></tr>
 [%- IF userdbprofiles.size > 0 -%]
@@ -72,6 +72,8 @@ function update_fak(yourform, checked, fak) {
 [% msg.maketext("Derzeit angezeigtes Profil") %]: <b>[% profilname %]</b>
 <p />
 [% END %]
+
+<p/>
 
 <table>
 <tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>

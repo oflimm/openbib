@@ -29,7 +29,7 @@
 <p />
 
 [% IF subjectid %]<h2>[% FOREACH subject IN subjects %][% IF subject.id == subjectid %][% subject.name%][% END %][% END %]</h2>[% END %]
-<div class="boxed">
+<div class="listoptions">
 <b>[% msg.maketext("Anzeige:") %]</b>&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show_public_lists" [%- IF NOT showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>[% msg.maketext("Alle Listen") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show_public_lists;showsubjects=1" [%- IF showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>[% msg.maketext("Themengebiete") %]</a>[%- IF NOT showsubjects.defined -%]&nbsp;&#124;&nbsp;<b>[% msg.maketext("Anzahl") %]</b>:&nbsp;[% public_litlists.size %][%- END -%]
 </div>
 

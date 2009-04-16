@@ -26,13 +26,13 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">&Uuml;bersicht</a></li>
-   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];edit_usertags=1">&Auml;ndern</a></li>
+   <li><a class="active" href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];edit_usertags=1">[% msg.maketext("&Auml;ndern") %]</a></li>
 </ul>
 
 <div class="content">
 <p/>
-<div class="boxed">
+<div class="listoptions">
 <b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.tags_loc %]?sessionID=[% sessionID %];view=[% view %];show_usertags=1;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.tags_loc %]?sessionID=[% sessionID %];view=[% view %];show_usertags=1;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 [%
@@ -41,7 +41,7 @@
 %]
 <p />
 <table width="100%">
-<tr><th>Eigene Tags</th></tr>
+<tr><th>[% msg.maketext("Eigene Tags") %]</th></tr>
 <tr><td class="boxedclear">
 [%- IF private_tags.size > 0 -%]
 [%-   IF show_cloud -%]
@@ -84,7 +84,7 @@ verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% se
 </ul>
 [%   END %]
 [% ELSE %]
-Bisher haben Sie noch keine Tags vergeben.
+[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
 [% END %]
 </td></tr>
 </table>

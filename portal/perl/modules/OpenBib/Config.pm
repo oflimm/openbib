@@ -1440,4 +1440,61 @@ sub get_geoposition {
     return $response;
 }
 
+sub get_loadbalancertargets {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $loadbalancertargets_ref = [];
+
+    my $request=$dbh->prepare("select * from loadbalancertargets order by host") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    
+    while (my $result=$request->fetchrow_hashref()){
+        my $id            = decode_utf8($result->{'id'});
+        my $host          = decode_utf8($result->{'host'});
+        my $active        = decode_utf8($result->{'active'});
+        
+        push @{$loadbalancertargets_ref}, {
+            id     => $id,
+            host   => $host,
+            active => $active,
+        };
+    }
+
+    
+    return $loadbalancertargets_ref;
+}
+
+sub get_active_loadbalancertargets {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my @activetargets = ();
+
+    my $request=$dbh->prepare("select host from loadbalancertargets where active = 1 order by host") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    
+    while (my $result=$request->fetchrow_hashref()){
+        my $host          = decode_utf8($result->{'host'});
+        
+        push @activetargets, $host;
+    }
+    
+    return @activetargets;
+}
+
 1;

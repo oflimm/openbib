@@ -28,10 +28,11 @@
 [%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
     </div>
     <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
 [%- IF treffer == qopts.hitrange -%]
-<b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>
+<span class="paging_active">1</span>&nbsp;&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>
 [%- ELSIF treffer < qopts.hitrange -%]
-<b>[1 - [% treffer %]]</b>
+<span class="paging_active">1</span>
 [%- END -%]
     </div>
   </div>

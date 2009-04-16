@@ -59,6 +59,9 @@ sub new {
     my $colors    = exists $arg_ref->{colors}
         ? $arg_ref->{colors}      : undef;
 
+    my $lang      = exists $arg_ref->{lang}
+        ? $arg_ref->{lang}        : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -68,11 +71,12 @@ sub new {
 
     bless ($self, $class);
 
-    $logger->debug("Initializing with colors = $colors");
+    $logger->debug("Initializing with colors = $colors, lang = $lang");
 
     $self->{bibid}      = (defined $bibid)?$bibid:(defined $config->{ezb_bibid})?$config->{ezb_bibid}:undef;
     $self->{colors}     = (defined $colors)?$colors:(defined $config->{ezb_colors})?$config->{ezb_colors}:undef;
     $self->{client_ip}  = (defined $client_ip )?$client_ip:undef;
+    $self->{lang}       = (defined $lang )?$lang:undef;
 
     $self->{client}  = LWP::UserAgent->new;            # HTTP client
 
@@ -85,7 +89,7 @@ sub get_subjects {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=&colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=&colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
 
     my $subjects_ref = [];
     
@@ -153,7 +157,7 @@ sub get_journals {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=$notation&colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&xmloutput=1";
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=$notation&colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
     
     my $titles_ref = [];
     
@@ -282,7 +286,7 @@ sub search_journals {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&jq_type1=KT&jq_term1=$fs&Notations[]=$notation&xmloutput=1";
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&jq_type1=KT&jq_term1=$fs&Notations[]=$notation&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
 #    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=KT&jq_term1=review&jq_bool2=AND&jq_not2=+&jq_type2=KS&jq_term2=&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&jq_bool4=AND&jq_not4=+&jq_type4=IS&jq_term4=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations[]=AZ&colors=3&xmloutput=1";
     my $titles_ref = [];
     
@@ -400,7 +404,7 @@ sub get_journalinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=de&jour_id=$id&xmloutput=1";
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&jour_id=$id&xmloutput=1";
 
     my $titles_ref = [];
     
@@ -481,7 +485,7 @@ sub get_journalreadme {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/show_readme.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=de&jour_id=$id&xmloutput=1";
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/show_readme.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&jour_id=$id&xmloutput=1";
 
     $logger->debug("Request: $url");
 

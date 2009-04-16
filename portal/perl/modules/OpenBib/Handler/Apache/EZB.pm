@@ -142,7 +142,7 @@ sub handler {
 
     $logger->debug("Access: colors($colors) green($access_green) yellow($access_yellow) red($access_red)");
     
-    my $ezb = new OpenBib::EZB({colors => $colors });
+    my $ezb = new OpenBib::EZB({colors => $colors, lang => $queryoptions->get_option('l') });
     
     if ($action eq "show_subjects"){
         my $subjects_ref = $ezb->get_subjects();
@@ -187,6 +187,7 @@ sub handler {
             
             # TT-Data erzeugen
             my $ttdata={
+                sindex        => $sindex,
                 access_green  => $access_green,
                 access_yellow => $access_yellow,
                 access_red    => $access_red,
@@ -226,6 +227,7 @@ sub handler {
             
             # TT-Data erzeugen
             my $ttdata={
+                sindex        => $sindex,
                 access_green  => $access_green,
                 access_yellow => $access_yellow,
                 access_red    => $access_red,
@@ -262,6 +264,7 @@ sub handler {
             
             # TT-Data erzeugen
             my $ttdata={
+                sindex        => $sindex,
                 journalinfo   => $journalinfo_ref,
                 view          => $view,
                 stylesheet    => $stylesheet,
@@ -303,6 +306,7 @@ sub handler {
 
                 # TT-Data erzeugen
                 my $ttdata={
+                    sindex        => $sindex,
                     journalreadme => $journalreadme_ref,
                     view          => $view,
                     stylesheet    => $stylesheet,

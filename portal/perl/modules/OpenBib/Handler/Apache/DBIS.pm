@@ -151,7 +151,7 @@ sub handler {
         $logger->debug("Using CGI values for color and ocolor");
     }
     
-    my $dbis = new OpenBib::DBIS({colors => $colors, ocolors => $ocolors });
+    my $dbis = new OpenBib::DBIS({colors => $colors, ocolors => $ocolors, lang => $queryoptions->get_option('l') });
     
     if ($action eq "show_subjects"){
         my $subjects_ref = $dbis->get_subjects();

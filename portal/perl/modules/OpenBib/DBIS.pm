@@ -62,6 +62,9 @@ sub new {
     my $ocolors   = exists $arg_ref->{ocolors}
         ? $arg_ref->{ocolors}     : undef;
 
+    my $lang      = exists $arg_ref->{lang}
+        ? $arg_ref->{lang}        : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -71,12 +74,13 @@ sub new {
 
     bless ($self, $class);
 
-    $logger->debug("Initializing with colors = $colors and ocolors = $ocolors");
+    $logger->debug("Initializing with colors = $colors and ocolors = $ocolors and lang = $lang");
     
     $self->{bibid}      = (defined $bibid)?$bibid:(defined $config->{dbis_bibid})?$config->{dbis_bibid}:undef;
     $self->{colors}     = (defined $colors)?$colors:(defined $config->{dbis_colors})?$config->{dbis_colors}:undef;
     $self->{ocolors}    = (defined $ocolors)?$ocolors:(defined $config->{dbis_ocolors})?$config->{dbis_ocolors}:undef;
     $self->{client_ip}  = (defined $client_ip )?$client_ip:undef;
+    $self->{lang}       = (defined $lang )?$lang:undef;
 
     $self->{client}  = LWP::UserAgent->new;            # HTTP client
 
@@ -89,7 +93,7 @@ sub get_subjects {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/fachliste.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&bib_id=".((defined $self->{bibid})?$self->{bibid}:"")."&lett=l&xmloutput=1";
+    my $url="http://rzblx10.uni-regensburg.de/dbinfo/fachliste.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&bib_id=".((defined $self->{bibid})?$self->{bibid}:"")."&lett=l&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
 
     my $subjects_ref = [];
     
@@ -165,7 +169,7 @@ sub search_dbs {
         $notation="&gebiete[]=$notation";
     }
     
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=usb_k&colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=fs&Suchwort=$fs&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."$notation&xmloutput=1";
+    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=usb_k&colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=fs&Suchwort=$fs&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."$notation&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
     
     my $titles_ref = [];
     
@@ -279,7 +283,7 @@ sub get_dbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=usb_k&colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=f&gebiete=$notation&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
+    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=usb_k&colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=f&gebiete=$notation&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
     
     my $titles_ref = [];
     
@@ -375,7 +379,7 @@ sub get_dbinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/detail.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=f&titel_id=$id&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
+    my $url="http://rzblx10.uni-regensburg.de/dbinfo/detail.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=f&titel_id=$id&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
 
     $logger->debug("Request: $url");
 
@@ -470,7 +474,7 @@ sub get_dbreadme {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/show_readme.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=de&jour_id=$id&xmloutput=1";
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/show_readme.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&jour_id=$id&xmloutput=1";
 
     $logger->debug("Request: $url");
 

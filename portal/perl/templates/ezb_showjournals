@@ -21,7 +21,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
+   <li><a class="active" href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -46,9 +46,20 @@
     <div class="hits">
     </div>
     <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
+[%- IF sindex == 0 -%]<img src="[% config.previous_img %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];notation=[% journals.subject.notation %];sc=[% thisnav.sc %];lc=[% thisnav.lc %];sindex=[% sindex - 50 %];action=show_journals"><img src="[% config.previous_img %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
 [% FOREACH thisnav IN journals.nav %]
-<a href="[% config.ezb_loc%]?sessionID=[% sessionID %];notation=[% journals.subject.notation %];sc=[% thisnav.sc %];lc=[% thisnav.lc %];sindex=[% thisnav.sindex %];action=show_journals">[[% thisnav.sindex+1 %] - [% thisnav.sindex+50 %]]</a> 
+[%
+     IF loop.first ;
+       minstart = thisnav.sindex;
+     ELSIF loop.last ;
+       maxstart = thisnav.sindex;
+     END;
+%]
+<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];notation=[% journals.subject.notation %];sc=[% thisnav.sc %];lc=[% thisnav.lc %];sindex=[% thisnav.sindex %];action=show_journals">[% IF sindex == thisnav.sindex %]<span class="paging_active">[% loop.count %]</span>[% ELSE %][% loop.count%][% END %]</a>&nbsp;
 [% END %]
+&nbsp;
+[% IF sindex == maxstart %]<img src="[% config.next_img %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];notation=[% journals.subject.notation %];sc=[% thisnav.sc %];lc=[% thisnav.lc %];sindex=[% sindex + 50 %];action=show_journals"><img src="[% config.next_img %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
     </div>
   </div>
   <div class="resultdrilldown">

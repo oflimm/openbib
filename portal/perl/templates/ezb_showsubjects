@@ -21,7 +21,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
+   <li><a class="active" href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -84,7 +84,8 @@
 <tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_yellow_img %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
 <tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.dbis_red_img %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
 <tr><td colspan="3"></td></tr>
-<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="notation">[% IF journals.subject.notation %]<option value="[% journals.subject.notation %]">[% journals.subject.desc %]</option>[%- END -%]<option value="">[% msg.maketext("Alle Fachgebiete") %]</option></select></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="notation">[% IF journals.subject.notation %]<option value="[% journals.subject.notation %]">[% journals.subject.desc %]</option>[%- END -%]<option value="">[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH subject IN subjects -%]
+<option value="[% subject.notation %]">[% subject.desc | truncate(45) %]</option>[%- END -%]</select></td></tr>
 </table>
 <p/>
 <table>

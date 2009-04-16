@@ -63,14 +63,16 @@
     </div>
 [%-     IF result.offsets -%]
     <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
+[%- IF offsets.first.offset == offset -%]<img src="[% config.previous_img %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];hitrange=[% hitrange %];action=showrange"><img src="[% config.previous_img %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
 [%          FOREACH singleoffset IN result.offsets %]
 [%-             IF singleoffset.type == 'getnext' -%]
 <a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
 [%-             ELSE -%]
 [%-                 IF singleoffset.offset == offset -%]
-<b>[[% singleoffset.start %] - [% singleoffset.end %]]</b>&nbsp;
+<span class="paging_active">[% loop.count %]</span>&nbsp;
 [%-                 ELSE -%]
-<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];hitrange=[% hitrange %];action=showrange">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
+<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];hitrange=[% hitrange %];action=showrange">[% loop.count %]</a>&nbsp;
 [%-                 END -%]
 [%-             END -%]
 [%-         END -%]

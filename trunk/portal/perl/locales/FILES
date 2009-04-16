@@ -61,6 +61,7 @@
 ../templates/admin_showcat
 ../templates/admin_showimx
 ../templates/admin_showlogintarget
+../templates/admin_showoperations
 ../templates/admin_showprofiles
 ../templates/admin_showsessions
 ../templates/admin_showsessions_1

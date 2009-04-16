@@ -26,8 +26,8 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">&Uuml;bersicht</a></li>
-   <li><a class="active" href="[% config.tags_loc %]?sessionID=[% sessionID %];edit_usertags=1">&Auml;ndern</a></li>
+   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% config.tags_loc %]?sessionID=[% sessionID %];edit_usertags=1">[% msg.maketext("&Auml;ndern") %]</a></li>
 </ul>
 
 <div class="content">
@@ -43,14 +43,14 @@
 <p />
 
 <table>
-<tr><td>Zu ersetzendes Tag</td><td></td><td>Neuer Tag-Name</td><td></td></tr>
-<tr><td><input type="text" name="oldtag" size="30" id="inputfield"></td><td>&rarr;</td><td><input type="text" name="newtag" size="30">&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_change" value="&Auml;ndern"></div></td></tr>
+<tr><td>[% msg.maketext("Zu ersetzendes Tag") %]</td><td></td><td>[% msg.maketext("Neuer Tag-Name") %]</td><td></td></tr>
+<tr><td><input type="text" name="oldtag" size="30" id="inputfield"></td><td>&rarr;</td><td><input type="text" name="newtag" size="30">&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("&Auml;ndern") %]"></div></td></tr>
 </table>
 
 </form>
 
 <table width="100%">
-<tr><th>Eigene Tags</th></tr>
+<tr><th>[% msg.maketext("Eigene Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
 <!-- Beginn Tag-Cloud -->
@@ -80,7 +80,7 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 [% END %]
 </ol>
 [% ELSE %]
-Bisher haben Sie noch keine Tags vergeben.
+[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
 [% END %]
 
 </td></tr>

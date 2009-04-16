@@ -104,6 +104,8 @@ sub handler {
     my $do_editcat      = $query->param('do_editcat')      || '';
     my $do_showlibinfo  = $query->param('do_showlibinfo')  || '';
     my $do_editlibinfo  = $query->param('do_editlibinfo')  || '';
+    my $do_showops      = $query->param('do_showops')      || '';
+    my $do_editserver   = $query->param('do_editserver')   || '';
     my $do_editcat_rss  = $query->param('do_editcat_rss')  || '';
     my $do_showprofiles = $query->param('do_showprofiles') || '';
     my $do_editprofile  = $query->param('do_editprofile')  || '';
@@ -125,13 +127,14 @@ sub handler {
     my $do_logout       = $query->param('do_logout')       || '';
 
     # Sub-Actions
-    my $do_new          = $query->param('do_new')          || '';
-    my $do_del          = $query->param('do_del')          || '';
-    my $do_change       = $query->param('do_change')       || '';
-    my $do_edit         = $query->param('do_edit')         || '';
-    my $do_show         = $query->param('do_show')         || '';
+    my $do_new          = $query->param('do_new')          || 0;
+    my $do_del          = $query->param('do_del')          || 0;
+    my $do_change       = $query->param('do_change')       || 0;
+    my $do_edit         = $query->param('do_edit')         || 0;
+    my $do_show         = $query->param('do_show')         || 0;
 
     # Variables
+    my $hostid          = $query->param('hostid')          || '';
     my $userid          = $query->param('userid')          || '';
     my $passwd          = $query->param('passwd')          || '';
     my $orgunit         = $query->param('orgunit')         || '';
@@ -141,8 +144,8 @@ sub handler {
     my $dbname          = $query->param('dbname')          || '';
     my $sigel           = $query->param('sigel')           || '';
     my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('use_libinfo')     || '';
-    my $active          = $query->param('active')          || '';
+    my $use_libinfo     = $query->param('use_libinfo')     || 0;
+    my $active          = $query->param('active')          || 0;
 
     my $roleid          = $query->param('roleid')          || '';
     my @roles           = ($query->param('roles'))?$query->param('roles'):();
@@ -868,6 +871,87 @@ sub handler {
       
         }
     
+    }
+    elsif ($do_showops) {
+        my $loadbalancertargets_ref = $config->get_loadbalancertargets;
+
+        my $ttdata={
+            loadbalancertargets => $loadbalancertargets_ref,
+
+            stylesheet => $stylesheet,
+            sessionID  => $session->{ID},
+            config     => $config,
+            session    => $session,
+            user       => $user,
+            msg        => $msg,
+        };
+    
+        OpenBib::Common::Util::print_page($config->{tt_admin_showoperations_tname},$ttdata,$r);
+    }
+    elsif ($do_editserver) {
+
+        if ($do_del) {
+	    editserver_del({id => $hostid});
+
+	    my $ret_ref = dist_cmd("editserver_del",{ id => $hostid }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
+            return OK;
+      
+        }
+        elsif ($do_change) {
+	    editserver_change({
+                id                   => $hostid,
+                active               => $active,
+            });
+            
+	    my $ret_ref = dist_cmd("editserver_change",{ 
+                id                   => $hostid,
+                active               => $active,
+            }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
+      
+            return OK;
+        }
+        elsif ($do_new) {
+
+            if ($host eq "") {
+
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Servernamen eingeben."),$r,$msg);
+
+                return OK;
+            }
+            $logger->debug("Host: $host Active: $active");
+            
+	    my $ret = editserver_new({
+                host                 => $host,
+                active               => $active,
+            });
+
+	    my $ret_ref = dist_cmd("editserver_new",{ 
+                host                 => $host,
+                active               => $active,
+            }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
+            return OK;
+        }
+
+        my $loadbalancertargets_ref = $config->get_loadbalancertargets;
+
+        my $ttdata={
+            loadbalancertargets => $loadbalancertargets_ref,
+
+            stylesheet => $stylesheet,
+            sessionID  => $session->{ID},
+            config     => $config,
+            session    => $session,
+            user       => $user,
+            msg        => $msg,
+        };
+    
+        OpenBib::Common::Util::print_page($config->{tt_admin_showoperations_tname},$ttdata,$r);
     }
     elsif ($do_showviews) {
         my $viewinfo_ref = $config->get_viewinfo_overview();
@@ -2104,7 +2188,8 @@ sub editsubject_del {
     my ($arg_ref) = @_;
 
     # Set defaults
-    my $id            = exists $arg_ref->{id};
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -2198,6 +2283,99 @@ sub editsubject_new {
     
     $idnresult=$dbh->prepare("insert into subjects (name,description) values (?,?)") or $logger->error($DBI::errstr);
     $idnresult->execute(encode_utf8($name),encode_utf8($description)) or $logger->error($DBI::errstr);
+    
+    return 1;
+}
+
+sub editserver_del {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    $logger->debug("About to delete id $id");
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+    my $request=$dbh->prepare("delete from loadbalancertargets where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($id) or $logger->error($DBI::errstr);
+    $request->finish();
+
+    return;
+}
+
+sub editserver_change {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $active                   = exists $arg_ref->{active}
+        ? $arg_ref->{active}              : 0;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
+    
+    my $request=$dbh->prepare("update loadbalancertargets set active = ? where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($active,$id) or $logger->error($DBI::errstr);
+    $request->finish();
+
+    return;
+}
+
+sub editserver_new {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $host                   = exists $arg_ref->{host}
+        ? $arg_ref->{host}                : undef;
+    my $active                 = exists $arg_ref->{active}
+        ? $arg_ref->{active}              : 0;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    if (!$host){
+        return -1;
+    }
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("select count(*) as rowcount from loadbalancertargets where host = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($host) or $logger->error($DBI::errstr);
+    my $res=$idnresult->fetchrow_hashref;
+    my $rows=$res->{rowcount};
+    
+    if ($rows > 0) {
+      $idnresult->finish();
+      return -1;
+    }
+    
+    $idnresult=$dbh->prepare("insert into loadbalancertargets (id,host,active) values (NULL,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute(encode_utf8($host),encode_utf8($active)) or $logger->error($DBI::errstr);
     
     return 1;
 }

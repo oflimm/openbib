@@ -1319,6 +1319,15 @@ td.mostrecent {
   font-weight: bold;
 }
 
+.paging {
+  font-size: 1.0em;
+}
+
+.paging_active {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
 #login_container {
   width: 99%;
 }

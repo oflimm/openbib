@@ -643,9 +643,17 @@ sub get_loadbalanced_servername {
     
     my $ua=new LWP::UserAgent(timeout => 5);
 
-    # Aktuellen Load der Server holen zur dynamischen Lastverteilung
-    my @servertab=@{$config->{loadbalancertargets}};
+    # Aktuellen Load der Server holen zur dynamischen Lastverteilung au
+    my @servertab=();
 
+    push @servertab, $config->get_active_loadbalancertargets;
+
+    $logger->debug("Got Servers ".YAML::Dump(\@servertab));
+    
+    if (!@servertab){
+        push @servertab, $config->{servername};
+    }
+    
     my %serverload=();
 
     foreach my $target (@servertab) {

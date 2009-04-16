@@ -275,6 +275,7 @@ tt_admin_logout_tname: admin_logout
 tt_admin_searchuser_tname: admin_searchuser
 tt_admin_showcat_tname: admin_showcat
 tt_admin_showlibinfo_tname: admin_showlibinfo
+tt_admin_showoperations_tname: admin_showoperations
 tt_admin_showprofiles_tname: admin_showprofiles
 tt_admin_showlogintarget_tname: admin_showlogintarget
 tt_admin_showsessions_1_tname: admin_showsessions_1

@@ -172,3 +172,15 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
+DROP TABLE IF EXISTS loadbalancertargets;
+CREATE TABLE loadbalancertargets (
+ id         INT(11) AUTO_INCREMENT PRIMARY KEY,
+ host       TEXT,
+ active     INT(1),
+ INDEX(id,active)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+

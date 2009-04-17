@@ -17,15 +17,11 @@
 <tr><td class="boxedclear">
 <ul>
 
-<li>Die n&auml;chste KUG-Version steht nun in einem &ouml;ffentlichen <a
-href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=kugng"
-target="_blank">Beta-Test</a> bereit. In ihr k&ouml;nnen Sie sich -
-parallel zum <i>normalen</i> KUG - alle Verbesserungen der kommenden
-Version anschauen. An Ihrem Feedback sind wir sehr
-interessiert. Schicken Sie es an <b>kug@ub.uni-koeln.de</b>. Weitere
-Informationen finden Sie im zugeh&ouml;rigen <a
-href="http://blog.openbib.org/2009/03/02/neue-version-von-kug-und-openbib-im-beta-test/"
-target="_blank">Blog-Eintrag</a>.</li>
+<li>Am 17.4.2009 erfolgte die Umstellung des KUG auf eine neue
+Version, die seit dem 2.3.2009 im Beta-Test war. Informationen
+&uuml;ber die &Auml;nderungen finden Sie in der <a href="[% config.info_loc %]?sessionID=[% sessionID %];stid=2">Versions-Historie</a> und im <a
+href="http://blog.openbib.org" target="_blank">OpenBibBlog</a>.</li>
+
 
 </ul>
 </td></tr>

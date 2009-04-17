@@ -1423,6 +1423,7 @@ ul.recent_tags {
 
 .listoptions {
   background: aliceblue;
+  margin-top: 5px;
   width: 100%;
   border-top-style: solid;
   border-top-color: lightblue;

@@ -172,6 +172,5 @@
 <!-- Titlelist ends here -->
 
 </div>
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -83,8 +83,7 @@
 <input type="hidden" name="sessionID" value="[% query.param('sessionID') %]" />
 <input type="hidden" name="queryid"   value="[% queryid %]" />
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc=config.resultlists_loc %] 
-
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.resultlists_loc -%]
 </form>
   </div>
   <div class="resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">

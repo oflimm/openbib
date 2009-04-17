@@ -93,3 +93,7 @@ ul.subjectlist li {
 #maincontent{
   margin-top: 25px;
 }
+
+.listoptions {
+  height: 35px;
+}

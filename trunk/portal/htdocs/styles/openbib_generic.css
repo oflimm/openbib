@@ -1422,9 +1422,10 @@ ul.recent_tags {
 }
 
 .listoptions {
+  overflow: hidden;   
   background: aliceblue;
   margin-top: 5px;
-  width: 100%;
+  width: 99.7%;
   border-top-style: solid;
   border-top-color: lightblue;
   border-top-width: 1px; 

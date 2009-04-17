@@ -1328,6 +1328,14 @@ td.mostrecent {
   font-weight: bold;
 }
 
+.table_active {
+  background: aliceblue;
+}
+
+.table_inactive {
+  background: #fff;
+}
+
 #login_container {
   width: 99%;
 }

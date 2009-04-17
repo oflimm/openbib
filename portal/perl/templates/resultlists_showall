@@ -29,7 +29,7 @@
 <div class="content">
 
 <p />
-
+  <div class="listoptions">
 <form method="get" action="[% config.resultlists_loc %]">
 <input type="hidden" name="offset"    value="[% query.param('offset') %]" />
 <input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
@@ -40,8 +40,8 @@
 [% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.resultlists_loc %] 
 
 </form>
-
-<p />
+  </div>
+<p/>
 
 [%- FOREACH result IN resultlists -%]
 [%-     recordlist = result.recordlist -%]
@@ -72,7 +72,7 @@
     END ;
 -%]
 [% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
-[%- IF offsets.first.offset == offset -%]<img src="[% config.previous_img %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];hitrange=[% hitrange %];action=showrange"><img src="[% config.previous_img %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
+[% IF offsets.size > 1 %][%- IF offsets.first.offset == offset -%]<img src="[% config.previous_img %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];hitrange=[% hitrange %];action=showrange"><img src="[% config.previous_img %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%][%- END -%]
 [%          FOREACH singleoffset IN result.offsets %]
 [%-             IF singleoffset.type == 'getnext' -%]
 ...&nbsp;&nbsp<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]"><img src="[% config.next_img %]" title="[Weitere Treffer...]" height="12"/></a>

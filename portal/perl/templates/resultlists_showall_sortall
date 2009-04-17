@@ -30,19 +30,6 @@
 
 <p />
 
-<form method="get" action="[% config.resultlists_loc %]">
-<input type="hidden" name="offset"    value="[% query.param('offset') %]" />
-<input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
-<input type="hidden" name="action"    value="showall" />
-<input type="hidden" name="sessionID" value="[% query.param('sessionID') %]" />
-<input type="hidden" name="queryid"   value="[% query.param('queryid') %]" />
-
-[% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.resultlists_loc %] 
-
-</form>
-
-<p />
-
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
@@ -51,6 +38,17 @@ Gesamtanzeige aller Treffer
     <div class="hits">
 [% recordlist.get_size %]  [% msg.maketext("Treffer") %]
     </div>
+  </div>
+  <div class="listoptions">
+<form method="get" action="[% config.resultlists_loc %]">
+<input type="hidden" name="offset"    value="[% query.param('offset') %]" />
+<input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
+<input type="hidden" name="action"    value="showall" />
+<input type="hidden" name="sessionID" value="[% query.param('sessionID') %]" />
+<input type="hidden" name="queryid"   value="[% query.param('queryid') %]" />
+
+[% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.resultlists_loc %] 
+</form>
   </div>
   <div class="resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%-     FOREACH record IN recordlist.get_records -%]

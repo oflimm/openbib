@@ -29,7 +29,7 @@
 <div class="content">
 
 <p />
-<p />
+  <div class="listoptions">
 <form method="get" action="[% config.resultlists_loc %]">
 <input type="hidden" name="offset"     value="[% query.param('offset') %]" />
 <input type="hidden" name="hitrange"   value="[% query.param('hitrange') %]" />
@@ -40,7 +40,7 @@
 [% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.virtualsearch_loc %]
 
 </form>
-
+  </div>
 <p/>
 
 [% suggestion = sq.get_spelling_suggestion %]

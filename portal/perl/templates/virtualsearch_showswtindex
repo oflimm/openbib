@@ -41,7 +41,11 @@
 </td></tr>
 </table>
 
-<hr />
+<p/>
+
+<table width="100%">
+<tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
+<tr><td class="boxedclear">
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -49,11 +53,12 @@
 <input type="hidden" name="profil"    value="[% profil %]" />
 
 <table>
-<tr><td class="category">[% msg.maketext("Schlagwort") %]&nbsp;</td><td>&nbsp;<input type="text" name="swt" value="[% contentreq %]" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den Schlagwortanfang ein") %]" />&nbsp;<input type="submit" name="swtindex" value="[% msg.maketext("Index") %]" />&nbsp;</td></tr>
+<tr><td style="text-align:center;"><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="searchindex" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 </table>
 
 </form>
 
-<p />
+</td></tr>
+</table>
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -33,23 +33,6 @@
 [%# USE dumper; dumper.dump(litlist)%]
 [% IF litlist.recordlist.size > 0 %]
 
-[%- IF format == 'HTML' && show == 'short' -%]
-
-<!-- Titlelist begins here -->
-<form method="get" action="[% config.litlists_loc %]">
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
-<input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
-<input type="hidden" name="sortall"         value="1" />
-<input type="hidden" name="do_showlitlist"  value="1" />
-<input type="hidden" name="action"          value="show" />
-
-[% PROCESS common/subtemplate name="titlist_options" this_loc=config.litlists_loc %]
-
-</form>
-[%- END -%]
-
-<p/>
-
 <!-- Titlelist begins here -->
 <div class="resultlist">
   <div class="resultheader">
@@ -70,6 +53,21 @@
 [%- END-%]
     </div>
   </div>
+[%- IF format == 'HTML' && show == 'short' -%]
+  <div class="listoptions">
+<!-- Titlelist begins here -->
+<form method="get" action="[% config.litlists_loc %]">
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
+<input type="hidden" name="sortall"         value="1" />
+<input type="hidden" name="do_showlitlist"  value="1" />
+<input type="hidden" name="action"          value="show" />
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.litlists_loc %]
+
+</form>
+  </div>
+[%- END -%]
   <div class="rightoptions">
 [% IF NOT hide_options %]
 <div class="reuse_data"><!-- Begin Reuse -->

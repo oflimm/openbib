@@ -31,27 +31,6 @@
 <div class="content">
 <p />
 
-<form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="offset"          value="[% offset %]" />
-<input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
-[%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
-[%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
-[%- IF query.param('supertit')          -%]<input type="hidden" name="supertit"      value="[% query.param('supertit') %]" />[% END %]
-[%- IF query.param('generalsearch')     -%]<input type="hidden" name="generalsearch" value="[% query.param('generalsearch') %]" />[% END %]
-[%- IF query.param('searchtitofaut')    -%]<input type="hidden" name="searchtitofaut" value="[% query.param('searchtitofaut') %]" />[% END %]
-[%- IF query.param('searchtitofurhkor') -%]<input type="hidden" name="searchtitofurhkor" value="[% query.param('searchtitofurhkor') %]" />[% END %]
-[%- IF query.param('searchtitofnot')    -%]<input type="hidden" name="searchtitofnot" value="[% query.param('searchtitofnot') %]" />[% END %]
-[%- IF query.param('searchtitofswt')    -%]<input type="hidden" name="searchtitofswt" value="[% query.param('searchtitofswt') %]" />[% END %]
-[%- IF query.param('searchtitofcnt')    -%]<input type="hidden" name="searchtitofcnt" value="[% query.param('searchtitofcnt') %]" />[% END %]
-[%- IF query.param('category')          -%]<input type="hidden" name="category" value="[% query.param('category') %]" />[% END %]
-
-[% PROCESS common/subtemplate name="titlist_options" this_loc=config.search_loc %] 
-
-</form>
-
-<p />
-
 <!-- Titlelist begins here -->
 [%- dbdesc   = dbinfo.dbnames.${database}.full -%]
 [%- dburl    = dbinfo.urls.${database} -%]
@@ -95,6 +74,26 @@
 [%- IF hits <= 1000 -%]
 <a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
 [%- END -%]
+  </div>
+  <div class="listoptions">
+<form method="get" action="[% config.search_loc %]">
+<input type="hidden" name="offset"          value="[% offset %]" />
+<input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+[%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
+[%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
+[%- IF query.param('supertit')          -%]<input type="hidden" name="supertit"      value="[% query.param('supertit') %]" />[% END %]
+[%- IF query.param('generalsearch')     -%]<input type="hidden" name="generalsearch" value="[% query.param('generalsearch') %]" />[% END %]
+[%- IF query.param('searchtitofaut')    -%]<input type="hidden" name="searchtitofaut" value="[% query.param('searchtitofaut') %]" />[% END %]
+[%- IF query.param('searchtitofurhkor') -%]<input type="hidden" name="searchtitofurhkor" value="[% query.param('searchtitofurhkor') %]" />[% END %]
+[%- IF query.param('searchtitofnot')    -%]<input type="hidden" name="searchtitofnot" value="[% query.param('searchtitofnot') %]" />[% END %]
+[%- IF query.param('searchtitofswt')    -%]<input type="hidden" name="searchtitofswt" value="[% query.param('searchtitofswt') %]" />[% END %]
+[%- IF query.param('searchtitofcnt')    -%]<input type="hidden" name="searchtitofcnt" value="[% query.param('searchtitofcnt') %]" />[% END %]
+[%- IF query.param('category')          -%]<input type="hidden" name="category" value="[% query.param('category') %]" />[% END %]
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.search_loc %] 
+
+</form>
   </div>
   <div class="resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% listrow = 'listrow1' %]

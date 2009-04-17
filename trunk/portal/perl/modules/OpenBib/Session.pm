@@ -567,7 +567,7 @@ sub get_items_in_resultlist_per_db {
         push @sqlargs, $offset;
     }
     else {
-        $sqlrequest.=" order by ASC";
+#        $sqlrequest.=" order by ASC";
         $offset = 0;
     }
     

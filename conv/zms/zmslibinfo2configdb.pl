@@ -36,6 +36,8 @@ use OpenBib::Config;
 use OpenBib::Database::DBI;
 use URI::Escape;
 
+my $database=$ARGV[0];
+
 my $config = OpenBib::Config->instance;
 
 # Verbindung zur SQL-Datenbank herstellen
@@ -84,7 +86,9 @@ foreach my $katalog_ref (@$dboverview_ref){
     my $url    = $katalog_ref->{url};
     my $dbname = $katalog_ref->{dbname};
 
-    next unless ($dbname=~/inst431/);
+    if ($database && $dbname ne $database){
+        next;
+    }
 
     print "### $dbname : $katalog_ref->{description}\n";
     my $content = URI->new($url);

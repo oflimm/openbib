@@ -287,7 +287,7 @@ a:active.invisible {
   width: 99%;
   position: absolute;
   top: 150px;
-  left: 2;
+  left: 0;
   background: #EDEBE3;
   padding: 5px;
 }

@@ -80,10 +80,7 @@
 [%- IF nav.first.active -%]<img src="[% config.previous_img %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.previous_img %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
-[%- IF navitem.active ;
-    previouspage = nav.prev;
-    nexpage      = nav.next;
--%]
+[%- IF navitem.active -%]
 <span class="paging_active">[% loop.count %]</span>
 [%- ELSE -%]
 [% loop.count %]

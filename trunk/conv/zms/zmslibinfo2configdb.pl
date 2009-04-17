@@ -59,7 +59,7 @@ my $category_map_ref = {
     'Internet' => '90',
     'Auskunft / Bibliothekar(in)' => '100',
     'Öffnungszeiten' => '110',
-    'Bestand'  => '120',
+    'Bestand (Bände)'  => '120',
     'Anzahl laufender Zeitschriften' => '140',
     'CDs / Digitale Medien' => '150',
     'Sonstige Bestandsangaben' => '160',
@@ -83,6 +83,8 @@ foreach my $katalog_ref (@$dboverview_ref){
 
     my $url    = $katalog_ref->{url};
     my $dbname = $katalog_ref->{dbname};
+
+    next unless ($dbname=~/inst431/);
 
     print "### $dbname : $katalog_ref->{description}\n";
     my $content = URI->new($url);

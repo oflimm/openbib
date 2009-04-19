@@ -63,11 +63,11 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbh
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs 1X\n";
+print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs 1X und 10X\n";
 
 my %stage1_titidns = ();
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content rlike '^1X.*' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content rlike '^10*X.*' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

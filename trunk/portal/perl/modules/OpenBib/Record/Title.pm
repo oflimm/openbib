@@ -54,6 +54,7 @@ use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
 use OpenBib::Record::Classification;
+use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::SearchQuery;
 use OpenBib::Session;

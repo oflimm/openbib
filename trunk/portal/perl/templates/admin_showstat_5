@@ -25,19 +25,12 @@
 
 <div class="content">
 
-<ul class="tabbingmenu">
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">Allgemein</a></li>
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=1">Weiterleitungen</a></li>
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=2">Views</a></li>
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=3">Recherchen</a></li>
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=4">Klienten</a></li>
-   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=5">Browser</a></li>
-</ul>
+[% PROCESS common/subtemplate name="admin_showstat_navigation" active="stat_browser" %] 
 
 <div class="content">
 
 <p>
-<div class="boxed">
+<div class="listoptions">
 <b>Jahr:</b>&nbsp;
 [%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');- %]
 [%- i = ret.min -%]

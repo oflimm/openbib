@@ -53,7 +53,7 @@ END ;
 [% IF NOT t1feed %]
 [% msg.maketext("Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen") %]
 <p />
-<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+<div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div>
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t1feed.id %]" />
 <table>
@@ -74,7 +74,7 @@ selected
 
 <p />
 <table width="100%">
-<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -110,7 +110,7 @@ END ;
 [% IF NOT t2feed %]
 [% msg.maketext("Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser") %]
 <p />
-<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+<div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div>
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t2feed.id %]" />
 <table>
@@ -131,7 +131,7 @@ selected
 
 <p />
 <table width="100%">
-<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -167,7 +167,7 @@ END ;
 [% IF NOT t3feed %]
 [% msg.maketext("Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft") %]
 <p />
-<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+<div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div>
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t3feed.id %]" />
 <table>
@@ -188,7 +188,7 @@ selected
 
 <p />
 <table width="100%">
-<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -224,7 +224,7 @@ END ;
 [% IF NOT t4feed %]
 [% msg.maketext("Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort") %]
 <p />
-<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+<div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div>
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t4feed.id %]" />
 <table>
@@ -245,7 +245,7 @@ selected
 
 <p />
 <table width="100%">
-<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -281,7 +281,7 @@ END ;
 [% IF NOT t5feed %]
 [% msg.maketext("Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen") %]
 <p />
-<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+<div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div>
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t5feed.id %]" />
 <table>
@@ -302,7 +302,7 @@ selected
 
 <p />
 <table width="100%">
-<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -324,13 +324,13 @@ selected
 <table width="100%">
 <tr><th>[% msg.maketext("Neuerwerbungen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:10pt">
-[% msg.maketext("&Uuml;bernahme der F&auml;cherstruktur der Erwerbung") %]<input type="submit" name="do_getacqgrp" value="[% msg.maketext("Übernehmen") %]" />
+[% msg.maketext("&Uuml;bernahme der F&auml;cherstruktur der Erwerbung") %]<div class="cssbutton glass kug"><input type="submit" name="do_getacqgrp" value="[% msg.maketext("Übernehmen") %]" /></div>
 <p />
 
 
 <p />
 <table width="100%">
-<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]" /></td></tr>
+<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td><td>&nbsp;</td><td align="right"><div class="cssbutton glass kug"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]" /></div></td></tr>
 </table>
 
 </td></tr>

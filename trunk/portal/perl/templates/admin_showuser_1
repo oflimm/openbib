@@ -42,7 +42,7 @@
 <tr><td>[% msg.maketext("Kennung") %]</td><td><input type="text" name="username" size="20"/></td></tr>
 <tr><td>[% msg.maketext("Name") %]</td><td><input type="text" name="commonname" size="20"/></td></tr>
 <tr><td>[% msg.maketext("Vorname") %]</td><td><input type="text" name="surname" size="20"/></td></tr>
-<tr><td colspan="2"><input type="submit" value="[% msg.maketext("Los") %]"></td></tr>
+<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]"></div></td></tr>
 </table>
 </td></tr>
 </table>

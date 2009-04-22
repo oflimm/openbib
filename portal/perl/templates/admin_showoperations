@@ -36,8 +36,8 @@
 <tr><td><b>[% msg.maketext("Rechnername") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
 <tr><td><input type="text" name="host" /></td><td><select name="active"><option value="1">[%
 msg.maketext("Ja") %]</option><option value="0"
-selected>[% msg.maketext("Nein") %]</option></select></td><td><input
-type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
+selected>[% msg.maketext("Nein") %]</option></select></td><td><div class="cssbutton glass kug"><input
+type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 </table>
 </td></tr>
 </table>

@@ -41,7 +41,7 @@
 <table>
 <tr><td><b>[% msg.maketext("Hostname") %]</b></td><td><b>[% msg.maketext("Port") %]</b></td><td><b>[% msg.maketext("Nutzername") %]</b></td><td><b>[% msg.maketext("DB-Name")
 %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Typ") %]</b></td></tr>
-<tr><td><input type="text" name="hostname" /></td><td><input type="text" name="port" /></td><td><input type="text" name="username" /></td><td><input type="text" name="dbname" /></td><td><input type="text" name="description" /></td><td><input type="text" name="type" /></td><td><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
+<tr><td><input type="text" name="hostname" /></td><td><input type="text" name="port" /></td><td><input type="text" name="username" /></td><td><input type="text" name="dbname" /></td><td><input type="text" name="description" /></td><td><input type="text" name="type" /></td><td><div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 </table>
 </td></tr>
 </table>

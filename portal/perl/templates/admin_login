@@ -31,7 +31,7 @@
 <table>
 <tr><td align="right"><b>[% msg.maketext("Benutzername") %]:</b></td><td><input type="text" name="username" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="passwd" /></td></tr>
-<tr><td></td><td><input type="submit" name="do_login" value="[% msg.maketext("Einloggen") %]" /></td></tr>
+<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" name="do_login" value="[% msg.maketext("Einloggen") %]" /></div></td></tr>
 </table>
 </form>
 

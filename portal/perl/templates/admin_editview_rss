@@ -74,7 +74,7 @@ neinja = ["Nein","Ja"];
 </select>
 <p />
 
-<input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" />
+<div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div>
 
 </td></tr>
 </table>
@@ -106,7 +106,7 @@ neinja = ["Nein","Ja"];
 </select>
 <p />
 
-<input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" />
+<div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div>
 
 </td></tr>
 </table>

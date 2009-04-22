@@ -51,8 +51,8 @@
 
 <p />
 <table width="100%">
-<tr><td align="left"><input type="submit" name="do_change"
-value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]"></td></tr>
+<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change"
+value="[% msg.maketext("Ändern") %]"></div></td><td>&nbsp;</td><td align="right"><div class="cssbutton glass kug"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]"></div></td></tr>
 </table>
 
 </form>

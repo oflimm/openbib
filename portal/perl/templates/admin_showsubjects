@@ -35,7 +35,7 @@
 <table>
 <tr><td><b>[% msg.maketext("Themengebiet") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
 <tr><td><input type="text" name="subject" /></td><td><input type="text" name="description" size="20" />
-</td><td><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
+</td><td><div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 </table>
 </td></tr>
 </table>

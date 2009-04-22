@@ -331,7 +331,12 @@ sub get_number_of_event {
 
     my @sqlwhere = ();
     my @sqlargs  = ();
-    
+
+    if ($type){
+        push @sqlwhere, " type = ?";
+	push @sqlargs,  $type;
+    } 
+
     if ($from){
         push @sqlwhere, " tstamp > ?";
 	push @sqlargs,  $from;
@@ -342,10 +347,6 @@ sub get_number_of_event {
 	push @sqlargs,  $to;
     } 
 
-    if ($type){
-        push @sqlwhere, " type = ?";
-	push @sqlargs,  $type;
-    } 
 
     if ($content){
         my $op = "=";
@@ -503,27 +504,28 @@ sub get_ranking_of_event {
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
             or $logger->error($DBI::errstr);
 
-    my $sqlstring="select count(content) as rowcount, content from eventlog";
+
+        my $sqlstring="select count(content) as rowcount, content from eventlog";
 
     my @sqlwhere = ();
     my @sqlargs  = ();
 
     if ($from){
         push @sqlwhere, " tstamp > ?";
-	push @sqlargs,  $from;
-    } 
+        push @sqlargs,  $from;
+    }
 
     if ($to){
         push @sqlwhere, " tstamp < ?";
-	push @sqlargs,  $to;
-    } 
+        push @sqlargs,  $to;
+    }
 
     if ($type){
         push @sqlwhere, " type = ?";
-	push @sqlargs,  $type;
-    } 
+        push @sqlargs,  $type;
+    }
 
-    my $sqlwherestring  = join(" and ",@sqlwhere);
+        my $sqlwherestring  = join(" and ",@sqlwhere);
 
     if ($sqlwherestring){
       $sqlstring.=" where $sqlwherestring";
@@ -543,18 +545,115 @@ sub get_ranking_of_event {
 
     while (my $res = $request->fetchrow_hashref){
         my $count      = $res->{rowcount};
-	my $content    = $res->{content};
+        my $content    = $res->{content};
 
-	push @ranking, {
-			content   => $content,
-			number    => $count,
-		       };
+        push @ranking, {
+                        content   => $content,
+                        number    => $count,
+                       };
     }
     $request->finish;
 
     $logger->debug(YAML::Dump(\@ranking));
 
     return @ranking;
+}
+
+sub get_ranking_of_event2 {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $from       = exists $arg_ref->{from}
+        ? $arg_ref->{from}               : undef;
+
+    my $to       = exists $arg_ref->{to}
+        ? $arg_ref->{to}                 : undef;
+
+    my $tstamp       = exists $arg_ref->{tstamp}
+        ? $arg_ref->{tstamp}             : undef;
+
+    my $type         = exists $arg_ref->{type}
+        ? $arg_ref->{type}               : undef;
+
+    my $limit        = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}              : '';
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
+
+    my $sqlstring="select distinct content from eventlog where type = ?";
+
+    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+    $request->execute($type) or $logger->error($DBI::errstr);
+
+    my @distinct_content = ();
+    while (my $res = $request->fetchrow_hashref){
+	my $content    = $res->{content};
+
+	push @distinct_content, $content;
+    }
+
+    $sqlstring="select count(content) as rowcount from eventlog";
+
+    my @sqlwhere = ();
+    my @sqlargs  = ();
+
+    if ($type){
+        push @sqlwhere, " type = ?";
+	push @sqlargs,  $type;
+    } 
+
+    if ($from){
+        push @sqlwhere, " tstamp > ?";
+	push @sqlargs,  $from;
+    } 
+
+    if ($to){
+        push @sqlwhere, " tstamp < ?";
+	push @sqlargs,  $to;
+    } 
+
+    push @sqlwhere, " content = ?";
+    
+    my $sqlwherestring  = join(" and ",@sqlwhere);
+
+    if ($sqlwherestring){
+      $sqlstring.=" where $sqlwherestring";
+    }
+
+    $logger->debug($sqlstring." ".join(" - ",@sqlargs));
+    $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+
+    my @ranking=();
+    
+    foreach my $content (@distinct_content){
+        $request->execute(@sqlargs,$content) or $logger->error($DBI::errstr);
+        
+        while (my $res = $request->fetchrow_hashref){
+            my $count      = $res->{rowcount};
+            
+            push @ranking, {
+                content   => $content,
+                number    => $count,
+            };
+        }
+    }
+    
+    $request->finish;
+
+    my @sortedranking = sort {$b->{number} cmp $a->{number}} @ranking;
+    
+    $logger->debug(YAML::Dump(\@ranking));
+
+    return @sortedranking;
 }
 
 sub log_query {

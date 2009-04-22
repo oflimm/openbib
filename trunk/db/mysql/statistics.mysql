@@ -40,7 +40,6 @@ CREATE TABLE eventlog (
  content    MEDIUMBLOB,
  INDEX (sessionid),
  INDEX (tstamp),
- INDEX (type),
  INDEX (type,tstamp,content(10)),
  INDEX (content(50))
 )

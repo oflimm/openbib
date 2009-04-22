@@ -28,7 +28,7 @@
 
 [% IF Aquisition == 0 %]
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td></tr>
 [% FOREACH mex IN circset %]
 <tr align="center"><td>
 [%-   IF dbinfo.use_libinfo.${record.database} %]
@@ -39,18 +39,7 @@
 <strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
-<td class="circurl">
-[%
-     IF mex.Ausleihurl %]
-   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.redirect_loc %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
-[%   ELSE %]
-[%      IF mex.Statuscode != 0 %]
-     <a href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;(ausgeliehen bis [% mex.Rueckgabe %])
-[%      ELSE %]
-Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
-[%      END %]
-[%   END %]
-</td></tr>
+</tr>
 [% END %]
 </table>
 [% ELSIF Aquisition == 1 %]

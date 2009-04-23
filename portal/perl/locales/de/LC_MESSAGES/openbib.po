@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-04-16 12:15+0200\n"
+"PO-Revision-Date: 2009-04-23 15:00+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -150,8 +150,6 @@ msgstr "%1 Titel"
 
 #. (titlecount,thisclassifications.size,subject.litlistcount)
 #: ../templates/info_53:55 ../templates/profile/kuglight/info_53:55
-#: ../templates/profile/kuglight/views/einbaende/searchmask:312
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:404
 #: ../templates/profile/kugng/searchmask_simple:393
 #: ../templates/profile/kugng/views/inst431/searchmask:312
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:404
@@ -345,6 +343,7 @@ msgstr "&Uuml;bernahme dieses Titels in die bestehende Literaturliste: "
 msgid "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 msgstr "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:86
 #: ../templates/profile/kuglight/views/umschlaege/search_browse_tit:77
 #: ../templates/views/umschlaege/search_browse_tit:77
 msgid "&Uuml;bernahme&nbsp;in&nbsp;Recherche"
@@ -399,8 +398,9 @@ msgstr "&Uuml;bersicht"
 #: ../templates/profile/kuglight/info_50:32
 #: ../templates/profile/kuglight/info_51:39
 #: ../templates/profile/kuglight/info_52:39
-#: ../templates/profile/kuglight/views/einbaende/searchmask:408
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:500
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:35
+#: ../templates/profile/kuglight/views/einbaende/searchmask:46
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:39
 #: ../templates/profile/kuglight/views/umschlaege/search_browse_tit:35
 #: ../templates/profile/kuglight/views/umschlaege/searchmask:46
 #: ../templates/profile/kuglight/views/umschlaege/searchmask_simple:39
@@ -475,6 +475,7 @@ msgstr "&ntilde; <i>suchen mit:</i> n"
 #: ../templates/profile/kuglight/litlists_manage_lists:39
 #: ../templates/profile/kuglight/litlists_manage_lists:62
 #: ../templates/profile/kuglight/litlists_manage_singlelist:40
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:101
 #: ../templates/profile/kuglight/views/umschlaege/managecollection_show:97
 #: ../templates/profile/kugng/database/inst001/search_showtitset:561
 #: ../templates/profile/kugng/database/inst001/search_showtitset:585
@@ -502,6 +503,7 @@ msgstr "(Notation, Signatur, Titel-String):"
 
 #: ../templates/managecollection_tit_as_html:149
 #: ../templates/profile/kuglight/managecollection_show:68
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:70
 #: ../templates/profile/kuglight/views/umschlaege/managecollection_show:66
 #: ../templates/profile/kugng/managecollection_tit_as_html:149
 #: ../templates/views/umschlaege/managecollection_show:66
@@ -509,6 +511,7 @@ msgid "<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen"
 msgstr "<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen"
 
 #: ../templates/managecollection_tit_as_html:76
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:81
 #: ../templates/profile/kuglight/views/umschlaege/managecollection_show:77
 #: ../templates/profile/kugng/managecollection_tit_as_html:76
 #: ../templates/views/umschlaege/managecollection_show:77
@@ -549,8 +552,6 @@ msgstr ""
 "Boole'schen Suchoperatoren zur Verf&uuml;gung. Lediglich der\n"
 "Abk&uuml;rzungsoperator <b>*</b> ist erlaubt."
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:335
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:427
 #: ../templates/profile/kugng/searchmask_simple:416
 #: ../templates/profile/kugng/views/inst431/searchmask:335
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:427
@@ -565,7 +566,7 @@ msgstr ""
 "<b>Einloggen</b> f&uuml;r Tagging,\n"
 "Literaturlisten usw.<p/>"
 
-#: ../templates/profile/kuglight/views/einbaende/std_footer:18
+#: ../templates/profile/kuglight/views/einbaende/std_footer:17
 #: ../templates/views/einbaende/std_footer:18
 msgid ""
 "<b>KUG</b> und <b>Digitale Einband-Sammlung</b> sind Dienste der "
@@ -786,6 +787,10 @@ msgstr ""
 "aktivierter Suchoption 'UND-Verkn&uuml;pfung innerhalb eines\n"
 "Suchfeldes in den Suchoptionen'"
 
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:143
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:113
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:142
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:82
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showall_sortall:113
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showsinglepool:132
 #: ../templates/views/umschlaege/resultlists_showall_sortall:113
@@ -838,6 +843,7 @@ msgstr "Abschicken"
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:56
 #: ../templates/profile/kuglight/managecollection_show:76
 #: ../templates/profile/kuglight/search_showtitset:56
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:91
 #: ../templates/profile/kuglight/views/umschlaege/managecollection_show:87
 #: ../templates/profile/kugng/database/inst001/search_showtitset:534
 #: ../templates/profile/kugng/database/inst001/search_showtitset:535
@@ -946,12 +952,10 @@ msgstr "Alle Eintr&auml;ge ausw&auml;hlen"
 
 #: ../templates/dbis_searchdbs:63 ../templates/dbis_showdbs:67
 #: ../templates/dbis_showsubjects:86 ../templates/ezb_searchjournals:71
-#: ../templates/ezb_showjournals:80 ../templates/ezb_showsubjects:87
+#: ../templates/ezb_showjournals:90 ../templates/ezb_showsubjects:87
 msgid "Alle Fachgebiete"
 msgstr "Alle Fachgebiete"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:63
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:66
 #: ../templates/profile/kugng/searchmask_simple:66
 #: ../templates/profile/kugng/views/inst431/searchmask:63
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:66
@@ -969,9 +973,6 @@ msgstr "Alle Formate"
 #: ../templates/profile/kuglight/databaseprofile:77
 #: ../templates/profile/kuglight/searchmask_options:18
 #: ../templates/profile/kuglight/searchmask_simple:121
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:162
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:255
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:350
 #: ../templates/profile/kuglight/views/engportrom/searchmask_simple:133
 #: ../templates/profile/kuglight/views/inst006/searchmask_simple:121
 #: ../templates/profile/kuglight/views/inst404/searchmask_simple:137
@@ -1037,8 +1038,6 @@ msgstr "Alle Treffer"
 msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:57
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:60
 #: ../templates/profile/kugng/searchmask_simple:60
 #: ../templates/profile/kugng/views/inst431/searchmask:57
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:60
@@ -1181,6 +1180,7 @@ msgstr ""
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:55
 #: ../templates/profile/kuglight/managecollection_show:75
 #: ../templates/profile/kuglight/search_showtitset:55
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:90
 #: ../templates/profile/kuglight/views/umschlaege/managecollection_show:86
 #: ../templates/profile/kugng/database/inst001/search_showtitset:532
 #: ../templates/profile/kugng/database/inst001/search_showtitset:533
@@ -1212,10 +1212,10 @@ msgstr "Als Mail verschicken"
 #: ../templates/database/spoho/search_showtitset:580
 #: ../templates/database/umschlaege/search_showtitset:585
 #: ../templates/litlists_manage_lists:79
-#: ../templates/litlists_manage_singlelist:128
-#: ../templates/litlists_show_singlelist:153
-#: ../templates/litlists_show_singlelist:180
-#: ../templates/litlists_show_singlelist:81
+#: ../templates/litlists_manage_singlelist:142
+#: ../templates/litlists_show_singlelist:151
+#: ../templates/litlists_show_singlelist:178
+#: ../templates/litlists_show_singlelist:79
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:46
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:58
 #: ../templates/profile/kuglight/litlists_manage_lists:66
@@ -1237,6 +1237,7 @@ msgid "Als Permanenten Link verwenden"
 msgstr "Als Permanenten Link verwenden"
 
 #: ../templates/profile/kuglight/searchmask:64
+#: ../templates/profile/kuglight/views/einbaende/searchmask:65
 #: ../templates/profile/kuglight/views/engportrom/searchmask:64
 #: ../templates/profile/kuglight/views/gbroich/searchmask:65
 #: ../templates/profile/kuglight/views/gdonck/searchmask:65
@@ -1310,40 +1311,40 @@ msgstr "Am Umschlag Beteiligte"
 msgid "An"
 msgstr "An"
 
-#: ../templates/database/alff/search_showtitlist:147
-#: ../templates/database/alff/search_showtitlist_of_cnt:147
+#: ../templates/database/alff/search_showtitlist:159
+#: ../templates/database/alff/search_showtitlist_of_cnt:159
 #: ../templates/database/alff/search_showtitset:562
 #: ../templates/database/alff/search_showtitset:563
-#: ../templates/database/alff/virtualsearch_result_item:142
+#: ../templates/database/alff/virtualsearch_result_item:143
 #: ../templates/database/ebooks/search_showtitset:545
 #: ../templates/database/ebooks/search_showtitset:546
-#: ../templates/database/einbaende/search_showtitlist:147
-#: ../templates/database/einbaende/search_showtitlist_of_cnt:147
+#: ../templates/database/einbaende/search_showtitlist:159
+#: ../templates/database/einbaende/search_showtitlist_of_cnt:159
 #: ../templates/database/einbaende/search_showtitset:605
 #: ../templates/database/einbaende/search_showtitset:606
 #: ../templates/database/einbaende/search_showtitset_1:586
 #: ../templates/database/einbaende/search_showtitset_1:587
 #: ../templates/database/inst001/search_showtitset:572
 #: ../templates/database/inst001/search_showtitset:573
-#: ../templates/database/landschaft/search_showtitlist:147
+#: ../templates/database/landschaft/search_showtitlist:159
 #: ../templates/database/landschaft/search_showtitset:557
 #: ../templates/database/landschaft/search_showtitset:558
-#: ../templates/database/landschaft/virtualsearch_result_item:142
+#: ../templates/database/landschaft/virtualsearch_result_item:143
 #: ../templates/database/nationallizenzen/search_showtitset:568
 #: ../templates/database/nationallizenzen/search_showtitset:569
-#: ../templates/database/portrait/search_showtitlist:147
-#: ../templates/database/portrait/search_showtitlist_of_cnt:145
+#: ../templates/database/portrait/search_showtitlist:157
+#: ../templates/database/portrait/search_showtitlist_of_cnt:157
 #: ../templates/database/portrait/search_showtitset:573
 #: ../templates/database/portrait/search_showtitset:574
-#: ../templates/database/portrait/virtualsearch_result_item:142
+#: ../templates/database/portrait/virtualsearch_result_item:143
 #: ../templates/database/spoho/search_showtitset:566
 #: ../templates/database/spoho/search_showtitset:567
-#: ../templates/database/umschlaege/search_showtitlist:145
-#: ../templates/database/umschlaege/search_showtitlist_of_cnt:145
+#: ../templates/database/umschlaege/search_showtitlist:157
+#: ../templates/database/umschlaege/search_showtitlist_of_cnt:157
 #: ../templates/database/umschlaege/search_showtitset:571
 #: ../templates/database/umschlaege/search_showtitset:572
-#: ../templates/database/umschlaege/virtualsearch_result_item:144
-#: ../templates/info:969 ../templates/litlists_manage_singlelist:212
+#: ../templates/database/umschlaege/virtualsearch_result_item:145
+#: ../templates/info:969 ../templates/litlists_manage_singlelist:226
 #: ../templates/litlists_tit_as_html_short:67
 #: ../templates/managecollection_tit_as_html:228
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_text:85
@@ -1355,10 +1356,6 @@ msgstr "An"
 #: ../templates/profile/kuglight/managecollection_tit_as_html:159
 #: ../templates/profile/kuglight/managecollection_tit_as_text:49
 #: ../templates/profile/kuglight/search_showtitset:53
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:138
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:121
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:139
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:140
 #: ../templates/profile/kugng/database/inst001/search_showtitset:526
 #: ../templates/profile/kugng/database/inst001/search_showtitset:527
 #: ../templates/profile/kugng/info:969
@@ -1377,18 +1374,18 @@ msgstr "An"
 #: ../templates/profile/kugng/tags_showtitlist:146
 #: ../templates/profile/kugng/views/kugng/info:969
 #: ../templates/profile/kugng/virtualsearch_result_item:140
-#: ../templates/resultlists_showall:138
-#: ../templates/resultlists_showall_sortall:121
-#: ../templates/resultlists_showsinglepool:139
-#: ../templates/search_showtitlist:147
-#: ../templates/search_showtitlist_of_cnt:145
+#: ../templates/resultlists_showall:148
+#: ../templates/resultlists_showall_sortall:119
+#: ../templates/resultlists_showsinglepool:147
+#: ../templates/search_showtitlist:157
+#: ../templates/search_showtitlist_of_cnt:157
 #: ../templates/search_showtitset:562 ../templates/search_showtitset:563
-#: ../templates/tags_showtitlist:146
+#: ../templates/tags_showtitlist:161
 #: ../templates/views/einbaende/resultlists_showall:138
 #: ../templates/views/einbaende/resultlists_showall_sortall:121
 #: ../templates/views/einbaende/resultlists_showsinglepool:139
 #: ../templates/views/einbaende/virtualsearch_result_item:140
-#: ../templates/views/kug/info:969 ../templates/virtualsearch_result_item:140
+#: ../templates/views/kug/info:969 ../templates/virtualsearch_result_item:141
 msgid "An BibSonomy senden"
 msgstr "An BibSonomy senden"
 
@@ -1444,8 +1441,8 @@ msgstr "Andere Ausgaben"
 #: ../templates/database/portrait/search_showtitset:593
 #: ../templates/database/spoho/search_showtitset:586
 #: ../templates/database/umschlaege/search_showtitset:591
-#: ../templates/litlists_manage_singlelist:135
-#: ../templates/litlists_show_singlelist:88
+#: ../templates/litlists_manage_singlelist:149
+#: ../templates/litlists_show_singlelist:86
 #: ../templates/managecollection_tit_as_bibtex:36
 #: ../templates/managecollection_tit_as_endnote:36
 #: ../templates/managecollection_tit_as_html:52
@@ -1461,12 +1458,12 @@ msgstr "Andere Ausgaben"
 msgid "Andere Formate"
 msgstr "Andere Formate"
 
-#: ../templates/litlists_show_singlelist:144
+#: ../templates/litlists_show_singlelist:142
 #: ../templates/profile/kugng/litlists_show_singlelist:181
 msgid "Andere Listen dieses Nutzer"
 msgstr "Andere Listen dieses Nutzer"
 
-#: ../templates/litlists_show_singlelist:134
+#: ../templates/litlists_show_singlelist:132
 #: ../templates/profile/kugng/litlists_show_singlelist:171
 msgid "Andere Listen dieses Nutzers"
 msgstr "Andere Listen dieses Nutzers"
@@ -1476,7 +1473,21 @@ msgstr "Andere Listen dieses Nutzers"
 msgid "Andere Titel"
 msgstr "Andere Titel"
 
-#: ../templates/ezb_showjournals:50 ../templates/search_showtitlist:72
+#: ../templates/common/navitembar:26
+#: ../templates/database/alff/search_showtitlist:61
+#: ../templates/database/alff/search_showtitlist_of_cnt:61
+#: ../templates/database/einbaende/search_showtitlist:61
+#: ../templates/database/einbaende/search_showtitlist_of_cnt:61
+#: ../templates/database/landschaft/search_showtitlist:61
+#: ../templates/database/portrait/search_showtitlist:61
+#: ../templates/database/portrait/search_showtitlist_of_cnt:59
+#: ../templates/database/umschlaege/search_showtitlist:59
+#: ../templates/database/umschlaege/search_showtitlist_of_cnt:59
+#: ../templates/ezb_showjournals:60 ../templates/litlists_manage_singlelist:96
+#: ../templates/resultlists_showall:75
+#: ../templates/resultlists_showsinglepool:61
+#: ../templates/search_showtitlist:59
+#: ../templates/search_showtitlist_of_cnt:59 ../templates/tags_showtitlist:52
 msgid "Anfang"
 msgstr "Anfang"
 
@@ -1499,6 +1510,7 @@ msgid "Angelegt"
 msgstr "Angelegt"
 
 #: ../templates/managecollection_tit_as_html:85
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:101
 #: ../templates/profile/kuglight/views/umschlaege/managecollection_show:97
 #: ../templates/profile/kugng/managecollection_tit_as_html:85
 #: ../templates/views/umschlaege/managecollection_show:97
@@ -1620,6 +1632,10 @@ msgstr "Anzeige:"
 msgid "Anzeigen"
 msgstr "Anzeigen"
 
+#: ../templates/profile/kuglight/views/einbaende/searchmask:204
+msgid "Art"
+msgstr "Art"
+
 #: ../templates/profile/kugng/userprefs:175 ../templates/userprefs:175
 msgid "Art der Autovervollst&auml;ndigung festlegen"
 msgstr "Art der Autovervollst&auml;ndigung festlegen"
@@ -1708,10 +1724,6 @@ msgstr "Aufruf dieser Spezial-Sicht"
 msgid "Aufruf ohne &Uuml;bernahme von Suchbegriffen"
 msgstr "Aufruf ohne &Uuml;bernahme von Suchbegriffen"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:239
-#: ../templates/profile/kuglight/views/einbaende/searchmask:59
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:295
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:62
 #: ../templates/profile/kugng/searchmask_simple:288
 #: ../templates/profile/kugng/searchmask_simple:62
 #: ../templates/profile/kugng/views/inst431/searchmask:239
@@ -1922,7 +1934,6 @@ msgstr "Ausleihstatus"
 #: ../templates/database/inst001/circset:31
 #: ../templates/database/inst001/circset:98
 #: ../templates/database/inst006/circset:31
-#: ../templates/database/inst302/circset:31
 #: ../templates/database/inst420/circset:34
 #: ../templates/database/inst431/circset:31
 #: ../templates/database/inst526/circset:31
@@ -2022,9 +2033,6 @@ msgstr ""
 msgid "Beginn"
 msgstr "Beginn"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:174
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:267
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:362
 #: ../templates/profile/kugng/searchmask_query:123
 #: ../templates/profile/kugng/searchmask_simple:173
 #: ../templates/profile/kugng/searchmask_simple:263
@@ -2068,7 +2076,7 @@ msgstr "Beginnen Sie eine neue Recherche"
 msgid "Begriff in allen Katalogen suchen"
 msgstr "Begriff in allen Katalogen suchen"
 
-#: ../templates/litlists_show_singlelist:77
+#: ../templates/litlists_show_singlelist:75
 #: ../templates/managecollection_tit_as_bibtex:18
 #: ../templates/managecollection_tit_as_endnote:18
 #: ../templates/managecollection_tit_as_html:34
@@ -2255,9 +2263,6 @@ msgstr "Bemerkungen"
 msgid "Benutzer"
 msgstr "Benutzer"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:156
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:249
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:344
 #: ../templates/profile/kugng/searchmask_simple:155
 #: ../templates/profile/kugng/searchmask_simple:245
 #: ../templates/profile/kugng/searchmask_simple:336
@@ -2385,7 +2390,7 @@ msgstr "Beschreibung"
 #: ../templates/database/inst006/circset:31
 #: ../templates/database/inst006/circset:61
 #: ../templates/database/inst302/circset:31
-#: ../templates/database/inst302/circset:61
+#: ../templates/database/inst302/circset:50
 #: ../templates/database/inst420/circset:34
 #: ../templates/database/inst420/circset:60
 #: ../templates/database/inst431/circset:31
@@ -2775,6 +2780,10 @@ msgstr ""
 "Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
 "Auskunft der Bibliothek."
 
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:41
+msgid "Buchbinder/Werkstatt"
+msgstr "Buchbinder/Werkstatt"
+
 #: ../templates/profile/kuglight/visible_categories_korset:16
 #: ../templates/visible_categories_korset:16
 msgid "C0001"
@@ -2809,7 +2818,7 @@ msgstr "Anzahl Titel"
 msgid "Cover anzeigen"
 msgstr "Cover anzeigen"
 
-#: ../templates/database/einbaende/titlist_options:45
+#: ../templates/database/einbaende/titlist_options:44
 #: ../templates/profile/kuglight/litlists_manage_singlelist:87
 #: ../templates/profile/kuglight/litlists_show_singlelist:69
 #: ../templates/profile/kuglight/resultlists_showall:63
@@ -2821,7 +2830,7 @@ msgstr "Cover anzeigen"
 #: ../templates/profile/kuglight/titlist_options:46
 #: ../templates/profile/kuglight/virtualsearch_result_combined:61
 #: ../templates/profile/kugng/litlists_show_singlelist:68
-#: ../templates/titlist_options:46
+#: ../templates/titlist_options:45
 msgid "Cover-Ansicht"
 msgstr "Cover-Ansicht"
 
@@ -3001,8 +3010,6 @@ msgstr "Das große W"
 
 #: ../templates/dbis_showdbinfo:29
 #: ../templates/profile/kuglight/dbis_showdbinfo:29
-#: ../templates/profile/kuglight/views/einbaende/searchmask:419
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:511
 #: ../templates/profile/kugng/searchmask_simple:500
 #: ../templates/profile/kugng/views/inst431/searchmask:419
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:511
@@ -3171,8 +3178,6 @@ msgstr "Deutsche Wikipedia"
 msgid "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
 msgstr "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:426
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:518
 #: ../templates/profile/kugng/searchmask_simple:507
 #: ../templates/profile/kugng/views/inst431/searchmask:426
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:518
@@ -3183,8 +3188,6 @@ msgstr "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
 msgid "Die 5 zuletzt angelegten Literaturlisten"
 msgstr "Die 5 zuletzt angelegten Literaturlisten"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:446
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:538
 #: ../templates/profile/kugng/searchmask_simple:524
 #: ../templates/profile/kugng/views/inst431/searchmask:443
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:535
@@ -3292,6 +3295,7 @@ msgstr ""
 "        dahinter angegebenen Zahl der verkn&uuml;pften Titel) aufgef&uuml;"
 "hrt ist."
 
+#: ../templates/profile/kuglight/views/einbaende/std_footer:20
 #: ../templates/profile/kuglight/views/richter/std_footer:20
 #: ../templates/profile/kuglight/views/umschlaege/std_footer:20
 #: ../templates/views/richter/std_footer:20
@@ -3584,6 +3588,10 @@ msgstr "Drill-Down"
 msgid "Druckansicht Titel"
 msgstr "Druckansicht Titel"
 
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:45
+msgid "Drucker/Verleger/Verlag"
+msgstr "Drucker/Verleger/Verlag"
+
 #: ../templates/info:674 ../templates/profile/kugng/info:674
 #: ../templates/profile/kugng/views/kugng/info:674
 #: ../templates/views/kug/info:674
@@ -3611,7 +3619,6 @@ msgstr ""
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:382
 #: ../templates/profile/kugng/views/inst431/searchmask:382
 #: ../templates/searchmask:382 ../templates/views/einbaende/searchmask:382
 msgid "E-Mail Adresse registrieren"
@@ -3724,8 +3731,14 @@ msgstr ""
 "Passwort vergessen? Dann gehen Sie bitte %2zurück%3 und lassen es sich "
 "zumailen."
 
-#: ../templates/database/einbaende/search_showtitlist:147
-#: ../templates/database/einbaende/search_showtitlist_of_cnt:147
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:42
+#: ../templates/profile/kuglight/views/einbaende/searchmask:134
+#: ../templates/profile/kuglight/views/einbaende/searchmask:79
+msgid "Einband"
+msgstr "Einband"
+
+#: ../templates/database/einbaende/search_showtitlist:159
+#: ../templates/database/einbaende/search_showtitlist_of_cnt:159
 #: ../templates/database/einbaende/search_showtitset:237
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:61
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset_1:64
@@ -3739,6 +3752,7 @@ msgid "Einband-Daten"
 msgstr "Einband-Daten"
 
 #: ../templates/profile/kuglight/managecollection_show:70
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:85
 #: ../templates/profile/kuglight/views/umschlaege/managecollection_show:81
 #: ../templates/views/umschlaege/managecollection_show:81
 msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
@@ -3776,7 +3790,10 @@ msgstr ""
 #: ../templates/profile/kuglight/info_52:36
 #: ../templates/profile/kuglight/searchmask:44
 #: ../templates/profile/kuglight/searchmask_simple:44
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:32
 #: ../templates/profile/kuglight/views/einbaende/search_olws_browse:25
+#: ../templates/profile/kuglight/views/einbaende/searchmask:43
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:36
 #: ../templates/profile/kuglight/views/engportrom/searchmask:44
 #: ../templates/profile/kuglight/views/engportrom/searchmask_simple:45
 #: ../templates/profile/kuglight/views/gbroich/searchmask:44
@@ -3944,10 +3961,6 @@ msgstr "Eingrenzung auf Gesamttitel (Serien)"
 #: ../templates/profile/kuglight/login:114
 #: ../templates/profile/kuglight/login:81
 #: ../templates/profile/kuglight/login_circulation:67
-#: ../templates/profile/kuglight/views/einbaende/searchmask:335
-#: ../templates/profile/kuglight/views/einbaende/searchmask:379
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:427
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:471
 #: ../templates/profile/kugng/login:64 ../templates/profile/kugng/login:96
 #: ../templates/profile/kugng/searchmask_simple:416
 #: ../templates/profile/kugng/searchmask_simple:460
@@ -4002,8 +4015,6 @@ msgstr "Elektronisch verfügbare Zeitschriften (EZB)"
 
 #: ../templates/ezb_showsubjects:31
 #: ../templates/profile/kuglight/ezb_showsubjects:31
-#: ../templates/profile/kuglight/views/einbaende/searchmask:416
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:508
 #: ../templates/profile/kugng/searchmask_simple:497
 #: ../templates/profile/kugng/views/inst431/searchmask:416
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:508
@@ -4046,7 +4057,20 @@ msgstr "Elektronische Zeitschriftendatenbank (EZB) %1"
 msgid "Empfehlungen"
 msgstr "Empfehlungen"
 
-#: ../templates/ezb_showjournals:62
+#: ../templates/common/navitembar:37
+#: ../templates/database/alff/search_showtitlist:72
+#: ../templates/database/alff/search_showtitlist_of_cnt:72
+#: ../templates/database/einbaende/search_showtitlist:72
+#: ../templates/database/einbaende/search_showtitlist_of_cnt:72
+#: ../templates/database/landschaft/search_showtitlist:72
+#: ../templates/database/portrait/search_showtitlist:72
+#: ../templates/database/portrait/search_showtitlist_of_cnt:70
+#: ../templates/database/umschlaege/search_showtitlist:70
+#: ../templates/database/umschlaege/search_showtitlist_of_cnt:70
+#: ../templates/ezb_showjournals:72
+#: ../templates/litlists_manage_singlelist:110
+#: ../templates/search_showtitlist:70
+#: ../templates/search_showtitlist_of_cnt:70 ../templates/tags_showtitlist:66
 msgid "Ende"
 msgstr "Ende"
 
@@ -4091,7 +4115,7 @@ msgid "Entdecken Sie weitere Titel &uuml;ber:"
 msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 
 #: ../templates/litlists_manage_lists:79
-#: ../templates/litlists_manage_singlelist:212
+#: ../templates/litlists_manage_singlelist:226
 #: ../templates/managecollection_tit_as_html:149
 #: ../templates/managecollection_tit_as_html:229
 #: ../templates/profile/kuglight/litlists_manage_lists:66
@@ -4101,7 +4125,7 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/profile/kugng/managecollection_tit_as_html:149
 #: ../templates/profile/kugng/managecollection_tit_as_html:229
 #: ../templates/profile/kugng/tags_showtitlist:148
-#: ../templates/tags_showtitlist:148
+#: ../templates/tags_showtitlist:163
 msgid "Entfernen"
 msgstr "Entfernen"
 
@@ -4204,10 +4228,6 @@ msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
 #: ../templates/corporate_banner.new:76 ../templates/corporate_banner:62
-#: ../templates/profile/kuglight/views/einbaende/corporate_banner:62
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:174
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:267
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:362
 #: ../templates/profile/kugng/corporate_banner:62
 #: ../templates/profile/kugng/searchmask_simple:173
 #: ../templates/profile/kugng/searchmask_simple:263
@@ -4230,7 +4250,7 @@ msgstr "Erweiterte Suche"
 #: ../templates/database/edz/circset:98
 #: ../templates/database/inst001/circset:98
 #: ../templates/database/inst006/circset:61
-#: ../templates/database/inst302/circset:61
+#: ../templates/database/inst302/circset:50
 #: ../templates/database/inst420/circset:60
 #: ../templates/database/inst431/circset:61
 #: ../templates/database/inst526/circset:61
@@ -4362,7 +4382,7 @@ msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
 
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_end:16
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_end:19
 #: ../templates/profile/kuglight/views/umschlaege/virtualsearch_result_end:19
 #: ../templates/profile/kuglight/virtualsearch_result_combined:75
 #: ../templates/profile/kuglight/virtualsearch_result_end:15
@@ -4478,9 +4498,6 @@ msgstr "Fakultät"
 
 #: ../templates/profile/kuglight/searchmask_options:19
 #: ../templates/profile/kuglight/searchmask_simple:122
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:163
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:256
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:351
 #: ../templates/profile/kuglight/views/engportrom/searchmask_simple:134
 #: ../templates/profile/kuglight/views/inst006/searchmask_simple:122
 #: ../templates/profile/kuglight/views/inst404/searchmask_simple:138
@@ -4650,6 +4667,8 @@ msgstr "Franz&ouml;sische Wikipedia"
 
 #: ../templates/profile/kuglight/searchmask_query:3
 #: ../templates/profile/kuglight/userprefs:175
+#: ../templates/profile/kuglight/views/einbaende/searchmask:114
+#: ../templates/profile/kuglight/views/einbaende/searchmask:186
 #: ../templates/profile/kuglight/views/inst501/searchmask_query:3
 #: ../templates/profile/kuglight/views/kapsel/searchmask_query:3
 #: ../templates/profile/kuglight/views/landschaft/searchmask_query:3
@@ -4671,12 +4690,6 @@ msgstr "Franz&ouml;sische Wikipedia"
 msgid "Freie Suche"
 msgstr "Freie Suche"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:161
-#: ../templates/profile/kuglight/views/einbaende/searchmask:223
-#: ../templates/profile/kuglight/views/einbaende/searchmask:282
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:182
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:276
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:371
 #: ../templates/profile/kugng/searchmask_simple:181
 #: ../templates/profile/kugng/searchmask_simple:272
 #: ../templates/profile/kugng/searchmask_simple:363
@@ -4707,12 +4720,7 @@ msgstr "Frühere Recherchen"
 #. ("<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>")
 #: ../templates/profile/kuglight/searchmask:143
 #: ../templates/profile/kuglight/searchmask_simple:179
-#: ../templates/profile/kuglight/views/einbaende/searchmask:176
-#: ../templates/profile/kuglight/views/einbaende/searchmask:235
-#: ../templates/profile/kuglight/views/einbaende/searchmask:294
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:196
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:291
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:386
+#: ../templates/profile/kuglight/views/einbaende/searchmask:226
 #: ../templates/profile/kuglight/views/engportrom/searchmask:159
 #: ../templates/profile/kuglight/views/engportrom/searchmask_simple:191
 #: ../templates/profile/kuglight/views/gbroich/searchmask:140
@@ -4861,6 +4869,7 @@ msgstr ""
 "bitte mit <b>Registrieren</b>."
 
 #: ../templates/profile/kuglight/searchmask_simple:99
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:72
 #: ../templates/profile/kuglight/views/engportrom/searchmask_simple:111
 #: ../templates/profile/kuglight/views/gbroich/searchmask_simple:76
 #: ../templates/profile/kuglight/views/gdonck/searchmask_simple:76
@@ -4912,12 +4921,10 @@ msgid "Geben Sie hier bitte Ihre Suchbegriffe ein"
 msgstr "Geben Sie hier bitte Ihre Suchbegriffe ein"
 
 #: ../templates/profile/kuglight/virtualsearch_showkorindex:52
-#: ../templates/virtualsearch_showkorindex:52
 msgid "Geben Sie hier den Körperschaftsanfang ein"
 msgstr "Geben Sie hier den Körperschaftsanfang ein"
 
 #: ../templates/profile/kuglight/virtualsearch_shownotindex:52
-#: ../templates/virtualsearch_shownotindex:52
 msgid "Geben Sie hier den Notationsanfang ein"
 msgstr "Geben Sie hier den Notationsanfang ein"
 
@@ -4931,12 +4938,10 @@ msgstr "Geben Sie hier den Notationsanfang ein"
 #: ../templates/profile/kuglight/virtualsearch_showswtindex:52
 #: ../templates/search_showswtindex:81
 #: ../templates/views/kapsel/search_showtitlist:190
-#: ../templates/virtualsearch_showswtindex:52
 msgid "Geben Sie hier den Schlagwortanfang ein"
 msgstr "Geben Sie hier den Schlagwortanfang ein"
 
 #: ../templates/profile/kuglight/virtualsearch_showverfindex:52
-#: ../templates/virtualsearch_showverfindex:52
 msgid "Geben Sie hier den Verfasseranfang ein"
 msgstr "Geben Sie hier den Verfasseranfang ein"
 
@@ -5006,8 +5011,6 @@ msgid "Google-Book-Search"
 msgstr "Google-Book-Search"
 
 #. ("<a href=\"${config.ezb_loc}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>")
-#: ../templates/profile/kuglight/views/einbaende/searchmask:417
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:509
 #: ../templates/profile/kugng/searchmask_simple:498
 #: ../templates/profile/kugng/views/inst431/searchmask:417
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:509
@@ -5180,6 +5183,11 @@ msgstr ""
 #: ../templates/profile/kuglight/searchmask:97
 #: ../templates/profile/kuglight/searchmask_simple:142
 #: ../templates/profile/kuglight/searchmask_simple:148
+#: ../templates/profile/kuglight/views/einbaende/searchmask:100
+#: ../templates/profile/kuglight/views/einbaende/searchmask:152
+#: ../templates/profile/kuglight/views/einbaende/searchmask:177
+#: ../templates/profile/kuglight/views/einbaende/searchmask:215
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:84
 #: ../templates/profile/kuglight/views/engportrom/searchmask:107
 #: ../templates/profile/kuglight/views/engportrom/searchmask:113
 #: ../templates/profile/kuglight/views/engportrom/searchmask:145
@@ -5447,10 +5455,11 @@ msgstr ""
 #: ../templates/profile/kuglight/searchmask:97
 #: ../templates/profile/kuglight/searchmask_simple:142
 #: ../templates/profile/kuglight/searchmask_simple:148
-#: ../templates/profile/kuglight/views/einbaende/corporate_banner:62
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:147
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:240
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:335
+#: ../templates/profile/kuglight/views/einbaende/searchmask:100
+#: ../templates/profile/kuglight/views/einbaende/searchmask:152
+#: ../templates/profile/kuglight/views/einbaende/searchmask:177
+#: ../templates/profile/kuglight/views/einbaende/searchmask:215
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:84
 #: ../templates/profile/kuglight/views/engportrom/searchmask:107
 #: ../templates/profile/kuglight/views/engportrom/searchmask:113
 #: ../templates/profile/kuglight/views/engportrom/searchmask:145
@@ -5842,7 +5851,7 @@ msgstr "Hier suchen Sie in allen Katalogen auf einmal"
 
 #: ../templates/corporate_banner.new:7 ../templates/mainnavigation:43
 #: ../templates/profile/kuglight/mainnavigation:28
-#: ../templates/profile/kuglight/views/einbaende/mainnavigation:36
+#: ../templates/profile/kuglight/views/einbaende/mainnavigation:17
 #: ../templates/profile/kuglight/views/gbroich/mainnavigation:16
 #: ../templates/profile/kuglight/views/gdonck/mainnavigation:16
 #: ../templates/profile/kuglight/views/gleuel/mainnavigation:16
@@ -6282,6 +6291,8 @@ msgstr "Ihr vergessenes KUG-Passwort"
 
 #: ../templates/managecollection_mail:38
 #: ../templates/profile/kuglight/managecollection_mail:38
+#: ../templates/profile/kuglight/views/einbaende/searchmask:111
+#: ../templates/profile/kuglight/views/einbaende/searchmask:183
 #: ../templates/profile/kuglight/views/portrait/searchmask_query:2
 #: ../templates/profile/kuglight/views/richter/searchmask_query:2
 #: ../templates/profile/kuglight/views/umschlaege/searchmask:111
@@ -6332,7 +6343,7 @@ msgid "Ihre Merkliste wurde an Sie per Mail versendet."
 msgstr "Ihre Merkliste wurde an Sie per Mail versendet."
 
 #: ../templates/leave:26 ../templates/profile/kuglight/leave:26
-#: ../templates/profile/kuglight/views/einbaende/leave:26
+#: ../templates/profile/kuglight/views/einbaende/leave:27
 #: ../templates/profile/kuglight/views/gbroich/leave:27
 #: ../templates/profile/kuglight/views/gdonck/leave:27
 #: ../templates/profile/kuglight/views/gleuel/leave:27
@@ -6693,6 +6704,7 @@ msgstr "In anderen Katalogen"
 #: ../templates/profile/kuglight/searchmask:97
 #: ../templates/profile/kuglight/searchmask_simple:142
 #: ../templates/profile/kuglight/searchmask_simple:148
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:84
 #: ../templates/profile/kuglight/views/engportrom/searchmask:107
 #: ../templates/profile/kuglight/views/engportrom/searchmask:113
 #: ../templates/profile/kuglight/views/engportrom/searchmask:145
@@ -6862,8 +6874,6 @@ msgstr "In anderen Katalogen"
 msgid "In ausgewählten Katalogen suchen"
 msgstr "In ausgewählten Katalogen suchen"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:408
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:500
 #: ../templates/profile/kugng/searchmask_simple:489
 #: ../templates/profile/kugng/views/inst431/searchmask:408
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:500
@@ -6874,8 +6884,6 @@ msgstr "In ausgewählten Katalogen suchen"
 msgid "In den Gesamtbestand eintauchen"
 msgstr "In den Gesamtbestand eintauchen"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:408
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:500
 #: ../templates/profile/kugng/searchmask_simple:489
 #: ../templates/profile/kugng/views/inst431/searchmask:408
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:500
@@ -7012,41 +7020,41 @@ msgstr "In der Trefferliste"
 msgid "In der einfachen Recherche bzw. dem freien Suchfeld"
 msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 
-#: ../templates/database/alff/search_showtitlist:147
-#: ../templates/database/alff/search_showtitlist_of_cnt:147
+#: ../templates/database/alff/search_showtitlist:159
+#: ../templates/database/alff/search_showtitlist_of_cnt:159
 #: ../templates/database/alff/search_showtitset:564
 #: ../templates/database/alff/search_showtitset:565
-#: ../templates/database/alff/virtualsearch_result_item:142
+#: ../templates/database/alff/virtualsearch_result_item:143
 #: ../templates/database/audiosmlg/search_showtitlist:161
 #: ../templates/database/audiosmlg/virtualsearch_result_item:84
 #: ../templates/database/ebooks/search_showtitset:547
 #: ../templates/database/ebooks/search_showtitset:548
-#: ../templates/database/einbaende/search_showtitlist:147
-#: ../templates/database/einbaende/search_showtitlist_of_cnt:147
+#: ../templates/database/einbaende/search_showtitlist:159
+#: ../templates/database/einbaende/search_showtitlist_of_cnt:159
 #: ../templates/database/einbaende/search_showtitset:607
 #: ../templates/database/einbaende/search_showtitset:608
 #: ../templates/database/einbaende/search_showtitset_1:588
 #: ../templates/database/einbaende/search_showtitset_1:589
 #: ../templates/database/inst001/search_showtitset:574
 #: ../templates/database/inst001/search_showtitset:575
-#: ../templates/database/landschaft/search_showtitlist:147
+#: ../templates/database/landschaft/search_showtitlist:159
 #: ../templates/database/landschaft/search_showtitset:559
 #: ../templates/database/landschaft/search_showtitset:560
-#: ../templates/database/landschaft/virtualsearch_result_item:142
+#: ../templates/database/landschaft/virtualsearch_result_item:143
 #: ../templates/database/nationallizenzen/search_showtitset:570
 #: ../templates/database/nationallizenzen/search_showtitset:571
-#: ../templates/database/portrait/search_showtitlist:147
-#: ../templates/database/portrait/search_showtitlist_of_cnt:145
+#: ../templates/database/portrait/search_showtitlist:157
+#: ../templates/database/portrait/search_showtitlist_of_cnt:157
 #: ../templates/database/portrait/search_showtitset:575
 #: ../templates/database/portrait/search_showtitset:576
-#: ../templates/database/portrait/virtualsearch_result_item:142
+#: ../templates/database/portrait/virtualsearch_result_item:143
 #: ../templates/database/spoho/search_showtitset:568
 #: ../templates/database/spoho/search_showtitset:569
-#: ../templates/database/umschlaege/search_showtitlist:145
-#: ../templates/database/umschlaege/search_showtitlist_of_cnt:145
+#: ../templates/database/umschlaege/search_showtitlist:157
+#: ../templates/database/umschlaege/search_showtitlist_of_cnt:157
 #: ../templates/database/umschlaege/search_showtitset:573
 #: ../templates/database/umschlaege/search_showtitset:574
-#: ../templates/database/umschlaege/virtualsearch_result_item:144
+#: ../templates/database/umschlaege/virtualsearch_result_item:145
 #: ../templates/info_10:114 ../templates/litlists_tit_as_html_short:67
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:158
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:42
@@ -7069,10 +7077,10 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:165
 #: ../templates/profile/kuglight/search_showtitset:54
 #: ../templates/profile/kuglight/tags_showtitlist:153
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:138
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:121
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:139
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:140
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:141
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:113
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:140
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:82
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:138
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:137
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:159
@@ -7101,13 +7109,13 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/profile/kugng/tags_showtitlist:146
 #: ../templates/profile/kugng/virtualsearch_result_combined:130
 #: ../templates/profile/kugng/virtualsearch_result_item:140
-#: ../templates/resultlists_showall:138
-#: ../templates/resultlists_showall_sortall:121
-#: ../templates/resultlists_showsinglepool:139
-#: ../templates/search_showtitlist:147
-#: ../templates/search_showtitlist_of_cnt:145
+#: ../templates/resultlists_showall:148
+#: ../templates/resultlists_showall_sortall:119
+#: ../templates/resultlists_showsinglepool:147
+#: ../templates/search_showtitlist:157
+#: ../templates/search_showtitlist_of_cnt:157
 #: ../templates/search_showtitset:564 ../templates/search_showtitset:565
-#: ../templates/tags_showtitlist:146
+#: ../templates/tags_showtitlist:161
 #: ../templates/views/einbaende/resultlists_showall:138
 #: ../templates/views/einbaende/resultlists_showall_sortall:121
 #: ../templates/views/einbaende/resultlists_showsinglepool:139
@@ -7123,7 +7131,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/views/umschlaege/resultlists_showall_sortall:113
 #: ../templates/views/umschlaege/resultlists_showsinglepool:132
 #: ../templates/virtualsearch_result_combined:130
-#: ../templates/virtualsearch_result_item:140
+#: ../templates/virtualsearch_result_item:141
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
@@ -7174,6 +7182,13 @@ msgstr "In welchen Katalogen möchten Sie suchen"
 
 #: ../templates/profile/kuglight/searchmask_query:11
 #: ../templates/profile/kuglight/searchmask_query:23
+#: ../templates/profile/kuglight/views/einbaende/searchmask:122
+#: ../templates/profile/kuglight/views/einbaende/searchmask:126
+#: ../templates/profile/kuglight/views/einbaende/searchmask:130
+#: ../templates/profile/kuglight/views/einbaende/searchmask:134
+#: ../templates/profile/kuglight/views/einbaende/searchmask:190
+#: ../templates/profile/kuglight/views/einbaende/searchmask:193
+#: ../templates/profile/kuglight/views/einbaende/searchmask:197
 #: ../templates/profile/kuglight/views/inst501/searchmask_query:11
 #: ../templates/profile/kuglight/views/portrait/searchmask_query:13
 #: ../templates/profile/kuglight/views/richter/searchmask_query:13
@@ -7193,20 +7208,18 @@ msgstr "In welchen Katalogen möchten Sie suchen"
 #: ../templates/views/umschlaege/searchmask:130
 #: ../templates/views/umschlaege/searchmask:134
 #: ../templates/views/umschlaege/searchmask:138
-#: ../templates/virtualsearch_showkorindex:52
-#: ../templates/virtualsearch_shownotindex:52
-#: ../templates/virtualsearch_showswtindex:52
-#: ../templates/virtualsearch_showverfindex:52
 msgid "Index"
 msgstr "Index"
 
-#: ../templates/info_61:54
-#: ../templates/profile/kuglight/views/einbaende/searchmask:146
-#: ../templates/profile/kugng/info_61:54
+#: ../templates/info_61:54 ../templates/profile/kugng/info_61:54
 #: ../templates/profile/kugng/views/inst431/searchmask:146
 #: ../templates/profile/kugng/views/kugng/searchmask:179
 #: ../templates/searchmask:146 ../templates/views/einbaende/searchmask:146
 #: ../templates/views/kug/searchmask:179
+#: ../templates/virtualsearch_showkorindex:47
+#: ../templates/virtualsearch_shownotindex:47
+#: ../templates/virtualsearch_showswtindex:47
+#: ../templates/virtualsearch_showverfindex:47
 msgid "Index-Suche"
 msgstr "Index-Suche"
 
@@ -7280,7 +7293,6 @@ msgid "Initiale Suchen"
 msgstr "Initiale Suchen"
 
 #: ../templates/profile/kuglight/searchmask_query:15
-#: ../templates/profile/kuglight/views/einbaende/searchmask:149
 #: ../templates/profile/kugng/searchmask_query:78
 #: ../templates/profile/kugng/views/inst431/searchmask:149
 #: ../templates/profile/kugng/views/inst431/searchmask_query:78
@@ -7291,6 +7303,10 @@ msgstr "Initiale Suchen"
 #: ../templates/views/inst501/searchmask_query:78
 #: ../templates/views/kug/searchmask:182
 #: ../templates/views/kug/searchmask_query:78
+#: ../templates/virtualsearch_showkorindex:56
+#: ../templates/virtualsearch_shownotindex:56
+#: ../templates/virtualsearch_showswtindex:56
+#: ../templates/virtualsearch_showverfindex:56
 msgid "Institutionen"
 msgstr "Institutionen"
 
@@ -7492,7 +7508,6 @@ msgstr "Jahr"
 #: ../templates/clouds_navigation:19
 #: ../templates/database/audiosmlg/clouds_navigation:19
 #: ../templates/profile/kuglight/clouds_navigation:19
-#: ../templates/profile/kuglight/views/einbaende/clouds_navigation:19
 #: ../templates/profile/kuglight/views/kapsel/clouds_navigation:19
 #: ../templates/profile/kuglight/views/portrait/clouds_navigation:19
 #: ../templates/profile/kuglight/views/portrait/virtualsearch_result_item:138
@@ -7503,10 +7518,14 @@ msgstr "Jahr"
 msgid "Jahre"
 msgstr "Jahre"
 
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:44
+#: ../templates/profile/kuglight/views/einbaende/searchmask:130
+msgid "Jahrhundert"
+msgstr "Jahrhundert"
+
 #: ../templates/profile/kuglight/userprefs:178
 #: ../templates/profile/kuglight/virtualsearch_showkorindex:52
 #: ../templates/profile/kugng/userprefs:251 ../templates/userprefs:251
-#: ../templates/virtualsearch_showkorindex:52
 msgid "K&ouml;rperschaft"
 msgstr "K&ouml;rperschaft"
 
@@ -7517,7 +7536,6 @@ msgstr "K&ouml;rperschaften"
 
 #: ../templates/clouds_navigation:17
 #: ../templates/profile/kuglight/clouds_navigation:17
-#: ../templates/profile/kuglight/views/einbaende/clouds_navigation:17
 #: ../templates/profile/kuglight/views/kapsel/clouds_navigation:17
 #: ../templates/views/einbaende/clouds_navigation:17
 #: ../templates/views/kapsel/clouds_navigation:17
@@ -7693,6 +7711,8 @@ msgstr "Katalogtitel nach Bibliothekssystematik"
 #: ../templates/profile/kuglight/search_shownotset:31
 #: ../templates/profile/kuglight/search_showswtset:33
 #: ../templates/profile/kuglight/search_showtitset:78
+#: ../templates/profile/kuglight/views/einbaende/searchmask:111
+#: ../templates/profile/kuglight/views/einbaende/searchmask:183
 #: ../templates/profile/kuglight/views/portrait/searchmask_query:2
 #: ../templates/profile/kuglight/views/richter/searchmask_query:2
 #: ../templates/profile/kuglight/views/umschlaege/searchmask:111
@@ -7710,12 +7730,11 @@ msgstr "Kategorie"
 msgid "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 
-#: ../templates/litlists_show_singlelist:69
+#: ../templates/litlists_show_singlelist:52
 msgid "Keine"
 msgstr "Keine"
 
 #: ../templates/database/inst006/circset:50
-#: ../templates/database/inst302/circset:50
 #: ../templates/database/inst420/circset:47
 #: ../templates/database/inst431/circset:50
 #: ../templates/database/inst526/circset:50
@@ -7750,8 +7769,6 @@ msgstr "Keine gültige Anfrage-ID"
 
 #: ../templates/admin_showuser_1:42
 #: ../templates/profile/kuglight/admin_showuser_1:42
-#: ../templates/profile/kuglight/views/einbaende/searchmask:377
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:469
 #: ../templates/profile/kugng/searchmask_simple:458
 #: ../templates/profile/kugng/views/inst431/searchmask:377
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:469
@@ -7808,7 +7825,10 @@ msgstr "Kompletter Titel"
 #: ../templates/profile/kuglight/info_52:37
 #: ../templates/profile/kuglight/searchmask:45
 #: ../templates/profile/kuglight/searchmask_simple:45
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:33
 #: ../templates/profile/kuglight/views/einbaende/search_olws_browse:26
+#: ../templates/profile/kuglight/views/einbaende/searchmask:44
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:37
 #: ../templates/profile/kuglight/views/engportrom/searchmask:45
 #: ../templates/profile/kuglight/views/engportrom/searchmask_simple:46
 #: ../templates/profile/kuglight/views/gbroich/searchmask:45
@@ -7978,8 +7998,8 @@ msgstr "Kosten"
 msgid "Kurzbeschreibung"
 msgstr "Kurzbeschreibung"
 
-#: ../templates/litlists_manage_singlelist:138
-#: ../templates/litlists_show_singlelist:91
+#: ../templates/litlists_manage_singlelist:152
+#: ../templates/litlists_show_singlelist:89
 #: ../templates/managecollection_tit_as_bibtex:39
 #: ../templates/managecollection_tit_as_endnote:39
 #: ../templates/managecollection_tit_as_html:55
@@ -8033,8 +8053,6 @@ msgstr "L&ouml;schen"
 msgid "L&ouml;schung des ausgew&auml;hlten Profils"
 msgstr "L&ouml;schung des ausgew&auml;hlten Profils"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:424
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:516
 #: ../templates/profile/kugng/searchmask_simple:505
 #: ../templates/profile/kugng/views/inst431/searchmask:424
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:516
@@ -8108,7 +8126,7 @@ msgstr "Leihfristende"
 msgid "Letzte 50 Neuaufnahmen"
 msgstr "Letzte 50 Neuaufnahmen"
 
-#: ../templates/database/einbaende/titlist_options:45
+#: ../templates/database/einbaende/titlist_options:44
 #: ../templates/dbis_showsubjects:34 ../templates/ezb_showsubjects:36
 #: ../templates/profile/kuglight/dbis_showsubjects:34
 #: ../templates/profile/kuglight/ezb_showsubjects:36
@@ -8124,7 +8142,7 @@ msgstr "Letzte 50 Neuaufnahmen"
 #: ../templates/profile/kuglight/virtualsearch_result_combined:61
 #: ../templates/profile/kugng/litlists_show_singlelist:68
 #: ../templates/profile/kugng/tags_showusertags:36
-#: ../templates/tags_showusertags:36 ../templates/titlist_options:46
+#: ../templates/tags_showusertags:36 ../templates/titlist_options:45
 msgid "Liste"
 msgstr "Liste"
 
@@ -8133,14 +8151,14 @@ msgstr "Liste"
 msgid "Liste der Quellen"
 msgstr "Liste der Quellen"
 
-#: ../templates/litlists_show_singlelist:138
-#: ../templates/litlists_show_singlelist:171
+#: ../templates/litlists_show_singlelist:136
+#: ../templates/litlists_show_singlelist:169
 #: ../templates/profile/kugng/litlists_show_singlelist:175
 #: ../templates/profile/kugng/litlists_show_singlelist:208
 msgid "Listen mit gemeinsamen Titeln"
 msgstr "Listen mit gemeinsamen Titeln"
 
-#: ../templates/database/einbaende/titlist_options:45
+#: ../templates/database/einbaende/titlist_options:44
 #: ../templates/profile/kuglight/litlists_manage_singlelist:87
 #: ../templates/profile/kuglight/litlists_show_singlelist:69
 #: ../templates/profile/kuglight/resultlists_showall:63
@@ -8152,7 +8170,7 @@ msgstr "Listen mit gemeinsamen Titeln"
 #: ../templates/profile/kuglight/titlist_options:46
 #: ../templates/profile/kuglight/virtualsearch_result_combined:61
 #: ../templates/profile/kugng/litlists_show_singlelist:68
-#: ../templates/titlist_options:46
+#: ../templates/titlist_options:45
 msgid "Listen-Ansicht"
 msgstr "Listen-Ansicht"
 
@@ -8198,8 +8216,6 @@ msgstr "Literaturliste"
 #: ../templates/profile/kuglight/info_13:45
 #: ../templates/profile/kuglight/info_41:30
 #: ../templates/profile/kuglight/info_54:111
-#: ../templates/profile/kuglight/views/einbaende/searchmask:411
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:503
 #: ../templates/profile/kugng/database/inst001/search_showtitset:752
 #: ../templates/profile/kugng/info_13:33 ../templates/profile/kugng/info_41:37
 #: ../templates/profile/kugng/litlists_show_publiclists:25
@@ -8301,7 +8317,7 @@ msgstr "Lokale Signatur      "
 #: ../templates/database/einbaende/search_showtitset:660
 #: ../templates/database/einbaende/search_showtitset_1:633
 #: ../templates/database/einbaende/search_showtitset_1:641
-#: ../templates/database/einbaende/titlist_options:39
+#: ../templates/database/einbaende/titlist_options:38
 #: ../templates/database/inst001/search_showtitset:619
 #: ../templates/database/inst001/search_showtitset:627
 #: ../templates/database/landschaft/search_showtitset:604
@@ -8338,7 +8354,13 @@ msgstr "Lokale Signatur      "
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:66
 #: ../templates/profile/kuglight/tags_showtitlist:64
 #: ../templates/profile/kuglight/titlist_options:40
-#: ../templates/profile/kuglight/views/einbaende/corporate_banner:62
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:101
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:70
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:81
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:63
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:59
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:62
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:60
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:58
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:60
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:66
@@ -8366,7 +8388,7 @@ msgstr "Lokale Signatur      "
 #: ../templates/profile/kugng/search_showtitset:609
 #: ../templates/profile/kugng/search_showtitset:617
 #: ../templates/search_showtitset:609 ../templates/search_showtitset:617
-#: ../templates/titlist_options:40
+#: ../templates/titlist_options:39
 #: ../templates/views/einbaende/corporate_banner:62
 #: ../templates/views/kapsel/resultlists_showall:58
 #: ../templates/views/kapsel/resultlists_showsinglepool:60
@@ -8390,6 +8412,11 @@ msgstr "Los"
 #: ../templates/profile/kuglight/searchmask:97
 #: ../templates/profile/kuglight/searchmask_simple:142
 #: ../templates/profile/kuglight/searchmask_simple:148
+#: ../templates/profile/kuglight/views/einbaende/searchmask:100
+#: ../templates/profile/kuglight/views/einbaende/searchmask:152
+#: ../templates/profile/kuglight/views/einbaende/searchmask:177
+#: ../templates/profile/kuglight/views/einbaende/searchmask:215
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:84
 #: ../templates/profile/kuglight/views/engportrom/searchmask:107
 #: ../templates/profile/kuglight/views/engportrom/searchmask:113
 #: ../templates/profile/kuglight/views/engportrom/searchmask:145
@@ -8668,7 +8695,6 @@ msgstr "Lösche Eingabemaske"
 msgid "Löschen"
 msgstr "Löschen"
 
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_end:18
 #: ../templates/profile/kuglight/virtualsearch_result_combined:165
 #: ../templates/profile/kuglight/virtualsearch_result_end:17
 #: ../templates/profile/kugng/virtualsearch_result_combined:141
@@ -8866,7 +8892,6 @@ msgstr "Mehrfachauswahl"
 msgid "Mein KUG"
 msgstr "Mein KUG"
 
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:48
 #: ../templates/profile/kuglight/virtualsearch_result_combined:70
 #: ../templates/profile/kugng/virtualsearch_result_combined:46
 #: ../templates/profile/kugng/virtualsearch_result_start:48
@@ -8898,8 +8923,8 @@ msgstr "Meldung"
 #: ../templates/profile/kuglight/managecollection_empty:25
 #: ../templates/profile/kuglight/managecollection_save_html:30
 #: ../templates/profile/kuglight/managecollection_show:45
-#: ../templates/profile/kuglight/views/einbaende/mainnavigation:29
-#: ../templates/profile/kuglight/views/einbaende/managecollection_show:44
+#: ../templates/profile/kuglight/views/einbaende/mainnavigation:16
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:49
 #: ../templates/profile/kuglight/views/gbroich/mainnavigation:16
 #: ../templates/profile/kuglight/views/gdonck/mainnavigation:16
 #: ../templates/profile/kuglight/views/gleuel/mainnavigation:16
@@ -8967,6 +8992,14 @@ msgstr ""
 "      dar&uuml;ber hinaus auch in dauerhaft gespeicherten Suchprofilen\n"
 "      organisieren."
 
+#: ../templates/profile/kuglight/views/einbaende/searchmask:190
+msgid "Motiv"
+msgstr "Motiv"
+
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:46
+msgid "Motiv/Werkzeug"
+msgstr "Motiv/Werkzeug"
+
 #: ../templates/info_61:48 ../templates/profile/kugng/info_61:48
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -8976,7 +9009,20 @@ msgstr "Multimedia"
 msgid "Möchten Sie diesen ändern?"
 msgstr "Möchten Sie diesen ändern?"
 
-#: ../templates/ezb_showjournals:62
+#: ../templates/common/navitembar:37
+#: ../templates/database/alff/search_showtitlist:72
+#: ../templates/database/alff/search_showtitlist_of_cnt:72
+#: ../templates/database/einbaende/search_showtitlist:72
+#: ../templates/database/einbaende/search_showtitlist_of_cnt:72
+#: ../templates/database/landschaft/search_showtitlist:72
+#: ../templates/database/portrait/search_showtitlist:72
+#: ../templates/database/portrait/search_showtitlist_of_cnt:70
+#: ../templates/database/umschlaege/search_showtitlist:70
+#: ../templates/database/umschlaege/search_showtitlist_of_cnt:70
+#: ../templates/ezb_showjournals:72
+#: ../templates/litlists_manage_singlelist:110
+#: ../templates/search_showtitlist:70
+#: ../templates/search_showtitlist_of_cnt:70 ../templates/tags_showtitlist:66
 msgid "N&auml;chste Seite"
 msgstr "N&auml;chste Seite"
 
@@ -9093,6 +9139,7 @@ msgstr "Nachname"
 
 #: ../templates/admin_showoperations:56 ../templates/admin_showuser_1:43
 #: ../templates/profile/kuglight/admin_showuser_1:43
+#: ../templates/profile/kuglight/views/einbaende/searchmask:189
 msgid "Name"
 msgstr "Name"
 
@@ -9274,21 +9321,18 @@ msgid "Neue Sitzung beginnen"
 msgstr "Neue Sitzung beginnen"
 
 #: ../templates/leave:34 ../templates/profile/kuglight/leave:34
-#: ../templates/profile/kuglight/views/einbaende/leave:34
 #: ../templates/profile/kugng/views/kugng/leave:34
 #: ../templates/views/einbaende/leave:34 ../templates/views/kug/leave:34
 msgid "Neue Sitzung beginnen?"
 msgstr "Neue Sitzung beginnen?"
 
+#: ../templates/profile/kuglight/views/einbaende/leave:35
 #: ../templates/profile/kuglight/views/richter/leave:35
 #: ../templates/profile/kuglight/views/umschlaege/leave:35
 #: ../templates/views/richter/leave:35 ../templates/views/umschlaege/leave:35
 msgid "Neue Sitzung starten"
 msgstr "Neue Sitzung starten"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:174
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:267
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:362
 #: ../templates/profile/kugng/searchmask_query:123
 #: ../templates/profile/kugng/searchmask_simple:173
 #: ../templates/profile/kugng/searchmask_simple:263
@@ -9332,7 +9376,7 @@ msgstr "Neuer Tag-Name"
 #: ../templates/database/edz/circset:95
 #: ../templates/database/inst001/circset:95
 #: ../templates/database/inst006/circset:58
-#: ../templates/database/inst302/circset:58
+#: ../templates/database/inst302/circset:47
 #: ../templates/database/inst420/circset:57
 #: ../templates/database/inst431/circset:58
 #: ../templates/database/inst526/circset:58
@@ -9391,7 +9435,6 @@ msgstr "Not-Datei"
 
 #: ../templates/profile/kuglight/searchmask_query:23
 #: ../templates/profile/kuglight/userprefs:180
-#: ../templates/profile/kuglight/views/einbaende/searchmask:149
 #: ../templates/profile/kuglight/virtualsearch_shownotindex:52
 #: ../templates/profile/kugng/searchmask_query:86
 #: ../templates/profile/kugng/userprefs:253
@@ -9403,7 +9446,10 @@ msgstr "Not-Datei"
 #: ../templates/userprefs:253 ../templates/views/einbaende/searchmask:149
 #: ../templates/views/kug/searchmask:182
 #: ../templates/views/kug/searchmask_query:86
-#: ../templates/virtualsearch_shownotindex:52
+#: ../templates/virtualsearch_showkorindex:56
+#: ../templates/virtualsearch_shownotindex:56
+#: ../templates/virtualsearch_showswtindex:56
+#: ../templates/virtualsearch_showverfindex:56
 msgid "Notation"
 msgstr "Notation"
 
@@ -9451,7 +9497,6 @@ msgstr ""
 #: ../templates/clouds_navigation:20
 #: ../templates/database/audiosmlg/clouds_navigation:20
 #: ../templates/profile/kuglight/clouds_navigation:20
-#: ../templates/profile/kuglight/views/einbaende/clouds_navigation:20
 #: ../templates/profile/kuglight/views/kapsel/clouds_navigation:20
 #: ../templates/profile/kuglight/views/portrait/clouds_navigation:20
 #: ../templates/views/einbaende/clouds_navigation:20
@@ -9495,12 +9540,10 @@ msgstr "Offiziell"
 
 #: ../templates/info_54:115 ../templates/litlists_manage_lists:74
 #: ../templates/litlists_show_publiclists:46
-#: ../templates/litlists_show_singlelist:153
-#: ../templates/litlists_show_singlelist:180
-#: ../templates/litlists_show_singlelist:57
+#: ../templates/litlists_show_singlelist:151
+#: ../templates/litlists_show_singlelist:178
+#: ../templates/litlists_show_singlelist:40
 #: ../templates/profile/kuglight/info_54:115
-#: ../templates/profile/kuglight/views/einbaende/searchmask:438
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:530
 #: ../templates/profile/kugng/litlists_manage_lists:74
 #: ../templates/profile/kugng/litlists_show_publiclists:46
 #: ../templates/profile/kugng/litlists_show_singlelist:190
@@ -9533,6 +9576,11 @@ msgstr "Offizielle Literaturliste des Instituts/Seminars"
 #: ../templates/profile/kuglight/search_showtitlist:47
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:47
 #: ../templates/profile/kuglight/tags_showtitlist:48
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:64
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:47
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:44
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:46
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:45
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:39
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:41
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:47
@@ -9591,8 +9639,6 @@ msgstr "Anzahl Titel"
 #: ../templates/profile/kuglight/login_circulation:66
 #: ../templates/profile/kuglight/selfreg:53
 #: ../templates/profile/kuglight/userprefs:50
-#: ../templates/profile/kuglight/views/einbaende/searchmask:378
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:470
 #: ../templates/profile/kugng/login:63 ../templates/profile/kugng/login:95
 #: ../templates/profile/kugng/searchmask_simple:459
 #: ../templates/profile/kugng/selfreg:55
@@ -9653,8 +9699,8 @@ msgstr "PermaLink"
 #: ../templates/database/portrait/search_showtitset:588
 #: ../templates/database/spoho/search_showtitset:581
 #: ../templates/database/umschlaege/search_showtitset:586
-#: ../templates/litlists_manage_singlelist:129
-#: ../templates/litlists_show_singlelist:82
+#: ../templates/litlists_manage_singlelist:143
+#: ../templates/litlists_show_singlelist:80
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:46
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:58
 #: ../templates/profile/kuglight/litlists_manage_singlelist:92
@@ -9675,6 +9721,7 @@ msgstr "Permanenter Link"
 msgid "Permanenter Link zu diesem Titel"
 msgstr "Permanenter Link zu diesem Titel"
 
+#: ../templates/profile/kuglight/views/einbaende/searchmask:122
 #: ../templates/profile/kuglight/views/inst501/searchmask_query:11
 #: ../templates/profile/kuglight/views/kapsel/searchmask_query:11
 #: ../templates/profile/kuglight/views/portrait/searchmask_query:13
@@ -9714,8 +9761,6 @@ msgstr "Person/Körperschaft"
 #: ../templates/clouds_navigation:18
 #: ../templates/profile/kuglight/clouds_navigation:18
 #: ../templates/profile/kuglight/searchmask_query:11
-#: ../templates/profile/kuglight/views/einbaende/clouds_navigation:18
-#: ../templates/profile/kuglight/views/einbaende/searchmask:149
 #: ../templates/profile/kuglight/views/kapsel/clouds_navigation:18
 #: ../templates/profile/kugng/searchmask_query:74
 #: ../templates/profile/kugng/views/inst431/searchmask:149
@@ -9729,6 +9774,10 @@ msgstr "Person/Körperschaft"
 #: ../templates/views/kapsel/clouds_navigation:18
 #: ../templates/views/kug/searchmask:182
 #: ../templates/views/kug/searchmask_query:74
+#: ../templates/virtualsearch_showkorindex:56
+#: ../templates/virtualsearch_shownotindex:56
+#: ../templates/virtualsearch_showswtindex:56
+#: ../templates/virtualsearch_showverfindex:56
 msgid "Personen"
 msgstr "Personen"
 
@@ -9896,7 +9945,7 @@ msgstr "Quellen zum Tag <i>%1</i> in BibSonomy"
 #: ../templates/mainnavigation:34
 #: ../templates/profile/kuglight/admin_showcat:68
 #: ../templates/profile/kuglight/admin_showviews:57
-#: ../templates/profile/kuglight/views/einbaende/mainnavigation:35
+#: ../templates/profile/kuglight/views/einbaende/mainnavigation:17
 #: ../templates/profile/kuglight/views/kapsel/mainnavigation:17
 #: ../templates/profile/kuglight/views/landschaft/mainnavigation:17
 #: ../templates/profile/kuglight/views/portrait/mainnavigation:17
@@ -9974,7 +10023,7 @@ msgstr ""
 "Plattformen (Windows, Linux, Mac) zur Verf&uuml;gung, deren\n"
 "Funktionsumfang weit &uuml;ber die einfache Anzeige hinausgeht."
 
-#: ../templates/ezb_searchjournals:92 ../templates/ezb_showjournals:101
+#: ../templates/ezb_searchjournals:92 ../templates/ezb_showjournals:111
 #: ../templates/profile/kuglight/ezb_showjournals:65
 msgid "ReadMe"
 msgstr "ReadMe"
@@ -9982,6 +10031,7 @@ msgstr "ReadMe"
 #: ../templates/admin_editsession:51
 #: ../templates/profile/kuglight/admin_editsession:51
 #: ../templates/profile/kuglight/mainnavigation:17
+#: ../templates/profile/kuglight/views/einbaende/mainnavigation:16
 #: ../templates/profile/kuglight/views/gbroich/mainnavigation:16
 #: ../templates/profile/kuglight/views/gdonck/mainnavigation:16
 #: ../templates/profile/kuglight/views/gleuel/mainnavigation:16
@@ -10044,8 +10094,6 @@ msgid "Recherchen"
 msgstr "Recherchen"
 
 #. ("<a href=\"${config.dbis_loc}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>")
-#: ../templates/profile/kuglight/views/einbaende/searchmask:420
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:512
 #: ../templates/profile/kugng/searchmask_simple:501
 #: ../templates/profile/kugng/views/inst431/searchmask:420
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:512
@@ -10060,15 +10108,12 @@ msgstr ""
 "Recherchieren Sie fachspezifisch in einer Vielzahl von %1freien und\n"
 "lizensierten Datenbanken%2."
 
-#. ("${alldbcount.all.chunk(-3)
-#. ("${alldbcount.serials.chunk(-3)
-#. ("${alldbcount.articles.chunk(-3)
 #. ("${alldbcount.all}","${alldbs}")
 #. ("${alldbcount.serials}","${alldbs}")
 #. ("${alldbcount.articles}","${alldbs}")
-#: ../templates/profile/kuglight/views/einbaende/searchmask:122
-#: ../templates/profile/kuglight/views/einbaende/searchmask:196
-#: ../templates/profile/kuglight/views/einbaende/searchmask:255
+#. ("${alldbcount.all.chunk(-3)
+#. ("${alldbcount.serials.chunk(-3)
+#. ("${alldbcount.articles.chunk(-3)
 #: ../templates/profile/kugng/views/inst431/searchmask:122
 #: ../templates/profile/kugng/views/inst431/searchmask:196
 #: ../templates/profile/kugng/views/inst431/searchmask:255
@@ -10080,7 +10125,6 @@ msgid "Recherchieren Sie im KUG in %1 Titeln und %2 Katalogen"
 msgstr "Recherchieren Sie im KUG in %1 Titeln und %2 Katalogen"
 
 #. ("${alldbcount.all.chunk(-3)
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:125
 #: ../templates/profile/kugng/searchmask_simple:125
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:125
 #: ../templates/searchmask_simple:125
@@ -10094,7 +10138,6 @@ msgid "Recherchieren Sie in allen Katalogen der Philosophischen Fakult&auml;t"
 msgstr "Recherchieren Sie in allen Katalogen der Philosophischen Fakult&auml;t"
 
 #. ("${alldbcount.articles.chunk(-3)
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:311
 #: ../templates/profile/kugng/searchmask_simple:304
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:311
 #: ../templates/searchmask_simple:311
@@ -10104,7 +10147,6 @@ msgid "Recherchieren Sie nach %1 Aufs&auml;tzen in %2 Katalogen"
 msgstr "Recherchieren Sie nach %1 Aufs&auml;tzen in %2 Katalogen"
 
 #. ("${alldbcount.serials.chunk(-3)
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:216
 #: ../templates/profile/kugng/searchmask_simple:213
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:216
 #: ../templates/searchmask_simple:216
@@ -10123,6 +10165,9 @@ msgstr "Rechnername"
 msgid "Rechtschreibvorschläge"
 msgstr "Rechtschreibvorschläge"
 
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:43
+#: ../templates/profile/kuglight/views/einbaende/searchmask:126
+#: ../templates/profile/kuglight/views/einbaende/searchmask:197
 #: ../templates/profile/kuglight/views/portrait/clouds_navigation:15
 #: ../templates/profile/kuglight/views/portrait/searchmask_query:21
 #: ../templates/views/portrait/clouds_navigation:15
@@ -10130,6 +10175,13 @@ msgstr "Rechtschreibvorschläge"
 msgid "Region"
 msgstr "Region"
 
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:48
+msgid "Region/Werkzeug"
+msgstr "Region/Werkzeug"
+
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:34
+#: ../templates/profile/kuglight/views/einbaende/searchmask:45
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:38
 #: ../templates/profile/kuglight/views/umschlaege/search_browse_tit:34
 #: ../templates/profile/kuglight/views/umschlaege/searchmask:45
 #: ../templates/profile/kuglight/views/umschlaege/searchmask_simple:38
@@ -10140,7 +10192,6 @@ msgid "Register"
 msgstr "Register"
 
 #: ../templates/login:99 ../templates/profile/kuglight/selfreg:55
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:474
 #: ../templates/profile/kugng/login:99
 #: ../templates/profile/kugng/searchmask_simple:463
 #: ../templates/profile/kugng/selfreg:57
@@ -10151,8 +10202,6 @@ msgstr "Register"
 msgid "Registrieren"
 msgstr "Registrieren"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:382
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:474
 #: ../templates/profile/kugng/searchmask_simple:463
 #: ../templates/profile/kugng/views/inst431/searchmask:382
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:474
@@ -10199,6 +10248,7 @@ msgid "Rolle zuordnen"
 msgstr "Rolle zuordnen"
 
 #: ../templates/profile/kuglight/searchmask_simple:160
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:95
 #: ../templates/profile/kuglight/views/engportrom/searchmask_simple:172
 #: ../templates/profile/kuglight/views/gbroich/searchmask_simple:107
 #: ../templates/profile/kuglight/views/gdonck/searchmask_simple:107
@@ -10311,7 +10361,6 @@ msgstr "Anzahl Titel"
 #: ../templates/search_showswtindex:41 ../templates/userprefs:252
 #: ../templates/views/kapsel/searchmask_query:15
 #: ../templates/views/richter/searchmask_query:21
-#: ../templates/virtualsearch_showswtindex:52
 msgid "Schlagwort"
 msgstr "Schlagwort"
 
@@ -10319,8 +10368,6 @@ msgstr "Schlagwort"
 #: ../templates/database/audiosmlg/clouds_navigation:15
 #: ../templates/profile/kuglight/clouds_navigation:15
 #: ../templates/profile/kuglight/searchmask_query:19
-#: ../templates/profile/kuglight/views/einbaende/clouds_navigation:15
-#: ../templates/profile/kuglight/views/einbaende/searchmask:149
 #: ../templates/profile/kuglight/views/kapsel/clouds_navigation:15
 #: ../templates/profile/kuglight/views/portrait/virtualsearch_result_item:126
 #: ../templates/profile/kugng/searchmask_query:82
@@ -10336,6 +10383,10 @@ msgstr "Schlagwort"
 #: ../templates/views/kug/searchmask:182
 #: ../templates/views/kug/searchmask_query:82
 #: ../templates/views/portrait/virtualsearch_result_item:126
+#: ../templates/virtualsearch_showkorindex:56
+#: ../templates/virtualsearch_shownotindex:56
+#: ../templates/virtualsearch_showswtindex:56
+#: ../templates/virtualsearch_showverfindex:56
 msgid "Schlagworte"
 msgstr "Schlagworte"
 
@@ -10420,19 +10471,38 @@ msgstr ""
 msgid "Seit"
 msgstr "Seit"
 
-#: ../templates/ezb_showjournals:49 ../templates/search_showtitlist:71
+#: ../templates/common/navitembar:25
+#: ../templates/database/alff/search_showtitlist:60
+#: ../templates/database/alff/search_showtitlist_of_cnt:60
+#: ../templates/database/alff/virtualsearch_result_item:33
+#: ../templates/database/einbaende/search_showtitlist:60
+#: ../templates/database/einbaende/search_showtitlist_of_cnt:60
+#: ../templates/database/landschaft/search_showtitlist:60
+#: ../templates/database/landschaft/virtualsearch_result_item:33
+#: ../templates/database/portrait/search_showtitlist:60
+#: ../templates/database/portrait/search_showtitlist_of_cnt:58
+#: ../templates/database/portrait/virtualsearch_result_item:33
+#: ../templates/database/umschlaege/search_showtitlist:58
+#: ../templates/database/umschlaege/search_showtitlist_of_cnt:58
+#: ../templates/database/umschlaege/virtualsearch_result_item:35
+#: ../templates/ezb_showjournals:59 ../templates/litlists_manage_singlelist:95
+#: ../templates/resultlists_showall:74
+#: ../templates/resultlists_showsinglepool:60
+#: ../templates/search_showtitlist:58
+#: ../templates/search_showtitlist_of_cnt:58 ../templates/tags_showtitlist:51
+#: ../templates/virtualsearch_result_item:31
 msgid "Seite:"
 msgstr "Seite:"
 
-#: ../templates/database/alff/virtualsearch_result_item:149
+#: ../templates/database/alff/virtualsearch_result_item:150
 #: ../templates/database/audiosmlg/virtualsearch_result_item:91
-#: ../templates/database/landschaft/virtualsearch_result_item:149
-#: ../templates/database/portrait/virtualsearch_result_item:149
-#: ../templates/database/umschlaege/virtualsearch_result_item:151
+#: ../templates/database/landschaft/virtualsearch_result_item:150
+#: ../templates/database/portrait/virtualsearch_result_item:150
+#: ../templates/database/umschlaege/virtualsearch_result_item:152
 #: ../templates/profile/kuglight/database/landschaft/virtualsearch_result_item:88
 #: ../templates/profile/kuglight/database/portrait/virtualsearch_result_item:88
 #: ../templates/profile/kuglight/database/umschlaege/virtualsearch_result_item:89
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:147
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:89
 #: ../templates/profile/kuglight/views/portrait/virtualsearch_result_item:155
 #: ../templates/profile/kuglight/views/portrait/virtualsearch_result_item:79
 #: ../templates/profile/kuglight/virtualsearch_result_combined:161
@@ -10447,7 +10517,7 @@ msgstr "Seite:"
 #: ../templates/views/portrait/virtualsearch_result_item:155
 #: ../templates/views/portrait/virtualsearch_result_item:79
 #: ../templates/virtualsearch_result_combined:137
-#: ../templates/virtualsearch_result_item:147
+#: ../templates/virtualsearch_result_item:148
 #: ../templates/virtualsearch_showkorindex:38
 #: ../templates/virtualsearch_shownotindex:38
 #: ../templates/virtualsearch_showswtindex:38
@@ -11082,6 +11152,8 @@ msgstr "Sigel"
 #: ../templates/profile/kuglight/search_showmulttitset:109
 #: ../templates/profile/kuglight/searchmask_query:35
 #: ../templates/profile/kuglight/userprefs:183
+#: ../templates/profile/kuglight/views/einbaende/searchmask:138
+#: ../templates/profile/kuglight/views/einbaende/searchmask:201
 #: ../templates/profile/kuglight/views/inst501/searchmask_query:35
 #: ../templates/profile/kuglight/views/portrait/searchmask_query:29
 #: ../templates/profile/kuglight/views/richter/searchmask_query:29
@@ -11118,7 +11190,7 @@ msgstr "Signatur"
 
 #: ../templates/corporate_banner.new:7 ../templates/mainnavigation:43
 #: ../templates/profile/kuglight/mainnavigation:28
-#: ../templates/profile/kuglight/views/einbaende/mainnavigation:36
+#: ../templates/profile/kuglight/views/einbaende/mainnavigation:17
 #: ../templates/profile/kuglight/views/gbroich/mainnavigation:16
 #: ../templates/profile/kuglight/views/gdonck/mainnavigation:16
 #: ../templates/profile/kuglight/views/gleuel/mainnavigation:16
@@ -11185,7 +11257,7 @@ msgstr ""
 "schreiben Sie als <b>Trunkierungszeichen</b> ein *."
 
 #: ../templates/database/audiosmlg/search_showtitlist:49
-#: ../templates/database/einbaende/titlist_options:18
+#: ../templates/database/einbaende/titlist_options:17
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:49
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist_of_cnt:50
 #: ../templates/profile/kuglight/database/landschaft/search_showtitlist:47
@@ -11202,6 +11274,9 @@ msgstr ""
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:49
 #: ../templates/profile/kuglight/tags_showtitlist:50
 #: ../templates/profile/kuglight/titlist_options:18
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:49
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:48
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:47
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:41
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:43
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:49
@@ -11212,7 +11287,7 @@ msgstr ""
 #: ../templates/profile/kuglight/virtualsearch_result_combined:42
 #: ../templates/profile/kuglight/virtualsearch_result_start:43
 #: ../templates/profile/kugng/litlists_show_singlelist:49
-#: ../templates/titlist_options:18
+#: ../templates/titlist_options:17
 #: ../templates/views/kapsel/resultlists_showall:41
 #: ../templates/views/kapsel/resultlists_showsinglepool:43
 #: ../templates/views/kapsel/search_showtitlist:49
@@ -11249,6 +11324,7 @@ msgstr "Sortierung"
 msgid "Sortierung nach"
 msgstr "Sortierung nach"
 
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:46
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showall:47
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showall_sortall:46
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showsinglepool:46
@@ -11284,10 +11360,6 @@ msgstr "Spezifische KUG-Sichten"
 #: ../templates/profile/kuglight/search_showtitset:33
 #: ../templates/profile/kuglight/searchmask:31
 #: ../templates/profile/kuglight/searchmask_simple:31
-#: ../templates/profile/kuglight/views/einbaende/searchmask:329
-#: ../templates/profile/kuglight/views/einbaende/searchmask:51
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:421
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:54
 #: ../templates/profile/kuglight/views/engportrom/searchmask:31
 #: ../templates/profile/kuglight/views/engportrom/searchmask_simple:32
 #: ../templates/profile/kuglight/views/gbroich/searchmask:31
@@ -11490,7 +11562,6 @@ msgid "Standort des Buches"
 msgstr "Standort des Buches"
 
 #: ../templates/corporate_banner.new:5 ../templates/mainnavigation:33
-#: ../templates/profile/kuglight/views/einbaende/mainnavigation:33
 #: ../templates/profile/kugng/mainnavigation:33
 #: ../templates/profile/kugng/views/inst431/mainnavigation:33
 #: ../templates/profile/kugng/views/kugng/mainnavigation:33
@@ -11565,9 +11636,6 @@ msgstr "Such-Index"
 #: ../templates/profile/kuglight/clouds_navigation:21
 #: ../templates/profile/kuglight/info_13:46
 #: ../templates/profile/kuglight/searchmask:103
-#: ../templates/profile/kuglight/views/einbaende/clouds_navigation:21
-#: ../templates/profile/kuglight/views/einbaende/searchmask:412
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:504
 #: ../templates/profile/kuglight/views/engportrom/searchmask:119
 #: ../templates/profile/kuglight/views/gbroich/searchmask:99
 #: ../templates/profile/kuglight/views/gdonck/searchmask:99
@@ -11630,7 +11698,6 @@ msgid "Suchbegriffe"
 msgstr "Suchbegriffe"
 
 #: ../templates/corporate_banner.new:76 ../templates/corporate_banner:62
-#: ../templates/profile/kuglight/views/einbaende/corporate_banner:62
 #: ../templates/profile/kugng/corporate_banner:62
 #: ../templates/views/einbaende/corporate_banner:62
 msgid "Suche"
@@ -11648,11 +11715,15 @@ msgstr "Suche &uuml;ber alle Kataloge"
 msgid "Suche nach Datenbanken"
 msgstr "Suche nach Datenbanken"
 
-#: ../templates/ezb_searchjournals:59 ../templates/ezb_showjournals:68
+#: ../templates/ezb_searchjournals:59 ../templates/ezb_showjournals:78
 #: ../templates/ezb_showsubjects:74
 msgid "Suche nach Zeitschriften"
 msgstr "Suche nach Zeitschriften"
 
+#: ../templates/profile/kuglight/views/einbaende/searchmask:100
+#: ../templates/profile/kuglight/views/einbaende/searchmask:152
+#: ../templates/profile/kuglight/views/einbaende/searchmask:177
+#: ../templates/profile/kuglight/views/einbaende/searchmask:215
 #: ../templates/profile/kuglight/views/umschlaege/searchmask:100
 #: ../templates/profile/kuglight/views/umschlaege/searchmask:150
 #: ../templates/views/umschlaege/searchmask:100
@@ -11664,7 +11735,7 @@ msgstr "Suche starten"
 #: ../templates/database/audiosmlg/search_showtitlist:192
 #: ../templates/dbis_searchdbs:67 ../templates/dbis_showdbs:71
 #: ../templates/dbis_showsubjects:91 ../templates/ezb_searchjournals:75
-#: ../templates/ezb_showjournals:84 ../templates/ezb_showsubjects:92
+#: ../templates/ezb_showjournals:94 ../templates/ezb_showsubjects:92
 #: ../templates/mainnavigation:29
 #: ../templates/profile/kuglight/bibsonomy_showtitlist:54
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitlist:190
@@ -11672,11 +11743,6 @@ msgstr "Suche starten"
 #: ../templates/profile/kuglight/search_showswtindex:81
 #: ../templates/profile/kuglight/search_showtitlist:196
 #: ../templates/profile/kuglight/search_showtitset:283
-#: ../templates/profile/kuglight/views/einbaende/mainnavigation:29
-#: ../templates/profile/kuglight/views/einbaende/searchmask:149
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:147
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:240
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:335
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:190
 #: ../templates/profile/kuglight/views/kapsel/searchmask:100
 #: ../templates/profile/kuglight/views/kapsel/searchmask:67
@@ -11733,6 +11799,10 @@ msgstr "Suche starten"
 #: ../templates/views/portrait/searchmask:132
 #: ../templates/views/portrait/searchmask:72
 #: ../templates/views/portrait/searchmask_simple:73
+#: ../templates/virtualsearch_showkorindex:56
+#: ../templates/virtualsearch_shownotindex:56
+#: ../templates/virtualsearch_showswtindex:56
+#: ../templates/virtualsearch_showverfindex:56
 msgid "Suchen"
 msgstr "Suchen"
 
@@ -11827,6 +11897,7 @@ msgid "Suchhinweise"
 msgstr "Suchhinweise"
 
 #: ../templates/profile/kuglight/searchmask:57
+#: ../templates/profile/kuglight/views/einbaende/searchmask:58
 #: ../templates/profile/kuglight/views/engportrom/searchmask:57
 #: ../templates/profile/kuglight/views/gbroich/searchmask:58
 #: ../templates/profile/kuglight/views/gdonck/searchmask:58
@@ -11891,9 +11962,6 @@ msgid "Suchlogik"
 msgstr "Suchlogik"
 
 #: ../templates/profile/kuglight/searchmask:120
-#: ../templates/profile/kuglight/views/einbaende/searchmask:135
-#: ../templates/profile/kuglight/views/einbaende/searchmask:211
-#: ../templates/profile/kuglight/views/einbaende/searchmask:270
 #: ../templates/profile/kuglight/views/engportrom/searchmask:136
 #: ../templates/profile/kuglight/views/gbroich/searchmask:116
 #: ../templates/profile/kuglight/views/gdonck/searchmask:116
@@ -11968,7 +12036,6 @@ msgstr "Systematik-Gruppen"
 
 #: ../templates/clouds_navigation:16
 #: ../templates/profile/kuglight/clouds_navigation:16
-#: ../templates/profile/kuglight/views/einbaende/clouds_navigation:16
 #: ../templates/views/einbaende/clouds_navigation:16
 msgid "Systematiken/Notationen"
 msgstr "Systematiken/Notationen"
@@ -14506,16 +14573,12 @@ msgstr "Themengebiet(e) von DBIS zuordnen"
 #: ../templates/admin_navigation:22 ../templates/info_53:42
 #: ../templates/info_54:41 ../templates/litlists_manage_lists:69
 #: ../templates/litlists_show_publiclists:33
-#: ../templates/litlists_show_singlelist:63
+#: ../templates/litlists_show_singlelist:46
 #: ../templates/profile/kuglight/admin_editsubject:108
 #: ../templates/profile/kuglight/admin_editsubject:155
 #: ../templates/profile/kuglight/admin_navigation:21
 #: ../templates/profile/kuglight/info_53:42
 #: ../templates/profile/kuglight/info_54:41
-#: ../templates/profile/kuglight/views/einbaende/searchmask:299
-#: ../templates/profile/kuglight/views/einbaende/searchmask:60
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:391
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:63
 #: ../templates/profile/kugng/litlists_manage_lists:69
 #: ../templates/profile/kugng/litlists_show_publiclists:33
 #: ../templates/profile/kugng/litlists_show_singlelist:76
@@ -14577,8 +14640,8 @@ msgstr "Tit-Datei"
 #: ../templates/database/spoho/search_showtitset:427
 #: ../templates/database/umschlaege/search_showtitset:432
 #: ../templates/dbis_showdbinfo:48 ../templates/ezb_showjournalinfo:45
-#: ../templates/litlists_manage_singlelist:100
-#: ../templates/litlists_show_singlelist:60
+#: ../templates/litlists_manage_singlelist:83
+#: ../templates/litlists_show_singlelist:43
 #: ../templates/managecollection_tit_as_html:24
 #: ../templates/managecollection_tit_as_html_simple:19
 #: ../templates/profile/kuglight/circulation_make_order:65
@@ -14609,7 +14672,7 @@ msgstr "Tit-Datei"
 #: ../templates/profile/kugng/views/inst431/searchmask_options:4
 #: ../templates/profile/kugng/views/kugng/searchmask_options:4
 #: ../templates/search_showtitset:423 ../templates/searchmask_options:4
-#: ../templates/tags_showtitlist:60
+#: ../templates/tags_showtitlist:39
 #: ../templates/views/gbroich/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
@@ -14711,6 +14774,10 @@ msgstr "Titel-String"
 msgid "Titel/Merkliste via Mail verschicken"
 msgstr "Titel/Merkliste via Mail verschicken"
 
+#: ../templates/profile/kuglight/views/einbaende/searchmask:118
+msgid "Titel/Provenienz"
+msgstr "Titel/Provenienz"
+
 #: ../templates/bibsonomy_showtags:20
 #: ../templates/profile/kuglight/bibsonomy_showtags:20
 msgid "Titel/Schlagworte nicht in BibSonomy enthalten"
@@ -14753,7 +14820,7 @@ msgstr "Titelaufnahme"
 #: ../templates/profile/kuglight/tags_showtitlist:76
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:78
 #: ../templates/profile/kugng/tags_showtitlist:57
-#: ../templates/tags_showtitlist:57
+#: ../templates/tags_showtitlist:36
 #: ../templates/views/kapsel/search_showtitlist:78
 msgid "Titelliste"
 msgstr "Titelliste"
@@ -14824,21 +14891,21 @@ msgid "Top 20"
 msgstr "Top 20"
 
 #: ../templates/admin_editsession:51
-#: ../templates/database/alff/search_showtitlist:69
-#: ../templates/database/alff/search_showtitlist_of_cnt:69
+#: ../templates/database/alff/search_showtitlist:48
+#: ../templates/database/alff/search_showtitlist_of_cnt:48
 #: ../templates/database/alff/virtualsearch_result_item:30
 #: ../templates/database/audiosmlg/search_showtitlist:102
 #: ../templates/database/audiosmlg/search_showtitlist:86
 #: ../templates/database/audiosmlg/virtualsearch_result_item:18
-#: ../templates/database/einbaende/search_showtitlist:69
-#: ../templates/database/einbaende/search_showtitlist_of_cnt:69
-#: ../templates/database/landschaft/search_showtitlist:69
+#: ../templates/database/einbaende/search_showtitlist:48
+#: ../templates/database/einbaende/search_showtitlist_of_cnt:48
+#: ../templates/database/landschaft/search_showtitlist:48
 #: ../templates/database/landschaft/virtualsearch_result_item:30
-#: ../templates/database/portrait/search_showtitlist:69
-#: ../templates/database/portrait/search_showtitlist_of_cnt:67
+#: ../templates/database/portrait/search_showtitlist:48
+#: ../templates/database/portrait/search_showtitlist_of_cnt:46
 #: ../templates/database/portrait/virtualsearch_result_item:30
-#: ../templates/database/umschlaege/search_showtitlist:67
-#: ../templates/database/umschlaege/search_showtitlist_of_cnt:67
+#: ../templates/database/umschlaege/search_showtitlist:46
+#: ../templates/database/umschlaege/search_showtitlist_of_cnt:46
 #: ../templates/database/umschlaege/virtualsearch_result_item:32
 #: ../templates/ezb_searchjournals:48
 #: ../templates/profile/kuglight/admin_editsession:51
@@ -14865,10 +14932,8 @@ msgstr "Top 20"
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:108
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:92
 #: ../templates/profile/kuglight/select_queries:60
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:62
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:52
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:63
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:28
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:74
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:22
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:68
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:102
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:86
@@ -14892,10 +14957,10 @@ msgstr "Top 20"
 #: ../templates/profile/kugng/virtualsearch_result_combined:69
 #: ../templates/profile/kugng/virtualsearch_result_item:28
 #: ../templates/resultlists_choice:95 ../templates/resultlists_showall:62
-#: ../templates/resultlists_showall_sortall:52
-#: ../templates/resultlists_showsinglepool:63
-#: ../templates/search_showtitlist:67
-#: ../templates/search_showtitlist_of_cnt:67 ../templates/select_queries:60
+#: ../templates/resultlists_showall_sortall:39
+#: ../templates/resultlists_showsinglepool:48
+#: ../templates/search_showtitlist:46
+#: ../templates/search_showtitlist_of_cnt:46 ../templates/select_queries:60
 #: ../templates/views/einbaende/resultlists_showall:62
 #: ../templates/views/einbaende/resultlists_showall_sortall:52
 #: ../templates/views/einbaende/resultlists_showsinglepool:63
@@ -14939,11 +15004,11 @@ msgstr "Treffer-, Merk- und Literaturlisten"
 #: ../templates/profile/kuglight/resultlists_showall:26
 #: ../templates/profile/kuglight/resultlists_showall_sortall:26
 #: ../templates/profile/kuglight/resultlists_showsinglepool:26
-#: ../templates/profile/kuglight/views/einbaende/mainnavigation:29
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:26
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:26
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:26
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:26
+#: ../templates/profile/kuglight/views/einbaende/mainnavigation:16
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:31
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:30
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:30
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:31
 #: ../templates/profile/kuglight/views/gbroich/mainnavigation:16
 #: ../templates/profile/kuglight/views/gdonck/mainnavigation:16
 #: ../templates/profile/kuglight/views/gleuel/mainnavigation:16
@@ -15408,7 +15473,6 @@ msgstr "Verf&uuml;gbar"
 #: ../templates/profile/kugng/circulation_make_order:62
 #: ../templates/profile/kugng/userprefs:250 ../templates/userprefs:250
 #: ../templates/views/portrait/virtualsearch_result_item:89
-#: ../templates/virtualsearch_showverfindex:52
 msgid "Verfasser"
 msgstr "Verfasser"
 
@@ -15432,6 +15496,8 @@ msgstr ""
 msgid "Verkn&uuml;pfungen mehrerer Suchfelder"
 msgstr "Verkn&uuml;pfungen mehrerer Suchfelder"
 
+#: ../templates/profile/kuglight/views/einbaende/searchmask:111
+#: ../templates/profile/kuglight/views/einbaende/searchmask:183
 #: ../templates/profile/kuglight/views/portrait/searchmask_query:2
 #: ../templates/profile/kuglight/views/richter/searchmask_query:2
 #: ../templates/profile/kuglight/views/umschlaege/searchmask:111
@@ -15503,13 +15569,12 @@ msgstr "Verwandte Personen"
 msgid "Verwandte Themen"
 msgstr "Verwandte Themen"
 
-#: ../templates/litlists_manage_singlelist:124
+#: ../templates/litlists_manage_singlelist:138
 #: ../templates/profile/kugng/litlists_manage_singlelist:126
 msgid "Verweisen Sie auf diese Liste"
 msgstr "Verweisen Sie auf diese Liste"
 
 #: ../templates/leave:27 ../templates/profile/kuglight/leave:27
-#: ../templates/profile/kuglight/views/einbaende/leave:27
 #: ../templates/profile/kugng/views/kugng/leave:27
 #: ../templates/views/einbaende/leave:27 ../templates/views/kug/leave:27
 msgid ""
@@ -15532,6 +15597,14 @@ msgid ""
 msgstr ""
 "Vielen Dank f&uuml;r Ihren Besuch in der Virtuellen Bibliothek Elise und "
 "Helene Richter."
+
+#: ../templates/profile/kuglight/views/einbaende/leave:28
+msgid ""
+"Vielen Dank f&uuml;r Ihren Besuch in der digitalen Einband-Sammlung der USB "
+"K&ouml;ln."
+msgstr ""
+"Vielen Dank f&uuml;r Ihren Besuch in der digitalen Einband-Sammlung der USB "
+"K&ouml;ln."
 
 #: ../templates/profile/kuglight/views/umschlaege/leave:28
 #: ../templates/views/umschlaege/leave:28
@@ -15590,8 +15663,8 @@ msgstr "Virtueller Verfasserindex"
 #: ../templates/database/portrait/search_showtitset:596
 #: ../templates/database/spoho/search_showtitset:589
 #: ../templates/database/umschlaege/search_showtitset:594
-#: ../templates/litlists_manage_singlelist:138
-#: ../templates/litlists_show_singlelist:91
+#: ../templates/litlists_manage_singlelist:152
+#: ../templates/litlists_show_singlelist:89
 #: ../templates/managecollection_tit_as_bibtex:39
 #: ../templates/managecollection_tit_as_endnote:39
 #: ../templates/managecollection_tit_as_html:55
@@ -15620,7 +15693,21 @@ msgstr "Volume (Jahr) der ersten Ausgabe"
 msgid "Vorgemerkt"
 msgstr "Vorgemerkt"
 
-#: ../templates/ezb_showjournals:50 ../templates/search_showtitlist:72
+#: ../templates/common/navitembar:26
+#: ../templates/database/alff/search_showtitlist:61
+#: ../templates/database/alff/search_showtitlist_of_cnt:61
+#: ../templates/database/einbaende/search_showtitlist:61
+#: ../templates/database/einbaende/search_showtitlist_of_cnt:61
+#: ../templates/database/landschaft/search_showtitlist:61
+#: ../templates/database/portrait/search_showtitlist:61
+#: ../templates/database/portrait/search_showtitlist_of_cnt:59
+#: ../templates/database/umschlaege/search_showtitlist:59
+#: ../templates/database/umschlaege/search_showtitlist_of_cnt:59
+#: ../templates/ezb_showjournals:60 ../templates/litlists_manage_singlelist:96
+#: ../templates/resultlists_showall:75
+#: ../templates/resultlists_showsinglepool:61
+#: ../templates/search_showtitlist:59
+#: ../templates/search_showtitlist_of_cnt:59 ../templates/tags_showtitlist:52
 msgid "Vorherige Seite"
 msgstr "Vorherige Seite"
 
@@ -15794,7 +15881,6 @@ msgstr ""
 #: ../templates/database/inst001/circset:119
 #: ../templates/database/inst001/circset:82
 #: ../templates/database/inst006/circset:45
-#: ../templates/database/inst302/circset:45
 #: ../templates/database/inst420/circset:42
 #: ../templates/database/inst431/circset:45
 #: ../templates/database/inst526/circset:45
@@ -16243,6 +16329,18 @@ msgstr ""
 "      jeweilige Titel in Katalogen des KUG enthalten ist und diese\n"
 "      Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben."
 
+#: ../templates/profile/kuglight/views/einbaende/searchmask:193
+msgid "Werkstatt"
+msgstr "Werkstatt"
+
+#: ../templates/profile/kuglight/views/einbaende/search_browse_tit:47
+msgid "Werkstatt/Werkzeug"
+msgstr "Werkstatt/Werkzeug"
+
+#: ../templates/profile/kuglight/views/einbaende/searchmask:79
+msgid "Werkzeug"
+msgstr "Werkzeug"
+
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:58
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset_1:61
 msgid "Werkzeug-Abbildungen"
@@ -16309,15 +16407,12 @@ msgstr "Wolke der von Nutzern vergebenen Tags"
 #: ../templates/profile/kuglight/info_17:43
 #: ../templates/profile/kuglight/info_18:43
 #: ../templates/profile/kuglight/info_19:43
-#: ../templates/profile/kuglight/info_9:43
-#: ../templates/profile/kuglight/views/einbaende/searchmask:410
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:502
-#: ../templates/profile/kugng/info:86 ../templates/profile/kugng/info:936
-#: ../templates/profile/kugng/info_13:25 ../templates/profile/kugng/info_14:36
-#: ../templates/profile/kugng/info_16:36 ../templates/profile/kugng/info_17:36
-#: ../templates/profile/kugng/info_18:36 ../templates/profile/kugng/info_19:36
-#: ../templates/profile/kugng/info_40:30 ../templates/profile/kugng/info_41:30
-#: ../templates/profile/kugng/info_9:36
+#: ../templates/profile/kuglight/info_9:43 ../templates/profile/kugng/info:86
+#: ../templates/profile/kugng/info:936 ../templates/profile/kugng/info_13:25
+#: ../templates/profile/kugng/info_14:36 ../templates/profile/kugng/info_16:36
+#: ../templates/profile/kugng/info_17:36 ../templates/profile/kugng/info_18:36
+#: ../templates/profile/kugng/info_19:36 ../templates/profile/kugng/info_40:30
+#: ../templates/profile/kugng/info_41:30 ../templates/profile/kugng/info_9:36
 #: ../templates/profile/kugng/searchmask_simple:491
 #: ../templates/profile/kugng/views/inst431/searchmask:410
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:502
@@ -16375,10 +16470,6 @@ msgstr ""
 msgid "Wählen Sie bitte einen View aus:"
 msgstr "Wählen Sie bitte einen View aus:"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:180
-#: ../templates/profile/kuglight/views/einbaende/searchmask:58
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:200
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:61
 #: ../templates/profile/kugng/searchmask_simple:197
 #: ../templates/profile/kugng/searchmask_simple:61
 #: ../templates/profile/kugng/views/inst431/searchmask:180
@@ -16452,12 +16543,8 @@ msgstr "Zugriffsbedingungen"
 
 #: ../templates/profile/kuglight/searchmask:64
 #: ../templates/profile/kuglight/searchmask_simple:166
-#: ../templates/profile/kuglight/views/einbaende/searchmask:167
-#: ../templates/profile/kuglight/views/einbaende/searchmask:228
-#: ../templates/profile/kuglight/views/einbaende/searchmask:287
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:188
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:282
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:377
+#: ../templates/profile/kuglight/views/einbaende/searchmask:65
+#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:101
 #: ../templates/profile/kuglight/views/engportrom/searchmask:64
 #: ../templates/profile/kuglight/views/engportrom/searchmask_simple:178
 #: ../templates/profile/kuglight/views/gbroich/searchmask:65
@@ -16574,8 +16661,6 @@ msgid "Zur Trefferliste"
 msgstr "Zur Trefferliste"
 
 #. ("<a href=\"${config.searchmask_loc}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>")
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_end:16
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_end:18
 #: ../templates/profile/kuglight/virtualsearch_result_combined:165
 #: ../templates/profile/kuglight/virtualsearch_result_combined:75
 #: ../templates/profile/kuglight/virtualsearch_result_end:15
@@ -16611,7 +16696,7 @@ msgstr ""
 "bessere Recherchierbarkeit der Titel integriert:"
 
 #: ../templates/database/audiosmlg/search_showtitlist:61
-#: ../templates/database/einbaende/titlist_options:30
+#: ../templates/database/einbaende/titlist_options:29
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:60
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist_of_cnt:62
 #: ../templates/profile/kuglight/database/landschaft/search_showtitlist:58
@@ -16629,6 +16714,10 @@ msgstr ""
 #: ../templates/profile/kuglight/searchmask_options:4
 #: ../templates/profile/kuglight/tags_showtitlist:62
 #: ../templates/profile/kuglight/titlist_options:31
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:61
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:57
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:60
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:58
 #: ../templates/profile/kuglight/views/gbroich/searchmask_options:4
 #: ../templates/profile/kuglight/views/gdonck/searchmask_options:4
 #: ../templates/profile/kuglight/views/gleuel/searchmask_options:4
@@ -16653,7 +16742,7 @@ msgstr ""
 #: ../templates/profile/kugng/litlists_show_singlelist:62
 #: ../templates/profile/kugng/views/inst431/searchmask_options:4
 #: ../templates/profile/kugng/views/kugng/searchmask_options:4
-#: ../templates/searchmask_options:4 ../templates/titlist_options:31
+#: ../templates/searchmask_options:4 ../templates/titlist_options:30
 #: ../templates/views/gbroich/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
@@ -16680,7 +16769,6 @@ msgstr "absteigend"
 #: ../templates/admin_showuser_1:54 ../templates/corporate_banner.new:4
 #: ../templates/mainnavigation:32
 #: ../templates/profile/kuglight/admin_showuser_1:54
-#: ../templates/profile/kuglight/views/einbaende/mainnavigation:32
 #: ../templates/profile/kugng/mainnavigation:32
 #: ../templates/profile/kugng/views/inst431/mainnavigation:32
 #: ../templates/profile/kugng/views/kugng/mainnavigation:32
@@ -16690,7 +16778,7 @@ msgid "admin"
 msgstr "Administrator"
 
 #: ../templates/database/audiosmlg/search_showtitlist:60
-#: ../templates/database/einbaende/titlist_options:29
+#: ../templates/database/einbaende/titlist_options:28
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:59
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist_of_cnt:61
 #: ../templates/profile/kuglight/database/landschaft/search_showtitlist:57
@@ -16708,6 +16796,10 @@ msgstr "Administrator"
 #: ../templates/profile/kuglight/searchmask_options:4
 #: ../templates/profile/kuglight/tags_showtitlist:61
 #: ../templates/profile/kuglight/titlist_options:30
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:60
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:56
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:59
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:57
 #: ../templates/profile/kuglight/views/gbroich/searchmask_options:4
 #: ../templates/profile/kuglight/views/gdonck/searchmask_options:4
 #: ../templates/profile/kuglight/views/gleuel/searchmask_options:4
@@ -16732,7 +16824,7 @@ msgstr "Administrator"
 #: ../templates/profile/kugng/litlists_show_singlelist:61
 #: ../templates/profile/kugng/views/inst431/searchmask_options:4
 #: ../templates/profile/kugng/views/kugng/searchmask_options:4
-#: ../templates/searchmask_options:4 ../templates/titlist_options:30
+#: ../templates/searchmask_options:4 ../templates/titlist_options:29
 #: ../templates/views/gbroich/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
@@ -16763,12 +16855,11 @@ msgstr "aufsteigend"
 #: ../templates/profile/kuglight/managecollection_tit_as_html:22
 #: ../templates/profile/kuglight/managecollection_tit_as_html_simple:19
 #: ../templates/profile/kuglight/resultlists_showall_sortall:130
-#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:111
 #: ../templates/profile/kuglight/virtualsearch_result_combined:154
 #: ../templates/profile/kugng/managecollection_tit_as_html:218
 #: ../templates/profile/kugng/resultlists_showall_sortall:111
 #: ../templates/profile/kugng/virtualsearch_result_combined:130
-#: ../templates/resultlists_showall_sortall:111
+#: ../templates/resultlists_showall_sortall:109
 #: ../templates/views/einbaende/resultlists_showall_sortall:111
 #: ../templates/virtualsearch_result_combined:130
 msgid "aus:"
@@ -16777,7 +16868,7 @@ msgstr "aus:"
 #: ../templates/database/edz/circset:115
 #: ../templates/database/inst001/circset:115
 #: ../templates/database/inst006/circset:73
-#: ../templates/database/inst302/circset:73
+#: ../templates/database/inst302/circset:62
 #: ../templates/database/inst420/circset:72
 #: ../templates/database/inst431/circset:73
 #: ../templates/database/inst526/circset:73
@@ -16803,7 +16894,7 @@ msgstr "ausgeschieden"
 #: ../templates/database/edz/circset:113
 #: ../templates/database/inst001/circset:113
 #: ../templates/database/inst006/circset:71
-#: ../templates/database/inst302/circset:71
+#: ../templates/database/inst302/circset:60
 #: ../templates/database/inst420/circset:70
 #: ../templates/database/inst431/circset:71
 #: ../templates/database/inst526/circset:71
@@ -16829,7 +16920,7 @@ msgstr "beim Lieferanten reklamiert"
 #: ../templates/database/edz/circset:111
 #: ../templates/database/inst001/circset:111
 #: ../templates/database/inst006/circset:69
-#: ../templates/database/inst302/circset:69
+#: ../templates/database/inst302/circset:58
 #: ../templates/database/inst420/circset:68
 #: ../templates/database/inst431/circset:69
 #: ../templates/database/inst526/circset:69
@@ -16855,7 +16946,7 @@ msgstr "beim Lieferanten storniert"
 #: ../templates/database/edz/circset:107
 #: ../templates/database/inst001/circset:107
 #: ../templates/database/inst006/circset:65
-#: ../templates/database/inst302/circset:65
+#: ../templates/database/inst302/circset:54
 #: ../templates/database/inst420/circset:64
 #: ../templates/database/inst431/circset:65
 #: ../templates/database/inst526/circset:65
@@ -16913,7 +17004,7 @@ msgstr "getrennte Kataloge"
 #: ../templates/database/edz/circset:109
 #: ../templates/database/inst001/circset:109
 #: ../templates/database/inst006/circset:67
-#: ../templates/database/inst302/circset:67
+#: ../templates/database/inst302/circset:56
 #: ../templates/database/inst420/circset:66
 #: ../templates/database/inst431/circset:67
 #: ../templates/database/inst526/circset:67
@@ -16938,10 +17029,7 @@ msgstr "im Gesch&auml;ftsgang"
 
 #: ../templates/dbis_searchdbs:63 ../templates/dbis_showdbs:67
 #: ../templates/dbis_showsubjects:86 ../templates/ezb_searchjournals:71
-#: ../templates/ezb_showjournals:80 ../templates/ezb_showsubjects:87
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:148
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:241
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:336
+#: ../templates/ezb_showjournals:90 ../templates/ezb_showsubjects:87
 #: ../templates/profile/kugng/searchmask_simple:148
 #: ../templates/profile/kugng/searchmask_simple:238
 #: ../templates/profile/kugng/searchmask_simple:329
@@ -16975,12 +17063,12 @@ msgstr "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
 msgid "ja, seit"
 msgstr "ja, seit"
 
-#: ../templates/database/einbaende/titlist_options:36
+#: ../templates/database/einbaende/titlist_options:35
 #: ../templates/profile/kuglight/resultlists_showall:57
 #: ../templates/profile/kuglight/resultlists_showall_sortall:60
 #: ../templates/profile/kuglight/titlist_options:37
 #: ../templates/profile/kuglight/virtualsearch_result_start:59
-#: ../templates/titlist_options:37
+#: ../templates/titlist_options:36
 msgid "katalogübergreifend"
 msgstr "katalogübergreifend"
 
@@ -16999,8 +17087,6 @@ msgstr "Dozent"
 msgid "librarian"
 msgstr "Bibliothekar"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:413
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:505
 #: ../templates/profile/kugng/searchmask_simple:494
 #: ../templates/profile/kugng/views/inst431/searchmask:413
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:505
@@ -17020,7 +17106,7 @@ msgstr "meistgenutzte Titel"
 #: ../templates/profile/kuglight/database/portrait/virtualsearch_result_item:18
 #: ../templates/profile/kuglight/database/umschlaege/virtualsearch_result_item:22
 #: ../templates/profile/kuglight/resultlists_choice:107
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:28
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:22
 #: ../templates/profile/kuglight/views/portrait/virtualsearch_result_item:18
 #: ../templates/profile/kuglight/virtualsearch_result_item:19
 #: ../templates/profile/kugng/resultlists_choice:107
@@ -17033,8 +17119,6 @@ msgid "mind."
 msgstr "mind."
 
 #: ../templates/login:47 ../templates/login:85
-#: ../templates/profile/kuglight/views/einbaende/searchmask:345
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:437
 #: ../templates/profile/kugng/login:47 ../templates/profile/kugng/login:85
 #: ../templates/profile/kugng/searchmask_simple:426
 #: ../templates/profile/kugng/views/inst431/searchmask:345
@@ -17069,7 +17153,7 @@ msgstr ""
 msgid "mit Grund"
 msgstr "mit Grund"
 
-#: ../templates/ezb_searchjournals:68 ../templates/ezb_showjournals:77
+#: ../templates/ezb_searchjournals:68 ../templates/ezb_showjournals:87
 #: ../templates/ezb_showsubjects:84
 msgid "mit Volltextartikeln, die nur im Uni-Netz zugänglich sind"
 msgstr "mit Volltextartikeln, die nur im Uni-Netz zugänglich sind"
@@ -17084,7 +17168,7 @@ msgstr ""
 "mit der Basisklassifikation. Darüber lassen sich nun in\n"
 "      einem Katalog andere thematisch benachbarte Titel finden."
 
-#: ../templates/ezb_searchjournals:67 ../templates/ezb_showjournals:76
+#: ../templates/ezb_searchjournals:67 ../templates/ezb_showjournals:86
 #: ../templates/ezb_showsubjects:83
 msgid "mit frei zugänglichen Volltextartikeln"
 msgstr "mit frei zugänglichen Volltextartikeln"
@@ -17128,8 +17212,10 @@ msgstr "nach Buchbinder/Werkst&auml;tten"
 msgid "nach Einband"
 msgstr "nach Einband"
 
-#: ../templates/database/einbaende/titlist_options:23
+#: ../templates/database/einbaende/titlist_options:22
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:53
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:50
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:51
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showall:51
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showall_sortall:50
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showsinglepool:50
@@ -17175,6 +17261,8 @@ msgstr "nach Interpret/Gruppe"
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:54
 #: ../templates/profile/kuglight/tags_showtitlist:55
 #: ../templates/profile/kuglight/titlist_options:24
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:54
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:53
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:46
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:48
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:54
@@ -17185,7 +17273,7 @@ msgstr "nach Interpret/Gruppe"
 #: ../templates/profile/kuglight/virtualsearch_result_start:49
 #: ../templates/profile/kugng/drilldown_categorized:225
 #: ../templates/profile/kugng/litlists_show_singlelist:54
-#: ../templates/titlist_options:24
+#: ../templates/titlist_options:23
 #: ../templates/views/kapsel/resultlists_showall:46
 #: ../templates/views/kapsel/resultlists_showsinglepool:48
 #: ../templates/views/kapsel/search_showtitlist:54
@@ -17256,7 +17344,7 @@ msgstr "nach Medienart"
 #: ../templates/profile/kuglight/virtualsearch_result_combined:45
 #: ../templates/profile/kuglight/virtualsearch_result_start:46
 #: ../templates/profile/kugng/litlists_show_singlelist:51
-#: ../templates/titlist_options:21
+#: ../templates/titlist_options:20
 #: ../templates/views/kapsel/resultlists_showall:43
 #: ../templates/views/kapsel/resultlists_showsinglepool:45
 #: ../templates/views/kapsel/search_showtitlist:51
@@ -17266,8 +17354,12 @@ msgstr "nach Medienart"
 msgid "nach Person"
 msgstr "nach Person"
 
-#: ../templates/database/einbaende/titlist_options:21
+#: ../templates/database/einbaende/titlist_options:20
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:51
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:51
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:48
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:50
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:49
 msgid "nach Person/Region"
 msgstr "nach Person/Region"
 
@@ -17281,7 +17373,7 @@ msgid "nach Personen"
 msgstr "nach Personen"
 
 #: ../templates/database/audiosmlg/search_showtitlist:57
-#: ../templates/database/einbaende/titlist_options:26
+#: ../templates/database/einbaende/titlist_options:25
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:56
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist_of_cnt:58
 #: ../templates/profile/kuglight/database/landschaft/search_showtitlist:54
@@ -17298,6 +17390,10 @@ msgstr "nach Personen"
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:57
 #: ../templates/profile/kuglight/tags_showtitlist:58
 #: ../templates/profile/kuglight/titlist_options:27
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:57
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:53
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:56
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:54
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:49
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:51
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:57
@@ -17310,7 +17406,7 @@ msgstr "nach Personen"
 #: ../templates/profile/kuglight/views/umschlaege/virtualsearch_result_start:54
 #: ../templates/profile/kuglight/virtualsearch_result_combined:51
 #: ../templates/profile/kugng/litlists_show_singlelist:57
-#: ../templates/titlist_options:27
+#: ../templates/titlist_options:26
 #: ../templates/views/kapsel/resultlists_showall:49
 #: ../templates/views/kapsel/resultlists_showsinglepool:51
 #: ../templates/views/kapsel/search_showtitlist:57
@@ -17337,16 +17433,16 @@ msgstr "nach Region"
 msgid "nach Regionen"
 msgstr "nach Regionen"
 
-#: ../templates/database/einbaende/titlist_options:20
+#: ../templates/database/einbaende/titlist_options:19
 #: ../templates/profile/kuglight/titlist_options:20
 #: ../templates/profile/kuglight/virtualsearch_result_combined:44
 #: ../templates/profile/kuglight/virtualsearch_result_start:45
-#: ../templates/titlist_options:20
+#: ../templates/titlist_options:19
 msgid "nach Relevanz"
 msgstr "nach Relevanz"
 
 #: ../templates/database/audiosmlg/search_showtitlist:56
-#: ../templates/database/einbaende/titlist_options:25
+#: ../templates/database/einbaende/titlist_options:24
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:55
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist_of_cnt:57
 #: ../templates/profile/kuglight/database/landschaft/search_showtitlist:53
@@ -17363,6 +17459,10 @@ msgstr "nach Relevanz"
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:56
 #: ../templates/profile/kuglight/tags_showtitlist:57
 #: ../templates/profile/kuglight/titlist_options:26
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:56
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:52
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:55
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:53
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:48
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:50
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:56
@@ -17376,7 +17476,7 @@ msgstr "nach Relevanz"
 #: ../templates/profile/kuglight/virtualsearch_result_combined:50
 #: ../templates/profile/kuglight/virtualsearch_result_start:51
 #: ../templates/profile/kugng/litlists_show_singlelist:56
-#: ../templates/titlist_options:26
+#: ../templates/titlist_options:25
 #: ../templates/views/kapsel/resultlists_showall:48
 #: ../templates/views/kapsel/resultlists_showsinglepool:50
 #: ../templates/views/kapsel/search_showtitlist:56
@@ -17437,6 +17537,8 @@ msgstr "nach Themen"
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:52
 #: ../templates/profile/kuglight/tags_showtitlist:53
 #: ../templates/profile/kuglight/titlist_options:22
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:52
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:51
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:44
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:46
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:52
@@ -17446,7 +17548,7 @@ msgstr "nach Themen"
 #: ../templates/profile/kuglight/virtualsearch_result_combined:46
 #: ../templates/profile/kuglight/virtualsearch_result_start:47
 #: ../templates/profile/kugng/litlists_show_singlelist:52
-#: ../templates/titlist_options:22
+#: ../templates/titlist_options:21
 #: ../templates/views/kapsel/resultlists_showall:44
 #: ../templates/views/kapsel/resultlists_showsinglepool:46
 #: ../templates/views/kapsel/search_showtitlist:52
@@ -17456,8 +17558,10 @@ msgstr "nach Themen"
 msgid "nach Titel"
 msgstr "nach Titel"
 
-#: ../templates/database/einbaende/titlist_options:22
+#: ../templates/database/einbaende/titlist_options:21
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:52
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:49
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:50
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showall:50
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showall_sortall:49
 #: ../templates/profile/kuglight/views/umschlaege/resultlists_showsinglepool:49
@@ -17470,7 +17574,7 @@ msgid "nach Titel/Z&auml;hlung"
 msgstr "nach Titel/Z&auml;hlung"
 
 #: ../templates/database/audiosmlg/search_showtitlist:55
-#: ../templates/database/einbaende/titlist_options:24
+#: ../templates/database/einbaende/titlist_options:23
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:54
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist_of_cnt:56
 #: ../templates/profile/kuglight/database/landschaft/search_showtitlist:52
@@ -17487,6 +17591,10 @@ msgstr "nach Titel/Z&auml;hlung"
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:55
 #: ../templates/profile/kuglight/tags_showtitlist:56
 #: ../templates/profile/kuglight/titlist_options:25
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:55
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall_sortall:51
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:54
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_start:52
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:47
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:49
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:55
@@ -17500,7 +17608,7 @@ msgstr "nach Titel/Z&auml;hlung"
 #: ../templates/profile/kuglight/virtualsearch_result_combined:49
 #: ../templates/profile/kuglight/virtualsearch_result_start:50
 #: ../templates/profile/kugng/litlists_show_singlelist:55
-#: ../templates/titlist_options:25
+#: ../templates/titlist_options:24
 #: ../templates/views/kapsel/resultlists_showall:47
 #: ../templates/views/kapsel/resultlists_showsinglepool:49
 #: ../templates/views/kapsel/search_showtitlist:55
@@ -17528,6 +17636,8 @@ msgstr "nach Verlag"
 #: ../templates/profile/kuglight/search_showtitlist_of_cnt:53
 #: ../templates/profile/kuglight/tags_showtitlist:54
 #: ../templates/profile/kuglight/titlist_options:23
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showall:53
+#: ../templates/profile/kuglight/views/einbaende/resultlists_showsinglepool:52
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showall:45
 #: ../templates/profile/kuglight/views/kapsel/resultlists_showsinglepool:47
 #: ../templates/profile/kuglight/views/kapsel/search_showtitlist:53
@@ -17536,7 +17646,7 @@ msgstr "nach Verlag"
 #: ../templates/profile/kuglight/virtualsearch_result_combined:47
 #: ../templates/profile/kuglight/virtualsearch_result_start:48
 #: ../templates/profile/kugng/litlists_show_singlelist:53
-#: ../templates/titlist_options:23
+#: ../templates/titlist_options:22
 #: ../templates/views/kapsel/resultlists_showall:45
 #: ../templates/views/kapsel/resultlists_showsinglepool:47
 #: ../templates/views/kapsel/search_showtitlist:53
@@ -17568,7 +17678,7 @@ msgstr "nach am Umschlag Beteiligte"
 msgid "nein"
 msgstr "nein"
 
-#: ../templates/ezb_searchjournals:69 ../templates/ezb_showjournals:78
+#: ../templates/ezb_searchjournals:69 ../templates/ezb_showjournals:88
 #: ../templates/ezb_showsubjects:85
 msgid ""
 "ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in "
@@ -17622,6 +17732,7 @@ msgstr "online im Hochschulnetz"
 #: ../templates/profile/kuglight/litlists_manage_lists:39
 #: ../templates/profile/kuglight/litlists_manage_lists:64
 #: ../templates/profile/kuglight/litlists_manage_singlelist:40
+#: ../templates/profile/kuglight/views/einbaende/managecollection_show:101
 #: ../templates/profile/kuglight/views/umschlaege/managecollection_show:97
 #: ../templates/profile/kugng/database/inst001/search_showtitset:561
 #: ../templates/profile/kugng/database/inst001/search_showtitset:585
@@ -17644,7 +17755,7 @@ msgid "privat"
 msgstr "privat"
 
 #: ../templates/database/audiosmlg/search_showtitlist:64
-#: ../templates/database/einbaende/titlist_options:35
+#: ../templates/database/einbaende/titlist_options:34
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist:63
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist_of_cnt:65
 #: ../templates/profile/kuglight/database/landschaft/search_showtitlist:61
@@ -17676,7 +17787,7 @@ msgstr "privat"
 #: ../templates/profile/kuglight/views/xanten/searchmask_options:4
 #: ../templates/profile/kuglight/virtualsearch_result_start:58
 #: ../templates/profile/kugng/views/inst431/searchmask_options:4
-#: ../templates/searchmask_options:4 ../templates/titlist_options:36
+#: ../templates/searchmask_options:4 ../templates/titlist_options:35
 #: ../templates/views/gbroich/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
@@ -17695,7 +17806,6 @@ msgstr "privat"
 msgid "pro Katalog"
 msgstr "pro Katalog"
 
-#: ../templates/profile/kuglight/views/einbaende/std_footer:18
 #: ../templates/profile/kugng/std_footer:18 ../templates/std_footer:18
 #: ../templates/views/einbaende/std_footer:18
 msgid "realisiert mit"
@@ -17737,8 +17847,6 @@ msgstr "schlecht"
 msgid "sehr gut"
 msgstr "sehr gut"
 
-#: ../templates/profile/kuglight/views/einbaende/searchmask:414
-#: ../templates/profile/kuglight/views/einbaende/searchmask_simple:506
 #: ../templates/profile/kugng/searchmask_simple:495
 #: ../templates/profile/kugng/views/inst431/searchmask:414
 #: ../templates/profile/kugng/views/inst431/searchmask_simple:506
@@ -17764,7 +17872,7 @@ msgstr "usw. usf."
 #: ../templates/profile/kuglight/database/landschaft/virtualsearch_result_item:18
 #: ../templates/profile/kuglight/database/portrait/virtualsearch_result_item:18
 #: ../templates/profile/kuglight/database/umschlaege/virtualsearch_result_item:22
-#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:28
+#: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:22
 #: ../templates/profile/kuglight/views/portrait/virtualsearch_result_item:18
 #: ../templates/profile/kuglight/virtualsearch_result_combined:79
 #: ../templates/profile/kuglight/virtualsearch_result_combined:93

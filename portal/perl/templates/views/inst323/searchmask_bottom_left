@@ -65,4 +65,4 @@ END ;-%]
 [% END %]
 
 <h3><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="[% msg.maketext("Neuerwerbungslisten") %]"/>&nbsp;Elektronische Bibliothek</h3>
-Greifen Sie auf <a href="http://www.aleki.uni-koeln.de/ebib/" target="_blank">digitalisierte historische Kinder- und Jugendliteratur</a> in der Elektronische Bibliothek der ALEKI in Zusammenarbeit mit dem Bilderbuchmuseum Burg Wissem zu
+Greifen Sie auf <a href="http://www.aleki.uni-koeln.de/ebib/" target="_blank">digitalisierte historische Kinder- und Jugendliteratur</a> in der Elektronischen Bibliothek der ALEKI in Zusammenarbeit mit dem Bilderbuchmuseum Burg Wissem zu

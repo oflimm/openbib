@@ -34,6 +34,7 @@
 use utf8;
 
 use Getopt::Long;
+use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Record::Person;
@@ -277,6 +278,9 @@ sub by_title {
     my $line1=(exists $line1{T0331}[0]{content} && defined $line1{T0331}[0]{content})?cleanrl($line1{T0331}[0]{content}):"";
     my $line2=(exists $line2{T0331}[0]{content} && defined $line2{T0331}[0]{content})?cleanrl($line2{T0331}[0]{content}):"";
 
+    $line1=OpenBib::Common::Stopwords::strip_first_stopword($line1);
+    $line2=OpenBib::Common::Stopwords::strip_first_stopword($line2);
+    
     $line1 cmp $line2;
 }
 

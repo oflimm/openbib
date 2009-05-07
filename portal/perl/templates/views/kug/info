@@ -1030,7 +1030,7 @@ function addEngine(name,ext,cat)
 
     <h1 id="kontakt">16 [% msg.maketext("Kontakt") %]</h1>
     <p>
-    [% msg.maketext("Fragen und Anmerkungen richten Sie bitte an:") %]<a href="http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug">kug@ub.uni-koeln.de</a>
+    [% msg.maketext("Fragen und Anmerkungen richten Sie bitte an:") %]<a href="http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html">kug@ub.uni-koeln.de</a>
     </p>
 </div>
 </div>

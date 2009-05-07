@@ -13,10 +13,12 @@
 -%]
 [% PROCESS common/subtemplate name="newsflash" %]
 
-[% IF viewdbs.size == 1 && config.have_libinfo(viewdbs.first) %]
-<h3><img style="vertical-align:bottom" src="[% config.info_img %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;[% msg.maketext("Steckbrief der Bibliothek") %]</h3>
+[%# IF viewdbs.size == 1 && config.have_libinfo(viewdbs.first) %]
+<h3><img style="vertical-align:bottom" src="[% config.info_img %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;Steckbriefe der Bibliotheken</h3>
 
-[%- libinfo = config.get_libinfo(viewdbs.first); -%]
+<table>
+[% FOREACH viewdb IN [ "inst420" "inst422" "inst423" ] %]
+[%- libinfo = config.get_libinfo(viewdb); -%]
 
 [% categories = [
                 'I0010', # msg.maketext("I0010") # Institutsname
@@ -28,7 +30,6 @@
                 ]
 %]
 
-<table>
 [%-
 
 FOREACH category IN categories;
@@ -55,15 +56,19 @@ FOREACH category IN categories;
 <tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-   END ;
 END ;-%]
-</table>
+<tr><td colspan="2">
 [%-   IF dbinfo.use_libinfo.${viewdbs.first} %]
-[<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% viewdbs.first %];stid=60">
+[<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% viewdb %];stid=60">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]
 [% msg.maketext("Mehr") %]</a>]
+[%# END %]
+</td></tr>
+<tr><td colspan="2"></td></tr>
+<tr><td colspan="2"></td></tr>
 [% END %]
-
+</table>
 <h3><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="[% msg.maketext("Tip: Digitaler Kartenkatalog") %]" />&nbsp;[% msg.maketext("Weitere Best&auml;nde im Digitalen Kartenkatalog") %]</h3>
 <p>
 Sie finden weitere Best&auml;nde dieser Kataloge in den

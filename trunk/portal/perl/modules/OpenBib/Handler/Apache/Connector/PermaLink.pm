@@ -54,8 +54,10 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
+    my $config  = OpenBib::Config->instance;
+
+    my $session = OpenBib::Session->instance;
+
     my $uri  = $r->parsed_uri;
     my $path = $uri->path;
 
@@ -81,6 +83,22 @@ sub handler {
         ($id1,$id2,$type,$view)=($1,$2,$3,$4);
     }
 
+    # Zugriffe loggen
+    if ($type == 1){
+        # Titel
+        $session->log_event({
+            type      => 802,
+            content   => "$id1:$id2:$view",
+        });
+    }
+    elsif ($type == 6){
+        # Literaturliste
+        $session->log_event({
+            type      => 803,
+            content   => "$id1:$id2:$view",
+        });
+    }
+    
     my $ttdata={
         view            => $view,
         id1             => $id1,

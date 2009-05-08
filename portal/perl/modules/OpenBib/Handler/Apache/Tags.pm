@@ -284,6 +284,13 @@ sub handler {
                     hitrange  => $hitrange,
                 });
             }
+
+            # Zugriff loggen
+            $session->log_event({
+		type      => 804,
+                content   => $tag,
+            });
+
         }
 
         $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));

@@ -32,7 +32,7 @@ use 5.008001;
 
 use utf8;
 
-use Encode 'decode';
+use Encode 'decode_utf8';
 use Getopt::Long;
 use XML::LibXML;
 use YAML::Syck;
@@ -91,7 +91,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
 
    # Sprache
    foreach my $item ($etext_node->findnodes ('dc:language//text()')) {
-       print TIT "0015:".Encode::encode_utf8($item->textContent)."\n";
+       print TIT "0015:".$item->textContent."\n";
    }
 
    # Verfasser, Personen
@@ -131,7 +131,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
 
    # Titel
    foreach my $item ($etext_node->findnodes ('dc:title//text()')) {
-       my $content = Encode::encode_utf8($item->textContent);
+       my $content = $item->textContent;
        if (my ($hst,$zusatz)=$content=~m/^(.+?)\n(.*)/ms){
            $zusatz=~s/\n/ /msg;
            print TIT "0331:$hst\n";
@@ -151,7 +151,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
 
    # Beschreibung
    foreach my $item ($etext_node->findnodes ('dc:description//text()')) {
-       my $content = Encode::encode_utf8($item->textContent);
+       my $content = $item->textContent;
        print TIT "0501:$content\n";
    }
 

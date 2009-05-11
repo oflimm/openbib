@@ -63,7 +63,7 @@ sub new {
 }
 
 sub load {
-    my ($self)=@_;
+    my ($self,$arg_ref)=@_;
 
     # Set defaults
     my $id                = exists $arg_ref->{id}
@@ -96,13 +96,13 @@ sub load {
     $request=$dbh->prepare("select dbname from profildb where profilid = ?") or $logger->error($DBI::errstr);
     $request->execute($self->{id}) or $logger->error($DBI::errstr);
 
-    while (my $result=$idnresult->fetchrow_hashref()){
+    while (my $result=$request->fetchrow_hashref()){
         my $database = decode_utf8($result->{'dbname'});
         
         $self->{database}->{$database} = 1;
     }
     
-    $idnresult->finish();
+    $request->finish();
 
     return $self;
 }

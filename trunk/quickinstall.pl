@@ -122,6 +122,7 @@ my %copy_files = (
     "$cwd/portal/perl/conf/portal.log4perl"                => "/opt/openbib/conf/portal.log4perl",
     "$cwd/portal/perl/conf/portal.yml-dist"                => "/opt/openbib/conf/portal.yml",
     "$cwd/portal/perl/conf/convert.yml-dist"               => "/opt/openbib/conf/convert.yml",
+    "$cwd/portal/perl/conf/bk.yml"                         => "/opt/openbib/conf/bk.yml",
     "$cwd/portal/perl/modules/OpenBib/Search/Z3950/USBK/Config.pm-dist"
                                                            => "$cwd/portal/perl/modules/OpenBib/Search/Z3950/USBK/Config.pm",
 );

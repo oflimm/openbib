@@ -1041,6 +1041,9 @@ sub log_event {
     #
     # 800 => Aufruf Literaturliste
     # 801 => Aufruf RSS-Feeds
+    # 802 => Aufruf PermaLink Titel
+    # 803 => Aufruf PermaLink Literaturliste
+    # 804 => Aufruf Liste zu Tag
     
     my $log_only_unique_ref = {
 			     10 => 1,

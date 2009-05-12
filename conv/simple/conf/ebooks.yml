@@ -8,8 +8,8 @@ tracelevel:
 csv:
   'eol': "\n"
   'sep_char': "\t"
-  'quote_char': "\""
-  'escape_char': "\""
+  'quote_char': ""
+  'escape_char': ""
 
 # Feld der eindeutigen Titel-ID
 uniqueidfield: 'Nr'

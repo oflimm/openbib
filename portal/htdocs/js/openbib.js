@@ -15,8 +15,11 @@ $('#additional_title_info > ul').tabs();
 // Tabs fuer Suchmaske nach Formaten 
 $('#searchmask_types > ul').tabs();
 
-// Tabs fuer weitere Informationen
-//$('#additional_title_info_vert').accordion();
+// Accordion fuer Datenbankauswahl
+$('.ui-accordion').accordion({ 
+      autoHeight: false,
+      alwaysOpen: false, 
+});
 
 // nojs_* modifizieren fuer JavaScript-Version der Seite
 

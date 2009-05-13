@@ -32,7 +32,7 @@ use 5.008001;
 
 use utf8;
 
-use Encode 'decode_utf8';
+use Encode 'decode';
 use Getopt::Long;
 use XML::LibXML;
 use YAML::Syck;
@@ -153,6 +153,12 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
    foreach my $item ($etext_node->findnodes ('dc:description//text()')) {
        my $content = $item->textContent;
        print TIT "0501:$content\n";
+   }
+
+   # Medientyp
+   foreach my $item ($etext_node->findnodes ('dc:type//text()')) {
+       my $content = $item->textContent;
+       print TIT "0800:$content\n";
    }
 
    # Schlagworte

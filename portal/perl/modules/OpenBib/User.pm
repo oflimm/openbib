@@ -2245,11 +2245,11 @@ sub get_recent_litlists {
     my @sql_args  = ();
     
     if ($subjectid){
-        $sql_stmnt = "select distinct(ls.litlistid) as id from litlist2subject as ls, litlists as l where ls.subjectid = ? and ls.litlistid = l.id and l.type = 1 order by l.id DESC limit $count";
+        $sql_stmnt = "select distinct(ls.litlistid) as id from litlist2subject as ls, litlists as l where ls.subjectid = ? and ls.litlistid = l.id and l.type = 1 and (select count(litlistid) from litlistitems where litlistid=l.id)  > 0 order by l.id DESC limit $count";
         push @sql_args, $subjectid;
     }
     else {
-        $sql_stmnt = "select id from litlists where type = 1 order by id DESC limit $count";
+        $sql_stmnt = "select l.id from litlists as l where l.type = 1 and (select count(litlistid) from litlistitems where litlistid=l.id)  > 0 order by id DESC limit $count";
     }
 
     my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);

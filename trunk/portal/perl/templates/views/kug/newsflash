@@ -15,7 +15,12 @@
 <h3><img style="vertical-align:bottom" src="[% config.news_img %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
-
+<li>Die rund 28.700 freien E-Books des <a
+href="http://www.gutenberg.org/" target="_blank">internationalen Projektes Gutenberg</a> sind
+nun im KUG als eigenst&auml;ndiger Katalog enthalten und werden
+zus&auml;tzlich zusammen mit den lizensierten E-Books der USB K&ouml;ln &uuml;ber einen
+<a href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=ebooks"
+target="_blank">eigenst&auml;ndigen Sucheinstieg</a> angeboten.</li>
 <li>Am 17.4.2009 erfolgte die Umstellung des KUG auf eine neue Version, die seit dem 2.3.2009 im Beta-Test war. Informationen &uuml;ber die &Auml;nderungen finden Sie in der <a href="[% config.info_loc %]?sessionID=[% sessionID %];stid=2">Versions-Historie</a> und im <a href="http://blog.openbib.org" target="_blank">OpenBibBlog</a>.
 </li>
 

@@ -170,7 +170,10 @@ my $atime = new Benchmark;
         system("mkdir $rootdir/data/$database");
     }
     
-    system("cd $pooldir/$database/ ; zcat $dboptions_ref->{titfilename} | $meta2mexexe") if ($genmex);
+    if ($genmex){
+        $logger->info("### $database: Erzeuge Exemplardaten aus Titeldaten");
+        system("cd $pooldir/$database/ ; zcat $dboptions_ref->{titfilename} | $meta2mexexe");
+    }
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_move.pl"){
         $logger->info("### $database: Verwende Plugin pre_move.pl");

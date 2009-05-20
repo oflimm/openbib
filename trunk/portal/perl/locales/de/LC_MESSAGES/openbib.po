@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-04-23 15:00+0200\n"
+"PO-Revision-Date: 2009-05-20 08:05+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -6190,7 +6190,7 @@ msgstr "Art des Systems"
 #: ../templates/views/inst526/searchmask_bottom_left:26
 #: ../templates/visible_categories_libinfoset:40
 msgid "I0230"
-msgstr "Online-Katalogisierung seit Erscheinungsjahr"
+msgstr "Online-Katalogisierung"
 
 #: ../templates/searchmask_bottom_left:27
 #: ../templates/views/engportrom/searchmask_bottom_left:27

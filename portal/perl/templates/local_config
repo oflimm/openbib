@@ -33,6 +33,14 @@
                     defaultlogintarget = 4,
                     validlogintargets  = { "5" => 1, "4" => 1, }
                   },
+       "inst422" = {
+                    subjectid          = 2,
+                    defaultlogintarget = 4,
+                    validlogintargets  = { "5" => 1, "4" => 1, }
+                  },
+       "inst423" = {
+                    subjectid          = 2,
+                  },
        "inst431" = {
                     subjectid          = 20,
                     defaultlogintarget = 4,
@@ -69,15 +77,6 @@
                   },
        "inst407" = {
                     subjectid          = 7,
-                  },
-       "inst420" = {
-                    subjectid          = 2,
-                  },
-       "inst422" = {
-                    subjectid          = 2,
-                  },
-       "inst423" = {
-                    subjectid          = 2,
                   },
        "inst450" = {
                     subjectid          = 2,

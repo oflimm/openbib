@@ -44,15 +44,15 @@
 <div class="images"><!-- Begin Images -->
 [% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]
 <p>
-<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.coverscans_full_exturl.replace('ISBNINHERE',isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>
+<a href="[% config.redirect_loc %]/[% sessionID %]/526/[% config.coverscans_credits_exturl.replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.coverscans_full_exturl.replace('ISBNINHERE',isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>
 </p>
 [% END %]
 <p>
-<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="[% config.redirect_loc %]/[% sessionID %]/525/http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 <p>
 [%- IF bibkey -%]
-<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+<a href="[% config.redirect_loc %]/[% sessionID %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
 </div><!-- End Images -->
@@ -334,17 +334,17 @@ END;
 <img src="[% config.wikipedia_img %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
 [%-   IF normset.${"E4200"} %]
 [%-    FOREACH item IN normset.${"E4200"}-%]
-<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+<a href="[% config.redirect_loc %]/[% sessionID %]/522/http://de.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
 [%-   IF normset.${"E4201"} %]
 [%-     FOREACH item IN normset.${"E4201"}-%]
-<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+<a href="[% config.redirect_loc %]/[% sessionID %]/522/http://en.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normset.${"E4202"} %]
 [%-     FOREACH item IN normset.${"E4202"}-%]
-<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+<a href="[% config.redirect_loc %]/[% sessionID %]/522/http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>

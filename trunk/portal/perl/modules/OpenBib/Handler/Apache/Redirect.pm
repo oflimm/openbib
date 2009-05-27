@@ -99,11 +99,14 @@ sub handler {
         501 => 1, # TOC / ImageWaere-Server
 	502 => 1, # USB ebook Vollzugriff
 	503 => 1, # Nationallizenzen Vollzugriff
-	504 => 1, # Gutenberg Vollzugriff
-        510 => 1, # BibSonomy
+        504 => 1, # Gutenberg Vollzugriff
+        510 => 1, # BibSonomy Einzeltreffer hochladen
+        511 => 1, # BibSonomy Sprung zum Titel in BibSonomy
         520 => 1, # Wikipedia / Personen
         521 => 1, # Wikipedia / ISBN
         522 => 1, # Wikipedia / Artikel
+        525 => 1, # Google Books
+        526 => 1, # Cover-Scan
         530 => 1, # EZB
         531 => 1, # DBIS
         532 => 1, # Kartenkatalog Philfak

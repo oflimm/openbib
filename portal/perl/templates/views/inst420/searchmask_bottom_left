@@ -70,7 +70,12 @@ zugeh&ouml;rigen digitalisierten Karten-Katalogen:
 </p>
 
 <ul>
-<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=420a" target="_blank">Historisches Seminar</a>. </li>
-<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=424e" target="_blank">Historisches Seminar / Arbeitskreis Nationalismusforschung</a>. </li>
+<li><a href="[% config.redirect_loc %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=420a" target="_blank">Historisches Seminar</a>. </li>
+<li><a href="[% config.redirect_loc %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=424e" target="_blank">Historisches Seminar / Arbeitskreis Nationalismusforschung</a>. </li>
 </ul>
 
+<h3><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="[% msg.maketext("Neuerwerbungslisten") %]"/>&nbsp;[% msg.maketext("Neuerwerbungslisten") %]</h3>
+
+<p>
+Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://kug.ub.uni-koeln.de/neuerwerbungslisten/inst420/00/02/index.html" target="_blank">Neuerwerbungslisten</a> angeboten.
+</p>

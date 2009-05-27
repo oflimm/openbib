@@ -264,6 +264,9 @@ function submitViaEnter(evt){
 <p />
 <div class="cssbutton glass kug" style="float:left"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div>
 
+</td></tr>
+</table>
+
 </div><!-- End searchmask_dbchoice -->
 
 </div><!-- End searchmask_advanced -->

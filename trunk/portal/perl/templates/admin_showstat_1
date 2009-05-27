@@ -69,9 +69,13 @@
 <tr><td>Anzahl Aufrufe von Nationallizenzen</td><td><b>[% ret = statistics.get_number_of_event({ type => 503, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
 <tr><td>Anzahl Aufrufe von E-Books / USB Koeln</td><td><b>[% ret = statistics.get_number_of_event({ type => 502, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
 <tr><td>Anzahl Aufrufe von E-Books / Gutenberg</td><td><b>[% ret = statistics.get_number_of_event({ type => 504, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
-<tr><td>Anzahl Aufrufe BibSonomy</td><td><b>[% ret = statistics.get_number_of_event({ type => 510, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
+<tr><td>Anzahl per Klick &uuml;bertragene Titel nach BibSonomy</td><td><b>[% ret = statistics.get_number_of_event({ type => 510, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
+<tr><td>Anzahl Aufrufe Weiterleitung zu Titel in BibSonomy</td><td><b>[% ret = statistics.get_number_of_event({ type => 511, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
+<tr><td>Anzahl Aufrufe Weiterleitung zu Titel in Google Books </td><td><b>[% ret = statistics.get_number_of_event({ type => 525, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
+<tr><td>Anzahl Aufrufe Weiterleitung &uuml;ber Cover-Scan </td><td><b>[% ret = statistics.get_number_of_event({ type => 526, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
 <tr><td>Anzahl Aufrufe von Wikipedia / Personen</td><td><b>[% ret = statistics.get_number_of_event({ type => 520, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
 <tr><td>Anzahl Aufrufe von Wikipedia / ISBN-Suche</td><td><b>[% ret = statistics.get_number_of_event({ type => 521, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
+<tr><td>Anzahl Aufrufe von Wikipedia / Artikel</td><td><b>[% ret = statistics.get_number_of_event({ type => 522, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
 <tr><td>Anzahl Aufrufe von EZB</td><td><b>[% ret = statistics.get_number_of_event({ type => 530, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
 <tr><td>Anzahl Aufrufe von DBIS</td><td><b>[% ret = statistics.get_number_of_event({ type => 531, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>
 <tr><td>Anzahl Aufrufe der Kartenkataloge/PhilFak</td><td><b>[% ret = statistics.get_number_of_event({ type => 532, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td></tr>

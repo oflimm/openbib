@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%
+[% USE dumper;dumper.dump(circset);
  Aquisition = 0;
 
  FOREACH mex IN circset ;
@@ -31,7 +31,7 @@
 <tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
 <tr><td class="boxedclear">
 <table width="100%">
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH mex IN circset %]
 <tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
@@ -57,7 +57,7 @@ Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
 <tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
 <tr><td class="boxedclear">
 <table width="100%">
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Erwerbungsstatus") %]</td></tr>
 [% FOREACH mex IN circset %]
 <tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>
 [%   IF mex.AquisitionStatuscode <= 2 %]

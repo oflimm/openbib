@@ -80,14 +80,43 @@ my $json = new JSON;
 
 my %author = ();
 
-tie %author,        'MLDBM', "./data_aut.db"
-        or die "Could not tie data_aut.\n";
+#tie %author,        'MLDBM', "./data_aut.db"
+#        or die "Could not tie data_aut.\n";
+
+print "### Processing Titles: 1st pass - getting authors\n";
+
+open(OL,"<:utf8",$inputfile_titles);
+
+my $count = 1;
+while (<OL>){
+    my $recordset=undef;    
+    
+    eval {
+        $recordset = $json->jsonToObj($_);
+    };
+
+    # Autoren abarbeiten Anfang
+    if (exists $recordset->{authors}){
+      foreach my $author_ref (@{$recordset->{authors}}){
+	my $key     = $author_ref->{key};
+        $author{$key}=1;
+      }
+    }
+
+    if ($count % 10000 == 0){
+        print "$count done\n";
+    }
+
+    $count++;
+}
+
+close(OL);
 
 print "#### Processing Authors\n";
 
 open(OL,"<:utf8",$inputfile_authors);
 
-my $count = 1;
+$count = 1;
 
 while (<OL>){
     my $recordset=undef;
@@ -96,7 +125,7 @@ while (<OL>){
         $recordset = $json->jsonToObj($_);
     };
 
-    if (exists $recordset->{key}){
+    if (exists $recordset->{key} && exists $author{$recordset->{key}}){
         $author{$recordset->{key}}=$recordset;
     }
 
@@ -117,19 +146,17 @@ my $have_titid_ref = {};
 $count = 1;
 
 while (<OL>){
-    my $convconfig={};
-    my $recordset=undef;
-    
+    my $recordset=undef;    
     eval {
         $recordset = $json->jsonToObj($_);
     };
 
 #    print YAML::Dump($recordset);
 
-#    if ($have_titid_ref->{$recordset->{id}}){
-#        print STDERR  "Doppelte ID: ".$recordset->{id}."\n";
-#        next;
-#    }
+    if (!$recordset->{id} || $have_titid_ref->{$recordset->{id}}){
+        print STDERR  "Doppelte ID: ".$recordset->{id}."\n";
+        next;
+    }
 
     printf TIT "0000:%d\n", $recordset->{id};
     $have_titid_ref->{$recordset->{id}} = 1;
@@ -138,7 +165,7 @@ while (<OL>){
         foreach my $item_ref (@{$recordset->{languages}}){
             my $lang = $item_ref->{key};
             $lang =~s/^\/l\///;
-            print TIT "0005:$lang\n";
+            print TIT "0015:$lang\n";
         }
     }
     
@@ -175,8 +202,8 @@ while (<OL>){
         print TIT "0403:$recordset->{edition_name}\n";
     }
 
-    if (exists $recordset->{publishing_date}){
-        print TIT "0425:$recordset->{publishing_date}\n";
+    if (exists $recordset->{publish_date}){
+        print TIT "0425:$recordset->{publish_date}\n";
     }
 
     if (exists $recordset->{pagination}){
@@ -191,81 +218,98 @@ while (<OL>){
 
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){
-        foreach my $author_ref (@{$recordset->{authors}}){
-            my $key     = $author_ref->{key};
-            my $content = $author{$key}{name};
-            my $autidn=get_autidn($content);
-            
-            if ($autidn > 0){
-	      print AUT "0000:$author{$key}{id}\n";
-	      print AUT "0001:$author{$key}{name}\n";
-	      print AUT "9999:\n";
-	    }   
-	    else {
-	      $autidn=(-1)*$autidn;
-	    }
-                
-	    print TIT "0100:IDN: $autidn\n";
-        }
-        # Autoren abarbeiten Ende
+      foreach my $author_ref (@{$recordset->{authors}}){
+	my $key     = $author_ref->{key};
+        
+        if (!exists $author{$key}{name}){
+	  print STDERR "### Key existiert nicht\n";
+	}
+
+	my $content = $author{$key}{name};
+	
+	if ($content){	  
+	  my $autidn=get_autidn($content);
+	  
+	  if ($autidn > 0){
+	    print AUT "0000:$autidn\n";
+	    print AUT "0001:$content\n";
+	    print AUT "9999:\n";
+	  }   
+	  else {
+	    $autidn=(-1)*$autidn;
+	  }
+	  
+	  print TIT "0100:IDN: $autidn\n";
+	}
+      }
     }
+    # Autoren abarbeiten Ende
 
     # Personen abarbeiten Anfang
     if (exists $recordset->{contributions}){    
-        foreach my $content (@{$recordset->{contributions}}){
-            
-            my $autidn=get_autidn($content);
-            
-            if ($autidn > 0){
-                print AUT "0000:$autidn\n";
-                print AUT "0001:$content\n";
-                print AUT "9999:\n";
-                
-            }
-            else {
-                $autidn=(-1)*$autidn;
-            }
-            
-            print TIT "0101:IDN: $autidn\n";
+      foreach my $content (@{$recordset->{contributions}}){
+	
+	if ($content){
+	  my $autidn=get_autidn($content);
+	  
+	  if ($autidn > 0){
+	    print AUT "0000:$autidn\n";
+	    print AUT "0001:$content\n";
+	    print AUT "9999:\n";
+	    
+	  }
+	  else {
+	    $autidn=(-1)*$autidn;
+	  }
+	  
+	  print TIT "0101:IDN: $autidn\n";
         }
+      }
     }
     # Personen abarbeiten Ende
 
     # Notationen abarbeiten Anfang
     if (exists $recordset->{dewey_decimal_class}){
-        foreach my $content (@{$recordset->{dewey_decimal_class}}){
-            my $notidn=get_notidn($content);
-            
-            if ($notidn > 0){
-                print NOTATION "0000:$notidn\n";
-                print NOTATION "0001:$content\n";
-                print NOTATION "9999:\n";
-                
-            }
-            else {
-                $notidn=(-1)*$notidn;
-            }
-            
-            print TIT "0700:IDN: $notidn\n";
+      foreach my $content (@{$recordset->{dewey_decimal_class}}){
+	if ($content){	  
+	  my $notidn=get_notidn($content);
+	  
+	  if ($notidn > 0){
+	    print NOTATION "0000:$notidn\n";
+	    print NOTATION "0001:$content\n";
+	    print NOTATION "9999:\n";
+	    
+	  }
+	  else {
+	    $notidn=(-1)*$notidn;
+	  }
+	  
+	  print TIT "0700:IDN: $notidn\n";
         }
+      }
     }
     # Notationen abarbeiten Ende
 
     # Schlagworte abarbeiten Anfang
     if (exists $recordset->{subjects}){
-        foreach my $singlesubject (@{$recordset->{subjects}}){
-            my $swtidn=get_swtidn($singlesubject);
-            
-            if ($swtidn > 0){	  
-                print SWT "0000:$swtidn\n";
-                print SWT "0001:$singlesubject\n";
-                print SWT "9999:\n";
-            }
-            else {
-                $swtidn=(-1)*$swtidn;
-            }
-            print TIT "0710:IDN: $swtidn\n";
+      foreach my $content (@{$recordset->{subjects}}){
+	if ($content){
+	  # Punkt am Ende entfernen
+	  $content=~s/\.\s*$//;
+
+	  my $swtidn=get_swtidn($content);
+	  
+	  if ($swtidn > 0){	  
+	    print SWT "0000:$swtidn\n";
+	    print SWT "0001:$content\n";
+	    print SWT "9999:\n";
+	  }
+	  else {
+	    $swtidn=(-1)*$swtidn;
+	  }
+	  print TIT "0710:IDN: $swtidn\n";
         }
+      }
     }
     # Schlagworte abarbeiten Ende
     print TIT "9999:\n";

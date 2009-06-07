@@ -41,7 +41,7 @@ use DB_File;
 use MLDBM qw(DB_File Storable);
 use Storable ();
 use YAML::Syck;
-use JSON;
+use JSON::XS;
 
 use OpenBib::Config;
 
@@ -76,15 +76,12 @@ open (KOR,     ">:utf8","unload.KOE");
 open (NOTATION,">:utf8","unload.SYS");
 open (SWT,     ">:utf8","unload.SWD");
 
-my $json = new JSON;
-
 my %author = ();
 
 #tie %author,        'MLDBM', "./data_aut.db"
 #        or die "Could not tie data_aut.\n";
 
 print "### Processing Titles: 1st pass - getting authors\n";
-
 open(OL,"<:utf8",$inputfile_titles);
 
 my $count = 1;
@@ -92,7 +89,7 @@ while (<OL>){
     my $recordset=undef;    
     
     eval {
-        $recordset = $json->jsonToObj($_);
+        $recordset = decode_json $_;
     };
 
     # Autoren abarbeiten Anfang
@@ -122,7 +119,7 @@ while (<OL>){
     my $recordset=undef;
     
     eval {
-        $recordset = $json->jsonToObj($_);
+        $recordset = decode_json $_;
     };
 
     if (exists $recordset->{key} && exists $author{$recordset->{key}}){
@@ -148,10 +145,15 @@ $count = 1;
 while (<OL>){
     my $recordset=undef;    
     eval {
-        $recordset = $json->jsonToObj($_);
+        $recordset = decode_json $_;
     };
 
 #    print YAML::Dump($recordset);
+
+    if (!$recordset->{id}){
+        print STDERR  "Keine ID\n".YAML::Dump($recordset)."\n";
+        next;
+    }
 
     if (!$recordset->{id} || $have_titid_ref->{$recordset->{id}}){
         print STDERR  "Doppelte ID: ".$recordset->{id}."\n";
@@ -222,7 +224,7 @@ while (<OL>){
 	my $key     = $author_ref->{key};
         
         if (!exists $author{$key}{name}){
-	  print STDERR "### Key existiert nicht\n";
+	  print STDERR "### Key $key existiert nicht\n";
 	}
 
 	my $content = $author{$key}{name};

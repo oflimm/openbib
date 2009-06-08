@@ -1,0 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchmask_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="newsflash" %]
+
+<a href="http://openlibrary.org"><img src="http://openlibrary.org/static/logos/logo-en.png" alt="OpenLibrary Logo"/></a>

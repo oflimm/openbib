@@ -100,6 +100,7 @@ sub handler {
 	502 => 1, # USB ebook Vollzugriff
 	503 => 1, # Nationallizenzen Vollzugriff
         504 => 1, # Gutenberg Vollzugriff
+        505 => 1, # OpenLibrary Vollzugriff
         510 => 1, # BibSonomy Einzeltreffer hochladen
         511 => 1, # BibSonomy Sprung zum Titel in BibSonomy
         520 => 1, # Wikipedia / Personen

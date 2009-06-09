@@ -90,12 +90,12 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/js/jtip.js"></script>
+<!-- <script language="JavaScript" type="text/javascript" src="/js/jtip.js"></script> -->
 
   <link rel="stylesheet" href="[% "${config.css_loc}/jquery.autocomplete.css" %]" type="text/css" />
   <link rel="stylesheet" href="[% "${config.css_loc}/ui.tabs.css" %]" type="text/css" media="print, projection, screen" />
   <link rel="stylesheet" href="[% "${config.css_loc}/ui.accordion.css" %]" type="text/css" media="print, projection, screen" />
-  <link rel="stylesheet" href="[% "${config.css_loc}/jtip.css" %]" type="text/css" media="print, projection, screen" />
+<!-- <link rel="stylesheet" href="[% "${config.css_loc}/jtip.css" %]" type="text/css" media="print, projection, screen" /> -->
   <link rel="stylesheet" href="[% "${config.css_loc}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
   <link rel="stylesheet" href="[% "${config.css_loc}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
 <!--[if lt IE 7.]>

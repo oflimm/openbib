@@ -10,7 +10,7 @@
 # Ausgabe eines Titel-Normdatensatzes
 #
 # Anpassungen: 663 global hinzugefuegt, 662 ueber Zaehler verlinkt und
-#              URL zu openlibrary generiert
+#              URL zur Detailanzeige des Internetarchivs  generiert
 #
 #######################################################################
 -%]
@@ -161,7 +161,7 @@ FOREACH category IN categories;
          content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE "T0662";
-         content   = "<a href=\"${config.redirect_loc}/${sessionID}/505/http://openlibrary.org/details/${content}\" target=\"_blank\">Greifen Sie hier online auf den Volltext zu</a>";
+         content   = "<a href=\"${config.redirect_loc}/${sessionID}/505/http://www.archive.org/details/${content}\" target=\"_blank\">Greifen Sie hier online auf den Volltext zu</a>";
 
     CASE "E4100";
          localurl    = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";

@@ -162,8 +162,17 @@ sub get_number_of_all_views {
 }
 
 sub get_number_of_titles {
-    my $self = shift;
-    my $profilename = shift;
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $database           = exists $arg_ref->{database}
+        ? $arg_ref->{database}        : undef;
+
+    my $view               = exists $arg_ref->{view}
+        ? $arg_ref->{view}            : undef;
+
+    my $profile            = exists $arg_ref->{profile}
+        ? $arg_ref->{profile}         : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -174,9 +183,18 @@ sub get_number_of_titles {
             or $logger->error_die($DBI::errstr);
 
     my $request;
-    if ($profilename){
+    if ($database){
+        $request=$dbh->prepare("select sum(count) as alltitcount, type from titcount,dbinfo where titcount.dbname = ? and titcount.dbname=dbinfo.dbname and dbinfo.active=1 group by titcount.type") or $logger->error($DBI::errstr);
+        $request->execute($database) or $logger->error($DBI::errstr);
+    }
+    elsif ($view){
+        $request=$dbh->prepare("select sum(count) as alltitcount, type from titcount,dbinfo,viewdbs where viewdbs.viewname = ? and viewdbs.dbname=titcount.dbname and titcount.dbname=dbinfo.dbname and dbinfo.active=1 group by titcount.type") or $logger->error($DBI::errstr);
+        $request->execute($profile) or $logger->error($DBI::errstr);
+
+    }
+    elsif ($profile){
         $request=$dbh->prepare("select sum(count) as alltitcount, type from titcount,dbinfo,profiledbs where profiledbs.profilename = ? and profiledbs.dbname=titcount.dbname and titcount.dbname=dbinfo.dbname and dbinfo.active=1 group by titcount.type") or $logger->error($DBI::errstr);
-        $request->execute($profilename) or $logger->error($DBI::errstr);
+        $request->execute($profile) or $logger->error($DBI::errstr);
     }
     else {
         $request=$dbh->prepare("select sum(count) as alltitcount, type from titcount,dbinfo where titcount.dbname=dbinfo.dbname and dbinfo.active=1 group by titcount.type") or $logger->error($DBI::errstr);

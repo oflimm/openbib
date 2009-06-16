@@ -327,7 +327,7 @@ sub get_number_of_event {
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
             or $logger->error($DBI::errstr);
 
-    my $sqlstring="select count(tstamp) as rowcount from eventlog";
+    my $sqlstring="select count(tstamp) as rowcount, min(tstamp) as sincetstamp from eventlog";
 
     my @sqlwhere = ();
     my @sqlargs  = ();
@@ -369,6 +369,7 @@ sub get_number_of_event {
     
     my $res        = $request->fetchrow_hashref;
     my $count      = $res->{rowcount};
+    my $since      = $res->{sincetstamp};
 
     $request->finish;
 
@@ -376,6 +377,7 @@ sub get_number_of_event {
 
     return {
         number => $count,
+        since  => $since,
     }
 }
 

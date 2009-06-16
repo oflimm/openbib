@@ -97,10 +97,15 @@ open (NOTATION,">:utf8","unload.SYS");
 open (SWT,     ">:utf8","unload.SWD");
 
 my $titid = 1;
-
+my $have_titid_ref = {};
 while (my $result=$request->fetchrow_hashref){
     if ($convconfig->{uniqueidfield}){
+        if ($have_titid_ref->{$result->{$convconfig->{uniqueidfield}}}){
+            print STDERR  "Doppelte ID: ".$result->{$convconfig->{uniqueidfield}}."\n";
+	    next;
+        }
         printf TIT "0000:%d\n", $result->{$convconfig->{uniqueidfield}};
+        $have_titid_ref->{$result->{$convconfig->{uniqueidfield}}} = 1;
     }
     else {
         printf TIT "0000:%d\n", $titid++;

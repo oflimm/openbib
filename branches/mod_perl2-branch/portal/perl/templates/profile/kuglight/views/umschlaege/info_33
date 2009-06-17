@@ -1,0 +1,113 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_31
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30">Redaktion</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">Dokumentation</a></li>
+<!--   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a></li>-->
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=33">Bibliographie</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Bibliographie zur Umschlag-Sammlung</h1>
+
+<p>
+<ul>
+<dt>Phil Baines, Penguin by design.</dt><dd>A cover story, 1935-2005. London 2005.</dt>
+
+<dt>Ludwig Bielschowsky, Der Büchersammler.</dt><dd>Eine Anleitung. 2., neubearb. Ausg. Koblenz 1980.</dd>
+
+<dt>Blickfang: Bucheinbände und Schutzumschläge Berliner Verlage 1919 - 1933.</dt><dd>1000 Beispiele, illustriert und dokumentiert. Hrsg. Jürgen Holstein. Mit einem Vorw. von Christoph Stölzl. Beitr. von Peter Nils Dorén ...Berlin 2005.</dd>
+
+<dt>Buchumschläge 1900-1950: aus der Sammlung Curt Tillmann.</dt><dd> Eine Ausstellung des dt. Literaturarchivs im Schiller-Nationalmuseum Marbach a. N. Hrsg. von Walter Scheffler und Gertrud Fiege. Marbach 1971 (=Kataloge zu Sonderausstellungen des Schiller-Nationalmuseums 22).</dt>
+
+<dt>Der Buchumschlag.</dt><dd> Internat. Ausstellung; 3.2.-4.3.1951. Veranstaltet vom Victoria & Albert Museum London. [Zürich] 1951 (= Wegleitung des Kunstgewerbemuseums Zürich 189).</dd>
+
+<dt>Ilse Valerie Cohnen, Buchumschläge.</dt><dd> Eine Sammlung herausragender Beispiele. Mainz 1999.</dd>
+
+<dt>Fritz Helmut Ehmcke, Broschur und Schutzumschlag am deutschen Buch der neueren Zeit.</dt><dd> Mainz 1951 (= Kleiner Druck der Gutenberg-Gesellschaft 47).</dd>
+
+<dt>(Andrea Fondermann?), Die Sammlung der Buchumschläge des Gymnasium Petrinum.</dt><dd> Recklinghausen o. J.</dd>
+
+<dt>Gérard Genette, Paratexte.</dt><dd>Das Buch vom Beiwerk zum Buch. Frankfurt, New York, Paris 1989. Darin: Umschlag und Zubehör, S. 29-36.</dd>
+
+<dt>Günter Grass: »Bin ich nun Schreiber oder Zeichner?«.</dt><dd> In: Günther Grass, "Essays und Reden II. 1970-1979". Göttingen 1997.</dd>
+
+<dt>Andrea Grote, Buchumschläge des Expressionismus: unter Berücksichtigung der Probleme schutzwürdiger Literatur.</dt><dd> Berlin, Humboldt-Univ., Inst. für Bibliothekswiss., Hausarbeit, 1995. Berlin 1995.</dd>
+
+<dt>Wilhelm Haefs, Ästhetische Aspekte der Gebrauchsbuchs in der Weimarer Republik.</dt><dd> In: Leipziger Jahrbuch zur Buchgeschichte 6 (1996) S. 353-382.</dd>
+
+<dt>Franz Hönig, Der Schutzumschlag in Gestaltung, Drucklegung und Werbung.</dt><dd> Bd. 1-5, Berlin 1937.</dd>
+
+<dt>Jürgen Holstein, Bucheinbände und Schutzumschläge aus der Berliner Zeit 1922-1934.</dt><dd> In: Einbandforschung Heft 19 (2006) S. 43.</dd>
+
+<dt>Jürgen Holstein, Georg Salter. Bucheinbände und Schutzumschläge
+aus Berliner Zeit 1922-1934.</dt><dd> Mit einer Auswahl-Bibliographie
+zur Buchumschlag-Literatur. Mit einem Beitrag zur Typographie bei
+Georg Salter von Peter Nils Dorén. Berlin 2003.</dd>
+
+<dt>Marion Jenzin; Joachim Güntner, Das Buch vom Buch.</dt><dd> 5000 Jahre Buchgeschichte. 3. überarb. u. erw. Aufl. Hannover 2007.</dd>
+
+<dt>Heinz Knobloch, Rund um das Buch.</dt><dd> Leipzig 1973.</dd>
+
+<dt>Heinz F. Kroehl, Buch und Buchumschlag im Test.</dt><dd> Dortmund 1984.</dd>
+
+<dt>Heinz F. Kroehl, Der Buchumschlag als Gegenstand kommunikationswissenschaftlicher Untersuchungen.</dt><dd> Mainz 1980. Zugl. Mainz, Univ., Diss 1980.</dd>
+
+<dt>Reinhard Markner, Werbung in der Bücherei. Der trojanische Schutzumschlag.</dt><dd> In: FAZ vom 20. April 2006, S. 42.</dd>
+
+<dt>Otto Mazal, Einbandkunde.</dt><dd>Die Geschichte des Bucheinbands. Wiesbaden 1997 (= Elemente des Buch- und Bibliothekswesens, Bd. 14) S. 324-328.</dd>
+
+<dt>Adam C. Oellers; Roland Rappmann; Hermann-Josef Reudenbach, Buchumschläge 1890-1960.</dt><dd> Umschlag- und Einbandgestaltung Aachener Künstler, Suermondt-Ludwig-Museum Aachen, 9. Juli - 13. September 1998 ; Bibliothek der RWTH Aachen, 28. September - 24. Oktober 1998; Bischöfliche Diözesanbibliothek Aachen, 16. November - 18. Dezember 1998. Aachen 1998.</dd>
+
+<dt>Friedrich Pfäfflin, 100 Jahre S. Fischer Verlag, 1886-1986.</dt><dd>Buchumschläge. Über Bücher und ihre äußere Gestalt. Frankfurt am Main 1986.</dd>
+
+<dt>Alan Powers, Front cover.</dt><dd> Great book jackets and cover design. Repr. London 2001.</dd>
+
+<dt>Georg Kurt Schauer, Kleine Geschichte des deutschen Buchumschlags.</dt><dd> Königstein im Taunus 1962.</dd>
+
+<dt>Walter Scheffler und Gertrud Fiege, Curt Tillmann und seine Buchumschlagsammlung.</dt><dd> In: Buchumschläge 1900-1950. Aus der Sammlung Curt Tillmann. Eine Ausstellung des Deutschen Literaturarchivs im Schiller-Nationalmuseum Marbach a. N., S. 5-15.</dd>
+
+<dt>Die Schwenke-Sammlung gotischer Stempel- und Einbanddurchreibungen.</dt><dd> Nach Motiven geordnet und nach Werkstätten bestimmt und beschrieben von Ilse Schunke, fortgeführt von Konrad von Rabenau. Bd 2: Werkstätten, Berlin 1996 (= Beiträge zur Inkunabelkunde, Folge 3, 10) S. 9.</dd>
+
+<dt>Lore Sprandel-Krafft, Die spätgotischen Einbände an den Inkunabeln der Universitätsbibliothek Würzburg.</dt><dd> Würzburg 2000 (= Quellen und Forschungen zur Geschichte des Bistums und Hochstifts Würzburg 55).</dd>
+
+<dt>Renate Stefan; Nina Rothfos; Wim Westerveld, U 1.</dt><dd>Vom Schutzumschlag zum Marketinginstrument. Unter Mitarbeit von Manja Hellpap. Mainz 2006.</dd>
+
+<dt>Rolf Stümpel, Photographie auf dem deutschen Buchumschlag.</dt><dd> Gutenberg-Museum Mainz, 6. Juni - 29. August 1982; e. Ausstellung anlässl. d. diesjährigen Kongresses d. Dt. Ges. für Photographie in Mainz. Mainz 1982.</dd>
+
+<dt>Curt Tillmann, Die Entwicklung des Buchumschlags.</dt><dd> Eine Studie zu seiner Geschichte. In: Imprimatur 9 (1940) S. 145-159.</dd>
+
+<dt>Curt Tillmann, Über das Sammeln von Buchumschlägen.</dt><dd> In: Zeitschrift für Bücherfreunde 37 (= 3. Folge, 2) 1933, S. 1-4.</dd>
+
+<dt>Doris Vortmann, Neues aus der Bibliothek: die erhaltenen Schutzumschläge der Alten Lehrerbibliothek.</dt><dd> In: Petrinum: das Schulmagazin 39 (2007) S. 136-137. </dd>
+
+</ul>
+<p />
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,33 @@
+# Encoding der Daten
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'ID'
+
+# Personen
+pers:
+  '100': '0100:'        # 1. Verfasser
+  '700': '0100:'        # 2. und weitere Verfasser
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys: 
+
+# Schlagworte
+subj:
+
+# Titel
+title:
+  '040': '0015:' # Sprache
+  '245': '0331:' # HST
+  '506': '0663:' # Lizenzinformation
+  '500': '0501:' # Fussnote
+  '516': '0435:' # Format
+  '740': '0370:' # WST
+  '856': '0662:' # URL eBook
+  '260': '0412:' # Verlag

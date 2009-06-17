@@ -1,0 +1,73 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showuser
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsseite zur Nutzerverwaltung
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Nutzerverwaltung anzeigen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="users" %] 
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+</ul>
+
+<div class="content">
+
+<form method="get" action="[%config.admin_loc %]">
+<input type="hidden" name="do_searchuser" value="1" />
+<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Nutzer suchen") %]</th></tr>
+<tr><td class="boxedclear">
+<table>
+<tr><td>[% msg.maketext("Kennung") %]</td><td><input type="text" name="username" size="20"/></td></tr>
+<tr><td>[% msg.maketext("Name") %]</td><td><input type="text" name="commonname" size="20"/></td></tr>
+<tr><td>[% msg.maketext("Vorname") %]</td><td><input type="text" name="surname" size="20"/></td></tr>
+<tr><td colspan="2"><input type="submit" value="[% msg.maketext("Los") %]"></td></tr>
+</table>
+</td></tr>
+</table>
+</form>
+
+<p />
+[%#
+
+    msg.maketext("admin")     # Administrator
+    msg.maketext("librarian") # Bibliothekar
+    msg.maketext("lecturer")  # Dozent
+
+-%]
+<table width="100%">
+<tr><th>[% msg.maketext("Nutzer mit Rollen") %]</th></tr>
+<tr><td class="boxedclear">
+<ul class="subjectlist">
+[% FOREACH role IN user.get_all_roles %]
+<li><a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_searchuser=1;roleid=[% role.id %]">[% msg.maketext(role.role) %]</a></li>
+[% END %]
+</ul>
+</td></tr>
+</table>
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

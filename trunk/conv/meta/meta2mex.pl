@@ -111,7 +111,7 @@ while (<>){
             $mexbuffer[$mexidx++]="0014:".$signatur if ($signatur);
             $mexbuffer[$mexidx++]="0016:".$standort if ($standort);
             $mexbuffer[$mexidx++]="1204:".$erschverl if ($erschverl);
-            $mexbuffer[$mexidx++]="3300:".$sigel if ($sigel);
+            $mexbuffer[$mexidx++]="3330:".$sigel if ($sigel);
             
             $mexbuffer[$mexidx++]="9999:\n";
             

@@ -32,7 +32,7 @@ use utf8;
 
 use base qw(Apache::Singleton::Process);
 
-use Apache::Reload;
+use Apache2::Reload;
 use YAML::Syck;
 
 sub new {

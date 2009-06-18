@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::DispatchQuery
 #
-#  Dieses File ist (C) 2005-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::SubRequest ();
 use DBI;
 use Digest::MD5;
 use Log::Log4perl qw(get_logger :levels);
@@ -57,12 +58,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $status=$query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $session   = OpenBib::Session->instance({
@@ -86,27 +87,27 @@ sub handler {
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         
-        return OK;
+        return Apache2::Const::OK;
     }
 
     if    ($do_newquery) {
         $r->internal_redirect("http://$config->{servername}$config->{searchmask_loc}?sessionID=$session->{ID}&queryid=$queryid&view=$view");
-        return OK;
+        return Apache2::Const::OK;
     }
     elsif ($do_resultlist) {
         $r->internal_redirect("http://$config->{servername}$config->{resultlists_loc}?sessionID=$session->{ID}&view=$view&action=choice&queryid=$queryid");
-        return OK;
+        return Apache2::Const::OK;
     }
     elsif ($do_externalquery) {
         $r->internal_redirect("http://$config->{servername}$config->{externaljump_loc}?sessionID=$session->{ID}&view=$view&queryid=$queryid");
-        return OK;
+        return Apache2::Const::OK;
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Aktion"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
   
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

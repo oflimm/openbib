@@ -32,7 +32,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Reload;
+use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBI;
@@ -993,7 +993,7 @@ sub print_to_handler {
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $user          = OpenBib::User->instance;
     my $searchquery   = OpenBib::SearchQuery->instance;
-    my $query         = Apache::Request->instance($r);
+    my $query         = Apache2::Request->new($r);
 
     my $stid          = $query->param('stid')              || '';
 

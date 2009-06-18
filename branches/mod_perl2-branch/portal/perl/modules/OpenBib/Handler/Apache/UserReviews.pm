@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::UserReviews.pm
 #
-#  Copyright 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::SubRequest (); # internal_redirect
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;
@@ -63,12 +64,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $status=$query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $session   = OpenBib::Session->instance({
@@ -122,7 +123,7 @@ sub handler {
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
-        return OK;
+        return Apache2::Const::OK;
     }
     
     my $view="";
@@ -144,7 +145,7 @@ sub handler {
 
         if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my $reviewlist_ref = $user->get_reviews({loginname => $loginname});
@@ -173,14 +174,14 @@ sub handler {
 
         OpenBib::Common::Util::print_page($config->{tt_userreviews_show_tname},$ttdata,$r);
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
     if ($do_add){
 
         if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         $logger->debug("Aufnehmen/Aendern des Reviews");
@@ -196,14 +197,14 @@ sub handler {
         });
         
         $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
-        return OK;
+        return Apache2::Const::OK;
     }
 
     if ($do_change){
 
         if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         $logger->debug("Aufnehmen/Aendern des Reviews");
@@ -219,14 +220,14 @@ sub handler {
         });
         
         $r->internal_redirect("http://$config->{servername}$config->{userreviews_loc}?sessionID=$session->{ID};do_show=1");
-        return OK;
+        return Apache2::Const::OK;
     }
 
     if ($do_vote){
 
         if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um diese Rezension zu beurteilen",$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my $status = $user->vote_for_review({
@@ -237,11 +238,11 @@ sub handler {
 
         if ($status == 1){
             OpenBib::Common::Util::print_warning("Sie haben bereits diese Rezension beurteilt",$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
         
         $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
-        return OK;
+        return Apache2::Const::OK;
 
     }
 
@@ -249,7 +250,7 @@ sub handler {
 
         if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         $user->del_review_of_user({
@@ -258,7 +259,7 @@ sub handler {
         });
 
         $r->internal_redirect("http://$config->{servername}$config->{userreviews_loc}?sessionID=$session->{ID};do_show=1");
-        return OK;
+        return Apache2::Const::OK;
 
     }
 
@@ -267,7 +268,7 @@ sub handler {
         
         if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my $review_ref = $user->get_review_of_user({id => $reviewid, loginname => $loginname});
@@ -296,10 +297,10 @@ sub handler {
 
         OpenBib::Common::Util::print_page($config->{tt_userreviews_edit_tname},$ttdata,$r);
         
-        return OK;
+        return Apache2::Const::OK;
     }
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

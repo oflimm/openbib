@@ -34,9 +34,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common REDIRECT);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use Encode qw/decode_utf8 encode_utf8/;
 use DBI;
@@ -63,12 +64,12 @@ sub handler {
     my $config      = OpenBib::Config->instance;
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $status = $query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $session   = OpenBib::Session->instance({
@@ -120,7 +121,7 @@ sub handler {
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
-        return OK;
+        return Apache2::Const::OK;
     }
     
     my $view="";
@@ -159,7 +160,7 @@ sub handler {
             
             OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
             
-            return OK;
+            return Apache2::Const::OK;
         }
     }
     elsif ($action eq "get_tit_of_tag"){
@@ -223,7 +224,7 @@ sub handler {
             
             OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
             
-            return OK;
+            return Apache2::Const::OK;
         }
     }
     elsif ($action eq "get_tit_of_user"){
@@ -286,7 +287,7 @@ sub handler {
             
             OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
             
-            return OK;
+            return Apache2::Const::OK;
         }
     }
     elsif ($action eq "add_title"){
@@ -298,15 +299,15 @@ sub handler {
             $logger->debug($bibsonomy_uri);
             
             $r->content_type('text/html');
-            $r->header_out(Location => $bibsonomy_uri);
+            $r->headers_out("Location" => $bibsonomy_uri);
             
-            return REDIRECT;
+            return Apache2::Const::REDIRECT;
         }
     }
     
     OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

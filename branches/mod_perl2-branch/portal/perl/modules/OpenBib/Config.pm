@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,7 +32,8 @@ use utf8;
 
 use base qw(Apache::Singleton::Process);
 
-use Apache::Reload;
+use Apache2::Reload;
+use Apache2::Const -compile => qw(:common);
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use LWP;

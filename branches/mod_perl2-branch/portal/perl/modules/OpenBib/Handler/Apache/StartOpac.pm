@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::StartOpac
 #
-#  Dieses File ist (C) 2001-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,12 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Connection ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
+use Apache2::SubRequest (); # internal_redirect
 use DBI;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
@@ -59,12 +62,12 @@ sub handler {
 
     my $session = OpenBib::Session->instance;
     
-    my $query   = Apache::Request->instance($r);
+    my $query   = Apache2::Request->new($r);
 
     my $status = $query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $fs   = $query->param('fs')      || '';
@@ -94,7 +97,7 @@ sub handler {
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
-    if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->headers_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $r->connection->remote_ip($1);
     }
     
@@ -213,7 +216,7 @@ sub handler {
     
     $r->internal_redirect($redirecturl);
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

@@ -34,9 +34,9 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use Template;
@@ -56,12 +56,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $status=$query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $session   = OpenBib::Session->instance({
@@ -80,7 +80,7 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $view="";
@@ -115,7 +115,7 @@ sub handler {
   
     OpenBib::Common::Util::print_page($config->{tt_leave_tname},$ttdata,$r);
   
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

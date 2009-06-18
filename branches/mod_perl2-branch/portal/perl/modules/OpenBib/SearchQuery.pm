@@ -32,7 +32,7 @@ use utf8;
 
 use base qw(Apache::Singleton);
 
-use Apache::Request ();
+use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
@@ -141,7 +141,7 @@ sub set_from_apache_request {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $query = Apache::Request->instance($r);
+    my $query = Apache2::Request->new($r);
 
     # Wandlungstabelle Erscheinungsjahroperator
     my $ejahrop_ref={

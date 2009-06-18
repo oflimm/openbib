@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::UnAPI.pm
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,10 +33,11 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(OK HTTP_NOT_ACCEPTABLE HTTP_NOT_FOUND SERVER_ERROR);
-use Apache::Reload;
-use Apache::Request ();
-use Apache::URI ();
+use Apache2::Const -compile => qw(OK HTTP_NOT_ACCEPTABLE HTTP_NOT_FOUND SERVER_ERROR);
+use Apache2::Log;
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::RequestRec ();
 use Benchmark;
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
@@ -57,12 +58,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
 
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
     
     my $status=$query->parse;
     
     if ($status){
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $unapiid        = $query->param('id')              || '';
@@ -77,7 +78,7 @@ sub handler {
     if ($format){
 
         unless (exists $config->{unAPI_formats}->{$format}){
-            return HTTP_NOT_ACCEPTABLE;
+            return Apache2::Const::HTTP_NOT_ACCEPTABLE;
         }
 
         if ($unapiid){
@@ -94,7 +95,7 @@ sub handler {
             }
 
             if (!$record->record_exists){
-                return HTTP_NOT_FOUND;
+                return Apache2::Const::HTTP_NOT_FOUND;
             }
             
             my $ttdata={
@@ -123,15 +124,15 @@ sub handler {
             
             # Dann Ausgabe des neuen Headers
             if ($format_info{$format}){
-                print $r->send_http_header($format_info{$format});
+                print $r->content_type($format_info{$format});
             }
             else {
-                print $r->send_http_header('application/xml');
+                print $r->content_type('application/xml');
             }
             
             $template->process($config->{$templatename}, $ttdata) || do {
                 $r->log_reason($template->error(), $r->filename);
-                return SERVER_ERROR;
+                return Apache2::Const::SERVER_ERROR;
             };
             
         }
@@ -159,14 +160,14 @@ sub handler {
         });
         
         # Dann Ausgabe des neuen Headers
-        print $r->send_http_header("application/xml");
+        print $r->content_type("application/xml");
   
         $template->process($templatename, $ttdata) || do {
             $r->log_reason($template->error(), $r->filename);
-            return SERVER_ERROR;
+            return Apache2::Const::SERVER_ERROR;
         };
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
     

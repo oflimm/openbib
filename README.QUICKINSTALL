@@ -28,10 +28,10 @@ Vorgehensweise:
 
    Es sind dies:
 
-   Apache::Constants
+   Apache2::Const
    Apache::GTopLimit
    Apache::Reload
-   Apache::Request
+   Apache2::Request
    Apache::URI
    Benchmark ':hireswallclock'
    Date::Manip

@@ -33,10 +33,11 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
-use Apache::URI ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::RequestIO (); # print
+use Apache2::RequestRec (); # headers_in, headers_out, args
 use Benchmark;
 use DBI;
 use Encode 'decode_utf8';
@@ -58,12 +59,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
     
     my $status=$query->parse;
     
     if ($status){
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
@@ -77,7 +78,7 @@ sub handler {
     my $exact = $query->param('exact') || '';
 
     if (!$word || $word=~/\d/){
-        return OK;
+        return Apache2::Const::OK;
     }
 
     if (!$exact){
@@ -117,7 +118,7 @@ sub handler {
 
     $logger->debug("LiveSearch for word $word and type $type");
     
-    print $r->send_http_header("text/plain");
+    print $r->content_type("text/plain");
     
     if (@livesearch_suggestions){
         $r->print(join("\n",map {decode_utf8($_)} @livesearch_suggestions));
@@ -127,7 +128,7 @@ sub handler {
     }
 
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

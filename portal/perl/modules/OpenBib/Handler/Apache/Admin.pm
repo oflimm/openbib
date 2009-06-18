@@ -34,9 +34,12 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Log;
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
+use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -69,12 +72,12 @@ sub handler {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $query=Apache::Request->instance($r);
+    my $query=Apache2::Request->new($r);
 
     my $status=$query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -349,7 +352,7 @@ sub handler {
         };
     
         OpenBib::Common::Util::print_page($config->{tt_admin_login_tname},$ttdata,$r);
-        return OK;
+        return Apache2::Const::OK;
     }
   
     ###########################################################################
@@ -358,12 +361,12 @@ sub handler {
         # Sessionid erzeugen
         if ($username ne $adminuser) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
         
         if ($passwd ne $adminpasswd) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Passwort eingegeben"),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
         
         # Session ist nun authentifiziert und wird mit dem Admin 
@@ -384,7 +387,7 @@ sub handler {
         };
     
         OpenBib::Common::Util::print_page($config->{tt_admin_loggedin_tname},$ttdata,$r);
-        return OK;
+        return Apache2::Const::OK;
     }
   
     # Ab hier gehts nur weiter mit korrekter SessionID
@@ -397,7 +400,7 @@ sub handler {
 
     if (!$adminsession) {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     $logger->debug("Server: ".$r->get_server_name);
@@ -411,7 +414,7 @@ sub handler {
 	    my $ret_ref = dist_cmd("editcat_del",{ dbname => $dbname }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
-            return OK;
+            return Apache2::Const::OK;
 
         }
         elsif ($do_change) {
@@ -428,7 +431,7 @@ sub handler {
 						 }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_new) {
 
@@ -436,14 +439,14 @@ sub handler {
 
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."),$r,$msg);
 
-                return OK;
+                return Apache2::Const::OK;
             }
 
             if ($config->db_exists($dbname)) {
 
                 OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Katalog unter diesem Namen"),$r,$msg);
 
-                return OK;
+                return Apache2::Const::OK;
             }
 
             editcat_new($thisdbinfo_ref);
@@ -451,7 +454,7 @@ sub handler {
 	    my $ret_ref = dist_cmd("editcat_new",{ dbinfo => $thisdbinfo_ref }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_edit) {
             my $dbinfo_ref = $config->get_dbinfo($dbname);
@@ -556,7 +559,7 @@ sub handler {
 							}) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_new){
 	    editcat_rss_new($dbname,$rsstype);
@@ -567,7 +570,7 @@ sub handler {
 						     }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
-            return OK;              
+            return Apache2::Const::OK;              
         }
         
         if ($do_edit) {
@@ -623,7 +626,7 @@ sub handler {
 	    my $ret_ref = dist_cmd("editlibinfo_del",{ dbname => $dbname }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
-            return OK;
+            return Apache2::Const::OK;
 
         }
         elsif ($do_change) {
@@ -639,7 +642,7 @@ sub handler {
 						 }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_edit) {
             my $libinfo_ref = $config->get_libinfo($dbname);
@@ -688,7 +691,7 @@ sub handler {
 	    my $ret_ref = dist_cmd("editprofile_del",{ profilename => $profilename }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showprofiles=1");
-            return OK;
+            return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
@@ -707,7 +710,7 @@ sub handler {
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showprofiles=1");
       
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_new) {
 
@@ -715,7 +718,7 @@ sub handler {
 
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."),$r,$msg);
 
-                return OK;
+                return Apache2::Const::OK;
             }
 
 	    my $ret = editprofile_new({
@@ -730,11 +733,11 @@ sub handler {
 
 	    if ($ret == -1){
 	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
-	      return OK;
+	      return Apache2::Const::OK;
 	    }
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editprofile=1&do_edit=1&profilename=$profilename");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_edit) {
 
@@ -798,7 +801,7 @@ sub handler {
 	    my $ret_ref = dist_cmd("editsubject_del",{ id => $subjectid }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
-            return OK;
+            return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
@@ -820,7 +823,7 @@ sub handler {
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editsubject=1;subjectid=$subjectid;do_edit=1");
       
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_new) {
 
@@ -828,7 +831,7 @@ sub handler {
 
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."),$r,$msg);
 
-                return OK;
+                return Apache2::Const::OK;
             }
 
 	    my $ret = editsubject_new({
@@ -843,11 +846,11 @@ sub handler {
 
 	    if ($ret == -1){
 	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Themengebiet unter diesem Namen"),$r,$msg);
-	      return OK;
+	      return Apache2::Const::OK;
 	    }
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_edit) {
 
@@ -896,7 +899,7 @@ sub handler {
 	    my $ret_ref = dist_cmd("editserver_del",{ id => $hostid }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
-            return OK;
+            return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
@@ -912,7 +915,7 @@ sub handler {
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
       
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_new) {
 
@@ -920,7 +923,7 @@ sub handler {
 
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Servernamen eingeben."),$r,$msg);
 
-                return OK;
+                return Apache2::Const::OK;
             }
             $logger->debug("Host: $host Active: $active");
             
@@ -935,7 +938,7 @@ sub handler {
             }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my $loadbalancertargets_ref = $config->get_loadbalancertargets;
@@ -979,7 +982,7 @@ sub handler {
 	    my $ret_ref = dist_cmd("editview_del",{ viewname => $viewname }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
-            return OK;
+            return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
@@ -1009,7 +1012,7 @@ sub handler {
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
       
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_new) {
 
@@ -1017,7 +1020,7 @@ sub handler {
 
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-Profil eingeben."),$r,$msg);
 
-                return OK;
+                return Apache2::Const::OK;
             }
 
 	    my $ret = editview_new({
@@ -1039,11 +1042,11 @@ sub handler {
 
 	    if ($ret == -1){
 	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
-	      return OK;
+	      return Apache2::Const::OK;
 	    }
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview=1&do_edit=1&viewname=$viewname");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_edit) {
             my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -1122,11 +1125,11 @@ sub handler {
 
           if ($rsstype eq "primary"){
               $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview_rss=1&do_edit=1&viewname=$viewname");
-              return OK;
+              return Apache2::Const::OK;
           }
           elsif ($rsstype eq "all") {
               $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
-              return OK;
+              return Apache2::Const::OK;
           }
       }
       elsif ($do_edit) {
@@ -1293,7 +1296,7 @@ sub handler {
 
 	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 
-        return OK;
+        return Apache2::Const::OK;
     }
     elsif ($do_editsession) {
 
@@ -1332,7 +1335,7 @@ sub handler {
 
             OpenBib::Common::Util::print_page($config->{tt_admin_editsession_tname},$ttdata,$r);
 
-            return OK;
+            return Apache2::Const::OK;
         }
     }
     elsif ($do_exploresessions) {
@@ -1399,7 +1402,7 @@ sub handler {
             
             OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
             
-            return OK;
+            return Apache2::Const::OK;
 	    
             
 	}
@@ -1407,7 +1410,7 @@ sub handler {
             
             unless ($fromdate && $todate){
                 OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"),$r,$msg);
-                return OK;
+                return Apache2::Const::OK;
                 
             }
             
@@ -1456,7 +1459,7 @@ sub handler {
             
             OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
             
-            return OK;
+            return Apache2::Const::OK;
 	}
     }
     elsif ($do_showstat) {
@@ -1517,7 +1520,7 @@ sub handler {
 	    my $ret_ref = dist_cmd("editlogintarget_del",{ targetid => $targetid }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
-            return OK;
+            return Apache2::Const::OK;
 
         }
         elsif ($do_change) {
@@ -1529,7 +1532,7 @@ sub handler {
 						 }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_new) {
 
@@ -1537,14 +1540,14 @@ sub handler {
 
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens eine Beschreibung eingeben."),$r,$msg);
 
-                return OK;
+                return Apache2::Const::OK;
             }
 
             if ($user->logintarget_exists({description => $thislogintarget_ref->{description}})) {
 
                 OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Anmeldeziel unter diesem Namen"),$r,$msg);
 
-                return OK;
+                return Apache2::Const::OK;
             }
 
             editlogintarget_new($thislogintarget_ref);
@@ -1552,7 +1555,7 @@ sub handler {
 	    my $ret_ref = dist_cmd("editlogintarget_new",{ logintarget => $thislogintarget_ref }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_edit) {
             
@@ -1610,7 +1613,7 @@ sub handler {
 						 }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showuser=1;stid=1");
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_edit) {
             my $userinfo = new OpenBib::User({ID => $userid })->get_info;
@@ -1668,7 +1671,7 @@ sub handler {
 
             if (!@sql_where){
                 OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."),$r,$msg);
-                return OK;
+                return Apache2::Const::OK;
             }
             
             $sql_stmt.=join(" and ",@sql_where);
@@ -1735,7 +1738,7 @@ sub handler {
     
   LEAVEPROG: sleep 0;
   
-    return OK;
+    return Apache2::Const::OK;
 }
 
 sub editcat_del {

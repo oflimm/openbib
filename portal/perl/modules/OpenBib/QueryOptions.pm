@@ -64,7 +64,7 @@ sub _new_instance {
 
     # Hinweis: Bisher wuerde statt $query direkt das Request-Objekt $r
     # uebergeben und an dieser Stelle wieder ein $query-Objekt via
-    # Apache::Request daraus erzeugt. Bei Requests, die via POST
+    # Apache2::Request daraus erzeugt. Bei Requests, die via POST
     # sowohl mit dem enctype multipart/form-data wie auch
     # multipart/form-data abgesetzt wurden, lassen sich keine
     # Parameter ala sessionID extrahieren.  Das ist ein grosses

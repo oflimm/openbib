@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::VirtualSearch.pm
 #
-#  Dieses File ist (C) 1997-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,12 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Log;
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::RequestIO (); # rflush, print
+use Apache2::RequestRec ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
@@ -71,12 +74,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $status=$query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $session   = OpenBib::Session->instance({
@@ -148,7 +151,7 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $view="";
@@ -267,7 +270,7 @@ sub handler {
                 # Kein Profil
                 else {
                     OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>"),$r,$msg);
-                    return OK;
+                    return Apache2::Const::OK;
                 }
                 
                 # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
@@ -332,12 +335,12 @@ sub handler {
 
         if (!$contentreq) {
             OpenBib::Common::Util::print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         if ($#databases > 0 && length($contentreq) < 3) {
             OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my %index=();
@@ -467,7 +470,7 @@ sub handler {
 
         OpenBib::Common::Util::print_page($template,$ttdata,$r);
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
     ####################################################################
@@ -539,14 +542,14 @@ sub handler {
         my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
             OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
     }
 
     if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
         if ($searchquery->get_searchfield('ejahr')->{norm}) {
             OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
     }
 
@@ -555,7 +558,7 @@ sub handler {
         if ($searchquery->get_searchfield('ejahr')->{norm}) {
             if (!$firstsql) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-                return OK;
+                return Apache2::Const::OK;
             }
         }
     }
@@ -566,7 +569,7 @@ sub handler {
 
     if (!$firstsql) {
         OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my %trefferpage  = ();
@@ -800,7 +803,7 @@ sub handler {
                 });
 
                 # Start der Ausgabe mit korrektem Header
-                print $r->send_http_header("text/html");
+                print $r->content_type("text/html");
                 
                 # Es kann kein Datenbankabhaengiges Template geben
                 
@@ -860,7 +863,7 @@ sub handler {
                 
                 $itemtemplate->process($itemtemplatename, $ttdata) || do {
                     $r->log_reason($itemtemplate->error(), $r->filename);
-                    return SERVER_ERROR;
+                    return Apache2::Const::SERVER_ERROR;
                 };
                 
                 $trefferpage{'combined'} = $recordlist;
@@ -884,7 +887,7 @@ sub handler {
         });
         
         # Start der Ausgabe mit korrektem Header
-        print $r->send_http_header("text/html");
+        print $r->content_type("text/html");
         
         # Ausgabe des ersten HTML-Bereichs
         my $starttemplate = Template->new({
@@ -928,7 +931,7 @@ sub handler {
         
         $starttemplate->process($starttemplatename, $startttdata) || do {
             $r->log_reason($starttemplate->error(), $r->filename);
-            return SERVER_ERROR;
+            return Apache2::Const::SERVER_ERROR;
         };
         
         # Ausgabe flushen
@@ -1040,7 +1043,7 @@ sub handler {
                     
                     $itemtemplate->process($itemtemplatename, $ttdata) || do {
                         $r->log_reason($itemtemplate->error(), $r->filename);
-                        return SERVER_ERROR;
+                        return Apache2::Const::SERVER_ERROR;
                     };
                     
                     $trefferpage{$database} = $recordlist;
@@ -1231,7 +1234,7 @@ sub handler {
                         
                             $itemtemplate->process($itemtemplatename, $ttdata) || do {
                                 $r->log_reason($itemtemplate->error(), $r->filename);
-                                return SERVER_ERROR;
+                                return Apache2::Const::SERVER_ERROR;
                             };
                         
                             $trefferpage{$database} = $recordlist;
@@ -1342,7 +1345,7 @@ sub handler {
 
                         $itemtemplate->process($itemtemplatename, $ttdata) || do {
                             $r->log_reason($itemtemplate->error(), $r->filename);
-                            return SERVER_ERROR;
+                            return Apache2::Const::SERVER_ERROR;
                         };
 
                         $trefferpage{$database} = $recordlist;
@@ -1416,7 +1419,7 @@ sub handler {
         
         $endtemplate->process($endtemplatename, $endttdata) || do {
             $r->log_reason($endtemplate->error(), $r->filename);
-            return SERVER_ERROR;
+            return Apache2::Const::SERVER_ERROR;
         };
         
     }
@@ -1476,7 +1479,7 @@ sub handler {
         }) unless ($combinedbs);
     }
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 sub gen_cloud {

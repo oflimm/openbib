@@ -30,8 +30,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
 
 sub strip_first_stopword {
     my ($content)=@_;

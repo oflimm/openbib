@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::ServerLoad
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,8 +34,9 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::RequestRec ();
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 
@@ -60,7 +61,7 @@ sub handler {
         $sessiondbh->disconnect();
     }
 
-    print $r->send_http_header("text/plain");
+    print $r->content_type("text/plain");
 
     print "SessionDB: $sessiondbstatus\n";
 
@@ -68,7 +69,7 @@ sub handler {
     print "Load: ".<LOADAVG>;
     close(LOADAVG);
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

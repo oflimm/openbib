@@ -114,12 +114,12 @@ sub load_from_handler {
   
     my $logger = get_logger();
 
-    my $query=Apache::Request->instance($r);
+    my $query=Apache2::Request->new($r);
 
     my $status=$query->parse;
     
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
     
     my $profilename = ($query->param('profilename'))?$query->param('profilename'):'Datenbank-Profil';

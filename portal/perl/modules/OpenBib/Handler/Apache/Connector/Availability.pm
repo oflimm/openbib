@@ -33,10 +33,14 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
-use Apache::URI ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Log;
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
+use Apache2::URI ();
+use APR::URI ();
+
 use Business::ISBN;
 use Benchmark;
 use DBI;
@@ -63,7 +67,7 @@ sub handler {
     
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
     my $client_ip="";
-    if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->headers_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -117,7 +121,7 @@ sub handler {
             $key = $isbnXX->as_isbn13->as_string;
         }
         else {
-            return OK;
+            return Apache2::Const::OK;
         }
         
         my $isbn = OpenBib::Common::Util::grundform({
@@ -297,14 +301,14 @@ sub handler {
     });
   
     # Dann Ausgabe des neuen Headers
-    print $r->send_http_header("application/xml");
+    print $r->content_type("application/xml");
   
     $template->process($config->{tt_connector_availability_tname}, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
-        return SERVER_ERROR;
+        return Apache2::Const::SERVER_ERROR;
     };
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

@@ -34,9 +34,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request();          # CGI-Handling (or require)
+use Apache2::Connection ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request();          # CGI-Handling (or require)
 use DBI;
 use Email::Valid;               # EMail-Adressen testen
 use Encode 'decode_utf8';
@@ -59,12 +60,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $status=$query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $session   = OpenBib::Session->instance({
@@ -89,7 +90,7 @@ sub handler {
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
-    if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->headers_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $r->connection->remote_ip($1);
     }
 
@@ -99,7 +100,7 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
   
     my $view="";
@@ -130,23 +131,23 @@ sub handler {
     elsif ($action eq "auth") {
         if ($loginname eq "" || $password1 eq "" || $password2 eq "") {
             OpenBib::Common::Util::print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         if ($password1 ne $password2) {
             OpenBib::Common::Util::print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
         unless (Email::Valid->address($loginname)){
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID}&action=show\">","</a>"),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         if ($user->user_exists($loginname)) {
             OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         # Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
@@ -159,7 +160,7 @@ sub handler {
             
             unless ( $recaptcha_result->{is_valid} ) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
-                return OK;
+                return Apache2::Const::OK;
             }
         }
         
@@ -198,7 +199,7 @@ sub handler {
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

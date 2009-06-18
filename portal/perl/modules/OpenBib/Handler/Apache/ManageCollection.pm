@@ -34,9 +34,13 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common M_GET);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common M_GET);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::SubRequest (); # internal_redirect
+use Apache2::URI ();
+use APR::URI ();
+
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -61,12 +65,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $status=$query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $session   = OpenBib::Session->instance({
@@ -106,7 +110,7 @@ sub handler {
 
     if (!$session->is_valid()) {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $view="";
@@ -129,7 +133,7 @@ sub handler {
         $logger->debug("Nicht authentifizierter Nutzer versucht Literaturliste anzulegen");
         $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
 
-        return OK;
+        return Apache2::Const::OK;
     }
     elsif (! $user->is_authenticated && $do_addtags) {
         # Aufruf-URL
@@ -142,7 +146,7 @@ sub handler {
         $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
         $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
     $logger->info("SessionID: $session->{ID}");
@@ -168,7 +172,7 @@ sub handler {
         }
 
         OpenBib::Common::Util::print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
     # Anzeigen des Inhalts der Merkliste
     elsif ($action eq "show") {
@@ -189,11 +193,11 @@ sub handler {
             }
 
             # Start der Ausgabe mit korrektem Header
-            print $r->send_http_header("text/plain");
+            print $r->content_type("text/plain");
             
             print $anzahl;
 
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_collection_delentry) {
             foreach my $tit ($query->param('titid')) {
@@ -221,7 +225,7 @@ sub handler {
             }
 
             $r->internal_redirect($redirecturl);
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($do_litlist_addentry) {
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
@@ -235,25 +239,25 @@ sub handler {
             }
 
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
-            return OK;
+            return Apache2::Const::OK;
 
 	}
         elsif ($do_addlitlist) {
             if (!$title) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
 	    
-                return OK;
+                return Apache2::Const::OK;
             }
 	  
             $user->add_litlist({ title =>$title, type => $littype});
 
             $r->internal_redirect("http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}&action=show&type=HTML");
-            return OK;
+            return Apache2::Const::OK;
 	}
         elsif ($do_addtags) {
             if (!$tags) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."),$r,$msg);
-                return OK;
+                return Apache2::Const::OK;
             }
 
             if ($user->{ID}){
@@ -275,7 +279,7 @@ sub handler {
                 }
                 else {
                     OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."),$r,$msg);
-                    return OK;
+                    return Apache2::Const::OK;
                 }
             }
             else {
@@ -289,7 +293,7 @@ sub handler {
             }
 
             $r->internal_redirect($redirecturl);
-            return OK;
+            return Apache2::Const::OK;
         }
         
         my $recordlist = new OpenBib::RecordList::Title();
@@ -316,7 +320,7 @@ sub handler {
             };
             
             OpenBib::Common::Util::print_page($config->{tt_managecollection_empty_tname},$ttdata,$r);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         # TT-Data erzeugen
@@ -337,7 +341,7 @@ sub handler {
         };
     
         OpenBib::Common::Util::print_page($config->{tt_managecollection_show_tname},$ttdata,$r);
-        return OK;
+        return Apache2::Const::OK;
     }
     # Abspeichern der Merkliste
     elsif ($action eq "save" || $action eq "print" || $action eq "mail") {
@@ -376,16 +380,16 @@ sub handler {
             };
 
             if ($type eq "HTML") {
-                print $r->header_out("Content-Type" => "text/html");
-                print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
+                print $r->headers_out("Content-Type" => "text/html");
+                print $r->headers_out("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
                 OpenBib::Common::Util::print_page($config->{tt_managecollection_save_html_tname},$ttdata,$r);
             }
             else {
-                print $r->header_out("Content-Type" => "text/plain");
-                print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
+                print $r->headers_out("Content-Type" => "text/plain");
+                print $r->headers_out("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
                 OpenBib::Common::Util::print_page($config->{tt_managecollection_save_plain_tname},$ttdata,$r);
             }
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($action eq "print"){
             # TT-Data erzeugen
@@ -407,7 +411,7 @@ sub handler {
             };
             
             OpenBib::Common::Util::print_page($config->{tt_managecollection_print_tname},$ttdata,$r);
-            return OK;
+            return Apache2::Const::OK;
         }
         elsif ($action eq "mail"){
             # TT-Data erzeugen
@@ -429,14 +433,14 @@ sub handler {
             };
             
             OpenBib::Common::Util::print_page($config->{tt_managecollection_mail_tname},$ttdata,$r);
-            return OK;
+            return Apache2::Const::OK;
         }
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

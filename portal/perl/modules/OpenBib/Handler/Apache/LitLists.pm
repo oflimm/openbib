@@ -34,9 +34,12 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::SubRequest (); # internal_redirect
+use Apache2::URI ();
+use APR::URI ();
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;
@@ -62,12 +65,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $status=$query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $session   = OpenBib::Session->instance({
@@ -135,7 +138,7 @@ sub handler {
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
-        return OK;
+        return Apache2::Const::OK;
     }
     
     my $view="";
@@ -159,7 +162,7 @@ sub handler {
 
         $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $subjects_ref = OpenBib::User->get_subjects;
@@ -171,7 +174,7 @@ sub handler {
             if ($title eq ""){
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
                 
-                return OK;
+                return Apache2::Const::OK;
             }
             
             my $litlistid = $user->add_litlist({ title =>$title, type => $type, subjectids => \@subjectids });
@@ -183,7 +186,7 @@ sub handler {
             }
             
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
-            return OK;
+            return Apache2::Const::OK;
             
 	}
 
@@ -192,7 +195,7 @@ sub handler {
             $user->del_litlist({ litlistid => $litlistid});
 
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
-            return OK;
+            return Apache2::Const::OK;
             
 	}
 
@@ -201,7 +204,7 @@ sub handler {
             if (!$title || !$type || !$litlistid){
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
                 
-                return OK;
+                return Apache2::Const::OK;
             }
 
             my $userrole_ref = $user->get_roles_of_user($user->{ID});
@@ -217,7 +220,7 @@ sub handler {
             }
             
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
-            return OK;
+            return Apache2::Const::OK;
             
 	}
 	elsif ($do_addentry) {
@@ -225,7 +228,7 @@ sub handler {
             if (!$litlistid || !$titid || !$titdb ){
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben oder Titel und Datenbank existieren nicht."),$r,$msg);
                 
-                return OK;
+                return Apache2::Const::OK;
             }
             
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
@@ -235,7 +238,7 @@ sub handler {
             }
             
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&do_showlitlist=1&litlistid=$litlistid");
-            return OK;
+            return Apache2::Const::OK;
 	  
 	}
         elsif ($do_delentry) {
@@ -243,7 +246,7 @@ sub handler {
             if (!$titid || !$titdb || !$litlistid) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."),$r,$msg);
 	    
-                return OK;
+                return Apache2::Const::OK;
             }
 
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
@@ -253,7 +256,7 @@ sub handler {
             }
 
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
-            return OK;
+            return Apache2::Const::OK;
 	  
 	}
         elsif ($do_showlitlist) {
@@ -261,7 +264,7 @@ sub handler {
             if (!$litlistid || !$user->{ID} ) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste oder Sie sind nicht authentifiziert."),$r,$msg);
 	    
-                return OK;
+                return Apache2::Const::OK;
             }
 	  
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
@@ -304,7 +307,7 @@ sub handler {
             else {
                 OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
             }
-            return OK;
+            return Apache2::Const::OK;
 	  
         }
         else {
@@ -329,7 +332,7 @@ sub handler {
             };
 
             OpenBib::Common::Util::print_page($config->{tt_litlists_manage_lists_tname},$ttdata,$r);
-            return OK;
+            return Apache2::Const::OK;
 	}
     }
     elsif ($action eq "show") {
@@ -380,11 +383,11 @@ sub handler {
             };
 	    
 	    OpenBib::Common::Util::print_page($config->{tt_litlists_show_singlelist_tname},$ttdata,$r);
-            return OK;
+            return Apache2::Const::OK;
         }
         else {
 	    OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
     }
     elsif ($action eq "show_public_lists") {
@@ -409,9 +412,9 @@ sub handler {
         };
 	    
         OpenBib::Common::Util::print_page($config->{tt_litlists_show_publiclists_tname},$ttdata,$r);
-        return OK;
+        return Apache2::Const::OK;
     }
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

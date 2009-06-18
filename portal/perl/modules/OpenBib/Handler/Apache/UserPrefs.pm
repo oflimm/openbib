@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::UserPrefs
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::SubRequest (); # internal_redirect
 use DBI;
 use Email::Valid;
 use Encode 'decode_utf8';
@@ -59,12 +60,12 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $status=$query->parse;
 
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
 
     my $session   = OpenBib::Session->instance({
@@ -119,7 +120,7 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $view="";
@@ -133,7 +134,7 @@ sub handler {
 
     unless($user->{ID}){
         OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
   
     if ($action eq "showfields") {
@@ -257,7 +258,7 @@ sub handler {
     elsif ($action eq "changepw") {
         if ($password1 eq "" || $password1 ne $password2) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
     
         $user->set_credentials({
@@ -269,7 +270,7 @@ sub handler {
     elsif ($action eq "changemask") {
         if ($setmask eq "") {
             OpenBib::Common::Util::print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         $user->set_mask($setmask);
@@ -303,7 +304,7 @@ sub handler {
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

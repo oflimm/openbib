@@ -30,9 +30,11 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Log;
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Digest::MD5 qw(md5_hex);
@@ -91,7 +93,7 @@ sub print_warning {
     
     my $stylesheet=get_css_by_browsertype($r);
 
-    my $query=Apache::Request->instance($r);
+    my $query=Apache2::Request->new($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -153,11 +155,11 @@ sub print_warning {
     };
   
     # Dann Ausgabe des neuen Headers
-    print $r->send_http_header("text/html");
+    print $r->content_type("text/html");
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
-        return SERVER_ERROR;
+        return Apache2::Const::SERVER_ERROR;
     };
   
     return;
@@ -173,7 +175,7 @@ sub print_info {
     
     my $stylesheet=get_css_by_browsertype($r);
 
-    my $query=Apache::Request->instance($r);
+    my $query=Apache2::Request->new($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -227,11 +229,11 @@ sub print_info {
     };
   
     # Dann Ausgabe des neuen Headers
-    print $r->send_http_header("text/html");
+    print $r->content_type("text/html");
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
-        return SERVER_ERROR;
+        return Apache2::Const::SERVER_ERROR;
     };
   
     return;
@@ -303,11 +305,11 @@ sub print_page {
     });
   
     # Dann Ausgabe des neuen Headers
-    print $r->send_http_header("text/html");
+    print $r->content_type("text/html");
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
-        return SERVER_ERROR;
+        return Apache2::Const::SERVER_ERROR;
     };
   
     return;

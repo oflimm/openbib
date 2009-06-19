@@ -14,9 +14,9 @@
 -%]
 
 [% FOREACH record IN recordlist.get_records %]
-[%- dbdesc   = dbinfo.dbnames.${record.database}.full -%]
-[%- dburl    = dbinfo.urls.${record.database} -%]
-<tr class="titlerow"><td>[% msg.maketext("Titel") %] [% loop.count %] [% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></td></tr>
+[%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
+[%- dburl    = dbinfo.get('urls').${record.database} -%]
+<tr class="titlerow"><td>[% msg.maketext("Titel") %] [% loop.count %] [% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></td></tr>
 <tr><td>
 [% normset    = record.get_normdata %]
 [% mexnormset = record.get_mexdata  %]

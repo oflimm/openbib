@@ -26,8 +26,8 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a class="active" href="[% config.tags_loc %]?sessionID=[% sessionID %];edit_usertags=1">[% msg.maketext("&Auml;ndern") %]</a></li>
+   <li><a                href="[% config.get('tags_loc') %]?sessionID=[% sessionID %];show_usertags=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% config.get('tags_loc') %]?sessionID=[% sessionID %];edit_usertags=1">[% msg.maketext("&Auml;ndern") %]</a></li>
 </ul>
 
 <div class="content">
@@ -37,7 +37,7 @@
 
 %]
 
-<form <form method="post" action="[% config.tags_loc %]" enctype="application/x-www-form-urlencoded">
+<form <form method="post" action="[% config.get('tags_loc') %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <p />

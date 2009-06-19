@@ -39,7 +39,7 @@
 <div class="content">
 
 <div class="boxedclear">
-<form method="get" action="[% config.admin_loc %]">
+<form method="get" action="[% config.get('admin_loc') %]">
 <input type="hidden" name="sessionID"   value="[% sessionID %]" />
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
 <input type="hidden" name="do_editsubject" value="1" />
@@ -93,7 +93,7 @@ selected="selected"
 
 <p/>
 <div class="boxedclear">
-<form method="get" action="[% config.admin_loc %]">
+<form method="get" action="[% config.get('admin_loc') %]">
 <input type="hidden" name="sessionID"   value="[% sessionID %]" />
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
 <input type="hidden" name="do_editsubject" value="1" />
@@ -140,7 +140,7 @@ selected="selected"
 
 <p/>
 <div class="boxedclear">
-<form method="get" action="[% config.admin_loc %]">
+<form method="get" action="[% config.get('admin_loc') %]">
 <input type="hidden" name="sessionID"   value="[% sessionID %]" />
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
 <input type="hidden" name="do_editsubject" value="1" />

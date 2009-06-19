@@ -23,14 +23,14 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div class="content">
 
 <p />
 <p />
-<form method="get" action="[% config.resultlists_loc %]">
+<form method="get" action="[% config.get('resultlists_loc') %]">
 <input type="hidden" name="offset"     value="[% query.param('offset') %]" />
 <input type="hidden" name="hitrange"   value="[% query.param('hitrange') %]" />
 <input type="hidden" name="action"     value="showall" />

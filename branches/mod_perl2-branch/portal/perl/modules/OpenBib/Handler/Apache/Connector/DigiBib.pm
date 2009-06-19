@@ -39,6 +39,7 @@ use Apache2::Log;
 use Apache2::Request();      # CGI-Handling (or require)
 use Apache2::RequestIO (); # rflush, print
 use Apache2::RequestRec ();
+use APR::Table;
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -158,7 +159,7 @@ sub handler {
 
         # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
         # Client-IP setzen
-        if ($r->headers_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
             $r->connection->remote_ip($1);
         }
         

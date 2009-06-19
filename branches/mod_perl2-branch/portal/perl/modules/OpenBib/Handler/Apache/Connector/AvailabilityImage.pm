@@ -38,6 +38,8 @@ use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
 use Apache2::SubRequest ();
+use APR::Table;
+
 use Business::ISBN;
 use Benchmark;
 use DBI;
@@ -71,7 +73,7 @@ sub handler {
 
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
     my $client_ip="";
-    if ($r->headers_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -137,6 +139,7 @@ sub handler {
                 my $type = $gbs_result->{"ISBN$isbn13"}{preview} || '';
                 
                 if ($type eq "noview"){
+                    #$r->internal_redirect("/images/openbib/no_img.png");
                     $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
                     #$r->internal_redirect("http://$config->{servername}/images/openbib/gbs-noview.png");
                     return Apache2::Const::OK;
@@ -150,6 +153,7 @@ sub handler {
                     return Apache2::Const::OK;
                 }
                 else {
+                    #$r->internal_redirect("/images/openbib/no_img.png");
                     $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
                     #$r->internal_redirect("http://$config->{servername}/images/openbib/gbs.png");
                     return Apache2::Const::OK;

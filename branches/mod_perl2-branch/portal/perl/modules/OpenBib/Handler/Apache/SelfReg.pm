@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::SelfReg
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,6 +38,8 @@ use Apache2::Connection ();
 use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::Request();          # CGI-Handling (or require)
+use APR::Table;
+
 use DBI;
 use Email::Valid;               # EMail-Adressen testen
 use Encode 'decode_utf8';
@@ -90,7 +92,7 @@ sub handler {
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
-    if ($r->headers_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $r->connection->remote_ip($1);
     }
 

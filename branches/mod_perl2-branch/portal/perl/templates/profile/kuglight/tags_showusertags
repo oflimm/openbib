@@ -26,8 +26,8 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">&Uuml;bersicht</a></li>
-   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];edit_usertags=1">&Auml;ndern</a></li>
+   <li><a class="active" href="[% config.get('tags_loc') %]?sessionID=[% sessionID %];show_usertags=1">&Uuml;bersicht</a></li>
+   <li><a                href="[% config.get('tags_loc') %]?sessionID=[% sessionID %];edit_usertags=1">&Auml;ndern</a></li>
 </ul>
 
 <div class="content">
@@ -63,7 +63,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% itemid %];private_tags=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit dem Tag </span><a href="[% config.get('tags_loc') %]?sessionID=[% sessionID %];searchtitoftag=[% itemid %];private_tags=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

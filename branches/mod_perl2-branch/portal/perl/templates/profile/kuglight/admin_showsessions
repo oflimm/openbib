@@ -25,13 +25,13 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Aktive Sessions (lokal)</a></li>
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1;stid=1">Explorer</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1">Aktive Sessions (lokal)</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1;stid=1">Explorer</a></li>
 </ul>
 
 <div class="content">
 
-<form method="get" action="[%config.admin_loc %]">
+<form method="get" action="[%config.get('admin_loc') %]">
 <input type="hidden" name="do_editsession" value="1" />
 <input type="hidden" name="sessionID"      value="[% sessionID %]" />
 
@@ -45,7 +45,7 @@
 
 [% FOREACH session IN sessions %]
 
-<tr><td><a href="[%config.admin_loc %]?sessionID=[% sessionID %];do_editsession=1;do_show=1;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
+<tr><td><a href="[%config.get('admin_loc') %]?sessionID=[% sessionID %];do_editsession=1;do_show=1;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
 
 [% END %]
 

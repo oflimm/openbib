@@ -33,7 +33,7 @@ use utf8;
 use base qw(Apache::Singleton);
 
 use DBI;
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use YAML;
@@ -75,6 +75,12 @@ sub _new_instance {
     $dbinforesult->finish();
 
     return $self;
+}
+
+sub get {
+    my ($self,$key) = @_;
+
+    return $self->{$key};
 }
 
 1;

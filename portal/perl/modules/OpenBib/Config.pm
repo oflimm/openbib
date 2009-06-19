@@ -1516,4 +1516,10 @@ sub get_active_loadbalancertargets {
     return @activetargets;
 }
 
+sub get {
+    my ($self,$key) = @_;
+
+    return $self->{$key};
+}
+
 1;

@@ -36,14 +36,14 @@ function update_fak(yourform, checked, fak) {
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+   <li><a class="active" href="[% config.get('databasechoice_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div class="content">
 
 <p/>
 
-<form method="post" action="[% config.databasechoice_loc %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% config.get('databasechoice_loc') %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="hitrange" value="-1" />
 <input type="hidden" name="view" value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -56,7 +56,7 @@ function update_fak(yourform, checked, fak) {
 <table>
 <tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
 
-[%- FOREACH category = config.orgunits -%]
+[%- FOREACH category = config.get('orgunits') -%]
 [%- is_empty = 1 ;
     FOREACH db = catdb ;
       IF db.category == category.short && db.db != '' ; 

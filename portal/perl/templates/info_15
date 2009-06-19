@@ -25,14 +25,14 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Spezialisierte KUG-Portale") %]">[% msg.maketext("Spezialisierte KUG-Portale") %]</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Spezialisierte KUG-Portale") %]">[% msg.maketext("Spezialisierte KUG-Portale") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <table width="100%">
-<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% msg.maketext("Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an
 Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgew&auml;hlt
@@ -61,12 +61,12 @@ eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.") %]
 <span style="font-size:1.2em">[% msg.maketext("Kataloge dieser Spezial-Sicht") %]:</span>
 <ul>
 [% FOREACH dbname IN active_viewdbs %]
-<li>[% dbinfo.dbnames.${dbname}.short %]</li>
+<li>[% dbinfo.get('dbnames').${dbname}.short %]</li>
 [% END %]
 </ul>
 <p />
 <img style="vertical-align:bottom"
-src="[% config.follow_img %]" alt="[% msg.maketext("Weiterleitungs-Icon") %]"
+src="[% config.get('follow_img') %]" alt="[% msg.maketext("Weiterleitungs-Icon") %]"
 />&nbsp;<a
 href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=[%
 viewname %]" target="_blank"><b>[% msg.maketext("Aufruf dieser Spezial-Sicht") %]</b></a>

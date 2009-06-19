@@ -23,7 +23,7 @@
 <div id="maincontent">
 
       <ul class="tabbingmenu">
-	<li><a class="active" href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print
+	<li><a class="active" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=print
 [%- IF singleidn -%]
 ;singleidn=[% singleidn %]
 [%- END -%]

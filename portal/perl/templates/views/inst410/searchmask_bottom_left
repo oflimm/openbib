@@ -14,7 +14,7 @@
 [% PROCESS common/subtemplate name="newsflash" %]
 
 [% IF viewdbs.size == 1 && config.have_libinfo(viewdbs.first) %]
-<h3><img style="vertical-align:bottom" src="[% config.info_img %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;[% msg.maketext("Steckbrief der Bibliothek") %]</h3>
+<h3><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;[% msg.maketext("Steckbrief der Bibliothek") %]</h3>
 
 [%- libinfo = config.get_libinfo(viewdbs.first); -%]
 
@@ -48,7 +48,7 @@ FOREACH category IN categories;
         # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
         # kodiert.
         thiscategory = category ;
-        IF config.categorymapping.${libinfo.database}.$category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
           thiscategory = "${category}-${record.database}" ;
         END;
 -%]
@@ -56,15 +56,15 @@ FOREACH category IN categories;
 [%-   END ;
 END ;-%]
 </table>
-[%-   IF dbinfo.use_libinfo.${viewdbs.first} %]
-[<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% viewdbs.first %];stid=60">
+[%-   IF dbinfo.get('use_libinfo').${viewdbs.first} %]
+[<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% viewdbs.first %];stid=60">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]
 [% msg.maketext("Mehr") %]</a>]
 [% END %]
 
-<h3><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="[% msg.maketext("Tip: Digitaler Kartenkatalog") %]" />&nbsp;[% msg.maketext("Weitere Best&auml;nde im Digitalen Kartenkatalog") %]</h3>
+<h3><img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="[% msg.maketext("Tip: Digitaler Kartenkatalog") %]" />&nbsp;[% msg.maketext("Weitere Best&auml;nde im Digitalen Kartenkatalog") %]</h3>
 <p>
 Sie finden weitere Best&auml;nde dieses Katalogs in dem
 zugeh&ouml;rigen <a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=410i" target="_blank">digitalisierten Karten-Katalog der Linguistik - Abteilung Phonetik</a>.

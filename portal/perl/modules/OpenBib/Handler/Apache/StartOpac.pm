@@ -40,6 +40,8 @@ use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
 use Apache2::SubRequest (); # internal_redirect
+use APR::Table;
+
 use DBI;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
@@ -97,7 +99,7 @@ sub handler {
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
-    if ($r->headers_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $r->connection->remote_ip($1);
     }
     

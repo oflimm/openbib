@@ -22,30 +22,30 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
-[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.litlists %]   <li><a [% IF active == 41 %]class="active"[% END %] href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.get('litlists') %]   <li><a [% IF active == 41 %]class="active"[% END %] href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 </ul>
 
 <div class="content">
 
 <div id="infobox">
 <table width="100%">
-<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% msg.maketext("W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
 <b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten
 Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,
 Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</b> in der Form einer
 Wortwolke ([_1]&nbsp;[_2]) zu erhalten. Je mehr Titel mit
-einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.","<img src=\"${config.wikipedia_img}\" alt=\"Mashup mit
+einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.","<img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit
 Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>") %]
 </td></tr>
 </table>
@@ -57,11 +57,11 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
 
 [%
   catdb     = config.get_infomatrix_of_active_databases({session => session, view => view});
-  maxcolumn = config.databasechoice_maxcolumn;
-  colspan   = config.databasechoice_maxcolumn * 3;
+  maxcolumn = config.get('databasechoice_maxcolumn');
+  colspan   = config.get('databasechoice_maxcolumn') * 3;
 %]
 <table>
-[%- FOREACH category = config.orgunits -%]
+[%- FOREACH category = config.get('orgunits') -%]
   [%- IF category.nr >= 1 -%]
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
   [%- END -%]
@@ -70,11 +70,11 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
   [%- FOREACH db = catdb -%]
     [%- IF db.category == category.short -%]
       [%- IF db.column == 1 -%]
-<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% db.db %];stid=14" title="Schlagworte">[% db.name %]</a></td>
+<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% db.db %];stid=14" title="Schlagworte">[% db.name %]</a></td>
       [%- END -%]
       [%- IF db.column > 1 && db.column < maxcolumn -%]
         [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% db.db %];stid=14" title="Schlagworte">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% db.db %];stid=14" title="Schlagworte">[% db.name %]</a></td>
         [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
         [%- END -%]
@@ -84,7 +84,7 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
         [%- IF db.column != 1 -%]
 
           [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% db.db %];stid=14" title="Schlagworte">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% db.db %];stid=14" title="Schlagworte">[% db.name %]</a></td>
           [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
           [%- END -%]

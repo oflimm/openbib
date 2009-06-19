@@ -16,8 +16,8 @@
 
 [%- libinfo = config.get_libinfo(id); -%]
 
-[%- IF config.google_maps_api_key && libinfo.${"I1000"}.first.content -%]
-<script type="text/javascript" src="http://www.google.com/jsapi?key=[% config.google_maps_api_key %]"></script>
+[%- IF config.get('google_maps_api_key') && libinfo.${"I1000"}.first.content -%]
+<script type="text/javascript" src="http://www.google.com/jsapi?key=[% config.get('google_maps_api_key') %]"></script>
 
 <script type="text/javascript">
   google.load("maps", "2");
@@ -39,10 +39,10 @@
 
 <div id="maincontent">
 
-[% IF config.lang.size > 1 %]
+[% IF config.get('lang').size > 1 %]
 <div id="langchoice">
-[%   FOREACH l IN config.lang %]
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -77,7 +77,7 @@ FOREACH category IN categories;
         # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
         # kodiert.
         thiscategory = category ;
-        IF config.categorymapping.${libinfo.database}.$category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
           thiscategory = "${category}-${record.database}" ;
         END;
 -%]

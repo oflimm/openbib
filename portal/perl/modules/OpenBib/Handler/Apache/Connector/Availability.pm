@@ -40,6 +40,7 @@ use Apache2::RequestRec ();
 use Apache2::Request ();
 use Apache2::URI ();
 use APR::URI ();
+use APR::Table ;
 
 use Business::ISBN;
 use Benchmark;
@@ -67,7 +68,7 @@ sub handler {
     
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
     my $client_ip="";
-    if ($r->headers_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 

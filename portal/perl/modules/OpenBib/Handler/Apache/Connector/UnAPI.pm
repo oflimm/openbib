@@ -124,14 +124,14 @@ sub handler {
             
             # Dann Ausgabe des neuen Headers
             if ($format_info{$format}){
-                print $r->content_type($format_info{$format});
+                $r->content_type($format_info{$format});
             }
             else {
-                print $r->content_type('application/xml');
+                $r->content_type('application/xml');
             }
             
             $template->process($config->{$templatename}, $ttdata) || do {
-                $r->log_reason($template->error(), $r->filename);
+                $r->log_error($template->error(), $r->filename);
                 return Apache2::Const::SERVER_ERROR;
             };
             
@@ -160,10 +160,10 @@ sub handler {
         });
         
         # Dann Ausgabe des neuen Headers
-        print $r->content_type("application/xml");
+        $r->content_type("application/xml");
   
         $template->process($templatename, $ttdata) || do {
-            $r->log_reason($template->error(), $r->filename);
+            $r->log_error($template->error(), $r->filename);
             return Apache2::Const::SERVER_ERROR;
         };
 

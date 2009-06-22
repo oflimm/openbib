@@ -161,7 +161,7 @@ sub handler {
         });
 
         $maintemplate->process($config->{tt_mailpassword_mail_main_tname}, $mainttdata ) || do {
-            $r->log_reason($maintemplate->error(), $r->filename);
+            $r->log_error($maintemplate->error(), $r->filename);
             return Apache2::Const::SERVER_ERROR;
         };
 

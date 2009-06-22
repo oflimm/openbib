@@ -299,7 +299,7 @@ sub handler {
             $logger->debug($bibsonomy_uri);
             
             $r->content_type('text/html');
-            $r->headers_out("Location" => $bibsonomy_uri);
+            $r->headers_out->add("Location" => $bibsonomy_uri);
             
             return Apache2::Const::REDIRECT;
         }

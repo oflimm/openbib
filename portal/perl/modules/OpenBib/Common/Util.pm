@@ -155,7 +155,7 @@ sub print_warning {
     };
   
     # Dann Ausgabe des neuen Headers
-    print $r->content_type("text/html");
+    $r->content_type("text/html");
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
@@ -229,7 +229,7 @@ sub print_info {
     };
   
     # Dann Ausgabe des neuen Headers
-    print $r->content_type("text/html");
+    $r->content_type("text/html");
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
@@ -305,7 +305,7 @@ sub print_page {
     });
   
     # Dann Ausgabe des neuen Headers
-    print $r->content_type("text/html");
+    $r->content_type("text/html");
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);

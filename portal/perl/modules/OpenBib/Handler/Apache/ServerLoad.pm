@@ -36,6 +36,7 @@ use utf8;
 
 use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
+use Apache2::RequestIO  ();
 use Apache2::RequestRec ();
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
@@ -61,12 +62,12 @@ sub handler {
         $sessiondbh->disconnect();
     }
 
-    print $r->content_type("text/plain");
-
-    print "SessionDB: $sessiondbstatus\n";
+    $r->content_type("text/plain");
+    
+    $r->print("SessionDB: $sessiondbstatus\n");
 
     open(LOADAVG,"/proc/loadavg") or $logger->error_die($DBI::errstr);
-    print "Load: ".<LOADAVG>;
+    $r->print("Load: ".<LOADAVG>);
     close(LOADAVG);
 
     return Apache2::Const::OK;

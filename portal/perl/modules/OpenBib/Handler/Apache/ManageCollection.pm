@@ -37,6 +37,7 @@ use utf8;
 use Apache2::Const -compile => qw(:common M_GET);
 use Apache2::Reload;
 use Apache2::Request ();
+use Apache2::RequestIO (); # print, rflush
 use Apache2::SubRequest (); # internal_redirect
 use Apache2::URI ();
 use APR::URI ();
@@ -193,9 +194,9 @@ sub handler {
             }
 
             # Start der Ausgabe mit korrektem Header
-            print $r->content_type("text/plain");
+            $r->content_type("text/plain");
             
-            print $anzahl;
+            $r->print($anzahl);
 
             return Apache2::Const::OK;
         }
@@ -380,13 +381,13 @@ sub handler {
             };
 
             if ($type eq "HTML") {
-                print $r->headers_out("Content-Type" => "text/html");
-                print $r->headers_out("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
+                $r->content_type('text/html');
+                $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
                 OpenBib::Common::Util::print_page($config->{tt_managecollection_save_html_tname},$ttdata,$r);
             }
             else {
-                print $r->headers_out("Content-Type" => "text/plain");
-                print $r->headers_out("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
+                $r->content_type('text/plain');
+                $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
                 OpenBib::Common::Util::print_page($config->{tt_managecollection_save_plain_tname},$ttdata,$r);
             }
             return Apache2::Const::OK;

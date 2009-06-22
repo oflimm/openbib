@@ -197,7 +197,7 @@ sub handler {
         });
 
         # Start der Ausgabe mit korrektem Header
-        print $r->content_type("text/html");
+        $r->content_type("text/html");
 
         $template->process($config->{tt_connector_locationmark_titlist_tname}, $ttdata) || do {
 #        $template->process("lbs_systematik", $ttdata) || do {

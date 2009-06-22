@@ -208,7 +208,7 @@ sub handler {
         my $fallbacksb = "";
         
         # Start der Ausgabe mit korrektem Header
-        print $r->content_type("text/html");
+        $r->content_type("text/html");
         
         my @ergebnisse;
         my $recordlist;
@@ -466,7 +466,7 @@ sub handler {
         };
         
         $starttemplate->process($starttemplatename, $startttdata) || do {
-            $r->log_reason($starttemplate->error(), $r->filename);
+            $r->log_error($starttemplate->error(), $r->filename);
             return Apache2::Const::SERVER_ERROR;
         };
         
@@ -516,7 +516,7 @@ sub handler {
         };
         
         $itemtemplate->process($itemtemplatename, $ttdata) || do {
-            $r->log_reason($itemtemplate->error(), $r->filename);
+            $r->log_error($itemtemplate->error(), $r->filename);
             return Apache2::Const::SERVER_ERROR;
         };
         
@@ -548,14 +548,14 @@ sub handler {
         };
         
         $endtemplate->process($endtemplatename, $endttdata) || do {
-            $r->log_reason($endtemplate->error(), $r->filename);
+            $r->log_error($endtemplate->error(), $r->filename);
             return Apache2::Const::SERVER_ERROR;
         };
         
     }
     elsif ($tosearch eq "Langanzeige"){
         
-        print $r->content_type("text/html");
+        $r->content_type("text/html");
         
         my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
@@ -640,7 +640,7 @@ sub handler {
         };
         
         $template->process($templatename, $ttdata) || do {
-            $r->log_reason($template->error(), $r->filename);
+            $r->log_error($template->error(), $r->filename);
             return Apache2::Const::SERVER_ERROR;
         };
   } 

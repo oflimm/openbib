@@ -302,10 +302,10 @@ sub handler {
     });
   
     # Dann Ausgabe des neuen Headers
-    print $r->content_type("application/xml");
+    $r->content_type("application/xml");
   
     $template->process($config->{tt_connector_availability_tname}, $ttdata) || do {
-        $r->log_reason($template->error(), $r->filename);
+        $r->log_error($template->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
     };
 

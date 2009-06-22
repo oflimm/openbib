@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::EZB.pm
 #
-#  Copyright 2008 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2008-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -299,7 +299,7 @@ sub handler {
 
             if ($journalreadme_ref->{location}){
                 $r->content_type('text/html');
-                $r->headers_out("Location" => $journalreadme_ref->{location});
+                $r->headers_out->add("Location" => $journalreadme_ref->{location});
                 
                 return Apache2::Const::REDIRECT;
             }

@@ -36,7 +36,7 @@ no warnings 'redefine';
 use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::Request ();
-use Apache2::RequestIO (); # print
+use Apache2::RequestIO (); # print, rflush
 use Apache2::RequestRec ();
 use Benchmark;
 use DBI;
@@ -120,7 +120,7 @@ sub handler {
         $logger->debug("Found corrections for $word in language $aspell_language: ".join(',',@aspell_suggestions));
     }
 
-    print $r->content_type("text/plain");
+    $r->content_type("text/plain");
     
     if (@aspell_suggestions){
         $r->print(join("\n",map {decode_utf8($_)} @aspell_suggestions));

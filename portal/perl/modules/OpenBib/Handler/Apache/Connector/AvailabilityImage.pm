@@ -33,11 +33,10 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
+use Apache2::Const -compile => qw(:common REDIRECT);
 use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
-use Apache2::SubRequest ();
 use APR::Table;
 
 use Business::ISBN;
@@ -85,6 +84,7 @@ sub handler {
     if ($action eq "lookup"){
 
         my $isbn13="";
+        my $isbn10="";
         
         if ($isbn){
             # Normierung auf ISBN13
@@ -92,12 +92,18 @@ sub handler {
             
             if (defined $isbnXX && $isbnXX->is_valid){
                 $isbn13 = $isbnXX->as_isbn13->as_string;
+                $isbn10 = $isbnXX->as_isbn10->as_string;
             }
             else {
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-                return Apache2::Const::OK;
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
             
+            $isbn13 = OpenBib::Common::Util::grundform({
+                category => '0540',
+                content  => $isbn,
+            });
+
             $isbn13 = OpenBib::Common::Util::grundform({
                 category => '0540',
                 content  => $isbn,
@@ -118,8 +124,8 @@ sub handler {
                 $logger->debug("Error-Code:".$response->code());
                 $logger->debug("Fehlermeldung:".$response->message());
 
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
-                return Apache2::Const::OK;                
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
             else {
                 $logger->info("ISBN $isbn13 found in Google BookSearch");
@@ -136,27 +142,27 @@ sub handler {
                 
                 $logger->debug("GBS".YAML::Dump($gbs_result));
                 
-                my $type = $gbs_result->{"ISBN$isbn13"}{preview} || '';
+                my $type = $gbs_result->{"ISBN$isbn13"}{preview} || $gbs_result->{"ISBN$isbn10"}{preview} || '';
                 
                 if ($type eq "noview"){
-                    #$r->internal_redirect("/images/openbib/no_img.png");
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-                    #$r->internal_redirect("http://$config->{servername}/images/openbib/gbs-noview.png");
-                    return Apache2::Const::OK;
+                    $logger->debug("GBS: noview");
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                    return Apache2::Const::REDIRECT;
                 }
                 elsif ($type eq "partial"){
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/gbs-partial.png");
-                    return Apache2::Const::OK;
+                    $logger->debug("GBS: partial");
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/gbs-partial.png");
+                    return Apache2::Const::REDIRECT;
                 }
                 elsif ($type eq "full"){
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/gbs-full.png");
-                    return Apache2::Const::OK;
+                    $logger->debug("GBS: full");
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/gbs-full.png");
+                    return Apache2::Const::REDIRECT;
                 }
                 else {
-                    #$r->internal_redirect("/images/openbib/no_img.png");
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-                    #$r->internal_redirect("http://$config->{servername}/images/openbib/gbs.png");
-                    return Apache2::Const::OK;
+                    $logger->debug("GBS: other");
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                    return Apache2::Const::REDIRECT;
                 }
             }
         }
@@ -174,17 +180,17 @@ sub handler {
                 $logger->debug("Error-Code:".$response->code());
                 $logger->debug("Fehlermeldung:".$response->message());
 
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
-                return Apache2::Const::OK;                
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
             else {
                 $logger->info("Bibkey $bibkey found in BibSonomy");
                 $logger->debug($response->content());
                 
                 my $content = $response->content();
-                if ($content=~/rdf:Description/){                    
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/bibsonomy_available.png");
-                    return Apache2::Const::OK;
+                if ($content=~/rdf:Description/){
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/bibsonomy_available.png");
+                    return Apache2::Const::REDIRECT;
                 }
             }
         }
@@ -201,8 +207,8 @@ sub handler {
 
             if ($result->{ebcount} > 0){
                 $logger->info("ISBN $isbn13 found for USB Ebooks");
-                $r->internal_redirect("http://$config->{servername}/images/openbib/usb_ebook.png");
-                return Apache2::Const::OK;
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/usb_ebook.png");
+                return Apache2::Const::REDIRECT;
             }
             
         }
@@ -220,8 +226,8 @@ sub handler {
                 $logger->debug("Error-Code:".$response->code());
                 $logger->debug("Fehlermeldung:".$response->message());
 
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
-                return Apache2::Const::OK;                
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
             else {
                 $logger->info("ISBN $isbn found in OpenLibrary");
@@ -254,8 +260,8 @@ sub handler {
                    $logger->debug("Error-Code:".$response->code());
                    $logger->debug("Fehlermeldung:".$response->message());
 
-                   $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
-                   return Apache2::Const::OK;                
+                   $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                   return Apache2::Const::REDIRECT;
                 }
                 else {
                     my ($json_result) = $response->content();
@@ -267,13 +273,15 @@ sub handler {
                     $logger->debug("OL OBJ Data".YAML::Dump($ol_result));
                 }
 
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-                return Apache2::Const::OK;
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
         }
     }
-    
-    $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
+
+    $logger->debug("Default: no image");
+    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+    return Apache2::Const::REDIRECT;
     
     return Apache2::Const::OK;
 }

@@ -118,7 +118,7 @@ sub handler {
 
     $logger->debug("LiveSearch for word $word and type $type");
     
-    print $r->content_type("text/plain");
+    $r->content_type("text/plain");
     
     if (@livesearch_suggestions){
         $r->print(join("\n",map {decode_utf8($_)} @livesearch_suggestions));

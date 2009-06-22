@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Redirect
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -129,8 +129,8 @@ sub handler {
         });
 
         $r->content_type('text/html');
-        $r->headers_out("Location" => $url);
-        
+        $r->headers_out->add("Location" => $url);
+
         return Apache2::Const::REDIRECT;
     }
     else {

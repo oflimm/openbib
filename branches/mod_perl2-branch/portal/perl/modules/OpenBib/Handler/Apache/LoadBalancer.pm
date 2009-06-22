@@ -100,11 +100,10 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    $r->headers_out("Location" => "http://$bestserver$config->{startopac_loc}?$urlquery");
-    $r->status(Apache2::Const::REDIRECT);
-    $r->content_type;
-  
-    return Apache2::Const::OK;
+    $r->content_type('text/html');
+    $r->headers_out->add("Location" => "http://$bestserver$config->{startopac_loc}?$urlquery");
+
+    return Apache2::Const::REDIRECT;
 }
 
 1;

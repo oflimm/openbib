@@ -37,6 +37,7 @@ use Apache2::Const -compile => qw(:common);
 use Apache2::Log;
 use Apache2::Reload;
 use Apache2::Request ();
+use Apache2::RequestIO (); # print, rflush
 use Apache2::RequestRec ();
 use Apache2::URI ();
 use APR::URI ();
@@ -269,7 +270,7 @@ sub handler {
             };
             
             $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                $r->log_reason($itemtemplate->error(), $r->filename);
+                $r->log_error($itemtemplate->error(), $r->filename);
                 return Apache2::Const::SERVER_ERROR;
             };
             
@@ -297,9 +298,9 @@ sub handler {
         $logger->debug("Verwende Eintrag aus RSS-Cache");
     }
     #print $r->content_type("application/rdf+xml");
-    print $r->content_type("application/xml");
+    $r->content_type("application/xml");
 
-    print $rss_content;
+    $r->print($rss_content);
 
     # Aufruf des Feeds loggen
     $session->log_event({

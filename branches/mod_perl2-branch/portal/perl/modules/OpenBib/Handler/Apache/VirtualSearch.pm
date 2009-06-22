@@ -803,7 +803,7 @@ sub handler {
                 });
 
                 # Start der Ausgabe mit korrektem Header
-                print $r->content_type("text/html");
+                $r->content_type("text/html");
                 
                 # Es kann kein Datenbankabhaengiges Template geben
                 
@@ -862,7 +862,7 @@ sub handler {
                 };
                 
                 $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                    $r->log_reason($itemtemplate->error(), $r->filename);
+                    $r->log_error($itemtemplate->error(), $r->filename);
                     return Apache2::Const::SERVER_ERROR;
                 };
                 
@@ -887,7 +887,7 @@ sub handler {
         });
         
         # Start der Ausgabe mit korrektem Header
-        print $r->content_type("text/html");
+        $r->content_type("text/html");
         
         # Ausgabe des ersten HTML-Bereichs
         my $starttemplate = Template->new({
@@ -930,7 +930,7 @@ sub handler {
         };
         
         $starttemplate->process($starttemplatename, $startttdata) || do {
-            $r->log_reason($starttemplate->error(), $r->filename);
+            $r->log_error($starttemplate->error(), $r->filename);
             return Apache2::Const::SERVER_ERROR;
         };
         
@@ -1042,7 +1042,7 @@ sub handler {
                     };
                     
                     $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                        $r->log_reason($itemtemplate->error(), $r->filename);
+                        $r->log_error($itemtemplate->error(), $r->filename);
                         return Apache2::Const::SERVER_ERROR;
                     };
                     
@@ -1233,7 +1233,7 @@ sub handler {
                             };
                         
                             $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                                $r->log_reason($itemtemplate->error(), $r->filename);
+                                $r->log_error($itemtemplate->error(), $r->filename);
                                 return Apache2::Const::SERVER_ERROR;
                             };
                         
@@ -1344,7 +1344,7 @@ sub handler {
                         };
 
                         $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                            $r->log_reason($itemtemplate->error(), $r->filename);
+                            $r->log_error($itemtemplate->error(), $r->filename);
                             return Apache2::Const::SERVER_ERROR;
                         };
 
@@ -1418,7 +1418,7 @@ sub handler {
         };
         
         $endtemplate->process($endtemplatename, $endttdata) || do {
-            $r->log_reason($endtemplate->error(), $r->filename);
+            $r->log_error($endtemplate->error(), $r->filename);
             return Apache2::Const::SERVER_ERROR;
         };
         

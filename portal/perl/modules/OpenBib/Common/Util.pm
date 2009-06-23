@@ -341,9 +341,8 @@ sub grundform {
     if ($category eq '0002'){
         if ($content =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/){
             $content=$3.$2.$1;
+            return $content;
         }
-
-	return $content;
     }
     
     # ISBN filtern

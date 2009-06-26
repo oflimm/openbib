@@ -882,7 +882,15 @@ sub to_xapian_querystring {
 
             # Inhalte von @searchterms mit Suchprefix bestuecken
             foreach my $searchterm (@searchterms){
-                $searchterm=$prefix_ref->{$field}.$searchterm if (exists $prefix_ref->{$field});
+                if (exists $prefix_ref->{$field}){
+                    $searchterm=$prefix_ref->{$field}.$searchterm;
+                }
+                # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
+                # Nochmal explizites Setzen von +, weil sonst Wildcards innerhalb mehrerer
+                # Suchterme ignoriert werden.
+                elsif ($field eq "fs") {
+                    $searchterm="+".$searchterm if ($searchterm=~/^\w/);
+                }
             }
             $searchtermstring = join(' ',@searchterms);
             $xapianquerystring = "$searchtermop($searchtermstring)";

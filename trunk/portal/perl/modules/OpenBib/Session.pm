@@ -952,6 +952,9 @@ sub clear_data {
     }
     
     # dann Sessiondaten loeschen
+    $idnresult=$dbh->prepare("delete from eventlog where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
     $idnresult=$dbh->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
   

@@ -690,6 +690,16 @@ sub handler {
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_search_showswtset_tname},$ttdata,$r);
+
+        $session->log_event({
+            type      => 14,
+            content   => {
+                id       => $searchsingleswt,
+                database => $database,
+            },
+            serialize => 1,
+        });
+
         return Apache2::Const::OK;
     }
   
@@ -715,6 +725,16 @@ sub handler {
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_search_showkorset_tname},$ttdata,$r);
+
+        $session->log_event({
+            type      => 12,
+            content   => {
+                id       => $searchsinglekor,
+                database => $database,
+            },
+            serialize => 1,
+        });
+
         return Apache2::Const::OK;
     }
     
@@ -740,6 +760,16 @@ sub handler {
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_search_shownotset_tname},$ttdata,$r);
+
+        $session->log_event({
+            type      => 13,
+            content   => {
+                id       => $searchsinglenot,
+                database => $database,
+            },
+            serialize => 1,
+        });
+
         return Apache2::Const::OK;
     }
   
@@ -765,6 +795,16 @@ sub handler {
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_search_showautset_tname},$ttdata,$r);
+
+        $session->log_event({
+            type      => 11,
+            content   => {
+                id       => $searchsingleaut,
+                database => $database,
+            },
+            serialize => 1,
+        });
+
         return Apache2::Const::OK;
     }
     

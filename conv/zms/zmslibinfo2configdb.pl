@@ -122,8 +122,12 @@ foreach my $katalog_ref (@$dboverview_ref){
         my $content  = $inhalt[$i+1];
         
         $category =~s{\</*p\>}{}g;
+        $category =~s{\<br.*?>}{}g;
+        $category =~s{^\s+}{}g;
+        $content =~s{\<br.*?>}{}g;
         $content =~s{\</p>\<p\>}{<br/>}g;
         $content =~s{\</*p\>}{}g;
+
         $num_category = $category_map_ref->{$category};
 
         if ($num_category eq "120"){
@@ -144,7 +148,7 @@ foreach my $katalog_ref (@$dboverview_ref){
         else {
             $request->execute($dbname,$num_category,$content);
         }
-        print "$category / $num_category : $content\n";
+        print ":$category: / :$num_category: - :$content:\n";
     }
 }
 

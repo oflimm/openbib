@@ -401,7 +401,7 @@ $(document).ready(function(){
      titlecount = titlecount + thisbklist.${classification};
   END ;
 %]
-<li><a style="font-weight:bold;font-size:1.2em;" href="[% config.info_loc %]?sessionID=[% sessionID %];stid=54;id=[% subject.id %]">[% subject.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,subject.litlistcount) %])</li>
+<li><a style="font-weight:bold;font-size:1.2em;" href="[% config.info_loc %]?sessionID=[% sessionID %];stid=54;id=[% subject.id %]">[% subject.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,subject.litlistcount.public) %])</li>
 [% END %]
 </ul>
 </div><!-- End Themengebiete -->

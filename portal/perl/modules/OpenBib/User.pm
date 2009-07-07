@@ -2736,16 +2736,22 @@ sub get_number_of_litlists_by_subject {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error($DBI::errstr);
 
-    return [] if (!defined $dbh);
+    return { all => 0, public => 0, private => 0} if (!defined $dbh);
 
-    my $request=$dbh->prepare("select count(distinct litlistid) as llcount from litlist2subject where subjectid=?") or $logger->error($DBI::errstr);
+    my $count_ref={};
+    my $request=$dbh->prepare("select count(distinct l2s.litlistid) as llcount from litlist2subject as l2s, litlists as l where l2s.litlistid=l.id and l2s.subjectid=? and l.type=1") or $logger->error($DBI::errstr);
     $request->execute($subjectid) or $logger->error($DBI::errstr);
-
-    my $subjects_ref = [];
-    
     my $result=$request->fetchrow_hashref;
+    $count_ref->{public} = $result->{llcount};
 
-    return $result->{llcount};
+    $request=$dbh->prepare("select count(distinct litlistid) as llcount from litlist2subject where subjectid=?") or $logger->error($DBI::errstr);
+    $request->execute($subjectid) or $logger->error($DBI::errstr);
+    $result=$request->fetchrow_hashref;
+    $count_ref->{all}=$result->{llcount};
+
+    $count_ref->{private} = $count_ref->{all} - $count_ref->{public};
+    
+    return $count_ref;
 }
 
 sub set_subjects_of_litlist {

@@ -2739,12 +2739,12 @@ sub get_number_of_litlists_by_subject {
     return { all => 0, public => 0, private => 0} if (!defined $dbh);
 
     my $count_ref={};
-    my $request=$dbh->prepare("select count(distinct l2s.litlistid) as llcount from litlist2subject as l2s, litlists as l where l2s.litlistid=l.id and l2s.subjectid=? and l.type=1") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select count(distinct l2s.litlistid) as llcount from litlist2subject as l2s, litlists as l where l2s.litlistid=l.id and l2s.subjectid=? and l.type=1 and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)") or $logger->error($DBI::errstr);
     $request->execute($subjectid) or $logger->error($DBI::errstr);
     my $result=$request->fetchrow_hashref;
     $count_ref->{public} = $result->{llcount};
 
-    $request=$dbh->prepare("select count(distinct litlistid) as llcount from litlist2subject where subjectid=?") or $logger->error($DBI::errstr);
+    $request=$dbh->prepare("select count(distinct litlistid) as llcount from litlist2subject as l2s where subjectid=? and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)") or $logger->error($DBI::errstr);
     $request->execute($subjectid) or $logger->error($DBI::errstr);
     $result=$request->fetchrow_hashref;
     $count_ref->{all}=$result->{llcount};

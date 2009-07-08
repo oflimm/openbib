@@ -36,7 +36,7 @@
 [% IF showsubjects.defined %]
 <ul class="subjectlist">
 [%- FOREACH subject IN subjects -%]
-<li><a <a href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %]&action=show_public_lists;subjectid=[% subject.id %]">[% subject.name %]</a> ([% msg.maketext("[_1] Listen",subject.litlistcount) %])</li>
+<li><a <a href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %]&action=show_public_lists;subjectid=[% subject.id %]">[% subject.name %]</a> ([% msg.maketext("[_1] Listen",subject.litlistcount.public) %])</li>
 [% END %]
 </ul>
 [% ELSE %]

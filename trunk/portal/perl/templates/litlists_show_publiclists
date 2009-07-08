@@ -43,7 +43,7 @@
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul class="subjectlist">
 [%- FOREACH thisitem IN public_litlists -%]
-<li><a <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount.public) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><a <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% END %]
 </ul>
 [% END %]

@@ -52,7 +52,7 @@
      titlecount = titlecount + thisbklist.${classification};
   END ;
 %]
-<li><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=54;id=[% subject.id %]">[% subject.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,subject.litlistcount) %])</li>
+<li><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=54;id=[% subject.id %]">[% subject.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,subject.litlistcount.public) %])</li>
 [% END %]
 </ul>
 

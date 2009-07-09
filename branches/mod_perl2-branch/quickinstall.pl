@@ -3,7 +3,7 @@
 #
 #  quickinstall.pl
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -45,7 +45,7 @@ my $documentroot = "/var/www";
 # 2) Wo ist das conf.d-Verzeichnis Ihres Web-Servers
 #    z.B. /etc/apache/conf.d  OHNE abschliessenden /
 
-my $confd        = "/etc/apache-perl/conf.d";
+my $confd        = "/etc/apache2/conf.d";
 
 # 3) Nach erfolgter Anpassung der vorangegangenen Einstellunge
 #    bitte mit 'touch' die Datei .changed_config erzeugen

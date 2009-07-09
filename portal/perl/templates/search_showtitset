@@ -53,6 +53,9 @@
 <a href="[% config.get('redirect_loc') %]/[% sessionID %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
+<p>
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/511/http://www.unifloh.de/koeln/search?type=buy&q=[% isbn %]&x=0&y=0" target="_blank" title="[% msg.maketext("Unifloh") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% isbn %];target=unifloh" alt="[% msg.maketext("Bei Unifloh vorhanden?") %]" border="0" /></a><br/>
+</p>
 </div><!-- End Images -->
 
 <div class="categories"><!-- Begin Categories -->
@@ -363,6 +366,7 @@ END;
 [% IF config.get('reviews') %]
 <li><a href="#reviews"><span>[% msg.maketext("Bewertungen/Rezensionen") %]</span></a></li>
 [% END %]
+<li><a href="#usedbooks"><span>[% msg.maketext("Gebraucht kaufen") %]</span></a></li>
 </ul>
 [% END %]
 
@@ -473,6 +477,7 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 
 [%   END %]
 </div><!-- End: Reviews -->
+
 [% END %]
 
 <!-- End: Reviews -->
@@ -516,6 +521,20 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 </ol>
 </div><!-- End: Similar Records -->
 [% END %]
+
+<h2 class="nojs_show">[% msg.maketext("Gebraucht kaufen") %]</h2>
+
+<div id="usedbooks"><!-- Begin Gebraucht kaufen -->
+
+<p>
+[% msg.maketext("Überprüfen Sie, ob dieses Buch an der Universität gebraucht zum Kauf angeboten wird:") %]
+</p>
+
+<p>
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/511/http://www.unifloh.de/koeln/search?type=buy&q=[% isbn %]&x=0&y=0">[% msg.maketext("Weiter") %]</a>
+</p>
+
+</div><!-- End Gebraucht kaufen -->
 
 </div><!-- End: Additional Title Info -->
 </div><!-- End: Bottom Info -->

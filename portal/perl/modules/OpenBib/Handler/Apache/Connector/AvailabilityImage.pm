@@ -46,6 +46,7 @@ use JSON;
 use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use Template;
+use XML::LibXML;
 use YAML;
 
 use OpenBib::Config;
@@ -101,12 +102,12 @@ sub handler {
             
             $isbn13 = OpenBib::Common::Util::grundform({
                 category => '0540',
-                content  => $isbn,
+                content  => $isbn13,
             });
 
-            $isbn13 = OpenBib::Common::Util::grundform({
+            $isbn10 = OpenBib::Common::Util::grundform({
                 category => '0540',
-                content  => $isbn,
+                content  => $isbn10,
             });
         }
         
@@ -212,7 +213,7 @@ sub handler {
             }
             
         }
-        if ($target eq "ol" && $isbn){
+        elsif ($target eq "ol" && $isbn){
             my $ua       = LWP::UserAgent->new();
             $ua->agent($useragent);
             $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
@@ -277,6 +278,40 @@ sub handler {
                 return Apache2::Const::REDIRECT;
             }
         }
+        elsif ($target eq "unifloh" && $isbn13){
+            my $ua       = LWP::UserAgent->new();
+            $ua->agent($useragent);
+            $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
+            my $url      ="http://www.unifloh.de/apicall?a=4f4ad14a8a543ed4ec90e2a136e5fbcc&uni_tag=koeln&method=getoffers&isbn=$isbn13";
+            $logger->debug("Querying Unifloh with $url");
+            my $request  = HTTP::Request->new('GET', $url);
+            my $response = $ua->request($request);
+
+            if ( $response->is_error() ) {
+                $logger->info("Error querying Unifloh");
+                $logger->debug("Error-Code:".$response->code());
+                $logger->debug("Fehlermeldung:".$response->message());
+
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
+            }
+            else {
+                $logger->debug($response->content());
+                
+                my $content = $response->content();
+                if ($content=~/<numlocal>(\d+)<\/numlocal>/){
+                    my $localitems=$1;
+                    if ($localitems > 0){
+                        $r->headers_out->add("Location" => "http://www.unifloh.de/template_new/images/logo2.gif");
+                    }
+                    else {
+                        $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                    }
+                    return Apache2::Const::REDIRECT;
+                }
+            }
+        }
+
     }
 
     $logger->debug("Default: no image");

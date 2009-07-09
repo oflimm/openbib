@@ -69,7 +69,7 @@ if (!$lang || !$filename || !exists $lang2cat_ref->{$lang}){
    print_help();
 }
 
-my $config = OpenBib::Config->instance;
+my $config = new OpenBib::Config;
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/wikipedia-enrichmnt-$lang.log";
 
@@ -96,27 +96,24 @@ my $enrichdbh
     or $logger->error_die($DBI::errstr);
 
 # Zuerst alle Anreicherungen loeschen
-# Origin 30 = Wikipedia
+# Origin 30 = Wikipedia-DE
 my $deleterequest = $enrichdbh->prepare("delete from normdata where category = ? and origin=30");
-$deleterequest->execute($lang2cat_ref->{$lang});
 my $insertrequest = $enrichdbh->prepare("insert into normdata values (?,30,?,?,?)");
 
-$isbn_ref = {};
-
 if ($importyml){
-    $logger->info("Einladen der Daten aus YAML-Datei $filename");
-    $isbn_ref = YAML::LoadFile($filename);
+    YAML::LoadFile($filename);
 }
 else {
+   $deleterequest->execute($lang2cat_ref->{$lang});
 
    my $twig= XML::Twig->new(
       TwigHandlers => {
         "/mediawiki/siteinfo" => \&parse_siteinfo,
-        "/mediawiki/page"     => \&parse_page,
+        "/mediawiki/page" => \&parse_page,
       },
     );
 
-
+   $isbn_ref = {};
    $counter  = 1;
 
    $logger->info("Datei $filename einlesen");
@@ -133,8 +130,7 @@ $logger->info("In Datenbank speichern");
 
 foreach my $isbn (keys %$isbn_ref){
     my $indicator=1;
-    my @sorted_articles = sort @{$isbn_ref->{$isbn}};
-    foreach my $articlename (@sorted_articles){
+    foreach my $articlename (@{$isbn_ref->{$isbn}}){
         $insertrequest->execute($isbn,$lang2cat_ref->{$lang},$indicator,$articlename);
         $indicator++;
     }
@@ -237,14 +233,11 @@ wikipedia2enrich.pl - Einspielen von Wikipedia-Artikeln in Anreicherungs-DB
 
    Optionen:
    -help                 : Diese Informationsseite
-
-   -import-yml           : Import der YAML-Datei
-   --filename=...        : Dateiname des wikipedia-Dumps im XML-Format bzw.
-                           der YAML-Datei mit den bereits verarbeiteten Daten
+       
+   --filename=...        : Dateiname des wikipedia-Dumps im XML-Format
    --logfile=...         : Name der Log-Datei
    --lang=\[de\|en\|fr\]     : Sprache
 
-       
 Bsp:
   1) Analyse eines Wikipedia Dumps
 

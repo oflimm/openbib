@@ -870,7 +870,7 @@ sub updatelastresultset {
     return;
 }
 
-sub clear_data {
+sub save_eventlog_to_statisticsdb {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
@@ -883,10 +883,10 @@ sub clear_data {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult;
-
     my $view = $self->get_viewname();
     $logger->debug("Viewname: $view");
+    
+    my $idnresult;
 
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
     my $statistics=new OpenBib::Statistics;
@@ -950,8 +950,31 @@ sub clear_data {
 
 	$seen_title{"$dbname:$katkey"}=1;
     }
+
+    return;
+}
+
+sub clear_data {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult;
+
+    $self->save_eventlog_to_statisticsdb;
     
     # dann Sessiondaten loeschen
+    $idnresult=$dbh->prepare("delete from eventlog where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
     $idnresult=$dbh->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
   
@@ -1015,6 +1038,10 @@ sub log_event {
     # Recherchen:
     #   1 => Recherche-Anfrage bei Virtueller Recherche
     #  10 => Eineltrefferanzeige
+    #  11 => Verfasser-Normdatenanzeige
+    #  12 => Koerperschafts-Normdatenanzeige
+    #  13 => Notations-Normdatenanzeige
+    #  14 => Schlagwort-Normdatenanzeige
     #  20 => Rechercheart (einfach=1,komplex=2, externer Suchschlitz=3)
     #  21 => Recherche-Backend (sql,xapian,z3950)
     #  22 => Recherche-Einstieg ueber Connector (1=DigiBib)

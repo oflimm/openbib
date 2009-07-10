@@ -1,0 +1,49 @@
+[%#-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# databasechoice
+# searchmask
+# resultlists
+# collection
+# startpage
+# rssfeeds
+# login
+# info
+# tutorial
+#
+#######################################################################
+-%]
+[%- username = user.get_username -%]
+<div id="mainnavigation">
+<div id="mainnavigation_left">
+<a [%- IF active_menu == "searchmask" -%]class="active_menu" [%- END -%]href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
+</div>
+<div id="mainnavigation_right">
+[%- IF user.is_admin || session.is_authenticated_as(config.adminuser) -%]<a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
+<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
+<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="[% config.rssfeeds_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
+[% IF config.login_active == 1 %]
+[% IF username %]
+<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% config.userprefs_loc %]?sessionID=[% sessionID %];view=[% view %];action=showfields">[% msg.maketext("Mein KUG") %]</a>
+[% ELSE %]
+<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];do_login=1">[% msg.maketext("Mein KUG") %]</a>
+[%- END -%]
+&nbsp;::&nbsp;
+[% END %]
+<a [%- IF active_menu == "info" -%]class="active_menu"[%- END -%]href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "tutorial" -%]class="active_menu"[%- END -%]href="[% config.info_loc %]?sessionID=[% sessionID %];stid=61">[% msg.maketext("Tutorien") %]</a>&nbsp;::&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+[%- IF username -%]
+ [[% username %]]
+[%- END -%]
+</span></b></a>
+</div>
+</div>

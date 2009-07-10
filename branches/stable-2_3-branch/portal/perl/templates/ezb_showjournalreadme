@@ -1,0 +1,35 @@
+[%#-
+#######################################################################
+#
+# Templatename: ezb_showsubjects
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des ReadMe zu einer lizenzpflichtigen Zeitschrift
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
+</ul>
+
+<div class="content">
+
+[% USE dumper; dumper.dump(journalreadme) %]
+
+<h3><img src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_468x64.gif" alt="Elektronische Zeitschriftenbibliothek" /></h3>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: newsflash
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe aktueller Meldungen und Hinweise
+#
+#######################################################################
+-%]
+
+<h3><img style="vertical-align:bottom" src="[% config.news_img %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
+
+<ul>
+<li><b>16.6.2009</b>: Knapp 683.000 freie E-Books aus dem <a
+href="http://www.archive.org/">Internet Archiv</a>, die in dessen
+assoziierten Katalogsystem <a href="http://openlibrary.org/" target="_blank">Open Library</a>
+nachgewiesen wurden, sind nun im KUG als eigenst&auml;ndiger Katalog <i>OpenLibrary.org / E-Books</i> enthalten und werden
+zus&auml;tzlich &uuml;ber einen <a href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=openlibrary"
+target="_blank">eigenst&auml;ndigen Sucheinstieg</a> angeboten.</li>
+</li>
+
+</ul>

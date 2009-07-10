@@ -1,0 +1,216 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "info" %] 
+
+<div id="maincontent">
+
+    <ul class="tabbingmenu">
+      <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Suchhilfe") %]</a></li>
+      <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1">[% msg.maketext("Projekt") %]</a></li>
+      <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2">[% msg.maketext("KUG-Versionen") %]</a></li>
+      <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=3">Artikel/Stimmen</a></li>
+
+    </ul>
+    
+    <div class="content">
+      <div class="infotext">
+    
+<p />
+
+
+<table width="100%">
+<tr><th>Artikel</th></tr>
+<tr><td class="boxed">
+<dl>
+<dt>Oliver Flimm: KUG mit OpenBib - Aufbau des Kölner
+UniversitätsGesamtkataloges (KUG) mit Open-Source Komponenten</dt>
+<dd>Vortrag: Netz-AG NRW, 8.11.2007 (<a
+href="http://www.ub.uni-koeln.de/usb/content/e30/e314/e2354/e6733/e12096/e12099/e12097/netz-ag-kug-20071108_ger.odp"
+target="_blank">ODP</a>, <a
+href="http://www.ub.uni-koeln.de/usb/content/e30/e314/e2354/e6733/e12096/e12099/e12098/netz-ag-kug-20071108_ger.pdf"
+target="_blank">PDF</a>)</dd>
+
+<dt>Oliver Flimm: Die Open-Source-Software OpenBib an der USB Köln - Überblick und Entwicklungen in Richtung OPAC 2.0</dt>
+<dd>aus: <a href="http://eprints.rclis.org/archive/00009891/" target="_blank">BIBLIOTHEK. Forschung und Praxis, Jg. 31 (2007) Nr. 2</a></dd>
+
+<dt>Dr. Peter Kostaedt: Der Kölner UniversitätsGesamtkatalog (KUG)</dt>
+<dd>Vortrag: <a href="http://www.vdb-online.org/landesverbaende/sw/berichte/2007-fortbildung-stuttgart/kostaedt_kug.pdf" target="_blank">VDB-Fortbildungsveranstaltung, Stuttgart, Hochschule der Medien, 9.7.2007</a></dd>
+
+<dt>Oliver Flimm: Der Kölner UniversitätsGesamtkatalog (KUG) - Einsatz und technischer Aufbau</dt>
+<dd>aus: <a href="http://www.ub.uni-koeln.de/dezkat/content/e1604/e2004" target="_blank">RRZK-Kompass - Mitteilungen des RRZK/ZAIK Nr. 108</a></dd>
+
+<dt>Oliver Flimm u. Regine Boeff: Von der traditionellen zur digitalen Sammlung historischer und künstlerischer Bucheinbände der USB Köln mit einem Einblick in die technische Konzeption der Datenbank</dt>
+<dd>aus: <a href="http://www.bibliothek-saur.de/t6030001.html" target="_blank">BIBLIOTHEK. Forschung und Praxis. Jg. 30 (2006) Nr. 1, S.63-68</a></dd>
+
+<dt>Oliver Flimm und Christiane Hoffrath: Der Weg des KUG zum umfassenden Recherche-Portal</dt>
+<dd>aus: <a href="http://www.ub.uni-koeln.de/dezkat/content/e1604/e1790" target="_blank">Kooperative Informationsverarbeitung an der Universität zu Köln - Bericht für das Jahr 2005: Der Weg des KUG zum umfassenden Recherche-Portal, S. 135-141</a></dd>
+
+<dt>Oliver Flimm: Veränderungen und Erweiterungen im KUG-Projekt</dt>
+<dd>aus: <a href="http://www.ub.uni-koeln.de/dezkat/content/e1604/e1634" target="_blank">Kooperative Informationsverarbeitung an der Universität zu Köln - Bericht für das Jahr 2004: Kölner UniversitätsGesamtkatalog (KUG-Projekt), S. 111-115</a></dd>
+
+<dt>Hildegard Schoel: Der Schatz ist gehoben</dt>
+<dd>aus: <a href="http://www.ub.uni-koeln.de/dezkat/content/e1604/e1866" target="_blank">Kölner Universitätsjournal. 35, 3-2005, S. 16-17</a></dd>
+
+<dt>Oliver Flimm: Das KUG-Projekt an der USB Köln</dt>
+<dd>aus: <a href="http://www.ub.uni-koeln.de/dezkat/content/e1604/e1689" target="_blank">Kooperative Informationsverarbeitung an der Universität zu Köln - Bericht für das Jahr 2002: SISIS SunRise für die Institutsbibliotheken der Universität zu Köln, S. 153-156</a></dd>
+
+<dt>Irene Bischoff: Ein weitgehend verborgener Schatz auf dem Campus: Literaturbestände in Kölner Institutsbibliotheken</dt>
+<dd>aus: <a href="http://www.ub.uni-koeln.de/dezkat/content/e1604/e1621" target="_blank">Kölner Universitätsjournal. 31, 2-2001, S. 26-27</a></dd>
+
+</dl>
+
+
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>Stimmen</th></tr>
+<tr><td class="boxed">
+<dl>
+
+<dt>Interview mit Patrick Danowski und Lambert Heller zu Bibliothek 2.0</dt>
+<dd><i>[...]Es gibt zwei sehr schöne Open Source OPAC-Systeme in Deutschland, eines ist der <a href="http://www.xopac.org/" target="_blank">XOPAC</a> in Karlsruhe und der KUG, Kölner Universitätsgesamtkatalog, der auf OpenBib basiert.[...]</i><p /><a href="http://www.ib.hu-berlin.de/~libreas/libreas_neu/podcasts/podcast_5/index.html"
+target="_blank">Patrick Danowski im LIBREAS Podcast Nr. 5</a> am 24.7.2007</dd>
+
+<dt>Bibliothekskatalog 2.0: Wortwolken und eigene «tags»</dt>
+<dd><i>Eine schöne Neuerung hat der Kölner Universitätsgesamtkatalog
+soeben freigeschaltet, [...]</i><p /><a href="http://weblog.histnet.ch/archives/335"
+target="_blank">Peter Haber im Histnet-Weblog, dem Weblog zu
+Geschichte und Neuen Medien</a> am 4.4.2007</dd>
+
+<dt>OPAC 2.0: KUG und Bibsonomy</dt> <dd><i>[...]Glückwunsch an die
+Kölner eine wirklich gelungene Integration eines Web 2.0
+Dienstes. OpenBib entwickelt sich immer mehr zu einem OPAC 2.0 und
+braucht, wenn das Innovationstempo so weiter geht, einen Vergleich mit
+primo nicht zu scheuen.[...]</i><p /><a
+href="http://bibliothek2.wordpress.com/2007/01/15/opac-20-kug-und-bibsonomy/"
+target="_blank">Patrick Danowski im 'Bibliothek 2.0 und
+mehr'-Weblog</a> am 15.1.2007</dd>
+
+<dt>Bibsonomy im KUG</dt>
+<dd><i>[...]Oliver Flimm stellt mal wieder innovatives aus Köln
+vor. Nachdem ich hier die Vorschlagsfunktion und das
+Popularitätsranking im KUG schon gewürdigt habe, ist nun etwas (im
+deutschsprachigen Raum) Neues zu bewundern[...]</i><p /><a
+href="http://infobib.de/blog/2007/01/15/bibsonomy-im-kug/"
+target="_blank">Infobib-Weblog</a> am 15.1.2007</dd>
+
+<dt>Vorschlagsfunktion und Popularitätsranking im KUG</dt>
+<dd><i>[...]zwei neue Funktionen des Kölner UniversitätsGesamtkatalog
+(KUG)[...]</i><p /><a
+href="http://infobib.de/blog/2006/12/27/vorschlagsfunktion-und-popularitatsranking-im-kug/"
+target="_blank">Infobib-Weblog</a> am 27.12.2006</dd>
+
+<dt>RSS-Feeds aus dem Katalog in Köln</dt>
+<dd><i>[...]Das ich das noch erleben darf![...]Das ist der erste (mir
+bekannte) Katalog in Deutschland einer grossen Bibliothek mit
+RSS-Feeds, finde ich wesentlich bemerkenswerter als den siebten
+Chatbot oder die zwölfte Chatauskunft.[...]</i><p /><a
+href="http://log.netbib.de/archives/2006/09/21/rss-feeds-aus-dem-katalog-in-koln"
+target="_blank">Edlef Stabenau im netbib-Weblog</a> am 21.9.2006</dd>
+
+</dl>
+
+
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>Verschiedenes</th></tr>
+<tr><td class="boxed">
+<dl>
+
+<dt>Heidrun Wiesenm&uuml;ller: Neue Trends und alte Desiderate - Der
+OPAC der Zukunft</dt>
+
+<dd>[...]Es ist sicher kein Wunder, dass besonders innovative Kataloge
+häufig Eigenentwicklungen sind - z.B. der XOPAC der UB Karlsruhe oder
+das Programm OpenBib, auf dem der Kölner UniversitätsGesamtkatalog
+(KUG) basiert.[...]Es folgte ein weiterer Vortrag von Dr. Peter
+Kostädt über das derzeit sicher prominenteste deutsche Beispiel für
+einen Katalog mit Web 2.0-Features: den von Oliver Flimm entwickelten
+Kölner Universitäts-Gesamt- katalog (KUG). Beispielsweise ist im KUG
+nicht nur eine Empfehlungsfunktion (wie man sie z.B. von Amazon kennt)
+integriert, sondern auch die sehr nützliche Option, Trefferlisten nach
+Popularität sortieren zu lassen. In der personalisierten Version
+("Mein KUG") kann man eigene Tags vergeben und dabei entscheiden, ob
+diese auch für andere Nutzer sichtbar sein sollen. Ebenso trifft man
+im KUG auf die von vielen Web 2.0-Anwendungen bekannte Darstellung in
+Form von "Wortwolken", z.B. für die am häufigsten vergebenen Schlag-
+wörter oder Nutzer-Tags. Die in den Titelaufnahmen vorkom- menden
+Personen sind in Form eines Mashups mit Wikipedia verlinkt, und mit
+einem einzigen Klick lassen sich die biblio- graphischen Angaben eines
+gefundenen Titels an den Bookmarking-Dienst BibSonomy senden. Über
+RSS-Feeds kann man z.B. alle Neuzugänge zu einem bestimmten Schlag-
+wort oder von einem bestimmten Verfasser abonnieren.  [...]
+<p />
+<a href="http://www.vdb-online.org/publikationen/vdb-mitteilungen/vdb-mitteilungen-2008-1.pdf" target="_blank">VDB-Mitteilungen 2008/1</a>
+</dd>
+<dt>Pierre Gavin: Eine neue OPAC-Generation : Das wiedergefundene verlorene Paradies?</dt>
+<dd><a href="http://campus.hesge.ch/id_bilingue/doc/projekte/acueil_praesentationen/ACUEIL_opac_paradis_retrouveDE.pdf" target="_blank">Folien</a> aus: Workshop « OPACs – Utilisateurs – Interfaces » 19 mars 2008 à Berne BNS
+</dd>
+<dt>Cristian Cabezas Mardones: Biblioteca 2.0 - Explicada por ejemplos</dt>
+<dd><a href="http://www.slideshare.net/rdonoso/biblioteca-20-230139/" target="_blank">Folien</a></dd>
+<dt>Dídac Margaix-Arnal: El Opac 2.0 - las tecnologías de la Web 2.0 aplicadas a los catálogos</dt>
+<dd>
+[...]Este catálogo colectivo ha sido construido con la aplicación de software libre OpenBib. Presenta funcionalidades
+sociales basadas en tres aspectos básicos: etiquetas para mejorar las búsquedas, recomendaciones basadas en
+la actividad de los usuarios e interoperabilidad del sistema con otras herramientas como Wikipedia y BibSonomy[...]
+<p />
+<a href="http://www.calsi.org/2007/wp-content/uploads/2007/11/didac_margaix.pdf" target="_blank">PDF</a>&nbsp;<a href="http://www.slideshare.net/calsi/el-opac-20las-tecnologas-de-la-web-20-aplicadas-a-los-catlogos-bibliogrficos" target="_blank">Folien</a>
+</dd>
+
+<dt>Jürgen Plieninger, Edlef Stabenau, Lambert Heller: Never run a
+changing system? - Über die Chancen des Einsatzes "Sozialer Software" in der Bibliotheksarbeit</dt>
+<dd><i>[...]Gerade das letzte Beispiel "Katalog 2.0" zeigt, wie viel
+Entwicklung noch vor den Bibliotheken liegt. Dass dies aber
+prinzipiell möglich ist, ohne wieder ein überdimensioniertes Projekt
+mit hunderttausenden Euro Etat starten zu müssen, zeigt das Beispiel
+des Kölner Universitäts-Gesamtkatalogs (KUG)
+(http://kug.ub.uni-koeln.de, weitere Beispiele unter
+http://wiki.netbib.de/coma/Katalog2.0). Hier [wurden] entscheidende
+Verbesserungen (RSS, Merkpunkte, Personalisierbarkeit ...)
+eingebunden, ohne dass hierfür ein großer Etat bereitgestanden
+hätte.[...]</i><p />
+<a href="http://www.opus-bayern.de/bib-info/volltexte/2008/424/"
+target="_blank">B.I.T. online</a>, Heft 3/2007</dd>
+
+<dt>Patrick Danowski: Library 2.0 ? Will the web 2.0 change everything?</dt>
+<dd><a href="http://internal.ulib.sk/indico/prispevky/danowski.pdf"
+target="_blank">Vortrag CASLIN 2007</a>, 3.-7.6.2007</dd>
+
+<dt>Esther Susanne Steiner: OPAC 2.0 - mit Web 2.0-Technologie zum Bibliothekskatalog der Zukunft?</dt>
+<dd><a href="http://opus.bsz-bw.de/hdms/volltexte/2007/624/" target="_blank">Bachelor-Arbeit</a>, 29.5.2007</dd>
+
+
+</dl>
+</td></tr>
+</table>
+
+
+ </div>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

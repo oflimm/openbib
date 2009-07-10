@@ -1,0 +1,60 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showstat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="statistics" %] 
+
+<div class="content">
+
+[% PROCESS common/subtemplate name="admin_showstat_navigation" active="stat_views" %] 
+
+<div class="content">
+
+<p>
+<div class="listoptions">
+<b>Jahr:</b>&nbsp;
+[%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');- %]
+[%- i = ret.min -%]
+[%- WHILE i <= ret.max -%]
+<a href="[% config.admin_loc%]?sessionID=[% sessionID %];do_showstat=1;stid=2;year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
+[%- i = i+1 -%]
+[%- END -%]
+</div>
+</p>
+
+<table width="100%">
+<tr><th>Nutzung der vorhandenen Views</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table>
+[% views = statistics.get_ranking_of_event({ type => 100, from => "${year}0101", to => "${year}1231"}) %]
+[% FOREACH view IN views %]
+<tr><td>[% view.content %]</td><td><b>[% view.number %]</b> </td></tr>
+[% END %]
+</table>
+</td></td>
+</table>
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

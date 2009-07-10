@@ -1,0 +1,57 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+  bks         = config.load_bk;
+  thisbklist = statistics.get_result({id => view, type => 10}); 
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+[%
+bklist = [];
+FOREACH bk IN bks;
+  IF bk.key.length == 2;
+    bklist.push(bk.key);
+  END ;
+END ;
+
+bklist = bklist.sort;
+
+%]
+
+<ul class="subjectlist">
+[% FOREACH bk IN bklist %]
+[%   IF thisbklist.${bk}.defined %] 
+<li>[% bk %] / <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=51;category=[% bk %]"">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
+[%   END %]
+[% END %]
+[%# USE dumper; dumper.dump(thisbklist)%]
+</ul>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

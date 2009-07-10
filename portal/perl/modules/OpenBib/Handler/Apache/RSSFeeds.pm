@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::RSSFeeds
 #
-#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -59,11 +59,11 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments");
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session   = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),

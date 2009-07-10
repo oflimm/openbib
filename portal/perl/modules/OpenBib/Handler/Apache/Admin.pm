@@ -74,11 +74,11 @@ sub handler {
 
     my $query=Apache2::Request->new($r);
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments");
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 

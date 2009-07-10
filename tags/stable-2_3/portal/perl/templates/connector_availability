@@ -1,0 +1,83 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_availability
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Verfuegbarkeitsinformationen im KUG
+#
+#######################################################################
+-%]
+<?xml version="1.0"?>
+<availability_response key="[% key %]">
+[%- normset = "" -%]
+[%-
+   num_of_available_records = available_recordlist.get_size;
+   num_of_similar_records   = similar_recordlist.get_size;
+   normset_type = "";
+   
+   IF     num_of_available_records > 0;
+      normset = available_recordlist.get_records.first.get_brief_normdata;
+   ELSIF num_of_similar_records > 0;
+      normset = similar_recordlist.get_records.first.get_brief_normdata;
+      normset_type = "similar";
+   END;
+-%]
+[%- IF normset.${"T0331"}.first.content || normset.${"T0540"}.first.content %]
+<title_summary[%- IF normset_type == "similar" -%] type="similar"[%- END -%]>
+[%- IF normset.${"T0331"}.first.content %]
+  <title>[% normset.${"T0331"}.first.content %]</title>
+[%- END %]
+[%- FOREACH category IN [ "P0100" "P0102" "P0103" ] %]
+[%-   FOREACH item IN normset.$category %]
+  <creator>[% item.content %]</creator>
+[%-   END %]
+[%- END %]
+  <type>text</type>
+[%- IF normset.${"T0412"}.first.content %]
+  <publisher>[% normset.${"T0412"}.first.content %]</publisher>
+[%- END %]
+[%- IF normset.${"T0425"}.first.content %]
+  <date>[% normset.${"T0425"}.first.content %]</date>
+[%- END %]
+[%- IF normset.${"T0516"}.first.content %]
+  <language>[% normset.${"T0516"}.first.content %]</language>
+[%- END %]
+[%- FOREACH item IN normset.${"T0710"} %]
+  <subject>[% item.content %]</subject>
+[%- END %]
+[%- IF normset.${"T0540"}.first.content %]
+  <identifier>URN:ISBN:[% normset.${"T0540"}.first.content %]</identifier>
+[%- ELSIF have_bibkey -%]
+  <identifier>URN:BIBKEY:[% key %]</identifier>
+[%- END -%]
+</title_summary>
+[%- END -%]
+
+<availability>
+<size>[% num_of_available_records %]</size>
+[% FOREACH record IN available_recordlist.get_records %]
+<catalogue>
+  <name>[% record.database %]</name>
+  <id>[% record.id %]</id>
+  <description>[% dbinfo.dbnames.${record.database}.short %]</description>
+  <permalink>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</permalink>
+</catalogue>
+[% END %]
+</availability>
+
+<similar_record_availability>
+<size>[% num_of_similar_records %]</size>
+[% FOREACH record IN similar_recordlist.get_records %]
+<catalogue>
+  <name>[% record.database %]</name>
+  <id>[% record.id %]</id>
+  <description>[% dbinfo.dbnames.${record.database}.short %]</description>
+  <permalink>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</permalink>
+</catalogue>
+[% END %]
+</similar_record_availability>
+</availability_response>

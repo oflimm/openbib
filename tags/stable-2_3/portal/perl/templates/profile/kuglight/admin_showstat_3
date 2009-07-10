@@ -1,0 +1,89 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showstat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="statistics" %] 
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">Allgemein</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=1">Weiterleitungen</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=2">Views</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=3">Recherchen</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=4">Klienten</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=5">Browser</a></li>
+</ul>
+
+<div class="content">
+
+<p>
+<div class="boxed">
+<b>Jahr:</b>&nbsp;
+[%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');- %]
+[%- i = ret.min -%]
+[%- WHILE i <= ret.max -%]
+<a href="[% config.admin_loc%]?sessionID=[% sessionID %];do_showstat=1;stid=3;year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
+[%- i = i+1 -%]
+[%- END -%]
+</div>
+</p>
+
+<table width="100%">
+<tr><th>Verwendete Recherche-Art</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table>
+<tr><td>Einfache Recherche</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 1, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Komplexe Recherche</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 2, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Externer Suchschlitz</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 3, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Externer Connector (DigiBib/uk-online/Citavi)</td><td><b>[% ret = statistics.get_number_of_event({ type => 22, content => 1, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+</table>
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>Verwendete Kategorien</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td>Freie Suche</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'fs', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Titelworte</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'hst', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Personen</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'verf', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>K&ouml;rperschaften</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'kor', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Schlagworte</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'swt', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Notationen</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'notation', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>ISBN</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'isbn', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>ISSN</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'issn', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Signatur</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'sign', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Kompletter Titel</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'hststring', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Serie/Band/Quelle</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'gtquelle', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>Jahr</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'ejahr', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+</table>
+</td></td>
+</table>
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

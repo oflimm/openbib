@@ -1,0 +1,126 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview_rss
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog bearbeiten' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="views" %] 
+
+<div class="content">
+
+<table width="100%">
+<tr><th>[% msg.maketext("RSS-Einstellungen für View") %] [% view.description%]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<!-- Anfang: Primaerer RSS Feed fuer diesen View -->
+<form method="get" action="[% config.admin_loc %]">
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<input type="hidden" name="viewname"        value="[% view.name %]" />
+<input type="hidden" name="do_editview_rss" value="1" />
+<input type="hidden" name="rss_type"        value="primary" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Prim&auml;rer RSS-Feed f&uuml;r diesen View (Browser Auto-Discovery)") %]</th></tr>
+
+<tr><td class="boxedclear" style="font-size:10pt">
+
+[%
+
+rsstypes = [
+"",
+"Neuzugang (generell)",
+];
+
+neinja = ["Nein","Ja"];
+
+%]
+
+[% IF view.primrssfeed < 0 %]
+[% msg.maketext("Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View") %]
+<p />
+[% msg.maketext("Wählen Sie bitte einen View aus:") %]
+[% ELSE %]
+[% msg.maketext("Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View") %]
+<p />
+[% msg.maketext("Möchten Sie diesen ändern?") %]
+[% END %]
+
+<p />
+
+<select name="rssid">
+
+<option value="-1">[% msg.maketext("Kein prim&auml;rer RSS-Feed ausgew&auml;hlt") %]</option>
+
+[% FOREACH singlefeed IN allrssfeeds %]
+[%-   NEXT IF singlefeed.type != 1  -%]
+[%-   feedid   = singlefeed.id -%]
+<option value="[% feedid %]"[%- IF view.primrssfeed == feedid -%] selected="selected"[%- END -%]>[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %] ([% msg.maketext("Aktiv") %]: [% neinja.${singlefeed.active} %])</option>
+[% END %]
+</select>
+<p />
+
+<div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div>
+
+</td></tr>
+</table>
+
+</form>
+
+<!-- Ende: Primaerer RSS Feed fuer diesen View -->
+
+<!-- Anfang: Alle RSS Feeds fuer diesen View -->
+<form method="get" action="[% config.admin_loc %]">
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<input type="hidden" name="viewname"        value="[% view.name %]" />
+<input type="hidden" name="do_editview_rss" value="1" />
+<input type="hidden" name="rss_type"        value="all" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:10pt">
+
+<p />
+
+<select name="rssids" multiple="multiple">
+
+[% FOREACH singlefeed IN allrssfeeds %]
+[%-   NEXT IF singlefeed.type != 1  -%]
+[%-   feedid   = singlefeed.id -%]
+<option value="[% feedid %]"[%- IF view.rssfeeds.${feedid} -%] selected="selected"[%- END -%]>[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %] ([% msg.maketext("Aktiv") %]: [% neinja.${singlefeed.active} %])</option>
+[% END %]
+</select>
+<p />
+
+<div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div>
+
+</td></tr>
+</table>
+
+</form>
+
+<!-- Ende: Alle RSS Feeds fuer diesen View -->
+
+
+</td></tr>
+</table>
+
+
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

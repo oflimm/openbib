@@ -1,0 +1,117 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+drop table IF EXISTS session;
+CREATE TABLE session (
+ sessionid     VARCHAR(255) NOT NULL PRIMARY KEY,
+ createtime    DATETIME,
+ lastresultset BLOB,
+ benutzernr    TEXT,
+ benutzerpin   TEXT,
+ queryoptions  TEXT,
+ returnurl     TEXT,
+
+ bibsonomy_user TEXT,
+ bibsonomy_key  TEXT,
+ bibsonomy_sync TEXT,
+
+INDEX (sessionid),
+ INDEX (benutzernr(255))
+);
+
+drop table IF EXISTS treffer;
+CREATE TABLE treffer (
+ sessionid VARCHAR(255) NOT NULL,
+ dbname    TEXT,
+ singleidn BIGINT,
+
+ INDEX (sessionid),
+ INDEX (dbname(255)),
+ INDEX (singleidn)
+);
+
+drop table IF EXISTS lastresultitem;
+CREATE TABLE lastresultlist (
+ sessionid VARCHAR(255) NOT NULL,
+ dbname    TEXT,
+ singleidn BIGINT,
+
+ INDEX (sessionid)
+);
+
+drop table IF EXISTS eventlog;
+CREATE TABLE eventlog (
+ sessionid  VARCHAR(255) NOT NULL,
+ tstamp     DATETIME,
+ type       INT,
+ content    MEDIUMBLOB,
+ INDEX (sessionid),
+ INDEX (tstamp),
+ INDEX (type),
+ INDEX (content(50))
+);
+
+drop table IF EXISTS queries;
+CREATE TABLE queries (
+ queryid   BIGINT AUTO_INCREMENT PRIMARY KEY,
+ sessionid VARCHAR(255) NOT NULL,
+ query     TEXT,
+ hitrange  INT,
+ hits      INT,
+ dbases    TEXT,
+
+ INDEX (queryid),
+ INDEX (sessionid),
+ INDEX (query(255)),
+ INDEX (dbases(255))
+);
+
+drop table IF EXISTS dbchoice;
+CREATE TABLE dbchoice (
+ sessionid VARCHAR(255) NOT NULL,
+ dbname    TEXT,
+
+ INDEX (sessionid)
+);
+
+drop table IF EXISTS searchresults;
+CREATE TABLE searchresults (
+ sessionid    VARCHAR(255) NOT NULL,
+ dbname       VARCHAR(255) NOT NULL,
+ offset       INT,
+ hitrange     INT,
+ searchresult LONGTEXT,
+ hits         INT,
+ queryid      BIGINT,
+
+ INDEX (sessionid),
+ INDEX (dbname),
+ INDEX (queryid)
+);
+
+drop table IF EXISTS sessionview;
+CREATE TABLE sessionview (
+ sessionid VARCHAR(255) NOT NULL,
+ viewname  VARCHAR(20)  NOT NULL,
+
+ INDEX (sessionid),
+ INDEX (viewname)
+);
+
+drop table IF EXISTS sessionmask;
+CREATE TABLE sessionmask (
+ sessionid VARCHAR(255) NOT NULL,
+ masktype  VARCHAR(20)  NOT NULL,
+
+ INDEX (sessionid),
+ INDEX (masktype)
+);
+
+drop table IF EXISTS sessionprofile;
+create table sessionprofile (
+ sessionid VARCHAR(255) NOT NULL,
+ profile   TEXT         NOT NULL,
+
+ INDEX (sessionid)
+);

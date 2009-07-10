@@ -1,0 +1,179 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<p />
+
+<h1>Die Digitale Umschlag-Sammlung - Digitalisierung und Archivierung von Schutzumschlägen in der Universitäts- und Stadtbibliothek Köln</h1>
+
+<p> Bereits im ausgehenden 19. Jahrhundert erkannten Verleger und
+Autoren die Werbewirksamkeit bunt bedruckter Buchhüllen, die
+Vorderseite des Umschlags begann als Blickfang verkaufsstrategische
+Aufgaben zu übernehmen und entwickelte sich bis heute zum wichtigsten
+Marketinginstrument des Buchhandels. Bald boten sich auch die
+Umschlagklappen oder -rückseiten als Informations- und Werbeträger an
+und enthielten eine kurze Zusammenfassung des Buchinhalts, Zitate aus
+dem Text, biographische Angaben zum Autor oder Hinweise auf das
+weitere Verlagsprogramm. Gérard Genette, der französische
+Literaturwissenschaftler, zählt die Umschlaginformationen im Rahmen
+der von ihm in die Intertextualitätsforschung eingeführten, den
+Basistext ergänzenden oder kommentierenden Paratexte zu den das Buch
+begleitenden Peritexten. Paratexte stehen als Sammelbegriff für alles,
+was sich als "Beiwerk des Buches" bezeichnet, wie etwa das Register,
+die Titelei und das Vor- und Nachwort.  </p>
+
+<table cellpadding="3">
+<tr><td align="center">
+<img src="http://kug.ub.uni-koeln.de/images/openbib/views/umschlaege/umschlag1.jpg" alt="Umschlag" />
+</td>
+<td>
+<p>Umschläge erfüllen etliche weitere Aufgaben: Das professionelle
+Layout sucht den individuellen Inhalt des Buches zu inszenieren; in
+diesem Sinne entwerfen Verleger wie Autoren den Schutzumschlag als
+Portal zum Buch und nutzen ihn als Medium und Mittel zur visuellen
+Kommunikation mit dem Buchkäufer. Hier steht nicht ausschließlich die
+subtil bis aggressiv konzipierte Verlagswerbung im Vordergrund,
+sondern Bild und Text schlüsseln den Inhalt einprägsam auf.  </p>
+
+<p>Namhafte Grafiker, Künstler und Buchillustratoren projizieren
+anhand ausführlicher Inhaltsangaben, Manuskriptauszüge und
+schriftstellerischer Stellungnahmen den "Geist" des Buches
+und die Idee des Autors in Wort und Bild auf die Buchdeckel. In
+Kooperation mit den Programm- Herstellungs- und Marketingleitern,
+gelegentlich mit den Lektoren oder den Verlegern selbst streben sie
+die optimale Verbindung von individuellem Umschlagdesign mit der
+üblichen Verlagspräsentation (dem Logo, Farb- oder Typographiekonzept)
+an; außerdem gilt es, dem vertraglich vereinbarten Mitspracherecht der
+Autoren Rechnung zu tragen, häufig sind auch sie an der Gestaltung der
+Umschläge beteiligt.  </p>
+</td></tr>
+<tr><td>
+<p>Zahlreiche Veröffentlichungen bezeugen die Bedeutsamkeit der
+Schutzumschläge gebundener Verlagseinbände. Gewöhnlich aber entfällt
+die zum ephemeren Gebrauch gedachte "Verpackung" bereits nach dem Kauf
+oder nach der Lektüre des Buchs. Vor allem die Buchhüllen aus der
+ersten Hälfte des 20. Jahrhunderts haben damit Seltenheitswert und
+können - sofern erhalten - den antiquarischen Preis der Schriften um
+ein Vielfaches in die Höhe treiben.  </p>
+
+<p>In Universitätsbibliotheken finden die Buchhüllen noch heute als
+"schmückendes und werbendes Beiwerk" zum Buch wenig Beachtung; sie
+gelten als "nicht zitierfähig" und werden im Allgemeinen bei der
+Einarbeitung der erworbenen Bücher in den Bestand makuliert.  </p>
+
+</td><td align="center"><img src="http://kug.ub.uni-koeln.de/images/openbib/views/umschlaege/umschlag2.jpg" alt="Umschlag" /></td></tr>
+
+<tr><td align="center"><img src="http://kug.ub.uni-koeln.de/images/openbib/views/umschlaege/umschlag3.jpg" alt="Umschlag" /></td>
+<td>
+<p>Nachdem sich die Funktion der Umschläge im Laufe ihrer Entwicklung
+vom Buchschutz zum aussagekräftigen Informationsträger gewandelt hat
+und ihr Fehlen vor allem in wissenschaftlichen Bibliotheken regelmäßig
+als Substanzverlust reklamiert wird, archiviert und konserviert die
+Universitäts- und Stadtbibliothek Köln in ihrem Auftrag der
+Bestandserhaltung seit etwa sieben Jahren wenigstens einen Teil der
+täglich anfallenden Objekte als originären, unverzichtbaren
+Bestandteil des Buchs.  </p>
+
+<p>Dazu gehören alle Buchhüllen aus den kontinuierlich - meist um
+Erstausgaben - anwachsenden Sondersammlungen "Moderne Deutschsprachige
+Literatur" und "Neue Deutschsprachige Lyrik", aber auch die
+bibliophiler Kollektionen wie H. C. Artmann, Heinrich Vormweg, Gertrud
+von Le Fort und Reinhold Schneider. Die Umschläge finden getrennt von
+den Büchern nach Signaturen geordnet in konservatorisch geeigneten
+Behältnissen Aufbewahrung; ihr Erhalt ist in einer lokalen Fußnote mit
+dem Hinweis: "Schutzumschlag bitte separat per Leihschein bestellen"
+im Katalog nachgewiesen. Bei Bedarf stehen sie auf Bestellung im
+Lesesaal für Historische Sammlungen bereit. Um die Umschläge mit
+Ausleihen möglichst wenig zu strapazieren und auch, um
+Forschungsarbeiten außerhalb des Hauses zu gewährleisten, sind sie in
+der Digitalen Umschlag-Sammlung der USB erschlossen und komplett (mit
+Klappen und Rücken, evtl. auch Bauchbinde oder, falls bedruckt, mit
+der "stummen" Rückseite) abgebildet. </p>
+</td></tr>
+<tr><td>
+<p>Die Datenbank für Schutzumschläge entstand 2008 als
+Gemeinschaftsprojekt der Dezernate ´Historische Sammlungen und
+Bestandserhaltung´, ´Medienbearbeitung und bibliothekarische
+Dienstleistungen´ und ´IT-Dienste´ in Absprache mit dem Börsenverein
+des deutschen Buchhandels. Mit der Titelaufnahme der Bücher verknüpft,
+lassen die gemäß der Buchvorlage in Registern recherchierbar
+verzeichneten Umschlaggestalter und -fotografen interessante
+Zusammenhänge zwischen Grafikern, Verlagen und Autoren
+nachvollziehen. Weitere Einträge vermerken die Umschlagmaße und
+spezifische Angaben zu den Umschlagabbildungen.  </p>
+
+<p>Zweifellos wäre der Erhalt aller Hüllen wünschenswert, in der
+Praxis jedoch mangelt es nicht an gutem Willen, sondern an Platz und
+Personal. Bei einem jährlichen Zuwachs (in Köln) von etwa 30.000
+Monographien, von denen etwa ein Drittel gebunden in die Bibliothek
+gelangt, müssten folgerichtig Jahr für Jahr ca. 10.000 Buchumschläge
+eine geeignete Unterbringung finden. Diesem Anspruch kann die USB
+nicht gerecht werden.  </p>
+</td><td align="center"><img src="http://kug.ub.uni-koeln.de/images/openbib/views/umschlaege/umschlag4.jpg" alt="Umschlag" /></td></tr>
+</table>
+
+<p>Dennoch fand sich neben der konsequent durchgeführten Konservierung
+der Umschläge aus Sonderkollektionen ein praktikabler Kompromiss auch
+zum Erhalt informationsträchtiger Buchhüllen der übrigen
+Neuerwerbungen, erstreckt sich das Problem der "verschwundenen
+Umschläge" in den Bibliotheken doch ebenfalls auf die Werke der
+Gebrauchs- und Fachliteratur. Hier geht man zwar davon aus, dass sich
+die Leser anhand der systematischen Kataloge und der (digitalisierten)
+Inhaltsverzeichnisse einen Überblick über das Thema der Lektüre
+verschaffen, sofern sie nicht ohnehin die benötigten Titel gezielt
+anfordern, in der Praxis der Freihandbereiche bevorzugen sie dann doch
+das Studium des Klappentexts.  </p>
+
+<p>Vor allem sparsame Verleger fachkundlicher Literatur verlagern
+Wissenswertes zum Buchinhalt auf den Umschlag. Der Tradition des
+früher üblichen Frontispizes folgend, übernimmt der Schutzumschlag
+heute nicht selten die Abbildung der im Text behandelten Person oder
+des beschriebenen Gegenstands. Häufig findet sich die entsprechende
+Legende dann im Abbildungsverzeichnis oder beim Impressum wieder,
+damit rückt die Buchhülle beim Leser durchaus in den Mittelpunkt des
+Interesses und dürfte als wissenschaftlicher Nachweis akzeptabel und
+erhaltenswert sein.  </p>
+
+<p>Um die wichtigsten Objekte auch aus diesen Beständen zu sichern,
+kontrollieren die Mitarbeiterinnen der Einbandstelle täglich die
+Umschläge der neu erworbenen Gebrauchsliteratur. Enthalten die Hüllen
+relevante Hinweise und Illustrationen, werden sie in der
+Hausbuchbinderei passend zugeschnitten, gefalzt, dann mit reversiblem
+Leim in die Bücher eingeklebt und im Online-Katalog der Bibliothek mit
+einer Fußnote nachgewiesen, die im Wortlaut von der Fußnote der
+separat verwahrten Umschläge abweicht. Weiterhin bleiben in der USB
+die seltenen Hüllen älterer Literatur, etwa von Buchgeschenken, und
+die Hüllen von Kunst- und Photobüchern oder literarischer Erstausgaben
+auch außerhalb der Sondersammlungen erhalten.  </p>
+
+<p>Als unproblematisch erweist sich schließlich die Archivierung der
+am Buch fixierten Originalumschläge von Broschuren. Die Paperbacks von
+bibliophilem Wert bleiben ungebunden und finden, falls erforderlich,
+ihrem Umfang entsprechend Schutz in einer Kassette oder Mappe. Fällt
+die Entscheidung, broschiert erschienene Bücher mit einem festen
+Einband zu stabilisieren, wird der Umschlag mit eingebunden. Der
+Rücken des Originalumschlags ersetzt, an entsprechender Stelle
+aufgeleimt, den Titelaufdruck und erleichtert vor allem in den
+Freihandbereichen die Suche in den Regalen.  </p>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,630 @@
+# Versionsnummer
+version: OpenBib v2.2
+
+# Unter diesem Namen wird der lokale Server angesprochen
+servername: server.openbib.org
+
+# Unter diesem Name wird der Servers, der die Lastverteilung
+# vornimmt, angesprochen
+loadbalancerservername: loadbalancer.openbib.org
+
+# Auf folgende Server werden die Benutzer verteilt
+loadbalancertargets:
+  - target1.openbib.org
+  - target2.openbib.org
+
+# Name des Datenbanksystems und des verwendeten DBI/DBD-Moduls
+dbms: mysql
+dbimodule: mysql
+
+# Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
+dbhost: localhost
+dbport: 3306
+dbuser: root
+dbpasswd: StrengGeheim
+
+# Einstellungen fuer den Zugriff auf die Session-Datenbank
+sessiondbhost: localhost
+sessiondbport: 3306
+sessiondbname: session
+sessiondbuser: root
+sessiondbpasswd: StrengGeheim
+
+# Einstellungen fuer den Zugriff auf die Config-Datenbank
+configdbhost: localhost
+configdbport: 3306
+configdbname: config
+configdbuser: root
+configdbpasswd: StrengGeheim
+
+# Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
+userdbhost: localhost
+userdbport: 3306
+userdbname: kuguser
+userdbuser: root
+userdbpasswd: StrengGeheim
+
+# Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
+enrichmntdbhost: localhost
+enrichmntdbport: 3306
+enrichmntdbname: enrichmnt
+enrichmntdbuser: root
+enrichmntdbpasswd: StrengGeheim
+
+# Einstellungen fuer den Zugriff auf die Statistik-Datenbank
+statisticsdbhost: localhost
+statisticsdbport: 3306
+statisticsdbname: statistics
+statisticsdbuser: root
+statisticsdbpasswd: StrengGeheim
+
+# Benutzer, Passwort und default view fuer die Administration
+adminuser: adminuser
+adminpasswd: StrengGeheim
+adminview: kugng
+
+# Verteilte Administration mit einer Masteradmin?
+distadmin:
+  master: admin.openbib.org
+  slave:
+    - slaveadmin1.openbib.org
+    - slaveadmin2.openbib.org
+
+# Organisationseinheiten der Kataloge (z.B. Fakultaeten)
+orgunits:
+  - desc: 'Fakultätsungebunden'
+    nr: 0
+    short: 0ungeb
+  - desc: 'Wirtschafts- u. Sozialwissenschaftliche Fakultät'
+    nr: 1
+    short: 1wiso
+  - desc: 'Rechtswissenschaftliche Fakultät'
+    nr: 2
+    short: 2recht
+  - desc: 'Humanwissenschaftliche Fakultät'
+    nr: 3
+    short: 3human
+  - desc: 'Philosophische Fakultät'
+    nr: 4
+    short: 4phil
+  - desc: 'Mathematisch-Naturwissenschaftliche Fakultät'
+    nr: 5
+    short: 5matnat
+  - desc: 'Spezialkataloge'
+    nr: 6
+    short: 6spezial
+  - desc: Externe Kataloge
+    nr: 7
+    short: 7extern
+
+# RSS-Typen
+rss_types:
+  neuerwerbung: 99
+  neuzugang: 1
+  neuzugang_nach_aut: 2
+  neuzugang_nach_kor: 3
+  neuzugang_nach_swt: 4
+  neuzugang_nach_sys: 5
+
+# Spracheinstellungen
+lang:
+  - de
+  - en
+
+# Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
+admin_loc: /portal/admin
+bibsonomy_loc: /portal/bibsonomy
+catalogue_loc: /portal/katalogisierung
+circulation_loc: /portal/benutzerkonto
+connector_availabilityimage_loc: /portal/connector/availabilityimage
+connector_availability_loc: /portal/connector/availability
+connector_bibmanager_loc: /portal/connector/literaturverwaltung
+connector_digibib_loc: /portal/connector/digibib
+connector_olws_loc: /portal/connector/olws
+connector_permalink_loc: /portal/connector/permalink
+connector_livesearch_loc: /portal/connector/livesearch
+connector_locationmark_loc: /portal/connector/sykasignatur
+connector_rss_loc: /portal/connector/rss
+connector_similarpersons_loc: /portal/connector/similarpersons
+connector_similarsubjects_loc: /portal/connector/similarsubjects
+connector_spellcheck_loc: /portal/connector/spellcheck
+connector_ukonline_loc: /portal/connector/uk-online
+connector_unapi_loc: /portal/connector/unapi
+databasechoice_loc: /portal/katalogauswahl
+databaseprofile_loc: /portal/katalogprofile
+dbis_loc: /portal/dbis
+dispatchquery_loc: /portal/anfrageverteilen
+externaljump_loc: /portal/externersprung
+ezb_loc: /portal/ezb
+info_loc: /portal/info
+leave_loc: /portal/beenden
+litlists_loc: /portal/literaturlisten
+loadbalancer_loc: /portal/lastverteilung
+login_loc: /portal/login
+mailcollection_loc: /portal/merklistemailen
+mailpassword_loc: /portal/passwortmailen
+managecollection_loc: /portal/merkliste
+redirect_loc: /portal/weiterleitung
+resultlists_loc: /portal/trefferlisten
+rssfeeds_loc: /portal/rssfeeds
+search_loc: /portal/recherche
+searchmask_loc: /portal/eingabe
+selfreg_loc: /portal/selbstregistrierung
+serverload_loc: /portal/getload
+startopac_loc: /portal/opac
+tags_loc: /portal/tags
+userprefs_loc: /portal/benutzereinstellungen
+userreviews_loc: /portal/benutzerbewertungen
+virtualsearch_loc: /portal/virtuellerecherche
+
+css_loc: /styles
+
+# Programm zum Versenden von Mails
+mail_prog: /bin/mailx
+
+# Email-Adressen fuer den Admin und generellen Kontakt
+admin_email: admin@openbib.org
+contact_email: contact@openbib.org
+
+# Externe Links zum direkten Einsprung in die Digitale
+# Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
+# sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
+# fuer den entsprechenden Standort (hier 038)
+hbzmonofernleih_exturl: http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038
+hbzzeitfernleih_exturl: http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038
+
+# Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
+# fuer den entsprechenden Standort (hier USBK)
+ezb_exturl: http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4
+
+ezb_bibid: USBK
+ezb_colors: 3
+
+# Externer Link zum DatenBankInfoSystem (DBIS)
+dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
+
+dbis_bibid: usb_k
+# 1 (frei) + 4 (Hochschulnetz online) + 8 (Hochschulnetz Citrix) + 32 (Hochschulnetz eingeschraenkt)
+dbis_colors: 45
+# 8 (Pay-per-use) + 32 (DFG Nationallizenz)
+dbis_ocolors: 32
+
+# Externer Link zur Cover-Scan Anreicherung (ISBNINHERE wird durch ISBN ersetzt)
+coverscans_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=55
+coverscans_full_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=120
+coverscans_credits_exturl: http://www.lob.de/isbn/ISBNINHERE@kug
+coverscans_creditstext_exturl: 'Zum Kauf weiter zu Lehmanns Fachbuchhandlung GmbH'
+
+# Pfad zur Konfigurationsdatei von Log4Perl
+log4perl_path: /opt/openbib/conf/portal.log4perl
+
+# Pfad zu den lokalisierten Message-Dateien
+locale_base_path: /opt/openbib/locales
+
+# Pfad zu den Portal-Templates (Template Toolkit)
+tt_include_path: /opt/openbib/templates
+
+# xapian index basepath
+xapian_index_base_path: /opt/openbib/ft/xapian/index
+xapian_option:
+  maxmatch: 2000
+
+# Stopwort-Liste
+stopword_filename: /opt/openbib/ft/stopwords.txt
+
+# Pfade zum Document und Image Root
+document_root_path: /var/www
+image_root_path: /usr/share/images
+
+# Verwendete Funktionsbilder
+courses_img: /images/openbib/courses.png
+dbis_green_img: /images/openbib/dbis/z0.gif
+dbis_yellow_img: /images/openbib/dbis/z2.gif
+dbis_red_img: /images/openbib/dbis/z-ppu.gif
+dbis_yellow_red_img: /images/openbib/dbis/z5.gif
+dbis_de_img: /images/openbib/dbis/z-de.gif
+delete_img: /images/openbib/cancel.png
+follow_img: /images/openbib/solidrightarrow.png
+info_img: /images/openbib/info.png
+help_img: /images/openbib/help.png
+hint_img: /images/openbib/hint.png
+lang_de_img: /images/openbib/de.gif
+lang_en_img: /images/openbib/en.gif
+listofinterest_img: /images/openbib/note.png
+liststyle_cover_img: /images/openbib/view_detailed.png
+liststyle_list_img: /images/openbib/view_text.png
+mail_img: /images/openbib/3d-file-blue-mailbox.png
+tutorial_img: /images/openbib/kaboodle_ger.png
+tutorial_with_audio_img: /images/openbib/multimedia_ger.png
+news_img: /images/openbib/newsflash.png
+next_img: /images/openbib/next.gif
+no_next_img: /images/openbib/no_next.png
+no_previous_img: /images/openbib/no_previous.png
+note_img: /images/openbib/note.png
+openbib_img: /images/openbib/openbib-powered.png
+pdf_img: /images/openbib/pdf-document.png
+permalink_img: /images/openbib/3d-file-blue-permalink.png
+previous_img: /images/openbib/previous.png
+print_img: /images/openbib/3d-file-blue-printer.png
+rssfeed_img: /images/openbib/rssfeed.png
+save_img: /images/openbib/3d-file-blue-disk35.png
+search_img: /images/openbib/search.png
+share_img: /images/openbib/share.png
+toggle_show_img: /images/openbib/toggle_plus.png
+top20_img: /images/openbib/top20-12px.png
+thumbnail_img: /images/openbib/thumbnail.png
+tutorial_img: /images/openbib/tutorial.png
+wikipedia_img:  /images/openbib/wikipedia.png
+university_img:  /images/openbib/university.png
+
+# Mapping der einzelnen Kompontenten zu ihren Templates
+tt_admin_editcat_rss_tname: admin_editcat_rss
+tt_admin_editcat_tname: admin_editcat
+tt_admin_editlibinfo_tname: admin_editlibinfo
+tt_admin_editlogintarget_tname: admin_editlogintarget
+tt_admin_editprofile_tname: admin_editprofile
+tt_admin_editsession_tname: admin_editsession
+tt_admin_edituser_tname: admin_edituser
+tt_admin_editview_rss_tname: admin_editview_rss
+tt_admin_editview_tname: admin_editview
+tt_admin_exploresessions_list_tname: admin_exploresessions_list
+tt_admin_exploresessions_show_tname: admin_exploresessions_show
+tt_admin_loggedin_tname: admin_loggedin
+tt_admin_login_tname: admin_login
+tt_admin_logout_tname: admin_logout
+tt_admin_searchuser_tname: admin_searchuser
+tt_admin_showcat_tname: admin_showcat
+tt_admin_showlibinfo_tname: admin_showlibinfo
+tt_admin_showoperations_tname: admin_showoperations
+tt_admin_showprofiles_tname: admin_showprofiles
+tt_admin_showlogintarget_tname: admin_showlogintarget
+tt_admin_showsessions_1_tname: admin_showsessions_1
+tt_admin_showsessions_tname: admin_showsessions
+tt_admin_showstat_1_tname: admin_showstat_1
+tt_admin_showstat_2_tname: admin_showstat_2
+tt_admin_showstat_3_tname: admin_showstat_3
+tt_admin_showstat_4_tname: admin_showstat_4
+tt_admin_showstat_50_tname: admin_showstat_50
+tt_admin_showstat_51_tname: admin_showstat_51
+tt_admin_showstat_52_tname: admin_showstat_52
+tt_admin_showstat_53_tname: admin_showstat_53
+tt_admin_showstat_5_tname: admin_showstat_5
+tt_admin_showstat_tname: admin_showstat
+tt_admin_showsubjects_tname: admin_showsubjects
+tt_admin_editsubject_tname: admin_editsubject
+tt_admin_showuser_tname: admin_showuser
+tt_admin_showuser_1_tname: admin_showuser_1
+tt_admin_showviews_tname: admin_showviews
+tt_bibsonomy_showtags_tname: bibsonomy_showtags
+tt_bibsonomy_showtitlist_tname: bibsonomy_showtitlist
+tt_catalogue_loggedin_tname: catalogue_loggedin
+tt_catalogue_login_tname: catalogue_login
+tt_catalogue_logout_tname: catalogue_logout
+tt_circulation_make_order_tname: circulation_make_order
+tt_circulation_make_reserv_tname: circulation_make_reserv
+tt_circulation_orders_tname: circulation_orders
+tt_circulation_remind_tname: circulation_remind
+tt_circulation_renew_loans_tname: circulation_renew_loans
+tt_circulation_reserv_tname: circulation_reserv
+tt_circulation_tname: circulation
+tt_connector_availability_tname: connector_availability
+tt_connector_digibib_result_end_tname: connector_digibib_result_end
+tt_connector_digibib_result_item_tname: connector_digibib_result_item
+tt_connector_digibib_result_start_tname: connector_digibib_result_start
+tt_connector_digibib_showtitset_tname: connector_digibib_showtitset
+tt_connector_locationmark_titlist_tname: connector_locationmark_titlist
+tt_connector_permalink_tname: connector_permalink
+tt_connector_rss_item_tname: connector_rss_item
+tt_connector_similarpersons_tname: connector_similarpersons
+tt_connector_similarsubjects_tname: connector_similarsubjects
+tt_connector_unapi_bibtex_tname: connector_unapi_bibtex
+tt_connector_unapi_formats_tname: connector_unapi_formats
+tt_connector_unapi_mods_tname: connector_unapi_mods
+tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
+tt_databasechoice_tname: databasechoice
+tt_databaseprofile_tname: databaseprofile
+tt_error_tname: error
+tt_externaljump_tname: externaljump
+tt_dbis_showsubjects_tname: dbis_showsubjects
+tt_dbis_showdbs_tname: dbis_showdbs
+tt_dbis_searchdbs_tname: dbis_searchdbs
+tt_dbis_showdbinfo_tname: dbis_showdbinfo
+tt_dbis_showdbreadme_tname: dbis_showdbreadme
+tt_ezb_showsubjects_tname: ezb_showsubjects
+tt_ezb_searchjournals_tname: ezb_searchjournals
+tt_ezb_showjournals_tname: ezb_showjournals
+tt_ezb_showjournalinfo_tname: ezb_showjournalinfo
+tt_ezb_showjournalreadme_tname: ezb_showjournalreadme
+tt_info_10_tname: info_10
+tt_info_11_tname: info_11
+tt_info_12_tname: info_12
+tt_info_13_tname: info_13
+tt_info_14_tname: info_14
+tt_info_15_tname: info_15
+tt_info_16_tname: info_16
+tt_info_17_tname: info_17
+tt_info_18_tname: info_18
+tt_info_19_tname: info_19
+tt_info_1_tname: info_1
+tt_info_20_tname: info_20
+tt_info_21_tname: info_21
+tt_info_22_tname: info_22
+tt_info_23_tname: info_23
+tt_info_24_tname: info_24
+tt_info_25_tname: info_25
+tt_info_2_tname: info_2
+tt_info_30_tname: info_30
+tt_info_31_tname: info_31
+tt_info_32_tname: info_32
+tt_info_33_tname: info_33
+tt_info_34_tname: info_34
+tt_info_35_tname: info_35
+tt_info_3_tname: info_3
+tt_info_40_tname: info_40
+tt_info_41_tname: info_41
+tt_info_42_tname: info_42
+tt_info_50_tname: info_50
+tt_info_51_tname: info_51
+tt_info_52_tname: info_52
+tt_info_53_tname: info_53
+tt_info_54_tname: info_54
+tt_info_60_tname: info_60
+tt_info_61_tname: info_61
+tt_info_9_tname: info_9
+tt_info_message_tname: info_message
+tt_info_tname: info
+tt_leave_tname: leave
+tt_litlists_manage_lists_tname: litlists_manage_lists
+tt_litlists_manage_singlelist_tname: litlists_manage_singlelist
+tt_litlists_show_publiclists_tname: litlists_show_publiclists
+tt_litlists_show_singlelist_tname: litlists_show_singlelist
+tt_loadbalancer_tname: loadbalancer
+tt_login_circulation_tname: login_circulation
+tt_login_tname: login
+tt_mailcollection_mail_html_tname: mailcollection_mail_html
+tt_mailcollection_mail_main_tname: mailcollection_mail_main
+tt_mailcollection_mail_plain_tname: mailcollection_mail_plain
+tt_mailcollection_success_tname: mailcollection_success
+tt_mailpassword_mail_main_tname: mailpassword_mail_main
+tt_mailpassword_success_tname: mailpassword_success
+tt_mailpassword_tname: mailpassword
+tt_managecollection_empty_tname: managecollection_empty
+tt_managecollection_mail_tname: managecollection_mail
+tt_managecollection_print_tname: managecollection_print
+tt_managecollection_save_html_tname: managecollection_save_html
+tt_managecollection_save_plain_tname: managecollection_save_plain
+tt_managecollection_show_tname: managecollection_show
+tt_resultlists_choice_tname: resultlists_choice
+tt_resultlists_empty_tname: resultlists_empty
+tt_resultlists_showall_sortall_tname: resultlists_showall_sortall
+tt_resultlists_showall_tname: resultlists_showall
+tt_resultlists_showsinglepool_tname: resultlists_showsinglepool
+tt_rssfeeds_tname: rssfeeds
+tt_search_browse_aut_tname: search_browse_aut
+tt_search_browse_kor_tname: search_browse_kor
+tt_search_browse_not_tname: search_browse_not
+tt_search_browse_swt_tname: search_browse_swt
+tt_search_browse_tit_tname: search_browse_tit
+tt_search_olws_browse_tname: search_olws_browse
+tt_search_showautset_tname: search_showautset
+tt_search_showkorset_tname: search_showkorset
+tt_search_showmulttitset_tname: search_showmulttitset
+tt_search_shownotset_tname: search_shownotset
+tt_search_showswtindex_tname: search_showswtindex
+tt_search_showswtset_tname: search_showswtset
+tt_search_showtitlist_tname: search_showtitlist
+tt_search_showtitlist_of_cnt_tname: search_showtitlist_of_cnt
+tt_search_showtitset_tname: search_showtitset
+tt_search_showtitset_1_tname: search_showtitset_1
+tt_searchmask_advanced_tname: searchmask
+tt_searchmask_simple_tname: searchmask_simple
+tt_selfreg_success_tname: selfreg_success
+tt_selfreg_tname: selfreg
+tt_startopac_tname: startopac
+tt_tags_editusertags_tname: tags_editusertags
+tt_tags_showtitlist_tname: tags_showtitlist
+tt_tags_showusertags_tname: tags_showusertags
+tt_userprefs_ask_delete_tname: userprefs_ask_delete
+tt_userprefs_changefields_tname: userprefs_changefields
+tt_userprefs_tname: userprefs
+tt_userprefs_userdeleted_tname: userprefs_userdeleted
+tt_userreviews_edit_tname: userreviews_edit
+tt_userreviews_show_tname: userreviews_show
+tt_virtualsearch_result_combined_tname: virtualsearch_result_combined
+tt_virtualsearch_result_end_tname: virtualsearch_result_end
+tt_virtualsearch_result_item_tname: virtualsearch_result_item
+tt_virtualsearch_result_start_tname: virtualsearch_result_start
+tt_virtualsearch_showkorindex_tname: virtualsearch_showkorindex
+tt_virtualsearch_shownotindex_tname: virtualsearch_shownotindex
+tt_virtualsearch_showswtindex_tname: virtualsearch_showswtindex
+tt_virtualsearch_showverfindex_tname: virtualsearch_showverfindex
+
+# Anzahl der Spalten bei der Datenbankauswahlseite
+databasechoice_maxcolumn: 1
+
+# Verschiedene Pfadangaben
+autoconv_dir: /opt/openbib/autoconv
+base_dir: /opt/openbib
+conv_dir: /opt/openbib/conv
+dbdesc_dir: /opt/openbib/db
+tool_dir: /opt/openbib/bin
+
+# Zugriffsinformationen fuer das BibSonomy-API
+bibsonomy_api_key: ''
+bibsonomy_api_user: ''
+
+# Zugriffsinformationen fuer ReCaptcha
+recaptcha_public_key: ''
+recaptcha_private_key: ''
+
+# Zugriffinformationen fuer das Google Maps API
+google_maps_api_key: ''
+
+# Aktivierung verschiedener Funktionalitaeten
+login_active: 1
+newsflash: 0
+
+# Sollen Performance-Benchmarks durchgefuehrt werden
+benchmark: 0
+
+# Kurztiteltabelle verwenden?
+use_titlistitem_table: 1
+
+# Maximale Laenge an Inhalt in Kurztitelliste, ab der Personen
+# gekuerzt werden soll
+maxlength_pers: 100
+maxlength_sign: 70
+maxlength_dbname: 70
+
+# https fuer Admin und Nutzer verwenden
+use_https: 1
+use_admin_https: 1
+
+# Testsystem
+testsystem: 0
+
+# Drill-Down
+drilldown: 1
+drilldown_option:
+  categorized: 1
+  categorized_db: 1
+  categorized_aut: 1
+  categorized_kor: 1
+  categorized_mart: 1
+  categorized_not: 1
+  categorized_spr: 1
+  categorized_swt: 1
+  categorized_year: 1
+  cloud: 1
+  cloud_min: 6
+
+# Default Query-Options (Session)
+default_query_options:
+  hitrange: 50
+  offset: 1
+  l: 'de'
+  profil: ''
+  autoplus: ''
+  sb: 'sql'
+  js: 0
+  listtype: 'list'
+
+# Generierte BestOf-Daten
+best_of:
+  3:
+    cloud: log
+  4:
+    cloud: linear
+  5:
+    cloud: linear
+  6:
+    cloud: linear
+  7:
+    cloud: linear
+  8:
+    cloud: log
+  9:
+    cloud: log
+
+# Social-Tagging
+social_tagging: 1
+
+# Literaturlisten
+litlists: 1
+
+# Reviews/Ratings
+reviews: 1
+
+# Cover-Scans
+coverscans:
+  all: 1
+
+# unAPI
+unAPI: 1
+unAPI_formats:
+  bibtex: 1
+  mods: 0
+  oai_dc: 1
+
+# Katalogabhaengige Kategorie-Mappings
+categorymapping:
+  ebooks:
+    T0662: 1
+  einbaende:
+    T0100: 1
+    T0101: 1
+    T0102: 1
+    T0200: 1
+    T0201: 1
+    T0304: 1
+    T0310: 1
+    T0331: 1
+    T0335: 1
+    T0361: 1
+    T0370: 1
+    T0410: 1
+    T0413: 1
+    T0424: 1
+    T0425: 1
+    T0435: 1
+    T0501: 1
+    T0508: 1
+    T0700: 1
+    T0710: 1
+    T0750: 1
+    T0800: 1
+  inst450:
+    T0100: 1
+    T0101: 1
+    T0200: 1
+    T0201: 1
+    T0501: 1
+    T0509: 1
+    T0525: 1
+  kapsel:
+    S0103: 1
+    N0102: 1
+  landschaft:
+    T0100: 1
+    T0200: 1
+    T0331: 1
+    T0334: 1
+    T0407: 1
+    T0425: 1
+    T0591: 1
+    T0594: 1
+    T0595: 1
+    T0700: 1
+    T0710: 1
+    T0750: 1
+  nationallizenzen:
+    T0662: 1
+    T0663: 1
+  portrait:
+    T0100: 1
+    T0101: 1
+    T0102: 1
+    T0103: 1
+    T0200: 1
+    T0201: 1
+    T0331: 1
+    T0334: 1
+    T0424: 1
+    T0425: 1
+    T0501: 1
+    T0508: 1
+    T0559: 1
+    T0662: 1
+    T0700: 1
+    T0710: 1
+    T0800: 1
+    T3000: 1
+    T3001: 1
+  richter:
+    T0501: 1
+  umschlaege:
+    T0100: 1
+    T0200: 1
+    T0710: 1
+
+

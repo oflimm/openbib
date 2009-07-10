@@ -60,11 +60,11 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments");
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session   = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),

@@ -65,11 +65,11 @@ sub handler {
 
     my $query  = Apache2::Request->new($r);
     
-    my $status=$query->parse;
+#     my $status=$query->parse;
     
-    if ($status){
-        $logger->error("Cannot parse Arguments");
-    }
+#     if ($status){
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
     my $client_ip="";

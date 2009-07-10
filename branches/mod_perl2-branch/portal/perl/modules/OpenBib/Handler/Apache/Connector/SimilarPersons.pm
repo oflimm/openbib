@@ -61,12 +61,12 @@ sub handler {
 
     my $query  = Apache2::Request->new($r);
     
-    my $status=$query->parse;
+#     my $status=$query->parse;
     
-    if ($status){
-        $logger->error("Cannot parse Arguments");
-    }
-
+#     if ($status){
+#         $logger->error("Cannot parse Arguments");
+#     }
+    
     my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
 
     # Message Katalog laden

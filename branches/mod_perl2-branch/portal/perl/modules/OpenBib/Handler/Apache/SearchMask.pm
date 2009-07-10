@@ -69,11 +69,11 @@ sub handler {
 
     my $statistics  = new OpenBib::Statistics();
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments");
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session   = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),

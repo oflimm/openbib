@@ -60,11 +60,11 @@ sub handler {
 
     my $query  = Apache2::Request->new($r);
     
-    my $status=$query->parse;
+#     my $status=$query->parse;
     
-    if ($status){
-        $logger->error("Cannot parse Arguments");
-    }
+#     if ($status){
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $unapiid        = $query->param('id')              || '';
     my $format         = $query->param('format')          || '';

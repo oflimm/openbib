@@ -1180,21 +1180,92 @@ __END__
 
  use OpenBib::Common::Util;
 
- # Stylesheet-Namen aus mod_perl Request-Object (Browser-Typ) bestimmen
  my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
- # eine neue Session erzeugen und Rueckgabe der $sessionID
- my $sessionID=OpenBib::Common::Util::init_new_session($sessiondbh);
+ my $nomalized_content = OpenBib::Common::Util::grundform({ content => $content, $category => $category, searchreq => $searchreq, tagging => $tagging});
 
- # Ist die Session gueltig? Nein, dann Warnung und Ausstieg
- unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-   OpenBib::Search::Util::print_warning("Warnungstext",$r);
-   exit;
- }
+ my $server_to_use = OpenBib::Common::Util::get_loadbalanced_servername;
 
- # Komplette Seite aus Template $templatename, Template-Daten $ttdata und
- # Request-Objekt $r bilden und ausgeben
+ my $bibtex_entry = OpenBib::Common::Util::normset2bibtex($normset_ref,$utf8);
+
+ my $bibkey = OpenBib::Common::Util::gen_bibkey({ normdata => $normdata_ref});
+
+ my $nomalized_isbn13 = OpenBib::Common::Util::to_isbn13($isbn10);
+
+ my $effective_path_to_template = OpenBib::Common::Util::get_cascaded_templatepath({ database => $database, view => $view, profile => $profile, templatename => $templatename });
+
+ my $items_with_cloudinfo_ref = OpenBib::Common::Util::gen_cloud_class({ items => $items_ref, min => $mincount, max => $maxcount, type => $type});
+
  OpenBib::Common::Util::print_page($templatename,$ttdata,$r);
+ OpenBib::Common::Util::print_info($warning,$r,$msg);
+ OpenBib::Common::Util::print_warning($warning,$r,$msg);
+
+=head1 METHODS
+
+=head2 Verschiedenes
+
+=over 4
+
+=item get_css_by_browertype
+
+Liefert den Namen des CSS Stylesheets entsprechend des aufrufenden HTTP_USER_AGENT zurück. Das ist im Fall der aktuellen MSIE-Versionen 5-9 das Stylesheet openbib-ie.css, im Fall von Mozilla 5.0 das Stylesheet openbib.css. Bei älteren Browser-Version wird im Falle von MSIE sonst openbib-simple-ie.css bzw. bei allen anderen Browsern openbib-simple.css verwendet.
+
+=item grundform({ content => $content, $category => $category, searchreq => $searchreq, tagging => $tagging})
+
+Allgemeine Normierung des Inhaltes $content oder in Abhängigkeit von der Kategorie $category, bei einer Suchanfrage ($searchreq=1) bzw. beim Tagging ($tagging=1). Neben einer Filterung nach erlaubten Zeichen erfolgt insbesondere die Rückführung von Zeichen auf ihre Grundbuchstaben, also ae für ä oder e für é.
+
+=item get_loadbalanced_servername
+
+Liefert den Namen des Servers aus der Menge aktiver Produktionsserver zurück, der am wenigsten belastet ist (bzgl. Load) und dessen Session-Datenbank korrekt funktioniert.
+
+=item normset2bibtex($normset_ref,$utf8) 
+
+Wandelt den bibliographischen Datensatz $normset_ref in das BibTeX-Format um. Über $utf8 kann spezifiziert werden, ob in diesem Eintrag UTF8-Kodierung verwendet werden soll oder plain (La)TeX.
+
+=item utf2bibtex($string,$utf8)
+
+Filtert nicht akzeptierte Zeichen aus $string und wandelt die UTF8-kodierten Sonderzeichen des Strings $string, wenn $utf8 nicht besetzt ist, in das plain (La)TeX-Format.
+
+=item gen_bibkey_base({ normdata => $normdata_ref })
+
+Generiere die Basiszeichenkette aus den bibliographischen Daten für die Bildung des BibKeys. Dies ist eine Hilfsfunktion für gen_bibkey
+
+=item gen_bibkey({ normdata => $normdata_ref, bibkey_base => $bibkey_base})
+
+Erzeuge einen BibKey entweder aus den bibliographischen Daten $normdata_ref oder aus einer schon generierten Basis-Zeichenkette $bibkey_base.
+
+=item to_isbn13($isbn10)
+
+Erzeuge eine ISBN13 aus einer ISBN und liefere diese normiert (keine Leerzeiche oder Bindestricke, Kleinschreibung) zurück. 
+
+=item get_cascaded_templatepath({ database => $database, view => $view, profile => $profile, templatename => $templatename })
+
+Liefert in Abhängigkeit der Datenbank $database, des View $view und des Katalogprofils $profile den effektiven Pfad zum jeweiligen Template $templatename zurück.
+
+=item gen_cloud_class({ items => $items_ref, min => $mincount, max => $maxcount, type => $type})
+
+Reichere eine Liste quantifizierter Begriffe $items_ref entsprechend schon bestimmten minimalen und maximalen Vorkommens $mincount bzw. $maxcount für den type 'linear/log' mit Klasseninformatinen für die Bildung einer Wortwolke an. 
+
+=back
+
+=head2 Ausgabe über Apache-Handler
+
+=over 4
+
+
+=item print_page($templatename,$ttdata,$r)
+
+Ausgabe des Templates $templatename mit den Daten $ttdata über den Apache-Handler $r
+
+=item print_warning($warning,$r,$msg)
+
+Ausgabe des Warnhinweises $warning über den Apache-Handler $r unter Verwendung des Message-Katalogs $msg
+
+=item print_info($info,$r,$msg)
+
+Ausgabe des Informationstextes $info an den Apache-Handler $r unter Verwendung des Message-Katalogs $msg
+
+=back
 
 =head1 EXPORT
 

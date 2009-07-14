@@ -1171,10 +1171,7 @@ __END__
 =head1 DESCRIPTION
 
  In OpenBib::Common::Util sind all jene Funktionen untergebracht, die 
- von mehr als einem mod_perl-Modul verwendet werden. Es sind dies 
- Funktionen aus den Bereichen Session- und User-Management, Ausgabe 
- von Webseiten oder deren Teilen und Interaktionen mit der 
- Katalog-Datenbank.
+ von mehr als einem mod_perl-Modul verwendet werden.
 
 =head1 SYNOPSIS
 

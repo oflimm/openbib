@@ -31,11 +31,9 @@
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH mex IN circset %]
 [%-
-     IF     mex.Zweigstelle == 0 ;
+     mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normset.id}";
 
-        IF mex.Ausleihurl ;
-           mex.Ausleihurl = "${mex.Ausleihurl}?Login=sisis&Query=0000=${normset.id}";
-        END ;
+     IF     mex.Zweigstelle == 0 ;
 
         IF mex.Signatur.match('^2[2-9]A') || mex.Signatur.match('[3-9][0-9]A') ;
            IF mex.Status == "bestellbar" ;
@@ -58,9 +56,6 @@
         END ;
 
      ELSIF mex.Zweigstelle == 4 ;
-        IF mex.Ausleihurl ;
-           mex.Ausleihurl = "${mex.Ausleihurl}?Login=ewa&Query=0000=${normset.id}";
-        END ;
 
         IF mex.Abteilungscode == 3 ;
            IF mex.Status == "bestellbar" ;
@@ -98,9 +93,8 @@
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Erwerbungsstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 
 [% FOREACH mex IN circset ;
-    IF mex.Ausleihurl ;
-       mex.Ausleihurl = "${mex.Ausleihurl}?Login=sisis&Query=0000=${normset.id}";
-    END ; %]
+     mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normset.id}";
+%]
 <tr align="center"><td><a href="http://www.ub.uni-koeln.de/"
 target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>
 [%   IF mex.AquisitionStatuscode <= 2 %]

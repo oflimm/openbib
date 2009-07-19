@@ -311,11 +311,14 @@ sub print_to_handler {
         
         # Navigationselemente erzeugen
         my %args=$r->args;
+
+        $logger->debug("Argument-List: ".\%args);
+        
         delete $args{offset};
         delete $args{hitrange};
         my @args=();
         while (my ($key,$value)=each %args) {
-            push @args,"$key=$value";
+            push @args,"$key=$value" if (defined $key && defined $value);
         }
         
         my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);

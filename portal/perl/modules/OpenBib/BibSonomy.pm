@@ -491,7 +491,7 @@ __END__
 
 =head1 DESCRIPTION
 
- Mit diesem Objekt kann von OpenBib über das API von BibSonomy auf diesen Web-Dienst zugegriffen werden.
+ Mit diesem Objekt kann von OpenBib Ã¼ber das API von BibSonomy auf diesen Web-Dienst zugegriffen werden.
 
 =head1 SYNOPSIS
 
@@ -511,9 +511,9 @@ __END__
 
 =item new({ api_key => $api_key, api_user => $api_user })
 
-Anlegen eines neuen BibSonomy-Objektes. Für den Zugriff über das
+Anlegen eines neuen BibSonomy-Objektes. FÃ¼r den Zugriff Ã¼ber das
 BibSonomy-API muss ein API-Key $api_key und ein API-Nutzer $api_user
-vorhanden sein. Diese können direkt bei der Objekt-Erzeugung angegeben
+vorhanden sein. Diese kÃ¶nnen direkt bei der Objekt-Erzeugung angegeben
 werden, ansonsten werden die Standard-Keys bibsonomy_api_key und
 -Nutzer bibsonomy_api_user aus OpenBib::Config respektive portal.yml
 verwendet.
@@ -521,7 +521,7 @@ verwendet.
 =item get_posts({ bibkey => $bibkey, tag => $tag, user => $user, type => $type, start => $start, end => $end});
 
 Liefert eine Liste mit Posts aus BibSonomy zu einem Tag $tag, einem
-Nutzer $user oder einem Bibkey $bibkey von $start bis $end. Über $type
+Nutzer $user oder einem Bibkey $bibkey von $start bis $end. Ãœber $type
 (default: 'bibtex')kann bestimmt werden, ob sich die Liste auf
 bibliographische Informationen bezieht ('bibtex') oder Web-Links
 ('bookmark').
@@ -529,15 +529,15 @@ bibliographische Informationen bezieht ('bibtex') oder Web-Links
 =item get_tags({ bibkey => $bibkey, tags => $tags_ref })
 
 Liefert auf Basis einer Liste gegebener Tags $tags_ref und/oder eines
-Bibkeys $bibkey eine Gesamt-Liste aller diesbezüglich in BibSonomy
-vorkommenden Tags zurück. Bei übergebenen Bibkey werden dazu die Tags
+Bibkeys $bibkey eine Gesamt-Liste aller diesbezÃ¼glich in BibSonomy
+vorkommenden Tags zurÃ¼ck. Bei Ã¼bergebenen Bibkey werden dazu die Tags
 des entsprechenden Titels in Bibsonomy - falls existent - bestimmt,
-bei übergebener Tag-Liste wird jedes auf Existenz in BibSonomy
-überprüft.
+bei Ã¼bergebener Tag-Liste wird jedes auf Existenz in BibSonomy
+Ã¼berprÃ¼ft.
 
 =item change_posts({ bibkey => $bibkey, tags => $tags_ref, type => $type, visibility => $visibility})
 
-Ändern der Tags entsprechend $tags_ref sowie der Sichbarkeit
+Ã„ndern der Tags entsprechend $tags_ref sowie der Sichbarkeit
 $visibility (public, private) eines eigenen Eintrags mit dem Bibkey
 $bibkey in BibSonomy des Typs $type.
 
@@ -545,8 +545,8 @@ $bibkey in BibSonomy des Typs $type.
 
 Erzeuge einen neuen bibliographischen Eintrag in BibSonomy zu einem
 gegebenen Satz $record mit Tags $tags_ref und Sichtbarkeit
-$visibility. Falls kein $record übergeben wird, kann stattdessen
-direkt die Id $id in der gewünschten Datenbank $database angegeben
+$visibility. Falls kein $record Ã¼bergeben wird, kann stattdessen
+direkt die Id $id in der gewÃ¼nschten Datenbank $database angegeben
 werden. Ein Bookmark-Eintrag kann derzeit NICHT erzeugt werden.
 
 =back

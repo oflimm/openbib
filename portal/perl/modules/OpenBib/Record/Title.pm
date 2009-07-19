@@ -611,10 +611,8 @@ sub load_brief_record {
             $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
             %$listitem_ref=(%$listitem_ref,%titlistitem);
 
-        }
-        else {
             $record_exists = 1 if (!$record_exists);
-        }       
+        }
     }
     else {
         my ($atime,$btime,$timeall)=(0,0,0);

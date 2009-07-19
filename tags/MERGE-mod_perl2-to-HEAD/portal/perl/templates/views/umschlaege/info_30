@@ -1,0 +1,97 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=30">Redaktion</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=31">Dokumentation</a></li>
+<!--   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a></li>-->
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=33">Bibliographie</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Redaktion</h1>
+
+<h2>Inhaltliche Realisierung</h2>
+
+<table>
+<tr><td><b>Regine Boeff</b><br />
+
+Beschreibung und Erfassung<br />
+Abt. Einbandstelle<br />
+Tel:   0221/470-2416<br />
+Email:<a href="http://www.ub.uni-koeln.de/res/personen_e_mail/boeff/index_ger.html" target="_blank">boeff@ub.uni-koeln.de</a>
+</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td><b>Caroline Dohmen-Richter</b><br />
+Beschreibung und Erfassung<br />
+Abt. Einbandstelle<br />
+
+Tel:   0221/470-2416<br />
+Email:<a href="http://www.ub.uni-koeln.de/res/personen_e_mail/dohmen/index_ger.html" target="_blank">dohmen@ub.uni-koeln.de</a></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td><b>Petra Luppus</b><br />
+Vertretung<br />
+Abt. Einbandstelle<br />
+
+Tel:   0221/470-2416<br />
+Email:luppus@ub.uni-koeln.de</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+
+</tr>
+</table>
+
+<br />
+<br />
+
+<h2>Technische Realisierung</h2>
+
+<table>
+
+<tr><td><b>Oliver Flimm</b><br />
+Programmierung<br />
+Abt.EDV<br />
+Tel:   0221/470-3330<br />
+Email:<a href="http://www.ub.uni-koeln.de/res/personen_e_mail/flimm/index_ger.html" target="_blank"> flimm@ub.uni-koeln.de</a></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td><b>Christiane Hoffrath</b><br />
+Workflow-Konzept<br />
+
+Abt. Universit&auml;tsGesamtKatalog<br />
+Tel:   0221/470-3306<br />
+Email: <a href="http://www.ub.uni-koeln.de/res/personen_e_mail/hoffrath/index_ger.html" target="_blank">hoffrath@ub.uni-koeln.de</a></td>
+</tr>
+</table>
+<br />
+<br />
+<br />
+
+
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

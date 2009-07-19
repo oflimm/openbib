@@ -1,0 +1,92 @@
+[%#-
+#######################################################################
+#
+# Templatename: local_config
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Lokale Anpassungen fuer die Ausgabe der zugehoerigen Templates
+# (Definition neuer Variablen oder Umdefinition von config-Variablen)
+#
+#######################################################################
+-%]
+[%-
+  view_config = {
+       "inst001" = {
+                    defaultlogintarget = 4,
+                    validlogintargets  = { "1" => 1, "4" => 1, }
+                  },
+       "inst006" = {
+                    subjectid          = 15,
+                    defaultlogintarget = 4,
+                    validlogintargets  = { "6" => 1, "4" => 1, }
+                  },
+       "inst302" = {
+                    subjectid          = 15,
+                    defaultlogintarget = 4,
+                    validlogintargets  = { "2" => 1, "4" => 1, }
+                  },
+       "inst420" = {
+                    subjectid          = 2,
+                    defaultlogintarget = 4,
+                    validlogintargets  = { "5" => 1, "4" => 1, }
+                  },
+       "inst422" = {
+                    subjectid          = 2,
+                    defaultlogintarget = 4,
+                    validlogintargets  = { "5" => 1, "4" => 1, }
+                  },
+       "inst423" = {
+                    subjectid          = 2,
+                  },
+       "inst431" = {
+                    subjectid          = 20,
+                    defaultlogintarget = 4,
+                    validlogintargets  = { "3" => 1, "4" => 1, }
+                  },
+       "inst526" = {
+                    subjectid          = 15,
+                    defaultlogintarget = 4,
+                    validlogintargets  = { "7" => 1, "4" => 1, }
+                  },
+       "inst108" = {
+                    subjectid          = 5,
+                  },
+       "inst132" = {
+                    subjectid          = 8,
+                  },
+       "inst134" = {
+                    subjectid          = 12,
+                  },
+       "inst136" = {
+                    subjectid          = 5,
+                  },
+       "inst219" = {
+                    subjectid          = 3,
+                  },
+       "inst401" = {
+                    subjectid          = 10,
+                  },
+       "inst402" = {
+                    subjectid          = 11,
+                  },
+       "inst406" = {
+                    subjectid          = 7,
+                  },
+       "inst407" = {
+                    subjectid          = 7,
+                  },
+       "inst450" = {
+                    subjectid          = 2,
+                  },
+       "inst501" = {
+                    subjectid          = 4,
+                  },
+       "inst514" = {
+                    subjectid          = 19,
+                  },
+
+       };
+-%]

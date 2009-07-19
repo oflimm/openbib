@@ -1,0 +1,70 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showuser
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsseite zur Nutzerverwaltung
+#
+#######################################################################
+-%]
+[%- sysprofile = "kugng" -%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Nutzerverwaltung anzeigen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="users" %] 
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+</ul>
+
+<div class="content">
+
+<!-- Userlist begins here -->
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[% msg.maketext("Gefundene Nutzer") %]
+    </div>
+    <div class="hits">
+[% userlist.size %]  [% msg.maketext("Nutzer") %]
+    </div>
+  </div>
+  <div class="resultitems fullwidth">
+[% FOREACH singleuser IN userlist %]
+    <div class="item">
+      <div class="numbering">[% loop.count %]</div>
+      <div class="thumbnail">
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];userid=[% singleuser.id %];do_edituser=1;do_edit=1"><strong><span class="rltitle">[% singleuser.loginname %]</span></strong></a></span>    
+      </div>
+      <div class="titlemark"></div>
+      <div class="titleactions">
+      </div>
+    </div>
+<!-- Ende einzelner Treffer -->
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->
+
+
+[%# USE dumper;dumper.dump(userlist) %]
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

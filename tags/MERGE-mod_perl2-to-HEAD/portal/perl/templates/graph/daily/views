@@ -1,0 +1,34 @@
+[%- FOREACH view IN config.get_active_views -%]
+[% 
+
+    FILTER null ;
+        result = statistics.get_sequencestat_of_event({ type => 100 , subtype => graph, content => view, month => month }) ;
+
+	data = [
+	     result.x_values ,
+	     result.y_values ,
+	] ;
+	
+        USE my_graph = GD.Graph.bars3d();
+
+        my_graph.set(
+            x_label          => 'Monat',
+            y_label          => 'Aufrufe',
+	    x_label_position => 0.5,
+            title            => "Aufrufe der Sicht ${view} in ${month}/${year}",
+            y_min_value      => 0,
+	    show_values      => 1,
+	    values_space     => 12,
+
+            # shadows
+            bar_spacing      => 8,
+            shadow_depth     => 4,
+            shadowclr        => 'dred',
+            transparent      => 0,
+        ) ; 
+
+        my_graph.plot(data).png | redirect("${graph}/${type}/${view}-${year}-${month}.png",1);
+      END;
+
+
+    -%][%- END -%]

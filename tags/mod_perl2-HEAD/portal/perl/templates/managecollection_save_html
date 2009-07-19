@@ -1,0 +1,51 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_save_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Abspeichern der Merkliste in eine Datei im HTML-Format
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "collection" %] 
+
+<div id="maincontent">
+
+    <form method="get" action="[% config.get('managecollection_loc') %]">
+      <input type="hidden" name="sessionID" value="[% sessionID %]" />
+      <input type="hidden" name="action"    value="show" />
+      
+      <ul class="tabbingmenu">
+	<li><a class="active" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
+      </ul>
+      
+      <div class="content">
+	
+	<p />
+	  
+	<ul class="tabbingmenu">
+	  <li><a[%- IF type == 'HTML' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML">HTML</a></li>
+	</ul>
+	
+	<div class="content">
+	  
+	  <p />
+[% IF type == 'HTML' %]
+[%   PROCESS common/subtemplate name="managecollection_tit_as_html" database="${record.database}" %]
+[% END %]
+
+	</div>
+      </div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

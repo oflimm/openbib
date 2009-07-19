@@ -1,0 +1,162 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=30">Die B&uuml;cherlisten</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=31">Arbeitsablauf / Aktuelles</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=34">Internetquellen</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=33">Ansprechpartner</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Die B&uuml;cherlisten als Grundlage der virtuellen
+Zusammenf&uuml;hrung</h1>
+
+
+<p> In der Akte "Richter" befindet sich neben dem Briefwechsel mit
+Elise Richter ein wahrscheinlich unvollst&auml;ndiges Konvolut an
+B&uuml;cherlisten. Diese Listen sind nach Fachgebieten
+(Romanistik,Anglistik, Linguistik, Folklore etc.) aufgeteilt,
+insgesamt aber unsortiert vorhanden. Es handelt sich &uuml;berwiegend
+um Typoskripte mit handschriftlichen Korrekturen und Anmerkungen. Die
+einzelnen Bl&auml;tter weisen verschiedene Z&auml;hlungen auf.  </p>
+
+<p>
+<a href="/images/openbib/views/richter/31.jpg" target="_blank"><img src="/images/openbib/views/richter/31_small.jpg"  border="0" alt=""></a>
+</p>
+
+<p>
+<a href="/images/openbib/views/richter/32.jpg" target="_blank"><img src="/images/openbib/views/richter/32_small.jpg" border="0" alt=""></a>
+</p>
+
+<h1>Die Bearbeitung der Listen</h1>
+
+<p> Die Listen wurden im ersten Arbeitsgang im K&ouml;lner
+Universit&auml;tsgesamtkatalog (KUG) recherchiert. Nicht im
+Onlinekatalog der USB zu ermittelnde Titel wurden in eigenen Listen
+erfasst und im zweiten Arbeitsgang am alphabetischen Katalog (AK) und
+ggf. im systematischen Katalog (SyK) &uuml;berpr&uuml;ft.</p>
+
+<p> Ob es sich bei den ermittelten B&uuml;chern um Exemplare der
+Richter-Bibliothek handelte, konnte nur im Magazin per Autopsie
+festgestellt werden. Ermittelte Exemplare wurden f&uuml;r die
+"Virtuelle Bibliothek Elise und Helene Richter" katalogisiert und
+beschrieben. B&uuml;cher, die nicht (mehr) in der USB K&ouml;ln
+gefunden werden konnten, wurden auf Nachweise im Institutsbereich der
+Universit&auml;t K&ouml;ln &uuml;berpr&uuml;ft. Allerdings fand sich
+dort bis heute kein Exemplar. </p>
+
+<p> Externe Funde sind ein Buch aus der Deutschen Zentralbibliothek
+f&uuml;r Medizin, sowie ein Exemplar. das uns als Bestand der RWTH
+Aachen gemeldet wurde. Bei diesem Buch handelte sich um eine Dublette
+der K&ouml;lner USB, die von der Bibliothek der RWTH in den achtziger
+Jahren erworben worden war.</p>
+
+<p> Aufw&auml;ndig und schwierig und letztlich erfolglos war bislang
+die Suche nach Titeln, die in den Listen nur als Mengenangabe
+erscheinen. Beispiel: "Cottwold Dial.[ect] 108 Brosch&uuml;ren und
+Dissertationen" oder "Zur engl. Philologie rund 80 Brosch&uuml;ren und
+Dissertationen. Diese Werke konnten in der unten genannten Statistik
+nicht ber&uuml;cksichtigt werden.</p>
+
+<p> Aufgrund der ungenauen Zahlenangaben der Listen, wurde ein
+Mittelwert von 40 Titeln pro Liste zugrunde gelegt. Damit
+erh&auml;lt man die Titelanzahl von 2720 B&auml;nden.</p>
+
+<h1>Statistische Erfassung der Richter-Bibliothek</h1>
+
+<h2 id="Gesamtstatistik">Gesamtstatistik</h2>
+
+<img src="/images/openbib/views/richter/Gesamtstatistik.png">
+
+<h2 id="Anglistik">Anglistik</h2>
+
+<img src="/images/openbib/views/richter/Anglistik.png">
+
+<h2 id="Folklore">Folklore</h2>
+
+<img src="/images/openbib/views/richter/Folklore.png">
+
+<h2 id="Linguistik">Linguistik</h2>
+
+<img src="/images/openbib/views/richter/Linguistik.png" />
+
+<h2 id="Phonetik">Phonetik</h2>
+
+<img src="/images/openbib/views/richter/Phonetik.png" />
+
+<h2 id="Portugiesisch">Portugiesisch</h2>
+
+<img src="/images/openbib/views/richter/Portugiesisch.png">
+
+<h2 id="Provenzalisch">Provenzalisch</h2>
+
+<img src="/images/openbib/views/richter/Provenzalisch.png">
+
+<h2 id="R&auml;toromanisch">R&auml;toromanisch</h2>
+
+<img src="/images/openbib/views/richter/Raetoromanisch.png">
+
+<h2 id="Reiseb&uuml;cher">Reiseb&uuml;cher</h2>
+
+<img src="/images/openbib/views/richter/Reisebuecher.png">
+
+<h2 id="Romanistik">Romanistik</h2>
+
+<img src="/images/openbib/views/richter/Romanistik.png" />
+
+<h2 id="Romanistik">Romanistik frz. Dichtung</h2>
+
+<img src="/images/openbib/views/richter/Romanistik_frz_Dichtung.png" />
+
+<h2 id="Romanistik Italienisch">Romanistik Italienisch</h2>
+
+<img src="/images/openbib/views/richter/Romanistik_Italienisch.png">
+
+<h2 id="Romanistik Spanisch">Romanistik Spanisch</h2>
+
+<img src="/images/openbib/views/richter/Romanistik_Spanisch.png">
+
+<h2 id="Rum&auml;nisch">Rum&auml;nisch<h2>
+
+<img src="/images/openbib/views/richter/Rumaenisch.png">
+
+<h2 id="Sprachwissenschaft">Sprachwissenschaft</h2>
+
+<img src="/images/openbib/views/richter/Sprachwissenschaft.png" />
+
+<h2 id="Theater">Theater</h2>
+
+<img src="/images/openbib/views/richter/Theater.png">
+
+<h2 id="Woerterbuecher">W&ouml;rterb&uuml;cher</h2>
+
+<img src="/images/openbib/views/richter/Woerterbuecher.png" />
+
+<p />
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

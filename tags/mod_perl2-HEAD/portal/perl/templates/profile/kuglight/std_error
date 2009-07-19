@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_error
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Fehlermeldung
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% IF show_corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+[% END %]
+
+<h1>[% errmsg %]</h1>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]
+

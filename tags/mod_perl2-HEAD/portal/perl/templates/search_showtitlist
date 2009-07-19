@@ -1,0 +1,173 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitlist
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Titel-Kurztrefferliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = 'Trefferliste'
+%]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% dbinfo.get('dbnames').$database.short %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<!-- Titlelist begins here -->
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
+[%- dburl    = dbinfo.get('urls').${database} -%]
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[%-   IF dbinfo.get('use_libinfo').${database} %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% database %];stid=60">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
+    </div>
+    <div class="hits">
+[% recordlist.get_size %]  [% msg.maketext("Treffer") %]
+    </div>
+[% IF offset >= 0 && hitrange > 0 %]
+    <div class="navigation">
+[%- FOREACH navitem IN nav ;
+      IF navitem.active ;
+        previouspage = lastpage;
+        nextpage = loop.next;
+      END ;
+      lastpage = navitem; 
+    END ;
+-%]
+[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
+[%- IF nav.first.active -%]<img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
+[%- FOREACH navitem IN nav -%]
+<a href="[% navitem.url %]">
+[%- IF navitem.active -%]
+<span class="paging_active">[% loop.count %]</span>
+[%- ELSE -%]
+[% loop.count %]
+[%- END -%]
+</a>&nbsp;&nbsp;
+[%- END -%]
+
+[% IF nav.last.active %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
+
+[%- IF hits <= 1000 -%]
+<a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
+[%- END -%]
+    </div>
+[%-    END -%]
+  </div>
+  <div class="listoptions">
+<form method="get" action="[% config.get('search_loc') %]">
+<input type="hidden" name="offset"          value="[% offset %]" />
+<input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+[%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
+[%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
+[%- IF query.param('supertit')          -%]<input type="hidden" name="supertit"      value="[% query.param('supertit') %]" />[% END %]
+[%- IF query.param('generalsearch')     -%]<input type="hidden" name="generalsearch" value="[% query.param('generalsearch') %]" />[% END %]
+[%- IF query.param('searchtitofaut')    -%]<input type="hidden" name="searchtitofaut" value="[% query.param('searchtitofaut') %]" />[% END %]
+[%- IF query.param('searchtitofurhkor') -%]<input type="hidden" name="searchtitofurhkor" value="[% query.param('searchtitofurhkor') %]" />[% END %]
+[%- IF query.param('searchtitofnot')    -%]<input type="hidden" name="searchtitofnot" value="[% query.param('searchtitofnot') %]" />[% END %]
+[%- IF query.param('searchtitofswt')    -%]<input type="hidden" name="searchtitofswt" value="[% query.param('searchtitofswt') %]" />[% END %]
+[%- IF query.param('searchtitofcnt')    -%]<input type="hidden" name="searchtitofcnt" value="[% query.param('searchtitofcnt') %]" />[% END %]
+[%- IF query.param('category')          -%]<input type="hidden" name="category" value="[% query.param('category') %]" />[% END %]
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %] 
+
+</form>
+  </div>
+  <div class="resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[% listrow = 'listrow1' %]
+[% FOREACH record IN recordlist.get_records %]
+[%- item = record.get_brief_normdata -%]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%-    order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
+    <div class="item">
+      <div class="numbering">[% loop.count+offset %]</div>
+      <div class="thumbnail">
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+[%- IF item.popularity -%]<br />(Popularit&auml;t: [% item.popularity %])[%- END -%]
+      </div>
+      <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
+      <div class="titleactions">
+<a class="collection" class="collection" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
+      </div>
+    </div>
+<!-- Ende einzelner Treffer -->
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

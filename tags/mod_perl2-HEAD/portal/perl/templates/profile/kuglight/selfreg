@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: selfreg
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Anmeldung zur Selbstregistrierung
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('login_loc') %]?sessionID=[% sessionID %];view=[% view %];do_login=1">[% msg.maketext("Login") %]</a></li>
+   <li><a class="active" href="[% config.get('selfreg_loc') %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Selbstregistrierung") %]</a></li>
+   <li><a                href="[% config.get('mailpassword_loc') %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<table width="100%">
+<tr><th><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.8em">
+[% msg.maketext("Geben Sie f&uuml;r die Selbstregistrierung bitte als
+Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal
+Ihr selbst gew&auml;hltes Passwort. Zur Absicherung gegen einen
+automatisierten Missbrauch wird ein sog. [_1]CAPTCHA[_2] verwendet. Daher m&uuml;ssen Sie zus&auml;tzlich die zwei
+verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.","<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\">","</a>") %]
+</td></tr>
+</table>
+<br />
+<br />
+<p />
+<form method="post" action="[% config.get('selfreg_loc') %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action"    value="auth" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<table>
+<tr><td>
+<table>
+<tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]:</b></td><td><input type="text" name="loginname" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort (wiederholt)") %]:</b></td><td><input type="password" name="password2" /></td></tr>
+<tr><td></td><td><input type="submit" value="[% msg.maketext("Registrieren") %]" /></td></tr>
+</table>
+</td>
+[%- IF config.${"recaptcha_public_key"} -%]
+[%- recaptcha_options = { lang => lang, theme => 'white' } -%]
+<td>[% recaptcha.get_html(config.${"recaptcha_public_key"},'',0,recaptcha_options) %]<td>
+[%- END -%]
+</tr>
+</table>
+<p />
+</form>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

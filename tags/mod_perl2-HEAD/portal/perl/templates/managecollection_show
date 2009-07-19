@@ -1,0 +1,65 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_show
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Anzeigen der Merkliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "collection" %] 
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_collection(yourform, checked, item) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(item) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+    
+    <form method="get" action="[% config.get('managecollection_loc') %]">
+      <input type="hidden" name="sessionID" value="[% sessionID %]" />
+      <input type="hidden" name="action"    value="show" />
+
+<div id="maincontent">
+
+      <ul class="tabbingmenu">
+	<li><a class="active" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
+      </ul>
+      
+      <div class="content">
+	
+	  <p />
+[% IF type == 'HTML' %]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_html"  show_bibsonomy=1 -%]
+[% ELSIF type == 'Text' %]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_text" show_bibsonomy=1 -%]
+[% ELSIF type == 'BibTeX' %]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_bibtex" show_bibsonomy=1 -%]
+[% ELSIF type == 'EndNote' %]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_endnote" show_bibsonomy=1 -%]
+[% END %]
+
+	</div>
+
+</form>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<mods:modsCollection xmlns:mods="http://www.loc.gov/mods/" version="3.0">
+  <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/" xmlns:mods="http://www.loc.gov/mods/" xsi:schemaLocation="http://www.loc.gov/mods/ http://www.loc.gov/standards/mods/mods.xsd">
+[% normset = record.get_normdata  %]
+[% IF normset.${"T0331"}.first.content %]
+    <titleInfo>
+      <title>[% normset.${"T0331"}.first.content %]</title>
+    </titleInfo>
+[% END %]
+[% FOREACH item IN normset.${"T0100"} %]
+    <name type="personal">
+      <namePart xmlns:xlink="http://www.w3.org/TR/xlink">[% item.content %]</namePart>
+[%   IF item.supplement %]
+      <role>
+        <text>[% item.supplement %]</text>
+      </role>
+[%  ELSE %]
+      <role>
+        <text>creator</text>
+      </role>
+[% END %]
+   </name>
+[% END %]
+    <typeOfResource xmlns:xlink="http://www.w3.org/TR/xlink">text</typeOfResource>
+    <originInfo xmlns:xlink="http://www.w3.org/TR/xlink">
+[% IF normset.${"T0410"}.first.content %]
+      <place>
+        <text>[% normset.${"T0410"}.first.content %]</text>
+      </place>
+[% END %]
+[% IF normset.${"T0412"}.first.content %]
+      <publisher>[% normset.${"T0412"}.first.content %]</publisher>
+[% END %]
+[% IF normset.${"T0425"}.first.content %]
+      <dateIssued>[% normset.${"T0425"}.first.content %]</dateIssued>
+[% END %]
+[% IF normset.${"T0403"}.first.content %]
+      <edition>[% normset.${"T0403"}.first.content %]</edition>
+[% END %]
+    </originInfo>
+[% IF normset.${"T0516"}.first.content %]
+    <language authority="iso639-2b">[% normset.${"T0516"}.first.content %]</language>
+[% END %]
+    <physicalDescription>
+[% IF normset.${"T0800"}.first.content %]
+      <form>[% normset.${"T0800"}.first.content %]</form>
+[% END %]
+[% IF normset.${"T0433"}.first.content %]
+      <extent>[% normset.${"T0433"}.first.content %]</extent>
+[% END %]
+    </physicalDescription>
+[% FOREACH item IN normset.${"T0710"} %]
+    <subject xmlns:xlink="http://www.w3.org/TR/xlink">
+      <topic>[% item.content %]</topic>
+    </subject>
+[% END %]
+[% IF normset.${"T0540"}.first.content %]
+    <identifier type="isbn">[% normset.${"T0540"}.first.content %]</identifier>
+[% END %]
+[% IF normset.${"T0543"}.first.content %]
+    <identifier type="issn">[% normset.${"T0543"}.first.content %]</identifier>
+[% END %]
+  </mods>
+</mods:modsCollection>

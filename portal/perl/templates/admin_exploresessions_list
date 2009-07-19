@@ -25,14 +25,14 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Aktive Sessions (lokal)</a></li>
-   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1;stid=1">Explorer</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1">Aktive Sessions (lokal)</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1;stid=1">Explorer</a></li>
 </ul>
 
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_exploresessions=1;clientip=[% clientip %];fromdate=[% fromdate %];todate=[% todate %]">Liste der Sessions</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_exploresessions=1;clientip=[% clientip %];fromdate=[% fromdate %];todate=[% todate %]">Liste der Sessions</a></li>
 </ul>
 
 <div class="content">
@@ -46,7 +46,7 @@
 
 [% FOREACH singlesession IN sessions %]
 
-<tr><td><a href="[%config.admin_loc %]?sessionID=[% sessionID %];do_exploresessions=1;do_show=1;singlesessionid=[% singlesession.sessionid %];clientip=[% clientip %];fromdate=[% fromdate %];todate=[% todate %]">[% singlesession.sessionid %]</a></td><td>[% singlesession.createtime %]</td></tr>
+<tr><td><a href="[%config.get('admin_loc') %]?sessionID=[% sessionID %];do_exploresessions=1;do_show=1;singlesessionid=[% singlesession.sessionid %];clientip=[% clientip %];fromdate=[% fromdate %];todate=[% todate %]">[% singlesession.sessionid %]</a></td><td>[% singlesession.createtime %]</td></tr>
 
 [% END %]
 

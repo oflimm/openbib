@@ -33,7 +33,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=52">[% thisbk %] / [% bks.${thisbk.chunk(2).first} %] / [% bks.${thisbk} %]</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=52">[% thisbk %] / [% bks.${thisbk.chunk(2).first} %] / [% bks.${thisbk} %]</a></li>
 </ul>
 
 <div class="content">
@@ -44,7 +44,7 @@
 [% FOREACH bkinfo IN thisbklist %]
 [%   thisdb    = bkinfo.key %]
 [%   thiscount = bkinfo.value %]
-<tr><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;hitrange=50">[% dbinfo.dbnames.${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Titel</td></tr>
+<tr><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;hitrange=50">[% dbinfo.get('dbnames').${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Titel</td></tr>
 [% END %]
 </table>
 

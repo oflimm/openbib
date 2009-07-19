@@ -34,14 +34,14 @@ function update_collection(yourform, checked, item) {
 // -->
 </script>
     
-    <form method="get" action="[% config.managecollection_loc %]">
+    <form method="get" action="[% config.get('managecollection_loc') %]">
       <input type="hidden" name="sessionID" value="[% sessionID %]" />
       <input type="hidden" name="action"    value="show" />
 
 <div id="maincontent">
 
       <ul class="tabbingmenu">
-	<li><a class="active" href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
+	<li><a class="active" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
       </ul>
       
       <div class="content">

@@ -29,14 +29,14 @@
 
 package OpenBib::Handler::Apache::Connector::OLWS;
 
-use Apache::Constants qw(:common);
+use Apache2::Const -compile => qw(:common);
 
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Reload;
-use Apache::Request();          # CGI-Handling (or require)
+use Apache2::Reload;
+use Apache2::Request();          # CGI-Handling (or require)
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Transport::HTTP;
 

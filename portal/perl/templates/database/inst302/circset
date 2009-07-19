@@ -31,8 +31,8 @@
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td></tr>
 [% FOREACH mex IN circset %]
 <tr align="center"><td>
-[%-   IF dbinfo.use_libinfo.${record.database} %]
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">
+[%-   IF dbinfo.get('use_libinfo').${record.database} %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]

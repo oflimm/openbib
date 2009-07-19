@@ -34,8 +34,8 @@ use lib '/usr/lib/perl5';
 no warnings 'redefine';
 use utf8;
 
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Reload;
+use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode; # 'decode_utf8';

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::DatabaseProfile
 #
-#  Dieses File ist (C) 2005-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::SubRequest ();
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -57,13 +58,13 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query=Apache::Request->instance($r);
+    my $query=Apache2::Request->new($r);
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),
@@ -95,7 +96,7 @@ sub handler {
     
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $view="";
@@ -109,7 +110,7 @@ sub handler {
 
     unless($user->{ID}){
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $idnresult="";
@@ -155,7 +156,7 @@ sub handler {
         };
     
         OpenBib::Common::Util::print_page($config->{tt_databaseprofile_tname},$ttdata,$r);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     #####################################################################   
@@ -167,7 +168,7 @@ sub handler {
         # Wurde ueberhaupt ein Profilname eingegeben?
         if (!$newprofile) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keinen Profilnamen eingegeben!"),$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my $profilid = $user->dbprofile_exists($newprofile);
@@ -200,7 +201,7 @@ sub handler {
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
     }
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

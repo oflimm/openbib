@@ -35,10 +35,10 @@
 <td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
 [%- END -%]
 <td align="center">
-	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" title="Als Mail verschicken"><img src="[% config.mail_img %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="[% config.save_img %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% database %];singleidn=[% titidn %]" target="print" title="Ausdrucken"><img src="[% config.print_img %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
+	<a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" title="Als Mail verschicken"><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=print;database=[% database %];singleidn=[% titidn %]" target="print" title="Ausdrucken"><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
 </td>
 [%- IF nexturl -%]
 <td align="right"><a href="[% nexturl %];queryid=[% queryid %]">[[% msg.maketext("N&auml;chster Titel") %]]</a></td>
@@ -102,7 +102,7 @@ FOREACH category IN categories;
          IF NOT thisid.match('^\d+$');
              thisid = item.content;
          END;
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${thisid}";
+         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${thisid}";
          content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
@@ -110,7 +110,7 @@ FOREACH category IN categories;
          IF NOT thisid.match('^\d+$');
              thisid = item.content;
          END;
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${thisid}";
+         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${thisid}";
          content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
@@ -124,7 +124,7 @@ FOREACH category IN categories;
          IF NOT thisid.match('^\d+$');
              thisid = item.content;
          END;
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${thisid}";
+         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${thisid}";
          content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0700";
@@ -132,18 +132,18 @@ FOREACH category IN categories;
          IF NOT thisid.match('^\d+$');
              thisid = item.content;
          END;
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${thisid}";
+         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${thisid}";
          content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0800";
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${normset.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
          content   = "<a href=\"${localurl}\">${content}</a>";
 
     CASE "T5001";
-         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
+         content   = "<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
 
     CASE "T5002";
-         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
+         content   = "<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);
@@ -154,7 +154,7 @@ FOREACH category IN categories;
    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
    # kodiert.
    thiscategory = category ;
-   IF config.categorymapping.$database.$category ;
+   IF config.get('categorymapping').$database.$category ;
       thiscategory = "${category}-${normset.database}" ;
    END;
 
@@ -199,14 +199,14 @@ END;
 <table width="100%">
 <tr><th>Das könnte Sie interessieren:</th></tr>
 <tr><td class="boxedclear">
-Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance">Weitere Informationen</a> finden Sie in der Suchhilfe.
+Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance">Weitere Informationen</a> finden Sie in der Suchhilfe.
 <table>
 [%-   isbnitems = normset.${"T4000"} -%]
 [%-   hstitems  = normset.${"T4001"} -%]
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;isbn=${isbnitem.content}" -%]
+[%-   globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
 <tr><td><a href="[% globalurl %]"><span class="globalsearch">G</span></a></td><td>[% hstitem.content %]</td></tr>
 [%-   END -%]

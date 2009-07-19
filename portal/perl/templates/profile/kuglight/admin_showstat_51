@@ -29,7 +29,7 @@
 <tr><th>Entwicklung der Suchanfragen nach Monaten eines Jahres</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
-[%   USE dir = Directory("${config.image_root_path}/graph/monthly/queries") %]
+[%   USE dir = Directory("${config.get('image_root_path')}/graph/monthly/queries") %]
 [%   FOREACH file = dir.files %]
 <img src="/images/openbib/graph/monthly/queries/[% file.name %]" />
 [%   END %]
@@ -45,7 +45,7 @@ Es existieren keine entsprechenden Grafiken.
 <tr><th>Entwicklung der Suchanfragen nach Tagen eines Monats</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
-[%   USE dir = Directory("${config.image_root_path}/graph/daily/queries") %]
+[%   USE dir = Directory("${config.get('image_root_path')}/graph/daily/queries") %]
 [%   FOREACH file = dir.files %]
 <img src="/images/openbib/graph/daily/queries/[% file.name %]" />
 <p />

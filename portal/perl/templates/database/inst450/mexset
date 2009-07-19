@@ -6,8 +6,8 @@
 <tr align="center"><td><strong>
 [%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
 [%-   thisdbname = mex.${"X4000"}.content.dbname -%]
-[%-   IF dbinfo.use_libinfo.${thisdbname} %]
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">[% mex.${"X4000"}.content.full %]</a>
+[%-   IF dbinfo.get('use_libinfo').${thisdbname} %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">[% mex.${"X4000"}.content.full %]</a>
 [%-   ELSE -%]
 <a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>
 [%-   END -%]

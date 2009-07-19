@@ -23,21 +23,21 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div class="content">
 
 <p />
 <p />
-<form method="get" action="[% config.resultlists_loc %]">
+<form method="get" action="[% config.get('resultlists_loc') %]">
 <input type="hidden" name="offset"     value="[% query.param('offset') %]" />
 <input type="hidden" name="hitrange"   value="[% query.param('hitrange') %]" />
 <input type="hidden" name="action"     value="showall" />
 <input type="hidden" name="sessionID"  value="[% query.param('sessionID') %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 
-[% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.virtualsearch_loc %]
+[% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.get('virtualsearch_loc') %]
 
 </form>
 

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Circulation
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,12 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::SubRequest ();
+use Apache2::URI ();
+use APR::URI ();
 use DBI;
 use Digest::MD5;
 use Email::Valid;
@@ -62,13 +65,13 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session    = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),
@@ -97,7 +100,7 @@ sub handler {
     
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $view="";
@@ -125,13 +128,13 @@ sub handler {
         else {
             $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
         }
-        return OK;
+        return Apache2::Const::OK;
     }
     # wenn der Benutzer bereits fuer ein anderes Target authentifiziert ist
     else {
         if ($validtarget && $validtarget ne $sessionlogintarget){
             $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
-            return OK;
+            return Apache2::Const::OK;
         }
         
     }
@@ -369,7 +372,7 @@ sub handler {
             
             $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
             
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my $circexlist=undef;
@@ -429,7 +432,7 @@ sub handler {
             
             $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
             
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my $circexlist=undef;
@@ -462,7 +465,7 @@ sub handler {
 
         $r->internal_redirect("http://$config->{servername}$config->{circulation_loc}?sessionID=$session->{ID};action=showcirc;circaction=reservations");
 
-        return OK;
+        return Apache2::Const::OK;
     }
     elsif ($action eq "make_order"){
 
@@ -476,7 +479,7 @@ sub handler {
             
             $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
             
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my $circexlist=undef;
@@ -536,7 +539,7 @@ sub handler {
             
             $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
             
-            return OK;
+            return Apache2::Const::OK;
         }
 
         my $circexlist=undef;
@@ -582,7 +585,7 @@ sub handler {
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

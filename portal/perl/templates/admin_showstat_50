@@ -29,7 +29,7 @@
 <tr><th>Entwicklung der Sessions nach Monaten eines Jahres</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
-[%   USE dir = Directory("${config.image_root_path}/graph/monthly/sessions") %]
+[%   USE dir = Directory("${config.get('image_root_path')}/graph/monthly/sessions") %]
 [%   FOREACH file = dir.files %]
 <img src="/images/openbib/graph/monthly/sessions/[% file.name %]" />
 [%   END %]
@@ -45,7 +45,7 @@ Es existieren keine entsprechenden Grafiken.
 <tr><th>Entwicklung der Sessions nach Tagen eines Monats</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
-[%   USE dir = Directory("${config.image_root_path}/graph/daily/sessions") %]
+[%   USE dir = Directory("${config.get('image_root_path')}/graph/daily/sessions") %]
 [%   FOREACH file = dir.files %]
 <img src="/images/openbib/graph/daily/sessions/[% file.name %]" />
 <p />

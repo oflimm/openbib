@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::DigiBib.pm
 #
-#  Dieses File ist (C) 2003-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -29,13 +29,17 @@
 
 package OpenBib::Handler::Apache::Connector::DigiBib;
 
-use Apache::Constants qw(:common);
-
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Request();      # CGI-Handling (or require)
+use Apache2::Connection ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Log;
+use Apache2::Request();      # CGI-Handling (or require)
+use Apache2::RequestIO (); # rflush, print
+use Apache2::RequestRec ();
+use APR::Table;
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -61,13 +65,13 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
     
-    my $status=$query->parse;
+#     my $status=$query->parse;
     
-    if ($status){
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status){
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session = OpenBib::Session->instance;
 
@@ -155,7 +159,7 @@ sub handler {
 
         # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
         # Client-IP setzen
-        if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
             $r->connection->remote_ip($1);
         }
         
@@ -204,7 +208,7 @@ sub handler {
         my $fallbacksb = "";
         
         # Start der Ausgabe mit korrektem Header
-        print $r->send_http_header("text/html");
+        $r->content_type("text/html");
         
         my @ergebnisse;
         my $recordlist;
@@ -346,14 +350,14 @@ sub handler {
                 my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
                 if (!$ejtest) {
                     OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
-                    return OK;
+                    return Apache2::Const::OK;
                 }
             }
             
             if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
                 if ($searchquery->get_searchfield('ejahr')->{norm}) {
                     OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-                    return OK;
+                    return Apache2::Const::OK;
                 }
             }
             
@@ -362,14 +366,14 @@ sub handler {
                 if ($searchquery->get_searchfield('ejahr')->{norm}) {
                     if (!$firstsql) {
                         OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-                        return OK;
+                        return Apache2::Const::OK;
                     }
                 }
             }
             
             if (!$firstsql) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
-                return OK;
+                return Apache2::Const::OK;
             }
             
             foreach my $database (@databases){
@@ -462,8 +466,8 @@ sub handler {
         };
         
         $starttemplate->process($starttemplatename, $startttdata) || do {
-            $r->log_reason($starttemplate->error(), $r->filename);
-            return SERVER_ERROR;
+            $r->log_error($starttemplate->error(), $r->filename);
+            return Apache2::Const::SERVER_ERROR;
         };
         
         # Ausgabe flushen
@@ -512,8 +516,8 @@ sub handler {
         };
         
         $itemtemplate->process($itemtemplatename, $ttdata) || do {
-            $r->log_reason($itemtemplate->error(), $r->filename);
-            return SERVER_ERROR;
+            $r->log_error($itemtemplate->error(), $r->filename);
+            return Apache2::Const::SERVER_ERROR;
         };
         
         # Ausgabe des letzten HTML-Bereichs
@@ -544,14 +548,14 @@ sub handler {
         };
         
         $endtemplate->process($endtemplatename, $endttdata) || do {
-            $r->log_reason($endtemplate->error(), $r->filename);
-            return SERVER_ERROR;
+            $r->log_error($endtemplate->error(), $r->filename);
+            return Apache2::Const::SERVER_ERROR;
         };
         
     }
     elsif ($tosearch eq "Langanzeige"){
         
-        print $r->send_http_header("text/html");
+        $r->content_type("text/html");
         
         my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
@@ -636,12 +640,12 @@ sub handler {
         };
         
         $template->process($templatename, $ttdata) || do {
-            $r->log_reason($template->error(), $r->filename);
-            return SERVER_ERROR;
+            $r->log_error($template->error(), $r->filename);
+            return Apache2::Const::SERVER_ERROR;
         };
   } 
 
-  return OK;
+  return Apache2::Const::OK;
 }
 
 1;

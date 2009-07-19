@@ -23,7 +23,7 @@
 
 <div class="content">
 
-<form method="get" action="[% config.admin_loc %]">
+<form method="get" action="[% config.get('admin_loc') %]">
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
 <input type="hidden" name="dbname"     value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat" value="1" />
@@ -34,7 +34,7 @@
 <table>
 <tr><td><b>[% msg.maketext("Fakult&auml;t") %]</b></td><td>
 <select name="orgunit">
-[% FOREACH item IN config.orgunits %]
+[% FOREACH item IN config.get('orgunits') %]
 <option value="[% item.short %]"
 [% IF katalog.orgunit == item.short %]
  selected

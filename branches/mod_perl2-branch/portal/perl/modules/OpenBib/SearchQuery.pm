@@ -2,7 +2,7 @@
 #
 #  OpenBib::SearchQuery
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -1037,3 +1037,100 @@ sub get_spelling_suggestion {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::SearchQuery - Apache-Singleton der vom Nutzer eingegebenen
+Suchanfrage
+
+=head1 DESCRIPTION
+
+Dieses Apache-Singleton verwaltet die vom Nutzer eingegebene Suchanfrage.
+
+=head1 SYNOPSIS
+
+ use OpenBib::SearchQuery;
+
+ my $searchquery   = OpenBib::SearchQuery->instance;
+
+=head1 METHODS
+
+=over 4
+
+=item instance
+
+Instanziierung des Apache-Singleton. Zu jedem Suchbegriff lässt sich
+neben der eingegebenen Form vol auch die Normierung norm, der
+zugehörige Bool'sche Verknüpfungsparameter bool sowie die ausgewählten
+Datenbanken speichern.
+
+=item set_from_apache_request($r,$dbases_ref)
+
+Setzen der Suchbegriffe direkt aus dem Apache-Request samt übergebener
+Suchoptionen und zusätzlicher Normierung der Suchbegriffe.
+
+=item load({ sessionID => $sessionID, queryid => $queryid })
+
+Laden der Suchanfrage zu $queryid in der Session $sessionID
+
+=item get_searchquery
+
+Liefert die Suchanfrage zurück.
+
+=item to_cgi_params
+
+Liefert einen CGI-Teilstring der Suchbegriffe mit ihren Bool'schen Operatoren zurück.
+
+=item get_hits
+
+Liefert die Treffferzahl der aktuellen Suchanfrage zurück.
+
+=item get_id
+
+Liefert die zugehörige Query-ID zurück.
+
+=item get_databases
+
+Liefert die ausgewählten Datenbanken zur Suchanfrage zurück.
+
+=item get_searchfield($fieldname)
+
+Liefert den Inhalt des Suchfeldes $fieldname zurück.
+
+=item get_searchterms
+
+Liefert Listenreferenz auf alle tokenizierten Suchbegriffe zurück.
+
+=item to_sql_querystring
+
+Liefert den SQL-Anfragestring zur Suchanfrage zurück
+
+=item to_sql_queryargs
+
+Liefert die zum SQL-Anfragestring zugehörigen Parameterwerte(= Begriffe pro Suchfeld) als Liste zurück.
+
+=item to_xapian_querystring
+
+Liefert den Xapian-Anfragestring zur Suchanfrage zurück
+
+=item get_spelling_suggestion
+
+Liefert entsprechend der Suchbegriffe, des Aspell-Wörterbuchs der
+Sprache de_DE sowie des Vorkommens im Xapian-Index den relevantesten
+Rechschreibvorschlag zurück.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

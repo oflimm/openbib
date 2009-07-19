@@ -2,7 +2,7 @@
 #
 #  OpenBib::Session
 #
-#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -1544,3 +1544,76 @@ sub get_info {
 
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::Session - Apache-Singleton einer Session
+
+=head1 DESCRIPTION
+
+Dieses Apache-Singleton verwaltet eine Session im Portal
+
+=head1 SYNOPSIS
+
+ use OpenBib::Session;
+
+=head1 METHODS
+
+=over 4
+
+=item new({ sessionID => $sessionID })
+
+Erzeugung als herkömmliches Objektes und nicht als
+Apache-Singleton. Damit kann auch ausserhalb des Apache mit mod_perl
+auf eine gegebene Session in Perl-Skripten zugegriffen werden.
+
+=item instance({ sessionID => $sessionID })
+
+Instanziierung des Apache-Singleton yur SessionID $sessionID. Wird
+keine sessionID übergeben, dann wird eine neue erzeugt.
+
+=item instance({ sessionID => $sessionID })
+
+Instanziierung des Apache-Singleton yur SessionID $sessionID. Wird keine sessionID übergeben, dann wird eine neue erzeugt.
+
+=item _init_new_session
+
+Private Methode zur Erzeugung einer neuen Session.
+
+=item is_valid
+
+Liefert einen wahren Wert zurück, wenn die Session existiert.
+
+=item get_viewname
+
+Liefert den in dieser Session verwendeten View $viewname zurück.
+
+=item get_profile
+
+Liefert das in dieser Session verwendeten systemweite Katalog-Profil $profile zurück.
+
+=item set_profile($profile)
+
+Setzt das systemweite Katalog-Profil $profile für die Session.
+
+=item get_resultlists_offsets({ database => $database, queryid => $queryid, hitrange => $hitrange})
+
+Liefert eine Liste der Offsets einer in der Session
+zwischengespeicherten Trefferergebnisliste spezifiziert durch
+$database, $queryid und $hitrange zurück.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

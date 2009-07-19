@@ -2,7 +2,7 @@
 #
 #  OpenBib::Common::Util
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -1166,12 +1166,12 @@ __END__
 
 =head1 NAME
 
- OpenBib::Common::Util - Gemeinsame Funktionen der OpenBib-Module
+OpenBib::Common::Util - Gemeinsame Funktionen der OpenBib-Module
 
 =head1 DESCRIPTION
 
- In OpenBib::Common::Util sind all jene Funktionen untergebracht, die 
- von mehr als einem mod_perl-Modul verwendet werden.
+In OpenBib::Common::Util sind all jene Funktionen untergebracht, die
+von mehr als einem mod_perl-Modul verwendet werden.
 
 =head1 SYNOPSIS
 
@@ -1205,74 +1205,101 @@ __END__
 
 =item get_css_by_browertype
 
-Liefert den Namen des CSS Stylesheets entsprechend des aufrufenden HTTP_USER_AGENT zurück. Das ist im Fall der aktuellen MSIE-Versionen 5-9 das Stylesheet openbib-ie.css, im Fall von Mozilla 5.0 das Stylesheet openbib.css. Bei älteren Browser-Version wird im Falle von MSIE sonst openbib-simple-ie.css bzw. bei allen anderen Browsern openbib-simple.css verwendet.
+Liefert den Namen des CSS Stylesheets entsprechend des aufrufenden
+HTTP_USER_AGENT zurÃ¼ck. Das ist im Fall der aktuellen MSIE-Versionen
+5-9 das Stylesheet openbib-ie.css, im Fall von Mozilla 5.0 das
+Stylesheet openbib.css. Bei anderen Browser-Version wird im Falle von
+MSIE sonst openbib-simple-ie.css bzw. bei allen anderen Browsern
+openbib-simple.css verwendet.
 
 =item grundform({ content => $content, $category => $category, searchreq => $searchreq, tagging => $tagging})
 
-Allgemeine Normierung des Inhaltes $content oder in Abhängigkeit von der Kategorie $category, bei einer Suchanfrage ($searchreq=1) bzw. beim Tagging ($tagging=1). Neben einer Filterung nach erlaubten Zeichen erfolgt insbesondere die Rückführung von Zeichen auf ihre Grundbuchstaben, also ae für ä oder e für é.
+Allgemeine Normierung des Inhaltes $content oder in AbhÃ¤ngigkeit von
+der Kategorie $category, bei einer Suchanfrage ($searchreq=1)
+bzw. beim Tagging ($tagging=1). Neben einer Filterung nach erlaubten
+Zeichen erfolgt insbesondere die RÃ¼ckfÃ¼hrung von Zeichen auf ihre
+Grundbuchstaben, also ae fÃ¼r Ã¤ oder e fÃ¼r Ã©.
 
 =item get_loadbalanced_servername
 
-Liefert den Namen des Servers aus der Menge aktiver Produktionsserver zurück, der am wenigsten belastet ist (bzgl. Load) und dessen Session-Datenbank korrekt funktioniert.
+Liefert den Namen des Servers aus der Menge aktiver Produktionsserver
+zurÃ¼ck, der am wenigsten belastet ist (bzgl. Load) und dessen
+Session-Datenbank korrekt funktioniert.
 
-=item normset2bibtex($normset_ref,$utf8) 
+=item normset2bibtex($normset_ref,$utf8)
 
-Wandelt den bibliographischen Datensatz $normset_ref in das BibTeX-Format um. Über $utf8 kann spezifiziert werden, ob in diesem Eintrag UTF8-Kodierung verwendet werden soll oder plain (La)TeX.
+Wandelt den bibliographischen Datensatz $normset_ref in das
+BibTeX-Format um. Ãœber $utf8 kann spezifiziert werden, ob in diesem
+Eintrag UTF8-Kodierung verwendet werden soll oder plain (La)TeX.
 
 =item utf2bibtex($string,$utf8)
 
-Filtert nicht akzeptierte Zeichen aus $string und wandelt die UTF8-kodierten Sonderzeichen des Strings $string, wenn $utf8 nicht besetzt ist, in das plain (La)TeX-Format.
+Filtert nicht akzeptierte Zeichen aus $string und wandelt die
+UTF8-kodierten Sonderzeichen des Strings $string, wenn $utf8 nicht
+besetzt ist, in das plain (La)TeX-Format.
 
 =item gen_bibkey_base({ normdata => $normdata_ref })
 
-Generiere die Basiszeichenkette aus den bibliographischen Daten für die Bildung des BibKeys. Dies ist eine Hilfsfunktion für gen_bibkey
+Generiere die Basiszeichenkette aus den bibliographischen Daten fÃ¼r
+die Bildung des BibKeys. Dies ist eine Hilfsfunktion fÃ¼r gen_bibkey
 
 =item gen_bibkey({ normdata => $normdata_ref, bibkey_base => $bibkey_base})
 
-Erzeuge einen BibKey entweder aus den bibliographischen Daten $normdata_ref oder aus einer schon generierten Basis-Zeichenkette $bibkey_base.
+Erzeuge einen BibKey entweder aus den bibliographischen Daten
+$normdata_ref oder aus einer schon generierten Basis-Zeichenkette
+$bibkey_base.
 
 =item to_isbn13($isbn10)
 
-Erzeuge eine ISBN13 aus einer ISBN und liefere diese normiert (keine Leerzeiche oder Bindestricke, Kleinschreibung) zurück. 
+Erzeuge eine ISBN13 aus einer ISBN und liefere diese normiert (keine
+Leerzeiche oder Bindestricke, Kleinschreibung) zurÃ¼ck.
 
 =item get_cascaded_templatepath({ database => $database, view => $view, profile => $profile, templatename => $templatename })
 
-Liefert in Abhängigkeit der Datenbank $database, des View $view und des Katalogprofils $profile den effektiven Pfad zum jeweiligen Template $templatename zurück.
+Liefert in AbhÃ¤ngigkeit der Datenbank $database, des View $view und des
+Katalogprofils $profile den effektiven Pfad zum jeweiligen Template
+$templatename zurÃ¼ck.
 
 =item gen_cloud_class({ items => $items_ref, min => $mincount, max => $maxcount, type => $type})
 
-Reichere eine Liste quantifizierter Begriffe $items_ref entsprechend schon bestimmten minimalen und maximalen Vorkommens $mincount bzw. $maxcount für den type 'linear/log' mit Klasseninformatinen für die Bildung einer Wortwolke an. 
+Reichere eine Liste quantifizierter Begriffe $items_ref entsprechend
+schon bestimmten minimalen und maximalen Vorkommens $mincount
+bzw. $maxcount fÃ¼r den type 'linear/log' mit Klasseninformatinen fÃ¼r
+die Bildung einer Wortwolke an.
 
 =back
 
-=head2 Ausgabe über Apache-Handler
+=head2 Ausgabe Ã¼ber Apache-Handler
 
 =over 4
 
 
 =item print_page($templatename,$ttdata,$r)
 
-Ausgabe des Templates $templatename mit den Daten $ttdata über den Apache-Handler $r
+Ausgabe des Templates $templatename mit den Daten $ttdata Ã¼ber den
+Apache-Handler $r
 
 =item print_warning($warning,$r,$msg)
 
-Ausgabe des Warnhinweises $warning über den Apache-Handler $r unter Verwendung des Message-Katalogs $msg
+Ausgabe des Warnhinweises $warning Ã¼ber den Apache-Handler $r unter
+Verwendung des Message-Katalogs $msg
 
 =item print_info($info,$r,$msg)
 
-Ausgabe des Informationstextes $info an den Apache-Handler $r unter Verwendung des Message-Katalogs $msg
+Ausgabe des Informationstextes $info an den Apache-Handler $r unter
+Verwendung des Message-Katalogs $msg
 
 =back
 
 =head1 EXPORT
 
- Es werden keine Funktionen exportiert. Alle Funktionen muessen
- vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
- Verzicht auf den Exporter weniger Speicherverbrauch und mehr
- Performance auf Kosten von etwas mehr Schreibarbeit.
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
 
 =head1 AUTHOR
 
- Oliver Flimm <flimm@openbib.org>
+Oliver Flimm <flimm@openbib.org>
 
 =cut

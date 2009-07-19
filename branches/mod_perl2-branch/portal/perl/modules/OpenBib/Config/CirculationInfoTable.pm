@@ -84,3 +84,53 @@ sub get {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::Config::CirculationInfoTable - Apache-Singleton mit
+Informationen zur Kopplung mit den jeweiligen Ausleihsystemen
+
+=head1 DESCRIPTION
+
+Dieses Apache-Singleton enthält für alle Datenbanken bzw. Kataloge die
+Informationen über einen Zugriff über OLWS (circ, ja = 1, nein = 0),
+den DB-Namen im Lokalsystem für den Zugriff über OLWS (circdb), den
+Zugriffs-URL für OLWS (circheckurl) sowie einen optionalen
+Web-OPAC-URL (circurl). Wenn circurl definiert ist, wird bei den
+Ausleihdaten in den damit spezifizierten OPAC gesprungen, sonst werden
+die ausleihrelevanten Funktionen transparent über OLWS innerhalb von
+OpenBib angeboten.
+
+=head1 SYNOPSIS
+
+ use OpenBib::Config::CirculationInfoTable;
+
+ my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+
+=head1 METHODS
+
+=over 4
+
+=item instance
+
+Instanziierung des Apache-Singleton.
+
+=item get($dbname)
+
+Liefert die Kopplungsinformationen zur Datenbank $dbname
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

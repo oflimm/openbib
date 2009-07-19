@@ -30,8 +30,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Reload;
+use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -194,6 +194,8 @@ sub initial_search {
     my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
     my $thisquery = $enq->get_query()->get_description();
 
+    $logger->debug("Internal Xapian Query: $thisquery");
+    
     my %decider_map   = ();
     my @decider_types = ();
 

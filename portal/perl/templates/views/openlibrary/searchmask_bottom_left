@@ -13,7 +13,7 @@
 -%]
 [% PROCESS common/subtemplate name="newsflash" %]
 
-<h3><img style="vertical-align:bottom" src="[% config.info_img %]" alt="[% msg.maketext("Steckbrief des Katalogs") %]" />&nbsp;[% msg.maketext("Steckbrief des Katalogs") %]</h3>
+<h3><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Steckbrief des Katalogs") %]" />&nbsp;[% msg.maketext("Steckbrief des Katalogs") %]</h3>
 
 <table>
 <tr><td class="category">[% msg.maketext("Katalog") %]</td><td>Freie Digitalisate / E-Books der Open Library</td></tr>

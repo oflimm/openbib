@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 
-<h3><img style="vertical-align:bottom" src="[% config.news_img %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
+<h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
 <li><b>16.6.2009</b>: Knapp 683.000 freie E-Books aus dem <a

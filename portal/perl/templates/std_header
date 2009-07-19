@@ -30,58 +30,58 @@
 [% IF view && primrssfeed %]
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]" />
 [% END %]
-[% IF unapi && config.unAPI %]
-    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.servername %][% config.connector_unapi_loc %]" />
+[% IF unapi && config.get('unAPI') %]
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% config.get('connector_unapi_loc') %]" />
 [% END %]
 
   [%- TRY -%]
-    [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/views/$view/openbib_generic.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/views/$view/openbib_generic.css" %]" media="all" />
+    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic.css" %]" media="all" />
   [%- CATCH -%]        
     [%- TRY -%]
-      [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/openbib_generic.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/openbib_generic.css" %]" media="all" />
+      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/openbib_generic.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/openbib_generic.css" %]" media="all" />
     [%- CATCH -%]
       [%- TRY -%]
-        [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/openbib_generic.css" %]" media="all" />
+        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/openbib_generic.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/openbib_generic.css" %]" media="all" />
       [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/openbib_generic.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib_generic.css" %]" media="all" />
       [%- END -%]
     [%- END -%]
   [%- END -%]
 
 
   [%- TRY -%]
-    [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/views/$view/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/views/$view/$stylesheet" %]" media="all" />
+    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/$stylesheet" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/$stylesheet" %]" media="all" />
   [%- CATCH -%]
     [%- TRY -%]
-      [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/$stylesheet" %]" media="all" />
+      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/$stylesheet" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/$stylesheet" %]" media="all" />
     [%- CATCH -%]
       [%- TRY -%]
-        [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/$stylesheet" %]" media="all" />
+        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/$stylesheet" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/$stylesheet" %]" media="all" />
       [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/$stylesheet" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/$stylesheet" %]" media="all" />
       [%- END -%]
     [%- END -%]
   [%- END -%]
 
   [%- TRY -%]
-    [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/views/$view/openbib_generic_print.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/views/$view/openbib_generic_print.css" %]" media="print" />
+    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic_print.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic_print.css" %]" media="print" />
   [%- CATCH -%]
     [%- TRY -%]
-      [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/openbib_generic_print.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/openbib_generic_print.css" %]" media="print" />
+      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/openbib_generic_print.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/openbib_generic_print.css" %]" media="print" />
     [%- CATCH -%]
       [%- TRY -%]
-        [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic_print.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/openbib_generic_print.css" %]" media="print" />
+        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/openbib_generic_print.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/openbib_generic_print.css" %]" media="print" />
       [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/openbib_generic_print.css" %]" media="print" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib_generic_print.css" %]" media="print" />
       [%- END -%]
     [%- END -%]
   [%- END -%]
@@ -92,15 +92,15 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
 <!-- <script language="JavaScript" type="text/javascript" src="/js/jtip.js"></script> -->
 
-  <link rel="stylesheet" href="[% "${config.css_loc}/jquery.autocomplete.css" %]" type="text/css" />
-  <link rel="stylesheet" href="[% "${config.css_loc}/ui.tabs.css" %]" type="text/css" media="print, projection, screen" />
-  <link rel="stylesheet" href="[% "${config.css_loc}/ui.accordion.css" %]" type="text/css" media="print, projection, screen" />
-<!-- <link rel="stylesheet" href="[% "${config.css_loc}/jtip.css" %]" type="text/css" media="print, projection, screen" /> -->
-  <link rel="stylesheet" href="[% "${config.css_loc}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
-  <link rel="stylesheet" href="[% "${config.css_loc}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
+  <link rel="stylesheet" href="[% "${config.get('css_loc')}/jquery.autocomplete.css" %]" type="text/css" />
+  <link rel="stylesheet" href="[% "${config.get('css_loc')}/ui.tabs.css" %]" type="text/css" media="print, projection, screen" />
+  <link rel="stylesheet" href="[% "${config.get('css_loc')}/ui.accordion.css" %]" type="text/css" media="print, projection, screen" />
+<!-- <link rel="stylesheet" href="[% "${config.get('css_loc')}/jtip.css" %]" type="text/css" media="print, projection, screen" /> -->
+  <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
+  <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
 <!--[if lt IE 7.]>
 <style type="text/css" media="all"> 
-   @import url("[% "${config.css_loc}/cssbuttons/ieBrowserHacks.css" %]");
+   @import url("[% "${config.get('css_loc')}/cssbuttons/ieBrowserHacks.css" %]");
 </style>
 <script defer type="text/javascript" src="/js/pngfix.js"></script>
 <![endif]-->

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Redirect
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,10 +34,14 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common REDIRECT);
-use Apache::Reload;
-use Apache::Request ();
-use Encode 'decode_utf8';
+use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
+use Apache2::URI ();
+use APR::URI ();
+
+use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Common::Util;
@@ -91,7 +95,7 @@ sub handler {
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $valid_redirection_type_ref = {
@@ -125,14 +129,14 @@ sub handler {
         });
 
         $r->content_type('text/html');
-        $r->header_out(Location => $url);
-        
-        return REDIRECT;
+        $r->headers_out->add("Location" => $url);
+
+        return Apache2::Const::REDIRECT;
     }
     else {
         OpenBib::Common::Util::print_warning("Typ $type nicht definiert",$r,$msg);
         $logger->error("Typ $type nicht definiert");
-        return OK;
+        return Apache2::Const::OK;
     }
 }
 

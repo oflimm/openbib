@@ -33,10 +33,9 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
-use Apache::URI ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
 use Business::ISBN;
 use Benchmark;
 use DBI;
@@ -60,13 +59,13 @@ sub handler {
 
     my $config      = OpenBib::Config->instance;
 
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
     
-    my $status=$query->parse;
+#     my $status=$query->parse;
     
-    if ($status){
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status){
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
 
@@ -84,7 +83,7 @@ sub handler {
 
     if (!$database || !$type){
         OpenBib::Common::Util::print_warning($msg->maketext("Fehler."),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
@@ -136,7 +135,91 @@ sub handler {
         }
     }
 
-    if ($type eq "tit" && $id){
+    if ($type eq "notation" && $id){
+        $logger->debug("Getting similar Subject Headings for classification $id");
+
+        my $request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype= and sourceid=?");
+        $request->execute($id);
+
+        my @swtids=();
+        my $swtid_lookup_ref = {}; 
+        while (my $result=$request->fetchrow_hashref){
+            $swtid_lookup_ref->{$result->{id}}=1;
+            push @swtids, $result->{id};
+        }
+
+        my %similar_done = ();
+        foreach my $swtid (@swtids){
+            my $record=OpenBib::Record::Subject->new({database=>$database});
+            $record->load_name({dbh => $dbh, id=>$swtid});
+            my $content=$record->name_as_string;
+            
+            push @{$similar_subjects_ref}, {
+                        id      => $swtid,
+                        item    => $content,
+                        #                    count   => $count,
+            };            
+            
+
+
+            
+            #$request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype=4 and targetid != ? and sourceid in (select sourceid from conn where sourcetype=1 and targettype=4 and targetid = ?)");
+            $request = $dbh->prepare("select distinct c2.targetid as id, count(c2.sourceid) as titcount from conn as c1 left join conn as c2 on c1.sourceid=c2.sourceid where c1.sourcetype=1 and c2.sourcetype=1 and c1.targettype=4 and c2.targettype=4 and c1.targetid=? and c2.targetid != ? group by c2.sourceid");
+            $request->execute($swtid,$swtid);
+            
+            while (my $result=$request->fetchrow_hashref){
+                my $similarid       = $result->{id};
+                my $similartitcount = $result->{titcount};
+                #my $similartitcount = OpenBib::Record::Subject->new({database=>$database, id => $similarid})->get_number_of_titles;
+                
+                # Wenn das zu einem Schlagwort benachbarte Schlagwort schon im
+                # aktuellen Titel enthalten ist, dann ignorieren
+                next if (exists $swtid_lookup_ref->{$similarid});
+                
+                # Counts bzgl verschiedener Schlagworte des aktuellen Titels werden alle gezaehlt
+                if (!exists $tit_swt_count_ref->{$similarid}){
+                    $tit_swt_count_ref->{$similarid}=$similartitcount;
+                }
+                else {
+                    $tit_swt_count_ref->{$similarid}+=$similartitcount;
+                }
+                
+                # Jetzt wurde gezaehlt, aber ein Eintrag muss nicht angelegt werden.
+                if (exists $similar_done{$similarid}){
+                    next;
+                    }
+                else {
+                    $similar_done{$similarid}=1;
+                }
+                
+                my $record=OpenBib::Record::Subject->new({database=>$database});
+                $record->load_name({dbh => $dbh, id=>$similarid});
+                my $content=$record->name_as_string;
+                
+                push @{$similar_subjects_ref}, {
+                    id      => $similarid,
+                    item    => $content,
+                    #                    count   => $count,
+                };            
+            }
+            
+            foreach my $single_subject_ref (@{$similar_subjects_ref}){
+                my $count=$tit_swt_count_ref->{$single_subject_ref->{id}}/2;
+                
+                $single_subject_ref->{count} = $count;
+                
+                if ($maxcount < $count){
+                    $maxcount = $count;
+                }
+                
+                if ($mincount > $count){
+                    $mincount = $count;
+                }
+            }
+        }
+    }
+
+        if ($type eq "tit" && $id){
         $logger->debug("Getting similar Subject Headings for Titleid $id");
 
         my $request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype=4 and sourceid=?");
@@ -236,7 +319,7 @@ sub handler {
 
     OpenBib::Common::Util::print_page($config->{tt_connector_similarsubjects_tname},$ttdata,$r);
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

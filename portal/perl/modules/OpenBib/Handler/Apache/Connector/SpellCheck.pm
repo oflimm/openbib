@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::SpellCheck.pm
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,10 +33,11 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
-use Apache::URI ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::RequestIO (); # print, rflush
+use Apache2::RequestRec ();
 use Benchmark;
 use DBI;
 use Encode 'decode_utf8';
@@ -58,13 +59,13 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
     
-    my $status=$query->parse;
+#     my $status=$query->parse;
     
-    if ($status){
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status){
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     # Blacklist von unterdrueckten Worten, die leider in den entsprechenden Aspell-Dictionaries vorhanden sind
     # ToDo: Entfernung auf dem Dictionary-Level. Hier kann es aber zu Lizenzproblemen kommen, wenn diese geaendert werden.
@@ -84,7 +85,7 @@ sub handler {
     
     my $word = $query->param('q') || '';
     
-    return OK if (!$word || $word=~/\d/);
+    return Apache2::Const::OK if (!$word || $word=~/\d/);
 
     my @aspell_languages = ('de','en');
     
@@ -119,7 +120,7 @@ sub handler {
         $logger->debug("Found corrections for $word in language $aspell_language: ".join(',',@aspell_suggestions));
     }
 
-    print $r->send_http_header("text/plain");
+    $r->content_type("text/plain");
     
     if (@aspell_suggestions){
         $r->print(join("\n",map {decode_utf8($_)} @aspell_suggestions));
@@ -129,7 +130,7 @@ sub handler {
     }
 
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

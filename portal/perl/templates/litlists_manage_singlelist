@@ -28,7 +28,7 @@
 
 <p />
 
-<form method="get" action="[% config.litlists_loc %]">
+<form method="get" action="[% config.get('litlists_loc') %]">
 <input type="hidden" name="action"     value="manage" />
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
 <input type="hidden" name="litlistid"  value="[% litlist.properties.id %]" />
@@ -93,7 +93,7 @@ selected="selected"
     END ;
 -%]
 [% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
-[%- IF nav.first.active -%]<img src="[% config.previous_img %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.previous_img %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
+[%- IF nav.first.active -%]<img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
 [%- IF navitem.active ;
@@ -107,7 +107,7 @@ selected="selected"
 </a>&nbsp;&nbsp;
 [%- END -%]
 
-[% IF nav.last.active %]<img src="[% config.next_img %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.next_img %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
+[% IF nav.last.active %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
 
 [%- IF hits <= 1000 -%]
 <a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
@@ -118,14 +118,14 @@ selected="selected"
 [%- IF format == 'HTML' && show == 'short' -%]
   <div class="listoptions">
 <!-- Titlelist begins here -->
-<form method="get" action="[% config.litlists_loc %]">
+<form method="get" action="[% config.get('litlists_loc') %]">
 <input type="hidden" name="sessionID"       value="[% sessionID %]" />
 <input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
 <input type="hidden" name="sortall"         value="1" />
 <input type="hidden" name="do_showlitlist"  value="1" />
 <input type="hidden" name="action"          value="manage" />
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc=config.litlists_loc %]
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('litlists_loc') %]
 
 </form>
   </div>
@@ -139,8 +139,8 @@ selected="selected"
 
 <table>
 <tr>
-<th><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
-<td><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
+<th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
+<td><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% litlist.properties.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
 </table>
 
@@ -149,7 +149,7 @@ selected="selected"
 <div class="headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
-<a href="[% config.listlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.listlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.listlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.listlists_loc %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 </div>
@@ -163,20 +163,20 @@ selected="selected"
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
-[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'P0101'}  -%]
-[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
 [%# Titel konstruieren %]
@@ -204,26 +204,26 @@ selected="selected"
 [%- END -%]
 [%- signatur = signaturen.sort.unique.join(' ; ') -%]
 [%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
-[%- dbdesc   = dbinfo.dbnames.${item.database}.full -%]
-[%- dburl    = dbinfo.urls.${item.database} -%]
+[%- dbdesc   = dbinfo.get('dbnames').${item.database}.full -%]
+[%- dburl    = dbinfo.get('urls').${item.database} -%]
     <div class="item">
       <div class="numbering">[% loop.count+offset %]</div>
       <div class="thumbnail">
-    [% IF (config.coverscans.all || config.coverscans.${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-<span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br />aus:&nbsp;<i>
-[%-   IF dbinfo.use_libinfo.${database} %]
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% database %];stid=60">
+[%-   IF dbinfo.get('use_libinfo').${database} %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% database %];stid=60">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
-[% dbdesc | truncate(config.maxlength_dbname) %]</a></i>[%- IF item.popularity -%]&nbsp;(Popularit&auml;t: [% item.popularity %])[%- END -%]
+[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>[%- IF item.popularity -%]&nbsp;(Popularit&auml;t: [% item.popularity %])[%- END -%]
       </div>
-      <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
+      <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
       <div class="titleactions">
-<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/></a>&nbsp;&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=manage;litlistid=[% litlist.properties.id %];do_delentry=1;titid=[% item.id %];titdb=[% item.${"database"} %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" /></a><p/>[% record.tstamp %]
+<a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>&nbsp;&nbsp;<a href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %]&action=manage;litlistid=[% litlist.properties.id %];do_delentry=1;titid=[% item.id %];titdb=[% item.${"database"} %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a><p/>[% record.tstamp %]
       </div>
     </div>
 [% IF listrow == 'listrow1' %]

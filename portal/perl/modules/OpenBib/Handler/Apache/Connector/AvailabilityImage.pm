@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::AvailabilityImage
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,10 +33,12 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(:common REDIRECT);
-use Apache::Reload;
-use Apache::Request ();
-use Apache::URI ();
+use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
+use APR::Table;
+
 use Business::ISBN;
 use Benchmark;
 use DBI;
@@ -44,6 +46,7 @@ use JSON;
 use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use Template;
+use XML::LibXML;
 use YAML;
 
 use OpenBib::Config;
@@ -60,17 +63,17 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
 
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
     
-    my $status=$query->parse;
+#     my $status=$query->parse;
     
-    if ($status){
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status){
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
     my $client_ip="";
-    if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -82,6 +85,7 @@ sub handler {
     if ($action eq "lookup"){
 
         my $isbn13="";
+        my $isbn10="";
         
         if ($isbn){
             # Normierung auf ISBN13
@@ -89,15 +93,21 @@ sub handler {
             
             if (defined $isbnXX && $isbnXX->is_valid){
                 $isbn13 = $isbnXX->as_isbn13->as_string;
+                $isbn10 = $isbnXX->as_isbn10->as_string;
             }
             else {
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-                return OK;
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
             
             $isbn13 = OpenBib::Common::Util::grundform({
                 category => '0540',
-                content  => $isbn,
+                content  => $isbn13,
+            });
+
+            $isbn10 = OpenBib::Common::Util::grundform({
+                category => '0540',
+                content  => $isbn10,
             });
         }
         
@@ -115,8 +125,8 @@ sub handler {
                 $logger->debug("Error-Code:".$response->code());
                 $logger->debug("Fehlermeldung:".$response->message());
 
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
-                return OK;                
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
             else {
                 $logger->info("ISBN $isbn13 found in Google BookSearch");
@@ -133,25 +143,27 @@ sub handler {
                 
                 $logger->debug("GBS".YAML::Dump($gbs_result));
                 
-                my $type = $gbs_result->{"ISBN$isbn13"}{preview} || '';
+                my $type = $gbs_result->{"ISBN$isbn13"}{preview} || $gbs_result->{"ISBN$isbn10"}{preview} || '';
                 
                 if ($type eq "noview"){
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-                    #$r->internal_redirect("http://$config->{servername}/images/openbib/gbs-noview.png");
-                    return OK;
+                    $logger->debug("GBS: noview");
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                    return Apache2::Const::REDIRECT;
                 }
                 elsif ($type eq "partial"){
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/gbs-partial.png");
-                    return OK;
+                    $logger->debug("GBS: partial");
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/gbs-partial.png");
+                    return Apache2::Const::REDIRECT;
                 }
                 elsif ($type eq "full"){
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/gbs-full.png");
-                    return OK;
+                    $logger->debug("GBS: full");
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/gbs-full.png");
+                    return Apache2::Const::REDIRECT;
                 }
                 else {
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-                    #$r->internal_redirect("http://$config->{servername}/images/openbib/gbs.png");
-                    return OK;
+                    $logger->debug("GBS: other");
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                    return Apache2::Const::REDIRECT;
                 }
             }
         }
@@ -169,17 +181,17 @@ sub handler {
                 $logger->debug("Error-Code:".$response->code());
                 $logger->debug("Fehlermeldung:".$response->message());
 
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
-                return OK;                
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
             else {
                 $logger->info("Bibkey $bibkey found in BibSonomy");
                 $logger->debug($response->content());
                 
                 my $content = $response->content();
-                if ($content=~/rdf:Description/){                    
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/bibsonomy_available.png");
-                    return OK;
+                if ($content=~/rdf:Description/){
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/bibsonomy_available.png");
+                    return Apache2::Const::REDIRECT;
                 }
             }
         }
@@ -196,12 +208,12 @@ sub handler {
 
             if ($result->{ebcount} > 0){
                 $logger->info("ISBN $isbn13 found for USB Ebooks");
-                $r->internal_redirect("http://$config->{servername}/images/openbib/usb_ebook.png");
-                return OK;
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/usb_ebook.png");
+                return Apache2::Const::REDIRECT;
             }
             
         }
-        if ($target eq "ol" && $isbn){
+        elsif ($target eq "ol" && $isbn){
             my $ua       = LWP::UserAgent->new();
             $ua->agent($useragent);
             $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
@@ -215,8 +227,8 @@ sub handler {
                 $logger->debug("Error-Code:".$response->code());
                 $logger->debug("Fehlermeldung:".$response->message());
 
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
-                return OK;                
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
             else {
                 $logger->info("ISBN $isbn found in OpenLibrary");
@@ -249,8 +261,8 @@ sub handler {
                    $logger->debug("Error-Code:".$response->code());
                    $logger->debug("Fehlermeldung:".$response->message());
 
-                   $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
-                   return OK;                
+                   $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                   return Apache2::Const::REDIRECT;
                 }
                 else {
                     my ($json_result) = $response->content();
@@ -262,15 +274,51 @@ sub handler {
                     $logger->debug("OL OBJ Data".YAML::Dump($ol_result));
                 }
 
-                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-                return OK;
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
             }
         }
+        elsif ($target eq "unifloh" && $isbn13){
+            my $ua       = LWP::UserAgent->new();
+            $ua->agent($useragent);
+            $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
+            my $url      ="http://www.unifloh.de/apicall?a=4f4ad14a8a543ed4ec90e2a136e5fbcc&uni_tag=koeln&method=getoffers&isbn=$isbn13";
+            $logger->debug("Querying Unifloh with $url");
+            my $request  = HTTP::Request->new('GET', $url);
+            my $response = $ua->request($request);
+
+            if ( $response->is_error() ) {
+                $logger->info("Error querying Unifloh");
+                $logger->debug("Error-Code:".$response->code());
+                $logger->debug("Fehlermeldung:".$response->message());
+
+                $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                return Apache2::Const::REDIRECT;
+            }
+            else {
+                $logger->debug($response->content());
+                
+                my $content = $response->content();
+                if ($content=~/<numlocal>(\d+)<\/numlocal>/){
+                    my $localitems=$1;
+                    if ($localitems > 0){
+                        $r->headers_out->add("Location" => "http://www.unifloh.de/template_new/images/logo2.gif");
+                    }
+                    else {
+                        $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                    }
+                    return Apache2::Const::REDIRECT;
+                }
+            }
+        }
+
     }
+
+    $logger->debug("Default: no image");
+    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+    return Apache2::Const::REDIRECT;
     
-    $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-    
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

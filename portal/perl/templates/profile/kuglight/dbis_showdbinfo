@@ -36,7 +36,7 @@
 <div class="right_side boxedclear" style="width:auto;">
 <span class="headline">[% msg.maketext("Recherche starten") %]</span>
 <p>
-<img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="http://rzblx10.uni-regensburg.de/dbinfo/[% dbinfo.access.main %]" target="_blank" style="font-size:1.6em">[% msg.maketext("Weiter") %]</a>
+<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="http://rzblx10.uni-regensburg.de/dbinfo/[% dbinfo.access.main %]" target="_blank" style="font-size:1.6em">[% msg.maketext("Weiter") %]</a>
 </p>
 </div>
 [% END %]

@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -45,19 +45,13 @@ use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::Conv::Config;
-use OpenBib::Record::Classification;
-use OpenBib::Record::CorporateBody;
-use OpenBib::Record::Person;
-use OpenBib::Record::Subject;
-use OpenBib::Record::Title;
 use OpenBib::Statistics;
 
-my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$logfile);
 
 &GetOptions("reduce-mem"    => \$reducemem,
             "add-superpers" => \$addsuperpers,
             "add-mediatype" => \$addmediatype,
-            "incremental"   => \$incremental,
 	    "database=s"    => \$database,
             "logfile=s"     => \$logfile,
 	    );
@@ -150,10 +144,6 @@ if (exists $conv_config->{local_enrichmnt} && -e "$enrichmntdumpdir/enrichmntdat
     $logger->info("Lokale Einspielung mit zentralen Anreicherungsdaten aktiviert");
 }
 
-if ($incremental){
-    open(OUTDELETE, ">:utf8","delete.mysql") || die "OUTDELETE konnte nicht geoeffnet werden";
-}
-
 my $stammdateien_ref = {
     aut => {
         type           => "aut",
@@ -208,11 +198,6 @@ foreach my $type (keys %{$stammdateien_ref}){
     my ($category,$indicator,$content);
     if ($line=~m/^0000:(\d+)$/){
       $id=$1;
-      if ($incremental){
-          print OUTDELETE "delete from ".$type." where id=$id;\n";
-          print OUTDELETE "delete from ".$type."_string where id=$id;\n";
-          print OUTDELETE "delete from ".$type."_ft where id=$id;\n";
-      }
       next CATLINE;
     }
     elsif ($line=~m/^9999:/){
@@ -249,6 +234,7 @@ foreach my $type (keys %{$stammdateien_ref}){
                 }),
            };
         }
+  
     }
     
     my $contentnorm   = "";
@@ -285,9 +271,9 @@ foreach my $type (keys %{$stammdateien_ref}){
   close(OUT);
   close(OUTFT);
   close(OUTSTRING);
-
   close(IN);
 }
+
 
 #######################
 
@@ -478,19 +464,6 @@ while (my $line=<IN>){
 
     if ($line=~m/^0000:(\d+)$/){
         $id=$1;
-        
-        if ($incremental){
-            print OUTDELETE "delete from tit where id=$id;\n";
-            print OUTDELETE "delete from tit_string where id=$id;\n";
-            print OUTDELETE "delete from tit_ft where id=$id;\n";
-            print OUTDELETE "delete from titlistitems where id=$id;\n";
-            print OUTDELETE "delete from search where verwid=$id;\n";
-            print OUTDELETE "delete from popularity where id=$id;\n";
-            print OUTDELETE "delete mex from mex inner join conn where conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex.id and conn.sourceid=$id;\n";
-            print OUTDELETE "delete mex_string from mex inner join conn where conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex.id and conn.sourceid=$id;\n";
-            print OUTDELETE "delete mex_ft from mex inner join conn where conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex.id and conn.sourceid=$id;\n";
-            print OUTDELETE "delete from conn where sourceid=$id;\n";
-        }
 
         @verf      = ();
         @kor       = ();
@@ -895,15 +868,6 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0100";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_aut{$targetid}){
-                $listitemdata_aut{$targetid} = OpenBib::Record::Person
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-            }
-            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_aut{$targetid}){
@@ -944,15 +908,6 @@ while (my $line=<IN>){
             }
             
             my $category="0101";
-
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_aut{$targetid}){
-                $listitemdata_aut{$targetid} = OpenBib::Record::Person
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-            }
 
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
@@ -997,15 +952,6 @@ while (my $line=<IN>){
             
             my $category="0102";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_aut{$targetid}){
-                $listitemdata_aut{$targetid} = OpenBib::Record::Person
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-            }
-
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_aut{$targetid}){
@@ -1043,15 +989,6 @@ while (my $line=<IN>){
 
             my $category="0103";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_aut{$targetid}){
-                $listitemdata_aut{$targetid} = OpenBib::Record::Person
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-            }
-
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_aut{$targetid}){
@@ -1084,29 +1021,11 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0200";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_kor{$targetid}){
-                $listitemdata_kor{$targetid} = OpenBib::Record::CorporateBody
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-            }
-
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_kor{$targetid}){
                 push @kor, $targetid;
-
-                # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-                # dann aus DB holen
-                if ($incremental && !exists $listitemdata_kor{$targetid}){
-                    $listitemdata_kor{$targetid} = OpenBib::Record::CorporateBody
-                        ->new({id => $targetid, database => $database})
-                            ->load_name
-                                ->name_as_string;
-                }
-
+                
                 my $content = $listitemdata_kor{$targetid};
                 
                 push @{$listitem_ref->{C0200}}, {
@@ -1137,16 +1056,7 @@ while (my $line=<IN>){
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_kor{$targetid}){
                 push @kor, $targetid;
-
-                # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-                # dann aus DB holen
-                if ($incremental && !exists $listitemdata_kor{$targetid}){
-                    $listitemdata_kor{$targetid} = OpenBib::Record::CorporateBody
-                        ->new({id => $targetid, database => $database})
-                            ->load_name
-                                ->name_as_string;
-                }
-
+                
                 my $content = $listitemdata_kor{$targetid};
                 
                 push @{$listitem_ref->{C0201}}, {
@@ -1172,15 +1082,6 @@ while (my $line=<IN>){
             my $sourcetype = 1; # TIT
             my $supplement = "";
             my $category   = "0700";
-
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_not{$targetid}){
-                $listitemdata_not{$targetid} = OpenBib::Record::Classification
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-            }
 
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
@@ -1211,29 +1112,11 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0710";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-
-
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
-                 
+                
                 my $content = $listitemdata_swt{$targetid}->{content};
                 
                 push @{$listitem_ref->{S0710}}, {
@@ -1258,24 +1141,6 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0902";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-
-
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
@@ -1304,25 +1169,7 @@ while (my $line=<IN>){
             my $sourcetype = 1; # TIT
             my $supplement = "";
             my $category   = "0907";
-
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-
-
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-
+            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
@@ -1351,30 +1198,12 @@ while (my $line=<IN>){
             my $sourcetype = 1; # TIT
             my $supplement = "";
             my $category   = "0912";
-
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-
-
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-
+            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
-                
+
                 my $content = $listitemdata_swt{$targetid}->{content};
 
                 push @{$listitem_ref->{S0912}}, {
@@ -1399,24 +1228,6 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0917";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
@@ -1446,24 +1257,6 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0922";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
@@ -1493,24 +1286,6 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0927";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
@@ -1540,24 +1315,6 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0932";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
@@ -1587,24 +1344,6 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0937";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
@@ -1633,24 +1372,6 @@ while (my $line=<IN>){
             my $sourcetype = 1; # TIT
             my $supplement = "";
             my $category   = "0942";
-
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
 
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
@@ -1681,24 +1402,6 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0947";
 
-            # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
-            if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
-                    ->new({id => $targetid, database => $database})
-                        ->load_name
-                            ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
-            }
-            
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
@@ -1851,11 +1554,6 @@ while (my $line=<IN>){
         }	
     }
 }
-
-if ($incremental){
-    close(OUTDELETE);
-}
-
 close(OUT);
 close(OUTFT);
 close(OUTSTRING);
@@ -1885,31 +1583,21 @@ print CONTROLINDEXOFF "alter table search      disable keys;\n";
 print CONTROLINDEXOFF "alter table titlistitem disable keys;\n";
 
 foreach my $type (keys %{$stammdateien_ref}){
-    if (!$incremental){
-        print CONTROL << "ITEMTRUNC";
-truncate table $type;
-truncate table ${type}_ft;
-truncate table ${type}_string;
-ITEMTRUNC
-    }
-
     print CONTROL << "ITEM";
+truncate table $type;
 load data infile '$dir/$stammdateien_ref->{$type}{outfile}'        into table $type        fields terminated by '' ;
+truncate table ${type}_ft;
 load data infile '$dir/$stammdateien_ref->{$type}{outfile_ft}'     into table ${type}_ft     fields terminated by '' ;
+truncate table ${type}_string;
 load data infile '$dir/$stammdateien_ref->{$type}{outfile_string}' into table ${type}_string fields terminated by '' ;
 ITEM
 }
 
-if (!$incremental){
-    print CONTROL << "TITITEMTRUNC";
+print CONTROL << "TITITEM";
 truncate table conn;
 truncate table popularity;
 truncate table search;
 truncate table titlistitem;
-TITITEMTRUNC
-}
-    
-print CONTROL << "TITITEM";
 load data infile '$dir/conn.mysql'        into table conn   fields terminated by '' ;
 load data infile '$dir/popularity.mysql'  into table popularity fields terminated by '' ;
 load data infile '$dir/search.mysql'      into table search fields terminated by '' ;

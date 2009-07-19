@@ -2,7 +2,7 @@
 #
 #  OpenBib::Common::Util
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,9 +30,11 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Log;
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Digest::MD5 qw(md5_hex);
@@ -91,7 +93,7 @@ sub print_warning {
     
     my $stylesheet=get_css_by_browsertype($r);
 
-    my $query=Apache::Request->instance($r);
+    my $query=Apache2::Request->new($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -153,11 +155,11 @@ sub print_warning {
     };
   
     # Dann Ausgabe des neuen Headers
-    print $r->send_http_header("text/html");
+    $r->content_type("text/html");
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
-        return SERVER_ERROR;
+        return Apache2::Const::SERVER_ERROR;
     };
   
     return;
@@ -173,7 +175,7 @@ sub print_info {
     
     my $stylesheet=get_css_by_browsertype($r);
 
-    my $query=Apache::Request->instance($r);
+    my $query=Apache2::Request->new($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -227,11 +229,11 @@ sub print_info {
     };
   
     # Dann Ausgabe des neuen Headers
-    print $r->send_http_header("text/html");
+    $r->content_type("text/html");
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
-        return SERVER_ERROR;
+        return Apache2::Const::SERVER_ERROR;
     };
   
     return;
@@ -303,11 +305,11 @@ sub print_page {
     });
   
     # Dann Ausgabe des neuen Headers
-    print $r->send_http_header("text/html");
+    $r->content_type("text/html");
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
-        return SERVER_ERROR;
+        return Apache2::Const::SERVER_ERROR;
     };
   
     return;
@@ -339,7 +341,7 @@ sub grundform {
     if ($category eq '0002'){
         if ($content =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/){
             $content=$3.$2.$1;
-	    return $content;
+            return $content;
         }
     }
     
@@ -1164,45 +1166,140 @@ __END__
 
 =head1 NAME
 
- OpenBib::Common::Util - Gemeinsame Funktionen der OpenBib-Module
+OpenBib::Common::Util - Gemeinsame Funktionen der OpenBib-Module
 
 =head1 DESCRIPTION
 
- In OpenBib::Common::Util sind all jene Funktionen untergebracht, die 
- von mehr als einem mod_perl-Modul verwendet werden. Es sind dies 
- Funktionen aus den Bereichen Session- und User-Management, Ausgabe 
- von Webseiten oder deren Teilen und Interaktionen mit der 
- Katalog-Datenbank.
+In OpenBib::Common::Util sind all jene Funktionen untergebracht, die
+von mehr als einem mod_perl-Modul verwendet werden.
 
 =head1 SYNOPSIS
 
  use OpenBib::Common::Util;
 
- # Stylesheet-Namen aus mod_perl Request-Object (Browser-Typ) bestimmen
  my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
- # eine neue Session erzeugen und Rueckgabe der $sessionID
- my $sessionID=OpenBib::Common::Util::init_new_session($sessiondbh);
+ my $nomalized_content = OpenBib::Common::Util::grundform({ content => $content, $category => $category, searchreq => $searchreq, tagging => $tagging});
 
- # Ist die Session gueltig? Nein, dann Warnung und Ausstieg
- unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-   OpenBib::Search::Util::print_warning("Warnungstext",$r);
-   exit;
- }
+ my $server_to_use = OpenBib::Common::Util::get_loadbalanced_servername;
 
- # Komplette Seite aus Template $templatename, Template-Daten $ttdata und
- # Request-Objekt $r bilden und ausgeben
+ my $bibtex_entry = OpenBib::Common::Util::normset2bibtex($normset_ref,$utf8);
+
+ my $bibkey = OpenBib::Common::Util::gen_bibkey({ normdata => $normdata_ref});
+
+ my $nomalized_isbn13 = OpenBib::Common::Util::to_isbn13($isbn10);
+
+ my $effective_path_to_template = OpenBib::Common::Util::get_cascaded_templatepath({ database => $database, view => $view, profile => $profile, templatename => $templatename });
+
+ my $items_with_cloudinfo_ref = OpenBib::Common::Util::gen_cloud_class({ items => $items_ref, min => $mincount, max => $maxcount, type => $type});
+
  OpenBib::Common::Util::print_page($templatename,$ttdata,$r);
+ OpenBib::Common::Util::print_info($warning,$r,$msg);
+ OpenBib::Common::Util::print_warning($warning,$r,$msg);
+
+=head1 METHODS
+
+=head2 Verschiedenes
+
+=over 4
+
+=item get_css_by_browertype
+
+Liefert den Namen des CSS Stylesheets entsprechend des aufrufenden
+HTTP_USER_AGENT zurück. Das ist im Fall der aktuellen MSIE-Versionen
+5-9 das Stylesheet openbib-ie.css, im Fall von Mozilla 5.0 das
+Stylesheet openbib.css. Bei anderen Browser-Version wird im Falle von
+MSIE sonst openbib-simple-ie.css bzw. bei allen anderen Browsern
+openbib-simple.css verwendet.
+
+=item grundform({ content => $content, $category => $category, searchreq => $searchreq, tagging => $tagging})
+
+Allgemeine Normierung des Inhaltes $content oder in Abhängigkeit von
+der Kategorie $category, bei einer Suchanfrage ($searchreq=1)
+bzw. beim Tagging ($tagging=1). Neben einer Filterung nach erlaubten
+Zeichen erfolgt insbesondere die Rückführung von Zeichen auf ihre
+Grundbuchstaben, also ae für ä oder e für é.
+
+=item get_loadbalanced_servername
+
+Liefert den Namen des Servers aus der Menge aktiver Produktionsserver
+zurück, der am wenigsten belastet ist (bzgl. Load) und dessen
+Session-Datenbank korrekt funktioniert.
+
+=item normset2bibtex($normset_ref,$utf8)
+
+Wandelt den bibliographischen Datensatz $normset_ref in das
+BibTeX-Format um. Über $utf8 kann spezifiziert werden, ob in diesem
+Eintrag UTF8-Kodierung verwendet werden soll oder plain (La)TeX.
+
+=item utf2bibtex($string,$utf8)
+
+Filtert nicht akzeptierte Zeichen aus $string und wandelt die
+UTF8-kodierten Sonderzeichen des Strings $string, wenn $utf8 nicht
+besetzt ist, in das plain (La)TeX-Format.
+
+=item gen_bibkey_base({ normdata => $normdata_ref })
+
+Generiere die Basiszeichenkette aus den bibliographischen Daten für
+die Bildung des BibKeys. Dies ist eine Hilfsfunktion für gen_bibkey
+
+=item gen_bibkey({ normdata => $normdata_ref, bibkey_base => $bibkey_base})
+
+Erzeuge einen BibKey entweder aus den bibliographischen Daten
+$normdata_ref oder aus einer schon generierten Basis-Zeichenkette
+$bibkey_base.
+
+=item to_isbn13($isbn10)
+
+Erzeuge eine ISBN13 aus einer ISBN und liefere diese normiert (keine
+Leerzeiche oder Bindestricke, Kleinschreibung) zurück.
+
+=item get_cascaded_templatepath({ database => $database, view => $view, profile => $profile, templatename => $templatename })
+
+Liefert in Abhängigkeit der Datenbank $database, des View $view und des
+Katalogprofils $profile den effektiven Pfad zum jeweiligen Template
+$templatename zurück.
+
+=item gen_cloud_class({ items => $items_ref, min => $mincount, max => $maxcount, type => $type})
+
+Reichere eine Liste quantifizierter Begriffe $items_ref entsprechend
+schon bestimmten minimalen und maximalen Vorkommens $mincount
+bzw. $maxcount für den type 'linear/log' mit Klasseninformatinen für
+die Bildung einer Wortwolke an.
+
+=back
+
+=head2 Ausgabe über Apache-Handler
+
+=over 4
+
+
+=item print_page($templatename,$ttdata,$r)
+
+Ausgabe des Templates $templatename mit den Daten $ttdata über den
+Apache-Handler $r
+
+=item print_warning($warning,$r,$msg)
+
+Ausgabe des Warnhinweises $warning über den Apache-Handler $r unter
+Verwendung des Message-Katalogs $msg
+
+=item print_info($info,$r,$msg)
+
+Ausgabe des Informationstextes $info an den Apache-Handler $r unter
+Verwendung des Message-Katalogs $msg
+
+=back
 
 =head1 EXPORT
 
- Es werden keine Funktionen exportiert. Alle Funktionen muessen
- vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
- Verzicht auf den Exporter weniger Speicherverbrauch und mehr
- Performance auf Kosten von etwas mehr Schreibarbeit.
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
 
 =head1 AUTHOR
 
- Oliver Flimm <flimm@openbib.org>
+Oliver Flimm <flimm@openbib.org>
 
 =cut

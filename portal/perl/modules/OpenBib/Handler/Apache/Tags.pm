@@ -34,9 +34,13 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::SubRequest (); # internal_redirect
+use Apache2::URI ();
+use APR::URI ();
+
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;
@@ -63,13 +67,13 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session   = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),
@@ -126,7 +130,7 @@ sub handler {
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
-        return OK;
+        return Apache2::Const::OK;
     }
     
     my $view="";
@@ -150,7 +154,7 @@ sub handler {
 
         $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $loginname = $user->get_username();
@@ -168,7 +172,7 @@ sub handler {
         });
 
         $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
-        return OK;
+        return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
 
@@ -188,7 +192,7 @@ sub handler {
         else {
             $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         }
-        return OK;
+        return Apache2::Const::OK;
 
     }
     elsif ($do_change && $user->{ID}){
@@ -203,11 +207,11 @@ sub handler {
 
         if ($status){
             OpenBib::Common::Util::print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.",$r,$msg);
-            return OK;
+            return Apache2::Const::OK;
         }
         
         $r->internal_redirect("http://$config->{servername}$config->{tags_loc}?sessionID=$session->{ID};show_usertags=1");
-        return OK;
+        return Apache2::Const::OK;
 
     }
     
@@ -264,7 +268,7 @@ sub handler {
             if ($private_tags){
                 if (!$user->{ID}){
                     OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-                    return OK;
+                    return Apache2::Const::OK;
                 }
 
                 my $titles_ref;
@@ -319,7 +323,7 @@ sub handler {
         });
     }
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

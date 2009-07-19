@@ -4,7 +4,7 @@
 #
 #  Titel-Liste
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,8 +32,9 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::RequestRec ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
@@ -234,7 +235,7 @@ sub print_to_handler {
     my $user         = OpenBib::User->instance;
     my $queryoptions = OpenBib::QueryOptions->instance;
 
-    my $query         = Apache::Request->instance($r);
+    my $query         = Apache2::Request->new($r);
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
 
@@ -310,11 +311,14 @@ sub print_to_handler {
         
         # Navigationselemente erzeugen
         my %args=$r->args;
+
+        $logger->debug("Argument-List: ".\%args);
+        
         delete $args{offset};
         delete $args{hitrange};
         my @args=();
         while (my ($key,$value)=each %args) {
-            push @args,"$key=$value";
+            push @args,"$key=$value" if (defined $key && defined $value);
         }
         
         my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);

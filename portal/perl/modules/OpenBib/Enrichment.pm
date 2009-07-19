@@ -2,7 +2,7 @@
 #
 #  OpenBib::Enrichment
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -237,3 +237,68 @@ sub normdata_to_bdb {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::Enrichment - Apache-Singleton für den Zugriff auf
+Informationen in der zugehörigen Anreicherungs-Datenbank.
+
+=head1 DESCRIPTION
+
+Dieses Apache-Singleton bietet einen Zugriff auf die Informationen in
+der Anreicherungsdatenbank. Diese lassen sich z.B. in den Templates
+über $config->get_enrichmnt_object verwenden.
+
+=head1 SYNOPSIS
+
+ use OpenBib::Enrichment;
+
+ my $enrich = OpenBib::Enrichment->new;
+
+ my $enriched_normdata_ref = $enrich->get_additional_normdata({ isbn => '3-540-43645-6'})
+
+ my $histogram_ref         = $enrich->get_db_histogram_of_occurence({ category => '4200', content => 'Perl'});
+
+ my $similar_isbn_ref      = $enrich->get_similar_isbns({ isbn => '3-540-43645-6' })
+
+=head1 METHODS
+
+=over 4
+
+=item new
+
+Erzeugung des Objektes
+
+=item get_additional_normdata({ isbn => $isbn})
+
+Liefert eine Hashreferenz nach Kategorienummern auf alle
+Anreicherungsinhalte zur ISBN $isbn.
+
+=item get_similar_isbns({ isbn => $isbn })
+
+Liefert eine Listenreferenz auf alle ähnliche Ausgaben (andere
+Sprache, Auflage, ...) des Werkes mit der ISBN $isbn.
+
+=item get_db_histogram_of_occurence({ category => $category, content => $content })
+
+Entsprechend das Anreicherungsinhaltes $content in der Kategorie
+$category wird entsprechen der ISBN eine Abgleich mit allen Titeln in
+allen Datenbanken und ein Histogram in Form einer Hashreferenz auf den
+Inhalt content sowie eine Listenreferenz histogram mit den
+Informationen über die Datenbank dbname und der dortigen Anzahl count.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::RSS.pm
 #
-#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,10 +33,15 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
-use Apache::URI ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Log;
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::RequestIO (); # print, rflush
+use Apache2::RequestRec ();
+use Apache2::URI ();
+use APR::URI ();
+
 use Benchmark;
 use Date::Manip;
 use DBI;
@@ -265,8 +270,8 @@ sub handler {
             };
             
             $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                $r->log_reason($itemtemplate->error(), $r->filename);
-                return SERVER_ERROR;
+                $r->log_error($itemtemplate->error(), $r->filename);
+                return Apache2::Const::SERVER_ERROR;
             };
             
             $logger->debug("Adding $title / $desc") if (defined $title && defined $desc);
@@ -292,10 +297,10 @@ sub handler {
     else {
         $logger->debug("Verwende Eintrag aus RSS-Cache");
     }
-    #print $r->send_http_header("application/rdf+xml");
-    print $r->send_http_header("application/xml");
+    #print $r->content_type("application/rdf+xml");
+    $r->content_type("application/xml");
 
-    print $rss_content;
+    $r->print($rss_content);
 
     # Aufruf des Feeds loggen
     $session->log_event({
@@ -303,7 +308,7 @@ sub handler {
         content   => "$database:$type:$subtype",
     });
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

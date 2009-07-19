@@ -34,9 +34,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
 use DBI;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
@@ -64,15 +65,15 @@ sub handler {
     my $config      = OpenBib::Config->instance;
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
     my $statistics  = new OpenBib::Statistics();
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session   = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),
@@ -97,7 +98,7 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     my $view="";
@@ -296,7 +297,7 @@ sub handler {
     
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

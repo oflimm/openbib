@@ -23,7 +23,7 @@
     END ;
 -%]
 [% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
-[%- IF nav.first.active -%]<img src="[% config.previous_img %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.previous_img %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
+[%- IF nav.first.active -%]<img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
 [%- IF navitem.active -%]
@@ -34,7 +34,7 @@
 </a>&nbsp;&nbsp;
 [%- END -%]
 
-[% IF nav.last.active %]<img src="[% config.next_img %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.next_img %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
+[% IF nav.last.active %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
 
 <p/>
 [% END %]

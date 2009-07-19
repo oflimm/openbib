@@ -32,7 +32,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Reload;
+use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use DBI;
 use LWP;
@@ -71,7 +71,7 @@ sub new {
 
     bless ($self, $class);
 
-    $logger->debug("Initializing with colors = $colors, lang = $lang");
+    $logger->debug("Initializing with colors = ".(defined $colors || '')." and lang = ".(defined $lang || ''));
 
     $self->{bibid}      = (defined $bibid)?$bibid:(defined $config->{ezb_bibid})?$config->{ezb_bibid}:undef;
     $self->{colors}     = (defined $colors)?$colors:(defined $config->{ezb_colors})?$config->{ezb_colors}:undef;
@@ -141,9 +141,6 @@ sub get_journals {
     # Set defaults
     my $notation = exists $arg_ref->{notation}
         ? $arg_ref->{notation}     : '';
-
-    my $fs       = exists $arg_ref->{fs}
-        ? $arg_ref->{fs}           : '';
 
     my $sc       = exists $arg_ref->{sc}
         ? $arg_ref->{sc}           : '';
@@ -549,3 +546,87 @@ sub DESTROY {
 
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::EZB - Objektorientiertes Interface zum EZB XML-API
+
+=head1 DESCRIPTION
+
+Mit diesem Objekt kann auf das XML-API der
+Elektronischen Zeitschriftenbibliothek (EZB) in Regensburg zugegriffen werden.
+
+=head1 SYNOPSIS
+
+ use OpenBib::DBIS;
+
+ my $dbis = OpenBib::DBIS->new({});
+
+=head1 METHODS
+
+=over 4
+
+=item new({ bibid => $bibid, client_ip => $client_ip, colors => $colors, lang => $lang })
+
+Erzeugung des EZB Objektes. Dabei wird die EZB-Kennung $bibid der
+Bibliothek, die IP des aufrufenden Clients (zur Statistik), die
+Sprachversion lang, sowie die Spezifikation der gewünschten
+Zugriffsbedingungen color benötigt.
+
+=item get_subjects
+
+Liefert eine Listenreferenz der vorhandenen Fachgruppen zurück mit
+einer Hashreferenz auf die jeweilige Notation notation, der
+Datenbankanzahl count sowie der Beschreibung der Fachgruppe
+desc. Zusätzlich werden für eine Wolkenanzeige die entsprechenden
+Klasseninformationen hinzugefügt.
+
+=item search_journals({ fs => $fs, notation => $notation,  sc => $sc, lc => $lc, sindex => $sindex })
+
+Stellt die Suchanfrage $fs - optional eingeschränkt auf die Fachgruppe
+$notation - an die EZB und liefert als Ergebnis verschiedene
+Informatinen als Hashreferenz zurück. Weitere
+Einschränkungsmöglichkeiten sind sc, lc und sindex.
+
+Es sind dies die Informationen über die Ergebnisanzahl search_count,
+die Navigation nav, die Fachgruppe subject, die Zeitschriften
+journals, die aktuellen Einstellungen current_page sowie weitere
+verfügbare Seiten other_pages.
+
+=item get_journals({ notation => $notation, sc => $sc, lc => $lc, sindex => $sindex })
+
+Liefert eine Liste mit Informationen über alle Zeitschriften der
+Fachgruppe $notation aus der EZB als Hashreferenz zurück.
+
+Es sind dies die Informationen über die Navigation nav, die Fachgruppe
+subject, die Zeitschriften journals, die aktuellen Einstellungen
+current_page sowie weitere verfügbare Seiten other_pages.
+
+=item get_journalinfo({ id => $id })
+
+Liefert Informationen über die Zeitschrift mit der Id $id als
+Hashreferenz zurück. Es sind dies neben der Id $id auch Informationen
+über den Titel title, publisher, ZDB_number, subjects, keywords, firstvolume, firstdate, appearence, costs, homepages sowie remarks.
+
+=item get_journalreadme({ id => $id })
+
+Liefert zur Zeitschriftk mit der Id $id generelle Nutzungsinformationen
+als Hashreferenz zurück. Neben dem Titel title sind das Informationen
+periods (color, label, readme_link, warpto_link) über alle
+verschiedenen Zeiträume.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

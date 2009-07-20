@@ -64,7 +64,7 @@ sub _new_instance {
 
     # Hinweis: Bisher wuerde statt $query direkt das Request-Objekt $r
     # uebergeben und an dieser Stelle wieder ein $query-Objekt via
-    # Apache::Request daraus erzeugt. Bei Requests, die via POST
+    # Apache2::Request daraus erzeugt. Bei Requests, die via POST
     # sowohl mit dem enctype multipart/form-data wie auch
     # multipart/form-data abgesetzt wurden, lassen sich keine
     # Parameter ala sessionID extrahieren.  Das ist ein grosses
@@ -190,3 +190,68 @@ sub get_default_options {
 };
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::QueryOptions - Apache-Singleton zur Behandlung von Recherche-Optionen
+
+=head1 DESCRIPTION
+
+Dieses Apache-Singleton Verwaltet die Recherche-Optionen wie hitrange,
+offset, Sprache l, Profil profil, Automatische Und-Verknuepfung
+autoplus, Such-Backend sb sowie den Trefferlistentyp listtype.
+
+=head1 SYNOPSIS
+
+ use OpenBib::QueryOptions;
+
+ my $queryoptions  = OpenBib::QueryOptions->instance;
+
+ my $lang = $queryoptions->get_option('l');
+
+ my $current_options = $queryoptions->get_options;
+
+=head1 METHODS
+
+=over 4
+
+=item instance
+
+Instanziierung des Apache-Singleton.
+
+=item load
+
+Einladen der aktuellen QueryOptions der Session.
+
+=item dump
+
+Abspeichern der QueryOptions in der Session
+
+=item get_options
+
+Liefert alle QueryOptions als Hashreferenz
+
+=item get_option($option)
+
+Liefert den Wert der Option $option
+
+=item get_default_options
+
+Liefert die Standardeinstellung default_query_options aus der
+Konfigurationsdatei portal.yml.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

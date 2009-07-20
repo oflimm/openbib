@@ -22,11 +22,11 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
+   <li><a class="active" href="[% config.get('userprefs_loc') %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
 [% IF targettype != 'self' %]
-   <li><a                href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
+   <li><a                href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
 [% END %]
-   <li><a                href="[% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
+   <li><a                href="[% config.get('databaseprofile_loc') %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
 <div class="content">
@@ -41,13 +41,13 @@
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% loginname %]</td>
 
 [% IF targettype == 'self' %]
-<td><form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="delaccount_ask" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
+<td><form method="post" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="delaccount_ask" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
 [% END %]
 
 </tr>
 
 [% IF targettype == 'self' %]
-<tr><form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="changepw" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></form></tr>
+<tr><form method="post" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="changepw" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></form></tr>
 [% END %]
 
 </table>
@@ -96,14 +96,14 @@
 <table>
 <tr><td><b>[% msg.maketext("Ausgeliehen") %]:</b></td><td align="left">&nbsp;
 [%- IF userinfo.avanz > 0 -%]
-<a href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
+<a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
 [%- ELSE -%]
 [%- userinfo.avanz -%]
 [%- END -%]
 </td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Vorgemerkt") %]:</b></td><td>
 
 [%- IF userinfo.vmanz > 0 -%]
-<a href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
+<a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
 [%- ELSE -%]
 [%- userinfo.vmanz -%]
 [%- END -%]
@@ -111,7 +111,7 @@
 </td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Offene Geb&uuml;hren") %]:</b></td><td><span class="warning">
 
 [% IF userinfo.maanz > 0 %]
-<a href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
+<a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
 [% ELSE %]
 [% userinfo.maanz %]
 [% END %]
@@ -121,7 +121,7 @@
 
 <tr><td><b>[% msg.maketext("Bestellungen") %]:</b></td><td align="left">&nbsp;
 [%- IF userinfo.bsanz > 0 -%]
-<a href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
+<a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
 [%- ELSE -%]
 [%- userinfo.bsanz -%]
 [%- END -%]
@@ -143,7 +143,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Recherchemaske") %]</td></tr>
 <tr><td class="options">
-<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="action"    value="changemask" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <table>
@@ -168,7 +168,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Suchfelder") %]</td></tr>
 <tr><td class="options">
-<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="action" value="changefields" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <table>

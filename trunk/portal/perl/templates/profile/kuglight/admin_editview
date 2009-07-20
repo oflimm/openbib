@@ -23,7 +23,7 @@
 
 <div class="content">
 
-<form method="get" action="[% config.admin_loc %]">
+<form method="get" action="[% config.get('admin_loc') %]">
 <input type="hidden" name="sessionID"   value="[% sessionID %]" />
 <input type="hidden" name="viewname"    value="[% viewinfo.viewname %]" />
 <input type="hidden" name="do_editview" value="1" />
@@ -72,7 +72,7 @@ selected="selected"
 
 [% END %]
 
->[% singledb %]: [% IF dbinfo.dbnames.${singledb}.short %][% dbinfo.dbnames.${singledb}.short %][% ELSE %][% dbinfo.dbnames.${singledb}.short %][% END %]</option>
+>[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.short %][% END %]</option>
 
 [% END %]
 

@@ -21,10 +21,10 @@
 <div id="maincontent">
 
     <ul class="tabbingmenu">
-      <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Suchhilfe") %]</a></li>
-      <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1">[% msg.maketext("Projekt") %]</a></li>
-      <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2">[% msg.maketext("KUG-Versionen") %]</a></li>
-      <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=3">Artikel/Stimmen</a></li>
+      <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Suchhilfe") %]</a></li>
+      <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=1">[% msg.maketext("Projekt") %]</a></li>
+      <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=2">[% msg.maketext("KUG-Versionen") %]</a></li>
+      <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=3">Artikel/Stimmen</a></li>
     </ul>
     
     <div class="content">
@@ -114,7 +114,7 @@ erschlie&szlig;en.</p>
 <p> Offizielle Literaturlisten der verschiedenen Fachbereiche
 k&ouml;nnen nun von den Dozenten und Bibliothekaren als solche
 kenntlich gemacht werden. Diese Literaturlisten sind an folgendem
-Symbol zu erkennen: <img src="[% config.university_img %]"/> </p>
+Symbol zu erkennen: <img src="[% config.get('university_img') %]"/> </p>
 
 <p>[<a href="<p>[<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/3146/312/6/kugng/index.html" target="_blank">Beispiel</a>]
 </p>
@@ -354,7 +354,7 @@ Zugriff auf inhaltlich benachbarte Titel</p>
 
 <p> Wir haben begonnen, eine kontextbezogene Hilfe in den KUG
 einzubauen.  Diese erkennen Sie an einem Fragezeichen <img
-src="[% config.info_img %]" /> am rechten Bildschirmrand. &Uuml;ber
+src="[% config.get('info_img') %]" /> am rechten Bildschirmrand. &Uuml;ber
 dieses Fragezeichen k&ouml;nnen Sie zielgenau in den entsprechenden
 Abschnitt der Hilfeseite gelangen.  </p>
 
@@ -370,7 +370,7 @@ Wolken -> Suchbegriffe.  </p>
 <p>Einzelne Titel-S&auml;tze k&ouml;nnen nun unter einem einheitlichen
 URL verlinkt werden - &auml;hnlich Blog-Eintr&auml;gen. D.h. bei einer
 Volltitelanzeige finden Sie ein neues Icon <img
-src="[% config.permalink_img %]" border="0" />. Wenn
+src="[% config.get('permalink_img') %]" border="0" />. Wenn
 Sie darauf klicken, &ouml;ffnet sich in einem neuen Fenster der
 verlinkbare permanente URL zu diesem Titel in dieser Sicht.  </p>
 

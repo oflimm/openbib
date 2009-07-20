@@ -2,7 +2,7 @@
 #
 #  OpenBib::Session
 #
-#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -870,7 +870,7 @@ sub updatelastresultset {
     return;
 }
 
-sub clear_data {
+sub save_eventlog_to_statisticsdb {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
@@ -883,10 +883,10 @@ sub clear_data {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult;
-
     my $view = $self->get_viewname();
     $logger->debug("Viewname: $view");
+    
+    my $idnresult;
 
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
     my $statistics=new OpenBib::Statistics;
@@ -950,6 +950,26 @@ sub clear_data {
 
 	$seen_title{"$dbname:$katkey"}=1;
     }
+
+    return;
+}
+
+sub clear_data {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult;
+
+    $self->save_eventlog_to_statisticsdb;
     
     # dann Sessiondaten loeschen
     $idnresult=$dbh->prepare("delete from eventlog where sessionid = ?") or $logger->error($DBI::errstr);
@@ -1018,6 +1038,10 @@ sub log_event {
     # Recherchen:
     #   1 => Recherche-Anfrage bei Virtueller Recherche
     #  10 => Eineltrefferanzeige
+    #  11 => Verfasser-Normdatenanzeige
+    #  12 => Koerperschafts-Normdatenanzeige
+    #  13 => Notations-Normdatenanzeige
+    #  14 => Schlagwort-Normdatenanzeige
     #  20 => Rechercheart (einfach=1,komplex=2, externer Suchschlitz=3)
     #  21 => Recherche-Backend (sql,xapian,z3950)
     #  22 => Recherche-Einstieg ueber Connector (1=DigiBib)
@@ -1520,3 +1544,76 @@ sub get_info {
 
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::Session - Apache-Singleton einer Session
+
+=head1 DESCRIPTION
+
+Dieses Apache-Singleton verwaltet eine Session im Portal
+
+=head1 SYNOPSIS
+
+ use OpenBib::Session;
+
+=head1 METHODS
+
+=over 4
+
+=item new({ sessionID => $sessionID })
+
+Erzeugung als herkömmliches Objektes und nicht als
+Apache-Singleton. Damit kann auch ausserhalb des Apache mit mod_perl
+auf eine gegebene Session in Perl-Skripten zugegriffen werden.
+
+=item instance({ sessionID => $sessionID })
+
+Instanziierung des Apache-Singleton yur SessionID $sessionID. Wird
+keine sessionID übergeben, dann wird eine neue erzeugt.
+
+=item instance({ sessionID => $sessionID })
+
+Instanziierung des Apache-Singleton yur SessionID $sessionID. Wird keine sessionID übergeben, dann wird eine neue erzeugt.
+
+=item _init_new_session
+
+Private Methode zur Erzeugung einer neuen Session.
+
+=item is_valid
+
+Liefert einen wahren Wert zurück, wenn die Session existiert.
+
+=item get_viewname
+
+Liefert den in dieser Session verwendeten View $viewname zurück.
+
+=item get_profile
+
+Liefert das in dieser Session verwendeten systemweite Katalog-Profil $profile zurück.
+
+=item set_profile($profile)
+
+Setzt das systemweite Katalog-Profil $profile für die Session.
+
+=item get_resultlists_offsets({ database => $database, queryid => $queryid, hitrange => $hitrange})
+
+Liefert eine Liste der Offsets einer in der Session
+zwischengespeicherten Trefferergebnisliste spezifiziert durch
+$database, $queryid und $hitrange zurück.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

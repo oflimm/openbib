@@ -31,9 +31,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
+use utf8;
+
 use Getopt::Long;
 
 use OAI2::Harvester;
+
+binmode STDOUT, ':utf8';
 
 &GetOptions("oaiurl=s" => \$oaiurl,
 	    );

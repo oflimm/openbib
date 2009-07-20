@@ -42,7 +42,7 @@ FOREACH category IN categories;
     SWITCH category;
 
     CASE "C5000";
-         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofurhkor=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
+         content   = "<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${normset.database};searchtitofurhkor=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
     END;
 
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
@@ -50,7 +50,7 @@ FOREACH category IN categories;
    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
    # kodiert.
    thiscategory = category ;
-   IF config.categorymapping.${record.database}.$category ;
+   IF config.get('categorymapping').${record.database}.$category ;
      thiscategory = "${category}-${record.database}" ;
    END;
 

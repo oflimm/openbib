@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Search.pm
 #
-#  Copyright 1997-2008 Oliver Flimm <flimm@openbib.org>
+#  Copyright 1997-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,11 +34,11 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request;
 use Benchmark ':hireswallclock';
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8);
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
@@ -68,13 +68,13 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session   = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),
@@ -189,7 +189,7 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         $dbh->disconnect();
 
-        return OK;
+        return Apache2::Const::OK;
     }
     
     my $view="";
@@ -264,7 +264,7 @@ sub handler {
                 my $templatename = ($stid)?"tt_search_olws_browse_".$stid."_tname":"tt_search_olws_browse_tname";
 
                 OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-                return OK;
+                return Apache2::Const::OK;
             }
             
             my $soap = SOAP::Lite
@@ -289,7 +289,7 @@ sub handler {
             view             => $view,
             msg              => $msg,
         });
-        return OK;
+        return Apache2::Const::OK;
     }
 
     #######################################################################
@@ -324,7 +324,7 @@ sub handler {
             my $templatename = ($stid)?"tt_search_showautset_".$stid."_tname":"tt_search_showautset_tname";
             
             OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-            return OK;
+            return Apache2::Const::OK;
         }
     
         if ($generalsearch=~/^supertit/) {
@@ -370,7 +370,7 @@ sub handler {
                 msg              => $msg,
             });
 
-            return OK;
+            return Apache2::Const::OK;
         }
 
         if ($generalsearch=~/^subtit/) {
@@ -417,7 +417,7 @@ sub handler {
                 msg              => $msg,
             });
 
-            return OK;
+            return Apache2::Const::OK;
         }
 
         if ($generalsearch=~/^hst/) {
@@ -432,7 +432,7 @@ sub handler {
                           msg                => $msg,
                       });
 
-            return OK;
+            return Apache2::Const::OK;
         }
     
         if ($generalsearch=~/^swt/) {
@@ -462,7 +462,7 @@ sub handler {
             my $templatename = ($stid)?"tt_search_showswtset_".$stid."_tname":"tt_search_showswtset_tname";
 
             OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-            return OK;
+            return Apache2::Const::OK;
         }
     
         if ($generalsearch=~/^not/) {
@@ -492,7 +492,7 @@ sub handler {
             my $templatename = ($stid)?"tt_search_shownotset_".$stid."_tname":"tt_search_shownotset_tname";
             
             OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-            return OK;
+            return Apache2::Const::OK;
         }
     
     }
@@ -510,7 +510,7 @@ sub handler {
             view               => $view,
             msg                => $msg,
         });
-        return OK;
+        return Apache2::Const::OK;
     }
 
     #####################################################################
@@ -532,7 +532,7 @@ sub handler {
 #             stylesheet         => $stylesheet,
 #             view               => $view,
 #         });
-#         return OK;
+#         return Apache2::Const::OK;
 #     }
     
     #####################################################################
@@ -554,7 +554,7 @@ sub handler {
 #             stylesheet         => $stylesheet,
 #             view               => $view,
 #         });
-#         return OK;
+#         return Apache2::Const::OK;
 #     }
   
     #####################################################################
@@ -576,7 +576,7 @@ sub handler {
 #             stylesheet         => $stylesheet,
 #             view               => $view,
 #         });
-#         return OK;
+#         return Apache2::Const::OK;
 #    }
     #####################################################################
     # Wird derzeit nicht unterstuetzt
@@ -597,7 +597,7 @@ sub handler {
 #             stylesheet         => $stylesheet,
 #             view               => $view,
 #         });
-#         return OK;
+#         return Apache2::Const::OK;
 #    }
   
     #####################################################################
@@ -665,7 +665,7 @@ sub handler {
                           no_log             => $no_log,
                       });
         }
-        return OK;
+        return Apache2::Const::OK;
     }
   
     #####################################################################
@@ -700,7 +700,7 @@ sub handler {
             serialize => 1,
         });
 
-        return OK;
+        return Apache2::Const::OK;
     }
   
     ######################################################################
@@ -735,7 +735,7 @@ sub handler {
             serialize => 1,
         });
 
-        return OK;
+        return Apache2::Const::OK;
     }
     
     ######################################################################
@@ -770,7 +770,7 @@ sub handler {
             serialize => 1,
         });
 
-        return OK;
+        return Apache2::Const::OK;
     }
   
     #####################################################################
@@ -805,7 +805,7 @@ sub handler {
             serialize => 1,
         });
 
-        return OK;
+        return Apache2::Const::OK;
     }
     
     if ($searchtitofaut) {
@@ -869,7 +869,7 @@ sub handler {
             msg              => $msg,
         });
 
-        return OK;
+        return Apache2::Const::OK;
     }
   
     #####################################################################
@@ -933,7 +933,7 @@ sub handler {
             msg              => $msg,
         });
 
-        return OK;
+        return Apache2::Const::OK;
     }
   
     #######################################################################
@@ -998,7 +998,7 @@ sub handler {
         });
 
         
-        return OK;
+        return Apache2::Const::OK;
     }
   
     #######################################################################
@@ -1062,7 +1062,7 @@ sub handler {
             msg              => $msg,
         });
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
     #######################################################################
@@ -1200,7 +1200,7 @@ sub handler {
             msg              => $msg,
         });
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
     #######################################################################
@@ -1307,7 +1307,7 @@ sub handler {
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{"tt_search_browse_".$type."_tname"},$ttdata,$r);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     # Falls bis hierhin noch nicht abgearbeitet, dann wirds wohl nichts mehr geben
@@ -1315,7 +1315,7 @@ sub handler {
     $logger->error("Unerlaubt das Ende erreicht");
   
     $dbh->disconnect;
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

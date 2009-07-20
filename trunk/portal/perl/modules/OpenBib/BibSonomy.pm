@@ -32,7 +32,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Reload;
+use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use DBI;
 use LWP;
@@ -396,9 +396,6 @@ sub new_post {
     my $tags_ref   = exists $arg_ref->{tags}
         ? $arg_ref->{tags}       : undef;
 
-    my $type       = exists $arg_ref->{type}
-        ? $arg_ref->{type}       : 'bibtex';
-
     my $visibility = exists $arg_ref->{visibility}
         ? $arg_ref->{visibility} : 'public';
 
@@ -413,11 +410,6 @@ sub new_post {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my %valid_type = (
-        'bibtex'   => 'bibtex',
-        'bookmark' => 'bookmark',
-    );
 
     unless (defined $record){
         $record  = new OpenBib::Record::Title({ database => $database , id => $id})->load_full_record;    
@@ -491,3 +483,83 @@ sub DESTROY {
 
 
 1;
+__END__
+
+=head1 NAME
+
+ OpenBib::BibSonomy - Objekt zur Interaktion mit BibSonomy
+
+=head1 DESCRIPTION
+
+ Mit diesem Objekt kann von OpenBib über das API von BibSonomy auf diesen Web-Dienst zugegriffen werden.
+
+=head1 SYNOPSIS
+
+ use OpenBib::BibSonomy;
+
+ my $bibsonomy = new OpenBib::BibSonomy({ api_key => $api_key, api_user => $api_user});
+
+ my @tags = $bibsonomy->get_tags({ bibkey => $bibkey, tags => \@local_tags});
+
+ my $posts_ref = $bibsonomy->get_posts({ tag => encode_utf8($tag) ,start => $start, end => $end , type => $type});
+
+ my $posts_ref = $bibsonomy->get_posts({ user => $bsuser ,start => $start, end => $end , type => $type});
+
+=head1 METHODS
+
+=over 4
+
+=item new({ api_key => $api_key, api_user => $api_user })
+
+Anlegen eines neuen BibSonomy-Objektes. Für den Zugriff über das
+BibSonomy-API muss ein API-Key $api_key und ein API-Nutzer $api_user
+vorhanden sein. Diese können direkt bei der Objekt-Erzeugung angegeben
+werden, ansonsten werden die Standard-Keys bibsonomy_api_key und
+-Nutzer bibsonomy_api_user aus OpenBib::Config respektive portal.yml
+verwendet.
+
+=item get_posts({ bibkey => $bibkey, tag => $tag, user => $user, type => $type, start => $start, end => $end});
+
+Liefert eine Liste mit Posts aus BibSonomy zu einem Tag $tag, einem
+Nutzer $user oder einem Bibkey $bibkey von $start bis $end. Über $type
+(default: 'bibtex')kann bestimmt werden, ob sich die Liste auf
+bibliographische Informationen bezieht ('bibtex') oder Web-Links
+('bookmark').
+
+=item get_tags({ bibkey => $bibkey, tags => $tags_ref })
+
+Liefert auf Basis einer Liste gegebener Tags $tags_ref und/oder eines
+Bibkeys $bibkey eine Gesamt-Liste aller diesbezüglich in BibSonomy
+vorkommenden Tags zurück. Bei übergebenen Bibkey werden dazu die Tags
+des entsprechenden Titels in Bibsonomy - falls existent - bestimmt,
+bei übergebener Tag-Liste wird jedes auf Existenz in BibSonomy
+überprüft.
+
+=item change_posts({ bibkey => $bibkey, tags => $tags_ref, type => $type, visibility => $visibility})
+
+Ändern der Tags entsprechend $tags_ref sowie der Sichbarkeit
+$visibility (public, private) eines eigenen Eintrags mit dem Bibkey
+$bibkey in BibSonomy des Typs $type.
+
+=item new_post({ record => $record, tags => $tags_ref, type => $type, visibility => $visibility, database => $database, id => $id})
+
+Erzeuge einen neuen bibliographischen Eintrag in BibSonomy zu einem
+gegebenen Satz $record mit Tags $tags_ref und Sichtbarkeit
+$visibility. Falls kein $record übergeben wird, kann stattdessen
+direkt die Id $id in der gewünschten Datenbank $database angegeben
+werden. Ein Bookmark-Eintrag kann derzeit NICHT erzeugt werden.
+
+=back
+
+=head1 EXPORT
+
+ Es werden keine Funktionen exportiert. Alle Funktionen muessen
+ vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+ Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+ Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+ Oliver Flimm <flimm@openbib.org>
+
+=cut

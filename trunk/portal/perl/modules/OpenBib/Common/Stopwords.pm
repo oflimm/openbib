@@ -2,7 +2,7 @@
 #
 #  OpenBib::Common::Stopwords
 #
-#  Dieses File ist (C) 2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,8 +30,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
 
 sub strip_first_stopword {
     my ($content)=@_;
@@ -127,3 +127,45 @@ sub strip_first_stopword {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::Common::Stopwords - Gemeinsame Funktionen für die Behandlung
+von Stoppworten
+
+=head1 DESCRIPTION
+
+In OpenBib::Common::Stopwords sind all jene Funktionen untergebracht,
+die von mehr als einem mod_perl-Modul verwendet werden und
+Zeichenketten mit Stoppworte verarbeiten.
+
+=head1 SYNOPSIS
+
+ use OpenBib::Common::Stopwords;
+
+ my $content_without_leading_stopword=OpenBib::Common::Stopwords::strip_first_stopword($content);
+
+=head1 METHODS
+
+=over 4
+
+=item strip_first_stopword($content)
+
+Entferne vom Anfang der Zeichenkette $content ein Stoppwort
+entsprechend der in diesem Modul definierten Stoppwort-Liste.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

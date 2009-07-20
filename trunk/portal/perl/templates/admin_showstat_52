@@ -29,7 +29,7 @@
 <tr><th>Entwicklung der Session-Zahl in den einzelnen Sichten nach Monaten eines Jahres</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
-[%   USE dir = Directory("${config.image_root_path}/graph/monthly/views") %]
+[%   USE dir = Directory("${config.get('image_root_path')}/graph/monthly/views") %]
 [%   FOREACH file = dir.files %]
 <img src="/images/openbib/graph/monthly/views/[% file.name %]" />
 [%   END %]
@@ -45,7 +45,7 @@ Es existieren keine entsprechenden Grafiken.
 <tr><th>Entwicklung der Session-Zahl in den einzelnen Sichten nach Tagen eines Monats</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
-[%   USE dir = Directory("${config.image_root_path}/graph/daily/views") %]
+[%   USE dir = Directory("${config.get('image_root_path')}/graph/daily/views") %]
 [%   FOREACH file = dir.files %]
 <img src="/images/openbib/graph/daily/views/[% file.name %]" />
 <p />

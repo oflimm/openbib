@@ -32,7 +32,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Reload;
+use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use DBI;
 use LWP;
@@ -74,7 +74,7 @@ sub new {
 
     bless ($self, $class);
 
-    $logger->debug("Initializing with colors = $colors and ocolors = $ocolors and lang = $lang");
+    $logger->debug("Initializing with colors = ".(defined $colors || '')." and ocolors = ".(defined $ocolors | '')." and lang = ".(defined $lang || ''));
     
     $self->{bibid}      = (defined $bibid)?$bibid:(defined $config->{dbis_bibid})?$config->{dbis_bibid}:undef;
     $self->{colors}     = (defined $colors)?$colors:(defined $config->{dbis_colors})?$config->{dbis_colors}:undef;
@@ -149,18 +149,6 @@ sub search_dbs {
 
     my $notation = exists $arg_ref->{notation}
         ? $arg_ref->{notation}     : '';
-
-    my $lett     = exists $arg_ref->{lett}
-        ? $arg_ref->{lett}         : '';
-    
-    my $sc       = exists $arg_ref->{sc}
-        ? $arg_ref->{sc}           : '';
-    
-    my $lc       = exists $arg_ref->{lc}
-        ? $arg_ref->{lc}           : '';
-
-    my $sindex   = exists $arg_ref->{sindex}
-        ? $arg_ref->{sindex}       : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -264,21 +252,6 @@ sub get_dbs {
     # Set defaults
     my $notation = exists $arg_ref->{notation}
         ? $arg_ref->{notation}     : '';
-
-    my $fs       = exists $arg_ref->{fs}
-        ? $arg_ref->{fs}           : '';
-
-    my $lett     = exists $arg_ref->{lett}
-        ? $arg_ref->{lett}         : '';
-    
-    my $sc       = exists $arg_ref->{sc}
-        ? $arg_ref->{sc}           : '';
-    
-    my $lc       = exists $arg_ref->{lc}
-        ? $arg_ref->{lc}           : '';
-
-    my $sindex   = exists $arg_ref->{sindex}
-        ? $arg_ref->{sindex}       : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -528,5 +501,88 @@ sub DESTROY {
     return;
 }
 
-
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::DBIS - Objektorientiertes Interface zum DBIS XML-API
+
+=head1 DESCRIPTION
+
+Mit diesem Objekt kann auf das XML-API des
+Datenbankinformationssystems (DBIS) in Regensburg zugegriffen werden.
+
+=head1 SYNOPSIS
+
+ use OpenBib::DBIS;
+
+ my $dbis = OpenBib::DBIS->new({});
+
+=head1 METHODS
+
+=over 4
+
+=item new({ bibid => $bibid, client_ip => $client_ip, colors => $colors, ocolors => $ocolors, lang => $lang })
+
+Erzeugung des DBIS Objektes. Dabei wird die DBIS-Kennung $bibid der
+Bibliothek, die IP des aufrufenden Clients (zur Statistik), die
+Sprachversion lang, sowie die Spezifikation der gewünschten
+Zugriffsbedingungen color und ocolor benötigt.
+
+=item get_subjects
+
+Liefert eine Listenreferenz der vorhandenen Fachgruppen zurück mit
+einer Hashreferenz auf die jeweilige Notation notation, der
+Datenbankanzahl count, des Anfangbuchstabens lett sowie der
+Beschreibung der Fachgruppe desc. Zusätzlich werden für eine
+Wolkenanzeige die entsprechenden Klasseninformationen hinzugefügt.
+
+=item search_dbs({ fs => $fs, notation => $notation })
+
+Stellt die Suchanfrage $fs - optional eingeschränkt auf die Fachgruppe
+$notation - an DBIS und liefert als Ergebnis verschiedene Informatinen
+als Hashreferenz zurück.
+
+Es sind dies die Informationen über die aktuelle Ergebnisseite
+current_page (mit lett, colors, ocolors), die Fachgruppe subject, die
+Kategorisierung von Datenbanken db_groups, die Zugriffsbedingungen
+access_info sowie die jeweiligen Datenbanktypen db_type.
+
+=item get_dbs({ notation => $notation, fs => $fs, lett => $lett, sc => $sc, lc => $lc, sindex => $sindex })
+
+Liefert eine Liste mit Informationen über alle Datenbanken der
+Fachgruppe $notation aus DBIS als Hashreferenz zurück.
+
+Es sind dies die Informationen über die Fachgruppe subject, die
+Kategorisierung von Datenbanken db_groups, die Zugriffsbedingungen
+access_info sowie die jeweiligen Datenbanktypen db_type.
+
+=item get_dbinfo({ id => $id })
+
+Liefert Informationen über die Datenbank mit der Id $id als
+Hashreferenz zurück. Es sind dies neben der Id $id auch Informationen
+über den Titel title, hints, content, instructions, subjects,
+keywords, appearance, access, access_info sowie db_type.
+
+=item get_dbreadme({ id => $id })
+
+Liefert zur Datenbank mit der Id $id generelle Nutzungsinformationen
+als Hashreferenz zurück. Neben dem Titel title sind das Informationen
+periods (color, label, readme_link, warpto_link) über alle
+verschiedenen Zeiträume.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

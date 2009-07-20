@@ -24,7 +24,7 @@
 
 <div class="content">
 
-<form method="get" action="[%config.admin_loc %]">
+<form method="get" action="[%config.get('admin_loc') %]">
 <input type="hidden" name="do_editview" value="1" />
 <input type="hidden" name="sessionID"   value="[% sessionID %]" />
 
@@ -59,7 +59,7 @@
 [% FOREACH view IN views %]
 
 <tr><td>[% view.viewname %]</td><td align="center"><a href="http://[%
-config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editview_rss=1&viewname=[% view.viewname %];do_edit=1"><img src="[% config.rssfeed_img %]" alt="RSS-Icon" /></a></td><td><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&do_editview=1&viewname=[% view.viewname %]&do_edit=1">[% view.description %]</a></td><td>[% view.profile %]</td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
+config.get('servername') %][% config.get('admin_loc') %]?sessionID=[% sessionID %]&do_editview_rss=1&viewname=[% view.viewname %];do_edit=1"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %]&do_editview=1&viewname=[% view.viewname %]&do_edit=1">[% view.description %]</a></td><td>[% view.profile %]</td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
 [% END %]
 
 </table>

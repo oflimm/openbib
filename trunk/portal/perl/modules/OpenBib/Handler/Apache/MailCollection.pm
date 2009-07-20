@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::MailCollection
 #
-#  Dieses File ist (C) 2001-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Log;
+use Apache2::Reload;
+use Apache2::Request ();
 use DBI;
 use Email::Valid;
 use Encode 'decode_utf8';
@@ -64,13 +65,13 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session   = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),
@@ -95,7 +96,7 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
     
     my $view="";
@@ -111,12 +112,12 @@ sub handler {
     # die Session nicht authentifiziert ist
     if ($email eq "") {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }
 
     unless (Email::Valid->address($email)) {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."),$r,$msg);
-        return OK;
+        return Apache2::Const::OK;
     }	
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
@@ -185,8 +186,8 @@ sub handler {
     }
 
     $datatemplate->process($datatemplatename, $ttdata) || do {
-        $r->log_reason($datatemplate->error(), $r->filename);
-        return SERVER_ERROR;
+        $r->log_error($datatemplate->error(), $r->filename);
+        return Apache2::Const::SERVER_ERROR;
     };
   
     my $anschreiben="";
@@ -211,8 +212,8 @@ sub handler {
     });
 
     $maintemplate->process($config->{tt_mailcollection_mail_main_tname}, $mainttdata ) || do { 
-        $r->log_reason($maintemplate->error(), $r->filename);
-        return SERVER_ERROR;
+        $r->log_error($maintemplate->error(), $r->filename);
+        return Apache2::Const::SERVER_ERROR;
     };
 
     my $mailmsg = MIME::Lite->new(
@@ -248,7 +249,7 @@ sub handler {
     unlink $anschfile;
     unlink $mailfile;
 
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

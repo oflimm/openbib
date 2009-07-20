@@ -268,7 +268,11 @@ sub log_event {
     #
     # Recherchen:
     #   1 => Recherche-Anfrage bei Virtueller Recherche
-    #  10 => Eineltrefferanzeige
+    #  10 => Eineltrefferanzeige (Titel)
+    #  11 => Verfasser-Normdatenanzeige
+    #  12 => Koerperschafts-Normdatenanzeige
+    #  13 => Notations-Normdatenanzeige
+    #  14 => Schlagwort-Normdatenanzeige
     #  20 => Rechercheart (einfach=1,komplex=2,...)
     #  21 => Recherche-Backend (sql,xapian,z3950)
     #  22 => Recherche-Einstieg ueber Connector (1=DigiBib)

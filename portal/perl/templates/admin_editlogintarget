@@ -24,13 +24,13 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
 </ul>
 
 <div class="content">
 
-<form method="get" action="[%config.admin_loc %]">
+<form method="get" action="[%config.get('admin_loc') %]">
 <input type="hidden" name="do_editlogintarget" value="1" />
 <input type="hidden" name="sessionID"          value="[% sessionID %]" />
 <input type="hidden" name="targetid"           value="[% logintarget.id %]" />

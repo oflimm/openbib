@@ -1708,7 +1708,7 @@ msgstr ""
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1274
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1314
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr ""
 

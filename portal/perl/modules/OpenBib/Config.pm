@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,7 +32,8 @@ use utf8;
 
 use base qw(Apache::Singleton::Process);
 
-use Apache::Reload;
+use Apache2::Reload;
+use Apache2::Const -compile => qw(:common);
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use LWP;
@@ -1515,4 +1516,398 @@ sub get_active_loadbalancertargets {
     return @activetargets;
 }
 
+sub get {
+    my ($self,$key) = @_;
+
+    return $self->{$key};
+}
+
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::Config - Apache-Singleton mit Informationen über die allgemeine Portal-Konfiguration
+
+=head1 DESCRIPTION
+
+Dieses Apache-Singleton enthält Informationen über alle grundlegenden
+Konfigurationseinstellungen des Portals. Diese werden in YAML-Datei
+portal.yml definiert.  Darüber hinaus werden verschiedene Methoden
+bereitgestellt, mit denen auf die Einstellungen in der
+Konfigurations-Datenbank zugegriffen werden kann. Dort sind u.a. die
+Kataloge, Sichten, Profile usw. definiert.
+
+=head1 SYNOPSIS
+
+ use OpenBib::Config;
+
+ my $config = OpenBib::Config->instance;
+
+ # Zugriff auf Konfigurationsvariable aus portal.yml
+ my $servername = $config->get('servername'); # Zugriff über Accessor-Methode
+ my $servername = $config->{'servername'};    # direkter Zugriff
+
+
+=head1 METHODS
+
+=over 4
+
+=item new
+
+Erzeugung als herkömmliches Objektes und nicht als
+Apache-Singleton. Damit kann auch ausserhalb des Apache mit mod_perl
+auf die Konfigurationseinstellungen in Perl-Skripten zugegriffen werden.
+
+=item instance
+
+Instanziierung als Apache-Singleton.
+
+=item get($key)
+
+Accessor für Konfigurationsinformationen des Servers aus portal.yml.
+
+=back
+
+=head2 Datenbanken
+
+=over 4
+
+=item get_number_of_dbs($profilename)
+
+Liefert die Anzahl aktiver Datenbanken im Profil $profilename
+zurück. Wird kein $profilename übergeben, so wird die Anzahl aller
+aktiven Datenbanken zurückgeliefert.
+
+=item get_number_of_all_dbs
+
+Liefert die Anzahl aller vorhandenen eingerichteten Datenbanken -
+aktiv oder nicht - zurück.
+
+=item db_exists($dbname)
+
+Liefert einen Wert ungleich Null zurück, wenn die Datenbank $dbname
+existiert bzw. eingerichtet wurde - aktiv oder nicht.
+
+=item get_dbinfo($dbname)
+
+Liefert zu einer Datenbank $dbname eine Hashreferenz mit den
+zugehörigen konfigurierten Informationen zurück. Es sind dies die
+Organisationseinheit orgunit, die Beschreibung description, die
+Kurzbeschreibung shortdesc, des (Bibliotheks-)Systems system, des
+Datenbanknamens dbname, des Sigels sigel, des Weiterleitungs-URLs zu
+etwaigen Kataloginformationen sowie der Information zurück, ob die
+Datenbank aktiv ist (active) und anstelle von url lokale
+Bibliotheksinformationen angezeigt werden sollen (use_libinfo).
+
+=item get_dbinfo_overview
+
+Liefert eine Listenreferenz auf Hashreferenzen mit Informationen über
+alle Datenbanken zurück.  Es sind dies die Organisationseinheit
+orgunit, die Beschreibung description, des (Bibliotheks-)Systems
+system, des Datenbanknamens dbname, des Sigels sigel, des
+Weiterleitungs-URLs zu etwaigen Kataloginformationen sowie der
+Information zurück, ob die Datenbank aktiv ist (active) und anstelle
+von url lokale Bibliotheksinformationen angezeigt werden sollen
+(use_libinfo). Zusätzlich wird auch noch die Titelanzahl count sowie
+die Informatione autoconvert zurückgegeben, ob der Katalog automatisch
+aktualisiert werden soll.
+
+=item get_libinfo($dbname)
+
+Liefert eine Hashreferenz auf die allgemeinen Nutzungs-Informationen
+(Öffnungszeigen, Adresse, usw.)  der zur Datenbank $dbname zugehörigen
+Bibliothek. Zu jeder Kategorie category sind dies ein möglicher
+Indikator indicator und der eigentliche Kategorieinhalt content.
+
+=item have_libinfo($dbname)
+
+Gibt zurück, ob zu der Datenbank $dbname lokale Nutzungs-Informationen
+(Öffnungszeiten, Adresse, usw.) vorhanden sind.
+
+=item get_dboptions($dbname)
+
+Liefert eine Hashreferenz mit den grundlegenden Informatione für die
+automatische Migration der Daten sowie der Kopplung zu den
+zugrundeliegenden (Bibliotheks-)Systemen. Die Informationen sind host,
+protocol, remotepath, remoteuser, remotepasswd, filename, titfilename,
+autfilename, korfilename, swtfilename, notfilename, mexfilename,
+autoconvert, circ, circurl, circcheckurl sowie circdb.
+
+=item get_active_databases
+
+Liefert eine Liste aller aktiven Datenbanken zurück.
+
+=item get_active_database_names
+
+Liefert eine Liste mit Hashreferenzen (Datenbankname dbname,
+Beschreibung description) für alle aktiven Datenbanken zurück.
+
+=item get_active_databases_of_orgunit($orgunit)
+
+Liefert eine Liste aller aktiven Datenbanken zu einer
+Organisationseinheit $orgunit zurück.
+
+=item get_system_of_db($dbname)
+
+Liefert das verwendete (Bibliotheks-)System einer Datenbank $dbname
+zurück.
+
+=item get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref, maxcolumn => $maxcolumn, view => $view })
+
+Liefert eine Liste grundlegender Datenbankinformationen (orgunit, db,
+name, systemtype, sigel, url) aller Datenbanke bzw. aller Datenbanken
+eines Views $view mit zusätzlich generierten Indizes column für die
+Aufbereitung in einer Tabelle mit $maxcolumn Spalten. Zusätzlich wird
+entsprechend $checkeddb_ref die Information über eine Auswahl checked
+der jeweiligen Datenbank mit übergeben.
+
+=item get_infomatrix_of_all_databases({ profile => $profile, maxcolumn => $maxcolumn })
+
+Liefert eine Liste grundlegender Datenbankinformationen (orgunit, db,
+name, systemtype, sigel, url) aller Datenbanke mit zusätzlich
+generierten Indizes column für die Aufbereitung in einer Tabelle mit
+$maxcolumn Spalten. Zusätzlich wird entsprechend der Zugehörigkeit
+einer Datenbank zum Profil $profile die Vorauswahl checked der
+jeweiligen Datenbank gesetzt.
+
+=back
+
+=head2 Views
+
+=over 4
+
+=item get_number_of_views
+
+Liefert die Anzahl aktiven Views zurück.
+
+=item get_number_of_all_views
+
+Liefert die Anzahl aller vorhandenen eingerichteten Views -
+aktiv oder nicht - zurück.
+
+=item get_viewdesc_from_viewname($viewname)
+
+Liefert die Beschreibung des Views $viewname zurück.
+
+=item get_startpage_of_view($viewname)
+
+Liefert das Paar start_loc und start_id zu einem Viewname
+zurück. Dadurch kann beim Aufruf eines einem View direkt zu einer
+anderen Seite als der Eingabemaske gesprungen werden. Mögliche
+Parameter sind die in portal.yml definierte Location *_loc und eine
+Sub-Template-Id. Weitere Parameter sind nicht möglich. Typischerweise
+wird zu einer allgemeinen Informationsseite via info_loc gesprungen,
+in der allgemeine Informationen z.B. zum Projekt als allgemeine
+Startseite hinterlegt sind.
+
+=item view_exists($viewname)
+
+Liefert einen Wert ungleich Null zurück, wenn der View $viewname
+existiert bzw. eingerichtet wurde - aktiv oder nicht.
+
+=item get_dbs_of_view($viewname)
+
+Liefert die Liste der Namen aller im View $viewname vorausgewählter
+aktiven Datenbanken sortiert nach Organisationseinheit und
+Datenbankbeschreibung zurück.
+
+=item get_viewinfo_overview
+
+Liefert eine Listenreferenz mit einer Übersicht aller Views
+zurück. Neben dem Namen $viewname, der Beschreibung description, des
+zugehörigen Profils profile sowie der Aktivität active gehört dazu
+auch eine Liste aller zugeordneten Datenbanken viewdb.
+
+=item get_viewinfo($viewname)
+
+Liefert zu einem View $viewname eine Hashreferenz mit allen
+konfigurierten Informationen zu diesem View zurück. Es sind dies der
+Viewname viewname, seine Beschreibung description, der primäre
+RSS-Feed primrssfeed, etwaige alternative Startseiten
+start_loc/start_stid, den zugeordneten Profilnamen profilename sowie
+der Aktivität active.
+
+=item get_viewdbs($viewname)
+
+Liefert zu einem View $viewname eine Liste aller zugehörigen
+Datenbanken, sortiert nach Datenbanknamen zurück.
+
+=item get_active_views
+
+Liefert eine Liste aller aktiven Views zurück.
+
+=back
+
+
+=head2 Systemseitige Katalogprofile
+
+=over 4
+
+=item get_number_of_dbs($profilename)
+
+Liefert die Anzahl aktiver Datenbanken im Profil $profilename
+zurück. Wird kein $profilename übergeben, so wird die Anzahl aller
+aktiven Datenbanken zurückgeliefert.
+
+=item get_profileinfo_overview
+
+Liefert eine Listenreferenz mit einer Übersicht aller systemweiten Katalogprofile
+zurück. Neben dem Namen profilename, der Beschreibung description gehört dazu
+auch eine Liste aller zugeordneten Datenbanken profiledb.
+
+=item get_profileinfo($profilename)
+
+Liefert zu einem Profil $profilename eine Hashreferenz mit dem
+Profilnamen profilename sowie dessen Beschreibung description zurück.
+
+=item get_profiledbs($profilename)
+
+Liefert zu einem Profil $profilename eine Liste aller zugeordneten
+Datenbanken sortiert nach den Datenbanknamen zurück.
+
+=item get_active_databases_of_systemprofile($viewname)
+
+Liefert zu einem View $viewname eine Liste aller Datenbanken, die im
+zugehörigen systemseitigen Profil definiert sind.
+
+=back
+
+=head2 RSS
+
+=over 4
+
+=item valid_rsscache_entry({ database => $database, type => $type, subtype => $subtype, expiretimedate => $expiretimedate })
+
+Liefert einen zwischengespeicherten RSS-Feed für die Datenbank
+$database des Typs $type und Untertyps $subtype zurück, falls dieser
+neuer als $expiretimedate ist.
+
+=item get_rssfeeds_of_view($viewname)
+
+Liefert für einen View $viewname einen Hash mit allen RSS-Feeds
+zurück, die für diesen View konfiguriert wurden.
+
+=item get_rssfeed_overview
+
+Liefert eine Listenreferenz zurück mit allen Informationen über
+vorhandene RSS-Feeds. Es sind dies die ID feedid, der zugehörige
+Datenbankname dbname, die Spezifizierung der Feed-Art mit type und
+subtype, sowie eine Beschreibung subtypedesc.
+
+=item get_rssfeeds_of_db($dbname)
+
+Liefert alle Feeds zu einer Datenbank $dbname sortiert nach type und
+subtype in einer Listenreferenz zurück. Jeder Eintrag der Liste
+besteht aus Feed-ID id, der Spezifikation des Typs mit type und
+subtype nebst Beschreibung subtypedesc sowie der Information active,
+ob der Feed überhaupt aktiv ist.
+
+=item get_rssfeeds_of_db_by_type($dbname)
+
+Liefert zu einer Datenbank $dbname eine Hashreferenz zurück, in der zu
+jedem Type type eine Listenreferenz mit vorhandenen Informationen
+subtype, subtypedesc sowie der Aktivität active existiert.
+
+=item get_primary_rssfeed_of_view($viewname)
+
+Liefert zu einem View $viewname den URL des definierten primären Feed
+zurück.
+
+=item get_activefeeds_of_db($dbname)
+
+Liefert zu einer Datenbank $dbname eine Hashreferenz zurück, in der
+alle aktiven Typen type eingetragen wurden.
+
+=item get_rssfeedinfo({ view => $viewname })
+
+Liefert zu einem View $viewname eine Hashreferenz zurück, in der zu
+jeder Organisationseinheit orgunit eine Listenreferenz mit
+Informationen über den Datenbankname pool, der Datenbankbeschreibung
+pooldesc sowie des Typs (type) neuzugang. Wird kein View übergeben, so
+werden diese Informationen für alle Datenbanken bestimmt.
+
+=item update_rsscache({ database => $database, type => $type, subtype => $subtype, rssfeed => $rssfeed })
+
+Speichert den Inhalt $rssfeed des Feeds einer Datenbank $database,
+spezifiziert durch $type und $subtype in einem Cache zwischen. Auf
+diesen Inhalt kann dann später effizient mit get_valid_rsscache_entry
+zugegriffen werden.
+
+=back
+
+=head2 Lastverteilung
+
+=over 4
+
+=item get_loadbalancertargets
+
+Liefert eine Listenreferenz mit Informationen zu allen konfigurierten
+Servern, die für eine Lastverteilung definiert wurden. Diese
+Informationen in einer Hashreferenz umfassen die interne ID id, den
+Servernamen host sowie ob dieser Server aktiv ist oder nicht (active).
+
+=item get_active_loadbalancertargets
+
+Liefert eine Liste der Namen aller aktivierten Server für eine
+Lastverteilung zurück.
+
+=back
+
+=head2 Verschiedenes
+
+=over 4
+
+=item get_number_of_titles({ database => $database, view => $view, profile => $profile })
+
+Liefert entsprechend eines übergebenen Parameters die entsprechende
+Gesamtzahl aller Titel der aktiven Datenbank $database, der
+ausgewählten aktiven Datenbanken eines Views $view oder aller aktiven
+vorhandenen Datenbanken in einem Datenbank-Profil $profile
+zurück. Wenn kein Parameter übergeben wird, dann erhält man die
+Gesamtzahl aller eingerichteten aktiven Datenbanken.
+
+=item load_bk
+
+Lädt die Basisklassifikation (BK) aus bk.yml und liefert eine
+Hashreferenz auf diese Informationen zurück.  Auf diese kann dadurch
+speziell in Templates zugegriffen werden.
+
+=item get_enrichmnt_object
+
+Liefert eine Instanz des Anreicherungs-Objectes OpenBib::Enrichment
+zurück. Auf dieses kann dadurch speziell in Templates zugegriffen
+werden.
+
+=item get_ezb_object
+
+Liefert eine Instanz des EZB-Objectes OpenBib::EZB zurück. Auf dieses
+kann dadurch speziell in Templates zugegriffen werden.
+
+=item get_dbis_object
+
+Liefert eine Instanz des DBIS-Objectes OpenBib::DBIS zurück. Auf dieses
+kann dadurch speziell in Templates zugegriffen werden.
+
+=item get_geoposition($address)
+
+Liefert zu einer Adresse die Geo-Position via Google-Maps zurück.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=head1 SEE ALSO
+
+[[OpenBib::Config::DatabaseInfoTable]], [[OpenBib::Config::CirculationInfoTable]]
+
+=cut

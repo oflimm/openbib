@@ -22,18 +22,18 @@
 <div id="maincontent">
 
 <div id="langchoice">
-[% IF config.lang.size > 1 %]
-[%   FOREACH l IN config.lang %]
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[% IF config.get('lang').size > 1 %]
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 [% END %]
 </div>
 
     <ul class="tabbingmenu">
-      <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Suchhilfe") %]</a></li>
-      <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1">[% msg.maketext("Projekt") %]</a></li>
-      <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2">[% msg.maketext("KUG-Versionen") %]</a></li>
-      <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=3">[% msg.maketext("Artikel/Stimmen") %]</a></li>
+      <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Suchhilfe") %]</a></li>
+      <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=1">[% msg.maketext("Projekt") %]</a></li>
+      <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=2">[% msg.maketext("KUG-Versionen") %]</a></li>
+      <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=3">[% msg.maketext("Artikel/Stimmen") %]</a></li>
     </ul>
 
     <div class="content">
@@ -422,7 +422,7 @@ Kompletter Titel). F&uuml;r die Suche nach dem Titel 'Die
         absteigend), Anzeige pro Katalog oder
         katalog&uuml;bergreifend") %].</li>
 
-        <li>[% msg.maketext("Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: [_1]Mein KUG[_2]) für die 'Suche in einzelnen Katalogen' ausw&auml;hlen.","<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#perskug\">","</a>") %]</li>
+        <li>[% msg.maketext("Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: [_1]Mein KUG[_2]) für die 'Suche in einzelnen Katalogen' ausw&auml;hlen.","<a href=\"${config.get('info_loc')}?sessionID=${sessionID};view=${view}#perskug\">","</a>") %]</li>
 
         <li>[% msg.maketext("Die <b>Suchhistorie</b> listet Ihnen Ihre schon gestellten
         Suchanfragen auf mit der Angabe der Trefferzahl. So
@@ -526,7 +526,7 @@ zukünftige Recherchen.") %]</li>
       und Stadtbibliothek. Hier ist dann, wenn es sich um Medien im
         geschlossenen Magazinbereich handelt, eine Bestellung
         m&ouml;glich. Bei bereits verliehenen Medien k&ouml;nnen Sie
-        sie hier vormerken.","<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" />") %]
+        sie hier vormerken.","<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" />") %]
      </p>
 
      <h1 id="treffermerkliste">6 [% msg.maketext("Treffer- und Merkliste") %]</h1>
@@ -588,13 +588,13 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige <i>Pro Katalo
      Funktionselemente verwendet. Es sind dies:") %]
     </p>
     <table>
-     <tr><td align="center"><img src="[% config.listofinterest_img %]" alt="In die Merkliste" border="0" /></td><td>[% msg.maketext("Titel in die Merkliste eintragen") %]</td></tr>
+     <tr><td align="center"><img src="[% config.get('listofinterest_img') %]" alt="In die Merkliste" border="0" /></td><td>[% msg.maketext("Titel in die Merkliste eintragen") %]</td></tr>
 
-     <tr><td align="center"><img src="[% config.mail_img %]" alt="Als Mail verschicken" border="0" /></td><td>[% msg.maketext("Titel(liste) als Mail verschicken") %]</td></tr>
-     <tr><td align="center"><img src="[% config.save_img %]" alt="Abspeichern" border="0" /></td><td>[% msg.maketext("Titel(liste) abspeichern") %]</td></tr>   
-     <tr><td align="center"><img src="[% config.print_img %]" alt="Ausdrucken" border="0" /></td><td>[% msg.maketext("Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen") %]</td></tr>   
-     <tr><td align="center"><img src="[% config.info_img %]" alt="Kontextsensitive Hilfe" /></td><td>[% msg.maketext("Kontextsensitive Hilfe") %]</td></tr>   
-     <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="[% config.tutorial_img %]" alt="Interaktives Tutorium" /></a></td></tr>
+     <tr><td align="center"><img src="[% config.get('mail_img') %]" alt="Als Mail verschicken" border="0" /></td><td>[% msg.maketext("Titel(liste) als Mail verschicken") %]</td></tr>
+     <tr><td align="center"><img src="[% config.get('save_img') %]" alt="Abspeichern" border="0" /></td><td>[% msg.maketext("Titel(liste) abspeichern") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.get('print_img') %]" alt="Ausdrucken" border="0" /></td><td>[% msg.maketext("Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.get('info_img') %]" alt="Kontextsensitive Hilfe" /></td><td>[% msg.maketext("Kontextsensitive Hilfe") %]</td></tr>   
+     <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>
   </table>
 
     <h1 id="verlinkung">9 [% msg.maketext("Verlinkung und Lastverteilung des KUG") %]</h1>

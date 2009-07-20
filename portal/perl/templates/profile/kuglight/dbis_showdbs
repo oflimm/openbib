@@ -65,7 +65,7 @@
 <img src="[% dbs.access_info.${db.access}.icon_url %]" alt="[% dbs.access_info.${db.access}.desc %]" title="[% dbs.access_info.${db.access}.desc %]" />
       </div> 
       <div class="brieftitle">
-<a href="[% config.dbis_loc %]?sessionID=[% sessionID %];action=show_dbinfo;id=[% db.id %]">[% db.title %]</a>
+<a href="[% config.get('dbis_loc') %]?sessionID=[% sessionID %];action=show_dbinfo;id=[% db.id %]">[% db.title %]</a>
       </div>
       <div class="titlemark">
       </div>

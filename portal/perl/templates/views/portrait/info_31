@@ -21,9 +21,9 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30">Ansprechpartner</a></li>
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">Aktuelle Ausstellung</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=32">FAQ</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=30">Ansprechpartner</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=31">Aktuelle Ausstellung</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=32">FAQ</a></li>
 </ul>
 
 <div class="content">

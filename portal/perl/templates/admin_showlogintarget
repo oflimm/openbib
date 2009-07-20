@@ -24,14 +24,14 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
-   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
 </ul>
 
 <div class="content">
 
-<form method="get" action="[%config.admin_loc %]">
+<form method="get" action="[%config.get('admin_loc') %]">
 <input type="hidden" name="do_editlogintarget" value="1" />
 <input type="hidden" name="sessionID"          value="[% sessionID %]" />
 
@@ -60,7 +60,7 @@
 <tr><td><b>Id</b></td><td><b>[% msg.maketext("Hostname") %]</b></td><td><b>[% msg.maketext("Port") %]</b></td><td><b>[% msg.maketext("Nutzername") %]</b></td><td><b>[% msg.maketext("DB-Name")
 %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Typ") %]</b></td></tr>
 [% FOREACH target IN logintargets %]
-<tr><td>[% target.id %]</td><td>[% target.hostname %]</td><td>[% target.port %]</td><td>[% target.username %]</td><td>[% target.dbname %]</td><td><a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_editlogintarget=1;targetid=[% target.id %];do_edit=1">[% target.description %]</a></td><td>[% target.type %]</td></tr>
+<tr><td>[% target.id %]</td><td>[% target.hostname %]</td><td>[% target.port %]</td><td>[% target.username %]</td><td>[% target.dbname %]</td><td><a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_editlogintarget=1;targetid=[% target.id %];do_edit=1">[% target.description %]</a></td><td>[% target.type %]</td></tr>
 [% END %]
 </table>
 </td></tr>

@@ -63,7 +63,7 @@
 <catalogue>
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
-  <description>[% dbinfo.dbnames.${record.database}.short %]</description>
+  <description>[% dbinfo.get('dbnames').${record.database}.short %]</description>
   <permalink>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</permalink>
 </catalogue>
 [% END %]
@@ -75,7 +75,7 @@
 <catalogue>
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
-  <description>[% dbinfo.dbnames.${record.database}.short %]</description>
+  <description>[% dbinfo.get('dbnames').${record.database}.short %]</description>
   <permalink>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</permalink>
 </catalogue>
 [% END %]

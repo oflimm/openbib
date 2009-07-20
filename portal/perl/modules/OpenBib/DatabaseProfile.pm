@@ -114,12 +114,12 @@ sub load_from_handler {
   
     my $logger = get_logger();
 
-    my $query=Apache::Request->instance($r);
+    my $query=Apache2::Request->new($r);
 
     my $status=$query->parse;
     
     if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+        $logger->error("Cannot parse Arguments");
     }
     
     my $profilename = ($query->param('profilename'))?$query->param('profilename'):'Datenbank-Profil';
@@ -143,3 +143,34 @@ sub contains {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::DatabaseProfile - Objekt eines Datenbankprofils
+
+=head1 DESCRIPTION
+
+Dieses Objekt wird derzeit noch nicht verwendet. In ihm sollen alle
+Datenbankprofil-spezifischen Methoden zusammengefasst werden, die sich
+derzeit z.B. noch in OpenBib::User befinden.
+
+=head1 SYNOPSIS
+
+ use OpenBib::DatabaseProfile;
+
+=head1 METHODS
+
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

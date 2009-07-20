@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::LoadBalancer
 #
-#  Dieses File ist (C) 1997-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common REDIRECT);
-use Apache::Reload;
-use Apache::Request ();
+use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::RequestRec ();
 use HTTP::Request;
 use HTTP::Response;
 use IO::Socket;
@@ -58,13 +59,13 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache::Request->instance($r);
+    my $query  = Apache2::Request->new($r);
 
-    my $status=$query->parse;
+#     my $status=$query->parse;
 
-    if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
+#     if ($status) {
+#         $logger->error("Cannot parse Arguments");
+#     }
 
     my $session   = OpenBib::Session->instance({
         sessionID => -1,
@@ -96,14 +97,13 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_loadbalancer_tname},$ttdata,$r);
         OpenBib::LoadBalancer::Util::benachrichtigung($msg->maketext("Achtung: Es sind *alle* Server ausgefallen"));
 
-        return OK;
+        return Apache2::Const::OK;
     }
 
-    $r->header_out(Location => "http://$bestserver$config->{startopac_loc}?$urlquery");
-    $r->status(REDIRECT);
-    $r->send_http_header;
-  
-    return OK;
+    $r->content_type('text/html');
+    $r->headers_out->add("Location" => "http://$bestserver$config->{startopac_loc}?$urlquery");
+
+    return Apache2::Const::REDIRECT;
 }
 
 1;

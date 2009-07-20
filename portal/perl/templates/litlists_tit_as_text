@@ -13,7 +13,7 @@ FOREACH category IN categories;
     # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
     # kodiert.
     thiscategory = category ;
-    IF config.categorymapping.$database.$category ;
+    IF config.get('categorymapping').$database.$category ;
        thiscategory = "${category}-${normset.database}" ;
     END;
 

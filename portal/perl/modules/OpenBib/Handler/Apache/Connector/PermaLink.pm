@@ -33,10 +33,12 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
-use Apache::URI ();
+use Apache2::Const -compile => qw(:common);
+use Apache2::Reload;
+use Apache2::Request ();
+use Apache2::URI ();
+use APR::URI ();
+
 use Benchmark;
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
@@ -111,7 +113,7 @@ sub handler {
     OpenBib::Common::Util::print_page($config->{tt_connector_permalink_tname},$ttdata,$r);
 
     
-    return OK;
+    return Apache2::Const::OK;
 }
 
 1;

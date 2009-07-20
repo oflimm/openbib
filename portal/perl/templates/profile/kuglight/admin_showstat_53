@@ -29,7 +29,7 @@
 <tr><th>Entwicklung der Einzeltrefferaufrufe nach Monaten eines Jahres</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
-[%   USE dir = Directory("${config.image_root_path}/graph/monthly/fulltitle") %]
+[%   USE dir = Directory("${config.get('image_root_path')}/graph/monthly/fulltitle") %]
 [%   FOREACH file = dir.files %]
 <img src="/images/openbib/graph/monthly/fulltitle/[% file.name %]" />
 [%   END %]
@@ -45,7 +45,7 @@ Es existieren keine entsprechenden Grafiken.
 <tr><th>Entwicklung der Einzeltrefferaufrufe nach Tagen eines Monats</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
-[%   USE dir = Directory("${config.image_root_path}/graph/daily/fulltitle") %]
+[%   USE dir = Directory("${config.get('image_root_path')}/graph/daily/fulltitle") %]
 [%   FOREACH file = dir.files %]
 <img src="/images/openbib/graph/daily/fulltitle/[% file.name %]" />
 <p />

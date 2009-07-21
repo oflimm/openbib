@@ -172,26 +172,6 @@ sub handler {
 
     my $sysprofile   = $config->get_viewinfo($view)->{profilename};
 
-    # Historisch begruendetes Kompatabilitaetsmapping
-    
-    $query->param('boolverf'      => $query->param('bool9'))  if ($query->param('bool9'));
-    $query->param('boolhst'       => $query->param('bool1'))  if ($query->param('bool1'));
-    $query->param('boolswt'       => $query->param('bool2'))  if ($query->param('bool2'));
-    $query->param('boolkor'       => $query->param('bool3'))  if ($query->param('bool3'));
-    $query->param('boolnotation'  => $query->param('bool4'))  if ($query->param('bool4'));
-    $query->param('boolisbn'      => $query->param('bool5'))  if ($query->param('bool5'));
-    $query->param('boolissn'      => $query->param('bool8'))  if ($query->param('bool8'));
-    $query->param('boolsign'      => $query->param('bool6'))  if ($query->param('bool6'));
-    $query->param('boolejahr'     => $query->param('bool7'))  if ($query->param('bool7'));
-    $query->param('boolfs'        => $query->param('bool10')) if ($query->param('bool10'));
-    $query->param('boolmart'      => $query->param('bool11')) if ($query->param('bool11'));
-    $query->param('boolhststring' => $query->param('bool12')) if ($query->param('bool12'));
-
-    if ($sb eq "sql"){
-        # Automatische Und-Verknuepfung der Suchterme aktivieren
-        $query->param('autoplus' => 1);
-    }
-    
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $searchquery = OpenBib::SearchQuery->instance;

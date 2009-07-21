@@ -366,7 +366,6 @@ END;
 [% IF config.get('reviews') %]
 <li><a href="#reviews"><span>[% msg.maketext("Bewertungen/Rezensionen") %]</span></a></li>
 [% END %]
-<li><a href="#usedbooks"><span>[% msg.maketext("Gebraucht kaufen") %]</span></a></li>
 </ul>
 [% END %]
 
@@ -521,20 +520,6 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 </ol>
 </div><!-- End: Similar Records -->
 [% END %]
-
-<h2 class="nojs_show">[% msg.maketext("Gebraucht kaufen") %]</h2>
-
-<div id="usedbooks"><!-- Begin Gebraucht kaufen -->
-
-<p>
-[% msg.maketext("Überprüfen Sie, ob dieses Buch an der Universität gebraucht zum Kauf angeboten wird:") %]
-</p>
-
-<p>
-<a href="[% config.get('redirect_loc') %]/[% sessionID %]/511/http://www.unifloh.de/koeln/search?type=buy&q=[% isbn %]&x=0&y=0">[% msg.maketext("Weiter") %]</a>
-</p>
-
-</div><!-- End Gebraucht kaufen -->
 
 </div><!-- End: Additional Title Info -->
 </div><!-- End: Bottom Info -->

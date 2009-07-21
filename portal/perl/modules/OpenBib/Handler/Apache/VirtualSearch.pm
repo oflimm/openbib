@@ -935,8 +935,13 @@ sub handler {
         };
         
         # Ausgabe flushen
-        $r->rflush();
-        
+	eval {
+	  $r->rflush(); 
+	};
+	
+	if($@) { 
+	  $logger->error("Flush-Error") 
+	}
                 
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
@@ -1054,7 +1059,13 @@ sub handler {
                     undef $timeall;
                     
                     # flush output buffer
-                    $r->rflush();
+		    eval {
+		      $r->rflush(); 
+		    };
+		    
+		    if($@) { 
+		      $logger->error("Flush-Error") 
+		    }		    
                 }
             }
             else {
@@ -1245,7 +1256,13 @@ sub handler {
                             undef $timeall;
 
                             # flush output buffer
-                            $r->rflush();
+                            eval {
+			      $r->rflush(); 
+			    };
+
+			    if($@) { 
+			      $logger->error("Flush-Error") 
+			    }
                         }
                     }
                 }
@@ -1356,7 +1373,13 @@ sub handler {
                         undef $timeall;
 
                         # flush output buffer
-                        $r->rflush();
+			eval {
+			  $r->rflush(); 
+			};
+			
+			if($@) { 
+			  $logger->error("Flush-Error") 
+			}		    
                     }
                 }
             }

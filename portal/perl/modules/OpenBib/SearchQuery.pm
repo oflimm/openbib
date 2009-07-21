@@ -184,31 +184,31 @@ sub set_from_apache_request {
     ##        OR   - Oder-Verknuepfung
     ##        NOT  - Und Nicht-Verknuepfung
     my $boolverf      = ($query->param('boolverf'))     ?$query->param('boolverf')
-        :"AND";
+        :($query->param('bool9'))?$query->param('bool9'):"AND";
     my $boolhst       = ($query->param('boolhst'))      ?$query->param('boolhst')
-        :"AND";
+        :($query->param('bool1'))?$query->param('bool1'):"AND";
     my $boolswt       = ($query->param('boolswt'))      ?$query->param('boolswt')
-        :"AND";
+        :($query->param('bool2'))?$query->param('bool2'):"AND";
     my $boolkor       = ($query->param('boolkor'))      ?$query->param('boolkor')
-        :"AND";
+        :($query->param('bool3'))?$query->param('bool3'):"AND";
     my $boolnotation  = ($query->param('boolnotation')) ?$query->param('boolnotation')
-        :"AND";
+        :($query->param('bool4'))?$query->param('bool4'):"AND";
     my $boolisbn      = ($query->param('boolisbn'))     ?$query->param('boolisbn')
-        :"AND";
+        :($query->param('bool5'))?$query->param('bool5'):"AND";
     my $boolissn      = ($query->param('boolissn'))     ?$query->param('boolissn')
-        :"AND";
+        :($query->param('bool8'))?$query->param('bool8'):"AND";
     my $boolsign      = ($query->param('boolsign'))     ?$query->param('boolsign')
-        :"AND";
+        :($query->param('bool6'))?$query->param('bool6'):"AND";
     my $boolinhalt    = ($query->param('boolinhalt'))   ?$query->param('boolinhalt')
         :"AND";
     my $boolejahr     = ($query->param('boolejahr'))    ?$query->param('boolejahr')
-        :"AND" ;
+        :($query->param('bool7'))?$query->param('bool7'):"AND";
     my $boolfs        = ($query->param('boolfs'))       ?$query->param('boolfs')
-        :"AND";
+        :($query->param('bool10'))?$query->param('bool10'):"AND";
     my $boolmart      = ($query->param('boolmart'))     ?$query->param('boolmart')
-        :"AND";
+        :($query->param('bool11'))?$query->param('bool11'):"AND";
     my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring')
-        :"AND";
+        :($query->param('bool12'))?$query->param('bool12'):"AND";
     my $boolgtquelle  = ($query->param('boolgtquelle')) ?$query->param('boolgtquelle')
         :"AND";
 

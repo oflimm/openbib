@@ -16,7 +16,13 @@
 
 <ul>
 
-<li>Am 17.4.2009 erfolgte die Umstellung des KUG auf eine neue Version, die seit dem 2.3.2009 im Beta-Test war. Informationen &uuml;ber die &Auml;nderungen finden Sie in der <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=2">Versions-Historie</a> und im <a href="http://blog.openbib.org" target="_blank">OpenBibBlog</a>.
+<li><b>22.7.2009</b>: Zu den Themengebieten <a
+href="http://kug.ub.uni-koeln.de/tutorials/literaturlisten.html"
+target="_blank">Literaturlisten</a> sowie <a
+href="http://kug.ub.uni-koeln.de/tutorials/drilldowns.html"
+target="_blank">Treffermengen eingrenzen</a> bieten wir neue und
+überarbeitete Online-Tutorien an. Weitere Tutorien finden Sie unter
+dem Menu-Punkt <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=61">Tutorien</a>.
 </li>
 
 </ul>

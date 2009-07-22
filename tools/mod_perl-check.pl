@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-open(PS,"/bin/ps -eao \"cmd pid rss\"|grep apache-perl |");
+open(PS,"/bin/ps -eao \"cmd pid rss\"|grep apache2 |");
 
 while(<PS>){
   my ($cmd,$pid,$rss)=$_=~m/^(.+) +(\d+) +(\d+)/;

@@ -910,5 +910,61 @@ sub get_sequencestat_of_event {
 
     return $values_ref;
 }
-
 1;
+
+__END__
+
+=head1 NAME
+
+OpenBib::Statistics - Singleton für den Zugriff auf die Statistik-Datenbank
+
+=head1 DESCRIPTION
+
+Dieser Singleton bietet einen Zugriff auf die Statistik-Datenbank.
+
+=head1 SYNOPSIS
+
+ use OpenBib::Statistics;
+
+=head1 METHODS
+
+=over 4
+
+=item new
+
+Erzeugung als herkömmliches Objektes und nicht als
+Apache-Singleton. Damit kann auch ausserhalb des Apache mit mod_perl
+auf Statistikdaten in Perl-Skripten zugegriffen werden.
+
+=item store_relevance({ tstamp => $tstamp, id => $id, dbname => $dbname, isbn => $isbn, $katkey => $katkey, type => $type})
+
+Speichert den Aufruf eines Einzeltreffers als Relevanzinformation in
+der Statistik-Datenbank. Die gespeicherten Informationen sind die
+Sessionidentifikation $id, der Aufrufzeitpunkt $tstamp, eine etwaige
+$isbn, Datenbankname $dbname und $katkey des Titels in dieser Datenbank,
+sowie der Aufruftyp $type (1=Einzeltrefferaufruf)
+
+=item store_result({ id => $id, type => $type, subkey  => $subkey, $data => $data_ref });
+
+Speichert eine statistische Auswertung oder generell komplexe
+Datenstrukturen $data_ref für einen schnellen Lookup in der
+Statistik-Datenbank. Spezifiziert werden diese Daten über einen
+allgemeinen Typ $type (z.B. 1=meistaufgerufene Titel pro Datenbank,
+2=meistgenutzte Kataloge, ..), einem Identifikator $id und den
+eigentlichen Nutzdaten $data_ref. Zusätzlich kann optional zur
+weiteren Untergliederung auch noch ein subkey vergeben werden.
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@openbib.org>
+
+=cut

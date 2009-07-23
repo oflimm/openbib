@@ -495,11 +495,11 @@ Literaturlisten usw.<p/>") %]
 <a style="font-size: 1.2em;" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
 
 <h3>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h3>
-[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizensierten Zeitschriften[_2] zu","<a href=\"${config.get('ezb_loc')}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${config.get('ezb_loc')}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
 
 <h3>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h3>
 [% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
-lizensierten Datenbanken[_2]","<a href=\"${config.get('dbis_loc')}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
+lizenzierten Datenbanken[_2]","<a href=\"${config.get('dbis_loc')}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
 </td><!-- End overview -->
 <td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
 <h3><img style="vertical-align:bottom" src="[% config.get('note_img') %]" alt="Notieren"/>&nbsp;[% msg.maketext("Legen Sie Literaturlisten an und vergeben Sie Tags") %]</h3>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-07-23 13:29+0200\n"
+"PO-Revision-Date: 2009-07-23 13:36+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -10916,7 +10916,7 @@ msgstr "SammelVermerk"
 #: ../templates/views/umschlaege/visible_categories_titset:24
 #: ../templates/visible_categories_titset:23
 msgid "T0304"
-msgstr "EST"
+msgstr "Einheitstitel"
 
 #: ../templates/database/einbaende/visible_categories_toolset:18
 #: ../templates/profile/kuglight/database/einbaende/visible_categories_toolset:18
@@ -10996,7 +10996,7 @@ msgstr "Bildtitel"
 #: ../templates/views/umschlaege/visible_categories_titset:29
 #: ../templates/visible_categories_titset:29
 msgid "T0333"
-msgstr "Zu erg. Urh."
+msgstr "Zu ergänzender Urheber"
 
 #: ../templates/database/alff/visible_categories_titset:52
 #: ../templates/database/ebooks/visible_categories_titset:50
@@ -11107,7 +11107,7 @@ msgstr "Vorlageform"
 #: ../templates/views/umschlaege/visible_categories_titset:34
 #: ../templates/visible_categories_titset:34
 msgid "T0360"
-msgstr "Vorl.Unterreihe"
+msgstr "Vorlage Unterreihe"
 
 #: ../templates/database/alff/visible_categories_titset:32
 #: ../templates/database/ebooks/visible_categories_titset:30
@@ -11147,7 +11147,7 @@ msgstr "Beibände"
 #: ../templates/views/umschlaege/visible_categories_titset:32
 #: ../templates/visible_categories_titset:32
 msgid "T0365"
-msgstr "Gemeins. Angaben"
+msgstr "Gemeinsame Angaben"
 
 #: ../templates/database/alff/visible_categories_titset:28
 #: ../templates/database/ebooks/visible_categories_titset:26
@@ -11254,7 +11254,7 @@ msgstr "Verlagsort"
 #: ../templates/database/einbaende/visible_categories_titset:19
 #: ../templates/profile/kuglight/database/einbaende/visible_categories_titset:19
 msgid "T0410-einbaende"
-msgstr "Ersch-Ort"
+msgstr "Erscheinungsort"
 
 #: ../templates/database/alff/visible_categories_titset:38
 #: ../templates/database/ebooks/visible_categories_titset:36
@@ -11529,7 +11529,7 @@ msgstr "Richterindiz"
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:43
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:38
 msgid "T0502"
-msgstr "EST beig. Werk"
+msgstr "Einheitstitel beigefügtes Werk"
 
 #: ../templates/database/alff/visible_categories_titset:89
 #: ../templates/database/ebooks/visible_categories_titset:87
@@ -11546,7 +11546,7 @@ msgstr "EST beig. Werk"
 #: ../templates/views/umschlaege/visible_categories_titset:88
 #: ../templates/visible_categories_titset:89
 msgid "T0503"
-msgstr "Übers. HST"
+msgstr "Übersetzter Titel"
 
 #: ../templates/database/alff/visible_categories_titset:62
 #: ../templates/database/ebooks/visible_categories_titset:60
@@ -11607,7 +11607,7 @@ msgstr "Weiterer Titel/Fußnote"
 #: ../templates/views/umschlaege/visible_categories_titset:63
 #: ../templates/visible_categories_titset:63
 msgid "T0507"
-msgstr "AngabenHST"
+msgstr "Titelangaben"
 
 #: ../templates/database/alff/visible_categories_titset:50
 #: ../templates/database/ebooks/visible_categories_titset:48
@@ -12406,15 +12406,15 @@ msgstr "EDV Adress"
 #: ../templates/views/umschlaege/visible_categories_titset:106
 #: ../templates/visible_categories_titset:108
 msgid "T0662"
-msgstr "URL"
+msgstr "Web-Link"
 
 #: ../templates/database/ebooks/visible_categories_titset:106
 msgid "T0662-ebooks"
-msgstr "Volltext-URL"
+msgstr "Volltext-Link"
 
 #: ../templates/database/nationallizenzen/visible_categories_titset:106
 msgid "T0662-nationallizenzen"
-msgstr "Volltext-URL"
+msgstr "Volltext-Link"
 
 #: ../templates/database/portrait/visible_categories_titset:88
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:88
@@ -12614,7 +12614,7 @@ msgstr "Konkordanz"
 #: ../templates/views/umschlaege/visible_categories_titset:91
 #: ../templates/visible_categories_titset:93
 msgid "T0902"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/alff/visible_categories_titset:94
 #: ../templates/database/ebooks/visible_categories_titset:92
@@ -12631,7 +12631,7 @@ msgstr "Schlagwort RSWK"
 #: ../templates/views/umschlaege/visible_categories_titset:92
 #: ../templates/visible_categories_titset:94
 msgid "T0907"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/alff/visible_categories_titset:95
 #: ../templates/database/ebooks/visible_categories_titset:93
@@ -12648,7 +12648,7 @@ msgstr "Schlagwort RSWK"
 #: ../templates/views/umschlaege/visible_categories_titset:93
 #: ../templates/visible_categories_titset:95
 msgid "T0912"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/alff/visible_categories_titset:96
 #: ../templates/database/ebooks/visible_categories_titset:94
@@ -12665,7 +12665,7 @@ msgstr "Schlagwort RSWK"
 #: ../templates/views/umschlaege/visible_categories_titset:94
 #: ../templates/visible_categories_titset:96
 msgid "T0917"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/alff/visible_categories_titset:97
 #: ../templates/database/ebooks/visible_categories_titset:95
@@ -12682,7 +12682,7 @@ msgstr "Schlagwort RSWK"
 #: ../templates/views/umschlaege/visible_categories_titset:95
 #: ../templates/visible_categories_titset:97
 msgid "T0922"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/alff/visible_categories_titset:98
 #: ../templates/database/ebooks/visible_categories_titset:96
@@ -12699,7 +12699,7 @@ msgstr "Schlagwort RSWK"
 #: ../templates/views/umschlaege/visible_categories_titset:96
 #: ../templates/visible_categories_titset:98
 msgid "T0927"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/alff/visible_categories_titset:99
 #: ../templates/database/ebooks/visible_categories_titset:97
@@ -12716,7 +12716,7 @@ msgstr "Schlagwort RSWK"
 #: ../templates/views/umschlaege/visible_categories_titset:97
 #: ../templates/visible_categories_titset:99
 msgid "T0932"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/alff/visible_categories_titset:100
 #: ../templates/database/ebooks/visible_categories_titset:98
@@ -12733,7 +12733,7 @@ msgstr "Schlagwort RSWK"
 #: ../templates/views/umschlaege/visible_categories_titset:98
 #: ../templates/visible_categories_titset:100
 msgid "T0937"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/alff/visible_categories_titset:101
 #: ../templates/database/ebooks/visible_categories_titset:99
@@ -12750,7 +12750,7 @@ msgstr "Schlagwort RSWK"
 #: ../templates/views/umschlaege/visible_categories_titset:99
 #: ../templates/visible_categories_titset:101
 msgid "T0942"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/alff/visible_categories_titset:102
 #: ../templates/database/ebooks/visible_categories_titset:100
@@ -12767,7 +12767,7 @@ msgstr "Schlagwort RSWK"
 #: ../templates/views/umschlaege/visible_categories_titset:100
 #: ../templates/visible_categories_titset:102
 msgid "T0947"
-msgstr "Schlagwort RSWK"
+msgstr "Schlagwort"
 
 #: ../templates/database/landschaft/visible_categories_titset:83
 #: ../templates/database/portrait/visible_categories_titset:84

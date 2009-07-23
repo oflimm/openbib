@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-07-23 10:45+0200\n"
+"PO-Revision-Date: 2009-07-23 13:28+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3500,14 +3500,11 @@ msgstr "Advanced search mask"
 #: ../templates/views/einbaende/searchmask_simple:174
 #: ../templates/views/einbaende/searchmask_simple:267
 #: ../templates/views/einbaende/searchmask_simple:362
+#: ../templates/views/kug/searchmask_simple:173
 #: ../templates/views/kug/searchmask_simple:263
 #: ../templates/views/kug/searchmask_simple:354
 msgid "Erweiterte Suche"
 msgstr "Advanced search"
-
-#: ../templates/views/kug/searchmask_simple:173
-msgid "Erweiterte Suche mit Katalogauswahl"
-msgstr "Advanced search with choice of catalogues"
 
 #: ../templates/database/edz/circset:93
 #: ../templates/database/inst001/circset:93
@@ -4162,7 +4159,7 @@ msgstr "Google-Book-Search"
 #: ../templates/views/einbaende/searchmask_simple:509
 #: ../templates/views/kug/searchmask_simple:498
 msgid ""
-"Greifen Sie fachspezifisch auf alle %1freien und lizensierten Zeitschriften%"
+"Greifen Sie fachspezifisch auf alle %1freien und lizenzierten Zeitschriften%"
 "2 zu"
 msgstr "Browse all available %1free and licensed journals%2 by subject."
 
@@ -8681,7 +8678,7 @@ msgstr "Search requests"
 #: ../templates/views/kug/searchmask_simple:501
 msgid ""
 "Recherchieren Sie fachspezifisch in einer Vielzahl von %1freien und\n"
-"lizensierten Datenbanken%2"
+"lizenzierten Datenbanken%2"
 msgstr "Browse all available %1free and licensed databases%2 by subject."
 
 #. ("${alldbcount.all.chunk(-3)

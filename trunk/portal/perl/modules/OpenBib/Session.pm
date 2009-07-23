@@ -486,7 +486,7 @@ sub clear_dbchoice {
 }
 
 sub get_number_of_dbchoice {
-    my ($self,$dbname)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -508,7 +508,7 @@ sub get_number_of_dbchoice {
 }
 
 sub get_number_of_items_in_resultlist {
-    my ($self,$dbname)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -541,9 +541,6 @@ sub get_items_in_resultlist_per_db {
 
     my $offset    = exists $arg_ref->{offset}
         ? $arg_ref->{offset}             : undef;
-
-    my $hitrange  = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}           : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1591,7 +1588,8 @@ Liefert den in dieser Session verwendeten View $viewname zurück.
 
 =item get_profile
 
-Liefert das in dieser Session verwendeten systemweite Katalog-Profil $profile zurück.
+Liefert das in dieser Session verwendeten systemweite Katalog-Profil
+$profile zurück.
 
 =item set_profile($profile)
 
@@ -1602,6 +1600,174 @@ Setzt das systemweite Katalog-Profil $profile für die Session.
 Liefert eine Liste der Offsets einer in der Session
 zwischengespeicherten Trefferergebnisliste spezifiziert durch
 $database, $queryid und $hitrange zurück.
+
+=item get_mask
+
+Liefert den aktuellen Typ der Recherchemaske (simple, advanced) in der
+Session zurück.
+
+=item set_mask($mask)
+
+Setzt den aktuellen Typ der Recherchemaske (simple,advanced) in der
+Session auf $mask.
+
+=item set_view($view)
+
+Setzt den aktuellen View (simple,advanced) in der Session auf $view.
+
+=item set_dbchoice($dbname)
+
+Fügt die Datenbank $dbname der aktuellen Datenbankauswahl hinzu.
+
+=item get_dbchoice
+
+Liefert eine umgekehrt alphabetisch sortierte Liste der ausgewählten
+Datenbanken zurück.
+
+=item clear_dbchoice
+
+Löscht die aktuelle Datenbankauswahl.
+
+=item get_number_of_dbchoice
+
+Liefert die Anzahl ausgewählter Datenbanken zurück.
+
+=item get_number_of_item_in_resultlist
+
+Liefert die Anzahl der zwischengespeicherten Trefferlisten zurück.
+
+=item get_items_in_resultlist_per_db({ database => $database, queryid => $queryid, offset => $offset, hitrange => $hitrange })
+
+Liefert die zwischengespeicherten Treffer zur Anfrage $queryid in der
+Datenbank $database - optional mit Offset $offset - als Liste zurück.
+
+=item get_all_items_in_resultlist({ queryid => $queryid })
+
+Liefert alle zwischengespeicherten Treffer zur Anfrage $queryid als
+Liste aufgeschlüsselt als Hashreferenz mit dbname und searchresult
+zurück.
+
+=item get_max_queryid
+
+Liefert die maximal vergebene Query-Identifikationsnummer zurück.
+
+=item get_all_searchqueries({ sessionid => $sessionid, offset => $offset })
+
+Liefert eine Liste aller in der Session ausgeführten Suchanfragen als
+Hashreferenz mit den Inhalten Query-ID id, Suchanfrage searchquery,
+gefundene Treffer hits sowie durchsuchte Datenbanken $dbases zurück.
+
+=item get_number_of_items_in_collection
+
+Liefert die Anzahl der Merklisteneinträge zurück.
+
+=item get_items_in_collection
+
+Liefert ein RecordList::Title-Objekt mit den Einträgen in der
+Merkliste zurück.
+
+=item set_item_in_collection({ database => $database, id => $id })
+
+Fügt den Titel mit der Id $id in der Datenbank $database zur Merkliste
+hinzu.
+
+=item clear_item_in_collection({ database => $database, id => $id })
+
+Löscht den Titel mit der Id $id in der Datenbank $database aus der
+Merkliste.
+
+=item updatelastresultset($resultset_ref)
+
+Aktualisiert die Treffer-Informationen (Datenbank:Id) zur letzten Suchanfrage.
+
+=item save_eventlog_to_statisticsdb
+
+Speichert das Eventlog der aktuellen Session in der
+Statistik-Datenbank (ausgelagert von clear_data)
+
+=item clear_data
+
+Daten der aktuellen Session werden aus der Session-Datenbank entfernt
+und das Eventlog über save_eventlog_to_statisticsdb in der
+Statistik-Datenbank gesichert.
+
+=item log_event({ type => $type, content => $content, serialize => $serialize })
+
+Speichert das Event des Typs $type mit dem Inhalt $content in der
+aktuellen Session. Handelt es sich bei $content um eine Referenz einer
+komplexen Datenstruktur, dann muss zusätzlich serialize gesetzt werden.
+
+=item set_returnurl($returnurl)
+
+Speichert den URL $returnurl in der Session, auf den nach einem
+erfolgreichen Anmeldevorgang gesprungen wird.
+
+=item get_query_id({ databases => $databases_ref, hitrange => $hitrange})
+
+Liefert zur letzten Suchanfrage über die Datenbanken $databases_ref
+mit der Schrittweite $hitrange das Listenpaar mit (Query existiert
+schon, zugehörige Query-Id).
+
+=item set_hits_of_query({ queryid => $queryid, hits => $hits})
+
+Setzt für die Suchanfrage mit Query-ID $queryid die Trefferzahl auf $hits.
+
+=item set_all_searchresults({ queryid => $queryid, results => $results_ref, dbhits => $dbhits_ref, hitrange => $hitrange })
+
+Speichert alle Suchergebnisse $results_ref zur Query-ID $queryid mit
+den Trefferzahlen $dbhits_ref und der aktuellen Schrittweite $hitrange
+in der aktuellen Session.
+
+=item set_searchresult({ queryid => $queryid, recordlist => $recordlist, database => $database, offset => $offset, hitrange => $hitrange })
+
+Speichert das Suchergebnis $recordlist zur Query-ID $queryid in der
+Datenbank $database und der aktuellen Schrittweite $hitrange bzw. dem
+Offset $offset in der aktuellen Session.
+
+=item get_searchresult({ queryid => $queryid, database => $database, offset => $offset, hitrange => $hitrange })
+
+Liefert das Suchergebnis $recordlist als Objekt
+OpenBib::RecordList::Title zur Recherche mit der Query-ID $queryid in
+der Datenbank $database und der aktuellen Schrittweite $hitrange
+bzw. dem Offset $offset in der aktuellen Session zurück.
+
+=item get_returnurl
+
+Liefert den in der Session abgespeichert Rücksprung-URL.
+
+=item get_db_histogram_of_query($queryid)
+
+Liefert ein Histogramm der Datenbanken und Trefferzahlen zur
+Suchanfrage mit Query-Id $queryid. Das ist ein Wertepaar bestehend aus
+einer Liste mit Hashreferenzen (trefferdb, trefferdbdesc, trefferzahl)
+und der Gesamttrefferzahl.
+
+=item get_lastresultset
+
+Liefert den letzten Suchergebnisse (Datenbank, Id) als flacher String zurück.
+
+=item set_user($user)
+
+Setzt die Benutzernr auf den Nutzer $user in der aktuelle Session.
+
+=item logout_user($user)
+
+Entfernt die Sessiondaten zu Nutzer $user.
+
+=item is_authenticated_as($user)
+
+Liefert eine wahren Wert zurück, falls sich der Nutzer $user gegenüber
+der aktuellen Session authentifiziert hat.
+
+=item get_info_of_all_active_session
+
+Liefert eine Liste aller aktiven Session zurück. Die Liste besteht aus
+Hashreferenzen mit den Informationen singlesessionid, createtime,
+benutzernr sowie numqueries.
+
+=item get_info($sessionid)
+
+Liefert das Wertepaar Benutzernummer und Zeitpunkt der Sessionerzeugung zurück.
 
 =back
 

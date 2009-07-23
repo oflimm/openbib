@@ -167,9 +167,9 @@ sub handler {
             return Apache2::Const::SERVER_ERROR;
         };
 
-        return Apache2::Const::OK;
     }
 
+    return Apache2::Const::OK;
     
 
 }

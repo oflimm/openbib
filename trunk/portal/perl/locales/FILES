@@ -864,7 +864,6 @@
 ../templates/views/kug/leave
 ../templates/views/kug/local_config
 ../templates/views/kug/mainnavigation
-../templates/views/kug/newsflash
 ../templates/views/kug/searchmask
 ../templates/views/kug/searchmask_bottom_left
 ../templates/views/kug/searchmask_options

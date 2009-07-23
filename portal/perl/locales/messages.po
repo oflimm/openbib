@@ -1627,12 +1627,8 @@ msgstr ""
 msgid "Erweitere Recherchemaske"
 msgstr ""
 
-#: ../templates/corporate_banner:62 ../templates/searchmask_simple:174 ../templates/searchmask_simple:267 ../templates/searchmask_simple:362 ../templates/views/einbaende/corporate_banner:62 ../templates/views/einbaende/searchmask_simple:174 ../templates/views/einbaende/searchmask_simple:267 ../templates/views/einbaende/searchmask_simple:362 ../templates/views/kug/searchmask_simple:263 ../templates/views/kug/searchmask_simple:354
+#: ../templates/corporate_banner:62 ../templates/searchmask_simple:174 ../templates/searchmask_simple:267 ../templates/searchmask_simple:362 ../templates/views/einbaende/corporate_banner:62 ../templates/views/einbaende/searchmask_simple:174 ../templates/views/einbaende/searchmask_simple:267 ../templates/views/einbaende/searchmask_simple:362 ../templates/views/kug/searchmask_simple:173 ../templates/views/kug/searchmask_simple:263 ../templates/views/kug/searchmask_simple:354
 msgid "Erweiterte Suche"
-msgstr ""
-
-#: ../templates/views/kug/searchmask_simple:173
-msgid "Erweiterte Suche mit Katalogauswahl"
 msgstr ""
 
 #: ../templates/database/edz/circset:93 ../templates/database/inst001/circset:93 ../templates/database/inst006/circset:61 ../templates/database/inst302/circset:50 ../templates/database/inst420/circset:61 ../templates/database/inst431/circset:61 ../templates/database/inst526/circset:61 ../templates/database/lehrbuchsmlg/circset:93 ../templates/database/lesesaal/circset:93 ../templates/database/rheinabt/circset:93 ../templates/database/wiso/circset:93 ../templates/profile/kuglight/database/rheinabt/circset:103
@@ -1950,7 +1946,7 @@ msgstr ""
 
 #: ../templates/searchmask:417 ../templates/searchmask_simple:509 ../templates/views/einbaende/searchmask:417 ../templates/views/einbaende/searchmask_simple:509 ../templates/views/kug/searchmask_simple:498
 #. ("<a href=\"${config.get('ezb_loc')
-msgid "Greifen Sie fachspezifisch auf alle %1freien und lizensierten Zeitschriften%2 zu"
+msgid "Greifen Sie fachspezifisch auf alle %1freien und lizenzierten Zeitschriften%2 zu"
 msgstr ""
 
 #: ../templates/circulation_make_order:40 ../templates/circulation_make_reserv:39 ../templates/profile/kuglight/circulation_make_order:40 ../templates/profile/kuglight/circulation_make_reserv:39
@@ -3380,7 +3376,7 @@ msgstr ""
 #. ("<a href=\"${config.get('dbis_loc')
 msgid ""
 "Recherchieren Sie fachspezifisch in einer Vielzahl von %1freien und\n"
-"lizensierten Datenbanken%2"
+"lizenzierten Datenbanken%2"
 msgstr ""
 
 #: ../templates/searchmask:122 ../templates/searchmask:196 ../templates/searchmask:255 ../templates/views/einbaende/searchmask:122 ../templates/views/einbaende/searchmask:196 ../templates/views/einbaende/searchmask:255

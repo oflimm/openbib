@@ -124,8 +124,32 @@
   FOREACH part IN item.${'X0014'} ;
   signaturen.push("${part.content}") ;
   END ;
+
   signatur = signaturen.sort.unique.join(' ; ') ;
   isbn     = item.${"T0540"}.first.content.replace('-','') ;
+
+  titleinfos = [] ;
+
+  # Inhaltsverzeichnis vorhanden
+  ebook     = item.${'T4120'}.first.content ;
+  toc       = item.${'T4110'}.first.content ;
+
+  IF ebook ;
+    ebook = "${config.get('redirect_loc')}/${sessionID}/503/${ebook}" ;
+    titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">E-Book</a>") ;
+  END ;
+
+  IF toc ;
+    toc = "${config.get('redirect_loc')}/${sessionID}/500/${toc}" ;
+    titleinfos.push("<a href=\"${toc}\" target=\"_blank\">Inhaltsverzeichnis</a>") ;
+  END ;
+
+  IF item.popularity ;
+    titleinfos.push("Popularit&auml;t: ${item.popularity}") ;
+  END ;
+
+  titleinfo = titleinfos.join(" | ");
+
 -%]
     <div class="item">
       <div class="numbering">[% loop.count %]</div>
@@ -134,7 +158,7 @@
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
-[%- IF item.popularity -%]<br />(Popularit&auml;t:[% item.popularity %])[%- END -%]
+[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
       </div>
       <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
       <div class="titleactions">

@@ -642,6 +642,11 @@ while (my $line=<IN>){
                         if (exists $conv_config->{'search_swt'}{$category}){
                             push @titswt, $contentnormtmp;
                         }
+                        if (exists $conv_config->{'listitemcat'}{$category}){
+                            push @{$listitem_ref->{"T".$category}}, {
+                                content => $content,
+                            };
+                        }
                     }
                 }
             }

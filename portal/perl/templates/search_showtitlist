@@ -13,6 +13,9 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" title = 'Trefferliste'
 %]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
 
 <body>
 
@@ -142,7 +145,30 @@
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
 [%- signatur = signaturen.sort.unique.join(' ; ') -%]
-[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') ;
+
+    titleinfos = [] ;
+
+    # E-Book/Inhaltsverzeichnis vorhanden
+    ebook     = item.${'T4120'}.first.content ;
+    toc       = item.${'T4110'}.first.content ;
+
+    IF ebook ;
+      ebook = "${config.get('redirect_loc')}/${sessionID}/503/${ebook}" ;
+      titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${"ebook_i18n"}</a>") ;
+    END ;
+
+    IF toc ;
+      toc = "${config.get('redirect_loc')}/${sessionID}/500/${toc}" ;
+      titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
+    END ;
+
+    IF item.popularity ;
+      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
+    END ;
+
+    titleinfo = titleinfos.join(" | ");
+-%]
     <div class="item">
       <div class="numbering">[% loop.count+offset %]</div>
       <div class="thumbnail">
@@ -150,7 +176,7 @@
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
-[%- IF item.popularity -%]<br />(Popularit&auml;t: [% item.popularity %])[%- END -%]
+[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
       </div>
       <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
       <div class="titleactions">

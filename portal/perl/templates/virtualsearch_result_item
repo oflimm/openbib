@@ -14,6 +14,10 @@
 <!-- Beginn Result Item -->
 [%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
 [%- dburl    = dbinfo.get('urls').${database} -%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
@@ -130,22 +134,22 @@
 
   titleinfos = [] ;
 
-  # Inhaltsverzeichnis vorhanden
+  # E-Book/Inhaltsverzeichnis vorhanden
   ebook     = item.${'T4120'}.first.content ;
   toc       = item.${'T4110'}.first.content ;
 
   IF ebook ;
     ebook = "${config.get('redirect_loc')}/${sessionID}/503/${ebook}" ;
-    titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">E-Book</a>") ;
+    titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${"ebook_i18n"}</a>") ;
   END ;
 
   IF toc ;
     toc = "${config.get('redirect_loc')}/${sessionID}/500/${toc}" ;
-    titleinfos.push("<a href=\"${toc}\" target=\"_blank\">Inhaltsverzeichnis</a>") ;
+    titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
   END ;
 
   IF item.popularity ;
-    titleinfos.push("Popularit&auml;t: ${item.popularity}") ;
+    titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
   END ;
 
   titleinfo = titleinfos.join(" | ");

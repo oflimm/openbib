@@ -1170,7 +1170,7 @@ msgstr "An"
 #: ../templates/views/einbaende/resultlists_showall_sortall:121
 #: ../templates/views/einbaende/resultlists_showsinglepool:139
 #: ../templates/views/einbaende/virtualsearch_result_item:140
-#: ../templates/views/kug/info:969 ../templates/virtualsearch_result_item:141
+#: ../templates/views/kug/info:969 ../templates/virtualsearch_result_item:169
 msgid "An BibSonomy senden"
 msgstr "An BibSonomy senden"
 
@@ -2987,8 +2987,10 @@ msgstr "Digitale Bibliothek / Monographien (Fernleihe)"
 
 #: ../templates/info:620 ../templates/profile/kuglight/info:575
 #: ../templates/views/kug/info:620
-msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
-msgstr "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgid ""
+"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgstr ""
+"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
 
 #: ../templates/externaljump:110
 #: ../templates/profile/kuglight/externaljump:110
@@ -3057,6 +3059,11 @@ msgstr ""
 "      Titeln bestimmt. Dadurch bekommt der Nutzer weitere Titel\n"
 "      angezeigt, die von anderen Nutzern im Kontext des aktuellen\n"
 "      Titels für interessant befunden wurden."
+
+#: ../templates/virtualsearch_result_item:14
+#, fuzzy
+msgid "E-Book"
+msgstr "eBooks"
 
 #: ../templates/admin_edituser:56
 #: ../templates/profile/kuglight/admin_edituser:56
@@ -3658,8 +3665,10 @@ msgstr "Es existiert kein Passwort für die Kennung $loginname"
 
 #: ../templates/admin_editcat_rss:168
 #: ../templates/profile/kuglight/admin_editcat_rss:168
-msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
-msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgid ""
+"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgstr ""
+"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 
 #: ../templates/admin_editcat_rss:225
 #: ../templates/profile/kuglight/admin_editcat_rss:225
@@ -3719,8 +3728,10 @@ msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "Es sind keine Quellen verf&uuml;gbar."
 
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:135
-msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
-msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgid ""
+"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgstr ""
+"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:355
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:571
@@ -6260,7 +6271,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/views/umschlaege/resultlists_showall_sortall:113
 #: ../templates/views/umschlaege/resultlists_showsinglepool:132
 #: ../templates/virtualsearch_result_combined:130
-#: ../templates/virtualsearch_result_item:141
+#: ../templates/virtualsearch_result_item:169
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
@@ -6406,7 +6417,7 @@ msgid "Inhalt"
 msgstr "Inhalt"
 
 #: ../templates/info:50 ../templates/profile/kuglight/info:50
-#: ../templates/views/kug/info:50
+#: ../templates/views/kug/info:50 ../templates/virtualsearch_result_item:15
 msgid "Inhaltsverzeichnis"
 msgstr "Inhaltsverzeichnis"
 
@@ -9237,7 +9248,7 @@ msgstr "Seit"
 #: ../templates/resultlists_showsinglepool:60
 #: ../templates/search_showtitlist:58
 #: ../templates/search_showtitlist_of_cnt:58 ../templates/tags_showtitlist:51
-#: ../templates/virtualsearch_result_item:31
+#: ../templates/virtualsearch_result_item:35
 msgid "Seite:"
 msgstr "Seite:"
 
@@ -9261,7 +9272,7 @@ msgstr "Seite:"
 #: ../templates/views/portrait/virtualsearch_result_item:155
 #: ../templates/views/portrait/virtualsearch_result_item:79
 #: ../templates/virtualsearch_result_combined:137
-#: ../templates/virtualsearch_result_item:148
+#: ../templates/virtualsearch_result_item:176
 #: ../templates/virtualsearch_showkorindex:38
 #: ../templates/virtualsearch_shownotindex:38
 #: ../templates/virtualsearch_showswtindex:38
@@ -9370,8 +9381,10 @@ msgstr "Sie greifen auf eine nicht autorisierte Session zu"
 
 #. ("<a href=\"${config.get('info_loc')
 #: ../templates/profile/kuglight/login:46
-msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
-msgstr "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgid ""
+"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgstr ""
+"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:272
@@ -9749,16 +9762,20 @@ msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:205
-msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
-msgstr "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgid ""
+"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgstr ""
+"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:1541
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:440
-msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
-msgstr "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgid ""
+"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgstr ""
+"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:832
 msgid "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
@@ -9766,7 +9783,8 @@ msgstr "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:719
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
-msgstr "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
+msgstr ""
+"Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:1021
 msgid ""
@@ -13386,7 +13404,7 @@ msgstr "Top 20"
 #: ../templates/views/umschlaege/resultlists_showall:69
 #: ../templates/virtualsearch_result_combined:55
 #: ../templates/virtualsearch_result_combined:69
-#: ../templates/virtualsearch_result_item:28
+#: ../templates/virtualsearch_result_item:32
 #: ../templates/virtualsearch_showkorindex:25
 #: ../templates/virtualsearch_shownotindex:25
 #: ../templates/virtualsearch_showswtindex:25
@@ -15259,7 +15277,7 @@ msgstr "meistgenutzte Titel"
 #: ../templates/resultlists_choice:107
 #: ../templates/views/einbaende/virtualsearch_result_item:28
 #: ../templates/views/portrait/virtualsearch_result_item:18
-#: ../templates/virtualsearch_result_item:28
+#: ../templates/virtualsearch_result_item:32
 msgid "mind."
 msgstr "mind."
 
@@ -15947,7 +15965,7 @@ msgstr "usw. usf."
 #: ../templates/views/portrait/virtualsearch_result_item:18
 #: ../templates/virtualsearch_result_combined:55
 #: ../templates/virtualsearch_result_combined:69
-#: ../templates/virtualsearch_result_item:28
+#: ../templates/virtualsearch_result_item:32
 msgid "von"
 msgstr "von"
 
@@ -16048,4 +16066,3 @@ msgstr "Übernehmen"
 #: ../templates/profile/kuglight/circulation_reserv:34
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
-

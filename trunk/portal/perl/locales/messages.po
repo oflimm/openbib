@@ -725,7 +725,7 @@ msgstr ""
 msgid "Beginnen Sie eine neue Recherche"
 msgstr ""
 
-#: ../templates/database/alff/search_showtitset:107 ../templates/database/ebooks/search_showtitset:113 ../templates/database/inst001/search_showtitset:109 ../templates/database/landschaft/search_showtitset:102 ../templates/database/nationallizenzen/search_showtitset:113 ../templates/database/portrait/search_showtitset:118 ../templates/database/spoho/search_showtitset:111 ../templates/database/umschlaege/search_showtitset:116 ../templates/litlists_tit_as_html_full:36 ../templates/managecollection_tit_as_html:298 ../templates/profile/kuglight/database/umschlaege/search_showtitset:147 ../templates/profile/kuglight/search_showtitset:97 ../templates/search_showtitset:110
+#: ../templates/database/alff/search_showtitset:107 ../templates/database/ebooks/search_showtitset:113 ../templates/database/inst001/search_showtitset:109 ../templates/database/landschaft/search_showtitset:102 ../templates/database/nationallizenzen/search_showtitset:113 ../templates/database/portrait/search_showtitset:118 ../templates/database/spoho/search_showtitset:111 ../templates/database/umschlaege/search_showtitset:116 ../templates/litlists_tit_as_html_full:36 ../templates/managecollection_tit_as_html:298 ../templates/profile/kuglight/database/umschlaege/search_showtitset:147 ../templates/profile/kuglight/search_showtitset:97 ../templates/search_showautset:66 ../templates/search_showtitset:110
 msgid "Begriff in allen Katalogen suchen"
 msgstr ""
 
@@ -1141,6 +1141,14 @@ msgstr ""
 
 #: ../templates/admin_databaseprofile:75 ../templates/databaseprofile:64 ../templates/profile/kuglight/admin_databaseprofile:75 ../templates/profile/kuglight/databaseprofile:64
 msgid "Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden wieder zu Ihrer Verf&uuml;gung. Um ein hier definiertes Katalogprofil zu nutzen, w&auml;hlen Sie es in der Recherchemaske einfach unter <b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten Katalogen suchen</b>."
+msgstr ""
+
+#: ../templates/search_showautset:72
+#. ("${searchterm}","<a href=\"${globalurl}\"><spanclass=\"globalsearch\">","</span></a>")
+msgid ""
+"Dehnen Sie Ihre Recherche nach <i>%1</i> über die\n"
+"%2G%3lobale Suche auf alle\n"
+"vorhandenen Kataloge aus."
 msgstr ""
 
 #: ../templates/profile/kuglight/virtualsearch_more_search_tips:35 ../templates/virtualsearch_more_search_tips:35
@@ -2059,7 +2067,7 @@ msgstr ""
 msgid "Hilfe"
 msgstr ""
 
-#: ../templates/externaljump:36 ../templates/info_11:47 ../templates/info_13:41 ../templates/info_15:35 ../templates/login_circulation:33 ../templates/mailpassword:33 ../templates/profile/kuglight/databasechoice:51 ../templates/profile/kuglight/externaljump:36 ../templates/profile/kuglight/info_13:53 ../templates/profile/kuglight/info_15:46 ../templates/profile/kuglight/login:44 ../templates/profile/kuglight/login_circulation:33 ../templates/profile/kuglight/mailpassword:35 ../templates/profile/kuglight/rssfeeds:25 ../templates/profile/kuglight/selfreg:34 ../templates/profile/kuglight/views/rheinlandbib/databasechoice:51 ../templates/rssfeeds:32 ../templates/selfreg:32 ../templates/views/rheinlandbib/databasechoice:51
+#: ../templates/externaljump:36 ../templates/info_11:47 ../templates/info_13:41 ../templates/info_15:35 ../templates/login_circulation:33 ../templates/mailpassword:33 ../templates/profile/kuglight/databasechoice:51 ../templates/profile/kuglight/externaljump:36 ../templates/profile/kuglight/info_13:53 ../templates/profile/kuglight/info_15:46 ../templates/profile/kuglight/login:44 ../templates/profile/kuglight/login_circulation:33 ../templates/profile/kuglight/mailpassword:35 ../templates/profile/kuglight/rssfeeds:25 ../templates/profile/kuglight/selfreg:34 ../templates/profile/kuglight/views/rheinlandbib/databasechoice:51 ../templates/rssfeeds:32 ../templates/search_showautset:71 ../templates/selfreg:32 ../templates/views/rheinlandbib/databasechoice:51
 msgid "Hinweis"
 msgstr ""
 

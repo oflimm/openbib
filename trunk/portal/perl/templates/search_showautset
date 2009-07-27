@@ -60,6 +60,19 @@ FOREACH category IN categories;
 END;
 -%]
 </table>
+
+[%
+    searchterm        = normset.${"P0001"}.first.content;
+    globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+    globalurl         = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;verf=%22${searchterm}%22";
+%]
+
+<p> <img style="vertical-align:bottom" src="[% config.get('hint_img')
+%]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Dehnen Sie Ihre Recherche nach <i>[_1]</i> über die
+[_2]G[_3]lobale Suche auf alle
+vorhandenen Kataloge aus.","${searchterm}","<a href=\"${globalurl}\"><span
+class=\"globalsearch\">","</span></a>") %]</p>
+
 </div>
 
 [% PROCESS common/subtemplate name="std_footer" %]

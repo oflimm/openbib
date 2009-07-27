@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-07-25 13:07+0200\n"
-"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team:  <l10n@openbib.org>\n"
+"PO-Revision-Date: 2009-07-27 10:08+0200\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1683,7 +1683,7 @@ msgstr "Start a new search request"
 #: ../templates/managecollection_tit_as_html:298
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:147
 #: ../templates/profile/kuglight/search_showtitset:97
-#: ../templates/search_showtitset:110
+#: ../templates/search_showautset:66 ../templates/search_showtitset:110
 msgid "Begriff in allen Katalogen suchen"
 msgstr "Search this term in all catalogues"
 
@@ -2519,6 +2519,16 @@ msgstr ""
 "and are still available when you login the next time. To use a profile "
 "select it in the search mask at <b>search profile</b> and then click at "
 "<b>Search in selected catalogues</b>."
+
+#. ("${searchterm}","<a href=\"${globalurl}\"><spanclass=\"globalsearch\">","</span></a>")
+#: ../templates/search_showautset:72
+msgid ""
+"Dehnen Sie Ihre Recherche nach <i>%1</i> über die\n"
+"%2G%3lobale Suche auf alle\n"
+"vorhandenen Kataloge aus."
+msgstr ""
+"Search for <i>%1</i> with our "
+"%2G%3lobal Search in all available catalogues."
 
 #: ../templates/profile/kuglight/virtualsearch_more_search_tips:35
 #: ../templates/virtualsearch_more_search_tips:35
@@ -4997,8 +5007,8 @@ msgstr "Help"
 #: ../templates/profile/kuglight/rssfeeds:25
 #: ../templates/profile/kuglight/selfreg:34
 #: ../templates/profile/kuglight/views/rheinlandbib/databasechoice:51
-#: ../templates/rssfeeds:32 ../templates/selfreg:32
-#: ../templates/views/rheinlandbib/databasechoice:51
+#: ../templates/rssfeeds:32 ../templates/search_showautset:71
+#: ../templates/selfreg:32 ../templates/views/rheinlandbib/databasechoice:51
 msgid "Hinweis"
 msgstr "Hint"
 

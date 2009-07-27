@@ -67,6 +67,9 @@ weitere Recherchen anstossen. Um mehr Raum f&uuml;r die eigentlichen
 Inhalte zu gewinnen ging damit eine Verkleinerung des
 KUG-Logo-Bereiches einher.</li>
 
+<li>Der Nutzer kann nun direkt in den Trefferlisten auf
+Inhaltsverzeichnisse zu den jeweiligen Titeln zugreifen.</li>
+
 </ul>
 
 </p>
@@ -91,12 +94,13 @@ Fachgruppen begrenzen l&auml;sst.</p>
 
 <h2>Automatische Anreicherung mit Medientypen</h2>
 
-<p>
-Um den Bestand noch besser zu erschliessen (s.o.), werden den einzelnen
-Katalogaufnahmen die Medientypen 'Zeitschrift/Serien' und 'Aufsatz'
-automatisch angereichert, falls diese nicht vergeben wurden. Damit
-wird sowohl die eigentliche Recherche wie auch die sp&auml;tere
-Eingrenzung &uuml;ber Medientypen als Suchverfeinerung erm&ouml;glicht.
+<p> Um den Bestand noch besser zu erschliessen (s.o.), werden den
+einzelnen Katalogaufnahmen die Medientypen 'Zeitschrift/Serien',
+'Aufsatz' sowie "mit Inhaltsverzeichnis" automatisch angereichert,
+falls diese nicht vergeben wurden. Über die Medientypen
+'Zeitschrift/Serien' und 'Aufsatz' kann bereits die Recherche
+eingegrenzt werden, für alle drei angereicherten neuen Medientypen ist
+eine sp&auml;tere Eingrenzung als Suchverfeinerung m&ouml;glich.
 </p>
 
 <h2>Zuordnung von Literaturlisten zu Themengebieten</h2>

@@ -71,7 +71,7 @@ END;
 
 <p> <img style="vertical-align:bottom" src="[% config.get('hint_img')
 %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Dehnen Sie Ihre Recherche nach <i>[_1]</i> über die
-[_2]G[_3]lobale Suche auf alle
+[_2]G[_3] lobale Suche auf alle
 vorhandenen Kataloge aus.","${searchterm}","<a href=\"${globalurl}\"><span
 class=\"globalsearch\">","</span></a>") %]</p>
 

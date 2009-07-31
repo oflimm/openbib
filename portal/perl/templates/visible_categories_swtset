@@ -13,12 +13,17 @@
 -%]
 [%# Ausgabekategorien %]
 [% categories = [
-                 'S0001', # msg.maketext("S0001") Ansetzung 
+                 'S0001', # msg.maketext("S0001") Ansetzung
+                 'S0112', # msg.maketext("S0112") Alternative Ansetzung
                  'S0102', # msg.maketext("S0102") Verweisung
                  'S0113', # msg.maketext("S0113") Übergeordnet
                  'S0115', # msg.maketext("S0115") Assoziiert
                  'S0117', # msg.maketext("S0117") Früher
                  'S0119', # msg.maketext("S0119") Später
+                 'S0105', # msg.maketext("S0105") Definition
+                 'S0106', # msg.maketext("S0106") Hinweise
+                 'S0107', # msg.maketext("S0107") Quelle
+                 'S0108', # msg.maketext("S0108") Systematikzuordnung
                  'S5000', # msg.maketext("S5000") Anzahl Titel 
                 ];
 

@@ -47,6 +47,12 @@ our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf,$mexidn);
 @notdubbuf = ();
 $mexidn  =  1;
 
+$autdublastidx=1;
+$kordublastidx=1;
+$notdublastidx=1;
+$swtdublastidx=1;
+
+
 my ($inputfile,$configfile);
 
 &GetOptions(
@@ -93,40 +99,57 @@ sub parse_titset {
     my($t, $titset)= @_;
 
     my $id          = $titset->first_child($convconfig->{uniqueidfield})->text();
-    
+
+    my $titel       = $titset->first_child("title")->text();
+
     my ($text)      = $titset->find_nodes("revision/text");
 
-    my ($textdaten) = $text->text()=~/^{({Textdaten.*?TITEL.*?})/smx;
+    my $textinhalt  = $text->text();
     
-    return unless ($textdaten && $id);
+    my ($textdaten) = $textinhalt =~m/^\{\{Textdaten.*?\|\s*(AUTOR=.*?TITEL.*?SUBTITEL.*?)^}}/sm;
 
+
+    return if (!$textdaten);
+
+    my $baseurl         = $convconfig->{baseurl};
+    my $commons_baseurl = $convconfig->{commons_baseurl};
+    
     print TIT "0000:$id\n";
     
-    $textdaten=~s/\n//smg;
+    $textdaten=~s/\n//sg;
+
+    # Bei internen Links nur Alternativbezeichner uebriglassen
+    # zuerst Commons
+    $textdaten=~s/\[\[:?commons:([^|\[\]]+?)\|(.+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$2<\/a>/gi;
+    # dann den Rest
+    $textdaten=~s/\[\[([^|\]]+?)\|(.+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$2<\/a>/g;
 
     foreach my $item (split("\\|",$textdaten)){
         if ($item !~/=/){
             next;
         }
 
-        my ($category,$content)=split("=",$item);
+        my ($category,$content)=$item=~/^(\w+)=(.*?)$/;
 
+        next if ($content=~/^off$/);
+        
         $category=~s/^\s+//;
         $category=~s/\s+$//;
         
-        print "$category:$content\n";
-
-        # Autoren abarbeiten Anfang
         if (exists $convconfig->{pers}{$category} && $content){
+            my $split_regexp=$convconfig->{category_split_chars}{$category};
+
             my @parts = ();
-            if (exists $convconfig->{category_split_chars}{$category} && $content=~/$convconfig->{category_split_chars}{$category}/){
-                @parts = split($convconfig->{category_split_chars}{$category},$content);
+            if ($split_regexp){
+                @parts = split(/$split_regexp/,$content);
             }
             else {
                 push @parts, $content;
             }
-            
+
             foreach my $part (@parts){
+                $part=~s/\[\[([^|\]]+?)]]/$1/g;
+
                 $part=konv($part);
 
                 my $autidn=get_autidn($part);
@@ -146,16 +169,31 @@ sub parse_titset {
         # Autoren abarbeiten Ende
 
         if (exists $convconfig->{title}{$category} && $content){
+            my $split_regexp=$convconfig->{category_split_chars}{$category};
+            
             my @parts = ();
-            if (exists $convconfig->{category_split_chars}{$category} && $content=~/$convconfig->{category_split_chars}{$category}/){
-                @parts = split($convconfig->{category_split_chars}{$category},$content);
+            if ($split_regexp){
+                @parts = split(/$split_regexp/,$content);
             }
             else {
                 push @parts, $content;
             }
             
             foreach my $part (@parts){
+                # Formatierungen entfernen der Form {{center|xxx}}
+                $part=~s/\{\{[^|}]+?\|(.+?)}}/$1/g;
+                
+                # Sonst bei internen Links nur den Linkbezeichner nehmen    
+                # zuerst Commons
+                $part=~s/\[\[:?commons:([^|\[\]]+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$1<\/a>/gi;
+                # dann den Rest
+                $part=~s/\[\[([^|\]]+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$1<\/a>/g;
+
+                # Externe Links werden in den Text via HTML integriert
+                $part=~s/\[(http\S+)\s+(.*?)\]/<a href="$1" class="ext" target="_blank">$2<\/a>/g;
+
                 $part=konv($part);
+
                 print TIT $convconfig->{title}{$category}.$part."\n";
             }
         }
@@ -163,6 +201,8 @@ sub parse_titset {
 
     }
 
+    print TIT "0662:".$convconfig->{baseurl}."$titel\n";
+    
     print TIT "9999:\n";
     
     # Release memory of processed tree
@@ -266,12 +306,13 @@ sub konv {
     $content=~s/^\s+//;
     $content=~s/\s+$//;
 
+
 #    $content=~s/\&/&amp;/g;
     
 #    $content=~s/>/&gt;/g;
 #    $content=~s/</&lt;/g;
-    $content=~s/\[\[//g;
-    $content=~s/\]\]//g;
+#    $content=~s/\[\[//g;
+#    $content=~s/]]//g;
 
 
     return $content;

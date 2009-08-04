@@ -5,7 +5,8 @@
 uniqueidfield: 'id'
 
 category_split_chars:
-  'AUTOR': '<br.*?>|und'
+  'AUTOR': '(?:<br.*?>| und |, )'
+  'HERAUSGEBER': '(?:<br.*?>| und |, )'
 
 # Personen
 pers:
@@ -40,8 +41,12 @@ title:
   'QUELLE': '0508:'
   'KURZBESCHREIBUNG': '0750:'
   'SONSTIGES': '0501:'
-#  'BEARBEITUNGSSTAND': '''
+  'BEARBEITUNGSSTAND': '0501:'
 
 
 # Exemplare
 exempl:
+
+baseurl: 'http://de.wikisource.org/wiki/'
+
+commons_baseurl: 'http://commons.wikimedia.org/wiki/'

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-08-05 10:31+0200\n"
+"PO-Revision-Date: 2009-08-05 11:20+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -8550,7 +8550,7 @@ msgstr "Zitate in Wikiquote"
 
 #: ../templates/visible_categories_autset:31
 msgid "P0311"
-msgstr "Artikel in Wikicommons"
+msgstr "Medien in Wikicommons"
 
 #: ../templates/visible_categories_autset:32
 msgid "P0312"

@@ -170,6 +170,7 @@
 ../templates/database/umschlaege/visible_categories_titset
 ../templates/database/wiso/circset
 ../templates/database/wiso/mexset
+../templates/database/wikisource_de/visible_categories_titset
 ../templates/database/zbmed/circset
 ../templates/dbis_searchdbs
 ../templates/dbis_showdbinfo

@@ -79,14 +79,21 @@ open (NOTATION,">:utf8","unload.SYS");
 open (SWT,     ">:utf8","unload.SWD");
 open (MEX,     ">:utf8","unload.MEX");
 
-my $twig= XML::Twig->new(
-   TwigHandlers => {
-     "/mediawiki/page" => \&parse_titset
-   }
- );
+my $twigaut= XML::Twig->new(
+    TwigHandlers => {
+        "/mediawiki/page" => \&parse_autset
+    }
+);
+
+my $twigtit= XML::Twig->new(
+    TwigHandlers => {
+        "/mediawiki/page" => \&parse_titset
+    }
+);
 
 
-$twig->parsefile($inputfile);
+$twigaut->parsefile($inputfile);
+$twigtit->parsefile($inputfile);
 
 close(TIT);
 close(AUT);
@@ -94,6 +101,95 @@ close(KOR);
 close(NOTATION);
 close(SWT);
 close(MEX);
+
+sub parse_autset {
+    my($t, $autset)= @_;
+
+    my $id          = $autset->first_child($convconfig->{uniqueidfield})->text();
+
+    my $titel       = $autset->first_child("title")->text();
+
+    my ($text)      = $autset->find_nodes("revision/text");
+
+    my $textinhalt  = $text->text();
+
+    # Doppeleintraege, wie z.B. Gebrueder Grimm koennen strukturell nicht verarbeitet werden.
+    return if ($textinhalt =~m/\{\{Personendaten.*?\|\s*NACHNAME=.*?VORNAMEN.*?\{\{Personendaten.*?\|\s*NACHNAME=.*?VORNAMEN/sm);
+    
+    my ($personendaten) = $textinhalt =~m/\{\{Personendaten.*?\|\s*(NACHNAME=.*?VORNAMEN.*?)^}}/sm;
+
+    return if (!$personendaten);
+
+    my $baseurl         = $convconfig->{baseurl};
+    my $commons_baseurl = $convconfig->{commons_baseurl};
+
+    my $autidn=get_autidn($titel);
+
+    $personendaten=~s/\n//sg;
+
+    if ($autidn > 0){
+        print AUT "0000:$autidn\n";
+        print AUT "0001:$titel\n";
+
+        # Bei internen Links nur Alternativbezeichner uebriglassen
+        # zuerst Commons
+        $personendaten=~s/\[\[:?commons:([^|\[\]]+?)\|(.+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$2<\/a>/gi;
+        # dann den Rest
+        $personendaten=~s/\[\[([^|\]]+?)\|(.+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$2<\/a>/g;
+
+        foreach my $item (split("\\|",$personendaten)){
+            if ($item !~/=/){
+                next;
+            }
+            
+            my ($category,$content)=$item=~/^(\w+)=(.*?)$/;
+            
+            next if ($content=~/^off$/);
+            
+            $category=~s/^\s+//;
+            $category=~s/\s+$//;
+                        
+            if (exists $convconfig->{pers}{$category} && $content){
+                my $split_regexp=$convconfig->{category_split_chars}{$category};
+                
+                my @parts = ();
+                if ($split_regexp){
+                    @parts = split(/$split_regexp/,$content);
+                }
+                else {
+                    push @parts, $content;
+                }
+                
+                foreach my $part (@parts){
+                    
+                    if (!$convconfig->{no_wiki_filter}{$category}){
+                        # Formatierungen entfernen der Form {{center|xxx}}
+                        $part=~s/\{\{[^|}]+?\|(.+?)}}/$1/g;
+                        
+                        # Sonst bei internen Links nur den Linkbezeichner nehmen    
+                        # zuerst Commons
+                        $part=~s/\[\[:?commons:([^|\[\]]+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$1<\/a>/gi;
+                        # dann den Rest
+                        $part=~s/\[\[([^|\]]+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$1<\/a>/g;
+                        
+                        # Externe Links werden in den Text via HTML integriert
+                        $part=~s/\[(http\S+)\s+(.*?)\]/<a href="$1" class="ext" target="_blank">$2<\/a>/g;
+                    }
+                    
+                    $part=konv($part);
+                    
+                    print AUT $convconfig->{pers}{$category}.$part."\n";
+                }
+            }
+        }
+
+        print AUT "9999:\n";
+    }
+
+    # Release memory of processed tree
+    # up to here
+    $t->purge();
+}
 
 sub parse_titset {
     my($t, $titset)= @_;
@@ -106,7 +202,7 @@ sub parse_titset {
 
     my $textinhalt  = $text->text();
     
-    my ($textdaten) = $textinhalt =~m/^\{\{Textdaten.*?\|\s*(AUTOR=.*?TITEL.*?SUBTITEL.*?)^}}/sm;
+    my ($textdaten) = $textinhalt =~m/\{\{Textdaten.*?\|\s*(AUTOR=.*?TITEL.*?SUBTITEL.*?)^}}/sm;
 
 
     return if (!$textdaten);
@@ -118,6 +214,8 @@ sub parse_titset {
     
     $textdaten=~s/\n//sg;
 
+    # Formatierungen entfernen der Form {{center|xxx}}
+    $textdaten=~s/\{\{[^|}]+?\|(.+?)}}/$1/g;
     # Bei internen Links nur Alternativbezeichner uebriglassen
     # zuerst Commons
     $textdaten=~s/\[\[:?commons:([^|\[\]]+?)\|(.+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$2<\/a>/gi;
@@ -136,7 +234,7 @@ sub parse_titset {
         $category=~s/^\s+//;
         $category=~s/\s+$//;
         
-        if (exists $convconfig->{pers}{$category} && $content){
+        if (exists $convconfig->{perstit}{$category} && $content){
             my $split_regexp=$convconfig->{category_split_chars}{$category};
 
             my @parts = ();
@@ -163,7 +261,7 @@ sub parse_titset {
                     $autidn=(-1)*$autidn;
                 }
                 
-                print TIT $convconfig->{pers}{$category}."IDN: $autidn\n";
+                print TIT $convconfig->{perstit}{$category}."IDN: $autidn\n";
             }
         }
         # Autoren abarbeiten Ende
@@ -180,18 +278,18 @@ sub parse_titset {
             }
             
             foreach my $part (@parts){
-                # Formatierungen entfernen der Form {{center|xxx}}
-                $part=~s/\{\{[^|}]+?\|(.+?)}}/$1/g;
+
+                if (!$convconfig->{no_wiki_filter}{$category}){
+                    # Sonst bei internen Links nur den Linkbezeichner nehmen    
+                    # zuerst Commons
+                    $part=~s/\[\[:?commons:([^|\[\]]+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$1<\/a>/gi;
+                    # dann den Rest
+                    $part=~s/\[\[([^|\]]+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$1<\/a>/g;
+                    
+                    # Externe Links werden in den Text via HTML integriert
+                    $part=~s/\[(http\S+)\s+(.*?)\]/<a href="$1" class="ext" target="_blank">$2<\/a>/g;
+                }
                 
-                # Sonst bei internen Links nur den Linkbezeichner nehmen    
-                # zuerst Commons
-                $part=~s/\[\[:?commons:([^|\[\]]+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$1<\/a>/gi;
-                # dann den Rest
-                $part=~s/\[\[([^|\]]+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$1<\/a>/g;
-
-                # Externe Links werden in den Text via HTML integriert
-                $part=~s/\[(http\S+)\s+(.*?)\]/<a href="$1" class="ext" target="_blank">$2<\/a>/g;
-
                 $part=konv($part);
 
                 print TIT $convconfig->{title}{$category}.$part."\n";

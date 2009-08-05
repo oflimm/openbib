@@ -9,9 +9,28 @@ category_split_chars:
   'HERAUSGEBER': '(?:<br.*?>| und |, )'
 
 # Personen
-pers:
+perstit:
+  # Fuer Titelnormdaten
   'AUTOR': '0100:'            # Verfasser
   'HERAUSGEBER': '0101:'      # Person
+
+pers:
+  # Fuer Personennormdaten
+  'ALTERNATIVNAMEN': '0102:'   # Verweisung
+  'NACHNAME': '0300:'
+  'VORNAMEN': '0301:'
+  'KURZBESCHREIBUNG': '0302:'
+  'SONSTIGES': '0303:'
+  'GEBURTSDATUM': '0304:'
+  'GEBURTSORT': '0305:'
+  'STERBEDATUM': '0306:'
+  'STERBEORT': '0307:'
+  'BILD': '0308:'
+  'WIKIPEDIA': '0309:'
+  'WIKIQUOTE': '0310:'
+  'COMMONS': '0311:'
+  'PND': '0312:'
+
 
 # Koerperschaften
 corp:
@@ -46,6 +65,9 @@ title:
 
 # Exemplare
 exempl:
+
+no_wiki_filter:
+  'TITEL': 1
 
 baseurl: 'http://de.wikisource.org/wiki/'
 

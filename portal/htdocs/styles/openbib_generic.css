@@ -1471,3 +1471,9 @@ ul.recent_tags {
   border-bottom-width: 1px; 
 
 }
+
+/* a[href^="http://www.ub"], */
+a.ext {
+  padding-left: 1.3em;
+  background: url('/images/openbib/extern.gif') no-repeat left center;
+}

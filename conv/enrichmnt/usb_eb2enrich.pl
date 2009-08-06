@@ -96,7 +96,7 @@ else {
     
     $logger->info("Bestimmung der ebook-URL");
 
-    my $request=$dbh->prepare("select t1.content as isbn, t2.content as eburl from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category=662 and t1.category=540");
+    my $request=$dbh->prepare("select t1.content as isbn, t2.content as eburl from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category=662 and (t1.category=540 or t1.category=553)");
     $request->execute();
     
     while (my $res=$request->fetchrow_hashref){

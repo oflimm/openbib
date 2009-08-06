@@ -150,11 +150,17 @@ FOREACH category IN categories;
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
+    CASE [ "T0531" "T0533" ];
+         previssues = content.split("---&gt;: ");
+         globalurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;hststring=${previssues.1}";
+         localurl   = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;hitrange=${qopts.hitrange}";
+         content    = "<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
+
     CASE "T0540";
          content   = "<a class=\"isbn\" href=\"${config.get('redirect_loc')}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE "T0543";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.get('redirect_loc')}/${sessionID}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.get('redirect_loc')}/${sessionID}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
@@ -177,9 +183,9 @@ FOREACH category IN categories;
                thiscontent = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
                content     = "${config.get('redirect_loc')}/${sessionID}/500/${content}" ;
             END ;
-            content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
          ELSE ;
-            content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
+            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
          END ;
 
     CASE "E4100";
@@ -195,12 +201,12 @@ FOREACH category IN categories;
          thisindicator = item.indicator ;
          thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
          content       = "${config.get('redirect_loc')}/${sessionID}/500/${content}" ;
-         content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+         content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
 
     CASE "E4120";
          thiscontent   = "Greifen Sie hier online auf den Volltext zu";
 	 content       = "${config.get('redirect_loc')}/${sessionID}/503/${content}" ;
-	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
+	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          thisid     = item.id;
@@ -234,7 +240,7 @@ FOREACH category IN categories;
 
     CASE "T1600";
          IF content.match('Sie einen Bestellschein aus');
-             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" target=\"_blank\">Ortsleihe</a> schicken";
+             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" class=\"ext\" target=\"_blank\">Ortsleihe</a> schicken";
          END;
 
     CASE "T4500";
@@ -327,17 +333,17 @@ END;
 <img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
 [%-   IF normset.${"E4200"} %]
 [%-    FOREACH item IN normset.${"E4200"}-%]
-<a href="[% config.get('redirect_loc') %]/[% sessionID %]/522/http://de.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/522/http://de.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
 [%-   IF normset.${"E4201"} %]
 [%-     FOREACH item IN normset.${"E4201"}-%]
-<a href="[% config.get('redirect_loc') %]/[% sessionID %]/522/http://en.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/522/http://en.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normset.${"E4202"} %]
 [%-     FOREACH item IN normset.${"E4202"}-%]
-<a href="[% config.get('redirect_loc') %]/[% sessionID %]/522/http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/522/http://fr.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>

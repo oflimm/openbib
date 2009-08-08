@@ -16,18 +16,17 @@
 
 <ul>
 
+<li><b>7.8.2009</b>: Knapp 10.500 freie E-Texte aus der <a
+href="http://de.wikisource.org/" target="_blank">deutschen Wikisource Textsammlung</a>
+sind nun im KUG als eigenst&auml;ndiger Katalog <i>E-Texte /
+Wikisource deutsch</i> enthalten und werden zus&auml;tzlich &uuml;ber
+einen <a
+href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=wikisource"
+target="_blank">eigenst&auml;ndigen Sucheinstieg</a> angeboten.  </li>
+
 <li><b>27.7.2009</b>: Sie können nun direkt in den Trefferlisten auf
 Inhaltsverzeichnisse zu den jeweiligen Titeln zugreifen. Ebenso kann
 fortan eine Recherche in der einfachen Suche über den Medientyp "mit
 Inhaltsverzeichnis" entsprechend verfeinert werden.  </li>
-
-<li><b>22.7.2009</b>: Zu den Themengebieten <a
-href="http://kug.ub.uni-koeln.de/tutorials/literaturlisten.html"
-target="_blank">Literaturlisten</a> sowie <a
-href="http://kug.ub.uni-koeln.de/tutorials/drilldowns.html"
-target="_blank">Treffermengen eingrenzen</a> bieten wir neue und
-überarbeitete Online-Tutorien an. Weitere Tutorien finden Sie unter
-dem Menu-Punkt <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=61">Tutorien</a>.
-</li>
 
 </ul>

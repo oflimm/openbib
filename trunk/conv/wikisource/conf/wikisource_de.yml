@@ -5,8 +5,12 @@
 uniqueidfield: 'id'
 
 category_split_chars:
-  'AUTOR': '(?:<br.*?>| und |, )'
-  'HERAUSGEBER': '(?:<br.*?>| und |, )'
+  'AUTOR': '(?:\s*<br.*?>\s*|\s*und\s*|\s*,\s*|\s*;\s*)'
+  'HERAUSGEBER': '(?:\s*<br.*?>\s*|\s*und\s*|\s*,\s*|\s*;\s*)'
+
+pers_templatename: 'Personendaten'
+title_templatename: 'Titeldaten'
+wiki_category: 'Kategorie'
 
 # Personen
 perstit:

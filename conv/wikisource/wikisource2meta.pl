@@ -39,7 +39,7 @@ use YAML::Syck;
 
 use OpenBib::Config;
 
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf,$mexidn);
+our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf,$mexidn,$pers_templatename,$title_templatename,$category_name);
 
 @autdubbuf = ();
 @kordubbuf = ();
@@ -72,6 +72,10 @@ exit;
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
+my $pers_templatename  = $convconfig->{pers_templatename};
+my $title_templatename = $convconfig->{title_templatename};
+my $wiki_category      = $convconfig->{wiki_category};
+
 open (TIT,     ">:utf8","unload.TIT");
 open (AUT,     ">:utf8","unload.PER");
 open (KOR,     ">:utf8","unload.KOE");
@@ -83,17 +87,17 @@ my $twigaut= XML::Twig->new(
     TwigHandlers => {
         "/mediawiki/page" => \&parse_autset
     }
-);
+) if ($pers_templatename);
 
 my $twigtit= XML::Twig->new(
     TwigHandlers => {
         "/mediawiki/page" => \&parse_titset
     }
-);
+) if ($title_templatename);
 
 
-$twigaut->parsefile($inputfile);
-$twigtit->parsefile($inputfile);
+$twigaut->parsefile($inputfile) if ($pers_templatename);
+$twigtit->parsefile($inputfile) if ($title_templatename);
 
 close(TIT);
 close(AUT);
@@ -114,9 +118,9 @@ sub parse_autset {
     my $textinhalt  = $text->text();
 
     # Doppeleintraege, wie z.B. Gebrueder Grimm koennen strukturell nicht verarbeitet werden.
-    return if ($textinhalt =~m/\{\{Personendaten.*?\|\s*NACHNAME=.*?VORNAMEN.*?\{\{Personendaten.*?\|\s*NACHNAME=.*?VORNAMEN/sm);
+    return if ($textinhalt =~m/\{\{$pers_templatename.*?\|\s*.*?\{\{$pers_templatename.*?\|/sm);
     
-    my ($personendaten) = $textinhalt =~m/\{\{Personendaten.*?\|\s*(NACHNAME=.*?VORNAMEN.*?)^}}/sm;
+    my ($personendaten) = $textinhalt =~m/\{\{$pers_templatename.*?\|\s*(.*?)^}}/sm;
 
     return if (!$personendaten);
 
@@ -137,14 +141,14 @@ sub parse_autset {
         # dann den Rest
         $personendaten=~s/\[\[([^|\]]+?)\|(.+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$2<\/a>/g;
 
-        foreach my $item (split("\\|",$personendaten)){
+        foreach my $item (split("\s*\\|\s*",$personendaten)){
             if ($item !~/=/){
                 next;
             }
             
-            my ($category,$content)=$item=~/^(\w+)=(.*?)$/;
+            my ($category,$content)=$item=~/^\s*(\w+)\s*=\s*(.*?)\s*$/;
             
-            next if ($content=~/^off$/);
+            next if ($content=~/^\s*off\s*$/i);
             
             $category=~s/^\s+//;
             $category=~s/\s+$//;
@@ -202,8 +206,7 @@ sub parse_titset {
 
     my $textinhalt  = $text->text();
     
-    my ($textdaten) = $textinhalt =~m/\{\{Textdaten.*?\|\s*(AUTOR=.*?TITEL.*?SUBTITEL.*?)^}}/sm;
-
+    my ($textdaten) = $textinhalt =~m/\{\{$title_templatename.*?\|\s*(.*?)^}}/sm;
 
     return if (!$textdaten);
 
@@ -216,24 +219,26 @@ sub parse_titset {
 
     # Formatierungen entfernen der Form {{center|xxx}}
     $textdaten=~s/\{\{[^|}]+?\|(.+?)}}/$1/g;
+    $textdaten=~s/\{\{[^|}]+?}}//g;
     # Bei internen Links nur Alternativbezeichner uebriglassen
     # zuerst Commons
     $textdaten=~s/\[\[:?commons:([^|\[\]]+?)\|(.+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$2<\/a>/gi;
     # dann den Rest
     $textdaten=~s/\[\[([^|\]]+?)\|(.+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$2<\/a>/g;
 
-    foreach my $item (split("\\|",$textdaten)){
+    foreach my $item (split("\s*\\|\s*",$textdaten)){
         if ($item !~/=/){
             next;
         }
 
-        my ($category,$content)=$item=~/^(\w+)=(.*?)$/;
+        my ($category,$content)=$item=~/^\s*(\w+)\s*=\s*(.*?)\s*$/;
 
         next if ($content=~/^off$/);
         
         $category=~s/^\s+//;
         $category=~s/\s+$//;
-        
+
+        # Autoren abarbeiten Anfang
         if (exists $convconfig->{perstit}{$category} && $content){
             my $split_regexp=$convconfig->{category_split_chars}{$category};
 
@@ -298,6 +303,26 @@ sub parse_titset {
 
 
     }
+
+    # Kategorien als Schlagworte abarbeiten Anfang
+    foreach my $schlagwort ( $textinhalt =~m/\[\[$wiki_category:(.+?)]]/g){
+        $schlagwort=~s/\|.+?$//;
+        $schlagwort=konv($schlagwort);
+
+        my $swtidn=get_swtidn($schlagwort);
+        
+        if ($swtidn > 0){
+            print SWT "0000:$swtidn\n";
+            print SWT "0001:$schlagwort\n";
+            print SWT "9999:\n";
+        }
+        else {
+            $swtidn=(-1)*$swtidn;
+        }
+        
+        print TIT "0710:IDN: $swtidn\n";
+    }
+    # Kategorien als Schlagworte abarbeiten Ende
 
     print TIT "0662:".$convconfig->{baseurl}."$titel\n";
     

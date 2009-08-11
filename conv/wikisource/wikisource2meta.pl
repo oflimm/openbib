@@ -39,7 +39,7 @@ use YAML::Syck;
 
 use OpenBib::Config;
 
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf,$mexidn,$pers_templatename,$title_templatename,$category_name);
+our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf,$mexidn,$pers_templatename,$title_templatename,$wiki_category);
 
 @autdubbuf = ();
 @kordubbuf = ();
@@ -72,9 +72,9 @@ exit;
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
-my $pers_templatename  = $convconfig->{pers_templatename};
-my $title_templatename = $convconfig->{title_templatename};
-my $wiki_category      = $convconfig->{wiki_category};
+$pers_templatename  = $convconfig->{pers_templatename};
+$title_templatename = $convconfig->{title_templatename};
+$wiki_category      = $convconfig->{wiki_category};
 
 open (TIT,     ">:utf8","unload.TIT");
 open (AUT,     ">:utf8","unload.PER");
@@ -96,8 +96,15 @@ my $twigtit= XML::Twig->new(
 ) if ($title_templatename);
 
 
-$twigaut->parsefile($inputfile) if ($pers_templatename);
-$twigtit->parsefile($inputfile) if ($title_templatename);
+if ($pers_templatename){
+    print STDERR "### Bearbeite Personendaten\n";
+    $twigaut->parsefile($inputfile);
+}
+
+if ($title_templatename){
+    print STDERR "### Bearbeite Titeldaten\n";
+    $twigtit->parsefile($inputfile);
+}
 
 close(TIT);
 close(AUT);
@@ -141,18 +148,18 @@ sub parse_autset {
         # dann den Rest
         $personendaten=~s/\[\[([^|\]]+?)\|(.+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$2<\/a>/g;
 
-        foreach my $item (split("\s*\\|\s*",$personendaten)){
+        foreach my $item (split("\\|",$personendaten)){
             if ($item !~/=/){
                 next;
             }
-            
+
             my ($category,$content)=$item=~/^\s*(\w+)\s*=\s*(.*?)\s*$/;
             
             next if ($content=~/^\s*off\s*$/i);
             
             $category=~s/^\s+//;
             $category=~s/\s+$//;
-                        
+
             if (exists $convconfig->{pers}{$category} && $content){
                 my $split_regexp=$convconfig->{category_split_chars}{$category};
                 
@@ -226,7 +233,7 @@ sub parse_titset {
     # dann den Rest
     $textdaten=~s/\[\[([^|\]]+?)\|(.+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$2<\/a>/g;
 
-    foreach my $item (split("\s*\\|\s*",$textdaten)){
+    foreach my $item (split("\\|",$textdaten)){
         if ($item !~/=/){
             next;
         }

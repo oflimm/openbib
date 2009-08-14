@@ -71,8 +71,14 @@ title:
 exempl:
 
 no_wiki_filter:
+  'AUTOR': 1
+  'HERAUSGEBER': 1
   'TITEL': 1
 
 baseurl: 'http://de.wikisource.org/wiki/'
 
 commons_baseurl: 'http://commons.wikimedia.org/wiki/'
+
+GFDL-Text: 'Dieser Text steht unter der <a href="http://de.wikipedia.org/wiki/GNU_Free_Documentation_License" class="ext" title="w:GNU Free Documentation License">GFDL</a>'
+
+PD-Text: 'Dieser Text ist <a href="http://de.wikipedia.org/wiki/gemeinfrei" class="extiw" title="w:gemeinfrei">gemeinfrei</a>'

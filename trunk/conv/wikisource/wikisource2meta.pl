@@ -32,6 +32,9 @@ use 5.008001;
 
 use utf8;
 
+use strict;
+use warnings;
+
 use Encode 'decode';
 use Getopt::Long;
 use XML::Twig;
@@ -40,6 +43,7 @@ use YAML::Syck;
 use OpenBib::Config;
 
 our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf,$mexidn,$pers_templatename,$title_templatename,$wiki_category);
+our ($autdublastidx,$kordublastidx,$notdublastidx,$swtdublastidx,$gfdltext,$pdtext);
 
 @autdubbuf = ();
 @kordubbuf = ();
@@ -72,9 +76,12 @@ exit;
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
-$pers_templatename  = $convconfig->{pers_templatename};
-$title_templatename = $convconfig->{title_templatename};
-$wiki_category      = $convconfig->{wiki_category};
+$pers_templatename  = $convconfig->{'pers_templatename'};
+$title_templatename = $convconfig->{'title_templatename'};
+$wiki_category      = $convconfig->{'wiki_category'};
+
+$gfdltext           = $convconfig->{'GFDL-Text'};
+$pdtext             = $convconfig->{'PD-Text'};
 
 open (TIT,     ">:utf8","unload.TIT");
 open (AUT,     ">:utf8","unload.PER");
@@ -138,6 +145,9 @@ sub parse_autset {
 
     $personendaten=~s/\n//sg;
 
+    # Referenzen entfernen
+    $personendaten=~s/<ref>.*?<\/ref>/$1/g;
+
     if ($autidn > 0){
         print AUT "0000:$autidn\n";
         print AUT "0001:$titel\n";
@@ -154,7 +164,8 @@ sub parse_autset {
             }
 
             my ($category,$content)=$item=~/^\s*(\w+)\s*=\s*(.*?)\s*$/;
-            
+
+            next if (!$content);
             next if ($content=~/^\s*off\s*$/i);
             
             $category=~s/^\s+//;
@@ -221,13 +232,34 @@ sub parse_titset {
     my $commons_baseurl = $convconfig->{commons_baseurl};
     
     print TIT "0000:$id\n";
+
+    # Zuerst zeilenweise bereinigen zum besseren Matchen und einfacherer Regexp
+    my @textdatenset = split ("\n",$textdaten);
+
+    foreach my $line (@textdatenset){
+        # Bei internen Links nur (Alternativ-)bezeichner uebriglassen, wenn die entsprechenden Kategorien vom Filtern ausgeschlossen sind
+        foreach my $category (keys %{$convconfig->{'no_wiki_filter'}}){
+            if ($line=~/$category\s*=/){
+                $line=~s/\[\[([^|\]]+?)\|(.+?)]]/$2/g;
+                $line=~s/\[\[([^|\]]+?)]]/$1/g;
+            }            
+        }
+    }
+
+    $textdaten = join("\n",@textdatenset);
     
     $textdaten=~s/\n//sg;
 
-    # Formatierungen entfernen der Form {{center|xxx}}
+    # Referenzen entfernen
+    $textdaten=~s/<ref>.*?<\/ref>/$1/g;
+
+    # GBS-Links einfuegen
+    $textdaten=~s/\{\{GBS\|([^|]+)\|US\|([^|]+)}}/<a href="http:\/\/books.google.com\/books?id=$1&pg=$2" class="ext" target="_blank">Google Books USA<\/a>/gi;
+    $textdaten=~s/\{\{GBS\|([^|]+)}}/<a href="http:\/\/books.google.com\/books?id=$1" class="ext" target="_blank">Google Books<\/a>/gi;
+    # Sonst Formatierungen entfernen der Form {{center|xxx}}
     $textdaten=~s/\{\{[^|}]+?\|(.+?)}}/$1/g;
-    $textdaten=~s/\{\{[^|}]+?}}//g;
-    # Bei internen Links nur Alternativbezeichner uebriglassen
+
+    # Bei internen Links den noch nicht bereinigten Rest absolut verlinken
     # zuerst Commons
     $textdaten=~s/\[\[:?commons:([^|\[\]]+?)\|(.+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$2<\/a>/gi;
     # dann den Rest
@@ -240,7 +272,8 @@ sub parse_titset {
 
         my ($category,$content)=$item=~/^\s*(\w+)\s*=\s*(.*?)\s*$/;
 
-        next if ($content=~/^off$/);
+        next if (!$content);
+        next if ($content=~/^\s*off\s*$/i);
         
         $category=~s/^\s+//;
         $category=~s/\s+$//;
@@ -301,7 +334,12 @@ sub parse_titset {
                     # Externe Links werden in den Text via HTML integriert
                     $part=~s/\[(http\S+)\s+(.*?)\]/<a href="$1" class="ext" target="_blank">$2<\/a>/g;
                 }
-                
+
+                # Wenn im Titel nichts vernuenftiges steht, dann nehmen den Titel des Artikels (wg. engl. Wikisource mit [[../]])                
+                if ($convconfig->{title}{$category} =~/^0331/ && $part !~ /\w+/){
+                    $part=$titel;
+                }
+
                 $part=konv($part);
 
                 print TIT $convconfig->{title}{$category}.$part."\n";
@@ -341,10 +379,10 @@ sub parse_titset {
 }
                                    
 sub get_autidn {
-    ($autans)=@_;
+    my ($autans)=@_;
     
-    $autdubidx=1;
-    $autdubidn=0;
+    my $autdubidx=1;
+    my $autdubidn=0;
                                    
     while ($autdubidx < $autdublastidx){
         if ($autans eq $autdubbuf[$autdubidx]){
@@ -365,10 +403,10 @@ sub get_autidn {
 }
                                    
 sub get_swtidn {
-    ($swtans)=@_;
+    my ($swtans)=@_;
     
-    $swtdubidx=1;
-    $swtdubidn=0;
+    my $swtdubidx=1;
+    my $swtdubidn=0;
     #  print "Swtans: $swtans\n";
     
     while ($swtdubidx < $swtdublastidx){
@@ -390,10 +428,10 @@ sub get_swtidn {
 }
                                    
 sub get_koridn {
-    ($korans)=@_;
+    my ($korans)=@_;
     
-    $kordubidx=1;
-    $kordubidn=0;
+    my $kordubidx=1;
+    my $kordubidn=0;
     #  print "Korans: $korans\n";
     
     while ($kordubidx < $kordublastidx){
@@ -436,6 +474,11 @@ sub konv {
     $content=~s/^\s+//;
     $content=~s/\s+$//;
 
+    # Text-Makros ersetzen
+    $content=~s/\{\{GFDL-Text}}/$gfdltext/g;
+    $content=~s/\{\{PD-Text}}/$pdtext/g;
+
+    $content=~s/\{\{[^|}]+?}}//g;
 
 #    $content=~s/\&/&amp;/g;
     

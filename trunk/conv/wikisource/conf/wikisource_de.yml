@@ -10,6 +10,9 @@ category_split_chars:
 
 pers_templatename: 'Personendaten'
 title_templatename: 'Textdaten'
+
+index_prefix: 'Index:'
+
 wiki_category: 'Kategorie'
 
 # Personen

@@ -50,7 +50,7 @@ use YAML::Syck;
 
 our (%autbuf,%korbuf,%swtbuf,%notbuf,%metsbuf,$nextautidn,$nextkoridn,$nextnotidn,$nextswtidn);
 our ($pers_templatename,$title_templatename,$index_prefix,$wiki_category,$gfdltext,$pdtext);
-our ($baseurl,$commons_baseurl,$metsfile);
+our ($baseurl,$commons_baseurl,$metsfile,$owner,$ownersiteurl,$ownerlogo);
 
 %autbuf = ();
 %korbuf = ();
@@ -95,6 +95,9 @@ $pers_templatename  = $convconfig->{'pers_templatename'};
 $title_templatename = $convconfig->{'title_templatename'};
 $index_prefix       = $convconfig->{'index_prefix'};
 $wiki_category      = $convconfig->{'wiki_category'};
+$owner              = $convconfig->{'owner'};
+$ownerlogo          = $convconfig->{'ownerLogo'};
+$ownersiteurl       = $convconfig->{'ownerSiteURL'};
 
 $gfdltext           = $convconfig->{'GFDL-Text'};
 $pdtext             = $convconfig->{'PD-Text'};
@@ -345,6 +348,10 @@ sub parse_titset {
 
     print TIT "0662:".$convconfig->{baseurl}."$titel\n";
 
+    if ($indexseite){
+        print TIT "4120:".$convconfig->{baseurl}.$convconfig->{index_prefix}.$indexseite."\n";
+    }
+    
     my %mets = (exists $metsbuf{$indexseite})?%{$metsbuf{$indexseite}}:
         (exists $metsbuf{$titel})?%{$metsbuf{$titel}}:();
 
@@ -359,6 +366,16 @@ sub parse_titset {
     }   
     if ($mets{location}){
         print TIT "6003:$mets{location}\n";
+    }   
+
+    if ($owner){
+        print TIT "6040:$owner\n";
+    }   
+    if ($ownerlogo){
+        print TIT "6041:$ownerlogo\n";
+    }   
+    if ($ownersiteurl){
+        print TIT "6042:$ownersiteurl\n";
     }   
 
     my $i = 1;
@@ -507,17 +524,15 @@ sub generate_mets {
         elsif ($l =~ /^\|ORT=(.*)/) {
             $location = $1;
         }
-        elsif ($l =~ /^\|SEITEN=/) {
+        elsif ($l =~ /^\|SEITEN=(.*?)$/) {
+            push @pagelines, $1;
             $pagemode = 1;
-        } else {
-            # print "$l\n";
         }
     }
     
     my @images = ();
 
     foreach my $l (@pagelines) {
-        # TODO: Struktur auslesen (Titel, Vorwort, Gliederung...)
         next unless ($l =~ /^\[\[Seite:([^|]+)\|(.*)\]\]/ );
         my ($page, $label) = ($1, $2);
         

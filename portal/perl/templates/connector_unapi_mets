@@ -1,0 +1,99 @@
+[%- normset = record.get_normdata -%]
+<?xml version="1.0"?>
+<mets:mets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/"
+    xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd">
+    <mets:dmdSec ID="md[% record.id %]">
+        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+            <mets:xmlData>
+                <mods xmlns="http://www.loc.gov/mods/v3" version="3.0"
+                    xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-0.xsd">
+                    <titleInfo>
+                        <title>[% IF normset.${"T6001"}.first.content %][% normset.${"T6001"}.first.content %][% ELSIF normset.${"T0331"}.first.content %][% normset.${"T0331"}.first.content %][% END %]</title>
+                    </titleInfo>
+                    <name>
+                        <displayForm>[% IF normset.${"T6000"}.first.content %][% normset.${"T6000"}.first.content %]][% ELSIF normset.${"T0100"}.first.content %][% normset.${"T0100"}.first.content %][% END %]</displayForm>
+                    </name>
+[% IF normset.${"T6002"}.first.content || normset.${"T6003"}.first.content %]
+                    <originInfo>
+[%   IF normset.${"T6003"}.first.content %]
+                        <place>
+                            <placeTerm type="text">[% normset.${"T6003"}.first.content %]</placeTerm>
+                        </place>
+[%   END %]
+[%   IF normset.${"T6002"}.first.content %]
+                        <dateIssued>[% normset.${"T6002"}.first.content %]</dateIssued>
+[%   END %]
+                    </originInfo>
+[% END %]
+                </mods>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:amdSec ID="amd[% record.id %]">
+        <mets:rightsMD ID="rights[% record.id %]">
+            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                <mets:xmlData>
+                    <dv:rights xmlns:dv="http://dfg-viewer.de/">
+                        <dv:owner>Wikisource</dv:owner>
+                        <dv:ownerLogo>http://upload.wikimedia.org/wikisource/de/b/bc/Wiki.png</dv:ownerLogo>
+                        <dv:ownerSiteURL>http://de.wikisource.org/</dv:ownerSiteURL>
+                    </dv:rights>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+        <mets:digiprovMD ID="digiprov[% record.id %]">
+            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                <mets:xmlData>
+                    <dv:links xmlns:dv="http://dfg-viewer.de/">
+                        <dv:reference>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</dv:reference>
+                        <dv:presentation>http://de.wikisource.org/wiki/Index:[% normset.${"T4120"}.first.content %]</dv:presentation>
+                    </dv:links>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:digiprovMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp USE="DEFAULT">
+[% FOREACH item IN normset.${"T6052"} ;
+     mimetype = "image/jpeg";
+     IF item.content.match('\.[pP][nN][gG]') ;
+       mimetype = "image/png";
+     ELSIF item.content.match('\.[tT][iI][fF]') ;
+       mimetype = "image/tiff";
+     END ;
+%]
+            <mets:file ID="img[% loop.count %]" MIMETYPE="[% mimetype %]">
+                <mets:FLocat LOCTYPE="URL"
+                    xlink:href="[% item.content %]"
+                />
+            </mets:file>
+[% END %]
+        </mets:fileGrp>
+        <mets:fileGrp USE="MAX">
+[% FOREACH item IN normset.${"T6051"} ;
+     mimetype = "image/jpeg";
+     IF item.content.match('\.[pP][nN][gG]') ;
+       mimetype = "image/png";
+     ELSIF item.content.match('\.[tT][iI][fF]') ;
+       mimetype = "image/tiff";
+     END ;
+%]
+            <mets:file ID="img[% loop.count %]" MIMETYPE="[% mimetype %]">
+                <mets:FLocat LOCTYPE="URL"
+                    xlink:href="[% item.content %]"
+                />
+            </mets:file>
+[% END %]
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap TYPE="PHYSICAL">
+        <mets:div ID="phys[% record.id %]" DMDID="md[% record.id %]" ADMID="amd[% record.id %]">
+[% FOREACH item IN normset.${"T6050"} %]
+            <mets:div ID="div[% loop.count %]" ORDER="[% loop.count %]" [% IF item.content %]ORDERLABEL="[% item.content %]"[% END %] >
+                <mets:fptr FILEID="img[% loop.count %]"/>
+            </mets:div>
+[% END %]
+        </mets:div>
+    </mets:structMap>
+</mets:mets>

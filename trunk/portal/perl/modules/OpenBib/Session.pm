@@ -1062,6 +1062,7 @@ sub log_event {
     # 540 => HBZ-Monofernleihe
     # 541 => HBZ-Dokumentenlieferung
     # 550 => WebOPAC
+    # 560 => DFG-Viewer
     #
     # 800 => Aufruf Literaturliste
     # 801 => Aufruf RSS-Feeds

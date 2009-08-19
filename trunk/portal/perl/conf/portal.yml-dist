@@ -320,6 +320,7 @@ tt_connector_similarsubjects_tname: connector_similarsubjects
 tt_connector_unapi_bibtex_tname: connector_unapi_bibtex
 tt_connector_unapi_formats_tname: connector_unapi_formats
 tt_connector_unapi_mods_tname: connector_unapi_mods
+tt_connector_unapi_mets_tname: connector_unapi_mets
 tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
 tt_databasechoice_tname: databasechoice
 tt_databaseprofile_tname: databaseprofile
@@ -545,6 +546,7 @@ unAPI_formats:
   bibtex: 1
   mods: 0
   oai_dc: 1
+  mets: 0
 
 # Katalogabhaengige Kategorie-Mappings
 categorymapping:

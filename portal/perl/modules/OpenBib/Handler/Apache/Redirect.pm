@@ -120,6 +120,7 @@ sub handler {
         540 => 1, # HBZ-Monofernleihe
         541 => 1, # HBZ-Dokumentenlieferung
         550 => 1, # WebOPAC
+        560 => 1, # DFG-Viewer
     };
 
     if (exists $valid_redirection_type_ref->{$type}){

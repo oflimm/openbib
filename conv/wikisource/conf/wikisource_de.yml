@@ -68,6 +68,7 @@ title:
   'KURZBESCHREIBUNG': '0750:'
   'SONSTIGES': '0501:'
   'BEARBEITUNGSSTAND': '0501:'
+  'INDEXSEITE': '4120:'
 
 
 # Exemplare
@@ -85,3 +86,7 @@ commons_baseurl: 'http://commons.wikimedia.org/wiki/'
 GFDL-Text: 'Dieser Text steht unter der <a href="http://de.wikipedia.org/wiki/GNU_Free_Documentation_License" class="ext" title="w:GNU Free Documentation License">GFDL</a>'
 
 PD-Text: 'Dieser Text ist <a href="http://de.wikipedia.org/wiki/gemeinfrei" class="extiw" title="w:gemeinfrei">gemeinfrei</a>'
+
+owner: 'Wikisource'
+ownerLogo: 'http://upload.wikimedia.org/wikisource/de/b/bc/Wiki.png'
+ownerSiteURL: 'http://de.wikisource.org/'

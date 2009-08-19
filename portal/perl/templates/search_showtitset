@@ -19,7 +19,7 @@
 
 [% PROCESS common/subtemplate name="mainnavigation" %]
 
-[% normset         = record.get_normdata %]
+[%- normset         = record.get_normdata -%]
 [% mexnormset      = record.get_mexdata %]
 [% cirset          = record.get_circdata %] 
 [% same_records    = record.get_same_records %]
@@ -40,6 +40,12 @@
 <div class="details"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="images"><!-- Begin Images -->
+[%%]
+[% IF normset.${"T6051"} %]
+<p>
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/560/http://dfg-viewer.de/demo/viewer/?set[mets]=http%3A%2F%2Fkug5.ub.uni-koeln.de%2Fportal%2Fconnector%2Funapi%3Fid%3D[% record.database %]%3A[% record.id %]%26format%3Dmets]" target="_blank"><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /></a>
+</p>
+[% END %]
 [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
 <p>
 <a href="[% config.get('redirect_loc') %]/[% sessionID %]/526/[% config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>

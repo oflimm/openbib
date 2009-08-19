@@ -11,7 +11,8 @@
 #
 #                      und
 #
-#                      2009      Jakob Voss <jakob.voss@gbv.de> (Ursprung: METS/MODS)
+#                      2009      Jakob Voss <jakob.voss@gbv.de>
+#                                (Ursprungscode der Verarbeitung von METS/MODS)
 #                      
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -49,7 +50,7 @@ use YAML::Syck;
 
 our (%autbuf,%korbuf,%swtbuf,%notbuf,%metsbuf,$nextautidn,$nextkoridn,$nextnotidn,$nextswtidn);
 our ($pers_templatename,$title_templatename,$index_prefix,$wiki_category,$gfdltext,$pdtext);
-our ($baseurl,$commons_baseurl);
+our ($baseurl,$commons_baseurl,$metsfile);
 
 %autbuf = ();
 %korbuf = ();
@@ -65,6 +66,7 @@ my ($inputfile,$configfile,$logfile);
 
 &GetOptions(
 	    "inputfile=s"          => \$inputfile,
+	    "metsfile=s"           => \$metsfile,
             "configfile=s"         => \$configfile,
             "logfile=s"            => \$logfile,
 	    );
@@ -80,6 +82,11 @@ exit;
 
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
+
+if ($metsfile){
+  my $mets=LoadFile($metsfile);
+  %metsbuf=%{$mets};
+}
 
 $baseurl            = $convconfig->{baseurl};
 $commons_baseurl    = $convconfig->{commons_baseurl};
@@ -148,6 +155,8 @@ close(NOTATION);
 close(SWT);
 close(MEX);
 
+DumpFile("wikisource-mets-de.yml",\%metsbuf) unless ($metsfile);
+
 sub parse_1stpass {
     my($t, $article)= @_;
 
@@ -161,7 +170,7 @@ sub parse_1stpass {
 
     my $textinhalt  = $text->text();
 
-    if ($index_prefix && $titel=~/^$index_prefix/){
+    if ($index_prefix && $titel=~/^$index_prefix/ && !$metsfile){
         generate_mets({ id => $id, titel => $titel, article => $textinhalt});
     }
     elsif ($pers_templatename){
@@ -224,6 +233,8 @@ sub parse_titset {
     # dann den Rest
     $textdaten=~s/\[\[([^|\]]+?)\|(.+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$2<\/a>/g;
 
+    my $indexseite = "";
+    
     foreach my $item (split("\\|",$textdaten)){
         if ($item !~/=/){
             next;
@@ -236,6 +247,10 @@ sub parse_titset {
         
         $category=~s/^\s+//;
         $category=~s/\s+$//;
+
+        if ($category eq "INDEXSEITE"){
+            $indexseite = $content;
+        }        
 
         # Autoren abarbeiten Anfang
         if (exists $convconfig->{perstit}{$category} && $content){
@@ -298,7 +313,7 @@ sub parse_titset {
                 if ($convconfig->{title}{$category} =~/^0331/ && $part !~ /\w+/){
                     $part=$titel;
                 }
-
+                
                 $part=konv($part);
 
                 print TIT $convconfig->{title}{$category}.$part."\n";
@@ -330,11 +345,32 @@ sub parse_titset {
 
     print TIT "0662:".$convconfig->{baseurl}."$titel\n";
 
-    if (exists $metsbuf{$titel}){
-        $logger->debug("METS-Daten: $metsbuf{$titel}");
-        print TIT "6000:$metsbuf{$titel}\n";
+    my %mets = (exists $metsbuf{$indexseite})?%{$metsbuf{$indexseite}}:
+        (exists $metsbuf{$titel})?%{$metsbuf{$titel}}:();
+
+    if ($mets{autor}){
+        print TIT "6000:$mets{author}\n";
     }
-    
+    if ($mets{titel}){
+        print TIT "6001:$mets{titel}\n";
+    }   
+    if ($mets{year}){
+        print TIT "6002:$mets{year}\n";
+    }   
+    if ($mets{location}){
+        print TIT "6003:$mets{location}\n";
+    }   
+
+    my $i = 1;
+
+    foreach my $item_ref (@{$mets{items}}){
+        printf TIT "6050.%03d:%s\n",$i,$item_ref->{label} if (exists $item_ref->{label});
+        printf TIT "6051.%03d:%s\n",$i,$item_ref->{url} if (exists $item_ref->{url});
+        printf TIT "6052.%03d:%s\n",$i,$item_ref->{thumburl} if (exists $item_ref->{thumburl});
+        printf TIT "6053.%03d:%s\n",$i,$item_ref->{page} if (exists $item_ref->{page});
+        $i++;
+    }   
+
     print TIT "9999:\n";
     
     # Release memory of processed tree
@@ -436,8 +472,6 @@ sub generate_mets {
     my $logger = get_logger();
     
     # Set defaults
-    my $id         = exists $arg_ref->{id}
-        ? $arg_ref->{id}             : undef;
     my $titel      = exists $arg_ref->{titel}
         ? $arg_ref->{titel}          : undef;
     my $textinhalt = exists $arg_ref->{article}
@@ -479,20 +513,14 @@ sub generate_mets {
             # print "$l\n";
         }
     }
-        
-    my $dmdsecid = "md123";
-    my $logmapid = "log123";
-    my $amdsecid = "amd123";
-    my $physid   = "phys-123";
-    my $rightsid = "rights123";
-
+    
     my @images = ();
 
     foreach my $l (@pagelines) {
-    # TODO: Struktur auslesen (Titel, Vorwort, Gliederung...)
+        # TODO: Struktur auslesen (Titel, Vorwort, Gliederung...)
         next unless ($l =~ /^\[\[Seite:([^|]+)\|(.*)\]\]/ );
         my ($page, $label) = ($1, $2);
-
+        
         if ($page=~/djvu/i){
             $logger->debug("Ignoring DJVU-File");
             return;
@@ -508,7 +536,7 @@ sub generate_mets {
     }
 
     my $iiurlwidth = 1000;
-
+    
     my @titles = ();
     for (my $id=0; $id<@images; $id++) {
         my $title = "Image:" . $images[$id]->{page};
@@ -516,27 +544,27 @@ sub generate_mets {
             $logger->debug("Ignoring DJVU-File");
             return;
         }
-
+        
         push @titles, $title;
     }
-
+    
     return unless (@titles);
-        
+    
     my $apibaseurl = 'http://de.wikisource.org/w/api.php?format=json&action=query&prop=imageinfo&iiprop=url&iiurlwidth=' . $iiurlwidth
         . '&titles=';
-
+    
     my %imgurls = ();
     my %mapping = ();
-
+    
     my $imagecounter = 0;
     # get around Wikipedia API restrictions
     while (@titles){
         my @parts = splice(@titles,0,50);
         my $url = $apibaseurl.join('|',@parts);
         $logger->debug("Getting JSON from $url");
-
+        
         my $json = get($url);
-
+        
         return unless ($json);
         
         $logger->debug("JSON: $json");
@@ -551,7 +579,8 @@ sub generate_mets {
         foreach my $p (values %pages) {
             next unless (exists $p->{imageinfo}); # djvu-Files haben keine imageinfo
             my %imageinfo = %{ shift @{ $p->{imageinfo} } };
-            $imgurls{ $p->{title} } =  $imageinfo{thumburl};
+            $imgurls{ $p->{title} }{thumburl} =  $imageinfo{thumburl};
+            $imgurls{ $p->{title} }{url}      =  $imageinfo{url};
             $imagecounter++;
         }
         
@@ -561,6 +590,7 @@ sub generate_mets {
         sleep 1;
     }
 
+    # Anreicherung mit den gefundenen Bild-URLs
     for(my $id=0; $id<@images; $id++) {
         my %img = %{ $images[$id] };
             
@@ -573,114 +603,31 @@ sub generate_mets {
             $title = "Bild:" . $img{page};
         }
             
-        $logger->debug("Missing Title: $title") unless defined $imgurls{$title};
-        $images[$id]->{url} = $imgurls{$title};
+        $images[$id]->{thumburl} = $imgurls{$title}{thumburl};
+        $images[$id]->{url}      = $imgurls{$title}{url};
+
+        $logger->debug("Missing Title: $title") unless defined $imgurls{$title}{thumburl};
+
     }
 
     if (!$imagecounter){
         $logger->error("Keine Bilder vorhanden");
         return;
     }       
-        
-    my $mets = << "XMLDATA";
-<mets:mets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd">
-    <mets:dmdSec ID="$dmdsecid">
-        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
-            <mets:xmlData>
-                <mods xmlns="http://www.loc.gov/mods/v3" version="3.0" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-0.xsd">
-                    <titleInfo>
-                        <title>$title</title>
-                    </titleInfo>
-                    <name>
-                        <displayForm>$author</displayForm>
-                    </name>
-                    <originInfo>
-                        <place>
-                            <placeTerm type="text">$location</placeTerm>
-                        </place>
-                        <dateIssued>$year</dateIssued>
-                    </originInfo>
-                </mods>
-            </mets:xmlData>
-        </mets:mdWrap>
-    </mets:dmdSec>
-    <mets:amdSec ID="$amdsecid">
-        <mets:rightsMD ID="$rightsid">
-            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
-                <mets:xmlData>
-                    <dv:rights xmlns:dv="http://dfg-viewer.de/">
-                        <dv:owner>Wikisource</dv:owner>
-                        <dv:ownerLogo>http://upload.wikimedia.org/wikisource/de/b/bc/Wiki.png</dv:ownerLogo>
-                        <dv:ownerSiteURL>http://de.wikisource.org/</dv:ownerSiteURL>
-                    </dv:rights>
-                </mets:xmlData>
-            </mets:mdWrap>
-        </mets:rightsMD>
-        <!-- mets:digiprovMD ID="digiprov94775">
-            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
-                <mets:xmlData>
-                    <dv:links xmlns:dv="http://dfg-viewer.de/">
-                        <dv:reference>http://gso.gbv.de/DB=1.28/CMD?ACT=SRCHA&amp;IKT=8002&amp;TRM=1:078985D</dv:reference>
-                        <dv:presentation>http://digitale.bibliothek.uni-halle.de/vda/1:078985D</dv:presentation>
-                    </dv:links>
-                </mets:xmlData>
-            </mets:mdWrap>
-        </mets:digiprovMD -->
-    </mets:amdSec>
-XMLDATA
-        
-    $mets.="<mets:fileSec><mets:fileGrp USE='DEFAULT'>\n";
-        
-    for(my $id=0; $id<@images; $id++) {
-        my %img = %{ $images[$id] };
-            
-        my $imgurl = $img{url};
-        next unless ($imgurl);
 
-        my $filetype = "image/jpeg";
+    my $thisitem_ref = {
+        author   => $author,
+        title    => $title,
+        year     => $year,
+        location => $location,
+        items    => \@images,
+    };
 
-        if ($imgurl =~/\.je?pg$/i){
-            $filetype = "image/jpeg";
-        }
-        elsif ($imgurl =~/\.png$/i){
-            $filetype = "image/png";
-        }
-        elsif ($imgurl =~/\.tiff?$/i){
-            $filetype = "image/tiff";
-        }
-        
-        $mets.= "  <mets:file ID=\"img$id\" MIMETYPE=\"$filetype\">\n"; # TODO: mime-type
-        $mets.= "   <mets:FLocat LOCTYPE=\"URL\" xlink:href=\"$imgurl\"/>\n";
-        $mets.= "  </mets:file>\n";
-    }
+    $logger->debug(Dump($thisitem_ref));
+    
+    $metsbuf{$ursprungstitel} = $thisitem_ref;
 
-    $mets.= "</mets:fileGrp></mets:fileSec>\n";
-
-
-#    $mets.= "<mets:structMap TYPE='LOGICAL'>\n";
-#    $mets.= "<mets:div ID='$logmapid' DMDID='$dmdsecid' ADMID='$amdsecid'>\n";
-#    $mets.= "<mets:div ID='log0' ORDER='2' TYPE='section' LABEL='Inhalt'/>\n";
-#    $mets.= "</mets:div></mets:structMap>\n";
-
-    $mets.= "<mets:structMap TYPE='PHYSICAL'>\n";
-    $mets.= " <mets:div ID='$physid' DMDID='$dmdsecid' ADMID='$amdsecid'>\n";
-    for (my $id=0; $id<@images; $id++) {
-        $mets.= " <mets:div ID=\"phys$id\" ORDER=\"$id\" >\n"
-          . "  <mets:fptr FILEID=\"img$id\" /></mets:div>\n";
-    }
-    $mets.= "  </mets:div>\n";
-    $mets.= " </mets:structMap>\n";
-
-    $mets.= " <mets:structLink>\n";
-    $mets.= "  <mets:smLink xlink:from='$logmapid' xlink:to='$physid'/>\n";
-    $mets.= " </mets:structLink>\n";
-    $mets.= "</mets:mets>\n";
-
-    $logger->debug("METS: $mets");
-
-    $mets=~s/\n//sg;
-        
-    $metsbuf{$ursprungstitel}=$mets;
+    return;
 }
 
 sub get_id {

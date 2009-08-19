@@ -310,15 +310,10 @@ sub print_to_handler {
         $self->sort({order=>$sortorder,type=>$sorttype});
         
         # Navigationselemente erzeugen
-        my %args=$r->args;
-
-        $logger->debug("Argument-List: ".\%args);
-        
-        delete $args{offset};
-        delete $args{hitrange};
         my @args=();
-        while (my ($key,$value)=each %args) {
-            push @args,"$key=$value" if (defined $key && defined $value);
+        foreach my $param ($query->param()) {
+            $logger->debug("Adding Param $param with value ".$query->param($param));
+            push @args, $param."=".$query->param($param) if ($param ne "offset" && $param ne "hitrange");
         }
         
         my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);

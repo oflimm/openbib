@@ -35,9 +35,9 @@
             <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
                 <mets:xmlData>
                     <dv:rights xmlns:dv="http://dfg-viewer.de/">
-                        <dv:owner>Wikisource</dv:owner>
-                        <dv:ownerLogo>http://upload.wikimedia.org/wikisource/de/b/bc/Wiki.png</dv:ownerLogo>
-                        <dv:ownerSiteURL>http://de.wikisource.org/</dv:ownerSiteURL>
+                        <dv:owner>[% normset.${"T6040"}.first.content %]</dv:owner>
+                        <dv:ownerLogo>[% normset.${"T6041"}.first.content %]</dv:ownerLogo>
+                        <dv:ownerSiteURL>[% normset.${"T6042"}.first.content %]</dv:ownerSiteURL>
                     </dv:rights>
                 </mets:xmlData>
             </mets:mdWrap>
@@ -47,7 +47,7 @@
                 <mets:xmlData>
                     <dv:links xmlns:dv="http://dfg-viewer.de/">
                         <dv:reference>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</dv:reference>
-                        <dv:presentation>http://de.wikisource.org/wiki/Index:[% normset.${"T4120"}.first.content %]</dv:presentation>
+                        <dv:presentation>[% normset.${"T4120"}.first.content %]</dv:presentation>
                     </dv:links>
                 </mets:xmlData>
             </mets:mdWrap>

@@ -43,7 +43,7 @@
 [%%]
 [% IF normset.${"T6051"} %]
 <p>
-<a href="[% config.get('redirect_loc') %]/[% sessionID %]/560/http://dfg-viewer.de/demo/viewer/?set[mets]=http%3A%2F%2Fkug5.ub.uni-koeln.de%2Fportal%2Fconnector%2Funapi%3Fid%3D[% record.database %]%3A[% record.id %]%26format%3Dmets" target="_blank"><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /></a>
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/560/http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fkug5.ub.uni-koeln.de%2Fportal%2Fconnector%2Funapi%3Fid%3D[% record.database %]%3A[% record.id %]%26format%3Dmets" target="_blank"><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /></a>
 </p>
 [% END %]
 [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]

@@ -11,7 +11,7 @@
 #
 #                      und
 #
-#                      2009      Jakob Voss <jakob.voss@gbv.de>
+#                      2008      Jakob Voss <jakob.voss@gbv.de>
 #                                (Ursprungscode der Verarbeitung von METS/MODS)
 #                      
 #  Dieses Programm ist freie Software. Sie koennen es unter
@@ -174,7 +174,7 @@ sub parse_1stpass {
     my $textinhalt  = $text->text();
 
     if ($index_prefix && $titel=~/^$index_prefix/ && !$metsfile){
-        generate_mets({ id => $id, titel => $titel, article => $textinhalt});
+        generate_mets({ titel => $titel, article => $textinhalt});
     }
     elsif ($pers_templatename){
         generate_aut({ id => $id, titel => $titel, article => $textinhalt});
@@ -251,7 +251,7 @@ sub parse_titset {
         $category=~s/^\s+//;
         $category=~s/\s+$//;
 
-        if ($category eq "INDEXSEITE"){
+        if ($category=~/INDEXSEITE/){
             $indexseite = $content;
         }        
 
@@ -496,58 +496,35 @@ sub generate_mets {
 
     my ($ursprungstitel) = $titel =~ /^$index_prefix(.+)$/;
 
-    my ($author, $title, $location, $year);
+    $logger->debug("Bearbeite Index-Seite zu: $ursprungstitel");
 
-    my $pagemode = 0;
-    my @pagelines = ();
+    my ($author)     = $textinhalt =~/^\|AUTOR=(.*?)$/ms;
+    my ($title)      = $textinhalt =~/^\|TITEL=(.*?)$/ms;
+    my ($year)       = $textinhalt =~/^\|JAHR=(.*?)$/ms;
+    my ($location)   = $textinhalt =~/^\|LOCATION=(.*?)$/ms;
 
-    foreach my $l (split("\n",$textinhalt)) {
-        $l =~ s/^\s*//;
-        last if $l =~ /^\}\}/;
-        
-        $pagemode = 0 if ($l =~ /^\|[A-Z]/);
-        
-        if ($pagemode) {
-            push @pagelines, $l;
-        }
-        elsif ($l =~ /^\|AUTOR=(.*)/) {
-            $author = $1;
-            $author =~ s/['[\]]//g;
-        }
-        elsif ($l =~ /^\|TITEL=(.*)/) {
-            $title = $1;
-            $title =~ s/['[\]]//g;
-        }
-        elsif ($l =~ /^\|JAHR=(.*)/) {
-            $year = $1;
-        }
-        elsif ($l =~ /^\|ORT=(.*)/) {
-            $location = $1;
-        }
-        elsif ($l =~ /^\|SEITEN=(.*?)$/) {
-            push @pagelines, $1;
-            $pagemode = 1;
-        }
-    }
+    $logger->debug("A:$author;T:$title;Y:$year;L:$location");
     
+    my @pageinfos  = $textinhalt =~/\[\[Seite:([^|]+?\|.*?)]]/sg;
+
+    $logger->debug("Textinhalt: ".$textinhalt);
+    $logger->debug("Pageinfos: ".join(";",@pageinfos));
+
     my @images = ();
 
-    foreach my $l (@pagelines) {
-        next unless ($l =~ /^\[\[Seite:([^|]+)\|(.*)\]\]/ );
-        my ($page, $label) = ($1, $2);
-        
+    foreach my $pageinfo (@pageinfos){
+        my ($page,$label) = $pageinfo =~/^(.+?)\|(.*?)$/;
+
         if ($page=~/djvu/i){
             $logger->debug("Ignoring DJVU-File");
             return;
         }
-        
-        $label =~ s/<\/?[^>]+>//g; # HTML-tags entfernen
-        # $page =~ s/ /_/g;
 
         push @images, {
             label => $label,
-            page => $page
+            page  => $page
         };
+
     }
 
     my $iiurlwidth = 1000;
@@ -555,10 +532,6 @@ sub generate_mets {
     my @titles = ();
     for (my $id=0; $id<@images; $id++) {
         my $title = "Image:" . $images[$id]->{page};
-        if ($title=~/djvu/i){
-            $logger->debug("Ignoring DJVU-File");
-            return;
-        }
         
         push @titles, $title;
     }
@@ -631,10 +604,10 @@ sub generate_mets {
     }       
 
     my $thisitem_ref = {
-        author   => $author,
-        title    => $title,
-        year     => $year,
-        location => $location,
+        author   => konv_index($author),
+        title    => konv_index($title),
+        year     => konv_index($year),
+        location => konv_index($location),
         items    => \@images,
     };
 
@@ -697,6 +670,31 @@ sub konv {
 #    $content=~s/\[\[//g;
 #    $content=~s/]]//g;
 
+
+    return $content;
+}
+
+sub konv_index {
+    my ($content)=@_;
+
+    # Referenzen entfernen
+    $content=~s/<ref>.*?<\/ref>/$1/g;
+
+    # GBS-Links einfuegen
+    $content=~s/\{\{GBS\|([^|]+)\|US\|([^|]+)}}/<a href="http:\/\/books.google.com\/books?id=$1&pg=$2" class="ext" target="_blank">Google Books USA<\/a>/gi;
+    $content=~s/\{\{GBS\|([^|]+)}}/<a href="http:\/\/books.google.com\/books?id=$1" class="ext" target="_blank">Google Books<\/a>/gi;
+    # Sonst Formatierungen entfernen der Form {{center|xxx}}
+    $content=~s/\{\{[^|}]+?\|(.+?)}}/$1/g;
+
+    # Bei internen Links den noch nicht bereinigten Rest absolut verlinken
+    # zuerst Commons
+    $content=~s/\[\[:?commons:([^|\[\]]+?)\|(.+?)]]/<a href="$commons_baseurl$1" class="ext" target="_blank">$2<\/a>/gi;
+    # dann den Rest
+    $content=~s/\[\[([^|\]]+?)\|(.+?)]]/<a href="$baseurl$1" class="ext" target="_blank">$2<\/a>/g;
+
+    # Externe Links werden in den Text via HTML integriert
+    $content=~s/\[(http\S+)\s+(.*?)\]/<a href="$1" class="ext" target="_blank">$2<\/a>/g;
+    $content=~s/\[\[(.+?)]]/$1/g;
 
     return $content;
 }

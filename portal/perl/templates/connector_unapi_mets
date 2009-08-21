@@ -86,6 +86,22 @@
             </mets:file>
 [% END %]
         </mets:fileGrp>
+        <mets:fileGrp USE="MIN">
+[% FOREACH item IN normset.${"T6052"} ;
+     mimetype = "image/jpeg";
+     IF item.content.match('\.[pP][nN][gG]') ;
+       mimetype = "image/png";
+     ELSIF item.content.match('\.[tT][iI][fF]') ;
+       mimetype = "image/tiff";
+     END ;
+%]
+            <mets:file ID="img[% loop.count %]" MIMETYPE="[% mimetype %]">
+                <mets:FLocat LOCTYPE="URL"
+                    xlink:href="[% item.content.replace('1000px-','400px-') %]"
+                />
+            </mets:file>
+[% END %]
+        </mets:fileGrp>
     </mets:fileSec>
     <mets:structMap TYPE="PHYSICAL">
         <mets:div ID="phys[% record.id %]" DMDID="md[% record.id %]" ADMID="amd[% record.id %]">

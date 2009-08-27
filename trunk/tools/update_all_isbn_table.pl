@@ -98,7 +98,7 @@ my $enrichdbh         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{
 my $enrichrequest     = $enrichdbh->prepare("insert into all_isbn values (?,?,?,?)");
 my $delrequest        = $enrichdbh->prepare("delete from all_isbn where dbname=?");
 
-my $insertion_date_available = 0;
+my $insertion_date_available = 0; # wird fuer inkrementelles Update benoetigt
 
 foreach my $database (@databases){
     $logger->info("Getting ISBNs from database $database and adding to enrichmntdb");
@@ -107,7 +107,7 @@ foreach my $database (@databases){
 
     my $enriched_id_ref = {};
 
-    {
+    if ($incr){
         my $insertdaterequest = $dbh->prepare("select count(*) as insertdatecount from tit where category=2");
         $insertdaterequest->execute();
         
@@ -144,6 +144,8 @@ foreach my $database (@databases){
     else {
         $delrequest->execute($database);
     }
+
+    $logger->debug("SQL-Request: $sqlrequest");
     
     my $request=$dbh->prepare($sqlrequest);
     $request->execute(@sqlargs);
@@ -156,11 +158,12 @@ foreach my $database (@databases){
 
         # Normierung auf ISBN13
         my $isbn13 = Business::ISBN->new($thisisbn);
-        
+
         if (defined $isbn13 && $isbn13->is_valid){
             $thisisbn = $isbn13->as_isbn13->as_string;
         }
         else {
+            $logger->error("ISBN $thisisbn nicht gueltig!");
             next;
         }
 

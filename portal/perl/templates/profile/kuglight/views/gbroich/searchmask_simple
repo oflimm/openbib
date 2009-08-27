@@ -121,7 +121,7 @@
 
 <center>
 <p />
-<b>Insgesamt sind in diesem Katalog derzeit 291 Titel nachgewiesen.</b>
+<b>Insgesamt sind in diesem Katalog derzeit [% config.get_number_of_titles({ database => 'gbroich' }).all %] Titel nachgewiesen.</b>
 <p />
 [% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
 <p />

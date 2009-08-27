@@ -13,7 +13,7 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 [% PROCESS common/subtemplate name="visible_categories_titset" %]
-[%- recordlist.load_full_records -%]
+[%- ret = recordlist.load_full_records -%]
 
   <body>
 

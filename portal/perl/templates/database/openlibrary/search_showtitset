@@ -29,6 +29,10 @@
 [% similar_records = record.get_similar_records %]
 [%- bibkey = record.to_bibkey -%]
 [%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
+[%- IF NOT isbn ;
+       isbn   = normset.${"T0553"}.first.content.replace('-','') ;
+    END ;
+-%]
 
 <div id="maincontent">
 

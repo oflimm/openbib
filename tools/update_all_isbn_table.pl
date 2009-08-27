@@ -187,11 +187,13 @@ foreach my $database (@databases){
     $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category = 2 and t1.category=5050";
 
     if (!$insertion_date_available){
-        $sqlrequest = "select id, content as isbn from tit where category=5050";
+        $sqlrequest = "select id, content as bibkey from tit where category=5050";
     }
 
+    $logger->debug("SQL-Request: $sqlrequest");
+    
     $request=$dbh->prepare($sqlrequest);
-    $request->execute(@sqlargs);
+    $request->execute();
     
     my $bibkey_insertcount = 0;
     while (my $result=$request->fetchrow_hashref()){

@@ -190,10 +190,15 @@ dbis_colors: 45
 dbis_ocolors: 32
 
 # Externer Link zur Cover-Scan Anreicherung (ISBNINHERE wird durch ISBN ersetzt)
-coverscans_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=55
-coverscans_full_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=120
-coverscans_credits_exturl: http://www.lob.de/isbn/ISBNINHERE@kug
-coverscans_creditstext_exturl: 'Zum Kauf weiter zu Lehmanns Fachbuchhandlung GmbH'
+#coverscans_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=55
+#coverscans_full_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=120
+#coverscans_credits_exturl: http://www.lob.de/isbn/ISBNINHERE@kug
+#coverscans_creditstext_exturl: 'Zum Kauf weiter zu Lehmanns Fachbuchhandlung GmbH'
+
+coverscans_exturl: http://covers.openlibrary.org/b/isbn/ISBNINHERE-S.jpg
+coverscans_full_exturl: http://covers.openlibrary.org/b/isbn/ISBNINHERE-M.jpg
+coverscans_credits_exturl: http://www.openlibrary.org/
+coverscans_creditstext_exturl: 'Cover aus der OpenLibrary'
 
 # Pfad zur Konfigurationsdatei von Log4Perl
 log4perl_path: /opt/openbib/conf/portal.log4perl

@@ -44,19 +44,20 @@
 <div class="details"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="images"><!-- Begin Images -->
-[%%]
+
 [% IF normset.${"T6051"} %]
 <p>
 <a href="[% config.get('redirect_loc') %]/[% sessionID %]/560/http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F[% config.get('servername') %]%2Fportal%2Fconnector%2Funapi%3Fid%3D[% record.database %]%3A[% record.id %]%26format%3Dmets" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[Online lesen im DFG-Viewer]</center></a>
 </p>
 [% END %]
+
 [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
 <p>
-<a href="[% config.get('redirect_loc') %]/[% sessionID %]/526/[% config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>
+<a id="cover_full_url" href="[% config.get('redirect_loc') %]/[% sessionID %]/526/[% config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn) %]" target="_blank"><img id="cover_full" src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>
 </p>
 [% END %]
 <p>
-<a href="[% config.get('redirect_loc') %]/[% sessionID %]/525/http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/525/http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% isbn %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 <p>
 [%- IF bibkey -%]
@@ -419,7 +420,7 @@ END;
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
-<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+<input type="hidden" name="titisbn"    value="[% isbn %]" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neue Bewertung/Rezension") %]<span id="newreview_toggle"></span></th></tr>
@@ -659,7 +660,7 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
-<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+<input type="hidden" name="titisbn"    value="[% isbn %]" />
 
 <table>
 <tr><td colspan="2"><input type="text"   name="tags"       value="" size="40" maxlength="200" id="inputfield"/></td></tr>
@@ -734,7 +735,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
-<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+<input type="hidden" name="titisbn"    value="[% isbn %]" />
 <input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
 
 <table>
@@ -932,6 +933,22 @@ $(document).ready(function(){
 <!--</div>--><!-- End record -->
 
 <!-- Title ends here -->
+
+<script>
+   function addFullCover(resultbooks) {
+     for (i in resultbooks) {
+       var thisbook = resultbooks[i];
+       if (thisbook.thumbnail_url != undefined){         
+          document.getElementById('cover_full').src      = thisbook.thumbnail_url.replace("zoom=5","zoom=1");
+          document.getElementById('cover_full').title    = "Cover von Google Books";
+          document.getElementById('cover_full_url').href = thisbook.preview_url;
+       }
+     }
+   }
+</script>
+
+<script src="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN:[% isbn %]&callback=addFullCover"></script>
+
 </div><!-- End: Content -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

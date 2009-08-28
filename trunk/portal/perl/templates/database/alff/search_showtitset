@@ -916,6 +916,7 @@ $(document).ready(function(){
 <!--</div>--><!-- End record -->
 
 <!-- Title ends here -->
+
 </div><!-- End: Content -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

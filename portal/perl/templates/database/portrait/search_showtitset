@@ -415,7 +415,7 @@ END;
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
-<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+<input type="hidden" name="titisbn"    value="[% isbn %]" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neue Bewertung/Rezension") %]<span id="newreview_toggle"></span></th></tr>
@@ -654,7 +654,7 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
-<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+<input type="hidden" name="titisbn"    value="[% isbn %]" />
 
 <table>
 <tr><td colspan="2"><input type="text"   name="tags"       value="" size="40" maxlength="200" id="inputfield"/></td></tr>
@@ -729,7 +729,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
-<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+<input type="hidden" name="titisbn"    value="[% isbn %]" />
 <input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
 
 <table>
@@ -927,6 +927,7 @@ $(document).ready(function(){
 <!--</div>--><!-- End record -->
 
 <!-- Title ends here -->
+
 </div><!-- End: Content -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

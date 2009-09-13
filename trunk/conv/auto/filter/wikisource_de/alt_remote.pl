@@ -55,4 +55,4 @@ my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm *");
 system("$wgetexe -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; bzcat $dboptions_ref->{filename} > pool.dat ; $wikisource2metaexe --inputfile=pool.dat --configfile=$configfile ; gzip unload.*");
+system("cd $pooldir/$pool; bzcat $dboptions_ref->{filename} > pool.dat ; $wikisource2metaexe --inputfile=pool.dat --configfile=$configfile ; gzip unload.* ; rm pool.dat");

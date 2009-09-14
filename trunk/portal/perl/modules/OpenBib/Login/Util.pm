@@ -54,35 +54,42 @@ sub authenticate_olws_user {
     my $logger = get_logger();
 
     $logger->debug("Entered authenticate_olws_user circcheckurl: $circcheckurl circdb: $circdb");
-    
-    my $soap = SOAP::Lite
-        -> uri("urn:/Authentication")
-            -> proxy($circcheckurl);
-
-    my $result = $soap->authenticate_user(
-        SOAP::Data->name(parameter  =>\SOAP::Data->value(
-            SOAP::Data->name(username => $username)->type('string'),
-            SOAP::Data->name(password => $pin)->type('string'),
-            SOAP::Data->name(database => $circdb)->type('string')))
-      );
-    
-    $logger->debug("Result: ".YAML::Dump($result->result));
 
     my %userinfo=();
 
-    unless ($result->fault) {
-        if (defined $result->result) {
-            %userinfo = %{$result->result};
-            $userinfo{'erfolgreich'}="1";
+    eval {
+        my $soap = SOAP::Lite
+            -> uri("urn:/Authentication")
+                -> proxy($circcheckurl);
+        
+        my $result = $soap->authenticate_user(
+            SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                SOAP::Data->name(username => $username)->type('string'),
+                SOAP::Data->name(password => $pin)->type('string'),
+                SOAP::Data->name(database => $circdb)->type('string')))
+          );
+        
+        $logger->debug("Result: ".YAML::Dump($result->result));
+        
+        unless ($result->fault) {
+            if (defined $result->result) {
+                %userinfo = %{$result->result};
+                $userinfo{'erfolgreich'}="1";
+            }
+            else {
+                $userinfo{'erfolgreich'}="0";
+            }
         }
         else {
-            $userinfo{'erfolgreich'}="0";
+            $logger->error("SOAP Authentication Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
         }
+        
+    };
+    
+    if ($@){
+        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
-    else {
-        $logger->error("SOAP Authentication Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-    }
-
+    
     $logger->debug("Userinfo: ".YAML::Dump(\%userinfo));
     return \%userinfo;
 }

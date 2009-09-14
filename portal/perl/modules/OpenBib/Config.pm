@@ -1257,6 +1257,7 @@ sub get_infomatrix_of_active_databases {
         my $pool       = decode_utf8($result->{'dbname'});
         my $url        = decode_utf8($result->{'url'});
         my $sigel      = decode_utf8($result->{'sigel'});
+        my $use_libinfo= decode_utf8($result->{'use_libinfo'});
 	
         my $rcolumn;
         
@@ -1273,6 +1274,7 @@ sub get_infomatrix_of_active_databases {
                     systemtype => '',
                     sigel      => '',
                     url        => '',
+                    use_libinfo=> '',
                 };
                 $count++;
             }
@@ -1296,6 +1298,7 @@ sub get_infomatrix_of_active_databases {
             systemtype => $systemtype,
             sigel      => $sigel,
             url        => $url,
+            use_libinfo=> $use_libinfo,
             checked    => $checked,
         };
         
@@ -1315,6 +1318,7 @@ sub get_infomatrix_of_active_databases {
             systemtype => '',
             sigel      => '',
             url        => '',
+            use_libinfo=> '',
         };
         $count++;
     }
@@ -1356,6 +1360,7 @@ sub get_infomatrix_of_all_databases {
         my $pool       = decode_utf8($result->{'dbname'});
         my $url        = decode_utf8($result->{'url'});
         my $sigel      = decode_utf8($result->{'sigel'});
+        my $use_libinfo= decode_utf8($result->{'use_libinfo'});
 	
         my $rcolumn;
         
@@ -1372,6 +1377,7 @@ sub get_infomatrix_of_all_databases {
                     systemtype => '',
                     sigel      => '',
                     url        => '',
+                    use_libinfo=> '',
                 };
                 $count++;
             }
@@ -1395,6 +1401,7 @@ sub get_infomatrix_of_all_databases {
             systemtype => $systemtype,
             sigel      => $sigel,
             url        => $url,
+            use_libinfo=> $use_libinfo,
             checked    => $checked,
         };
         
@@ -1413,6 +1420,7 @@ sub get_infomatrix_of_all_databases {
             name       => '',
             systemtype => '',
             sigel      => '',
+            use_libinfo=> '',
             url        => '',
         };
         $count++;

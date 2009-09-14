@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
+use Apache2::Const -compile => qw(:common REDIRECT);
 use Apache2::Reload;
 use Apache2::Request ();
 use Apache2::SubRequest (); # internal_redirect
@@ -289,7 +289,12 @@ sub handler {
             $redirecturl="http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};do_loginfailed=1;code=$loginfailed";
         }
 
-        $r->internal_redirect($redirecturl);
+        $logger->debug("Redirecting to $redirecturl");
+
+        $r->content_type('text/html');
+        $r->headers_out->add("Location" => $redirecturl);
+
+        return Apache2::Const::REDIRECT;
     }
     elsif ($do_loginfailed) {
         if    ($code eq "1") {

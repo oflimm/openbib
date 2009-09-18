@@ -1,0 +1,79 @@
+[%#-
+#######################################################################
+#
+# Templatename: circset
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Ausleih/Explar-Informationen (via OLWS)
+#
+#######################################################################
+-%]
+[%
+ Aquisition = 0;
+
+ FOREACH mex IN circset ;
+    IF mex.AquisitionStatuscode >= 1 ;
+       Aquisition = 1;
+    END ;
+ END ;
+
+%]
+<p />
+
+[% IF Aquisition == 0 %]
+<table width="100%">
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
+[% FOREACH mex IN circset %]
+<tr align="center"><td>
+[%-   IF dbinfo.get('use_libinfo').${record.database} %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">
+[%-   ELSE -%]
+<a href="[% mex.Bibinfourl %]" target="_blank">
+[%-   END -%]
+<strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
+<td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
+<td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
+<td class="circurl">
+[%
+     IF mex.Ausleihurl %]
+   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.get('redirect_loc') %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+[%   ELSE %]
+[%      IF mex.Statuscode != 0 %]
+     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;(ausgeliehen bis [% mex.Rueckgabe %])
+[%      ELSE %]
+Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
+[%      END %]
+[%   END %]
+</td></tr>
+[% END %]
+</table>
+[% ELSIF Aquisition == 1 %]
+<table width="100%">
+<tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
+<tr><td class="boxedclear">
+<table width="100%">
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td></tr>
+[% FOREACH mex IN circset %]
+<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>
+[%   IF mex.AquisitionStatuscode <= 2 %]
+[% msg.maketext("bestellt beim Lieferanten") %]
+[%   ELSIF mex.AquisitionStatuscode <= 4 %]
+[% msg.maketext("im Gesch&auml;ftsgang") %]
+[%   ELSIF mex.AquisitionStatuscode == 5 %]
+[% msg.maketext("beim Lieferanten storniert") %]
+[%   ELSIF mex.AquisitionStatuscode <= 8 %]
+[% msg.maketext("beim Lieferanten reklamiert") %]
+[%   ELSIF mex.AquisitionStatuscode == 9 %]
+[% msg.maketext("ausgeschieden") %]
+[%   END %]
+</td></tr>
+[% END %]
+</table>
+
+</td></tr>
+</table>
+
+[% END %]

@@ -1,21 +1,16 @@
 [% IF circset.size <= 0 %]
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Inventarnummer") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Bestand") %]</td></tr>
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestand") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
 <tr align="center"><td><strong>
 [%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
-[%-   thisdbname = mex.${"X4000"}.content.dbname -%]
-[%-   IF dbinfo.get('use_libinfo').${thisdbname} %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% thisdbname %];stid=60">[% mex.${"X4000"}.content.full %]</a>
-[%-   ELSE -%]
 <a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>
-[%-   END -%]
 [%- ELSE -%]
 [% mex.${"X4000"}.content.full %]
 [%- END -%]
 </strong>
-</td><td>[%- IF mex.${"X0016"}.content -%]WP-Bibliothek[%- END -%]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% IF mex.${"X1200"} %][% mex.${"X1200"}.content %] [% END %][% mex.${"X1204"}.content %][% IF mex.${"X1203"} %] ([% mex.${"X1203"}.content %])[% END %]</td></tr>
+</td><td>[% IF mex.${"X0016"}.content %]WP-Bibliothek[% END %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% IF mex.${"X1200"} %][% mex.${"X1200"}.content %] [% END %][% mex.${"X1204"}.content %][% IF mex.${"X1203"} %] ([% mex.${"X1203"}.content %])[% END %]</td></tr>
 [% END %]
 </table>
 [% END %]

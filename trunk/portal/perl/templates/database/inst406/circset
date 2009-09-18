@@ -20,9 +20,6 @@
     END ;
  END ;
 
- IF normset.${"T5002"}.first.content.defined ;
-    Aquisition = 2 ;
- END ;
 %]
 <p />
 

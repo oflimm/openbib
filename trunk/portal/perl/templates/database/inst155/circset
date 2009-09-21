@@ -22,7 +22,7 @@
 
 %]
 <p />
-[% USE dumper;dumper.dump(circset)%]
+[%# USE dumper;dumper.dump(circset)%]
 [% IF Aquisition == 0 %]
 <table width="100%">
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>

@@ -37,20 +37,20 @@
 
         IF mex.Signatur.match('^2[2-9]A') || mex.Signatur.match('[3-9][0-9]A') ;
            IF mex.Status == "bestellbar" ;
-              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/service/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
+              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
            ELSIF mex.Status == "entliehen" ;
-              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/service/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / vormerkbar";
+              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / vormerkbar";
            END ;
         END ;      
 
         IF mex.Abteilungscode == 3 ;
            IF mex.Status == "bestellbar" ;
-              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/service/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / ausleihbar";
+              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / ausleihbar";
            ELSIF mex.Status == "entliehen" ;
-              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/service/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / entliehen";
+              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / entliehen";
            END ;
         ELSIF mex.Abteilungscode == 2 ; 
-           mex.Status = "<a href=\"http://www.ub.uni-koeln.de/service/ausleihabc/ls/index_ger.html\" target=\"_blank\">LS</a> / Pr&auml;senzbestand";
+           mex.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/ls/index_ger.html\" target=\"_blank\">LS</a> / Pr&auml;senzbestand";
         ELSIF mex.Abteilungscode == 98 ; 
            mex.Status = "<a href=\"http://www.ub.uni-koeln.de/edz/content/index_ger.html\" target=\"_blank\">EDZ</a> / einsehbar";
         END ;
@@ -59,9 +59,9 @@
 
         IF mex.Abteilungscode == 3 ;
            IF mex.Status == "bestellbar" ;
-              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1693\" target=\"_blank\">LBS EWA</a> / ausleihbar";
+              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1967\" target=\"_blank\">LBS EWA</a> / ausleihbar";
            ELSIF mex.Status == "entliehen" ;
-              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1693\" target=\"_blank\">LBS EWA</a> / entliehen";
+              mex.Status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1967\" target=\"_blank\">LBS EWA</a> / entliehen";
            END ;
         ELSIF mex.Abteilungscode == 4 || mex.Abteilungscode == 7 ; 
            mex.Status = "EWA LS / Pr&auml;senzbestand";

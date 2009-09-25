@@ -99,6 +99,7 @@
                 'T0937', # msg.maketext("T0937") Schlagwort
                 'T0942', # msg.maketext("T0942") Schlagwort
                 'T0947', # msg.maketext("T0947") Schlagwort
+                #'E4300', # msg.maketext("E4300") Schlagwort
                 'T0700', # msg.maketext("T0700") Notation
                 'T0540', # msg.maketext("T0540") ISBN
                 'T0543', # msg.maketext("T0543") ISSN

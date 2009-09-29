@@ -50,7 +50,7 @@
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
-<input type="hidden" name="profil"    value="[% profil %]" />
+<input type="hidden" name="profil"    value="alldbs" />
 
 <table>
 <tr><td style="text-align:center;"><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="searchindex" value="[% msg.maketext("Suchen") %]" /></div></td></tr>

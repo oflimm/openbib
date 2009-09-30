@@ -56,4 +56,4 @@ if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" &
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm unload* ; rm $dboptions_ref->{filename}");
 system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; zcat $dboptions_ref->{filename} > pool.dat ; $aleph2metaexe --filename=pool.dat; gzip unload.*");
+system("cd $pooldir/$pool; zcat $dboptions_ref->{filename} > pool.dat ; $aleph2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/spoho.yml; gzip unload.*");

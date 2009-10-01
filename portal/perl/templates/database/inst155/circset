@@ -35,7 +35,8 @@
 [%-   END -%]
 <strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
-<td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
+<td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[% ELSIF
+mex.Status == 'entliehen' && mex.Rueckgabe != '31.12.9999' && mex.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% mex.Rueckgabe %][%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
 <td class="circurl">
 [%
      IF mex.Ausleihurl %]
@@ -43,7 +44,7 @@
 [%   ELSE %]
 [%      IF mex.Statuscode != 0 ;
             IF mex.Vormerkbarkeit  %]
-     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;(ausgeliehen bis [% mex.Rueckgabe %])
+     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% mex.Vormerkungen+1 %]. Stelle)
 [%          ELSIF mex.Gruppe.Name.match("Handapparat") %]
                 keine Vormerkung m&ouml;glich<br/>(in [% mex.Entleiher.Name %])
 [%          ELSE %]            

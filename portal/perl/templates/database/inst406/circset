@@ -22,7 +22,7 @@
 
 %]
 <p />
-
+[%# USE dumper;dumper.dump(circset)%]
 [% IF Aquisition == 0 %]
 <table width="100%">
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
@@ -35,14 +35,21 @@
 [%-   END -%]
 <strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
-<td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
+<td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[% ELSIF
+mex.Status == 'entliehen' && mex.Rueckgabe != '31.12.9999' && mex.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% mex.Rueckgabe %][%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
 <td class="circurl">
 [%
      IF mex.Ausleihurl %]
    <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.get('redirect_loc') %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
-[%      IF mex.Statuscode != 0 %]
-     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;(ausgeliehen bis [% mex.Rueckgabe %])
+[%      IF mex.Statuscode != 0 ;
+            IF mex.Vormerkbarkeit  %]
+     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% mex.Vormerkungen+1 %]. Stelle)
+[%          ELSIF mex.Gruppe.Name.match("Handapparat") %]
+                keine Vormerkung m&ouml;glich<br/>(in [% mex.Entleiher.Name %])
+[%          ELSE %]            
+                keine Vormerkung m&ouml;glich
+[%          END %]
 [%      ELSE %]
 Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
 [%      END %]

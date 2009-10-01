@@ -280,7 +280,7 @@ a:active.invisible {
 #maincontent{
   width: 99%;
   position: absolute;
-  top: 165px;
+  top: 175px;
   left: 0;
   background: #EDEBE3 ;
   padding: 5px;
@@ -289,7 +289,7 @@ a:active.invisible {
 #mainnavigation {
   width: 99%;
   position: absolute;
-  top: 135px;
+  top: 140px;
   left: 1;
   padding: 0px;
   border: 1px solid #666;

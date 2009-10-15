@@ -42,6 +42,7 @@ use XML::LibXML;
 use XML::LibXML::XPathContext;
 use YAML::Syck;
 use DB_File;
+use Encode qw /decode_utf8/;
 
 use OpenBib::Conv::Common::Util;
 use OpenBib::Config;
@@ -64,12 +65,20 @@ HELP
 exit;
 }
 
-open (TIT,     ,"|gzip > unload.TIT.gz");
-open (AUT,     ,"|gzip > unload.PER.gz");
-open (KOR,     ,"|gzip > unload.KOE.gz");
-open (NOTATION ,"|gzip > unload.SYS.gz");
-open (SWT,     ,"|gzip > unload.SWD.gz");
-open (MEX,     ,"|gzip > unload.MEX.gz");
+our $mediatype_ref = {
+    'article'  => 'Artikel',
+    'preprint' => 'Preprint',
+    'series'   => 'Reihe',
+    'archive'  => 'Archiv',
+    'book'     => 'Buch',
+};
+
+open (TIT,     ,"|buffer | gzip > unload.TIT.gz");
+open (AUT,     ,"|buffer | gzip > unload.PER.gz");
+open (KOR,     ,"|buffer | gzip > unload.KOE.gz");
+open (NOTATION ,"|buffer | gzip > unload.SYS.gz");
+open (SWT,     ,"|buffer | gzip > unload.SWD.gz");
+open (MEX,     ,"|buffer | gzip > unload.MEX.gz");
 
 binmode(TIT,     ":utf8");
 binmode(AUT,     ":utf8");
@@ -81,9 +90,21 @@ binmode(MEX,     ":utf8");
 binmode(TIT, ":utf8");
 
 our %numericidmapping;
+our %have_id = ();
 
-tie %numericidmapping,             'DB_File', $idmappingfile
-    or die "Could not tie idmapping.\n";
+our $numericidmapping_ref;
+
+if (! -f $idmappingfile){
+    %numericidmapping = ();
+}
+else {
+    $numericidmapping_ref = LoadFile($idmappingfile);
+    
+    %numericidmapping = %{$numericidmapping_ref};
+}
+
+#tie %numericidmapping,             'DB_File', $idmappingfile
+#    or die "Could not tie idmapping.\n";
 
 if (! exists $numericidmapping{'next_unused_id'}){
     $numericidmapping{'next_unused_id'}=1;
@@ -101,7 +122,7 @@ sub process_file {
     # Workaround: XPATH-Problem mit Default-Namespace. Daher alle
     # Namespaces entfernen.
 
-    my $slurped_file = read_file($File::Find::name);
+    my $slurped_file = decode_utf8(read_file($File::Find::name));
 
     $slurped_file=~s/<amf.*?>/<amf>/g;
     $slurped_file=~s/repec:/repec_/g;
@@ -116,12 +137,17 @@ sub process_file {
     #    my $xc   = XML::LibXML::XPathContext->new($root);
 #    $xc->registerNs(repec   => 'http://repec.openlib.org');
 #    $xc->registerNs(default => 'http://amf.openlib.org');
+
     
     #######################################################################
     # Collection
     foreach my $node ($root->findnodes('/amf/collection')) {
         my $id    = $node->getAttribute ('id');
         my ($intid,$is_new) = get_next_numeric_id($id);
+
+        next if ($have_id{$intid});
+
+        $have_id{$intid}=1;
         
         print TIT "0000:$intid\n";
         print TIT "0010:$id\n";
@@ -171,6 +197,7 @@ sub process_file {
         # Medientyp
         foreach my $item ($node->findnodes ('type//text()')) {
             my $content = $item->textContent;
+            $content = (exists $mediatype_ref->{$content})?$mediatype_ref->{$content}:$content;
             print TIT "0800:$content\n";
         }
 
@@ -188,7 +215,11 @@ sub process_file {
     foreach my $node ($root->findnodes('/amf/text')) {
         my $id    = $node->getAttribute ('id');
         my ($intid,$is_new) = get_next_numeric_id($id);
-        
+
+        next if ($have_id{$intid});
+
+        $have_id{$intid}=1;
+
         print TIT "0000:$intid\n";
         print TIT "0010:$id\n";
 
@@ -253,19 +284,30 @@ sub process_file {
         # Medientyp
         foreach my $item ($node->findnodes ('type//text()')) {
             my $content = $item->textContent;
+            $content = (exists $mediatype_ref->{$content})?$mediatype_ref->{$content}:$content;
             print TIT "0800:$content\n";
         }
 
+        my $urlidx=1;
         # Link zum Volltext
         foreach my $item ($node->findnodes ('file/url//text()')) {
             my $content = $item->textContent;
-            print TIT "0662:$content\n";
+            printf TIT "0662.%03d:%s\n",$urlidx,$content;
+            $urlidx++;
         }
 
+        $urlidx=1;
         # Beschreibung des Links zum Volltext
         foreach my $item ($node->findnodes ('file/repec_function//text()')) {
             my $content = $item->textContent;
-            print TIT "0663:$content\n";
+            printf TIT "0663.%03d:%s\n",$urlidx,$content;
+            $urlidx++;
+        }
+
+        foreach my $item ($node->findnodes ('date//text()')) {
+            my ($date) = $item->textContent =~/^(\d\d\d\d)-\d\d-\d\d/;
+            
+            print TIT "0425:$date\n" if ($date);
         }
 
         my $issue        = "";
@@ -281,6 +323,7 @@ sub process_file {
         }
         foreach my $item ($node->findnodes ('serial/issuedate//text()')) {
             $issuedate = $item->textContent;
+            print TIT "0425:$issuedate\n";
         }
         foreach my $item ($node->findnodes ('serial/volume//text()')) {
             $volume = $item->textContent;
@@ -306,7 +349,7 @@ sub process_file {
             if ($content){
 
                 my @parts = ();
-                if ($content=~/(?:,|;\s*)/){
+                if ($content=~/(?:\s*,\s*|\s*;\s*)/){
                     @parts = split('(?:\s*,\s*|\s*;\s*)',$content);
                 }
                 else {
@@ -314,6 +357,7 @@ sub process_file {
                 }
 
                 foreach my $part (@parts){
+                    $part=~s/^(\w)/\u$1/;
                     my $swtidn  = OpenBib::Conv::Common::Util::get_swtidn($part);
                     
                     if ($swtidn > 0) {
@@ -328,7 +372,36 @@ sub process_file {
                 }
             }
         }
-        
+
+        # Klassifikation
+        foreach my $item ($node->findnodes ('classification//text()')) {
+            my $content = $item->textContent;
+
+            if ($content){
+                my @parts = ();
+                if ($content=~/(?:\s*,\s*|\s*;\s*)/){
+                    @parts = split('(?:\s*,\s*|\s*;\s*)',$content);
+                }
+                else {
+                    push @parts, $content;
+                }
+
+                foreach my $part (@parts){
+                    my $notidn  = OpenBib::Conv::Common::Util::get_notidn($part);
+                    
+                    if ($notidn > 0) {
+                        print NOTATION "0000:$notidn\n";
+                        print NOTATION "0001:$part\n";
+                        print NOTATION "9999:\n";
+                    } else {
+                        $notidn=(-1)*$notidn;
+                    }
+                    
+                    print TIT "0700:IDN: $notidn\n";
+                }
+            }
+        }
+
         print TIT "9999:\n";
     }
 #
@@ -343,6 +416,8 @@ close(KOR);
 close(NOTATION);
 close(SWT);
 close(MEX);
+
+DumpFile($idmappingfile,\%numericidmapping);
 
 sub konv {
     my ($content)=@_;

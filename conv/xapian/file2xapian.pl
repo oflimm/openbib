@@ -86,7 +86,7 @@ if (!$database){
   exit;
 }
 
-my $FLINT_BTREE_MAX_KEY_LEN = 245;
+my $FLINT_BTREE_MAX_KEY_LEN = 80;
 my $DRILLDOWN_MAX_KEY_LEN   = 100;
 
 my %normdata                = ();
@@ -148,6 +148,8 @@ my $count = 1;
             $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
             next;
         }
+
+#        next unless ($t_id == 243909);
 
         my $tokinfos_ref=[
             {
@@ -282,7 +284,8 @@ my $count = 1;
                     # Naechstes, wenn Stopwort
                     next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
 
-                    # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN=252 Zeichen
+                    # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
+                    
                     $next=(length($next) > $FLINT_BTREE_MAX_KEY_LEN)?substr($next,0,$FLINT_BTREE_MAX_KEY_LEN):$next;
 
                     $seen_token_ref->{$next}=1;

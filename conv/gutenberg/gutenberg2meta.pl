@@ -31,6 +31,8 @@
 use 5.008001;
 
 use utf8;
+use warnings;
+use strict;
 
 use Encode 'decode';
 use Getopt::Long;
@@ -40,14 +42,13 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 
-my ($inputfile,$configfile);
+my ($inputfile);
 
 &GetOptions(
 	    "inputfile=s"          => \$inputfile,
-            "configfile=s"         => \$configfile,
 	    );
 
-if (!$inputfile && !$configfile){
+if (!$inputfile){
     print << "HELP";
 gutenberg2meta.pl - Aufrufsyntax
 

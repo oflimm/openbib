@@ -78,7 +78,7 @@ my $tree = $parser->parse_file($inputfile);
 my $root = $tree->getDocumentElement;
 
 foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
- my $etext_number = $etext_node->getAttribute ('ID');
+ my $etext_number = $etext_node->getAttribute ('rdf:ID');
    $etext_number =~ s/^etext//;
 
    print TIT "0000:$etext_number\n";

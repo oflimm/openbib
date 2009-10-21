@@ -66,7 +66,7 @@ exit;
 }
 
 our $mediatype_ref = {
-    'article'  => 'Artikel',
+    'article'  => 'Aufsatz',
     'preprint' => 'Preprint',
     'series'   => 'Reihe',
     'archive'  => 'Archiv',
@@ -185,7 +185,7 @@ sub process_file {
             my $id = $item->getAttribute ('ref');
             last if ($id=~/^RePEc$/); # Root-Node wird nicht verlinkt
             my ($intid,$is_new) = get_next_numeric_id($id);
-            print TIT "0004:$id\n";
+            print TIT "0004:$intid\n";
         }
 
         # Verlag

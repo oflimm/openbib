@@ -63,9 +63,19 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbh
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-print "### $pool: Bestimme Titel-ID's anhand des Standortes\n";
+print "### $pool: Bestimme Titel-ID's anhand der Signatur (Rh*, 1K*, XK*)\n";
 
 my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content like 'Rh%' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+
+$request->execute() or $logger->error($DBI::errstr);;
+
+while (my $result=$request->fetchrow_hashref()){
+  $titidns{$result->{'titid'}}=1;
+}
+
+print "### $pool: Bestimme Titel-ID's anhand der Notation (Rh*)\n";
+
+$request=$dbh->prepare("select distinct conn.sourceid as titid from conn,notation where notation.category=1 and notation.content like 'Rh%' and conn.targetid=notation.id and conn.sourcetype=1 and conn.targettype=5") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

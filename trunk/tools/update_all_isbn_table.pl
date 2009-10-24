@@ -209,6 +209,39 @@ foreach my $database (@databases){
 
     $logger->info("$bibkey_insertcount Bibkeys inserted");
 
+    $logger->info("Getting ISSNs from database $database and adding to enrichmntdb");
+
+    $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category = 2 and t1.category=543";
+
+    if (!$insertion_date_available){
+        $sqlrequest = "select id, content as issn from tit where category=543";
+    }
+
+    $logger->debug("SQL-Request: $sqlrequest");
+    
+    $request=$dbh->prepare($sqlrequest);
+    $request->execute();
+    
+    my $issn_insertcount = 0;
+    while (my $result=$request->fetchrow_hashref()){
+        my $id       = $result->{id};
+        my $issn     = $result->{issn};
+        my $date     = $result->{thisdate} || 0;
+        
+        if ($issn){
+            # Normierung als String
+            $issn = OpenBib::Common::Util::grundform({
+                category => '0543',
+                content  => $issn,
+            });
+            
+            $enrichrequest->execute($issn,$database,$id,$date);
+            $issn_insertcount++;
+        }
+    }
+
+    $logger->info("$issn_insertcount ISSNs inserted");
+    
     $request->finish;
     $dbh->disconnect();
 }

@@ -199,7 +199,7 @@ FOREACH category IN categories;
             content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
          END ;
 
-    CASE "E4100";
+    CASE [ "E4100" "T4100" ];
          localurl    = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
@@ -219,13 +219,23 @@ FOREACH category IN categories;
 	 content       = "${config.get('redirect_loc')}/${sessionID}/503/${content}" ;
 	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
 
+    CASE "E4300";
+         thiscontent = item.content;
+
+         NEXT IF rswkswt_done.${thiscontent} == 1;
+         localurl    = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+	 content       = "<a href=\"${localurl}\">${content}</a>";
+         rswkswt_done.${thiscontent} = 1;
+
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          thisid     = item.id;
          IF NOT thisid.match('^\d+$');
              thisid = item.content;
          END;
 
-         NEXT IF rswkswt_done.${thisid} == 1;
+         thiscontent = item.content;
+
+         NEXT IF rswkswt_done.${thiscontent} == 1;
 
          rssfeed = "" ;
          IF activefeed.4 ;
@@ -234,7 +244,7 @@ FOREACH category IN categories;
          globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
-         rswkswt_done.${thisid} = 1;
+         rswkswt_done.${thiscontent} = 1;
 
     CASE "T0700";
          thisid     = item.id;
@@ -849,6 +859,37 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 </div>
 [% END %]
 <!-- Ende Literaturlisten -->
+
+<!-- Anfang Verschlagwortung in anderen Katalogen -->
+[% more_subjects = 0 ;
+   FOREACH item IN normset.${"E4300"};
+      thiscontent = item.content;
+
+      NEXT IF rswkswt_done.${thiscontent} == 1;
+      more_subjects = 1;
+      LAST;
+   END;
+%]
+[% IF more_subjects %]
+<div class="available_subjects"><!-- Begin Vorhandene Schlagworte -->
+<div class="headline">[% msg.maketext("Verschlagwortung anderer Kataloge") %]</div>
+<p/>
+<ul>
+[% FOREACH item IN normset.${"E4300"};
+      thiscontent = item.content;
+
+      NEXT IF rswkswt_done.${thiscontent} == 1;
+      localurl    = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${thiscontent.replace('&amp;','%26')};category=E4300;hitrange=${qopts.hitrange}";
+      content       = "<a href=\"${localurl}\">${thiscontent}</a>";
+      rswkswt_done.${thiscontent} = 1;
+%]
+<li>[% content %]</li>
+[%- END -%]
+</ul>
+</div>
+<p />
+[% END %]
+<!-- Ende Verschlagwortung in anderen Katalogen -->
 
 <!-- Anfang KUG-Tags -->
 [% IF all_tags.size > 0 %]

@@ -393,8 +393,12 @@ sub load_full_record {
         push @isbn_refs, @{$normset_ref->{T0553}} if (exists $normset_ref->{T0553});
 
         my $bibkey    = $normset_ref->{T5050}[0]{content};
+
+        my @issn_refs = ();
+        push @issn_refs, @{$normset_ref->{T0543}} if (exists $normset_ref->{T0543});
         
         $logger->debug("Enrichment ISBN's ".YAML::Dump(\@isbn_refs));
+        $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
         
         if (@isbn_refs){
             my @isbn_refs_tmp = ();
@@ -514,7 +518,47 @@ sub load_full_record {
                 };
             }            
         }
-        
+        elsif (@issn_refs){
+            my @issn_refs_tmp = ();
+            # Normierung
+
+            foreach my $issn_ref (@issn_refs){
+                my $thisissn = $issn_ref->{content};
+
+                push @issn_refs_tmp, OpenBib::Common::Util::grundform({
+                    category => '0543',
+                    content  => $thisissn,
+                });
+
+            }
+
+            # Dubletten Bereinigen
+            my %seen_issns = ();
+            
+            @issn_refs = grep { ! $seen_issns{$_} ++ } @issn_refs_tmp;
+
+            $logger->debug("ISSN: ".YAML::Dump(\@issn_refs));
+           
+            foreach my $issn (@issn_refs){
+                my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
+                my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                $request->execute($issn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                
+                # Anreicherung der Normdaten
+                while (my $res=$request->fetchrow_hashref) {
+                    my $category   = "E".sprintf "%04d",$res->{category };
+                    my $content    =        decode_utf8($res->{content});
+                    
+                    push @{$normset_ref->{$category}}, {
+                        content    => $content,
+                    };
+                }
+                
+                $request->finish();
+                $logger->debug("Enrich: $issn -> $reqstring");
+            }
+
+        }
         $enrichdbh->disconnect();
 
         if ($config->{benchmark}) {

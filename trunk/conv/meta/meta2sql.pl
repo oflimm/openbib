@@ -538,11 +538,13 @@ while (my $line=<IN>){
         }
         
         # Zentrale Anreicherungsdaten lokal einspielen
-        if ($local_enrichmnt && exists $normdata_ref->{isbn13}){
+        if ($local_enrichmnt && (exists $normdata_ref->{isbn13} || exists $normdata_ref->{issn})){
             foreach my $category (keys %{$conv_config->{local_enrichmnt}}){
-                if (exists $enrichmntdata{$normdata_ref->{isbn13}}{$category}){
+                my $enrichmnt_data_ref = (exists $enrichmntdata{$normdata_ref->{isbn13}}{$category})?$enrichmntdata{$normdata_ref->{isbn13}}{$category}:
+                    ($enrichmntdata{$normdata_ref->{issn}}{$category})?$enrichmntdata{$normdata_ref->{issn}}{$category}:undef;
+                if ($enrichmnt_data_ref){
                     my $indicator = 1;
-                    foreach my $content (@{$enrichmntdata{$normdata_ref->{isbn13}}{$category}}){
+                    foreach my $content (@{$enrichmnt_data_ref}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
@@ -1830,10 +1832,17 @@ while (my $line=<IN>){
 
             }
             elsif (exists $conv_config->{search_issn     }{$category}){
-                push @issn,      OpenBib::Common::Util::grundform({
+                my $issnnorm =  OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
+
+                # Normierte ISSN fuer lokale Anreicherung merken
+                if (!exists $normdata_ref->{issn}){
+                    $normdata_ref->{issn} = $issnnorm;
+                }
+
+                push @issn,      $issnnorm;
             }
             elsif (exists $conv_config->{search_artinh   }{$category}){
                 push @artinh, OpenBib::Common::Util::grundform({

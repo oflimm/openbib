@@ -177,7 +177,7 @@ while (my $line=<DAT>){
                     else {
                         $notidn=(-1)*$notidn;
                     }
-                    print TIT $convconfig->{sys}{$kateg}."IDN: $swtidn\n";
+                    print TIT $convconfig->{sys}{$kateg}."IDN: $notidn\n";
                 }
             }
             # Schlagworte abarbeiten Ende

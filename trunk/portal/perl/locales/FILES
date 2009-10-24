@@ -168,6 +168,7 @@
 ../templates/database/umschlaege/search_showtitset
 ../templates/database/umschlaege/virtualsearch_result_item
 ../templates/database/umschlaege/visible_categories_titset
+../templates/database/usbzsablage/visible_categories_titset
 ../templates/database/wiso/circset
 ../templates/database/wiso/mexset
 ../templates/database/wikisource_de/visible_categories_titset

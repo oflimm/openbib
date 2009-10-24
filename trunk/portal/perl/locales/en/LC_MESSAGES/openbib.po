@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-09-24 08:39+0200\n"
+"PO-Revision-Date: 2009-10-23 08:15+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1959,16 +1959,16 @@ msgstr "Description"
 #: ../templates/database/inst001/mexset:3
 #: ../templates/database/inst001/search_showtitset:323
 #: ../templates/database/inst006/circset:28
-#: ../templates/database/inst006/circset:58
+#: ../templates/database/inst006/circset:65
 #: ../templates/database/inst302/circset:28
 #: ../templates/database/inst302/circset:47
 #: ../templates/database/inst420/circset:28
-#: ../templates/database/inst420/circset:58
+#: ../templates/database/inst420/circset:65
 #: ../templates/database/inst431/circset:28
-#: ../templates/database/inst431/circset:58
+#: ../templates/database/inst431/circset:65
 #: ../templates/database/inst450/mexset:3
 #: ../templates/database/inst526/circset:28
-#: ../templates/database/inst526/circset:58
+#: ../templates/database/inst526/circset:65
 #: ../templates/database/landschaft/search_showtitset:297
 #: ../templates/database/lehrbuchsmlg/circset:31
 #: ../templates/database/lehrbuchsmlg/circset:93
@@ -3003,7 +3003,7 @@ msgstr "E-mail address"
 #: ../templates/views/umschlaege/visible_categories_titset:102
 #: ../templates/visible_categories_titset:105
 msgid "E4100"
-msgstr "Basis-classification"
+msgstr "Basic classification"
 
 #: ../templates/database/alff/visible_categories_titset:112
 #: ../templates/database/ebooks/visible_categories_titset:111
@@ -3032,6 +3032,7 @@ msgid "E4120"
 msgstr "Fulltext-URL"
 
 #: ../templates/database/inst001/visible_categories_titset:102
+#: ../templates/database/usbzsablage/visible_categories_titset:102
 #: ../templates/visible_categories_titset:103
 msgid "E4300"
 msgstr "Subject headings (ext.)"
@@ -3536,11 +3537,11 @@ msgstr "Advanced search"
 
 #: ../templates/database/edz/circset:93
 #: ../templates/database/inst001/circset:93
-#: ../templates/database/inst006/circset:58
+#: ../templates/database/inst006/circset:65
 #: ../templates/database/inst302/circset:47
-#: ../templates/database/inst420/circset:58
-#: ../templates/database/inst431/circset:58
-#: ../templates/database/inst526/circset:58
+#: ../templates/database/inst420/circset:65
+#: ../templates/database/inst431/circset:65
+#: ../templates/database/inst526/circset:65
 #: ../templates/database/lehrbuchsmlg/circset:93
 #: ../templates/database/lesesaal/circset:93
 #: ../templates/database/rheinabt/circset:93
@@ -3853,12 +3854,11 @@ msgstr "Interlibrary loan request"
 msgid "Fernleihe"
 msgstr "Interlibrary loan request"
 
-#: ../templates/info_61:40 ../templates/info_61:41 ../templates/info_61:49
-#: ../templates/info_61:50 ../templates/info_61:51 ../templates/info_61:52
-#: ../templates/info_61:53 ../templates/info_61:56 ../templates/info_61:57
-#: ../templates/info_61:59 ../templates/info_61:60 ../templates/info_61:61
-#: ../templates/info_61:62 ../templates/info_61:63 ../templates/info_61:64
-#: ../templates/info_61:65
+#: ../templates/info_61:41 ../templates/info_61:49 ../templates/info_61:50
+#: ../templates/info_61:51 ../templates/info_61:52 ../templates/info_61:53
+#: ../templates/info_61:56 ../templates/info_61:57 ../templates/info_61:59
+#: ../templates/info_61:60 ../templates/info_61:61 ../templates/info_61:62
+#: ../templates/info_61:63 ../templates/info_61:64 ../templates/info_61:65
 msgid "Film ohne Ton"
 msgstr "Film without audio"
 
@@ -6638,10 +6638,10 @@ msgstr "Primary RSS feed not selected"
 msgid "Keine"
 msgstr "None"
 
-#: ../templates/database/inst006/circset:47
-#: ../templates/database/inst420/circset:47
-#: ../templates/database/inst431/circset:47
-#: ../templates/database/inst526/circset:47
+#: ../templates/database/inst006/circset:54
+#: ../templates/database/inst420/circset:54
+#: ../templates/database/inst431/circset:54
+#: ../templates/database/inst526/circset:54
 msgid "Keine Aktion m&ouml;glich"
 msgstr "No action available"
 
@@ -7749,8 +7749,8 @@ msgstr "Motive"
 msgid "Motiv/Werkzeug"
 msgstr "Motive/Tool"
 
-#: ../templates/info_61:48 ../templates/info_61:54 ../templates/info_61:55
-#: ../templates/info_61:58
+#: ../templates/info_61:40 ../templates/info_61:48 ../templates/info_61:54
+#: ../templates/info_61:55 ../templates/info_61:58
 msgid "Multimedia"
 msgstr "Multimedia"
 
@@ -8084,11 +8084,11 @@ msgstr "New tag name"
 
 #: ../templates/database/edz/circset:90
 #: ../templates/database/inst001/circset:90
-#: ../templates/database/inst006/circset:55
+#: ../templates/database/inst006/circset:62
 #: ../templates/database/inst302/circset:44
-#: ../templates/database/inst420/circset:55
-#: ../templates/database/inst431/circset:55
-#: ../templates/database/inst526/circset:55
+#: ../templates/database/inst420/circset:62
+#: ../templates/database/inst431/circset:62
+#: ../templates/database/inst526/circset:62
 #: ../templates/database/lehrbuchsmlg/circset:90
 #: ../templates/database/lesesaal/circset:90
 #: ../templates/database/rheinabt/circset:90
@@ -10514,6 +10514,7 @@ msgstr "Systematic browsing"
 #: ../templates/database/nationallizenzen/visible_categories_titset:84
 #: ../templates/database/richter/visible_categories_titset:84
 #: ../templates/database/umschlaege/visible_categories_titset:85
+#: ../templates/database/usbzsablage/visible_categories_titset:85
 #: ../templates/database/wikisource_de/visible_categories_titset:86
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:84
 #: ../templates/profile/kuglight/database/umschlaege/visible_categories_titset:85
@@ -10531,6 +10532,7 @@ msgstr "Language"
 #: ../templates/database/nationallizenzen/visible_categories_titset:88
 #: ../templates/database/richter/visible_categories_titset:88
 #: ../templates/database/umschlaege/visible_categories_titset:89
+#: ../templates/database/usbzsablage/visible_categories_titset:89
 #: ../templates/database/wikisource_de/visible_categories_titset:90
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:86
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:88
@@ -10549,6 +10551,7 @@ msgstr "Added entry"
 #: ../templates/database/nationallizenzen/visible_categories_titset:46
 #: ../templates/database/richter/visible_categories_titset:46
 #: ../templates/database/umschlaege/visible_categories_titset:47
+#: ../templates/database/usbzsablage/visible_categories_titset:47
 #: ../templates/database/wikisource_de/visible_categories_titset:47
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:46
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:46
@@ -10568,6 +10571,7 @@ msgstr "Country of publication"
 #: ../templates/database/nationallizenzen/visible_categories_titset:21
 #: ../templates/database/richter/visible_categories_titset:21
 #: ../templates/database/umschlaege/visible_categories_titset:22
+#: ../templates/database/usbzsablage/visible_categories_titset:21
 #: ../templates/database/wikisource_de/visible_categories_titset:21
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:21
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:21
@@ -10585,6 +10589,7 @@ msgstr "Volume"
 #: ../templates/database/kapsel/visible_categories_titset:16
 #: ../templates/database/nationallizenzen/visible_categories_titset:16
 #: ../templates/database/richter/visible_categories_titset:16
+#: ../templates/database/usbzsablage/visible_categories_titset:16
 #: ../templates/database/wikisource_de/visible_categories_titset:16
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:16
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:16
@@ -10627,6 +10632,7 @@ msgstr "Author"
 #: ../templates/database/nationallizenzen/visible_categories_titset:17
 #: ../templates/database/richter/visible_categories_titset:17
 #: ../templates/database/umschlaege/visible_categories_titset:19
+#: ../templates/database/usbzsablage/visible_categories_titset:17
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:17
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:18
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:17
@@ -10679,6 +10685,7 @@ msgstr "Displayed person"
 #: ../templates/database/nationallizenzen/visible_categories_titset:18
 #: ../templates/database/richter/visible_categories_titset:18
 #: ../templates/database/umschlaege/visible_categories_titset:20
+#: ../templates/database/usbzsablage/visible_categories_titset:18
 #: ../templates/database/wikisource_de/visible_categories_titset:18
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:18
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:19
@@ -10702,6 +10709,7 @@ msgstr "Other persons"
 #: ../templates/database/kapsel/visible_categories_titset:19
 #: ../templates/database/nationallizenzen/visible_categories_titset:19
 #: ../templates/database/richter/visible_categories_titset:19
+#: ../templates/database/usbzsablage/visible_categories_titset:19
 #: ../templates/database/wikisource_de/visible_categories_titset:19
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:19
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:19
@@ -10745,6 +10753,7 @@ msgstr "Cooperation"
 #: ../templates/database/nationallizenzen/visible_categories_titset:20
 #: ../templates/database/richter/visible_categories_titset:20
 #: ../templates/database/umschlaege/visible_categories_titset:21
+#: ../templates/database/usbzsablage/visible_categories_titset:20
 #: ../templates/database/wikisource_de/visible_categories_titset:20
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:20
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:20
@@ -10777,6 +10786,7 @@ msgstr "Corporate body"
 #: ../templates/database/nationallizenzen/visible_categories_titset:25
 #: ../templates/database/richter/visible_categories_titset:25
 #: ../templates/database/umschlaege/visible_categories_titset:26
+#: ../templates/database/usbzsablage/visible_categories_titset:25
 #: ../templates/database/wikisource_de/visible_categories_titset:25
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:25
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:25
@@ -10795,6 +10805,7 @@ msgstr "Statement of collective uniform title"
 #: ../templates/database/nationallizenzen/visible_categories_titset:23
 #: ../templates/database/richter/visible_categories_titset:23
 #: ../templates/database/umschlaege/visible_categories_titset:24
+#: ../templates/database/usbzsablage/visible_categories_titset:23
 #: ../templates/database/wikisource_de/visible_categories_titset:23
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:23
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:23
@@ -10818,6 +10829,7 @@ msgstr "Motif"
 #: ../templates/database/nationallizenzen/visible_categories_titset:22
 #: ../templates/database/richter/visible_categories_titset:22
 #: ../templates/database/umschlaege/visible_categories_titset:23
+#: ../templates/database/usbzsablage/visible_categories_titset:22
 #: ../templates/database/wikisource_de/visible_categories_titset:22
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:22
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:22
@@ -10841,6 +10853,7 @@ msgstr "Title"
 #: ../templates/database/nationallizenzen/visible_categories_titset:24
 #: ../templates/database/richter/visible_categories_titset:24
 #: ../templates/database/umschlaege/visible_categories_titset:25
+#: ../templates/database/usbzsablage/visible_categories_titset:24
 #: ../templates/database/wikisource_de/visible_categories_titset:24
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:24
 #: ../templates/profile/kuglight/database/umschlaege/visible_categories_titset:25
@@ -10878,6 +10891,7 @@ msgstr "Image title"
 #: ../templates/database/nationallizenzen/visible_categories_titset:28
 #: ../templates/database/richter/visible_categories_titset:28
 #: ../templates/database/umschlaege/visible_categories_titset:29
+#: ../templates/database/usbzsablage/visible_categories_titset:29
 #: ../templates/database/wikisource_de/visible_categories_titset:29
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:28
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:28
@@ -10896,6 +10910,7 @@ msgstr "Title"
 #: ../templates/database/nationallizenzen/visible_categories_titset:50
 #: ../templates/database/richter/visible_categories_titset:50
 #: ../templates/database/umschlaege/visible_categories_titset:51
+#: ../templates/database/usbzsablage/visible_categories_titset:51
 #: ../templates/database/wikisource_de/visible_categories_titset:51
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:50
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:50
@@ -10925,6 +10940,7 @@ msgstr "Material"
 #: ../templates/database/portrait/visible_categories_titset:21
 #: ../templates/database/richter/visible_categories_titset:29
 #: ../templates/database/umschlaege/visible_categories_titset:30
+#: ../templates/database/usbzsablage/visible_categories_titset:30
 #: ../templates/database/wikisource_de/visible_categories_titset:30
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:29
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:21
@@ -10951,6 +10967,7 @@ msgstr "Subtitle"
 #: ../templates/database/nationallizenzen/visible_categories_titset:27
 #: ../templates/database/richter/visible_categories_titset:27
 #: ../templates/database/umschlaege/visible_categories_titset:28
+#: ../templates/database/usbzsablage/visible_categories_titset:27
 #: ../templates/database/wikisource_de/visible_categories_titset:28
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:27
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:27
@@ -10970,6 +10987,7 @@ msgstr "Parallel title"
 #: ../templates/database/nationallizenzen/visible_categories_titset:32
 #: ../templates/database/richter/visible_categories_titset:32
 #: ../templates/database/umschlaege/visible_categories_titset:33
+#: ../templates/database/usbzsablage/visible_categories_titset:33
 #: ../templates/database/wikisource_de/visible_categories_titset:33
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:32
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:30
@@ -10994,6 +11012,7 @@ msgstr "Descriptive form"
 #: ../templates/database/nationallizenzen/visible_categories_titset:33
 #: ../templates/database/richter/visible_categories_titset:33
 #: ../templates/database/umschlaege/visible_categories_titset:34
+#: ../templates/database/usbzsablage/visible_categories_titset:34
 #: ../templates/database/wikisource_de/visible_categories_titset:34
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:33
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:33
@@ -11013,6 +11032,8 @@ msgstr "Subseries"
 #: ../templates/database/nationallizenzen/visible_categories_titset:30
 #: ../templates/database/richter/visible_categories_titset:30
 #: ../templates/database/umschlaege/visible_categories_titset:31
+#: ../templates/database/usbzsablage/visible_categories_titset:28
+#: ../templates/database/usbzsablage/visible_categories_titset:31
 #: ../templates/database/wikisource_de/visible_categories_titset:31
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:30
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:30
@@ -11036,6 +11057,7 @@ msgstr "Attached volumes"
 #: ../templates/database/nationallizenzen/visible_categories_titset:31
 #: ../templates/database/richter/visible_categories_titset:31
 #: ../templates/database/umschlaege/visible_categories_titset:32
+#: ../templates/database/usbzsablage/visible_categories_titset:32
 #: ../templates/database/wikisource_de/visible_categories_titset:32
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:31
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:31
@@ -11054,6 +11076,7 @@ msgstr "Remainder of title for whole item"
 #: ../templates/database/nationallizenzen/visible_categories_titset:26
 #: ../templates/database/richter/visible_categories_titset:26
 #: ../templates/database/umschlaege/visible_categories_titset:27
+#: ../templates/database/usbzsablage/visible_categories_titset:26
 #: ../templates/database/wikisource_de/visible_categories_titset:26
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:26
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:26
@@ -11078,6 +11101,7 @@ msgstr "Provenance"
 #: ../templates/database/portrait/visible_categories_titset:23
 #: ../templates/database/richter/visible_categories_titset:34
 #: ../templates/database/umschlaege/visible_categories_titset:35
+#: ../templates/database/usbzsablage/visible_categories_titset:35
 #: ../templates/database/wikisource_de/visible_categories_titset:35
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:34
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:23
@@ -11097,6 +11121,7 @@ msgstr "Edition"
 #: ../templates/database/nationallizenzen/visible_categories_titset:39
 #: ../templates/database/richter/visible_categories_titset:39
 #: ../templates/database/umschlaege/visible_categories_titset:40
+#: ../templates/database/usbzsablage/visible_categories_titset:40
 #: ../templates/database/wikisource_de/visible_categories_titset:40
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:39
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:39
@@ -11115,6 +11140,7 @@ msgstr "Dates/periods of publication"
 #: ../templates/database/nationallizenzen/visible_categories_titset:56
 #: ../templates/database/richter/visible_categories_titset:56
 #: ../templates/database/umschlaege/visible_categories_titset:57
+#: ../templates/database/usbzsablage/visible_categories_titset:57
 #: ../templates/database/wikisource_de/visible_categories_titset:57
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:56
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:56
@@ -11141,6 +11167,7 @@ msgstr "Height x width"
 #: ../templates/database/portrait/visible_categories_titset:31
 #: ../templates/database/richter/visible_categories_titset:35
 #: ../templates/database/umschlaege/visible_categories_titset:36
+#: ../templates/database/usbzsablage/visible_categories_titset:36
 #: ../templates/database/wikisource_de/visible_categories_titset:36
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:35
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:37
@@ -11170,6 +11197,7 @@ msgstr "Place"
 #: ../templates/database/portrait/visible_categories_titset:32
 #: ../templates/database/richter/visible_categories_titset:36
 #: ../templates/database/umschlaege/visible_categories_titset:37
+#: ../templates/database/usbzsablage/visible_categories_titset:37
 #: ../templates/database/wikisource_de/visible_categories_titset:37
 #: ../templates/profile/kuglight/database/einbaende/visible_categories_titset:20
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:36
@@ -11195,6 +11223,7 @@ msgstr "Publisher"
 #: ../templates/database/nationallizenzen/visible_categories_titset:45
 #: ../templates/database/richter/visible_categories_titset:45
 #: ../templates/database/umschlaege/visible_categories_titset:46
+#: ../templates/database/usbzsablage/visible_categories_titset:46
 #: ../templates/database/wikisource_de/visible_categories_titset:46
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:45
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:45
@@ -11219,6 +11248,7 @@ msgstr "Printer"
 #: ../templates/database/nationallizenzen/visible_categories_titset:38
 #: ../templates/database/richter/visible_categories_titset:38
 #: ../templates/database/umschlaege/visible_categories_titset:39
+#: ../templates/database/usbzsablage/visible_categories_titset:39
 #: ../templates/database/wikisource_de/visible_categories_titset:39
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:38
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:39
@@ -11249,6 +11279,7 @@ msgstr "Year"
 #: ../templates/database/nationallizenzen/visible_categories_titset:37
 #: ../templates/database/richter/visible_categories_titset:37
 #: ../templates/database/umschlaege/visible_categories_titset:38
+#: ../templates/database/usbzsablage/visible_categories_titset:38
 #: ../templates/database/wikisource_de/visible_categories_titset:38
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:37
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:37
@@ -11287,6 +11318,7 @@ msgstr "Year"
 #: ../templates/database/portrait/visible_categories_titset:35
 #: ../templates/database/richter/visible_categories_titset:49
 #: ../templates/database/umschlaege/visible_categories_titset:50
+#: ../templates/database/usbzsablage/visible_categories_titset:50
 #: ../templates/database/wikisource_de/visible_categories_titset:50
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:49
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:40
@@ -11316,6 +11348,8 @@ msgstr "Extent of item"
 #: ../templates/database/richter/visible_categories_titset:57
 #: ../templates/database/umschlaege/visible_categories_titset:45
 #: ../templates/database/umschlaege/visible_categories_titset:58
+#: ../templates/database/usbzsablage/visible_categories_titset:45
+#: ../templates/database/usbzsablage/visible_categories_titset:58
 #: ../templates/database/wikisource_de/visible_categories_titset:45
 #: ../templates/database/wikisource_de/visible_categories_titset:58
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:44
@@ -11344,6 +11378,7 @@ msgstr "Illustration statement"
 #: ../templates/database/nationallizenzen/visible_categories_titset:47
 #: ../templates/database/richter/visible_categories_titset:47
 #: ../templates/database/umschlaege/visible_categories_titset:48
+#: ../templates/database/usbzsablage/visible_categories_titset:48
 #: ../templates/database/wikisource_de/visible_categories_titset:48
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:47
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:47
@@ -11369,6 +11404,7 @@ msgstr "Dimensions"
 #: ../templates/database/nationallizenzen/visible_categories_titset:58
 #: ../templates/database/richter/visible_categories_titset:58
 #: ../templates/database/umschlaege/visible_categories_titset:59
+#: ../templates/database/usbzsablage/visible_categories_titset:59
 #: ../templates/database/wikisource_de/visible_categories_titset:59
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:58
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:58
@@ -11388,6 +11424,7 @@ msgstr "Accompanying material"
 #: ../templates/database/nationallizenzen/visible_categories_titset:53
 #: ../templates/database/richter/visible_categories_titset:53
 #: ../templates/database/umschlaege/visible_categories_titset:54
+#: ../templates/database/usbzsablage/visible_categories_titset:54
 #: ../templates/database/wikisource_de/visible_categories_titset:54
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:53
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:53
@@ -11406,6 +11443,7 @@ msgstr "Series title"
 #: ../templates/database/landschaft/visible_categories_titset:31
 #: ../templates/database/nationallizenzen/visible_categories_titset:59
 #: ../templates/database/umschlaege/visible_categories_titset:60
+#: ../templates/database/usbzsablage/visible_categories_titset:60
 #: ../templates/database/wikisource_de/visible_categories_titset:60
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:59
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:31
@@ -11452,6 +11490,7 @@ msgstr "Uniform title note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:87
 #: ../templates/database/richter/visible_categories_titset:87
 #: ../templates/database/umschlaege/visible_categories_titset:88
+#: ../templates/database/usbzsablage/visible_categories_titset:88
 #: ../templates/database/wikisource_de/visible_categories_titset:89
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:85
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:87
@@ -11472,6 +11511,7 @@ msgstr "Note on german translation"
 #: ../templates/database/portrait/visible_categories_titset:39
 #: ../templates/database/richter/visible_categories_titset:60
 #: ../templates/database/umschlaege/visible_categories_titset:61
+#: ../templates/database/usbzsablage/visible_categories_titset:61
 #: ../templates/database/wikisource_de/visible_categories_titset:61
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:60
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:44
@@ -11494,6 +11534,7 @@ msgstr "Parallel titles note"
 #: ../templates/database/portrait/visible_categories_titset:40
 #: ../templates/database/richter/visible_categories_titset:61
 #: ../templates/database/umschlaege/visible_categories_titset:62
+#: ../templates/database/usbzsablage/visible_categories_titset:62
 #: ../templates/database/wikisource_de/visible_categories_titset:62
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:61
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:45
@@ -11515,6 +11556,7 @@ msgstr "Variant titles note"
 #: ../templates/database/portrait/visible_categories_titset:86
 #: ../templates/database/richter/visible_categories_titset:62
 #: ../templates/database/umschlaege/visible_categories_titset:63
+#: ../templates/database/usbzsablage/visible_categories_titset:63
 #: ../templates/database/wikisource_de/visible_categories_titset:63
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:62
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:86
@@ -11535,6 +11577,7 @@ msgstr "Other title information note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:48
 #: ../templates/database/richter/visible_categories_titset:48
 #: ../templates/database/umschlaege/visible_categories_titset:49
+#: ../templates/database/usbzsablage/visible_categories_titset:49
 #: ../templates/database/wikisource_de/visible_categories_titset:49
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:48
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:84
@@ -11567,6 +11610,7 @@ msgstr "Source of entry note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:63
 #: ../templates/database/richter/visible_categories_titset:63
 #: ../templates/database/umschlaege/visible_categories_titset:64
+#: ../templates/database/usbzsablage/visible_categories_titset:64
 #: ../templates/database/wikisource_de/visible_categories_titset:64
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:63
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:46
@@ -11597,6 +11641,7 @@ msgstr "Issuing body note"
 #: ../templates/database/portrait/visible_categories_titset:42
 #: ../templates/database/richter/visible_categories_titset:64
 #: ../templates/database/umschlaege/visible_categories_titset:65
+#: ../templates/database/usbzsablage/visible_categories_titset:65
 #: ../templates/database/wikisource_de/visible_categories_titset:65
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:64
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:47
@@ -11619,6 +11664,7 @@ msgstr "Edition statement note"
 #: ../templates/database/portrait/visible_categories_titset:43
 #: ../templates/database/richter/visible_categories_titset:65
 #: ../templates/database/umschlaege/visible_categories_titset:66
+#: ../templates/database/usbzsablage/visible_categories_titset:66
 #: ../templates/database/wikisource_de/visible_categories_titset:66
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:65
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:48
@@ -11641,6 +11687,7 @@ msgstr "Imprint note"
 #: ../templates/database/portrait/visible_categories_titset:44
 #: ../templates/database/richter/visible_categories_titset:66
 #: ../templates/database/umschlaege/visible_categories_titset:67
+#: ../templates/database/usbzsablage/visible_categories_titset:67
 #: ../templates/database/wikisource_de/visible_categories_titset:67
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:66
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:49
@@ -11663,6 +11710,7 @@ msgstr "Physical description note"
 #: ../templates/database/portrait/visible_categories_titset:45
 #: ../templates/database/richter/visible_categories_titset:67
 #: ../templates/database/umschlaege/visible_categories_titset:68
+#: ../templates/database/usbzsablage/visible_categories_titset:68
 #: ../templates/database/wikisource_de/visible_categories_titset:68
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:67
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:50
@@ -11685,6 +11733,7 @@ msgstr "Alterations on imprint note"
 #: ../templates/database/portrait/visible_categories_titset:46
 #: ../templates/database/richter/visible_categories_titset:68
 #: ../templates/database/umschlaege/visible_categories_titset:69
+#: ../templates/database/usbzsablage/visible_categories_titset:69
 #: ../templates/database/wikisource_de/visible_categories_titset:69
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:68
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:51
@@ -11705,6 +11754,7 @@ msgstr "Series title note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:85
 #: ../templates/database/richter/visible_categories_titset:85
 #: ../templates/database/umschlaege/visible_categories_titset:86
+#: ../templates/database/usbzsablage/visible_categories_titset:86
 #: ../templates/database/wikisource_de/visible_categories_titset:87
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:83
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:85
@@ -11738,6 +11788,7 @@ msgstr "Contents note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:81
 #: ../templates/database/richter/visible_categories_titset:81
 #: ../templates/database/umschlaege/visible_categories_titset:82
+#: ../templates/database/usbzsablage/visible_categories_titset:81
 #: ../templates/database/wikisource_de/visible_categories_titset:82
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:80
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:81
@@ -11765,6 +11816,7 @@ msgstr "Contents note"
 #: ../templates/database/portrait/visible_categories_titset:48
 #: ../templates/database/richter/visible_categories_titset:70
 #: ../templates/database/umschlaege/visible_categories_titset:71
+#: ../templates/database/usbzsablage/visible_categories_titset:70
 #: ../templates/database/wikisource_de/visible_categories_titset:71
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:69
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:53
@@ -11785,6 +11837,7 @@ msgstr "Split note for serials"
 #: ../templates/database/nationallizenzen/visible_categories_titset:40
 #: ../templates/database/richter/visible_categories_titset:40
 #: ../templates/database/umschlaege/visible_categories_titset:41
+#: ../templates/database/usbzsablage/visible_categories_titset:41
 #: ../templates/database/wikisource_de/visible_categories_titset:41
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:40
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:40
@@ -11805,6 +11858,7 @@ msgstr "Frequency of publication"
 #: ../templates/database/portrait/visible_categories_titset:49
 #: ../templates/database/richter/visible_categories_titset:71
 #: ../templates/database/umschlaege/visible_categories_titset:72
+#: ../templates/database/usbzsablage/visible_categories_titset:71
 #: ../templates/database/wikisource_de/visible_categories_titset:72
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:70
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:54
@@ -11831,6 +11885,7 @@ msgstr "Places"
 #: ../templates/database/portrait/visible_categories_titset:50
 #: ../templates/database/richter/visible_categories_titset:75
 #: ../templates/database/umschlaege/visible_categories_titset:76
+#: ../templates/database/usbzsablage/visible_categories_titset:75
 #: ../templates/database/wikisource_de/visible_categories_titset:76
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:74
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:55
@@ -11853,6 +11908,7 @@ msgstr "Issued with note"
 #: ../templates/database/portrait/visible_categories_titset:51
 #: ../templates/database/richter/visible_categories_titset:76
 #: ../templates/database/umschlaege/visible_categories_titset:77
+#: ../templates/database/usbzsablage/visible_categories_titset:76
 #: ../templates/database/wikisource_de/visible_categories_titset:77
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:75
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:56
@@ -11875,6 +11931,7 @@ msgstr "Title of serially published supplementary items note"
 #: ../templates/database/portrait/visible_categories_titset:52
 #: ../templates/database/richter/visible_categories_titset:77
 #: ../templates/database/umschlaege/visible_categories_titset:78
+#: ../templates/database/usbzsablage/visible_categories_titset:77
 #: ../templates/database/wikisource_de/visible_categories_titset:78
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:76
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:57
@@ -11897,6 +11954,7 @@ msgstr "Related files note"
 #: ../templates/database/portrait/visible_categories_titset:53
 #: ../templates/database/richter/visible_categories_titset:78
 #: ../templates/database/umschlaege/visible_categories_titset:79
+#: ../templates/database/usbzsablage/visible_categories_titset:78
 #: ../templates/database/wikisource_de/visible_categories_titset:79
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:77
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:58
@@ -11919,6 +11977,7 @@ msgstr "Earlier edition"
 #: ../templates/database/portrait/visible_categories_titset:54
 #: ../templates/database/richter/visible_categories_titset:79
 #: ../templates/database/umschlaege/visible_categories_titset:80
+#: ../templates/database/usbzsablage/visible_categories_titset:79
 #: ../templates/database/wikisource_de/visible_categories_titset:80
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:78
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:59
@@ -11941,6 +12000,7 @@ msgstr "Earlier title"
 #: ../templates/database/portrait/visible_categories_titset:55
 #: ../templates/database/richter/visible_categories_titset:80
 #: ../templates/database/umschlaege/visible_categories_titset:81
+#: ../templates/database/usbzsablage/visible_categories_titset:80
 #: ../templates/database/wikisource_de/visible_categories_titset:81
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:79
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:60
@@ -11963,6 +12023,7 @@ msgstr "Later edition"
 #: ../templates/database/portrait/visible_categories_titset:56
 #: ../templates/database/richter/visible_categories_titset:72
 #: ../templates/database/umschlaege/visible_categories_titset:73
+#: ../templates/database/usbzsablage/visible_categories_titset:72
 #: ../templates/database/wikisource_de/visible_categories_titset:73
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:71
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:61
@@ -11985,6 +12046,7 @@ msgstr "Concordance of titles"
 #: ../templates/database/portrait/visible_categories_titset:57
 #: ../templates/database/richter/visible_categories_titset:73
 #: ../templates/database/umschlaege/visible_categories_titset:74
+#: ../templates/database/usbzsablage/visible_categories_titset:73
 #: ../templates/database/wikisource_de/visible_categories_titset:74
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:72
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:62
@@ -12007,6 +12069,7 @@ msgstr "Number of copies"
 #: ../templates/database/portrait/visible_categories_titset:58
 #: ../templates/database/richter/visible_categories_titset:74
 #: ../templates/database/umschlaege/visible_categories_titset:75
+#: ../templates/database/usbzsablage/visible_categories_titset:74
 #: ../templates/database/wikisource_de/visible_categories_titset:75
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:73
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:63
@@ -12041,6 +12104,7 @@ msgstr "Reproduction"
 #: ../templates/database/nationallizenzen/visible_categories_titset:103
 #: ../templates/database/richter/visible_categories_titset:102
 #: ../templates/database/umschlaege/visible_categories_titset:103
+#: ../templates/database/usbzsablage/visible_categories_titset:104
 #: ../templates/database/wikisource_de/visible_categories_titset:105
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:100
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:102
@@ -12059,6 +12123,7 @@ msgstr "ISBN"
 #: ../templates/database/nationallizenzen/visible_categories_titset:105
 #: ../templates/database/richter/visible_categories_titset:104
 #: ../templates/database/umschlaege/visible_categories_titset:105
+#: ../templates/database/usbzsablage/visible_categories_titset:105
 #: ../templates/database/wikisource_de/visible_categories_titset:107
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:101
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:104
@@ -12095,6 +12160,7 @@ msgstr "Fingerprint"
 #: ../templates/database/inst001/visible_categories_titset:83
 #: ../templates/database/landschaft/visible_categories_titset:67
 #: ../templates/database/portrait/visible_categories_titset:62
+#: ../templates/database/usbzsablage/visible_categories_titset:83
 #: ../templates/database/wikisource_de/visible_categories_titset:84
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:67
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:62
@@ -12112,6 +12178,7 @@ msgstr "Other standard numbers"
 #: ../templates/database/portrait/visible_categories_titset:63
 #: ../templates/database/richter/visible_categories_titset:54
 #: ../templates/database/umschlaege/visible_categories_titset:55
+#: ../templates/database/usbzsablage/visible_categories_titset:55
 #: ../templates/database/wikisource_de/visible_categories_titset:55
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:54
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:68
@@ -12133,6 +12200,7 @@ msgstr "Title source"
 #: ../templates/database/portrait/visible_categories_titset:64
 #: ../templates/database/richter/visible_categories_titset:41
 #: ../templates/database/umschlaege/visible_categories_titset:42
+#: ../templates/database/usbzsablage/visible_categories_titset:42
 #: ../templates/database/wikisource_de/visible_categories_titset:42
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:41
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:64
@@ -12172,6 +12240,7 @@ msgstr "Edition statement of source"
 #: ../templates/database/portrait/visible_categories_titset:67
 #: ../templates/database/richter/visible_categories_titset:42
 #: ../templates/database/umschlaege/visible_categories_titset:43
+#: ../templates/database/usbzsablage/visible_categories_titset:43
 #: ../templates/database/wikisource_de/visible_categories_titset:43
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:42
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:67
@@ -12197,6 +12266,7 @@ msgstr "Territory"
 #: ../templates/database/portrait/visible_categories_titset:68
 #: ../templates/database/richter/visible_categories_titset:43
 #: ../templates/database/umschlaege/visible_categories_titset:44
+#: ../templates/database/usbzsablage/visible_categories_titset:44
 #: ../templates/database/wikisource_de/visible_categories_titset:44
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:43
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:68
@@ -12249,6 +12319,7 @@ msgstr "Standard numbers of source"
 #: ../templates/database/nationallizenzen/visible_categories_titset:55
 #: ../templates/database/richter/visible_categories_titset:55
 #: ../templates/database/umschlaege/visible_categories_titset:56
+#: ../templates/database/usbzsablage/visible_categories_titset:56
 #: ../templates/database/wikisource_de/visible_categories_titset:56
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:55
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:55
@@ -12269,6 +12340,7 @@ msgstr "Reference"
 #: ../templates/database/portrait/visible_categories_titset:73
 #: ../templates/database/richter/visible_categories_titset:82
 #: ../templates/database/umschlaege/visible_categories_titset:83
+#: ../templates/database/usbzsablage/visible_categories_titset:82
 #: ../templates/database/wikisource_de/visible_categories_titset:83
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:81
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:73
@@ -12291,6 +12363,7 @@ msgstr "Year of publication"
 #: ../templates/database/portrait/visible_categories_titset:74
 #: ../templates/database/richter/visible_categories_titset:83
 #: ../templates/database/umschlaege/visible_categories_titset:84
+#: ../templates/database/usbzsablage/visible_categories_titset:84
 #: ../templates/database/wikisource_de/visible_categories_titset:85
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:82
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:74
@@ -12311,6 +12384,7 @@ msgstr "Holding information of original of microfilming"
 #: ../templates/database/nationallizenzen/visible_categories_titset:51
 #: ../templates/database/richter/visible_categories_titset:51
 #: ../templates/database/umschlaege/visible_categories_titset:52
+#: ../templates/database/usbzsablage/visible_categories_titset:52
 #: ../templates/database/wikisource_de/visible_categories_titset:52
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:51
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:51
@@ -12331,6 +12405,7 @@ msgstr "Specific material designation / file type"
 #: ../templates/database/portrait/visible_categories_titset:75
 #: ../templates/database/richter/visible_categories_titset:52
 #: ../templates/database/umschlaege/visible_categories_titset:53
+#: ../templates/database/usbzsablage/visible_categories_titset:53
 #: ../templates/database/wikisource_de/visible_categories_titset:53
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:52
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:75
@@ -12350,6 +12425,7 @@ msgstr "Electronic location / access"
 #: ../templates/database/landschaft/visible_categories_titset:85
 #: ../templates/database/richter/visible_categories_titset:105
 #: ../templates/database/umschlaege/visible_categories_titset:106
+#: ../templates/database/usbzsablage/visible_categories_titset:106
 #: ../templates/database/wikisource_de/visible_categories_titset:108
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:102
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:85
@@ -12427,6 +12503,7 @@ msgstr "Keywords in variant spelling"
 #: ../templates/database/nationallizenzen/visible_categories_titset:101
 #: ../templates/database/richter/visible_categories_titset:101
 #: ../templates/database/umschlaege/visible_categories_titset:101
+#: ../templates/database/usbzsablage/visible_categories_titset:103
 #: ../templates/database/wikisource_de/visible_categories_titset:103
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:99
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:101
@@ -12460,6 +12537,7 @@ msgstr "Profession/world-view"
 #: ../templates/database/kapsel/visible_categories_titset:88
 #: ../templates/database/nationallizenzen/visible_categories_titset:90
 #: ../templates/database/richter/visible_categories_titset:90
+#: ../templates/database/usbzsablage/visible_categories_titset:91
 #: ../templates/database/wikisource_de/visible_categories_titset:92
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:88
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:90
@@ -12497,6 +12575,7 @@ msgstr "Related to cover art"
 #: ../templates/database/nationallizenzen/visible_categories_titset:86
 #: ../templates/database/richter/visible_categories_titset:86
 #: ../templates/database/umschlaege/visible_categories_titset:87
+#: ../templates/database/usbzsablage/visible_categories_titset:87
 #: ../templates/database/wikisource_de/visible_categories_titset:88
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:84
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:86
@@ -12529,6 +12608,7 @@ msgstr "Transcription"
 #: ../templates/database/nationallizenzen/visible_categories_titset:89
 #: ../templates/database/richter/visible_categories_titset:89
 #: ../templates/database/umschlaege/visible_categories_titset:90
+#: ../templates/database/usbzsablage/visible_categories_titset:90
 #: ../templates/database/wikisource_de/visible_categories_titset:91
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:87
 #: ../templates/profile/kuglight/database/landschaft/visible_categories_titset:81
@@ -12565,6 +12645,7 @@ msgstr "Concordance"
 #: ../templates/database/nationallizenzen/visible_categories_titset:91
 #: ../templates/database/richter/visible_categories_titset:91
 #: ../templates/database/umschlaege/visible_categories_titset:91
+#: ../templates/database/usbzsablage/visible_categories_titset:92
 #: ../templates/database/wikisource_de/visible_categories_titset:93
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:89
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:91
@@ -12583,6 +12664,7 @@ msgstr "Subject headings"
 #: ../templates/database/nationallizenzen/visible_categories_titset:92
 #: ../templates/database/richter/visible_categories_titset:92
 #: ../templates/database/umschlaege/visible_categories_titset:92
+#: ../templates/database/usbzsablage/visible_categories_titset:93
 #: ../templates/database/wikisource_de/visible_categories_titset:94
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:90
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:92
@@ -12601,6 +12683,7 @@ msgstr "Subject headings"
 #: ../templates/database/nationallizenzen/visible_categories_titset:93
 #: ../templates/database/richter/visible_categories_titset:93
 #: ../templates/database/umschlaege/visible_categories_titset:93
+#: ../templates/database/usbzsablage/visible_categories_titset:94
 #: ../templates/database/wikisource_de/visible_categories_titset:95
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:91
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:93
@@ -12619,6 +12702,7 @@ msgstr "Subject headings"
 #: ../templates/database/nationallizenzen/visible_categories_titset:94
 #: ../templates/database/richter/visible_categories_titset:94
 #: ../templates/database/umschlaege/visible_categories_titset:94
+#: ../templates/database/usbzsablage/visible_categories_titset:95
 #: ../templates/database/wikisource_de/visible_categories_titset:96
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:92
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:94
@@ -12637,6 +12721,7 @@ msgstr "Subject headings"
 #: ../templates/database/nationallizenzen/visible_categories_titset:95
 #: ../templates/database/richter/visible_categories_titset:95
 #: ../templates/database/umschlaege/visible_categories_titset:95
+#: ../templates/database/usbzsablage/visible_categories_titset:96
 #: ../templates/database/wikisource_de/visible_categories_titset:97
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:93
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:95
@@ -12655,6 +12740,7 @@ msgstr "Subject headings"
 #: ../templates/database/nationallizenzen/visible_categories_titset:96
 #: ../templates/database/richter/visible_categories_titset:96
 #: ../templates/database/umschlaege/visible_categories_titset:96
+#: ../templates/database/usbzsablage/visible_categories_titset:97
 #: ../templates/database/wikisource_de/visible_categories_titset:98
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:94
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:96
@@ -12673,6 +12759,7 @@ msgstr "Subject headings"
 #: ../templates/database/nationallizenzen/visible_categories_titset:97
 #: ../templates/database/richter/visible_categories_titset:97
 #: ../templates/database/umschlaege/visible_categories_titset:97
+#: ../templates/database/usbzsablage/visible_categories_titset:98
 #: ../templates/database/wikisource_de/visible_categories_titset:99
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:95
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:97
@@ -12691,6 +12778,7 @@ msgstr "Subject headings"
 #: ../templates/database/nationallizenzen/visible_categories_titset:98
 #: ../templates/database/richter/visible_categories_titset:98
 #: ../templates/database/umschlaege/visible_categories_titset:98
+#: ../templates/database/usbzsablage/visible_categories_titset:99
 #: ../templates/database/wikisource_de/visible_categories_titset:100
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:96
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:98
@@ -12709,6 +12797,7 @@ msgstr "Subject headings"
 #: ../templates/database/nationallizenzen/visible_categories_titset:99
 #: ../templates/database/richter/visible_categories_titset:99
 #: ../templates/database/umschlaege/visible_categories_titset:99
+#: ../templates/database/usbzsablage/visible_categories_titset:100
 #: ../templates/database/wikisource_de/visible_categories_titset:101
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:97
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:99
@@ -12727,6 +12816,7 @@ msgstr "Subject headings"
 #: ../templates/database/nationallizenzen/visible_categories_titset:100
 #: ../templates/database/richter/visible_categories_titset:100
 #: ../templates/database/umschlaege/visible_categories_titset:100
+#: ../templates/database/usbzsablage/visible_categories_titset:101
 #: ../templates/database/wikisource_de/visible_categories_titset:102
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:98
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:100
@@ -12746,6 +12836,7 @@ msgid "T1202"
 msgstr "Remark on holdings"
 
 #: ../templates/database/inst001/visible_categories_titset:110
+#: ../templates/database/usbzsablage/visible_categories_titset:110
 msgid "T1600"
 msgstr "Remark"
 
@@ -12756,6 +12847,7 @@ msgstr "Remark"
 #: ../templates/database/nationallizenzen/visible_categories_titset:108
 #: ../templates/database/richter/visible_categories_titset:106
 #: ../templates/database/umschlaege/visible_categories_titset:107
+#: ../templates/database/usbzsablage/visible_categories_titset:107
 #: ../templates/database/wikisource_de/visible_categories_titset:109
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:103
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:106
@@ -12774,6 +12866,7 @@ msgstr "Provenance"
 #: ../templates/database/nationallizenzen/visible_categories_titset:109
 #: ../templates/database/richter/visible_categories_titset:107
 #: ../templates/database/umschlaege/visible_categories_titset:108
+#: ../templates/database/usbzsablage/visible_categories_titset:108
 #: ../templates/database/wikisource_de/visible_categories_titset:110
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:104
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:107
@@ -12792,6 +12885,7 @@ msgstr "USB URL"
 #: ../templates/database/nationallizenzen/visible_categories_titset:110
 #: ../templates/database/richter/visible_categories_titset:108
 #: ../templates/database/umschlaege/visible_categories_titset:109
+#: ../templates/database/usbzsablage/visible_categories_titset:109
 #: ../templates/database/wikisource_de/visible_categories_titset:111
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:105
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:108
@@ -12841,11 +12935,16 @@ msgstr "Table of contents (tiff)"
 msgid "T3003"
 msgstr "Table of contents (pdf)"
 
+#: ../templates/database/usbzsablage/visible_categories_titset:111
+msgid "T4100"
+msgstr "Basic classification"
+
 #: ../templates/database/alff/visible_categories_titset:114
 #: ../templates/database/inst001/visible_categories_titset:112
 #: ../templates/database/nationallizenzen/visible_categories_titset:113
 #: ../templates/database/richter/visible_categories_titset:112
 #: ../templates/database/umschlaege/visible_categories_titset:112
+#: ../templates/database/usbzsablage/visible_categories_titset:112
 #: ../templates/database/wikisource_de/visible_categories_titset:114
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:112
 #: ../templates/profile/kuglight/database/umschlaege/visible_categories_titset:112
@@ -12864,6 +12963,7 @@ msgstr "Tags of users"
 #: ../templates/database/nationallizenzen/visible_categories_titset:114
 #: ../templates/database/richter/visible_categories_titset:113
 #: ../templates/database/umschlaege/visible_categories_titset:113
+#: ../templates/database/usbzsablage/visible_categories_titset:113
 #: ../templates/database/wikisource_de/visible_categories_titset:115
 #: ../templates/profile/kuglight/database/einbaende/visible_categories_titset:25
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:109
@@ -12884,6 +12984,7 @@ msgstr "# of superordinate titles"
 #: ../templates/database/nationallizenzen/visible_categories_titset:115
 #: ../templates/database/richter/visible_categories_titset:114
 #: ../templates/database/umschlaege/visible_categories_titset:114
+#: ../templates/database/usbzsablage/visible_categories_titset:114
 #: ../templates/database/wikisource_de/visible_categories_titset:116
 #: ../templates/profile/kuglight/database/einbaende/visible_categories_titset:26
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:110
@@ -12903,6 +13004,7 @@ msgstr "# of dependent titles"
 #: ../templates/database/nationallizenzen/visible_categories_titset:116
 #: ../templates/database/richter/visible_categories_titset:115
 #: ../templates/database/umschlaege/visible_categories_titset:115
+#: ../templates/database/usbzsablage/visible_categories_titset:115
 #: ../templates/database/wikisource_de/visible_categories_titset:117
 #: ../templates/profile/kuglight/database/kapsel/visible_categories_titset:111
 #: ../templates/profile/kuglight/database/richter/visible_categories_titset:115
@@ -14155,10 +14257,10 @@ msgstr "Due to an unexpectant event the KUG cannot be used for the next few minu
 #: ../templates/database/edz/circset:113 ../templates/database/edz/circset:77
 #: ../templates/database/inst001/circset:113
 #: ../templates/database/inst001/circset:77
-#: ../templates/database/inst006/circset:42
-#: ../templates/database/inst420/circset:42
-#: ../templates/database/inst431/circset:42
-#: ../templates/database/inst526/circset:42
+#: ../templates/database/inst006/circset:43
+#: ../templates/database/inst420/circset:43
+#: ../templates/database/inst431/circset:43
+#: ../templates/database/inst526/circset:43
 #: ../templates/database/lehrbuchsmlg/circset:113
 #: ../templates/database/lehrbuchsmlg/circset:77
 #: ../templates/database/lesesaal/circset:113
@@ -14981,11 +15083,11 @@ msgstr "from:"
 
 #: ../templates/database/edz/circset:109
 #: ../templates/database/inst001/circset:109
-#: ../templates/database/inst006/circset:70
+#: ../templates/database/inst006/circset:77
 #: ../templates/database/inst302/circset:59
-#: ../templates/database/inst420/circset:70
-#: ../templates/database/inst431/circset:70
-#: ../templates/database/inst526/circset:70
+#: ../templates/database/inst420/circset:77
+#: ../templates/database/inst431/circset:77
+#: ../templates/database/inst526/circset:77
 #: ../templates/database/lehrbuchsmlg/circset:109
 #: ../templates/database/lesesaal/circset:109
 #: ../templates/database/rheinabt/circset:109
@@ -14996,11 +15098,11 @@ msgstr "eliminated"
 
 #: ../templates/database/edz/circset:107
 #: ../templates/database/inst001/circset:107
-#: ../templates/database/inst006/circset:68
+#: ../templates/database/inst006/circset:75
 #: ../templates/database/inst302/circset:57
-#: ../templates/database/inst420/circset:68
-#: ../templates/database/inst431/circset:68
-#: ../templates/database/inst526/circset:68
+#: ../templates/database/inst420/circset:75
+#: ../templates/database/inst431/circset:75
+#: ../templates/database/inst526/circset:75
 #: ../templates/database/lehrbuchsmlg/circset:107
 #: ../templates/database/lesesaal/circset:107
 #: ../templates/database/rheinabt/circset:107
@@ -15011,11 +15113,11 @@ msgstr "complained to supplier"
 
 #: ../templates/database/edz/circset:105
 #: ../templates/database/inst001/circset:105
-#: ../templates/database/inst006/circset:66
+#: ../templates/database/inst006/circset:73
 #: ../templates/database/inst302/circset:55
-#: ../templates/database/inst420/circset:66
-#: ../templates/database/inst431/circset:66
-#: ../templates/database/inst526/circset:66
+#: ../templates/database/inst420/circset:73
+#: ../templates/database/inst431/circset:73
+#: ../templates/database/inst526/circset:73
 #: ../templates/database/lehrbuchsmlg/circset:105
 #: ../templates/database/lesesaal/circset:105
 #: ../templates/database/rheinabt/circset:105
@@ -15026,11 +15128,11 @@ msgstr "order to supplier cancelled"
 
 #: ../templates/database/edz/circset:101
 #: ../templates/database/inst001/circset:101
-#: ../templates/database/inst006/circset:62
+#: ../templates/database/inst006/circset:69
 #: ../templates/database/inst302/circset:51
-#: ../templates/database/inst420/circset:62
-#: ../templates/database/inst431/circset:62
-#: ../templates/database/inst526/circset:62
+#: ../templates/database/inst420/circset:69
+#: ../templates/database/inst431/circset:69
+#: ../templates/database/inst526/circset:69
 #: ../templates/database/lehrbuchsmlg/circset:101
 #: ../templates/database/lesesaal/circset:101
 #: ../templates/database/rheinabt/circset:101
@@ -15072,11 +15174,11 @@ msgstr "separated catalogues"
 
 #: ../templates/database/edz/circset:103
 #: ../templates/database/inst001/circset:103
-#: ../templates/database/inst006/circset:64
+#: ../templates/database/inst006/circset:71
 #: ../templates/database/inst302/circset:53
-#: ../templates/database/inst420/circset:64
-#: ../templates/database/inst431/circset:64
-#: ../templates/database/inst526/circset:64
+#: ../templates/database/inst420/circset:71
+#: ../templates/database/inst431/circset:71
+#: ../templates/database/inst526/circset:71
 #: ../templates/database/lehrbuchsmlg/circset:103
 #: ../templates/database/lesesaal/circset:103
 #: ../templates/database/rheinabt/circset:103

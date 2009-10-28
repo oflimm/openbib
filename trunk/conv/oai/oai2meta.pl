@@ -35,7 +35,6 @@ use warnings;
 use strict;
 
 use XML::Twig;
-use File::Slurp;
 use Getopt::Long;
 use YAML::Syck;
 use Encode qw /decode_utf8/;

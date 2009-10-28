@@ -37,7 +37,7 @@ use Getopt::Long;
 
 use OAI2::Harvester;
 
-binmode STDOUT, ':utf8';
+#binmode STDOUT, ':utf8';
 
 &GetOptions("oaiurl=s" => \$oaiurl,
 	    );
@@ -68,12 +68,16 @@ if( $response->is_error ) {
   exit();
 }
 
+print "<?xml version = '1.0' encoding = 'UTF-8'?>\n";
 print "<oairesponse>\n";
 while( my $rec = $response->next ) {
+    print "<record>\n";
+    print " <id>".$rec->identifier."</id>\n";
     if( $rec->is_error ) {
         die $rec->message;
     }
     print $rec->metadata, "\n";
+    print "</record>\n";
 }
 print "</oairesponse>\n";
 

@@ -31,310 +31,261 @@
 use 5.008001;
 
 use utf8;
+use warnings;
+use strict;
 
 use XML::Twig;
+use File::Slurp;
+use Getopt::Long;
+use YAML::Syck;
+use Encode qw /decode_utf8/;
 
-use vars qw(@autbuffer @autdubbuf);
-use vars qw(@korbuffer @kordubbuf);
-use vars qw(@swtbuffer @swtdubbuf);
-use vars qw(@titbuffer @titdubbuf);
-use vars qw($id);
-my $inputfile=$ARGV[0];
+use OpenBib::Conv::Common::Util;
+use OpenBib::Config;
 
-$autdublastidx=1;
-$autidx=0;
+our $mexidn  =  1;
 
-$kordublastidx=1;
-$koridx=0;
+my ($inputfile,$idmappingfile);
 
-$swtdublastidx=1;
-$swtidx=0;
+&GetOptions(
+	    "inputfile=s"          => \$inputfile,
+            "idmappingfile=s"      => \$idmappingfile,
+	    );
 
-$titdublastidx=1;
-$titidx=0;
+if (!$inputfile || !$idmappingfile){
+    print << "HELP";
+oai2meta.pl - Aufrufsyntax
 
-my $id=1;
+    oai2meta.pl --inputfile=xxx --idmappingfile=yyy
+HELP
+exit;
+}
 
-@autbuffer=();
-@autdubbuf=();
-@korbuffer=();
-@kordubbuf=();
-@swtbuffer=();
-@swtdubbuf=();
-@titbuffer=();
-@titdubbuf=();
+open (TIT,     ,"|buffer | gzip > unload.TIT.gz");
+open (AUT,     ,"|buffer | gzip > unload.PER.gz");
+open (KOR,     ,"|buffer | gzip > unload.KOE.gz");
+open (NOTATION ,"|buffer | gzip > unload.SYS.gz");
+open (SWT,     ,"|buffer | gzip > unload.SWD.gz");
+open (MEX,     ,"|buffer | gzip > unload.MEX.gz");
+
+binmode(TIT,     ":utf8");
+binmode(AUT,     ":utf8");
+binmode(KOR,     ":utf8");
+binmode(NOTATION,":utf8");
+binmode(SWT,     ":utf8");
+binmode(MEX,     ":utf8");
+
+our %numericidmapping;
+our %have_id = ();
+
+our $numericidmapping_ref;
+
+if (! -f $idmappingfile){
+    %numericidmapping = ();
+}
+else {
+    $numericidmapping_ref = LoadFile($idmappingfile);
+    
+    %numericidmapping = %{$numericidmapping_ref};
+}
+
+if (! exists $numericidmapping{'next_unused_id'}){
+    $numericidmapping{'next_unused_id'}=1;
+}
 
 my $twig= XML::Twig->new(
-   TwigHandlers => {
-     "/oairesponse/metadata/oai_dc:dc" => \&parse_titset
-   }
+    TwigHandlers => {
+        "/oairesponse/record" => \&parse_titset
+    },
  );
 
 
 $twig->parsefile($inputfile);
 
-ausgabeautfile();
-ausgabekorfile();
-ausgabeswtfile();
-ausgabetitfile();
+DumpFile($idmappingfile,\%numericidmapping);
 
 sub parse_titset {
     my($t, $titset)= @_;
-    
-    $titbuffer[$titidx++]="0000:".$id;
-    $id++;
-               
+
     # Verfasser/Personen
-    foreach my $desk ($titset->children('dc:creator')){
-        my $ans=$desk->text();
-        if ($ans){
-            my $idn=get_autidn($ans);
-            if ($idn > 0){
-                $autbuffer[$autidx++]="0000:".$idn;
-                $autbuffer[$autidx++]="0001:".$ans;
-                $autbuffer[$autidx++]="9999:";
-            }
-            else {
-                $idn=(-1)*$idn;
-            }
+    foreach my $desk ($titset->children('id')){
+        my $id=$desk->text();
+        my ($intid,$is_new) = get_next_numeric_id($id);
 
-            $titbuffer[$titidx++]="0100:IDN: ".$idn;
-        }
-    }
+        next if ($have_id{$intid});
 
-    # Koerperschaften
-    foreach my $desk ($titset->children('dc:publisher')){
-        my $ans=$desk->text();
-        if ($ans){
-            my $idn=get_koridn($ans);
-            if ($idn > 0){
-                $korbuffer[$koridx++]="0000:".$idn;
-                $korbuffer[$koridx++]="0001:".$ans;
-                $korbuffer[$koridx++]="9999:";
-            }
-            else {
-                $idn=(-1)*$idn;
-            }
-
-            $titbuffer[$titidx++]="0201:IDN: ".$idn;
-        }
-    }
-
-    # Schlagworte
-    foreach my $desk ($titset->children('dc:subject')){
-        my $ans=$desk->text();
-        if ($ans){
-            my $idn=get_swtidn($ans);
-            if ($idn > 0){
-                $swtbuffer[$swtidx++]="0000:".$idn;
-                $swtbuffer[$swtidx++]="0001:".$ans;
-                $swtbuffer[$swtidx++]="9999:";
-            }
-            else {
-                $idn=(-1)*$idn;
-            }
-
-            $titbuffer[$titidx++]="0710:IDN: ".$idn;
-        }
-    }
-    
-    # Titelkategorien
-
-    # Titel
-    if($titset->first_child('dc:title')->text()){
-        $titbuffer[$titidx++]="0331:".$titset->first_child('dc:title')->text();
-    }
-
-    # Datum
-    if($titset->first_child('dc:date')->text()){
-        $titbuffer[$titidx++]="0002:".$titset->first_child('dc:date')->text();
-    }
-    
-    # HSFN
-    if($titset->first_child('dc:type')->text()){
-        my $type=$titset->first_child('dc:type')->text();
-
-        if ($type=~/Text.Thesis.Doctoral/){
-            $type="Dissertation";
-        }
-        elsif ($type=~/Text.Thesis.Habilitation/){
-            $type="Habilitation";
-        }
-        elsif ($cleantype=~/Text.Thesis.Doctoral.Abstract/){
-            $type="Dissertations-Abstract";
-        }
-
-        $titbuffer[$titidx++]="0519:".$type;
-    }
-
-    # Abstract
-    foreach my $desk ($titset->children('dc:description')){
-        my $abstract=$desk->text();
+        $have_id{$intid}=1;
         
-        $abstract=~s/&lt;(\S{1,5})&gt;/<$1>/g;
-        $abstract=~s/&amp;(\S{1,8});/&$1;/g;
-        $abstract=~s/\n/<br>/g;
-        $abstract=~s/^Zusammenfassung<br>//g;
-        $abstract=~s/^Summary<br>//g;
-        $abstract=~s/\|/&#124;/g;
+        print TIT "0000:$intid\n";
+        print TIT "0010:$id\n";
 
-        $titbuffer[$titidx++]="0750:".$abstract;
+        last; # Nur ein Durchlauf
     }
 
-    # URL
-    foreach my $desk ($titset->children('dc:identifier')){
-        my $url=$desk->text();
+    foreach my $mdnode ($titset->children('metadata')){
+        foreach my $oainode ($mdnode->children('oai_dc:dc')){
+            
+            # Verfasser/Personen
+            foreach my $desk ($oainode->children('dc:creator')){
+                my $content = decode_utf8($desk->text());
+                
+                my $autidn  = OpenBib::Conv::Common::Util::get_autidn($content);
+                
+                if ($autidn > 0) {
+                    print AUT "0000:$autidn\n";
+                    print AUT "0001:$content\n";
+                    print AUT "9999:\n";
+                }
+                else {
+                    $autidn=(-1)*$autidn;
+                }
+                
+                print TIT "0100:IDN: $autidn\n";
+            }
+            
+            # Koerperschaften
+            foreach my $desk ($oainode->children('dc:publisher')){
+                my $content = decode_utf8($desk->text());
+                
+                my $koridn  = OpenBib::Conv::Common::Util::get_koridn($content);
+                
+                if ($koridn > 0) {
+                    print KOR "0000:$koridn\n";
+                    print KOR "0001:$content\n";
+                    print KOR "9999:\n";
+                }
+                else {
+                    $koridn=(-1)*$koridn;
+                }
+                
+                print TIT "0201:IDN: $koridn\n";
 
-        $titbuffer[$titidx++]="0662:".$url if ($url=~/http/);
-    }
+            }
+        
+            # Schlagworte
+            foreach my $desk ($oainode->children('dc:subject')){
+                my $content = decode_utf8($desk->text());
 
-    # Format
-    foreach my $desk ($titset->children('dc:format')){
-        my $format=$desk->text();
+                if ($content){
+                    
+                    my @parts = ();
+                    if ($content=~/(?:\s*,\s*|\s*;\s*)/){
+                        @parts = split('(?:\s*,\s*|\s*;\s*)',$content);
+                    }
+                    else {
+                        push @parts, $content;
+                    }
+                    
+                    foreach my $part (@parts){
+                        $part=~s/^(\w)/\u$1/;
+                        my $swtidn  = OpenBib::Conv::Common::Util::get_swtidn($part);
+                        
+                        if ($swtidn > 0) {
+                            print SWT "0000:$swtidn\n";
+                            print SWT "0001:$part\n";
+                            print SWT "9999:\n";
+                        }
+                        else {
+                            $swtidn=(-1)*$swtidn;
+                        }
+                        
+                        print TIT "0710:IDN: $swtidn\n";
+                    }
+                }
+            }
+            
+            # Titelkategorien
+            
+            # Titel
+            if($oainode->first_child('dc:title')->text()){
+                print TIT "0331:".decode_utf8($oainode->first_child('dc:title')->text())."\n";
+            }
+            
+            # Datum
+            if($oainode->first_child('dc:date')->text()){
+                print TIT "0002:".decode_utf8($oainode->first_child('dc:date')->text())."\n";
+            }
+            
+            # HSFN
+            if ($oainode->first_child('dc:type')->text()) {
+                my $type=decode_utf8($oainode->first_child('dc:type')->text());
 
-        $titbuffer[$titidx++]="0435:".$format;
-    }
+                if ($type=~/Text.Thesis.Doctoral/) {
+                    $type="Dissertation";
+                }
+                elsif ($type=~/Text.Thesis.Habilitation/) {
+                    $type="Habilitation";
+                }
+                elsif ($type=~/Text.Thesis.Doctoral.Abstract/) {
+                    $type="Dissertations-Abstract";
+                }
 
-    # Sprache
-    foreach my $desk ($titset->children('dc:language')){
-        my $lang=$desk->text();
+                print TIT "0519:$type\n";
+            }
 
-        $titbuffer[$titidx++]="0516:".$lang;
-    }
+            # Abstract
+            foreach my $desk ($oainode->children('dc:description')) {
+                my $abstract = decode_utf8($desk->text());
+        
+                $abstract=~s/&lt;(\S{1,5})&gt;/<$1>/g;
+                $abstract=~s/&amp;(\S{1,8});/&$1;/g;
+                $abstract=~s/\n/<br>/g;
+                $abstract=~s/^Zusammenfassung<br>//g;
+                $abstract=~s/^Summary<br>//g;
+                $abstract=~s/\|/&#124;/g;
+
+                print TIT "0750:$abstract\n";
+            }
+
+            # URL
+            foreach my $desk ($oainode->children('dc:identifier')) {
+                my $url=decode_utf8($desk->text());
+
+                print TIT "0662:$url\n" if ($url=~/http/);
+            }
+
+            # Format
+            foreach my $desk ($oainode->children('dc:format')) {
+                my $format=decode_utf8($desk->text());
+
+                print TIT "0435:$format\n";
+            }
+
+            # Sprache
+            foreach my $desk ($oainode->children('dc:language')) {
+                my $lang=decode_utf8($desk->text());
+
+                print TIT "0516:$lang\n";
+            }
 
     
-    # Jahr
-    if($titset->first_child('dc:date')->text()){
-        $titbuffer[$titidx++]="0425:".$titset->first_child('dc:date')->text();
+            # Jahr
+            if ($oainode->first_child('dc:date')->text()) {
+                print TIT "0425:".decode_utf8($oainode->first_child('dc:date')->text())."\n";
+            }
+        }
     }
+    
 
-    $titbuffer[$titidx++]="9999:";
+    print TIT "9999:\n";
     
     # Release memory of processed tree
     # up to here
     $t->purge();
 }
-                                   
-                                   
-sub get_autidn {
-    ($autans)=@_;
-    
-    $autdubidx=1;
-    $autdubidn=0;
-                                   
-    while ($autdubidx < $autdublastidx){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;      
-            
-            # print STDERR "AutIDN schon vorhanden: $autdubidn\n";
-        }
-        $autdubidx++;
-    }
-    if (!$autdubidn){
-        $autdubbuf[$autdublastidx]=$autans;
-        $autdubidn=$autdublastidx;
-        #print STDERR "AutIDN noch nicht vorhanden: $autdubidn\n";
-        $autdublastidx++;
-        
-    }
-    return $autdubidn;
-}
-                                   
-sub get_swtidn {
-    ($swtans)=@_;
-    
-    $swtdubidx=1;
-    $swtdubidn=0;
-    #  print "Swtans: $swtans\n";
-    
-    while ($swtdubidx < $swtdublastidx){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;      
-            
-            #            print "SwtIDN schon vorhanden: $swtdubidn, $swtdublastidx\n";
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdublastidx]=$swtans;
-        $swtdubidn=$swtdublastidx;
-        #        print "SwtIDN noch nicht vorhanden: $swtdubidn, $swtdubidx, $swtdublastidx\n";
-        $swtdublastidx++;
-        
-    }
-    return $swtdubidn;
-}
-                                   
-sub get_koridn {
-    ($korans)=@_;
-    
-    $kordubidx=1;
-    $kordubidn=0;
-    #  print "Korans: $korans\n";
-    
-    while ($kordubidx < $kordublastidx){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;
-        }
-        $kordubidx++;
-    }
-    if (!$kordubidn){
-        $kordubbuf[$kordublastidx]=$korans;
-        $kordubidn=$kordublastidx;
-        #    print "KorIDN noch nicht vorhanden: $kordubidn\n";
-        $kordublastidx++;
-    }
-    return $kordubidn;
-}
 
-sub ausgabeautfile {
-    open(AUT,">:utf8","unload.PER");
-    $i=0;
-    while ($i < $autidx){
-        print AUT $autbuffer[$i],"\n";
-        $i++;
+sub get_next_numeric_id {
+    my $alnumidentifier = shift;
+
+    if (exists $numericidmapping{$alnumidentifier}){
+        # (Id,New?)
+        return ($numericidmapping{$alnumidentifier},0);
     }
-    close(AUT);
-}
+    else {
+        $numericidmapping{$alnumidentifier}= $numericidmapping{'next_unused_id'};
+        $numericidmapping{'next_unused_id'}=$numericidmapping{'next_unused_id'}+1;
 
-sub ausgabetitfile
-{
-    open (TIT,">:utf8","unload.TIT");
-    $i=0;
-    while ($i < $titidx){
-	print TIT $titbuffer[$i],"\n";
-	$i++;
+        # (Id,New?)
+        return ($numericidmapping{$alnumidentifier},1);
     }
-    close(TIT);
 }
-
-sub ausgabemexfile {
-    open(MEX,">:utf8","mex.exp");
-    $i=0;
-    while ($i < $mexidx){
-	print MEX $mexbuffer[$i],"\n";
-	$i++;
-    }
-    close(MEX);
-}
-
-sub ausgabeswtfile {
-  open(SWT,">:utf8","unload.SWD");
-  $i=0;
-  while ($i < $swtidx) {
-      print SWT $swtbuffer[$i],"\n";
-      $i++;
-  }
-  close(SWT);
-}
-
-sub ausgabekorfile {
-    open(KOR,">:utf8","unload.KOE");
-    $i=0;
-    while ($i < $koridx){
-	print KOR $korbuffer[$i],"\n";
-	$i++;
-    }
-    close(KOR);
-}
-

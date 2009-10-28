@@ -106,7 +106,7 @@ DumpFile($idmappingfile,\%numericidmapping);
 sub parse_titset {
     my($t, $titset)= @_;
 
-    # Verfasser/Personen
+    # Id
     foreach my $desk ($titset->children('id')){
         my $id=$desk->text();
         my ($intid,$is_new) = get_next_numeric_id($id);
@@ -126,7 +126,7 @@ sub parse_titset {
             
             # Verfasser/Personen
             foreach my $desk ($oainode->children('dc:creator')){
-                my $content = decode_utf8($desk->text());
+                my $content = $desk->text();
                 
                 my $autidn  = OpenBib::Conv::Common::Util::get_autidn($content);
                 
@@ -144,7 +144,7 @@ sub parse_titset {
             
             # Koerperschaften
             foreach my $desk ($oainode->children('dc:publisher')){
-                my $content = decode_utf8($desk->text());
+                my $content = $desk->text();
                 
                 my $koridn  = OpenBib::Conv::Common::Util::get_koridn($content);
                 
@@ -163,7 +163,7 @@ sub parse_titset {
         
             # Schlagworte
             foreach my $desk ($oainode->children('dc:subject')){
-                my $content = decode_utf8($desk->text());
+                my $content = $desk->text();
 
                 if ($content){
                     
@@ -197,17 +197,17 @@ sub parse_titset {
             
             # Titel
             if($oainode->first_child('dc:title')->text()){
-                print TIT "0331:".decode_utf8($oainode->first_child('dc:title')->text())."\n";
+                print TIT "0331:".$oainode->first_child('dc:title')->text()."\n";
             }
             
             # Datum
             if($oainode->first_child('dc:date')->text()){
-                print TIT "0002:".decode_utf8($oainode->first_child('dc:date')->text())."\n";
+                print TIT "0002:".$oainode->first_child('dc:date')->text()."\n";
             }
             
             # HSFN
             if ($oainode->first_child('dc:type')->text()) {
-                my $type=decode_utf8($oainode->first_child('dc:type')->text());
+                my $type=$oainode->first_child('dc:type')->text();
 
                 if ($type=~/Text.Thesis.Doctoral/) {
                     $type="Dissertation";
@@ -224,7 +224,7 @@ sub parse_titset {
 
             # Abstract
             foreach my $desk ($oainode->children('dc:description')) {
-                my $abstract = decode_utf8($desk->text());
+                my $abstract = $desk->text();
         
                 $abstract=~s/&lt;(\S{1,5})&gt;/<$1>/g;
                 $abstract=~s/&amp;(\S{1,8});/&$1;/g;
@@ -238,21 +238,21 @@ sub parse_titset {
 
             # URL
             foreach my $desk ($oainode->children('dc:identifier')) {
-                my $url=decode_utf8($desk->text());
+                my $url=$desk->text();
 
                 print TIT "0662:$url\n" if ($url=~/http/);
             }
 
             # Format
             foreach my $desk ($oainode->children('dc:format')) {
-                my $format=decode_utf8($desk->text());
+                my $format=$desk->text();
 
                 print TIT "0435:$format\n";
             }
 
             # Sprache
             foreach my $desk ($oainode->children('dc:language')) {
-                my $lang=decode_utf8($desk->text());
+                my $lang=$desk->text();
 
                 print TIT "0516:$lang\n";
             }
@@ -260,7 +260,7 @@ sub parse_titset {
     
             # Jahr
             if ($oainode->first_child('dc:date')->text()) {
-                print TIT "0425:".decode_utf8($oainode->first_child('dc:date')->text())."\n";
+                print TIT "0425:".$oainode->first_child('dc:date')->text()."\n";
             }
         }
     }

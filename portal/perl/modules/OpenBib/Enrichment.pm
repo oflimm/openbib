@@ -40,6 +40,7 @@ use Storable ();
 
 use OpenBib::Config;
 use OpenBib::Database::DBI;
+use OpenBib::Record::Title;
 
 sub new {
     my ($class) = @_;
@@ -236,6 +237,103 @@ sub normdata_to_bdb {
     $dbh->disconnect;
 }
 
+sub get_common_holdings {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $selector            = exists $arg_ref->{selector}
+        ? $arg_ref->{selector}         : "ISBN13";
+
+    my $databases_ref       = exists $arg_ref->{databases}
+        ? $arg_ref->{databases}        : ();
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
+
+    my %selector_length = (
+        'BibKey' => 33,
+        'ISBN13' => 13,
+        'ISSN'   => 8,
+    );
+
+    return () unless (@{$databases_ref} && defined $dbh && exists $selector_length{$selector});
+
+    my $common_holdings_ref = [];
+
+    my %all_isbn             = ();
+
+    my $in_select_string = join(',',map {'?'} @{$databases_ref});
+    
+    my $sql_string = "select * from all_isbn where dbname in ($in_select_string) and length(isbn)=?";
+    
+    $logger->debug($sql_string);
+    
+    my $request=$dbh->prepare($sql_string) or $logger->error($DBI::errstr);
+    
+    $request->execute(@{$databases_ref},$selector_length{$selector}) or $logger->error($DBI::errstr);;
+    
+    while (my $result=$request->fetchrow_hashref){
+        if (!exists $all_isbn{$result->{isbn}}{$result->{dbname}} && $result->{id}){
+            $all_isbn{$result->{isbn}}{$result->{dbname}} = [ $result->{id} ];
+        }
+        elsif ($result->{id}) {
+            push @{$all_isbn{$result->{isbn}}{$result->{dbname}}}, $result->{id};
+        }
+    }
+    
+    # Einzelbestaende entfernen
+    foreach my $isbn (keys %all_isbn){
+        my @owning_dbs = keys %{$all_isbn{$isbn}};
+
+        $logger->debug("$isbn - $#owning_dbs - ".join(" ; ",@owning_dbs));
+        
+        if ($#owning_dbs < 1){
+            delete($all_isbn{$isbn});
+        }
+    }
+
+    foreach my $isbn (keys %all_isbn){
+        my $this_item_ref = {};
+        
+        my $persons = "";
+        my $title   = "";
+        foreach my $database (@{$databases_ref}){
+            if (exists $all_isbn{$isbn}{$database}){
+                my @signaturen = ();
+                foreach my $id (@{$all_isbn{$isbn}{$database}}){
+                    my $record=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record->get_brief_normdata;
+                    if (!$persons){
+                        $persons=$record->{PC0001}[0]{content};
+                    }
+                    
+                    if (!$title){
+                        $title=$record->{T0331}[0]{content};
+                    }
+                    foreach my $signature_ref (@{$record->{X0014}}){
+                        push @signaturen, $signature_ref->{content};
+                    }
+                }
+                $this_item_ref->{$database}{loc_mark} = join(" ; ",@signaturen);
+            }
+            else {
+                $this_item_ref->{$database}{loc_mark} = "";
+            }
+        }
+
+        $this_item_ref->{$selector}  = $isbn;
+        $this_item_ref->{persons}    = $persons;
+        $this_item_ref->{title}      = $title;
+
+        push @{$common_holdings_ref}, $this_item_ref;
+    }
+
+    return $common_holdings_ref;
+}
+
 1;
 __END__
 
@@ -262,6 +360,8 @@ der Anreicherungsdatenbank. Diese lassen sich z.B. in den Templates
 
  my $similar_isbn_ref      = $enrich->get_similar_isbns({ isbn => '3-540-43645-6' })
 
+ my $commons_holdings_ref  = $enrich->get_common_holdings({ selector => 'ISBN13' databases => ['inst103','inst106'] });
+
 =head1 METHODS
 
 =over 4
@@ -287,6 +387,14 @@ $category wird entsprechen der ISBN eine Abgleich mit allen Titeln in
 allen Datenbanken und ein Histogram in Form einer Hashreferenz auf den
 Inhalt content sowie eine Listenreferenz histogram mit den
 Informationen über die Datenbank dbname und der dortigen Anzahl count.
+
+=item get_common_holdings({ selector => $selector, databases => $databases_ref })
+
+Entsprechend des Kriteriums $selector (Werte: ISBN13, ISSN, BibKey) werden die Datenbanken
+$databases_ref miteinander abgeglichen, um gemeinsamen Besitz zu ermitteln. Hat mehr als eine
+Datenbank einen Titel, so werden die Informationen "Wert des Selektor", Signaturen pro
+Datenbank, Personen und Titel als Hash-Referenz in einer Array-Referenz abgelegt. Diese
+Array-Referenz wird als Ergebnis zurückgeliefert.
 
 =back
 

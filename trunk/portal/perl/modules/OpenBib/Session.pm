@@ -35,7 +35,7 @@ use base qw(Apache::Singleton);
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
-use YAML;
+use YAML::Syck;
 
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
@@ -1540,6 +1540,40 @@ sub get_info {
     return ($benutzernr,$createtime);
 }
 
+sub get_recently_selected_titles {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $offset   = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}            : 0;
+    my $hitrange = exists $arg_ref->{hitrange}
+        ? $arg_ref->{hitrange}          : 50;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("select content from eventlog where sessionid=? and type=10 order by tstamp DESC limit $offset,$hitrange") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
+    my $recordlist = new OpenBib::RecordList::Title;
+
+    while (my $res=$idnresult->fetchrow_hashref){
+        my $content_ref = Storable::thaw(pack "H*",$res->{content});
+        $recordlist->add(new OpenBib::Record::Title({database => $content_ref->{database}, id => $content_ref->{id}}));
+    }
+    
+    $idnresult->finish();
+
+    $logger->debug($recordlist);
+    return $recordlist;
+}
 
 1;
 __END__
@@ -1769,6 +1803,11 @@ benutzernr sowie numqueries.
 =item get_info($sessionid)
 
 Liefert das Wertepaar Benutzernummer und Zeitpunkt der Sessionerzeugung zurück.
+
+=item get_recently_selected_titles({ hitrange => $hitrange, offset => $offset})
+
+Liefert anhand des Session-Eventlogs eine OpenBib::RecordList::Title aller
+aufgerufenen einzeltreffer, optional eingegrenzt ueber $hitrange und $offset.
 
 =back
 

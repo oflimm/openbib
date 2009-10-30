@@ -11,8 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title = 'Trefferliste'
-%]
+[% PROCESS common/subtemplate name="std_header" title = 'Trefferliste' disable_cache_control=1 %]
 [%- ebook_i18n      = msg.maketext("E-Book") -%]
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]

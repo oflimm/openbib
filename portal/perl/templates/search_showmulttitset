@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title = "Recherche in Datenbank: $poolname " %]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Datenbank: $poolname " disable_cache_control=1 %]
 
 <body>
 

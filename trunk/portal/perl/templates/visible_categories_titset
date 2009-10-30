@@ -100,6 +100,7 @@
                 'T0937', # msg.maketext("T0937") Schlagwort
                 'T0942', # msg.maketext("T0942") Schlagwort
                 'T0947', # msg.maketext("T0947") Schlagwort
+                #'E4300', # msg.maketext("E4300") Schlagwort 
                 'T0700', # msg.maketext("T0700") Notation
                 'E4100', # msg.maketext("E4100") Basisklassifikation
                 'T0540', # msg.maketext("T0540") ISBN

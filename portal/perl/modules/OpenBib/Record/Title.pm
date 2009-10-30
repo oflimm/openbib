@@ -1097,6 +1097,7 @@ sub print_to_handler {
         qopts       => $queryoptions->get_options,
         queryid     => $searchquery->get_id,
         sessionID   => $session->{ID},
+        session     => $session,
         record      => $self,
         titidn      => $self->{id},
 

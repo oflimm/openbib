@@ -205,13 +205,23 @@ FOREACH category IN categories;
 	 content       = "${config.get('redirect_loc')}/${sessionID}/503/${content}" ;
 	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 
+    CASE "E4300";
+         thiscontent = item.content;
+
+         NEXT IF rswkswt_done.${thiscontent} == 1;
+         localurl    = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+	 content       = "<a href=\"${localurl}\">${content}</a>";
+         rswkswt_done.${thiscontent} = 1;
+
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          thisid     = item.id;
          IF NOT thisid.match('^\d+$');
              thisid = item.content;
          END;
 
-         NEXT IF rswkswt_done.${thisid} == 1;
+         thiscontent = item.content;
+
+         NEXT IF rswkswt_done.${thiscontent} == 1;
 
          rssfeed = "" ;
          IF activefeed.4 ;
@@ -220,7 +230,7 @@ FOREACH category IN categories;
          globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
-         rswkswt_done.${thisid} = 1;
+         rswkswt_done.${thiscontent} = 1;
 
     CASE "T0700";
          thisid     = item.id;
@@ -307,6 +317,7 @@ END;
 [% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
 [% END -%]
 [%- END -%]
+
 [%- IF mexnormset.size > 0 -%]
 [%- FOREACH mex IN mexnormset -%]
 [% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% mex.${"X4000"}.content.full %]
@@ -921,6 +932,59 @@ $(document).ready(function(){
 <p/>
 
 </div><!-- End Discover-Sources -->
+
+<p/>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+// Begin Togglen / Einzeltreffer-Historie
+$("#history_toggle").html("<b>[<a href=\"#history_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#history").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#history_toggle").click(function(){
+ $("#history").toggle();
+ $("#history_toggle").html("");
+});
+});
+</script>
+
+[% recent_titles = session.get_recently_selected_titles.load_brief_records %]
+[% IF recent_titles.get_size > 0 %]
+<div class="session_history"><!-- Begin Historie -->
+
+<b id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:")</b><p/>
+
+[% FOREACH record IN recent_titles.get_records %]
+[%- item = record.get_brief_normdata -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+
+[% IF recent_titles.get_size > 5 && loop.count == 5 %]
+<span id="history_toggle"></span>
+<div id="history">
+[% END %]
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% config.get('search_loc') %]?sessionID=[% sessionID
+%];queryid=[% queryid %];database=[% item.database
+%];searchsingletit=[% item.id %]"><strong><span class="rltitle">[%
+title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
+[% END %]
+[% IF recent_titles.get_size > 5 %]
+</div>
+[% END %]
+
+<p/>
+</div><!-- End Historie -->
+[% END %]
+
 </div><!-- End User-Specific -->
 
 <!--</div>--><!-- End record -->

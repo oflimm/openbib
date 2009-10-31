@@ -988,9 +988,9 @@ $("#history_toggle").click(function(){
 
 [% recent_titles = session.get_recently_selected_titles.load_brief_records %]
 [% IF recent_titles.get_size > 0 %]
-<div class="discover_sources"><!-- Begin Historie -->
+<div class="session_history"><!-- Begin Historie -->
 
-<b id="history_anchor">Diese Titel interessierten Sie bereits:</b><p/>
+<b id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:")</b><p/>
 
 [% FOREACH record IN recent_titles.get_records %]
 [%- item = record.get_brief_normdata -%]
@@ -1008,10 +1008,10 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% item.${'PC0001'}.first.content %]<br/><a href="[% config.get('search_loc') %]?sessionID=[% sessionID
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% config.get('search_loc') %]?sessionID=[% sessionID
 %];queryid=[% queryid %];database=[% item.database
 %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[%
-title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span> </p>
+title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
 [% END %]
 [% IF recent_titles.get_size > 5 %]
 </div>

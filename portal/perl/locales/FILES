@@ -168,7 +168,6 @@
 ../templates/database/umschlaege/search_showtitset
 ../templates/database/umschlaege/virtualsearch_result_item
 ../templates/database/umschlaege/visible_categories_titset
-../templates/database/usbzsablage/visible_categories_titset
 ../templates/database/wiso/circset
 ../templates/database/wiso/mexset
 ../templates/database/wikisource_de/visible_categories_titset
@@ -321,7 +320,6 @@
 ../templates/profile/kuglight/connector_unapi_mods
 ../templates/profile/kuglight/connector_unapi_oai_dc
 ../templates/profile/kuglight/corporate_banner
-../templates/profile/kuglight/database
 ../templates/profile/kuglight/databasechoice
 ../templates/profile/kuglight/database/einbaende/drilldown_categorized
 ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html

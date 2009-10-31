@@ -933,7 +933,7 @@ $("#history_toggle").click(function(){
 [% IF recent_titles.get_size > 0 %]
 <div class="session_history"><!-- Begin Historie -->
 
-<b id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:")</b><p/>
+<b id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</b><p/>
 
 [% FOREACH record IN recent_titles.get_records %]
 [%- item = record.get_brief_normdata -%]

@@ -1005,6 +1005,10 @@ dt.review {
   -webkit-border-radius: 12px;
 }
 
+.session_history p {
+ margin-top: -5px;
+}
+
 .circulation {
   float: left;
   width: 99%;

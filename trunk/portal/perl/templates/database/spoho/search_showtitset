@@ -915,6 +915,59 @@ $(document).ready(function(){
 <p/>
 
 </div><!-- End Discover-Sources -->
+
+<p/>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+// Begin Togglen / Einzeltreffer-Historie
+$("#history_toggle").html("<b>[<a href=\"#history_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#history").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#history_toggle").click(function(){
+ $("#history").toggle();
+ $("#history_toggle").html("");
+});
+});
+</script>
+
+[% recent_titles = session.get_recently_selected_titles.load_brief_records %]
+[% IF recent_titles.get_size > 0 %]
+<div class="session_history"><!-- Begin Historie -->
+
+<b id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:")</b><p/>
+
+[% FOREACH record IN recent_titles.get_records %]
+[%- item = record.get_brief_normdata -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+
+[% IF recent_titles.get_size > 5 && loop.count == 5 %]
+<span id="history_toggle"></span>
+<div id="history">
+[% END %]
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% config.get('search_loc') %]?sessionID=[% sessionID
+%];queryid=[% queryid %];database=[% item.database
+%];searchsingletit=[% item.id %]"><strong><span class="rltitle">[%
+title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
+[% END %]
+[% IF recent_titles.get_size > 5 %]
+</div>
+[% END %]
+
+<p/>
+</div><!-- End Historie -->
+[% END %]
+
 </div><!-- End User-Specific -->
 
 <!--</div>--><!-- End record -->

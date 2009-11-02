@@ -34,6 +34,7 @@ use utf8;
 
 use Business::ISBN;
 use DB_File;
+use Encode qw/decode_utf8/;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use MIME::Base64 ();
@@ -545,6 +546,8 @@ while (my $line=<IN>){
                 if ($enrichmnt_data_ref){
                     my $indicator = 1;
                     foreach my $content (@{$enrichmnt_data_ref}){
+                        $content = decode_utf8($content);
+                        
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,

@@ -135,6 +135,8 @@ else {
         
         push @{$isbn_ref->{"$isbn"}}, $schlagwort;
     }
+
+    YAML::DumpFile("swt-isbn-$database.yml",$isbn_ref);
 }
 
 $logger->info("Loeschen der bisherigen Daten");

@@ -969,6 +969,7 @@
 ../templates/views/umschlaege/virtualsearch_result_end
 ../templates/views/umschlaege/virtualsearch_result_start
 ../templates/views/umschlaege/visible_categories_titset
+../templates/views/usbzsablage/searchmask_simple
 ../templates/views/xanten/corporate_banner
 ../templates/views/xanten/leave
 ../templates/views/xanten/mainnavigation

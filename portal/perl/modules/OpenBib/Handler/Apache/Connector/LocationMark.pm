@@ -213,17 +213,25 @@ sub by_signature {
     my %line1=%$a;
     my %line2=%$b;
 
+#    my $logger = get_logger() ;
+    
     my $base = $line1{base};
     
     # Sortierung anhand erster Signatur
     my $line1=(exists $line1{locmark} && defined $line1{locmark})?cleanrl($line1{locmark}):"0";
     my $line2=(exists $line2{locmark} && defined $line2{locmark})?cleanrl($line2{locmark}):"0";
 
-    my ($zahl1,$rest1)=$line1=~m/$base(\d+?)(.*?)/i;
-    my ($zahl2,$rest2)=$line2=~m/$base(\d+?)(.*?)/i;
+#    $logger->debug("1 L1: $line1 / L2: $line2 / Base: $base");
+    
+    my ($zahl1,$rest1)=$line1=~m/$base(\d+)(.*?)/i;
+    my ($zahl2,$rest2)=$line2=~m/$base(\d+)(.*?)/i;
 
+#    $logger->debug("2 Z1: $zahl1 / R1: $rest1 / Z2: $zahl2 / R2: $rest2");
+    
     $line1=sprintf "%08d%s", $zahl1, $rest1;
     $line2=sprintf "%08d%s", $zahl2, $rest2;
+
+#    $logger->debug("3 L1: $line1 / L2: $line2");
     
     $line1 cmp $line2;
 }

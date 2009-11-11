@@ -90,19 +90,11 @@ print "### $pool: Gefundene Titel-ID's $count\n";
 
 # IDN's uebergeordneter Titel finden
 
-print "### $pool: Bestimme uebergeordnete/untergeordnete Titel\n";
+print "### $pool: Bestimme uebergeordnete Titel\n";
 
 foreach $titidn (keys %titidns){
 
   # Ueberordnungen
-  $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-  $request->execute($titidn) or $logger->error($DBI::errstr);;
-  
-  while (my $result=$request->fetchrow_hashref()){
-    $titidns{$result->{'sourceid'}}=1;
-  }
-
-  # Unterordnungen
   $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
   $request->execute($titidn) or $logger->error($DBI::errstr);;
   

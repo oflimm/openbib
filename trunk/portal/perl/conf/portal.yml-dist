@@ -1,5 +1,5 @@
 # Versionsnummer
-version: OpenBib v2.2
+version: OpenBib v2.3
 
 # Unter diesem Namen wird der lokale Server angesprochen
 servername: server.openbib.org
@@ -125,6 +125,7 @@ connector_permalink_loc: /portal/connector/permalink
 connector_livesearch_loc: /portal/connector/livesearch
 connector_locationmark_loc: /portal/connector/sykasignatur
 connector_rss_loc: /portal/connector/rss
+connector_seealso_loc: /portal/connector/seealso
 connector_similarpersons_loc: /portal/connector/similarpersons
 connector_similarsubjects_loc: /portal/connector/similarsubjects
 connector_spellcheck_loc: /portal/connector/spellcheck
@@ -580,6 +581,15 @@ categorymapping:
     T0710: 1
     T0750: 1
     T0800: 1
+  inst404abklatsch:
+    T0331: 1
+    T0403: 1
+    T0410: 1
+    T0425: 1
+    T0501: 1
+    T0710: 1
+    T1664: 1
+    T0433: 1
   inst450:
     T0100: 1
     T0101: 1

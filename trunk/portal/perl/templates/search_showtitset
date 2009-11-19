@@ -162,11 +162,13 @@ FOREACH category IN categories;
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
     CASE [ "T0531" "T0533" ];
-         previssues = content.split("---&gt;: ");
-         globalurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;hststring=${previssues.1}";
-         localurl   = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;hitrange=${qopts.hitrange}";
-         content    = "<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
-
+         IF content.match("---&gt;: ") ;
+            previssues = content.split("---&gt;: ");
+            globalurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;hststring=${previssues.1}";
+            localurl   = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;hitrange=${qopts.hitrange}";
+            content    = "<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
+         END ;
+          
     CASE "T0540";
          content   = "<a class=\"isbn\" href=\"${config.get('redirect_loc')}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 

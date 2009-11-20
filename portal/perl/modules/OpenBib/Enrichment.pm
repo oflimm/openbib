@@ -176,6 +176,43 @@ sub get_similar_isbns {
     return $similar_isbn_ref;
 }
 
+sub get_all_holdings {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $isbn          = exists $arg_ref->{isbn}
+        ? $arg_ref->{isbn}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+            or $logger->error($DBI::errstr);
+    
+    return {} unless (defined $isbn && defined $dbh);
+
+    # Normierung auf ISBN13
+    $isbn = OpenBib::Common::Util::to_isbn13($isbn);
+
+    my $reqstring="select isbn from all_isbn where isbn=?";
+    my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+    $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                
+    my $all_isbn_ref = [] ;
+    while (my $res=$request->fetchrow_hashref) {
+        push @{$all_isbn_ref}, {
+            $res->{dbname},
+            $res->{id},
+        };
+    }
+
+    return $all_isbn_ref;
+}
+
 sub normdata_to_bdb {
     my ($self,$arg_ref)=@_;
 

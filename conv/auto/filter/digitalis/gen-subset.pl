@@ -92,16 +92,29 @@ print "### $pool: Gefundene Titel-ID's $count\n";
 
 print "### $pool: Bestimme uebergeordnete Titel\n";
 
-foreach $titidn (keys %titidns){
+my %tmp_titidns_super = %titidns;
 
-  # Ueberordnungen
-  $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-  $request->execute($titidn) or $logger->error($DBI::errstr);;
-  
-  while (my $result=$request->fetchrow_hashref()){
-    $titidns{$result->{'targetid'}}=1;
-  }
+while (keys %tmp_titidns_super){
+    print "### Ueberordnungen - neuer Durchlauf\n";
+    my %found = ();
 
+    foreach my $titidn (keys %tmp_titidns_super){
+        
+        # Ueberordnungen
+        $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
+        $request->execute($titidn) or $logger->error($DBI::errstr);;
+        
+        while (my $result=$request->fetchrow_hashref()){
+            $titidns{$result->{'targetid'}} = 1;
+            if ($titidn != $result->{'targetid'}){ # keine Ringschluesse - ja, das gibt es
+                $found{$result->{'targetid'}}   = 1;
+            }
+            
+        }
+        
+    }
+
+    %tmp_titidns_super = %found;
 }
 
 # IDN's der Autoren, Koerperschaften, Schlagworte, Notationen bestimmen

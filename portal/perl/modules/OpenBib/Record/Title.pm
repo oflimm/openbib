@@ -1920,4 +1920,17 @@ sub record_exists {
     return $self->{_exists};
 }
 
+sub to_drilldown_term {
+    my ($self,$term)=@_;
+    
+    $term = OpenBib::Common::Util::grundform({
+        content   => $term,
+        searchreq => 1,
+    });
+
+    $term=~s/\W/_/g;
+
+    return $term;
+}
+
 1;

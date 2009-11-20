@@ -93,24 +93,53 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbh
 
 print "### edz: Bestimme uebergeordnete/untergeordnete Titel\n";
 
-foreach $titidn (keys %titidns){
+my %tmp_titidns_super = %titidns;
+my %tmp_titidns_sub   = %titidns;
 
-  # Ueberordnungen
-  $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-  $request->execute($titidn) or $logger->error($DBI::errstr);;
-  
-  while (my $result=$request->fetchrow_hashref()){
-    $titidns{$result->{'sourceid'}}=1;
-  }
+while (keys %tmp_titidns_super){
+    print "### Ueberordnungen - neuer Durchlauf\n";
+    my %found = ();
 
-  # Unterordnungen
-  $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-  $request->execute($titidn) or $logger->error($DBI::errstr);;
-  
-  while (my $result=$request->fetchrow_hashref()){
-    $titidns{$result->{'targetid'}}=1;
-  }
+    foreach my $titidn (keys %tmp_titidns_super){
+        
+        # Ueberordnungen
+        $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
+        $request->execute($titidn) or $logger->error($DBI::errstr);;
+        
+        while (my $result=$request->fetchrow_hashref()){
+            $titidns{$result->{'targetid'}} = 1;
+            if ($titidn != $result->{'targetid'}){ # keine Ringschluesse - ja, das gibt es
+                $found{$result->{'targetid'}}   = 1;
+            }
+            
+        }
+        
+    }
 
+    %tmp_titidns_super = %found;
+}
+
+while (keys %tmp_titidns_sub){
+    print "### Unterordnungen - neuer Durchlauf\n";
+    my %found = ();
+
+    foreach my $titidn (keys %tmp_titidns_sub){
+        
+        # Unterordnungen
+        $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
+        $request->execute($titidn) or $logger->error($DBI::errstr);;
+        
+        while (my $result=$request->fetchrow_hashref()){
+            $titidns{$result->{'sourceid'}}=1;
+            if ($titidn != $result->{'sourceid'}){ # keine Ringschluesse - ja, das gibt es...
+                $found{$result->{'sourceid'}}   = 1;
+            }
+            
+        }
+        
+    }
+
+    %tmp_titidns_sub = %found;
 }
 
 # IDN's der Autoren, Koerperschaften, Schlagworte, Notationen bestimmen

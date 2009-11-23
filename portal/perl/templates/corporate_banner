@@ -59,7 +59,9 @@ $(document).ready(function(){
 
 		<div id="header_logo"><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
                 <div id="header_simplesearch">
-<table><tr><td><span class="bigtext">[% msg.maketext("Suche") %]</span>&nbsp;</td><td><input id="input_box_all" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></div>&nbsp;&nbsp;</td><td><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td></tr></table>
+<table><tr><td><span class="bigtext">[% msg.maketext("Suche") %]</span>&nbsp;</td><td><input id="input_box_all" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></div>&nbsp;&nbsp;</td><td><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a><!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+</td></tr></table>
 </div>
 </form>
 

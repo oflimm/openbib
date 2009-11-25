@@ -146,6 +146,7 @@ mailcollection_loc: /portal/merklistemailen
 mailpassword_loc: /portal/passwortmailen
 managecollection_loc: /portal/merkliste
 redirect_loc: /portal/weiterleitung
+resource_loc: /portal/resource
 resultlists_loc: /portal/trefferlisten
 rssfeeds_loc: /portal/rssfeeds
 search_loc: /portal/recherche
@@ -401,6 +402,11 @@ tt_managecollection_print_tname: managecollection_print
 tt_managecollection_save_html_tname: managecollection_save_html
 tt_managecollection_save_plain_tname: managecollection_save_plain
 tt_managecollection_show_tname: managecollection_show
+tt_resource_bib_tname: resource_bib
+tt_resource_person_tname: resource_person
+tt_resource_corporatebody_tname: resource_corporatebody
+tt_resource_subject_tname: resource_subject
+tt_resource_classification_tname: resource_classification
 tt_resultlists_choice_tname: resultlists_choice
 tt_resultlists_empty_tname: resultlists_empty
 tt_resultlists_showall_sortall_tname: resultlists_showall_sortall

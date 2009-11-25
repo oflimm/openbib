@@ -44,15 +44,17 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use Search::Xapian;
 use String::Tokenizer;
-
+use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Common::Util;
 
-my ($database,$help,$logfile,$withfields);
+my ($database,$help,$logfile,$withfields,$withsorting,$withpositions);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
             "with-fields"     => \$withfields,
+            "with-sorting"    => \$withsorting,
+            "with-positions"  => \$withpositions,
 	    "help"            => \$help
 	    );
 
@@ -261,6 +263,8 @@ my $count = 1;
         # Katalogname des Satzes recherchierbar machen
         $doc->add_term("D8".$database);
 
+        my $k = 0;
+
         foreach my $tokinfo_ref (@$tokinfos_ref) {
 
             if ($tokinfo_ref->{type} eq 'index'){
@@ -279,8 +283,6 @@ my $count = 1;
                     next if (!$next);
                     # Naechstes, wenn keine Zahl oder einstellig
                     # next if (length($next) < 2 && $next !~ /\d/);
-                    # Naechstes, wenn schon gesehen 
-                    next if (exists $seen_token_ref->{$next});
                     # Naechstes, wenn Stopwort
                     next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
 
@@ -288,11 +290,19 @@ my $count = 1;
                     
                     $next=(length($next) > $FLINT_BTREE_MAX_KEY_LEN)?substr($next,0,$FLINT_BTREE_MAX_KEY_LEN):$next;
 
-                    $seen_token_ref->{$next}=1;
-                
-                    # Token generell einfuegen
-                    $doc->add_term($next);
+                    # Wenn noch nicht gesehen, dann Term indexieren
+                    if (!exists $seen_token_ref->{$next}){
+                        # Token generell einfuegen
+                        $doc->add_term($next);
+                    }
 
+                    $seen_token_ref->{$next}=1;
+
+                    if ($withpositions){
+                        $doc->add_posting($next,$k);
+                        $k++;
+                    }
+                    
                     push @saved_tokens, $next;
                 }
 
@@ -305,6 +315,12 @@ my $count = 1;
                         $fieldtoken=(length($fieldtoken) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
 
                         $doc->add_term($fieldtoken);
+
+                        if ($withpositions){
+                            $doc->add_posting($fieldtoken,$k);
+                            $k++;
+                        }
+
                     }
                 }
    	    }
@@ -391,6 +407,91 @@ my $count = 1;
             my $multstring = join("\t",@unique_terms);
 
             $doc->add_value($type_ref->{id},encode_utf8($multstring)) if ($multstring);
+        }
+
+        if ($withsorting){
+            my $sorting_ref = [
+                {
+                    # Verfasser/Koepeschaft
+                    id         => 20,
+                    category   => 'PC0001',
+                    type       => 'stringcategory',
+                },
+                {
+                    # Titel
+                    id         => 21,
+                    category   => 'T0331',
+                    type       => 'stringcategory',
+                },
+                {
+                    # Zaehlung
+                    id         => 22,
+                    category   => 'T5100',
+                    type       => 'integercategory',
+                },
+                {
+                    # Jahr
+                    id         => 23,
+                    category   => 'T0425',
+                    type       => 'integercategory',
+                },
+                {
+                    # Verlag
+                    id         => 24,
+                    category   => 'T0412',
+                    type       => 'stringcategory',
+                },
+                {
+                    # Signatur
+                    id         => 25,
+                    category   => 'X0014',
+                    type       => 'stringcategory',
+                },
+                {
+                    # Popularitaet
+                    id         => 26,
+                    category   => 'popularity',
+                    type       => 'integervalue',
+                },
+                
+            ];
+
+            my $titlistitem_raw = pack "H*", $listitem;
+            my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+
+#            $logger->debug(YAML::Dump($titlistitem_ref));
+            
+            foreach my $this_sorting_ref (@{$sorting_ref}){
+
+                if ($this_sorting_ref->{type} eq "stringcategory"){
+                    my $content = (exists $titlistitem_ref->{$this_sorting_ref->{category}}[0]{content})?$titlistitem_ref->{$this_sorting_ref->{category}}[0]{content}:"";
+                    $content = OpenBib::Common::Util::grundform({
+                        content   => $content,
+                    });
+
+#                    $logger->debug("Adding $content as sortvalue");
+
+                    $doc->add_value($this_sorting_ref->{id},$content);
+                }
+                elsif ($this_sorting_ref->{type} eq "integercategory"){
+                    my $content = 0;
+                    if (exists $titlistitem_ref->{$this_sorting_ref->{category}}[0]{content}){
+                        ($content) = $titlistitem_ref->{$this_sorting_ref->{category}}[0]{content}=~m/^(\d+)/;
+                    }
+                    $content = sprintf "%08d", $content;
+#                    $logger->debug("Adding $content as sortvalue");
+                    $doc->add_value($this_sorting_ref->{id},$content);
+                }
+                elsif ($this_sorting_ref->{type} eq "integervalue"){
+                    my $content = 0 ;
+                    if (exists $titlistitem_ref->{$this_sorting_ref->{category}}){
+                        ($content) = $titlistitem_ref->{$this_sorting_ref->{category}}=~m/^(\d+)/;
+                    }
+                    $content = sprintf "%08d",$content;
+#                    $logger->debug("Adding $content as sortvalue");
+                    $doc->add_value($this_sorting_ref->{id},$content);
+                }
+            }
         }
 
         $doc->set_data($listitem);

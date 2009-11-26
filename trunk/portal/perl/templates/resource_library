@@ -1,0 +1,25 @@
+[%- libinfo = config.get_libinfo(id); -%]
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+    <rdf:Description
+rdf:about="http://[% config.get('servername') %][% config.get('resource_loc') %]/library/[% id %]">
+        <rdf:type
+rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
+        <rdfs:isDefinedBy
+rdf:resource="http://[% config.get('servername') %][% config.get('resource_loc') %]/library/[% id %]"/>
+[% FOREACH item IN libinfo.${"I0010"} %]
+        <foaf:name>[% item.content %]</foaf:name>
+[% END %]
+[% FOREACH item IN libinfo.${"I1000"} %]
+        <geo:lat>[% item.content.split(',').first %]</geo:lat>
+        <geo:long>[% item.content.split(',').last %]</geo:long>
+[% END %]
+[% FOREACH item IN libinfo.${"I0090"} %]
+        <foaf:homepage>[% item.content.replace('<.*?>','') %]</foaf:homepage>
+[% END %]
+    </rdf:Description>
+</rdf:RDF>

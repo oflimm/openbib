@@ -21,10 +21,10 @@
 [% END %]
     <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
 [%#    <owl:sameAs rdf:resource="http://dbpedia.org/page/xxx"/> %]
-    <rdfs:isDefinedBy rdf:resource="http://[% config.get('servername') %][% config.get('resource_loc') %]/person/[% database %]:[% id %]"/>
+    <rdfs:isDefinedBy rdf:resource="http://[% config.get('servername') %][% config.get('resource_loc') %]/person/[% database %]:[% id %]/rdf+xml"/>
   </rdf:Description>
 [% FOREACH title_record IN title_records.to_ids %]
-  <rdf:Description rdf:about="http://[% config.get('servername') %][% config.get('resource_loc') %]/bib/[% title_record.database %]:[% title_record.id %]">
+  <rdf:Description rdf:about="http://[% config.get('servername') %][% config.get('resource_loc') %]/title/[% title_record.database %]:[% title_record.id %]">
     <dc:creator rdf:resource="http://[% config.get('servername') %][% config.get('resource_loc') %]/person/[% database %]:[% id %]"/>
   </rdf:Description>
 [% END %]

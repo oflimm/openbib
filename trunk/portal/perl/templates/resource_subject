@@ -18,11 +18,11 @@
 [%#    <skos:related rdf:resource="http://libris.kb.se/resource/auth/164863"/> %]
 [% END %] 
     <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
-    <rdfs:isDefinedBy rdf:resource="http://[% config.get('servername') %][% config.get('resource_loc') %]/subject/[% database %]:[% id %]"/>
+    <rdfs:isDefinedBy rdf:resource="http://[% config.get('servername') %][% config.get('resource_loc') %]/subject/[% database %]:[% id %]/rdf+xml"/>
     <skos:inScheme rdf:resource="http://libris.kb.se/sao"/>
   </rdf:Description>
 [% FOREACH title_record IN title_records.to_ids %]
-  <rdf:Description rdf:about="http://[% config.get('servername') %][% config.get('resource_loc') %]/bib/[% title_record.database %]:[% title_record.id %]">
+  <rdf:Description rdf:about="http://[% config.get('servername') %][% config.get('resource_loc') %]/title/[% title_record.database %]:[% title_record.id %]">
     <dc:subject rdf:resource="http://[% config.get('servername') %][% config.get('resource_loc') %]/person/[% database %]:[% id %]"/>
   </rdf:Description>
 [% END %]

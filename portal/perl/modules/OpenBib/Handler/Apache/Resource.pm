@@ -34,12 +34,13 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
+use Apache2::Const -compile => qw(:common :http);
 use Apache2::Reload;
 use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
+use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
@@ -72,25 +73,25 @@ sub handler {
     # Basisipfad entfernen
     my $basepath = $config->{resource_loc};
     $path=~s/$basepath//;
-
+    
     # Service-Parameter aus URI bestimmen
     my $key;
     my $type;
-    my $format;
+    my $representation;
 
-    if ($path=~m/^\/(\w+)\/(.+)\/(.*)/){
+    if ($path=~m/^\/(\w+)\/(.+?)\/(.*)/){
         $type   = $1;
         $key    = $2;
-        $format = $3;
+        $representation = $3;
     }
     elsif ($path=~m/^\/(\w+)\/(.+)/){
         $type   = $1;
         $key    = $2;
-        $format = $3;
+        $representation = '';
     }
 
     my $is_bibtype_ref = {
-        'bib'            => 1,
+        'title'          => 1,
         'person'         => 1,
         'corporatebody'  => 1,
         'subject'        => 1,
@@ -99,8 +100,44 @@ sub handler {
     
     my ($database,$id)=("","");
 
-    if (!$format){
-        $format = "rdf";
+    $logger->debug("Type: $type - Key: $key - Representation: $representation");
+
+    my $content_type_map_ref = {
+        "application/rdf+xml" => "rdf+xml",
+        "text/rdf+n3"         => "rdf+n3",
+    };
+
+    my $content_type_map_rev_ref = {
+        "rdf+xml" => "application/rdf+xml",
+        "rdf+n3"  => "text/rdf+n3",
+        "html"    => "text/html",
+    };
+
+    if (!$representation){
+        my $accept       = $r->headers_in->{Accept} || '';
+        my @accept_types = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
+        
+        my $information_resource_found = 0;
+        foreach my $information_resource_type (keys %{$content_type_map_ref}){            
+            if (any { $_ eq $information_resource_type } @accept_types) {
+                $r->content_type($information_resource_type);
+                my $new_location = $config->{resource_loc}."/$type/$key/".$content_type_map_ref->{$information_resource_type};
+                $logger->debug("Redirecting HTTP_SEE_OTHER to $new_location");
+                $r->headers_out->add("Location" => $new_location);
+                $information_resource_found = 1;
+                $logger->debug("Information Resource Type: $information_resource_type");
+            }                                                
+        }
+
+        if (!$information_resource_found){
+            my $information_resource_type="text/html";
+            $r->content_type($information_resource_type);
+            $r->headers_out->add("Location" => $config->{resource_loc}."/$type/$key/html");
+            $logger->debug("Information Resource Type: $information_resource_type");
+        }
+
+        $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accept_types));
+        return Apache2::Const::HTTP_SEE_OTHER;
     }
     
     my $callback   = $query->param('callback')  || '';
@@ -115,7 +152,7 @@ sub handler {
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
 
-    $logger->debug("Type: $type - Format: $format");
+    $logger->debug("Type: $type - Representation: $representation");
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
@@ -123,20 +160,16 @@ sub handler {
     # TT-Data erzeugen
     
     my $ttdata= {
-        dbinfo      => $dbinfotable,
-        callback    => $callback,
-        lang        => $lang,
-        format      => $format,
+        dbinfo         => $dbinfotable,
+        callback       => $callback,
+        lang           => $lang,
+        representation => $representation,
         
-        config      => $config,
+        config         => $config,
     };
     
     #####################################################################
         
-    my $content_type_map_ref = {
-        'rdf'   => "application/rdf+xml",
-        'rdfn3' => "text/rdf+n3",
-    };
     
     if ($is_bibtype_ref->{$type} ){
         ($database,$id) = split(":",$key);
@@ -158,7 +191,7 @@ sub handler {
         $ttdata->{database} = $database;
         $ttdata->{id}       = $id;
         
-        if ($type eq "bib") {
+        if ($type eq "title") {
             my $record = OpenBib::Record::Title->new({database => $database, id => $id})
                 ->load_full_record({dbh => $dbh});
             
@@ -246,7 +279,7 @@ sub handler {
     });
     
     # Dann Ausgabe des neuen Headers
-    my $content_type = (exists $content_type_map_ref->{$format})?$content_type_map_ref->{$format}:"text/html";
+    my $content_type = (exists $content_type_map_rev_ref->{$representation})?$content_type_map_rev_ref->{$representation}:"text/html";
     
     $r->content_type($content_type);
     

@@ -93,7 +93,6 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/js/jquery.jfeed.pack.js"></script>
 <!-- <script language="JavaScript" type="text/javascript" src="/js/jtip.js"></script> -->
 
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/jquery.autocomplete.css" %]" type="text/css" />

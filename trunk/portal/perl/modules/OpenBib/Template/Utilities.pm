@@ -30,6 +30,9 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use LWP::Simple;
+use XML::RSS;
+
 use OpenBib::Common::Util;
 
 sub new {
@@ -54,6 +57,17 @@ sub normalize_drilldown {
     $content=~s/\W/_/g;
     
     return $content;
+}
+
+sub load_rss_feed {
+    my ($self, $url) = @_;
+
+    return undef unless ($url);
+    
+    my $rss=XML::RSS->new;
+    $rss->parse(get($url));
+
+    return $rss;
 }
 
 1;

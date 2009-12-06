@@ -86,6 +86,7 @@ sub handler {
     my $stid     = $query->param('stid')     || '';
     my $database = $query->param('database') || '';
     my $id       = $query->param('id')       || '';
+    my $format   = $query->param('format')   || '';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
@@ -111,6 +112,7 @@ sub handler {
 
     # TT-Data erzeugen
     my $ttdata={
+        format        => $format,
         stid          => $stid,
         database      => $database,
         query         => $query,

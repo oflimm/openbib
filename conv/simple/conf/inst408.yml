@@ -1,5 +1,7 @@
 # Encoding der Daten
-encoding: utf8
+encoding: iso-8859-1
+
+outputencoding: iso-8859-1
 
 # Tracelevel
 tracelevel:
@@ -14,25 +16,47 @@ csv:
 # Feld der eindeutigen Titel-ID
 uniqueidfield: 'ID'
 
+category_split_chars:
+  'AUTOR': '\s*;\s*'
+  'KÖRPERSCHAFT': '\s*;\s*'
+  'SCHLAGWORT': '\s*;\s*'
+  'SIGNATUR ALT': '\s*;\s*'
+  'STANDORT': '\s*;\s*'
+
 # Personen
 pers:
-  'Author': '0100:'        # Verfasser
+  'AUTOR': '0100:'        # Verfasser
 
 # Koerperschaften
 corp:
+  'KÖRPERSCHAFT': '0200:'        # Verfasser
 
 # Systematik
 sys: 
 
 # Schlagworte
 subj:
-  'keyword': '0710:'
+  'SCHLAGWORT': '0710:'
 
 # Titel
 title:
-  'Title': '0331:'
-  'Year': '0425:'
-  'Number': '0010:'
-  'Publisher': '0412:'
-  'Place': '0410:'
-  'pages': '0433:'
+  'TITEL': '0331.001:'
+  'JAHR': '0425.001:'
+  'VERLAG': '0412.001:'
+  'ORT': '0410.001:'
+  'SERIE': '0451.001:'
+  'AUSGABE': '0403:'
+  'SEITEN': '0433.001:'
+  'DATUM': '0002:'
+  'EXTRAAUSGABE': '0335.001:'
+  'ISBN / ISSN': '0540.001:'
+  'SPRACHE': '0015.001:'
+  'SCHRIFT': '0516.001:'
+  'ERSCHEINUNGSWEISE': '0523.001:'
+  'BUCH / JOURNAL': '0800.001:'
+  'Field17': '0600.001:'
+
+# Exemplare
+exempl:
+  'SIGNATUR ALT': '0014:'
+  'STANDORT': '0016:'

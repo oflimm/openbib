@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: ${poolname.short}" unapi=1 %]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: ${poolname.short}" unapi=1 LinkedData="bib" %]
 
 <body>
 
@@ -138,6 +138,9 @@ END ;
 <li><a href="#mexinfo"><span>Bestand</span></a></li>
 [%   END %]
 [% END %]
+[% IF normset.${"E4115"}.first.content %]
+<li><a href="#tictocs"><span>Letzte Artikel</span></a></li>
+[% END %]
 [% IF same_records.get_size > 0 %]
 <li><a href="#same_records"><span>[% msg.maketext("In anderen Katalogen") %]</span></a></li>
 [% END %]
@@ -166,6 +169,24 @@ END ;
 [%   END %]
 [% END %]
 
+[% IF normset.${"E4115"}.first.content  %]
+<script type="text/javascript">
+$(document).ready(function(){
+// Begin Verwandte Personen
+  $.get("[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=62;id=[% normset.${"E4115"}.first.content %];format=ajax",
+         function (txt){
+           $("#tictocs").html(txt); 
+  });
+});
+</script>
+
+<h2 class="nojs_show">Letzte Artikel</h2>
+
+<div id="tictocs"><!-- Begin TicTocs -->
+F&uuml;r die letzten in dieser Zeitschrift
+ver&ouml;ffentlichten Artikel bieten wir eine eine <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=62;id=[% normset.${"E4115"}.first.content %]">&Uuml;bersicht</a> an.
+</div><!-- End TicTocs -->
+[% END %]
 <!-- Begin: Reviews -->
 [% IF config.get('reviews') %]
 <h2 class="nojs_show">[% msg.maketext("Bewertungen/Rezensionen") %]</h2>

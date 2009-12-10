@@ -10,6 +10,9 @@ my @l10nfiles=();
 open (L10NFILES,$l10nfilepath);
 while (my $file=<L10NFILES>){
     chomp($file);
+    if (! -e $file){
+        print STDERR "File $file doesn't exist\n";
+    }
     push @l10nfiles, $file;
 }
 close(L10NFILES);

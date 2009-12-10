@@ -11,6 +11,17 @@
 #
 #######################################################################
 -%]
+[%- normset         = record.get_normdata -%]
+[%- mexnormset      = record.get_mexdata -%]
+[%- cirset          = record.get_circdata -%] 
+[%- same_records    = record.get_same_records -%]
+[%- similar_records = record.get_similar_records -%]
+[%- bibkey = record.to_bibkey -%]
+[%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
+[%- IF NOT isbn ;
+       isbn   = normset.${"T0553"}.first.content.replace('-','') ;
+    END ;
+-%]
 [% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: ${poolname.short}" unapi=1 LinkedData="title" %]
 
 <body>
@@ -18,18 +29,6 @@
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" %]
-
-[%- normset         = record.get_normdata -%]
-[% mexnormset      = record.get_mexdata %]
-[% cirset          = record.get_circdata %] 
-[% same_records    = record.get_same_records %]
-[% similar_records = record.get_similar_records %]
-[%- bibkey = record.to_bibkey -%]
-[%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
-[%- IF NOT isbn ;
-       isbn   = normset.${"T0553"}.first.content.replace('-','') ;
-    END ;
--%]
 
 <div id="maincontent">
 
@@ -126,20 +125,21 @@ END ;
 
 
 <div id="additional_title_info"><!-- Begin Additional Title Info -->
-[%   reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
+[%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
+[%- tictocs_feed = normset.${"E4115"}.first.content -%]
 
 [% IF circset.size > 0 || mexnormset.size > 0 || same_records.get_size
-> 0 || similar_records.get_size > 0 || config.get('reviews') %]
+> 0 || similar_records.get_size > 0 || config.get('reviews') || tictocs_feed %]
 <ul class="nojs_hidden">
 [% IF circset.size > 0 %]
 <li><a href="#circinfo"><span>[% msg.maketext("Ausleihe/Exemplare") %]</span></a></li>
 [% ELSE %]
 [%   IF mexnormset.size > 0 %]
-<li><a href="#mexinfo"><span>Bestand</span></a></li>
+<li><a href="#mexinfo"><span>[% msg.maketext("Bestand") %]</span></a></li>
 [%   END %]
 [% END %]
-[% IF normset.${"E4115"}.first.content %]
-<li><a href="#tictocs"><span>Letzte Artikel</span></a></li>
+[% IF tictocs_feed %]
+<li><a href="#tictocs"><span>[% msg.maketext("Letzte Artikel") %]</span></a></li>
 [% END %]
 [% IF same_records.get_size > 0 %]
 <li><a href="#same_records"><span>[% msg.maketext("In anderen Katalogen") %]</span></a></li>
@@ -161,7 +161,7 @@ END ;
 </div><!-- End Circulation -->
 [% ELSE %]
 [%   IF mexnormset.size > 0 %]
-<h2 class="nojs_show">Bestand</h2>
+<h2 class="nojs_show">[% msg.maketext("Bestand") %]</h2>
 
 <div id="mexinfo"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="mexset" %]
@@ -169,7 +169,7 @@ END ;
 [%   END %]
 [% END %]
 
-[% IF normset.${"E4115"}.first.content  %]
+[% IF tictocs_feed %]
 <script type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
@@ -180,11 +180,10 @@ $(document).ready(function(){
 });
 </script>
 
-<h2 class="nojs_show">Letzte Artikel</h2>
+<h2 class="nojs_show">[% msg.maketext("Letzte Artikel") %]</h2>
 
 <div id="tictocs"><!-- Begin TicTocs -->
-F&uuml;r die letzten in dieser Zeitschrift
-ver&ouml;ffentlichten Artikel bieten wir eine eine <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=62;id=[% normset.${"E4115"}.first.content %]">&Uuml;bersicht</a> an.
+[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${config.get('info_loc')}?sessionID=${sessionID};stid=62;id=${tictocs_feed}\">","</a>") %]
 </div><!-- End TicTocs -->
 [% END %]
 <!-- Begin: Reviews -->

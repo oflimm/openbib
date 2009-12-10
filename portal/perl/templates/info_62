@@ -46,7 +46,7 @@
 [% END %]
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("TicTocs - Letzte Artikel") %]</span></a></li>
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Zuletzt in der Zeitschrift ver&ouml;ffentlichte Artikel") %]</span></a></li>
 </ul>
 
 <div class="content">

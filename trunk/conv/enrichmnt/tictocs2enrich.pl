@@ -95,11 +95,11 @@ $logger->debug("Origin: $origin");
 my $deleterequest = $enrichdbh->prepare("delete from normdata where category=4115 and origin=?");
 my $enrichrequest = $enrichdbh->prepare("insert into normdata values(?,?,4115,?,?)");
 
-my $isbn_ref = {};
+my $issn_ref = {};
 
 if ($importyml){
     $logger->info("Einladen der Daten aus YAML-Datei $filename");
-    $isbn_ref = YAML::LoadFile($filename);
+    $issn_ref = YAML::LoadFile($filename);
 }
 else {
     # Einladen der aktuellen Feed-Liste
@@ -111,7 +111,7 @@ else {
     foreach my $feedinfo (split("\n",$feed_list_string)){
         my ($id,$title,$rssurl,$paperissn,$eissn) = split("\t",$feedinfo);
 
-        $logger->info("ID: $id - Title: $title - RSS: $rssurl - PISSN: $paperissn - EISSN: $eissn");
+        $logger->debug("ID: $id - Title: $title - RSS: $rssurl - PISSN: $paperissn - EISSN: $eissn");
         
         for my $issn ($paperissn,$eissn){
             next unless ($issn);
@@ -121,13 +121,13 @@ else {
                 content  => $issn,
             });
 
-            push @{$isbn_ref->{"$issn"}}, $rssurl;
+            push @{$issn_ref->{"$issn"}}, $rssurl;
 
             $logger->debug("Adding $rssurl to ISSN $issn");
         }
     }
 
-    YAML::DumpFile("tictocs-issn.yml",$isbn_ref);
+    YAML::DumpFile("tictocs-issn.yml",$issn_ref);
 }
 
 $logger->info("Loeschen der bisherigen Daten");
@@ -135,25 +135,25 @@ $deleterequest->execute($origin);
 
 $logger->info("Einladen der neuen Daten");
 
-my $isbncount = 0;
-foreach my $thisisbn (keys %{$isbn_ref}){
+my $issncount = 0;
+foreach my $thisissn (keys %{$issn_ref}){
 
     my $indicator = 1;
 
     # Dublette Schlagworte's entfernen
     my %seen_terms  = ();
-    my @unique_swts = grep { ! $seen_terms{$_} ++ } @{$isbn_ref->{$thisisbn}}; 
+    my @unique_feeds = grep { ! $seen_terms{$_} ++ } @{$issn_ref->{$thisissn}}; 
 
-    foreach my $thisswt (@unique_swts){
-        $enrichrequest->execute($thisisbn,$origin,$indicator,$thisswt);
+    foreach my $thisfeed (@unique_feeds){
+        $enrichrequest->execute($thisissn,$origin,$indicator,$thisfeed);
         
         $indicator++;
     }
 
-    $isbncount++;
+    $issncount++;
 }
 
-$logger->info("Fuer $isbncount ISBNs wurden Schlagworte angereichtert");
+$logger->info("Fuer $issncount ISSNs wurden RSS-Feeds angereichtert");
 
 sub print_help {
     print << "ENDHELP";

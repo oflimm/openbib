@@ -15,6 +15,12 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b>11.12.2009</b>: Zu vielen Zeitschriften finden Sie in der
+Titelanzeige unter "Letzte Artikel" nun einer &Uuml;bersicht der dort
+zuletzt erschienenen Artikel (weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2009/12/10/verweise-auf-aktuelle-zeitschriftenartikel-mit-tictocs-im-kug/"
+target="_blank">Blog-Artikel</a>).</li>
 
 <li><b>11.11.2009</b>: Durch eine katalog&uuml;bergreifende
 Anreicherung mit Schlagworten (weitergehende Informationen in diesem
@@ -26,9 +32,5 @@ erh&ouml;ht.</li>
 <li><b>9.11.2009</b>: In der Einzeltrefferanzeige erhalten Sie nun
 einen &Uuml;berblick der Titel, die Sie sich in der aktuellen Sitzung
 bereits angeschaut haben.</li>
-
-<li><b>15.10.2009</b>: Knapp 889.000 Titelnachweise von <a href="http://www.repec.org/" target="_blank">RePEc</a>
-(Research Papers in Economics) wurden testweise in den KUG integriert
-und sind ab sofort über ihn recherchierbar. </li>
 
 </ul>

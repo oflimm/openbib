@@ -92,10 +92,16 @@ print "### $pool: Bestimme uebergeordnete Titel\n";
 
 my %tmp_titidns_super = %titidns;
 
+my $level = 0;
 while (keys %tmp_titidns_super){
     print "### Ueberordnungen - neuer Durchlauf\n";
-    my %found = ();
 
+    if ($level > 20){
+       print "### Ueberordnungen - Abbbruch ! Ebene $level erreicht\n";
+       last;
+    }    
+
+    my %found = ();
     foreach my $titidn (keys %tmp_titidns_super){
         
         # Ueberordnungen
@@ -111,6 +117,7 @@ while (keys %tmp_titidns_super){
         }
         
     }
+    $level++;
 
     %tmp_titidns_super = %found;
 }

@@ -7,7 +7,7 @@
 #  Extrahieren einer Titeluntermenge eines Katalogs anhand der
 #  mex-Daten fuer die Erzeugung eines separaten neuen Katalogs
 #
-#  Dieses File ist (C) 2005-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -64,7 +64,7 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$masterpool;host=$config->
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-my $signaturanfang = "^42[014] \\$.*";
+my $signaturanfang = "^420 \\$.*";
 
 print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs $signaturanfang\n";
 
@@ -92,10 +92,16 @@ print "### $pool: Bestimme uebergeordnete Titel\n";
 
 my %tmp_titidns_super = %titidns;
 
+my $level = 0;
 while (keys %tmp_titidns_super){
     print "### Ueberordnungen - neuer Durchlauf\n";
-    my %found = ();
 
+    if ($level > 20){
+       print "### Ueberordnungen - Abbbruch ! Ebene $level erreicht\n";
+       last;
+    }    
+
+    my %found = ();
     foreach my $titidn (keys %tmp_titidns_super){
         
         # Ueberordnungen
@@ -111,6 +117,7 @@ while (keys %tmp_titidns_super){
         }
         
     }
+    $level++;
 
     %tmp_titidns_super = %found;
 }

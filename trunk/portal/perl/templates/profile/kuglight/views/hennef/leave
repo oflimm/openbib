@@ -25,7 +25,7 @@
   <center>
     <p style="font-size:1.5em">
       [% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
-        <br />Vielen Dank f&uuml;r Ihren Besuch der Stiftsbibliothek Xanten aus der Virtuellen Bibliothek der Arbeitsstelle Historische Best&auml;nde im Rheinland..
+        <br />Vielen Dank f&uuml;r Ihren Besuch des Stadtarchivs Hennef aus der Virtuellen Bibliothek der Arbeitsstelle Historische Best&auml;nde im Rheinland..
 
     </p>
   </center>

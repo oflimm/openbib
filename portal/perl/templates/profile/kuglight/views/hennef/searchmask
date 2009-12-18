@@ -133,7 +133,7 @@
 </form>
 
 <p />
-<b>Insgesamt sind in diesem Katalog derzeit [% config.get_number_of_titles({ database => 'xanten' }).all %] Titel nachgewiesen.</b>
+<b>Insgesamt sind in diesem Katalog derzeit [% config.get_number_of_titles({ database => 'hennef' }).all %] Titel nachgewiesen.</b>
 
 <p />
 

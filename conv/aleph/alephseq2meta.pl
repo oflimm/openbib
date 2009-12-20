@@ -6,7 +6,7 @@
 #
 #  Konverierung von Aleph Sequential MAB Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -31,123 +31,50 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
+use strict;
+use warnings;
+use utf8;
+
 use Getopt::Long;
 
 use OpenBib::Config;
 use YAML;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
+my $config = OpenBib::Config->instance;
+
+my ($inputfile,$configfile);
 
 &GetOptions(
-	    "filename=s"       => \$filename,
+	    "inputfile=s"      => \$inputfile,
+            "configfile=s"     => \$configfile,
 	    );
 
-if (!$filename){
+if (!$inputfile || !$configfile){
     print << "HELP";
 alephseq2meta.pl - Aufrufsyntax
 
-    alephseq2meta.pl --filename=xxx
+    alephseq2meta.pl --inputfile=xxx --configfile=yyy
 HELP
 exit;
 }
 
-# Kategorieflags
+open(DAT,"<","$filename");
 
-%autkonv=(
-    '1001a'   => '0100', # Verfasser
-    '1011a'   => '0101', # Person
-);
+my $ht2id_ref={};
 
-%korkonv=(
-    '2001a'   => '0200', #
-    '2011a'   => '0201', # 
-);
+# Pass 1: Titel-IDs zu HT-Nummern bestimmen
+while (<DAT>){
+    if (/$config->{ht-selector}/){
+        $ht2id_ref->{$2}=$1;
+    }
+}
 
-%notkonv=(
-    '7001a'   => '0700', # 
-);
+close(DAT);
 
-%swtkonv=(
-    '9021a'   => '0710',  #
-    '9021g'   => '0710',  #
-    '9021f'   => '0710',  #
-    '9021s'   => '0710',  #
-    '9071a'   => '0710',  #
-    '9071g'   => '0710',  #
-    '9071f'   => '0710',  #
-    '9071s'   => '0710',  #
-    '9121a'   => '0710',  #
-    '9121g'   => '0710',  #
-    '9121f'   => '0710',  #
-    '9121s'   => '0710',  #
-    '9171a'   => '0710',  #
-    '9171g'   => '0710',  #
-    '9171f'   => '0710',  #
-    '9171s'   => '0710',  #
-    '9221a'   => '0710',  #
-    '9221g'   => '0710',  #
-    '9221f'   => '0710',  #
-    '9221s'   => '0710',  #
-    '9271a'   => '0710',  #
-    '9271g'   => '0710',  #
-    '9271f'   => '0710',  #
-    '9271s'   => '0710',  #
-    '9321a'   => '0710',  #
-    '9321g'   => '0710',  #
-    '9321f'   => '0710',  #
-    '9321s'   => '0710',  #
-    '9371a'   => '0710',  #
-    '9371g'   => '0710',  #
-    '9371f'   => '0710',  #
-    '9371s'   => '0710',  #
-    '9421a'   => '0710',  #
-    '9421g'   => '0710',  #
-    '9421f'   => '0710',  #
-    '9421s'   => '0710',  #
-    '9471a'   => '0710',  #
-    '9471g'   => '0710',  #
-    '9471f'   => '0710',  #
-    '9471s'   => '0710',  #
-);
+# Pass 2: Daten konvertieren
 
-# Kategoriemappings
+open(DAT,"<:utf8","$inputfile");
 
-%titelkonv=(
-    '0001a' => '0010', #
-    '0371a' => '0015', #
-    '3041a' => '0304', #
-    '3101a' => '0310', #
-    '3311a' => '0331', #
-    '3351a' => '0335', #
-    '3591a' => '0359', #
-    '3601a' => '0360', #
-    '3701a' => '0370', #
-    '4031a' => '0403', #
-    '4051a' => '0405', #
-    '4101a' => '0410', # 
-    '4121a' => '0412', #
-    '4251a' => '0425', #
-    '4331a' => '0433', #
-    '4341a' => '0434', #
-    '4511a' => '0451.001', #
-    '4611a' => '0451.004', #
-    '4711a' => '0451.009', #
-    '4551a' => '0455.001', #
-    '4651a' => '0455.004', #
-    '4751a' => '0455.009', #
-    '5011a' => '0501', #
-    '5071a' => '0507', #
-    '5331a' => '0533', #
-    '5401a' => '0540', #
-    '5901a' => '0590', #
-    '5951a' => '0595', #
-    '5961a' => '0596', #
-);
-
-# Einlesen und Reorganisieren
-
-open(DAT,"<:utf8","$filename");
 my @buffer = ();
 
 $titidn=1;
@@ -169,7 +96,7 @@ open (NOTATION,">:utf8","unload.SYS");
 open (SWT,     ">:utf8","unload.SWD");
 
 while (<DAT>){
-    if (/L01000010LDR-1/){
+    if (/$config->{header}/){
         convert_buffer() if (@buffer);
         @buffer = ();
     }
@@ -340,101 +267,93 @@ sub convert_buffer {
 }
 
 sub get_autidn {
-    ($autans)=@_;
-    
-    $autdubidx=$startautidn;
-    $autdubidn=0;
-    #  print "Autans: $autans\n";
-    
-    while ($autdubidx < $autdublastidx){
+    my ($autans)=@_;
+
+#    print "AUT $autans\n";
+
+    my $autdubidx=1;
+    my $autdubidn=0;
+
+#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
+
+    while ($autdubidx <= $#autdubbuf){
         if ($autans eq $autdubbuf[$autdubidx]){
             $autdubidn=(-1)*$autdubidx;      
-            
-            #      print "AutIDN schon vorhanden: $autdubidn\n";
         }
         $autdubidx++;
     }
     if (!$autdubidn){
-        $autdubbuf[$autdublastidx]=$autans;
-        $autdubidn=$autdublastidx;
-        #    print "AutIDN noch nicht vorhanden: $autdubidn\n";
-        $autdublastidx++;
-        
+        $autdubbuf[$autdubidx]=$autans;
+        $autdubidn=$autdubidx;
     }
+
+#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
+    
+#    print $autdubidn,"\n";
     return $autdubidn;
 }
 
 sub get_swtidn {
-    ($swtans)=@_;
+    my ($swtans)=@_;
+
+#    print "SWT $swtans\n";
     
-    $swtdubidx=$startswtidn;
-    $swtdubidn=0;
-    #  print "Swtans: $swtans\n";
+    my $swtdubidx=1;
+    my $swtdubidn=0;
+
+#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
     
-    while ($swtdubidx < $swtdublastidx){
+    while ($swtdubidx <= $#swtdubbuf){
         if ($swtans eq $swtdubbuf[$swtdubidx]){
             $swtdubidn=(-1)*$swtdubidx;      
-            
-            #            print "SwtIDN schon vorhanden: $swtdubidn, $swtdublastidx\n";
         }
         $swtdubidx++;
     }
     if (!$swtdubidn){
-        $swtdubbuf[$swtdublastidx]=$swtans;
-        $swtdubidn=$swtdublastidx;
-        #        print "SwtIDN noch nicht vorhanden: $swtdubidn, $swtdubidx, $swtdublastidx\n";
-        $swtdublastidx++;
-        
+        $swtdubbuf[$swtdubidx]=$swtans;
+        $swtdubidn=$swtdubidx;
     }
+#    print $swtdubidn,"\n";
+
+#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
+#    print "-----\n";
     return $swtdubidn;
 }
 
 sub get_koridn {
-    ($korans)=@_;
+    my ($korans)=@_;
     
-    $kordubidx=$startkoridn;
-    $kordubidn=0;
-    #  print "Korans: $korans\n";
+    my $kordubidx=1;
+    my $kordubidn=0;
     
-    while ($kordubidx < $kordublastidx){
+    while ($kordubidx <= $#kordubbuf){
         if ($korans eq $kordubbuf[$kordubidx]){
             $kordubidn=(-1)*$kordubidx;      
-            
-            #      print "KorIDN schon vorhanden: $kordubidn\n";
         }
         $kordubidx++;
     }
     if (!$kordubidn){
-        $kordubbuf[$kordublastidx]=$korans;
-        $kordubidn=$kordublastidx;
-        #    print "KorIDN noch nicht vorhanden: $kordubidn\n";
-        $kordublastidx++;
-        
+        $kordubbuf[$kordubidx]=$korans;
+        $kordubidn=$kordubidx;
     }
     return $kordubidn;
 }
 
 sub get_notidn {
-    ($notans)=@_;
+    my ($notans)=@_;
     
-    $notdubidx=$startnotidn;
-    $notdubidn=0;
-    #  print "Notans: $notans\n";
+    my $notdubidx=1;
+    my $notdubidn=0;
     
-    while ($notdubidx < $notdublastidx){
+    while ($notdubidx <= $#notdubbuf){
         if ($notans eq $notdubbuf[$notdubidx]){
             $notdubidn=(-1)*$notdubidx;      
-            
-            #      print "NotIDN schon vorhanden: $notdubidn\n";
         }
         $notdubidx++;
     }
     if (!$notdubidn){
-        $notdubbuf[$notdublastidx]=$notans;
-        $notdubidn=$notdublastidx;
-        #    print "NotIDN noch nicht vorhanden: $notdubidn\n";
-        $notdublastidx++;
-        
+        $notdubbuf[$notdubidx]=$notans;
+        $notdubidn=$notdubidx;
     }
     return $notdubidn;
 }

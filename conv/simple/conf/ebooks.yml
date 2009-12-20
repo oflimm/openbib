@@ -14,6 +14,10 @@ csv:
 # Feld der eindeutigen Titel-ID
 uniqueidfield: 'Nr'
 
+category_split_chars:
+  'Autor': '\s*;\s*'
+  'Herausgeber': '\s*;\s*'
+
 # Personen
 pers:
   'Autor': '0100:'        # Verfasser

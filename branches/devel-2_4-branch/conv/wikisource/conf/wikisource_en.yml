@@ -1,0 +1,32 @@
+# Tracelevel
+#tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'id'
+
+category_split_chars:
+  'author': '(?:\s*<br.*?>\s*|\s*und\s*|\s*,\s*|\s*;\s*)'
+
+pers_templatename: ''
+title_templatename: 'header2'
+wiki_category: 'Category'
+
+# Personen
+perstit:
+  # Fuer Titelnormdaten
+  'author': '0100:'            # Verfasser
+
+# Titel
+title:
+  'title': '0331:'
+  'notes': '0750:'
+
+# Exemplare
+exempl:
+
+no_wiki_filter:
+  'title': 1
+
+baseurl: 'http://en.wikisource.org/wiki/'
+
+commons_baseurl: 'http://commons.wikimedia.org/wiki/'

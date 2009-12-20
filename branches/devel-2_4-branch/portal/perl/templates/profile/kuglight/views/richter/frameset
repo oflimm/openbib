@@ -1,0 +1,41 @@
+[%#-
+#######################################################################
+#
+# Templatename: startopac
+#
+# Typ         : Mastertemplate und Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Framesets
+#
+#######################################################################
+-%]
+[%-
+# Aufruf der Frames mit den gewuenschten Inhalten
+
+IF NOT toprows ;
+  toprows = 140;
+
+  IF view;
+    toprows = 180;
+  END;
+END;
+-%]
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>KUG Recherche-Portal</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="/images/openbib/favicon.ico" rel="shortcut icon" />
+</head>
+ <frameset rows="[% toprows %],*" border="0">
+   <noframes>
+    <body>
+        <p>[% msg.maketext("Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit ihren Inhalten wie geplant zu sehen.") %]</p>
+    </body>
+   </noframes>
+   <frame name="header" src="[% headerframeurl %]" noresize="noresize" frameborder="0"/>
+   <frame name="body"   src="[% bodyframeurl %]" frameborder="0" />
+ </frameset>
+</html>

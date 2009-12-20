@@ -1,0 +1,40 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+# Anpassung: Bestellformular fuer Portrait
+#
+#######################################################################
+-%]
+<a class="invisible" href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg" height="270" /></a>
+<p>
+<a href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
+<br /><br />
+<a href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait.tif"><span style="font-size:0.7em">Als Tiff-Datei (Original)</span></a>
+</p>
+<p style="font-size:0.7em;font-weight:bold;">
+Bestellung in den Lesesaal Historische Sammlungen:
+</p>
+[% signaturen = [] ;
+   FOREACH mex IN mexnormset ;
+   signaturen.push(mex.${"X0014"}.content);
+   END %]
+<form style="font-size:0.7em" method="get" action="http://kug.ub.uni-koeln.de/cgi-bin/portrait_bestellung.pl">
+<input type="hidden" name="titel"    value="[% normset.${"T0331"}.first.content %]"/>
+<input type="hidden" name="signatur" value="[% signaturen.sort.unique.join(' ; ') %]"/>
+<input type="hidden" name="person"   value="[% normset.${"T0102"}.first.content %]"/>
+<table>
+<tr><td>Benutzernummer:</td><td><input type="text" name="bnr"/></td></tr>
+<tr><td>Opac-Pin:</td><td><input type="password" name="password"/></td></tr>
+<tr><td colspan="2"><input type="submit" value="Bestellen"/></td></tr>
+</table>
+</p>
+</form>

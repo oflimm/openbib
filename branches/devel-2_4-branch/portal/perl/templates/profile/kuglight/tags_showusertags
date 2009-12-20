@@ -1,0 +1,81 @@
+[%#-
+#######################################################################
+#
+# Templatename: tags_show_usertags
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der privaten Tags eines Benutzers
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="userprefs_navigation" active="tags" %]
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('tags_loc') %]?sessionID=[% sessionID %];show_usertags=1">&Uuml;bersicht</a></li>
+   <li><a                href="[% config.get('tags_loc') %]?sessionID=[% sessionID %];edit_usertags=1">&Auml;ndern</a></li>
+</ul>
+
+<div class="content">
+
+[%
+   private_tags = user.get_private_tags({ loginname => loginname  });
+
+%]
+<p />
+<table width="100%">
+<tr><th>Eigene Tags</th></tr>
+<tr><td class="boxedclear">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF private_tags.size > 0 -%]
+<ol class="cloud">
+[%- FOREACH thisitem IN private_tags -%]
+[% item      = thisitem.name;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemid    = thisitem.id;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+verkn&uuml;pft mit dem Tag </span><a href="[% config.get('tags_loc') %]?sessionID=[% sessionID %];searchtitoftag=[% itemid %];private_tags=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+Bisher haben Sie noch keine Tags vergeben.
+[% END %]
+</td></tr>
+</table>
+<p />
+
+</div>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

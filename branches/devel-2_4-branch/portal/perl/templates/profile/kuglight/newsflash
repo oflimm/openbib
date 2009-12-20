@@ -1,0 +1,28 @@
+[%#-
+#######################################################################
+#
+# Templatename: newsflash
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe aktueller Meldungen und Hinweise
+#
+#######################################################################
+-%]
+
+<table width="100%">
+<tr><th style="color:red">Aktuelles</th></tr>
+<tr><td class="boxedclear">
+<ul>
+
+<li>Am 17.4.2009 erfolgte die Umstellung des KUG auf eine neue
+Version, die seit dem 2.3.2009 im Beta-Test war. Informationen
+&uuml;ber die &Auml;nderungen finden Sie in der <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=2">Versions-Historie</a> und im <a
+href="http://blog.openbib.org" target="_blank">OpenBibBlog</a>.</li>
+
+
+</ul>
+</td></tr>
+</table>

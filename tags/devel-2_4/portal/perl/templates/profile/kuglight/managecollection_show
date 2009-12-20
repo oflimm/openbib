@@ -1,0 +1,116 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_show
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Anzeigen der Merkliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+[%- ret = recordlist.load_full_records -%]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_collection(yourform, checked, item) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(item) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+    
+    <form method="get" action="[% config.get('managecollection_loc') %]">
+      <input type="hidden" name="sessionID" value="[% sessionID %]" />
+      <input type="hidden" name="action"    value="show" />
+
+<div id="maincontent">
+
+      <ul class="tabbingmenu">
+	<li><a class="active" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
+      </ul>
+      
+      <div class="content">
+	
+	<p />
+	  
+	<ul class="tabbingmenu">
+	  <li><a[%- IF type == 'HTML' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML">HTML</a></li>
+	  <li><a[%- IF type == 'Text' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=Text">Text</a></li>
+	  <li><a[%- IF type == 'BibTeX' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=BibTeX">BibTeX</a></li>
+	  <li><a[%- IF type == 'EndNote' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=EndNote">EndNote</a></li>
+	</ul>
+	
+	<div class="content">
+	  
+	  <table width="100%">
+	      <tr><th>[% msg.maketext("Optionen") %]</th></tr>
+	      <tr><td class="boxed">
+		  <table border="0" cellspacing="0" cellpadding="0" width="100%">
+		      <tr>
+			<td>
+[%- IF type == 'HTML' -%]
+[% IF show == 'short'%]<b>[% msg.maketext("Kurztitel") %]</b>[% ELSE %]<a href="[% managecollection_loc%]?sessionID=[% sessionID %];action=show;type=HTML;show=short">[% msg.maketext("Kurztitel") %]</a>[% END %]&nbsp;&#124;&nbsp;[% IF show == 'full' %]<b>[% msg.maketext("Volltitel") %]</b>[% ELSE %]<a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML;show=full">[% msg.maketext("Volltitel") %]</a>[% END %]&nbsp;<b>&#124;</b>&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen") %] <input type="submit" name="do_collection_delentry" value="[% msg.maketext("Los") %]" />
+[%- ELSE -%]
+<b>[% msg.maketext("Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich") %]</b>
+[%- END -%]
+                       </td>
+			<td>&nbsp;</td>
+			<td class="fbuttonarea" align="center" width="80">
+			  <a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=mail;type=[% type %];show=[% show %]" title="[% msg.maketext("Als Mail verschicken") %]"><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+			  <a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=save;type=[% type %];show=[% show %]" target="save" title="[% msg.maketext("Abspeichern") %]"><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>
+			</td></tr>
+		  </table>
+		</td></tr>
+	  </table>
+
+
+	  
+	  <p />
+[% IF type == 'HTML' %]
+<p />
+	  <table width="100%">
+            <tr class="titlerow"><td><input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" /></td><td><b>Alle Eintr&auml;ge ausw&auml;hlen</b></td></tr>
+[%- FOREACH record IN recordlist.get_records -%]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_html" database="${record.database}" show_bibsonomy=0 -%]
+[%- END -%]
+	  </table>
+
+[% ELSIF type == 'Text' %]
+	  <pre>
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_text" show_bibsonomy=0 -%]
+          </pre>
+[% ELSIF type == 'BibTeX' %]
+          <pre>
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_bibtex" show_bibsonomy=0 -%]
+          </pre>
+[% ELSIF type == 'EndNote' %]
+          <pre>
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_endnote" show_bibsonomy=0 -%]
+          </pre>
+[% END %]
+
+	</div>
+      </div>
+
+<p />
+
+</form>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

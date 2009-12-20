@@ -1,0 +1,29 @@
+[%- normset         = record.to_rawdata -%]
+<rdf:RDF
+    xmlns:dbpedia="http://dbpedia.org/property/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:libris="http://libris.kb.se/vocabulary/experimental#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" >
+  <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/subject/[% database %]:[% id %]">
+[%#    <owl:sameAs rdf:resource="http://dbpedia.org/page/Steampunk"/> %]
+[% FOREACH item IN normset.${"S0001"} %]
+    <skos:prefLabel>[% item.content %]</skos:prefLabel>
+[% END %]
+[% FOREACH item IN normset.${"S0102"} %]
+    <skos:related>[% item.content %]</skos:related>
+[%#    <skos:related rdf:resource="http://libris.kb.se/resource/auth/164863"/> %]
+[% END %] 
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:isDefinedBy rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/subject/[% database %]:[% id %]/rdf+xml"/>
+    <skos:inScheme rdf:resource="http://libris.kb.se/sao"/>
+  </rdf:Description>
+[% FOREACH title_record IN title_records.to_ids %]
+  <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/title/[% title_record.database %]:[% title_record.id %]">
+    <dc:subject rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/person/[% database %]:[% id %]"/>
+  </rdf:Description>
+[% END %]
+</rdf:RDF>

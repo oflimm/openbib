@@ -1,0 +1,34 @@
+/* Generisches Stylesheet fuer die Print-Ausgabe des OpenBib-Portals */
+
+#thumbnail, .resultdrilldown, .resultheader .resultnavigation, #header_uni_siegel, #header_usb_siegel, #mainnavigation, #mainnavigation_left, #mainnavigation_right, #langchoice, #options { display: none }
+
+#header {
+  width: 100%;
+  position: relative;
+  background: white ;
+  padding: 0px;
+}
+
+#header_uni_schriftzug {
+  border-bottom: 4px solid #00089e; /* Linie im Kopf */
+  padding-bottom: 3px;
+  display: block;
+  margin: 17px 10px 0 10px;
+}
+
+#header_usb_schriftzug {
+  display: block;
+  margin: 4px 0 0 10px;
+}	
+
+#maincontent {
+  width: 99%;
+  position: relative;
+  background: white ;
+  padding: 5px;
+
+}
+
+.resultitems {
+  width: 99%;
+}

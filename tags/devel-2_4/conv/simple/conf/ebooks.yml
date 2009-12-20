@@ -1,0 +1,56 @@
+# Encoding der Daten
+encoding: iso-8859-1
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': "\t"
+  'quote_char': "\""
+  'escape_char': "\""
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'Nr'
+
+category_split_chars:
+  'Autor': '\s*;\s*'
+  'Herausgeber': '\s*;\s*'
+
+# Personen
+pers:
+  'Autor': '0100:'        # Verfasser
+  'Herausgeber': '0101:'  # Person
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys: 
+  'Paket1': '0700:'
+  'Paket2': '0700:'
+
+# Schlagworte
+subj:
+  'Paket': '0710:' # GBV-Schlagwoerter
+  'Subject': '0710:'
+  'Subject2': '0710:'
+  'Subject3': '0710:'
+
+# Titel
+title:
+  'Titel': '0331:'
+  'Serientitel': '0451:'
+  'Untertitel': '0370:'
+  'Auflage': '0403:'
+  'PrintISBN': '0540:'
+  'OEBISBN': '0540:'
+  'EBookISBN': '0553:'
+  'Erscheinungsjahr': '0425:'
+# 'DOI': ''
+  'Hosting': '0508:'
+# 'Kurzbeschreibung': '0750:'
+  'URL': '0662:'
+  'Verlag': '0412:'
+  'Erscheinungsdatum': '0002:'

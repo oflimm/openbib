@@ -1,0 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: newsflash
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe aktueller Meldungen und Hinweise
+#
+#######################################################################
+-%]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
+
+<ul>
+<li><b>11.12.2009</b>: Zu vielen Zeitschriften finden Sie in der
+Titelanzeige unter "Letzte Artikel" nun einer &Uuml;bersicht der dort
+zuletzt erschienenen Artikel (weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2009/12/10/verweise-auf-aktuelle-zeitschriftenartikel-mit-tictocs-im-kug/"
+target="_blank">Blog-Artikel</a>).</li>
+
+<li><b>11.11.2009</b>: Durch eine katalog&uuml;bergreifende
+Anreicherung mit Schlagworten (weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2009/11/09/kataloganreicherung-mit-schlagworten/"
+target="_blank">Blog-Artikel</a>) wurde die Auffindbarkeit der Titeln
+erh&ouml;ht.</li>
+
+<li><b>9.11.2009</b>: In der Einzeltrefferanzeige erhalten Sie nun
+einen &Uuml;berblick der Titel, die Sie sich in der aktuellen Sitzung
+bereits angeschaut haben.</li>
+
+</ul>

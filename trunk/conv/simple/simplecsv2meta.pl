@@ -87,12 +87,14 @@ our $mexidn=1;
 my $request = $dbh->prepare("select * from data") || die $dbh->errstr;
 $request->execute();
 
-open (TIT,     ">:utf8","unload.TIT");
-open (AUT,     ">:utf8","unload.PER");
-open (KOR,     ">:utf8","unload.KOE");
-open (NOTATION,">:utf8","unload.SYS");
-open (SWT,     ">:utf8","unload.SWD");
-open (MEX,     ">:utf8","unload.MEX");
+my $outputencoding = ($convconfig->{outputencoding})?$convconfig->{outputencoding}:'utf8';
+
+open (TIT,     ">:encoding($outputencoding)","unload.TIT");
+open (AUT,     ">:encoding($outputencoding)","unload.PER");
+open (KOR,     ">:encoding($outputencoding)","unload.KOE");
+open (NOTATION,">:encoding($outputencoding)","unload.SYS");
+open (SWT,     ">:encoding($outputencoding)","unload.SWD");
+open (MEX,     ">:encoding($outputencoding)","unload.MEX");
 
 my $titid = 1;
 my $have_titid_ref = {};
@@ -113,9 +115,11 @@ while (my $result=$request->fetchrow_hashref){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
 
         if ($content){
+            my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                $multiple = 1;
             }
             else {
                 $content=~s/\n/ /g;
@@ -124,7 +128,13 @@ while (my $result=$request->fetchrow_hashref){
             
             foreach my $part (@parts){
                 $part=~s/uhttp:/http:/;
-                print TIT $convconfig->{title}{$kateg}.$part."\n";
+                my $new_category = $convconfig->{title}{$kateg};
+
+                if ($multiple && $new_category=~/^(\d+):$/){
+                    $new_category=sprintf "%s.%03d:",$1,$multiple;
+                    $multiple++;
+                }
+                print TIT $new_category.$part."\n";
             }
         }
     }
@@ -134,9 +144,11 @@ while (my $result=$request->fetchrow_hashref){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
         
         if ($content){
+            my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                $multiple = 1;
             }
             else {
                 push @parts, $content;
@@ -154,8 +166,15 @@ while (my $result=$request->fetchrow_hashref){
                 else {
                     $autidn=(-1)*$autidn;
                 }
-                
-                print TIT $convconfig->{pers}{$kateg}."IDN: $autidn\n";
+
+                my $new_category = $convconfig->{pers}{$kateg};
+
+                if ($multiple && $new_category=~/^(\d+):$/){
+                    $new_category=sprintf "%s.%03d:",$1,$multiple;
+                    $multiple++;
+                }
+
+                print TIT $new_category."IDN: $autidn\n";
             }
         }
 
@@ -167,9 +186,11 @@ while (my $result=$request->fetchrow_hashref){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
         
         if ($content){
+            my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                $multiple = 1;                
             }
             else {
                 push @parts, $content;
@@ -188,8 +209,15 @@ while (my $result=$request->fetchrow_hashref){
                 else {
                     $koridn=(-1)*$koridn;
                 }
+
+                my $new_category = $convconfig->{corp}{$kateg};
+
+                if ($multiple && $new_category=~/^(\d+):$/){
+                    $new_category=sprintf "%s.%03d:",$1,$multiple;
+                    $multiple++;
+                }
                 
-                print TIT $convconfig->{corp}{$kateg}."IDN: $koridn\n";
+                print TIT $new_category."IDN: $koridn\n";
             }
         }
     }
@@ -201,9 +229,11 @@ while (my $result=$request->fetchrow_hashref){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
         
         if ($content){
+            my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                $multiple = 1;
             }
             else {
                 push @parts, $content;
@@ -220,7 +250,15 @@ while (my $result=$request->fetchrow_hashref){
                 else {
                     $notidn=(-1)*$notidn;
                 }
-                print TIT $convconfig->{sys}{$kateg}."IDN: $notidn\n";
+
+                my $new_category = $convconfig->{sys}{$kateg};
+
+                if ($multiple && $new_category=~/^(\d+):$/){
+                    $new_category=sprintf "%s.%03d:",$1,$multiple;
+                    $multiple++;
+                }
+                
+                print TIT $new_category."IDN: $notidn\n";
             }
         }
     }
@@ -231,9 +269,11 @@ while (my $result=$request->fetchrow_hashref){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
 
         if ($content){
+            my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                $multiple = 1;
             }
             else {
                 push @parts, $content;
@@ -250,18 +290,29 @@ while (my $result=$request->fetchrow_hashref){
                 else {
                     $swtidn=(-1)*$swtidn;
                 }
-                print TIT $convconfig->{subj}{$kateg}."IDN: $swtidn\n";
+
+                my $new_category = $convconfig->{subj}{$kateg};
+
+                if ($multiple && $new_category=~/^(\d+):$/){
+                    $new_category=sprintf "%s.%03d:",$1,$multiple;
+                    $multiple++;
+                }
+                
+                print TIT $new_category."IDN: $swtidn\n";
             }
             
         }
     }
     # Schlagworte abarbeiten Ende
 
+
+    my %mex = ();
     # Exemplare abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{exempl}}){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
 
         if ($content){
+            my $multiple = 1;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
@@ -269,16 +320,24 @@ while (my $result=$request->fetchrow_hashref){
             else {
                 push @parts, $content;
             }
-            
+
             foreach my $part (@parts){
-                print MEX "0000:$mexidn\n";
-                print MEX "0004:$titid\n";
-                print MEX $convconfig->{exempl}{$kateg}.$part."\n";
-                print MEX "9999:\n";
-                $mexidn++;
+                 $mex{$multiple}{$convconfig->{exempl}{$kateg}} = $part; 
             }
         }
     }
+
+    #print YAML::Dump(\%mex);
+    foreach my $part (keys %mex){        
+        print MEX "0000:$mexidn\n";
+        print MEX "0004:$titid\n";
+        foreach my $category (keys %{$mex{$part}}){
+            print MEX $category.$mex{$part}{$category}."\n";
+        }
+        print MEX "9999:\n";
+        $mexidn++;
+    }
+
     # Exemplare abarbeiten Ende
 
     print TIT "9999:\n";

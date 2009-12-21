@@ -1048,6 +1048,19 @@ sub to_isbn13 {
     return $thisisbn;
 }
 
+sub to_issn {
+    my ($thisissn) = @_;
+
+    return undef unless (defined $thisissn);
+    
+    $thisissn = OpenBib::Common::Util::grundform({
+        category => '0543',
+        content  => $thisissn,
+    });
+
+    return $thisissn;
+}
+
 sub get_cascaded_templatepath {
     my ($arg_ref) = @_;
 

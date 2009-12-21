@@ -116,8 +116,14 @@ sub get_additional_normdata {
     
     return {} unless (defined $isbn && defined $dbh);
 
-    # Normierung auf ISBN13
-    $isbn = OpenBib::Common::Util::to_isbn13($isbn);
+    if (length($isbn) <= 9){
+        # Normierung der ISSN
+        $isbn = OpenBib::Common::Util::to_issn($isbn);
+    }
+    else {
+        # Normierung auf ISBN13
+        $isbn = OpenBib::Common::Util::to_isbn13($isbn);
+    }
     
     my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
     my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);

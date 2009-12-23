@@ -129,15 +129,21 @@ sub handler {
     my $view       = $query->param('view')       || 'institute';
     my $serien     = $query->param('serien')     || 0;
     my $sb         = $query->param('sb')         || 'xapian';
-
+    my $up         = $query->param('up')         || '0';
+    my $down       = $query->param('down')       || '0';
+    
     # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
 
     # Wenn 'erste Trefferliste' oder Langtitelanzeige
     # Bei zurueckblaettern auf die erste Trefferliste wird eine weitere Session
     # geoeffnet und gezaeht. Die DigiBib-Zugriffsspezifikation des hbz ohne
     # eigene Sessions laesst jedoch keinen anderen Weg zu.
+
+    # Intern wird beim Offset mit 0 begonnen
     
-    if ($offset == 1){
+    $offset=$offset-1;
+    
+    if ($offset == 0){
         $session->log_event({
             type      => 22,
             content   => 1,
@@ -192,8 +198,81 @@ sub handler {
         
         my @ergebnisse;
         my $recordlist;
+
+        $logger->debug("Got Id $up in Database $database");
         
-        if ($sb eq "xapian"){
+        # Up/Down werden per SQL bestimmt
+        if ($database && $up){
+            $recordlist = new OpenBib::RecordList::Title();
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
+
+            $logger->debug("Searching Supertit for Id $up in Database $database with Limits $limits");
+            
+            my $dbh
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                    or $logger->error_die($DBI::errstr);
+            
+            # Bestimmung der Titel
+            my $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1 $limits";
+            my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($up) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+            while (my $res=$request->fetchrow_hashref) {
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{targetid}}));
+            }
+
+            $recordlist->load_brief_records;
+            
+            if ($sorttype && $sortorder){
+                $recordlist->sort({order=>$sortorder,type=>$sorttype});
+            }
+
+            push @ergebnisse, @{$recordlist->to_list};
+            
+            $request->finish();
+
+            $treffercount=$#ergebnisse+1;            
+        }
+        elsif ($database && $down){
+            $recordlist = new OpenBib::RecordList::Title();
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
+
+            $logger->debug("Searching Subtit for Id $up in Database $database with Limits $limits");
+            
+            my $dbh
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                    or $logger->error_die($DBI::errstr);
+
+            # Bestimmung der Titel
+            my $reqstring="select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1 $limits";
+            my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($down) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+            while (my $res=$request->fetchrow_hashref) {
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
+            }
+
+            $recordlist->load_brief_records;
+            
+            if ($sorttype && $sortorder){
+                $recordlist->sort({order=>$sortorder,type=>$sorttype});
+            }
+
+            push @ergebnisse, @{$recordlist->to_list};
+            
+            $request->finish();
+
+            $treffercount=$#ergebnisse+1;            
+        }        
+        elsif ($sb eq "xapian"){
             $recordlist = new OpenBib::RecordList::Title();
 
             my $dbh;
@@ -455,8 +534,8 @@ sub handler {
 
         $logger->debug(YAML::Dump(\@ergebnisse));
         
-        my $liststart = ($offset<= $treffercount)?$offset-1:0;
-        my $listend   = ($offset+$listlength-1 <= $treffercount)?$offset+$listlength-2:$treffercount-1;
+        my $liststart = ($offset<= $treffercount)?$offset:0;
+        my $listend   = ($offset+$listlength <= $treffercount)?$offset+$listlength-1:$treffercount-1;
         
         my $itemtemplatename=$config->{tt_connector_digibib_result_item_tname};
 

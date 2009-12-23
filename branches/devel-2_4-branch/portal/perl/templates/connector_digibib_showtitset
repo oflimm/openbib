@@ -142,6 +142,8 @@
 
 <LI><UL>
 <LI> DB=KVIK
+<LI> ID=[% record.id %]
+<LI> DBID=[% record.database %]
 <LI> AU=[% utf2iso(person)                     # Verfasser %]
 <LI> RE=[% utf2iso(item.${'T0359'}.0.content)  # VorlVerf %]
 <LI> TI=[% utf2iso(item.${'T0331'}.0.content)  # HST %]
@@ -173,6 +175,7 @@
 [% IF item.${'T5002'}.0.content %]
 <LI> BDV=true
 [% END %]
+<LI> LNKDB=http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html
 [% IF has_sb %]
 [%- sbitem         = sbrecord.get_normdata -%]
 [%- sbitemmex      = sbrecord.get_mexdata -%]

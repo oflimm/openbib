@@ -167,6 +167,12 @@
 [%- END %]
 <LI> AUH=[% utf2iso(autorlink) %]
 <LI> TIH=[% utf2iso(titellink) %]
+[% IF item.${'T5001'}.0.content %]
+<LI> GTV=true
+[% END %]
+[% IF item.${'T5002'}.0.content %]
+<LI> BDV=true
+[% END %]
 [% IF has_sb %]
 [%- sbitem         = sbrecord.get_normdata -%]
 [%- sbitemmex      = sbrecord.get_mexdata -%]

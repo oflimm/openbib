@@ -90,31 +90,28 @@
       END ;
    END ;
 %]
+[%- request_base    = "sb=xapian;drilldown=1;dd_categorized=1;" -%]
+
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-[% IF combinedbs %]
-<tr><td class="listrow2"><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% thisquery.id %];offset=0;hitrange=[% hitrange %];sb=[% qopts.sb %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
-[% ELSE %]
-<tr><td class="listrow2"><a href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];action=showall;sortall=0;sorttype=author;queryid=[% thisquery.id %];view=[% view %];offset=0"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];queryid=[% thisquery.id %];hitrange=50;sorttype=author;sortorder=up;combinedbs=1;page=1"><b>[% msg.maketext("Alle Treffer") %] / Kombinierte Kataloge</b></a></td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];queryid=[% thisquery.id %];hitrange=50;sorttype=author;sortorder=up;combinedbs=0;page=1"><b>[% msg.maketext("Alle Treffer") %] / Separate Kataloge</b></a></td><td align="right">[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
-
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];database=[% resultdb.trefferdb %];action=showrange;offset=0;queryid=[% thisquery.id %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
-[% IF resultdb.trefferzahl == qopts.maxhits %]
+<tr><td class="[% listrow %]"><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];queryid=[% thisquery.id %];database=[% resultdb.trefferdb %];hitrange=50;sorttype=author;sortorder=up;page=1"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
+[%   IF resultdb.trefferzahl == qopts.maxhits %]
 [% msg.maketext("mind.") %]&nbsp;
-[% END %]
+[%   END %]
 [% resultdb.trefferzahl %]
 </td></tr>
-[% IF listrow == 'listrow1' %]
-[% listrow = 'listrow2' %]
-[% ELSE %]
-[% listrow = 'listrow1' %]
-[% END %]
-[% END %]
-
+[%   IF listrow == 'listrow1' %]
+[%     listrow = 'listrow2' %]
+[%   ELSE %]
+[%     listrow = 'listrow1' %]
+[%   END %]
 [% END %]
 
 </table>

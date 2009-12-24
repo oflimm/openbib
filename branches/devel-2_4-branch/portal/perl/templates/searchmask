@@ -124,8 +124,17 @@ $(document).ready(function(){
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />
-<input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="sb"        value="xapian" />
 <input type="hidden" name="st"        value="2" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.get('drilldown_option').cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.get('drilldown_option').categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
 
 [% PROCESS common/subtemplate name="searchmask_query" %]
 

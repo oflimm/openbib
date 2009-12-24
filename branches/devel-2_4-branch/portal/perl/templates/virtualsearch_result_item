@@ -12,12 +12,18 @@
 #######################################################################
 -%]
 <!-- Beginn Result Item -->
-[%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
-[%- dburl    = dbinfo.get('urls').${database} -%]
-[%- ebook_i18n      = msg.maketext("E-Book") -%]
-[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
-[%- popularity_i18n = msg.maketext("Popularität") -%]
-
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
+    dburl    = dbinfo.get('urls').${database} ;
+    ebook_i18n      = msg.maketext("E-Book") ;
+    toc_i18n        = msg.maketext("Inhaltsverzeichnis") ;
+    popularity_i18n = msg.maketext("Popularität") ;
+    request_base    = "sb=xapian;drilldown=1;dd_categorized=1;" ;
+    start_range     = nav.current_page*qopts.hitrange-qopts.hitrange + 1;
+    end_range       = nav.current_page*qopts.hitrange;
+    IF end_range >= fullresultcount ;
+       end_range       = fullresultcount;
+    END;
+-%]
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
@@ -29,18 +35,20 @@
      [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
     </div>
     <div class="hits">
-[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
+[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% start_range %]-[% end_range %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
     </div>
     <div class="navigation">
-[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
-[%- IF treffer == qopts.hitrange -%]
-<span class="paging_active">1</span>&nbsp;...&nbsp;&nbsp;<a href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]"><img src="[% config.get('next_img') %]" title="[Weitere Treffer...]" height="12"/></a>
-[%- ELSIF treffer < qopts.hitrange -%]
-<span class="paging_active">1</span>
+[% msg.maketext("Seite:") %]&nbsp;
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %]">[% page %]</a>
+[%-   END -%]
 [%- END -%]
     </div>
   </div>
-[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %]
+[% IF drilldown && fullresultcount <= config.get('xapian_option').maxmatch %]
   <div class="resultdrilldown">
 [% PROCESS common/subtemplate name="drilldown_categorized" %][% PROCESS common/subtemplate name="drilldown_cloud" %]
   </div>
@@ -159,7 +167,7 @@
 
 -%]
     <div class="item">
-      <div class="numbering">[% loop.count %]</div>
+      <div class="numbering">[% start_range+loop.count - 1 %]</div>
       <div class="thumbnail">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 

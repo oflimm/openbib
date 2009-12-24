@@ -1225,11 +1225,10 @@ sub set_all_searchresults {
     foreach my $db (keys %{$results_ref}) {
         my $res=$results_ref->{$db};
         
-        my $storableres=unpack "H*",Storable::freeze($res);
+        my $storableres= ""; #unpack "H*",Storable::freeze($res);
         
         $logger->debug("YAML-Dumped: ".YAML::Dump($res));
-        my $num=$dbhits_ref->{$db};
-        $idnresult->execute($self->{ID},$db,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
+        $idnresult->execute($self->{ID},$db,$hitrange,$storableres,$dbhits_ref->{$db},$queryid) or $logger->error($DBI::errstr);
     }
     $idnresult->finish();
 

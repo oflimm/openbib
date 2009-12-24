@@ -3,151 +3,192 @@
 #
 # Templatename: virtualsearch_result_combined
 #
-# Typ         : Mastertemplate (optional)
+# Typ         : Mastertemplate (2/3)
 #
 # Aufgabe:
 #
-# Ausgabe der Suchergebnisse *eines* Katalogs
+# Ausgabe der kombinierten Suchergebnisse aller Kataloge
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
-
-<body>
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
-
-<div id="maincontent">
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="#">[% msg.maketext("Trefferliste") %]</a></li>
-</ul>
-
-<div class="content">
-
-<p />
-<p />
-<form method="get" action="[% config.get('virtualsearch_loc') %]">
-[%- FOREACH qparam IN query.param -%]
-[%-   IF qparam != 'sortorder' && qparam != 'sorttype' %]
-<input type="hidden" name="[% qparam %]" value="[% query.param(qparam) %]" />
-[%-   END -%]
-[%- END -%]
-
-[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('virtualsearch_loc') %]
-
-<p />
-</form>
-
-[% suggestion = searchquery.get_spelling_suggestion %]
-[% IF suggestion %]
-[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?sessionID=[% sessionID %];hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=[% query.param('combinedbs') %];searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
-[% END %]
-
-<table>
-[% IF fullresultcount == 0 %]
-<tr><td colspan="7"><span style="font-size:1.7em;font-face:bold">[% msg.maketext("Es wurden keine Treffer gefunden") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.get('searchmask_loc')}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>") %]</span></td></tr>
-[% ELSE %]
-[%# USE dumper;dumper.dump(offsets) %]
 <!-- Beginn Result Item -->
-<!-- <tr class="titlerow"><td>&nbsp;</td><td colspan="3">[%- IF treffer == qopts.hitrange -%]<b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];combinedbs=1;queryid=[% queryid %];offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>[% END %]</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>-->
-[%-     IF offsets -%]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3">
-[%          FOREACH singleoffset IN offsets %]
-[%-             IF singleoffset.type == 'getnext' -%]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
-[%-             ELSE -%]
-[%-                 IF singleoffset.offset == offset -%]
-<b>[[% singleoffset.start %] - [% singleoffset.end %]]</b>&nbsp;
-[%-                 ELSE -%]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
-[%-                 END -%]
-[%-             END -%]
-[%-         END -%]
-</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>
-[%-     END -%]
+[%-
+    ebook_i18n      = msg.maketext("E-Book") ;
+    toc_i18n        = msg.maketext("Inhaltsverzeichnis") ;
+    popularity_i18n = msg.maketext("Popularität") ;
+    request_base    = "sb=xapian;drilldown=1;dd_categorized=1;" ;
+    start_range     = nav.current_page*qopts.hitrange-qopts.hitrange + 1;
+    end_range       = nav.current_page*qopts.hitrange;
+    IF end_range >= fullresultcount ;
+       end_range       = fullresultcount;
+    END;
+-%]
 
-[% listrow = 'listrow2' %]
-[%- FOREACH record IN recordlist.get_records -%]
-[%- item = record.get_brief_normdata -%]
-[%# Verfasser konstruieren %]
-[%- persons = [] -%]
-[%- FOREACH part IN item.${'P0100'}  -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
-[%#- persons.push("${part.content}") -%]
-[%- END -%]
-[%- FOREACH part IN item.${'P0101'}  -%]
-[%-   IF part.supplement -%]
-[%-      part.content = "${part.content} ${part.supplement}" -%]
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+        Trefferliste
+    </div>
+    <div class="hits">
+[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% start_range %]-[% end_range %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
+    </div>
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %];combinedbs=1">[% page %]</a>
 [%-   END -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
-[%#- persons.push("${part.content}") -%]
 [%- END -%]
-[%- FOREACH part IN item.${'C0200'}  -%]
-[%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
-[%- END -%]
-[%- FOREACH part IN item.${'C0201'}  -%]
-[%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
-[%- END -%]
-[%- person = persons.join(' ; ') -%]
-
-[%# Titel konstruieren %]
-[%- title = item.${'T0331'}.first.content -%]
-[%- IF item.${'T0310'}.first.content -%]
-[%- title = item.${'T0310'}.first.content -%]
-[%- END -%]
-
-[%# Einbeziehung der Zaehlfelder T5100 %]
-[%- IF title && item.${'T5100'}.first.content -%]
-[%- order = item.${'T5100'}.first.content -%]
-[%-    IF title == order -%]
-[%-      title = "${order}."-%]
-[%-    ELSE -%]
-[%-      title = "${order}. ${title}" -%]
-[%-    END -%]
-[%- END -%]
-
-[%# Verlage konstruieren %]
-[%- publisher = item.${'T0412'}.first.content -%]
-
-[%# Ejahr konstruieren %]
-[%- yearofpub = item.${'T0425'}.first.content -%]
-
-[%# Signaturen konstruieren %]
-[%- signaturen = [] -%]
-[%- FOREACH part IN item.${'X0014'} -%]
-[%- signaturen.push("${part.content}") -%]
-[%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
-[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
-[%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
-[%- dburl    = dbinfo.get('urls').${record.database} -%]
-
-<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td class="thumbnail">[% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td colspan="2"><span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></td><td><span class="rlcollect"><a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
-[%- IF listrow == 'listrow1' -%]
-[%- listrow = 'listrow2' -%]
-[%- ELSE -%]
-[%- listrow = 'listrow1' -%]
-[%- END -%]
+    </div>
+  </div>
+[% IF drilldown && fullresultcount <= config.get('xapian_option').maxmatch %]
+  <div class="resultdrilldown">
+[% PROCESS common/subtemplate name="drilldown_categorized" %][% PROCESS common/subtemplate name="drilldown_cloud" %]
+  </div>
 [% END %]
-<tr><td class="listnr">&nbsp;</td><td colspan="6"><b><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
-<tr><td colspan="7">&nbsp;</td></tr>
-<!-- Ende Result Item -->
+  <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+<!-- Anfang einzelner Treffer -->
+[%-
+  item = record.get_brief_normdata ;
 
-<tr><td colspan="7"><span style="font-size:1.5em;font-face:bold">[% msg.maketext("M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.get('searchmask_loc')}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>") %]</span></td></tr>
-[% END %]
-</table>
+  dbdesc   = dbinfo.get('dbnames').${record.database}.full ;
+  dburl    = dbinfo.get('urls').${record.database} ;
 
-<p />
+  # Verfasser konstruieren
+  persons = [] ;
 
-[% PROCESS common/subtemplate name="virtualsearch_more_search_tips" %]
+  personslength = 0 ;
+  truncatepers  = 0 ;
 
+  FOREACH part IN item.${'P0100'} ;
+    thislength = part.content.length ;
+    IF (thislength+personslength) < config.get('maxlength_pers') ;
+      persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
+      personslength = personslength+thislength ;
+    ELSE ;
+      truncatepers = 1 ;
+    END ;
+  END ;
+  FOREACH part IN item.${'P0101'}  ;
+    IF part.supplement ;
+       part.content = "${part.content} ${part.supplement}" ;
+    END ;
+    thislength = part.content.length ;
+    IF (thislength+personslength) < config.get('maxlength_pers') ;
+      persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
+      personslength = personslength+thislength ;
+    ELSE ;
+      truncatepers = 1 ;
+    END ;
+  END ;
+  FOREACH part IN item.${'C0200'}  ;
+    thislength = part.content.length ;
+    IF (thislength+personslength) < config.get('maxlength_pers') ;
+      persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
+      personslength = personslength+thislength ;
+    ELSE ;
+      truncatepers = 1 ;
+    END ;
+  END ;
+  FOREACH part IN item.${'C0201'}  ;
+    thislength = part.content.length ;
+    IF (thislength+personslength) < config.get('maxlength_pers') ;
+      persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
+      personslength = personslength+thislength ;
+    ELSE ;
+      truncatepers = 1 ;
+    END ;
+  END ;
+  person = persons.join(' ; ') ;
+  IF truncatepers ;
+    person = "$person [...]" ;
+  END ;
 
+  # Titel konstruieren
+  title = item.${'T0331'}.first.content ;
+  IF item.${'T0310'}.first.content ;
+  title = item.${'T0310'}.first.content ;
+  END ;
+
+  # Einbeziehung der Zaehlfelder T5100
+  IF title && item.${'T5100'}.first.content ;
+  order = item.${'T5100'}.first.content ;
+     IF title == order ;
+       title = "${order}.";
+     ELSE ;
+       title = "${order}. ${title}" ;
+     END ;
+  END ;
+
+  # Auflage konstruieren
+  edition = item.${'T0403'}.first.content ;
+
+  # Verlage konstruieren
+  publisher = item.${'T0412'}.first.content ;
+
+  # Ejahr konstruieren
+  yearofpub = item.${'T0425'}.first.content ;
+
+  # Signaturen konstruieren
+  signaturen = [] ;
+  FOREACH part IN item.${'X0014'} ;
+  signaturen.push("${part.content}") ;
+  END ;
+
+  signatur = signaturen.sort.unique.join(' ; ') ;
+  isbn     = item.${"T0540"}.first.content.replace('-','') ;
+
+  titleinfos = [] ;
+
+  # E-Book/Inhaltsverzeichnis vorhanden
+  ebook     = item.${'T4120'}.first.content ;
+  toc       = item.${'T4110'}.first.content ;
+
+  IF ebook ;
+    ebook = "${config.get('redirect_loc')}/${sessionID}/503/${ebook}" ;
+    titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
+  END ;
+
+  IF toc ;
+    toc = "${config.get('redirect_loc')}/${sessionID}/500/${toc}" ;
+    titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
+  END ;
+
+  IF item.popularity ;
+    titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
+  END ;
+
+  titleinfo = titleinfos.join(" | ");
+
+-%]
+    <div class="item">
+      <div class="numbering">[% start_range+loop.count - 1 %]</div>
+      <div class="thumbnail">
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<br />aus:&nbsp;<i>
+[%-   IF dbinfo.get('use_libinfo').${item.database} %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% item.database %];stid=60">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>[%- IF titleinfo -%]&nbsp;[ [% titleinfo %] ][%- END -%]
+      </div>
+      <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
+      <div class="titleactions">
+<a class="collection" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
+      </div>
+    </div>
+<!-- Ende einzelner Treffer -->
+[%- END -%]
+  </div>
+  <div class="resultfooter">
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
+  </div>
 </div>
-<p />
-
-[% PROCESS common/subtemplate name="std_footer" %]
+<p/>

@@ -1,4 +1,4 @@
-[%     IF drilldown_categorized && fullresultcount >= 10 %]
+[%     IF drilldown_categorized  %]
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -113,7 +113,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
    ELSE ;
       request_base = "${request_base}searchprofile=1;dbauswahl=1;database=${database};";
    END ;
-%] 
+%]
 [%         IF combinedbs == 1 && category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">

@@ -189,7 +189,7 @@ sub initial_search {
     $qp->add_prefix('issn'   ,'X9');
 
     # Drilldowns
-    $qp->add_prefix('ddsubj'  ,'D1');
+    $qp->add_prefix('ddswt'   ,'D1');
     $qp->add_prefix('ddnot'   ,'D2');
     $qp->add_prefix('ddper'   ,'D3');
     $qp->add_prefix('typ'     ,'D4');

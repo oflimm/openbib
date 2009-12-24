@@ -361,7 +361,7 @@ ENDE
     my $atime = new Benchmark;
 
     $logger->info("### $database: Importing data into searchengine");   
-    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --with-fields --database=$database");
+    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-fields -with-sorting -with-positions --database=$database");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

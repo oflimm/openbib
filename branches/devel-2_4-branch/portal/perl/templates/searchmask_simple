@@ -127,6 +127,7 @@ $(document).ready(function(){
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange"  value="50" />
+<input type="hidden" name="page"      value="1" />
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sorttype"  value="author" />
 <input type="hidden" name="sortorder" value="up" />
@@ -218,6 +219,7 @@ $(document).ready(function(){
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange"  value="50" />
+<input type="hidden" name="page"      value="1" />
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sorttype"  value="author" />
 <input type="hidden" name="sortorder" value="up" />
@@ -313,6 +315,7 @@ $(document).ready(function(){
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange"  value="50" />
+<input type="hidden" name="page"      value="1" />
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sorttype"  value="author" />
 <input type="hidden" name="sortorder" value="up" />

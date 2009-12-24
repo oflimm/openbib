@@ -128,6 +128,14 @@ sub initial_search {
         ? $arg_ref->{dbh}           : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}      : undef;
+    my $sorttype          = exists $arg_ref->{sorttype}
+        ? $arg_ref->{sorttype}      : undef;
+    my $sortorder         = exists $arg_ref->{sortorder}
+        ? $arg_ref->{sortorder}     : undef;
+    my $hitrange          = exists $arg_ref->{hitrange}
+        ? $arg_ref->{hitrange}      : 50;
+    my $offset            = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}        : 0;
     my $dd_categorized    = exists $arg_ref->{dd_categorized}
         ? $arg_ref->{dd_categorized} : 0;
 
@@ -171,29 +179,48 @@ sub initial_search {
     $qp->set_default_op(Search::Xapian::OP_AND);
     $qp->add_prefix('id'       ,'Q');
 
-    $qp->add_prefix('inauth'   ,'X1');
-    $qp->add_prefix('intitle'  ,'X2');
-    $qp->add_prefix('incorp'   ,'X3');
-    $qp->add_prefix('insubj'   ,'X4');
-    $qp->add_prefix('insys'    ,'X5');
-    $qp->add_prefix('inyear'   ,'X7');
-    $qp->add_prefix('inisbn'   ,'X8');
-    $qp->add_prefix('inissn'   ,'X9');
+    $qp->add_prefix('aut'    ,'X1');
+    $qp->add_prefix('tit'    ,'X2');
+    $qp->add_prefix('corp'   ,'X3');
+    $qp->add_prefix('subj'   ,'X4');
+    $qp->add_prefix('sys'    ,'X5');
+    $qp->add_prefix('year'   ,'X7');
+    $qp->add_prefix('isbn'   ,'X8');
+    $qp->add_prefix('issn'   ,'X9');
 
     # Drilldowns
-    $qp->add_prefix('ddswt'   ,'D1');
+    $qp->add_prefix('ddsubj'  ,'D1');
     $qp->add_prefix('ddnot'   ,'D2');
     $qp->add_prefix('ddper'   ,'D3');
-    $qp->add_prefix('ddtyp'   ,'D4');
+    $qp->add_prefix('typ'     ,'D4');
     $qp->add_prefix('ddyear'  ,'D5');
     $qp->add_prefix('ddspr'   ,'D6');
     $qp->add_prefix('ddcorp'  ,'D7');
-    $qp->add_prefix('dddb'    ,'D8');
+    $qp->add_prefix('db'      ,'D8');
     
     my $category_map_ref = {};
     my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
-    my $thisquery = $enq->get_query()->get_description();
 
+    my $sorttype_map_ref = {
+        "author"     => 20,
+        "title"      => 21,
+        "order"      => 22,
+        "yearofpub"  => 23,
+        "publisher"  => 24,
+        "signature"  => 25,
+        "popularity" => 26,
+    };
+    
+    # Sorting
+    if ($sorttype ne "relevance" || exists $sorttype_map_ref->{$sorttype}) { # default
+        $sortorder = ($sortorder eq "up")?0:1;
+        $logger->debug("Set Sorting to type ".$sorttype_map_ref->{$sorttype}." / order ".$sortorder);
+
+        $enq->set_sort_by_value($sorttype_map_ref->{$sorttype},$sortorder)
+    }
+    
+    my $thisquery = $enq->get_query()->get_description();
+        
     $logger->debug("Internal Xapian Query: $thisquery");
     
     my %decider_map   = ();
@@ -258,6 +285,7 @@ sub initial_search {
       $self->{resultcount} = scalar(@matches);
     }
 
+#    my @this_matches      = splice(@matches,$offset,$hitrange);
     $self->{_matches}     = \@matches;
 
     if ($singletermcount > $maxmatch){
@@ -291,6 +319,55 @@ sub querystring {
 sub enq {
     my $self=shift;
     return $self->{_enq};
+}
+
+sub get_categorized_drilldown {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $ddatime   = new Benchmark;
+    
+    # Transformation Hash->Array zur Sortierung
+
+    my $category_map_ref     = ();
+    my $tmp_category_map_ref = $self->{categories};
+                                
+    foreach my $type (keys %{$tmp_category_map_ref}) {
+        my $contents_ref = [] ;
+        foreach my $content (keys %{$tmp_category_map_ref->{$type}}) {
+            my $normcontent = OpenBib::Common::Util::grundform({
+                content   => decode_utf8($content),
+                searchreq => 1,
+            });
+            
+            $normcontent=~s/\W/_/g;
+            push @{$contents_ref}, [
+                decode_utf8($content),
+                $tmp_category_map_ref->{$type}{$content},
+                $normcontent,
+            ];
+        }
+        
+        $logger->debug(YAML::Dump($contents_ref));
+        
+        # Schwartz'ian Transform
+        
+        @{$category_map_ref->{$type}} = map { $_->[0] }
+            sort { $b->[1] <=> $a->[1] }
+                map { [$_, $_->[1]] }
+                    @{$contents_ref};
+    }
+
+    my $ddbtime       = new Benchmark;
+    my $ddtimeall     = timediff($ddbtime,$ddatime);
+    my $drilldowntime    = timestr($ddtimeall,"nop");
+    $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
+    
+    $logger->debug("Zeit fuer categorized drilldowns $drilldowntime");
+
+    return $category_map_ref;
 }
 
 sub DESTROY {

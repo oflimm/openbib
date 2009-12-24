@@ -1,4 +1,4 @@
-[%     IF drilldown_categorized && fullresultcount >= 10 %]
+[%     IF drilldown_categorized %]
 <script type="text/javascript">
 $(document).ready(function(){
 

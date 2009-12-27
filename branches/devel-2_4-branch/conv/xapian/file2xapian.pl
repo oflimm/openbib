@@ -155,81 +155,81 @@ my $count = 1;
 
         my $tokinfos_ref=[
             {
-                prefix  => $config->{xapian_search_prefix}{'per'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'verf'}},
                 content => $verf,
 	        type    => 'index',
             },
             {
-                prefix  => $config->{xapian_search_prefix}{'tit'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'hst'}},
                 content => $hst,
 	        type    => 'index',
             },
             {
-                prefix  => $config->{xapian_search_prefix}{'corp'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'kor'}},
                 content => $kor,
 	        type    => 'index',
             },
             {
-                prefix  => $config->{xapian_search_prefix}{'subj'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'swt'}},
                 content => $swt,
 	        type    => 'index',
             },
             {
-                prefix  => $config->{xapian_search_prefix}{'sys'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'notation'}},
                 content => $notation,
 	        type    => 'index',
             },
             {
-                prefix  => $config->{xapian_search_prefix}{'mark'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'sign'}},
                 content => $sign,
 	        type    => 'index',
             },
             {
-                prefix  => $config->{xapian_search_prefix}{'year'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ejahr'}},
                 content => $ejahr,
 	        type    => 'index',
             },
             {
-                prefix  => $config->{xapian_search_prefix}{'isbn'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'isbn'}},
                 content => $isbn,
 	        type    => 'index',
             },
             {
-                prefix  => $config->{xapian_search_prefix}{'issn'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'issn'}},
                 content => $issn,
 	        type    => 'index',
             },
+#             {
+#                 prefix  => $config->{xapian_search_prefix}{'artinh'},
+#                 content => $artinh,
+# 	        type    => 'index',
+#             },
             {
-                prefix  => $config->{xapian_search_prefix}{'artinh'},
-                content => $artinh,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{'cnt'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'inhalt'}},
                 content => $inhalt,
 	        type    => 'index',
             },
             {
                 # Schlagwort
-                prefix  => $config->{xapian_search_prefix}{'fsubj'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ddswt'}},
 	        type    => "drilldown",
                 cat     => 'swt',
             },
             {
                 # Notation
-                prefix  => $config->{xapian_search_prefix}{'fsys'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ddnot'}},
 	        type    => "drilldown",
                 cat     => 'notation',
             },
             {
                 # Person
-                prefix  => $config->{xapian_search_prefix}{'fper'},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ddaut'}},
 	        type    => "drilldown",
                 cat     => 'verf',
             },
             {
                 # Medientyp
-                prefix  => $config->{xapian_search_prefix}{ftyp},
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ddmart'}},
 	        type    => "drilldown",
                 cat     => 'mart',
             },

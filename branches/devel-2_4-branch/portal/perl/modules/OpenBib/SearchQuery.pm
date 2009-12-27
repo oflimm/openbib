@@ -1246,6 +1246,8 @@ sub to_xapian_querystring {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+
     # Aufbau des xapianquerystrings
     my @xapianquerystrings = ();
     my $xapianquerystring  = "";
@@ -1256,35 +1258,7 @@ sub to_xapian_querystring {
         'OR'      => '',
     };
 
-    my $fields_ref = [
-        'fs',
-        'verf',
-        'hst',
-        'swt',
-        'kor',
-        'notation',
-        'sign',
-        'isbn',
-        'issn',
-        'mart',
-        'hststring',
-        'inhalt',
-        'gtquelle',
-        'ejahr',
-    ];
-
-    my $prefix_ref = {
-        'verf'     => 'aut:',
-        'hst'      => 'tit:',
-        'kor'      => 'corp:',
-        'swt'      => 'subj:',
-        'notation' => 'sys:',
-        'isbn'     => 'isbn:',
-        'issn'     => 'issn:',
-        'mart'     => 'typ:',
-    };
-    
-    foreach my $field (@{$fields_ref}){
+    foreach my $field (keys %{$config->{searchfield_prefix}}){
         my $searchtermstring = (defined $self->{_searchquery}->{$field}->{norm})?$self->{_searchquery}->{$field}->{norm}:'';
         my $searchtermop     = (defined $self->{_searchquery}->{$field}->{bool} && defined $ops_ref->{$self->{_searchquery}->{$field}->{bool}})?$ops_ref->{$self->{_searchquery}->{$field}->{bool}}:'';
         if ($searchtermstring) {
@@ -1297,8 +1271,8 @@ sub to_xapian_querystring {
                 }
                 $searchtermstring = "(".join(' ',@searchterms).")";
             }
-            elsif (exists $prefix_ref->{$field}){
-                $searchtermstring=$searchtermop.$prefix_ref->{$field}."($searchtermstring)";
+            else {
+                $searchtermstring=$searchtermop.$config->{searchfield_prefix}{$field}.":($searchtermstring)";
             }
 
             # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft

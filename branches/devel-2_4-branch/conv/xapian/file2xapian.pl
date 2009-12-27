@@ -155,99 +155,99 @@ my $count = 1;
 
         my $tokinfos_ref=[
             {
-                prefix  => "X1",
+                prefix  => $config->{xapian_search_prefix}{'per'},
                 content => $verf,
 	        type    => 'index',
             },
             {
-                prefix  => "X2",
+                prefix  => $config->{xapian_search_prefix}{'tit'},
                 content => $hst,
 	        type    => 'index',
             },
             {
-                prefix  => "X3",
+                prefix  => $config->{xapian_search_prefix}{'corp'},
                 content => $kor,
 	        type    => 'index',
             },
             {
-                prefix  => "X4",
+                prefix  => $config->{xapian_search_prefix}{'subj'},
                 content => $swt,
 	        type    => 'index',
             },
             {
-                prefix  => "X5",
+                prefix  => $config->{xapian_search_prefix}{'sys'},
                 content => $notation,
 	        type    => 'index',
             },
             {
-                prefix  => "X6",
+                prefix  => $config->{xapian_search_prefix}{'mark'},
                 content => $sign,
 	        type    => 'index',
             },
             {
-                prefix  => "X7",
+                prefix  => $config->{xapian_search_prefix}{'year'},
                 content => $ejahr,
 	        type    => 'index',
             },
             {
-                prefix  => "X8",
+                prefix  => $config->{xapian_search_prefix}{'isbn'},
                 content => $isbn,
 	        type    => 'index',
             },
             {
-                prefix  => "X9",
+                prefix  => $config->{xapian_search_prefix}{'issn'},
                 content => $issn,
 	        type    => 'index',
             },
             {
-                prefix  => "Y1",
+                prefix  => $config->{xapian_search_prefix}{'artinh'},
                 content => $artinh,
 	        type    => 'index',
             },
             {
-                prefix  => "Y2",
+                prefix  => $config->{xapian_search_prefix}{'cnt'},
                 content => $inhalt,
 	        type    => 'index',
             },
             {
                 # Schlagwort
-                prefix  => "D1",
+                prefix  => $config->{xapian_search_prefix}{'fsubj'},
 	        type    => "drilldown",
                 cat     => 'swt',
             },
             {
                 # Notation
-                prefix  => "D2",
+                prefix  => $config->{xapian_search_prefix}{'fsys'},
 	        type    => "drilldown",
                 cat     => 'notation',
             },
             {
                 # Person
-                prefix  => "D3",
+                prefix  => $config->{xapian_search_prefix}{'fper'},
 	        type    => "drilldown",
                 cat     => 'verf',
             },
             {
                 # Medientyp
-                prefix  => "D4",
+                prefix  => $config->{xapian_search_prefix}{ftyp},
 	        type    => "drilldown",
                 cat     => 'mart',
             },
             {
                 # Jahr
-                prefix  => "D5",
+                prefix  => $config->{xapian_search_prefix}{fyear},
 	        type    => "drilldown",
                 cat     => 'year',
             },
             {
                 # Sprache
-                prefix  => "D6",
+                prefix  => $config->{xapian_search_prefix}{'fstrp'},
 	        type    => "drilldown",
                 cat     => 'spr',
             },
             {
                 # Koerperschaft
-                prefix  => "D7",
+                prefix  => $config->{xapian_search_prefix}{'fcorp'},
 	        type    => "drilldown",
                 cat     => 'kor',
             },
@@ -258,10 +258,10 @@ my $count = 1;
         my $doc=Search::Xapian::Document->new();
 
         # ID des Satzes recherchierbar machen
-        $doc->add_term("Q".$s_id);
+        $doc->add_term($config->{xapian_search_prefix}{'id'}.$s_id);
 
         # Katalogname des Satzes recherchierbar machen
-        $doc->add_term("D8".$database);
+        $doc->add_term($config->{xapian_search_prefix}{'fdb'}.$database);
 
         my $k = 0;
 
@@ -326,130 +326,86 @@ my $count = 1;
    	    }
             elsif ($tokinfo_ref->{type} eq 'drilldown'){
                 next if (!exists $normdata{$s_id}->{$tokinfo_ref->{cat}});
-
+                
                 my %seen_terms = ();
                 my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$tokinfo_ref->{cat}}}; 
-
+                
 	        foreach my $unique_term (@unique_terms){
-		  # Kategorie in Feld einfuegen            
-		  my $field = OpenBib::Common::Util::grundform({
-                       content   => $unique_term,
-		       searchreq => 1,
-							       });
-
-		  $field=~s/\W/_/g;
-
-		  $field="$tokinfo_ref->{prefix}$field";
-
-                  # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
-		  if (length($field) > $DRILLDOWN_MAX_KEY_LEN){
-                      $field=substr($field,0,$DRILLDOWN_MAX_KEY_LEN);
-                  }
-
-		  $doc->add_term($field);
+                    # Kategorie in Feld einfuegen            
+                    my $field = OpenBib::Common::Util::grundform({
+                        content   => $unique_term,
+                        searchreq => 1,
+                    });
+                    
+                    $field=~s/\W/_/g;
+                    
+                    $field="$tokinfo_ref->{prefix}$field";
+                    
+                    # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
+                    if (length($field) > $DRILLDOWN_MAX_KEY_LEN){
+                        $field=substr($field,0,$DRILLDOWN_MAX_KEY_LEN);
+                    }
+                    
+                    $doc->add_term($field);
 	        }
    	    }
 	}
-
-        my $value_type_ref = [
-            {
-                # Schlagwort
-                id     => 1,
-                type   => 'swt',
-            },
-            {
-                # Notation
-                id   => 2,
-                type => 'notation',
-            },
-            {
-                # Person
-                id   => 3,
-                type => 'verf',
-            },
-            {
-                # Medientyp
-                id   => 4,
-                type => 'mart',
-            },
-            {
-                # Jahr
-                id   => 5,
-                type => 'year',
-            },
-            {
-                # Sprache
-                id   => 6,
-                type => 'spr',
-            },
-            {
-                # Koerperschaft
-                id   => 7,
-                type => 'kor',
-            },
-            {
-                # Katalog
-                id   => 8,
-                type => 'database',
-            },
-            
-        ];
         
-        foreach my $type_ref (@{$value_type_ref}){
+        foreach my $type (keys %{$config->{xapian_drilldown_value}}){
             # Datenbankname
-            $doc->add_value($type_ref->{id},encode_utf8($database)) if ($type_ref->{type} eq "database" && $database);
+            $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($database)) if ($type eq "db" && $database);
             
-            next if (!exists $normdata{$s_id}->{$type_ref->{type}});
+            next if (!exists $normdata{$s_id}->{$config->{xapian_drilldown_value}{$type}});
 
             my %seen_terms = ();
-            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$type_ref->{type}}}; 
+            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$config->{xapian_drilldown_value}{$type}}}; 
 
             my $multstring = join("\t",@unique_terms);
 
-            $doc->add_value($type_ref->{id},encode_utf8($multstring)) if ($multstring);
+            $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($multstring)) if ($multstring);
         }
 
         if ($withsorting){
             my $sorting_ref = [
                 {
                     # Verfasser/Koepeschaft
-                    id         => 20,
+                    id         => $config->{xapian_sorttype_value}{'author'},
                     category   => 'PC0001',
                     type       => 'stringcategory',
                 },
                 {
                     # Titel
-                    id         => 21,
+                    id         => $config->{xapian_sorttype_value}{'title'},
                     category   => 'T0331',
                     type       => 'stringcategory',
                 },
                 {
                     # Zaehlung
-                    id         => 22,
+                    id         => $config->{xapian_sorttype_value}{'order'},
                     category   => 'T5100',
                     type       => 'integercategory',
                 },
                 {
                     # Jahr
-                    id         => 23,
+                    id         => $config->{xapian_sorttype_value}{'yearofpub'},
                     category   => 'T0425',
                     type       => 'integercategory',
                 },
                 {
                     # Verlag
-                    id         => 24,
+                    id         => $config->{xapian_sorttype_value}{'publisher'},
                     category   => 'T0412',
                     type       => 'stringcategory',
                 },
                 {
                     # Signatur
-                    id         => 25,
+                    id         => $config->{xapian_sorttype_value}{'signature'},
                     category   => 'X0014',
                     type       => 'stringcategory',
                 },
                 {
                     # Popularitaet
-                    id         => 26,
+                    id         => $config->{xapian_sorttype_value}{'popularity'},
                     category   => 'popularity',
                     type       => 'integervalue',
                 },

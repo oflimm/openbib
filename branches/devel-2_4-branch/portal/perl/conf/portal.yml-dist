@@ -211,10 +211,74 @@ locale_base_path: /opt/openbib/locales
 # Pfad zu den Portal-Templates (Template Toolkit)
 tt_include_path: /opt/openbib/templates
 
+# Suchprefixe in der Rercherche fuer die internen Felder verf, hst usw.
+searchfield_prefix:
+  'fs': 'fs'
+  'verf': 'per'
+  'hst': 'tit'
+  'swt': 'subj'
+  'kor': 'corp'
+  'notation': 'sys'
+  'sign': 'mark'
+  'isbn': 'isbn'
+  'issn': 'issn'
+  'mart': 'typ'
+  'hststring': 'ftit'
+  'inhalt': 'cnt'
+  'gtquelle': 'src'
+  'ejahr': 'year'
+
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
 xapian_option:
   maxmatch: 2000
+
+# Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
+# entsprechend searchfield_prefix
+xapian_search_prefix:
+  'id': 'Q'
+
+# Volltext
+  'per': 'X1'
+  'tit': 'X2'
+  'corp': 'X3'
+  'subj': 'X4'
+  'sys': 'X5'
+  'mark': 'X6'
+  'year': 'X7'
+  'isbn': 'X8'
+  'issn': 'X9'
+  'artinh': 'Y1'
+  'cnt': 'Y2'
+
+  # String / Drilldowns
+  'fsubj': 'D1'
+  'fsys': 'D2'
+  'fper': 'D3'
+  'ftyp' : 'D4'
+  'fyear': 'D5'
+  'flang': 'D6'
+  'fcorp': 'D7'
+  'fdb': 'D8'
+
+xapian_drilldown_value:
+  per: 3
+  typ: 4
+  sys: 2
+  lang: 6
+  subj: 1
+  year: 5
+  corp: 7
+  db: 8
+
+xapian_sorttype_value:
+  'author': 20
+  'title': 21
+  'order': 22
+  'yearofpub': 23
+  'publisher': 24
+  'signature': 25
+  'popularity': 26
 
 # Stopwort-Liste
 stopword_filename: /opt/openbib/ft/stopwords.txt

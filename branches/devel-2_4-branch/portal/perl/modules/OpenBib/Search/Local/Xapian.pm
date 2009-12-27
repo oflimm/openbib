@@ -177,46 +177,20 @@ sub initial_search {
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
     $qp->set_database($dbh);
     $qp->set_default_op(Search::Xapian::OP_AND);
-    $qp->add_prefix('id'       ,'Q');
 
-    $qp->add_prefix('aut'    ,'X1');
-    $qp->add_prefix('tit'    ,'X2');
-    $qp->add_prefix('corp'   ,'X3');
-    $qp->add_prefix('subj'   ,'X4');
-    $qp->add_prefix('sys'    ,'X5');
-    $qp->add_prefix('year'   ,'X7');
-    $qp->add_prefix('isbn'   ,'X8');
-    $qp->add_prefix('issn'   ,'X9');
-
-    # Drilldowns
-    $qp->add_prefix('ddswt'   ,'D1');
-    $qp->add_prefix('ddnot'   ,'D2');
-    $qp->add_prefix('ddper'   ,'D3');
-    $qp->add_prefix('typ'     ,'D4');
-    $qp->add_prefix('ddyear'  ,'D5');
-    $qp->add_prefix('ddspr'   ,'D6');
-    $qp->add_prefix('ddcorp'  ,'D7');
-    $qp->add_prefix('db'      ,'D8');
+    foreach my $prefix (keys %{$config->{xapian_search_prefix}}){
+        $qp->add_prefix($prefix,$config->{xapian_search_prefix}{$prefix});
+    }
     
     my $category_map_ref = {};
     my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
 
-    my $sorttype_map_ref = {
-        "author"     => 20,
-        "title"      => 21,
-        "order"      => 22,
-        "yearofpub"  => 23,
-        "publisher"  => 24,
-        "signature"  => 25,
-        "popularity" => 26,
-    };
-    
     # Sorting
-    if ($sorttype ne "relevance" || exists $sorttype_map_ref->{$sorttype}) { # default
+    if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
         $sortorder = ($sortorder eq "up")?0:1;
-        $logger->debug("Set Sorting to type ".$sorttype_map_ref->{$sorttype}." / order ".$sortorder);
+        $logger->debug("Set Sorting to type ".$config->{xapian_sorttype_value}{$sorttype}." / order ".$sortorder);
 
-        $enq->set_sort_by_value($sorttype_map_ref->{$sorttype},$sortorder)
+        $enq->set_sort_by_value($config->{xapian_sorttype_value}{$sorttype},$sortorder)
     }
     
     my $thisquery = $enq->get_query()->get_description();
@@ -226,14 +200,9 @@ sub initial_search {
     my %decider_map   = ();
     my @decider_types = ();
 
-    push @decider_types, 1 if ($config->{drilldown_option}{categorized_swt});
-    push @decider_types, 2 if ($config->{drilldown_option}{categorized_not});
-    push @decider_types, 3 if ($config->{drilldown_option}{categorized_aut});
-    push @decider_types, 4 if ($config->{drilldown_option}{categorized_mart});
-    push @decider_types, 5 if ($config->{drilldown_option}{categorized_year});
-    push @decider_types, 6 if ($config->{drilldown_option}{categorized_spr});
-    push @decider_types, 7 if ($config->{drilldown_option}{categorized_kor});
-    push @decider_types, 8;# if ($config->{drilldown_option}{categorized_database});
+    foreach my $drilldown_value (keys %{$config->{xapian_drilldown_value}}){
+        push @decider_types, $config->{xapian_drilldown_value}{$drilldown_value};
+    }
 
     my $decider_ref = sub {
       foreach my $value (@decider_types){

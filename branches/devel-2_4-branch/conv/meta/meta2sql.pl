@@ -573,31 +573,31 @@ while (my $line=<IN>){
                                 print OUTFT     "$id$category$contentnormtmp\n";
                             }
                         }
-                        if (exists $conv_config->{'search_hst'}{$category}){
+                        if (exists $conv_config->{'search'}{'hst'}{$category}){
                             push @hst, $contentnormtmp;
                         }
-                        if (exists $conv_config->{'search_ejahr'}{$category}){
+                        if (exists $conv_config->{'search'}{'ejahr'}{$category}){
                             push @ejahr, $contentnormtmp;
                         }
-                        if (exists $conv_config->{'search_ejahrft'}{$category}){
+                        if (exists $conv_config->{'search'}{'ejahrft'}{$category}){
                             push @ejahrft, $contentnormtmp;
                         }
-                        if (exists $conv_config->{'search_gtquelle'}{$category}){
+                        if (exists $conv_config->{'search'}{'gtquelle'}{$category}){
                             push @gtquelle, $contentnormtmp;
                         }
-                        if (exists $conv_config->{'search_inhalt'}{$category}){
+                        if (exists $conv_config->{'search'}{'inhalt'}{$category}){
                             push @inhalt, $contentnormtmp;
                         }
-                        if (exists $conv_config->{'search_artinh'}{$category}){
+                        if (exists $conv_config->{'search'}{'mart'}{$category}){
                             push @artinh, $contentnormtmp;
                         }
-                        if (exists $conv_config->{'search_verf'}{$category}){
+                        if (exists $conv_config->{'search'}{'verf'}{$category}){
                             push @titverf, $contentnormtmp;
                         }
-                        if (exists $conv_config->{'search_kor'}{$category}){
+                        if (exists $conv_config->{'search'}{'kor'}{$category}){
                             push @titkor, $contentnormtmp;
                         }
-                        if (exists $conv_config->{'search_swt'}{$category}){
+                        if (exists $conv_config->{'search'}{'swt'}{$category}){
                             push @titswt, $contentnormtmp;
                         }
                         if (exists $conv_config->{'listitemcat'}{$category}){
@@ -1767,37 +1767,37 @@ while (my $line=<IN>){
                 content   => $content,
             };
 
-            if (   exists $conv_config->{search_ejahr    }{$category}){
+            if (   exists $conv_config->{search}{ejahr    }{$category}){
                 push @ejahr, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            if (   exists $conv_config->{search_ejahrft  }{$category}){
+            if (   exists $conv_config->{search}{ejahrft  }{$category}){
                 push @ejahrft, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            if (   exists $conv_config->{search_gtquelle }{$category}){
+            if (   exists $conv_config->{search}{gtquelle }{$category}){
                 push @gtquelle, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $conv_config->{search_hst      }{$category}){
+            elsif (exists $conv_config->{search}{hst      }{$category}){
                 push @hst, OpenBib::Common::Util::grundform({
                     # Keine Uebergabe der Kategorie, da erstes Stopwort hier nicht entfernt werden soll
                     content  => $content,
                 });
             }
-            if (   exists $conv_config->{search_inhalt   }{$category}){
+            if (   exists $conv_config->{search}{inhalt   }{$category}){
                 push @inhalt, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $conv_config->{search_isbn     }{$category}){
+            elsif (exists $conv_config->{search}{isbn     }{$category}){
 
                 my $isbnnorm = OpenBib::Common::Util::grundform({
                     category => $category,
@@ -1834,7 +1834,7 @@ while (my $line=<IN>){
                 }
 
             }
-            elsif (exists $conv_config->{search_issn     }{$category}){
+            elsif (exists $conv_config->{search}{issn     }{$category}){
                 my $issnnorm =  OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
@@ -1847,25 +1847,25 @@ while (my $line=<IN>){
 
                 push @issn,      $issnnorm;
             }
-            elsif (exists $conv_config->{search_artinh   }{$category}){
+            elsif (exists $conv_config->{search}{mart     }{$category}){
                 push @artinh, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $conv_config->{search_verf     }{$category}){
+            elsif (exists $conv_config->{search}{verf     }{$category}){
                 push @titverf, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $conv_config->{search_kor      }{$category}){
+            elsif (exists $conv_config->{search}{kor      }{$category}){
                 push @titkor, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $conv_config->{search_swt      }{$category}){
+            elsif (exists $conv_config->{search}{swt      }{$category}){
                 push @titswt, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,

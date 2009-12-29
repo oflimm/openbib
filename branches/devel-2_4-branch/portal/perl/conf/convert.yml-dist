@@ -257,6 +257,14 @@ convtab:
         '0341': 1       # PSTVorlage
         '0361': 1       # Vorlage beigefuegtes Werk
         '0370': 1       # WST
+      hststring:
+        '0304': 1       # EST
+        '0310': 1       # AST
+        '0331': 1       # HST
+        '0335': 1       # Zusatz zum HST
+        '0341': 1       # PSTVorlage
+        '0361': 1       # Vorlage beigefuegtes Werk
+        '0370': 1       # WST
       inhalt:
         '0750': 1       # Abstract
         '4201': 1       # Wikipedia

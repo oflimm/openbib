@@ -1262,24 +1262,42 @@ sub to_xapian_querystring {
         my $searchtermstring = (defined $self->{_searchquery}->{$field}->{norm})?$self->{_searchquery}->{$field}->{norm}:'';
         my $searchtermop     = (defined $self->{_searchquery}->{$field}->{bool} && defined $ops_ref->{$self->{_searchquery}->{$field}->{bool}})?$ops_ref->{$self->{_searchquery}->{$field}->{bool}}:'';
         if ($searchtermstring) {
-            if ($field eq "fs") {
-                my @searchterms = split('\s+',$searchtermstring);
+            # Freie Suche einfach uebernehmen
+            if ($field eq "fs" && $searchtermstring) {
+#                 my @searchterms = split('\s+',$searchtermstring);
                 
-                # Inhalte von @searchterms mit Suchprefix bestuecken
-                foreach my $searchterm (@searchterms){                    
-                    $searchterm="+".$searchtermstring if ($searchtermstring=~/^\w/);
-                }
-                $searchtermstring = "(".join(' ',@searchterms).")";
+#                 # Inhalte von @searchterms mit Suchprefix bestuecken
+#                 foreach my $searchterm (@searchterms){                    
+#                     $searchterm="+".$searchtermstring if ($searchtermstring=~/^\w/);
+#                 }
+#                 $searchtermstring = "(".join(' ',@searchterms).")";
+
+                push @xapianquerystrings, $searchtermstring;
             }
-            else {
+            # Titelstring mit _ ersetzten
+            elsif (($field eq "hststring" || $field eq "sign") && $searchtermstring) {
+                my @chars = split("",$searchtermstring);
+                my $newsearchtermstring = "";
+                foreach my $char (@chars){
+                    if ($char ne "*"){
+                        $char=~s/\W/_/g;
+                    }
+                    $newsearchtermstring.=$char;
+                }
+                    
+                $searchtermstring=$searchtermop.$config->{searchfield_prefix}{$field}.":$newsearchtermstring";
+                push @xapianquerystrings, $searchtermstring;                
+            }
+            # Sonst Operator und Prefix hinzufuegen
+            elsif ($searchtermstring) {
                 $searchtermstring=$searchtermop.$config->{searchfield_prefix}{$field}.":($searchtermstring)";
+                push @xapianquerystrings, $searchtermstring;                
             }
 
             # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
             # Nochmal explizites Setzen von +, weil sonst Wildcards innerhalb mehrerer
             # Suchterme ignoriert werden.
 
-            push @xapianquerystrings, $searchtermstring;
         }
     }
 

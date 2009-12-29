@@ -453,6 +453,7 @@ my @kor       = ();
 my @swt       = ();
 my @notation  = ();
 my @hst       = ();
+my @hststring = ();
 my @sign      = ();
 my @isbn      = ();
 my @issn      = ();
@@ -498,6 +499,7 @@ while (my $line=<IN>){
         @swt       = ();
         @notation  = ();
         @hst       = ();
+        @hststrring= ();
         @sign      = ();
         @isbn      = ();
         @issn      = ();
@@ -731,7 +733,17 @@ while (my $line=<IN>){
         my $ejahrft   = join(" ",@ejahrft);
         my $gtquelle  = join(" ",@gtquelle);
         my $inhalt    = join(" ",@inhalt);
-        
+
+        if (@hststring){
+            push @{$normdata_ref->{hststring}}, @hststring;
+        }
+
+        # Exemplardaten-Hash zu listitem-Hash hinzufuegen
+
+        foreach my $content (@{$listitemdata_mex{$id}}){
+            push @{$normdata_ref->{sign}}, $content;            
+        }
+
         print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$ejahrft$gtquelle$inhalt$isbn$issn$artinh\n";
 
         # Listitem zusammensetzen
@@ -1791,6 +1803,14 @@ while (my $line=<IN>){
                     content  => $content,
                 });
             }
+            if (exists $conv_config->{search}{hststring}{$category}){
+                my $normcontent = OpenBib::Common::Util::grundform({
+                    category => "0331",
+                    content  => $content,
+                });
+                push @{$normdata_ref->{hststring}}, $normcontent;
+
+            }            
             if (   exists $conv_config->{search}{inhalt   }{$category}){
                 push @inhalt, OpenBib::Common::Util::grundform({
                     category => $category,

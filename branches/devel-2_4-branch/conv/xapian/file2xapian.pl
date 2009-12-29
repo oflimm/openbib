@@ -153,7 +153,7 @@ my $count = 1;
 
 #        next unless ($t_id == 243909);
 
-        my $tokinfos_ref=[
+        my $tokinfos_ref= [
             {
                 prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'verf'}},
                 content => $verf,
@@ -177,6 +177,11 @@ my $count = 1;
             {
                 prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'notation'}},
                 content => $notation,
+	        type    => 'index',
+            },
+            {
+                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'gtquelle'}},
+                content => $gtquelle,
 	        type    => 'index',
             },
             {
@@ -211,37 +216,37 @@ my $count = 1;
             },
             {
                 # Schlagwort
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ddswt'}},
+                prefix  => $config->{xapian_search_prefix}{'fsubj'},
 	        type    => "drilldown",
                 cat     => 'swt',
             },
             {
                 # Notation
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ddnot'}},
+                prefix  => $config->{xapian_search_prefix}{'fsys'},
 	        type    => "drilldown",
                 cat     => 'notation',
             },
             {
                 # Person
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ddaut'}},
+                prefix  => $config->{xapian_search_prefix}{'fper'},
 	        type    => "drilldown",
                 cat     => 'verf',
             },
             {
                 # Medientyp
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ddmart'}},
+                prefix  => $config->{xapian_search_prefix}{'ftyp'},
 	        type    => "drilldown",
                 cat     => 'mart',
             },
             {
                 # Jahr
-                prefix  => $config->{xapian_search_prefix}{fyear},
+                prefix  => $config->{xapian_search_prefix}{'fyear'},
 	        type    => "drilldown",
                 cat     => 'year',
             },
             {
                 # Sprache
-                prefix  => $config->{xapian_search_prefix}{'fstrp'},
+                prefix  => $config->{xapian_search_prefix}{'flang'},
 	        type    => "drilldown",
                 cat     => 'spr',
             },
@@ -251,6 +256,19 @@ my $count = 1;
 	        type    => "drilldown",
                 cat     => 'kor',
             },
+            {
+                # HST String
+                prefix  => $config->{xapian_search_prefix}{'ftit'},
+	        type    => "drilldown",
+                cat     => 'hststring',
+            },
+#             {
+#                 # Signatur
+#                 prefix  => $config->{xapian_search_prefix}{'fsign'},
+# 	        type    => "drilldown",
+#                 cat     => 'sign',
+#             },
+
         ];
 
         my $seen_token_ref = {};
@@ -350,15 +368,15 @@ my $count = 1;
 	        }
    	    }
 	}
-        
+
         foreach my $type (keys %{$config->{xapian_drilldown_value}}){
             # Datenbankname
             $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($database)) if ($type eq "db" && $database);
             
-            next if (!exists $normdata{$s_id}->{$config->{xapian_drilldown_value}{$type}});
+            next if (!exists $normdata{$s_id}->{$type});
 
             my %seen_terms = ();
-            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$config->{xapian_drilldown_value}{$type}}}; 
+            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$type}}; 
 
             my $multstring = join("\t",@unique_terms);
 

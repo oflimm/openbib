@@ -216,17 +216,23 @@ searchfield_prefix:
   'fs': 'fs'
   'verf': 'per'
   'hst': 'tit'
+  'hststring': 'ftit'
   'swt': 'subj'
   'kor': 'corp'
   'notation': 'sys'
   'sign': 'mark'
   'isbn': 'isbn'
   'issn': 'issn'
-  'mart': 'typ'
-  'hststring': 'ftit'
+  'artinh': 'typ'
   'inhalt': 'cnt'
   'gtquelle': 'src'
   'ejahr': 'year'
+  'ddswt': 'fsubj'
+  'spr': 'flang'
+  'ddnot': 'fsys'
+  'ddper': 'fper'
+  'ddmart': 'ftyp'
+  'sign': 'fsign'
 
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
@@ -248,8 +254,9 @@ xapian_search_prefix:
   'year': 'X7'
   'isbn': 'X8'
   'issn': 'X9'
-  'artinh': 'Y1'
+  'typ': 'Y1'
   'cnt': 'Y2'
+  'src': 'Y3'
 
   # String / Drilldowns
   'fsubj': 'D1'
@@ -260,6 +267,8 @@ xapian_search_prefix:
   'flang': 'D6'
   'fcorp': 'D7'
   'fdb': 'D8'
+  'ftit': 'D9'
+  'fsign': 'E1'
 
 xapian_drilldown_value:
   per: 3

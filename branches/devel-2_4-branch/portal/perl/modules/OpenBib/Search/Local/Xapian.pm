@@ -183,7 +183,7 @@ sub initial_search {
     }
     
     my $category_map_ref = {};
-    my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
+    my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
 
     # Sorting
     if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
@@ -236,12 +236,12 @@ sub initial_search {
       }
     }
 
-    my @matches   = ($dd_categorized)?$enq->matches(0,$maxmatch,$decider_ref):$enq->matches(0,$maxmatch);
+    my $rset = Search::Xapian::RSet->new();
+    
+    my $mset = ($dd_categorized)?$enq->get_mset($offset,$hitrange,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$hitrange,$maxmatch);
 
     $logger->debug("DB: $database") if (defined $database);
     
-    $logger->debug("Matches: ".YAML::Dump(\@matches));
-
     $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
 
     $self->{_querystring} = $querystring;
@@ -251,9 +251,14 @@ sub initial_search {
       $self->{resultcount} = $singletermcount;
     }
     else {
-      $self->{resultcount} = scalar(@matches);
+      $self->{resultcount} = $mset->get_matches_estimated;
     }
 
+    my @matches = ();
+    foreach my $match ($mset->items()) {
+        push @matches, $match;
+    }
+    
 #    my @this_matches      = splice(@matches,$offset,$hitrange);
     $self->{_matches}     = \@matches;
 

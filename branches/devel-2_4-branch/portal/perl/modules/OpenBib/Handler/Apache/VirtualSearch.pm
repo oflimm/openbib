@@ -725,7 +725,10 @@ sub handler {
                 
                 sortorder       => $sortorder,
                 sorttype        => $sorttype,
-                
+
+                hitrange        => $hitrange,
+                offset          => $offset,
+
                 dd_categorized  => $drilldown_categorized,
             });
             
@@ -747,7 +750,8 @@ sub handler {
                 });
                 
                 my @matches = $request->matches;
-                foreach my $match (splice(@matches,$offset,$hitrange)) {
+                foreach my $match (@matches) {
+#                foreach my $match (splice(@matches,$offset,$hitrange)) {
                     my $document        = $match->get_document();
                     my $titlistitem_raw = pack "H*", $document->get_data();
                     my $titlistitem_ref = Storable::thaw($titlistitem_raw);
@@ -826,7 +830,7 @@ sub handler {
                 offset         => $offset,
                 hitrange       => $hitrange,
                 
-                lastquery       => $searchquery->to_xapian_querystring,
+                lastquery       => $request->querystring,
                 sorttype        => $sorttype,
                 sortorder       => $sortorder,
                 resulttime      => $resulttime,
@@ -997,8 +1001,8 @@ sub handler {
                         $logger->error("Database: $database - :".$@);
                         $fallbacksb="sql";
                     }
-                    else {
-                        my $request = new OpenBib::Search::Local::Xapian();
+                    else { 
+                       my $request = new OpenBib::Search::Local::Xapian();
                     
                         $request->initial_search({
                             serien          => $serien,
@@ -1007,6 +1011,9 @@ sub handler {
 
                             sortorder       => $sortorder,
                             sorttype        => $sorttype,
+
+                            hitrange        => $hitrange,
+                            offset          => $offset,
 
                             dd_categorized  => $drilldown_categorized,
                         });
@@ -1031,7 +1038,8 @@ sub handler {
                             });
 
                             my @matches = $request->matches;
-                            foreach my $match (splice(@matches,$offset,$hitrange)) {
+                            foreach my $match (@matches) {
+#                            foreach my $match (splice(@matches,$offset,$hitrange)) {
                                 # Es werden immer nur $hitrange Titelinformationen
                                 # zur Ausgabe aus dem MSet herausgeholt
                                 my $document        = $match->get_document();

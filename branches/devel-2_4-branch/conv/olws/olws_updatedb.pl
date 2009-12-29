@@ -435,49 +435,49 @@ sub process_raw_title {
                 }
 
 
-                if (   exists $conv_config->{search_ejahr    }{$category}){
+                if (   exists $conv_config->{search}{ejahr    }{$category}){
                     push @ejahr, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $conv_config->{search_hst      }{$category}){
+                elsif (exists $conv_config->{search}{hst      }{$category}){
                     push @hst, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $conv_config->{search_isbn     }{$category}){
+                elsif (exists $conv_config->{search}{isbn     }{$category}){
                     push @isbn,      OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $conv_config->{search_issn     }{$category}){
+                elsif (exists $conv_config->{search}{issn     }{$category}){
                     push @issn,      OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $conv_config->{search_artinh   }{$category}){
+                elsif (exists $conv_config->{search}{artinh   }{$category}){
                     push @artinh, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $conv_config->{search_verf     }{$category}){
+                elsif (exists $conv_config->{search}{verf     }{$category}){
                     push @titverf, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $conv_config->{search_kor      }{$category}){
+                elsif (exists $conv_config->{search}{kor      }{$category}){
                     push @titkor, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $conv_config->{search_swt      }{$category}){
+                elsif (exists $conv_config->{search}{swt      }{$category}){
                     push @titswt, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,

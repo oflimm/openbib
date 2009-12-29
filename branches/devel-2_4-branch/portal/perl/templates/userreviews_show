@@ -101,7 +101,7 @@
 Rezension von:
 </p>
 <span class="rlauthor">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br /><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
 
 </td></tr>
 <tr><td></td></tr>

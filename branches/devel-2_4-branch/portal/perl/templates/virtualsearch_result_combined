@@ -34,12 +34,19 @@
     </div>
     <div class="navigation">
 [% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
 [%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
 &nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %];combinedbs=1">[% page %]</a>
 [%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
 [%- END -%]
     </div>
   </div>
@@ -171,7 +178,7 @@
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
-<br />aus:&nbsp;<i>
+<br /><img style="vertical-align:bottom;padding:1px;" src="[% config.get('home_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>&nbsp;<i>
 [%-   IF dbinfo.get('use_libinfo').${item.database} %]
 <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% item.database %];stid=60">
 [%-   ELSE -%]

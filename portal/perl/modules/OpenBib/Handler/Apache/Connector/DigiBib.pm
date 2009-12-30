@@ -205,23 +205,20 @@ sub handler {
         if ($database && $up){
             $recordlist = new OpenBib::RecordList::Title();
 
-            my $limits="";
-            if ($hitrange > 0){
-                $limits="limit $offset,$hitrange";
-            }
-
-            $logger->debug("Searching Supertit for Id $up in Database $database with Limits $limits");
+            $logger->debug("Searching Supertit for Id $up in Database $database");
             
             my $dbh
                 = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                     or $logger->error_die($DBI::errstr);
             
             # Bestimmung der Titel
-            my $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1 $limits";
+            my $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($up) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
+            my $i=0;
             while (my $res=$request->fetchrow_hashref) {
+                last if ($i > $maxhits);
                 $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{targetid}}));
             }
 
@@ -240,23 +237,20 @@ sub handler {
         elsif ($database && $down){
             $recordlist = new OpenBib::RecordList::Title();
 
-            my $limits="";
-            if ($hitrange > 0){
-                $limits="limit $offset,$hitrange";
-            }
-
-            $logger->debug("Searching Subtit for Id $up in Database $database with Limits $limits");
+            $logger->debug("Searching Subtit for Id $up in Database $database");
             
             my $dbh
                 = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                     or $logger->error_die($DBI::errstr);
 
             # Bestimmung der Titel
-            my $reqstring="select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1 $limits";
+            my $reqstring="select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($down) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
+            my $i=0;
             while (my $res=$request->fetchrow_hashref) {
+                last if ($i > $maxhits);
                 $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
             }
 

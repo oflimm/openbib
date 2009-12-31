@@ -127,6 +127,7 @@ convtab:
         string: 1
         init:
           'verf': 1
+          'verfstring': 1
       '0102':         # Verweisform
         ft: 1
         string: 1
@@ -138,6 +139,7 @@ convtab:
         string: 1
         init:
           'kor': 1
+          'korstring': 1
       '0102':         # Verweisform
         ft: 1
         string: 1
@@ -164,12 +166,14 @@ convtab:
         string: 1
         init:
           'sign': 1
+          'signstring': 1
     inverted_not:
       '0001':         # Ansetzung
         ft: 1
         string: 1
         init:
           'notation': 1
+          'notationstring': 1
       '0002':         # Ansetzung
         ft: 1
         string: 1
@@ -191,6 +195,7 @@ convtab:
         string: 1
         init:
           'swt': 1
+          'swtstring': 1
       '0102':         # Verweisform
         ft: 1
         string: 1
@@ -276,14 +281,14 @@ convtab:
         string: 1
       '0424':
         init:
-          'year': 1
-          'yearstring': 1
-        facet:
-          'mart': 1
+          'ejahr': 1
+          'ejahrstring': 1
       '0425':
         init:
+          'ejahr': 1
+          'ejahrstring': 1
+        facet:
           'year': 1
-          'yearstring': 1
       '0451':
         init:
           'gtquelle': 1

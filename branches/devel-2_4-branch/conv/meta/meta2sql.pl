@@ -971,9 +971,13 @@ while (my $line=<IN>){
                     content => $content,
                 } if (exists $conv_config->{listitemcat}{'0100'});
 
-                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){                    
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1033,7 +1037,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1087,7 +1095,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1141,7 +1153,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1198,7 +1214,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1246,7 +1266,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1294,7 +1318,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1342,7 +1370,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1390,7 +1422,11 @@ while (my $line=<IN>){
                 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1438,7 +1474,11 @@ while (my $line=<IN>){
                 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1486,7 +1526,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1534,7 +1578,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1582,7 +1630,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1630,7 +1682,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1678,7 +1734,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1726,7 +1786,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1774,7 +1838,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 
@@ -1822,7 +1890,11 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
-                        push @{$normdata_ref->{$searchfield}}, $content;
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
                     }
                 }
 

@@ -212,7 +212,7 @@ locale_base_path: /opt/openbib/locales
 tt_include_path: /opt/openbib/templates
 
 # Suchprefixe in der Rercherche fuer die internen Felder verf, hst usw.
-searchfield_prefix:
+searchfield:
   'id':
      'prefix': 'id'
      'type': 'ft'
@@ -282,7 +282,7 @@ searchfield_prefix:
   'signstring':
      'prefix': 'fsign'
      'type': 'string'
-  'yearstring':
+  'ejahrstring':
      'prefix': 'fyear'
      'type': 'string'
 

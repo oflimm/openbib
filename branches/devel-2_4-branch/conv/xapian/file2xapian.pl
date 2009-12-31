@@ -240,7 +240,8 @@ my $count = 1;
                     if (length($field) > $DRILLDOWN_MAX_KEY_LEN){
                         $field=substr($field,0,$DRILLDOWN_MAX_KEY_LEN);
                     }
-                    
+
+                    $logger->debug("Added Stringvalue $field");
                     $doc->add_term($field);
 	        }
    	    }
@@ -253,10 +254,11 @@ my $count = 1;
             next if (!exists $normdata{$s_id}->{"facet_".$type});
 
             my %seen_terms = ();
-            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{"facet".$type}}; 
+            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{"facet_".$type}}; 
 
             my $multstring = join("\t",@unique_terms);
 
+            $logger->debug("Adding to $type facet $multstring");
             $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($multstring)) if ($multstring);
         }
 
@@ -323,7 +325,7 @@ my $count = 1;
                     });
 
                     if ($content){
-                        #                    $logger->debug("Adding $content as sortvalue");                        
+                        $logger->debug("Adding $content as sortvalue");                        
                         $doc->add_value($this_sorting_ref->{id},$content);
                     }
                 }
@@ -334,7 +336,7 @@ my $count = 1;
                     }
                     if ($content){
                         $content = sprintf "%08d", $content;
-                        #                    $logger->debug("Adding $content as sortvalue");
+                        $logger->debug("Adding $content as sortvalue");
                         $doc->add_value($this_sorting_ref->{id},$content);
                     }
                 }
@@ -345,7 +347,7 @@ my $count = 1;
                     }
                     if ($content){                    
                         $content = sprintf "%08d",$content;
-                        #                    $logger->debug("Adding $content as sortvalue");
+                        $logger->debug("Adding $content as sortvalue");
                         $doc->add_value($this_sorting_ref->{id},$content);
                     }
                 }

@@ -124,93 +124,244 @@ convtab:
     inverted_aut:
       '0001':         # Ansetzung
         ft: 1
-        init: 1
         string: 1
+        init:
+          'verf': 1
       '0102':         # Verweisform
         ft: 1
-        init: 1
         string: 1
+        init:
+          'verf': 1
     inverted_kor:
       '0001':         # Ansetzung
         ft: 1
-        init: 1
         string: 1
+        init:
+          'kor': 1
       '0102':         # Verweisform
         ft: 1
-        init: 1
         string: 1
+        init:
+          'kor': 1
       '0103':         # Abkuerzung der Verweisform
         ft: 1
-        init: 1
         string: 1
+        init:
+          'kor': 1
       '0110':         # Abkuerzung der Ansetzung
         ft: 1
-        init: 1
         string: 1
+        init:
+          'kor': 1
       '0111':         # Frueherer/Spaeterer Name
         ft: 1
-        init: 1
         string: 1
+        init:
+          'kor': 1
     inverted_mex:
       '0014':         # Signatur
         ft: 1
-        init: 1
         string: 1
+        init:
+          'sign': 1
     inverted_not:
       '0001':         # Ansetzung
         ft: 1
-        init: 1
         string: 1
+        init:
+          'notation': 1
       '0002':         # Ansetzung
         ft: 1
-        init: 1
         string: 1
+        init:
+          'notation': 1
       '0102':         # Stichwort
         ft: 1
-        init: 1
         string: 1
+        init:
+          'notation': 1
       '0103':         # Verweisform
         ft: 1
-        init: 1
         string: 1
+        init:
+          'notation': 1
     inverted_swt:
       '0001':         # Ansetzung
         ft: 1
-        init: 1
         string: 1
+        init:
+          'swt': 1
       '0102':         # Verweisform
         ft: 1
-        init: 1
         string: 1
+        init:
+          'swt': 1
     inverted_tit:
       '0002':         # Aufnahmedatum
         string: 1
+      '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+        init:
+          'subid': 1
+      '0089':
+        init:
+          'gtquelle': 1
+      '0015':
+        init:
+          'spr': 1
+          'sprstring': 1
+        facet:
+          'spr': 1
+      '0100':
+        facet:
+          'verf': 1
+      '0101':
+        facet:
+          'verf': 1
+      '0102':
+        facet:
+          'verf': 1
+      '0103':
+        facet:
+          'verf': 1
+      '0200':
+        facet:
+          'kor': 1
+      '0201':
+        facet:
+          'kor': 1
+      '0103':
+        facet:
+          'verf': 1
       '0304':         # EST
         ft: 1
         string: 1
+        init:
+          'hst': 1
+          'hststring': 1
       '0310':         # AST
         ft: 1
         string: 1
+        init:
+          'hst': 1
+          'hststring': 1
       '0331':         # HST
         ft: 1
         string: 1
+        init:
+          'hst': 1
+          'hststring': 1
       '0335':         # Zusatz zum HST
         ft: 1
         string: 0
+        init:
+          'hst': 1
+          'hststring': 1
       '0341':         # PSTVorlage
         ft: 1
         string: 1
+        init:
+          'hst': 1
+          'hststring': 1
+      '0361':       # Vorlage beigefuegtes Werk
+        init:
+          'hst': 1
+          'hststring': 1
       '0370':         # WST
         ft: 1
         string: 1
+        init:
+          'hst': 1
+          'hststring': 1
       '0413':         # Drucker
         string: 1
+      '0424':
+        init:
+          'year': 1
+          'yearstring': 1
+        facet:
+          'mart': 1
+      '0425':
+        init:
+          'year': 1
+          'yearstring': 1
+      '0451':
+        init:
+          'gtquelle': 1
       '0540':         # ISBN
         string: 1
+        init:
+          'isbn': 1
+      '0543':         # ISSN
+        init:
+          'isbn': 1
+      '0553':         # ISBN
+        string: 1
+        init:
+          'isbn': 1
+      '0590':
+        init:
+          'gtquelle': 1
+      '0700':
+        facet:
+          'notation': 1
+      '0710':
+        facet:
+          'swt': 1
+      '0750':         # Abstract
+        init:
+          'inhalt': 1
       '0800':         # Medienart
         string: 1
+        init:
+          'mart': 1
+          'martstring': 1
+        facet:
+          'mart': 1
+      '0902':
+        facet:
+          'swt': 1
+      '0907':
+        facet:
+          'swt': 1
+      '0912':
+        facet:
+          'swt': 1
+      '0917':
+        facet:
+          'swt': 1
+      '0922':
+        facet:
+          'swt': 1
+      '0927':
+        facet:
+          'swt': 1
+      '0932':
+        facet:
+          'swt': 1
+      '0937':
+        facet:
+          'swt': 1
+      '0942':
+        facet:
+          'swt': 1
+      '0947':
+        facet:
+          'swt': 1
       '4100':         # BK
         string: 1
+      '4201':         # Wikipedia
+        init:
+          'inhalt': 1
+      '4201':         # Wikipedia
+        init:
+          'inhalt': 1
+      '4203':         # Wikipedia
+        init:
+          'inhalt': 1
+      '4300':         # Fremde Schlagworte
+        init:
+          'swt': 1
+          'swtstring': 1
       '5050':         # Bibkey
         string: 1
       '5051':         # Bibkey Base
@@ -239,50 +390,62 @@ convtab:
 # angesiedelte Kategorien in den anderen Normdaten-Klassen verf, kor oder
 # swt recherchierbar gemacht werden.
     search:
-      mart:
-        '0800': 1       # ArtInhalt
-      ejahr:
-        '0425': 1       # Erschjahr
-      ejahrft:
-        '0425': 1       # Erschjahr
-      gtquelle:
-        '0089': 1       # Bandkennzeichen
-        '0451': 1       # Quelle
-        '0590': 1       # Serie/Band
-      hst:
-        '0304': 1       # EST
-        '0310': 1       # AST
-        '0331': 1       # HST
-        '0335': 1       # Zusatz zum HST
-        '0341': 1       # PSTVorlage
-        '0361': 1       # Vorlage beigefuegtes Werk
-        '0370': 1       # WST
-      hststring:
-        '0304': 1       # EST
-        '0310': 1       # AST
-        '0331': 1       # HST
-        '0335': 1       # Zusatz zum HST
-        '0341': 1       # PSTVorlage
-        '0361': 1       # Vorlage beigefuegtes Werk
-        '0370': 1       # WST
-      inhalt:
-        '0750': 1       # Abstract
-        '4201': 1       # Wikipedia
-        '4202': 1       # Wikipedia
-        '4203': 1       # Wikipedia
-      isbn:
-        '0540': 1       # ISBN
-        '0553': 1       # ArtikelNr als 13-stellige ISBN
-      issn:
-        '0543': 1       # ISSN
-      kor: {}
-      sign:
-        '0014': 1
-        '1203': 1
-      swt:
-        '4300': 1       # Fremde Schlagworte
-      verf:
-        '0413': 1       # Drucker
+      '0004':
+        subid: 1    # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+      '0800':       # ArtInhalt
+        mart: 1
+      '0425':       # Erschjahr
+        ejahr: 1
+        ejahrft: 1
+      '0089':       # Bandkennzeichen
+        gtquelle: 1
+      '0451':       # Quelle
+        gtquelle: 1
+      '0590':       # Serie/Band
+        gtquelle: 1
+      '0304':       # EST
+        hst: 1
+        hststring: 1
+      '0310':       # AST
+        hst: 1
+        hststring: 1
+      '0331':       # HST
+        hst: 1
+        hststring: 1
+      '0335':       # Zusatz zum HST
+        hst: 1
+        hststring: 1
+      '0341':       # PSTVorlage
+        hst: 1
+        hststring: 1
+      '0361':       # Vorlage beigefuegtes Werk
+        hst: 1
+        hststring: 1
+      '0370':       # WST
+        hst: 1
+        hststring: 1
+      '0750':       # Abstract
+        inhalt: 1
+      '4201':       # Wikipedia
+        inhalt: 1
+      '4202':       # Wikipedia
+        inhalt: 1
+      '4203':       # Wikipedia
+        inhalt: 1
+      '0540':       # ISBN
+        isbn: 1
+      '0553':       # ArtikelNr als 13-stellige ISBN
+        isbn: 1
+      '0543':       # ISSN
+        issn: 1
+      '0014':
+        sign: 1
+      '1203':
+        sign: 1
+      '4300':       # Fremde Schlagworte
+        swt: 1
+      '0413':       # Drucker
+        verf: 1
 ##############################################################################
 # Sonderanpassungen fuer einzelne Kataloge
 ##############################################################################
@@ -439,11 +602,13 @@ convtab:
         string: 1
   nationallizenzen:
     search:
-      gtquelle:
-        '0089': 1       # Bandkennzeichen
-        '0451': 1       # Gesamttitel
-        '0508': 1       # Sammlung
-        '0590': 1       # Serie/Band
+      '0089':       # Bandkennzeichen
+        gtquelle: 1
+      '0451':       # Gesamttitel
+        gtquelle: 1
+      '0508':       # Sammlung
+        gtquelle: 1
+      '0590':       # Serie/Band
   richter:
     inverted_tit:
       '0002':         # Aufnahmedatum
@@ -471,14 +636,16 @@ convtab:
       '0720':         # Provenienz-Register
         string: 1
     search:
-      inhalt:
-        '0501': 1       # Richterindiz
-        '0720': 1       # Provenienz
-        '0750': 1       # Abstract
+      '0501':       # Richterindiz
+        inhalt: 1
+      '0720':       # Provenienz
+        inhalt: 1
+      '0750':       # Abstract
+        inhalt: 1
   einbaende:
     search:
-      gtquelle:
-        '0304': 1       # Werkzeug
+      '0304':       # Werkzeug
+        gtquelle: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
       '0014': 1
@@ -520,8 +687,8 @@ convtab:
       '1203': 1
   umschlaege:
     search:
-      gtquelle:
-        '0412': 1       # Verlag
+      '0412':       # Verlag
+        gtquelle: 1
     inverted_tit:
       '0002':         # Aufnahmedatum
         string: 1

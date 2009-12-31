@@ -242,13 +242,7 @@ foreach my $type (keys %{$stammdateien_ref}){
             $listitemdata_not{$id}=$content;
         }
         elsif ($type eq "swt"){
-           $listitemdata_swt{$id}= {
-               content     => $content,
-                contentnorm => OpenBib::Common::Util::grundform({
-                    category => 'T0710',
-                    content  => $content,
-                }),
-           };
+           $listitemdata_swt{$id}=$content;
         }
     }
     
@@ -267,9 +261,11 @@ foreach my $type (keys %{$stammdateien_ref}){
        if ($stammdateien_ref->{$type}{inverted_ref}->{$category}->{ft}){
            $contentnormft = $contentnormtmp;
        }
-       
-       if ($stammdateien_ref->{$type}{inverted_ref}->{$category}->{init}){
-           push @{$stammdateien_ref->{$type}{data}{$id}}, $contentnormtmp;
+
+       if (exists $stammdateien_ref->{$type}{inverted_ref}{$category}->{init}){
+           foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$category}->{init}}){
+               push @{$stammdateien_ref->{$type}{data}{$id}{$searchfield}}, $contentnormtmp;               
+           }
        }
    }
 
@@ -356,8 +352,10 @@ while (my $line=<IN>){
                 $contentnormft = $contentnormtmp;
             }
 
-            if ($stammdateien_ref->{mex}{inverted_ref}->{$category}->{init}){
-                push @{$stammdateien_ref->{mex}{data}{$titid}}, $contentnormtmp;
+            if (exists $stammdateien_ref->{$type}{inverted_ref}{$category}->{init}){
+                foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$category}->{init}}){
+                    push @{$stammdateien_ref->{mex}{data}{$titid}{$searchfield}}, $contentnormtmp;               
+                }
             }
 	}
 
@@ -445,14 +443,12 @@ open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeff
 open(OUT,           ">:utf8","tit.mysql"        ) || die "OUT konnte nicht geoeffnet werden";
 open(OUTFT,         ">:utf8","tit_ft.mysql"     ) || die "OUTFT konnte nicht geoeffnet werden";
 open(OUTSTRING,     ">:utf8","tit_string.mysql" ) || die "OUTSTRING konnte nicht geoeffnet werden";
-open(OUTSEARCH,     ">:utf8","search.mysql"     ) || die "OUT konnte nicht geoeffnet werden";
 open(TITLISTITEM,   ">"     ,"titlistitem.mysql") || die "TITLISTITEM konnte nicht goeffnet werden";
 
 my @verf      = ();
 my @kor       = ();
 my @swt       = ();
 my @notation  = ();
-my @hst       = ();
 my @hststring = ();
 my @sign      = ();
 my @isbn      = ();
@@ -466,7 +462,6 @@ my @titkor    = ();
 my @titswt    = ();
 my @autkor    = ();
 my @inhalt    = ();
-my @superids  = ();
 
 my $listitem_ref={};
 my $thisitem_ref={};
@@ -475,9 +470,10 @@ my $normdata_ref={};
 
 CATLINE:
 while (my $line=<IN>){
+    my $searchfield_ref = {};
     my ($category,$indicator,$content);
     my ($ejahr,$sign,$isbn,$issn,$artinh);
-
+    
     if ($line=~m/^0000:(\d+)$/){
         $id=$1;
         
@@ -494,11 +490,11 @@ while (my $line=<IN>){
             print OUTDELETE "delete from conn where sourceid=$id;\n";
         }
 
+        $searchfield_ref = {};
         @verf      = ();
         @kor       = ();
         @swt       = ();
         @notation  = ();
-        @hst       = ();
         @hststrring= ();
         @sign      = ();
         @isbn      = ();
@@ -512,7 +508,6 @@ while (my $line=<IN>){
         @titkor    = ();
         @titswt    = ();
         @autkor    = ();
-        @superids  = ();
 
         $listitem_ref={};
         $thisitem_ref={};
@@ -532,7 +527,7 @@ while (my $line=<IN>){
 
         # Personen der Ueberordnung anreichern (Schiller-Raeuber)
         if ($addsuperpers){
-            foreach my $superid (@superids){
+            foreach my $superid (@{$searchfield_ref->{subid}}){
                 if (exists $listitemdata_superid{$superid}){
                     my @superpersids = split (":",$listitemdata_superid{$superid}); 
                     push @verf, @superpersids;
@@ -555,6 +550,9 @@ while (my $line=<IN>){
                             content  => $content,
                         });
 
+                        # ToDo: Parametrisierbarkeit in convert.yml im Bereich search fuer
+                        #       die Recherchierbarkeit via Suchmaschine
+                        
                         $logger->debug("Id: $id - Adding $category -> $content");
                         print OUT       "$id$category$indicator$content\n";
 
@@ -575,33 +573,41 @@ while (my $line=<IN>){
                                 print OUTFT     "$id$category$contentnormtmp\n";
                             }
                         }
-                        if (exists $conv_config->{'search'}{'hst'}{$category}){
-                            push @hst, $contentnormtmp;
+
+                        if (exists $conv_config->{'search'}{$category}){
+                            foreach my $searchfield (keys %{$conv_config->{'search'}{$category}}){
+                                push @{$searchfield_ref->{$searchfield}}, $contentnormtmp;
+                            }
                         }
-                        if (exists $conv_config->{'search'}{'ejahr'}{$category}){
-                            push @ejahr, $contentnormtmp;
-                        }
-                        if (exists $conv_config->{'search'}{'ejahrft'}{$category}){
-                            push @ejahrft, $contentnormtmp;
-                        }
-                        if (exists $conv_config->{'search'}{'gtquelle'}{$category}){
-                            push @gtquelle, $contentnormtmp;
-                        }
-                        if (exists $conv_config->{'search'}{'inhalt'}{$category}){
-                            push @inhalt, $contentnormtmp;
-                        }
-                        if (exists $conv_config->{'search'}{'mart'}{$category}){
-                            push @artinh, $contentnormtmp;
-                        }
-                        if (exists $conv_config->{'search'}{'verf'}{$category}){
-                            push @titverf, $contentnormtmp;
-                        }
-                        if (exists $conv_config->{'search'}{'kor'}{$category}){
-                            push @titkor, $contentnormtmp;
-                        }
-                        if (exists $conv_config->{'search'}{'swt'}{$category}){
-                            push @titswt, $contentnormtmp;
-                        }
+                        
+#                         if (exists $conv_config->{'search'}{'hst'}{$category}){
+#                             push @hst, 
+#                         }
+#                         if (exists $conv_config->{'search'}{'ejahr'}{$category}){
+#                             push @ejahr, $contentnormtmp;
+#                         }
+#                         if (exists $conv_config->{'search'}{'ejahrft'}{$category}){
+#                             push @ejahrft, $contentnormtmp;
+#                         }
+#                         if (exists $conv_config->{'search'}{'gtquelle'}{$category}){
+#                             push @gtquelle, $contentnormtmp;
+#                         }
+#                         if (exists $conv_config->{'search'}{'inhalt'}{$category}){
+#                             push @inhalt, $contentnormtmp;
+#                         }
+#                         if (exists $conv_config->{'search'}{'mart'}{$category}){
+#                             push @artinh, $contentnormtmp;
+#                         }
+#                         if (exists $conv_config->{'search'}{'verf'}{$category}){
+#                             push @titverf, $contentnormtmp;
+#                         }
+#                         if (exists $conv_config->{'search'}{'kor'}{$category}){
+#                             push @titkor, $contentnormtmp;
+#                         }
+#                         if (exists $conv_config->{'search'}{'swt'}{$category}){
+#                             push @titswt, $contentnormtmp;
+#                         }
+
                         if (exists $conv_config->{'listitemcat'}{$category}){
                             push @{$listitem_ref->{"T".$category}}, {
                                 content => $content,
@@ -695,56 +701,35 @@ while (my $line=<IN>){
         my %seen_verf=();
         foreach my $item (@verf){
             next if (exists $seen_verf{$item});
-            push @temp, join(" ",@{$stammdateien_ref->{aut}{data}{$item}});
+
+            foreach my $searchfield (keys %{$stammdateien_ref->{aut}{data}{$item}}){
+                push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{aut}{data}{$item}{$searchfield}};
+            }
+
             $seen_verf{$item}=1;
         }
-        push @temp, join(" ",@titverf);
-        my $verf     = join(" ",@temp);
 
-        @temp=();
         foreach my $item (@kor){
-            push @temp, join(" ",@{$stammdateien_ref->{kor}{data}{$item}});
+            foreach my $searchfield (keys %{$stammdateien_ref->{kor}{data}{$item}}){
+                push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{kor}{data}{$item}{$searchfield}};
+            }
         }
-        push @temp, join(" ",@titkor);
-        my $kor      = join(" ",@temp);
 
-        @temp=();
         foreach my $item (@swt){
-            push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}});
+            foreach my $searchfield (keys %{$stammdateien_ref->{swt}{data}{$item}}){
+                push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{swt}{data}{$item}{$searchfield}};
+            }
         }
-        push @temp, join(" ",@titswt);
-        my $swt      = join(" ",@temp);
 
-        @temp=();
         foreach my $item (@notation){
-            push @temp, join(" ",@{$stammdateien_ref->{notation}{data}{$item}});
-        }
-        my $notation = join(" ",@temp);
-
-        @temp=();
-	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}{$id}});
-        my $mex = join(" ",@temp);
-        
-        my $hst       = join(" ",@hst);
-        my $isbn      = join(" ",@isbn);
-        my $issn      = join(" ",@issn);
-        my $artinh    = join(" ",@artinh);
-        my $ejahr     = join(" ",@ejahr);
-        my $ejahrft   = join(" ",@ejahrft);
-        my $gtquelle  = join(" ",@gtquelle);
-        my $inhalt    = join(" ",@inhalt);
-
-        if (@hststring){
-            push @{$normdata_ref->{hststring}}, @hststring;
+            foreach my $searchfield (keys %{$stammdateien_ref->{notation}{data}{$item}}){
+                push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{notation}{data}{$item}{$searchfield}};
+            }
         }
 
-        # Exemplardaten-Hash zu listitem-Hash hinzufuegen
-
-        foreach my $content (@{$listitemdata_mex{$id}}){
-            push @{$normdata_ref->{sign}}, $content;            
+        foreach my $searchfield (keys %{$stammdateien_ref->{mex}{data}{$id}}){
+            push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{mex}{data}{$item}{$searchfield}};
         }
-
-        print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$ejahrft$gtquelle$inhalt$isbn$issn$artinh\n";
 
         # Listitem zusammensetzen
 
@@ -924,6 +909,9 @@ while (my $line=<IN>){
                 $contentnormft = $contentnormtmp;
             }
         }
+
+        # Parametrisierung fuer die Suchmaschine
+
         
         # Verknuepfungen
         if ($category=~m/^0004/){
@@ -934,8 +922,18 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "";
 
-            push @superids, $targetid;
-            
+            if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                    push @{$normdata_ref->{$searchfield}}, $targetid;
+                }
+            }
+
+            if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                    push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                }
+            }
+
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0100/){
@@ -947,7 +945,7 @@ while (my $line=<IN>){
             my $category   = "0100";
 
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
-            # dann aus DB holen
+            # da schon vorhande -> dann aus DB holen
             if ($incremental && !exists $listitemdata_aut{$targetid}){
                 $listitemdata_aut{$targetid} = OpenBib::Record::Person
                     ->new({id => $targetid, database => $database})
@@ -972,11 +970,19 @@ while (my $line=<IN>){
                     type    => 'aut',
                     content => $content,
                 } if (exists $conv_config->{listitemcat}{'0100'});
-                
-                push @{$normdata_ref->{verf}}, $content;
-                
-                push @autkor, $content;
-                
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1024,11 +1030,19 @@ while (my $line=<IN>){
                     content    => $content,
                     supplement => $supplement,
                 } if (exists $conv_config->{listitemcat}{'0101'});
-                
-                push @{$normdata_ref->{verf}}, $content;
-                
-                push @autkor, $content;
-                
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1070,10 +1084,18 @@ while (my $line=<IN>){
                     content    => $content,
                     supplement => $supplement,
                 } if (exists $conv_config->{listitemcat}{'0102'});
-                
-                push @{$normdata_ref->{verf}}, $content;
-                
-                push @autkor, $content;
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
                 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1116,11 +1138,19 @@ while (my $line=<IN>){
                     content    => $content,
                     supplement => $supplement,
                 } if (exists $conv_config->{listitemcat}{'0103'});
-                
-                push @{$normdata_ref->{verf}}, $content;
-                
-                push @autkor, $content;
-            
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1166,9 +1196,17 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0200'});
 
-                push @{$normdata_ref->{kor}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
-                push @autkor, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
                 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1206,9 +1244,17 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0201'});
 
-                push @{$normdata_ref->{kor}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
-                push @autkor, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
                 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1246,8 +1292,18 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0700'});
 
-                push @{$normdata_ref->{notation}}, $content;
-                
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }                
+
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1265,19 +1321,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-
-
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
 
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1285,7 +1332,7 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
                  
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
                 
                 push @{$listitem_ref->{S0710}}, {
                     id         => $targetid,
@@ -1293,7 +1340,17 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0710'});
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
                 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1312,19 +1369,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-
-
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
             
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1332,16 +1380,26 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0902}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0902'});
+                
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
-                push @{$normdata_ref->{swt}}, $content;
-
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1359,19 +1417,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-
-
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
 
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1379,15 +1428,25 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0907}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0907'});
+                
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
                 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1406,19 +1465,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-
-
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
 
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1426,7 +1476,7 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
                 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0912}}, {
                     id         => $targetid,
@@ -1434,8 +1484,18 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0912'});
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1453,19 +1513,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
             
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1473,7 +1524,7 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0917}}, {
                     id         => $targetid,
@@ -1481,7 +1532,17 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0917'});
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
+
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
                 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1500,19 +1561,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
             
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1520,7 +1572,7 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0922}}, {
                     id         => $targetid,
@@ -1528,8 +1580,18 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0922'});
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1547,19 +1609,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
             
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1567,7 +1620,7 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0927}}, {
                     id         => $targetid,
@@ -1575,8 +1628,18 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0927'});
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1594,19 +1657,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
             
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1614,7 +1668,7 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0932}}, {
                     id         => $targetid,
@@ -1622,8 +1676,18 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0932'});
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1641,19 +1705,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
             
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1661,7 +1716,7 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0937}}, {
                     id         => $targetid,
@@ -1669,8 +1724,18 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0937'});
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1688,19 +1753,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
 
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1708,7 +1764,7 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0942}}, {
                     id         => $targetid,
@@ -1716,8 +1772,18 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0942'});
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1735,19 +1801,10 @@ while (my $line=<IN>){
             # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
             # dann aus DB holen
             if ($incremental && !exists $listitemdata_swt{$targetid}){
-                my $content = OpenBib::Record::Subject
+                $listitemdata_swt{$targetid} = OpenBib::Record::Subject
                     ->new({id => $targetid, database => $database})
                         ->load_name
                             ->name_as_string;
-                
-                
-                $listitemdata_swt{$targetid} = {
-                    content     => $content,
-                    contentnorm => OpenBib::Common::Util::grundform({
-                        category => 'T0710',
-                        content  => $content,
-                    }),
-                };
             }
             
             # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1755,7 +1812,7 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
-                my $content = $listitemdata_swt{$targetid}->{content};
+                my $content = $listitemdata_swt{$targetid};
 
                 push @{$listitem_ref->{S0947}}, {
                     id         => $targetid,
@@ -1763,8 +1820,18 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0947'});
 
-                push @{$normdata_ref->{swt}}, $content;
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                        push @{$normdata_ref->{$searchfield}}, $content;
+                    }
+                }
 
+                if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                        push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                    }
+                }
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1779,134 +1846,43 @@ while (my $line=<IN>){
                 content   => $content,
             };
 
-            if (   exists $conv_config->{search}{ejahr    }{$category}){
-                push @ejahr, OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-            }
-            if (   exists $conv_config->{search}{ejahrft  }{$category}){
-                push @ejahrft, OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-            }
-            if (   exists $conv_config->{search}{gtquelle }{$category}){
-                push @gtquelle, OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-            }
-            elsif (exists $conv_config->{search}{hst      }{$category}){
-                push @hst, OpenBib::Common::Util::grundform({
-                    # Keine Uebergabe der Kategorie, da erstes Stopwort hier nicht entfernt werden soll
-                    content  => $content,
-                });
-            }
-            if (exists $conv_config->{search}{hststring}{$category}){
-                my $normcontent = OpenBib::Common::Util::grundform({
-                    category => "0331",
-                    content  => $content,
-                });
-                push @{$normdata_ref->{hststring}}, $normcontent;
-
-            }            
-            if (   exists $conv_config->{search}{inhalt   }{$category}){
-                push @inhalt, OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-            }
-            elsif (exists $conv_config->{search}{isbn     }{$category}){
-
-                my $isbnnorm = OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-                
-                push @isbn, $isbnnorm;
-
-                # Alternative ISBN zur Rechercheanreicherung erzeugen
-                my $isbn = Business::ISBN->new($isbnnorm);
-
-                if (defined $isbn && $isbn->is_valid){
-                    my $isbnXX;
-                    if (length($isbnnorm) == 10){
-                        $isbnXX = $isbn->as_isbn13;
-                    }
-                    else {
-                        $isbnXX = $isbn->as_isbn10;
-                    }
-
-                    if (defined $isbnXX){
-                        if (!exists $normdata_ref->{isbn13}){
-                            $normdata_ref->{isbn13} = OpenBib::Common::Util::grundform({
-                                category => $category,
-                                content  => $isbnXX->as_isbn13->as_string,
-                            });
+            if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                    if ($searchfield eq "isbn"){
+                        # Alternative ISBN zur Rechercheanreicherung erzeugen
+                        my $isbn = Business::ISBN->new($contentnorm);
+                        
+                        if (defined $isbn && $isbn->is_valid){
+                            my $isbnXX;
+                            if (length($isbnnorm) == 10){
+                                $isbnXX = $isbn->as_isbn13;
+                            }
+                            else {
+                                $isbnXX = $isbn->as_isbn10;
+                            }
+                            
+                            if (defined $isbnXX){
+                                if (!exists $normdata_ref->{isbn13}){
+                                    $normdata_ref->{isbn13} = OpenBib::Common::Util::grundform({
+                                        category => $category,
+                                        content  => $isbnXX->as_isbn13->as_string,
+                                    });
+                                }
+                            }
                         }
-
-                        push @isbn,      OpenBib::Common::Util::grundform({
-                            category => $category,
-                            content  => $isbnXX->as_string,
-                        });
                     }
+                    push @{$normdata_ref->{$searchfield}}, $contentnorm;
                 }
-
             }
-            elsif (exists $conv_config->{search}{issn     }{$category}){
-                my $issnnorm =  OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
 
-                # Normierte ISSN fuer lokale Anreicherung merken
-                if (!exists $normdata_ref->{issn}){
-                    $normdata_ref->{issn} = $issnnorm;
+            if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                    push @{$normdata_ref->{"facet_".$searchfield}}, $content;
                 }
-
-                push @issn,      $issnnorm;
             }
-            elsif (exists $conv_config->{search}{mart     }{$category}){
-                push @artinh, OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-            }
-            elsif (exists $conv_config->{search}{verf     }{$category}){
-                push @titverf, OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-            }
-            elsif (exists $conv_config->{search}{kor      }{$category}){
-                push @titkor, OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-            }
-            elsif (exists $conv_config->{search}{swt      }{$category}){
-                push @titswt, OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-            }
-
+            
             if ($category && $content){
                 print OUT       "$id$category$indicator$content\n";
-
-		if ($category eq "0800"){ # Medienart
-		  push @{$normdata_ref->{mart}}, $content;
-		}
-
-		if ($category eq "0015"){ # Sprache
-		  push @{$normdata_ref->{spr}}, $content;
-		}
-
-                if ($category eq "0425" || $category eq "0424"){ # Jahr
-		  push @{$normdata_ref->{year}}, $content;
-		}
-
             }
             if ($category && $contentnorm){
                 print OUTSTRING "$id$category$contentnorm\n";
@@ -1947,7 +1923,6 @@ DISABLEKEYS
 }
 
 print CONTROLINDEXOFF "alter table conn        disable keys;\n";
-print CONTROLINDEXOFF "alter table search      disable keys;\n";
 print CONTROLINDEXOFF "alter table titlistitem disable keys;\n";
 
 foreach my $type (keys %{$stammdateien_ref}){
@@ -1978,7 +1953,6 @@ TITITEMTRUNC
 print CONTROL << "TITITEM";
 load data infile '$dir/conn.mysql'        into table conn   fields terminated by '' ;
 load data infile '$dir/popularity.mysql'  into table popularity fields terminated by '' ;
-load data infile '$dir/search.mysql'      into table search fields terminated by '' ;
 load data infile '$dir/titlistitem.mysql' into table titlistitem fields terminated by '' ;
 TITITEM
 
@@ -1991,7 +1965,6 @@ ENABLEKEYS
 }
 
 print CONTROLINDEXON "alter table conn        enable keys;\n";
-print CONTROLINDEXON "alter table search      enable keys;\n";
 print CONTROLINDEXON "alter table titlistitem enable keys;\n";
 
 close(CONTROL);

@@ -102,7 +102,6 @@ my %xapian_idmapping;
 
 tie %xapian_idmapping, 'DB_File', $config->{'autoconv_dir'}."/pools/$database/xapian_idmapping.db";
 
-open(SEARCH,      "<:utf8","search.mysql"      ) || die "SEARCH konnte nicht geoeffnet werden";
 open(TITLISTITEM, "<:utf8","titlistitem.mysql" ) || die "TITLISTITEM konnte nicht geoeffnet werden";
 
 my $dbbasedir=$config->{xapian_index_base_path};
@@ -143,133 +142,8 @@ my $atime = new Benchmark;
 my $count = 1;
 {
     my $atime = new Benchmark;
-    while (my $search=<SEARCH>, my $titlistitem=<TITLISTITEM>) {
-        my ($s_id,$verf,$hst,$kor,$swt,$notation,$sign,$ejahrint,$ejahr,$gtquelle,$inhalt,$isbn,$issn,$artinh)=split("",$search);
-        my ($t_id,$listitem)=split ("",$titlistitem);
-        if ($s_id != $t_id) {
-            $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
-            next;
-        }
-
-#        next unless ($t_id == 243909);
-
-        my $tokinfos_ref= [
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'verf'}},
-                content => $verf,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'hst'}},
-                content => $hst,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'kor'}},
-                content => $kor,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'swt'}},
-                content => $swt,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'notation'}},
-                content => $notation,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'gtquelle'}},
-                content => $gtquelle,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'sign'}},
-                content => $sign,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'ejahr'}},
-                content => $ejahr,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'isbn'}},
-                content => $isbn,
-	        type    => 'index',
-            },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'issn'}},
-                content => $issn,
-	        type    => 'index',
-            },
-#             {
-#                 prefix  => $config->{xapian_search_prefix}{'artinh'},
-#                 content => $artinh,
-# 	        type    => 'index',
-#             },
-            {
-                prefix  => $config->{xapian_search_prefix}{$config->{searchfield_prefix}{'inhalt'}},
-                content => $inhalt,
-	        type    => 'index',
-            },
-            {
-                # Schlagwort
-                prefix  => $config->{xapian_search_prefix}{'fsubj'},
-	        type    => "drilldown",
-                cat     => 'swt',
-            },
-            {
-                # Notation
-                prefix  => $config->{xapian_search_prefix}{'fsys'},
-	        type    => "drilldown",
-                cat     => 'notation',
-            },
-            {
-                # Person
-                prefix  => $config->{xapian_search_prefix}{'fper'},
-	        type    => "drilldown",
-                cat     => 'verf',
-            },
-            {
-                # Medientyp
-                prefix  => $config->{xapian_search_prefix}{'ftyp'},
-	        type    => "drilldown",
-                cat     => 'mart',
-            },
-            {
-                # Jahr
-                prefix  => $config->{xapian_search_prefix}{'fyear'},
-	        type    => "drilldown",
-                cat     => 'year',
-            },
-            {
-                # Sprache
-                prefix  => $config->{xapian_search_prefix}{'flang'},
-	        type    => "drilldown",
-                cat     => 'spr',
-            },
-            {
-                # Koerperschaft
-                prefix  => $config->{xapian_search_prefix}{'fcorp'},
-	        type    => "drilldown",
-                cat     => 'kor',
-            },
-            {
-                # HST String
-                prefix  => $config->{xapian_search_prefix}{'ftit'},
-	        type    => "drilldown",
-                cat     => 'hststring',
-            },
-#             {
-#                 # Signatur
-#                 prefix  => $config->{xapian_search_prefix}{'fsign'},
-# 	        type    => "drilldown",
-#                 cat     => 'sign',
-#             },
-
-        ];
+    while (my $titlistitem=<TITLISTITEM>) {
+        my ($s_id,$listitem)=split ("",$titlistitem);
 
         my $seen_token_ref = {};
         
@@ -283,14 +157,15 @@ my $count = 1;
 
         my $k = 0;
 
-        foreach my $tokinfo_ref (@$tokinfos_ref) {
-
-            if ($tokinfo_ref->{type} eq 'index'){
-	      # Tokenize
-	      next if (! $tokinfo_ref->{content});
-
-                $tokenizer->tokenize($tokinfo_ref->{content});
-        
+        foreach my $searchfield (keys %{$config->{searchfield}}) {
+            
+            if ($config->{searchfield}{$searchfield}{type} eq 'ft'){
+                # Tokenize
+                next if (! $normdata{$s_id}->{$searchfield});
+                
+                my $tokenstring = join(' ',@{$normdata{$s_id}->{$searchfield}});
+                $tokenizer->tokenize($tokenstring);
+                
                 my $i = $tokenizer->iterator();
 
                 my @saved_tokens=();
@@ -327,7 +202,7 @@ my $count = 1;
                 if ($withfields) {
                     foreach my $token (@saved_tokens) {
                         # Token in Feld einfuegen            
-                        my $fieldtoken=$tokinfo_ref->{prefix}.$token;
+                        my $fieldtoken=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$token;
 
                         # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN=252 Zeichen
                         $fieldtoken=(length($fieldtoken) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
@@ -342,13 +217,15 @@ my $count = 1;
                     }
                 }
    	    }
-            elsif ($tokinfo_ref->{type} eq 'drilldown'){
-                next if (!exists $normdata{$s_id}->{$tokinfo_ref->{cat}});
+            elsif ($config->{searchfield}{$searchfield}{type} eq 'string'){
+                next if (!exists $normdata{$s_id}->{$searchfield});
                 
                 my %seen_terms = ();
-                my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$tokinfo_ref->{cat}}}; 
+                my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$searchfield}}; 
                 
 	        foreach my $unique_term (@unique_terms){
+                    next unless ($unique_term);
+                    
                     # Kategorie in Feld einfuegen            
                     my $field = OpenBib::Common::Util::grundform({
                         content   => $unique_term,
@@ -357,7 +234,7 @@ my $count = 1;
                     
                     $field=~s/\W/_/g;
                     
-                    $field="$tokinfo_ref->{prefix}$field";
+                    $field=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$field;
                     
                     # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
                     if (length($field) > $DRILLDOWN_MAX_KEY_LEN){
@@ -373,10 +250,10 @@ my $count = 1;
             # Datenbankname
             $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($database)) if ($type eq "db" && $database);
             
-            next if (!exists $normdata{$s_id}->{$type});
+            next if (!exists $normdata{$s_id}->{"facet_".$type});
 
             my %seen_terms = ();
-            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$type}}; 
+            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{"facet".$type}}; 
 
             my $multstring = join("\t",@unique_terms);
 
@@ -439,31 +316,38 @@ my $count = 1;
 
                 if ($this_sorting_ref->{type} eq "stringcategory"){
                     my $content = (exists $titlistitem_ref->{$this_sorting_ref->{category}}[0]{content})?$titlistitem_ref->{$this_sorting_ref->{category}}[0]{content}:"";
+                    next unless ($content);
+                    
                     $content = OpenBib::Common::Util::grundform({
                         content   => $content,
                     });
 
-#                    $logger->debug("Adding $content as sortvalue");
-
-                    $doc->add_value($this_sorting_ref->{id},$content);
+                    if ($content){
+                        #                    $logger->debug("Adding $content as sortvalue");                        
+                        $doc->add_value($this_sorting_ref->{id},$content);
+                    }
                 }
                 elsif ($this_sorting_ref->{type} eq "integercategory"){
                     my $content = 0;
                     if (exists $titlistitem_ref->{$this_sorting_ref->{category}}[0]{content}){
                         ($content) = $titlistitem_ref->{$this_sorting_ref->{category}}[0]{content}=~m/^(\d+)/;
                     }
-                    $content = sprintf "%08d", $content;
-#                    $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($this_sorting_ref->{id},$content);
+                    if ($content){
+                        $content = sprintf "%08d", $content;
+                        #                    $logger->debug("Adding $content as sortvalue");
+                        $doc->add_value($this_sorting_ref->{id},$content);
+                    }
                 }
                 elsif ($this_sorting_ref->{type} eq "integervalue"){
                     my $content = 0 ;
                     if (exists $titlistitem_ref->{$this_sorting_ref->{category}}){
                         ($content) = $titlistitem_ref->{$this_sorting_ref->{category}}=~m/^(\d+)/;
                     }
-                    $content = sprintf "%08d",$content;
-#                    $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($this_sorting_ref->{id},$content);
+                    if ($content){                    
+                        $content = sprintf "%08d",$content;
+                        #                    $logger->debug("Adding $content as sortvalue");
+                        $doc->add_value($this_sorting_ref->{id},$content);
+                    }
                 }
             }
         }

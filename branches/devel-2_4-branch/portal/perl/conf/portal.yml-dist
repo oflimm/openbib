@@ -213,26 +213,78 @@ tt_include_path: /opt/openbib/templates
 
 # Suchprefixe in der Rercherche fuer die internen Felder verf, hst usw.
 searchfield_prefix:
-  'fs': 'fs'
-  'verf': 'per'
-  'hst': 'tit'
-  'hststring': 'ftit'
-  'swt': 'subj'
-  'kor': 'corp'
-  'notation': 'sys'
-  'sign': 'mark'
-  'isbn': 'isbn'
-  'issn': 'issn'
-  'artinh': 'typ'
-  'inhalt': 'cnt'
-  'gtquelle': 'src'
-  'ejahr': 'year'
-  'ddswt': 'fsubj'
-  'spr': 'flang'
-  'ddnot': 'fsys'
-  'ddper': 'fper'
-  'ddmart': 'ftyp'
-  'sign': 'fsign'
+  'id':
+     'prefix': 'id'
+     'type': 'ft'
+  'fs':
+     'prefix': 'fs'
+     'type': 'ft'
+  'verf':
+     'prefix': 'per'
+     'type': 'ft'
+  'hst':
+     'prefix': 'tit'
+     'type': 'ft'
+  'swt': 
+     'prefix': 'subj'
+     'type': 'ft'
+  'kor':
+     'prefix': 'corp'
+     'type': 'ft'
+  'notation':
+     'prefix': 'sys'
+     'type': 'ft'
+  'sign':
+     'prefix': 'mark'
+     'type': 'ft'
+  'isbn':
+     'prefix': 'isbn'
+     'type': 'ft'
+  'issn':
+     'prefix': 'issn'
+     'type': 'ft'
+  'mart':
+     'prefix': 'typ'
+     'type': 'ft'
+  'inhalt':
+     'prefix': 'cnt'
+     'type': 'ft'
+  'gtquelle':
+     'prefix': 'src'
+     'type': 'ft'
+  'ejahr':
+     'prefix': 'year'
+     'type': 'ft'
+  'subid':
+     'prefix': 'fsub'
+     'type': 'ft'
+  'hststring':
+     'prefix': 'ftit'
+     'type': 'string'
+  'swtstring':
+     'prefix': 'fsubj'
+     'type': 'string'
+  'sprstring':
+     'prefix': 'flang'
+     'type': 'string'
+  'notstring':
+     'prefix': 'fsys'
+     'type': 'string'
+  'verfstring':
+     'prefix': 'fper'
+     'type': 'string'
+  'korstring':
+     'prefix': 'fcorp'
+     'type': 'string'
+  'martstring':
+     'prefix': 'ftyp'
+     'type': 'string'
+  'signstring':
+     'prefix': 'fsign'
+     'type': 'string'
+  'yearstring':
+     'prefix': 'fyear'
+     'type': 'string'
 
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
@@ -269,15 +321,16 @@ xapian_search_prefix:
   'fdb': 'D8'
   'ftit': 'D9'
   'fsign': 'E1'
+  'fsub': 'E2'
 
 xapian_drilldown_value:
-  per: 3
-  typ: 4
-  sys: 2
-  lang: 6
-  subj: 1
+  verf: 3
+  mart: 4
+  notation: 2
+  spr: 6
+  swt: 1
   year: 5
-  corp: 7
+  kor: 7
   db: 8
 
 xapian_sorttype_value:

@@ -1258,7 +1258,7 @@ sub to_xapian_querystring {
         'OR'      => '',
     };
 
-    foreach my $field (keys %{$config->{searchfield_prefix}}){
+    foreach my $field (keys %{$config->{searchfield}}){
         my $searchtermstring = (defined $self->{_searchquery}->{$field}->{norm})?$self->{_searchquery}->{$field}->{norm}:'';
         my $searchtermop     = (defined $self->{_searchquery}->{$field}->{bool} && defined $ops_ref->{$self->{_searchquery}->{$field}->{bool}})?$ops_ref->{$self->{_searchquery}->{$field}->{bool}}:'';
         if ($searchtermstring) {
@@ -1285,12 +1285,12 @@ sub to_xapian_querystring {
                     $newsearchtermstring.=$char;
                 }
                     
-                $searchtermstring=$searchtermop.$config->{searchfield_prefix}{$field}.":$newsearchtermstring";
+                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":$newsearchtermstring";
                 push @xapianquerystrings, $searchtermstring;                
             }
             # Sonst Operator und Prefix hinzufuegen
             elsif ($searchtermstring) {
-                $searchtermstring=$searchtermop.$config->{searchfield_prefix}{$field}.":($searchtermstring)";
+                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":($searchtermstring)";
                 push @xapianquerystrings, $searchtermstring;                
             }
 

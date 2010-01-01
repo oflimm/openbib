@@ -208,12 +208,24 @@ my $count = 1;
                 
 	        foreach my $unique_term (@unique_terms){
                     next unless ($unique_term);
-                    
+
+                    my $field = undef;
+
+                    if (exists $config->{searchfield}{$searchfield}{option}{string_first_stopword}){
+                        $field = OpenBib::Common::Util::grundform({
+                            category  => '0331', # Stellvertretend fuer alle derartige Kategorien
+                            content   => $unique_term,
+                            searchreq => 1,
+                        });
+
+                    }
+                    else {
                     # Kategorie in Feld einfuegen            
-                    my $field = OpenBib::Common::Util::grundform({
-                        content   => $unique_term,
-                        searchreq => 1,
-                    });
+                        $field = OpenBib::Common::Util::grundform({
+                            content   => $unique_term,
+                            searchreq => 1,
+                        });
+                    }
                     
                     $field=~s/\W/_/g;
                     

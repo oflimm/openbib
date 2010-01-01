@@ -261,6 +261,8 @@ searchfield:
   'hststring':
      'prefix': 'ftit'
      'type': 'string'
+     'option':
+       'strip_first_stopword': 1
   'swtstring':
      'prefix': 'fsubj'
      'type': 'string'

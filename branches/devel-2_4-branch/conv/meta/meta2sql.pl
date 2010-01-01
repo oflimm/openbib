@@ -53,7 +53,7 @@ use OpenBib::Record::Subject;
 use OpenBib::Record::Title;
 use OpenBib::Statistics;
 
-my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile,$loglevel);
 
 &GetOptions("reduce-mem"    => \$reducemem,
             "add-superpers" => \$addsuperpers,
@@ -61,15 +61,17 @@ my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile);
             "incremental"   => \$incremental,
 	    "database=s"    => \$database,
             "logfile=s"     => \$logfile,
+            "loglevel=s"    => \$loglevel,
 	    );
 
 my $config      = OpenBib::Config->instance;
 my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$database.log";
+$loglevel=($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -560,18 +562,24 @@ while (my $line=<IN>){
                         $indicator++;
                         # Normierung (String/Fulltext) der als invertierbar definierten Kategorien
                         if (exists $stammdateien_ref->{tit}{inverted_ref}->{$category}){
-                            if ($stammdateien_ref->{tit}{inverted_ref}->{$category}->{string}){
+                            if (exists $stammdateien_ref->{tit}{inverted_ref}->{$category}->{string}){
                                 print OUTSTRING "$id$category$contentnormtmp\n";
                             }
                             
-                            if ($stammdateien_ref->{tit}{inverted_ref}->{$category}->{ft}){
+                            if (exists $stammdateien_ref->{tit}{inverted_ref}->{$category}->{ft}){
                                 print OUTFT     "$id$category$contentnormtmp\n";
                             }
-                        }
+                            
+                            if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
+                                foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
+                                    push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                                }
+                            }
 
-                        if (exists $conv_config->{'search'}{$category}){
-                            foreach my $searchfield (keys %{$conv_config->{'search'}{$category}}){
-                                push @{$searchfield_ref->{$searchfield}}, $contentnormtmp;
+                            if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
+                                foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
+                                    push @{$normdata_ref->{"facet_".$searchfield}}, $content;
+                                }
                             }
                         }
                         

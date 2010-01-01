@@ -48,10 +48,11 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Common::Util;
 
-my ($database,$help,$logfile,$withfields,$withsorting,$withpositions);
+my ($database,$help,$logfile,$withfields,$withsorting,$withpositions,$loglevel);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
+            "loglevel=s"      => \$loglevel,
             "with-fields"     => \$withfields,
             "with-sorting"    => \$withsorting,
             "with-positions"  => \$withpositions,
@@ -63,9 +64,10 @@ if ($help){
 }
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/file2xapian.log';
+$loglevel=($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append

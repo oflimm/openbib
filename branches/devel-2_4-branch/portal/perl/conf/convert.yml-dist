@@ -128,11 +128,13 @@ convtab:
         init:
           'verf': 1
           'verfstring': 1
+          'fs': 1
       '0102':         # Verweisform
         ft: 1
         string: 1
         init:
           'verf': 1
+          'fs': 1
     inverted_kor:
       '0001':         # Ansetzung
         ft: 1
@@ -140,26 +142,31 @@ convtab:
         init:
           'kor': 1
           'korstring': 1
+          'fs': 1
       '0102':         # Verweisform
         ft: 1
         string: 1
         init:
           'kor': 1
+          'fs': 1
       '0103':         # Abkuerzung der Verweisform
         ft: 1
         string: 1
         init:
           'kor': 1
+          'fs': 1
       '0110':         # Abkuerzung der Ansetzung
         ft: 1
         string: 1
         init:
           'kor': 1
+          'fs': 1
       '0111':         # Frueherer/Spaeterer Name
         ft: 1
         string: 1
         init:
           'kor': 1
+          'fs': 1
     inverted_mex:
       '0014':         # Signatur
         ft: 1
@@ -167,6 +174,7 @@ convtab:
         init:
           'sign': 1
           'signstring': 1
+          'fs': 1
     inverted_not:
       '0001':         # Ansetzung
         ft: 1
@@ -174,21 +182,25 @@ convtab:
         init:
           'notation': 1
           'notationstring': 1
+          'fs': 1
       '0002':         # Ansetzung
         ft: 1
         string: 1
         init:
           'notation': 1
+          'fs': 1
       '0102':         # Stichwort
         ft: 1
         string: 1
         init:
           'notation': 1
+          'fs': 1
       '0103':         # Verweisform
         ft: 1
         string: 1
         init:
           'notation': 1
+          'fs': 1
     inverted_swt:
       '0001':         # Ansetzung
         ft: 1
@@ -196,11 +208,13 @@ convtab:
         init:
           'swt': 1
           'swtstring': 1
+          'fs': 1
       '0102':         # Verweisform
         ft: 1
         string: 1
         init:
           'swt': 1
+          'fs': 1
     inverted_tit:
       '0002':         # Aufnahmedatum
         string: 1
@@ -210,10 +224,12 @@ convtab:
       '0089':
         init:
           'gtquelle': 1
+          'fs': 1
       '0015':
         init:
           'spr': 1
           'sprstring': 1
+          'fs': 1
         facet:
           'spr': 1
       '0100':
@@ -243,11 +259,13 @@ convtab:
         init:
           'hst': 1
           'hststring': 1
+          'fs': 1
       '0310':         # AST
         ft: 1
         string: 1
         init:
           'hst': 1
+          'fs': 1
           'hststring': 1
       '0331':         # HST
         ft: 1
@@ -255,57 +273,69 @@ convtab:
         init:
           'hst': 1
           'hststring': 1
+          'fs': 1
       '0335':         # Zusatz zum HST
         ft: 1
         string: 0
         init:
           'hst': 1
           'hststring': 1
+          'fs': 1
       '0341':         # PSTVorlage
         ft: 1
         string: 1
         init:
           'hst': 1
           'hststring': 1
+          'fs': 1
       '0361':       # Vorlage beigefuegtes Werk
         init:
           'hst': 1
           'hststring': 1
+          'fs': 1
       '0370':         # WST
         ft: 1
         string: 1
         init:
           'hst': 1
           'hststring': 1
+          'fs': 1
       '0413':         # Drucker
         string: 1
       '0424':
         init:
           'ejahr': 1
           'ejahrstring': 1
+          'fs': 1
       '0425':
         init:
           'ejahr': 1
           'ejahrstring': 1
+          'fs': 1
         facet:
           'year': 1
       '0451':
         init:
           'gtquelle': 1
+          'fs': 1
       '0540':         # ISBN
         string: 1
         init:
           'isbn': 1
+          'fs': 1
       '0543':         # ISSN
         init:
           'isbn': 1
+          'fs': 1
       '0553':         # ISBN
         string: 1
         init:
           'isbn': 1
+          'fs': 1
       '0590':
         init:
           'gtquelle': 1
+          'fs': 1
       '0700':
         facet:
           'notation': 1
@@ -315,11 +345,13 @@ convtab:
       '0750':         # Abstract
         init:
           'inhalt': 1
+          'fs': 1
       '0800':         # Medienart
         string: 1
         init:
           'mart': 1
           'martstring': 1
+          'fs': 1
         facet:
           'mart': 1
       '0902':
@@ -357,16 +389,20 @@ convtab:
       '4201':         # Wikipedia
         init:
           'inhalt': 1
+          'fs': 1
       '4201':         # Wikipedia
         init:
           'inhalt': 1
+          'fs': 1
       '4203':         # Wikipedia
         init:
           'inhalt': 1
+          'fs': 1
       '4300':         # Fremde Schlagworte
         init:
           'swt': 1
           'swtstring': 1
+          'fs': 1
       '5050':         # Bibkey
         string: 1
       '5051':         # Bibkey Base

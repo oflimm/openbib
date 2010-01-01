@@ -454,8 +454,6 @@ my @sign      = ();
 my @isbn      = ();
 my @issn      = ();
 my @artinh    = ();
-my @ejahr     = ();
-my @ejahrft   = ();
 my @gtquelle  = ();
 my @titverf   = ();
 my @titkor    = ();
@@ -472,7 +470,7 @@ CATLINE:
 while (my $line=<IN>){
     my $searchfield_ref = {};
     my ($category,$indicator,$content);
-    my ($ejahr,$sign,$isbn,$issn,$artinh);
+    my ($sign,$isbn,$issn,$artinh);
     
     if ($line=~m/^0000:(\d+)$/){
         $id=$1;
@@ -482,7 +480,6 @@ while (my $line=<IN>){
             print OUTDELETE "delete from tit_string where id=$id;\n";
             print OUTDELETE "delete from tit_ft where id=$id;\n";
             print OUTDELETE "delete from titlistitems where id=$id;\n";
-            print OUTDELETE "delete from search where verwid=$id;\n";
             print OUTDELETE "delete from popularity where id=$id;\n";
             print OUTDELETE "delete mex from mex inner join conn where conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex.id and conn.sourceid=$id;\n";
             print OUTDELETE "delete mex_string from mex inner join conn where conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex.id and conn.sourceid=$id;\n";
@@ -500,8 +497,6 @@ while (my $line=<IN>){
         @isbn      = ();
         @issn      = ();
         @artinh    = ();
-        @ejahr     = ();
-        @ejahrft   = ();
         @gtquelle  = ();
         @inhalt    = ();
         @titverf   = ();
@@ -580,34 +575,6 @@ while (my $line=<IN>){
                             }
                         }
                         
-#                         if (exists $conv_config->{'search'}{'hst'}{$category}){
-#                             push @hst, 
-#                         }
-#                         if (exists $conv_config->{'search'}{'ejahr'}{$category}){
-#                             push @ejahr, $contentnormtmp;
-#                         }
-#                         if (exists $conv_config->{'search'}{'ejahrft'}{$category}){
-#                             push @ejahrft, $contentnormtmp;
-#                         }
-#                         if (exists $conv_config->{'search'}{'gtquelle'}{$category}){
-#                             push @gtquelle, $contentnormtmp;
-#                         }
-#                         if (exists $conv_config->{'search'}{'inhalt'}{$category}){
-#                             push @inhalt, $contentnormtmp;
-#                         }
-#                         if (exists $conv_config->{'search'}{'mart'}{$category}){
-#                             push @artinh, $contentnormtmp;
-#                         }
-#                         if (exists $conv_config->{'search'}{'verf'}{$category}){
-#                             push @titverf, $contentnormtmp;
-#                         }
-#                         if (exists $conv_config->{'search'}{'kor'}{$category}){
-#                             push @titkor, $contentnormtmp;
-#                         }
-#                         if (exists $conv_config->{'search'}{'swt'}{$category}){
-#                             push @titswt, $contentnormtmp;
-#                         }
-
                         if (exists $conv_config->{'listitemcat'}{$category}){
                             push @{$listitem_ref->{"T".$category}}, {
                                 content => $content,
@@ -901,7 +868,7 @@ while (my $line=<IN>){
                 content  => $content,
             });
 
-            if ($stammdateien_ref->{tit}{inverted_ref}->{$category}->{string}){
+            if ($stammdateien_ref->{tit}{inverted_ref}->{$category}->{string} || $stammdateien_ref->{tit}{inverted_ref}->{$category}->{init}){
                 $contentnorm   = $contentnormtmp;
             }
 
@@ -1935,10 +1902,12 @@ while (my $line=<IN>){
                             
                             if (defined $isbnXX){
                                 if (!exists $normdata_ref->{isbn13}){
-                                    $normdata_ref->{isbn13} = OpenBib::Common::Util::grundform({
+                                    my $isbn13 = OpenBib::Common::Util::grundform({
                                         category => $category,
                                         content  => $isbnXX->as_isbn13->as_string,
                                     });
+                                    $normdata_ref->{isbn13} = $isbn13;
+                                    push @{$normdata_ref->{fs}}, $contentnorm;
                                 }
                             }
                         }

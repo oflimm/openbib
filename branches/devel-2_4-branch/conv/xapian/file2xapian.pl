@@ -157,11 +157,15 @@ my $count = 1;
 
         my $k = 0;
 
+        $logger->debug("Available Data for id $s_id ".YAML::Dump(\$normdata{$s_id}));
+
         foreach my $searchfield (keys %{$config->{searchfield}}) {
-            
+
+            $logger->debug("Processing Searchfield $searchfield for id $s_id");
+            # Einzelne Worte (Fulltext)
             if ($config->{searchfield}{$searchfield}{type} eq 'ft'){
                 # Tokenize
-                next if (! $normdata{$s_id}->{$searchfield});
+                next if (! exists $normdata{$s_id}->{$searchfield});
                 
                 my $tokenstring = join(' ',@{$normdata{$s_id}->{$searchfield}});
                 $tokenizer->tokenize($tokenstring);
@@ -179,44 +183,21 @@ my $count = 1;
                     # Naechstes, wenn Stopwort
                     next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
 
+                    my $fieldtoken=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$next;
+
                     # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
                     
-                    $next=(length($next) > $FLINT_BTREE_MAX_KEY_LEN)?substr($next,0,$FLINT_BTREE_MAX_KEY_LEN):$next;
+                    $fieldtoken=(length($fieldtoken) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
 
-                    # Wenn noch nicht gesehen, dann Term indexieren
-                    if (!exists $seen_token_ref->{$next}){
-                        # Token generell einfuegen
-                        $doc->add_term($next);
-                    }
-
-                    $seen_token_ref->{$next}=1;
-
-                    if ($withpositions){
-                        $doc->add_posting($next,$k);
-                        $k++;
-                    }
+                    $doc->add_term($fieldtoken);
                     
-                    push @saved_tokens, $next;
-                }
-
-                if ($withfields) {
-                    foreach my $token (@saved_tokens) {
-                        # Token in Feld einfuegen            
-                        my $fieldtoken=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$token;
-
-                        # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN=252 Zeichen
-                        $fieldtoken=(length($fieldtoken) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
-
-                        $doc->add_term($fieldtoken);
-
-                        if ($withpositions){
-                            $doc->add_posting($fieldtoken,$k);
-                            $k++;
-                        }
-
+                    if ($withpositions){
+                        $doc->add_posting($fieldtoken,$k);
+                        $k++;
                     }
                 }
    	    }
+            # Zusammenhaengende Zeichenkette
             elsif ($config->{searchfield}{$searchfield}{type} eq 'string'){
                 next if (!exists $normdata{$s_id}->{$searchfield});
                 
@@ -247,6 +228,7 @@ my $count = 1;
    	    }
 	}
 
+        # Facetten
         foreach my $type (keys %{$config->{xapian_drilldown_value}}){
             # Datenbankname
             $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($database)) if ($type eq "db" && $database);
@@ -262,6 +244,7 @@ my $count = 1;
             $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($multstring)) if ($multstring);
         }
 
+        # Sortierung
         if ($withsorting){
             my $sorting_ref = [
                 {

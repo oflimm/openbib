@@ -296,6 +296,8 @@ xapian_option:
 xapian_search_prefix:
   'id': 'Q'
 
+  fs': ''
+
 # Volltext
   'per': 'X1'
   'tit': 'X2'

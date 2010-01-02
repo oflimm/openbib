@@ -41,6 +41,7 @@ use Encode qw(decode_utf8 encode_utf8);
 use MLDBM qw(DB_File Storable);
 use Storable ();
 use Getopt::Long;
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Search::Xapian;
 use String::Tokenizer;
@@ -149,8 +150,7 @@ my $count = 1;
             next;
         }
 
-        my $searchcontent_raw = pack "H*", $searchcontent;
-        my $searchcontent_ref = Storable::thaw($searchcontent_raw);
+        my $searchcontent_ref = decode_json $searchcontent;
 
         $logger->debug(YAML::Dump($searchcontent_ref));
         

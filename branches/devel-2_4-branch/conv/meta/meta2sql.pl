@@ -36,6 +36,7 @@ use Business::ISBN;
 use DB_File;
 use Encode qw/decode_utf8/;
 use Getopt::Long;
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use MIME::Base64 ();
 use MLDBM qw(DB_File Storable);
@@ -827,7 +828,7 @@ while (my $line=<IN>){
 
         print TITLISTITEM "$id$listitem\n";
 
-        my $normdatastring = unpack "H*", Storable::freeze($normdata_ref);
+        my $normdatastring = encode_json $normdata_ref;
         print SEARCHENGINE "$id$normdatastring\n";
         
         # Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel

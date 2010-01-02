@@ -136,25 +136,12 @@ my $tokenizer = String::Tokenizer->new();
 
 $logger->info("Migration der Titelsaetze");
 
-# Searchfield Mapping 
-my %searchfield_idx = ();
-my $i=0;
-foreach my $searchfield (sort keys %{$config->{searchfield}}){
-    $searchfield_idx{$searchfield} = $i;
-    $i++;
-}
-
-foreach my $facetfield (sort keys %{$config->{xapian_drilldown_value}}){
-    $searchfield_idx{"facet_".$facetfield} = $i;
-    $i++;
-}
-
 my $atime = new Benchmark;
 my $count = 1;
 {
     my $atime = new Benchmark;
     while (my $titlistitem=<TITLISTITEM>, my $searchengine=<SEARCHENGINE>) {
-        my ($s_id,@searchengine_fields)=split ("-::-",$searchengine);
+        my ($s_id,$searchcontent)=split ("",$searchengine);
         my ($t_id,$listitem)=split ("",$titlistitem);
 
         if ($s_id != $t_id) {
@@ -162,18 +149,8 @@ my $count = 1;
             next;
         }
 
-        my $searchcontent_ref = {};
-
-        $logger->debug(YAML::Dump(\%searchfield_idx));        
-
-        $logger->debug(YAML::Dump(\@searchengine_fields));
-        
-        foreach my $field (keys %searchfield_idx){
-            $searchcontent_ref->{$field} = [];
-            $logger->debug("$field - ".$searchengine_fields[$searchfield_idx{$field}]);
-            my @items = split("#::#",$searchengine_fields[$searchfield_idx{$field}]);
-            push @{$searchcontent_ref->{$field}}, @items if (@items);
-        }
+        my $searchcontent_raw = pack "H*", $searchcontent;
+        my $searchcontent_ref = Storable::thaw($searchcontent_raw);
 
         $logger->debug(YAML::Dump($searchcontent_ref));
         

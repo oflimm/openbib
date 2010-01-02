@@ -827,20 +827,8 @@ while (my $line=<IN>){
 
         print TITLISTITEM "$id$listitem\n";
 
-        my @searchengine_fields = ($id);
-
-        foreach my $searchfield (sort keys %{$config->{searchfield}}){
-            my %seen_terms = ();
-            push @searchengine_fields, join("#::#",grep { ! $seen_terms{$_} ++ } @{$normdata_ref->{$searchfield}});
-        }
-
-        foreach my $facetfield (sort keys %{$config->{xapian_drilldown_value}}){
-            my %seen_terms = ();
-            push @searchengine_fields, join("#::#",grep { ! $seen_terms{$_} ++ } @{$normdata_ref->{"facet_".$facetfield}});
-        }
-
-        my $searchengine_string = join("-::-",@searchengine_fields);
-        print SEARCHENGINE $searchengine_string,"\n";
+        my $normdatastring = unpack "H*", Storable::freeze($normdata_ref);
+        print SEARCHENGINE "$id$normdatastring\n";
         
         # Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel
         my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ normdata => $thisitem_ref});

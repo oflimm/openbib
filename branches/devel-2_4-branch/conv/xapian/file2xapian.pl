@@ -25,8 +25,8 @@
 #
 #####################################################################
 
-use strict;
-use warnings;
+#use strict;
+#use warnings;
 use utf8;
 
 BEGIN {
@@ -93,18 +93,14 @@ if (!$database){
 my $FLINT_BTREE_MAX_KEY_LEN = 80;
 my $DRILLDOWN_MAX_KEY_LEN   = 100;
 
-my %normdata                = ();
-
-tie %normdata,                'MLDBM', "./normdata.db"
-    or die "Could not tie normdata.\n";
-
 $logger->info("### POOL $database");
 
 my %xapian_idmapping;
 
 tie %xapian_idmapping, 'DB_File', $config->{'autoconv_dir'}."/pools/$database/xapian_idmapping.db";
 
-open(TITLISTITEM, "<:utf8","titlistitem.mysql" ) || die "TITLISTITEM konnte nicht geoeffnet werden";
+open(TITLISTITEM,  "<:utf8","titlistitem.mysql" ) || die "TITLISTITEM konnte nicht geoeffnet werden";
+open(SEARCHENGINE, "<:utf8","searchengine.csv"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
 
 my $dbbasedir=$config->{xapian_index_base_path};
 
@@ -140,13 +136,47 @@ my $tokenizer = String::Tokenizer->new();
 
 $logger->info("Migration der Titelsaetze");
 
+# Searchfield Mapping 
+my %searchfield_idx = ();
+my $i=0;
+foreach my $searchfield (sort keys %{$config->{searchfield}}){
+    $searchfield_idx{$searchfield} = $i;
+    $i++;
+}
+
+foreach my $facetfield (sort keys %{$config->{xapian_drilldown_value}}){
+    $searchfield_idx{"facet_".$facetfield} = $i;
+    $i++;
+}
+
 my $atime = new Benchmark;
 my $count = 1;
 {
     my $atime = new Benchmark;
-    while (my $titlistitem=<TITLISTITEM>) {
-        my ($s_id,$listitem)=split ("",$titlistitem);
+    while (my $titlistitem=<TITLISTITEM>, my $searchengine=<SEARCHENGINE>) {
+        my ($s_id,@searchengine_fields)=split ("-::-",$searchengine);
+        my ($t_id,$listitem)=split ("",$titlistitem);
 
+        if ($s_id != $t_id) {
+            $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
+            next;
+        }
+
+        my $searchcontent_ref = {};
+
+        $logger->debug(YAML::Dump(\%searchfield_idx));        
+
+        $logger->debug(YAML::Dump(\@searchengine_fields));
+        
+        foreach my $field (keys %searchfield_idx){
+            $searchcontent_ref->{$field} = [];
+            $logger->debug("$field - ".$searchengine_fields[$searchfield_idx{$field}]);
+            my @items = split("#::#",$searchengine_fields[$searchfield_idx{$field}]);
+            push @{$searchcontent_ref->{$field}}, @items if (@items);
+        }
+
+        $logger->debug(YAML::Dump($searchcontent_ref));
+        
         my $seen_token_ref = {};
         
         my $doc=Search::Xapian::Document->new();
@@ -159,17 +189,15 @@ my $count = 1;
 
         my $k = 0;
 
-        $logger->debug("Available Data for id $s_id ".YAML::Dump(\$normdata{$s_id}));
-
         foreach my $searchfield (keys %{$config->{searchfield}}) {
 
             $logger->debug("Processing Searchfield $searchfield for id $s_id");
             # Einzelne Worte (Fulltext)
             if ($config->{searchfield}{$searchfield}{type} eq 'ft'){
                 # Tokenize
-                next if (! exists $normdata{$s_id}->{$searchfield});
+                next if (! exists $searchcontent_ref->{$searchfield});
                 
-                my $tokenstring = join(' ',@{$normdata{$s_id}->{$searchfield}});
+                my $tokenstring = join(' ',@{$searchcontent_ref->{$searchfield}});
                 $tokenizer->tokenize($tokenstring);
                 
                 my $i = $tokenizer->iterator();
@@ -201,10 +229,10 @@ my $count = 1;
    	    }
             # Zusammenhaengende Zeichenkette
             elsif ($config->{searchfield}{$searchfield}{type} eq 'string'){
-                next if (!exists $normdata{$s_id}->{$searchfield});
+                next if (!exists $searchcontent_ref->{$searchfield});
                 
                 my %seen_terms = ();
-                my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$searchfield}}; 
+                my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$searchcontent_ref->{$searchfield}}; 
                 
 	        foreach my $unique_term (@unique_terms){
                     next unless ($unique_term);
@@ -247,10 +275,10 @@ my $count = 1;
             # Datenbankname
             $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($database)) if ($type eq "db" && $database);
             
-            next if (!exists $normdata{$s_id}->{"facet_".$type});
+            next if (!exists $searchcontent_ref->{"facet_".$type});
 
             my %seen_terms = ();
-            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{"facet_".$type}}; 
+            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$searchcontent_ref->{"facet_".$type}}; 
 
             my $multstring = join("\t",@unique_terms);
 
@@ -377,6 +405,9 @@ my $resulttime = timestr($timeall,"nop");
 $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
 $logger->info("Gesamtzeit: $resulttime Sekunden");
+
+close(TITLISTITEM);
+close(SEARCHENGINE);
 
 untie(%xapian_idmapping);
 

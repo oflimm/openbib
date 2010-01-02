@@ -97,7 +97,6 @@ my %listitemdata_swt        = ();
 my %listitemdata_mex        = ();
 my %listitemdata_superid    = ();
 my %listitemdata_popularity = ();
-my %normdata                = ();
 my %enrichmntdata           = ();
 
 # Verbindung zur SQL-Datenbank herstellen
@@ -137,9 +136,6 @@ if ($reducemem){
     tie %listitemdata_superid,    "DB_File", "./listitemdata_superid.db"
         or die "Could not tie listitemdata_superid.\n";
 }
-
-tie %normdata,                'MLDBM', "./normdata.db"
-    or die "Could not tie normdata.\n";
 
 my $local_enrichmnt  = 0;
 my $enrichmntdumpdir = $config->{autoconv_dir}."/data/enrichment";
@@ -446,6 +442,7 @@ open(OUT,           ">:utf8","tit.mysql"        ) || die "OUT konnte nicht geoef
 open(OUTFT,         ">:utf8","tit_ft.mysql"     ) || die "OUTFT konnte nicht geoeffnet werden";
 open(OUTSTRING,     ">:utf8","tit_string.mysql" ) || die "OUTSTRING konnte nicht geoeffnet werden";
 open(TITLISTITEM,   ">"     ,"titlistitem.mysql") || die "TITLISTITEM konnte nicht goeffnet werden";
+open(SEARCHENGINE,  ">:utf8","searchengine.csv" ) || die "SEARCHENGINE konnte nicht goeffnet werden";
 
 my @verf      = ();
 my @kor       = ();
@@ -830,8 +827,21 @@ while (my $line=<IN>){
 
         print TITLISTITEM "$id$listitem\n";
 
-	$normdata{$id} = $normdata_ref; 
+        my @searchengine_fields = ($id);
 
+        foreach my $searchfield (sort keys %{$config->{searchfield}}){
+            my %seen_terms = ();
+            push @searchengine_fields, join("#::#",grep { ! $seen_terms{$_} ++ } @{$normdata_ref->{$searchfield}});
+        }
+
+        foreach my $facetfield (sort keys %{$config->{xapian_drilldown_value}}){
+            my %seen_terms = ();
+            push @searchengine_fields, join("#::#",grep { ! $seen_terms{$_} ++ } @{$normdata_ref->{"facet_".$facetfield}});
+        }
+
+        my $searchengine_string = join("-::-",@searchengine_fields);
+        print SEARCHENGINE $searchengine_string,"\n";
+        
         # Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel
         my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ normdata => $thisitem_ref});
         my $bibkey      = OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base });
@@ -1951,7 +1961,7 @@ close(OUT);
 close(OUTFT);
 close(OUTSTRING);
 close(OUTCONNECTION);
-close(OUTSEARCH);
+close(SEARCHENGINE);
 close(TITLISTITEM);
 close(IN);
 

@@ -940,6 +940,8 @@ while (my $line=<IN>){
                     content => $content,
                 } if (exists $conv_config->{listitemcat}{'0100'});
 
+                push @autkor, $content;
+
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){                    
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -1004,6 +1006,8 @@ while (my $line=<IN>){
                     supplement => $supplement,
                 } if (exists $conv_config->{listitemcat}{'0101'});
 
+                push @autkor, $content;
+
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -1062,6 +1066,8 @@ while (my $line=<IN>){
                     supplement => $supplement,
                 } if (exists $conv_config->{listitemcat}{'0102'});
 
+                push @autkor, $content;
+                
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -1119,6 +1125,8 @@ while (my $line=<IN>){
                     content    => $content,
                     supplement => $supplement,
                 } if (exists $conv_config->{listitemcat}{'0103'});
+
+                push @autkor, $content;
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
@@ -1181,6 +1189,8 @@ while (my $line=<IN>){
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0200'});
 
+                push @autkor, $content;
+
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -1232,6 +1242,8 @@ while (my $line=<IN>){
                     type       => 'kor',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0201'});
+
+                push @autkor, $content;
 
                 if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){

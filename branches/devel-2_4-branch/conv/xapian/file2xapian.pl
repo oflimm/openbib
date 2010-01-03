@@ -311,10 +311,19 @@ my $count = 1;
                 
             ];
 
-            my $titlistitem_raw = pack "H*", $listitem;
-            my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+            my $titlistitem_ref;
 
-#            $logger->debug(YAML::Dump($titlistitem_ref));
+            if ($config->{internal_serialize_type} eq "packed_storable"){
+                $titlistitem_ref = Storable::thaw(pack "H*", $listitem);
+            }
+            elsif ($config->{internal_serialize_type} eq "json"){
+                $titlistitem_ref = decode_json $listitem;
+            }
+            else {
+                $titlistitem_ref = Storable::thaw(pack "H*", $listitem);
+            }
+
+            $logger->debug(YAML::Dump($titlistitem_ref));
             
             foreach my $this_sorting_ref (@{$sorting_ref}){
 

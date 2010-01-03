@@ -615,6 +615,9 @@ benchmark: 0
 # Kurztiteltabelle verwenden?
 use_titlistitem_table: 1
 
+# Internes Serialisierungsformat, z.B. zur Ablage-Format in der Tabelle (json oder packed_storable)
+internal_serialize_type: 'json'
+
 # Maximale Laenge an Inhalt in Kurztitelliste, ab der Personen
 # gekuerzt werden soll
 maxlength_pers: 100

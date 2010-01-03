@@ -323,9 +323,19 @@ sub handler {
                     foreach my $match (@matches) {
                         last if ($i > $maxhits);
                         my $document        = $match->get_document();
-                        my $titlistitem_raw = pack "H*", $document->get_data();
-                        my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+
+                        my $titlistitem_ref;
                         
+                        if ($config->{internal_serialize_type} eq "packed_storable"){
+                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                        }
+                        elsif ($config->{internal_serialize_type} eq "json"){
+                            $titlistitem_ref = decode_json $document->get_data();
+                        }
+                        else {
+                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                        }
+
                         $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
                         $i++;
                     }

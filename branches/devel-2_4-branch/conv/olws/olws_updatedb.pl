@@ -663,19 +663,20 @@ sub process_raw_title {
     # - in MLDB auslagern
     # - Kategorien als eigene Spalten
     
-    
-    my $listitem = Storable::freeze($listitem_ref);
 
+    my $listitem = "";
+    
+    if ($config->{internal_serialize_type} eq "packed_storable"){
+        $listitem = unpack "H*",Storable::freeze($listitem_ref);
+    }
+    elsif ($config->{internal_serialize_type} eq "json"){
+        $listitem = encode_json $listitem_ref;
+    }
+    else {
+        $listitem = unpack "H*",Storable::freeze($listitem_ref);
+    }
+    
     $logger->debug("Writing Listitem:".YAML::Dump($listitem_ref));
-    
-    my $encoding_type="hex";
-    
-    if    ($encoding_type eq "base64"){
-        $listitem = MIME::Base64::encode_base64($listitem,"");
-    }
-    elsif ($encoding_type eq "hex"){
-        $listitem = unpack "H*",$listitem;
-    }
 
     # Listitem loeschen und schreiben
 
@@ -684,7 +685,6 @@ sub process_raw_title {
     $dbh->do("insert into titlistitem values (?,?)",undef,
              $titid,$listitem);
     
-    $logger->debug(YAML::Dump($raw_title_ref));
     return;
 }
 

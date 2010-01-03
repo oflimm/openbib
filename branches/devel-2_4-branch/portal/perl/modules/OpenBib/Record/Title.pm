@@ -37,6 +37,7 @@ use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 use Storable;
@@ -638,19 +639,19 @@ sub load_brief_record {
             
             $logger->debug("Storable::listitem: $titlistitem");
 
-            my $encoding_type="hex";
+            my $titlistitem_ref;
 
-            if    ($encoding_type eq "base64"){
-                $titlistitem = MIME::Base64::decode($titlistitem);
+            if ($config->{internal_serialize_type} eq "packed_storable"){
+                $titlistitem_ref = Storable::thaw(pack "H*", $titlistitem);
             }
-            elsif ($encoding_type eq "hex"){
-                $titlistitem = pack "H*",$titlistitem;
+            elsif ($config->{internal_serialize_type} eq "json"){
+                $titlistitem_ref = decode_json $titlistitem;
             }
-            elsif ($encoding_type eq "uu"){
-                $titlistitem = unpack "u",$titlistitem;
+            else {
+                $titlistitem_ref = Storable::thaw(pack "H*", $titlistitem);
             }
 
-            my %titlistitem = %{ Storable::thaw($titlistitem) };
+            my %titlistitem = %{ Storable::thaw($titlistitem_ref) };
             
             $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
             %$listitem_ref=(%$listitem_ref,%titlistitem);

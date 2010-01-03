@@ -351,7 +351,7 @@ while (my $line=<IN>){
                 $contentnormft = $contentnormtmp;
             }
 
-            if (exists $stammdateien_ref->{$type}{inverted_ref}{$category}->{init}){
+            if (exists $stammdateien_ref->{mex}{inverted_ref}{$category}->{init}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$category}->{init}}){
                     push @{$stammdateien_ref->{mex}{data}{$titid}{$searchfield}}, $contentnormtmp;               
                 }
@@ -442,7 +442,7 @@ open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeff
 open(OUT,           ">:utf8","tit.mysql"        ) || die "OUT konnte nicht geoeffnet werden";
 open(OUTFT,         ">:utf8","tit_ft.mysql"     ) || die "OUTFT konnte nicht geoeffnet werden";
 open(OUTSTRING,     ">:utf8","tit_string.mysql" ) || die "OUTSTRING konnte nicht geoeffnet werden";
-open(TITLISTITEM,   ">"     ,"titlistitem.mysql") || die "TITLISTITEM konnte nicht goeffnet werden";
+open(TITLISTITEM,   ">:utf8","titlistitem.mysql") || die "TITLISTITEM konnte nicht goeffnet werden";
 open(SEARCHENGINE,  ">:utf8","searchengine.csv" ) || die "SEARCHENGINE konnte nicht goeffnet werden";
 
 my @verf      = ();
@@ -808,22 +808,17 @@ while (my $line=<IN>){
         # - Data::Dumper verwenden, da hier ASCII herauskommt
         # - in MLDB auslagern
         # - Kategorien als eigene Spalten
-        
-        
-        my $listitem = Storable::freeze($listitem_ref);
 
-        my $encoding_type="hex";
-        
-        if    ($encoding_type eq "base64"){
-            $listitem = MIME::Base64::encode_base64($listitem,"");
+        my $listitem = "";
+
+        if ($config->{internal_serialize_type} eq "packed_storable"){
+            $listitem = unpack "H*",Storable::freeze($listitem_ref);
         }
-        elsif ($encoding_type eq "hex"){
-            $listitem = unpack "H*",$listitem;
+        elsif ($config->{internal_serialize_type} eq "json"){
+            $listitem = encode_json $listitem_ref;
         }
-        elsif ($encoding_type eq "uu"){
-            $listitem =~s/\\/\\\\/g;
-            $listitem =~s/\n/\\n/g;
-            $listitem = pack "u",$listitem;
+        else {
+            $listitem = unpack "H*",Storable::freeze($listitem_ref);
         }
 
         print TITLISTITEM "$id$listitem\n";
@@ -1993,7 +1988,6 @@ if (!$incremental){
     print CONTROL << "TITITEMTRUNC";
 truncate table conn;
 truncate table popularity;
-truncate table search;
 truncate table titlistitem;
 TITITEMTRUNC
 }

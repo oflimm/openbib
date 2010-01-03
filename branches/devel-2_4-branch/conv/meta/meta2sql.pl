@@ -352,7 +352,7 @@ while (my $line=<IN>){
             }
 
             if (exists $stammdateien_ref->{mex}{inverted_ref}{$category}->{init}){
-                foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$category}->{init}}){
+                foreach my $searchfield (keys %{$stammdateien_ref->{mex}{inverted_ref}{$category}->{init}}){
                     push @{$stammdateien_ref->{mex}{data}{$titid}{$searchfield}}, $contentnormtmp;               
                 }
             }

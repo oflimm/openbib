@@ -152,8 +152,6 @@ my $count = 1;
 
         my $searchcontent_ref = decode_json $searchcontent;
 
-        $logger->debug(YAML::Dump($searchcontent_ref));
-        
         my $seen_token_ref = {};
         
         my $doc=Search::Xapian::Document->new();
@@ -323,8 +321,6 @@ my $count = 1;
                 $titlistitem_ref = Storable::thaw(pack "H*", $listitem);
             }
 
-            $logger->debug(YAML::Dump($titlistitem_ref));
-            
             foreach my $this_sorting_ref (@{$sorting_ref}){
 
                 if ($this_sorting_ref->{type} eq "stringcategory"){

@@ -95,7 +95,7 @@ $(document).ready(function(){
 [% END %]
 
 [% IF showsign %]
-<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="boolsignstring"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="signstring" value="[% searchquery.signstring.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showhststring %]

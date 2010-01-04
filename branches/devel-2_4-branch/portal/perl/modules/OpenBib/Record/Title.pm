@@ -651,7 +651,7 @@ sub load_brief_record {
                 $titlistitem_ref = Storable::thaw(pack "H*", $titlistitem);
             }
 
-            my %titlistitem = %{ Storable::thaw($titlistitem_ref) };
+            my %titlistitem = %{ $titlistitem_ref };
             
             $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
             %$listitem_ref=(%$listitem_ref,%titlistitem);

@@ -95,8 +95,7 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];queryid=[% thisquery.id %];hitrange=50;sorttype=author;sortorder=up;combinedbs=1;page=1"><b>[% msg.maketext("Alle Treffer") %] / Kombinierte Kataloge</b></a></td><td align="right">[% hitcount %]</td></tr>
-<tr><td class="listrow2"><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];queryid=[% thisquery.id %];hitrange=50;sorttype=author;sortorder=up;combinedbs=0;page=1"><b>[% msg.maketext("Alle Treffer") %] / Separate Kataloge</b></a></td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];queryid=[% thisquery.id %];hitrange=50;sorttype=author;sortorder=up;combinedbs=1;page=1"><b>kombinierte</b></a> / <a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];queryid=[% thisquery.id %];hitrange=50;sorttype=author;sortorder=up;combinedbs=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 [% listrow = 'listrow2' %]

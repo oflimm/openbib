@@ -48,6 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::Record::Person;
+use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
@@ -231,6 +232,7 @@ sub handler {
     
     
     my $ttdata = {
+        record          => OpenBib::Record::Title->new,
         format          => $format,
         similar_persons => $sorted_similar_persons_ref,
         database        => $database,

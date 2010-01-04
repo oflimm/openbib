@@ -306,44 +306,6 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
--------------------------------------------------
------------------ Initiale Suche ----------------
--------------------------------------------------
-
-drop table IF EXISTS search;
-create table search (
-verwidn   BIGINT NOT NULL,
-verf      TEXT,
-hst       TEXT,
-kor       TEXT,
-swt       TEXT,
-notation  TEXT,
-sign      TEXT,
-ejahr     SMALLINT,
-ejahrft   TEXT,
-gtquelle  TEXT,
-inhalt    TEXT,
-isbn      TEXT,
-issn      TEXT,
-artinh    TEXT,
-INDEX     (verwidn),
-FULLTEXT  (verf),
-FULLTEXT  (hst),
-FULLTEXT  (kor),
-FULLTEXT  (swt),
-FULLTEXT  (notation),
-FULLTEXT  (sign),
-INDEX     (ejahr),
-FULLTEXT  (inhalt),
-FULLTEXT  (isbn),
-FULLTEXT  (issn),
-FULLTEXT  (artinh),
-FULLTEXT  (verf,hst,kor,swt,notation,sign,inhalt,isbn,issn,ejahrft)
-)
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
-PACK_KEYS=1;
-
 drop table IF EXISTS titlistitem;
 create table titlistitem (
 id       BIGINT NOT NULL,

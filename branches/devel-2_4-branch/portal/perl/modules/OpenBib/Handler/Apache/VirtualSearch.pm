@@ -184,14 +184,6 @@ sub handler {
                 content   => $sb,
     });
 
-    my $queryalreadyexists = 0;
-
-    if ($queryid){
-        $logger->debug("Query exists for SessionID $session->{ID} -> $queryid: Loading");
-        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
-        $queryalreadyexists = 1;
-    }
-
     my $sysprofile   = $config->get_viewinfo($view)->{profilename};
 
     # BEGIN DB-Bestimmung
@@ -291,9 +283,20 @@ sub handler {
         }
     }
 
-    unless ($queryid) {
-        $searchquery->set_from_apache_request($r,\@databases);
+    # Dublette Datenbanken filtern
+    my %seen_dbases = ();
+    @databases = grep { ! $seen_dbases{$_} ++ } @databases;
 
+    my $queryalreadyexists = 0;
+
+    if ($queryid){
+        $logger->debug("Query exists for SessionID $session->{ID} -> $queryid: Loading");
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+        $queryalreadyexists = 1;
+    }
+    else {
+        $searchquery->set_from_apache_request($r,\@databases);
+        
         # Abspeichern des Query und Generierung der Queryid
         if ($session->{ID} ne "-1") {
             ($queryalreadyexists,$queryid) = $session->get_queryid({
@@ -488,66 +491,6 @@ sub handler {
     #
 
 
-    # Folgende nicht erlaubte Anfragen werden sofort ausgesondert
-
-    my $firstsql;
-
-    if ($searchquery->get_searchfield('fs')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('verf')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('kor')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('hst')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('swt')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('notation')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('sign')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('isbn')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('issn')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('mart')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('hststring')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('inhalt')->{norm}) {
-        $firstsql=1;
-    }
-    
-    if ($searchquery->get_searchfield('gtquelle')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('ejahr')->{norm}){
-        $firstsql=1;
-    }
-    
     if ($searchquery->get_searchfield('ejahr')->{norm}) {
         my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
@@ -564,20 +507,7 @@ sub handler {
     }
 
 
-    if ($searchquery->get_searchfield('ejahr')->{bool} eq "AND") {
-        if ($searchquery->get_searchfield('ejahr')->{norm}) {
-            if (!$firstsql) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-                return Apache2::Const::OK;
-            }
-        }
-    }
-
-    if ($searchquery->get_searchfield('searchterm')->{norm}) {
-        $firstsql=1;
-    }
-
-    if (!$firstsql) {
+    if (!$searchquery->have_searchterms) {
         OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
         return Apache2::Const::OK;
     }

@@ -52,7 +52,7 @@ FOREACH category IN categories;
 
          globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchall=1;fs=${searchprefix}:${searchterm}";
          localurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
-         content   = "${rssfeed}<a href=\"${config.get('redirect_loc')}/${sessionID}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "${rssfeed}<a href=\"${config.get('redirect_loc')}/${sessionID}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('connector_availabilityimage_loc')}?action=lookup&target=wikipedia&lang=${qopts.l}&id=${wikicontent}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;

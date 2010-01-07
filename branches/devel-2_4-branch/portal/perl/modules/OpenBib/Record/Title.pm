@@ -635,7 +635,7 @@ sub load_brief_record {
         $request->execute($id);
         
         if (my $res=$request->fetchrow_hashref){
-            my $titlistitem     = $res->{listitem};
+            my $titlistitem     = decode_utf8($res->{listitem});
             
             $logger->debug("Storable::listitem: $titlistitem");
 
@@ -1923,13 +1923,19 @@ sub record_exists {
 
 sub to_drilldown_term {
     my ($self,$term)=@_;
-    
+
+    my $config = OpenBib::Config->instance;
+
     $term = OpenBib::Common::Util::grundform({
         content   => $term,
         searchreq => 1,
     });
 
     $term=~s/\W/_/g;
+
+    if (length($term) > $config->{xapian_option}{max_key_length}){
+        $term=substr($term,0,$config->{xapian_option}{max_key_length}-2); # 2 wegen Prefix
+    }
 
     return $term;
 }

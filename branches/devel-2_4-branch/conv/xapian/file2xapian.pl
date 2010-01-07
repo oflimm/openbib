@@ -91,8 +91,7 @@ if (!$database){
   exit;
 }
 
-my $FLINT_BTREE_MAX_KEY_LEN = 80;
-my $DRILLDOWN_MAX_KEY_LEN   = 100;
+my $FLINT_BTREE_MAX_KEY_LEN = $config->{xapian_option}{max_key_length};
 
 $logger->info("### POOL $database");
 
@@ -234,9 +233,9 @@ my $count = 1;
                     
                     $field=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$field;
                     
-                    # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
-                    if (length($field) > $DRILLDOWN_MAX_KEY_LEN){
-                        $field=substr($field,0,$DRILLDOWN_MAX_KEY_LEN);
+                    # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
+                    if (length($field) > $FLINT_BTREE_MAX_KEY_LEN){
+                        $field=substr($field,0,$FLINT_BTREE_MAX_KEY_LEN);
                     }
 
                     $logger->debug("Added Stringvalue $field");

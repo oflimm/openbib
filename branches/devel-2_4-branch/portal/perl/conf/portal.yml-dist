@@ -292,6 +292,7 @@ searchfield:
 xapian_index_base_path: /opt/openbib/ft/xapian/index
 xapian_option:
   maxmatch: 2000
+  max_key_length: 100
 
 # Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
 # entsprechend searchfield_prefix

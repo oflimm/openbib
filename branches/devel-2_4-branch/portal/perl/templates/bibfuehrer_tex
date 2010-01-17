@@ -1,0 +1,385 @@
+\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\usepackage{german}
+\usepackage{typearea}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[utf8]{inputenc}
+
+% Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
+\usepackage{picins}
+
+% Header anpassbar
+\usepackage{fancyhdr}
+
+% Headings umdefinieren
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyhead[LE]{\nouppercase{\leftmark}}
+\fancyfoot[RO, LE]{\thepage}
+
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+\addtolength{\headwidth}{2cm}
+
+\parindent0.0mm
+\parskip0.3cm
+\parindent=0pt\relax
+\typearea{15}
+\setcounter{secnumdepth}{0}
+%\renewcommand\thesection{\arabic{section}.}
+%\renewcommand\thesubsection{\thesection\arabic{subsection}.}
+
+\renewcommand\arraystretch{1.3}% (1.0 is for standard spacing)
+
+\begin{document}
+
+\frontmatter
+\begin{titlepage}
+
+\begin{center}
+\rule[-.1in]{16cm}{1mm}\\[3mm]
+{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont
+  USB K"oln $\bullet$ Abt. Universit"atsGesamtKatalog}\\[-2mm]
+\rule[-.1in]{16cm}{1mm}
+
+\vspace{5cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Die Bibliotheken\\[0.3cm]der\\[0.6cm]Universit"at zu K"oln}
+
+  \vspace{2cm}
+
+  Ein Service der Abt. Universit"atsGesamtKatalog / USB K"oln\\
+  Stand: \today
+
+\end{center}
+
+\newpage 
+
+Liebe Kolleginnen und Kollegen,
+
+mit dem Bibliotheksf"uhrer des Jahres 2005 wurde die Publikation einer
+Print-Ausgabe eingestellt und die Informationen zu den Bibliotheken
+der Universit"at zu K"oln nur noch online auf den Webseiten angeboten.
+
+Da jedoch weiterhin ein gro"ser Bedarf nach einer umfassenden "Ubersicht
+aller Bibliotheken in einer ausdruckbaren Publikation besteht, bieten
+wir nun einen automatisch aus den Webseiten generierten neuen
+Bibliotheksf"uhrer an.
+
+\minisec{URL des elektronischen Bibliotheksf"uhrers}
+
+Unter dem URL \texttt{http://kug.ub.uni-koeln.de/bibliotheksfuehrer/} finden
+Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
+
+  \begin{tabular}[t]{ll}
+    AnsprechpartnerInnen : & Abt. Universit"atsGesamtKatalog / USB K"oln\\
+    Telefon : & 0221-470 3306 \\
+    Fax     : & 0221-470 5166 \\
+    E-Mail  : & gk@ub.uni-koeln.de \\
+  \end{tabular}
+
+\end{titlepage}
+
+[%-
+
+  dez_orgunits = [
+                   { 
+                     desc = "Fakult\"atsungebundene Bibliotheken",
+                     id   = -1,
+                   },
+                   { 
+                     desc = "Bibliotheken der Wirtschafts- und Sozialwissenschaftlichen Fakult\"at",
+                     id   = 1,
+                   },
+                   {                       
+                     desc = "Bibliotheken der Rechtswissenschaftlichen Fakult\"at",
+                     id   = 2,
+                   },
+                   { 
+                     desc = "Bibliotheken der Humanwissenschaftlichen Fakult\"at",
+                     id   = 3,
+                   },
+                   { 
+                     desc = "Bibliotheken der Philosophischen Fakult\"at",
+                     id   = 4,
+                   },
+                   { 
+                     desc = "Bibliotheken der Mathematisch-Naturwissenschaftlichen Fakult\"at",
+                     id   = 5,
+                   },
+                   { 
+                     desc = "Theologie als Studienfach",
+                     id   = 6,
+                   }
+               ];
+
+     dez_orgunit_pools = {
+
+                     "-1" = [
+                     "inst005",
+                     "inst006",
+                     "inst007",
+                     "inst008",
+                     ],
+
+                     "1" = [
+                     "inst102",
+                     "inst103",
+                     "inst104",
+                     "inst105",
+                     "inst106",
+                     "inst107",
+                     "inst108",
+                     "inst109",
+                     "inst110",
+                     "inst111",
+                     "inst112",
+                     "inst113",
+                     "inst117",
+                     "inst118",
+                     "inst119",
+                     "inst120",
+                     "inst121",
+                     "inst123",
+                     "inst124",
+                     "inst125",
+                     "inst128",
+                     "inst132",
+                     "inst134",
+                     "inst136",
+                     "inst137",
+                     "inst139",
+                     "inst140",
+                     "inst146",
+                     "inst155",
+                     "inst156",
+                     "inst157",
+                     "inst158",
+                     "inst159",
+                     "inst160",
+                     "inst164",
+                     "inst166",
+                     "inst170",
+                     "inst171",
+                         ],
+                  "2" = [
+                     "inst201",
+                     "inst202",
+                     "inst203",
+                     "inst204",
+                     "inst205",
+                     "inst206",
+                     "inst207",
+                     "inst208",
+                     "inst209",
+                     "inst210",
+                     "inst211",
+                     "inst212",
+                     "inst213",
+                     "inst214",
+                     "inst215",
+                     "inst216",
+                     "inst217",
+                     "inst218",
+                     "inst219",
+                     "inst220",
+                     "inst221",
+                     "inst222",
+                     "inst223",
+                     "inst224",
+                     "inst225",
+                     "inst226",
+                     "inst227",
+                     "inst228",
+                     "inst229",
+                     "inst230",
+                     "inst231",
+                     "inst232",
+                     "inst233",
+                     "inst234",
+                      ],
+                  "3" = [
+                     "inst302",
+                     "inst303",
+                     "inst304",
+                     "inst305",
+                     "inst308",
+                     "inst309",
+                     "inst310",
+                     "inst319",
+                     "inst320",
+                     "inst321",
+                     "inst326",
+                     "inst327",
+                     "inst403",
+                      ],
+                  "4" = [
+                     "inst401",
+                     "inst404",
+                     "inst405",
+                     "inst406",
+                     "inst407",
+                     "inst408",
+                     "inst409",
+                     "inst410",
+                     "inst411",
+                     "inst412",
+                     "inst413",
+                     "inst416",
+                     "inst418",
+                     "inst419",
+                     "inst420",
+                     "inst425",
+                     "inst426",
+                     "inst427",
+                     "inst428",
+                     "inst429",
+                     "inst430",
+                     "inst431",
+                     "inst432",
+                     "inst433",
+                     "inst434",
+                     "inst437",
+                     "inst438",
+                     "inst444",
+                     "inst445",
+                     "inst448",
+                     "inst460",
+                     "inst461",
+                     "inst462",
+                     "inst463",
+                     "inst464",
+                     "inst465",
+                     "inst466",
+                     "inst467",
+                      ],
+                  "5" = [
+                     "inst501",
+                     "inst502",
+                     "inst503",
+                     "inst509",
+                     "inst514",
+                     "inst517",
+                     "inst519",
+                     "inst525",
+                     "inst526",
+                     "inst540",
+                      ],
+                  "6" = [
+                     "inst622",
+                     "inst623",
+                      ],
+                    };
+
+            categories = [
+                'I0010', # msg.maketext("I0010") # Institutsname
+                'I0020', # msg.maketext("I0020") # Straße
+                'I0030', # msg.maketext("I0030") # Gebäude
+#                'I0040', # msg.maketext("I0040") # Interaktiver Lageplan der Universität
+                'I0050', # msg.maketext("I0050") # Gemeinsame Bibliothek
+                'I0060', # msg.maketext("I0060") # Telefon
+                'I0070', # msg.maketext("I0070") # Fax
+                'I0080', # msg.maketext("I0080") # E-Mail
+                'I0090', # msg.maketext("I0090") # Internet
+                'I0100', # msg.maketext("I0100") # Auskunft / Bibliothekar(in)
+                'I0110', # msg.maketext("I0110") # Öffnungszeiten
+                'I0120', # msg.maketext("I0120") # Bestand Monos
+                'I0130', # msg.maketext("I0130") # Bestand Zeitschriften
+                'I0140', # msg.maketext("I0140") # Anzahl laufender Zeitschriften
+                'I0150', # msg.maketext("I0150") # Bestand CD's / Digitale Medien
+                'I0160', # msg.maketext("I0160") # Sonstige Bestandsangaben
+                'I0170', # msg.maketext("I0170") # Besondere Sammelgebiete
+                'I0180', # msg.maketext("I0180") # Art der Bibliothek
+                'I0190', # msg.maketext("I0190") # Neuerwerbungslisten
+                'I1000', # msg.maketext("I1000") # Geo-Koordinaten
+               ];
+-%]
+
+
+%\thispagestyle{empty}
+
+%\begin{verbatim}
+
+
+%Copyright (c) 2005 Oliver Flimm <flimm@openbib.org>
+
+%Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
+%und/oder zu veraendern unter den Bedingungen der GNU Free
+%Documentation License, Version 1.1 oder einer spaeteren, von der Free 
+%Software Foundation veroeffentlichten Version; mit den
+%Unveraenderlichen Abschnitten DEREN TITEL AUFGEZAEHLT sind, mit den 
+%Vorderseitentexten die AUFGEZAEHLT sind, und mit den Rueckseitentexten
+%die AUFGEZAEHLT sind. Eine Kopie dieser Lizenz ist in dem Abschnitt 
+%enthalten, der mit "GNU Free Documentation License"
+%\end{verbatim}
+
+\mainmatter
+
+\tableofcontents
+
+\chapter{Dezentrale Hochschulbibliotheken}
+
+[% FOREACH orgunit IN dez_orgunits %]
+
+\section{[% orgunit.desc %]}
+
+[%   FOREACH database IN dez_orgunit_pools.${orgunit.id} %]
+
+[% dbinfo  = config.get_dbinfo(database) %]
+[% libinfo = config.get_libinfo(database) %]
+[% truncdesc = libinfo.${"I0010"}.first.content | truncate(65) %]
+
+[%   NEXT IF NOT config.have_libinfo(database) %]
+
+
+[%# USE dumper;dumper.dump(dbinfo) %]
+
+[%# USE dumper;dumper.dump(libinfo) %]
+
+%\subsection{[% filterchars(libinfo.${"I0010"}.first.content) %]}
+\subsection[[% IF dbinfo.sigel.match("^[0-9][0-9][0-9]") %]ISIL DE-38-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(truncdesc) %]]{[% IF dbinfo.sigel.match("^[0-9][0-9][0-9]") %]ISIL DE-38-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(libinfo.${"I0010"}.first.content) %]}
+
+\subsubsection*{Informationen zur Bibliothek}
+\begin{tabular}{p{5.5cm}|p{11cm}}
+%\begin{description}
+[% FOREACH category IN categories;
+      FOREACH item IN libinfo.$category;
+        content = item.content.replace("^ ","");
+        NEXT IF content == "0" ;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
+          thiscategory = "${category}-${database}" ;
+        END;
+%]
+  \textbf{[% filterchars(msg.maketext("${thiscategory}")) %]} & \noindent [% filterchars(item.content) %]\\
+%\item[[% filterchars(msg.maketext("${thiscategory}")) %]] [% filterchars(item.content) %]
+[%   END %]
+[%   END %]
+\end{tabular}
+%\end{description}
+
+\newpage
+[% IF libinfo.${"I1000"}.first.content %]
+\subsubsection*{Lageplan der Bibliothek}
+
+\begin{shadowenv}
+\begin{center}
+\includegraphics[width=15cm]{[% database %]_map.png}
+\end{center}
+\end{shadowenv}
+
+\newpage
+[% END %]
+[%   END %]
+
+[%   END %]
+
+\end{document}

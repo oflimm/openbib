@@ -97,8 +97,10 @@ my $origin = 24;
 
 my $deleterequest     = $enrichdbh->prepare("delete from normdata where category=4110 and origin=$origin");
 my $ocr_deleterequest = $enrichdbh->prepare("delete from normdata where category=4111 and origin=$origin");
+my $publ_deleterequest = $enrichdbh->prepare("delete from normdata where category=4125 and origin=$origin");
 my $enrichrequest     = $enrichdbh->prepare("insert into normdata values(?,$origin,4110,?,?)");
 my $ocr_enrichrequest = $enrichdbh->prepare("insert into normdata values(?,$origin,4111,?,?)");
+my $publ_enrichrequest = $enrichdbh->prepare("insert into normdata values(?,$origin,4125,?,?)");
 
 unless ($usedbfile){
     unlink $filename;
@@ -232,6 +234,9 @@ foreach my $thisisbn (keys %isbndata){
                    }
                }
                $toc_indicator++;
+            }
+            elsif ($thisitem_ref->{type} =~/^Verlagsdaten/){        
+               $publ_enrichrequest->execute($thisisbn,1,$thisitem_ref->{url});
             }
 #        else {
 #            $logger->info("Typ: $thisitem_ref->{type}");

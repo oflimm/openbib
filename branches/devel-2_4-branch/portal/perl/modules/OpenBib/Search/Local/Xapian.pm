@@ -169,7 +169,6 @@ sub initial_search {
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
     $qp->set_stopper($stopper);
     
-#    my $querystring    = $searchquery->get_searchfield('fs')->{norm};
     my $querystring    = $searchquery->to_xapian_querystring;
 
     my ($is_singleterm) = $querystring =~m/^(\w+)$/;

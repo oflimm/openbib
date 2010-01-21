@@ -177,7 +177,7 @@
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-<span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title | truncate(config.get('maxlength_tit')) %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br /><img style="vertical-align:bottom;padding:1px;" src="[% config.get('home_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>&nbsp;<i>
 [%-   IF dbinfo.get('use_libinfo').${item.database} %]
 <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% item.database %];stid=60">
@@ -193,9 +193,30 @@
     </div>
 <!-- Ende einzelner Treffer -->
 [%- END -%]
-  </div>
-  <div class="resultfooter">
+  <div class="footer">
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+    </div>
+    <div class="resulttime">
 in: [% resulttime %] [% msg.maketext("Sekunden") %]
+    </div>
   </div>
+</div>
+<div class="resultfooter">
+   &nbsp;
 </div>
 <p/>

@@ -871,8 +871,44 @@ dt.review {
   padding: 10px;
 }
 
+.resultitems .footer {
+  width: 100%;
+  position: relative;
+  margin-bottom: 5px;
+  border-left-style: solid;
+  border-left-color: lightblue;
+  border-left-width: 1px;
+  border-right-style: solid;
+  border-right-color: lightblue;
+  border-right-width: 1px;
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;
+  -moz-border-radius-bottomright: 12px;
+  -moz-border-radius-bottomleft: 12px;
+  -webkit-border-radius-bottomright: 12px;
+  -webkit-border-radius-bottomleft: 12px;
+}
+
+.resultitems .footer .navigation {
+  float: left;
+  text-align: left;
+  width: 50%;
+  padding-left: 15px;
+}
+
+.resultitems .footer .resulttime {
+  float: right;
+  width: 20%;
+  padding: 5px;
+}
+
 .resultfooter {
-  font-size:0.8em;
+  float:left;
+  width: 100%;
 }
 
 .drilldown {

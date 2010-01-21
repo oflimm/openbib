@@ -1,10 +1,11 @@
-\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\documentclass[version=,11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
 \usepackage{german}
 \usepackage{typearea}
 \usepackage{longtable}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{url}
 \usepackage[utf8]{inputenc}
 
 % Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
@@ -84,6 +85,10 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 \end{titlepage}
 
 [%-
+  zentrale_pools = [
+                    "inst001",
+                    "zbmed"
+                   ];
 
   dez_orgunits = [
                    { 
@@ -319,6 +324,58 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 \mainmatter
 
 \tableofcontents
+
+\chapter{Zentrale Hochschulbibliotheken}
+
+[%   FOREACH database IN zentrale_pools %]
+
+[%   NEXT IF NOT config.have_libinfo(database) %]
+
+[% dbinfo  = config.get_dbinfo(database) %]
+[% libinfo = config.get_libinfo(database) %]
+[% truncdesc = libinfo.${"I0010"}.first.content | truncate(65) %]
+
+%\subsection{[% filterchars(libinfo.${"I0010"}.first.content) %]}
+\section[[% IF dbinfo.sigel.match("^[0-9][0-9]") %]ISIL DE-[% dbinfo.sigel.replace(" ","") %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(truncdesc,1) %]]{[% IF dbinfo.sigel.match("^[0-9][0-9]") %]ISIL DE-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(libinfo.${"I0010"}.first.content,1) %]}
+
+\subsubsection*{Informationen zur Bibliothek}
+\begin{tabular}{p{5.5cm}|p{11cm}}
+%\begin{description}
+[% FOREACH category IN categories;
+      FOREACH item IN libinfo.$category;
+        content = item.content.replace("^ ","");
+        NEXT IF content == "0" ;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
+          thiscategory = "${category}-${database}" ;
+        END;
+%]
+  \textbf{[% filterchars(msg.maketext("${thiscategory}")) %]} & \noindent [% filterchars(item.content) %]\\
+%\item[[% filterchars(msg.maketext("${thiscategory}")) %]] [% filterchars(item.content) %]
+[%   END %]
+[%   END %]
+\end{tabular}
+%\end{description}
+
+\newpage
+[% IF libinfo.${"I1000"}.first.content %]
+\subsubsection*{Lageplan der Bibliothek}
+
+\begin{shadowenv}
+\begin{center}
+\includegraphics[width=15cm]{[% database %]_map.png}
+\end{center}
+\end{shadowenv}
+
+\newpage
+[% END %]
+[% END %]
+
 
 \chapter{Dezentrale Hochschulbibliotheken}
 

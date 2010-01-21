@@ -36,6 +36,7 @@ use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS qw(encode_json decode_json);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use String::Tokenizer;
@@ -62,7 +63,7 @@ sub _new_instance {
     };
 
     foreach my $searchfield (keys %{$config->{searchfield}}){
-        $self->{_searchfield}{$searchfield} = {
+        $self->{_searchquery}{$searchfield} = {
             norm => '',
             val  => '',
             bool => '',
@@ -623,9 +624,7 @@ sub load  {
     $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
     my $res = $idnresult->fetchrow_hashref();
 
-    $self->{_id}          = $queryid;
-    $self->{_searchquery} = Storable::thaw(pack "H*", decode_utf8($res->{query}));
-    $self->{_hits}        = decode_utf8($res->{'hits'});
+    $self->from_json($res->{query});
 
     $logger->debug("Stored Databases as string: ".$res->{dbases});
     
@@ -662,17 +661,30 @@ sub save  {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $query_string=unpack "H*", Storable::freeze($self->get_searchquery);
+    my $query_obj_string = "";
+    
+    if ($config->{internal_serialize_type} eq "packed_storable"){
+        $query_obj_string = unpack "H*", Storable::freeze($self);
+    }
+    elsif ($config->{internal_serialize_type} eq "json"){
+        $query_obj_string = encode_json $self;
+    }
+    else {
+        $query_obj_string = unpack "H*", Storable::freeze($self);
+    }
 
     my $databases_string = join('\|\|',@{$self->{_databases}});
 
+    $logger->debug("Query Object: ".$query_obj_string);
+    $logger->debug("Query Databases: ".$databases_string);
+    
     my $request=$dbh->prepare("delete from queries where queryid=? and sessionid=?") or $logger->error($DBI::errstr);
     $request->execute($self->{_id},$sessionID) or $logger->error($DBI::errstr);
 
     $request=$dbh->prepare("insert into queries (queryid,sessionid,query,hitrange,hits,dbases) values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($self->{_id},$sessionID,$query_string,$hitrange,$self->{_hits},$databases_string) or $logger->error($DBI::errstr);
+    $request->execute($self->{_id},$sessionID,$query_obj_string,$hitrange,$self->{_hits},$databases_string) or $logger->error($DBI::errstr);
 
-    $logger->debug("Saving SearchQuery: queryid,sessionid,query,hitrange,hits,dbases = $self->{_id},$sessionID,$query_string,$hitrange,$self->{_hits},$databases_string");
+    $logger->debug("Saving SearchQuery: queryid,sessionid,query_obj_string,hitrange,hits,dbases = $self->{_id},$sessionID,$query_obj_string,$hitrange,$self->{_hits},$databases_string");
     $request->finish();
 
     return $self;
@@ -963,6 +975,30 @@ sub have_searchterms {
     return $self->{_have_searchterms};
 }
 
+sub to_json {
+    my ($self) = @_;
+
+    my $tmp_ref = {};
+    foreach my $property (sort keys %{$self}){
+        $tmp_ref->{$property} = $self->{$property};
+    }
+    
+    return encode_json $tmp_ref;
+}
+
+sub from_json {
+    my ($self,$json) = @_;
+
+    return unless ($json);
+    
+    my $tmp_ref = decode_json $json;
+    foreach my $property (keys %{$tmp_ref}){
+        $self->{$property} = $tmp_ref->{$property};
+    }
+
+    return $self;
+}
+    
 1;
 __END__
 
@@ -1046,6 +1082,14 @@ Liefert den Xapian-Anfragestring zur Suchanfrage zurück
 Liefert entsprechend der Suchbegriffe, des Aspell-Wörterbuchs der
 Sprache de_DE sowie des Vorkommens im Xapian-Index den relevantesten
 Rechschreibvorschlag zurück.
+
+=item from_json($json_string)
+
+Speichert die im JSON-Format übergebenen Attribute  im Objekt ab.
+
+=item to_json
+
+Liefert die im Objekt gespeicherten Attribute im JSON-Format zurück.
 
 =item have_searchterms
 

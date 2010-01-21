@@ -292,6 +292,8 @@ sub handler {
     if ($queryid){
         $logger->debug("Query exists for SessionID $session->{ID} -> $queryid: Loading");
         $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+        @databases = @{$searchquery->get_databases};
+        
         $queryalreadyexists = 1;
     }
     else {
@@ -1169,14 +1171,9 @@ sub handler {
     # Neuer Query
     if (!$queryalreadyexists) {
 
+        # Jetzt update der Trefferinformationen
         $searchquery->save({sessionID => $session->{ID}, queryid => $queryid});
 
-        # Jetzt update der Trefferinformationen
-        my $dbasesstring=join("||",@databases);
-        
-        $logger->debug("Databases for this query: $dbasesstring");
-        my $thisquerystring=unpack "H*", Storable::freeze($searchquery->get_searchquery);
-        
         # Wurde in allen Katalogen recherchiert?
         
         my $alldbcount = $config->get_number_of_dbs();

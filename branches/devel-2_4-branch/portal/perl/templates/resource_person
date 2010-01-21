@@ -1,4 +1,5 @@
 [%- normset         = record.to_rawdata -%]
+[%- IF representation == "rdf+xml" -%]
 <rdf:RDF
     xmlns:dbpedia="http://dbpedia.org/property/"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -29,3 +30,12 @@
   </rdf:Description>
 [% END %]
 </rdf:RDF>
+[%- ELSIF representation == "html" -%]
+[%-
+    view = 'kug';
+    id1  = database;
+    id2  = id;
+    type = 2;
+-%]
+[% PROCESS common/subtemplate name="connector_permalink" %]
+[%- END -%]

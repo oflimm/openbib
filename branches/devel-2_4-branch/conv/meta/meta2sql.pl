@@ -2007,7 +2007,7 @@ TITITEMTRUNC
 print CONTROL << "TITITEM";
 load data infile '$dir/conn.mysql'        into table conn   fields terminated by '' ;
 load data infile '$dir/popularity.mysql'  into table popularity fields terminated by '' ;
-load data infile '$dir/titlistitem.mysql' into table titlistitem fields terminated by '' ;
+load data infile '$dir/titlistitem.mysql' into table titlistitem fields terminated by '' escaped by '';
 TITITEM
 
 foreach my $type (keys %{$stammdateien_ref}){

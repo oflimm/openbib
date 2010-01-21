@@ -637,7 +637,7 @@ sub load_brief_record {
         if (my $res=$request->fetchrow_hashref){
             my $titlistitem     = decode_utf8($res->{listitem});
             
-            $logger->debug("Storable::listitem: $titlistitem");
+            $logger->debug("Stored listitem: $titlistitem");
 
             my $titlistitem_ref;
 

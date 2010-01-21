@@ -153,8 +153,8 @@ $template->process("bibfuehrer_$mode", $ttdata) || do {
     print $template->error();
 };
 
-system("pdflatex $outputbasename.tex");
-system("pdflatex $outputbasename.tex");
+#system("pdflatex $outputbasename.tex");
+#system("pdflatex $outputbasename.tex");
 
 sub print_help {
     print "gen-bibfuehrer.pl - Erzeugen des Bibliotheksfuehrers\n\n";
@@ -166,16 +166,30 @@ sub print_help {
 }
 
 sub filterchars {
-  my ($content)=@_;
+  my ($content,$chapter)=@_;
 
+  # Log4perl logger erzeugen
+  my $logger = get_logger();
+
+  $logger->debug("Vorher: '$content'");
+
+  # URL's sind verlinkt
+  $content=~s/>(http:\S+)</>\\url{$1}</g;    
+  $content=~s/<a.*?>//g;
+  $content=~s/<\/a>//g;
+  $content=~s/^\s+//g;
+  $content=~s/\s+$//g;
+  $content=~s/<br \/>$/ /g;
+  $content=~s/<br.*?>/\\newline /g unless ($chapter);
+#  $content=~s/ (http:\S+)/ \\url{$1}/g;    
   $content=~s/<.*?>//g;
   $content=~s/\$/\\\$/g;
   $content=~s/\&gt\;/\$>\$/g;
   $content=~s/\&lt\;/\$<\$/g;
   $content=~s/\&\#\d+\;//g;
-  $content=~s/\{/\\\{/g;
-  $content=~s/\}/\\\}/g;
-  $content=~s/#/\\\#/g;
+#  $content=~s/\{/\\\{/g;
+#  $content=~s/\}/\\\}/g;
+#  $content=~s/#/\\\#/g;
 
   # Entfernen
   $content=~s/±//g;
@@ -241,6 +255,8 @@ sub filterchars {
   #$content=~s/\&#363\;/\\=\{u\}/g; # u oberstrich
   #$content=~s/\&#362\;/\\=\{U\}/g; # U oberstrich
 
+  $logger->debug("Nachher: '$content'");
+  
   return $content;
 }
 

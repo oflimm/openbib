@@ -71,4 +71,12 @@ rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('re
 </rdf:Description>
 </rdf:RDF>
 [%- ELSIF representation == "rdf+n3" -%]
+[%- ELSIF representation == "html" -%]
+[%-
+    view = 'kug';
+    id1  = database;
+    id2  = id;
+    type = 1;
+-%]
+[% PROCESS common/subtemplate name="connector_permalink" %]
 [%- END -%]

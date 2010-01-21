@@ -124,7 +124,9 @@ foreach my $katalog_ref (@$dboverview_ref){
         $category =~s{\</*p\>}{}g;
         $category =~s{\<br.*?>}{}g;
         $category =~s{^\s+}{}g;
-        $content =~s{\<br.*?>}{}g;
+        $content  =~s{^ +}{}g;
+#        $content =~s{\<br.*?>}{}g;
+#        $content =~s/<br \/>//g;
         $content =~s{\</p>\<p\>}{<br/>}g;
         $content =~s{\</*p\>}{}g;
 

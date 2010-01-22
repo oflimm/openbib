@@ -68,6 +68,8 @@
 %]
 
 [%- IF resultlist.size > 5 -%]
+[%- searchprefix  = config.get('searchfield').verfstring.prefix -%]
+
 <ol class="cloud">
 [%- FOREACH thisitem IN resultlist -%]
 [% item      = thisitem.item;
@@ -76,7 +78,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind 
-verkn&uuml;pft mit </span><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;[%- IF config.get('drilldown') && itemcount < config.get('xapian_option').maxmatch -%]drilldown=1;[%- IF config.get('drilldown_option').cloud -%]dd_cloud=1;[%- END -%][%- IF config.get('drilldown_option').categorized -%]dd_categorized=1;[%- END -%][%- END -%]fs=ddper:[% utils.normalize_drilldown(item) %];database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;[%- IF config.get('drilldown') && itemcount < config.get('xapian_option').maxmatch -%]drilldown=1;[%- IF config.get('drilldown_option').cloud -%]dd_cloud=1;[%- END -%][%- IF config.get('drilldown_option').categorized -%]dd_categorized=1;[%- END -%][%- END -%]fs=[% searchprefix %]:[% utils.normalize_drilldown(item) %];database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

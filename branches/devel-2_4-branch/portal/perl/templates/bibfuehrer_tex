@@ -41,25 +41,35 @@
 \begin{titlepage}
 
 \begin{center}
-\rule[-.1in]{16cm}{1mm}\\[3mm]
-{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont
-  USB K"oln $\bullet$ Abt. Universit"atsGesamtKatalog}\\[-2mm]
-\rule[-.1in]{16cm}{1mm}
 
-\vspace{5cm}
+\vspace{2cm}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Die Bibliotheken\\[0.3cm]der\\[0.6cm]Universit"at zu K"oln}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{60}{60pt}\selectfont Die Bibliotheken}\\[0.3cm]\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont der\\[0.6cm]Universit"at zu K"oln}
 
-  \vspace{2cm}
+\vspace{2cm}
 
-  Ein Service der Abt. Universit"atsGesamtKatalog / USB K"oln\\
-  Stand: \today
+\includegraphics[width=12cm]{blaues-siegel-uni-koeln.jpg}
+
+  \vspace{1cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Stand: \today}
 
 \end{center}
 
+\vspace{2mm}
+\rule[-.1in]{18cm}{0.1mm}\\[2mm]
+\begin{tabular}{lp{8cm}}
+\raisebox{-0.6cm}{\includegraphics[width=3.2cm]{usblogo.jpg}} &
+\raisebox{-0.1cm}{\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont
+Ein Service der Abt. Universit"atsGesamtKatalog / USB K"oln}}\\
+\end{tabular}
+
+\rule[1cm]{18cm}{0.1mm}
+
+
 \newpage 
 
-Liebe Kolleginnen und Kollegen,
+Sehr geehrte Damen und Herren,
 
 mit dem Bibliotheksf"uhrer des Jahres 2005 wurde die Publikation einer
 Print-Ausgabe eingestellt und die Informationen zu den Bibliotheken
@@ -73,7 +83,28 @@ Bibliotheksf"uhrer an.
 \minisec{URL des elektronischen Bibliotheksf"uhrers}
 
 Unter dem URL \texttt{http://kug.ub.uni-koeln.de/bibliotheksfuehrer/} finden
-Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
+Sie fortan den neuen elektronischen Bibliotheksf"uhrer.
+
+\minisec{Angabe der ISIL}
+
+Zur Identifizierung der einzelnen Bibliotheken wurden bislang immer
+die jeweiligen Bibliothekssigel verwendet. Im Jahr 2007 hat die AG Verbundsysteme
+beschlossen zuk"unftig auf Sigel zu verzichten und fortan nur noch die
+ISIL (International Standard Identifier for Libraries and Related
+Organizations) zu verwenden. Die ISIL setzt die bisherige
+Sigelbezeichnung in einen internationalen Kontext und ist f"ur die
+Kennzeichnung im Internet besser geeignet.
+
+Aus dem bisherigen Sigel 38/006 wird z.B. die ISIL DE-38-006. Teile
+des Sigels werden also sehr einfach in die ISIL "uberf"uhrt.
+
+\minisec{Anzahl Monographien und Zeitschriften }
+
+F"ur die dezentralen Bibliotheken werden die Angaben zur Anzahl an
+Monographien, Zeitschriften und laufenden Zeitschriften kummuliert
+f"ur alle zusammen sowie nach Fakult"at ausgegeben.
+
+\vspace{1cm}
 
   \begin{tabular}[t]{ll}
     AnsprechpartnerInnen : & Abt. Universit"atsGesamtKatalog / USB K"oln\\
@@ -93,15 +124,18 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
   dez_orgunits = [
                    { 
                      desc = "Fakult\"atsungebundene Bibliotheken",
-                     id   = -1,
+                     id   = 7,
+                     image = "logounikoeln.jpg",
                    },
                    { 
                      desc = "Bibliotheken der Wirtschafts- und Sozialwissenschaftlichen Fakult\"at",
                      id   = 1,
+                     image = "logowiso.jpg",
                    },
                    {                       
                      desc = "Bibliotheken der Rechtswissenschaftlichen Fakult\"at",
                      id   = 2,
+                     image = "logorecht.jpg",
                    },
                    { 
                      desc = "Bibliotheken der Humanwissenschaftlichen Fakult\"at",
@@ -110,10 +144,12 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                    { 
                      desc = "Bibliotheken der Philosophischen Fakult\"at",
                      id   = 4,
+                     image = "logophil.jpg",
                    },
                    { 
                      desc = "Bibliotheken der Mathematisch-Naturwissenschaftlichen Fakult\"at",
                      id   = 5,
+                     image = "logomatnat.jpg",
                    },
                    { 
                      desc = "Theologie als Studienfach",
@@ -123,7 +159,7 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 
      dez_orgunit_pools = {
 
-                     "-1" = [
+                     "7" = [
                      "inst005",
                      "inst006",
                      "inst007",
@@ -140,7 +176,6 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                      "inst108",
                      "inst109",
                      "inst110",
-                     "inst111",
                      "inst112",
                      "inst113",
                      "inst117",
@@ -167,12 +202,10 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                      "inst160",
                      "inst164",
                      "inst166",
-                     "inst170",
                      "inst171",
                          ],
                   "2" = [
                      "inst201",
-                     "inst202",
                      "inst203",
                      "inst204",
                      "inst205",
@@ -199,7 +232,6 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                      "inst226",
                      "inst227",
                      "inst228",
-                     "inst229",
                      "inst230",
                      "inst231",
                      "inst232",
@@ -237,6 +269,9 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                      "inst418",
                      "inst419",
                      "inst420",
+                     "inst421",
+                     "inst422",
+                     "inst423",
                      "inst425",
                      "inst426",
                      "inst427",
@@ -368,7 +403,7 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 
 \begin{shadowenv}
 \begin{center}
-\includegraphics[width=15cm]{[% database %]_map.png}
+\includegraphics[width=15cm]{[% libinfo.${"I1000"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
 \end{shadowenv}
 
@@ -379,9 +414,100 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 
 \chapter{Dezentrale Hochschulbibliotheken}
 
+[%
+
+all_dezmonoanz    = 0;
+all_dezzeitanz    = 0;
+all_dezlfdzeitanz = 0;
+all_dezonlineanz  = 0;
+all_dezbiblanz    = 0;
+
+FOREACH orgunit IN dez_orgunits ;
+
+  monoanz          = 0;
+  zeitanz          = 0;
+  lfdzeitanz       = 0;
+  onlineanz        = 0;
+  biblanz          = 0;
+
+  FOREACH database IN dez_orgunit_pools.${orgunit.id} ;
+     onlinetitcount = config.get_number_of_titles(database => database);
+     libinfo        = config.get_libinfo(database);
+
+     monoanz          = monoanz + libinfo.${"I0120"}.first.content.replace('\D','');
+     zeitanz          = zeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
+     lfdzeitanz       = lfdzeitanz + libinfo.${"I0140"}.first.content.replace('\D','');
+     onlineanz        = onlineanz + onlinetitcount.all;
+     biblanz          = biblanz + 1;
+
+     all_dezmonoanz    = all_dezmonoanz + libinfo.${"I0120"}.first.content.replace('\D','');
+     all_dezzeitanz    = all_dezzeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
+     all_dezlfdzeitanz = all_dezlfdzeitanz + libinfo.${"I0140"}.first.content.replace('\D','');
+     all_dezonlineanz  = all_dezonlineanz + onlinetitcount.all;
+-%]
+% [% database %] - Monos [% libinfo.${"I0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.all %]
+[%
+
+  END;
+
+  anzahl.${orgunit.id}.mono    = monoanz;
+  anzahl.${orgunit.id}.zeit    = zeitanz;
+  anzahl.${orgunit.id}.lfdzeit = lfdzeitanz;
+  anzahl.${orgunit.id}.online  = onlineanz;
+  anzahl.${orgunit.id}.bibl    = biblanz;
+
+  all_dezbiblanz   = all_dezbiblanz + biblanz;
+
+END;
+
+-%]
+
+[%# USE dumper; dumper.dump(anzahl)%]
+\begin{center}
+\begin{shadowenv}
+\begin{tabular}{ll}
+\textbf{Anzahl Bibliotheken} & [% all_dezbiblanz %]\\
+&\\
+\textbf{Anzahl Medien}       & \\
+\emph{B"ucher} & [% all_dezmonoanz %]\\
+\emph{Zeitschriften} & [% all_dezzeitanz %]\\
+\emph{Lfd. Zeitschriften} & [% all_dezlfdzeitanz %]\\
+\textbf{Anzahl online recherchierbare Titel} & [% all_dezonlineanz %]\\
+\end{tabular}
+\end{shadowenv}
+\end{center}
+
+\newpage
+
 [% FOREACH orgunit IN dez_orgunits %]
 
 \section{[% orgunit.desc %]}
+
+[% IF orgunit.image %]
+\vspace{2cm}
+
+\begin{center}
+\includegraphics[height=12cm]{[% orgunit.image %]}
+\end{center}
+
+\vspace{1cm}
+[% END %]
+
+\begin{center}
+\begin{shadowenv}
+\begin{tabular}{ll}
+\textbf{Anzahl Bibliotheken} & [% anzahl.${orgunit.id}.bibl %]\\
+&\\
+\textbf{Anzahl Medien}       & \\
+\emph{B"ucher} & [% anzahl.${orgunit.id}.mono %]\\
+\emph{Zeitschriften} & [% anzahl.${orgunit.id}.zeit %]\\
+\emph{Lfd. Zeitschriften} & [% anzahl.${orgunit.id}.lfdzeit %]\\
+\textbf{Anzahl online recherchierbare Titel} & [% anzahl.${orgunit.id}.online %]\\
+\end{tabular}
+\end{shadowenv}
+\end{center}
+
+\newpage
 
 [%   FOREACH database IN dez_orgunit_pools.${orgunit.id} %]
 
@@ -429,7 +555,7 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 
 \begin{shadowenv}
 \begin{center}
-\includegraphics[width=15cm]{[% database %]_map.png}
+\includegraphics[width=15cm]{[% libinfo.${"I1000"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
 \end{shadowenv}
 

@@ -113,8 +113,13 @@ my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
 foreach my $database (keys %{$dbinfotable->{use_libinfo}}){
     my $libinfo = $config->get_libinfo($database);
-    my ($lat,$long) = split(",",$libinfo->{"I1000"}->[0]->{content});
-    my $filename="${database}_map.png";
+    my $coordinates = $libinfo->{"I1000"}->[0]->{content};
+    my ($lat,$long) = split("\\s*,\\s*",$coordinates);
+
+    $coordinates=~s/\s*,\s*/-/g;
+    $coordinates=~s/\./_/g;
+    
+    my $filename="${coordinates}_map.png";
     
     if ($lat && $long && ! -e $filename){
         # URL fuer dne StaticMap-Dienst des OpenStreetMap-Projektes
@@ -138,7 +143,7 @@ my $template = Template->new({
         ABSOLUTE       => 1,
     }) ],
     OUTPUT_PATH   => './',
-    OUTPUT        => "$outputbasename.$mode",
+    OUTPUT        => "$outputbasename.tex",
 });
 
 
@@ -149,12 +154,14 @@ my $ttdata = {
     msg          => $msg,
 };
 
-$template->process("bibfuehrer_$mode", $ttdata) || do { 
+$template->process("bibfuehrer_tex", $ttdata) || do { 
     print $template->error();
 };
 
-#system("pdflatex $outputbasename.tex");
-#system("pdflatex $outputbasename.tex");
+if ($mode eq "pdf"){
+    system("pdflatex $outputbasename.tex");
+    system("pdflatex $outputbasename.tex");
+}
 
 sub print_help {
     print "gen-bibfuehrer.pl - Erzeugen des Bibliotheksfuehrers\n\n";

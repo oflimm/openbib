@@ -62,6 +62,8 @@ my $category_map_ref = {
     'Auskunft / Bibliothekar(in)' => '100',
     'Öffnungszeiten' => '110',
     'Bestand'  => '120',
+    'Bestand Monographien'  => '120',
+    'Bestand Zeitschriften'  => '130',        
     'Bestand (Bände)'  => '120',
     'Anzahl laufender Zeitschriften' => '140',
     'CDs / Digitale Medien' => '150',
@@ -132,7 +134,7 @@ foreach my $katalog_ref (@$dboverview_ref){
 
         $num_category = $category_map_ref->{$category};
 
-        if ($num_category eq "120"){
+        if ($num_category eq "120" && ($content =~/(\d+)\s+Mono/ || $content =~/(\d+)\s+Zeitschr/) ){
             my ($num_monos)    = $content =~/(\d+)\s+Mono/;
             my ($num_zeitschr) = $content =~/(\d+)\s+Zeitsch/;
 
@@ -146,7 +148,11 @@ foreach my $katalog_ref (@$dboverview_ref){
                 $request->execute($dbname,120,$content);
             }
             
-        }       
+        }
+        elsif ($num_category eq "120" || $num_category eq "130" || $num_category eq "140"){
+            $content =~s/(\D+)//g;
+            $request->execute($dbname,$num_category,$content);
+        }
         else {
             $request->execute($dbname,$num_category,$content);
         }

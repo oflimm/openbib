@@ -65,9 +65,9 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$sourcepool;host=$config->
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs GRUE\n";
+print "### $pool: Bestimme Titel-ID's anhand Kategorie 3004\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content rlike '^GRUE' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select id from tit where category=3004 and (content like '%Libris Gernot Uwe Gabel%' or content like '%Libris G. U. Gabel%')") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

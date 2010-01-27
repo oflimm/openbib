@@ -65,9 +65,9 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$sourcepool;host=$config->
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-print "### $pool: Bestimme Titel-ID's anhand der Signaturanfaenge GBI-GBXIV\n";
+print "### $pool: Bestimme Titel-ID's anhand der Signaturanfaenge GBI-GBXIV ohne GBXIII\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and (mex.content rlike '^GBI[0-9]%' or mex.content rlike '^GBII*[0-9]' or mex.content rlike '^GBVI*[0-9]' or mex.content rlike '^GBIX[0-9]' or mex.content rlike '^GBXI*[0-9]' or mex.content rlike '^GBXIV[0-9]') and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and (mex.content rlike '^GBI[0-9]' or mex.content rlike '^GBII*[0-9]' or mex.content rlike '^GBVI*[0-9]' or mex.content rlike '^GBIX[0-9]' or mex.content rlike '^GBX[0-9]' or mex.content rlike '^GBXI[0-9]' or mex.content rlike '^GBXII[0-9]' or mex.content rlike '^GBXIV[0-9]') and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

@@ -31,7 +31,7 @@ use utf8;
 use URI;
 use YAML;
 use Web::Scraper;
-use Encode qw/decode/;
+use Encode qw/decode encode_utf8/;
 use OpenBib::Config;
 use OpenBib::Database::DBI;
 use URI::Escape;
@@ -80,6 +80,8 @@ my $category_map_ref = {
     'Online-Katalogisierung seit Erwerbungsjahr' => '235',
     'Mitarbeit am KUG' => '240',
     'Sigel in ZDB' => '250',
+    'Bemerkung' => '270',
+    'Geo-Position (Bg,Lg)' => '280',
 };
 
 my $dboverview_ref = $config->get_dbinfo_overview();
@@ -122,39 +124,43 @@ foreach my $katalog_ref (@$dboverview_ref){
         }
         my $category = $inhalt[$i];
         my $content  = $inhalt[$i+1];
-        
+
+#        print "Content pre:$content:\n";
         $category =~s{\</*p\>}{}g;
         $category =~s{\<br.*?>}{}g;
         $category =~s{^\s+}{}g;
-        $content  =~s{^ +}{}g;
-#        $content =~s{\<br.*?>}{}g;
+        $content  =~s/^\s+//g;
 #        $content =~s/<br \/>//g;
         $content =~s{\</p>\<p\>}{<br/>}g;
         $content =~s{\</*p\>}{}g;
-
+        $content =~s{\<br \/>$}{}g;
+#        print "Content post:$content:\n";
+        
         $num_category = $category_map_ref->{$category};
 
-        if ($num_category eq "120" && ($content =~/(\d+)\s+Mono/ || $content =~/(\d+)\s+Zeitschr/) ){
-            my ($num_monos)    = $content =~/(\d+)\s+Mono/;
-            my ($num_zeitschr) = $content =~/(\d+)\s+Zeitsch/;
-
-            if ($num_monos){
-                $request->execute($dbname,120,$num_monos);
+        if ($num_category){
+            if ($num_category eq "120" && ($content =~/(\d+)\s+Mono/ || $content =~/(\d+)\s+Zeitschr/) ){
+                my ($num_monos)    = $content =~/(\d+)\s+Mono/;
+                my ($num_zeitschr) = $content =~/(\d+)\s+Zeitsch/;
+                
+                if ($num_monos){
+                    $request->execute($dbname,120,$num_monos);
+                }
+                if ($num_zeitschr){
+                    $request->execute($dbname,130,$num_zeitschr);
+                }
+                if (!$num_monos && !$num_zeitschr){
+                    $request->execute($dbname,120,encode_utf8($content));
+                }
+                
             }
-            if ($num_zeitschr){
-                $request->execute($dbname,130,$num_zeitschr);
+            elsif ($num_category eq "120" || $num_category eq "130" || $num_category eq "140"){
+                #            $content =~s/(\D+)//g;
+                $request->execute($dbname,$num_category,encode_utf8($content));
             }
-            if (!$num_monos && !$num_zeitschr){
-                $request->execute($dbname,120,$content);
+            else {
+                $request->execute($dbname,$num_category,encode_utf8($content));
             }
-            
-        }
-        elsif ($num_category eq "120" || $num_category eq "130" || $num_category eq "140"){
-            $content =~s/(\D+)//g;
-            $request->execute($dbname,$num_category,$content);
-        }
-        else {
-            $request->execute($dbname,$num_category,$content);
         }
         print ":$category: / :$num_category: - :$content:\n";
     }

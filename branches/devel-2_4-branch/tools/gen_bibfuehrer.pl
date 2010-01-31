@@ -123,7 +123,7 @@ foreach my $database (keys %{$dbinfotable->{use_libinfo}}){
     
     if ($lat && $long && ! -e $filename){
         # URL fuer dne StaticMap-Dienst des OpenStreetMap-Projektes
-        my $url = "http://ojw.dev.openstreetmap.org/StaticMap/?lat=$lat&lon=$long&z=15&h=500&mlat0=$lat&mlon0=$long&show=1";
+        my $url = "http://ojw.dev.openstreetmap.org/StaticMap/?lat=$lat&lon=$long&z=16&w=1000&h=1000&mlat0=$lat&mlon0=$long&fmt=png&show=1";
 
         $logger->info("Hole OSM-Karte via $url");
                 
@@ -181,7 +181,9 @@ sub filterchars {
   $logger->debug("Vorher: '$content'");
 
   # URL's sind verlinkt
-  $content=~s/>(http:\S+)</>\\url{$1}</g;    
+  $content=~s/>(http:\S+)</>\\url{$1}</g;
+  $content=~s/\&#39;/'/g;
+
   $content=~s/<a.*?>//g;
   $content=~s/<\/a>//g;
   $content=~s/^\s+//g;
@@ -221,6 +223,7 @@ sub filterchars {
   $content = encode("utf8",$content);
   $content=~s/\x{c2}\x{a0}//g;
   $content=~s/\x{e2}\x{80}\x{89}//g;
+  $content = decode("utf8", $content);
   # Umlaute
   #$content=~s/\&uuml\;/ü/g;
   #$content=~s/\&auml\;/ä/g;

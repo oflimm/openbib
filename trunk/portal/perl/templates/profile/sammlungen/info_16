@@ -56,6 +56,8 @@
         'ultra-genutzt',
         'am-meisten-genutzt',
    ];
+
+   bklookup    = config.load_bk ;
 %]
 
 [%- IF resultlist.size > 5 -%]
@@ -65,8 +67,9 @@
    itemcount = thisitem.count;
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
+   bkdesc      = bklookup.${item};
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=sql;profil=dbauswahl;notation=[% item %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=sql;profil=dbauswahl;notation=[% item %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% IF bkdesc %][% bkdesc %] ([% item %])[% ELSE %][% item %][% END %]">[% IF bkdesc %][% bkdesc %] ([% item %])[% ELSE %][% item %][% END %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

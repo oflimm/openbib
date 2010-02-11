@@ -1,0 +1,89 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_60
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+<table cellpadding="10">
+
+<tr>
+
+<td style="vertical-align:top;padding:40px;"> <center> <img src="/images/openbib/views/artmann/yeti_300x308.gif"
+alt="Yeti" /><br /><br /><i
+style="font-size:0.8em">Cover der Ausgabe Sherpa bensing grinsing</i></cente
+r>
+</td>
+
+<td valign="top">
+<h1>Die H. C. Artmann-Sammlung Knupfer</h1>
+
+
+<span style="color:#F7931E; font-weight:bold">Bei den Menschfressern geht alles so einfach<br />&nbsp;
+-krach schleif schneid brat schmalz<br />
+und der liebe Bauch ist lecker Sonne<br />
+
+<br />
+H.C. Artmann: Der handkolorierte Menschenfresser<br />
+</span>
+<p>
+Am 8. Februar 2006 schenkte der Geschäftsführer des Auktionshauses Venator und Hanstein Karl-Heinz Knupfer der Universitäts- und Stadtbibliothek Köln seine umfangreiche Sammlung von Werken des österreichischen Schriftstellers H.C. Artmann.
+</p>
+<p>
+Die Schenkung umfasst insgesamt 239 Titel. Damit ist die USB Köln im Besitz des umfangreichsten Artmann-Bestandes in deutschen wissenschaftlichen Bibliotheken.
+</p>
+
+<h1>Die Sammlung in der USB</h1>
+
+<p>
+Die Titel wurden geschlossen unter der Signatur KNUP aufgestellt. Sie sind vollständig in ihrer ursprünglichen Form mit den Originalumschlägen erhalten. Signaturen und Etiketten sind den Büchern beigelegt und nicht eingeklebt. Alle Titel wurden in der Hausbuchbinderei durchgesehen und ggf. repariert. Elf Bücher wurden von den Buchbindermeisterinnen, die bereits eine Anzahl bedeutender Preise gewonnen haben, und ihren Lehrlingen mit handwerklich gekonnten und künstlerisch interessanten Einbänden und Kassetten versehen.
+</p>
+
+<p>
+Die Einsichtnahme für Forschungszwecke erfolgt im Historischen Lesesaal. Alle Titel sind in Suchen & Bestellen der USB und im Verbundkatalog NRW erfasst.[<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">mehr</a>]
+</p>
+
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -125,16 +125,17 @@ foreach my $katalog_ref (@$dboverview_ref){
         my $category = $inhalt[$i];
         my $content  = $inhalt[$i+1];
 
-#        print "Content pre:$content:\n";
+        print "Content pre:$content:\n";
         $category =~s{\</*p\>}{}g;
         $category =~s{\<br.*?>}{}g;
         $category =~s{^\s+}{}g;
-        $content  =~s/^\s+//g;
 #        $content =~s/<br \/>//g;
         $content =~s{\</p>\<p\>}{<br/>}g;
         $content =~s{\</*p\>}{}g;
         $content =~s{\<br \/>$}{}g;
-#        print "Content post:$content:\n";
+        $content  =~s/^\s+//g;
+        $content  =~s/\s+$//g;
+        print "Content post:$content:\n";
         
         $num_category = $category_map_ref->{$category};
 

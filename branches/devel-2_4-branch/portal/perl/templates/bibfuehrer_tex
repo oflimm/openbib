@@ -48,7 +48,7 @@
 
 \vspace{2cm}
 
-\includegraphics[width=12cm]{blaues-siegel-uni-koeln.jpg}
+\includegraphics[width=12cm]{[% config.get('image_root_path') %]/openbib/blaues-siegel-uni-koeln.jpg}
 
   \vspace{1cm}
 
@@ -59,7 +59,7 @@
 \vspace{2mm}
 \rule[-.1in]{18cm}{0.1mm}\\[2mm]
 \begin{tabular}{lp{8cm}}
-\raisebox{-0.6cm}{\includegraphics[width=3.2cm]{usblogo.jpg}} &
+\raisebox{-0.6cm}{\includegraphics[width=3.2cm]{[% config.get('image_root_path') %]/openbib/usblogo.jpg}} &
 \raisebox{-0.1cm}{\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont
 Ein Service der Abt. Universit"atsGesamtKatalog / USB K"oln}}\\
 \end{tabular}
@@ -309,7 +309,8 @@ Universit"ats- und Stadtbibliothek K"oln\\
                 'I0235', # msg.maketext("I0235") # Online-Katalogisierung seit Erwerbungsjahr
                 'I0240', # msg.maketext("I0240") # Mitarbeit am KUG
                 'I0250', # msg.maketext("I0250") # Sigel in ZDB
-                'I1000', # msg.maketext("I1000") # Geo-Koordinaten
+                'I0280', # msg.maketext("I1000") # Geo-Koordinaten
+                         # msg.maketext("I2080") # Geo-Koordinaten
                ];
 -%]
 
@@ -409,7 +410,7 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 \vspace{1cm}
 
 \begin{center}
-\includegraphics[height=12cm]{logounikoeln.jpg}
+\includegraphics[height=12cm]{[% config.get('image_root_path') %]/openbib/logounikoeln.jpg}
 \end{center}
 
 \vspace{1cm}
@@ -466,12 +467,12 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 %\end{description}
 
 \newpage
-[% IF libinfo.${"I1000"}.first.content %]
+[% IF libinfo.${"I0280"}.first.content %]
 \subsubsection*{Lageplan der Bibliothek}
 
 \begin{shadowenv}
 \begin{center}
-\includegraphics[width=15cm]{[% libinfo.${"I1000"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
+\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
 \end{shadowenv}
 
@@ -555,7 +556,7 @@ END;
 \vspace{2cm}
 
 \begin{center}
-\includegraphics[height=12cm]{[% orgunit.image %]}
+\includegraphics[height=12cm]{[% config.get('image_root_path') %]/openbib/[% orgunit.image %]}
 \end{center}
 
 \vspace{1cm}
@@ -618,12 +619,12 @@ END;
 %\end{description}
 
 \newpage
-[% IF libinfo.${"I1000"}.first.content %]
+[% IF libinfo.${"I0280"}.first.content %]
 \subsubsection*{Lageplan der Bibliothek}
 
 \begin{shadowenv}
 \begin{center}
-\includegraphics[width=15cm]{[% libinfo.${"I1000"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
+\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
 \end{shadowenv}
 
@@ -960,7 +961,7 @@ Nordrhein-Westfalen
 \section{Geb"audeplan der Universit"at zu K"oln}
 
 \begin{center}
-\includegraphics[width=17cm]{gebaeudeplan.jpg}
+\includegraphics[width=17cm]{[% config.get('image_root_path') %]/openbib/geo/gebaeudeplan.jpg}
 \end{center}
 
 \end{document}

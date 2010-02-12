@@ -108,19 +108,24 @@ my $logger = get_logger();
 my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
 $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-my $config      = OpenBib::Config->instance;
-my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+my $config        = OpenBib::Config->instance;
+my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+my $img_base_path = $config->{image_root_path}."/openbib/geo";
+
+if (! -e $img_base_path){
+    mkdir $img_base_path, '755';
+}
 
 foreach my $database (keys %{$dbinfotable->{use_libinfo}}){
     my $libinfo = $config->get_libinfo($database);
-    my $coordinates = $libinfo->{"I1000"}->[0]->{content};
+    my $coordinates = $libinfo->{"I0280"}->[0]->{content};
     my ($lat,$long) = split("\\s*,\\s*",$coordinates);
 
     $coordinates=~s/\s*,\s*/-/g;
     $coordinates=~s/\./_/g;
     
-    my $filename="${coordinates}_map.png";
-    
+    my $filename="${img_base_path}/${coordinates}_map.png";
+
     if ($lat && $long && ! -e $filename){
         # URL fuer dne StaticMap-Dienst des OpenStreetMap-Projektes
         my $url = "http://ojw.dev.openstreetmap.org/StaticMap/?lat=$lat&lon=$long&z=16&w=1000&h=1000&mlat0=$lat&mlon0=$long&fmt=png&show=1";
@@ -161,6 +166,7 @@ $template->process("bibfuehrer_tex", $ttdata) || do {
 if ($mode eq "pdf"){
     system("pdflatex $outputbasename.tex");
     system("pdflatex $outputbasename.tex");
+    system("rm $outputbasename.aux $outputbasename.out $outputbasename.log $outputbasename.tex $outputbasename.toc");
 }
 
 sub print_help {

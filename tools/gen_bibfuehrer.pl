@@ -118,7 +118,7 @@ if (! -e $img_base_path){
 
 foreach my $database (keys %{$dbinfotable->{use_libinfo}}){
     my $libinfo = $config->get_libinfo($database);
-    my $coordinates = $libinfo->{"I1000"}->[0]->{content};
+    my $coordinates = $libinfo->{"I0280"}->[0]->{content};
     my ($lat,$long) = split("\\s*,\\s*",$coordinates);
 
     $coordinates=~s/\s*,\s*/-/g;

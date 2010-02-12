@@ -309,7 +309,8 @@ Universit"ats- und Stadtbibliothek K"oln\\
                 'I0235', # msg.maketext("I0235") # Online-Katalogisierung seit Erwerbungsjahr
                 'I0240', # msg.maketext("I0240") # Mitarbeit am KUG
                 'I0250', # msg.maketext("I0250") # Sigel in ZDB
-                'I1000', # msg.maketext("I1000") # Geo-Koordinaten
+                'I0280', # msg.maketext("I1000") # Geo-Koordinaten
+                         # msg.maketext("I2080") # Geo-Koordinaten
                ];
 -%]
 
@@ -466,12 +467,12 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 %\end{description}
 
 \newpage
-[% IF libinfo.${"I1000"}.first.content %]
+[% IF libinfo.${"I0280"}.first.content %]
 \subsubsection*{Lageplan der Bibliothek}
 
 \begin{shadowenv}
 \begin{center}
-\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I1000"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
+\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
 \end{shadowenv}
 
@@ -618,12 +619,12 @@ END;
 %\end{description}
 
 \newpage
-[% IF libinfo.${"I1000"}.first.content %]
+[% IF libinfo.${"I0280"}.first.content %]
 \subsubsection*{Lageplan der Bibliothek}
 
 \begin{shadowenv}
 \begin{center}
-\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I1000"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
+\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
 \end{shadowenv}
 

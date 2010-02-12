@@ -131,14 +131,9 @@
 ../templates/database/inst001/mexset
 ../templates/database/inst001/search_showtitset_categories
 ../templates/database/inst001/visible_categories_titset
-../templates/database/inst006/circset
 ../templates/database/inst302/circset
-../templates/database/inst404abklatsch/visible_categories_titset
-../templates/database/inst420/circset
-../templates/database/inst431/circset
 ../templates/database/inst450/mexset
 ../templates/database/inst450/visible_categories_titset
-../templates/database/inst526/circset
 ../templates/database/kapsel/visible_categories_notset
 ../templates/database/kapsel/visible_categories_swtset
 ../templates/database/kapsel/visible_categories_titset

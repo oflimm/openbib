@@ -16,7 +16,7 @@
 
 [%- libinfo = config.get_libinfo(id); -%]
 
-[%- IF config.get('google_maps_api_key') && libinfo.${"I1000"}.first.content -%]
+[%- IF config.get('google_maps_api_key') && libinfo.${"I0280"}.first.content -%]
 <script type="text/javascript" src="http://www.google.com/jsapi?key=[% config.get('google_maps_api_key') %]"></script>
 
 <script type="text/javascript">
@@ -25,8 +25,8 @@
   // Call this function when the page has been loaded
   function initialize() {
         var map = new google.maps.Map2(document.getElementById("map"));
-        map.setCenter(new google.maps.LatLng([% libinfo.${"I1000"}.first.content %]), 15);
-        var point = new GLatLng([% libinfo.${"I1000"}.first.content %]);
+        map.setCenter(new google.maps.LatLng([% libinfo.${"I0280"}.first.content %]), 15);
+        var point = new GLatLng([% libinfo.${"I0280"}.first.content %]);
         map.addOverlay(new GMarker(point));
   }
   google.setOnLoadCallback(initialize);

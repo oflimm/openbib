@@ -1,10 +1,11 @@
-\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\documentclass[version=,11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
 \usepackage{german}
 \usepackage{typearea}
 \usepackage{longtable}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{url}
 \usepackage[utf8]{inputenc}
 
 % Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
@@ -28,7 +29,7 @@
 \parskip0.3cm
 \parindent=0pt\relax
 \typearea{15}
-\setcounter{secnumdepth}{0}
+\setcounter{secnumdepth}{1}
 %\renewcommand\thesection{\arabic{section}.}
 %\renewcommand\thesubsection{\thesection\arabic{subsection}.}
 
@@ -40,63 +41,68 @@
 \begin{titlepage}
 
 \begin{center}
-\rule[-.1in]{16cm}{1mm}\\[3mm]
-{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont
-  USB K"oln $\bullet$ Abt. Universit"atsGesamtKatalog}\\[-2mm]
-\rule[-.1in]{16cm}{1mm}
 
-\vspace{5cm}
+\vspace{2cm}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Die Bibliotheken\\[0.3cm]der\\[0.6cm]Universit"at zu K"oln}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{60}{60pt}\selectfont Die Bibliotheken}\\[0.3cm]\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont der\\[0.6cm]Universit"at zu K"oln}
 
-  \vspace{2cm}
+\vspace{2cm}
 
-  Ein Service der Abt. Universit"atsGesamtKatalog / USB K"oln\\
-  Stand: \today
+\includegraphics[width=12cm]{[% config.get('image_root_path') %]/openbib/blaues-siegel-uni-koeln.jpg}
+
+  \vspace{1cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Stand: \today}
 
 \end{center}
 
-\newpage 
+\vspace{2mm}
+\rule[-.1in]{18cm}{0.1mm}\\[2mm]
+\begin{tabular}{lp{8cm}}
+\raisebox{-0.6cm}{\includegraphics[width=3.2cm]{[% config.get('image_root_path') %]/openbib/usblogo.jpg}} &
+\raisebox{-0.1cm}{\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont
+Ein Service der Abt. Universit"atsGesamtKatalog / USB K"oln}}\\
+\end{tabular}
 
-Liebe Kolleginnen und Kollegen,
+\rule[1cm]{18cm}{0.1mm}
 
-mit dem Bibliotheksf"uhrer des Jahres 2005 wurde die Publikation einer
-Print-Ausgabe eingestellt und die Informationen zu den Bibliotheken
-der Universit"at zu K"oln nur noch online auf den Webseiten angeboten.
+\newpage
 
-Da jedoch weiterhin ein gro"ser Bedarf nach einer umfassenden "Ubersicht
-aller Bibliotheken in einer ausdruckbaren Publikation besteht, bieten
-wir nun einen automatisch aus den Webseiten generierten neuen
-Bibliotheksf"uhrer an.
+\vspace{6cm}
 
-\minisec{URL des elektronischen Bibliotheksf"uhrers}
-
-Unter dem URL \texttt{http://kug.ub.uni-koeln.de/bibliotheksfuehrer/} finden
-Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
-
-  \begin{tabular}[t]{ll}
-    AnsprechpartnerInnen : & Abt. Universit"atsGesamtKatalog / USB K"oln\\
+\begin{tabular}[t]{lp{12cm}}
+    Herausgeber : & Prof. Dr. Wolfgang Schmitz, Leitender Direktor der
+Universit"ats- und Stadtbibliothek K"oln\\
+    Redaktion : & Abt. Universit"atsGesamtKatalog / USB K"oln\\
     Telefon : & 0221-470 3306 \\
     Fax     : & 0221-470 5166 \\
     E-Mail  : & gk@ub.uni-koeln.de \\
-  \end{tabular}
+\end{tabular}
+
 
 \end{titlepage}
 
 [%-
+  zentrale_pools = [
+                    "inst001",
+                    "zbmed"
+                   ];
 
   dez_orgunits = [
                    { 
                      desc = "Fakult\"atsungebundene Bibliotheken",
-                     id   = -1,
+                     id   = 7,
+#                     image = "logounikoeln.jpg",
                    },
                    { 
                      desc = "Bibliotheken der Wirtschafts- und Sozialwissenschaftlichen Fakult\"at",
                      id   = 1,
+                     image = "logowiso.jpg",
                    },
                    {                       
                      desc = "Bibliotheken der Rechtswissenschaftlichen Fakult\"at",
                      id   = 2,
+                     image = "logorecht.jpg",
                    },
                    { 
                      desc = "Bibliotheken der Humanwissenschaftlichen Fakult\"at",
@@ -105,10 +111,12 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                    { 
                      desc = "Bibliotheken der Philosophischen Fakult\"at",
                      id   = 4,
+                     image = "logophil.jpg",
                    },
                    { 
                      desc = "Bibliotheken der Mathematisch-Naturwissenschaftlichen Fakult\"at",
                      id   = 5,
+                     image = "logomatnat.jpg",
                    },
                    { 
                      desc = "Theologie als Studienfach",
@@ -118,7 +126,7 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 
      dez_orgunit_pools = {
 
-                     "-1" = [
+                     "7" = [
                      "inst005",
                      "inst006",
                      "inst007",
@@ -135,7 +143,6 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                      "inst108",
                      "inst109",
                      "inst110",
-                     "inst111",
                      "inst112",
                      "inst113",
                      "inst117",
@@ -162,12 +169,10 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                      "inst160",
                      "inst164",
                      "inst166",
-                     "inst170",
                      "inst171",
                          ],
                   "2" = [
                      "inst201",
-                     "inst202",
                      "inst203",
                      "inst204",
                      "inst205",
@@ -194,7 +199,6 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                      "inst226",
                      "inst227",
                      "inst228",
-                     "inst229",
                      "inst230",
                      "inst231",
                      "inst232",
@@ -232,6 +236,9 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                      "inst418",
                      "inst419",
                      "inst420",
+                     "inst421",
+                     "inst422",
+                     "inst423",
                      "inst425",
                      "inst426",
                      "inst427",
@@ -294,6 +301,14 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
                 'I0170', # msg.maketext("I0170") # Besondere Sammelgebiete
                 'I0180', # msg.maketext("I0180") # Art der Bibliothek
                 'I0190', # msg.maketext("I0190") # Neuerwerbungslisten
+                'I0200', # msg.maketext("I0200") # Kopierer / Technische Ausstattung
+                'I0260', # msg.maketext("I0260") # Art der Vernetzung
+                'I0210', # msg.maketext("I0210") # DV-Ausstattung  
+                'I0220', # msg.maketext("I0220") # Art des Systems
+                'I0230', # msg.maketext("I0230") # Online-Katalogisierung seit Erscheinungsjahr
+                'I0235', # msg.maketext("I0235") # Online-Katalogisierung seit Erwerbungsjahr
+                'I0240', # msg.maketext("I0240") # Mitarbeit am KUG
+                'I0250', # msg.maketext("I0250") # Sigel in ZDB
                 'I1000', # msg.maketext("I1000") # Geo-Koordinaten
                ];
 -%]
@@ -320,11 +335,247 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 
 \tableofcontents
 
+\chapter{Vorwort}
+
+Sehr geehrte Damen und Herren,
+
+mit dem Bibliotheksf"uhrer des Jahres 2005 wurde die Publikation einer
+Print-Ausgabe eingestellt und die Informationen zu den Bibliotheken
+der Universit"at zu K"oln nur noch online auf den Webseiten angeboten.
+
+Da jedoch weiterhin ein gro"ser Bedarf nach einer umfassenden "Ubersicht
+aller Bibliotheken in einer ausdruckbaren Publikation besteht, bieten
+wir nun einen automatisch aus den Webseiten generierten neuen
+Bibliotheksf"uhrer an.
+
+\minisec{URL des elektronischen Bibliotheksf"uhrers}
+
+Unter dem URL \texttt{http://kug.ub.uni-koeln.de/bibliotheksfuehrer/} finden
+Sie fortan den neuen elektronischen Bibliotheksf"uhrer.
+
+\minisec{Angabe der ISIL}
+
+Zur Identifizierung der einzelnen Bibliotheken wurden bislang immer
+die jeweiligen Bibliothekssigel verwendet. Im Jahr 2007 hat die AG Verbundsysteme
+beschlossen zuk"unftig auf Sigel zu verzichten und fortan nur noch die
+ISIL (International Standard Identifier for Libraries and Related
+Organizations) zu verwenden. Die ISIL setzt die bisherige
+Sigelbezeichnung in einen internationalen Kontext und ist f"ur die
+Kennzeichnung im Internet besser geeignet.
+
+Aus dem bisherigen Sigel 38/006 wird z.B. die ISIL DE-38-006. Teile
+des Sigels werden also sehr einfach in die ISIL "uberf"uhrt.
+
+\minisec{Anzahl Monographien und Zeitschriften }
+
+F"ur die dezentralen Bibliotheken werden die Angaben zur Anzahl an
+Monographien, Zeitschriften und laufenden Zeitschriften kummuliert
+f"ur alle zusammen sowie nach Fakult"at ausgegeben.
+
+\vspace{1cm}
+
+  \begin{tabular}[t]{ll}
+    AnsprechpartnerInnen : & Abt. Universit"atsGesamtKatalog / USB K"oln\\
+    Telefon : & 0221-470 3306 \\
+    Fax     : & 0221-470 5166 \\
+    E-Mail  : & gk@ub.uni-koeln.de \\
+  \end{tabular}
+
+\chapter{Zentrale Hochschulbibliotheken}
+
+[%-
+  monoanz          = 0;
+  zeitanz          = 0;
+  lfdzeitanz       = 0;
+  onlineanz        = 0;
+  biblanz          = 0;
+
+  FOREACH database IN zentrale_pools ;
+     onlinetitcount = config.get_number_of_titles(database => database);
+     libinfo        = config.get_libinfo(database);
+
+     monoanz          = monoanz + libinfo.${"I0120"}.first.content.replace('\D','');
+     zeitanz          = zeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
+     lfdzeitanz       = lfdzeitanz + libinfo.${"I0140"}.first.content.replace('\D','');
+     onlineanz        = onlineanz + onlinetitcount.all;
+     biblanz          = biblanz + 1;
+-%]
+% [% database %] - Monos [% libinfo.${"I0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.all %]
+[%
+
+  END;
+-%]
+
+\vspace{1cm}
+
+\begin{center}
+\includegraphics[height=12cm]{[% config.get('image_root_path') %]/openbib/logounikoeln.jpg}
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+\begin{shadowenv}
+\begin{tabular}{ll}
+\textbf{Anzahl Bibliotheken} & [% biblanz %]\\
+&\\
+\textbf{Anzahl Medien}       & \\
+\emph{B"ucher} & [% monoanz.chunk(-3).join('.') %]\\
+\emph{Zeitschriften} & [% zeitanz.chunk(-3).join('.') %]\\
+\emph{Lfd. Zeitschriften} & [% lfdzeitanz.chunk(-3).join('.') %]\\
+\textbf{Anzahl online recherchierbare Titel} & [% onlineanz.chunk(-3).join('.') %]\\
+\end{tabular}
+\end{shadowenv}
+\end{center}
+
+\newpage
+
+[%   FOREACH database IN zentrale_pools %]
+
+[%   NEXT IF NOT config.have_libinfo(database) %]
+
+[% dbinfo  = config.get_dbinfo(database) %]
+[% libinfo = config.get_libinfo(database) %]
+[% truncdesc = libinfo.${"I0010"}.first.content | truncate(65) %]
+
+%\subsection{[% filterchars(libinfo.${"I0010"}.first.content) %]}
+\section[[% IF dbinfo.sigel.match("^[0-9][0-9]") %]ISIL DE-[% dbinfo.sigel.replace(" ","") %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(truncdesc,1) %]]{[% IF dbinfo.sigel.match("^[0-9][0-9]") %]ISIL DE-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(libinfo.${"I0010"}.first.content,1) %]}
+
+\subsubsection*{Informationen zur Bibliothek}
+\begin{tabular}{p{5.5cm}|p{11cm}}
+%\begin{description}
+[% FOREACH category IN categories;
+      FOREACH item IN libinfo.$category;
+        content = item.content.replace("^ ","");
+        NEXT IF content == "0" ;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
+          thiscategory = "${category}-${database}" ;
+        END;
+%]
+  \textbf{[% filterchars(msg.maketext("${thiscategory}")) %]} & \noindent [% filterchars(item.content) %]\\
+%\item[[% filterchars(msg.maketext("${thiscategory}")) %]] [% filterchars(item.content) %]
+[%   END %]
+[%   END %]
+\end{tabular}
+%\end{description}
+
+\newpage
+[% IF libinfo.${"I1000"}.first.content %]
+\subsubsection*{Lageplan der Bibliothek}
+
+\begin{shadowenv}
+\begin{center}
+\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I1000"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
+\end{center}
+\end{shadowenv}
+
+\newpage
+[% END %]
+[% END %]
+
+
 \chapter{Dezentrale Hochschulbibliotheken}
+
+[%
+
+all_dezmonoanz    = 0;
+all_dezzeitanz    = 0;
+all_dezlfdzeitanz = 0;
+all_dezonlineanz  = 0;
+all_dezbiblanz    = 0;
+
+FOREACH orgunit IN dez_orgunits ;
+
+  monoanz          = 0;
+  zeitanz          = 0;
+  lfdzeitanz       = 0;
+  onlineanz        = 0;
+  biblanz          = 0;
+
+  FOREACH database IN dez_orgunit_pools.${orgunit.id} ;
+     onlinetitcount = config.get_number_of_titles(database => database);
+     libinfo        = config.get_libinfo(database);
+
+     monoanz          = monoanz + libinfo.${"I0120"}.first.content.replace('\D','');
+     zeitanz          = zeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
+     lfdzeitanz       = lfdzeitanz + libinfo.${"I0140"}.first.content.replace('\D','');
+     onlineanz        = onlineanz + onlinetitcount.all;
+     biblanz          = biblanz + 1;
+
+     all_dezmonoanz    = all_dezmonoanz + libinfo.${"I0120"}.first.content.replace('\D','');
+     all_dezzeitanz    = all_dezzeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
+     all_dezlfdzeitanz = all_dezlfdzeitanz + libinfo.${"I0140"}.first.content.replace('\D','');
+     all_dezonlineanz  = all_dezonlineanz + onlinetitcount.all;
+-%]
+% [% database %] - Monos [% libinfo.${"I0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.all %]
+[%
+
+  END;
+
+  anzahl.${orgunit.id}.mono    = monoanz;
+  anzahl.${orgunit.id}.zeit    = zeitanz;
+  anzahl.${orgunit.id}.lfdzeit = lfdzeitanz;
+  anzahl.${orgunit.id}.online  = onlineanz;
+  anzahl.${orgunit.id}.bibl    = biblanz;
+
+  all_dezbiblanz   = all_dezbiblanz + biblanz;
+
+END;
+
+-%]
+
+[%# USE dumper; dumper.dump(anzahl)%]
+\begin{center}
+\begin{shadowenv}
+\begin{tabular}{ll}
+\textbf{Anzahl Bibliotheken} & [% all_dezbiblanz %]\\
+&\\
+\textbf{Anzahl Medien}       & \\
+\emph{B"ucher} & [% all_dezmonoanz.chunk(-3).join('.') %]\\
+\emph{Zeitschriften} & [% all_dezzeitanz.chunk(-3).join('.') %]\\
+\emph{Lfd. Zeitschriften} & [% all_dezlfdzeitanz.chunk(-3).join('.') %]\\
+\textbf{Anzahl online recherchierbare Titel} & [% all_dezonlineanz.chunk(-3).join('.') %]\\
+\end{tabular}
+\end{shadowenv}
+\end{center}
+
+\newpage
 
 [% FOREACH orgunit IN dez_orgunits %]
 
 \section{[% orgunit.desc %]}
+
+[% IF orgunit.image %]
+\vspace{2cm}
+
+\begin{center}
+\includegraphics[height=12cm]{[% config.get('image_root_path') %]/openbib/[% orgunit.image %]}
+\end{center}
+
+\vspace{1cm}
+[% END %]
+
+\begin{center}
+\begin{shadowenv}
+\begin{tabular}{ll}
+\textbf{Anzahl Bibliotheken} & [% anzahl.${orgunit.id}.bibl %]\\
+&\\
+\textbf{Anzahl Medien}       & \\
+\emph{B"ucher} & [% anzahl.${orgunit.id}.mono.chunk(-3).join('.') %]\\
+\emph{Zeitschriften} & [% anzahl.${orgunit.id}.zeit.chunk(-3).join('.') %]\\
+\emph{Lfd. Zeitschriften} & [% anzahl.${orgunit.id}.lfdzeit.chunk(-3).join('.') %]\\
+\textbf{Anzahl online recherchierbare Titel} & [% anzahl.${orgunit.id}.online.chunk(-3).join('.') %]\\
+\end{tabular}
+\end{shadowenv}
+\end{center}
+
+\newpage
 
 [%   FOREACH database IN dez_orgunit_pools.${orgunit.id} %]
 
@@ -372,7 +623,7 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 
 \begin{shadowenv}
 \begin{center}
-\includegraphics[width=15cm]{[% database %]_map.png}
+\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I1000"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
 \end{shadowenv}
 
@@ -381,5 +632,335 @@ Sie fortan den neuen elektronischen Bibliotheksf"uhrer.  \vspace{1cm}
 [%   END %]
 
 [%   END %]
+
+\chapter{Allgemeine Informationen}
+
+\section{Koordinierung von Informations- und Medienbeschaffungen an den Hochschulen des Landes}
+
+\minisec{Erlass des Ministeriums für Schule, Wissenschaft und Forschung des Landes Nordrhein-Westfalen vom 07. Mai 2002 (Aktenzeichen 514 – 34.5)}
+
+Der Bezugserlass erhält hiermit nachstehende Fassung:
+
+
+Um eine sparsame Mittelbewirtschaftung und eine hohe Effizienz der im
+Hochschulbereich für die Informations- und Medienbeschaffung
+verwendeten Mittel sicherzustellen, ist wie folgt zu verfahren:
+
+\begin{enumerate}
+\item Zwischen der zentralen Hochschulbibliothek oder der entsprechenden Einrichtung nach § 30 Hochschulgesetz (HG) und den dezentralen Bibliotheken oder den entsprechenden Einrichtungen und Betriebseinheiten der Fachbereiche (§ 29 HG) sind schriftlich grundsätzliche Erwerbungsabsprachen zu treffen, die durch Absprachen im Einzelfall ergänzt werden.
+
+\item Die dezentralen Bibliotheken oder die entsprechenden Einrichtungen und Betriebseinheiten der Fachbereiche (§ 29 HG) haben sich mit der zentralen Hochschulbibliothek immer abzustimmen
+
+\begin{itemize}
+\item vor dem Abonnieren und Abbestellen einer Zeitschrift,
+\item vor dem Kauf oder der (unentgeltlichen) Übernahme zurückliegender Zeitschriftenjahrgänge,
+\item vor dem Kauf und Abbestellen von Loseblattwerken,
+\item vor dem Kauf gedruckter Einzel- oder Fortsetzungswerke im Gesamtwert von mehr als 200 €,
+\item vor dem Kauf oder Lizenzerwerb elektronischer Medien über 100 €, gleichgültig ob auf physischen Datenträgern (Disketten, CD-ROM o. ä.) oder als Online-Version. Vorstehendes gilt entsprechend bei der Beschaffung von Literatur oder elektronischen Medien aus besonderen Mitteln
+(z. B. Mittel aus Beiträgen Dritter).
+\end{itemize}
+\item Die nach dem Erlass vom 29.08.1973 erarbeiteten hochschulinternen Richtlinien für die sachgemäße Vergabe der Aufträge an den Buchhandel und die Vergabe der Buchbinderarbeiten sind fortzuschreiben und ggf. um weitere Bereiche der Zusammenarbeit (z. B. Erschließung, Organisation) zu ergänzen.
+\end{enumerate}
+
+\newpage
+
+\section{Richtlinien über die Aussonderung und Archivierung von Bibliotheksgut, Behandlung von Geschenken und Durchführung des Schriftentausches in den Hochschulen des Landes Nordrhein-Westfalen und der Deutschen Zentralbibliothek für Medizin}
+
+%\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
+%\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}
+
+\minisec{Erlass vom 23.01.1990 - III A 6 - 7044.5 - in der Fassung vom 30. August 2002 - 514-5.02.10.07 des MSWF NRW}
+
+Der Bezugserlass erhält hiermit nachstehende Fassung:
+
+\minisec{1. Allgemeines}
+
+Die nachstehenden Richtlinien gelten für die Hochschulbibliotheken des
+Landes Nordrhein-Westfalen sowie für die Deutsche Zentralbibliothek
+der Medizin.
+
+Bibliotheksgut im Sinne dieser Richtlinien sind Druckschriften und
+sonstige Medien.
+
+\minisec{2.1. Aussonderung}
+
+Die Aussonderung von Bibliotheksgut ist zur Sicherung der
+Bestandsqualität und zur Vermeidung von unnötigem Aufwand für
+Aufbewahrung, Erhaltung und Erschließung notwendig. Bibliotheksgut ist
+auszusondern, wenn es für die Forschung und Lehre entbehrlich oder
+wenn es unbrauchbar geworden ist.
+
+Entbehrlich ist Bibliotheksgut insbesondere dann, wenn es wegen der
+Änderung des Fächerspektrums nicht mehr dem Profil der jeweiligen
+Hochschule entspricht und nicht von besonderem Quellenwert oder
+historischer Bedeutung ist, dem Sammelauftrag oder der
+Versorgungsfunktion der Bibliothek nicht oder nicht mehr entspricht,
+dem historisch gewachsenen Charakter des Bestandes nicht entspricht
+oder mehrfach in der Bibliothek bzw. im Bibliothekssystem vorhanden
+ist und nicht häufig genutzt wird.  Unbrauchbar ist Bibliotheksgut,
+wenn es nicht mehr benutzbar oder eine Benutzung nicht mehr zumutbar
+ist und es nicht mit vertretbarem Aufwand wieder hergerichtet werden
+kann.
+
+\minisec{2.2. Archivierung}
+
+\minisec{2.2.1 Allgemeines}
+
+Es ist zu gewährleisten, dass Druckschriften und sonstige Medien, die
+für Wissenschaft, Kultur und Gesellschaft in Nordrhein-Westfalen von
+dauerhaftem Wert sind, in mindestens einem Exemplar im Land archiviert
+werden und somit auf Dauer erhalten und benutzbar bleiben.
+
+Die Aufgabe der Archivierung und Bestandserhaltung wird von den
+Bibliotheken gemeinsam nach Maßgabe dieser Richtlinien wahrgenommen.
+
+Den drei Universitäts- und Landesbibliotheken Bonn, Düsseldorf und
+Münster, der Universitäts- und Stadtbibliothek Köln und - für die
+technischen Fachgebiete - der Hochschulbibliothek der Technischen
+Hochschule Aachen kommt hierbei eine besondere Verantwortung zu.
+
+\minisec{2.2.2 Lokale Archivierungspflicht}
+
+Archivierungspflicht besteht für Veröffentlichungen der eigenen
+Hochschule (Dissertationen, Habilitationsschriften u.ä.),
+Pflichtexemplare in den drei Universitäts- und Landesbibliotheken,
+Bestände mit vertraglichen oder gesetzlichen Bindungen,
+Regionalliteratur in Bibliotheken mit regionalem Sammelauftrag,
+insbesondere den Universitäts- und Landesbibliotheken, die Bestände
+der Deutschen Zentralbibliothek für Medizin, der ehemaligen Deutschen
+Zentralbibliothek für Landbauwissenschaften und der Bibliothek der
+Deutschen Sporthochschule Köln, die Bestände der Sondersammelgebiete
+der Universitätstbibliotheken Bonn, Köln und Münster und des
+Sammelschwerpunktes der Fachhochschulbibliothek Köln, Sondersammlungen
+und historisch gewachsene Bestandssegmente, deren besonderer
+wissenschaftlicher oder kultureller Wert in ihrer Geschlossenheit
+liegt.  Bibliotheken mit eigenen Sammelschwerpunkten über die
+offiziellen Sammelgebiete hinaus übernehmen hierfür die Verantwortung
+zur Archivierung in Absprache mit den unter Ziffer 2.2.1, Abs. 3
+genannten Bibliotheken.
+
+\minisec{3. Zuständigkeit}
+
+Die Bibliotheksleiterin/der Bibliotheksleiter prüft, ob Bibliotheksgut
+ausgesondert oder archiviert wird und ob Bibliotheksgut, das als
+Geschenk oder im Tausch angeboten wird, in den Bestand aufgenommmen
+wird; sie/er trägt die Verantwortung dafür, dass die
+haushaltsrechtlichen Bestimmungen eingehalten werden. Die
+Bibliotheksleiterin/der Bibliotheksleiter kann die Zuständigkeit
+delegieren.
+
+\minisec{4. Gegenstand der Aussonderung und Archivierung}
+
+\minisec{4.1. Monographien}
+
+Die Universitäts- und Landesbibliotheken, die Hochschulbibliothek der
+Technischen Hochschule Aachen und die Universitäts- und
+Stadtbibliothek Köln haben die Archivierungspflicht für erhaltenswerte
+monographische Literatur, die nicht unter die lokale
+Archivierungspflicht anderer Bibliotheken fällt (s. Ziffer 2.2.2), um
+diesen damit die Möglichkeit der Aussonderung zu geben.
+
+Monographien, die im Sinne von Ziffer 2.2 erhaltenswert und nur in
+einem Exemplar im Lande vorhanden sind, werden in der Regel von der
+Bibliothek archiviert, in deren Bestand sich dieses Exemplar befindet.
+
+Dissertationen fremder Hochschulen müssen nicht auf Dauer aufbewahrt
+werden, sofern sie nicht als Pflichtexemplar eingegangen sind oder zum
+Sondersammelgebiet gehören.
+
+\minisec{4.2. Zeitschriften}
+
+Zu erhaltende Zeitschriften (s. Ziffer 2.2) aus laufendem Abonnement,
+die nur einmal im Lande vorhanden sind, werden von der Bibliothek
+archiviert, die das Abonnement hält; mehrfach im Lande vorhandene von
+der Bibliothek, bei der die Zeitschrift am vollständigsten vorhanden
+ist. Bei gleichem Bestand haben die Universitäts- und
+Landesbibliotheken, die Hochschulbibliothek der Technischen Hochschule
+Aachen und die Universitäts- und Stadtbibliothek Köln die
+Archivierungspflicht.
+
+Die aussondernde Bibliothek muss anhand der Zeitschriftendatenbank
+(ZDB) die Bestände der an den Leihverkehr angeschlossenen
+nordrhein-westfälischen Bibliotheken prüfen und gegebenenfalls an die
+archivierende Bibliothek Bände zur Lückenergänzung abgeben. Dublette
+Bände können ausgesondert werden.
+
+Bei abgeschlossenen Zeitschriften ist zu verfahren wie bei
+Monographien (s. Ziffer 4.1).
+
+\minisec{4.3. Zeitungen}
+
+Zeitungen sind zu nur archivieren, wenn sie unter das
+Pflichtexemplargesetz fallen oder Regionalbezug haben. Die
+Archivierungspflicht obliegt im Wesentlichen den Universitäts- und
+Landesbibliotheken.
+
+\minisec{4.4. Geschenke und Tauschgaben}
+
+Wird der Bibliothek Bibliotheksgut als Geschenk oder im Tausch
+(s. Ziffer 8) angeboten, so ist nach den Kriterien des § 63 Abs.1 LHO
+zu prüfen, ob es in den Bestand aufgenommen wird. Bei der Prüfung ist
+ein strenger Maßstab anzulegen, insbesondere sind Verwaltungsaufwand
+und Kosten, die durch Aufnahme in den Bestand und Erhaltung entstehen
+würden, zu berücksichtigen.
+
+Unterbleibt eine Aufnahme in den Bestand, so ist - ggf. nach einer
+zeitlich befristeten Zwischenlagerung - entweder eine Aussonderung
+nach den Ziffern 5.1 bis 5.4 oder die Rückgabe an den Schenker
+vorzusehen bzw. bei Tauschgaben das Bibliotheksgut zurückzuweisen.
+
+\minisec{4.5. Nicht inventarisiertes Bibliotheksgut}
+
+Bibliotheksgut, das wegen seiner vorübergehenden Bedeutung nicht
+inventarisiert worden ist (s. Ziffer 7), kann ohne weiteres
+ausgesondert werden.
+
+\minisec{5. Formen der Aussonderung}
+
+Die Aussonderung nicht zu archivierenden Bibliotheksgutes erfolgt
+durch Veräußerung, Abgabe an eine andere Bibliothek, unentgeltliche
+Abgabe an jedermann oder Makulierung.  Die Aussonderung von
+Bibliotheksgut ist gemäß Nr. 6.3 VV zu § 73 LHO in der Regel im
+Zugangsverzeichnis oder auf andere, mit geringstmöglichem Aufwand
+verbundene Weise, zu vermerken (z. B. in Aktenvermerken). Im
+ausgesonderten Bibliotheksgut ist der Eigentumsvermerk ungültig zu
+machen, falls das Bibliotheksgut nicht unmittelbar makuliert wird.
+
+In den regionalen und überregionalen Literaturnachweisen ist die
+Aussonderung nachzuvollziehen.
+
+\minisec{5.1. Veräußerung}
+
+Nicht zu archivierendes Bibliotheksgut sollte von den
+Hochschulbibliotheken und der Deutschen Zentralbibliothek für Medizin
+im Rahmen der personellen Ressourcen unter Berücksichtigung des
+Wirtschaftlichkeitsgebotes veräußert werden. Die Veräußerung ist
+gem. § 63 Abs. 3 LHO nur zum vollen Wert zulässig, der sich nach dem
+auf dem Antiquariatsmarkt zu erzielenden Erlös bestimmt. Der Erlös
+fließt dem Erwerbungstitel der Hochschulbibliothek bzw. der Deutschen
+Zentralbibliothek für Medizin zu.
+
+Nur mit Zustimmung des Ministeriums für Schule, Wissenschaft und
+Forschung dürfen veräußert werden: Einzelwerke im Wert von über 2.500
+Euro Handschriften und Nachlässe Druckschriften, die vor 1850
+erschienen sind anderes Bibliotheksgut von besonderer Bedeutung 5.2
+Abgabe an eine andere Bibliothek
+
+Verlagerungen von Beständen sind weitgehend zu vermeiden. Ausnahmen
+sind die Lücken\-ergänzung von Zeitschriften (s. Ziffer 4.2) und die
+Abgabe von Spezialbeständen an die unter Ziffer 2.2.1 Abs. 3 und 2.2.2
+genannten Bibliotheken oder an Bibliotheken außerhalb des
+Hochschulbereichs des Landes, die das entsprechende Gebiet in
+besonderer Weise pflegen. In diesen Fällen besteht Anbietungspflicht.
+
+Bei der Abgabe von Bibliotheksgut an eine andere Hochschulbibliothek
+des Landes Nordrhein-Westfalen unterbleibt eine Werterstattung bis zu
+der in Nr. 2 VV zu § 61 LHO genannten Wertgrenze von z. Zt. 100.000 DM
+= 51.129,19 Euro im Einzelfall, bei Abgabe von Bibliotheksgut an eine
+Bibliothek des Landes außerhalb des Hochschulbereichs kann auf eine
+Werterstattung verzichtet werden, wenn der volle Wert des
+Bibliotheksguts im Einzelfall oder je Jahr den Betrag von z. Zt. 5.000
+DM = 2.556,46 Euro nicht übersteigt. Die Wertermittlung ist mit
+geringstmöglichem Aufwand durchzuführen.
+
+\minisec{5.2. Unentgeltliche Abgabe}
+
+Bibliotheksgut, für das nachweislich auf dem Antiquariatsmarkt kein
+Erlös zu erzielen ist oder dessen Erhaltungszustand eine Veräußerung
+ausschließt, kann unentgeltlich abgegeben werden. Der Nachweis ist mit
+geringstmöglichem Aufwand zu führen.
+
+\minisec{5.3 Makulierung}
+
+Bibliotheksgut, für das nachweislich auf dem Antiquariatsmarkt kein
+Erlös zu erzielen ist oder dessen Erhaltungszustand eine Veräußerung
+ausschließt, kann makuliert werden. Der Nachweis ist mit
+geringstmöglichem Aufwand zu führen.
+
+\minisec{6. Aussonderung und Archivierung durch dezentrale Bibliotheken der Hochschulen}
+
+Aussonderung und Archivierung von Bibliotheksgut in den dezentralen
+Bibliotheken einer Hochschule sind mit der Zentralbibliothek zu
+koordinieren.
+
+Ausgesondertes Bibliotheksgut ist der Zentralbibliothek anzubieten,
+die entscheidet, ob sie dieses übernimmt oder an andere Bibliotheken
+weiterleitet oder ob sie der Veräußerung, der unentgeltlichen Abgabe
+oder Makulierung zustimmt.
+
+\minisec{7. Verzicht auf Inventarisierung}
+
+Bei Bibliotheksgut, das nicht auf Dauer in den Bestand aufgenommen
+wird, kann auf eine Inventarisierung verzichtet werden. In diesem Fall
+ist das Bibliotheksgut nur mit geringstmöglichem Aufwand für die
+Bbiliotheksstatistik zu erfassen.
+
+Zu diesem Bibliotheksgut zählen insbesondere:
+
+\begin{itemize}
+\item Druckschriften mit nur vorübergehender Bedeutung (z. B. Zeitungen für
+Zwecke der aktuellen Information, Telefon- und Kursbücher, amtliche
+Handausgaben, Bezugsquellenverzeichnisse, Wörterbücher zum
+Handgebrauch, Vorlesungsverzeichnisse, Mehrfachexemplare von
+Lehrbüchern und Studienmaterialien).
+
+\item Bei Wörterbüchern zum Handgebrauch und bei Mehrfachexemplaren von
+Lehrbüchern und Studienmaterialien mit einem Stückpreis von 30,- Euro
+und mehr sollte allerdings nur dann auf eine Inventarisierung
+verzichtet werden, wenn damit auch eine messbare
+Verwaltungsvereinfachung verbunden ist.
+\end{itemize}
+
+\minisec{8. Tausch}
+
+Schriftentausch ist als Erwerb und zugleich als Veräußerung anzusehen
+und - soweit die in § 63 LHO genannten Voraussetzungen vorliegen -
+haushaltsrechtlich zulässig.
+
+Tauschbeziehungen sollen grundsätzlich nur dann unterhalten werden,
+wenn sie für den Bestandsaufbau von besonderem Nutzen sind und
+inhaltlich dem Sammelauftrag der Bibliothek entsprechen. Gelangt im
+Tauschverkehr entbehrliches Bibliotheksgut in die Bibliothek, so ist
+es entweder zurückzuweisen oder nach den Ziffern 5.1 bis 5.4
+auszusondern. Es darf nicht, nur um das Prinzip der Gleichwertigkeit
+von Gabe und Gegengabe zu wahren, dauernd oder vorübergehend in den
+Bestand aufgenommen werden.
+
+Bei Tauschbeziehungen ist auf die Ausgewogenheit von Leistung und
+Gegenleistung zu achten. Ist der Tausch länger als drei Jahre zum
+Nachteil der Hochschulbibliothek nicht mehr ausgewogen, so ist der
+Tausch einzustellen. Soll aus wichtigen Gründen der Tausch dennoch
+fortgesetzt werden, so ist dies aktenkundig zu machen. Zur Fortsetzung
+des Tausches aus wichtigen Gründen wird hiermit meine Zustimmung
+erteilt (Nr. 2.3 VV zu § 63 LHO).
+
+Für den Dissertationentausch gelten die Absätze eins bis drei
+nicht. Bei der Aufnahme von Dissertationen anderer Hochschulen in den
+Bestand sind strenge Maßstäbe anzulegen.
+
+Dissertationen der eigenen Hochschule sind für Tauschzwecke in
+angemessen kleiner Stückzahl vier Jahre aufzubewahren.
+
+Schriften der eigenen Hochschule, die im Interesse von Forschung und
+Lehre oder zur Unterrichtung der Öffentlichkeit hergestellt sind,
+dürfen von der Hochschulbibliothek an andere Bibliotheken und
+wissenschaftliche Institutionen ohne Beachtung des
+Gegenseitigkeitsprinzips weitergegeben werden (§ 63 Abs. 3 Satz 2
+LHO).
+
+Im Auftrag
+
+(Helf)
+
+Ministerium für Schule, Wissenschaft und Forschung des Landes
+Nordrhein-Westfalen
+
+\newpage
+
+\section{Geb"audeplan der Universit"at zu K"oln}
+
+\begin{center}
+\includegraphics[width=17cm]{[% config.get('image_root_path') %]/openbib/geo/gebaeudeplan.jpg}
+\end{center}
 
 \end{document}

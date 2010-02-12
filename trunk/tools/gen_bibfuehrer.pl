@@ -108,17 +108,27 @@ my $logger = get_logger();
 my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
 $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-my $config      = OpenBib::Config->instance;
-my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+my $config        = OpenBib::Config->instance;
+my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+my $img_base_path = $config->{image_root_path}."/openbib/geo";
+
+if (! -e $img_base_path){
+    mkdir $img_base_path, '755';
+}
 
 foreach my $database (keys %{$dbinfotable->{use_libinfo}}){
     my $libinfo = $config->get_libinfo($database);
-    my ($lat,$long) = split(",",$libinfo->{"I1000"}->[0]->{content});
-    my $filename="${database}_map.png";
+    my $coordinates = $libinfo->{"I1000"}->[0]->{content};
+    my ($lat,$long) = split("\\s*,\\s*",$coordinates);
+
+    $coordinates=~s/\s*,\s*/-/g;
+    $coordinates=~s/\./_/g;
     
+    my $filename="${img_base_path}/${coordinates}_map.png";
+
     if ($lat && $long && ! -e $filename){
         # URL fuer dne StaticMap-Dienst des OpenStreetMap-Projektes
-        my $url = "http://ojw.dev.openstreetmap.org/StaticMap/?lat=$lat&lon=$long&z=15&h=500&mlat0=$lat&mlon0=$long&show=1";
+        my $url = "http://ojw.dev.openstreetmap.org/StaticMap/?lat=$lat&lon=$long&z=16&w=1000&h=1000&mlat0=$lat&mlon0=$long&fmt=png&show=1";
 
         $logger->info("Hole OSM-Karte via $url");
                 
@@ -138,7 +148,7 @@ my $template = Template->new({
         ABSOLUTE       => 1,
     }) ],
     OUTPUT_PATH   => './',
-    OUTPUT        => "$outputbasename.$mode",
+    OUTPUT        => "$outputbasename.tex",
 });
 
 
@@ -149,12 +159,15 @@ my $ttdata = {
     msg          => $msg,
 };
 
-$template->process("bibfuehrer_$mode", $ttdata) || do { 
+$template->process("bibfuehrer_tex", $ttdata) || do { 
     print $template->error();
 };
 
-system("pdflatex $outputbasename.tex");
-system("pdflatex $outputbasename.tex");
+if ($mode eq "pdf"){
+    system("pdflatex $outputbasename.tex");
+    system("pdflatex $outputbasename.tex");
+    system("rm $outputbasename.aux $outputbasename.out $outputbasename.log $outputbasename.tex $outputbasename.toc");
+}
 
 sub print_help {
     print "gen-bibfuehrer.pl - Erzeugen des Bibliotheksfuehrers\n\n";
@@ -166,16 +179,32 @@ sub print_help {
 }
 
 sub filterchars {
-  my ($content)=@_;
+  my ($content,$chapter)=@_;
 
+  # Log4perl logger erzeugen
+  my $logger = get_logger();
+
+  $logger->debug("Vorher: '$content'");
+
+  # URL's sind verlinkt
+  $content=~s/>(http:\S+)</>\\url{$1}</g;
+  $content=~s/\&#39;/'/g;
+
+  $content=~s/<a.*?>//g;
+  $content=~s/<\/a>//g;
+  $content=~s/^\s+//g;
+  $content=~s/\s+$//g;
+  $content=~s/<br \/>$/ /g;
+  $content=~s/<br.*?>/\\newline /g unless ($chapter);
+#  $content=~s/ (http:\S+)/ \\url{$1}/g;    
   $content=~s/<.*?>//g;
   $content=~s/\$/\\\$/g;
   $content=~s/\&gt\;/\$>\$/g;
   $content=~s/\&lt\;/\$<\$/g;
   $content=~s/\&\#\d+\;//g;
-  $content=~s/\{/\\\{/g;
-  $content=~s/\}/\\\}/g;
-  $content=~s/#/\\\#/g;
+#  $content=~s/\{/\\\{/g;
+#  $content=~s/\}/\\\}/g;
+#  $content=~s/#/\\\#/g;
 
   # Entfernen
   $content=~s/±//g;
@@ -200,6 +229,7 @@ sub filterchars {
   $content = encode("utf8",$content);
   $content=~s/\x{c2}\x{a0}//g;
   $content=~s/\x{e2}\x{80}\x{89}//g;
+  $content = decode("utf8", $content);
   # Umlaute
   #$content=~s/\&uuml\;/ü/g;
   #$content=~s/\&auml\;/ä/g;
@@ -241,6 +271,8 @@ sub filterchars {
   #$content=~s/\&#363\;/\\=\{u\}/g; # u oberstrich
   #$content=~s/\&#362\;/\\=\{U\}/g; # U oberstrich
 
+  $logger->debug("Nachher: '$content'");
+  
   return $content;
 }
 

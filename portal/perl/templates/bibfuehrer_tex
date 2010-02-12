@@ -309,8 +309,7 @@ Universit"ats- und Stadtbibliothek K"oln\\
                 'I0235', # msg.maketext("I0235") # Online-Katalogisierung seit Erwerbungsjahr
                 'I0240', # msg.maketext("I0240") # Mitarbeit am KUG
                 'I0250', # msg.maketext("I0250") # Sigel in ZDB
-                'I0280', # msg.maketext("I1000") # Geo-Koordinaten
-                         # msg.maketext("I2080") # Geo-Koordinaten
+                'I0280', # msg.maketext("I0280") # Geo-Koordinaten
                ];
 -%]
 
@@ -338,19 +337,40 @@ Universit"ats- und Stadtbibliothek K"oln\\
 
 \chapter{Vorwort}
 
-Mit dem Bibliotheksf"uhrer des Jahres 2005 wurde die Publikation einer
-Print-Ausgabe eingestellt und die Informationen zu den Bibliotheken
-der Universit"at zu K"oln nur noch online auf den Webseiten angeboten.
+Mit dem Bibliotheksf"uhrer des Jahres 2005 wurde die Publikation der
+kostenintensiven Print-Ausgabe eingestellt. Die Informationen zu den
+Bibliotheken der Universit"at zu K"oln werden seither direkt auf den
+Webseiten der Abteilung UGK als Online-Bibliotheksf"uhrer unter dem
+URL
 
-Da jedoch weiterhin ein gro"ser Bedarf nach einer umfassenden "Ubersicht
-aller Bibliotheken in einer ausdruckbaren Publikation besteht, bieten
-wir nun einen automatisch aus den Webseiten generierten neuen
-Bibliotheksf"uhrer an.
+\url{http://www.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/index_ger.html}
 
-\minisec{URL des elektronischen Bibliotheksf"uhrers}
+bereit gestellt.
 
-Unter dem URL \texttt{http://kug.ub.uni-koeln.de/bibliotheksfuehrer/} finden
-Sie fortan den neuen elektronischen Bibliotheksf"uhrer.
+Die im Bibliotheksf"uhrer enthaltenen Informationen (ausgenommen
+Geo-Position und Lageplan) beruhen auf der Selbstangabe der jeweiligen
+Bibliotheken. "Anderungen werden umgehend eingepflegt. Im Interesse
+aller Nutzer sind wir auf die kontinuierlichen Meldungen der
+Bibliotheken angewiesen! Aktualisierungen k"onnen einfach per E-Mail an
+\texttt{gk@ub.uni-koeln.de} geschickt werden.
+
+Da jedoch weiterhin ein gro"ser Bedarf nach einer umfassenden
+"Ubersicht aller Bibliotheken in einer ausdruckbaren Publikation
+besteht, bieten wir nun einen automatisch aus den Webseiten
+generierten neuen Bibliotheksf"uhrer im pdf-Format an. Dieser Service
+wird durch eine technische Erweiterung der KUG-Plattform
+erm"oglicht. Die Aktualisierung dieses Bibliotheksf"uhrers findet
+t"aglich statt. Gegen"uber der ehemaligen statischen Print-Ausgabe
+wurden die Informationen u.a. durch Lagepl"ane und statistische
+Informationen deutlich erweitert.
+
+\minisec{URL des elektronischen Bibliotheksf"uhrers im pdf-Format}
+
+Unter dem URL
+
+\url{http://kug.ub.uni-koeln.de/bibliotheksfuehrer/}
+
+finden Sie diesen elektronischen Bibliotheksf"uhrer.
 
 \minisec{Angabe der ISIL}
 

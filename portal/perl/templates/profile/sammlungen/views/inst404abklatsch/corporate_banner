@@ -1,0 +1,9 @@
+<!-- Begin Template: corporate_banner -->
+	<div id="header2">
+		<div id="header_logo"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=20" title="Startseite der Sammlung" id="header_usb_siegel_small"></a></div>
+
+                <div id="header_right"><span id="header2_uni_schriftzug">Abklatsch-Sammlung</span>
+		<span id="header2_usb_schriftzug">Arbeitsstelle für Papyrologie, Epigraphik und Numismatik der Nordrhein-Westfälischen Akademie der Wissenschaften und der Künste am Institut für Altertumskunde der Universität zu Köln</span><a href="http://www.ub.uni-koeln.de" title="Startseite der USB Köln" id="header_uni_siegel_small" target="_blank"></a>
+                </div>
+       </div>
+<!-- End Template: corporate_banner -->

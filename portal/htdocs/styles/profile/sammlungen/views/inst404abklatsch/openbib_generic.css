@@ -626,7 +626,7 @@ dt.review {
 }
 
 #header2_uni_schriftzug {
-  border-bottom: 2px solid #00089e; /* Linie im Kopf */
+  border-bottom: 2px solid #5e5e5e; /* Linie im Kopf */
   padding-bottom: 3px;
   display: block;
   margin: 16px 110px 0 110px;

@@ -84,7 +84,7 @@
                 'T0646', # msg.maketext("T0646") Filmbesitz
                 'T0015', # msg.maketext("T0015") Sprache
                 'T0516', # msg.maketext("T0516") Sprache
-                'T0750', # msg.maketext("T0750") Abstract
+#                'T0750', # msg.maketext("T0750") Abstract
                 'T0503', # msg.maketext("T0503") Uebers. HST
                 'T0026', # msg.maketext("T0026") NE/R
                 'T0800', # msg.maketext("T0800") Art/Inhalt Medienart

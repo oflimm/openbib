@@ -1,6 +1,6 @@
 [% IF circset.size <= 0 %]
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Inventarnummer") %]</td></tr>
+<tr align="center"><td class="headline">Institut</td><td class="headline">[% msg.maketext("Inventarnummer") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
 <tr align="center"><td><strong>

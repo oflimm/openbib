@@ -52,7 +52,7 @@
                 'T0655', # msg.maketext("T0655") EDV Adress
                 'T0451', # msg.maketext("T0451") GesTit Vorl
                 'T0590', # msg.maketext("T0590") HSTQuelle
-                'T0600', # msg.maketext("T0600-inst404abklatsch") Schublade
+#                'T0600', # msg.maketext("T0600-inst404abklatsch") Schublade
                 'T0407', # msg.maketext("T0407") Massstab
                 'T0434', # msg.maketext("T0434") Sonst. Angaben
                 'T0437', # msg.maketext("T0437") Begleitmat.

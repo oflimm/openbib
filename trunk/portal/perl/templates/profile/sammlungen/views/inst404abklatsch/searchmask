@@ -111,18 +111,15 @@ $(document).ready(function(){
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sb"        value="sql" />
 <input type="hidden" name="st"        value="2" />
-<input type="hidden" name="profil"        value="dbauswahl" />
+<input type="hidden" name="hitrange"  value="100" />
+<input type="hidden" name="sorttype"  value="author" />
+<input type="hidden" name="autoplus"  value="1" />
+<input type="hidden" name="profil"    value="dbauswahl" />
 
 <center>
 <table width="70%">
-<tr><td>
+<tr><td style="vertical-align:top;padding:20px;">
 [% PROCESS common/subtemplate name="searchmask_query" %]
-<table width="100%">
-<tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
-<tr><td class="boxedclear" id="searchoptions">
-[% PROCESS common/subtemplate name="searchmask_options" %]
-</td></tr>
-</table>
 
 </form>
 
@@ -146,67 +143,66 @@ $(document).ready(function(){
 </td>
 <td>
 
-<p>
-Die einzelnen Abklatsche wurden mit den folgenden Feldern erfaßt, von
-denen die hervorgehobenen über die öffentlich zugängliche
-Abklatsch-Datenbank abgefragt werden können:
-</p>
+<p> Die einzelnen Abklatsche wurden mit den folgenden Feldern erfaßt,
+die hier recherchiert werden k&ouml;nnen bzw. &uuml;ber Register
+erschlossen sind: </p>
 
-<b>1. Inventar-Nummer</b><br/>
+<dl>
+<dt>1. Kurztitel der Inschrift</dt>
 
-<p>
+<dd>
+in der Regel nach der Edition in der IK-Reihe oder in Epigraphica Anatolica
+</dd>
+
+<dt>2. Ort der Inschrift</dt>
+
+<dd>
+hierzu Werteliste, z.B. Ephesus, Knidos, Oinoanda
+</dd>
+
+<dt>3. Kategorie</dt>
+
+<dd>
+Zugang &uuml;ber Eingabemaske sowie <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0710">Register</a>, z.B. Ehrendekret, Grabinschrift usw.
+</dd>
+
+<dt>4. Edition und SEG-Eintrag</dt>
+
+<dd>
+Edition in der Regel nach IK-Reihe oder Epigraphica Anatolica, z.B. "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p. 3-5, Nr. 496", "SGO 01/15/04"
+SEG-Eintrag nach Möglichkeit letzter Eintrag im Supplementum Epigraphicum Graecum, z.B. "SEG 39, 1989, Nr. 1132" 
+<br/>
+Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0335">Register</a> 
+</dd>
+
+<dt>5. Inventarnummer</dt>
+
+<dd>
 "Dubl." hinter derselben Inventarnr. bedeutet, dass mehrere identische Abklatsche ein und desselben Steins vorliegen. 
 "A/B/C..." hinter derselben Inventarnr. kennzeichnet  verschiedene bzw. sich ergänzender Abklatsche ein und desselben Steins. 
 "a/b/c..." hinter derselben Inventarnr. dient der Unterscheidung mehrerer verschiedener Inschriften, die sich auf ein und demselben Abklatsch befinden. 
 "???" hinter einer Inventarnr. markieren in der Erfassungsphase den Abklatsch als noch nicht identifiziert bzw. unpubliziert.
 Die Abklatsche der Diogenes-Fragmente aus Oinoanda sind in der Weise inventarisiert, dass die Inventarnummer der YF-Nummer  im Bereich 1000-1400 entspricht, z.B. YF 46 = Inventarnr. 1046. 
-</p>
+</dd>
 
-2. Schublade<br/>
 
-<b>3. Kurztitel der Inschrift</b><br/>
+<dt>6. Aufbewahrungsort der Inschrift</dt>
 
-<p>
-in der Regel nach der Edition in der IK-Reihe oder in Epigraphica Anatolica
-</p>
+<dd>
+Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0410">Register</a>
+</dd>
 
-<b>4. Ort der Inschrift</b><br/>
+<dt>7. Datierung der Inschrift</dt>
 
-<p>
-hierzu Werteliste, z.B. Ephesus, Knidos, Oinoanda
-</p>
+<dd>
+Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0425">Register</a>, z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"
+</dd>
 
-5. Aufbewahrungsort der Inschrift<br/>
+<dt>Weitere Kategorien</dt>
+<dd>Dar&uuml;berhinaus wurden die Buchstabengröße und Charakteristika,
+Vermerke auf dem Abklatsch sowie weiterer Text erfasst</dd>
 
-<b>6. Datierung der Inschrift</b><br/>
-
-<p>
-hierzu Werteliste, z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"
-</p>
-
-<b>7. Kategorie</b><br/>
-
-<p>
-hierzu Werteliste, z.B. Ehrendekret, Grabinschrift usw.
-</p>
-
-<b>8. Edition</b><br/>
-
-<p>
-in der Regel nach IK-Reihe oder Epigraphica Anatolica, z.B. "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p. 3-5, Nr. 496", "SGO 01/15/04"
-</p>
-
-<b>9. SEG-Eintrag</b><br/>
-
-<p>
-nach Möglichkeit letzter Eintrag im Supplementum Epigraphicum Graecum, z.B. "SEG 39, 1989, Nr. 1132" 
-</p>
-
-10. Buchstabengröße und Charakteristika<br/>
-
-11. Vermerke auf dem Abklatsch<br/>
-
-12. Text<br/>
+</dl>
 
 </td>
 </tr>

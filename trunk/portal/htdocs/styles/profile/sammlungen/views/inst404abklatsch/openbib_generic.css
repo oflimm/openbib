@@ -796,6 +796,11 @@ dt.review {
 }
 
 .resultitems {
+  width: 75%;
+  margin-top: 5px;
+}
+
+.virtualsearch .resultitems  {
   width: 99.5%;
   margin-top: 5px;
 }

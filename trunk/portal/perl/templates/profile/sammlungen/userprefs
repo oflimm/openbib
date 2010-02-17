@@ -131,87 +131,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Einstellungen") %]</th></tr>
 <tr><td class="boxedclear">
-<!--
-<table>
-<tr><td valign="top">
-<table width="100%">
-<tr><th>[% msg.maketext("Recherchemaske") %]</td></tr>
-<tr><td class="options">
-<form method="post" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="action"    value="changemask" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<table>
-<tr><td align="left"><select name="setmask"><option value="simple"
-[%- IF userinfo.masktype == 'simple' -%]
- selected="selected"
-[%- END -%]
->[% msg.maketext("Einfache Recherchemaske") %]</option><option value="advanced"
-[%- IF userinfo.masktype == 'advanced' -%]
- selected="selected"
-[%- END -%]
->[% msg.maketext("Erweitere Recherchemaske") %]</option></select>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Art der Recherchemaske festlegen") %]" /></div></td></tr>
-</table>
-</form>
-</td></tr>
-</table>
-<p />
--->
-<table>
-<tr><td valign="top">
-<table width="100%">
-<tr><th>[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</td></tr>
-<tr><td class="options">
-<form method="post" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="action"    value="changeautocompletion" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<table>
-<tr><td align="left"><select name="setautocompletion"><option value="livesearch"
-[%- IF userinfo.autocompletiontype == 'livesearch' -%]
- selected="selected"
-[%- END -%]
->[% msg.maketext("LiveSearch") %]</option><option value="spelling"
-[%- IF userinfo.autocompletiontype == 'spelling' -%]
- selected="selected"
-[%- END -%]
->[% msg.maketext("Rechtschreibvorschläge") %]</option></select>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Art der Autovervollst&auml;ndigung festlegen") %]" /></div></td></tr>
-</table>
-</form>
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("LiveSearch") %]<!-- <span class="formInfo"><a href="/help/livesearch_[% qopts.l %].html?width=375" class="jTip" id="one" name="Ausgabe passender Personen und Schlagworte:"><img src="[% config.get('info_img') %]" /></a></span>--></td></tr>
-<tr><td class="options">
-<form method="post" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="action"    value="changelivesearch" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<table>
-<tr><td align="right"><input type="checkbox" name="livesearch_exact" value="1" [% IF livesearch.exact %]checked="checked"[% END %]/></td><td>[% msg.maketext("Exakte Übereinstimmung des Begriffes") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="livesearch_fs" value="1" [% IF livesearch.fs %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="livesearch_verf" value="1" [% IF livesearch.verf %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Personen") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="livesearch_swt" value="1" [% IF livesearch.swt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Schlagworten") %]</td></tr>
-<tr><td colspan="2">&nbsp;</td></tr>
-<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
-</table>
-</form>
-</td></tr>
-</table>
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("Rechtschreibvorschläge") %]</td></tr>
-<tr><td class="options">
-<form method="post" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="action"    value="changespelling" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<table>
-<tr><td align="right"><input type="checkbox" name="spelling_as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der Recherchemaske") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="spelling_resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] /></td><td>[% msg.maketext("In der Trefferliste") %]</td></tr>
-<tr><td colspan="2">&nbsp;</td></tr>
-<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
-</table>
-</form>
-</td></tr>
-</table>
-</td></tr>
-</table>
+
 <p />
 <table width="100%">
 <tr><th>[% msg.maketext("BibSonomy") %]</td></tr>
@@ -236,37 +156,7 @@
 </table>
 </td>
 
-<td>&nbsp;&nbsp;&nbsp;</td>
-
-<td valign="top">
-<table width="100%">
-<tr><th>[% msg.maketext("Suchfelder") %]</td></tr>
-<tr><td class="options">
-<form method="post" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="action" value="changefields" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<table>
-<tr><td align="right"><input type="checkbox" name="showfs"        value="1" [% IF fieldchoice.fs %]checked="checked"[% END %]/></td><td>[% msg.maketext("Freie Suche") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showhst"       value="1" [% IF fieldchoice.hst %]checked="checked"[% END %] /></td><td>[% msg.maketext("Hauptsachtitel (HST)") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showverf"      value="1" [% IF fieldchoice.verf %]checked="checked"[% END %] /></td><td>[% msg.maketext("Verfasser") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showkor"       value="1" [% IF fieldchoice.kor %]checked="checked"[% END %] /></td><td>[% msg.maketext("K&ouml;rperschaft") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showswt"       value="1" [% IF fieldchoice.swt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Schlagwort") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="shownotation"  value="1" [% IF fieldchoice.notation %]checked="checked"[% END %] /></td><td>[% msg.maketext("Notation") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showisbn"      value="1" [% IF fieldchoice.isbn %]checked="checked"[% END %] /></td><td>[% msg.maketext("ISBN") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showissn"      value="1" [% IF fieldchoice.issn %]checked="checked"[% END %] /></td><td>[% msg.maketext("ISSN") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showsign"      value="1" [% IF fieldchoice.sign %]checked="checked"[% END %] /></td><td>[% msg.maketext("Signatur") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showhststring" value="1" [% IF fieldchoice.hststring %]checked="checked"[% END %] /></td><td>[% msg.maketext("Titel-String") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showinhalt"    value="1" [% IF fieldchoice.inhalt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Abstrakt/Inhalt") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showgtquelle"  value="1" [% IF fieldchoice.gtquelle %]checked="checked"[% END %] /></td><td>[% msg.maketext("Serie/Band/Quelle") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showmart"      value="1" [% IF fieldchoice.mart %]checked="checked"[% END %] /></td><td>[% msg.maketext("Medienart") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showejahr"     value="1" [% IF fieldchoice.ejahr %]checked="checked"[% END %] /></td><td>[% msg.maketext("Erscheinungsjahr") %]</td></tr>
-<tr><td colspan="2">&nbsp;</td></tr>
-<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Suchfelder &auml;ndern") %]" /></div></td></tr>
-</table>
-</form>
-</td></tr>
-</table>
-</td></tr>
+</tr>
 
 </table>
 

@@ -46,7 +46,7 @@
                 'T0035', # msg.maketext("T0035") ErschLand
                 'T0435', # msg.maketext("T0435") Format
                 'T0508', # msg.maketext("T0508") Quelle
-                'T0433', # msg.maketext("T0433-inst404abklatsch") Buchstabengroesse
+#                'T0433', # msg.maketext("T0433-inst404abklatsch") Buchstabengroesse
                 'T0334', # msg.maketext("T0334") Material
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
@@ -56,7 +56,7 @@
                 'T0407', # msg.maketext("T0407") Massstab
                 'T0434', # msg.maketext("T0434") Sonst. Angaben
                 'T0437', # msg.maketext("T0437") Begleitmat.
-                'T0501', # msg.maketext("T0501-inst404abklatsch") Abklatschvermerke
+#                'T0501', # msg.maketext("T0501-inst404abklatsch") Abklatschvermerke
                 'T0504', # msg.maketext("T0504") PST Fussnote
                 'T0505', # msg.maketext("T0505") WST Fussnote
                 'T0507', # msg.maketext("T0507") Ang. HST

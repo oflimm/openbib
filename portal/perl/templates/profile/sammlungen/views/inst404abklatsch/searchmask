@@ -157,7 +157,8 @@ in der Regel nach der Edition in der IK-Reihe oder in Epigraphica Anatolica
 <dt>2. Ort der Inschrift</dt>
 
 <dd>
-hierzu Werteliste, z.B. Ephesus, Knidos, Oinoanda
+<dd>
+Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0200">Register</a>, z.B. Ephesus, Knidos, Oinoanda
 </dd>
 
 <dt>3. Kategorie</dt>
@@ -197,10 +198,6 @@ Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% ses
 <dd>
 Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0425">Register</a>, z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"
 </dd>
-
-<dt>Weitere Kategorien</dt>
-<dd>Dar&uuml;berhinaus wurden die Buchstabengröße und Charakteristika,
-Vermerke auf dem Abklatsch sowie weiterer Text erfasst</dd>
 
 </dl>
 

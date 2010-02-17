@@ -33,7 +33,7 @@
 <div id="mainnavigation_right">
 [%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
 <a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% IF startpage.start_loc %][% config.get("${startpage.start_loc}") %]?sessionID=[% sessionID %];view=[% view %][% IF startpage.start_stid %];stid=[% startpage.start_stid %][% END %][% ELSE %][% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced[% END %]">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
-<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="http://[% config.get('loadbalancerservername') %][% config.get('connector_rss_loc') %]/neuzugang/artmann.rdf" target="_blank">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
+<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="http://[% config.get('loadbalancerservername') %][% config.get('connector_rss_loc') %]/neuzugang/[% config.get_viewdbs(view).first %].rdf" target="_blank">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
 [% IF config.get('login_active') == 1 %]
 [% IF username %]
 <a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% config.get('userprefs_loc') %]?sessionID=[% sessionID %];view=[% view %];action=showfields">Meine Sammlung</a>

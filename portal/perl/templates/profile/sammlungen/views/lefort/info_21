@@ -1,0 +1,137 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_21
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der weitergehenden Sammlungsinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div class="boxedclear">
+
+<table>
+<tr><td style="vertical-align: top;padding-top:10px;">
+
+<p>
+<img src="/images/openbib/views/lefort/lefort5.png" class="img" alt="Gedichte" />
+</p>
+<p>
+<img src="/images/openbib/views/lefort/lefort2.png" class="img"
+alt="Das Schweigen" />
+</p>
+<p>
+<img src="/images/openbib/views/lefort/lefort1.png" class="img"
+alt="Unsre liebe Frau vom Karneval" />
+</p>
+<p>
+<img src="/images/openbib/views/lefort/lefort4.png" class="img"
+alt="Die Krone der Frau" />
+</p>
+<p>
+<img src="/images/openbib/views/lefort/lefort3.png" class="img"
+alt="Die Opferflamme" />
+</p>
+</td>
+<td style="vertical-align: top;padding-left:20px;">
+
+<h3>Biographisches zu Gertrud von Le Fort</h3>
+<p>
+Gertrud von Le Fort stammte aus einer protestantischen Familie[1] und
+verbrachte ihre Kindheit auf dem Familiengut Boek/Müritzsee
+(Mecklenburg) sowie in verschiedenen Garnisonsstädten, in denen ihr
+Vater, ein preußischer Offizier, tätig war. Bis zum 14. Lebensjahr
+wurde sie im Elternhaus privat unterrichtet, zum Teil durch den Vater
+anhand des Familienarchivs. Erst anschließend besuchte sie eine
+öffentliche Schule. Nach dem Tod des Vaters (1902) unternahm Gertrud
+von Le Fort einige Reisen. Entscheidende Bedeutung für ihr weiteres
+Leben und Werk hatte ein Aufenthalt in Rom 1907.
+</p>
+<p>
+Seit 1908 studierte sie in Heidelberg, Marburg und Berlin evangelische
+Theologie, Geschichte und Philosophie, unter anderem als Schülerin
+Hans von Schuberts und des Religionsphilosophen Ernst Troeltsch,
+dessen Glaubenslehre (1925) sie posthum nach eigenen
+Vorlesungsmitschriften herausgab. Seit 1922 lebte Gertrud von Le Fort
+in Baierbrunn/Isartal. Sie suchte, stark von der katholischen Kirche
+angezogen, in ihren religionsphilosophischen Studien Klärung ihrer
+konfessionellen Zugehörigkeit, veröffentlichte den Gedichtzyklus
+Hymnen an die Kirche (1924) und konvertierte 1926 in Rom zur
+katholischen Kirche. Von Baierbrunn aus unternahm Gertrud von Le Fort
+zahlreiche Reisen nach Italien, hielt seit 1933 Vortragsabende in der
+Schweiz und in Deutschland. Ihre Vorstellungen von einem
+\u201echristlichen Heiligen Deutschen Reich\u201c und dem
+Katholizismus standen in krassem Gegensatz zu den Lehren des
+Nationalsozialismus.[2] Trotzdem konnte sie 1938 ihren Roman Die
+Magdeburgische Hochzeit im Insel Verlag publizieren. 1939 übersiedelte
+Gertrud von Le Fort nach Oberstdorf/Allgäu, wo sie bis zu ihrem Tod
+lebte.
+</p>
+<p>
+Gertrud von Le Fort entwickelte sich zu einer der bedeutendsten
+katholischen Schriftstellerinnen des 20. Jahrhunderts, die unter
+anderem mit Paul Claudel, Hermann Hesse, Reinhold Schneider und Carl
+Zuckmayer in Verbindung stand.
+</p>
+<p>
+Im Zentrum ihrer Romane, Novellen, Erzählungen und Lyrik stehen
+religiöse Fragen in meist historischen Stoffen; die
+römisch-katholische Kirche erscheint als Mittlerin und als sittliche
+Ordnungsmacht. In ihren Romanen und anderen Werken geht es ihr um die
+Glaubensentscheidung, um religiöse Sinngebung von Leid und Opfer, um
+die Auseinandersetzung der Kirche mit dem Geist des Unglaubens und
+menschlicher Schwäche sowie um psychologische Darstellungen von
+seelischen Entwicklungen wie tragischen Seelenkonflikten, besonders
+aus dem Erleben der Frau.
+</p>
+<p>
+1928 publizierte sie ihr bekanntestes Werk Das Schweißtuch der
+Veronika, dessen Fortsetzung sie 1946 unter dem Titel Der Kranz der
+Engel veröffentlichte. In Die Letzte am Schafott (1932) behandelte sie
+das Schicksal von in der Französischen Revolution hingerichteten
+Karmelitinnen. Georges Bernanos (1888-1948) dramatisierte den Stoff
+unter dem (deutschen) Titel Die begnadete Angst(1948); dieses Stück
+wiederum diente als Vorlage für die Oper Dialogues des carmélites von
+Francis Poulenc. Weitere Werke von Gertrud von Le Fort sind: Hymnen an
+die Kirche (1924), Hymnen an Deutschland (1932), Die ewige Frau
+(1934), Die Magdeburgische Hochzeit (1938) und Am Tor des Himmels
+(1954).
+</p>
+<emph>Aus: <a href="http://de.wikipedia.org/wiki/Gertrud_von_le_Fort" target="_blank">Wikipedia</a></emph>
+
+<h3>Weitere Informationen</h3>
+
+<p>
+Die USB wird diese Sammlung weiterführen und die Titel von Gertrud von
+Le Fort und selbständig erscheinende Sekundärliteratur zu ihr und
+ihrem Werk möglichst vollständig erwerben.
+</p>
+<p>
+Umfangreiche Informationen zu Leben und Werk der Autorin bietet die
+<a href="http://www.gertrud-von-le-fort.de" target="_blank">Gertrud-von-le-Fort-Gesellschaft</a> auf ihren Webseiten.
+</p>
+
+<h3>Ansprechpartnerin:</h3>
+<strong>Ute Wolter</strong>, Fachreferentin für Germanistik<br />
+
+Tel.: 0221 470-7015<br />
+<a href="http://www.ub.uni-koeln.de/e50/e2492/e2652/index_ger.html?preview=preview" target="_blank">E-Mail</a><br /></p>
+</td></tr>
+</table>
+
+</div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

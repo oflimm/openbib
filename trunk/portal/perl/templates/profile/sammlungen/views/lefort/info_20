@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: info_60
+# Templatename: info_20
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe der Bibliotheksinformationen
+# Ausgabe der Sammlungsinformationen
 #
 #######################################################################
 -%]
@@ -70,6 +70,11 @@ Nordrhein-Westfalen über die umfangreichste Sammlung von Titeln dieser
 Autorin.
 </p>
 <p>
+Die USB wird diese Sammlung weiterführen und die Titel von Gertrud von
+Le Fort und selbständig erscheinende Sekundärliteratur zu ihr und
+ihrem Werk möglichst vollständig erwerben.
+</p>
+<p>
 Die Monographien der Schenkung sind als geschlossener Bestand mit der
 Sonderstandortsignatur LEFO aufgestellt. Die Bücher sind im
 Originalzustand mit den Originalumschlägen erhalten. Um eine möglichst
@@ -79,7 +84,7 @@ auch auf das Einkleben von Etiketten verzichtet.
 </p>
 <p>
 Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
-Lesesaal. Alle Titel sind in Suchen & Bestellen der USB und im
+Lesesaal. Alle Titel sind auch im Katalog der USB und im
 Verbundkatalog NRW erfasst.[<a href="[% config.get('info_loc')
 %]?sessionID=[% sessionID %]&stid=21">mehr</a>]
 </p>

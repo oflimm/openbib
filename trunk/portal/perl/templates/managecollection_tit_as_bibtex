@@ -12,6 +12,7 @@
 #
 #######################################################################
 -%]
+[% IF NOT data_only %]
 [% IF NOT hide_options %]
 <div class="boxedclear" style="float:right; width: 30%"><!-- Begin Reuse -->
 
@@ -41,12 +42,14 @@
 
 </div>
 [% END %]
-
 <div style="float:left; width: 65%;">
 <pre>
+[% END %]
 [%- FOREACH record IN recordlist.load_full_records.get_records -%]
 [% record.to_bibtex %]
 
 [% END -%]
+[% IF NOT data_only %]
 </pre>
 </div>
+[% END %]

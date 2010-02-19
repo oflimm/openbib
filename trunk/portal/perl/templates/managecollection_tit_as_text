@@ -12,6 +12,7 @@
 #
 #######################################################################
 -%]
+[% IF NOT data_only %]
 [% IF NOT hide_options %]
 <div class="boxedclear" style="float:right; width: 30%"><!-- Begin Reuse -->
 
@@ -44,6 +45,7 @@
 
 <div style="float:left; width: 65%;">
 <pre>
+[% END %]
 [%- FOREACH record IN recordlist.load_full_records.get_records -%]
 [%- normset    = record.get_normdata -%]
 [%- mexnormset = record.get_mexdata -%]
@@ -77,5 +79,7 @@ FOREACH category IN categories;
 [%- END -%]
 
 [% END %]
+[% IF NOT data_only %]
 </pre>
 </div>
+[% END %]

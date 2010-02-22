@@ -15,6 +15,18 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b>22.2.2010</b>: Drei neue Sammlungen - die <a
+href="http://artmann.ub.uni-koeln.de"
+target="_blank">H.C. Artmann-Sammlung Knupfer</a>, die <a
+href="http://lefort.ub.uni-koeln.de"
+target="_blank">Sammlung Gertrud von Le Fort</a> sowie die <a
+href="http://abklatschsammlung.ub.uni-koeln.de"
+target="_blank">Abklatsch-Sammlung des Instituts f&uuml;r Altertumskunde</a> - aus der USB K&ouml;ln und
+der Universit&auml;t wurden &uuml;ber eigenst&auml;ndige Portalsichten
+erschlossen. (weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2010/02/20/sammlungen/"
+target="_blank">Blog-Artikel</a>).</li>
 <li><b>11.12.2009</b>: Zu vielen Zeitschriften finden Sie in der
 Titelanzeige unter "Letzte Artikel" nun einer &Uuml;bersicht der dort
 zuletzt erschienenen Artikel (weitergehende Informationen in diesem
@@ -28,9 +40,5 @@ Anreicherung mit Schlagworten (weitergehende Informationen in diesem
 href="http://blog.openbib.org/2009/11/09/kataloganreicherung-mit-schlagworten/"
 target="_blank">Blog-Artikel</a>) wurde die Auffindbarkeit der Titeln
 erh&ouml;ht.</li>
-
-<li><b>9.11.2009</b>: In der Einzeltrefferanzeige erhalten Sie nun
-einen &Uuml;berblick der Titel, die Sie sich in der aktuellen Sitzung
-bereits angeschaut haben.</li>
 
 </ul>

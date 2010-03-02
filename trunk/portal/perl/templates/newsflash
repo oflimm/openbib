@@ -15,6 +15,12 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b>2.3.2010</b>: &Uuml;ber die Anzeige der Verf&uuml;gbarkeit im
+Online-Dienst PaperC k&ouml;nnen nun viele Lehrb&uuml;cher kostenlos
+aus dem Web-Browser heraus gelesen werden.(weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2010/03/02/paperc-im-kug/"
+target="_blank">Blog-Artikel</a>).</li>
 <li><b>22.2.2010</b>: Drei neue Sammlungen - die <a
 href="http://artmann.ub.uni-koeln.de"
 target="_blank">H.C. Artmann-Sammlung Knupfer</a>, die <a
@@ -33,12 +39,5 @@ zuletzt erschienenen Artikel (weitergehende Informationen in diesem
 <a
 href="http://blog.openbib.org/2009/12/10/verweise-auf-aktuelle-zeitschriftenartikel-mit-tictocs-im-kug/"
 target="_blank">Blog-Artikel</a>).</li>
-
-<li><b>11.11.2009</b>: Durch eine katalog&uuml;bergreifende
-Anreicherung mit Schlagworten (weitergehende Informationen in diesem
-<a
-href="http://blog.openbib.org/2009/11/09/kataloganreicherung-mit-schlagworten/"
-target="_blank">Blog-Artikel</a>) wurde die Auffindbarkeit der Titeln
-erh&ouml;ht.</li>
 
 </ul>

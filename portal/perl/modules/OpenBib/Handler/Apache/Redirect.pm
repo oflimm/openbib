@@ -107,6 +107,7 @@ sub handler {
         505 => 1, # OpenLibrary Vollzugriff
         510 => 1, # BibSonomy Einzeltreffer hochladen
         511 => 1, # BibSonomy Sprung zum Titel in BibSonomy
+        512 => 1, # Sprung zum Titel in PaperC
         520 => 1, # Wikipedia / Personen
         521 => 1, # Wikipedia / ISBN
         522 => 1, # Wikipedia / Artikel

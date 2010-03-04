@@ -65,9 +65,9 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$sourcepool;host=$config->
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-print "### $pool: Bestimme Titel-ID's anhand des Signaturanfaenge WA, WB, WC, WF, WG, WH, AD\n";
+print "### $pool: Bestimme Titel-ID's anhand des Signaturanfaenge WA, WB, WC, WF, WG, WH, ENNE\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and (mex.content rlike '^W[ABCFGH]' or mex.content rlike '^AD') and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and (mex.content rlike '^W[ABCFGH]' or mex.content rlike '^ENNE[0-9]+') and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

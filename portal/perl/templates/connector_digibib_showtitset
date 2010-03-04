@@ -13,6 +13,7 @@
 -%]
 [%- item         = record.get_normdata -%]
 [%- itemmex      = record.get_mexdata -%]
+[%- itemcirc     = record.get_circdata -%]
 [%# USE dumper;dumper.dump(item)%]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
@@ -82,54 +83,6 @@
 [%- FOREACH part IN item.${'T0662'}  -%]
 [%- urls.push(part.content)-%]
 [%- END -%]
-[%-
-
-    location = {} ;
-
-    FOREACH mex IN itemmex ;
-
-       catname  = utf2iso(mex.${"X4000"}.content.short) ;
-       caturl   = mex.${"X4001"}.content ;
-       verlauf  = mex.${"X1204"}.content ;
-       signatur = mex.${"X0014"}.content ;
-
-       IF verlauf == '-' ;
-          verlauf = '' ;
-       ELSE ;
-          verlauf = "(${verlauf})" ;
-       END ;
-       location.${catname}.${"url"}     = caturl ;
-       location.${catname}.${"verlauf"} = verlauf ;
-
-       IF NOT location.${catname}.exists("signatur") ;
-          location.${catname}.${"signatur"} = signatur ;
-       ELSE ;
-          signaturstring = location.${catname}.${"signatur"} ;
-          signaturstring = "${signaturstring} ; ${signatur}" ;
-          location.${catname}.${"signatur"}= signaturstring  ;      
-       END ;
-    END ;
-
-    locations = [] ;
-
-    FOREACH catname IN location.keys ;
-       caturl         = location.${catname}.${"url"} ;
-       verlauf        = location.${catname}.${"verlauf"} ;
-       signaturstring = location.${catname}.${"signatur"} ;
-
-       locations.push("<a href=\"${caturl}\" target=\"_blank\">${catname}</a>: ${signaturstring} ${verlauf}");
-
-    END ;
-
-    dbdesc   = dbinfo.get('dbnames').${database}.short ;
-    dburl    = dbinfo.get('urls').${database} ;
-
-    IF locations.size == 0;
-       locationstring = "<a href=\"${dburl}\" target=\"_blank\">${dbdesc}</a>";
-    ELSE ;
-       locationstring = locations.join("<br />");
-    END ;
--%]
 [%
 
  quelle = item.${'T0590'}.0.content;
@@ -166,7 +119,13 @@
 <LI> YR=[% utf2iso(item.${'T0425'}.0.content)  # ErschJahr %]
 <LI> IB=[% utf2iso(isbn)                       # ISBN %]
 <LI> IS=[% utf2iso(issn)                       # ISSN %]
-<LI> LO=[% utf2iso(locationstring)             # Locations mit Signatur und Bestandsverlauf%]
+[% IF itemcirc.size > 0 %]
+[%    PROCESS common/subtemplate name="connector_digibib_circset" %]
+[% ELSE %]
+[%    IF itemmex.size > 0 %]
+[%       PROCESS common/subtemplate name="connector_digibib_mexset" %]
+[%    END %]
+[% END %]
 <LI> FN=[% utf2iso(fussnote)                   # Fussnote %]
 [%- FOREACH url IN urls %]
 <LI> LNK[% loop.count %]=[% utf2iso(url)       # URL %]

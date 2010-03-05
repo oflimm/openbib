@@ -15,7 +15,7 @@
 <table width="100%">
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH mex IN circset %]
-[%- mex.Ausleihurl = "${mex.Ausleihurl}?Login=sisis&Query=0000=${normset.id}" -%]
+[%- mex.Ausleihurl = "${mex.Ausleihurl}?Login=sisis&Query=0000=%22${normset.id}%22" -%]
 <tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[% mex.Status %]</strong></td>

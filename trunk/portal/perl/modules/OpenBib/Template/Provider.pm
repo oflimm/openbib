@@ -36,6 +36,8 @@ no warnings 'redefine';
 use utf8;
 
 use Apache2::Reload;
+use Encode qw(decode_utf8);
+
 use base qw(Template::Provider);
 
 sub _load {
@@ -51,8 +53,8 @@ sub _load {
 }
 
 sub conv2utf8 {
-    my @list = map pack('U*', unpack 'U0U*', $_), @_;
-#    my @list = map decode_utf8($_), @_;
+#    my @list = map pack('U*', unpack 'U0U*', $_), @_;
+    my @list = map decode_utf8($_), @_;
     return wantarray ? @list : $list[0];
 }
 

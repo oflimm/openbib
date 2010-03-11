@@ -1825,7 +1825,7 @@ sub utf2bibtex {
     $string=~s/Ä/{\\"A}/g;
     $string=~s/Ö/{\\"O}/g;
     $string=~s/Ü/{\\"U}/g;
-    $string=~s/ß/{\\"s}/g;
+    $string=~s/ß/{\\ss}/g;
 
     return $string;
 }

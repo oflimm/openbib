@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Admin
 #
-#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -101,33 +101,35 @@ sub handler {
     my $view        = $query->param('view') || $config->{adminview};
     
     # Main-Actions
-    my $do_login        = $query->param('do_login')        || '';
-    my $do_loginmask    = $query->param('do_loginmask')    || '';
-    my $do_showcat      = $query->param('do_showcat')      || '';
-    my $do_editcat      = $query->param('do_editcat')      || '';
-    my $do_showlibinfo  = $query->param('do_showlibinfo')  || '';
-    my $do_editlibinfo  = $query->param('do_editlibinfo')  || '';
-    my $do_showops      = $query->param('do_showops')      || '';
-    my $do_editserver   = $query->param('do_editserver')   || '';
-    my $do_editcat_rss  = $query->param('do_editcat_rss')  || '';
-    my $do_showprofiles = $query->param('do_showprofiles') || '';
-    my $do_editprofile  = $query->param('do_editprofile')  || '';
-    my $do_showsubjects = $query->param('do_showsubjects') || '';
-    my $do_editsubject  = $query->param('do_editsubject')  || '';
-    my $do_showviews    = $query->param('do_showviews')    || '';
-    my $do_editview     = $query->param('do_editview')     || '';
-    my $do_editview_rss = $query->param('do_editview_rss') || '';
-    my $do_showimx      = $query->param('do_showimx')      || '';
-    my $do_showsessions = $query->param('do_showsessions') || '';
-    my $do_editsession  = $query->param('do_editsession')  || '';
-    my $do_exploresessions = $query->param('do_exploresessions') || '';
-    my $do_showstat     = $query->param('do_showstat')     || '';
-    my $do_showuser     = $query->param('do_showuser')     || '';
-    my $do_edituser     = $query->param('do_edituser')     || '';
-    my $do_searchuser   = $query->param('do_searchuser')   || '';
-    my $do_showlogintarget  = $query->param('do_showlogintarget')     || '';
-    my $do_editlogintarget  = $query->param('do_editlogintarget')     || '';
-    my $do_logout       = $query->param('do_logout')       || '';
+    my $do_login                   = $query->param('do_login')        || '';
+    my $do_loginmask               = $query->param('do_loginmask')    || '';
+    my $do_showcat                 = $query->param('do_showcat')      || '';
+    my $do_editcat                 = $query->param('do_editcat')      || '';
+    my $do_showlibinfo             = $query->param('do_showlibinfo')  || '';
+    my $do_editlibinfo             = $query->param('do_editlibinfo')  || '';
+    my $do_showops                 = $query->param('do_showops')      || '';
+    my $do_editserver              = $query->param('do_editserver')   || '';
+    my $do_editcat_rss             = $query->param('do_editcat_rss')  || '';
+    my $do_showprofiles            = $query->param('do_showprofiles') || '';
+    my $do_editprofile             = $query->param('do_editprofile')  || '';
+    my $do_editorgunits            = $query->param('do_editorgunits')  || '';
+    my $do_editcat2orgunit         = $query->param('do_editcat2orgunit')  || '';
+    my $do_showsubjects            = $query->param('do_showsubjects') || '';
+    my $do_editsubject             = $query->param('do_editsubject')  || '';
+    my $do_showviews               = $query->param('do_showviews')    || '';
+    my $do_editview                = $query->param('do_editview')     || '';
+    my $do_editview_rss            = $query->param('do_editview_rss') || '';
+    my $do_showimx                 = $query->param('do_showimx')      || '';
+    my $do_showsessions            = $query->param('do_showsessions') || '';
+    my $do_editsession             = $query->param('do_editsession')  || '';
+    my $do_exploresessions         = $query->param('do_exploresessions') || '';
+    my $do_showstat                = $query->param('do_showstat')     || '';
+    my $do_showuser                = $query->param('do_showuser')     || '';
+    my $do_edituser                = $query->param('do_edituser')     || '';
+    my $do_searchuser              = $query->param('do_searchuser')   || '';
+    my $do_showlogintarget         = $query->param('do_showlogintarget')     || '';
+    my $do_editlogintarget         = $query->param('do_editlogintarget')     || '';
+    my $do_logout                  = $query->param('do_logout')       || '';
 
     # Sub-Actions
     my $do_new          = $query->param('do_new')          || 0;

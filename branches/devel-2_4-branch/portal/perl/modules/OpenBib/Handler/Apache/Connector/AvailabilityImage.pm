@@ -337,7 +337,46 @@ sub handler {
                     
                     return Apache2::Const::REDIRECT;
                 }
-            }                        
+            }
+            elsif ($target eq "paperc" && $id){
+                my $ua       = LWP::UserAgent->new();
+                $ua->agent($useragent);
+                $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
+                my $url      ="http://paperc.de/search?query=$id&commit=Suchen";
+                $logger->debug("Querying PaperC with $url");
+                my $request  = HTTP::Request->new('GET', $url);
+                my $response = $ua->request($request);
+                
+                if ( $response->is_error() ) {
+                    $logger->info("Error querying PaperC");
+                    $logger->debug("Error-Code:".$response->code());
+                    $logger->debug("Fehlermeldung:".$response->message());
+                    
+                    $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                    return Apache2::Const::REDIRECT;
+                }
+                else {
+                    $logger->debug($response->content());
+                    
+                    my $content = $response->content();
+                    if ($content=~/Die Suche nach.+?ergab 1 Treffer/){
+                        my $uri = "";
+                        if ($content=~/<a href="(.+?)">Info<\/a>/){
+                            $uri = $1;
+                            $logger->debug("Item found in PaperC with URI: $uri");
+                        }
+
+                        if ($uri){
+                            $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/paperc.png");
+                        }
+                        else {
+                            $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
+                        }
+                        return Apache2::Const::REDIRECT;
+                    }
+                }
+            }
+
         }
     }
     

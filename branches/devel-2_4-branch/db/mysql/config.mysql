@@ -99,6 +99,34 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
+drop table IF EXISTS orgunits;
+CREATE TABLE orgunits (
+ id          VARCHAR(20),
+ profilename VARCHAR(20),
+ description TEXT,
+ nr          INT,
+
+ INDEX (nr),
+ INDEX (profilename)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS db2orgunit;
+CREATE TABLE db2orgunit (
+ profilename VARCHAR(20),
+ dbname      VARCHAR(255),
+ orgunitid   VARCHAR(20),
+
+ INDEX (dbname),
+ INDEX (orgunitid),
+ INDEX (profilename)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
 drop table IF EXISTS viewinfo;
 CREATE TABLE viewinfo (
  viewname    VARCHAR(20),

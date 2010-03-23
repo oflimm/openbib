@@ -15,6 +15,16 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b>12.3.2010</b>: Die USB Köln gibt den Gesamtbestand ihrer
+Katalogdaten unter CC0 zum Download via <a
+href="http://opendata.ub.uni-koeln.de/"
+target="_blank">opendata.ub.uni-koeln.de</a> frei (weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2010/03/12/offene-bibliographische-daten-es-ist-soweit/"
+target="_blank">Blog-Artikel</a> und <a
+href="http://blog.openbib.org/2010/03/18/offene-katalogdaten-reaktionen/"
+target="_blank">Reaktionen</a>).</li>
+
 <li><b>11.12.2009</b>: Zu vielen Zeitschriften finden Sie in der
 Titelanzeige unter "Letzte Artikel" nun einer &Uuml;bersicht der dort
 zuletzt erschienenen Artikel (weitergehende Informationen in diesem
@@ -28,9 +38,5 @@ Anreicherung mit Schlagworten (weitergehende Informationen in diesem
 href="http://blog.openbib.org/2009/11/09/kataloganreicherung-mit-schlagworten/"
 target="_blank">Blog-Artikel</a>) wurde die Auffindbarkeit der Titeln
 erh&ouml;ht.</li>
-
-<li><b>9.11.2009</b>: In der Einzeltrefferanzeige erhalten Sie nun
-einen &Uuml;berblick der Titel, die Sie sich in der aktuellen Sitzung
-bereits angeschaut haben.</li>
 
 </ul>

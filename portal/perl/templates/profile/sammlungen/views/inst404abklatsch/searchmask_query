@@ -70,7 +70,7 @@ $(document).ready(function(){
 
 <tr><td class="category">[% msg.maketext("T0710-inst404abklatsch") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input id="autocomplete_swt" type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 
-<tr><td class="category">[% msg.maketext("T0335-inst404abklatsch") %] / SEG-Eintrag</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("T0335-inst404abklatsch") %] / SEG-Eintrag</td><td class="category"><select name="boolinhalt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="inhalt" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 
 <tr><td class="category">[% msg.maketext("Inventarnummer") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 

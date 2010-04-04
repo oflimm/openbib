@@ -35,7 +35,7 @@ drop table IF EXISTS all_isbn;
 create table all_isbn (
  isbn          VARCHAR(33) NOT NULL,
  dbname        VARCHAR(25) NOT NULL,
- id            BIGINT NOT NULL,
+ id            VARCHAR(255) NOT NULL,
  tstamp        DATETIME,
  index         (isbn),
  index         (dbname)

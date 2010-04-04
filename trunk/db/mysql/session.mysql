@@ -24,7 +24,7 @@ drop table IF EXISTS treffer;
 CREATE TABLE treffer (
  sessionid VARCHAR(255) NOT NULL,
  dbname    TEXT,
- singleidn BIGINT,
+ singleidn VARCHAR(255),
 
  INDEX (sessionid),
  INDEX (dbname(255)),
@@ -35,7 +35,7 @@ drop table IF EXISTS lastresultitem;
 CREATE TABLE lastresultlist (
  sessionid VARCHAR(255) NOT NULL,
  dbname    TEXT,
- singleidn BIGINT,
+ singleidn VARCHAR(255),
 
  INDEX (sessionid)
 );

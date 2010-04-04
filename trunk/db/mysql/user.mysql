@@ -164,7 +164,7 @@ DROP TABLE IF EXISTS treffer;
 CREATE TABLE treffer (
  userid    BIGINT NOT NULL,
  dbname    TEXT,
- singleidn BIGINT
+ singleidn VARCHAR(255)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci

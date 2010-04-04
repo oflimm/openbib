@@ -31,7 +31,7 @@ CREATE TABLE treffer (
  INDEX (singleidn)
 );
 
-drop table IF EXISTS lastresultitem;
+drop table IF EXISTS lastresultlist;
 CREATE TABLE lastresultlist (
  sessionid VARCHAR(255) NOT NULL,
  dbname    TEXT,

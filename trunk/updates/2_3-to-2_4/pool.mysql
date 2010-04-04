@@ -18,4 +18,5 @@ alter table mex_ft          modify id varchar(255) not null;
 alter table mex_string      modify id varchar(255) not null;
 alter table conn            modify sourceid varchar(255) not null, modify targetid varchar(255) not null;
 alter table titlistitem     modify id varchar(255) not null;
+alter table search          modify verwidn varchar(255) not null;
 alter table popularity      modify id varchar(255) not null;

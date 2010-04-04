@@ -1,2 +1,2 @@
 alter table treffer modify singleidn varchar(255) not null;
-alter table lastresultitem modify singleidn varchar(255) not null;
+alter table lastresultlist modify singleidn varchar(255) not null;

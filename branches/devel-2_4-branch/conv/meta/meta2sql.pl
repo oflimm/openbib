@@ -54,7 +54,7 @@ use OpenBib::Record::Subject;
 use OpenBib::Record::Title;
 use OpenBib::Statistics;
 
-my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile,$loglevel);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile,$loglevel,$count);
 
 &GetOptions("reduce-mem"    => \$reducemem,
             "add-superpers" => \$addsuperpers,
@@ -465,6 +465,7 @@ my $listitem_ref={};
 my $thisitem_ref={};
 
 my $normdata_ref={};
+$count=0;
 
 CATLINE:
 while (my $line=<IN>){
@@ -472,7 +473,8 @@ while (my $line=<IN>){
     my ($category,$indicator,$content);
     my ($sign,$isbn,$issn,$artinh);
     
-    if ($line=~m/^0000:(\d+)$/){
+    if ($line=~m/^0000:(.+)$/){
+        $count++;
         $id=$1;
         
         if ($incremental){
@@ -589,7 +591,7 @@ while (my $line=<IN>){
                     }
                 }
             }
-        }
+	  }
 
         # Medientypen erkennen und anreichern
         if ($addmediatype){
@@ -665,7 +667,7 @@ while (my $line=<IN>){
                 }
             }   
             
-        }
+	  }
         
         my @temp=();
 
@@ -835,9 +837,12 @@ while (my $line=<IN>){
             print OUTSTRING "$id5050$bibkey\n" if (exists $stammdateien_ref->{tit}{inverted_ref}->{'5050'}{string});
             print OUTSTRING "$id5051$bibkey_base\n" if (exists $stammdateien_ref->{tit}{inverted_ref}->{'5051'}{string});
         }
-        
+       
+        if ($count % 1000 == 0) {
+	     $logger->debug("$count Titelsaetze bearbeitet");
+        } 
         next CATLINE;
-    }
+      }
     elsif ($line=~m/^(\d+)\.(\d+):(.*?)$/){
         ($category,$indicator,$content)=($1,$2,$3);
     }

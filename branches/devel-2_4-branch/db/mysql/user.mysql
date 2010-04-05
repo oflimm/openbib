@@ -162,9 +162,9 @@ CREATE TABLE logintarget (
 
 DROP TABLE IF EXISTS treffer;
 CREATE TABLE treffer (
- userid    BIGINT NOT NULL,
+ userid    VARCHAR(255) NOT NULL,
  dbname    TEXT,
- singleidn BIGINT
+ singleidn VARCHAR(255)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
@@ -185,7 +185,7 @@ DROP TABLE IF EXISTS tittag;
 CREATE TABLE tittag (
  ttid      INT(11)     NOT NULL auto_increment,
  tagid     INT(11)     NOT NULL default '0',
- titid     INT(11)     NOT NULL default '0',
+ titid     VARCHAR(255) NOT NULL default '0',
  titisbn   CHAR(14)    NOT NULL default '',
  titdb     VARCHAR(25) NOT NULL default '',
  loginname TEXT,
@@ -205,7 +205,7 @@ DROP TABLE IF EXISTS reviews;
 CREATE TABLE reviews (
  id        INT(11)     NOT NULL auto_increment,
  tstamp    TIMESTAMP,
- titid     INT(11)     NOT NULL default '0',
+ titid     VARCHAR(255) NOT NULL default '0',
  titisbn   CHAR(14)    NOT NULL default '',
  titdb     VARCHAR(25) NOT NULL default '',
  loginname TEXT,
@@ -262,7 +262,7 @@ DROP TABLE IF EXISTS litlistitems;
 CREATE TABLE litlistitems (
  litlistid INT(11)     NOT NULL,
  tstamp    TIMESTAMP,
- titid     INT(11)     NOT NULL,
+ titid     VARCHAR(255) NOT NULL,
  titisbn   CHAR(14)    NOT NULL default '',
  titdb     VARCHAR(25) NOT NULL,
  INDEX (litlistid),

@@ -60,20 +60,14 @@ Die Kölner Ratsbibliothek (Syndikatsbibliothek) wurde 1602 als
 "Handbibliothek" des  Rates der Stadt Köln gegründet und mit
 einem richtigen Erwerbungsetat ausgestattet. Sie existierte mit dieser
 Aufgabe, aber mit wechselnder finanzieller Ausstattung bis zum Ende
-der Freien Reichsstadt 1794.  Die Syndikatsbibliothek wurde ein
-wichtiger Grundstock der sich langsam entwickelnden wissenschaftlichen
+der Freien Reichsstadt 1794. Die Bibliothek wurde zum
+wichtigen Grundstock der sich langsam entwickelnden wissenschaftlichen
 Stadtbibliothek und gelangte auf diesem Wege in den Besitz der heutigen
-Universitäts- und Stadtbibliothek.  Heute sind 1049 Titel (in 1434
-von ehemals 1817 Bänden) bekannt, überwiegend juristische, aber
-ebenso historische und politische Literatur.  Die Syndikatsbibliothek
-trägt die Signaturgruppe SB.</p>
-
-<!-- <h1>2. Überschrift?!</h1> -->
-
-
-<!-- <p>Zur info_21-Seite [<a href="[% config.get('info_loc')
-%]?sessionID=[% sessionID %]&stid=21">mehr</a>]
-</p> -->
+Universitäts- und Stadtbibliothek.
+Die Syndikatsbibliothek trägt die Signaturgruppe SB.
+<a href="[% config.get('info_loc')
+%]?sessionID=[% sessionID %]&stid=21">mehr</a>
+</p>
 
 <p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
 Lesesaal.

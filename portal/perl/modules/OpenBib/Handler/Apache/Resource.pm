@@ -79,12 +79,12 @@ sub handler {
     my $type;
     my $representation;
 
-    if ($path=~m/^\/(\w+)\/(.+?)\/(.*)/){
+    if ($path=~m/^\/(\w+)\/([^\/]+?)\/([^\/]*)/){
         $type   = $1;
         $key    = $2;
         $representation = $3;
     }
-    elsif ($path=~m/^\/(\w+)\/(.+)/){
+    elsif ($path=~m/^\/(\w+)\/([^\/]+)/){
         $type   = $1;
         $key    = $2;
         $representation = '';
@@ -171,8 +171,8 @@ sub handler {
     #####################################################################
         
     
-    if ($is_bibtype_ref->{$type} ){
-        ($database,$id) = split(":",$key);
+    if ($is_bibtype_ref->{$type} ){ # Valider Typ?
+        ($database,$id) = $key =~/^([^:]+):(.+)/;
     
         $logger->debug("Path: $path - Key: $key - DB: $database - ID: $id");
         

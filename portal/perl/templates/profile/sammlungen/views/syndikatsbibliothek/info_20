@@ -53,20 +53,26 @@ Universitäts- und Stadtbibliothek Köln</i></center>
 
 <td valign="top" style="padding-top:25px;">
 
-<h1>Die Syndikatsbibliothek   (Bibliothek des Rates der Stadt Köln)</h1>
+<h1>Die Syndikatsbibliothek - Bibliothek des Rates der Stadt Köln</h1>
 
 <p>
 Die Kölner Ratsbibliothek (Syndikatsbibliothek) wurde 1602 als
-"Handbibliothek" des  Rates der Stadt Köln gegründet und mit
-einem richtigen Erwerbungsetat ausgestattet. Sie existierte mit dieser
+"Handbibliothek" für den Rat der Stadt Köln und seine
+Verwaltungsbeamten gegründet.Sie existierte mit dieser
 Aufgabe, aber mit wechselnder finanzieller Ausstattung bis zum Ende
-der Freien Reichsstadt 1794. Die Bibliothek wurde zum
-wichtigen Grundstock der sich langsam entwickelnden wissenschaftlichen
-Stadtbibliothek und gelangte auf diesem Wege in den Besitz der heutigen
+der Freien Reichsstadt 1794. Bis ins 18. Jahrhundert hatte sie sich in
+eher bescheidenem Maße entwickelt und erst im 19. Jahrhundert erfolgte
+die Erweiterung zu einer wissenschaftlichen Stadtbibliothek, die den Bedarf des
+Wirtschafts- und Bildungsbürgertums abdeckte. Auf diesem Wege gelangte
+die ehemalige Ratsbibliothek als Fundament der späteren Kölner  Stadtbibliothek in den Besitz der heutigen
 Universitäts- und Stadtbibliothek.
-Die Syndikatsbibliothek trägt die Signaturgruppe SB.
-<a href="[% config.get('info_loc')
-%]?sessionID=[% sessionID %]&stid=21">mehr</a>
+</p>
+<p>
+Die Syndikatsbibliothek wird heute in der USB  wieder in ihrer ursprünglich
+geschlossenen Aufstellung unter der Signaturengruppe "SB" aubewahrt. 
+[<a href="[% config.get('info_loc')
+%]?sessionID=[% sessionID %]&stid=21">mehr</a>]
+
 </p>
 
 <p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen

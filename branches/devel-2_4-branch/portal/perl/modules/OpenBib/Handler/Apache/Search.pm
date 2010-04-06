@@ -813,48 +813,27 @@ sub handler {
 
         my $hits      = 0;
 
-        # Verfasser-Id numerisch, dann Titel zu von entsprechendem Normdaten
-        # satz bestimmen.
-        if ($searchtitofaut =~ /^\d+$/){
-            # Zuerst Gesamtzahl bestimmen
-            my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofaut);
-            
-            my $res=$request->fetchrow_hashref;
-            $hits = $res->{conncount};
-
-            my $limits="";
-            if ($hitrange > 0){
-                $limits="limit $offset,$hitrange";
-            }
-
-            # Bestimmung der Titel
-            $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=2 $limits") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofaut);
-            
-            
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-            }
-            $request->finish();            
+        # Zuerst Gesamtzahl bestimmen
+        my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofaut);
+        
+        my $res=$request->fetchrow_hashref;
+        $hits = $res->{conncount};
+        
+        my $limits="";
+        if ($hitrange > 0){
+            $limits="limit $offset,$hitrange";
         }
-        # ... ansonsten wird fuer den Fall fehlender Normdaten der komplette
-        # Verfasser uebergeben, der ausschliesslich in den Titeldaten zu finden ist.
-        else {
-            $searchtitofaut = OpenBib::Common::Util::grundform({
-                content  => $searchtitofaut,
-            });
-            
-            # Bestimmung der Titel
-            # ToDo parametrisierung der Verfasserkategorien pro Katalog
-            my $request=$dbh->prepare("select distinct id from tit_string where category in (100,101,103) and content=?") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofaut);
-            
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
-            }        
-            $request->finish();
+        
+        # Bestimmung der Titel
+        $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=2 $limits") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofaut);
+        
+        
+        while (my $res=$request->fetchrow_hashref){
+            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
         }
+        $request->finish();            
         
         $recordlist->print_to_handler({
             database         => $database,
@@ -878,47 +857,26 @@ sub handler {
 
         my $hits      = 0;
 
-        # Koerperschafts-Id numerisch, dann Titel zu von entsprechendem Normdaten
-        # satz bestimmen.
-        if ($searchtitofurhkor =~ /^\d+$/){
-            # Zuerst Gesamtzahl bestimmen
-            my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofurhkor);
-            
-            my $res=$request->fetchrow_hashref;
-            $hits = $res->{conncount};
-
-            my $limits="";
-            if ($hitrange > 0){
-                $limits="limit $offset,$hitrange";
-            }
-
-            # Bestimmung der Titel
-            $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=3 $limits") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofurhkor);
-            
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-            }
-            $request->finish();            
+        # Zuerst Gesamtzahl bestimmen
+        my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofurhkor);
+        
+        my $res=$request->fetchrow_hashref;
+        $hits = $res->{conncount};
+        
+        my $limits="";
+        if ($hitrange > 0){
+            $limits="limit $offset,$hitrange";
         }
-        # ... ansonsten wird fuer den Fall fehlender Normdaten die komplette
-        # Koerperschaft uebergeben, der ausschliesslich in den Titeldaten zu finden ist.
-        else {
-            $searchtitofurhkor = OpenBib::Common::Util::grundform({
-                content  => $searchtitofurhkor,
-            });
-            
-            # Bestimmung der Titel
-            # ToDo parametrisierung der Koerperschaftskategorien pro Katalog
-            my $request=$dbh->prepare("select distinct id from tit_string where category in (200,201) and content=?") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofurhkor);
-            
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
-            }        
-            $request->finish();
+        
+        # Bestimmung der Titel
+        $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=3 $limits") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofurhkor);
+        
+        while (my $res=$request->fetchrow_hashref){
+            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
         }
+        $request->finish();            
 
         $recordlist->print_to_handler({
             database         => $database,
@@ -942,47 +900,26 @@ sub handler {
 
         my $hits      = 0;
 
-        # Schlagwort-Id numerisch, dann Titel zu von entsprechendem Normdaten
-        # satz bestimmen.
-        if ($searchtitofswt =~ /^\d+$/){
-            # Zuerst Gesamtzahl bestimmen
-            my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofswt);
-            
-            my $res=$request->fetchrow_hashref;
-            $hits = $res->{conncount};
-
-            my $limits="";
-            if ($hitrange > 0){
-                $limits="limit $offset,$hitrange";
-            }
-
-            # Bestimmung der Titel
-            $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=4 $limits") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofswt);
-            
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-            }
-            $request->finish();            
+        # Zuerst Gesamtzahl bestimmen
+        my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofswt);
+        
+        my $res=$request->fetchrow_hashref;
+        $hits = $res->{conncount};
+        
+        my $limits="";
+        if ($hitrange > 0){
+            $limits="limit $offset,$hitrange";
         }
-        # ... ansonsten wird fuer den Fall fehlender Normdaten das komplette
-        # Schlagwort uebergeben, der ausschliesslich in den Titeldaten zu finden ist.
-        else {
-            $searchtitofswt = OpenBib::Common::Util::grundform({
-                content  => $searchtitofswt,
-            });
-            
-            # Bestimmung der Titel
-            # ToDo parametrisierung der Schlagwortkategorien pro Katalog
-            my $request=$dbh->prepare("select distinct id from tit_string where category in (710,902,907,912,917,922,927,932,937,942,947) and content=?") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofswt);
-            
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
-            }        
-            $request->finish();
+        
+        # Bestimmung der Titel
+        $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=4 $limits") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofswt);
+        
+        while (my $res=$request->fetchrow_hashref){
+            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
         }
+        $request->finish();            
 
         $recordlist->print_to_handler({
             database         => $database,
@@ -1007,47 +944,26 @@ sub handler {
 
         my $hits      = 0;
 
-        # Notations-Id numerisch, dann Titel zu von entsprechendem Normdaten
-        # satz bestimmen.
-        if ($searchtitofnot =~ /^\d+$/){
-            # Zuerst Gesamtzahl bestimmen
-            my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofnot);
-            
-            my $res=$request->fetchrow_hashref;
-            $hits = $res->{conncount};
-
-            my $limits="";
-            if ($hitrange > 0){
-                $limits="limit $offset,$hitrange";
-            }
-            
-            # Bestimmung der Titel
-            $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=5 $limits") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofnot);
-
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-            }
-            $request->finish();
+        # Zuerst Gesamtzahl bestimmen
+        my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofnot);
+        
+        my $res=$request->fetchrow_hashref;
+        $hits = $res->{conncount};
+        
+        my $limits="";
+        if ($hitrange > 0){
+            $limits="limit $offset,$hitrange";
         }
-        # ... ansonsten wird fuer den Fall fehlender Normdaten die komplette
-        # Notation uebergeben, der ausschliesslich in den Titeldaten zu finden ist.
-        else {
-            $searchtitofnot = OpenBib::Common::Util::grundform({
-                content  => $searchtitofnot,
-            });
-            
-            # Bestimmung der Titel
-            # ToDo parametrisierung der Notationskategorien pro Katalog
-            my $request=$dbh->prepare("select distinct id from tit_string where category in (700) and content=?") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofnot);
-            
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
-            }
-            $request->finish();
+        
+        # Bestimmung der Titel
+        $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=5 $limits") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofnot);
+        
+        while (my $res=$request->fetchrow_hashref){
+            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
         }
+        $request->finish();
 
         $recordlist->print_to_handler({
             database         => $database,

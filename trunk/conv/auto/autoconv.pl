@@ -378,6 +378,11 @@ $logger->info("### $database: Cleanup");
 system("$mysqladminexe drop   $databasetmp");
 system("rm $rootdir/data/$database/*");
 
+if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
+    $logger->info("### $database: Verwende Plugin post_cleanup.pl");
+    system("$config->{autoconv_dir}/filter/$database/post_cleanup.pl $database");
+}
+
 my $btime      = new Benchmark;
 my $timeall    = timediff($btime,$atime);
 my $resulttime = timestr($timeall,"nop");

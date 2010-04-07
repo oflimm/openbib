@@ -207,7 +207,7 @@ foreach my $type (keys %{$stammdateien_ref}){
  CATLINE:
   while (my $line=<IN>){
     my ($category,$indicator,$content);
-    if ($line=~m/^0000:(\d+)$/){
+    if ($line=~m/^0000:(.+)$/){
       $id=$1;
       if ($incremental){
           print OUTDELETE "delete from ".$type." where id=$id;\n";
@@ -313,7 +313,7 @@ my $titid;
 CATLINE:
 while (my $line=<IN>){
     my ($category,$indicator,$content);
-    if ($line=~m/^0000:(\d+)$/){
+    if ($line=~m/^0000:(.+)$/){
         $id=$1;
         $titid=0;
         next CATLINE;
@@ -419,7 +419,7 @@ if ($addsuperpers){
     my ($id,@persids);
 
     while (my $line=<IN>){
-        if ($line=~m/^0000:(\d+)$/){            
+        if ($line=~m/^0000:(.+)$/){            
             $id=$1;
             @persids=();
         }
@@ -477,7 +477,7 @@ while (my $line=<IN>){
     my ($category,$indicator,$content);
     my ($ejahr,$sign,$isbn,$issn,$artinh);
 
-    if ($line=~m/^0000:(\d+)$/){
+    if ($line=~m/^0000:(.+)$/){
         $id=$1;
         
         if ($incremental){

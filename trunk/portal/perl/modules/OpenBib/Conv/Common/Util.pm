@@ -5,7 +5,7 @@
 #  Zusammenfassung von Funktionen, die von mehreren Datenbackends
 #  verwendet werden
 #
-#  Dieses File ist (C) 2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,111 +33,65 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
+our (%autdubbuf,%kordubbuf,%swtdubbuf,%notdubbuf);
+our ($next_autid,$next_korid,$next_swtid,$next_notid) = (1,1,1,1);
 
-@autdubbuf = ();
-@kordubbuf = ();
-@swtdubbuf = ();
-@notdubbuf = ();
-
-sub id2int {
-    my ($id)=@_;
-
-    $id=lc($id);
-    $id=~s/\W//g;
-
-    my $bin = "";
-    
-    foreach my $item (reverse split(//,$id)){
-        my $part=(ord($item) >= 48 && ord($item) <= 57)?ord($item)-48:ord($item)-87;
-        my ($binpart) = unpack("B32", pack("N", $part))=~/(\d\d\d\d\d\d)$/;;
-        $bin ="$binpart$bin";
-    }
-
-    return $bin;
-    return unpack("N", pack("B32", substr("0" x 32 . $bin, -32)));
-}
+%autdubbuf = ();
+%kordubbuf = ();
+%swtdubbuf = ();
+%notdubbuf = ();
 
 sub get_autidn {
-    my ($autans)=@_;
+    my ($content)=@_;
 
-    my $autdubidx=1;
-    my $autdubidn=0;
-
-    while ($autdubidx <= $#autdubbuf){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;
-        }
-        $autdubidx++;
+    if (exists $autdubbuf{$content}){
+        return (-1)*$autdubbuf{$content};
     }
-    if (!$autdubidn){
-        $autdubbuf[$autdubidx]=$autans;
-        $autdubidn=$autdubidx;
+    else {
+        $autdubbuf{$content}=$next_autid;
+        $next_autid++;
+        return $autdubbuf{$content};
     }
-
-    return $autdubidn;
-}
-
-sub get_swtidn {
-    my ($swtans)=@_;
-
-    my $swtdubidx=1;
-    my $swtdubidn=0;
-
-    while ($swtdubidx <= $#swtdubbuf){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdubidx]=$swtans;
-        $swtdubidn=$swtdubidx;
-    }
-
-    return $swtdubidn;
 }
 
 sub get_koridn {
-    my ($korans)=@_;
-    
-    my $kordubidx=1;
-    my $kordubidn=0;
-    
-    while ($kordubidx <= $#kordubbuf){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;
-        }
-        $kordubidx++;
+    my ($content)=@_;
+
+    if (exists $kordubbuf{$content}){
+        return (-1)*$kordubbuf{$content};
     }
-    if (!$kordubidn){
-        $kordubbuf[$kordubidx]=$korans;
-        $kordubidn=$kordubidx;
+    else {
+        $kordubbuf{$content}=$next_korid;
+        $next_korid++;
+        return $kordubbuf{$content};
     }
-    
-    return $kordubidn;
+}
+
+sub get_swtidn {
+    my ($content)=@_;
+
+    if (exists $swtdubbuf{$content}){
+        return (-1)*$swtdubbuf{$content};
+    }
+    else {
+        $swtdubbuf{$content}=$next_swtid;
+        $next_swtid++;
+        return $swtdubbuf{$content};
+    }
 }
 
 sub get_notidn {
-    my ($notans)=@_;
-    
-    my $notdubidx=1;
-    my $notdubidn=0;
-    
-    while ($notdubidx <= $#notdubbuf){
-        if ($notans eq $notdubbuf[$notdubidx]){
-            $notdubidn=(-1)*$notdubidx;
-        }
-        $notdubidx++;
-    }
-    if (!$notdubidn){
-        $notdubbuf[$notdubidx]=$notans;
-        $notdubidn=$notdubidx;
-    }
-    
-    return $notdubidn;
-}
+    my ($content)=@_;
 
+    if (exists $notdubbuf{$content}){
+        return (-1)*$notdubbuf{$content};
+    }
+    else {
+        $notdubbuf{$content}=$next_notid;
+        $next_notid++;
+        return $notdubbuf{$content};
+    }
+}
 
 1;
 __END__
@@ -156,24 +110,53 @@ verwendet werden.
 
  use OpenBib::Conv::Common::Util;
 
- my $id="urn:nbn:de:hbz:38-13363";
+ print OpenBib::Conv::Common::Util::get_autidn("Doe, John")
 
- print "Katkey: ",id2int($id),"\n";
+ => 1
+
+ print OpenBib::Conv::Common::Util::get_autidn("Foo, Bar")
+
+ => 2
+
+ print OpenBib::Conv::Common::Util::get_autidn("Baz, Bar")
+
+ => 3
+
+ print OpenBib::Conv::Common::Util::get_autidn("Foo, Bar")
+
+ => 2
 
 =head1 METHODS
 
 =over 4
 
-=item id2int
+=item get_autid($name)
 
-Wandelt einen String-Identifier eindeutig einem Integer-Wert zu, der
-intern zur Referenzierung genutzt werden kann. Dazu wird ein einfacher
-Block-Code verwendet. Zunaechst erfolgt jedoch eine Normierung auf
-ASCII-Kleinbuchstaben und Zahlen. Alle anderen Zeichen werden
-entfernt. Diesen Zeichen werden dann binäre 6-bit Repräsentationen
-zugeordnet. Diese binären Repräsentationen werden dann entsprechend
-der Gesamtzeichenkette zu einer Gesamt-Binärzahl
-zusammengefasst. Diese wird dann als Integer interpretiert.
+Gibt in der Normdatenart Person die für die Ansetzungsform $name generierte numerische Identifikationsnummer
+zurück. Wenn $name noch nicht existiert, dann wird eine neue Nummer generiert und
+zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte Nummer
+zurückgeliefert.
+
+=item kor_autid($name)
+
+Gibt in der Normdatenart Körperschaft die für die Ansetzungsform $name generierte numerische Identifikationsnummer
+zurück. Wenn $name noch nicht existiert, dann wird eine neue Nummer generiert und
+zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte Nummer
+zurückgeliefert.
+
+=item get_swtid($name)
+
+Gibt in der Normdatenart Schlagwort die für die Ansetzungsform $name generierte numerische Identifikationsnummer
+zurück. Wenn $name noch nicht existiert, dann wird eine neue Nummer generiert und
+zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte Nummer
+zurückgeliefert.
+
+=item get_notid($name)
+
+Gibt in der Normdatenart Notation die für die Ansetzungsform $name generierte numerische Identifikationsnummer
+zurück. Wenn $name noch nicht existiert, dann wird eine neue Nummer generiert und
+zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte Nummer
+zurückgeliefert.
 
 =back
 

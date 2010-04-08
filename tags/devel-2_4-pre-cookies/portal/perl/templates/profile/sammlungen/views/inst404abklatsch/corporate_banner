@@ -1,0 +1,9 @@
+<!-- Begin Template: corporate_banner -->
+	<div id="header2">
+		<div id="header_logo"><a href="http://www.uni-koeln.de/" target="_blank" title="Startseite der Universit&auml;t zu K&ouml;ln" id="header_usb_siegel_small"></a></div>
+
+                <div id="header_right"><span id="header2_uni_schriftzug">Abklatsch-Sammlung</span>
+		<span id="header2_usb_schriftzug">Arbeitsstelle für Papyrologie, Epigraphik und Numismatik der Nordrhein-Westfälischen Akademie der Wissenschaften und der Künste am Institut für Altertumskunde der Universität zu Köln</span><a href="http://www.akdw.nrw.de/" title="Startseite der NRW-Akademie der Wissenschaften und der K&uuml;nste" id="header_uni_siegel_small" target="_blank"></a>
+                </div>
+       </div>
+<!-- End Template: corporate_banner -->

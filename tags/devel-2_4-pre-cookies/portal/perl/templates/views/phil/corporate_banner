@@ -1,0 +1,28 @@
+<!-- Begin Template: corporate_banner -->
+<table cellpadding="10" cellspacing="0" bgcolor="#FFFFFF" width=100%>
+<tr>
+<td width="88" align="center"><a class="hist" href="http://www.uni-koeln.de" target="_blank">
+    <img border="0" src="http://www.uni-koeln.de/phil-fak/bilder/uni_siegel.gif" alt="Universitätssiegel"></a></td>
+<td align=left>
+
+<!-- Beginn mittlerer Kopfbereich -->
+<table cellSpacing="3" cellPadding="3" width="100%" border=0>
+  <tr>
+    <td><a class="hist" href="http://www.uni-koeln.de" target="_blank"><font size="5" face="Arial, Helvetica, sans-serif"><b>Universit&auml;t zu K&ouml;ln</b></font></a></td>
+  </tr>
+  <tr>
+    <td><img src="http://www.uni-koeln.de/phil-fak/bilder/phil_linie.gif" height="3" width="100%" /></td>
+  </tr>
+
+  <tr>
+    <td><img src="http://www.uni-koeln.de/phil-fak/bilder/phil_rechteck.gif" /> <font size="4"><b>&nbsp;<a class="hist" href="http://kug.ub.uni-koeln.de/" target="_blank">KUG</a> / <a class="hist" href="http://www.uni-koeln.de/phil-fak/" target="_blank">Philosophische Fakult&auml;t</a></b></font></td>
+  </tr>
+</table>
+
+<!-- Ende mittlerer Kopfbereich -->
+</td>
+
+<td align="right" width="70"><img src="http://www.uni-koeln.de/phil-fak/bilder/phil_siegel.gif"  alt="Fakult&auml;tssiegel"></td>
+</tr>
+</table>
+<!-- End Template: corporate_banner -->

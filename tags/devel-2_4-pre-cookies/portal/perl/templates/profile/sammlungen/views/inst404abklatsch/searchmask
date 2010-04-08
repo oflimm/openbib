@@ -1,0 +1,213 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchframe_simple
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der einfachen Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchmask" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+[% IF config.get('testsystem') %]
+<div id="testsystem">
+[%# PROCESS common/subtemplate name="testsystem_info" %]
+<p />
+</div>
+[% END %]
+
+<!--<div class="langchoice">
+[% IF config.get('lang').size > 1 %]
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="searchmask" %]
+
+<div class="content">
+
+<br/>
+<br/>
+
+[% IF user.is_authenticated %]
+[% autocompletion_type = user.get_autocompletion %]
+[% livesearch          = user.get_livesearch %]
+[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_serials").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_articles").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_serials").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_articles").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+})
+</script>
+[%   END %]
+[% END %]
+
+<form method="get" action="[% config.get('virtualsearch_loc') %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="2" />
+<input type="hidden" name="hitrange"  value="100" />
+<input type="hidden" name="sorttype"  value="author" />
+<input type="hidden" name="autoplus"  value="1" />
+<input type="hidden" name="profil"    value="dbauswahl" />
+
+<center>
+<table width="70%">
+<tr><td style="vertical-align:top;padding:20px;">
+[% PROCESS common/subtemplate name="searchmask_query" %]
+
+</form>
+
+[% IF queries.size > 0 %]
+<p />
+<form method="get" id="queries" action="[% config.get('dispatchquery_loc') %]">
+<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<table>
+<tr>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
+</tr>
+</table>
+
+</form>
+[% END %]
+
+
+</td>
+<td>
+
+<p> Die einzelnen Abklatsche wurden mit den folgenden Feldern erfaßt,
+die hier recherchiert werden k&ouml;nnen bzw. &uuml;ber Register
+erschlossen sind: </p>
+
+<dl>
+<dt>1. Kurztitel der Inschrift</dt>
+
+<dd>
+in der Regel nach der Edition in der IK-Reihe oder in Epigraphica Anatolica
+</dd>
+
+<dt>2. Ort der Inschrift</dt>
+
+<dd>
+<dd>
+Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0200">Register</a>, z.B. Ephesus, Knidos, Oinoanda
+</dd>
+
+<dt>3. Kategorie</dt>
+
+<dd>
+Zugang &uuml;ber Eingabemaske sowie <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0710">Register</a>, z.B. Ehrendekret, Grabinschrift usw.
+</dd>
+
+<dt>4. Edition und SEG-Eintrag</dt>
+
+<dd>
+Edition in der Regel nach IK-Reihe oder Epigraphica Anatolica, z.B. "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p. 3-5, Nr. 496", "SGO 01/15/04"
+SEG-Eintrag nach Möglichkeit letzter Eintrag im Supplementum Epigraphicum Graecum, z.B. "SEG 39, 1989, Nr. 1132" 
+<br/>
+Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0335">Register</a> 
+</dd>
+
+<dt>5. Inventarnummer</dt>
+
+<dd>
+"Dubl." hinter derselben Inventarnr. bedeutet, dass mehrere identische Abklatsche ein und desselben Steins vorliegen. 
+"A/B/C..." hinter derselben Inventarnr. kennzeichnet  verschiedene bzw. sich ergänzender Abklatsche ein und desselben Steins. 
+"a/b/c..." hinter derselben Inventarnr. dient der Unterscheidung mehrerer verschiedener Inschriften, die sich auf ein und demselben Abklatsch befinden. 
+"???" hinter einer Inventarnr. markieren in der Erfassungsphase den Abklatsch als noch nicht identifiziert bzw. unpubliziert.
+Die Abklatsche der Diogenes-Fragmente aus Oinoanda sind in der Weise inventarisiert, dass die Inventarnummer der YF-Nummer  im Bereich 1000-1400 entspricht, z.B. YF 46 = Inventarnr. 1046. 
+</dd>
+
+
+<dt>6. Aufbewahrungsort der Inschrift</dt>
+
+<dd>
+Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0410">Register</a>
+</dd>
+
+<dt>7. Datierung der Inschrift</dt>
+
+<dd>
+Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0425">Register</a>, z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</table>
+</center>
+<p />
+
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

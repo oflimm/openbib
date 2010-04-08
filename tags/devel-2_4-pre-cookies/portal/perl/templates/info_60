@@ -1,0 +1,91 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_60
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[%- libinfo = config.get_libinfo(id); -%]
+
+[%- IF config.get('google_maps_api_key') && libinfo.${"I0280"}.first.content -%]
+<script type="text/javascript" src="http://www.google.com/jsapi?key=[% config.get('google_maps_api_key') %]"></script>
+
+<script type="text/javascript">
+  google.load("maps", "2");
+
+  // Call this function when the page has been loaded
+  function initialize() {
+        var map = new google.maps.Map2(document.getElementById("map"));
+        map.setCenter(new google.maps.LatLng([% libinfo.${"I0280"}.first.content %]), 15);
+        var point = new GLatLng([% libinfo.${"I0280"}.first.content %]);
+        map.addOverlay(new GMarker(point));
+  }
+  google.setOnLoadCallback(initialize);
+</script>
+[% END %]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Informationen zu dieser Bibliothek") %]</span></a></li>
+</ul>
+
+<div class="content">
+
+<div class="right_side" id="map" style="width: 300px; height: 300px"></div>
+
+[% PROCESS common/subtemplate name="visible_categories_libinfoset" %]
+
+<table>
+[%-
+
+FOREACH category IN categories;
+
+      FOREACH item IN libinfo.$category;
+        content = item.content.replace('%22','"');
+
+        SWITCH category;
+
+          CASE [ "I0010" "I0230" "I0235" ];
+            content   = "<b>${content}</b>";
+
+        END;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}")
+%]</td><td>[% content %]</td></tr>
+[%-   END ;
+END ;-%]
+</table>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

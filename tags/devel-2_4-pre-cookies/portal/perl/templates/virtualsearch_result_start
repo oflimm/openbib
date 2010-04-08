@@ -1,0 +1,63 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_start
+#
+# Typ         : Mastertemplate (1/3)
+#
+# Aufgabe:
+#
+# Ausgabe des Anfangs der initialen Trefferliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+<body>
+
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+  <div class="listoptions">
+<form method="get" action="[% config.get('virtualsearch_loc') %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="page"      value="[% page %]" />
+<input type="hidden" name="sb"        value="xapian" />
+<input type="hidden" name="st"        value="1" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.get('drilldown_option').cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.get('drilldown_option').categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
+<input type="hidden" name="autoplus"  value="0" />
+
+<input type="hidden" name="hitrange"   value="[% query.param('hitrange') %]" />
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+
+[% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.get('virtualsearch_loc') %]
+
+</form>
+  </div>
+<p/>
+
+[% suggestion = sq.get_spelling_suggestion %]
+[% IF spelling_suggestion.resultlist && suggestion  %]
+[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?sessionID=[% sessionID %];hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% END %]
+

@@ -1,0 +1,41 @@
+[%- normset         = record.to_rawdata -%]
+[%- IF representation == "rdf+xml" -%]
+<rdf:RDF
+    xmlns:dbpedia="http://dbpedia.org/property/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:libris="http://libris.kb.se/vocabulary/experimental#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" >
+  <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/person/[% database %]:[% id %]">
+[%#    <owl:sameAs rdf:resource="http://dbpedia.org/resource/xxx"/>
+    <rdf:seeAlso rdf:resource="http://en.wikipedia.org/wiki/xxx"/>
+    <dbpedia:birthYear>1234</dbpedia:birthYear> %]
+[% FOREACH item IN normset.${"P0001"} %]
+    <libris:key>[% item.content %]</libris:key>
+    <foaf:name>[% item.content %]</foaf:name>
+[% END %]
+[% FOREACH item IN normset.${"P0102"} %]
+    <foaf:name>[% item.content %]</foaf:name>
+[% END %]
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+[%#    <owl:sameAs rdf:resource="http://dbpedia.org/page/xxx"/> %]
+    <rdfs:isDefinedBy rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/person/[% database %]:[% id %]/rdf+xml"/>
+  </rdf:Description>
+[% FOREACH title_record IN title_records.to_ids %]
+  <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/title/[% title_record.database %]:[% title_record.id %]">
+    <dc:creator rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/person/[% database %]:[% id %]"/>
+  </rdf:Description>
+[% END %]
+</rdf:RDF>
+[%- ELSIF representation == "html" -%]
+[%-
+    view = 'kug';
+    id1  = database;
+    id2  = id;
+    type = 2;
+-%]
+[% PROCESS common/subtemplate name="connector_permalink" %]
+[%- END -%]

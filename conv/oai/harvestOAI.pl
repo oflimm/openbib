@@ -37,7 +37,7 @@ use Getopt::Long;
 
 use OAI2::Harvester;
 
-#binmode STDOUT, ':utf8';
+binmode STDOUT, ':utf8';
 
 &GetOptions("oaiurl=s" => \$oaiurl,
 	    );

@@ -5,7 +5,7 @@
 #  gen-subset.pl
 #
 #  Extrahieren einer Titeluntermenge eines Katalogs anhand der
-#  Titeldaten fuer die Erzeugung eines separaten neuen Katalogs
+#  mex-Daten fuer die Erzeugung eines separaten neuen Katalogs
 #
 #  Dieses File ist (C) 2005-2009 Oliver Flimm <flimm@openbib.org>
 #
@@ -57,17 +57,15 @@ $pooldir=$rootdir."/pools";
 
 my $pool=$ARGV[0];
 
-my $sourcepool="inst001";
-
 $mysqlexe="/usr/bin/mysql -u $config->{'dbuser'} --password=$config->{'dbpasswd'} -f";
 
-my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$sourcepool;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
+my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-print "### $pool: Bestimme Titel-ID's anhand der Signaturanfaenge LS/A6524-*, HL/Dek414/2-* 16A5804-*, Fd6/7-*\n";
+print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and (mex.content rlike '^LS/A6524-' or mex.content rlike '^HL/Dek414/2-' or mex.content rlike '^16A5804-' or mex.content rlike '^Fd6/7-') and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content rlike '^P [0-9]' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 
@@ -83,33 +81,36 @@ foreach my $key (keys %titidns){
 
 print "### $pool: Gefundene Titel-ID's $count\n";
 
+# $request=$dbh->prepare("select distinct id from mex where category='0016' and content='USB-Lehrbuchsammlung'") or $logger->error($DBI::errstr);
+# $request->execute();
+
+# while (my $result=$request->fetchrow_hashref()){
+#     $mexidns{$result->{'id'}}=1;
+# }
+
 # IDN's uebergeordneter Titel finden
 
-print "### $pool: Bestimme uebergeordnete Titel\n";
+# print "### $pool: Bestimme uebergeordnete/untergeordnete Titel\n";
 
-my %tmp_titidns_super = %titidns;
+# foreach $titidn (keys %titidns){
 
-while (keys %tmp_titidns_super){
-    print "### Ueberordnungen - neuer Durchlauf\n";
-    my %found = ();
+#   # Ueberordnungen
+#   $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
+#   $request->execute($titidn) or $logger->error($DBI::errstr);;
+  
+#   while (my $result=$request->fetchrow_hashref()){
+#     $titidns{$result->{'sourceid'}}=1;
+#   }
 
-    foreach my $titidn (keys %tmp_titidns_super){
-        
-        # Ueberordnungen
-        $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-        $request->execute($titidn) or $logger->error($DBI::errstr);;
-        
-        while (my $result=$request->fetchrow_hashref()){
-            $titidns{$result->{'targetid'}} = 1;
-            if ($titidn != $result->{'targetid'}){ # keine Ringschluesse - ja, das gibt es
-                $found{$result->{'targetid'}}   = 1;
-            }
-            
-        }        
-    }
+#   # Unterordnungen
+#   $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
+#   $request->execute($titidn) or $logger->error($DBI::errstr);;
+  
+#   while (my $result=$request->fetchrow_hashref()){
+#     $titidns{$result->{'targetid'}}=1;
+#   }
 
-    %tmp_titidns_super = %found;
-}
+# }
 
 # IDN's der Autoren, Koerperschaften, Schlagworte, Notationen bestimmen
 
@@ -161,7 +162,7 @@ foreach $titidn (keys %titidns){
 print "### $pool: Schreibe Meta-Daten\n";
 # Autoren
 
-open(AUT,"gzip -dc $pooldir/$sourcepool/unload.PER.gz|");
+open(AUT,"gzip -dc $pooldir/inst001/unload.PER.gz|");
 open(AUTOUT,"| gzip > $pooldir/$pool/unload.PER.gz");
 
 while (<AUT>){
@@ -180,7 +181,7 @@ close(AUTOUT);
 
 # Koerperschaften
 
-open(KOR,"gzip -dc $pooldir/$sourcepool/unload.KOE.gz|");
+open(KOR,"gzip -dc $pooldir/inst001/unload.KOE.gz|");
 open(KOROUT,"| gzip > $pooldir/$pool/unload.KOE.gz");
 
 while (<KOR>){
@@ -199,7 +200,7 @@ close(KOROUT);
 
 # Notationen
 
-open(NOTA,"gzip -dc $pooldir/$sourcepool/unload.SYS.gz|");
+open(NOTA,"gzip -dc $pooldir/inst001/unload.SYS.gz|");
 open(NOTAOUT,"| gzip > $pooldir/$pool/unload.SYS.gz");
 
 while (<NOTA>){
@@ -217,7 +218,7 @@ close(NOTA);
 close(NOTAOUT);
 
 # Schlagworte
-open(SWT,"gzip -dc $pooldir/$sourcepool/unload.SWD.gz|");
+open(SWT,"gzip -dc $pooldir/inst001/unload.SWD.gz|");
 open(SWTOUT,"| gzip > $pooldir/$pool/unload.SWD.gz");
 
 while (<SWT>){
@@ -236,7 +237,7 @@ close(SWTOUT);
 
 # Titeldaten
 
-open(TIT,"gzip -dc $pooldir/$sourcepool/unload.TIT.gz|");
+open(TIT,"gzip -dc $pooldir/inst001/unload.TIT.gz|");
 open(TITOUT,"| gzip > $pooldir/$pool/unload.TIT.gz");
 
 while (<TIT>){
@@ -255,7 +256,7 @@ close(TITOUT);
 
 # Exemplardaten
 
-open(MEX,"gzip -dc $pooldir/$sourcepool/unload.MEX.gz|");
+open(MEX,"gzip -dc $pooldir/inst001/unload.MEX.gz|");
 open(MEXOUT,"| gzip > $pooldir/$pool/unload.MEX.gz");
 
 my $mexbuffer="";

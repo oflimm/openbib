@@ -178,17 +178,13 @@ Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[% config.get('search_loc')
 
 <dt>5. Inventarnummer</dt>
 
-<dd> "Dubl." hinter derselben Inventarnr. bedeutet, dass mehrere
-identische Abklatsche ein und desselben Steins vorliegen. "A/B/C..." 
-hinter derselben Inventarnr. kennzeichnet verschiedene bzw. sich
-ergänzende Abklatsche ein und desselben Steins. "a/b/c..." hinter
-derselben Inventarnr. dient der Unterscheidung mehrerer verschiedener
-Inschriften, die sich auf ein und demselben Abklatsch befinden. "?" 
-hinter einer Inventarnr. markiert in der Erfassungsphase den
-Abklatsch als noch nicht identifiziert bzw. unpubliziert.  Die
-Abklatsche der Diogenes-Fragmente aus Oinoanda sind in der Weise
-inventarisiert, dass die Inventarnummer der YF-Nummer im Bereich
-1000-1400 entspricht, z.B. YF 46 = Inventarnr. 1046. </dd>
+<dd>
+"Dubl." hinter derselben Inventarnr. bedeutet, dass mehrere identische Abklatsche ein und desselben Steins vorliegen. 
+"A/B/C..." hinter derselben Inventarnr. kennzeichnet  verschiedene bzw. sich ergänzender Abklatsche ein und desselben Steins. 
+"a/b/c..." hinter derselben Inventarnr. dient der Unterscheidung mehrerer verschiedener Inschriften, die sich auf ein und demselben Abklatsch befinden. 
+"???" hinter einer Inventarnr. markieren in der Erfassungsphase den Abklatsch als noch nicht identifiziert bzw. unpubliziert.
+Die Abklatsche der Diogenes-Fragmente aus Oinoanda sind in der Weise inventarisiert, dass die Inventarnummer der YF-Nummer  im Bereich 1000-1400 entspricht, z.B. YF 46 = Inventarnr. 1046. 
+</dd>
 
 
 <dt>6. Aufbewahrungsort der Inschrift</dt>

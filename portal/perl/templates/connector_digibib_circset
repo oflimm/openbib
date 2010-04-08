@@ -31,7 +31,7 @@
        END ;
 
        IF circ.Statuscode != 0 ;
-            IF mex.Gruppe.Name.match("Handapparat") ;
+            IF circ.Gruppe.Name.match("Handapparat") ;
                 status = "${status} in ${circ.Entleiher.Name}";
             ELSIF circ.Vormerkbarkeit ;
                 stelle = circ.Vormerkungen;
@@ -43,7 +43,7 @@
           location.${catname}.${"signatur"} = "${signatur} (${status})" ;
        ELSE ;
           signaturstring = location.${catname}.${"signatur"} ;
-          signaturstring = "${signaturstring} ; ${signatur}" ;
+          signaturstring = "${signaturstring} ; ${signatur} (${status})" ;
           location.${catname}.${"signatur"}= signaturstring  ; 
        END ;
     END ;

@@ -44,14 +44,13 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$database,$view,$help,$logfile,$disablefilteryear);
+my ($type,$database,$view,$help,$logfile);
 
-&GetOptions("type=s"              => \$type,
-            "database=s"          => \$database,
-            "view=s"              => \$view,
-            "logfile=s"           => \$logfile,
-            "disable-filter-year" => \$disablefilteryear,
-	    "help"                => \$help
+&GetOptions("type=s"          => \$type,
+            "database=s"      => \$database,
+            "view=s"          => \$view,
+            "logfile=s"       => \$logfile,
+	    "help"            => \$help
 	    );
 
 if ($help){
@@ -576,17 +575,8 @@ if ($type == 9){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-
-        my $sql_string = "select count(distinct id) as scount, content from tit where category=425 and content regexp ? group by content order by scount DESC";
-        my @sql_args   = ("^[0-9][0-9][0-9][0-9]\$");
-        if ($disablefilteryear){
-            $sql_string = "select count(distinct id) as scount, content from tit where category=425 group by content order by scount DESC";
-            pop @sql_args ;
-        }
-        
-        my $request=$dbh->prepare($sql_string);
-        $request->execute(@sql_args);
-
+        my $request=$dbh->prepare("select count(distinct id) as scount, content from tit where category=425 and content regexp ? group by content order by scount DESC");
+        $request->execute("^[0-9][0-9][0-9][0-9]\$");
         while (my $result=$request->fetchrow_hashref){
             my $content = decode_utf8($result->{content});
             my $count   = $result->{scount};

@@ -85,6 +85,10 @@ sub handler {
     my $action          = $query->param('action') || '';
     my $setmask         = $query->param('setmask') || '';
     my $searchsingletit = $query->param('searchsingletit') || '';
+    my $searchsingleaut = $query->param('searchsingleaut') || '';
+    my $searchsinglekor = $query->param('searchsinglekor') || '';
+    my $searchsingleswt = $query->param('searchsingleswt') || '';
+    my $searchsinglenot = $query->param('searchsinglenot') || '';
     my $searchlitlist   = $query->param('searchlitlist')   || '';
   
     my $view="";
@@ -193,7 +197,23 @@ sub handler {
     if ($searchsingletit && $database ){
         $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsingletit=$searchsingletit;view=$view";
     }
+    
+    if ($searchsingleaut && $database ){
+        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsingleaut=$searchsingleaut;view=$view";
+    }
 
+    if ($searchsinglekor && $database ){
+        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsinglekor=$searchsinglekor;view=$view";
+    }
+
+    if ($searchsingleswt && $database ){
+        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsingleswt=$searchsingleswt;view=$view";
+    }
+
+    if ($searchsinglenot && $database ){
+        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsinglenot=$searchsinglenot;view=$view";
+    }
+    
     if ($fs){
         $redirecturl = "$config->{virtualsearch_loc}?view=$view;sessionID=$session->{ID};fs=".uri_escape($fs).";hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
     }

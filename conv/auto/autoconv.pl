@@ -45,10 +45,11 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
-my ($database,$sync,$genmex,$help,$logfile);
+my ($database,$sync,$genmex,$help,$logfile,$loglevel);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
+            "loglevel=s"      => \$loglevel,
 	    "sync"            => \$sync,
             "gen-mex"         => \$genmex,
 	    "help"            => \$help
@@ -58,10 +59,11 @@ if ($help){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/autoconv.log';
+$logfile  = ($logfile)?$logfile:'/var/log/openbib/autoconv.log';
+$loglevel = ($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -220,7 +222,7 @@ my $atime = new Benchmark;
         system("$config->{autoconv_dir}/filter/$database/alt_conv.pl $database");
     }
     else {
-        system("cd $rootdir/data/$database ; $meta2sqlexe -add-superpers -add-mediatype --database=$database");
+        system("cd $rootdir/data/$database ; $meta2sqlexe --loglevel=$loglevel -add-superpers -add-mediatype --database=$database");
     }
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_conv.pl"){
@@ -361,7 +363,7 @@ ENDE
     my $atime = new Benchmark;
 
     $logger->info("### $database: Importing data into searchengine");   
-    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --with-fields --database=$database");
+    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-fields -with-sorting -with-positions --database=$database");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
@@ -377,11 +379,6 @@ $logger->info("### $database: Cleanup");
 
 system("$mysqladminexe drop   $databasetmp");
 system("rm $rootdir/data/$database/*");
-
-if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
-    $logger->info("### $database: Verwende Plugin post_cleanup.pl");
-    system("$config->{autoconv_dir}/filter/$database/post_cleanup.pl $database");
-}
 
 my $btime      = new Benchmark;
 my $timeall    = timediff($btime,$atime);

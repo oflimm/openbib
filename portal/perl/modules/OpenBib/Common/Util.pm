@@ -1083,37 +1083,34 @@ sub get_cascaded_templatepath {
     my $config = OpenBib::Config->instance;
 
     if ($profile && -e "$config->{tt_include_path}/profile/$profile") {
-        if ($view && -e "$config->{tt_include_path}/profile/$profile/views/$view/$templatename") {
-            $templatename="profile/$profile/views/$view/$templatename";
-        }
 
         # Database-Template ist spezifischer als View-Template und geht vor
         if ($database && -e "$config->{tt_include_path}/profile/$profile/database/$database/$templatename") {
             $templatename="profile/$profile/database/$database/$templatename";
         }
-
-        if ($view && -e "$config->{tt_include_path}/profile/$profile/$templatename") {
+        elsif ($view && -e "$config->{tt_include_path}/profile/$profile/views/$view/$templatename") {
+            $templatename="profile/$profile/views/$view/$templatename";
+        }
+        elsif ($view && -e "$config->{tt_include_path}/profile/$profile/$templatename") {
             $templatename="profile/$profile/$templatename";
         }
-
-        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
-            $templatename="views/$view/$templatename";
-        }
-        
         # Database-Template ist spezifischer als View-Template und geht vor
-        if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
+        elsif ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
             $templatename="database/$database/$templatename";
         }                
-    }
-    else {
-        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+        elsif ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
             $templatename="views/$view/$templatename";
         }
         
+    }
+    else {
         # Database-Template ist spezifischer als View-Template und geht vor
         if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
             $templatename="database/$database/$templatename";
         }
+        elsif ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+            $templatename="views/$view/$templatename";
+        }        
     }
 
     return $templatename;

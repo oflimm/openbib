@@ -43,9 +43,7 @@ FOREACH category IN categories;
 [%- END -%]
 </table>
 
-[%# USE dumper;dumper.dump(record) %]
 [% IF circset.size > 0 || mexnormset.size > 0 %]
-
 [% IF circset.size > 0 %]
 <p />
 <table width="100%">

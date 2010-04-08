@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
-# Oliver Flimm <flimm@openbib.org>, 2006, 2009, 2010.
+# Oliver Flimm <flimm@openbib.org>, 2006, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2010-02-16 15:20+0100\n"
+"PO-Revision-Date: 2010-01-20 09:22+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,15 +22,15 @@ msgid "${category}"
 msgstr "${category}"
 
 #: ../templates/admin_editlibinfo:53 ../templates/admin_editlibinfo:62
-#: ../templates/database/ebooks/search_showtitset_categories:167
-#: ../templates/database/ebooks/search_showtitset_categories:198
+#: ../templates/database/ebooks/search_showtitset_categories:185
+#: ../templates/database/ebooks/search_showtitset_categories:216
 #: ../templates/database/einbaende/search_showtitset:153
 #: ../templates/database/einbaende/search_showtitset:225
 #: ../templates/database/einbaende/search_showtitset:303
 #: ../templates/database/einbaende/search_showtitset:336
 #: ../templates/database/einbaende/search_showtitset_1:317
-#: ../templates/database/inst001/search_showtitset_categories:203
-#: ../templates/database/inst001/search_showtitset_categories:234
+#: ../templates/database/inst001/search_showtitset_categories:221
+#: ../templates/database/inst001/search_showtitset_categories:252
 #: ../templates/database/umschlaege/search_showtitset:275
 #: ../templates/database/umschlaege/search_showtitset:306
 #: ../templates/info_60:84 ../templates/litlists_tit_as_html_full:185
@@ -124,7 +124,7 @@ msgstr "%1 titles in %2 groups"
 #. (titlecount,thisclassifications.size,subject.litlistcount.public)
 #. (titlecount,thisclassifications.size,subject.litlistcount)
 #: ../templates/info_53:55 ../templates/profile/kuglight/info_53:55
-#: ../templates/searchmask:312 ../templates/searchmask_simple:404
+#: ../templates/searchmask:321 ../templates/searchmask_simple:407
 #: ../templates/views/einbaende/searchmask:312
 #: ../templates/views/einbaende/searchmask_simple:404
 #: ../templates/views/kug/searchmask_simple:393
@@ -288,7 +288,7 @@ msgstr "Overview"
 #: ../templates/profile/kuglight/views/umschlaege/search_browse_tit:35
 #: ../templates/profile/kuglight/views/umschlaege/searchmask:46
 #: ../templates/profile/kuglight/views/umschlaege/searchmask_simple:39
-#: ../templates/searchmask:408 ../templates/searchmask_simple:500
+#: ../templates/searchmask:417 ../templates/searchmask_simple:503
 #: ../templates/views/einbaende/searchmask:408
 #: ../templates/views/einbaende/searchmask_simple:500
 #: ../templates/views/kug/info:85 ../templates/views/kug/info:935
@@ -380,7 +380,7 @@ msgstr ""
 "'complete title', Boolean operators have been disabled in the respective "
 "boxes. Only the truncation operator <b>*</b> is allowed."
 
-#: ../templates/searchmask:335 ../templates/searchmask_simple:427
+#: ../templates/searchmask:344 ../templates/searchmask_simple:430
 #: ../templates/views/einbaende/searchmask:335
 #: ../templates/views/einbaende/searchmask_simple:427
 #: ../templates/views/kug/searchmask_simple:416
@@ -734,8 +734,8 @@ msgstr "All types"
 #: ../templates/profile/kuglight/views/inst460/searchmask_simple:130
 #: ../templates/profile/kuglight/views/rheinlandbib/databasechoice:63
 #: ../templates/profile/kuglight/views/richter/searchmask_simple:99
-#: ../templates/searchmask_query:137 ../templates/searchmask_simple:162
-#: ../templates/searchmask_simple:255 ../templates/searchmask_simple:350
+#: ../templates/searchmask_query:137 ../templates/searchmask_simple:163
+#: ../templates/searchmask_simple:257 ../templates/searchmask_simple:353
 #: ../templates/views/einbaende/searchmask_simple:162
 #: ../templates/views/einbaende/searchmask_simple:255
 #: ../templates/views/einbaende/searchmask_simple:350
@@ -755,7 +755,7 @@ msgstr "All lists"
 
 #: ../templates/profile/kuglight/resultlists_choice:97
 #: ../templates/profile/kuglight/resultlists_choice:99
-#: ../templates/resultlists_choice:97 ../templates/resultlists_choice:99
+#: ../templates/resultlists_choice:98
 msgid "Alle Treffer"
 msgstr "All hits"
 
@@ -1005,7 +1005,9 @@ msgstr "On"
 #: ../templates/views/einbaende/resultlists_showall_sortall:121
 #: ../templates/views/einbaende/resultlists_showsinglepool:139
 #: ../templates/views/einbaende/virtualsearch_result_item:140
-#: ../templates/views/kug/info:969 ../templates/virtualsearch_result_item:172
+#: ../templates/views/kug/info:969
+#: ../templates/virtualsearch_result_combined:191
+#: ../templates/virtualsearch_result_item:199
 msgid "An BibSonomy senden"
 msgstr "Send to BibSonomy"
 
@@ -1193,6 +1195,10 @@ msgstr "View:"
 msgid "Anzeigen"
 msgstr "View"
 
+#: ../templates/drilldown_categorized:336
+msgid "Arabisch"
+msgstr "Arabic"
+
 #: ../templates/profile/kuglight/views/einbaende/searchmask:204
 msgid "Art"
 msgstr "Type"
@@ -1267,8 +1273,8 @@ msgstr "Use this view"
 msgid "Aufruf ohne &Uuml;bernahme von Suchbegriffen"
 msgstr "Use without aquisition of search terms"
 
-#: ../templates/searchmask:239 ../templates/searchmask:59
-#: ../templates/searchmask_simple:295 ../templates/searchmask_simple:62
+#: ../templates/searchmask:248 ../templates/searchmask:59
+#: ../templates/searchmask_simple:297 ../templates/searchmask_simple:62
 #: ../templates/views/einbaende/searchmask:239
 #: ../templates/views/einbaende/searchmask:59
 #: ../templates/views/einbaende/searchmask_simple:295
@@ -1341,7 +1347,7 @@ msgstr "Circulation options"
 #: ../templates/database/einbaende/search_showtitset_1:394
 #: ../templates/database/umschlaege/search_showtitset:364
 #: ../templates/database/umschlaege/search_showtitset:383
-#: ../templates/managecollection_tit_as_html_simple:52
+#: ../templates/managecollection_tit_as_html_simple:50
 #: ../templates/profile/kuglight/circset:16
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:130
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:345
@@ -1464,8 +1470,8 @@ msgstr ""
 msgid "Beginn"
 msgstr "Start"
 
-#: ../templates/searchmask_query:149 ../templates/searchmask_simple:174
-#: ../templates/searchmask_simple:267 ../templates/searchmask_simple:362
+#: ../templates/searchmask_query:149 ../templates/searchmask_simple:175
+#: ../templates/searchmask_simple:269 ../templates/searchmask_simple:365
 #: ../templates/views/einbaende/searchmask_simple:174
 #: ../templates/views/einbaende/searchmask_simple:267
 #: ../templates/views/einbaende/searchmask_simple:362
@@ -1477,8 +1483,8 @@ msgstr "Start"
 msgid "Beginnen Sie eine neue Recherche"
 msgstr "Start a new search request"
 
-#: ../templates/database/ebooks/search_showtitset_categories:25
-#: ../templates/database/inst001/search_showtitset_categories:24
+#: ../templates/database/ebooks/search_showtitset_categories:27
+#: ../templates/database/inst001/search_showtitset_categories:26
 #: ../templates/database/umschlaege/search_showtitset:120
 #: ../templates/litlists_tit_as_html_full:36
 #: ../templates/managecollection_tit_as_html:300
@@ -1642,8 +1648,8 @@ msgstr "Remarks"
 msgid "Benutzer"
 msgstr "User"
 
-#: ../templates/searchmask_query:131 ../templates/searchmask_simple:156
-#: ../templates/searchmask_simple:249 ../templates/searchmask_simple:344
+#: ../templates/searchmask_query:131 ../templates/searchmask_simple:157
+#: ../templates/searchmask_simple:251 ../templates/searchmask_simple:347
 #: ../templates/views/einbaende/searchmask_simple:156
 #: ../templates/views/einbaende/searchmask_simple:249
 #: ../templates/views/einbaende/searchmask_simple:344
@@ -1744,7 +1750,7 @@ msgid "Beschreibung"
 msgstr "Description"
 
 #: ../templates/circset:28 ../templates/circset:65
-#: ../templates/database/ebooks/search_showtitset_categories:203
+#: ../templates/database/ebooks/search_showtitset_categories:221
 #: ../templates/database/edz/circset:31 ../templates/database/edz/circset:93
 #: ../templates/database/edz/mexset:3
 #: ../templates/database/einbaende/search_showtitset:341
@@ -1752,7 +1758,7 @@ msgstr "Description"
 #: ../templates/database/inst001/circset:31
 #: ../templates/database/inst001/circset:93
 #: ../templates/database/inst001/mexset:3
-#: ../templates/database/inst001/search_showtitset_categories:239
+#: ../templates/database/inst001/search_showtitset_categories:257
 #: ../templates/database/inst302/circset:28
 #: ../templates/database/inst302/circset:47
 #: ../templates/database/inst450/mexset:3
@@ -1802,7 +1808,7 @@ msgstr "Characteristics of fields with"
 #: ../templates/database/lehrbuchsmlg/mexset:3
 #: ../templates/database/lesesaal/mexset:3
 #: ../templates/database/rheinabt/mexset:3 ../templates/database/wiso/mexset:3
-#: ../templates/managecollection_tit_as_html_simple:60 ../templates/mexset:3
+#: ../templates/managecollection_tit_as_html_simple:58 ../templates/mexset:3
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:70
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:145
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:240
@@ -1990,8 +1996,8 @@ msgstr "Please use My KUG to authenticate."
 msgid "Bitte bookmarken unter:"
 msgstr "Please bookmark as:"
 
-#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:405
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:544
+#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:415
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:497
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Please enter a four digit number as the year of publication."
 
@@ -2045,6 +2051,10 @@ msgstr "C0111"
 msgid "C5000"
 msgstr "C5000"
 
+#: ../templates/drilldown_categorized:335
+msgid "Chinesisch"
+msgstr "Chinese"
+
 #: ../templates/database/einbaende/titlist_options:44
 #: ../templates/profile/kuglight/litlists_manage_singlelist:87
 #: ../templates/profile/kuglight/litlists_show_singlelist:69
@@ -2056,7 +2066,7 @@ msgstr "C5000"
 #: ../templates/profile/kuglight/tags_showtitlist:68
 #: ../templates/profile/kuglight/titlist_options:46
 #: ../templates/profile/kuglight/virtualsearch_result_combined:61
-#: ../templates/titlist_options:45
+#: ../templates/titlist_options:43
 msgid "Cover-Ansicht"
 msgstr "Cover view"
 
@@ -2185,10 +2195,9 @@ msgstr ""
 "portal/opac?view=kug). Please always use the official entry point URLs to "
 "access the KUG. These are:"
 
-#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:412
-#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:421
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:551
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:560
+#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:422
+#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:431
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:504
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -2209,7 +2218,7 @@ msgstr "The big W"
 
 #: ../templates/dbis_showdbinfo:29
 #: ../templates/profile/kuglight/dbis_showdbinfo:29
-#: ../templates/searchmask:419 ../templates/searchmask_simple:512
+#: ../templates/searchmask:428 ../templates/searchmask_simple:515
 #: ../templates/views/einbaende/searchmask:419
 #: ../templates/views/einbaende/searchmask_simple:511
 #: ../templates/views/kug/searchmask_simple:501
@@ -2270,7 +2279,7 @@ msgid ""
 "Katalog aufnehmen"
 msgstr "Please remember that only a few libraries have articles in their catalogues"
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:342
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:355
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
@@ -2338,6 +2347,12 @@ msgstr "Your list of interest is empty"
 msgid "Derzeit werden folgende externe Recherchequellen angeboten:"
 msgstr "The following external services  are currently being offered:"
 
+#: ../templates/drilldown_categorized:305
+#: ../templates/drilldown_categorized:306
+#: ../templates/drilldown_categorized:307
+msgid "Deutsch"
+msgstr "German"
+
 #: ../templates/database/einbaende/search_showtitset:370
 #: ../templates/database/einbaende/search_showtitset_1:351
 #: ../templates/database/umschlaege/search_showtitset:340
@@ -2352,14 +2367,14 @@ msgstr "German Wikipedia"
 msgid "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
 msgstr "The 20 most used catalogues regarding title access"
 
-#: ../templates/searchmask:426 ../templates/searchmask_simple:519
+#: ../templates/searchmask:435 ../templates/searchmask_simple:522
 #: ../templates/views/einbaende/searchmask:426
 #: ../templates/views/einbaende/searchmask_simple:518
 #: ../templates/views/kug/searchmask_simple:508
 msgid "Die 5 zuletzt angelegten Literaturlisten"
 msgstr "Most recent literature lists"
 
-#: ../templates/searchmask:446 ../templates/searchmask_simple:539
+#: ../templates/searchmask:455 ../templates/searchmask_simple:542
 #: ../templates/views/einbaende/searchmask:446
 #: ../templates/views/einbaende/searchmask_simple:538
 #: ../templates/views/kug/searchmask_simple:525
@@ -2695,6 +2710,7 @@ msgstr ""
 #: ../templates/managecollection_tit_as_html:15
 #: ../templates/search_showtitlist:15
 #: ../templates/search_showtitlist_of_cnt:15 ../templates/tags_showtitlist:15
+#: ../templates/virtualsearch_result_combined:16
 #: ../templates/virtualsearch_result_item:17
 msgid "E-Book"
 msgstr "E-Book"
@@ -2705,7 +2721,7 @@ msgstr "E-Book"
 msgid "E-Mail"
 msgstr "E-mail"
 
-#: ../templates/searchmask:382 ../templates/views/einbaende/searchmask:382
+#: ../templates/searchmask:391 ../templates/views/einbaende/searchmask:382
 msgid "E-Mail Adresse registrieren"
 msgstr "Register E-mail address"
 
@@ -2719,7 +2735,7 @@ msgstr "E-mail address"
 #: ../templates/database/alff/visible_categories_titset:104
 #: ../templates/database/ebooks/visible_categories_titset:102
 #: ../templates/database/inst001/visible_categories_titset:111
-#: ../templates/database/inst404abklatsch/visible_categories_titset:104
+#: ../templates/database/inst404abklatsch/visible_categories_titset:105
 #: ../templates/database/nationallizenzen/visible_categories_titset:102
 #: ../templates/database/umschlaege/visible_categories_titset:102
 #: ../templates/database/wikisource_de/visible_categories_titset:104
@@ -2733,7 +2749,7 @@ msgstr "Basic classification"
 
 #: ../templates/database/alff/visible_categories_titset:112
 #: ../templates/database/ebooks/visible_categories_titset:111
-#: ../templates/database/inst404abklatsch/visible_categories_titset:112
+#: ../templates/database/inst404abklatsch/visible_categories_titset:113
 #: ../templates/database/nationallizenzen/visible_categories_titset:111
 #: ../templates/database/umschlaege/visible_categories_titset:110
 #: ../templates/database/wikisource_de/visible_categories_titset:112
@@ -2747,7 +2763,7 @@ msgstr "Table of contents"
 
 #: ../templates/database/alff/visible_categories_titset:113
 #: ../templates/database/ebooks/visible_categories_titset:112
-#: ../templates/database/inst404abklatsch/visible_categories_titset:113
+#: ../templates/database/inst404abklatsch/visible_categories_titset:114
 #: ../templates/database/nationallizenzen/visible_categories_titset:112
 #: ../templates/database/umschlaege/visible_categories_titset:111
 #: ../templates/database/wikisource_de/visible_categories_titset:113
@@ -2760,7 +2776,7 @@ msgid "E4120"
 msgstr "Fulltext-URL"
 
 #: ../templates/database/inst001/visible_categories_titset:102
-#: ../templates/database/inst404abklatsch/visible_categories_titset:102
+#: ../templates/database/inst404abklatsch/visible_categories_titset:103
 #: ../templates/visible_categories_titset:103
 msgid "E4300"
 msgstr "Subject headings (ext.)"
@@ -3004,8 +3020,8 @@ msgstr "Restrict to main entries (series)"
 #: ../templates/profile/kuglight/login:114
 #: ../templates/profile/kuglight/login:81
 #: ../templates/profile/kuglight/login_circulation:67
-#: ../templates/searchmask:335 ../templates/searchmask:379
-#: ../templates/searchmask_simple:427 ../templates/searchmask_simple:471
+#: ../templates/searchmask:344 ../templates/searchmask:388
+#: ../templates/searchmask_simple:430 ../templates/searchmask_simple:474
 #: ../templates/views/einbaende/searchmask:335
 #: ../templates/views/einbaende/searchmask:379
 #: ../templates/views/einbaende/searchmask_simple:427
@@ -3051,7 +3067,7 @@ msgstr "Elektronically available journals (EZB)"
 
 #: ../templates/ezb_showsubjects:31
 #: ../templates/profile/kuglight/ezb_showsubjects:31
-#: ../templates/searchmask:416 ../templates/searchmask_simple:509
+#: ../templates/searchmask:425 ../templates/searchmask_simple:512
 #: ../templates/views/einbaende/searchmask:416
 #: ../templates/views/einbaende/searchmask_simple:508
 #: ../templates/views/kug/searchmask_simple:498
@@ -3095,6 +3111,12 @@ msgstr "Recommendations"
 #: ../templates/search_showtitlist_of_cnt:72 ../templates/tags_showtitlist:68
 msgid "Ende"
 msgstr "End"
+
+#: ../templates/drilldown_categorized:308
+#: ../templates/drilldown_categorized:309
+#: ../templates/drilldown_categorized:310
+msgid "Englisch"
+msgstr "English"
 
 #: ../templates/database/einbaende/search_showtitset:375
 #: ../templates/database/einbaende/search_showtitset_1:356
@@ -3189,10 +3211,10 @@ msgstr "Search Result Enhancement"
 msgid "Erscheinungsjahr"
 msgstr "Year of publication"
 
-#: ../templates/database/ebooks/search_showtitset_categories:207
+#: ../templates/database/ebooks/search_showtitset_categories:225
 #: ../templates/database/einbaende/search_showtitset:345
 #: ../templates/database/einbaende/search_showtitset_1:326
-#: ../templates/database/inst001/search_showtitset_categories:243
+#: ../templates/database/inst001/search_showtitset_categories:261
 #: ../templates/database/umschlaege/search_showtitset:315
 #: ../templates/litlists_tit_as_text:30
 #: ../templates/managecollection_tit_as_text:75
@@ -3206,8 +3228,8 @@ msgstr "Flow of publication  "
 msgid "Erweitere Recherchemaske"
 msgstr "Advanced search mask"
 
-#: ../templates/corporate_banner:62 ../templates/searchmask_simple:174
-#: ../templates/searchmask_simple:267 ../templates/searchmask_simple:362
+#: ../templates/corporate_banner:62 ../templates/searchmask_simple:175
+#: ../templates/searchmask_simple:269 ../templates/searchmask_simple:365
 #: ../templates/views/einbaende/corporate_banner:62
 #: ../templates/views/einbaende/searchmask_simple:174
 #: ../templates/views/einbaende/searchmask_simple:267
@@ -3288,19 +3310,19 @@ msgid ""
 "      mindestens zwei Zeichen (Buchstaben/Ziffern) bestehen."
 msgstr "All search terms must consist of at least two characters   (letters/numbers)"
 
-#: ../templates/connector_similarpersons:40
-#: ../templates/connector_similarpersons:84
+#: ../templates/connector_similarpersons:47
+#: ../templates/connector_similarpersons:97
 #: ../templates/profile/kuglight/connector_similarpersons:40
 #: ../templates/profile/kuglight/connector_similarpersons:84
 msgid "Es konnten keine Personen bestimmt werden."
 msgstr "No other person could be found."
 
-#: ../templates/connector_similarsubjects:42
+#: ../templates/connector_similarsubjects:49
 #: ../templates/profile/kuglight/connector_similarsubjects:42
 msgid "Es konnten keine Themen bestimmt werden."
 msgstr "No other subjects could be found."
 
-#: ../templates/connector_similarsubjects:88
+#: ../templates/connector_similarsubjects:101
 #: ../templates/profile/kuglight/connector_similarsubjects:88
 msgid "Es konnten keine verwandten Themen bestimmt werden."
 msgstr "No other subjects could be found."
@@ -3319,8 +3341,8 @@ msgstr "No sources available."
 msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "You either didn't enter a username or less than two passwords "
 
-#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:428
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:571
+#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:438
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:511
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "You didn't enter any search criteria."
 
@@ -3338,7 +3360,6 @@ msgstr "No default search mask selected"
 #: ../templates/profile/kuglight/virtualsearch_result_end:15
 #: ../templates/views/einbaende/virtualsearch_result_end:16
 #: ../templates/views/umschlaege/virtualsearch_result_end:19
-#: ../templates/virtualsearch_result_combined:51
 #: ../templates/virtualsearch_result_end:16
 msgid "Es wurden keine Treffer gefunden"
 msgstr "No titles available for your search request"
@@ -3384,7 +3405,7 @@ msgstr ""
 "<b>^</b> ahead of your search query (e.g. ^education*). As before, you can "
 "truncate the word with a *."
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:337
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:350
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -3460,8 +3481,8 @@ msgstr "Faculty"
 #: ../templates/profile/kuglight/views/inst450/searchmask_simple:136
 #: ../templates/profile/kuglight/views/inst460/searchmask_simple:131
 #: ../templates/profile/kuglight/views/richter/searchmask_simple:100
-#: ../templates/searchmask_query:138 ../templates/searchmask_simple:163
-#: ../templates/searchmask_simple:256 ../templates/searchmask_simple:351
+#: ../templates/searchmask_query:138 ../templates/searchmask_simple:164
+#: ../templates/searchmask_simple:258 ../templates/searchmask_simple:354
 #: ../templates/views/einbaende/searchmask_simple:163
 #: ../templates/views/einbaende/searchmask_simple:256
 #: ../templates/views/einbaende/searchmask_simple:351
@@ -3548,6 +3569,10 @@ msgstr "Interlibrary loan request"
 msgid "Film ohne Ton"
 msgstr "Film without audio"
 
+#: ../templates/drilldown_categorized:334
+msgid "Finnisch"
+msgstr "Finnish"
+
 #: ../templates/info:1033 ../templates/profile/kuglight/info:655
 #: ../templates/views/kug/info:1033
 msgid "Fragen und Anmerkungen richten Sie bitte an:"
@@ -3562,6 +3587,11 @@ msgstr "Please send questions and feedback to:"
 #: ../templates/search_showtitset:120
 msgid "Franz&ouml;sische Wikipedia"
 msgstr "French Wikipedia"
+
+#: ../templates/drilldown_categorized:311
+#: ../templates/drilldown_categorized:312
+msgid "Französisch"
+msgstr "French"
 
 #: ../templates/profile/kuglight/searchmask_query:3
 #: ../templates/profile/kuglight/userprefs:175
@@ -3584,9 +3614,9 @@ msgstr "French Wikipedia"
 msgid "Freie Suche"
 msgstr "Free search"
 
-#: ../templates/searchmask:161 ../templates/searchmask:223
-#: ../templates/searchmask:282 ../templates/searchmask_simple:182
-#: ../templates/searchmask_simple:276 ../templates/searchmask_simple:371
+#: ../templates/searchmask:170 ../templates/searchmask:232
+#: ../templates/searchmask:291 ../templates/searchmask_simple:183
+#: ../templates/searchmask_simple:278 ../templates/searchmask_simple:374
 #: ../templates/views/einbaende/searchmask:161
 #: ../templates/views/einbaende/searchmask:223
 #: ../templates/views/einbaende/searchmask:282
@@ -3663,9 +3693,9 @@ msgstr "Earlier requests"
 #: ../templates/profile/kuglight/views/umschlaege/searchmask:161
 #: ../templates/profile/kuglight/views/xanten/searchmask:140
 #: ../templates/profile/kuglight/views/xanten/searchmask_simple:126
-#: ../templates/searchmask:176 ../templates/searchmask:235
-#: ../templates/searchmask:294 ../templates/searchmask_simple:196
-#: ../templates/searchmask_simple:291 ../templates/searchmask_simple:386
+#: ../templates/searchmask:185 ../templates/searchmask:244
+#: ../templates/searchmask:303 ../templates/searchmask_simple:197
+#: ../templates/searchmask_simple:293 ../templates/searchmask_simple:389
 #: ../templates/views/einbaende/searchmask:176
 #: ../templates/views/einbaende/searchmask:235
 #: ../templates/views/einbaende/searchmask:294
@@ -3860,7 +3890,7 @@ msgid "Google-Book-Search"
 msgstr "Google-Book-Search"
 
 #. ("<a href=\"${config.get('ezb_loc')
-#: ../templates/searchmask:417 ../templates/searchmask_simple:510
+#: ../templates/searchmask:426 ../templates/searchmask_simple:513
 #: ../templates/views/einbaende/searchmask:417
 #: ../templates/views/einbaende/searchmask_simple:509
 #: ../templates/views/kug/searchmask_simple:499
@@ -3869,6 +3899,11 @@ msgid ""
 "Greifen Sie fachspezifisch auf alle %1freien und lizenzierten Zeitschriften%"
 "2 zu"
 msgstr "Browse all available %1free and licensed journals%2 by subject."
+
+#: ../templates/drilldown_categorized:315
+#: ../templates/drilldown_categorized:316
+msgid "Griechisch"
+msgstr "Greek"
 
 #: ../templates/circulation_make_order:40
 #: ../templates/circulation_make_reserv:39
@@ -4449,8 +4484,8 @@ msgstr ""
 #: ../templates/profile/kuglight/views/xanten/searchmask:93
 #: ../templates/profile/kuglight/views/xanten/searchmask_simple:89
 #: ../templates/profile/kuglight/views/xanten/searchmask_simple:95
-#: ../templates/searchmask_query:147 ../templates/searchmask_simple:147
-#: ../templates/searchmask_simple:240 ../templates/searchmask_simple:335
+#: ../templates/searchmask_query:147 ../templates/searchmask_simple:148
+#: ../templates/searchmask_simple:242 ../templates/searchmask_simple:338
 #: ../templates/views/einbaende/corporate_banner:62
 #: ../templates/views/einbaende/searchmask_simple:147
 #: ../templates/views/einbaende/searchmask_simple:240
@@ -5554,7 +5589,7 @@ msgstr "In other catalogues"
 msgid "In ausgewählten Katalogen suchen"
 msgstr "Search in selected catalogues"
 
-#: ../templates/searchmask:408 ../templates/searchmask_simple:500
+#: ../templates/searchmask:417 ../templates/searchmask_simple:503
 #: ../templates/views/einbaende/searchmask:408
 #: ../templates/views/einbaende/searchmask_simple:500
 #: ../templates/views/kug/searchmask_simple:489
@@ -5562,7 +5597,7 @@ msgstr "Search in selected catalogues"
 msgid "In den Gesamtbestand eintauchen"
 msgstr "Dive into the structure and contents of our catalogues"
 
-#: ../templates/searchmask:408 ../templates/searchmask_simple:500
+#: ../templates/searchmask:417 ../templates/searchmask_simple:503
 #: ../templates/views/einbaende/searchmask:408
 #: ../templates/views/einbaende/searchmask_simple:500
 #: ../templates/views/kug/searchmask_simple:489
@@ -5750,8 +5785,8 @@ msgstr "In simple search or free search field"
 #: ../templates/views/umschlaege/resultlists_showall:136
 #: ../templates/views/umschlaege/resultlists_showall_sortall:113
 #: ../templates/views/umschlaege/resultlists_showsinglepool:132
-#: ../templates/virtualsearch_result_combined:130
-#: ../templates/virtualsearch_result_item:172
+#: ../templates/virtualsearch_result_combined:191
+#: ../templates/virtualsearch_result_item:199
 msgid "In die Merkliste"
 msgstr "Add to list of interest"
 
@@ -5826,7 +5861,7 @@ msgstr "In which catalogues do you want to search"
 msgid "Index"
 msgstr "Index"
 
-#: ../templates/info_61:56 ../templates/searchmask:146
+#: ../templates/info_61:56 ../templates/searchmask:155
 #: ../templates/views/einbaende/searchmask:146
 #: ../templates/views/kug/searchmask:179
 #: ../templates/virtualsearch_showkorindex:47
@@ -5899,7 +5934,9 @@ msgstr "Content"
 #: ../templates/managecollection_tit_as_html:16
 #: ../templates/profile/kuglight/info:50 ../templates/search_showtitlist:16
 #: ../templates/search_showtitlist_of_cnt:16 ../templates/tags_showtitlist:16
-#: ../templates/views/kug/info:50 ../templates/virtualsearch_result_item:18
+#: ../templates/views/kug/info:50
+#: ../templates/virtualsearch_result_combined:17
+#: ../templates/virtualsearch_result_item:18
 msgid "Inhaltsverzeichnis"
 msgstr "Table of Contents"
 
@@ -5909,7 +5946,7 @@ msgid "Initiale Suchen"
 msgstr "Initial search"
 
 #: ../templates/profile/kuglight/searchmask_query:15
-#: ../templates/searchmask:149 ../templates/searchmask_query:78
+#: ../templates/searchmask:158 ../templates/searchmask_query:78
 #: ../templates/views/einbaende/searchmask:149
 #: ../templates/views/inst501/searchmask_query:78
 #: ../templates/views/kug/searchmask:182
@@ -5975,10 +6012,10 @@ msgstr "Interactive tutorial"
 msgid "Inventarnummer"
 msgstr "Inventory number"
 
-#: ../templates/database/ebooks/search_showtitset_categories:206
+#: ../templates/database/ebooks/search_showtitset_categories:224
 #: ../templates/database/einbaende/search_showtitset:344
 #: ../templates/database/einbaende/search_showtitset_1:325
-#: ../templates/database/inst001/search_showtitset_categories:242
+#: ../templates/database/inst001/search_showtitset_categories:260
 #: ../templates/database/umschlaege/search_showtitset:314
 #: ../templates/litlists_tit_as_text:29
 #: ../templates/managecollection_tit_as_text:74
@@ -5987,6 +6024,15 @@ msgstr "Inventory number"
 #: ../templates/profile/kuglight/managecollection_tit_as_text:42
 msgid "Inventarnummer       "
 msgstr "Inventory number     "
+
+#: ../templates/drilldown_categorized:333
+msgid "Isländisch"
+msgstr "Icelandic"
+
+#: ../templates/drilldown_categorized:320
+#: ../templates/drilldown_categorized:321
+msgid "Italienisch"
+msgstr "Italian"
 
 #: ../templates/admin_editcat:140 ../templates/admin_editcat:163
 #: ../templates/admin_editcat:77 ../templates/admin_editcat:82
@@ -6076,6 +6122,10 @@ msgstr "Years"
 msgid "Jahrhundert"
 msgstr "Century"
 
+#: ../templates/drilldown_categorized:326
+msgid "Japanisch"
+msgstr "Japanese"
+
 #: ../templates/profile/kuglight/userprefs:178
 #: ../templates/profile/kuglight/virtualsearch_showkorindex:52
 #: ../templates/userprefs:251
@@ -6131,9 +6181,14 @@ msgstr "Digital card catalogue (faculty of arts)"
 msgid "Kartenkataloge der Philosophischen Fakultät"
 msgstr "Digital card catalogue (faculty of arts)"
 
+#: ../templates/litlists_manage_singlelist:245
+#: ../templates/litlists_tit_as_html_short:85
+#: ../templates/managecollection_tit_as_html:247
 #: ../templates/profile/kuglight/resultlists_choice:95
-#: ../templates/resultlists_choice:95
+#: ../templates/resultlists_choice:97 ../templates/tags_showtitlist:178
+#: ../templates/userreviews_show:104
 #: ../templates/views/openlibrary/searchmask_bottom_left:19
+#: ../templates/virtualsearch_result_combined:181
 msgid "Katalog"
 msgstr "Catalogue"
 
@@ -6281,7 +6336,7 @@ msgstr "Invalid request id"
 
 #: ../templates/admin_showuser_1:42
 #: ../templates/profile/kuglight/admin_showuser_1:42
-#: ../templates/searchmask:377 ../templates/searchmask_simple:469
+#: ../templates/searchmask:386 ../templates/searchmask_simple:472
 #: ../templates/views/einbaende/searchmask:377
 #: ../templates/views/einbaende/searchmask_simple:469
 #: ../templates/views/kug/searchmask_simple:458
@@ -6529,7 +6584,12 @@ msgstr "Remove"
 msgid "L&ouml;schung des ausgew&auml;hlten Profils"
 msgstr "Removal of selected profile"
 
-#: ../templates/searchmask:424 ../templates/searchmask_simple:517
+#: ../templates/drilldown_categorized:313
+#: ../templates/drilldown_categorized:314
+msgid "Latein"
+msgstr "Latin"
+
+#: ../templates/searchmask:433 ../templates/searchmask_simple:520
 #: ../templates/views/einbaende/searchmask:424
 #: ../templates/views/einbaende/searchmask_simple:516
 #: ../templates/views/kug/searchmask_simple:506
@@ -6602,7 +6662,7 @@ msgstr "Most recent articles"
 #: ../templates/profile/kuglight/tags_showtitlist:68
 #: ../templates/profile/kuglight/titlist_options:46
 #: ../templates/profile/kuglight/virtualsearch_result_combined:61
-#: ../templates/tags_showusertags:36 ../templates/titlist_options:45
+#: ../templates/tags_showusertags:36 ../templates/titlist_options:43
 msgid "Liste"
 msgstr "List"
 
@@ -6626,7 +6686,7 @@ msgstr "Other literature lists with common titles"
 #: ../templates/profile/kuglight/tags_showtitlist:68
 #: ../templates/profile/kuglight/titlist_options:46
 #: ../templates/profile/kuglight/virtualsearch_result_combined:61
-#: ../templates/titlist_options:45
+#: ../templates/titlist_options:43
 msgid "Listen-Ansicht"
 msgstr "List view"
 
@@ -6653,8 +6713,8 @@ msgstr "Literature list"
 #: ../templates/profile/kuglight/info_13:45
 #: ../templates/profile/kuglight/info_41:30
 #: ../templates/profile/kuglight/info_54:111
-#: ../templates/search_showtitset:627 ../templates/searchmask:411
-#: ../templates/searchmask_simple:503 ../templates/userprefs_navigation:16
+#: ../templates/search_showtitset:627 ../templates/searchmask:420
+#: ../templates/searchmask_simple:506 ../templates/userprefs_navigation:16
 #: ../templates/views/einbaende/searchmask:411
 #: ../templates/views/einbaende/searchmask_simple:503
 #: ../templates/views/kug/searchmask_simple:492
@@ -6707,10 +6767,10 @@ msgstr "Local"
 msgid "Lokale Signatur"
 msgstr "Local location mark"
 
-#: ../templates/database/ebooks/search_showtitset_categories:205
+#: ../templates/database/ebooks/search_showtitset_categories:223
 #: ../templates/database/einbaende/search_showtitset:343
 #: ../templates/database/einbaende/search_showtitset_1:324
-#: ../templates/database/inst001/search_showtitset_categories:241
+#: ../templates/database/inst001/search_showtitset_categories:259
 #: ../templates/database/umschlaege/search_showtitset:313
 #: ../templates/litlists_tit_as_text:28
 #: ../templates/managecollection_tit_as_text:73
@@ -6776,7 +6836,7 @@ msgstr "Local location mark  "
 #: ../templates/profile/kuglight/virtualsearch_result_combined:57
 #: ../templates/profile/kuglight/virtualsearch_result_start:61
 #: ../templates/search_showtitset:414 ../templates/search_showtitset:422
-#: ../templates/titlist_options:39
+#: ../templates/titlist_options:37
 #: ../templates/views/einbaende/corporate_banner:62
 #: ../templates/views/kapsel/resultlists_showall:58
 #: ../templates/views/kapsel/resultlists_showsinglepool:60
@@ -7072,7 +7132,6 @@ msgstr "Delete"
 #: ../templates/profile/kuglight/virtualsearch_result_combined:165
 #: ../templates/profile/kuglight/virtualsearch_result_end:17
 #: ../templates/views/einbaende/virtualsearch_result_end:18
-#: ../templates/virtualsearch_result_combined:141
 #: ../templates/virtualsearch_result_end:18
 msgid "M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?"
 msgstr "Would you like to refine your search request?"
@@ -7225,8 +7284,7 @@ msgstr "My KUG"
 
 #: ../templates/profile/kuglight/virtualsearch_result_combined:70
 #: ../templates/views/einbaende/virtualsearch_result_start:48
-#: ../templates/virtualsearch_result_combined:46
-#: ../templates/virtualsearch_result_start:48
+#: ../templates/virtualsearch_result_start:61
 msgid "Meinten Sie vielleicht:"
 msgstr "Did you mean:"
 
@@ -7533,6 +7591,10 @@ msgstr "No"
 msgid "Neu"
 msgstr "New"
 
+#: ../templates/drilldown_categorized:317
+msgid "Neu-Griechisch"
+msgstr "Modern Greek"
+
 #: ../templates/admin_editcat_rss:39
 #: ../templates/profile/kuglight/admin_editcat_rss:39
 msgid "Neuaufnahmen (generell)"
@@ -7591,8 +7653,8 @@ msgstr "Start new session?"
 msgid "Neue Sitzung starten"
 msgstr "Start new session"
 
-#: ../templates/searchmask_query:149 ../templates/searchmask_simple:174
-#: ../templates/searchmask_simple:267 ../templates/searchmask_simple:362
+#: ../templates/searchmask_query:149 ../templates/searchmask_simple:175
+#: ../templates/searchmask_simple:269 ../templates/searchmask_simple:365
 #: ../templates/views/einbaende/searchmask_simple:174
 #: ../templates/views/einbaende/searchmask_simple:267
 #: ../templates/views/einbaende/searchmask_simple:362
@@ -7662,6 +7724,11 @@ msgstr "Create new catalogue profile"
 msgid "Neues Themengebiet anlegen"
 msgstr "Create new subject"
 
+#: ../templates/drilldown_categorized:331
+#: ../templates/drilldown_categorized:332
+msgid "Niederländisch"
+msgstr "Dutch"
+
 #: ../templates/admin_editcat:122
 #: ../templates/profile/kuglight/admin_editcat:122
 msgid "Not-Datei"
@@ -7670,7 +7737,7 @@ msgstr "Not-File"
 #: ../templates/profile/kuglight/searchmask_query:23
 #: ../templates/profile/kuglight/userprefs:180
 #: ../templates/profile/kuglight/virtualsearch_shownotindex:52
-#: ../templates/searchmask:149 ../templates/searchmask_query:86
+#: ../templates/searchmask:158 ../templates/searchmask_query:86
 #: ../templates/userprefs:253 ../templates/views/einbaende/searchmask:149
 #: ../templates/views/kug/searchmask:182
 #: ../templates/views/kug/searchmask_query:86
@@ -7765,8 +7832,8 @@ msgstr "Official"
 #: ../templates/litlists_show_singlelist:151
 #: ../templates/litlists_show_singlelist:178
 #: ../templates/litlists_show_singlelist:40
-#: ../templates/profile/kuglight/info_54:115 ../templates/searchmask:438
-#: ../templates/searchmask_simple:531
+#: ../templates/profile/kuglight/info_54:115 ../templates/searchmask:447
+#: ../templates/searchmask_simple:534
 #: ../templates/views/einbaende/searchmask:438
 #: ../templates/views/einbaende/searchmask_simple:530
 #: ../templates/views/kug/searchmask_simple:520
@@ -7905,8 +7972,8 @@ msgstr "# of titles"
 #: ../templates/profile/kuglight/login:80
 #: ../templates/profile/kuglight/login_circulation:66
 #: ../templates/profile/kuglight/selfreg:53
-#: ../templates/profile/kuglight/userprefs:50 ../templates/searchmask:378
-#: ../templates/searchmask_simple:470 ../templates/selfreg:55
+#: ../templates/profile/kuglight/userprefs:50 ../templates/searchmask:387
+#: ../templates/searchmask_simple:473 ../templates/selfreg:55
 #: ../templates/userprefs:44 ../templates/views/einbaende/searchmask:378
 #: ../templates/views/einbaende/searchmask_simple:470
 #: ../templates/views/kug/searchmask_simple:459
@@ -8002,7 +8069,7 @@ msgstr "Person/Corporate Body"
 #: ../templates/profile/kuglight/clouds_navigation:18
 #: ../templates/profile/kuglight/searchmask_query:11
 #: ../templates/profile/kuglight/views/kapsel/clouds_navigation:18
-#: ../templates/searchmask:149 ../templates/searchmask_query:74
+#: ../templates/searchmask:158 ../templates/searchmask_query:74
 #: ../templates/views/einbaende/clouds_navigation:18
 #: ../templates/views/einbaende/searchmask:149
 #: ../templates/views/inst501/searchmask_query:74
@@ -8034,6 +8101,10 @@ msgstr ""
 "specific order)<br/>   e.g. %3kernighan, brian%4 (all entries by Brian "
 "Kernighan)"
 
+#: ../templates/drilldown_categorized:330
+msgid "Polnisch"
+msgstr "Polish"
+
 #: ../templates/info:709 ../templates/info:73 ../templates/views/kug/info:709
 #: ../templates/views/kug/info:73
 msgid "Popularit&auml;ts-Funktionen"
@@ -8044,6 +8115,7 @@ msgstr "Popularity-Functions"
 #: ../templates/managecollection_tit_as_html:17
 #: ../templates/search_showtitlist:17
 #: ../templates/search_showtitlist_of_cnt:17 ../templates/tags_showtitlist:17
+#: ../templates/virtualsearch_result_combined:18
 #: ../templates/virtualsearch_result_item:19
 msgid "Popularität"
 msgstr "Popularity"
@@ -8290,7 +8362,7 @@ msgid "Recherchen"
 msgstr "Search requests"
 
 #. ("<a href=\"${config.get('dbis_loc')
-#: ../templates/searchmask:420 ../templates/searchmask_simple:513
+#: ../templates/searchmask:429 ../templates/searchmask_simple:516
 #: ../templates/views/einbaende/searchmask:420
 #: ../templates/views/einbaende/searchmask_simple:512
 #: ../templates/views/kug/searchmask_simple:502
@@ -8303,8 +8375,8 @@ msgstr "Browse all available %1free and licensed databases%2 by subject."
 #. ("${alldbcount.all.chunk(-3)
 #. ("${alldbcount.serials.chunk(-3)
 #. ("${alldbcount.articles.chunk(-3)
-#: ../templates/searchmask:122 ../templates/searchmask:196
-#: ../templates/searchmask:255 ../templates/views/einbaende/searchmask:122
+#: ../templates/searchmask:122 ../templates/searchmask:205
+#: ../templates/searchmask:264 ../templates/views/einbaende/searchmask:122
 #: ../templates/views/einbaende/searchmask:196
 #: ../templates/views/einbaende/searchmask:255
 msgid "Recherchieren Sie im KUG in %1 Titeln und %2 Katalogen"
@@ -8322,14 +8394,14 @@ msgid "Recherchieren Sie in allen Katalogen der Philosophischen Fakult&auml;t"
 msgstr "Search all catalogues of the Philosophical Faculty"
 
 #. ("${alldbcount.articles.chunk(-3)
-#: ../templates/searchmask_simple:311
+#: ../templates/searchmask_simple:313
 #: ../templates/views/einbaende/searchmask_simple:311
 #: ../templates/views/kug/searchmask_simple:304
 msgid "Recherchieren Sie nach %1 Aufs&auml;tzen in %2 Katalogen"
 msgstr "Search for %1 articles in %2 catalogues"
 
 #. ("${alldbcount.serials.chunk(-3)
-#: ../templates/searchmask_simple:216
+#: ../templates/searchmask_simple:217
 #: ../templates/views/einbaende/searchmask_simple:216
 #: ../templates/views/kug/searchmask_simple:213
 msgid "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
@@ -8370,14 +8442,14 @@ msgid "Register"
 msgstr "Register"
 
 #: ../templates/login:99 ../templates/profile/kuglight/selfreg:55
-#: ../templates/searchmask_simple:474 ../templates/selfreg:57
+#: ../templates/searchmask_simple:477 ../templates/selfreg:57
 #: ../templates/views/einbaende/searchmask_simple:474
 #: ../templates/views/kug/searchmask_simple:463
 #: ../templates/views/usbzsablage/searchmask_simple:242
 msgid "Registrieren"
 msgstr "Register"
 
-#: ../templates/searchmask:382 ../templates/searchmask_simple:474
+#: ../templates/searchmask:391 ../templates/searchmask_simple:477
 #: ../templates/views/einbaende/searchmask:382
 #: ../templates/views/einbaende/searchmask_simple:474
 #: ../templates/views/kug/searchmask_simple:463
@@ -8460,6 +8532,11 @@ msgstr "Here you can get the results of previous queries"
 #: ../templates/views/portrait/searchmask_simple:83
 msgid "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
 msgstr "Get results of previous queries from here"
+
+#: ../templates/drilldown_categorized:324
+#: ../templates/drilldown_categorized:325
+msgid "Russisch"
+msgstr "Russian"
 
 #: ../templates/admin_editview_rss:94
 #: ../templates/profile/kuglight/admin_editview_rss:94
@@ -8550,7 +8627,7 @@ msgstr "Subject heading"
 #: ../templates/profile/kuglight/searchmask_query:19
 #: ../templates/profile/kuglight/views/kapsel/clouds_navigation:15
 #: ../templates/profile/kuglight/views/portrait/virtualsearch_result_item:126
-#: ../templates/searchmask:149 ../templates/searchmask_query:82
+#: ../templates/searchmask:158 ../templates/searchmask_query:82
 #: ../templates/views/einbaende/clouds_navigation:15
 #: ../templates/views/einbaende/searchmask:149
 #: ../templates/views/inst501/searchmask_query:82
@@ -8587,6 +8664,10 @@ msgstr "Index of subject headings for this catalogue"
 #: ../templates/views/kug/searchmask_bottom_left:16
 msgid "Schulungen"
 msgstr "Training course"
+
+#: ../templates/drilldown_categorized:327
+msgid "Schwedisch"
+msgstr "Swedish"
 
 #: ../templates/mailcollection_mail_main:1
 #: ../templates/profile/kuglight/mailcollection_mail_main:1
@@ -8662,7 +8743,10 @@ msgstr "Since"
 #: ../templates/resultlists_showsinglepool:60
 #: ../templates/search_showtitlist:60
 #: ../templates/search_showtitlist_of_cnt:60 ../templates/tags_showtitlist:53
-#: ../templates/virtualsearch_result_item:35
+#: ../templates/virtualsearch_result_combined:198
+#: ../templates/virtualsearch_result_combined:36
+#: ../templates/virtualsearch_result_item:206
+#: ../templates/virtualsearch_result_item:41
 msgid "Seite:"
 msgstr "Page:"
 
@@ -8685,8 +8769,8 @@ msgstr "Page:"
 #: ../templates/views/einbaende/virtualsearch_result_item:147
 #: ../templates/views/portrait/virtualsearch_result_item:155
 #: ../templates/views/portrait/virtualsearch_result_item:79
-#: ../templates/virtualsearch_result_combined:137
-#: ../templates/virtualsearch_result_item:179
+#: ../templates/virtualsearch_result_combined:215
+#: ../templates/virtualsearch_result_item:223
 #: ../templates/virtualsearch_showkorindex:38
 #: ../templates/virtualsearch_shownotindex:38
 #: ../templates/virtualsearch_showswtindex:38
@@ -8793,7 +8877,7 @@ msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden.
 msgstr "You have %advantages%2 by registering and using <b>My KUG</b>"
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:272
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:274
 msgid ""
 "Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie "
 "keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die "
@@ -9398,6 +9482,11 @@ msgstr "Order by"
 msgid "Sortierung:"
 msgstr "Alphabetic sorting:"
 
+#: ../templates/drilldown_categorized:322
+#: ../templates/drilldown_categorized:323
+msgid "Spanisch"
+msgstr "Spanish"
+
 #: ../templates/admin_edituser:58
 #: ../templates/profile/kuglight/admin_edituser:58
 #: ../templates/profile/kuglight/userprefs:77 ../templates/userprefs:71
@@ -9476,8 +9565,8 @@ msgstr "Specific KUG entry points, called <i>views</i>:"
 #: ../templates/profile/kuglight/views/richter/searchmask_simple:31
 #: ../templates/profile/kuglight/views/xanten/searchmask:31
 #: ../templates/profile/kuglight/views/xanten/searchmask_simple:31
-#: ../templates/searchmask:329 ../templates/searchmask:51
-#: ../templates/searchmask_simple:421 ../templates/searchmask_simple:54
+#: ../templates/searchmask:338 ../templates/searchmask:51
+#: ../templates/searchmask_simple:424 ../templates/searchmask_simple:54
 #: ../templates/views/einbaende/searchmask:329
 #: ../templates/views/einbaende/searchmask:51
 #: ../templates/views/einbaende/searchmask_simple:421
@@ -9561,10 +9650,10 @@ msgstr "Jump to KUG's result list"
 msgid "Standort"
 msgstr "Location"
 
-#: ../templates/database/ebooks/search_showtitset_categories:204
+#: ../templates/database/ebooks/search_showtitset_categories:222
 #: ../templates/database/einbaende/search_showtitset:342
 #: ../templates/database/einbaende/search_showtitset_1:323
-#: ../templates/database/inst001/search_showtitset_categories:240
+#: ../templates/database/inst001/search_showtitset_categories:258
 #: ../templates/database/umschlaege/search_showtitset:312
 #: ../templates/litlists_tit_as_text:27
 #: ../templates/managecollection_tit_as_text:72
@@ -9680,7 +9769,7 @@ msgstr "Index-Search"
 #: ../templates/profile/kuglight/views/rheinlandbib/searchmask:91
 #: ../templates/profile/kuglight/views/richter/searchmask:100
 #: ../templates/profile/kuglight/views/xanten/searchmask:99
-#: ../templates/searchmask:412 ../templates/searchmask_simple:504
+#: ../templates/searchmask:421 ../templates/searchmask_simple:507
 #: ../templates/views/einbaende/clouds_navigation:21
 #: ../templates/views/einbaende/searchmask:412
 #: ../templates/views/einbaende/searchmask_simple:504
@@ -9758,9 +9847,9 @@ msgstr "Search"
 #: ../templates/profile/kuglight/views/portrait/searchmask:131
 #: ../templates/profile/kuglight/views/portrait/searchmask:72
 #: ../templates/profile/kuglight/views/portrait/searchmask_simple:73
-#: ../templates/search_showswtindex:81 ../templates/searchmask:149
-#: ../templates/searchmask_query:147 ../templates/searchmask_simple:147
-#: ../templates/searchmask_simple:240 ../templates/searchmask_simple:335
+#: ../templates/search_showswtindex:81 ../templates/searchmask:158
+#: ../templates/searchmask_query:147 ../templates/searchmask_simple:148
+#: ../templates/searchmask_simple:242 ../templates/searchmask_simple:338
 #: ../templates/views/einbaende/mainnavigation:29
 #: ../templates/views/einbaende/searchmask:149
 #: ../templates/views/einbaende/searchmask_simple:147
@@ -9963,8 +10052,8 @@ msgstr "Search Operators"
 #: ../templates/profile/kuglight/views/portrait/searchmask:118
 #: ../templates/profile/kuglight/views/rheinlandbib/searchmask:108
 #: ../templates/profile/kuglight/views/xanten/searchmask:116
-#: ../templates/searchmask:135 ../templates/searchmask:211
-#: ../templates/searchmask:270 ../templates/views/einbaende/searchmask:135
+#: ../templates/searchmask:144 ../templates/searchmask:220
+#: ../templates/searchmask:279 ../templates/views/einbaende/searchmask:135
 #: ../templates/views/einbaende/searchmask:211
 #: ../templates/views/einbaende/searchmask:270
 #: ../templates/views/gbroich/searchmask:116
@@ -10019,7 +10108,7 @@ msgstr "Systematic browsing"
 #: ../templates/database/alff/visible_categories_titset:86
 #: ../templates/database/ebooks/visible_categories_titset:84
 #: ../templates/database/inst001/visible_categories_titset:85
-#: ../templates/database/inst404abklatsch/visible_categories_titset:85
+#: ../templates/database/inst404abklatsch/visible_categories_titset:86
 #: ../templates/database/inst450/visible_categories_titset:33
 #: ../templates/database/nationallizenzen/visible_categories_titset:84
 #: ../templates/database/richter/visible_categories_titset:84
@@ -10037,7 +10126,7 @@ msgstr "Language"
 #: ../templates/database/alff/visible_categories_titset:90
 #: ../templates/database/ebooks/visible_categories_titset:88
 #: ../templates/database/inst001/visible_categories_titset:89
-#: ../templates/database/inst404abklatsch/visible_categories_titset:89
+#: ../templates/database/inst404abklatsch/visible_categories_titset:90
 #: ../templates/database/kapsel/visible_categories_titset:86
 #: ../templates/database/nationallizenzen/visible_categories_titset:88
 #: ../templates/database/richter/visible_categories_titset:88
@@ -10056,7 +10145,7 @@ msgstr "Added entry"
 #: ../templates/database/alff/visible_categories_titset:48
 #: ../templates/database/ebooks/visible_categories_titset:46
 #: ../templates/database/inst001/visible_categories_titset:47
-#: ../templates/database/inst404abklatsch/visible_categories_titset:46
+#: ../templates/database/inst404abklatsch/visible_categories_titset:47
 #: ../templates/database/kapsel/visible_categories_titset:46
 #: ../templates/database/nationallizenzen/visible_categories_titset:46
 #: ../templates/database/richter/visible_categories_titset:46
@@ -10215,6 +10304,7 @@ msgstr "Other persons"
 #: ../templates/database/alff/visible_categories_titset:21
 #: ../templates/database/ebooks/visible_categories_titset:19
 #: ../templates/database/inst001/visible_categories_titset:19
+#: ../templates/database/inst404abklatsch/visible_categories_titset:19
 #: ../templates/database/kapsel/visible_categories_titset:19
 #: ../templates/database/nationallizenzen/visible_categories_titset:19
 #: ../templates/database/richter/visible_categories_titset:19
@@ -10230,10 +10320,6 @@ msgstr "Originator"
 #: ../templates/profile/kuglight/database/einbaende/visible_categories_coverset:18
 msgid "T0200-einbaende"
 msgstr "Region"
-
-#: ../templates/database/inst404abklatsch/visible_categories_titset:19
-msgid "T0200-inst404abklatsch"
-msgstr "Place of inscription"
 
 #: ../templates/database/inst450/visible_categories_titset:18
 msgid "T0200-inst450"
@@ -10421,7 +10507,7 @@ msgstr "Title"
 #: ../templates/database/alff/visible_categories_titset:52
 #: ../templates/database/ebooks/visible_categories_titset:50
 #: ../templates/database/inst001/visible_categories_titset:51
-#: ../templates/database/inst404abklatsch/visible_categories_titset:50
+#: ../templates/database/inst404abklatsch/visible_categories_titset:51
 #: ../templates/database/kapsel/visible_categories_titset:50
 #: ../templates/database/nationallizenzen/visible_categories_titset:50
 #: ../templates/database/richter/visible_categories_titset:50
@@ -10450,6 +10536,7 @@ msgstr "Material"
 #: ../templates/database/alff/visible_categories_titset:31
 #: ../templates/database/ebooks/visible_categories_titset:29
 #: ../templates/database/inst001/visible_categories_titset:30
+#: ../templates/database/inst404abklatsch/visible_categories_titset:30
 #: ../templates/database/kapsel/visible_categories_titset:29
 #: ../templates/database/nationallizenzen/visible_categories_titset:29
 #: ../templates/database/portrait/visible_categories_titset:21
@@ -10473,10 +10560,6 @@ msgstr "Other title information"
 #: ../templates/profile/kuglight/database/einbaende/visible_categories_toolset:19
 msgid "T0335-einbaende"
 msgstr "Subtitle"
-
-#: ../templates/database/inst404abklatsch/visible_categories_titset:30
-msgid "T0335-inst404abklatsch"
-msgstr "Edition"
 
 #: ../templates/database/alff/visible_categories_titset:29
 #: ../templates/database/ebooks/visible_categories_titset:27
@@ -10630,10 +10713,14 @@ msgstr "Provenance"
 msgid "T0403"
 msgstr "Edition"
 
+#: ../templates/database/inst404abklatsch/visible_categories_titset:35
+msgid "T0403-inst404abklatsch"
+msgstr "Edition"
+
 #: ../templates/database/alff/visible_categories_titset:41
 #: ../templates/database/ebooks/visible_categories_titset:39
 #: ../templates/database/inst001/visible_categories_titset:40
-#: ../templates/database/inst404abklatsch/visible_categories_titset:39
+#: ../templates/database/inst404abklatsch/visible_categories_titset:40
 #: ../templates/database/kapsel/visible_categories_titset:39
 #: ../templates/database/nationallizenzen/visible_categories_titset:39
 #: ../templates/database/richter/visible_categories_titset:39
@@ -10652,7 +10739,7 @@ msgstr "Dates/periods of publication"
 #: ../templates/database/alff/visible_categories_titset:58
 #: ../templates/database/ebooks/visible_categories_titset:56
 #: ../templates/database/inst001/visible_categories_titset:57
-#: ../templates/database/inst404abklatsch/visible_categories_titset:56
+#: ../templates/database/inst404abklatsch/visible_categories_titset:57
 #: ../templates/database/kapsel/visible_categories_titset:56
 #: ../templates/database/nationallizenzen/visible_categories_titset:56
 #: ../templates/database/richter/visible_categories_titset:56
@@ -10701,7 +10788,7 @@ msgstr "Place of publication"
 msgid "T0410-einbaende"
 msgstr "Place"
 
-#: ../templates/database/inst404abklatsch/visible_categories_titset:35
+#: ../templates/database/inst404abklatsch/visible_categories_titset:36
 msgid "T0410-inst404abklatsch"
 msgstr "Depository"
 
@@ -10709,7 +10796,7 @@ msgstr "Depository"
 #: ../templates/database/ebooks/visible_categories_titset:36
 #: ../templates/database/einbaende/visible_categories_titset:20
 #: ../templates/database/inst001/visible_categories_titset:37
-#: ../templates/database/inst404abklatsch/visible_categories_titset:36
+#: ../templates/database/inst404abklatsch/visible_categories_titset:37
 #: ../templates/database/inst450/visible_categories_titset:22
 #: ../templates/database/kapsel/visible_categories_titset:36
 #: ../templates/database/landschaft/visible_categories_titset:38
@@ -10738,7 +10825,7 @@ msgstr "Publisher"
 #: ../templates/database/alff/visible_categories_titset:47
 #: ../templates/database/ebooks/visible_categories_titset:45
 #: ../templates/database/inst001/visible_categories_titset:46
-#: ../templates/database/inst404abklatsch/visible_categories_titset:45
+#: ../templates/database/inst404abklatsch/visible_categories_titset:46
 #: ../templates/database/kapsel/visible_categories_titset:45
 #: ../templates/database/nationallizenzen/visible_categories_titset:45
 #: ../templates/database/richter/visible_categories_titset:45
@@ -10762,7 +10849,7 @@ msgstr "Printer"
 #: ../templates/database/alff/visible_categories_titset:40
 #: ../templates/database/ebooks/visible_categories_titset:38
 #: ../templates/database/inst001/visible_categories_titset:39
-#: ../templates/database/inst404abklatsch/visible_categories_titset:38
+#: ../templates/database/inst404abklatsch/visible_categories_titset:39
 #: ../templates/database/kapsel/visible_categories_titset:38
 #: ../templates/database/landschaft/visible_categories_titset:39
 #: ../templates/database/nationallizenzen/visible_categories_titset:38
@@ -10816,7 +10903,7 @@ msgstr "Year of publication"
 msgid "T0425-einbaende"
 msgstr "Year of manufacturing"
 
-#: ../templates/database/inst404abklatsch/visible_categories_titset:37
+#: ../templates/database/inst404abklatsch/visible_categories_titset:38
 msgid "T0425-inst404abklatsch"
 msgstr "Dating"
 
@@ -10853,7 +10940,7 @@ msgstr "Year"
 msgid "T0433"
 msgstr "Extent of item"
 
-#: ../templates/database/inst404abklatsch/visible_categories_titset:49
+#: ../templates/database/inst404abklatsch/visible_categories_titset:50
 msgid "T0433-inst404abklatsch"
 msgstr "Size of letters"
 
@@ -10863,8 +10950,8 @@ msgstr "Size of letters"
 #: ../templates/database/ebooks/visible_categories_titset:57
 #: ../templates/database/inst001/visible_categories_titset:45
 #: ../templates/database/inst001/visible_categories_titset:58
-#: ../templates/database/inst404abklatsch/visible_categories_titset:44
-#: ../templates/database/inst404abklatsch/visible_categories_titset:57
+#: ../templates/database/inst404abklatsch/visible_categories_titset:45
+#: ../templates/database/inst404abklatsch/visible_categories_titset:58
 #: ../templates/database/kapsel/visible_categories_titset:44
 #: ../templates/database/kapsel/visible_categories_titset:57
 #: ../templates/database/landschaft/visible_categories_titset:42
@@ -10899,7 +10986,7 @@ msgstr "Illustration statement"
 #: ../templates/database/alff/visible_categories_titset:49
 #: ../templates/database/ebooks/visible_categories_titset:47
 #: ../templates/database/inst001/visible_categories_titset:48
-#: ../templates/database/inst404abklatsch/visible_categories_titset:47
+#: ../templates/database/inst404abklatsch/visible_categories_titset:48
 #: ../templates/database/kapsel/visible_categories_titset:47
 #: ../templates/database/nationallizenzen/visible_categories_titset:47
 #: ../templates/database/richter/visible_categories_titset:47
@@ -10925,7 +11012,7 @@ msgstr "Dimensions"
 #: ../templates/database/alff/visible_categories_titset:60
 #: ../templates/database/ebooks/visible_categories_titset:58
 #: ../templates/database/inst001/visible_categories_titset:59
-#: ../templates/database/inst404abklatsch/visible_categories_titset:58
+#: ../templates/database/inst404abklatsch/visible_categories_titset:59
 #: ../templates/database/kapsel/visible_categories_titset:58
 #: ../templates/database/nationallizenzen/visible_categories_titset:58
 #: ../templates/database/richter/visible_categories_titset:58
@@ -10944,7 +11031,7 @@ msgstr "Accompanying material"
 #: ../templates/database/alff/visible_categories_titset:55
 #: ../templates/database/ebooks/visible_categories_titset:53
 #: ../templates/database/inst001/visible_categories_titset:54
-#: ../templates/database/inst404abklatsch/visible_categories_titset:53
+#: ../templates/database/inst404abklatsch/visible_categories_titset:54
 #: ../templates/database/inst450/visible_categories_titset:25
 #: ../templates/database/kapsel/visible_categories_titset:53
 #: ../templates/database/nationallizenzen/visible_categories_titset:53
@@ -10986,9 +11073,9 @@ msgstr "General note, unstructured"
 msgid "T0501-einbaende"
 msgstr "Sources"
 
-#: ../templates/database/inst404abklatsch/visible_categories_titset:59
+#: ../templates/database/inst404abklatsch/visible_categories_titset:60
 msgid "T0501-inst404abklatsch"
-msgstr "Remarks on copy"
+msgstr "Comment on copy"
 
 #: ../templates/database/inst450/visible_categories_titset:29
 msgid "T0501-inst450"
@@ -11014,7 +11101,7 @@ msgstr "Uniform title note"
 #: ../templates/database/alff/visible_categories_titset:89
 #: ../templates/database/ebooks/visible_categories_titset:87
 #: ../templates/database/inst001/visible_categories_titset:88
-#: ../templates/database/inst404abklatsch/visible_categories_titset:88
+#: ../templates/database/inst404abklatsch/visible_categories_titset:89
 #: ../templates/database/kapsel/visible_categories_titset:85
 #: ../templates/database/nationallizenzen/visible_categories_titset:87
 #: ../templates/database/richter/visible_categories_titset:87
@@ -11033,7 +11120,7 @@ msgstr "Note on german translation"
 #: ../templates/database/alff/visible_categories_titset:62
 #: ../templates/database/ebooks/visible_categories_titset:60
 #: ../templates/database/inst001/visible_categories_titset:61
-#: ../templates/database/inst404abklatsch/visible_categories_titset:60
+#: ../templates/database/inst404abklatsch/visible_categories_titset:61
 #: ../templates/database/kapsel/visible_categories_titset:60
 #: ../templates/database/landschaft/visible_categories_titset:44
 #: ../templates/database/nationallizenzen/visible_categories_titset:60
@@ -11056,7 +11143,7 @@ msgstr "Parallel titles note"
 #: ../templates/database/alff/visible_categories_titset:63
 #: ../templates/database/ebooks/visible_categories_titset:61
 #: ../templates/database/inst001/visible_categories_titset:62
-#: ../templates/database/inst404abklatsch/visible_categories_titset:61
+#: ../templates/database/inst404abklatsch/visible_categories_titset:62
 #: ../templates/database/kapsel/visible_categories_titset:61
 #: ../templates/database/landschaft/visible_categories_titset:45
 #: ../templates/database/nationallizenzen/visible_categories_titset:61
@@ -11079,7 +11166,7 @@ msgstr "Variant titles note"
 #: ../templates/database/alff/visible_categories_titset:64
 #: ../templates/database/ebooks/visible_categories_titset:62
 #: ../templates/database/inst001/visible_categories_titset:63
-#: ../templates/database/inst404abklatsch/visible_categories_titset:62
+#: ../templates/database/inst404abklatsch/visible_categories_titset:63
 #: ../templates/database/kapsel/visible_categories_titset:62
 #: ../templates/database/nationallizenzen/visible_categories_titset:62
 #: ../templates/database/portrait/visible_categories_titset:86
@@ -11100,7 +11187,7 @@ msgstr "Other title information note"
 #: ../templates/database/alff/visible_categories_titset:50
 #: ../templates/database/ebooks/visible_categories_titset:48
 #: ../templates/database/inst001/visible_categories_titset:49
-#: ../templates/database/inst404abklatsch/visible_categories_titset:48
+#: ../templates/database/inst404abklatsch/visible_categories_titset:49
 #: ../templates/database/kapsel/visible_categories_titset:48
 #: ../templates/database/landschaft/visible_categories_titset:84
 #: ../templates/database/nationallizenzen/visible_categories_titset:48
@@ -11133,7 +11220,7 @@ msgstr "Source of entry note"
 #: ../templates/database/alff/visible_categories_titset:65
 #: ../templates/database/ebooks/visible_categories_titset:63
 #: ../templates/database/inst001/visible_categories_titset:64
-#: ../templates/database/inst404abklatsch/visible_categories_titset:63
+#: ../templates/database/inst404abklatsch/visible_categories_titset:64
 #: ../templates/database/kapsel/visible_categories_titset:63
 #: ../templates/database/landschaft/visible_categories_titset:46
 #: ../templates/database/nationallizenzen/visible_categories_titset:63
@@ -11163,7 +11250,7 @@ msgstr "Issuing body note"
 #: ../templates/database/alff/visible_categories_titset:66
 #: ../templates/database/ebooks/visible_categories_titset:64
 #: ../templates/database/inst001/visible_categories_titset:65
-#: ../templates/database/inst404abklatsch/visible_categories_titset:64
+#: ../templates/database/inst404abklatsch/visible_categories_titset:65
 #: ../templates/database/kapsel/visible_categories_titset:64
 #: ../templates/database/landschaft/visible_categories_titset:47
 #: ../templates/database/nationallizenzen/visible_categories_titset:64
@@ -11186,7 +11273,7 @@ msgstr "Edition statement note"
 #: ../templates/database/alff/visible_categories_titset:67
 #: ../templates/database/ebooks/visible_categories_titset:65
 #: ../templates/database/inst001/visible_categories_titset:66
-#: ../templates/database/inst404abklatsch/visible_categories_titset:65
+#: ../templates/database/inst404abklatsch/visible_categories_titset:66
 #: ../templates/database/kapsel/visible_categories_titset:65
 #: ../templates/database/landschaft/visible_categories_titset:48
 #: ../templates/database/nationallizenzen/visible_categories_titset:65
@@ -11209,7 +11296,7 @@ msgstr "Imprint note"
 #: ../templates/database/alff/visible_categories_titset:68
 #: ../templates/database/ebooks/visible_categories_titset:66
 #: ../templates/database/inst001/visible_categories_titset:67
-#: ../templates/database/inst404abklatsch/visible_categories_titset:66
+#: ../templates/database/inst404abklatsch/visible_categories_titset:67
 #: ../templates/database/kapsel/visible_categories_titset:66
 #: ../templates/database/landschaft/visible_categories_titset:49
 #: ../templates/database/nationallizenzen/visible_categories_titset:66
@@ -11232,7 +11319,7 @@ msgstr "Physical description note"
 #: ../templates/database/alff/visible_categories_titset:69
 #: ../templates/database/ebooks/visible_categories_titset:67
 #: ../templates/database/inst001/visible_categories_titset:68
-#: ../templates/database/inst404abklatsch/visible_categories_titset:67
+#: ../templates/database/inst404abklatsch/visible_categories_titset:68
 #: ../templates/database/kapsel/visible_categories_titset:67
 #: ../templates/database/landschaft/visible_categories_titset:50
 #: ../templates/database/nationallizenzen/visible_categories_titset:67
@@ -11255,7 +11342,7 @@ msgstr "Alterations on imprint note"
 #: ../templates/database/alff/visible_categories_titset:70
 #: ../templates/database/ebooks/visible_categories_titset:68
 #: ../templates/database/inst001/visible_categories_titset:69
-#: ../templates/database/inst404abklatsch/visible_categories_titset:68
+#: ../templates/database/inst404abklatsch/visible_categories_titset:69
 #: ../templates/database/kapsel/visible_categories_titset:68
 #: ../templates/database/landschaft/visible_categories_titset:51
 #: ../templates/database/nationallizenzen/visible_categories_titset:68
@@ -11278,7 +11365,7 @@ msgstr "Series title note"
 #: ../templates/database/alff/visible_categories_titset:87
 #: ../templates/database/ebooks/visible_categories_titset:85
 #: ../templates/database/inst001/visible_categories_titset:86
-#: ../templates/database/inst404abklatsch/visible_categories_titset:86
+#: ../templates/database/inst404abklatsch/visible_categories_titset:87
 #: ../templates/database/kapsel/visible_categories_titset:83
 #: ../templates/database/nationallizenzen/visible_categories_titset:85
 #: ../templates/database/richter/visible_categories_titset:85
@@ -11296,7 +11383,7 @@ msgstr "Language"
 
 #: ../templates/database/alff/visible_categories_titset:71
 #: ../templates/database/ebooks/visible_categories_titset:69
-#: ../templates/database/inst404abklatsch/visible_categories_titset:69
+#: ../templates/database/inst404abklatsch/visible_categories_titset:70
 #: ../templates/database/nationallizenzen/visible_categories_titset:69
 #: ../templates/database/richter/visible_categories_titset:69
 #: ../templates/database/umschlaege/visible_categories_titset:70
@@ -11313,7 +11400,7 @@ msgstr "Contents note"
 #: ../templates/database/alff/visible_categories_titset:83
 #: ../templates/database/ebooks/visible_categories_titset:81
 #: ../templates/database/inst001/visible_categories_titset:81
-#: ../templates/database/inst404abklatsch/visible_categories_titset:81
+#: ../templates/database/inst404abklatsch/visible_categories_titset:82
 #: ../templates/database/kapsel/visible_categories_titset:80
 #: ../templates/database/nationallizenzen/visible_categories_titset:81
 #: ../templates/database/richter/visible_categories_titset:81
@@ -11339,7 +11426,7 @@ msgstr "Contents note"
 #: ../templates/database/alff/visible_categories_titset:72
 #: ../templates/database/ebooks/visible_categories_titset:70
 #: ../templates/database/inst001/visible_categories_titset:70
-#: ../templates/database/inst404abklatsch/visible_categories_titset:70
+#: ../templates/database/inst404abklatsch/visible_categories_titset:71
 #: ../templates/database/kapsel/visible_categories_titset:69
 #: ../templates/database/landschaft/visible_categories_titset:53
 #: ../templates/database/nationallizenzen/visible_categories_titset:70
@@ -11362,7 +11449,7 @@ msgstr "Split note for serials"
 #: ../templates/database/alff/visible_categories_titset:42
 #: ../templates/database/ebooks/visible_categories_titset:40
 #: ../templates/database/inst001/visible_categories_titset:41
-#: ../templates/database/inst404abklatsch/visible_categories_titset:40
+#: ../templates/database/inst404abklatsch/visible_categories_titset:41
 #: ../templates/database/kapsel/visible_categories_titset:40
 #: ../templates/database/nationallizenzen/visible_categories_titset:40
 #: ../templates/database/richter/visible_categories_titset:40
@@ -11381,7 +11468,7 @@ msgstr "Frequency of publication"
 #: ../templates/database/alff/visible_categories_titset:73
 #: ../templates/database/ebooks/visible_categories_titset:71
 #: ../templates/database/inst001/visible_categories_titset:71
-#: ../templates/database/inst404abklatsch/visible_categories_titset:71
+#: ../templates/database/inst404abklatsch/visible_categories_titset:72
 #: ../templates/database/kapsel/visible_categories_titset:70
 #: ../templates/database/landschaft/visible_categories_titset:54
 #: ../templates/database/nationallizenzen/visible_categories_titset:71
@@ -11408,7 +11495,7 @@ msgstr "Places"
 #: ../templates/database/alff/visible_categories_titset:77
 #: ../templates/database/ebooks/visible_categories_titset:75
 #: ../templates/database/inst001/visible_categories_titset:75
-#: ../templates/database/inst404abklatsch/visible_categories_titset:75
+#: ../templates/database/inst404abklatsch/visible_categories_titset:76
 #: ../templates/database/kapsel/visible_categories_titset:74
 #: ../templates/database/landschaft/visible_categories_titset:55
 #: ../templates/database/nationallizenzen/visible_categories_titset:75
@@ -11431,7 +11518,7 @@ msgstr "Issued with note"
 #: ../templates/database/alff/visible_categories_titset:78
 #: ../templates/database/ebooks/visible_categories_titset:76
 #: ../templates/database/inst001/visible_categories_titset:76
-#: ../templates/database/inst404abklatsch/visible_categories_titset:76
+#: ../templates/database/inst404abklatsch/visible_categories_titset:77
 #: ../templates/database/kapsel/visible_categories_titset:75
 #: ../templates/database/landschaft/visible_categories_titset:56
 #: ../templates/database/nationallizenzen/visible_categories_titset:76
@@ -11454,7 +11541,7 @@ msgstr "Title of serially published supplementary items note"
 #: ../templates/database/alff/visible_categories_titset:79
 #: ../templates/database/ebooks/visible_categories_titset:77
 #: ../templates/database/inst001/visible_categories_titset:77
-#: ../templates/database/inst404abklatsch/visible_categories_titset:77
+#: ../templates/database/inst404abklatsch/visible_categories_titset:78
 #: ../templates/database/kapsel/visible_categories_titset:76
 #: ../templates/database/landschaft/visible_categories_titset:57
 #: ../templates/database/nationallizenzen/visible_categories_titset:77
@@ -11477,7 +11564,7 @@ msgstr "Related files note"
 #: ../templates/database/alff/visible_categories_titset:80
 #: ../templates/database/ebooks/visible_categories_titset:78
 #: ../templates/database/inst001/visible_categories_titset:78
-#: ../templates/database/inst404abklatsch/visible_categories_titset:78
+#: ../templates/database/inst404abklatsch/visible_categories_titset:79
 #: ../templates/database/kapsel/visible_categories_titset:77
 #: ../templates/database/landschaft/visible_categories_titset:58
 #: ../templates/database/nationallizenzen/visible_categories_titset:78
@@ -11500,7 +11587,7 @@ msgstr "Earlier edition"
 #: ../templates/database/alff/visible_categories_titset:81
 #: ../templates/database/ebooks/visible_categories_titset:79
 #: ../templates/database/inst001/visible_categories_titset:79
-#: ../templates/database/inst404abklatsch/visible_categories_titset:79
+#: ../templates/database/inst404abklatsch/visible_categories_titset:80
 #: ../templates/database/kapsel/visible_categories_titset:78
 #: ../templates/database/landschaft/visible_categories_titset:59
 #: ../templates/database/nationallizenzen/visible_categories_titset:79
@@ -11523,7 +11610,7 @@ msgstr "Earlier title"
 #: ../templates/database/alff/visible_categories_titset:82
 #: ../templates/database/ebooks/visible_categories_titset:80
 #: ../templates/database/inst001/visible_categories_titset:80
-#: ../templates/database/inst404abklatsch/visible_categories_titset:80
+#: ../templates/database/inst404abklatsch/visible_categories_titset:81
 #: ../templates/database/kapsel/visible_categories_titset:79
 #: ../templates/database/landschaft/visible_categories_titset:60
 #: ../templates/database/nationallizenzen/visible_categories_titset:80
@@ -11546,7 +11633,7 @@ msgstr "Later edition"
 #: ../templates/database/alff/visible_categories_titset:74
 #: ../templates/database/ebooks/visible_categories_titset:72
 #: ../templates/database/inst001/visible_categories_titset:72
-#: ../templates/database/inst404abklatsch/visible_categories_titset:72
+#: ../templates/database/inst404abklatsch/visible_categories_titset:73
 #: ../templates/database/kapsel/visible_categories_titset:71
 #: ../templates/database/landschaft/visible_categories_titset:61
 #: ../templates/database/nationallizenzen/visible_categories_titset:72
@@ -11569,7 +11656,7 @@ msgstr "Concordance of titles"
 #: ../templates/database/alff/visible_categories_titset:75
 #: ../templates/database/ebooks/visible_categories_titset:73
 #: ../templates/database/inst001/visible_categories_titset:73
-#: ../templates/database/inst404abklatsch/visible_categories_titset:73
+#: ../templates/database/inst404abklatsch/visible_categories_titset:74
 #: ../templates/database/kapsel/visible_categories_titset:72
 #: ../templates/database/landschaft/visible_categories_titset:62
 #: ../templates/database/nationallizenzen/visible_categories_titset:73
@@ -11592,7 +11679,7 @@ msgstr "Number of copies"
 #: ../templates/database/alff/visible_categories_titset:76
 #: ../templates/database/ebooks/visible_categories_titset:74
 #: ../templates/database/inst001/visible_categories_titset:74
-#: ../templates/database/inst404abklatsch/visible_categories_titset:74
+#: ../templates/database/inst404abklatsch/visible_categories_titset:75
 #: ../templates/database/kapsel/visible_categories_titset:73
 #: ../templates/database/landschaft/visible_categories_titset:63
 #: ../templates/database/nationallizenzen/visible_categories_titset:74
@@ -11629,7 +11716,7 @@ msgstr "Reproduction"
 #: ../templates/database/alff/visible_categories_titset:105
 #: ../templates/database/ebooks/visible_categories_titset:103
 #: ../templates/database/inst001/visible_categories_titset:104
-#: ../templates/database/inst404abklatsch/visible_categories_titset:105
+#: ../templates/database/inst404abklatsch/visible_categories_titset:106
 #: ../templates/database/kapsel/visible_categories_titset:100
 #: ../templates/database/nationallizenzen/visible_categories_titset:103
 #: ../templates/database/richter/visible_categories_titset:102
@@ -11648,7 +11735,7 @@ msgstr "ISBN"
 #: ../templates/database/alff/visible_categories_titset:107
 #: ../templates/database/ebooks/visible_categories_titset:105
 #: ../templates/database/inst001/visible_categories_titset:105
-#: ../templates/database/inst404abklatsch/visible_categories_titset:107
+#: ../templates/database/inst404abklatsch/visible_categories_titset:108
 #: ../templates/database/kapsel/visible_categories_titset:101
 #: ../templates/database/nationallizenzen/visible_categories_titset:105
 #: ../templates/database/richter/visible_categories_titset:104
@@ -11666,7 +11753,7 @@ msgstr "ISSN"
 
 #: ../templates/database/alff/visible_categories_titset:106
 #: ../templates/database/ebooks/visible_categories_titset:104
-#: ../templates/database/inst404abklatsch/visible_categories_titset:106
+#: ../templates/database/inst404abklatsch/visible_categories_titset:107
 #: ../templates/database/nationallizenzen/visible_categories_titset:104
 #: ../templates/database/richter/visible_categories_titset:103
 #: ../templates/database/umschlaege/visible_categories_titset:104
@@ -11688,7 +11775,7 @@ msgid "T0578"
 msgstr "Fingerprint"
 
 #: ../templates/database/inst001/visible_categories_titset:83
-#: ../templates/database/inst404abklatsch/visible_categories_titset:83
+#: ../templates/database/inst404abklatsch/visible_categories_titset:84
 #: ../templates/database/landschaft/visible_categories_titset:67
 #: ../templates/database/portrait/visible_categories_titset:62
 #: ../templates/database/wikisource_de/visible_categories_titset:84
@@ -11701,7 +11788,7 @@ msgstr "Other standard numbers"
 #: ../templates/database/alff/visible_categories_titset:56
 #: ../templates/database/ebooks/visible_categories_titset:54
 #: ../templates/database/inst001/visible_categories_titset:55
-#: ../templates/database/inst404abklatsch/visible_categories_titset:54
+#: ../templates/database/inst404abklatsch/visible_categories_titset:55
 #: ../templates/database/inst450/visible_categories_titset:26
 #: ../templates/database/kapsel/visible_categories_titset:54
 #: ../templates/database/landschaft/visible_categories_titset:68
@@ -11725,7 +11812,7 @@ msgstr "Title source"
 #: ../templates/database/alff/visible_categories_titset:43
 #: ../templates/database/ebooks/visible_categories_titset:41
 #: ../templates/database/inst001/visible_categories_titset:42
-#: ../templates/database/inst404abklatsch/visible_categories_titset:41
+#: ../templates/database/inst404abklatsch/visible_categories_titset:42
 #: ../templates/database/kapsel/visible_categories_titset:41
 #: ../templates/database/nationallizenzen/visible_categories_titset:41
 #: ../templates/database/portrait/visible_categories_titset:64
@@ -11765,7 +11852,7 @@ msgstr "Edition statement of source"
 #: ../templates/database/alff/visible_categories_titset:44
 #: ../templates/database/ebooks/visible_categories_titset:42
 #: ../templates/database/inst001/visible_categories_titset:43
-#: ../templates/database/inst404abklatsch/visible_categories_titset:42
+#: ../templates/database/inst404abklatsch/visible_categories_titset:43
 #: ../templates/database/kapsel/visible_categories_titset:42
 #: ../templates/database/nationallizenzen/visible_categories_titset:42
 #: ../templates/database/portrait/visible_categories_titset:67
@@ -11791,7 +11878,7 @@ msgstr "Territory"
 #: ../templates/database/alff/visible_categories_titset:45
 #: ../templates/database/ebooks/visible_categories_titset:43
 #: ../templates/database/inst001/visible_categories_titset:44
-#: ../templates/database/inst404abklatsch/visible_categories_titset:43
+#: ../templates/database/inst404abklatsch/visible_categories_titset:44
 #: ../templates/database/kapsel/visible_categories_titset:43
 #: ../templates/database/nationallizenzen/visible_categories_titset:43
 #: ../templates/database/portrait/visible_categories_titset:68
@@ -11845,6 +11932,7 @@ msgstr "Standard numbers of source"
 #: ../templates/database/alff/visible_categories_titset:57
 #: ../templates/database/ebooks/visible_categories_titset:55
 #: ../templates/database/inst001/visible_categories_titset:56
+#: ../templates/database/inst404abklatsch/visible_categories_titset:56
 #: ../templates/database/kapsel/visible_categories_titset:55
 #: ../templates/database/nationallizenzen/visible_categories_titset:55
 #: ../templates/database/richter/visible_categories_titset:55
@@ -11860,14 +11948,10 @@ msgstr "Standard numbers of source"
 msgid "T0600"
 msgstr "Reference"
 
-#: ../templates/database/inst404abklatsch/visible_categories_titset:55
-msgid "T0600-inst404abklatsch"
-msgstr "Drawer"
-
 #: ../templates/database/alff/visible_categories_titset:84
 #: ../templates/database/ebooks/visible_categories_titset:82
 #: ../templates/database/inst001/visible_categories_titset:82
-#: ../templates/database/inst404abklatsch/visible_categories_titset:82
+#: ../templates/database/inst404abklatsch/visible_categories_titset:83
 #: ../templates/database/kapsel/visible_categories_titset:81
 #: ../templates/database/landschaft/visible_categories_titset:73
 #: ../templates/database/nationallizenzen/visible_categories_titset:82
@@ -11890,7 +11974,7 @@ msgstr "Year of publication"
 #: ../templates/database/alff/visible_categories_titset:85
 #: ../templates/database/ebooks/visible_categories_titset:83
 #: ../templates/database/inst001/visible_categories_titset:84
-#: ../templates/database/inst404abklatsch/visible_categories_titset:84
+#: ../templates/database/inst404abklatsch/visible_categories_titset:85
 #: ../templates/database/kapsel/visible_categories_titset:82
 #: ../templates/database/landschaft/visible_categories_titset:74
 #: ../templates/database/nationallizenzen/visible_categories_titset:83
@@ -11913,7 +11997,7 @@ msgstr "Holding information of original of microfilming"
 #: ../templates/database/alff/visible_categories_titset:53
 #: ../templates/database/ebooks/visible_categories_titset:51
 #: ../templates/database/inst001/visible_categories_titset:52
-#: ../templates/database/inst404abklatsch/visible_categories_titset:51
+#: ../templates/database/inst404abklatsch/visible_categories_titset:52
 #: ../templates/database/kapsel/visible_categories_titset:51
 #: ../templates/database/nationallizenzen/visible_categories_titset:51
 #: ../templates/database/richter/visible_categories_titset:51
@@ -11932,7 +12016,7 @@ msgstr "Specific material designation / file type"
 #: ../templates/database/alff/visible_categories_titset:54
 #: ../templates/database/ebooks/visible_categories_titset:52
 #: ../templates/database/inst001/visible_categories_titset:53
-#: ../templates/database/inst404abklatsch/visible_categories_titset:52
+#: ../templates/database/inst404abklatsch/visible_categories_titset:53
 #: ../templates/database/kapsel/visible_categories_titset:52
 #: ../templates/database/landschaft/visible_categories_titset:75
 #: ../templates/database/nationallizenzen/visible_categories_titset:52
@@ -11954,7 +12038,7 @@ msgstr "Electronic location / access"
 
 #: ../templates/database/alff/visible_categories_titset:108
 #: ../templates/database/inst001/visible_categories_titset:106
-#: ../templates/database/inst404abklatsch/visible_categories_titset:108
+#: ../templates/database/inst404abklatsch/visible_categories_titset:109
 #: ../templates/database/kapsel/visible_categories_titset:102
 #: ../templates/database/landschaft/visible_categories_titset:85
 #: ../templates/database/richter/visible_categories_titset:105
@@ -12033,7 +12117,7 @@ msgstr "Keywords in variant spelling"
 #: ../templates/database/alff/visible_categories_titset:103
 #: ../templates/database/ebooks/visible_categories_titset:101
 #: ../templates/database/inst001/visible_categories_titset:103
-#: ../templates/database/inst404abklatsch/visible_categories_titset:103
+#: ../templates/database/inst404abklatsch/visible_categories_titset:104
 #: ../templates/database/kapsel/visible_categories_titset:99
 #: ../templates/database/nationallizenzen/visible_categories_titset:101
 #: ../templates/database/richter/visible_categories_titset:101
@@ -12084,7 +12168,7 @@ msgstr "Subject headings"
 msgid "T0710-einbaende"
 msgstr "Century"
 
-#: ../templates/database/inst404abklatsch/visible_categories_titset:91
+#: ../templates/database/inst404abklatsch/visible_categories_titset:92
 msgid "T0710-inst404abklatsch"
 msgstr "Category"
 
@@ -12108,7 +12192,7 @@ msgstr "Related to cover art"
 #: ../templates/database/alff/visible_categories_titset:88
 #: ../templates/database/ebooks/visible_categories_titset:86
 #: ../templates/database/inst001/visible_categories_titset:87
-#: ../templates/database/inst404abklatsch/visible_categories_titset:87
+#: ../templates/database/inst404abklatsch/visible_categories_titset:88
 #: ../templates/database/kapsel/visible_categories_titset:84
 #: ../templates/database/nationallizenzen/visible_categories_titset:86
 #: ../templates/database/richter/visible_categories_titset:86
@@ -12139,7 +12223,7 @@ msgstr "Transcription"
 #: ../templates/database/alff/visible_categories_titset:91
 #: ../templates/database/ebooks/visible_categories_titset:89
 #: ../templates/database/inst001/visible_categories_titset:90
-#: ../templates/database/inst404abklatsch/visible_categories_titset:90
+#: ../templates/database/inst404abklatsch/visible_categories_titset:91
 #: ../templates/database/inst450/visible_categories_titset:32
 #: ../templates/database/kapsel/visible_categories_titset:87
 #: ../templates/database/landschaft/visible_categories_titset:81
@@ -12178,7 +12262,7 @@ msgstr "Concordance"
 #: ../templates/database/alff/visible_categories_titset:93
 #: ../templates/database/ebooks/visible_categories_titset:91
 #: ../templates/database/inst001/visible_categories_titset:92
-#: ../templates/database/inst404abklatsch/visible_categories_titset:92
+#: ../templates/database/inst404abklatsch/visible_categories_titset:93
 #: ../templates/database/kapsel/visible_categories_titset:89
 #: ../templates/database/nationallizenzen/visible_categories_titset:91
 #: ../templates/database/richter/visible_categories_titset:91
@@ -12197,7 +12281,7 @@ msgstr "Subject headings"
 #: ../templates/database/alff/visible_categories_titset:94
 #: ../templates/database/ebooks/visible_categories_titset:92
 #: ../templates/database/inst001/visible_categories_titset:93
-#: ../templates/database/inst404abklatsch/visible_categories_titset:93
+#: ../templates/database/inst404abklatsch/visible_categories_titset:94
 #: ../templates/database/kapsel/visible_categories_titset:90
 #: ../templates/database/nationallizenzen/visible_categories_titset:92
 #: ../templates/database/richter/visible_categories_titset:92
@@ -12216,7 +12300,7 @@ msgstr "Subject headings"
 #: ../templates/database/alff/visible_categories_titset:95
 #: ../templates/database/ebooks/visible_categories_titset:93
 #: ../templates/database/inst001/visible_categories_titset:94
-#: ../templates/database/inst404abklatsch/visible_categories_titset:94
+#: ../templates/database/inst404abklatsch/visible_categories_titset:95
 #: ../templates/database/kapsel/visible_categories_titset:91
 #: ../templates/database/nationallizenzen/visible_categories_titset:93
 #: ../templates/database/richter/visible_categories_titset:93
@@ -12235,7 +12319,7 @@ msgstr "Subject headings"
 #: ../templates/database/alff/visible_categories_titset:96
 #: ../templates/database/ebooks/visible_categories_titset:94
 #: ../templates/database/inst001/visible_categories_titset:95
-#: ../templates/database/inst404abklatsch/visible_categories_titset:95
+#: ../templates/database/inst404abklatsch/visible_categories_titset:96
 #: ../templates/database/kapsel/visible_categories_titset:92
 #: ../templates/database/nationallizenzen/visible_categories_titset:94
 #: ../templates/database/richter/visible_categories_titset:94
@@ -12254,7 +12338,7 @@ msgstr "Subject headings"
 #: ../templates/database/alff/visible_categories_titset:97
 #: ../templates/database/ebooks/visible_categories_titset:95
 #: ../templates/database/inst001/visible_categories_titset:96
-#: ../templates/database/inst404abklatsch/visible_categories_titset:96
+#: ../templates/database/inst404abklatsch/visible_categories_titset:97
 #: ../templates/database/kapsel/visible_categories_titset:93
 #: ../templates/database/nationallizenzen/visible_categories_titset:95
 #: ../templates/database/richter/visible_categories_titset:95
@@ -12273,7 +12357,7 @@ msgstr "Subject headings"
 #: ../templates/database/alff/visible_categories_titset:98
 #: ../templates/database/ebooks/visible_categories_titset:96
 #: ../templates/database/inst001/visible_categories_titset:97
-#: ../templates/database/inst404abklatsch/visible_categories_titset:97
+#: ../templates/database/inst404abklatsch/visible_categories_titset:98
 #: ../templates/database/kapsel/visible_categories_titset:94
 #: ../templates/database/nationallizenzen/visible_categories_titset:96
 #: ../templates/database/richter/visible_categories_titset:96
@@ -12292,7 +12376,7 @@ msgstr "Subject headings"
 #: ../templates/database/alff/visible_categories_titset:99
 #: ../templates/database/ebooks/visible_categories_titset:97
 #: ../templates/database/inst001/visible_categories_titset:98
-#: ../templates/database/inst404abklatsch/visible_categories_titset:98
+#: ../templates/database/inst404abklatsch/visible_categories_titset:99
 #: ../templates/database/kapsel/visible_categories_titset:95
 #: ../templates/database/nationallizenzen/visible_categories_titset:97
 #: ../templates/database/richter/visible_categories_titset:97
@@ -12311,7 +12395,7 @@ msgstr "Subject headings"
 #: ../templates/database/alff/visible_categories_titset:100
 #: ../templates/database/ebooks/visible_categories_titset:98
 #: ../templates/database/inst001/visible_categories_titset:99
-#: ../templates/database/inst404abklatsch/visible_categories_titset:99
+#: ../templates/database/inst404abklatsch/visible_categories_titset:100
 #: ../templates/database/kapsel/visible_categories_titset:96
 #: ../templates/database/nationallizenzen/visible_categories_titset:98
 #: ../templates/database/richter/visible_categories_titset:98
@@ -12330,7 +12414,7 @@ msgstr "Subject headings"
 #: ../templates/database/alff/visible_categories_titset:101
 #: ../templates/database/ebooks/visible_categories_titset:99
 #: ../templates/database/inst001/visible_categories_titset:100
-#: ../templates/database/inst404abklatsch/visible_categories_titset:100
+#: ../templates/database/inst404abklatsch/visible_categories_titset:101
 #: ../templates/database/kapsel/visible_categories_titset:97
 #: ../templates/database/nationallizenzen/visible_categories_titset:99
 #: ../templates/database/richter/visible_categories_titset:99
@@ -12349,7 +12433,7 @@ msgstr "Subject headings"
 #: ../templates/database/alff/visible_categories_titset:102
 #: ../templates/database/ebooks/visible_categories_titset:100
 #: ../templates/database/inst001/visible_categories_titset:101
-#: ../templates/database/inst404abklatsch/visible_categories_titset:101
+#: ../templates/database/inst404abklatsch/visible_categories_titset:102
 #: ../templates/database/kapsel/visible_categories_titset:98
 #: ../templates/database/nationallizenzen/visible_categories_titset:100
 #: ../templates/database/richter/visible_categories_titset:100
@@ -12394,14 +12478,14 @@ msgstr "Remark"
 msgid "T1664"
 msgstr "Provenance"
 
-#: ../templates/database/inst404abklatsch/visible_categories_titset:109
+#: ../templates/database/inst404abklatsch/visible_categories_titset:110
 msgid "T1664-inst404abklatsch"
-msgstr ""
+msgstr "Place of inscription"
 
 #: ../templates/database/alff/visible_categories_titset:110
 #: ../templates/database/ebooks/visible_categories_titset:109
 #: ../templates/database/inst001/visible_categories_titset:108
-#: ../templates/database/inst404abklatsch/visible_categories_titset:110
+#: ../templates/database/inst404abklatsch/visible_categories_titset:111
 #: ../templates/database/kapsel/visible_categories_titset:104
 #: ../templates/database/nationallizenzen/visible_categories_titset:109
 #: ../templates/database/richter/visible_categories_titset:107
@@ -12420,7 +12504,7 @@ msgstr "USB URL"
 #: ../templates/database/alff/visible_categories_titset:111
 #: ../templates/database/ebooks/visible_categories_titset:110
 #: ../templates/database/inst001/visible_categories_titset:109
-#: ../templates/database/inst404abklatsch/visible_categories_titset:111
+#: ../templates/database/inst404abklatsch/visible_categories_titset:112
 #: ../templates/database/kapsel/visible_categories_titset:105
 #: ../templates/database/nationallizenzen/visible_categories_titset:110
 #: ../templates/database/richter/visible_categories_titset:108
@@ -12476,7 +12560,7 @@ msgstr "Table of contents (pdf)"
 
 #: ../templates/database/alff/visible_categories_titset:114
 #: ../templates/database/inst001/visible_categories_titset:112
-#: ../templates/database/inst404abklatsch/visible_categories_titset:114
+#: ../templates/database/inst404abklatsch/visible_categories_titset:115
 #: ../templates/database/nationallizenzen/visible_categories_titset:113
 #: ../templates/database/richter/visible_categories_titset:112
 #: ../templates/database/umschlaege/visible_categories_titset:112
@@ -12494,7 +12578,7 @@ msgstr "Tags of users"
 #: ../templates/database/ebooks/visible_categories_titset:113
 #: ../templates/database/einbaende/visible_categories_titset:25
 #: ../templates/database/inst001/visible_categories_titset:113
-#: ../templates/database/inst404abklatsch/visible_categories_titset:115
+#: ../templates/database/inst404abklatsch/visible_categories_titset:116
 #: ../templates/database/kapsel/visible_categories_titset:109
 #: ../templates/database/nationallizenzen/visible_categories_titset:114
 #: ../templates/database/richter/visible_categories_titset:113
@@ -12515,7 +12599,7 @@ msgstr "# of superordinate titles"
 #: ../templates/database/ebooks/visible_categories_titset:114
 #: ../templates/database/einbaende/visible_categories_titset:26
 #: ../templates/database/inst001/visible_categories_titset:114
-#: ../templates/database/inst404abklatsch/visible_categories_titset:116
+#: ../templates/database/inst404abklatsch/visible_categories_titset:117
 #: ../templates/database/kapsel/visible_categories_titset:110
 #: ../templates/database/nationallizenzen/visible_categories_titset:115
 #: ../templates/database/richter/visible_categories_titset:114
@@ -12535,7 +12619,7 @@ msgstr "# of dependent titles"
 #: ../templates/database/alff/visible_categories_titset:117
 #: ../templates/database/ebooks/visible_categories_titset:115
 #: ../templates/database/inst001/visible_categories_titset:115
-#: ../templates/database/inst404abklatsch/visible_categories_titset:117
+#: ../templates/database/inst404abklatsch/visible_categories_titset:118
 #: ../templates/database/kapsel/visible_categories_titset:111
 #: ../templates/database/nationallizenzen/visible_categories_titset:116
 #: ../templates/database/richter/visible_categories_titset:115
@@ -12652,8 +12736,8 @@ msgstr "Assign DBIS subjects"
 #: ../templates/profile/kuglight/admin_editsubject:155
 #: ../templates/profile/kuglight/admin_navigation:21
 #: ../templates/profile/kuglight/info_53:42
-#: ../templates/profile/kuglight/info_54:41 ../templates/searchmask:299
-#: ../templates/searchmask:60 ../templates/searchmask_simple:391
+#: ../templates/profile/kuglight/info_54:41 ../templates/searchmask:308
+#: ../templates/searchmask:60 ../templates/searchmask_simple:394
 #: ../templates/searchmask_simple:63
 #: ../templates/views/einbaende/searchmask:299
 #: ../templates/views/einbaende/searchmask:60
@@ -12943,7 +13027,7 @@ msgstr "Top 20"
 #: ../templates/profile/kuglight/virtualsearch_shownotindex:25
 #: ../templates/profile/kuglight/virtualsearch_showswtindex:25
 #: ../templates/profile/kuglight/virtualsearch_showverfindex:25
-#: ../templates/resultlists_choice:95 ../templates/resultlists_showall:62
+#: ../templates/resultlists_choice:97 ../templates/resultlists_showall:62
 #: ../templates/resultlists_showall_sortall:39
 #: ../templates/resultlists_showsinglepool:48
 #: ../templates/search_showtitlist:48
@@ -12958,9 +13042,8 @@ msgstr "Top 20"
 #: ../templates/views/landschaft/resultlists_showall:68
 #: ../templates/views/portrait/virtualsearch_result_item:18
 #: ../templates/views/umschlaege/resultlists_showall:69
-#: ../templates/virtualsearch_result_combined:55
-#: ../templates/virtualsearch_result_combined:69
-#: ../templates/virtualsearch_result_item:32
+#: ../templates/virtualsearch_result_combined:33
+#: ../templates/virtualsearch_result_item:38
 #: ../templates/virtualsearch_showkorindex:25
 #: ../templates/virtualsearch_shownotindex:25
 #: ../templates/virtualsearch_showswtindex:25
@@ -13049,7 +13132,6 @@ msgstr "Hit Lists, List of Interests and Literature Lists"
 #: ../templates/views/umschlaege/resultlists_showsinglepool:30
 #: ../templates/views/umschlaege/virtualsearch_result_start:31
 #: ../templates/views/xanten/mainnavigation:16
-#: ../templates/virtualsearch_result_combined:25
 #: ../templates/virtualsearch_result_start:26
 msgid "Trefferliste"
 msgstr "Result list"
@@ -13084,6 +13166,10 @@ msgstr ""
 "beginning with the stem 'programm-' while   leaving the ending open: e.g. "
 "programming, programme or the German   programm etc.)"
 
+#: ../templates/drilldown_categorized:329
+msgid "Tschechisch"
+msgstr "Czech"
+
 #: ../templates/info_61:32 ../templates/mainnavigation:43
 #: ../templates/views/kug/mainnavigation:43
 msgid "Tutorien"
@@ -13113,6 +13199,10 @@ msgstr "Type"
 #: ../templates/search_showtitset:451 ../templates/search_showtitset:523
 msgid "Typ:"
 msgstr "Type:"
+
+#: ../templates/drilldown_categorized:328
+msgid "Türkisch"
+msgstr "Turkish"
 
 #: ../templates/info:231 ../templates/profile/kuglight/info:210
 #: ../templates/views/kug/info:231
@@ -13250,10 +13340,16 @@ msgstr "AND-relation in a search field"
 
 #: ../modules/OpenBib/Handler/Apache/Circulation.pm:586
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:441
+#: ../modules/OpenBib/Handler/Apache/ResultLists.pm:220
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:202
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:305
 msgid "Unerlaubte Aktion"
 msgstr "Invalid action"
+
+#: ../templates/drilldown_categorized:318
+#: ../templates/drilldown_categorized:319
+msgid "Ungarisch"
+msgstr "Hungarian"
 
 #: ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:106
 msgid "Ungültige Aktion"
@@ -13281,7 +13377,7 @@ msgstr "Invalid action"
 #: ../modules/OpenBib/Handler/Apache/Tags.pm:131
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:122
 #: ../modules/OpenBib/Handler/Apache/UserReviews.pm:124
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:153
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:162
 #: ../modules/OpenBib/L10N.pm:124
 msgid "Ungültige Session"
 msgstr "Invalid session"
@@ -13441,8 +13537,8 @@ msgstr "Misc"
 msgid "Verschlagwortung anderer Kataloge"
 msgstr "Subject headings from other catalogues"
 
-#: ../templates/connector_similarpersons:54
-#: ../templates/connector_similarsubjects:56
+#: ../templates/connector_similarpersons:61
+#: ../templates/connector_similarsubjects:63
 #: ../templates/database/einbaende/search_showtitset:914
 #: ../templates/database/einbaende/search_showtitset_1:895
 #: ../templates/database/umschlaege/search_showtitset:884
@@ -14116,8 +14212,8 @@ msgstr "Cloud of most frequently used tags"
 #: ../templates/profile/kuglight/info_17:43
 #: ../templates/profile/kuglight/info_18:43
 #: ../templates/profile/kuglight/info_19:43
-#: ../templates/profile/kuglight/info_9:43 ../templates/searchmask:410
-#: ../templates/searchmask_simple:502
+#: ../templates/profile/kuglight/info_9:43 ../templates/searchmask:419
+#: ../templates/searchmask_simple:505
 #: ../templates/views/einbaende/searchmask:410
 #: ../templates/views/einbaende/searchmask_simple:502
 #: ../templates/views/kug/info:86 ../templates/views/kug/info:936
@@ -14162,8 +14258,8 @@ msgstr ""
 msgid "Wählen Sie bitte einen View aus:"
 msgstr "Please select a view:"
 
-#: ../templates/searchmask:180 ../templates/searchmask:58
-#: ../templates/searchmask_simple:200 ../templates/searchmask_simple:61
+#: ../templates/searchmask:189 ../templates/searchmask:58
+#: ../templates/searchmask_simple:201 ../templates/searchmask_simple:61
 #: ../templates/views/einbaende/searchmask:180
 #: ../templates/views/einbaende/searchmask:58
 #: ../templates/views/einbaende/searchmask_simple:200
@@ -14287,9 +14383,9 @@ msgstr "Most recent articles published in this journal"
 #: ../templates/profile/kuglight/views/umschlaege/searchmask_simple:101
 #: ../templates/profile/kuglight/views/xanten/searchmask:65
 #: ../templates/profile/kuglight/views/xanten/searchmask_simple:113
-#: ../templates/searchmask:167 ../templates/searchmask:228
-#: ../templates/searchmask:287 ../templates/searchmask_simple:188
-#: ../templates/searchmask_simple:282 ../templates/searchmask_simple:377
+#: ../templates/searchmask:176 ../templates/searchmask:237
+#: ../templates/searchmask:296 ../templates/searchmask_simple:189
+#: ../templates/searchmask_simple:284 ../templates/searchmask_simple:380
 #: ../templates/views/einbaende/searchmask:167
 #: ../templates/views/einbaende/searchmask:228
 #: ../templates/views/einbaende/searchmask:287
@@ -14337,8 +14433,6 @@ msgstr "To result list"
 #: ../templates/profile/kuglight/virtualsearch_result_end:17
 #: ../templates/views/einbaende/virtualsearch_result_end:16
 #: ../templates/views/einbaende/virtualsearch_result_end:18
-#: ../templates/virtualsearch_result_combined:141
-#: ../templates/virtualsearch_result_combined:51
 #: ../templates/virtualsearch_result_end:16
 #: ../templates/virtualsearch_result_end:18
 msgid "Zur&uuml;ck zur %1Suchanfrage%2"
@@ -14500,7 +14594,6 @@ msgstr "Administrator"
 msgid "aufsteigend"
 msgstr "ascending"
 
-#: ../templates/managecollection_tit_as_html:247
 #: ../templates/managecollection_tit_as_html_simple:20
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:23
 #: ../templates/profile/kuglight/database/umschlaege/managecollection_tit_as_html:22
@@ -14510,7 +14603,6 @@ msgstr "ascending"
 #: ../templates/profile/kuglight/virtualsearch_result_combined:154
 #: ../templates/resultlists_showall_sortall:111
 #: ../templates/views/einbaende/resultlists_showall_sortall:111
-#: ../templates/virtualsearch_result_combined:130
 msgid "aus:"
 msgstr "from:"
 
@@ -14603,8 +14695,8 @@ msgstr "in internal course of business"
 #: ../templates/dbis_searchdbs:63 ../templates/dbis_showdbs:67
 #: ../templates/dbis_showsubjects:86 ../templates/ezb_searchjournals:71
 #: ../templates/ezb_showjournals:90 ../templates/ezb_showsubjects:87
-#: ../templates/searchmask_query:124 ../templates/searchmask_simple:148
-#: ../templates/searchmask_simple:241 ../templates/searchmask_simple:336
+#: ../templates/searchmask_query:124 ../templates/searchmask_simple:149
+#: ../templates/searchmask_simple:243 ../templates/searchmask_simple:339
 #: ../templates/views/einbaende/searchmask_simple:148
 #: ../templates/views/einbaende/searchmask_simple:241
 #: ../templates/views/einbaende/searchmask_simple:336
@@ -14632,7 +14724,7 @@ msgstr "yes, since"
 #: ../templates/profile/kuglight/resultlists_showall_sortall:60
 #: ../templates/profile/kuglight/titlist_options:37
 #: ../templates/profile/kuglight/virtualsearch_result_start:59
-#: ../templates/titlist_options:36
+#: ../templates/titlist_options:35
 msgid "katalogübergreifend"
 msgstr "spanning several catalogues"
 
@@ -14651,7 +14743,7 @@ msgstr "Lecturer"
 msgid "librarian"
 msgstr "Librarian"
 
-#: ../templates/searchmask:413 ../templates/searchmask_simple:506
+#: ../templates/searchmask:422 ../templates/searchmask_simple:509
 #: ../templates/views/einbaende/searchmask:413
 #: ../templates/views/einbaende/searchmask_simple:505
 #: ../templates/views/kug/searchmask_simple:495
@@ -14670,15 +14762,16 @@ msgstr "most often used titles"
 #: ../templates/profile/kuglight/views/einbaende/virtualsearch_result_item:22
 #: ../templates/profile/kuglight/views/portrait/virtualsearch_result_item:18
 #: ../templates/profile/kuglight/virtualsearch_result_item:19
-#: ../templates/resultlists_choice:107
+#: ../templates/resultlists_choice:105
 #: ../templates/views/einbaende/virtualsearch_result_item:28
 #: ../templates/views/portrait/virtualsearch_result_item:18
-#: ../templates/virtualsearch_result_item:32
+#: ../templates/virtualsearch_result_combined:33
+#: ../templates/virtualsearch_result_item:38
 msgid "mind."
 msgstr "at least"
 
-#: ../templates/login:47 ../templates/login:85 ../templates/searchmask:345
-#: ../templates/searchmask_simple:437
+#: ../templates/login:47 ../templates/login:85 ../templates/searchmask:354
+#: ../templates/searchmask_simple:440
 #: ../templates/views/einbaende/searchmask:345
 #: ../templates/views/einbaende/searchmask_simple:437
 #: ../templates/views/kug/searchmask_simple:426
@@ -14723,7 +14816,7 @@ msgstr ""
 msgid "mit frei zugänglichen Volltextartikeln"
 msgstr "freely accessible articles"
 
-#: ../templates/database/einbaende/drilldown_categorized:246
+#: ../templates/database/einbaende/drilldown_categorized:266
 msgid "nach Art"
 msgstr "by type"
 
@@ -14738,12 +14831,12 @@ msgstr "by type"
 msgid "nach Autor/Zusammenarbeit"
 msgstr "by author/cooperation"
 
-#: ../templates/database/umschlaege/drilldown_categorized:183
+#: ../templates/database/umschlaege/drilldown_categorized:191
 #: ../templates/profile/kuglight/database/umschlaege/drilldown_categorized:185
 msgid "nach Autoren"
 msgstr "by person"
 
-#: ../templates/database/portrait/drilldown_categorized:183
+#: ../templates/database/portrait/drilldown_categorized:191
 #: ../templates/profile/kuglight/database/portrait/drilldown_categorized:38
 msgid "nach Beruf/Weltanschauung"
 msgstr "by profession/world-view"
@@ -14753,7 +14846,7 @@ msgstr "by profession/world-view"
 msgid "nach Buchbinder/Werkst&auml;tten"
 msgstr "by bookbinder/work shop"
 
-#: ../templates/database/einbaende/drilldown_categorized:183
+#: ../templates/database/einbaende/drilldown_categorized:191
 #: ../templates/profile/kuglight/database/einbaende/drilldown_categorized:38
 msgid "nach Einband"
 msgstr "by binding"
@@ -14773,11 +14866,11 @@ msgstr "by binding"
 msgid "nach Fert.Jahr"
 msgstr "by year of production"
 
-#: ../templates/database/einbaende/drilldown_categorized:225
-#: ../templates/database/inst001/drilldown_categorized:228
-#: ../templates/database/portrait/drilldown_categorized:225
-#: ../templates/database/umschlaege/drilldown_categorized:225
-#: ../templates/drilldown_categorized:225
+#: ../templates/database/einbaende/drilldown_categorized:241
+#: ../templates/database/inst001/drilldown_categorized:244
+#: ../templates/database/portrait/drilldown_categorized:241
+#: ../templates/database/umschlaege/drilldown_categorized:241
+#: ../templates/drilldown_categorized:241
 #: ../templates/profile/kuglight/database/einbaende/drilldown_categorized:52
 #: ../templates/profile/kuglight/database/einbaende/search_showtitlist_of_cnt:55
 #: ../templates/profile/kuglight/database/landschaft/search_showtitlist:51
@@ -14817,13 +14910,13 @@ msgstr "by year of production"
 msgid "nach Jahr"
 msgstr "by year"
 
-#: ../templates/database/einbaende/drilldown_categorized:162
+#: ../templates/database/einbaende/drilldown_categorized:166
 #: ../templates/profile/kuglight/database/einbaende/drilldown_categorized:24
 msgid "nach Jahrhundert"
 msgstr "by century"
 
-#: ../templates/database/inst001/drilldown_categorized:162
-#: ../templates/drilldown_categorized:162
+#: ../templates/database/inst001/drilldown_categorized:166
+#: ../templates/drilldown_categorized:166
 #: ../templates/profile/kuglight/drilldown_categorized:164
 msgid "nach K&ouml;perschaften"
 msgstr "by corporate body"
@@ -14838,10 +14931,10 @@ msgstr "by corporate body"
 msgid "nach Katalog"
 msgstr "by catalogue"
 
-#: ../templates/database/inst001/drilldown_categorized:249
-#: ../templates/database/portrait/drilldown_categorized:246
-#: ../templates/database/umschlaege/drilldown_categorized:246
-#: ../templates/drilldown_categorized:246
+#: ../templates/database/inst001/drilldown_categorized:269
+#: ../templates/database/portrait/drilldown_categorized:266
+#: ../templates/database/umschlaege/drilldown_categorized:266
+#: ../templates/drilldown_categorized:266
 #: ../templates/profile/kuglight/database/portrait/drilldown_categorized:66
 #: ../templates/profile/kuglight/database/umschlaege/drilldown_categorized:248
 #: ../templates/profile/kuglight/drilldown_categorized:248
@@ -14944,15 +15037,15 @@ msgstr "by person"
 msgid "nach Popularit&auml;t"
 msgstr "by popularity"
 
-#: ../templates/database/portrait/drilldown_categorized:204
+#: ../templates/database/portrait/drilldown_categorized:216
 msgid "nach Provenienz"
 msgstr "by provenance"
 
-#: ../templates/database/einbaende/drilldown_categorized:204
+#: ../templates/database/einbaende/drilldown_categorized:216
 msgid "nach Region"
 msgstr "by region"
 
-#: ../templates/database/portrait/drilldown_categorized:162
+#: ../templates/database/portrait/drilldown_categorized:166
 #: ../templates/profile/kuglight/database/portrait/drilldown_categorized:24
 msgid "nach Regionen"
 msgstr "by regions"
@@ -15012,11 +15105,11 @@ msgstr "by relevance"
 msgid "nach Signatur"
 msgstr "by location mark"
 
-#: ../templates/database/einbaende/drilldown_categorized:267
-#: ../templates/database/inst001/drilldown_categorized:270
-#: ../templates/database/portrait/drilldown_categorized:267
-#: ../templates/database/umschlaege/drilldown_categorized:267
-#: ../templates/drilldown_categorized:267
+#: ../templates/database/einbaende/drilldown_categorized:291
+#: ../templates/database/inst001/drilldown_categorized:294
+#: ../templates/database/portrait/drilldown_categorized:291
+#: ../templates/database/umschlaege/drilldown_categorized:291
+#: ../templates/drilldown_categorized:291
 #: ../templates/profile/kuglight/database/einbaende/drilldown_categorized:80
 #: ../templates/profile/kuglight/database/portrait/drilldown_categorized:80
 #: ../templates/profile/kuglight/database/umschlaege/drilldown_categorized:269
@@ -15024,16 +15117,16 @@ msgstr "by location mark"
 msgid "nach Sprache"
 msgstr "by language"
 
-#: ../templates/database/inst001/drilldown_categorized:207
-#: ../templates/database/umschlaege/drilldown_categorized:204
-#: ../templates/drilldown_categorized:204
+#: ../templates/database/inst001/drilldown_categorized:219
+#: ../templates/database/umschlaege/drilldown_categorized:216
+#: ../templates/drilldown_categorized:216
 #: ../templates/profile/kuglight/database/umschlaege/drilldown_categorized:206
 #: ../templates/profile/kuglight/drilldown_categorized:206
 msgid "nach Systematik"
 msgstr "by classification"
 
-#: ../templates/database/inst001/drilldown_categorized:183
-#: ../templates/drilldown_categorized:183
+#: ../templates/database/inst001/drilldown_categorized:191
+#: ../templates/drilldown_categorized:191
 #: ../templates/profile/kuglight/drilldown_categorized:185
 msgid "nach Themen"
 msgstr "by subject"
@@ -15171,7 +15264,7 @@ msgstr "by numbering"
 msgid "nach Zeitstempel"
 msgstr "by timestamp"
 
-#: ../templates/database/umschlaege/drilldown_categorized:162
+#: ../templates/database/umschlaege/drilldown_categorized:166
 #: ../templates/profile/kuglight/database/umschlaege/drilldown_categorized:164
 msgid "nach Zusammenarbeit"
 msgstr "by cooperation"
@@ -15259,7 +15352,7 @@ msgstr "private"
 #: ../templates/profile/kuglight/views/rheinlandbib/searchmask_options:4
 #: ../templates/profile/kuglight/views/xanten/searchmask_options:4
 #: ../templates/profile/kuglight/virtualsearch_result_start:58
-#: ../templates/searchmask_options:4 ../templates/titlist_options:35
+#: ../templates/searchmask_options:4 ../templates/titlist_options:34
 #: ../templates/views/gbroich/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
@@ -15298,7 +15391,7 @@ msgstr "bad"
 msgid "sehr gut"
 msgstr "very good"
 
-#: ../templates/searchmask:414 ../templates/searchmask_simple:507
+#: ../templates/searchmask:423 ../templates/searchmask_simple:510
 #: ../templates/views/einbaende/searchmask:414
 #: ../templates/views/einbaende/searchmask_simple:506
 #: ../templates/views/kug/searchmask_simple:496
@@ -15325,9 +15418,8 @@ msgstr "etc."
 #: ../templates/profile/kuglight/virtualsearch_result_item:19
 #: ../templates/views/einbaende/virtualsearch_result_item:28
 #: ../templates/views/portrait/virtualsearch_result_item:18
-#: ../templates/virtualsearch_result_combined:55
-#: ../templates/virtualsearch_result_combined:69
-#: ../templates/virtualsearch_result_item:32
+#: ../templates/virtualsearch_result_combined:33
+#: ../templates/virtualsearch_result_item:38
 msgid "von"
 msgstr "from"
 

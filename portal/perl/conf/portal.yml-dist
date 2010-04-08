@@ -211,10 +211,141 @@ locale_base_path: /opt/openbib/locales
 # Pfad zu den Portal-Templates (Template Toolkit)
 tt_include_path: /opt/openbib/templates
 
+# Suchprefixe in der Rercherche fuer die internen Felder verf, hst usw.
+searchfield:
+  'id':
+     'prefix': 'id'
+     'type': 'ft'
+  'fs':
+     'prefix': 'fs'
+     'type': 'ft'
+  'verf':
+     'prefix': 'per'
+     'type': 'ft'
+  'hst':
+     'prefix': 'tit'
+     'type': 'ft'
+  'swt': 
+     'prefix': 'subj'
+     'type': 'ft'
+  'kor':
+     'prefix': 'corp'
+     'type': 'ft'
+  'notation':
+     'prefix': 'sys'
+     'type': 'ft'
+  'sign':
+     'prefix': 'mark'
+     'type': 'ft'
+  'isbn':
+     'prefix': 'isbn'
+     'type': 'ft'
+  'issn':
+     'prefix': 'issn'
+     'type': 'ft'
+  'mart':
+     'prefix': 'typ'
+     'type': 'ft'
+  'inhalt':
+     'prefix': 'cnt'
+     'type': 'ft'
+  'gtquelle':
+     'prefix': 'src'
+     'type': 'ft'
+  'ejahr':
+     'prefix': 'year'
+     'type': 'ft'
+  'subid':
+     'prefix': 'fsub'
+     'type': 'ft'
+  'hststring':
+     'prefix': 'ftit'
+     'type': 'string'
+     'option':
+       'strip_first_stopword': 1
+  'swtstring':
+     'prefix': 'fsubj'
+     'type': 'string'
+  'sprstring':
+     'prefix': 'flang'
+     'type': 'string'
+  'notstring':
+     'prefix': 'fsys'
+     'type': 'string'
+  'verfstring':
+     'prefix': 'fper'
+     'type': 'string'
+  'korstring':
+     'prefix': 'fcorp'
+     'type': 'string'
+  'martstring':
+     'prefix': 'ftyp'
+     'type': 'string'
+  'signstring':
+     'prefix': 'fsign'
+     'type': 'string'
+  'ejahrstring':
+     'prefix': 'fyear'
+     'type': 'string'
+
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
 xapian_option:
   maxmatch: 2000
+  max_key_length: 100
+
+# Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
+# entsprechend searchfield_prefix
+xapian_search_prefix:
+  'id': 'Q'
+
+  fs': ''
+
+# Volltext
+  'per': 'X1'
+  'tit': 'X2'
+  'corp': 'X3'
+  'subj': 'X4'
+  'sys': 'X5'
+  'mark': 'X6'
+  'year': 'X7'
+  'isbn': 'X8'
+  'issn': 'X9'
+  'typ': 'Y1'
+  'cnt': 'Y2'
+  'src': 'Y3'
+
+  # String / Drilldowns
+  'fsubj': 'D1'
+  'fsys': 'D2'
+  'fper': 'D3'
+  'ftyp' : 'D4'
+  'fyear': 'D5'
+  'flang': 'D6'
+  'fcorp': 'D7'
+  'fdb': 'D8'
+  'ftit': 'D9'
+  'fsign': 'E1'
+  'fsub': 'E2'
+
+xapian_drilldown_value:
+  verf: 3
+  mart: 4
+  notation: 2
+  spr: 6
+  swt: 1
+  year: 5
+  kor: 7
+  db: 8
+
+xapian_sorttype_value:
+  'author': 20
+  'title': 21
+  'order': 22
+  'yearofpub': 23
+  'publisher': 24
+  'signature': 25
+  'popularity': 26
 
 # Stopwort-Liste
 stopword_filename: /opt/openbib/ft/stopwords.txt
@@ -235,6 +366,7 @@ follow_img: /images/openbib/solidrightarrow.png
 info_img: /images/openbib/info.png
 help_img: /images/openbib/help.png
 hint_img: /images/openbib/hint.png
+home_img: /images/openbib/home.png
 lang_de_img: /images/openbib/de.gif
 lang_en_img: /images/openbib/en.gif
 listofinterest_img: /images/openbib/note.png
@@ -484,6 +616,9 @@ benchmark: 0
 
 # Kurztiteltabelle verwenden?
 use_titlistitem_table: 1
+
+# Internes Serialisierungsformat, z.B. zur Ablage-Format in der Tabelle (json oder packed_storable)
+internal_serialize_type: 'json'
 
 # Maximale Laenge an Inhalt in Kurztitelliste, ab der Personen
 # gekuerzt werden soll

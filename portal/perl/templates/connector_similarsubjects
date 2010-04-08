@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- request_base    = "sb=xapian;drilldown=1;dd_categorized=1;" -%]
 [%- IF format == 'ajax' -%]
 [%- IF similar_subjects.size > 1 %]
 <!-- Beginn Tag-Cloud -->
@@ -34,8 +35,14 @@
    itemclass = css_classes.$classnr;
    NEXT IF classnr <= 1;
    classnr = classnr - 1;
+
+   searchterm    = record.to_drilldown_term(item);
+   searchprefix  = config.get('searchfield').swtstring.prefix;
+
+   localurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% database %];searchsingleswt=[% swtid %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]
@@ -80,8 +87,14 @@
    itemclass = css_classes.$classnr;
    NEXT IF classnr <= 1;
    classnr = classnr - 1;
+
+   searchterm    = record.to_drilldown_term(item);
+   searchprefix  = config.get('searchfield').swtstring.prefix;
+
+   localurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% database %];searchsingleswt=[% swtid %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

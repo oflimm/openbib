@@ -48,6 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::Record::Subject;
+use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
@@ -309,6 +310,7 @@ sub handler {
                     @{$similar_subjects_ref};
 
     my $ttdata = {
+        record           => OpenBib::Record::Title->new,
         format           => $format,
         similar_subjects => $sorted_similar_subjects_ref,
         database         => $database,

@@ -33,6 +33,7 @@ use utf8;
 use base qw(Apache::Singleton);
 
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use YAML::Syck;
@@ -691,11 +692,11 @@ sub get_all_searchqueries {
 
     while (my $result=$idnresult->fetchrow_hashref()) {
         my $dbases = decode_utf8($result->{'dbases'});
-        $dbases=~s/\|\|/ ; /g;
+        my $searchquery_ref = decode_json $result->{'query'};
 
         push @queries, {
             id          => decode_utf8($result->{queryid}),
-            searchquery => Storable::thaw(pack "H*",$result->{query}),
+            searchquery => $searchquery_ref->{_searchquery},
             hits        => decode_utf8($result->{hits}),
             dbases      => $dbases,            
         };
@@ -1050,8 +1051,10 @@ sub log_event {
     # Redirects 
     # 500 => TOC / hbz-Server
     # 501 => TOC / ImageWaere-Server
-    # 502 => USB E-Books / Vollzugriff
-    # 503 => Nationallizenzen / Vollzugriff
+    # 502 => USB E-Books aus E-Books-Katalog / Vollzugriff
+    # 503 => USB E-Books ueber Anreicherung / Vollzugriff
+    # 504 => Projekt Gutenberg / Vollzugriff
+    # 505 => Nationallizenzen / Vollzugriff
     # 510 => BibSonomy
     # 520 => Wikipedia / Personen
     # 521 => Wikipedia / ISBN
@@ -1137,10 +1140,11 @@ sub get_queryid {
     # diese Liste nicht mehr fuer wiederholte Anfrage (Listentyp) verwenden, da sich dann
     # durch die Sortierung die Reihenfolge geaendert hat. Daher wird hier nicht mehr sortiert
     my $dbasesstring=join("||",@{$databases_ref});
+
+    my $query_obj_string = $searchquery->to_json;
     
-    my $thisquerystring=unpack "H*", Storable::freeze($searchquery->get_searchquery);
     my $idnresult=$dbh->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($thisquerystring,$self->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
+    $idnresult->execute($query_obj_string,$self->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
     my $res  = $idnresult->fetchrow_hashref;
     my $rows = $res->{rowcount};
         
@@ -1148,7 +1152,7 @@ sub get_queryid {
     if ($rows <= 0) {
         # Abspeichern des Queries bis auf die Gesamttrefferzahl
         $idnresult=$dbh->prepare("insert into queries (queryid,sessionid,query,hitrange,dbases) values (NULL,?,?,?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($self->{ID},$thisquerystring,$hitrange,$dbasesstring) or $logger->error($DBI::errstr);
+        $idnresult->execute($self->{ID},$query_obj_string,$hitrange,$dbasesstring) or $logger->error($DBI::errstr);
     }
     # Query existiert schon
     else {
@@ -1156,7 +1160,7 @@ sub get_queryid {
     }
         
     $idnresult=$dbh->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($thisquerystring,$self->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
+    $idnresult->execute($query_obj_string,$self->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
     
     while (my @idnres=$idnresult->fetchrow) {
         $queryid = decode_utf8($idnres[0]);
@@ -1225,11 +1229,10 @@ sub set_all_searchresults {
     foreach my $db (keys %{$results_ref}) {
         my $res=$results_ref->{$db};
         
-        my $storableres=unpack "H*",Storable::freeze($res);
+        my $storableres= ""; #unpack "H*",Storable::freeze($res);
         
         $logger->debug("YAML-Dumped: ".YAML::Dump($res));
-        my $num=$dbhits_ref->{$db};
-        $idnresult->execute($self->{ID},$db,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
+        $idnresult->execute($self->{ID},$db,$hitrange,$storableres,$dbhits_ref->{$db},$queryid) or $logger->error($DBI::errstr);
     }
     $idnresult->finish();
 

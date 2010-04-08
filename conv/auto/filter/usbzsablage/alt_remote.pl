@@ -4,9 +4,7 @@
 #
 #  alt_remote.pl
 #
-#  Holen via http und konvertieren in das Meta-Format
-#
-#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -25,35 +23,22 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
-
-#####################################################################
-# Einladen der benoetigten Perl-Module 
 #####################################################################
 
-use DBI;
+#####################################################################
+# Einladen der benoetigten Perl-Module
+#####################################################################
+
 use OpenBib::Config;
 
-my $config = new OpenBib::Config();
+my $config = OpenBib::Config->instance;
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
-my $confdir       = $config->{'base_dir'}."/conf";
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $cdm2metaexe   = "$konvdir/cdm2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dboptions_ref = $config->get_dboptions($pool);
+print "### $pool: Extrahiere der Daten der Zeitschriftenablage aus dem USB-Bestand\n";
 
-my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{filename}";
-my $httpauthstring="";
-if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepasswd} ne ""){
-    $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepasswd}";
-}
-
-print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm *");
-system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; $cdm2metaexe --inputfile=$dboptions_ref->{filename} --configfile=$confdir/$pool.yml; gzip unload.*");
+system("$rootdir/filter/$pool/gen-subset.pl $pool");

@@ -21,6 +21,8 @@
 
 [%-
 
+request_base = "sb=xapian;drilldown=1;dd_categorized=1;";
+
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 
@@ -43,9 +45,13 @@ FOREACH category IN categories;
          IF activefeed.2 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
-         content   = "${rssfeed}<a href=\"${config.get('redirect_loc')}/${sessionID}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+         searchterm    = record.to_drilldown_term(item.content);
+         searchprefix  = config.get('searchfield').verfstring.prefix;
+
+         globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchall=1;fs=${searchprefix}:${searchterm}";
+         localurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+         content   = "${rssfeed}<a href=\"${config.get('redirect_loc')}/${sessionID}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('connector_availabilityimage_loc')}?action=lookup&target=wikipedia&lang=${qopts.l}&id=${wikicontent}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -57,8 +63,12 @@ FOREACH category IN categories;
          IF activefeed.3 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsinglekor=${thisid}";
+
+         searchterm    = record.to_drilldown_term(item.content);
+         searchprefix  = config.get('searchfield').korstring.prefix;
+
+         globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchall=1;fs=${searchprefix}:${searchterm}";
+         localurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=ddcorp:${ddterm}";
          content   = "${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
@@ -146,8 +156,12 @@ FOREACH category IN categories;
          IF activefeed.4 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
+
+         searchterm    = record.to_drilldown_term(item.content);
+         searchprefix  = config.get('searchfield').swtstring.prefix;
+
+         globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchall=1;fs=${searchprefix}:${searchterm}";
+         localurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;
 
@@ -163,7 +177,11 @@ FOREACH category IN categories;
          IF activefeed.5 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsinglenot=${thisid}";
+
+         searchterm    = record.to_drilldown_term(item.content);
+         searchprefix  = config.get('searchfield').notstring.prefix;
+
+         localurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
          content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
          IF bkdesc ;

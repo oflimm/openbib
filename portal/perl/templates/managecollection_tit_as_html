@@ -244,7 +244,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
-<br />[% msg.maketext("aus:") %]&nbsp;<i>
+<br /><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>&nbsp;<i>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
 <a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">
 [%-   ELSE -%]

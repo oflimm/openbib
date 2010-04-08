@@ -41,8 +41,10 @@ use Apache2::Request ();
 use Apache2::RequestIO (); # rflush, print
 use Apache2::RequestRec ();
 use Benchmark ':hireswallclock';
+use Data::Pageset;
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
 use String::Tokenizer;
@@ -99,6 +101,13 @@ sub handler {
 
     my $hitrange      = ($query->param('hitrange' ))?$query->param('hitrange'):50;
     my $offset        = ($query->param('offset'   ))?$query->param('offset'):0;
+    my $page          = undef ;
+
+    if ($query->param('page')){
+        $page   = $query->param('page');
+        $offset = $page*$hitrange-$hitrange;
+    }
+    
     my $sorttype      = ($query->param('sorttype' ))?$query->param('sorttype'):"author";
     my $sortorder     = ($query->param('sortorder'))?$query->param('sortorder'):'up';
     my $autoplus      = $query->param('autoplus')      || 1;
@@ -123,7 +132,7 @@ sub handler {
     my $profil        = $query->param('profil')        || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
-    my $sb            = $query->param('sb')            || 'sql'; # Search backend
+    my $sb            = $query->param('sb')            || 'xapian'; # Search backend
     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
     my $drilldown             = $query->param('drilldown')      || 0;     # Drill-Down?
     my $drilldown_categorized = $query->param('dd_categorized') || 0;     # Categorized?
@@ -175,14 +184,6 @@ sub handler {
                 content   => $sb,
     });
 
-    my $queryalreadyexists = 0;
-
-    if ($queryid){
-        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
-
-        $queryalreadyexists = 1;
-    }
-
     my $sysprofile   = $config->get_viewinfo($view)->{profilename};
 
     # BEGIN DB-Bestimmung
@@ -209,20 +210,22 @@ sub handler {
         $session->set_profile('dbauswahl');
     }
     else {
+        # Wenn eine Queryid uebergeben wurde, dann werden *immer* die damit
+        # assoziierten Datenbanken verwendet
+        if ($queryid){
+            my $databases_ref = $searchquery->get_databases;
+            @databases = @{$databases_ref};
+        }
         # Wenn nur ein View angegeben wird, aber keine Submit-Funktion (s.u.),
         # z.B. wenn direkt von extern fuer einen View eine Recherche gestartet werden soll,
         # dann wird in den Datenbanken des View recherchiert
-        if ($view && !($searchall||$searchprofile||$searchindex||$verfindex||$korindex||$swtindex||$notindex)){
+        elsif ($view && !($searchall||$searchprofile||$searchindex||$verfindex||$korindex||$swtindex||$notindex)){
             $logger->debug("Selecting databases of view");
             @databases = $config->get_dbs_of_view($view);
         }
         
         else {
-            if ($queryid){
-                my $databases_ref = $searchquery->get_databases;
-                @databases = @{$databases_ref};
-            }
-            elsif ($searchall) {
+            if ($searchall) {
                 if ($view){
                     $logger->debug("Selecting all active databases of views systemprofile");
                     @databases = $config->get_active_databases_of_systemprofile($view);
@@ -240,14 +243,13 @@ sub handler {
                 }
                 # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
                 elsif ($profil) {
-                    $logger->debug("Selecting databases of userprofile");
+                    $logger->debug("Selecting databases of Profile $profil");
                     # Eventuell bestehende Auswahl zuruecksetzen
                     @databases=();
                     
                     # Benutzerspezifische Datenbankprofile
                     if ($profil=~/^user(\d+)/) {
                         my $profilid=$1;
-
                         @databases = $user->get_profiledbs_of_profileid($profilid);
                     }
                     # oder alle
@@ -281,9 +283,22 @@ sub handler {
         }
     }
 
-    unless ($queryid) {
-        $searchquery->set_from_apache_request($r,\@databases);
+    # Dublette Datenbanken filtern
+    my %seen_dbases = ();
+    @databases = grep { ! $seen_dbases{$_} ++ } @databases;
 
+    my $queryalreadyexists = 0;
+
+    if ($queryid){
+        $logger->debug("Query exists for SessionID $session->{ID} -> $queryid: Loading");
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+        @databases = @{$searchquery->get_databases};
+        
+        $queryalreadyexists = 1;
+    }
+    else {
+        $searchquery->set_from_apache_request($r,\@databases);
+        
         # Abspeichern des Query und Generierung der Queryid
         if ($session->{ID} ne "-1") {
             ($queryalreadyexists,$queryid) = $session->get_queryid({
@@ -478,66 +493,6 @@ sub handler {
     #
 
 
-    # Folgende nicht erlaubte Anfragen werden sofort ausgesondert
-
-    my $firstsql;
-
-    if ($searchquery->get_searchfield('fs')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('verf')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('kor')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('hst')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('swt')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('notation')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('sign')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('isbn')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('issn')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('mart')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('hststring')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('inhalt')->{norm}) {
-        $firstsql=1;
-    }
-    
-    if ($searchquery->get_searchfield('gtquelle')->{norm}) {
-        $firstsql=1;
-    }
-
-    if ($searchquery->get_searchfield('ejahr')->{norm}){
-        $firstsql=1;
-    }
-    
     if ($searchquery->get_searchfield('ejahr')->{norm}) {
         my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
@@ -554,20 +509,7 @@ sub handler {
     }
 
 
-    if ($searchquery->get_searchfield('ejahr')->{bool} eq "AND") {
-        if ($searchquery->get_searchfield('ejahr')->{norm}) {
-            if (!$firstsql) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-                return Apache2::Const::OK;
-            }
-        }
-    }
-
-    if ($searchquery->get_searchfield('searchterm')->{norm}) {
-        $firstsql=1;
-    }
-
-    if (!$firstsql) {
+    if (!$searchquery->have_searchterms) {
         OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
         return Apache2::Const::OK;
     }
@@ -587,15 +529,78 @@ sub handler {
 
     # Array aus DB-Name und Titel-ID zur Navigation
     my @resultset   = ();
-    my @resultlists = ();
     
     my $fallbacksb    = "";
     my $gesamttreffer = 0;
 
     my $atime=new Benchmark;
     
-    # Kombinierte Suche ueber alle Kataloge
+    my $starttemplatename=$config->{tt_virtualsearch_result_start_tname};
     
+    $starttemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $view,
+        profile      => $sysprofile,
+        templatename => $starttemplatename,
+    });
+    
+    # Start der Ausgabe mit korrektem Header
+    $r->content_type("text/html");
+    
+    # Ausgabe des ersten HTML-Bereichs
+    my $starttemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        INCLUDE_PATH   => $config->{tt_include_path},
+        #        ABSOLUTE       => 1,
+        RECURSION      => 1,
+        OUTPUT         => $r,
+    });
+    
+    # TT-Data erzeugen
+    
+    my $startttdata={
+        view           => $view,
+        stylesheet     => $stylesheet,
+        sessionID      => $session->{ID},
+        
+        loginname      => $loginname,
+        password       => $password,
+        
+        searchquery    => $searchquery->get_searchquery,
+        sq             => $searchquery,
+        
+        queryid        => $queryid,
+        query          => $query,
+        
+        qopts          => $queryoptions->get_options,
+        
+        spelling_suggestion => $spelling_suggestion_ref,
+        
+        sysprofile     => $sysprofile,
+        config         => $config,
+        user           => $user,
+        msg            => $msg,
+    };
+        
+    $starttemplate->process($starttemplatename, $startttdata) || do {
+        $r->log_error($starttemplate->error(), $r->filename);
+        return Apache2::Const::SERVER_ERROR;
+    };
+    
+    # Ausgabe flushen
+    eval {
+        $r->rflush(); 
+    };
+    
+    if($@) { 
+        $logger->error("Flush-Error") 
+    }
+    
+    # Kombinierte Suche ueber alle Kataloge
+
     if ($combinedbs){
         # Trefferliste
         my $recordlist;
@@ -606,343 +611,193 @@ sub handler {
             $recordlist = new OpenBib::RecordList::Title();
 
             my $atime=new Benchmark;
-            my $drilldowntime;
             my $category_map_ref = ();
             my $fullresultcount;
             my $resulttime;
             my $request;
             my $timeall;
             
-            # Suchergebnis bereits vorhanden?
-            if ($queryid && $offset >= 0 && $hitrange){
-                $logger->debug("Suchergebnis bereits vorhanden? Qid: $queryid, Offset: $offset, Hitrange: $hitrange");
-                $recordlist = $session->get_searchresult({
-                    queryid    => $queryid,
-                    database   => 'combined',
-                    offset     => $offset,
-                    hitrange   => $hitrange,
-                });
-
-                $fullresultcount = $recordlist->get_size();
+            my $dbh;
+            my $nav;
+            
+            foreach my $database (@databases) {
+                $logger->debug("Adding Xapian DB-Object for database $database");
                 
-            }
-
-            my $btime      = new Benchmark;
-            $timeall    = timediff($btime,$atime);
-            $resulttime = timestr($timeall,"nop");
-            $resulttime    =~s/(\d+\.\d+) .*/$1/;
-            
-            $logger->info($fullresultcount . " results found in $resulttime");
-
-            $logger->debug("Cached_recordlist: ".YAML::Dump($recordlist));
-
-            # Noch kein Ergebnis vorhanden, also suchen
-            if ($recordlist->get_size == 0){
-                my $dbh;
-            
-                foreach my $database (@databases) {
-                    $logger->debug("Adding Xapian DB-Object for database $database");
+                if (!defined $dbh){
+                    # Erstes Objekt erzeugen,
                     
-                    if (!defined $dbh){
-                        # Erstes Objekt erzeugen,
-                        
-                        $logger->debug("Creating Xapian DB-Object for database $database");                
+                    $logger->debug("Creating Xapian DB-Object for database $database");                
                     
                     eval {
                         $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
                     };
                     
                     if ($@){
-                        $logger->error("Database: $database - :".$@." falling back to sql Backend");
-                        $fallbacksb="sql";
+                        $logger->error("Initializing with Database: $database - :".$@." not available");
                     }
+                }
+                else {
+                    $logger->debug("Adding database $database");
+                    
+                    eval {
+                        $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
+                    };
+                    
+                    if ($@){
+                        $logger->error("Adding Database: $database - :".$@." not available");
+                    }                        
+                }
+            }
+
+            # Recherche starten
+            $request = new OpenBib::Search::Local::Xapian();
+                
+            $request->initial_search({
+                serien          => $serien,
+                dbh             => $dbh,
+                
+                sortorder       => $sortorder,
+                sorttype        => $sorttype,
+
+                hitrange        => $hitrange,
+                offset          => $offset,
+
+                dd_categorized  => $drilldown_categorized,
+            });
+            
+            $fullresultcount = $request->{resultcount};
+            
+            my $btime      = new Benchmark;
+            $timeall    = timediff($btime,$atime);
+            $resulttime = timestr($timeall,"nop");
+            $resulttime    =~s/(\d+\.\d+) .*/$1/;
+            
+            $logger->info($fullresultcount . " results found in $resulttime");
+            
+            if ($fullresultcount >= 1) {
+                $nav = Data::Pageset->new({
+                    'total_entries'    => $fullresultcount,
+                    'entries_per_page' => $hitrange,
+                    'current_page'     => $page,
+                    'mode'             => 'slide',
+                });
+                
+                my @matches = $request->matches;
+                foreach my $match (@matches) {
+#                foreach my $match (splice(@matches,$offset,$hitrange)) {
+                    my $document        = $match->get_document();
+
+                    my $titlistitem_ref;
+                    
+                    if ($config->{internal_serialize_type} eq "packed_storable"){
+                        $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                    }
+                    elsif ($config->{internal_serialize_type} eq "json"){
+                        $titlistitem_ref = decode_json $document->get_data();
                     }
                     else {
-                        $logger->debug("Adding database $database");
-                        
-                        eval {
-                            $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
-                        };
-                        
-                        if ($@){
-                            $logger->error("Database: $database - :".$@);
-                            $fallbacksb="sql";
-                            last;
-                        }                        
+                        $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
                     }
+                    
+                    $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
                 }
                 
-                # alles ok?, dann Recherche starten
-                if (!$fallbacksb) {
-                    $request = new OpenBib::Search::Local::Xapian();
-                    
-                    $request->initial_search({
-                        serien          => $serien,
-                        dbh             => $dbh,
-                        
-                        dd_categorized  => $drilldown_categorized,
-                    });
-                    
-                    $fullresultcount = $request->{resultcount};
-                    
-                    my $btime      = new Benchmark;
-                    $timeall    = timediff($btime,$atime);
-                    $resulttime = timestr($timeall,"nop");
-                    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-                    
-                    $logger->info($fullresultcount . " results found in $resulttime");
-                                        
-                    if ($fullresultcount >= 1) {
-                        
-                        my $range_start = $offset;
-                        my $range_end   = $offset+$hitrange;
-                        my $mcount=0;
-                        
-                        foreach my $match ($request->matches) {
-                            if ($mcount <  $range_start){
-                                $mcount++;
-                                next;
-                            }
-                            
-                            last if ($mcount >= $range_end);
-                            
-                            my $document        = $match->get_document();
-                            my $titlistitem_raw = pack "H*", $document->get_data();
-                            my $titlistitem_ref = Storable::thaw($titlistitem_raw);
-                            
-                            $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
-                            
-                            $mcount++;
-                        }
-                        
-                        if ($drilldown) {
-                            my $ddatime   = new Benchmark;
-                            
-                            if ($drilldown_categorized) {
-                                # Transformation Hash->Array zur Sortierung
-                                
-                                my $tmp_category_map_ref = $request->{categories};
-                                
-                                foreach my $type (keys %{$tmp_category_map_ref}) {
-                                    my $contents_ref = [] ;
-                                    foreach my $content (keys %{$tmp_category_map_ref->{$type}}) {
-                                        my $normcontent = OpenBib::Common::Util::grundform({
-                                            content   => decode_utf8($content),
-                                            searchreq => 1,
-                                        });
-                                        
-                                        $normcontent=~s/\W/_/g;
-                                        push @{$contents_ref}, [
-                                            decode_utf8($content),
-                                            $tmp_category_map_ref->{$type}{$content},
-                                            $normcontent,
-                                        ];
-                                    }
-                                    
-                                    $logger->debug(YAML::Dump($contents_ref));
-                                    
-                                    # Schwartz'ian Transform
-                                    
-                                    @{$category_map_ref->{$type}} = map { $_->[0] }
-                                        sort { $b->[1] <=> $a->[1] }
-                                            map { [$_, $_->[1]] }
-                                                @{$contents_ref};
-                                }
-                                
-                            }                        
-                            
-                            $logger->debug(YAML::Dump($recordlist->to_list));
-                            
-                            my $ddbtime       = new Benchmark;
-                            my $ddtimeall     = timediff($ddbtime,$ddatime);
-                            $drilldowntime    = timestr($ddtimeall,"nop");
-                            $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
-                        }
-                        
-                    
-                        # Weitere Treffer Cachen.
-                        
-                        $session->set_searchresult({
-                            queryid    => $queryid,
-                            recordlist => $recordlist,
-                            database   => 'combined',
-                            offset     => $offset,
-                            hitrange   => $hitrange,
-                        });
-                        
-                    }
+                if ($drilldown && $drilldown_categorized) {
+                    $category_map_ref = $request->get_categorized_drilldown;
                 }
             }
 
-            if (!$fallbacksb){
-                $recordlist->sort({order=>$sortorder,type=>$sorttype});
+            # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
+            # den einzeltreffern
+            push @resultset, @{$recordlist->to_ids};
+            
+            my $treffer=$fullresultcount;
+            
+            my $itemtemplatename=$config->{tt_virtualsearch_result_combined_tname};
+            
+            $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+                database     => '', # Template ist nicht datenbankabhaengig
+                view         => $view,
+                profile      => $sysprofile,
+                templatename => $itemtemplatename,
+            });
+            
+            # Start der Ausgabe mit korrektem Header
+            $r->content_type("text/html");
+            
+            # Es kann kein Datenbankabhaengiges Template geben
+            
+            my $itemtemplate = Template->new({
+                LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                    INCLUDE_PATH   => $config->{tt_include_path},
+                    ABSOLUTE       => 1,
+                }) ],
+                #                INCLUDE_PATH   => $config->{tt_include_path},
+                #                ABSOLUTE       => 1,
+                RECURSION      => 1,
+                OUTPUT         => $r,
+            });            
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                view            => $view,
+                sessionID       => $session->{ID},
                 
-                # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-                push @resultset, @{$recordlist->to_ids};
+                searchall       => $searchall,
                 
-                push @resultlists, {
-                    database   => 'combined',
-                    recordlist => $recordlist,
-                };
+                dbinfo          => $dbinfotable,
                 
-                my @offsets = $session->get_resultlists_offsets({
-                    database  => 'combined',
-                    queryid   => $queryid,
-                    hitrange  => $hitrange,
-                });
+                searchquery     => $searchquery,
                 
-                my $treffer=$recordlist->get_size();
+                qopts           => $queryoptions->get_options,
                 
-                my $itemtemplatename=$config->{tt_virtualsearch_result_combined_tname};
-
-                $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-                    database     => '', # Template ist nicht datenbankabhaengig
-                    view         => $view,
-                    profile      => $sysprofile,
-                    templatename => $itemtemplatename,
-                });
-
-                # Start der Ausgabe mit korrektem Header
-                $r->content_type("text/html");
+                query           => $query,
                 
-                # Es kann kein Datenbankabhaengiges Template geben
+                treffer         => $treffer,
                 
-                my $itemtemplate = Template->new({
-                    LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                        INCLUDE_PATH   => $config->{tt_include_path},
-                        ABSOLUTE       => 1,
-                    }) ],
-                    #                INCLUDE_PATH   => $config->{tt_include_path},
-                    #                ABSOLUTE       => 1,
-                    RECURSION      => 1,
-                    OUTPUT         => $r,
-                });            
+                queryid         => $queryid,
                 
-                # TT-Data erzeugen
-                my $ttdata={
-                    view            => $view,
-                    sessionID       => $session->{ID},
-                    
-                    searchall       => $searchall,
-                    
-                    dbinfo          => $dbinfotable,
-                    
-                    searchquery     => $searchquery,
-
-                    qopts           => $queryoptions->get_options,
-
-                    query           => $query,
-                    
-                    treffer         => $treffer,
-                    
-                    queryid         => $queryid,
-                    
-                    category_map    => $category_map_ref,
-                    
-                    fullresultcount => $fullresultcount,
-                    recordlist      => $recordlist,
-                    
-                    qopts           => $queryoptions->get_options,
-                    drilldown             => $drilldown,
-                    drilldown_categorized => $drilldown_categorized,
-                    
-                    offset         => $offset,
-                    hitrange       => $hitrange,
-                    offsets        => \@offsets,
-                    
-                    lastquery       => $searchquery->to_xapian_querystring,
-                    sorttype        => $sorttype,
-                    sortorder       => $sortorder,
-                    resulttime      => $resulttime,
-                    drilldowntime   => $drilldowntime,
-                    sysprofile      => $sysprofile,
-                    config          => $config,
-                    user            => $user,
-                    msg             => $msg,
-                };
+                category_map    => $category_map_ref,
                 
-                $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                    $r->log_error($itemtemplate->error(), $r->filename);
-                    return Apache2::Const::SERVER_ERROR;
-                };
+                fullresultcount => $fullresultcount,
+                recordlist      => $recordlist,
                 
-                $trefferpage{'combined'} = $recordlist;
-                $dbhits     {'combined'} = $treffer;
-                $gesamttreffer      = $treffer;
+                nav             => $nav,
                 
-            }
+                combinedbs      => $combinedbs,
+                
+                qopts           => $queryoptions->get_options,
+                drilldown             => $drilldown,
+                drilldown_categorized => $drilldown_categorized,
+                
+                offset         => $offset,
+                hitrange       => $hitrange,
+                
+                lastquery       => $request->querystring,
+                sorttype        => $sorttype,
+                sortorder       => $sortorder,
+                resulttime      => $resulttime,
+                sysprofile      => $sysprofile,
+                config          => $config,
+                user            => $user,
+                msg             => $msg,
+            };
+            
+            $logger->debug("Printing Combined Result");
+            
+            $itemtemplate->process($itemtemplatename, $ttdata) || do {
+                $r->log_error($itemtemplate->error(), $r->filename);
+                return Apache2::Const::SERVER_ERROR;
+            };
+            
+            $trefferpage{'combined'} = $recordlist;
+            $dbhits     {'combined'} = $treffer;
+            $gesamttreffer      = $treffer;
+            
         }
     }
-
     # Alternativ: getrennte Suche uber alle Kataloge
-    if (!$combinedbs || $fallbacksb){
-        
-        my $starttemplatename=$config->{tt_virtualsearch_result_start_tname};
-
-        $starttemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-            database     => '', # Template ist nicht datenbankabhaengig
-            view         => $view,
-            profile      => $sysprofile,
-            templatename => $starttemplatename,
-        });
-        
-        # Start der Ausgabe mit korrektem Header
-        $r->content_type("text/html");
-        
-        # Ausgabe des ersten HTML-Bereichs
-        my $starttemplate = Template->new({
-            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config->{tt_include_path},
-                ABSOLUTE       => 1,
-            }) ],
-            #        INCLUDE_PATH   => $config->{tt_include_path},
-            #        ABSOLUTE       => 1,
-            RECURSION      => 1,
-            OUTPUT         => $r,
-        });
-        
-        # TT-Data erzeugen
-        
-        my $startttdata={
-            view           => $view,
-            stylesheet     => $stylesheet,
-            sessionID      => $session->{ID},
-            
-            loginname      => $loginname,
-            password       => $password,
-            
-            searchquery    => $searchquery->get_searchquery,
-            sq             => $searchquery,
-            
-            queryid        => $queryid,
-            query          => $query,
-
-            qopts          => $queryoptions->get_options,
-
-            spelling_suggestion => $spelling_suggestion_ref,
-            
-            queryid        => $queryid,
-
-            sysprofile     => $sysprofile,
-            config         => $config,
-            user           => $user,
-            msg            => $msg,
-        };
-        
-        $starttemplate->process($starttemplatename, $startttdata) || do {
-            $r->log_error($starttemplate->error(), $r->filename);
-            return Apache2::Const::SERVER_ERROR;
-        };
-        
-        # Ausgabe flushen
-	eval {
-	  $r->rflush(); 
-	};
-	
-	if($@) { 
-	  $logger->error("Flush-Error") 
-	}
-                
+    else {
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
         ######################################################################
@@ -950,7 +805,7 @@ sub handler {
         ######################################################################
         
         my $atime=new Benchmark;
-                
+        
         foreach my $database (@databases) {
             
             # Trefferliste
@@ -1000,7 +855,7 @@ sub handler {
                     # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
                     push @resultset, @{$recordlist->to_ids};
                 
-                    my $treffer=$recordlist->get_size();
+                    my $treffer=$fullresultcount;
 
                     my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                     
@@ -1070,8 +925,6 @@ sub handler {
             }
             else {
                 # Lokale Datenbaken
-                my $fallbacksb=$sb;
-
                 if ($sb eq 'xapian') {
                     # Xapian
 
@@ -1082,6 +935,7 @@ sub handler {
                     $logger->debug("Creating Xapian DB-Object for database $database");
 
                     my $dbh;
+
                     eval {
                         $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
                     };
@@ -1090,14 +944,20 @@ sub handler {
                         $logger->error("Database: $database - :".$@);
                         $fallbacksb="sql";
                     }
-                    else {
-                        my $request = new OpenBib::Search::Local::Xapian();
+                    else { 
+                       my $request = new OpenBib::Search::Local::Xapian();
                     
                         $request->initial_search({
                             serien          => $serien,
                             dbh             => $dbh,
                             database        => $database,
-                        
+
+                            sortorder       => $sortorder,
+                            sorttype        => $sorttype,
+
+                            hitrange        => $hitrange,
+                            offset          => $offset,
+
                             dd_categorized  => $drilldown_categorized,
                         });
 
@@ -1113,79 +973,45 @@ sub handler {
                         my $category_map_ref = ();
 
                         if ($fullresultcount >= 1) {
+                            my $nav = Data::Pageset->new({
+                                'total_entries'    => $fullresultcount,
+                                'entries_per_page' => $hitrange,
+                                'current_page'     => $page,
+                                'mode'             => 'slide',
+                            });
 
-                            my $mcount=0;
-
-                            foreach my $match ($request->matches) {
+                            my @matches = $request->matches;
+                            foreach my $match (@matches) {
+#                            foreach my $match (splice(@matches,$offset,$hitrange)) {
                                 # Es werden immer nur $hitrange Titelinformationen
                                 # zur Ausgabe aus dem MSet herausgeholt
-                                if ($mcount < $hitrange) {
-                                    my $document        = $match->get_document();
-                                    my $titlistitem_raw = pack "H*", $document->get_data();
-                                    my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+                                my $document        = $match->get_document();
 
-                                    $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
+                                my $titlistitem_ref;
+                                
+                                if ($config->{internal_serialize_type} eq "packed_storable"){
+                                    $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
                                 }
-                                $mcount++;
+                                elsif ($config->{internal_serialize_type} eq "json"){
+                                    $titlistitem_ref = decode_json $document->get_data();
+                                }
+                                else {
+                                    $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                                }
+                                
+                                $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
                             }
                         
                             my $termweight_ref={};
                         
-                            my $drilldowntime;
-                        
                             if ($drilldown) {
-                                my $ddatime   = new Benchmark;
-                            
-                                if ($drilldown_categorized) {
-                                # Transformation Hash->Array zur Sortierung
-                                
-                                    my $tmp_category_map_ref = $request->{categories};
-                                
-                                    foreach my $type (keys %{$tmp_category_map_ref}) {
-                                        my $contents_ref = [] ;
-                                        foreach my $content (keys %{$tmp_category_map_ref->{$type}}) {
-                                            my $normcontent = OpenBib::Common::Util::grundform({
-                                                content   => decode_utf8($content),
-                                                searchreq => 1,
-                                            });
-                                      
-                                            $normcontent=~s/\W/_/g;
-                                            push @{$contents_ref}, [
-                                                decode_utf8($content),
-                                                $tmp_category_map_ref->{$type}{$content},
-                                                $normcontent,
-                                            ];
-                                        }
-                                    
-                                        $logger->debug(YAML::Dump($contents_ref));
-                                    
-                                        # Schwartz'ian Transform
-                                    
-                                        @{$category_map_ref->{$type}} = map { $_->[0] }
-                                            sort { $b->[1] <=> $a->[1] }
-                                                map { [$_, $_->[1]] }
-                                                    @{$contents_ref};
-                                    }
-
-                                }
-                            
-                                $logger->debug(YAML::Dump($recordlist->to_list));
-
-                                my $ddbtime       = new Benchmark;
-                                my $ddtimeall     = timediff($ddbtime,$ddatime);
-                                $drilldowntime    = timestr($ddtimeall,"nop");
-                                $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
-
-                                $logger->debug("Zeit fuer Drilldowns $drilldowntime");
+                                $category_map_ref = $request->get_categorized_drilldown;
                             }
 
-                            $recordlist->sort({order=>$sortorder,type=>$sorttype});
-
-                        
                             # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
                             push @resultset, @{$recordlist->to_ids};
                         
-                            my $treffer=$recordlist->get_size();
+                            my $treffer=$fullresultcount;
 
                             my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
 
@@ -1225,18 +1051,19 @@ sub handler {
 
                                 fullresultcount => $fullresultcount,
                                 recordlist      => $recordlist,
-                            
+
                                 qopts           => $queryoptions->get_options,
                                 drilldown             => $drilldown,
                                 drilldown_categorized => $drilldown_categorized,
 
                                 cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
 
+                                nav             => $nav,
+                                
                                 lastquery       => $request->querystring,
                                 sorttype        => $sorttype,
                                 sortorder       => $sortorder,
                                 resulttime      => $resulttime,
-                                drilldowntime   => $drilldowntime,
                                 sysprofile      => $sysprofile,
                                 config          => $config,
                                 user            => $user,
@@ -1266,122 +1093,6 @@ sub handler {
                         }
                     }
                 }
-                
-                if ($sb eq 'sql' || $fallbacksb eq 'sql') {
-                    # SQL
-            
-                    my $atime=new Benchmark;
-            
-                    my ($recordlist,$fullresultcount) = OpenBib::Search::Util::initial_search_for_titidns({
-                        serien          => $serien,
-
-                        database        => $database,
-
-                        hitrange        => $hitrange,
-
-                    });
-
-                    $logger->debug("Treffer-Ids in $database:".$recordlist->to_ids);
-
-                    # Wenn mindestens ein Treffer gefunden wurde
-                    if ($recordlist->get_size() > 0) {
-
-                        my $a2time;
-            
-                        if ($config->{benchmark}) {
-                            $a2time=new Benchmark;
-                        }
-
-                        # Kurztitelinformationen fuer RecordList laden
-                        $recordlist->load_brief_records;
-
-                        my $btime      = new Benchmark;
-                        my $timeall    = timediff($btime,$atime);
-                        my $resulttime = timestr($timeall,"nop");
-                        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-
-                        if ($config->{benchmark}) {
-                            my $b2time     = new Benchmark;
-                            my $timeall2   = timediff($b2time,$a2time);
-
-                            $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (holen)       : ist ".timestr($timeall2));
-                            $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (suchen+holen): ist ".timestr($timeall));
-                        }
-
-                        $recordlist->sort({order=>$sortorder,type=>$sorttype});
-
-                        # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-                        push @resultset, @{$recordlist->to_ids};
-	    
-                        my $treffer=$recordlist->get_size();
-
-                        my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
-                        
-                        $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-                            database     => $database,
-                            view         => $view,
-                            profile      => $sysprofile,
-                            templatename => $itemtemplatename,
-                        });
-
-                        my $itemtemplate = Template->new({
-                            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                                INCLUDE_PATH   => $config->{tt_include_path},
-                                ABSOLUTE       => 1,
-                            }) ],
-                            #                INCLUDE_PATH   => $config->{tt_include_path},
-                            #                ABSOLUTE       => 1,
-                            RECURSION      => 1,
-                            OUTPUT         => $r,
-                        });
-
-
-                        # TT-Data erzeugen
-                        my $ttdata={
-                            view            => $view,
-                            sessionID       => $session->{ID},
-		  
-                            dbinfo          => $dbinfotable,
-
-                            treffer         => $treffer,
-
-                            database        => $database,
-                            queryid         => $queryid,
-                            qopts           => $queryoptions->get_options,
-                            fullresultcount => $fullresultcount,
-                            recordlist      => $recordlist,
-
-                            sorttype        => $sorttype,
-                            sortorder       => $sortorder,
-                            resulttime      => $resulttime,
-                            sysprofile      => $sysprofile,
-                            config          => $config,
-                            user            => $user,
-                            msg             => $msg,
-                        };
-
-                        $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                            $r->log_error($itemtemplate->error(), $r->filename);
-                            return Apache2::Const::SERVER_ERROR;
-                        };
-
-                        $trefferpage{$database} = $recordlist;
-                        $dbhits     {$database} = $treffer;
-                        $gesamttreffer          = $gesamttreffer+$treffer;
-
-                        undef $btime;
-                        undef $timeall;
-
-                        # flush output buffer
-			eval {
-			  $r->rflush(); 
-			};
-			
-			if($@) { 
-			  $logger->error("Flush-Error") 
-			}		    
-                    }
-                }
             }
         }
 
@@ -1396,57 +1107,56 @@ sub handler {
         # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         
         #    $logger->info("InitialSearch: ", $session->{ID}, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") gtquelle=(", $boolgtquelle, "#", $gtquelle, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
-        
-        
-        # Ausgabe des letzten HTML-Bereichs
-        my $endtemplatename=$config->{tt_virtualsearch_result_end_tname};
-
-        $endtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-            database     => '', # Template ist nicht datenbankabhaengig
-            view         => $view,
-            profile      => $sysprofile,
-            templatename => $endtemplatename,
-        });
-        
-        my $endtemplate = Template->new({
-            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config->{tt_include_path},
-                ABSOLUTE       => 1,
-            }) ],
-            #        INCLUDE_PATH   => $config->{tt_include_path},
-            #        ABSOLUTE       => 1,
-            RECURSION      => 1,
-            OUTPUT         => $r,
-        });
-        
-        # TT-Data erzeugen
-        my $endttdata={
-            view          => $view,
-            sessionID     => $session->{ID},
-            
-            gesamttreffer => $gesamttreffer,
-            
-            loginname     => $loginname,
-            password      => $password,
-            
-            searchquery   => $searchquery->get_searchquery,
-            query         => $query,
-            queryid       => $queryid,
-            qopts         => $queryoptions->get_options,
-
-            sysprofile    => $sysprofile,
-            config        => $config,
-            user          => $user,
-            msg           => $msg,
-        };
-        
-        $endtemplate->process($endtemplatename, $endttdata) || do {
-            $r->log_error($endtemplate->error(), $r->filename);
-            return Apache2::Const::SERVER_ERROR;
-        };
-        
+                
     }
-
+    
+    # Ausgabe des letzten HTML-Bereichs
+    my $endtemplatename=$config->{tt_virtualsearch_result_end_tname};
+    
+    $endtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $view,
+        profile      => $sysprofile,
+        templatename => $endtemplatename,
+    });
+    
+    my $endtemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        INCLUDE_PATH   => $config->{tt_include_path},
+        #        ABSOLUTE       => 1,
+        RECURSION      => 1,
+        OUTPUT         => $r,
+    });
+    
+    # TT-Data erzeugen
+    my $endttdata={
+        view          => $view,
+        sessionID     => $session->{ID},
+        
+        gesamttreffer => $gesamttreffer,
+        
+        loginname     => $loginname,
+        password      => $password,
+        
+        searchquery   => $searchquery->get_searchquery,
+        query         => $query,
+        queryid       => $queryid,
+        qopts         => $queryoptions->get_options,
+        
+        sysprofile    => $sysprofile,
+        config        => $config,
+        user          => $user,
+        msg           => $msg,
+    };
+    
+    $endtemplate->process($endtemplatename, $endttdata) || do {
+        $r->log_error($endtemplate->error(), $r->filename);
+        return Apache2::Const::SERVER_ERROR;
+    };
+    
     # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
 
     if ($gesamttreffer > 0) {
@@ -1460,12 +1170,10 @@ sub handler {
 
     # Neuer Query
     if (!$queryalreadyexists) {
-        # Jetzt update der Trefferinformationen
-        my $dbasesstring=join("||",@databases);
 
-        $logger->debug("Databases for this query: $dbasesstring");
-        my $thisquerystring=unpack "H*", Storable::freeze($searchquery->get_searchquery);
-        
+        # Jetzt update der Trefferinformationen
+        $searchquery->save({sessionID => $session->{ID}, queryid => $queryid});
+
         # Wurde in allen Katalogen recherchiert?
         
         my $alldbcount = $config->get_number_of_dbs();
@@ -1500,8 +1208,9 @@ sub handler {
             dbhits   => \%dbhits,
             hitrange => $hitrange,
         }) unless ($combinedbs);
-    }
 
+    }
+    
     return Apache2::Const::OK;
 }
 

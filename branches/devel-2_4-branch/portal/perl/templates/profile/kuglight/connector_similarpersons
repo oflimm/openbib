@@ -33,7 +33,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% config.get('search_loc') %]?database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]
@@ -77,7 +77,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% config.get('search_loc') %]?database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

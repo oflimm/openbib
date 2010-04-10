@@ -32,6 +32,7 @@ use utf8;
 
 use base qw(Apache::Singleton);
 
+use Apache2::Cookie;
 use Encode 'decode_utf8';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
@@ -54,6 +55,9 @@ sub new {
     my $sessionID   = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
 
+    my $r           = exists $arg_ref->{apreq}
+        ? $arg_ref->{apreq}             : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -67,6 +71,13 @@ sub new {
 
     # Setzen der Defaults
 
+    if ($r){
+        my $cookiejar = Apache2::Cookie::Jar->new($r);
+        $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
+        
+        $logger->debug("Got SessionID-Cookie: $sessionID");
+    }   
+    
     if (!defined $sessionID){
         $self->{ID} = $self->_init_new_session();
         $logger->debug("Generation of new SessionID $self->{ID} successful");
@@ -75,13 +86,30 @@ sub new {
         $self->{ID}        = $sessionID;
         $logger->debug("Examining if SessionID $self->{ID} is valid");
         if (!$self->is_valid()){
-            $self->{ID} = undef;
             $logger->debug("SessionID is NOT valid");
+            
+            # Wenn uebergebene SessionID nicht ok, dann neue generieren
+            $self->{ID} = $self->_init_new_session();
+            $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
+
+    # Neuer Cookie?, dann senden
+    if ($sessionID ne $self->{ID}){
+        
+        $sessionID = $self->{ID};
+        
+        $logger->debug("Creating new Cookie with SessionID $self->{ID}");
+        
+        my $cookie = Apache2::Cookie->new($r,
+                                          -name    => "sessionID",
+                                          -value   => $self->{ID},
+                                          -expires => '+24h',
+                                      );
+        
+        $r->err_headers_out->set('Set-Cookie', $cookie);
+    }
     
-
-
     $logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
 }
@@ -93,11 +121,14 @@ sub _new_instance {
     my $sessionID   = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
 
+    my $r           = exists $arg_ref->{apreq}
+        ? $arg_ref->{apreq}             : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
-    
+                                # 
     my $self = { };
 
     bless ($self, $class);
@@ -106,21 +137,46 @@ sub _new_instance {
 
     # Setzen der Defaults
 
+    if ($r){
+        my $cookiejar = Apache2::Cookie::Jar->new($r);
+        $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
+        
+        $logger->debug("Got SessionID-Cookie: $sessionID");
+    }   
+    
     if (!defined $sessionID){
         $self->{ID} = $self->_init_new_session();
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
         $self->{ID}        = $sessionID;
+        
         $logger->debug("Examining if SessionID $self->{ID} is valid");
         if (!$self->is_valid()){
-            $self->{ID} = undef;
             $logger->debug("SessionID is NOT valid");
+            
+            # Wenn uebergebene SessionID nicht ok, dann neue generieren
+            $self->{ID} = $self->_init_new_session();
+            $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
+
+    # Neuer Cookie?, dann senden
+    if ($r && $sessionID ne $self->{ID}){
+        
+        $sessionID = $self->{ID};
+
+        $logger->debug("Creating new Cookie with SessionID $self->{ID}");
+        
+        my $cookie = Apache2::Cookie->new($r,
+                                          -name    => "sessionID",
+                                          -value   => $self->{ID},
+                                          -expires => '+24h',
+                                      );
+        
+        $r->err_headers_out->set('Set-Cookie', $cookie);
+    }
     
-
-
     $logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
 }
@@ -1051,10 +1107,8 @@ sub log_event {
     # Redirects 
     # 500 => TOC / hbz-Server
     # 501 => TOC / ImageWaere-Server
-    # 502 => USB E-Books aus E-Books-Katalog / Vollzugriff
-    # 503 => USB E-Books ueber Anreicherung / Vollzugriff
-    # 504 => Projekt Gutenberg / Vollzugriff
-    # 505 => Nationallizenzen / Vollzugriff
+    # 502 => USB E-Books / Vollzugriff
+    # 503 => Nationallizenzen / Vollzugriff
     # 510 => BibSonomy
     # 520 => Wikipedia / Personen
     # 521 => Wikipedia / ISBN

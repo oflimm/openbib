@@ -63,7 +63,7 @@ config.get('servername') %][% config.get('litlists_loc') %]?sessionID=[% session
 [% ELSE %] 
 [% msg.maketext("privat") %]
 [% END %]
-</td><td>[% litlist.itemcount %]</td><td>[% litlist.tstamp %]</td><td align="center">[% IF litlist.type == 1 %]<a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>[% ELSE %]&nbsp;[%- END -%]</td><td><a href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %]&action=manage;litlistid=[% litlist.id %];do_dellist=1"><b>[% msg.maketext("Entfernen") %]</b></a></td></tr>
+</td><td>[% litlist.itemcount %]</td><td>[% litlist.tstamp %]</td><td align="center">[% IF litlist.type == 1 %]<a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>[% ELSE %]&nbsp;[%- END -%]</td><td><a href="[% config.get('litlists_loc') %]?&action=manage;litlistid=[% litlist.id %];do_dellist=1"><b>[% msg.maketext("Entfernen") %]</b></a></td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

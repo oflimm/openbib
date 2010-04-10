@@ -383,7 +383,7 @@ sub grundform {
     # Fall: C++, C# und .Net
     $content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
-    $content=~s/\.(net)\#/dot$1/ig;
+    $content=~s/\.(net)/dot$1/ig;
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
@@ -666,7 +666,7 @@ sub get_loadbalanced_servername {
     # Fuer jeden Server, auf den verteilt werden soll, wird nun
     # per LWP der Load bestimmt.
     foreach my $targethost (@servertab) {
-        my $request  = new HTTP::Request POST => "http://$targethost$config->{serverload_loc}";
+        my $request  = new HTTP::Request GET => "http://$targethost$config->{serverload_loc}";
         my $response = $ua->request($request);
 
         if ($response->is_success) {

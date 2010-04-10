@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.get('resultlists_loc') %]?action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div class="content">

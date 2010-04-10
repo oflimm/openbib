@@ -1,7 +1,7 @@
 [% IF start %]
 <!-- Begin Template: corporate_banner -->
 	<div id="header2">
-		<div id="header_logo"><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
+		<div id="header_logo"><a href="[% config.get('searchmask_loc') %]?view=[% view %];setmask=simple" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
 
                 <div id="header_right"><a href="http://www.uni-koeln.de" title="Startseite der Universität zu Köln" id="header2_uni_schriftzug" target="_blank"><span>Universit&auml;t zu K&ouml;ln</span></a>
 		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header2_usb_schriftzug" target="_blank"><span>[% IF view %][% config.get_viewdesc_from_viewname(view) %][% ELSE %]K&ouml;lner Universit&auml;tsGesamtkatalog[% END %]</span></a>
@@ -38,7 +38,7 @@ $(document).ready(function(){
 
 	<div id="header2">
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 <input type="hidden" name="hitrange"  value="50" />
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sorttype"  value="author" />
@@ -57,9 +57,9 @@ $(document).ready(function(){
 <input type="hidden" name="autoplus"  value="0" />
 <input type="hidden" name="profil"  value="alldbs" />
 
-		<div id="header_logo"><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
+		<div id="header_logo"><a href="[% config.get('searchmask_loc') %]?view=[% view %];setmask=simple" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
                 <div id="header_simplesearch">
-<table><tr><td><span class="bigtext">[% msg.maketext("Suche") %]</span>&nbsp;</td><td><input id="input_box_all" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></div>&nbsp;&nbsp;</td><td><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td></tr></table>
+<table><tr><td><span class="bigtext">[% msg.maketext("Suche") %]</span>&nbsp;</td><td><input id="input_box_all" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></div>&nbsp;&nbsp;</td><td><a href="[% config.get('searchmask_loc') %]?view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td></tr></table>
 </div>
 </form>
 

@@ -1,6 +1,6 @@
 <!-- Begin Template: corporate_banner -->
 	<div id="header2">
-		<div id="header_logo"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=20" title="Startseite der Sammlung" id="header_usb_siegel_small"></a></div>
+		<div id="header_logo"><a href="[% config.get('info_loc') %]?stid=20" title="Startseite der Sammlung" id="header_usb_siegel_small"></a></div>
 
                 <div id="header_right"><a href="http://www.ub.uni-koeln.de" title="Startseite der USB Köln" id="header_uni_siegel_small" target="_blank"></a>
                 </div>

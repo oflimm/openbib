@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %];action=show;litlistid=[% litlist.properties.id %]">[% msg.maketext("Literaturliste") %]</a></li>
+   <li><a class="active" href="[% config.get('litlists_loc') %]?action=show;litlistid=[% litlist.properties.id %]">[% msg.maketext("Literaturliste") %]</a></li>
 </ul>
 
 <div class="content">
@@ -86,20 +86,20 @@
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'P0101'}  -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
 
@@ -135,7 +135,7 @@
 [%- dbdesc   = dbinfo.get('dbnames').${item.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${item.database} -%]
 
-<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.get('coverscans').all || config.get('coverscans').${record.database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlauthor">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.get('coverscans').all || config.get('coverscans').${record.database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlauthor">[% person %]</span><br /><a href="[% config.get('search_loc') %]?database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
 class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i></td><td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td><td>[% record.tstamp %]</td></tr>
 
 [% IF listrow == 'listrow1' %]

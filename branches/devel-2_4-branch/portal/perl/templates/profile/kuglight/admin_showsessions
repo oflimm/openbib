@@ -25,8 +25,8 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1">Aktive Sessions (lokal)</a></li>
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1;stid=1">Explorer</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?do_showsessions=1">Aktive Sessions (lokal)</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?do_showsessions=1;stid=1">Explorer</a></li>
 </ul>
 
 <div class="content">
@@ -45,7 +45,7 @@
 
 [% FOREACH session IN sessions %]
 
-<tr><td><a href="[%config.get('admin_loc') %]?sessionID=[% sessionID %];do_editsession=1;do_show=1;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
+<tr><td><a href="[%config.get('admin_loc') %]?do_editsession=1;do_show=1;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
 
 [% END %]
 

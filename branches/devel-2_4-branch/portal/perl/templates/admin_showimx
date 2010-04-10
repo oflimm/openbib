@@ -10,9 +10,9 @@
 
 <table width="100%">
 <tr>
-  <td align="left"><a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %]&action=showviews">Views</a>&nbsp;&nbsp;&nbsp;<a href="[%
-config.get('admin_loc') %]?sessionID=[% sessionID %]&action=showsession">Sessions</a>&nbsp;&nbsp;&nbsp;<a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %]&action=showimx"><b>Import</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
-align="right"><a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %]&action=logout"><b>Logout</b></a>&nbsp;</td>
+  <td align="left"><a href="[% config.get('admin_loc') %]?&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="[% config.get('admin_loc') %]?&action=showviews">Views</a>&nbsp;&nbsp;&nbsp;<a href="[%
+config.get('admin_loc') %]?&action=showsession">Sessions</a>&nbsp;&nbsp;&nbsp;<a href="[% config.get('admin_loc') %]?&action=showimx"><b>Import</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
+align="right"><a href="[% config.get('admin_loc') %]?&action=logout"><b>Logout</b></a>&nbsp;</td>
 </tr>
 </table>
 
@@ -20,7 +20,7 @@ align="right"><a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %]&a
 
 <form method="get" action="[%config.get('admin_loc') %]">
 <input type="hidden" name="action" value="imximport" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 
 <table width="100%">
 <tr><th>Automatische Importe veranlassen</th></tr>

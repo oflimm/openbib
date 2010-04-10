@@ -49,7 +49,6 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
-use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -60,16 +59,6 @@ sub handler {
     my $config = OpenBib::Config->instance;
     
     my $query  = Apache2::Request->new($r);
-
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => -1,
-    });
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 

@@ -56,7 +56,7 @@
 
 [% FOREACH profile IN profiles %]
 
-<tr><td>[% profile.profilename %]</td><td><a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %]&do_editprofile=1&profilename=[% profile.profilename %]&do_edit=1">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
+<tr><td>[% profile.profilename %]</td><td><a href="[% config.get('admin_loc') %]?&do_editprofile=1&profilename=[% profile.profilename %]&do_edit=1">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
 [% END %]
 
 </table>

@@ -25,13 +25,13 @@
 <div id="maincontent">
 
       <ul class="tabbingmenu">
-	<li><a class="active" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=mail;type=[% type%]">[% msg.maketext("Titel/Merkliste via Mail verschicken") %]</a></li>
+	<li><a class="active" href="[% config.get('managecollection_loc') %]?action=mail;type=[% type%]">[% msg.maketext("Titel/Merkliste via Mail verschicken") %]</a></li>
       </ul>
       
       <div class="content">
 	
 <form method="post" action="[% config.get('mailcollection_loc') %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 <input type="hidden" name="type"      value="[% type %]" />
 
 <table width="100%">

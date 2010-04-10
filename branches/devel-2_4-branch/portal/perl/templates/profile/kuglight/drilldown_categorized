@@ -128,7 +128,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_db_[% database %]_toggle"></span>
 <div id="dd_db_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% termitem.0 %];fs=[% lastquery %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% termitem.0 %];fs=[% lastquery %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.8.size > 5 %]
 </div>
@@ -149,7 +149,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_aut_[% database %]_toggle"></span>
 <div id="dd_aut_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %]fs=ddper:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=ddper:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.3.size > 5 %]
 </div>
@@ -170,7 +170,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_kor_[% database %]_toggle"></span>
 <div id="dd_kor_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %]fs=ddcorp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=ddcorp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.7.size > 5 %]
 </div>
@@ -191,7 +191,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_swt_[% database %]_toggle"></span>
 <div id="dd_swt_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %]fs=ddswt:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=ddswt:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.1.size > 5 %]
 </div>
@@ -212,7 +212,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_not_[% database %]_toggle"></span>
 <div id="dd_not_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %]fs=ddnot:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=ddnot:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.2.size > 5 %]
 </div>
@@ -233,7 +233,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_year_[% database %]_toggle"></span>
 <div id="dd_year_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %]fs=ddyear:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=ddyear:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
 [% IF category_map.5.size > 5 %]
 </div>
@@ -254,7 +254,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_mart_[% database %]_toggle"></span>
 <div id="dd_mart_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %]fs=ddtyp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=ddtyp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.4.size > 5 %]
 </div>
@@ -275,7 +275,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_spr_[% database %]_toggle"></span>
 <div id="dd_spr_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];[% request_base %]fs=ddspr:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=ddspr:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.6.size > 5 %]
 </div>

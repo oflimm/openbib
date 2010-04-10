@@ -26,12 +26,12 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showstat=1">Allgemein</a></li>
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showstat=1;stid=1">Weiterleitungen</a></li>
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showstat=1;stid=2">Views</a></li>
-   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showstat=1;stid=3">Recherchen</a></li>
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showstat=1;stid=4">Klienten</a></li>
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showstat=1;stid=5">Browser</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?do_showstat=1">Allgemein</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?do_showstat=1;stid=1">Weiterleitungen</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?do_showstat=1;stid=2">Views</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?do_showstat=1;stid=3">Recherchen</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?do_showstat=1;stid=4">Klienten</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?do_showstat=1;stid=5">Browser</a></li>
 </ul>
 
 <div class="content">
@@ -42,7 +42,7 @@
 [%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');- %]
 [%- i = ret.min -%]
 [%- WHILE i <= ret.max -%]
-<a href="[% config.get('admin_loc')%]?sessionID=[% sessionID %];do_showstat=1;stid=3;year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
+<a href="[% config.get('admin_loc')%]?do_showstat=1;stid=3;year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
 [%- i = i+1 -%]
 [%- END -%]
 </div>

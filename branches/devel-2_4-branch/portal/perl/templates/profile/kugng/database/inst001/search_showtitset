@@ -91,7 +91,7 @@
        itemid        = thisitem.id;
        itemclass     = css_classes.$classnr;
 
-       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${config.get('tags_loc')}?sessionID=${sessionID};searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
+       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${config.get('tags_loc')}?searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
      END ;
      alltags_cloud = "${alltags_cloud}\n</ol>" ;
      cloud_item = {
@@ -126,9 +126,9 @@ FOREACH category IN categories;
          IF activefeed.2 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
-         content   = "${rssfeed}<a href=\"${config.get('redirect_loc')}/${sessionID}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         globalurl = "${config.get('virtualsearch_loc')}?searchall=1;verf=%22${item.content}%22";
+         localurl  = "${config.get('search_loc')}?database=${record.database};searchsingleaut=${thisid}";
+         content   = "${rssfeed}<a href=\"${config.get('redirect_loc')}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -140,18 +140,18 @@ FOREACH category IN categories;
          IF activefeed.3 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsinglekor=${thisid}";
+         globalurl = "${config.get('virtualsearch_loc')}?searchall=1;kor=%22${item.content}%22";
+         localurl  = "${config.get('search_loc')}?database=${record.database};searchsinglekor=${thisid}";
          content   = "${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
     CASE "T0540";
-         content   = "<a class=\"isbn\" href=\"${config.get('redirect_loc')}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+         content   = "<a class=\"isbn\" href=\"${config.get('redirect_loc')}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE "T0543";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.get('redirect_loc')}/${sessionID}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.get('redirect_loc')}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
@@ -172,7 +172,7 @@ FOREACH category IN categories;
          IF thiscontent ;
             IF content.match('digitool.hbz-nrw.de') ;
                thiscontent = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
-               content     = "${config.get('redirect_loc')}/${sessionID}/500/${content}" ;
+               content     = "${config.get('redirect_loc')}/500/${content}" ;
             END ;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
          ELSE ;
@@ -180,7 +180,7 @@ FOREACH category IN categories;
          END ;
 
     CASE "E4100";
-         localurl    = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.get('search_loc')}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -191,12 +191,12 @@ FOREACH category IN categories;
     CASE "E4110";
          thisindicator = item.indicator ;
          thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
-         content       = "${config.get('redirect_loc')}/${sessionID}/500/${content}" ;
+         content       = "${config.get('redirect_loc')}/500/${content}" ;
          content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
 
     CASE "E4120";
          thiscontent   = "Greifen Sie hier online auf den Volltext zu";
-	 content       = "${config.get('redirect_loc')}/${sessionID}/503/${content}" ;
+	 content       = "${config.get('redirect_loc')}/503/${content}" ;
 	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
@@ -211,8 +211,8 @@ FOREACH category IN categories;
          IF activefeed.4 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
+         globalurl = "${config.get('virtualsearch_loc')}?searchall=1;swt=%22${item.content}%22";
+         localurl  = "${config.get('search_loc')}?database=${record.database};searchsingleswt=${thisid}";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thisid} = 1;
 
@@ -227,7 +227,7 @@ FOREACH category IN categories;
          IF activefeed.5 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsinglenot=${thisid}";
+         localurl  = "${config.get('search_loc')}?database=${record.database};searchsinglenot=${thisid}";
 
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
@@ -249,10 +249,10 @@ FOREACH category IN categories;
          content   = content ;
 
     CASE "T5001";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);
@@ -449,7 +449,7 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${config.get('search_loc')}?sessionID=${sessionID};database=${same_record.database};searchsingletit=${same_record.id}" %]
+[% same_url = "${config.get('search_loc')}?database=${same_record.database};searchsingletit=${same_record.id}" %]
 <li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
 [% END %]
 </ol>
@@ -465,7 +465,7 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <ol>
 [% FOREACH similar_record IN similar_records.get_records %]
 [% item = similar_record.get_brief_normdata %]
-[% similar_url = "${config.get('search_loc')}?sessionID=${sessionID};database=${similar_record.database};searchsingletit=${similar_record.id}" %]
+[% similar_url = "${config.get('search_loc')}?database=${similar_record.database};searchsingletit=${similar_record.id}" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
@@ -524,19 +524,19 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <table>
 <tr>
 <th><img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
-<td><a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
+<td><a href="[% config.get('bibsonomy_loc') %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
 <th><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
-<td><a class="collection" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
+<td><a class="collection" href="[% config.get('managecollection_loc') %]?action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
-<td><a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<td><a href="[% config.get('managecollection_loc') %]?action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
 <th><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
-<td><a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<td><a href="[% config.get('managecollection_loc') %]?action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
-<td><a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+<td><a href="[% config.get('managecollection_loc') %]?action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
 <th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
 <td><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
@@ -735,7 +735,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};searchall=1;isbn=${isbnitem.content}" -%]
+[%-   globalurl = "${config.get('virtualsearch_loc')}?searchall=1;isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
 <tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
 [%-   END -%]
@@ -773,7 +773,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [% IF loginname && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:
 [%- FOREACH tag IN private_tags_of_tit -%]
-<a href="[% config.get('tags_loc') %]?sessionID=[% sessionID %];searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
+<a href="[% config.get('tags_loc') %]?searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
 [%- END -%]
 [% END %]
 </td></tr>
@@ -785,7 +785,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <!-- Anfang BibSonomy-Tags -->
 <tr><td class="headline">[% msg.maketext("BibSonomy Tags") %]</td></tr>
 <tr><td>
-<span id="bibsonomy_tags"><a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span>
+<span id="bibsonomy_tags"><a href="[% config.get('bibsonomy_loc') %]?bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span>
 </td></tr>
 <tr><td></td></tr>
 <tr><td></td></tr>
@@ -795,7 +795,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% config.get('connector_similarpersons_loc') %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% config.get('connector_similarpersons_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarpersons").html(txt); 
   });
@@ -803,7 +803,7 @@ $(document).ready(function(){
 </script>
 <tr><td class="headline">[% msg.maketext("Verwandte Personen") %]</td></tr>
 <tr><td>
-<span id="similarpersons"><a href="[% config.get('connector_similarpersons_loc') %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarpersons"><a href="[% config.get('connector_similarpersons_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </td></tr>
 <tr><td></td></tr>
 <tr><td></td></tr>
@@ -813,7 +813,7 @@ $(document).ready(function(){
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Themen
-  $.get("[% config.get('connector_similarsubjects_loc') %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% config.get('connector_similarsubjects_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarsubjects").html(txt); 
   });
@@ -821,7 +821,7 @@ $(document).ready(function(){
 </script>
 <tr><td class="headline">[% msg.maketext("Verwandte Themen") %]</td></tr>
 <tr><td>
-<span id="similarsubjects"><a href="[% config.get('connector_similarsubjects_loc') %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarsubjects"><a href="[% config.get('connector_similarsubjects_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </td></tr>
 <tr><td></td></tr>
 <tr><td></td></tr>
@@ -829,7 +829,7 @@ $(document).ready(function(){
 
 <!-- Anfang Verschiedenes -->
 <tr><td class="headline">[% msg.maketext("Verschiedenes") %]</td></tr>
-<tr><td><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></td></tr>
+<tr><td><a href="[% config.get('info_loc') %]?view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></td></tr>
 
 </table>
 

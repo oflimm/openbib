@@ -14,18 +14,18 @@
 [%- username = user.get_username -%]
 <div id="mainnavigation">
 <div id="mainnavigation_left">
-<a href="[% config.get('databasechoice_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Recherche") %]</a>&nbsp;::&nbsp;<a href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;view=[% view %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
+<a href="[% config.get('databasechoice_loc') %]?view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a href="[% config.get('searchmask_loc') %]?view=[% view %]">[% msg.maketext("Recherche") %]</a>&nbsp;::&nbsp;<a href="[% config.get('resultlists_loc') %]?action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a href="[% config.get('managecollection_loc') %]?action=show;view=[% view %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
 </div>
 <div id="mainnavigation_right">
 [% IF config.get('login_active') == 1 %]
 [% IF username %]
-<a href="[% config.get('userprefs_loc') %]?sessionID=[% sessionID %];view=[% view %];action=showfields">[% msg.maketext("Mein KUG") %] light</a>
+<a href="[% config.get('userprefs_loc') %]?view=[% view %];action=showfields">[% msg.maketext("Mein KUG") %] light</a>
 [% ELSE %]
-<a href="[% config.get('login_loc') %]?sessionID=[% sessionID %];view=[% view %];do_login=1">[% msg.maketext("Mein KUG") %]</a>
+<a href="[% config.get('login_loc') %]?view=[% view %];do_login=1">[% msg.maketext("Mein KUG") %]</a>
 [% END %]
 &nbsp;::&nbsp;
 [% END %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="[% config.get('leave_loc') %]?sessionID=[% sessionID %];view=[% view %]"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+<a href="[% config.get('info_loc') %]?view=[% view %]">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="[% config.get('leave_loc') %]?view=[% view %]"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 [%- IF username -%]
  [[% username %]]
 [%- END -%]

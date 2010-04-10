@@ -24,15 +24,15 @@
 # Aufruf der Frames mit den gewuenschten Inhalten
 
 IF NOT headerframeurl;
-headerframeurl = "${config.get('headerframe_loc')}?sessionID=${sessionID};view=${view}" ;
+headerframeurl = "${config.get('headerframe_loc')}?view=${view}" ;
 END;
 
 IF NOT bodyframeurl;
-bodyframeurl   = "${config.get('info_loc')}?sessionID=${sessionID};view=${view};stid=20" ;
+bodyframeurl   = "${config.get('info_loc')}?view=${view};stid=20" ;
 END;
 
 IF searchsingletit && database;
-    bodyframeurl = "${config.get('search_loc')}?sessionID=${sessionID};search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit};view=${view}";
+    bodyframeurl = "${config.get('search_loc')}?search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit};view=${view}";
 END;
 
 IF fs;

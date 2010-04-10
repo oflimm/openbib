@@ -67,30 +67,30 @@
 
 [% suggestion = searchquery.get_spelling_suggestion %]
 [% IF suggestion %]
-[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?sessionID=[% sessionID %];hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=[% query.param('combinedbs') %];searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=[% query.param('combinedbs') %];searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
 [% END %]
 
 <table>
 [% IF fullresultcount == 0 %]
-<tr><td colspan="7"><span style="font-size:1.7em;font-face:bold">[% msg.maketext("Es wurden keine Treffer gefunden") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.get('searchmask_loc')}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>") %]</span></td></tr>
+<tr><td colspan="7"><span style="font-size:1.7em;font-face:bold">[% msg.maketext("Es wurden keine Treffer gefunden") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.get('searchmask_loc')}?view=${view};queryid=${queryid}\">","</a>") %]</span></td></tr>
 [% ELSE %]
 [%# USE dumper;dumper.dump(offsets) %]
 <!-- Beginn Result Item -->
-<!-- <tr class="titlerow"><td>&nbsp;</td><td colspan="3">[%- IF treffer == qopts.hitrange -%]<b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];combinedbs=1;queryid=[% queryid %];offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>[% END %]</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>-->
+<!-- <tr class="titlerow"><td>&nbsp;</td><td colspan="3">[%- IF treffer == qopts.hitrange -%]<b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.get('virtualsearch_loc') %]?combinedbs=1;queryid=[% queryid %];offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>[% END %]</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('info_loc') %]?view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>-->
 [%-     IF offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="3">
 [%          FOREACH singleoffset IN offsets %]
 [%-             IF singleoffset.type == 'getnext' -%]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
+<a href="[% config.get('virtualsearch_loc') %]?drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
 [%-             ELSE -%]
 [%-                 IF singleoffset.offset == offset -%]
 <b>[[% singleoffset.start %] - [% singleoffset.end %]]</b>&nbsp;
 [%-                 ELSE -%]
-<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
+<a href="[% config.get('virtualsearch_loc') %]?drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
 [%-                 END -%]
 [%-             END -%]
 [%-         END -%]
-</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>
+</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('info_loc') %]?view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>
 [%-     END -%]
 
 [% listrow = 'listrow2' %]
@@ -99,23 +99,23 @@
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'P0101'}  -%]
 [%-   IF part.supplement -%]
 [%-      part.content = "${part.content} ${part.supplement}" -%]
 [%-   END -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
 
@@ -151,7 +151,7 @@
 [%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${record.database} -%]
 
-<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td class="thumbnail">[% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td colspan="2"><span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></td><td><span class="rlcollect"><a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
+<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td class="thumbnail">[% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td colspan="2"><span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></td><td><span class="rlcollect"><a href="[% config.get('managecollection_loc') %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
 [%- IF listrow == 'listrow1' -%]
 [%- listrow = 'listrow2' -%]
 [%- ELSE -%]
@@ -162,7 +162,7 @@
 <tr><td colspan="7">&nbsp;</td></tr>
 <!-- Ende Result Item -->
 
-<tr><td colspan="7"><span style="font-size:1.5em;font-face:bold">[% msg.maketext("M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.get('searchmask_loc')}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>") %]</span></td></tr>
+<tr><td colspan="7"><span style="font-size:1.5em;font-face:bold">[% msg.maketext("M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.get('searchmask_loc')}?view=${view};queryid=${queryid}\">","</a>") %]</span></td></tr>
 [% END %]
 </table>
 

@@ -78,10 +78,10 @@ sub handler {
     # 
 
     my ($id1,$id2,$type,$view);
-    if ($path=~m/^\/(\w+?)\/([^\/]+?)\/([^\/]+?)\/index.html$/){
+    if ($path=~m/^\/([^\/]+?)\/([^\/]+?)\/(\d+?)\/index.html$/){
         ($id1,$id2,$type)=($1,$2,$3);
     }
-    elsif ($path=~m/^\/(\w+?)\/([^\/]+?)\/([^\/]+?)\/(\w+?)\/index.html$/){
+    elsif ($path=~m/^\/([^\/]+?)\/([^\/]+?)\/(\d+?)\/([^\/]+?)\/index.html$/){
         ($id1,$id2,$type,$view)=($1,$2,$3,$4);
     }
 

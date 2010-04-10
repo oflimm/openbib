@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.get('resultlists_loc') %]?action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div class="content">
@@ -69,27 +69,27 @@
 </form>
 
 <table>
-<tr class="titlerow"><td>&nbsp;</td><td>&nbsp;</td><td><b>Titel<b></td><td align="right" colspan="3"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td>&nbsp;</td><td><b>Titel<b></td><td align="right" colspan="3"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('info_loc') %]?view=[% view %]#popularity">P</a></td></tr>
 [% listrow = 'listrow1' %]
 [% FOREACH record IN recordlist.get_records %]
 [%  item = record.to_rawdata %]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'P0101'}  -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
 
@@ -127,7 +127,7 @@
 [%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${record.database} -%]
 
-<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td class="thumbnail">[% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];sorttype=[% qopts.sorttype %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></td><td><span class="rlcollect"><a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
+<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td class="thumbnail">[% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sorttype=[% qopts.sorttype %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></td><td><span class="rlcollect"><a href="[% config.get('managecollection_loc') %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]

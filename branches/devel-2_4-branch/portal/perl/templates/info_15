@@ -25,7 +25,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Spezialisierte KUG-Portale") %]">[% msg.maketext("Spezialisierte KUG-Portale") %]</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Spezialisierte KUG-Portale") %]">[% msg.maketext("Spezialisierte KUG-Portale") %]</a></li>
 </ul>
 
 <div class="content">

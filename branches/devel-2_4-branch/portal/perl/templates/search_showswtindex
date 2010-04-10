@@ -42,13 +42,13 @@ Gefundene Schlagworte zur Anfrage <b>'[% swt %]'</b> in diesem Katalog: <b>[% sw
 
 [% FOREACH item IN swtindex %]
 [% IF loop.index % 3 == 0 %]
-<tr><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
+<tr><td><a href="[% config.get('search_loc') %]?search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
 [% END %]
 [% IF loop.index % 3 == 1 %]
-<td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
+<td><a href="[% config.get('search_loc') %]?search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
 [% END %]
 [% IF loop.index % 3 == 2 %]
-<td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td></tr>
+<td><a href="[% config.get('search_loc') %]?search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td></tr>
 [% END %]
 
 [% END %]

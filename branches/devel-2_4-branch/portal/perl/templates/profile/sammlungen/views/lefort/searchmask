@@ -38,7 +38,7 @@
 <!--<div class="langchoice">
 [% IF config.get('lang').size > 1 %]
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('searchmask_loc') %]?setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -107,7 +107,7 @@ $(document).ready(function(){
 [% END %]
 
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sb"        value="sql" />
 <input type="hidden" name="st"        value="2" />
@@ -129,7 +129,7 @@ $(document).ready(function(){
 <p />
 <form method="get" id="queries" action="[% config.get('dispatchquery_loc') %]">
 <b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 
 <table>
 <tr>

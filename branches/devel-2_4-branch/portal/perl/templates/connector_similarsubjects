@@ -39,7 +39,7 @@
    searchterm    = record.to_drilldown_term(item);
    searchprefix  = config.get('searchfield').swtstring.prefix;
 
-   localurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+   localurl  = "${config.get('virtualsearch_loc')}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
@@ -91,7 +91,7 @@
    searchterm    = record.to_drilldown_term(item);
    searchprefix  = config.get('searchfield').swtstring.prefix;
 
-   localurl  = "${config.get('virtualsearch_loc')}?sessionID=${sessionID};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+   localurl  = "${config.get('virtualsearch_loc')}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>

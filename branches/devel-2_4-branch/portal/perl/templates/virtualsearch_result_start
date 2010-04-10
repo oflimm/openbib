@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.get('resultlists_loc') %]?trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div class="content">
@@ -31,7 +31,7 @@
 <p />
   <div class="listoptions">
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="page"      value="[% page %]" />
 <input type="hidden" name="sb"        value="xapian" />
@@ -58,6 +58,6 @@
 
 [% suggestion = sq.get_spelling_suggestion %]
 [% IF spelling_suggestion.resultlist && suggestion  %]
-[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?sessionID=[% sessionID %];hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
 [% END %]
 

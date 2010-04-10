@@ -23,18 +23,18 @@
 <div id="maincontent">
 
 <div id="langchoice">
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %]#perskug"><img src="[% config.get('info_img') %]"></a>&nbsp;
+<a href="[% config.get('info_loc') %]?#perskug"><img src="[% config.get('info_img') %]"></a>&nbsp;
 [% IF config.get('lang').size > 1 %]
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('login_loc') %]?sessionID=[% sessionID %];do_login=1;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('login_loc') %]?do_login=1;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 [% END %]
 </div>
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('login_loc') %]?sessionID=[% sessionID %];view=[% view %];do_login=1">[% msg.maketext("Login") %]</a></li>
-   <li><a                href="[% config.get('selfreg_loc') %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Selbstregistrierung") %]</a></li>
-   <li><a                href="[% config.get('mailpassword_loc') %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a></li>
+   <li><a class="active" href="[% config.get('login_loc') %]?view=[% view %];do_login=1">[% msg.maketext("Login") %]</a></li>
+   <li><a                href="[% config.get('selfreg_loc') %]?action=show">[% msg.maketext("Selbstregistrierung") %]</a></li>
+   <li><a                href="[% config.get('mailpassword_loc') %]?action=show">[% msg.maketext("Passwort vergessen?") %]</a></li>
 </ul>
 
 <div class="content">
@@ -43,7 +43,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
-[% msg.maketext("Sie haben [_1]Vorteile[_2], wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden.","<a href=\"${config.get('info_loc')}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>") %]
+[% msg.maketext("Sie haben [_1]Vorteile[_2], wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden.","<a href=\"${config.get('info_loc')}?view=${view}#meinkugvorteile\">","</a>") %]
 </td></tr>
 </table>
 
@@ -51,7 +51,7 @@
 
 <form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% END %][% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 <input type="hidden" name="view"      value="[% view %]" />
 
 <table width="100%">
@@ -81,7 +81,7 @@
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
 </table>
 <p />
-[% msg.maketext("Haben Sie Ihr Passwort vergessen, dann finden Sie hier [_1]weitere Informationen[_2].","<a href=\"${config.get('info_loc')}?sessionID=${sessionID};view=${view}#passwortbenutzerausweis\">","</a>") %]
+[% msg.maketext("Haben Sie Ihr Passwort vergessen, dann finden Sie hier [_1]weitere Informationen[_2].","<a href=\"${config.get('info_loc')}?view=${view}#passwortbenutzerausweis\">","</a>") %]
 </td></tr>
 </table>
 
@@ -91,14 +91,14 @@
 
 <form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% END %][% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 <input type="hidden" name="view"      value="[% view %]" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Login ohne Benutzerausweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
 <p />
-[% msg.maketext("Haben Sie sich schon &uuml;ber die Selbstregistrierung eine Kennung eingerichtet? Wenn nicht, so k&ouml;nnen Sie sich [_1]hier[_2] registrierten.","<a href=\"${config.get('selfreg_loc')}?sessionID=${sessionID};view=${view};action=show\">","</a>") %]
+[% msg.maketext("Haben Sie sich schon &uuml;ber die Selbstregistrierung eine Kennung eingerichtet? Wenn nicht, so k&ouml;nnen Sie sich [_1]hier[_2] registrierten.","<a href=\"${config.get('selfreg_loc')}?view=${view};action=show\">","</a>") %]
 <table>
 <tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
 %]:</b></td><td>
@@ -114,7 +114,7 @@ Selbstregistrierung
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
 </table>
 <p>
-[% msg.maketext("Haben Sie Ihr Passwort vergessen, dann klicken Sie es sich [_1]<b>hier</b>[_2] per E-Mail zusenden lassen","<a href=\"http://${config.get('servername')}${config.get('mailpassword_loc')}?sessionID=${sessionID};action=show\">","</a>") %]
+[% msg.maketext("Haben Sie Ihr Passwort vergessen, dann klicken Sie es sich [_1]<b>hier</b>[_2] per E-Mail zusenden lassen","<a href=\"http://${config.get('servername')}${config.get('mailpassword_loc')}?action=show\">","</a>") %]
 </td></tr>
 </table>
 

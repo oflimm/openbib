@@ -24,9 +24,9 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
 </ul>
 
 <div class="content">
@@ -61,7 +61,7 @@
 <tr><td class="boxedclear">
 <ul class="subjectlist">
 [% FOREACH role IN user.get_all_roles %]
-<li><a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_searchuser=1;roleid=[% role.id %]">[% msg.maketext(role.role) %]</a></li>
+<li><a href="[% config.get('admin_loc') %]?do_searchuser=1;roleid=[% role.id %]">[% msg.maketext(role.role) %]</a></li>
 [% END %]
 </ul>
 </td></tr>

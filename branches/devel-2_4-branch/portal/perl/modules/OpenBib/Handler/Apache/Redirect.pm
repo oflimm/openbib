@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Redirect
 #
-#  Dieses File ist (C) 2007-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -77,21 +77,19 @@ sub handler {
     #
     # 
 
-    my ($sessionID,$type,$url);
-    if ($path=~m/^\/(\w+?)\/(\w+?)\/(.+?)$/){
-        ($sessionID,$type,$url)=($1,$2,$3);
+    my ($type,$url);
+    if ($path=~m/^\/(\w+?)\/(.+?)$/){
+        ($type,$url)=($1,$2);
     }
 
     if ($query){
         $url = $url."?".$query;
     }
-    
-    $logger->debug("SessionID: $sessionID - Type: $type - URL: $url");
 
-    my $session   = OpenBib::Session->instance({
-        sessionID => $sessionID,
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
     
+    $logger->debug("SessionID: $session->{ID} - Type: $type - URL: $url");
+
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 

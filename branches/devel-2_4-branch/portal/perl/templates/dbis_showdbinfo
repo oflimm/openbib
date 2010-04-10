@@ -21,7 +21,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('dbis_loc') %]?sessionID=[% sessionID %];action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Informationen zur Datenbank") %]</span></a></li>
+   <li><a class="active" href="[% config.get('dbis_loc') %]?action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Informationen zur Datenbank") %]</span></a></li>
 </ul>
 
 <div class="content">

@@ -25,8 +25,8 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1">Aktive Sessions (lokal)</a></li>
-   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1;stid=1">Explorer</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?do_showsessions=1">Aktive Sessions (lokal)</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?do_showsessions=1;stid=1">Explorer</a></li>
 </ul>
 
 <div class="content">

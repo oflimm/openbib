@@ -60,17 +60,11 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->instance;    
 
-    my $session = OpenBib::Session->instance;
+    my $session = OpenBib::Session->instance({ apreq => $r });
     
     my $query   = Apache2::Request->new($r);
-
-#     my $status = $query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
 
     my $fs   = $query->param('fs')      || '';
 
@@ -180,14 +174,14 @@ sub handler {
     $logger->debug("StartOpac-sID: $session->{ID}");
 
     # Standard-URL
-    my $redirecturl = "$config->{searchmask_loc}?sessionID=$session->{ID};view=$view;setmask=$setmask";
+    my $redirecturl = "$config->{searchmask_loc}?view=$view;setmask=$setmask";
 
     my $viewstartpage_ref = $config->get_startpage_of_view($view);
 
     $logger->debug(YAML::Dump($viewstartpage_ref));
     
     if ($viewstartpage_ref->{start_loc}){
-        $redirecturl = "$config->{$viewstartpage_ref->{start_loc}}?sessionID=$session->{ID};view=$view";
+        $redirecturl = "$config->{$viewstartpage_ref->{start_loc}}?view=$view";
 
         if ($viewstartpage_ref->{start_stid}){
             $redirecturl.=";stid=$viewstartpage_ref->{start_stid}";
@@ -195,31 +189,31 @@ sub handler {
     }
     
     if ($searchsingletit && $database ){
-        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsingletit=$searchsingletit;view=$view";
+        $redirecturl = "$config->{search_loc}?search=Mehrfachauswahl;database=$database;searchsingletit=$searchsingletit;view=$view";
     }
     
     if ($searchsingleaut && $database ){
-        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsingleaut=$searchsingleaut;view=$view";
+        $redirecturl = "$config->{search_loc}?search=Mehrfachauswahl;database=$database;searchsingleaut=$searchsingleaut;view=$view";
     }
 
     if ($searchsinglekor && $database ){
-        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsinglekor=$searchsinglekor;view=$view";
+        $redirecturl = "$config->{search_loc}?search=Mehrfachauswahl;database=$database;searchsinglekor=$searchsinglekor;view=$view";
     }
 
     if ($searchsingleswt && $database ){
-        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsingleswt=$searchsingleswt;view=$view";
+        $redirecturl = "$config->{search_loc}?search=Mehrfachauswahl;database=$database;searchsingleswt=$searchsingleswt;view=$view";
     }
 
     if ($searchsinglenot && $database ){
-        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsinglenot=$searchsinglenot;view=$view";
+        $redirecturl = "$config->{search_loc}?search=Mehrfachauswahl;database=$database;searchsinglenot=$searchsinglenot;view=$view";
     }
     
     if ($fs){
-        $redirecturl = "$config->{virtualsearch_loc}?view=$view;sessionID=$session->{ID};fs=".uri_escape($fs).";hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
+        $redirecturl = "$config->{virtualsearch_loc}?view=$view;fs=".uri_escape($fs).";hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
     }
 
     if ($searchlitlist){
-        $redirecturl = "$config->{litlists_loc}?view=$view;sessionID=$session->{ID};action=show;litlistid=$searchlitlist";
+        $redirecturl = "$config->{litlists_loc}?view=$view;action=show;litlistid=$searchlitlist";
     }
 
     if ($config->{drilldown}){

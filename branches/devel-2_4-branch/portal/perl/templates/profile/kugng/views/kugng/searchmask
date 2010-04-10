@@ -124,7 +124,7 @@ function submitViaEnter(evt){
 
 <form method="get" id="queries" action="http://[% config.get('servername') %][% config.get('dispatchquery_loc') %]">
 
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 <input type="hidden" name="view"      value="[% view %]" />
 
 <table>
@@ -143,7 +143,7 @@ function submitViaEnter(evt){
 
 <form method="post" id="openbib" action="http://[% config.get('servername') %][% config.get('virtualsearch_loc') %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="view"      value="[% view %]" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 <input type="hidden" name="sb"        value="sql" />
 <input type="hidden" name="st"        value="2" />
 
@@ -234,11 +234,11 @@ function submitViaEnter(evt){
 [%- FOREACH db IN catdb -%]
 [%- IF db.category == category.short -%]
 [%- IF db.column == 1 -%]
-<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>&nbsp;</td><td>[%- IF dbinfo.get('use_libinfo').${db.db} -%]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% db.db %];stid=60">[%- ELSE -%]<a href="[% db.url %]" target="_blank">[%- END -%][% db.name %]</a></td>
+<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>&nbsp;</td><td>[%- IF dbinfo.get('use_libinfo').${db.db} -%]<a href="[% config.get('info_loc') %]?id=[% db.db %];stid=60">[%- ELSE -%]<a href="[% db.url %]" target="_blank">[%- END -%][% db.name %]</a></td>
 [%- END -%]
 [%- IF db.column > 1 && db.column < maxcolumn -%]
 [%- IF db.db -%]
-<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>&nbsp;</td><td>[%- IF dbinfo.get('use_libinfo').${db.db} -%]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% db.db %];stid=60">[%- ELSE -%]<a href="[% db.url %]" target="_blank">[%- END -%][% db.name %]</a></td>
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>&nbsp;</td><td>[%- IF dbinfo.get('use_libinfo').${db.db} -%]<a href="[% config.get('info_loc') %]?id=[% db.db %];stid=60">[%- ELSE -%]<a href="[% db.url %]" target="_blank">[%- END -%][% db.name %]</a></td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]
@@ -248,7 +248,7 @@ function submitViaEnter(evt){
 [%- IF db.column != 1 -%]
 
 [%- IF db.db -%]
-<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>&nbsp;</td><td>[%- IF dbinfo.get('use_libinfo').${db.db} -%]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% db.db %];stid=60">[%- ELSE -%]<a href="[% db.url %]" target="_blank">[%- END -%][% db.name %]</a></td>
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>&nbsp;</td><td>[%- IF dbinfo.get('use_libinfo').${db.db} -%]<a href="[% config.get('info_loc') %]?id=[% db.db %];stid=60">[%- ELSE -%]<a href="[% db.url %]" target="_blank">[%- END -%][% db.name %]</a></td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]

@@ -44,7 +44,7 @@
 <hr />
 
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 <input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
 <input type="hidden" name="profil"    value="[% profil %]" />
 

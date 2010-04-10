@@ -33,15 +33,15 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];database=[% database %];stid=14" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];database=[% database %];stid=14" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a                href="[% config.get('info_loc') %]?view=[% view %];database=[% database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
@@ -76,7 +76,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;[%- IF config.get('drilldown') && itemcount < config.get('xapian_option').maxmatch -%]drilldown=1;[%- IF config.get('drilldown_option').cloud -%]dd_cloud=1;[%- END -%][%- IF config.get('drilldown_option').categorized -%]dd_categorized=1;[%- END -%][%- END -%]fs=ddyear:[% utils.normalize_drilldown(item) %];database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% config.get('virtualsearch_loc') %]?sb=xapian;[%- IF config.get('drilldown') && itemcount < config.get('xapian_option').maxmatch -%]drilldown=1;[%- IF config.get('drilldown_option').cloud -%]dd_cloud=1;[%- END -%][%- IF config.get('drilldown_option').categorized -%]dd_categorized=1;[%- END -%][%- END -%]fs=ddyear:[% utils.normalize_drilldown(item) %];database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

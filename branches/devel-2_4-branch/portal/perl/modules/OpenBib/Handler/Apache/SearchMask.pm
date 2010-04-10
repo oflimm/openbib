@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::SearchMask
 #
-#  Dieses File ist (C) 2001-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -49,6 +49,7 @@ use YAML;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
+use Apache2::Cookie;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::SearchQuery;
@@ -62,22 +63,14 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $session = OpenBib::Session->instance({ apreq => $r });    
+
     my $config      = OpenBib::Config->instance;
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $query  = Apache2::Request->new($r);
 
     my $statistics  = new OpenBib::Statistics();
-
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
 
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
 

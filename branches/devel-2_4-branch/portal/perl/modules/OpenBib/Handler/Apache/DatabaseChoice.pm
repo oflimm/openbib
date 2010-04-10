@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::DatabaseChoice
 #
-#  Dieses File ist (C) 2001-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -53,23 +53,15 @@ sub handler {
     my $r=shift;
   
     # Log4perl logger erzeugen
-    my $logger = get_logger();
+    my $logger  = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query   = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
+    my $session = OpenBib::Session->instance({ apreq => $r });    
 
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
+    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   

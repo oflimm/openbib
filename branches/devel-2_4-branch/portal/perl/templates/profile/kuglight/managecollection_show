@@ -36,13 +36,13 @@ function update_collection(yourform, checked, item) {
 </script>
     
     <form method="get" action="[% config.get('managecollection_loc') %]">
-      <input type="hidden" name="sessionID" value="[% sessionID %]" />
+      
       <input type="hidden" name="action"    value="show" />
 
 <div id="maincontent">
 
       <ul class="tabbingmenu">
-	<li><a class="active" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
+	<li><a class="active" href="[% config.get('managecollection_loc') %]?action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
       </ul>
       
       <div class="content">
@@ -50,10 +50,10 @@ function update_collection(yourform, checked, item) {
 	<p />
 	  
 	<ul class="tabbingmenu">
-	  <li><a[%- IF type == 'HTML' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML">HTML</a></li>
-	  <li><a[%- IF type == 'Text' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=Text">Text</a></li>
-	  <li><a[%- IF type == 'BibTeX' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=BibTeX">BibTeX</a></li>
-	  <li><a[%- IF type == 'EndNote' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=EndNote">EndNote</a></li>
+	  <li><a[%- IF type == 'HTML' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?action=show;type=HTML">HTML</a></li>
+	  <li><a[%- IF type == 'Text' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?action=show;type=Text">Text</a></li>
+	  <li><a[%- IF type == 'BibTeX' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?action=show;type=BibTeX">BibTeX</a></li>
+	  <li><a[%- IF type == 'EndNote' -%] class="active"[%- END -%] href="[% config.get('managecollection_loc') %]?action=show;type=EndNote">EndNote</a></li>
 	</ul>
 	
 	<div class="content">
@@ -65,15 +65,15 @@ function update_collection(yourform, checked, item) {
 		      <tr>
 			<td>
 [%- IF type == 'HTML' -%]
-[% IF show == 'short'%]<b>[% msg.maketext("Kurztitel") %]</b>[% ELSE %]<a href="[% managecollection_loc%]?sessionID=[% sessionID %];action=show;type=HTML;show=short">[% msg.maketext("Kurztitel") %]</a>[% END %]&nbsp;&#124;&nbsp;[% IF show == 'full' %]<b>[% msg.maketext("Volltitel") %]</b>[% ELSE %]<a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;type=HTML;show=full">[% msg.maketext("Volltitel") %]</a>[% END %]&nbsp;<b>&#124;</b>&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen") %] <input type="submit" name="do_collection_delentry" value="[% msg.maketext("Los") %]" />
+[% IF show == 'short'%]<b>[% msg.maketext("Kurztitel") %]</b>[% ELSE %]<a href="[% managecollection_loc%]?action=show;type=HTML;show=short">[% msg.maketext("Kurztitel") %]</a>[% END %]&nbsp;&#124;&nbsp;[% IF show == 'full' %]<b>[% msg.maketext("Volltitel") %]</b>[% ELSE %]<a href="[% config.get('managecollection_loc') %]?action=show;type=HTML;show=full">[% msg.maketext("Volltitel") %]</a>[% END %]&nbsp;<b>&#124;</b>&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen") %] <input type="submit" name="do_collection_delentry" value="[% msg.maketext("Los") %]" />
 [%- ELSE -%]
 <b>[% msg.maketext("Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich") %]</b>
 [%- END -%]
                        </td>
 			<td>&nbsp;</td>
 			<td class="fbuttonarea" align="center" width="80">
-			  <a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=mail;type=[% type %];show=[% show %]" title="[% msg.maketext("Als Mail verschicken") %]"><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
-			  <a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=save;type=[% type %];show=[% show %]" target="save" title="[% msg.maketext("Abspeichern") %]"><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>
+			  <a href="[% config.get('managecollection_loc') %]?action=mail;type=[% type %];show=[% show %]" title="[% msg.maketext("Als Mail verschicken") %]"><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+			  <a href="[% config.get('managecollection_loc') %]?action=save;type=[% type %];show=[% show %]" target="save" title="[% msg.maketext("Abspeichern") %]"><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>
 			</td></tr>
 		  </table>
 		</td></tr>

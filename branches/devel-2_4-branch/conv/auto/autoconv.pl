@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -378,7 +378,12 @@ CLEANUP:
 $logger->info("### $database: Cleanup");
 
 system("$mysqladminexe drop   $databasetmp");
-system("rm $rootdir/data/$database/*");
+#system("rm $rootdir/data/$database/*");
+
+if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
+    $logger->info("### $database: Verwende Plugin post_cleanup.pl");
+    system("$config->{autoconv_dir}/filter/$database/post_cleanup.pl $database");
+}
 
 my $btime      = new Benchmark;
 my $timeall    = timediff($btime,$atime);

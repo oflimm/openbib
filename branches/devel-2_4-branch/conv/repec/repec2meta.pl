@@ -53,14 +53,13 @@ my ($inputdir,$idmappingfile);
 
 &GetOptions(
 	    "inputdir=s"           => \$inputdir,
-            "idmappingfile=s"      => \$idmappingfile,
 	    );
 
 if (!$inputdir || !$idmappingfile){
     print << "HELP";
 repec2meta.pl - Aufrufsyntax
 
-    repec2meta.pl --inputdir=xxx --idmappingfile=yyy
+    repec2meta.pl --inputdir=xxx
 HELP
 exit;
 }
@@ -89,26 +88,6 @@ binmode(MEX,     ":utf8");
 
 binmode(TIT, ":utf8");
 
-our %numericidmapping;
-our %have_id = ();
-
-our $numericidmapping_ref;
-
-if (! -f $idmappingfile){
-    %numericidmapping = ();
-}
-else {
-    $numericidmapping_ref = LoadFile($idmappingfile);
-    
-    %numericidmapping = %{$numericidmapping_ref};
-}
-
-#tie %numericidmapping,             'DB_File', $idmappingfile
-#    or die "Could not tie idmapping.\n";
-
-if (! exists $numericidmapping{'next_unused_id'}){
-    $numericidmapping{'next_unused_id'}=1;
-}
 our $parser = XML::LibXML->new();
 #    $parser->keep_blanks(0);
 #    $parser->recover(2);
@@ -143,14 +122,8 @@ sub process_file {
     # Collection
     foreach my $node ($root->findnodes('/amf/collection')) {
         my $id    = $node->getAttribute ('id');
-        my ($intid,$is_new) = get_next_numeric_id($id);
-
-        next if ($have_id{$intid});
-
-        $have_id{$intid}=1;
         
-        print TIT "0000:$intid\n";
-        print TIT "0010:$id\n";
+        print TIT "0000:$id\n";
 
         # Herausgeber
         foreach my $item ($node->findnodes ('haseditor/person/name//text()')) {
@@ -184,8 +157,7 @@ sub process_file {
         foreach my $item ($node->findnodes ('ispartof/collection')) {
             my $id = $item->getAttribute ('ref');
             last if ($id=~/^RePEc$/); # Root-Node wird nicht verlinkt
-            my ($intid,$is_new) = get_next_numeric_id($id);
-            print TIT "0004:$intid\n";
+            print TIT "0004:$id\n";
         }
 
         # Verlag
@@ -214,14 +186,8 @@ sub process_file {
     # Text
     foreach my $node ($root->findnodes('/amf/text')) {
         my $id    = $node->getAttribute ('id');
-        my ($intid,$is_new) = get_next_numeric_id($id);
 
-        next if ($have_id{$intid});
-
-        $have_id{$intid}=1;
-
-        print TIT "0000:$intid\n";
-        print TIT "0010:$id\n";
+        print TIT "0000:$id\n";
 
         # Verfasser
         foreach my $item ($node->findnodes ('hasauthor/person/name//text()')) {
@@ -271,8 +237,7 @@ sub process_file {
         foreach my $item ($node->findnodes ('ispartof/collection')) {
             my $id = $item->getAttribute ('ref');
             last if ($id=~/^RePEc$/); # Root-Node wird nicht verlinkt
-            my ($intid,$is_new) = get_next_numeric_id($id);
-            print TIT "0004:$intid\n";
+            print TIT "0004:$id\n";
         }
 
         # Verlag

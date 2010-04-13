@@ -143,11 +143,15 @@ $(document).ready(function(){
 </td>
 <td>
 
-<p> Die einzelnen Abklatsche wurden mit den folgenden Feldern erfaßt,
-die hier recherchiert werden k&ouml;nnen bzw. &uuml;ber Register
-erschlossen sind: </p>
-
 <dl>
+<dt>Freie Suche</dt>
+<dd>
+umfa&szlig;t die unten aufgef&uuml;hrten Felder 1-6. Alle eingegebenen
+Begriffe werden einzeln gesucht. Ein zusammengeh&ouml;riger Suchstring ist
+mit Anf&uuml;hrungszeichen zu markieren.
+</dd>
+
+
 <dt>1. Kurztitel der Inschrift</dt>
 
 <dd>
@@ -157,60 +161,65 @@ in der Regel nach der Edition in der IK-Reihe oder in Epigraphica Anatolica
 <dt>2. Ort der Inschrift</dt>
 
 <dd>
-<dd>
-Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0200">Register</a>, z.B. Ephesus, Knidos, Oinoanda
+z.B. Ephesos, Knidos, Oinoanda; Zugang auch über  <a href="[%
+config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view
+%];database=inst404abklatsch;browsecat=T0200">Register</a>
 </dd>
 
 <dt>3. Kategorie</dt>
 
-<dd>
-Zugang &uuml;ber Eingabemaske sowie <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0710">Register</a>, z.B. Ehrendekret, Grabinschrift usw.
-</dd>
+<dd>z.B. Ehrendekret, Grabinschrift; Zugang &uuml;ber Eingabemaske
+sowie <a href="[% config.get('search_loc') %]?sessionID=[% sessionID
+%];view=[% view
+%];database=inst404abklatsch;browsecat=T0710">Register</a> </dd>
 
-<dt>4. Edition und SEG-Eintrag</dt>
+<dt>4. Edition / SEG-Eintrag</dt>
 
-<dd>
-Edition in der Regel nach IK-Reihe oder Epigraphica Anatolica, z.B. "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p. 3-5, Nr. 496", "SGO 01/15/04"
-SEG-Eintrag nach Möglichkeit letzter Eintrag im Supplementum Epigraphicum Graecum, z.B. "SEG 39, 1989, Nr. 1132" 
-<br/>
-Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0335">Register</a> 
-</dd>
+<dd> Edition in der Regel nach IK-Reihe oder Epigraphica Anatolica,
+z.B. "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p. 3-5, Nr. 496"-
+SEG-Eintrag nach M&ouml;glichkeit gem&auml;&szlig; letztem Eintrag im
+Supplementum Epigraphicum Graecum, "SEG 39, 1989, Nr. 1132" <br/>
+Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[%
+config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view
+%];database=inst404abklatsch;browsecat=T0335">Register</a> </dd>
 
 <dt>5. Inventarnummer</dt>
 
-<dd> "Dubl." hinter derselben Inventarnr. bedeutet, dass mehrere
-identische Abklatsche ein und desselben Steins vorliegen. "A/B/C..." 
-hinter derselben Inventarnr. kennzeichnet verschiedene bzw. sich
-ergänzende Abklatsche ein und desselben Steins. "a/b/c..." hinter
-derselben Inventarnr. dient der Unterscheidung mehrerer verschiedener
-Inschriften, die sich auf ein und demselben Abklatsch befinden. "?" 
-hinter einer Inventarnr. markiert in der Erfassungsphase den
-Abklatsch als noch nicht identifiziert bzw. unpubliziert.  Die
-Abklatsche der Diogenes-Fragmente aus Oinoanda sind in der Weise
-inventarisiert, dass die Inventarnummer der YF-Nummer im Bereich
-1000-1400 entspricht, z.B. YF 46 = Inventarnr. 1046. </dd>
-
-
-<dt>6. Aufbewahrungsort der Inschrift</dt>
-
 <dd>
-Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0410">Register</a>
+Inventarnummer des Abklatsches
 </dd>
 
-<dt>7. Datierung der Inschrift</dt>
+<dt>6. Datierung der Inschrift</dt>
 
-<dd>
-Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=inst404abklatsch;browsecat=T0425">Register</a>, z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"
+<dd> z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"; Zugang hierzu
+&uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[%
+sessionID %];view=[% view
+%];database=inst404abklatsch;browsecat=T0425">Register</a> und "Freie Suche".
+
+</dd>
+<dt>7. Aufbewahrungsort der Inschrift</dt>
+
+<dd> Zugang ausschlie&szlig;lich &uuml;ber <a href="[% config.get('search_loc')
+%]?sessionID=[% sessionID %];view=[% view
+%];database=inst404abklatsch;browsecat=T0410">Register</a>
 </dd>
 
+<br />
+<dt>
+<a href="[%
+config.get('info_loc') %]?sessionID=[% sessionID
+%]&stid=22">Ausf&uuml;hrliche Erl&auml;uterungen zur Datenerfassung
+und den Suchmöglichkeiten</a>
+</dt>
 </dl>
 
 </td>
 </tr>
 </table>
+
+
 </center>
 <p />
-
 
 </div>
 

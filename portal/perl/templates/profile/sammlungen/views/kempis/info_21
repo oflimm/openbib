@@ -1,0 +1,135 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_21
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der weitergehenden Sammlungsinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div class="boxedclear">
+
+<table>
+<tr><td style="vertical-align: top;padding-top:10px;">
+
+<p> <img
+src="/images/openbib/views/kempis/thomasinfo21.jpg"
+class="img" alt="Thomas a Kempis" />
+<center><i>Thomas a Kempis</i></center>
+</p>
+
+<p> <img
+src="/images/openbib/views/kempis/imitatiochristi.jpg"
+class="img" alt="Imitatio Christi (1893)" />
+<center><i>Imitatio Christi</i> (1893)</center>
+</p>
+
+</td>
+<td style="vertical-align: top;padding-left:20px;">
+<h2>Biographische Notizen zu Thomas a Kempis (um 1380-1471) </h2>
+
+<p>
+Thomas von Kempen (lat. Thomas a Kempis) wurde als Thomas
+Hemerken (Malleolus, Hämmerlein) um 1380 als Handwerkersohn aus
+Kempen am Niederrheingeboren. 1392 kam er als Schüler in
+Deventer mit den "Brüdern vom Gemeinsamen Leben" in Kontakt, in deren
+Haus er ab 1398 lebte. Er lernte in dieser Gemeinschaft
+das Abschreiben von Büchern und das Auslegen von biblischen Texten. Auf
+Anraten seines Lehrers Florentius Radewijns trat er 1399 in das
+Augustinerchorherrenstift Agnetenberg bei Zwolle ein, dessen Prior,
+Vorsteher, sein älterer Bruder Johannes (um 1365-1432) war. 1406 legte
+Thomas die Gelübde ab, 1414 empfing er die Priesterweihe. Über 70
+Jahre lebte Thomas, von Gestalt klein, als stiller Mönch in dieser zur
+Windesheimer Kongegration gehörenden Klostergemeinschaft, der er auch
+als Subprior bzw. Novizenmeister diente. Er starb am 25. Juli 1471. Seit
+1897 ruhen die Gebeine des bekanntesten Vertreters der Devotio Modema
+in der Michaels-Kirche in Zwolle.
+</p>
+
+<p>
+<h2>Das Hauptwerk: Imitatio Christi</h2>
+
+Die letzte Fassung der "Vier Bücher von der Nachfolge Christi"schrieb
+Thomas von Kempen im Jahr 1441. Um 1473 wurde das Werk erstmals in
+Augsburg bei Günther Zainer gedruckt. (Laut E. Fromm erschien das Werk
+bereits um das Jahr 1470; im Inkunabelkatalog INKA wird als Druckjahr
+"vor 1473" angegeben.) Es gilt als das nach der Bibel
+im Mittelalter und der frühen Neuzeit meist editierte Werk, das in
+ca. 4000 Ausgaben aufgelegt und in 90 Sprachen übersetzt wurde. Neben
+den Druckausgaben existiert das Werk in 800 Handschriften und 89
+Inkunabeln. Die Verfasserschaft war lange Zeit umstritten, doch ist
+sich die Wissenschaft heute einig, das Thomas von Kempen der
+Urheber der "Imitatio Christi" ist.
+</p>
+
+<p> <h2>Ludwig von Büllingen (1771-1848)</h2>
+Ludwig Freiherr von
+Büllingen wurde am 23. Juli 1771 auf dem adeligen Gut Raedt bei Kempen
+geboren. Er trat 1795 als Kapitular in die Abtei Kornelimünster bei
+Aachen. Nach deren Aufhebung im Jahr 1802 lebte von Büllingen als
+Privatgeistlicher in Köln und feierte hier 1845 sein 50jähriges
+Priesterjubiläum. Büllingen wurde 1824 mit dem Auftrag der
+Verzeichnung der nachgelassenen Handschriften und Drucken der Frühzeit
+der Sammlung von Franz Ferdinand Wallraf betraut. Das Verzeichnis
+dieser 2.058 Werke aus der Zeit von ca. 1460 bis um 1520 befindet sich
+heute in der USB (Sign.: 5P175-1). Verzeichnisse der Handschriften und
+der Kölner Drucke(Sign.: 5P169)der Sammlung Wallraf
+folgten. Büllingens eigener Sammeltätigkeit verdankt die USB unter
+anderem auch den Besitz der Poetica-Sammlung (Sign.: RhFOL2354). Am
+26. Juni 1848 starb Ludwig von Büllingen. Seine Sammlungen vermachte
+er der Stadt Köln unter der testamentarischen Auflage "dafür
+vierhundert Messen lesen zu lassen". </p>
+
+<p>Quellen:
+<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/inst001/87249/1/kug/index.html"
+target="_blank">Corsten, Severin (Hd.: Lexikon des gesamten
+Buchwesens, 2. Aufl., Stuttgart, 1987- </a>;
+<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/inst001/287597/1/kug/index.html"
+target="_blank">Kranz, Gisbert: Thomas von Kempen, Mörs, 1993</a>;
+<br />
+<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/inst001/694765/1/kug/index.html"target="_blank">
+Fromm, Emil: Die Ausgaben der Imitatio Christi in der Kölner
+Stadtbibliothek, Köln, 1886</a>;
+<br />
+Corsten, Severin: Ludwig von Büllingen (1771-1848), in:
+<a href="http://www.ub.uni-koeln.de/bibliothek/pub/schriften/index_ger.html"
+target="_blank"> Kölner Sammler und ihre Bücherkollektionen in der
+Universitäts- und Stadtbibliothek</a>
+</p>
+
+<p>
+<h2>Weitere Sammlungen zu Thomas Hemerken von Kempen</h2>
+<a href="http://www.thomas-archiv-online.de/" target="_blank">
+Thomas-Archiv in Kempen</a>
+<br />
+<a href="http://lib.harvard.edu/" target="_blank"> Harvard College
+Library in Cambridge, Mass.</a>
+</p>
+
+<h2>Ansprechpartner:</h2>
+<strong>Dr. Karl-Ferdinand Beßelmann</strong>,
+Fachreferent für Rheinische Landeskunde und Theologie
+<br />
+Tel.: 0221 470-3877
+<br />
+<a href="http://www.ub.uni-koeln.de/e50/e2492/e3030/index_ger.html?preview=preview"
+target="_blank">E-Mail</a><br /></p>
+</td></tr> </table>
+
+</div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

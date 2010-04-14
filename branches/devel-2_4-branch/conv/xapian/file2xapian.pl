@@ -4,7 +4,7 @@
 #
 #  file2xapian.pl
 #
-#  Dieses File ist (C) 2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -172,6 +172,10 @@ my $count = 1;
                 next if (! exists $searchcontent_ref->{$searchfield});
                 
                 my $tokenstring = join(' ',@{$searchcontent_ref->{$searchfield}});
+
+                # Split cjk
+                
+                
                 $tokenizer->tokenize($tokenstring);
                 
                 my $i = $tokenizer->iterator();
@@ -190,8 +194,9 @@ my $count = 1;
                     my $fieldtoken=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$next;
 
                     # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
-                    
-                    $fieldtoken=(length($fieldtoken) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
+
+                    my $fieldtoken_octet = encode_utf8($fieldtoken); 
+                    $fieldtoken=(length($fieldtoken_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
 
                     $doc->add_term($fieldtoken);
                     
@@ -234,9 +239,8 @@ my $count = 1;
                     $field=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$field;
                     
                     # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
-                    if (length($field) > $FLINT_BTREE_MAX_KEY_LEN){
-                        $field=substr($field,0,$FLINT_BTREE_MAX_KEY_LEN);
-                    }
+                    my $field_octet = encode_utf8($field); 
+                    $field=(length($field_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($field_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$field;
 
                     $logger->debug("Added Stringvalue $field");
                     $doc->add_term($field);

@@ -1,0 +1,102 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+<table cellpadding="10">
+
+<tr>
+
+<td style="vertical-align:top;padding:40px;"> <center> <img src="/images/openbib/views/dante/dantestartbild.jpg"
+alt="Wallraf" /><br /><br /><i
+style="font-size:0.8em">Fresco im Dom zu Orvieto<br/></center>
+</td>
+
+<td valign="top" style="padding-top:25px;">
+
+<h1>Die Dante-Sammlung (Wilhelm Reiners) in der Universit&auml;ts-
+und Stadtbibliothek K&ouml;ln </h1>
+
+<p> Die 1964 erworbene Privatsammlung Wilhelm Reiners umfasste
+ursprünglich ca. 1200 Bde. Nach Abgabe der Dubletten an das
+Petrarca-Institut Köln und an die Universitätsbibliothek Bochum
+verblieben ca. 900 Bde. eine Zählung anhand des Katalogs der Sammlung
+Reiners ergab 409 Titel, die vor 1900 erschienen waren. Die Mehrzahl
+dieser Werke wurden im 19. Jahrhundert publiziert. Neben 244
+italienischen Titeln waren die deutschen Ausgaben am meisten vertreten
+(110). Die übrigen Werke verteilen sich auf die lateinische,
+französische, englische, niederländische und dänische Sprache. Etwa
+200 Titel sind Dante-Ausgaben und Dante-Briefe, überwiegend in der
+Originalsprache, teilweise mit Illustrationen versehen. Die restlichen
+Titel der Sammlung sind Kommentare, Forschungsberichte, biographische
+Werke und Literatur über die Renaissance. Die Sammlung Reiners brachte
+also für die USB eine aussergewöhnliche Bereichung ihres
+Dante-Bestandes, so dass sie seither eine der umfassendsten und besten
+Dante-Kollektionen Deutschlands verwahrt.[<a href="[%
+config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
+</p>
+
+<h1>Dante Alighieri</h1>
+
+<p>
+Dante Alighieri wurde im  Mai oder Juni 1265 in Florenz geboren. Er
+starb am 14. September 1321 in Ravenna.
+Mit seiner Göttlichen Komödie hat er das bis dahin dominierende Latein
+überwunden und das Italienische zu einer Literatursprache
+heraufgeführt.
+Dante ist der bekannteste Dichter Italiens und gilt als einer der
+bedeutendsten Poeten des europäischen Mittelalters. Sein Werk schöpft
+souverän aus der Theologie, der Philosophie und den übrigen
+Wissenschaften (Artes liberales) seiner Zeit.
+</p>
+
+<p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
+Lesesaal.
+</p>
+
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

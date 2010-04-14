@@ -417,6 +417,10 @@ sub grundform {
 	$content=~s/:/ /g;
     }
 
+    # Leerzeichen bei CJK einfuegen
+
+    $content=~s/(\p{InKatakana}|\p{InHiragana}|\p{InCJKCompatibility}|\p{InCJKCompatibilityForms}|\p{InCJKCompatibilityIdeographs}|\p{InCJKCompatibilityIdeographsSupplement}|\p{InCJKRadicalsSupplement}|\p{InCJKStrokes}|\p{InCJKSymbolsAndPunctuation}|\p{InCJKUnifiedIdeographs}|\p{InCJKUnifiedIdeographsExtensionA}|\p{InCJKUnifiedIdeographsExtensionB}|\p{InEnclosedCJKLettersAndMonths})/$1 /g;
+    
     # Zeichenersetzungen
     $content=~s/'/ /g;
     $content=~s/\// /g;

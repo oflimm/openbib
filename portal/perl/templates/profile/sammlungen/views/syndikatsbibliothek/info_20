@@ -71,7 +71,7 @@ Universitäts- und Stadtbibliothek.
 Die Syndikatsbibliothek wird heute in der USB  wieder in ihrer ursprünglich
 geschlossenen Aufstellung unter der Signaturengruppe "SB" aubewahrt. 
 [<a href="[% config.get('info_loc')
-%]?sessionID=[% sessionID %]&stid=21">mehr</a>]
+%]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 
 </p>
 

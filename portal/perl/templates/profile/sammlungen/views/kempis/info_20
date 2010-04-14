@@ -76,7 +76,7 @@ zahlreiche religiöse Schriften in lateinischer Sprache, darunter das
 weltberühmte Erbauungsbuch "De imitatione Christi", eines der am
 meisten verbreiteten Bücher des ausgehenden Mittelalters.
 [<a href="[% config.get('info_loc')
-%]?sessionID=[% sessionID %]&stid=21">mehr</a>]
+%]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 </p>
 
 <p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen

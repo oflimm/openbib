@@ -71,7 +71,7 @@ das  <a href="[% config.get('search_loc') %]?sessionID=[% sessionID
 Die Edition der auf dem Abklatsch befindlichen Inschrift ist in der
 Regel nach der IK-Reihe oder den Epigraphica Anatolica vermerkt, nach
 den Mustern "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p.3-5, Nr. 496",
-"SGO 01/15/04". Au&szlig;erdem ist in der Regel der letzte Eintrag im
+"SGO 01/15/04". Außerdem ist in der Regel der letzte Eintrag im
 Supplementum Epigraphicum Graecum erfa&szlig;t, in welchem die auf dem
 Abklatsch befindliche Inschrift editiert ist, nach dem Muster "SEG
 39, 1989, Nr. 1132". Zur gezielten Suche ist entweder das <a href="[% config.get('search_loc')
@@ -122,7 +122,7 @@ sessionID %];view=[% view
 %];database=inst404abklatsch;browsecat=T0410">Register</a> suchbar
 </dd>
 
-<dt>8. Angaben auf dem Abklatsch (nicht &ouml;fentlich)</dt>
+<dt>8. Angaben auf dem Abklatsch (nicht &ouml;ffentlich)</dt>
 
 <dd>
 In diesem Feld sind alle Angaben aufgenommen, die auf den

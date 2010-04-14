@@ -55,8 +55,7 @@ style="font-size:0.8em">Fresco im Dom zu Orvieto<br/></center>
 <h1>Die Dante-Sammlung (Wilhelm Reiners) in der Universit&auml;ts-
 und Stadtbibliothek K&ouml;ln </h1>
 
-<p>
-Die 1964 erworbene Privatsammlung Wilhelm Reiners umfasste
+<p> Die 1964 erworbene Privatsammlung Wilhelm Reiners umfasste
 ursprünglich ca. 1200 Bde. Nach Abgabe der Dubletten an das
 Petrarca-Institut Köln und an die Universitätsbibliothek Bochum
 verblieben ca. 900 Bde. eine Zählung anhand des Katalogs der Sammlung
@@ -66,13 +65,13 @@ italienischen Titeln waren die deutschen Ausgaben am meisten vertreten
 (110). Die übrigen Werke verteilen sich auf die lateinische,
 französische, englische, niederländische und dänische Sprache. Etwa
 200 Titel sind Dante-Ausgaben und Dante-Briefe, überwiegend in der
-Originalsprache, teilweise mit Illustrationen versehen. Die
-restlichen Titel der Sammlung sind Kommentare, Forschungsberichte,
-biographische Werke und Literatur über die Renaissance. Die Sammlung
-Reiners brachte also für die USB eine aussergewöhnliche Bereichung
-ihres Dante-Bestandes, so dass sie seither eine der umfassendsten und
-besten Dante-Kollektionen Deutschlands verwahrt.[<a href="[% config.get('info_loc')
-%]?sessionID=[% sessionID %]&stid=21">mehr</a>]
+Originalsprache, teilweise mit Illustrationen versehen. Die restlichen
+Titel der Sammlung sind Kommentare, Forschungsberichte, biographische
+Werke und Literatur über die Renaissance. Die Sammlung Reiners brachte
+also für die USB eine aussergewöhnliche Bereichung ihres
+Dante-Bestandes, so dass sie seither eine der umfassendsten und besten
+Dante-Kollektionen Deutschlands verwahrt.[<a href="[%
+config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 </p>
 
 <h1>Dante Alighieri</h1>

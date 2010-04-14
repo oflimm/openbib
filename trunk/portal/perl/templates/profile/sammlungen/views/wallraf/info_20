@@ -56,20 +56,22 @@ style="font-size:0.8em">Franz Ferdinand Wallraf (1748-1824)<br
 <h1>Die Bibliothek Franz Ferdinand Wallraf in der Universit&auml;ts-
 und Stadtbibliothek K&ouml;ln </h1>
 
-<p>
-Zu den Wallraf'schen Sammlungen, dem "Wallrafianum" geh&ouml;rte
-neben Mineralien, Pr&auml;paraten, Gem&auml;lden, Skulpturen,
-Urkunden und Handschriften auch eine umfangreiche Bibliothek. Als 1802
-der K&ouml;lner Klosterbesitz der S&auml;kularisation zum Opfer fiel,
+<p> Zu den Wallraf'schen Sammlungen, dem "Wallrafianum" geh&ouml;rte
+neben Mineralien, Pr&auml;paraten, Gem&auml;lden, Skulpturen, Urkunden
+und Handschriften auch eine umfangreiche Bibliothek. Als 1802 der
+K&ouml;lner Klosterbesitz der S&auml;kularisation zum Opfer fiel,
 bem&uuml;hte sich Wallraf darum, Restbest&auml;nde k&ouml;lnischer und
-niederrheinischer Ordensniederlassungen zu
-sichern. Seine B&uuml;chersammlung erhielt auf diese Weise einen
-nahezu universalen Charakter. Wallraf vermachte seine Sammlungen der
-Stadt K&ouml;ln. Gemeinsam mit der Syndikatsbibliothek des K&ouml;lner
-Rates bildete die "Bibliothek Wallraf" den Grundstock der ehemaligen
-Stadtbibliothek K&ouml;ln, die 1919 Teil der neuen
-Universit&auml;ts- und Stadtbibliothek wurde. Heute befinden sich alle Druckwerke in
-der USB. Die Wallraf'schen Handschriften werden im Stadtarchiv aufbewahrt.
+niederrheinischer Ordensniederlassungen zu sichern. Seine
+B&uuml;chersammlung erhielt auf diese Weise einen nahezu universalen
+Charakter. Wallraf vermachte seine Sammlungen der Stadt
+K&ouml;ln. Gemeinsam mit der Syndikatsbibliothek des K&ouml;lner Rates
+bildete die "Bibliothek Wallraf" den Grundstock der ehemaligen
+Stadtbibliothek K&ouml;ln, die 1919 Teil der neuen Universit&auml;ts-
+und Stadtbibliothek wurde. In der USB befindet sich heute die Masse
+der ehemaligen Wallraf-Bibliothek. Weitere buchbestände befinden sich
+außerdem in städtische Einrichtungen wie dem Stadtmuseum, das
+Wallraf-Richartz-Museum und auch das Stadtarchiv. Die
+Wallraf'schen Handschriften werden im Stadtarchiv aufbewahrt.
 </p>
 
 <h1>Franz Ferdinand Wallraf</h1>
@@ -90,7 +92,7 @@ Patriotismus und seine Liebe zur Vaterstadt Köln, unabhängig von den
 herrschenden politischen Verhältnissen. Seine wissenschaftliche Arbeit
 und seine Sammeltätigkeit schützten ihn in den vielfältigen Umbrüchen
 seiner Zeit.[<a href="[% config.get('info_loc')
-%]?sessionID=[% sessionID %]&stid=21">mehr</a>]
+%]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 </p>
 
 <p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen

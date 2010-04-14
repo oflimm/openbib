@@ -55,7 +55,7 @@ my ($inputdir,$idmappingfile);
 	    "inputdir=s"           => \$inputdir,
 	    );
 
-if (!$inputdir || !$idmappingfile){
+if (!$inputdir){
     print << "HELP";
 repec2meta.pl - Aufrufsyntax
 
@@ -382,8 +382,6 @@ close(NOTATION);
 close(SWT);
 close(MEX);
 
-DumpFile($idmappingfile,\%numericidmapping);
-
 sub konv {
     my ($content)=@_;
 
@@ -392,20 +390,4 @@ sub konv {
     $content=~s/</&lt;/g;
 
     return $content;
-}
-
-sub get_next_numeric_id {
-    my $alnumidentifier = shift;
-
-    if (exists $numericidmapping{$alnumidentifier}){
-        # (Id,New?)
-        return ($numericidmapping{$alnumidentifier},0);
-    }
-    else {
-        $numericidmapping{$alnumidentifier}= $numericidmapping{'next_unused_id'};
-        $numericidmapping{'next_unused_id'}=$numericidmapping{'next_unused_id'}+1;
-
-        # (Id,New?)
-        return ($numericidmapping{$alnumidentifier},1);
-    }
 }

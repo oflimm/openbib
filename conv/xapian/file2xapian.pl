@@ -4,7 +4,7 @@
 #
 #  file2xapian.pl
 #
-#  Dieses File ist (C) 2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -88,7 +88,7 @@ if (!$database){
   exit;
 }
 
-my $FLINT_BTREE_MAX_KEY_LEN = 80;
+my $FLINT_BTREE_MAX_KEY_LEN = 240;
 my $DRILLDOWN_MAX_KEY_LEN   = 100;
 
 my %normdata                = ();
@@ -287,9 +287,10 @@ my $count = 1;
                     next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
 
                     # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
-                    
-                    $next=(length($next) > $FLINT_BTREE_MAX_KEY_LEN)?substr($next,0,$FLINT_BTREE_MAX_KEY_LEN):$next;
 
+                    my $next_octet = encode_utf8($next); 
+                    $next=(length($next_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($next_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$next;
+                    
                     # Wenn noch nicht gesehen, dann Term indexieren
                     if (!exists $seen_token_ref->{$next}){
                         # Token generell einfuegen
@@ -312,7 +313,9 @@ my $count = 1;
                         my $fieldtoken=$tokinfo_ref->{prefix}.$token;
 
                         # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN=252 Zeichen
-                        $fieldtoken=(length($fieldtoken) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
+
+                        my $fieldtoken_octet = encode_utf8($fieldtoken); 
+                        $fieldtoken=(length($fieldtoken_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
 
                         $doc->add_term($fieldtoken);
 

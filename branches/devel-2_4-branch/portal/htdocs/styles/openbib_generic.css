@@ -1,5 +1,9 @@
 /* Generisches Stylesheet fuer das OpenBib-Portal */
 
+/***************************************/
+/* Allgemeine Definitionen             */
+
+
 body {
 /*  color: black;
   font-size: 0.9em;
@@ -1535,3 +1539,4 @@ a.ext {
   padding-left: 1.3em;
   background: url('/images/openbib/extern.gif') no-repeat left center;
 }
+

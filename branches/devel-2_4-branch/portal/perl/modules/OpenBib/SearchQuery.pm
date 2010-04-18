@@ -148,6 +148,27 @@ sub set_from_apache_request {
         $self->{_searchquery}->{$searchfield}->{bool} = $searchfield_bool_op;
 
         if ($searchfield_norm_content){
+            # Zuerst Stringsuchen in der Freie Suche
+
+            if ($searchfield eq "fs" || $searchfield_norm_content=~/:|.+?|/){
+                while ($searchfield_norm_content=~m/^([^\|]+)\|([^\|]+)\|(.*)$/){
+                    my $first = $1;
+                    my $string = $2;
+                    my $last = $3;
+
+                    $string = OpenBib::Common::Util::grundform({
+                        content   => $string,
+                        searchreq => 1,
+                    });
+
+                    $string=~s/\W/_/g;
+                    
+                    $logger->debug("1: $first String: $string 3: $last");
+                    
+                    $searchfield_norm_content=$first.$string.$last;
+                }
+            }
+            
             if ($config->{'searchfield'}{$searchfield}{option} eq "filter_isbn"){
                 $searchfield_norm_content = lc($searchfield_norm_content);
                 # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
@@ -175,6 +196,10 @@ sub set_from_apache_request {
                  });
             }
 
+            if ($config->{'searchfield'}{$searchfield}{type} eq "string"){
+                $searchfield_norm_content =~s/\W/_/g;
+            }
+            
             if ($searchfield_norm_content){
                 $self->{_have_searchterms} = 1;
                 $self->{_searchquery}{$searchfield}{norm} = $searchfield_norm_content;

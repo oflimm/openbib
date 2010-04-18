@@ -206,7 +206,7 @@ foreach my $type (keys %{$stammdateien_ref}){
  CATLINE:
   while (my $line=<IN>){
     my ($category,$indicator,$content);
-    if ($line=~m/^0000:(\d+)$/){
+    if ($line=~m/^0000:(.+)$/){
       $id=$1;
       if ($incremental){
           print OUTDELETE "delete from ".$type." where id=$id;\n";
@@ -308,7 +308,7 @@ my $titid;
 CATLINE:
 while (my $line=<IN>){
     my ($category,$indicator,$content);
-    if ($line=~m/^0000:(\d+)$/){
+    if ($line=~m/^0000:(.+)$/){
         $id=$1;
         $titid=0;
         next CATLINE;
@@ -360,7 +360,7 @@ while (my $line=<IN>){
 
         # Verknupefungen
         if ($category=~m/^0004/){
-            my ($sourceid) = $content=~m/^(\d+)/;
+            my ($sourceid) = $content=~m/^(.+)/;
             my $sourcetype = 1; # TIT
             my $targettype = 6; # MEX
             my $targetid   = $id;
@@ -403,7 +403,7 @@ if ($addsuperpers){
     open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeffnet werden";
 
     while (my $line=<IN>){
-        if ($line=~m/^0004.*?:(\d+)/){
+        if ($line=~m/^0004.*?:(.+)/){
             my $superid=$1;
             $listitemdata_superid{$superid}=1;
         }
@@ -416,7 +416,7 @@ if ($addsuperpers){
     my ($id,@persids);
 
     while (my $line=<IN>){
-        if ($line=~m/^0000:(\d+)$/){            
+        if ($line=~m/^0000:(.+)$/){            
             $id=$1;
             @persids=();
         }
@@ -889,7 +889,7 @@ while (my $line=<IN>){
         
         # Verknuepfungen
         if ($category=~m/^0004/){
-            my ($targetid) = $content=~m/^(\d+)/;
+            my ($targetid) = $content=~m/^(.+)/;
             my $targettype = 1; # TIT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT

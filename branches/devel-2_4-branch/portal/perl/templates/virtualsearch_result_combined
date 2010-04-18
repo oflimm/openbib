@@ -30,7 +30,7 @@
         Trefferliste
     </div>
     <div class="hits">
-[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.get('info_loc') %]?view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% start_range %]-[% end_range %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
+[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% start_range %]-[% end_range %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
     </div>
     <div class="navigation">
 [% msg.maketext("Seite:") %]&nbsp;
@@ -42,7 +42,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %];combinedbs=1">[% page %]</a>
+&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %];combinedbs=1">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]
@@ -73,7 +73,7 @@
   FOREACH part IN item.${'P0100'} ;
     thislength = part.content.length ;
     IF (thislength+personslength) < config.get('maxlength_pers') ;
-      persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
+      persons.push("<a href=\"${config.get('search_loc')}?view=${view};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
       personslength = personslength+thislength ;
     ELSE ;
       truncatepers = 1 ;
@@ -85,7 +85,7 @@
     END ;
     thislength = part.content.length ;
     IF (thislength+personslength) < config.get('maxlength_pers') ;
-      persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
+      persons.push("<a href=\"${config.get('search_loc')}?view=${view};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
       personslength = personslength+thislength ;
     ELSE ;
       truncatepers = 1 ;
@@ -94,7 +94,7 @@
   FOREACH part IN item.${'C0200'}  ;
     thislength = part.content.length ;
     IF (thislength+personslength) < config.get('maxlength_pers') ;
-      persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
+      persons.push("<a href=\"${config.get('search_loc')}?view=${view};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
       personslength = personslength+thislength ;
     ELSE ;
       truncatepers = 1 ;
@@ -103,7 +103,7 @@
   FOREACH part IN item.${'C0201'}  ;
     thislength = part.content.length ;
     IF (thislength+personslength) < config.get('maxlength_pers') ;
-      persons.push("<a href=\"${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
+      persons.push("<a href=\"${config.get('search_loc')}?view=${view};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
       personslength = personslength+thislength ;
     ELSE ;
       truncatepers = 1 ;
@@ -177,10 +177,10 @@
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-<span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title | truncate(config.get('maxlength_tit')) %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?view=[% view %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title | truncate(config.get('maxlength_tit')) %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br /><img style="vertical-align:bottom;padding:1px;" src="[% config.get('home_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>&nbsp;<i>
 [%-   IF dbinfo.get('use_libinfo').${item.database} %]
-<a href="[% config.get('info_loc') %]?id=[% item.database %];stid=60">
+<a href="[% config.get('info_loc') %]?view=[% view %];id=[% item.database %];stid=60">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -188,7 +188,7 @@
       </div>
       <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
       <div class="titleactions">
-<a class="collection" href="[% config.get('managecollection_loc') %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% config.get('bibsonomy_loc') %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
+<a class="collection" href="[% config.get('managecollection_loc') %]?view=[% view %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% config.get('bibsonomy_loc') %]?view=[% view %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
       </div>
     </div>
 <!-- Ende einzelner Treffer -->
@@ -204,7 +204,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]

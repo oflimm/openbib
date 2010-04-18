@@ -35,7 +35,7 @@
    NEXT IF classnr <= 1;
    classnr = classnr - 1;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% config.get('search_loc') %]?database=[% database %];searchsingleswt=[% swtid %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% config.get('search_loc') %]?view=[% view %];database=[% database %];searchsingleswt=[% swtid %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]
@@ -81,7 +81,7 @@
    NEXT IF classnr <= 1;
    classnr = classnr - 1;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% config.get('search_loc') %]?database=[% database %];searchsingleswt=[% swtid %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% config.get('search_loc') %]?view=[% view %];database=[% database %];searchsingleswt=[% swtid %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

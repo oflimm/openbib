@@ -36,7 +36,7 @@ function update_fak(yourform, checked, fak) {
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('databasechoice_loc') %]?view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+   <li><a class="active" href="[% config.get('databasechoice_loc') %]?view=[% view %];view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div class="content">

@@ -24,7 +24,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('resultlists_loc') %]?action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.get('resultlists_loc') %]?view=[% view %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div class="content">
@@ -94,15 +94,15 @@
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
 [% IF combinedbs %]
-<tr><td class="listrow2"><a href="[% config.get('virtualsearch_loc') %]?drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% thisquery.id %];offset=0;hitrange=[% hitrange %];sb=[% qopts.sb %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.get('virtualsearch_loc') %]?view=[% view %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% thisquery.id %];offset=0;hitrange=[% hitrange %];sb=[% qopts.sb %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
 [% ELSE %]
-<tr><td class="listrow2"><a href="[% config.get('resultlists_loc') %]?action=showall;sortall=0;sorttype=author;queryid=[% thisquery.id %];view=[% view %];offset=0"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.get('resultlists_loc') %]?view=[% view %];action=showall;sortall=0;sorttype=author;queryid=[% thisquery.id %];view=[% view %];offset=0"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.get('resultlists_loc') %]?database=[% resultdb.trefferdb %];action=showrange;offset=0;queryid=[% thisquery.id %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
+<tr><td class="[% listrow %]"><a href="[% config.get('resultlists_loc') %]?view=[% view %];database=[% resultdb.trefferdb %];action=showrange;offset=0;queryid=[% thisquery.id %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
 [% IF resultdb.trefferzahl == qopts.maxhits %]
 [% msg.maketext("mind.") %]&nbsp;
 [% END %]

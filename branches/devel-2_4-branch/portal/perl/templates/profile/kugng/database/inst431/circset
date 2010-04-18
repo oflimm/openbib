@@ -32,7 +32,7 @@
 [% FOREACH mex IN circset %]
 <tr align="center"><td>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-<a href="[% config.get('info_loc') %]?id=[% record.database %];stid=60">
+<a href="[% config.get('info_loc') %]?view=[% view %];id=[% record.database %];stid=60">
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]
@@ -45,7 +45,7 @@
    <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.get('redirect_loc') %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF mex.Statuscode != 0 %]
-     <a href="[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;(ausgeliehen bis [% mex.Rueckgabe %])
+     <a href="[% config.get('circulation_loc') %]?view=[% view %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;(ausgeliehen bis [% mex.Rueckgabe %])
 [%      ELSE %]
 Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
 [%      END %]
@@ -62,7 +62,7 @@ Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
 [% FOREACH mex IN circset %]
 <tr align="center"><td>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-<a href="[% config.get('info_loc') %]?id=[% record.database %];stid=60">
+<a href="[% config.get('info_loc') %]?view=[% view %];id=[% record.database %];stid=60">
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]

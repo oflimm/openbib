@@ -22,9 +22,9 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('login_loc') %]?view=[% view %];do_login=1">[% msg.maketext("Login") %]</a></li>
-   <li><a class="active" href="[% config.get('selfreg_loc') %]?action=show">[% msg.maketext("Selbstregistrierung") %]</a></li>
-   <li><a                href="[% config.get('mailpassword_loc') %]?action=show">[% msg.maketext("Passwort vergessen?") %]</a></li>
+   <li><a                href="[% config.get('login_loc') %]?view=[% view %];view=[% view %];do_login=1">[% msg.maketext("Login") %]</a></li>
+   <li><a class="active" href="[% config.get('selfreg_loc') %]?view=[% view %];action=show">[% msg.maketext("Selbstregistrierung") %]</a></li>
+   <li><a                href="[% config.get('mailpassword_loc') %]?view=[% view %];action=show">[% msg.maketext("Passwort vergessen?") %]</a></li>
 </ul>
 
 <div class="content">
@@ -32,7 +32,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Sie sind erfolgreich registriert") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Klicken Sie nun [_1]hier[_2], um sich anzumelden.","<a href=\"http://${config.get('servername')}${config.get('login_loc')}?&do_login=1&loginname=${loginname}\">","</a>") %]
+[% msg.maketext("Klicken Sie nun [_1]hier[_2], um sich anzumelden.","<a href=\"http://${config.get('servername')}${config.get('login_loc')}?view=${view};&do_login=1&loginname=${loginname}\">","</a>") %]
 </td></tr>
 </table>
 

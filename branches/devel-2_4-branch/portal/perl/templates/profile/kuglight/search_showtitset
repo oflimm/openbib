@@ -30,7 +30,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('search_loc') %]?database=[% record.database %];searchsingletit=[% record.id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('search_loc') %]?view=[% view %];database=[% record.database %];searchsingletit=[% record.id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -49,12 +49,12 @@
 <td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
 [%- END -%]
 <td align="center">
-<!--	    <a href="[% config.get('info_loc') %]?view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]"><img src="[% config.get('top20_img') %]" alt="[% msg.maketext("Top 20") %]" border="0" /></a>&nbsp;-->
+<!--	    <a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]"><img src="[% config.get('top20_img') %]" alt="[% msg.maketext("Top 20") %]" border="0" /></a>&nbsp;-->
 <!--        <a href="[% config.get('redirect_loc') %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top"><img src="[% config.get('share_img') %]" alt="An BibSonomy senden" title="[% msg.maketext("An BibSonomy senden") %]" /></a>&nbsp;-->
-	<span class="rlcollect"><a href="[% config.get('managecollection_loc') %]?action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span>&nbsp;
-        <a href="[% config.get('managecollection_loc') %]?action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]"><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
-        <a href="[% config.get('managecollection_loc') %]?action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]"><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
-        <a href="[% config.get('managecollection_loc') %]?action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]"><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
+	<span class="rlcollect"><a href="[% config.get('managecollection_loc') %]?view=[% view %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span>&nbsp;
+        <a href="[% config.get('managecollection_loc') %]?view=[% view %];action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]"><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('managecollection_loc') %]?view=[% view %];action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]"><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('managecollection_loc') %]?view=[% view %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]"><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
 <!--        <a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>&nbsp;-->
 </td>
 [%- IF nexturl -%]
@@ -115,8 +115,8 @@ FOREACH category IN categories;
          IF activefeed.2 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.get('virtualsearch_loc')}?searchall=1;verf=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?database=${record.database};searchsingleaut=${thisid}";
+         globalurl = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;verf=%22${item.content}%22";
+         localurl  = "${config.get('search_loc')}?view=${view};database=${record.database};searchsingleaut=${thisid}";
          content   = "<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
@@ -129,8 +129,8 @@ FOREACH category IN categories;
          IF activefeed.3 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.get('virtualsearch_loc')}?searchall=1;kor=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?database=${record.database};searchsinglekor=${thisid}";
+         globalurl = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;kor=%22${item.content}%22";
+         localurl  = "${config.get('search_loc')}?view=${view};database=${record.database};searchsinglekor=${thisid}";
          content   = "<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
@@ -169,7 +169,7 @@ FOREACH category IN categories;
          END ;
 
    # CASE "E4100";
-   #      localurl    = "${config.get('search_loc')}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+   #      localurl    = "${config.get('search_loc')}?view=${view};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
    #      bklookup    = config.load_bk ;
    #      bkdesc      = bklookup.${content};
    #      content     = "<a href=\"${localurl}\">${content}</a>";
@@ -198,8 +198,8 @@ FOREACH category IN categories;
          IF activefeed.4 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.get('virtualsearch_loc')}?searchall=1;swt=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?database=${record.database};searchsingleswt=${thisid}";
+         globalurl = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;swt=%22${item.content}%22";
+         localurl  = "${config.get('search_loc')}?view=${view};database=${record.database};searchsingleswt=${thisid}";
          content   = "<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0700";
@@ -212,7 +212,7 @@ FOREACH category IN categories;
          IF activefeed.5 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         localurl  = "${config.get('search_loc')}?database=${record.database};searchsinglenot=${thisid}";
+         localurl  = "${config.get('search_loc')}?view=${view};database=${record.database};searchsinglenot=${thisid}";
          content   = " <a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T1600";
@@ -226,10 +226,10 @@ FOREACH category IN categories;
          content   = content ;
 
     CASE "T5001";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?view=${view};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?view=${view};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

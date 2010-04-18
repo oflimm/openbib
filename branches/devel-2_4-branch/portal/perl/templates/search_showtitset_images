@@ -24,13 +24,13 @@
 </p>
 [% END %]
 <p>
-<a href="[% config.get('redirect_loc') %]/525/http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;id=[% isbn %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="[% config.get('redirect_loc') %]/525/http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?view=[% view %];action=lookup;id=[% isbn %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 <p>
 [%- IF bibkey -%]
-<a href="[% config.get('redirect_loc') %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;id=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+<a href="[% config.get('redirect_loc') %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?view=[% view %];action=lookup;id=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
 <p>
-<a href="[% config.get('redirect_loc') %]/512/http://paperc.de/search?query=[% isbn %]&commit=Suchen" target="_blank" title="[% msg.maketext("Online Lesen bei PaperC") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;id=[% isbn %];target=paperc" alt="[% msg.maketext("Bei PaperC vorhanden?") %]" border="0" /></a><br/>
+<a href="[% config.get('redirect_loc') %]/512/http://paperc.de/search?query=[% isbn %]&commit=Suchen" target="_blank" title="[% msg.maketext("Online Lesen bei PaperC") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?view=[% view %];action=lookup;id=[% isbn %];target=paperc" alt="[% msg.maketext("Bei PaperC vorhanden?") %]" border="0" /></a><br/>
 </p>

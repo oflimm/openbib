@@ -23,7 +23,7 @@
 <tr><th>[% msg.maketext("Logout erfolgreich") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
-[% msg.maketext("Um sich wieder einzuloggen folgen Sie bitte [_1]diesem Link[_2].","<a href=\"http://${config.get('servername')}${config.get('admin_loc')}?do_loginmask=1\">","</a>") %]
+[% msg.maketext("Um sich wieder einzuloggen folgen Sie bitte [_1]diesem Link[_2].","<a href=\"http://${config.get('servername')}${config.get('admin_loc')}?view=${view};do_loginmask=1\">","</a>") %]
 
 </td></tr>
 </table>

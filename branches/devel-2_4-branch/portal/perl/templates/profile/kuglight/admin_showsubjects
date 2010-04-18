@@ -56,7 +56,7 @@
 [% listrow = 'listrow1' %]
 [% FOREACH subject IN subjects %]
 
-<tr class="[% listrow %]"><td><a href="[% config.get('admin_loc') %]?&do_editsubject=1&subjectid=[% subject.id %]&do_edit=1">[% subject.name %]</a></td><td>[% subject.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
+<tr class="[% listrow %]"><td><a href="[% config.get('admin_loc') %]?view=[% view %];&do_editsubject=1&subjectid=[% subject.id %]&do_edit=1">[% subject.name %]</a></td><td>[% subject.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]

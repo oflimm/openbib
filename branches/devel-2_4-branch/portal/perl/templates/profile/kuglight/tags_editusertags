@@ -26,8 +26,8 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('tags_loc') %]?show_usertags=1">&Uuml;bersicht</a></li>
-   <li><a class="active" href="[% config.get('tags_loc') %]?edit_usertags=1">&Auml;ndern</a></li>
+   <li><a                href="[% config.get('tags_loc') %]?view=[% view %];show_usertags=1">&Uuml;bersicht</a></li>
+   <li><a class="active" href="[% config.get('tags_loc') %]?view=[% view %];edit_usertags=1">&Auml;ndern</a></li>
 </ul>
 
 <div class="content">

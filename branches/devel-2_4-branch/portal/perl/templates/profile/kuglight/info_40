@@ -27,7 +27,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];database=[% database %];stid=40" title="Viewname"><span class="dbdescshort">[% config.get_viewdesc_from_viewname(view) %]</span></a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% database %];stid=40" title="Viewname"><span class="dbdescshort">[% config.get_viewdesc_from_viewname(view) %]</span></a></li>
 </ul>
 
 <div class="content">

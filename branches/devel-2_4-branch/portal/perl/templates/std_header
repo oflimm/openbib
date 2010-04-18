@@ -93,12 +93,43 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
-<!-- <script language="JavaScript" type="text/javascript" src="/js/jtip.js"></script> -->
 
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/jquery.autocomplete.css" %]" type="text/css" />
-  <link rel="stylesheet" href="[% "${config.get('css_loc')}/ui.tabs.css" %]" type="text/css" media="print, projection, screen" />
+  [%- TRY -%]
+    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/jquery.autocomplete.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/jquery.autocomplete.css" %]" />
+  [%- CATCH -%]        
+    [%- TRY -%]
+      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/jquery.autocomplete.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/jquery.autocomplete.css" %]" />
+    [%- CATCH -%]
+      [%- TRY -%]
+        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/jquery.autocomplete.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/jquery.autocomplete.css" %]" />
+      [%- CATCH -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/jquery.autocomplete.css" %]" />
+      [%- END -%]
+    [%- END -%]
+  [%- END -%]
+
+  [%- TRY -%]
+    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/ui.tabs.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/ui.tabs.css" %]" />
+  [%- CATCH -%]        
+    [%- TRY -%]
+      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/ui.tabs.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/ui.tabs.css" %]" />
+    [%- CATCH -%]
+      [%- TRY -%]
+        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/ui.tabs.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/ui.tabs.css" %]" />
+      [%- CATCH -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/ui.tabs.css" %]" />
+      [%- END -%]
+    [%- END -%]
+  [%- END -%]
+
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/ui.accordion.css" %]" type="text/css" media="print, projection, screen" />
-<!-- <link rel="stylesheet" href="[% "${config.get('css_loc')}/jtip.css" %]" type="text/css" media="print, projection, screen" /> -->
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
 <!--[if lt IE 7.]>

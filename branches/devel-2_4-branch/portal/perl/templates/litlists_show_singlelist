@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('litlists_loc') %]?action=show;litlistid=[% litlist.properties.id %]">[% msg.maketext("Literaturliste") %]</a></li>
+   <li><a class="active" href="[% config.get('litlists_loc') %]?view=[% view %];action=show;litlistid=[% litlist.properties.id %]">[% msg.maketext("Literaturliste") %]</a></li>
 </ul>
 
 <div class="content">
@@ -46,7 +46,7 @@
 <b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.subjects.size -%]
 [%- FOREACH subject IN litlist.properties.subjects-%]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID%];stid=54;id=[% subject.id %]">[% subject.name %]</a>&nbsp;&nbsp;
+<a href="[% config.get('info_loc') %]?view=[% view %];sessionID=[% sessionID%];stid=54;id=[% subject.id %]">[% subject.name %]</a>&nbsp;&nbsp;
 [%- END-%]
 [%- ELSE -%]
 [% msg.maketext("Keine") %]
@@ -86,7 +86,7 @@
 <div class="headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
-<a href="[% config.get('listlists_loc') %]?action=show;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.get('litlists_loc') %]?action=show;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('listlists_loc') %]?action=show;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('listlists_loc') %]?action=show;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('listlists_loc') %]?action=show;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% config.get('listlists_loc') %]?view=[% view %];action=show;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.get('litlists_loc') %]?view=[% view %];action=show;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('listlists_loc') %]?view=[% view %];action=show;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('listlists_loc') %]?view=[% view %];action=show;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('listlists_loc') %]?view=[% view %];action=show;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 </div>
@@ -148,7 +148,7 @@
 [% listrow = 'listrow1' %]
 [% FOREACH other_litlist IN other_litlists.same_user %]
 [%   IF other_litlist.type == 1 %]
-<tr class="[% listrow %]"><td><a href="http://[% config.get('servername') %][% config.get('litlists_loc') %]?action=show;litlistid=[% other_litlist.id %];do_showlitlist=1"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)[%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+<tr class="[% listrow %]"><td><a href="http://[% config.get('servername') %][% config.get('litlists_loc') %]?view=[% view %];action=show;litlistid=[% other_litlist.id %];do_showlitlist=1"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)[%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 
 [%     IF listrow == 'listrow1' %]
 [%       listrow = 'listrow2' %]
@@ -175,7 +175,7 @@
 [% listrow = 'listrow1' %]
 [% FOREACH other_litlist IN other_litlists.same_title %]
 [%   IF other_litlist.type == 1 %]
-<tr class="[% listrow %]"><td><a href="[% config.get('litlists_loc') %]?action=show;litlistid=[% other_litlist.id %];do_showlitlist=1"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)&nbsp;[%- IF other_litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+<tr class="[% listrow %]"><td><a href="[% config.get('litlists_loc') %]?view=[% view %];action=show;litlistid=[% other_litlist.id %];do_showlitlist=1"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)&nbsp;[%- IF other_litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 
 [%     IF listrow == 'listrow1' %]
 [%       listrow = 'listrow2' %]

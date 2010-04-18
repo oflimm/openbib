@@ -32,7 +32,7 @@ bodyframeurl   = "${config.get('searchmask_loc')}?view=${view};setmask=${setmask
 END;
 
 IF searchsingletit && database;
-    bodyframeurl = "${config.get('search_loc')}?search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit};view=${view}";
+    bodyframeurl = "${config.get('search_loc')}?view=${view};search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit}";
 END;
 
 IF fs;

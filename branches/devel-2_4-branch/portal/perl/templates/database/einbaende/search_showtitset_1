@@ -72,7 +72,7 @@
        itemid        = thisitem.id;
        itemclass     = css_classes.$classnr;
 
-       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${config.get('tags_loc')}?searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
+       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${config.get('tags_loc')}?view=${view};searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
      END ;
      alltags_cloud = "${alltags_cloud}\n</ol>" ;
      cloud_item = {
@@ -234,7 +234,7 @@ END ;
 [%- ELSE -%]
 <tr><td width="200"></td><td colspan="2"></td></tr>
 [%- END -%]
-<tr><td><b>[% msg.maketext("Textangaben") %]</b></td><td><a href="[% config.get('search_loc') %]?database=einbaende;searchsingletit=[% titidn %]" class="cssbutton glass kug"><span>[% msg.maketext("Anzeigen") %]</span></a></td></tr>
+<tr><td><b>[% msg.maketext("Textangaben") %]</b></td><td><a href="[% config.get('search_loc') %]?view=[% view %];database=einbaende;searchsingletit=[% titidn %]" class="cssbutton glass kug"><span>[% msg.maketext("Anzeigen") %]</span></a></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
 </table>
 
@@ -477,15 +477,15 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 <dd class="review">[%    IF item.review %][% item.review %][% END %]
 [% IF item.id == ownreviewid %]
 <p />
-<a href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
+<a href="[% config.get('userreviews_loc') %]?view=[% view %];sessionID=[% sessionID
 %];reviewid=[% item.id %];do_edit=1">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
+href="[% config.get('userreviews_loc') %]?view=[% view %];sessionID=[% sessionID
 %];reviewid=[% item.id %];do_del=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF loginname %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% config.get('userreviews_loc') %]?view=[% view %];sessionID=[% sessionID
 %];titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
+<a href="[% config.get('userreviews_loc') %]?view=[% view %];sessionID=[% sessionID
 %];titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
@@ -509,7 +509,7 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${config.get('search_loc')}?database=${same_record.database};searchsingletit=${same_record.id}" %]
+[% same_url = "${config.get('search_loc')}?view=${view};database=${same_record.database};searchsingletit=${same_record.id}" %]
 <li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
 [% END %]
 </ol>
@@ -525,7 +525,7 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <ol>
 [% FOREACH similar_record IN similar_records.get_records %]
 [% item = similar_record.get_brief_normdata %]
-[% similar_url = "${config.get('search_loc')}?database=${similar_record.database};searchsingletit=${similar_record.id}" %]
+[% similar_url = "${config.get('search_loc')}?view=${view};database=${similar_record.database};searchsingletit=${similar_record.id}" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
@@ -584,19 +584,19 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <table>
 <tr>
 <th><img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
-<td><a href="[% config.get('bibsonomy_loc') %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
+<td><a href="[% config.get('bibsonomy_loc') %]?view=[% view %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
 <th><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
-<td><a class="collection" href="[% config.get('managecollection_loc') %]?action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
+<td><a class="collection" href="[% config.get('managecollection_loc') %]?view=[% view %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
-<td><a href="[% config.get('managecollection_loc') %]?action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<td><a href="[% config.get('managecollection_loc') %]?view=[% view %];action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
 <th><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
-<td><a href="[% config.get('managecollection_loc') %]?action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<td><a href="[% config.get('managecollection_loc') %]?view=[% view %];action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
-<td><a href="[% config.get('managecollection_loc') %]?action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+<td><a href="[% config.get('managecollection_loc') %]?view=[% view %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
 <th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
 <td><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
@@ -606,7 +606,7 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <div class="headline"><span id="formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="formats_do"><!-- Begin formats do -->
 <p>
-<a href="[% config.get('search_loc') %]?searchsingletit=[% record.id %];database=[% record.database %];format=full;queryid=[% queryid %]" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('search_loc') %]?searchsingletit=[% record.id %];database=[% record.database %];format=Text;queryid=[% queryid %]" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('search_loc') %]?searchsingletit=[% record.id %];database=[% record.database %];format=BibTeX;queryid=[% queryid %]" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('search_loc') %]?searchsingletit=[% record.id %];database=[% record.database %];format=EndNote;queryid=[% queryid %]" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% config.get('search_loc') %]?view=[% view %];searchsingletit=[% record.id %];database=[% record.database %];format=full;queryid=[% queryid %]" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('search_loc') %]?view=[% view %];searchsingletit=[% record.id %];database=[% record.database %];format=Text;queryid=[% queryid %]" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('search_loc') %]?view=[% view %];searchsingletit=[% record.id %];database=[% record.database %];format=BibTeX;queryid=[% queryid %]" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('search_loc') %]?view=[% view %];searchsingletit=[% record.id %];database=[% record.database %];format=EndNote;queryid=[% queryid %]" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 <p/>
@@ -829,7 +829,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${config.get('virtualsearch_loc')}?searchall=1;isbn=${isbnitem.content}" -%]
+[%-   globalurl = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
 <tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
 [%-   END -%]
@@ -846,7 +846,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="headline">[% msg.maketext("Literaturlisten") %]</div>
 <ul style="list-style-type: square">
 [% FOREACH litlist IN litlists %]
-<li><a href="[% config.get('litlists_loc') %]?action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
+<li><a href="[% config.get('litlists_loc') %]?view=[% view %];action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
 [% END %]
 </ul>
 </div>
@@ -862,7 +862,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [% IF loginname && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:
 [%- FOREACH tag IN private_tags_of_tit -%]
-<a href="[% config.get('tags_loc') %]?searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
+<a href="[% config.get('tags_loc') %]?view=[% view %];searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
 [%- END -%]
 [% END %]
 </div>
@@ -874,7 +874,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
 <div class="headline"><span id="bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="bibsonomy_tags"><a href="[% config.get('bibsonomy_loc') %]?bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span>
+<span id="bibsonomy_tags"><a href="[% config.get('bibsonomy_loc') %]?view=[% view %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span>
 </div>
 <p/>
 </div>
@@ -884,7 +884,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% config.get('connector_similarpersons_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% config.get('connector_similarpersons_loc') %]?view=[% view %];database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarpersons").html(txt); 
   });
@@ -894,7 +894,7 @@ $(document).ready(function(){
 <div class="similarpersons"><!-- Begin Verwandte Personen -->
 <div class="headline"><span id="similarpersons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarpersons_do"><!-- Begin similarpersons do -->
-<span id="similarpersons"><a href="[% config.get('connector_similarpersons_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarpersons"><a href="[% config.get('connector_similarpersons_loc') %]?view=[% view %];database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -904,7 +904,7 @@ $(document).ready(function(){
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Themen
-  $.get("[% config.get('connector_similarsubjects_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% config.get('connector_similarsubjects_loc') %]?view=[% view %];database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarsubjects").html(txt); 
   });
@@ -913,7 +913,7 @@ $(document).ready(function(){
 <div class="similarsubjects"><!-- Begin Verwandte Themen -->
 <div class="headline"><span id="similarsubjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarsubjects_do"><!-- Begin similarsubjects do -->
-<span id="similarsubjects"><a href="[% config.get('connector_similarsubjects_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarsubjects"><a href="[% config.get('connector_similarsubjects_loc') %]?view=[% view %];database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -924,7 +924,7 @@ $(document).ready(function(){
 <div class="headline"><span id="misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="misc_do"><!-- Begin misc do -->
 <ul style="list-style-type: square">
-<li><a href="[% config.get('info_loc') %]?view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+<li><a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 </div>
 </div>

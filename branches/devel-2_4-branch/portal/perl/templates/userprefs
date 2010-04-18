@@ -90,14 +90,14 @@
 <table>
 <tr><td><b>[% msg.maketext("Ausgeliehen") %]:</b></td><td align="left">&nbsp;
 [%- IF userinfo.avanz > 0 -%]
-<a href="[% config.get('circulation_loc') %]?action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
+<a href="[% config.get('circulation_loc') %]?view=[% view %];action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
 [%- ELSE -%]
 [%- userinfo.avanz -%]
 [%- END -%]
 </td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Vorgemerkt") %]:</b></td><td>
 
 [%- IF userinfo.vmanz > 0 -%]
-<a href="[% config.get('circulation_loc') %]?action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
+<a href="[% config.get('circulation_loc') %]?view=[% view %];action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
 [%- ELSE -%]
 [%- userinfo.vmanz -%]
 [%- END -%]
@@ -105,7 +105,7 @@
 </td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Offene Geb&uuml;hren") %]:</b></td><td><span class="warning">
 
 [% IF userinfo.maanz > 0 %]
-<a href="[% config.get('circulation_loc') %]?action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
+<a href="[% config.get('circulation_loc') %]?view=[% view %];action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
 [% ELSE %]
 [% userinfo.maanz %]
 [% END %]
@@ -115,7 +115,7 @@
 
 <tr><td><b>[% msg.maketext("Bestellungen") %]:</b></td><td align="left">&nbsp;
 [%- IF userinfo.bsanz > 0 -%]
-<a href="[% config.get('circulation_loc') %]?action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
+<a href="[% config.get('circulation_loc') %]?view=[% view %];action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
 [%- ELSE -%]
 [%- userinfo.bsanz -%]
 [%- END -%]
@@ -229,7 +229,7 @@
 </form>
 [%- IF bibsonomy.sync == "on" -%]
 <p/>
-<a href="[% config.get('userprefs_loc') %]?action=bibsonomy_sync_all">[% msg.maketext("Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen") %]</a>
+<a href="[% config.get('userprefs_loc') %]?view=[% view %];action=bibsonomy_sync_all">[% msg.maketext("Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen") %]</a>
 [%- END -%]
 </td></tr>
 </table>

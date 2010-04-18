@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="<a href="[% config.get('litlists_loc') %]?&action=show_public_lists" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Alle &ouml;ffentlichen Literaturlisten") %]</span></a></li>
+   <li><a class="active" href="<a href="[% config.get('litlists_loc') %]?view=[% view %];&action=show_public_lists" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Alle &ouml;ffentlichen Literaturlisten") %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -33,7 +33,7 @@
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul>
 [%- FOREACH thisitem IN public_litlists -%]
-<li><a <a href="[% config.get('litlists_loc') %]?&action=show;litlistid=[% thisitem.id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
+<li><a <a href="[% config.get('litlists_loc') %]?view=[% view %];&action=show;litlistid=[% thisitem.id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
 die Literaturliste [% item %]">[% thisitem.title%]</a> ([% thisitem.itemcount %])</li>
 [% END %]
 </ul>

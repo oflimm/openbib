@@ -41,16 +41,16 @@ function update_fak(yourform, checked, fak) {
 
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.get('userprefs_loc') %]?action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
+   <li><a href="[% config.get('userprefs_loc') %]?view=[% view %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
 [%- IF config.get('litlists') -%]
-   <li><a                href="[% config.get('litlists_loc') %]?action=manage">[% msg.maketext("Literaturlisten") %]</a></li>
+   <li><a                href="[% config.get('litlists_loc') %]?view=[% view %];action=manage">[% msg.maketext("Literaturlisten") %]</a></li>
 [%- END -%]
-   <li><a                href="[% config.get('tags_loc') %]?show_usertags=1">[% msg.maketext("Tags") %]</a></li>
-[% IF config.get('reviews') %]   <li><a                href="[% config.get('userreviews_loc') %]?do_show=1">[% msg.maketext("Rezensionen") %]</a></li>[% END %]
+   <li><a                href="[% config.get('tags_loc') %]?view=[% view %];show_usertags=1">[% msg.maketext("Tags") %]</a></li>
+[% IF config.get('reviews') %]   <li><a                href="[% config.get('userreviews_loc') %]?view=[% view %];do_show=1">[% msg.maketext("Rezensionen") %]</a></li>[% END %]
 [% IF targettype != 'self' %]
-<li><a href="[% config.get('circulation_loc') %]?action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
+<li><a href="[% config.get('circulation_loc') %]?view=[% view %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
 [% END %]
-   <li><a class="active" href="[% config.get('databaseprofile_loc') %]?do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
+   <li><a class="active" href="[% config.get('databaseprofile_loc') %]?view=[% view %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
 <div class="content">

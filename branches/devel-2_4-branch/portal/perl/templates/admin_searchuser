@@ -25,9 +25,9 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('admin_loc') %]?do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a class="active" href="[% config.get('admin_loc') %]?do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
-   <li><a                href="[% config.get('admin_loc') %]?do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?view=[% view %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?view=[% view %];do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
+   <li><a                href="[% config.get('admin_loc') %]?view=[% view %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
 </ul>
 
 <div class="content">
@@ -49,7 +49,7 @@
       <div class="thumbnail">
       </div> 
       <div class="brieftitle">
-<span class="rlperson">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% config.get('admin_loc') %]?userid=[% singleuser.id %];do_edituser=1;do_edit=1"><strong><span class="rltitle">[% singleuser.loginname %]</span></strong></a></span>    
+<span class="rlperson">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% config.get('admin_loc') %]?view=[% view %];userid=[% singleuser.id %];do_edituser=1;do_edit=1"><strong><span class="rltitle">[% singleuser.loginname %]</span></strong></a></span>    
       </div>
       <div class="titlemark"></div>
       <div class="titleactions">

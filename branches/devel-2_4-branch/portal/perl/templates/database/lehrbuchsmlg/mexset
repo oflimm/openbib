@@ -6,7 +6,7 @@
 <tr align="center"><td><strong>
 [%-   thisdbname = mex.${"X4000"}.content.dbname -%]
 [%-   IF dbinfo.get('use_libinfo').${thisdbname} %]
-<a href="[% config.get('info_loc') %]?id=[% record.database %];stid=60">[% mex.${"X4000"}.content.full %]</a>
+<a href="[% config.get('info_loc') %]?view=[% view %];id=[% record.database %];stid=60">[% mex.${"X4000"}.content.full %]</a>
 [%-   ELSE -%]
 <a href="http://www.ub.uni-koeln.de/" target="_blank">USB K&ouml;ln</a>
 [%-   END -%]

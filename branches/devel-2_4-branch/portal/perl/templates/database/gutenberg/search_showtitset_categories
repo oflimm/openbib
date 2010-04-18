@@ -45,12 +45,12 @@ FOREACH category IN categories;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
-         searchterm    = record.to_drilldown_term(item.content);
+         searchterm    = item.content;
          searchprefix  = config.get('searchfield').verfstring.prefix;
 
-         globalurl = "${config.get('virtualsearch_loc')}?${request_base}searchall=1;fs=${searchprefix}:${searchterm}";
-         localurl  = "${config.get('virtualsearch_loc')}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
-         content   = "${rssfeed}<a href=\"${config.get('redirect_loc')}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('connector_availabilityimage_loc')}?action=lookup&target=wikipedia&lang=${qopts.l}&id=${wikicontent}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         globalurl = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
+         content   = "${rssfeed}<a href=\"${config.get('redirect_loc')}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('connector_availabilityimage_loc')}?view=${view};action=lookup&target=wikipedia&lang=${qopts.l}&id=${wikicontent}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -63,11 +63,11 @@ FOREACH category IN categories;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
-         searchterm    = record.to_drilldown_term(item.content);
+         searchterm    = item.content;
          searchprefix  = config.get('searchfield').korstring.prefix;
 
-         globalurl = "${config.get('virtualsearch_loc')}?${request_base}searchall=1;fs=${searchprefix}:${searchterm}";
-         localurl  = "${config.get('virtualsearch_loc')}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+         globalurl = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
          content   = "${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
@@ -76,8 +76,8 @@ FOREACH category IN categories;
     CASE [ "T0531" "T0533" ];
          IF content.match("---&gt;: ") ;
             previssues = content.split("---&gt;: ");
-            globalurl  = "${config.get('virtualsearch_loc')}?searchall=1;hststring=${previssues.1}";
-            localurl   = "${config.get('search_loc')}?database=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;hitrange=${qopts.hitrange}";
+            globalurl  = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;hststring=${previssues.1}";
+            localurl   = "${config.get('search_loc')}?view=${view};database=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;hitrange=${qopts.hitrange}";
             content    = "<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
          END ;
           
@@ -91,7 +91,7 @@ FOREACH category IN categories;
          content   = "<a href=\"${config.get('redirect_loc')}/504/${content}\" target=\"_blank\">Greifen Sie hier online auf den Volltext zu</a>";
 
     CASE [ "E4100" "T4100" ];
-         localurl    = "${config.get('search_loc')}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.get('search_loc')}?view=${view};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -114,7 +114,7 @@ FOREACH category IN categories;
          thiscontent = item.content;
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
-         localurl    = "${config.get('search_loc')}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.get('search_loc')}?view=${view};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
 	 content       = "<a href=\"${localurl}\">${content}</a>";
          rswkswt_done.${thiscontent} = 1;
 
@@ -133,11 +133,11 @@ FOREACH category IN categories;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
-         searchterm    = record.to_drilldown_term(item.content);
+         searchterm    = item.content;
          searchprefix  = config.get('searchfield').swtstring.prefix;
 
-         globalurl = "${config.get('virtualsearch_loc')}?${request_base}searchall=1;fs=${searchprefix}:${searchterm}";
-         localurl  = "${config.get('virtualsearch_loc')}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+         globalurl = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;
 
@@ -152,10 +152,10 @@ FOREACH category IN categories;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
-         searchterm    = record.to_drilldown_term(item.content);
+         searchterm    = item.content;
          searchprefix  = config.get('searchfield').notstring.prefix;
 
-         localurl  = "${config.get('virtualsearch_loc')}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+         localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
          content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T1600";
@@ -169,10 +169,10 @@ FOREACH category IN categories;
          content   = content ;
 
     CASE "T5001";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?view=${view};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?view=${view};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

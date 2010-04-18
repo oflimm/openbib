@@ -24,17 +24,17 @@
 # Aufruf der Frames mit den gewuenschten Inhalten
 
 IF NOT headerframeurl;
-headerframeurl = "${config.get('headerframe_loc')}?view=${view}" ;
+headerframeurl = "${config.get('headerframe_loc')}?view=${view};view=${view}" ;
 END;
 
-bodyframeurl   = "${config.get('info_loc')}?view=${view};stid=20" ;
+bodyframeurl   = "${config.get('info_loc')}?view=${view};view=${view};stid=20" ;
 
 IF searchsingletit && database;
-    bodyframeurl = "${config.get('search_loc')}?search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit};view=${view}";
+    bodyframeurl = "${config.get('search_loc')}?view=${view};search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit};view=${view}";
 END;
 
 IF fs;
-    bodyframeurl = "${config.get('virtualsearch_loc')}?view=${view};sessionID=${sessionID};searchall=1;fs=${fs};hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=1";
+    bodyframeurl = "${config.get('virtualsearch_loc')}?view=${view};view=${view};sessionID=${sessionID};searchall=1;fs=${fs};hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=1";
 END;
 -%]
 [% PROCESS common/subtemplate name="frameset" %]

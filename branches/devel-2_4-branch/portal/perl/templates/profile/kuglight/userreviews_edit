@@ -35,20 +35,20 @@
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN review.titnormset.${'P0100'}  -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?database=${review.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?view=${view};database=${review.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN review.titnormset.${'P0101'}  -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?database=${review.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?view=${view};database=${review.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN review.titnormset.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?database=${review.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?view=${view};database=${review.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- FOREACH part IN review.titnormset.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('search_loc')}?database=${review.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${config.get('search_loc')}?view=${view};database=${review.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
 
@@ -83,7 +83,7 @@
 [%- dbdesc   = dbinfo.get('dbnames').${review.titnormset.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${review.titnormset.database} -%]
 
-<span class="rlauthor">[% person %]</span><br /><a href="[% config.get('search_loc') %]?search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% review.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+<span class="rlauthor">[% person %]</span><br /><a href="[% config.get('search_loc') %]?view=[% view %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% review.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
 class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
 <p />
 

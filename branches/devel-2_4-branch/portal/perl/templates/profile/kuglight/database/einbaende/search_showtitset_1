@@ -39,10 +39,10 @@
 <td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
 [%- END -%]
 <td align="center">
-<!--	<a href="[% config.get('managecollection_loc') %]?action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
-        <a href="[% config.get('managecollection_loc') %]?action=mail;database=[% database %];singleidn=[% titidn %]" title="Als Mail verschicken"><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
-        <a href="[% config.get('managecollection_loc') %]?action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
-        <a href="[% config.get('managecollection_loc') %]?action=print;database=[% database %];singleidn=[% titidn %]" target="print" title="Ausdrucken"><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
+<!--	<a href="[% config.get('managecollection_loc') %]?view=[% view %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('managecollection_loc') %]?view=[% view %];action=mail;database=[% database %];singleidn=[% titidn %]" title="Als Mail verschicken"><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('managecollection_loc') %]?view=[% view %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('managecollection_loc') %]?view=[% view %];action=print;database=[% database %];singleidn=[% titidn %]" target="print" title="Ausdrucken"><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
 -->
 </td>
 [%- IF nexturl -%]
@@ -57,11 +57,11 @@
 
 <ul class="tabbingmenu">
 [% IF item.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle|Werkzeug)',1) %]
-   <li><a                href="[% config.get('search_loc') %]?database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
-   <li><a class="active" href="[% config.get('search_loc') %]?database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Werkzeug-Abbildungen") %]</a></li>
+   <li><a                href="[% config.get('search_loc') %]?view=[% view %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
+   <li><a class="active" href="[% config.get('search_loc') %]?view=[% view %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Werkzeug-Abbildungen") %]</a></li>
 [% ELSE %]
-   <li><a                href="[% config.get('search_loc') %]?database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
-   <li><a class="active" href="[% config.get('search_loc') %]?database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Einband-Abbildungen") %]</a></li>
+   <li><a                href="[% config.get('search_loc') %]?view=[% view %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
+   <li><a class="active" href="[% config.get('search_loc') %]?view=[% view %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Einband-Abbildungen") %]</a></li>
 [% END %]
 </ul>
 

@@ -12,7 +12,7 @@
 [%             FOREACH termitem IN category_map.3 ;
                   LAST IF loop.count > 5 ;
 %]
-<a href="[% config.get('virtualsearch_loc') %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddper:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddper:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -26,7 +26,7 @@
 [%             FOREACH termitem IN category_map.1 ;
                   LAST IF loop.count > 5 ;
 %]
-<a href="[% config.get('virtualsearch_loc') %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddswt:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddswt:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -40,7 +40,7 @@
 [%             FOREACH termitem IN category_map.2 ;
                   LAST IF loop.count > 5 ;
  %]
-<a href="[% config.get('virtualsearch_loc') %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddnot:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddnot:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -54,7 +54,7 @@
 [%             FOREACH termitem IN category_map.5 ;
                   LAST IF loop.count > 5 ;
  %]
-<a href="[% config.get('virtualsearch_loc') %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddyear:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddyear:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -68,7 +68,7 @@
 [%             FOREACH termitem IN category_map.4 ;
                   LAST IF loop.count > 5 ;
  %]
-<a href="[% config.get('virtualsearch_loc') %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddtyp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddtyp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -82,7 +82,7 @@
 [%             FOREACH termitem IN category_map.6 ;
                   LAST IF loop.count > 5 ;
  %]
-<a href="[% config.get('virtualsearch_loc') %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddspr:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddspr:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>

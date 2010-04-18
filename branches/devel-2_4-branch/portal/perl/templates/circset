@@ -29,7 +29,7 @@
 [% FOREACH mex IN circset %]
 <tr align="center"><td>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-<a href="[% config.get('info_loc') %]?id=[% record.database %];stid=60">
+<a href="[% config.get('info_loc') %]?view=[% view %];id=[% record.database %];stid=60">
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]
@@ -46,7 +46,7 @@ mex.Status == 'entliehen' && mex.Rueckgabe != '31.12.9999' && mex.Rueckgabe != '
             IF mex.Gruppe.Name.match("Handapparat") %]
                 keine Vormerkung m&ouml;glich<br/>(in [% mex.Entleiher.Name %])
 [%          ELSIF mex.Vormerkbarkeit  %]
-     <a href="[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% mex.Vormerkungen+1 %]. Stelle)
+     <a href="[% config.get('circulation_loc') %]?view=[% view %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% mex.Vormerkungen+1 %]. Stelle)
 [%          ELSE %]            
                 keine Vormerkung m&ouml;glich
 [%          END %]

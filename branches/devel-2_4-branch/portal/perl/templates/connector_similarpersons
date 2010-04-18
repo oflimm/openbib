@@ -34,10 +34,10 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 
-   searchterm    = record.to_drilldown_term(item);
+   searchterm    = item;
    searchprefix  = config.get('searchfield').verfstring.prefix;
 
-   localurl  = "${config.get('virtualsearch_loc')}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+   localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
@@ -84,10 +84,10 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 
-   searchterm    = record.to_drilldown_term(item);
+   searchterm    = item;
    searchprefix  = config.get('searchfield').verfstring.prefix;
 
-   localurl  = "${config.get('virtualsearch_loc')}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:${searchterm}";
+   localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>

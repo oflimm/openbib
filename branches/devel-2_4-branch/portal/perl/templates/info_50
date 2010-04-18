@@ -26,7 +26,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
 </ul>
 
 <div class="content">
@@ -46,7 +46,7 @@ bklist = bklist.sort;
 <ul class="subjectlist">
 [% FOREACH bk IN bklist %]
 [%   IF thisbklist.${bk}.defined %] 
-<li>[% bk %] / <a href="[% config.get('info_loc') %]?view=[% view %];stid=51;category=[% bk %]"">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
+<li>[% bk %] / <a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=51;category=[% bk %]"">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
 [%   END %]
 [% END %]
 [%# USE dumper; dumper.dump(thisbklist)%]

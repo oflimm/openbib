@@ -38,7 +38,7 @@
 <!--<div class="langchoice">
 [% IF config.get('lang').size > 1 %]
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('searchmask_loc') %]?setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('searchmask_loc') %]?view=[% view %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -158,13 +158,13 @@ in der Regel nach der Edition in der IK-Reihe oder in Epigraphica Anatolica
 
 <dd>
 <dd>
-Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?view=[% view %];database=inst404abklatsch;browsecat=T0200">Register</a>, z.B. Ephesus, Knidos, Oinoanda
+Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?view=[% view %];view=[% view %];database=inst404abklatsch;browsecat=T0200">Register</a>, z.B. Ephesus, Knidos, Oinoanda
 </dd>
 
 <dt>3. Kategorie</dt>
 
 <dd>
-Zugang &uuml;ber Eingabemaske sowie <a href="[% config.get('search_loc') %]?view=[% view %];database=inst404abklatsch;browsecat=T0710">Register</a>, z.B. Ehrendekret, Grabinschrift usw.
+Zugang &uuml;ber Eingabemaske sowie <a href="[% config.get('search_loc') %]?view=[% view %];view=[% view %];database=inst404abklatsch;browsecat=T0710">Register</a>, z.B. Ehrendekret, Grabinschrift usw.
 </dd>
 
 <dt>4. Edition und SEG-Eintrag</dt>
@@ -173,7 +173,7 @@ Zugang &uuml;ber Eingabemaske sowie <a href="[% config.get('search_loc') %]?view
 Edition in der Regel nach IK-Reihe oder Epigraphica Anatolica, z.B. "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p. 3-5, Nr. 496", "SGO 01/15/04"
 SEG-Eintrag nach Möglichkeit letzter Eintrag im Supplementum Epigraphicum Graecum, z.B. "SEG 39, 1989, Nr. 1132" 
 <br/>
-Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[% config.get('search_loc') %]?view=[% view %];database=inst404abklatsch;browsecat=T0335">Register</a> 
+Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[% config.get('search_loc') %]?view=[% view %];view=[% view %];database=inst404abklatsch;browsecat=T0335">Register</a> 
 </dd>
 
 <dt>5. Inventarnummer</dt>
@@ -190,13 +190,13 @@ Die Abklatsche der Diogenes-Fragmente aus Oinoanda sind in der Weise inventarisi
 <dt>6. Aufbewahrungsort der Inschrift</dt>
 
 <dd>
-Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?view=[% view %];database=inst404abklatsch;browsecat=T0410">Register</a>
+Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?view=[% view %];view=[% view %];database=inst404abklatsch;browsecat=T0410">Register</a>
 </dd>
 
 <dt>7. Datierung der Inschrift</dt>
 
 <dd>
-Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?view=[% view %];database=inst404abklatsch;browsecat=T0425">Register</a>, z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"
+Zugang hierzu &uuml;ber <a href="[% config.get('search_loc') %]?view=[% view %];view=[% view %];database=inst404abklatsch;browsecat=T0425">Register</a>, z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"
 </dd>
 
 </dl>

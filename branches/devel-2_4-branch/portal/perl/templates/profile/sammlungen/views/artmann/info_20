@@ -31,7 +31,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('info_loc') %]?id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('info_loc') %]?view=[% view %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -76,10 +76,10 @@ Die Titel wurden geschlossen unter der Signatur KNUP aufgestellt. Sie sind volls
 </p>
 
 <p>
-Die Einsichtnahme für Forschungszwecke erfolgt im Historischen Lesesaal. Alle Titel sind in Suchen & Bestellen der USB und im Verbundkatalog NRW erfasst.[<a href="[% config.get('info_loc') %]?&stid=21">mehr</a>]
+Die Einsichtnahme für Forschungszwecke erfolgt im Historischen Lesesaal. Alle Titel sind in Suchen & Bestellen der USB und im Verbundkatalog NRW erfasst.[<a href="[% config.get('info_loc') %]?view=[% view %];&stid=21">mehr</a>]
 </p>
 
-<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?view=[% view %];&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 
 </td></tr>
 </table>

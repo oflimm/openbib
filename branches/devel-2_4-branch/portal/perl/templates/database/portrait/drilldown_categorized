@@ -126,7 +126,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_db_[% database %]_toggle"></span>
 <div id="dd_db_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% termitem.0 %];fs=[% lastquery %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% termitem.0 %];fs=[% lastquery %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.8.size > 5 %]
 </div>
@@ -148,10 +148,10 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <div id="dd_aut_[% database %]">
 [% END %]
 [%-
-    searchterm    = termitem.2;
+    searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').verfstring.prefix;
 -%]
-<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:[% searchterm %] [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.3.size > 5 %]
 </div>
@@ -173,10 +173,10 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <div id="dd_swt_[% database %]">
 [% END %]
 [%-
-    searchterm    = termitem.2;
+    searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').swtstring.prefix;
 -%]
-<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:[% searchterm %] [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.1.size > 5 %]
 </div>
@@ -198,10 +198,10 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <div id="dd_not_[% database %]">
 [% END %]
 [%-
-    searchterm    = termitem.2;
+    searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').notstring.prefix;
 -%]
-<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:[% searchterm %] [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.2.size > 5 %]
 </div>
@@ -223,10 +223,10 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <div id="dd_kor_[% database %]">
 [% END %]
 [%-
-    searchterm    = termitem.2;
+    searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').korstring.prefix;
 -%]
-<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:[% searchterm %] [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.7.size > 5 %]
 </div>
@@ -248,10 +248,10 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <div id="dd_year_[% database %]">
 [% END %]
 [%-
-    searchterm    = termitem.2;
+    searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').ejahrstring.prefix;
 -%]
-<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:[% searchterm %] [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
 [% IF category_map.5.size > 5 %]
 </div>
@@ -273,10 +273,10 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <div id="dd_mart_[% database %]">
 [% END %]
 [%-
-    searchterm    = termitem.2;
+    searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').martstring.prefix;
 -%]
-<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:[% searchterm %] [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.4.size > 5 %]
 </div>
@@ -298,10 +298,10 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <div id="dd_spr_[% database %]">
 [% END %]
 [%-
-    searchterm    = termitem.2;
+    searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').sprstring.prefix;
 -%]
-<a href="[% config.get('virtualsearch_loc') %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:[% searchterm %] [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.6.size > 5 %]
 </div>

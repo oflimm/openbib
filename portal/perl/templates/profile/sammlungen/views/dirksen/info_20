@@ -1,0 +1,100 @@
+  [%#-
+#######################################################################
+#
+# Templatename: info_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+<table cellpadding="10">
+
+<tr>
+
+<td style="vertical-align:top;padding:40px;"> <center>
+<img src="/images/openbib/views/dirksen/startseite.jpg" alt="Herbert von Dirksen"
+/><br /><br /><i style="font-size:0.8em">Herbert von Dirksen</center> </td>
+
+<td valign="top" style="padding-top:25px;">
+
+<h1>Die Bibliothek Herbert von Dirksen in der Universit&auml;ts-
+und Stadtbibliothek K&ouml;ln </h1>
+
+<p> 1949 vermachte der ehemalige deutsche Botschafter Dr. Herbert von
+Dirksen seine Privatbibliothek der USB Köln. Die Bibliothek umfasst
+über 1.500 Bände, die vorwiegend Geschichte, Literaturgeschichte und
+Handelsrecht betreffen. Daraus heben sich einige B&uuml;cher zur
+Diplomatiegeschichte hervor, weiterhin Werke der politischen und
+historischen Landeskunde, die sich insbesondere auf den ostasiatischen
+Raum beziehen. Neben Biographien bekannter Pers&ouml;nlichkeiten und
+Literatur zur Geschichte des 20. Jahrhunderts, beinhaltet die
+Bibliothek Brosch&uuml;ren und Flugschriften zu damals aktuellen
+politischen Geschehnissen. Die Literatur entstammt in der Hauptsache
+dem fr&uuml;hen 20. Jahrhundert. Die Bibliothek steht geschlossen unter der
+Signatur DIRK.
+
+</p>
+
+<h1>Herbert von Dirksen (1882-1955)</h1>
+
+<p>Herbert von Dirksen wurde 1882 in Berlin geboren. Nach dem
+Abschluss seines Studiums in Heidelberg und Berlin, arbeitete der
+promovierte Jurist seit 1918 im Auswärtigen Amt. 1928 wurde er zum
+Botschafter in Moskau ernannt. Darauf folgte 1933 die Versetzung nach
+Tokio. Als letzter Vorkriegsbotschafter wurde er 1938
+schlie&szlig;lich nach London beordert und dort 1940 in den
+einstweiligen Ruhestand versetzt. Von Dirksen kehrte nach Deutschland
+zur&uuml;ck und widmete sich auf seinem Gut Gr&ouml;ditzberg in
+Schlesien fortan wieder seiner publizistischen T&auml;tigkeit. Nach
+Kriegsende und dem Verlust seines Besitzes lie&szlig; sich von Dirksen
+in Bergen in Oberbayern nieder. Am 19. Dezember 1955 ist er in
+M&uuml;nchen gestorben.  [<a href="[% config.get('info_loc')
+%]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>] </p>
+
+<p>
+<!--Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
+Lesesaal.-->
+</p>
+
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

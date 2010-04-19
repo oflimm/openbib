@@ -1,0 +1,23 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_footer
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Seiten-Footers
+#
+#######################################################################
+-%]
+</div><!-- End maincontent -->
+
+[% IF NOT hide_foot_banner %]
+<div class="footer"><!-- Begin footer -->
+Die <b> Bibliothek Herbert von Dirksen</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>KUG v2.3</tt>
+</div><!-- End footer -->
+[% END %]
+
+</body>
+</html>

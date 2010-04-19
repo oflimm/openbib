@@ -1,0 +1,138 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_21
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der weitergehenden Sammlungsinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div class="boxedclear">
+
+<table>
+<tr><td style="vertical-align: top;padding-top:10px;">
+
+<p> <img
+src="/images/openbib/views/dirksen/dirksenjapan.png"
+class="img" alt="Herbert von Dirksen am Japanischen Kaiserhof" />
+<center><i>Herbert von Dirksen<br /> am Japanischen
+Kaiserhof, 1933</center>
+</i>
+</p>
+
+<p> <img
+src="/images/openbib/views/dirksen/exlibris.jpg"
+class="img" alt="Exlibris" />
+<center><i>Exlibris</i></center>
+</p>
+
+
+
+</td>
+<td style="vertical-align: top;padding-left:20px;">
+
+<h2>Biographische Notizen zu Herbert von Dirksen </h2>
+
+<p> Herbert von Dirksen entstammte einer ursprünglich aus den
+Niederlanden kommenden, seit vielen Generationen in preu&szlig;ischen
+Diensten stehenden mennonitischen Familie. Bekannt unter seinen
+Vorfahren ist vor allem der Jurist Heinrich Eduard Dirksen
+(1790-1868), der an den Universit&auml;ten Königsberg und Berlin
+lehrte. Mit dem Eintritt von Herberts Vater Willibald Dirksen (1852-1928)in
+den preu&szlig;ischen Adelstand, wurde der Familie das Adelsprädikat
+"von" verliehen. Neben dem Staatsdienst verwalteten die von Dirksens
+ihren Landbesitz, darunter das Rittergut Jessen im Kreis Spremberg
+sowie den Besitz der Burg Gr&ouml;ditzberg, letztere ist auf dem
+Exlibris von Herbert von Dirksen abgebildet.  </p>
+
+<p> <h2>Der Karrierediplomat 1918 bis 1940 </h2>
+
+Schon Willibald Dirksen hatte viele Jahre hindurch das
+V&ouml;lkerrechts-Referat im Ausw&auml;rtigen Amt betreut. Herbert von
+Dirksen war w&auml;hrend des Ersten Weltkrieges in der deutschen
+Verwaltung in Belgien und in der Gesandschaft in Den Haag tätig. Nach
+dem Krieg trat er 1918 ins Ausw&auml;rtige Amt ein und war hier von
+Anfang an haupts&auml;chlich mit Angelegenheiten Osteuropas (u.a. in
+Kiew und Warschau) besch&auml;ftigt, bis er 1928 zum Botschafter in
+Moskau ernannt wurde, eine wichtige diplomatische Aufgabe und
+bemerkenswert als erster Botschafterposten. Vergeblich versuchte er
+die deutsch-sowjetischen Beziehungen in ein unproblematisches und
+freundschaftliches Verhältnis zu wandeln. 1933 wurde er in gleicher
+Eigenschaft auf den Posten in Tokio versetzt. Sein Auftrag lautete,
+die deutsch-japanischen Beziehungen zu konsolidieren und als
+Gegengewicht zur Sowjetunion auszubauen. In seine Amtszeit fiel der
+Abschluss des Antikominternpaktes (1936), den aber Joachim von
+Ribbentrop an ihm und dem Ausw&auml;rtigen Amt vorbei
+aushandelte. 1938 wurde Dirksen schlie&szlig;lich Botschafter in
+London, dem es zufiel, in die Verhandlungen während der entscheidenden
+Wochen des Jahres 1939 involviert zu sein, die dann zum Krieg zwischen
+Deutschland und England führten. <br /> Als sowjetische Truppen 1944
+große Teile Schlesiens und auch Dirkensen Gut besetzt hatten,
+leisteten ihm Erinerungsfotos und Briefe sowjetischer Spitzenpolitiker
+zur Abwehr von &Uuml;bergriffen gute Dienste. Wenig später wurde er
+gezwungen, sich auf Befehl des Au&szlig;enministers Ribbentrop als
+"unsicherer Kantonist" ins unbesetzte Deutschland durchzuschlagen. Er
+gelangte so auf abenteuerlicher Flucht über Prag nach Bayern, wo er
+für den Rest seines Lebens seinen Wohnsitz nahm.  </p>
+
+<p> <h2>Bibliothekstransfer Irland - K&ouml;ln</h2>
+
+Dirksens Bibliothek war nach seiner Abberufung aus London in England
+verblieben. 1939 wurde der gegenseitige Austausch des Privateigentums
+des deutschen und englischen Botschafters zwischen den
+Au&szlig;enministerien vereinbart. Dirksens Bibliothek brachte man zu
+diesem Zweck in einen irischen Hafen, von wo aus ein von der Schweizer
+Regierung gechartertes Schiff sie nach Deutschland bringen sollte. Die
+Transaktion wurde durch den beginnenden Krieg verhindert und so
+lagerten Dirksens Bücher letzlich bis 1949 in Irland.<br /> Im
+Dezember 1948 hatte sich Herbert von Dirksen an den Generaldirektor
+der K&ouml;lner Museen gewandt, weil er seine B&uuml;chersammlung der
+Wissenschaft zur Verf&uuml;gung stellen wollte. Dieser nahm
+R&uuml;cksprache mit Prof. Dr. Peter Rassow, Historiker
+an der Universit&auml;t zu K&ouml;ln, der bedauerte, die Sammlung aus
+Platzmangel nicht einstellen zu können und Dirksen deshalb an den
+damaligen Ltd. Direktor der USB Prof. Dr. Hermann Corsten
+verwies. Zwischen Dirksen und Corsten begann daraufhin ein
+umfangreicher Briefwechsel. Obwohl Dirksen Anfang 1949 nach Irland
+reiste und sich pers&ouml;nlich um den Abtransport seiner Bücher
+k&uuml;mmerte, konnten diese erst im August in der USB in Empfang
+genommen werden. Der USB wurden damit rund 1.000 Titel mit 1.598
+Bänden übergeben.  </p> <p> Die Bibliothek Dirksen ist nicht nach
+wissenschaftlichen Gesichtspunkten entstanden, sondern sie zeigt ein
+Spektrum, das von beruflichen und privaten Interessen des Besitzers
+gepr&auml;gt ist. Dennoch war und ist sie eine interessante Bereichung
+der Sammlungen der USB.  </p>
+
+<p>
+Quelle: Schmitz, Wolfgang: Herbert von Dirksen (1882-1955), in:
+<a href="http://www.ub.uni-koeln.de/bibliothek/pub/schriften/index_ger.html"
+target="_blank"> Kölner Sammler und ihre Bücherkollektionen in der
+Universitäts- und Stadtbibliothek</a>
+</p>
+
+<!--
+<h2>Ansprechpartner:</h2>
+Tel.: 0221 470-3877
+<br />
+<a href="http://www.ub.uni-koeln.de/e50/e2492/e3030/index_ger.html?preview=preview"
+target="_blank">E-Mail</a><br /></p>
+-->
+</td></tr> </table>
+
+</div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

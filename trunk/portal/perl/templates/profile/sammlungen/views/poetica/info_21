@@ -1,0 +1,93 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_21
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der weitergehenden Sammlungsinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div class="boxedclear">
+
+<table>
+<tr><td style="vertical-align: top;padding-top:10px;">
+
+<p> <img src="/images/openbib/views/poetica/seiteinfo21_2.jpg"
+class="img" alt="Bildunterschrift2" /> 
+<center><a href="/images/openbib/views/poetica/bild2.jpg">
+Bildunterschrift1</a></center>
+</p>
+
+<p> <img
+src="/images/openbib/views/poetica/seiteinfo21_1.jpg"
+class="img" alt="Bildunterschrift1" />
+<center><a href="/images/openbib/views/poetica/bild3.jpg">Bildunterschrift2</a></center>
+</p>
+
+
+<p>
+<img
+src="/images/openbib/views/poetica/seiteinfo21_3.jpg"
+class="img" alt="Bildunterschrift3" />
+</p>
+<center><a href="/images/openbib/views/poetica/bild4.jpg">Bildunterschrift3</a></center>
+</p>
+
+
+</td>
+<td style="vertical-align: top;padding-left:20px;">
+
+<h2>Überschrift</h2>
+
+<p> 
+</p>
+
+<p>
+
+</p>
+
+
+
+<p>
+</p>
+
+
+
+<p>
+</p>
+
+
+<!--
+<p>Quelle: Gernot Gabel, Wilhem Reiners (1873 - 1943) in:
+<a href="http://www.ub.uni-koeln.de/bibliothek/pub/schriften/index_ger.html"
+target="_blank">Kölner Sammler und ihre Bücherkollektionen in der
+Universitäts- und Stadtbibliothek</a>
+</p>
+ -->
+
+
+<h3>Ansprechpartner:</h3>
+<strong>Dr. K.-F. Beßelmann<br />
+Tel.: 0221-470 3877</strong>, 
+<br />
+<a href="http://www.ub.uni-koeln.de/res/personen_e_mail/dr_besselmann/index_ger.html?preview=preview" target="_blank">E-Mail</a><br /></p>
+</td></tr>
+</table>
+
+</div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

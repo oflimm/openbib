@@ -15,7 +15,7 @@
 
 [% IF NOT hide_foot_banner %]
 <div class="footer"><!-- Begin footer -->
-<b>Der Digitale Kartenkatalog</b> wurde an der Philosophischen Fakult&auml;t erfasst&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>
+Der <b>Digitale Kartenkatalog</b> wurde an der Philosophischen Fakult&auml;t erfasst&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>
 </div><!-- End footer -->
 [% END %]
 

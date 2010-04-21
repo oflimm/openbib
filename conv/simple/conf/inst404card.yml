@@ -1,0 +1,45 @@
+# Encoding der Daten
+encoding: iso-8859-1
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': ";"
+  'quote_char': "\""
+  'escape_char': "\""
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: '655x'
+uniqueidmatch: '^(.+)\.tif$'
+
+category_split_chars:
+  '100x': '\s*;\s*'
+  '101x': '\s*;\s*'
+
+# Personen
+pers:
+  '100x': '0100:'        # Verfasser
+  '101x': '0101:'  # Person
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys: 
+
+# Schlagworte
+subj:
+
+
+# Titel
+title:
+  '331x': '0331:'
+  '331y': '0339:'
+  '335' : '0335:'
+  '410': '0410:'
+  '425': '0425:'
+  '655x' : '0655:'
+  '750x' : '0750:'

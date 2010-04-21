@@ -310,7 +310,7 @@ drop table IF EXISTS titlistitem;
 create table titlistitem (
 id       VARCHAR(255) NOT NULL,
 listitem BLOB,
-PRIMARY KEY (id)
+INDEX (id)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci

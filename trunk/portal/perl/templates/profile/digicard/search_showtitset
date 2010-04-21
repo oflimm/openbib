@@ -58,6 +58,15 @@
 
 <p/>
 
+<h2>Automatisch erkannte Zeichen der Katalogkarte</h2>
+
+<p style="text-width:100%;">
+[% ocr = normset.${"T0750"}.first.content;
+   ocr = highlightquery(searchquery,ocr);
+ %]
+[% ocr %]
+</p>
+
 </div><!-- End Images -->
 
 <div class="categories"><!-- Begin Categories -->

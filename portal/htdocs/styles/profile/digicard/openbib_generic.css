@@ -774,7 +774,6 @@ dt.review {
 }
 
 .resultlist .resultdrilldown {
-  display: none;
   float: right;
   width: 23%;
   margin-top: 5px; 
@@ -936,7 +935,7 @@ dt.review {
 /*   position: absolute; */
   float: left;
   margin-left: 5px;
-  width:70%;
+  width:100%;
 /*  border-top-style: solid;
   border-top-color: lightblue;
   border-top-width: 1px;
@@ -959,17 +958,17 @@ dt.review {
   float: left;
 /*  position: absolute;
   left: 15px;*/
-  width: 70%;
+  width: 40%;
 }
 
 .details .images {
   float: right;
-  width: 26%;
+  width: 45%;
   margin-right: 10px;
 }
 
 .userspecific {
-  width: 29%;
+  width: 0%;
   float: right;
 }
 

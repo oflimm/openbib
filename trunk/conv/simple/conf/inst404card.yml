@@ -1,5 +1,5 @@
 # Encoding der Daten
-encoding: iso-8859-1
+encoding: utf-8
 
 # Tracelevel
 tracelevel:
@@ -43,3 +43,7 @@ title:
   '425': '0425:'
   '655x' : '0655:'
   '750x' : '0750:'
+
+filter:
+  '750x':
+     filter_junk: 1

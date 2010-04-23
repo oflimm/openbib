@@ -89,7 +89,7 @@
   </div>
   <div class="resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.get_records -%]
-  [% PROCESS common/subtemplate name="titlist_item_as_html_short" multiple_dbs=0 %]
+  [% PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %]
 [%- END -%]
   </div>
 </div>

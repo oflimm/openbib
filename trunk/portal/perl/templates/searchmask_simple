@@ -38,7 +38,7 @@
 
 [% IF config.get('testsystem') %]
 <div id="testsystem">
-[%# PROCESS common/subtemplate name="testsystem_info" %]
+[% PROCESS common/subtemplate name="testsystem_info" %]
 <p />
 </div>
 [% END %]

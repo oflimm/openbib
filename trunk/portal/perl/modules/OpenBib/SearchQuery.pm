@@ -654,16 +654,16 @@ sub to_sql_querystring {
         push @sqlargs, $self->{_searchquery}->{fs}->{norm};
     }
    
-    if ($self->{_searchquery}->{verf}->{norm}) {	
-        push @sqlwhere, $self->{_searchquery}->{verf}->{bool}." match (verf) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{verf}->{norm};
-    }
-  
     if ($self->{_searchquery}->{hst}->{norm}) {
         push @sqlwhere, $self->{_searchquery}->{hst}->{bool}." match (hst) against (? IN BOOLEAN MODE)";
         push @sqlargs,  $self->{_searchquery}->{hst}->{norm};
     }
-  
+
+    if ($self->{_searchquery}->{verf}->{norm}) {	
+        push @sqlwhere, $self->{_searchquery}->{verf}->{bool}." match (verf) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $self->{_searchquery}->{verf}->{norm};
+    }
+      
     if ($self->{_searchquery}->{swt}->{norm}) {
         push @sqlwhere, $self->{_searchquery}->{swt}->{bool}." match (swt) against (? IN BOOLEAN MODE)";
         push @sqlargs,  $self->{_searchquery}->{swt}->{norm};
@@ -766,13 +766,13 @@ sub to_sql_queryargs {
     if ($self->{_searchquery}->{fs}->{norm}) {	
         push @sqlargs, $self->{_searchquery}->{fs}->{norm};
     }
-   
-    if ($self->{_searchquery}->{verf}->{norm}) {	
-        push @sqlargs,  $self->{_searchquery}->{verf}->{norm};
-    }
-  
+
     if ($self->{_searchquery}->{hst}->{norm}) {
         push @sqlargs,  $self->{_searchquery}->{hst}->{norm};
+    }
+      
+    if ($self->{_searchquery}->{verf}->{norm}) {	
+        push @sqlargs,  $self->{_searchquery}->{verf}->{norm};
     }
   
     if ($self->{_searchquery}->{swt}->{norm}) {

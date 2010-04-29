@@ -25,6 +25,8 @@ angegebenen P-Nummer (z.B. P1234, <i>sofort einsehbar</i>)
 angegebenen Fachgruppe (<i>sofort einsehbar</i>)
 [% ELSIF mex.${"X0014"}.content.match('^LS ') %]USB-Lesesaal (1. OG, 
 <i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^KS V') %]USB-Magazin (Ausleihe nur in den Lesesaal)<br/>
+Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)
 [% ELSIF mex.${"X0014"}.content.match('^KS ') %]USB-Katalogsaal
 (2. OG, <i>sofort einsehbar</i>)
 [% ELSIF mex.${"X0014"}.content.match('^EDZ ') %]USB-Lesesaal (1. OG):

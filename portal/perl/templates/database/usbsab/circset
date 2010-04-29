@@ -55,6 +55,10 @@
            mex.Status = "<a href=\"http://www.ub.uni-koeln.de/edz/content/index_ger.html\" target=\"_blank\">EDZ</a> / einsehbar";
         END ;
 
+        IF mex.Signatur.match('^KS/V') ;
+           mex.Status = "bestellbar (Nutzung nur im Lesesaal)<br/>Bitte f&uuml;llen Sie einen konventionellen Leihschein aus (erh&auml;ltlich an der Auskunft und der Lesesaal-Theke im 1.OG)";
+        END ; 
+
      ELSIF mex.Zweigstelle == 4 ;
 
         IF mex.Abteilungscode == 3 ;
@@ -67,6 +71,7 @@
            mex.Status = "EWA LS / Pr&auml;senzbestand";
         END ;
      END ;
+
 -%]
 <tr align="center"><td><a href="http://www.ub.uni-koeln.de/" target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>

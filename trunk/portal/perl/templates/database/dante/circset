@@ -57,6 +57,7 @@
 
         IF mex.Signatur.match('^KS/V') ;
            mex.Status = "bestellbar (Nutzung nur im Lesesaal)<br/>Bitte f&uuml;llen Sie einen konventionellen Leihschein aus (erh&auml;ltlich an der Auskunft und der Lesesaal-Theke im 1.OG)";
+           mex.Standort = "Hauptabteilung / Magazin";
         END ; 
 
      ELSIF mex.Zweigstelle == 4 ;

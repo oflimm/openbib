@@ -33,7 +33,7 @@
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]
-<strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
+<strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[% ELSIF
 mex.Status == 'entliehen' && mex.Rueckgabe != '31.12.9999' && mex.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% mex.Rueckgabe %][%- ELSE -%][% mex.Status %][%- END -%]</strong></td>

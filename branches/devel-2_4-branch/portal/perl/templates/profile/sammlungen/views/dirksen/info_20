@@ -31,7 +31,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -82,15 +82,14 @@ zur&uuml;ck und widmete sich auf seinem Gut Gr&ouml;ditzberg in
 Schlesien fortan wieder seiner publizistischen T&auml;tigkeit. Nach
 Kriegsende und dem Verlust seines Besitzes lie&szlig; sich von Dirksen
 in Bergen in Oberbayern nieder. Am 19. Dezember 1955 ist er in
-M&uuml;nchen gestorben.  [<a href="[% config.get('info_loc')
-%]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>] </p>
+M&uuml;nchen gestorben.  [<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?&stid=21">Weitere Informationen</a>] </p>
 
 <p>
 <!--Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
 Lesesaal.-->
 </p>
 
-<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 
 </td></tr>
 </table>

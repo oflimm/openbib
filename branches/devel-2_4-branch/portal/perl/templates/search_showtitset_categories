@@ -157,7 +157,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').swtstring.prefix;
 
-         globalurl = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchall=1;fs=${searchprefix}:${searcherm}";
+         globalurl = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
          localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;

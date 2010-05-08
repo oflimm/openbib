@@ -52,14 +52,14 @@ FOREACH category IN categories;
     SWITCH category;
 
     CASE [ "T0100" "T0101" "T0103" ];
-         globalurl = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;verf=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?view=${view};database=${normset.database};searchsingleaut=${item.id}";
-         content   = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;verf=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsingleaut=${item.id}";
+         content   = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
-         globalurl = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;kor=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?view=${view};database=${normset.database};searchsinglekor=${item.id}";
-         content   = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;kor=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsinglekor=${item.id}";
+         content   = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${content}</b>";
@@ -68,21 +68,21 @@ FOREACH category IN categories;
          content   = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
-         globalurl = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;swt=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?view=${view};database=${normset.database};searchsingleswt=${item.id}";
-         content   = " <a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;swt=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsingleswt=${item.id}";
+         content   = " <a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in
 allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0700";
-         globalurl = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;notation=%22${item.content}%22";
-         localurl  = "${config.get('search_loc')}?view=${view};database=${normset.database};searchsinglenot=${item.id}";
-         content   = " <a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;notation=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsinglenot=${item.id}";
+         content   = " <a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T5001";
-         content   = "<a href=\"${config.get('search_loc')}?view=${view};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
 
     CASE "T5002";
-         content   = "<a href=\"${config.get('search_loc')}?view=${view};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
 
     END;
 
@@ -142,8 +142,8 @@ END;
 
 <hr />
 
-<form method="get" action="[% config.get('search_loc') %]">
-<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
+
 <input type="hidden" name="hitrange"   value="[% qopts.hitrange %]" />
 <input type="hidden" name="database"   value="[% database %]" />
 

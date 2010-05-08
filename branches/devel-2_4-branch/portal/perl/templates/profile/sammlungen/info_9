@@ -59,8 +59,6 @@
 %]
 
 [%- IF resultlist.size > 5 -%]
-[%- searchprefix  = config.get('searchfield').ejahrstring.prefix -%]
-
 <ol class="cloud">
 [%- FOREACH thisitem IN resultlist -%]
 [% item      = thisitem.item;
@@ -68,7 +66,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=xapian;[%- IF config.get('drilldown') && itemcount < config.get('xapian_option').maxmatch -%]drilldown=1;[%- IF config.get('drilldown_option').cloud -%]dd_cloud=1;[%- END -%][%- IF config.get('drilldown_option').categorized -%]dd_categorized=1;[%- END -%][%- END -%]fs=[% searchprefix %]:|[% item %]|;database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=sql;profil=dbauswahl;ejahr=[% item %];ejahrop=eq" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

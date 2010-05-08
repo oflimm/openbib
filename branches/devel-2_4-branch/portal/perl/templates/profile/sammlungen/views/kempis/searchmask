@@ -38,7 +38,7 @@
 <!--<div class="langchoice">
 [% IF config.get('lang').size > 1 %]
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('searchmask_loc') %]?view=[% view %];sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -57,17 +57,17 @@
 [% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#to_focus").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+  $("#to_focus").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
-  $("#input_box_serials").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+  $("#input_box_serials").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
-  $("#input_box_articles").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+  $("#input_box_articles").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -77,7 +77,7 @@ $(document).ready(function(){
 [% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#to_focus").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+  $("#to_focus").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -85,7 +85,7 @@ $(document).ready(function(){
                 extraParams: {
                   exact: "[% livesearch.exact %]"
                 }});
-  $("#input_box_serials").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+  $("#input_box_serials").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -93,7 +93,7 @@ $(document).ready(function(){
                 extraParams: {
                   exact: "[% livesearch.exact %]"
                 }});
-  $("#input_box_articles").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+  $("#input_box_articles").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -106,21 +106,12 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-<form method="get" action="[% config.get('virtualsearch_loc') %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="view"      value="[% view %]" />
-<input type="hidden" name="sb"        value="xapian" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+
+
+<input type="hidden" name="sb"        value="sql" />
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="profil"        value="dbauswahl" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="drilldown"      value="1" />
-[% END %]
-[% IF config.get('drilldown_option').cloud %]
-<input type="hidden" name="dd_cloud"       value="1" />
-[% END %]
-[% IF config.get('drilldown_option').categorized %]
-<input type="hidden" name="dd_categorized" value="1" />
-[% END %]
 
 <table width="70%">
 <tr><td>
@@ -136,9 +127,9 @@ $(document).ready(function(){
 
 [% IF queries.size > 0 %]
 <p />
-<form method="get" id="queries" action="[% config.get('dispatchquery_loc') %]">
+<form method="get" id="queries" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dispatchquery_loc.name %]">
 <b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 
 <table>
 <tr>

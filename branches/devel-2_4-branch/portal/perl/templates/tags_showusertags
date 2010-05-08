@@ -26,14 +26,14 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('tags_loc') %]?view=[% view %];show_usertags=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a                href="[% config.get('tags_loc') %]?view=[% view %];edit_usertags=1">[% msg.maketext("&Auml;ndern") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]?show_usertags=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]?edit_usertags=1">[% msg.maketext("&Auml;ndern") %]</a></li>
 </ul>
 
 <div class="content">
 <p/>
 <div class="listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.get('tags_loc') %]?view=[% view %];view=[% view %];show_usertags=1;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.get('tags_loc') %]?view=[% view %];view=[% view %];show_usertags=1;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]?show_usertags=1;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]?show_usertags=1;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 [%
    private_tags = user.get_private_tags({ loginname => loginname  });
@@ -67,7 +67,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a href="[% config.get('tags_loc') %]?view=[% view %];searchtitoftag=[% itemid %];private_tags=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit dem Tag </span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% itemid %];private_tags=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%     END %]
 </ol>
 [%   ELSE %]
@@ -79,7 +79,7 @@ verkn&uuml;pft mit dem Tag </span><a href="[% config.get('tags_loc') %]?view=[% 
    itemid    = thisitem.id;
    itemclass = css_classes.$classnr;
 %]
-<li><a href="[% config.get('tags_loc') %]?view=[% view %];searchtitoftag=[% itemid %];private_tags=1">[% item %]</a> ([% itemcount %])</li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% itemid %];private_tags=1">[% item %]</a> ([% itemcount %])</li>
 [%     END %]
 </ul>
 [%   END %]

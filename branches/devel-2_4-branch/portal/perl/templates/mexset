@@ -1,16 +1,3 @@
-[%#-
-#######################################################################
-#
-# Templatename: connector_digibib_mexset
-#
-# Typ         : Subtemplate       
-#
-# Aufgabe:
-#
-# Ausgabe der Exemplar-Informationen aus den bibliograph. Daten
-#
-#######################################################################
--%]
 [% IF circset.size <= 0 %]
 <table width="100%">
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Inventarnummer") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Bestand") %]</td></tr>
@@ -20,7 +7,7 @@
 [%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
 [%-   thisdbname = mex.${"X4000"}.content.dbname -%]
 [%-   IF dbinfo.get('use_libinfo').${thisdbname} %]
-<a href="[% config.get('info_loc') %]?view=[% view %];id=[% thisdbname %];stid=60">[% mex.${"X4000"}.content.full %]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% thisdbname %];stid=60">[% mex.${"X4000"}.content.full %]</a>
 [%-   ELSE -%]
 <a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>
 [%-   END -%]

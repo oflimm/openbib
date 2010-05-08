@@ -21,9 +21,9 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=20">Elise und Helene Richter</a></li>
-   <li><a                href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=22">Biographien</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=21">Die Bibliothek Richter heute</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=20">Elise und Helene Richter</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=22">Biographien</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=21">Die Bibliothek Richter heute</a></li>
 </ul>
 
 <div class="content">
@@ -73,7 +73,7 @@ September 2007 weitestgehend abgeschlossen wurde. Alle gefundenden
 B&uuml;cher, Sonderdrucke, Zeitschriftenhefte etc. wurden in der
 Virtuellen Bibliothek Elise und Helene Richter" erfasst. Die Grundlage
 f&uuml;r die Recherche bilden die 1941 von Elise und Helene Richter
-erstellten <a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=30">Listen</a>.</p>
+erstellten <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=30">Listen</a>.</p>
 
 <p> Neben der bibliographischen Verzeichnung der B&uuml;cher wurde
 eine rudiment&auml;re Verschlagwortung der Titel vorgenommen. Der

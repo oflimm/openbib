@@ -25,7 +25,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('externaljump_loc') %]?view=[% view %];queryid=[% thisquery.get_id %];action=action=Weiter+als+externe+Recherche">[% msg.maketext("Sprung in externe Recherchequellen") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').externaljump_loc.name %]?queryid=[% thisquery.get_id %];action=action=Weiter+als+externe+Recherche">[% msg.maketext("Sprung in externe Recherchequellen") %]</a></li>
 </ul>
 
 <div class="content">
@@ -86,7 +86,7 @@
 [%- IF thisquery.get_hits -%]
  = [% thisquery.hits %] Treffer
 [%- END -%]
-</td><td>=&gt;</td><td><a href="[% config.get('resultlists_loc') %]?view=[% view %];&action=choice&queryid=[% thisquery.get_id %]">[% msg.maketext("Sprung zur Trefferliste im KUG") %]</a></td></tr>
+</td><td>=&gt;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?&action=choice&queryid=[% thisquery.get_id %]">[% msg.maketext("Sprung zur Trefferliste im KUG") %]</a></td></tr>
 </table>
 </td></tr>
 </table>
@@ -101,18 +101,18 @@
 <tr><td><img src="/images/openbib/external/digibib.gif" alt="DigiBib-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Digitale Bibliothek / Monographien (Fernleihe)") %]</b></td><td>=&gt;</td><td>
 
 [% IF searchquery.verf.val != '' || searchquery.hst.val != '' || searchquery.hststring.val != '' || searchquery.kor.val != '' || searchquery.isbn.val != '' %]
-<a href="[% config.get('redirect_loc') %]/540/[% config.get('hbzmonofernleih_exturl') %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% searchquery.verf.val %]&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_fzIB=[% searchquery.isbn.val %]&D_PARAM_QUERY_hzYR=[% searchquery.ejahr.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/540/[% config.get('hbzmonofernleih_exturl') %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% searchquery.verf.val %]&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_fzIB=[% searchquery.isbn.val %]&D_PARAM_QUERY_hzYR=[% searchquery.ejahr.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
-<a href="[% config.get('redirect_loc') %]/540/[% config.get('hbzmonofernleih_exturl') %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% searchquery.verf.val %]&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_fzIB=[% searchquery.isbn.val %]&D_PARAM_QUERY_hzYR=[% searchquery.ejahr.val %][% authurl %]" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/540/[% config.get('hbzmonofernleih_exturl') %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% searchquery.verf.val %]&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_fzIB=[% searchquery.isbn.val %]&D_PARAM_QUERY_hzYR=[% searchquery.ejahr.val %][% authurl %]" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
 
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel, Person, K&ouml;rperschaft, ISBN, Erscheinungsjahr") %]]</td></tr>
 <tr><td><img src="/images/openbib/external/digibib.gif" alt="DigiBib-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)") %]</b></td><td>=&gt;</td><td>
 
 [% IF searchquery.hst.val != '' || searchquery.hststring.val != '' || searchquery.kor.val != '' || searchquery.issn.val != '' %]
-<a href="[% config.get('redirect_loc') %]/541/[% config.get('hbzzeitfernleih_exturl') %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_gzIS=[% searchquery.issn.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/541/[% config.get('hbzzeitfernleih_exturl') %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_gzIS=[% searchquery.issn.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
-<a href="[% config.get('redirect_loc') %]/541/[% config.get('hbzzeitfernleih_exturl') %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_gzIS=[% searchquery.issn.val %][% authurl %]" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/541/[% config.get('hbzzeitfernleih_exturl') %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_gzIS=[% searchquery.issn.val %][% authurl %]" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
 
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN") %]]</td></tr>
@@ -120,9 +120,9 @@
 <tr><td><img src="/images/openbib/external/ezb.gif" alt="DBIS-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Datenbankinformationssystem (DBIS)") %]</b></td><td>=&gt;</td><td>
 
 [% IF searchquery.hst.val != '' || searchquery.hststring.val != ''%]
-<a href="[% config.get('redirect_loc') %]/531/http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&Suchwort=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&lett=fs" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/531/http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&Suchwort=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&lett=fs" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
-<a href="[% config.get('redirect_loc') %]/531/http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&ocolors=40&lett=a" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/531/http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&ocolors=40&lett=a" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
 
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel") %]]</td></tr>
@@ -130,9 +130,9 @@
 <tr><td><img src="/images/openbib/external/ezb.gif" alt="EZB-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Elektronische Zeitschriftendatenbank (EZB)") %]</b></td><td>=&gt;</td><td>
 
 [% IF searchquery.hst.val != '' || searchquery.hststring.val != '' || searchquery.issn.val != '' %]
-<a href="[% config.get('redirect_loc') %]/530/[% config.get('ezb_exturl') %]&jq_term1=[% searchquery.issn.val %]&jq_term2=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a></td>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/530/[% config.get('ezb_exturl') %]&jq_term1=[% searchquery.issn.val %]&jq_term2=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a></td>
 [% ELSE %]
-<a href="[% config.get('redirect_loc') %]/530/http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?bibid=USBK&colors=7&lang=de" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/530/http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?bibid=USBK&colors=7&lang=de" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
 
 <td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel, ISSN") %] ]</td></tr>
@@ -140,14 +140,14 @@
 <tr><td><img src="/images/openbib/external/medpilot.gif" alt="MedPilot-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("MedPilot") %]</td><td>=&gt;</td><td>
 
 [% IF searchquery.hst.val != '' || searchquery.hststring.val != ''%]
-<a href="[% config.get('redirect_loc') %]/533/http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&Suche=Suchen" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/533/http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&Suche=Suchen" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
-<a href="[% config.get('redirect_loc') %]/533/http://www.medpilot.de/" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/533/http://www.medpilot.de/" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel") %] ]</td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td><img src="/images/openbib/external/retro-philfak.png" alt="Digitalisierter Kartenkatalog der Philosophischen Fakult&auml;t" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Kartenkatalog Philosoph. Fakultät") %]</td><td>=&gt;</td><td>
-<a href="[% config.get('redirect_loc') %]/534/http://retro-philfak.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/534/http://retro-philfak.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Keine") %] ]</td></tr>
 </table>
 

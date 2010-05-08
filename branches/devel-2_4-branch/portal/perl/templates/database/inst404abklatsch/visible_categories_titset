@@ -16,7 +16,7 @@
                 'T0100', # msg.maketext("T0100") Verfasser
                 'T0101', # msg.maketext("T0101") Person
                 'T0103', # msg.maketext("T0103") Gefeierte Person
-                'T0200', # msg.maketext("T0200") Urheber
+                'T0200', # msg.maketext("T0200-inst404abklatsch") Ort der Inschrft
                 'T0201', # msg.maketext("T0201") Koerperschaft
                 'T0089', # msg.maketext("T0089") Bandangabe  
                 'T0310', # msg.maketext("T0310") AST  
@@ -27,12 +27,11 @@
                 'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
-                'T0335', # msg.maketext("T0335") Zusatz zum HST
+                'T0335', # msg.maketext("T0335-inst404abklatsch") Edition
                 'T0361', # msg.maketext("T0361") Vorlage beigef. Werk
                 'T0365', # msg.maketext("T0365") Gemeins. Angaben
                 'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
                 'T0360', # msg.maketext("T0360") Vorl. Unterreihe
-                'T0403', # msg.maketext("T0403-inst404abklatsch") Edition
                 'T0410', # msg.maketext("T0410-inst404abklatsch") Aufbewahrungsort
                 'T0412', # msg.maketext("T0412") Verlag
                 'T0425', # msg.maketext("T0425-inst404abklatsch") Datierung
@@ -47,17 +46,17 @@
                 'T0035', # msg.maketext("T0035") ErschLand
                 'T0435', # msg.maketext("T0435") Format
                 'T0508', # msg.maketext("T0508") Quelle
-                'T0433', # msg.maketext("T0433-inst404abklatsch") Buchstabengroesse
+#                'T0433', # msg.maketext("T0433-inst404abklatsch") Buchstabengroesse
                 'T0334', # msg.maketext("T0334") Material
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
                 'T0451', # msg.maketext("T0451") GesTit Vorl
                 'T0590', # msg.maketext("T0590") HSTQuelle
-#                'T0600', # msg.maketext("T0600") Bemerkung
+#                'T0600', # msg.maketext("T0600-inst404abklatsch") Schublade
                 'T0407', # msg.maketext("T0407") Massstab
                 'T0434', # msg.maketext("T0434") Sonst. Angaben
                 'T0437', # msg.maketext("T0437") Begleitmat.
-                'T0501', # msg.maketext("T0501-inst404abklatsch") Abklatschvermerke
+#                'T0501', # msg.maketext("T0501-inst404abklatsch") Abklatschvermerke
                 'T0504', # msg.maketext("T0504") PST Fussnote
                 'T0505', # msg.maketext("T0505") WST Fussnote
                 'T0507', # msg.maketext("T0507") Ang. HST
@@ -85,7 +84,7 @@
                 'T0646', # msg.maketext("T0646") Filmbesitz
                 'T0015', # msg.maketext("T0015") Sprache
                 'T0516', # msg.maketext("T0516") Sprache
-                'T0750', # msg.maketext("T0750") Abstract
+#                'T0750', # msg.maketext("T0750") Abstract
                 'T0503', # msg.maketext("T0503") Uebers. HST
                 'T0026', # msg.maketext("T0026") NE/R
                 'T0800', # msg.maketext("T0800") Art/Inhalt Medienart

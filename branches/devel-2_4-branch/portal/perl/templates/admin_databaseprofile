@@ -37,20 +37,20 @@ function update_fak(yourform, checked, fak) {
 
 <div id="maincontent">
 
-<form method="post" action="[% config.get('databaseprofile_loc') %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databaseprofile_loc.name %]" enctype="application/x-www-form-urlencoded">
 
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.get('userprefs_loc') %]?view=[% view %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userprefs_loc.name %]?action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
 [%- IF config.get('litlists') -%]
-   <li><a                href="[% config.get('litlists_loc') %]?view=[% view %];action=manage">[% msg.maketext("Literaturlisten") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?action=manage">[% msg.maketext("Literaturlisten") %]</a></li>
 [%- END -%]
-   <li><a                href="[% config.get('tags_loc') %]?view=[% view %];show_usertags=1">[% msg.maketext("Tags") %]</a></li>
-[% IF config.get('reviews') %]   <li><a                href="[% config.get('userreviews_loc') %]?view=[% view %];do_show=1">[% msg.maketext("Rezensionen") %]</a></li>[% END %]
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]?show_usertags=1">[% msg.maketext("Tags") %]</a></li>
+[% IF config.get('reviews') %]   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userreviews_loc.name %]?do_show=1">[% msg.maketext("Rezensionen") %]</a></li>[% END %]
 [% IF targettype != 'self' %]
-<li><a href="[% config.get('circulation_loc') %]?view=[% view %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').circulation_loc.name %]?action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
 [% END %]
-   <li><a class="active" href="[% config.get('databaseprofile_loc') %]?view=[% view %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databaseprofile_loc.name %]?do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
 <div class="content">

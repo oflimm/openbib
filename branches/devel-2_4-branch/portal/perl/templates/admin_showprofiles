@@ -24,9 +24,9 @@
 
 <div class="content">
 
-<form method="get" action="[%config.get('admin_loc') %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
 <input type="hidden" name="do_editprofile" value="1" />
-<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neues Katalog-Profil anlegen") %]</th></tr>
@@ -56,7 +56,7 @@
 
 [% FOREACH profile IN profiles %]
 
-<tr><td>[% profile.profilename %]</td><td><a href="[% config.get('admin_loc') %]?view=[% view %];&do_editprofile=1&profilename=[% profile.profilename %]&do_edit=1">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
+<tr><td>[% profile.profilename %]</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?&do_editprofile=1&profilename=[% profile.profilename %]&do_edit=1">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
 [% END %]
 
 </table>

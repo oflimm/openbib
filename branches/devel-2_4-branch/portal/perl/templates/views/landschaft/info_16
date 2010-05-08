@@ -26,27 +26,27 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.get('searchmask_loc') %]?view=[% view %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% config.get('searchmask_loc') %]?view=[% view %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a                href="[% config.get('search_loc') %]?view=[% view %];view=[% view %];database=landschaft;browsecat=T0101" title="Register">Register</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=landschaft;stid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=landschaft;browsecat=T0101" title="Register">Register</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=landschaft;stid=14" title="Wolken">Wolken</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=14" title="Wolken">Wolken</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=landschaft;stid=14" title="K&uuml;nstler">K&uuml;nstler</a></li>
-   <li><a                href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=landschaft;stid=15" title="Topograph. Schlagwort">Topograph. Schlagwort</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=landschaft;stid=16" title="1. Ikonograph. Schlagwort">1. Ikonograph. Schlagwort</a></li>
-   <li><a                href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=landschaft;stid=17" title="2. Ikonograph. Schlagwort">2. Ikonograph. Schlagwort</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=14" title="K&uuml;nstler">K&uuml;nstler</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=15" title="Topograph. Schlagwort">Topograph. Schlagwort</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=16" title="1. Ikonograph. Schlagwort">1. Ikonograph. Schlagwort</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=17" title="2. Ikonograph. Schlagwort">2. Ikonograph. Schlagwort</a></li>
 </ul>
 
 <div class="content">
@@ -77,7 +77,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-topograph. verschlagwortet mit </span><a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=sql;notation=%22[% item.replace('"','') | uri %]%22;database=[% database %];searchprofile=1" class="tag">[% item %]</a></li>
+topograph. verschlagwortet mit </span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=sql;notation=%22[% item.replace('"','') | uri %]%22;database=[% database %];searchprofile=1" class="tag">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

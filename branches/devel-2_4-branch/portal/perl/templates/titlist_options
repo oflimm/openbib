@@ -30,10 +30,12 @@
   <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
 &nbsp;
-<select name="combinedbs">
-  <option value="0"[%- IF query.param('combinedbs') == '0' -%] selected="selected"[%- END -%]>[% msg.maketext("pro Katalog") %]</option>
-  <option value="1"[%- IF query.param('combinedbs') == '1' && NOT database -%] selected="selected"[%- END -%]>[% msg.maketext("katalogübergreifend") %]</option>
+[% IF show_sortall == 1 %]
+<select name="sortall">
+  <option value="0"[%- IF query.param('sortall') == '0' -%] selected="selected"[%- END -%]>[% msg.maketext("pro Katalog") %]</option>
+  <option value="1"[%- IF query.param('sortall') == '1' -%] selected="selected"[%- END -%]>[% msg.maketext("katalogübergreifend") %]</option>
 </select>
+[% END %]
 </td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td>
 </tr>
 </table>

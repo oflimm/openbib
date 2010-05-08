@@ -22,24 +22,24 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.get('searchmask_loc') %]?view=[% view %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% config.get('searchmask_loc') %]?view=[% view %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=13" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=13" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-  <li><a                href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=13" title="Wolken">Wolken</a></li>
-  <li><a                href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% database %];stid=15" title="Sichten">Sichten</a></li>
-  <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% database %];stid=11" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+  <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=13" title="Wolken">Wolken</a></li>
+  <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% database %];stid=15" title="Sichten">Sichten</a></li>
+  <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% database %];stid=11" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% database %];stid=11" title="Katalogauswahl">Katalogauswahl</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% database %];stid=11" title="Katalogauswahl">Katalogauswahl</a></li>
 </ul>
 
 <div class="content">
@@ -69,11 +69,11 @@ Nutzung zu erhalten.
   [%- FOREACH db = catdb -%]
     [%- IF db.category == category.short -%]
       [%- IF db.column == 1 -%]
-<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% db.db %];stid=10" title="Top 20">[% db.name %]</a></td>
+<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% db.db %];stid=10" title="Top 20">[% db.name %]</a></td>
       [%- END -%]
       [%- IF db.column > 1 && db.column < maxcolumn -%]
         [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% db.db %];stid=10" title="Top 20">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% db.db %];stid=10" title="Top 20">[% db.name %]</a></td>
         [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
         [%- END -%]
@@ -83,7 +83,7 @@ Nutzung zu erhalten.
         [%- IF db.column != 1 -%]
 
           [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% db.db %];stid=10" title="Top 20">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% db.db %];stid=10" title="Top 20">[% db.name %]</a></td>
           [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
           [%- END -%]

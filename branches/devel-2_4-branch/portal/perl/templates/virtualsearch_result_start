@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
-
+[%- request_base    = "sb=xapian;drilldown=1;dd_categorized=1;"  -%]
 <body>
 
 
@@ -23,31 +23,18 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('resultlists_loc') %]?view=[% view %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?trefferliste=choice">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div class="content">
 
 <p />
   <div class="listoptions">
-<form method="get" action="[% config.get('virtualsearch_loc') %]">
-
-<input type="hidden" name="view"      value="[% view %]" />
-<input type="hidden" name="page"      value="[% page %]" />
-<input type="hidden" name="sb"        value="xapian" />
-<input type="hidden" name="st"        value="1" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="drilldown"      value="1" />
-[% END %]
-[% IF config.get('drilldown_option').cloud %]
-<input type="hidden" name="dd_cloud"       value="1" />
-[% END %]
-[% IF config.get('drilldown_option').categorized %]
-<input type="hidden" name="dd_categorized" value="1" />
-[% END %]
-<input type="hidden" name="autoplus"  value="0" />
-
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]">
+<input type="hidden" name="offset"     value="[% query.param('offset') %]" />
 <input type="hidden" name="hitrange"   value="[% query.param('hitrange') %]" />
+<input type="hidden" name="action"     value="showall" />
+
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 
 [% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.get('virtualsearch_loc') %]

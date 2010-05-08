@@ -22,16 +22,16 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
-[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.get('litlists') %]   <li><a [% IF active == 41 %]class="active"[% END %] href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
-   <li><a                href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.get('litlists') %]   <li><a [% IF active == 41 %]class="active"[% END %] href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 </ul>
 
 <div class="content">
@@ -70,11 +70,11 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
   [%- FOREACH db = catdb -%]
     [%- IF db.category == category.short -%]
       [%- IF db.column == 1 -%]
-<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% db.db %];stid=9" title="Jahre">[% db.name %]</a></td>
+<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% db.db %];stid=9" title="Jahre">[% db.name %]</a></td>
       [%- END -%]
       [%- IF db.column > 1 && db.column < maxcolumn -%]
         [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% db.db %];stid=9" title="Jahre">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% db.db %];stid=9" title="Jahre">[% db.name %]</a></td>
         [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
         [%- END -%]
@@ -84,7 +84,7 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
         [%- IF db.column != 1 -%]
 
           [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];database=[% db.db %];stid=9" title="Jahre">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% db.db %];stid=9" title="Jahre">[% db.name %]</a></td>
           [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
           [%- END -%]

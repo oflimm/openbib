@@ -20,7 +20,7 @@
 <tr class="titlerow"><td align="left">&nbsp;<b>[% loop.count %]</b>&nbsp;&nbsp;[% item.content %]</td><td align="right">[% item.titcount %]</td></tr>
 [% listrow = 'listrow1' %]
 [% FOREACH dbitem IN item.databases %]
-<tr class="[% listrow %]"><td align="left"><a href="[% config.get('search_loc') %]?view=[% view %];database=[% dbitem.dbname %];searchtitofurhkor=[% dbitem.id %]">[% dbitem.dbdesc.full %]</a></td><td align="right">[% dbitem.titcount %]</td></tr>
+<tr class="[% listrow %]"><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=[% dbitem.dbname %];searchtitofurhkor=[% dbitem.id %]">[% dbitem.dbdesc.full %]</a></td><td align="right">[% dbitem.titcount %]</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]

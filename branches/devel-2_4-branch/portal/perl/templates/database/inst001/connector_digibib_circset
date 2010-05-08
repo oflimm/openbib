@@ -13,7 +13,6 @@
 -%]
 [%-
     #USE dumper;dumper.dump(itemcirc);
-
     location = {} ;
 
     FOREACH circ IN itemcirc ;
@@ -23,52 +22,46 @@
        signatur = circ.${"Signatur"} ;
        status   = circ.${"Status"} ;
 
-       entliehenbis = "";
        IF status == 'entliehen' && circ.Rueckgabe != '31.12.9999' && circ.Rueckgabe != '1.1.1753' ;
-           entliehenbis =  " bis ${circ.Rueckgabe}" ;
-       END ;
-
-       opactext  = "";
-       IF circ.Fussnote ;
-         opactext  = " / ${circ.Fussnote}";
+           entliehenbis =  "bis ${circ.Rueckgabe}" ;
        END ;
 
        IF     circ.Zweigstelle == 0 ;
           IF circ.Signatur.match('^2[3-9]A') || circ.Signatur.match('[3-9][0-9]A') ;
              IF status == "bestellbar" ;
-                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar ${opactext}";
+                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
              ELSIF circ.Status == "entliehen" ;
-                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / vormerkbar ${opactext}";
+                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / vormerkbar";
              END ;
           END ;      
 
           IF circ.Abteilungscode == 3 ;
              IF status == "bestellbar" ;
-                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / ausleihbar${opactext}";
+                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / ausleihbar";
              ELSIF circ.Status == "entliehen" ;
-                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / entliehen${entliehenbis}${opactext}";
+                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / entliehen ${entliehenbis}";
              END ;
           ELSIF circ.Abteilungscode == 2 ; 
-             status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/ls/index_ger.html\" target=\"_blank\">LS</a> / Pr&auml;senzbestand${opactext}";
+             status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/ls/index_ger.html\" target=\"_blank\">LS</a> / Pr&auml;senzbestand";
           ELSIF circ.Abteilungscode == 98 ; 
-             status = "<a href=\"http://www.ub.uni-koeln.de/edz/content/index_ger.html\" target=\"_blank\">EDZ</a> / einsehbar${opactext}";
+             status = "<a href=\"http://www.ub.uni-koeln.de/edz/content/index_ger.html\" target=\"_blank\">EDZ</a> / einsehbar";
           END ;
 
        ELSIF circ.Zweigstelle == 4 ;
 
           IF circ.Abteilungscode == 3 ;
              IF status == "bestellbar" ;
-                status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1967\" target=\"_blank\">LBS EWA</a> / ausleihbar${opactext}";
+                status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1967\" target=\"_blank\">LBS EWA</a> / ausleihbar";
              ELSIF status == "entliehen" ;
-                status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1967\" target=\"_blank\">LBS EWA</a> / entliehen${entliehenbis} ${opactext}";
+                status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1967\" target=\"_blank\">LBS EWA</a> / entliehen  ${entliehenbis}";
              END ;
           ELSIF circ.Abteilungscode == 4 || circ.Abteilungscode == 7 ; 
-             status = "EWA LS / Pr&auml;senzbestand${opactext}";
+             status = "EWA LS / Pr&auml;senzbestand";
           END ;
        END ;
 
        IF status == 'entliehen' && entliehenbis ;
-          status = "entliehen ${entliehenbis}${opactext}";
+          status = "entliehen ${entliehenbis}";
        END;
 
        IF circ.Vormerkbarkeit && status == 'entliehen';

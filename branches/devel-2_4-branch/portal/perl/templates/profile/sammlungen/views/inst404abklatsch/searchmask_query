@@ -5,21 +5,21 @@
 <script type="text/javascript">
 $(document).ready(function(){
 [%   IF showfs %]
-  $("#autocomplete_fs").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+  $("#autocomplete_fs").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
 [%   END %]
 [%   IF showverf %]
-  $("#autocomplete_verf").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+  $("#autocomplete_verf").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
 [%   END %]
 [%   IF showswt %]
-  $("#autocomplete_swt").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+  $("#autocomplete_swt").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -31,14 +31,14 @@ $(document).ready(function(){
 <script type="text/javascript">
 $(document).ready(function(){
 [%   IF showfs %]
-  $("#autocomplete_fs").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+  $("#autocomplete_fs").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
 [%   END %]
 [%   IF showverf %]
-  $("#autocomplete_verf").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+  $("#autocomplete_verf").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -48,7 +48,7 @@ $(document).ready(function(){
                   type: "2" }});
 [%   END %]
 [%   IF showswt %]
-  $("#autocomplete_swt").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+  $("#autocomplete_swt").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -70,7 +70,7 @@ $(document).ready(function(){
 
 <tr><td class="category">[% msg.maketext("T0710-inst404abklatsch") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input id="autocomplete_swt" type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 
-<tr><td class="category">[% msg.maketext("T0335-inst404abklatsch") %] / SEG-Eintrag</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("T0335-inst404abklatsch") %] / SEG-Eintrag</td><td class="category"><select name="boolinhalt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="inhalt" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 
 <tr><td class="category">[% msg.maketext("Inventarnummer") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 

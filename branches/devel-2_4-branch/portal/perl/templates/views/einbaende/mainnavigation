@@ -26,14 +26,14 @@
 [%- username = user.get_username -%]
 <div id="mainnavigation">
 <div id="mainnavigation_left">
-&nbsp;&nbsp;<a [%- IF active_menu == "searchmask" -%]class="active_menu" [%- END -%]href="[% config.get('searchmask_loc') %]?view=[% view %];view=[% view %]">[% msg.maketext("Suchen") %]</a>&nbsp;&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% config.get('resultlists_loc') %]?view=[% view %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% config.get('managecollection_loc') %]?view=[% view %];action=show;view=[% view %]">[% msg.maketext("Merkliste") %]  <span id="collectioncount"></span></a>
+&nbsp;&nbsp;<a [%- IF active_menu == "searchmask" -%]class="active_menu" [%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?">[% msg.maketext("Suchen") %]</a>&nbsp;&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?action=choice">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=show">[% msg.maketext("Merkliste") %]  <span id="collectioncount"></span></a>
 </div>
 <div id="mainnavigation_right">
-[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('admin_loc') %]?view=[% view %];do_showcat=1">[% msg.maketext("admin") %]</a>&nbsp&nbsp;[%- END -%]
-<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=20">[% msg.maketext("Startseite") %]</a>&nbsp;&nbsp;
-<a [%- IF active_menu == "project" -%]class="active_menu" [%- END -%]href="[% config.get('info_loc') %]?view=[% view %];view=[% view %];stid=30">Projekt</a>&nbsp&nbsp;
-<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="http://[% config.get('loadbalancerservername') %][% config.get('connector_rss_loc') %]/neuzugang/einbaende.rdf">[% msg.maketext("RSS") %]</a>&nbsp;&nbsp;
-<a [%- IF active_menu == "info" -%]class="active_menu"[%- END -%]href="[% config.get('info_loc') %]?view=[% view %];view=[% view %]">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="[% config.get('leave_loc') %]?view=[% view %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showcat=1">[% msg.maketext("admin") %]</a>&nbsp&nbsp;[%- END -%]
+<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=20">[% msg.maketext("Startseite") %]</a>&nbsp;&nbsp;
+<a [%- IF active_menu == "project" -%]class="active_menu" [%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=30">Projekt</a>&nbsp&nbsp;
+<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_rss_loc.name %]/neuzugang/einbaende.rdf">[% msg.maketext("RSS") %]</a>&nbsp;&nbsp;
+<a [%- IF active_menu == "info" -%]class="active_menu"[%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').leave_loc.name %]?" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 </span></b></a>
 </div>
 </div>

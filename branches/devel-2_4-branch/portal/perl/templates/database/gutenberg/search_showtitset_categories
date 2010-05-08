@@ -20,8 +20,6 @@
 
 [%-
 
-request_base = "sb=xapian;drilldown=1;dd_categorized=1;";
-
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 
@@ -42,15 +40,11 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-
-         searchterm    = item.content;
-         searchprefix  = config.get('searchfield').verfstring.prefix;
-
-         globalurl = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-         localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
-         content   = "${rssfeed}<a href=\"${config.get('redirect_loc')}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('connector_availabilityimage_loc')}?view=${view};action=lookup&target=wikipedia&lang=${qopts.l}&id=${wikicontent}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;verf=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchsingleaut=${thisid}";
+         content   = "${rssfeed}<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -60,14 +54,10 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-
-         searchterm    = item.content;
-         searchprefix  = config.get('searchfield').korstring.prefix;
-
-         globalurl = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-         localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;kor=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchsinglekor=${thisid}";
          content   = "${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
@@ -76,22 +66,22 @@ FOREACH category IN categories;
     CASE [ "T0531" "T0533" ];
          IF content.match("---&gt;: ") ;
             previssues = content.split("---&gt;: ");
-            globalurl  = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;hststring=${previssues.1}";
-            localurl   = "${config.get('search_loc')}?view=${view};database=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;hitrange=${qopts.hitrange}";
+            globalurl  = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;hststring=${previssues.1}";
+            localurl   = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;hitrange=${qopts.hitrange}";
             content    = "<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
          END ;
           
     CASE "T0540";
-         content   = "<a class=\"isbn\" href=\"${config.get('redirect_loc')}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+         content   = "<a class=\"isbn\" href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE "T0543";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.get('redirect_loc')}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE "T0662";
-         content   = "<a href=\"${config.get('redirect_loc')}/504/${content}\" target=\"_blank\">Greifen Sie hier online auf den Volltext zu</a>";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/504/${content}\" target=\"_blank\">Greifen Sie hier online auf den Volltext zu</a>";
 
     CASE [ "E4100" "T4100" ];
-         localurl    = "${config.get('search_loc')}?view=${view};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -102,19 +92,19 @@ FOREACH category IN categories;
     CASE "E4110";
          thisindicator = item.indicator ;
          thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
-         content       = "${config.get('redirect_loc')}/500/${content}" ;
+         content       = "${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/500/${content}" ;
          content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
 
     CASE "E4120";
          thiscontent   = "Greifen Sie hier online auf den Volltext zu";
-	 content       = "${config.get('redirect_loc')}/503/${content}" ;
+	 content       = "${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/503/${content}" ;
 	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
 
     CASE "E4300";
          thiscontent = item.content;
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
-         localurl    = "${config.get('search_loc')}?view=${view};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
 	 content       = "<a href=\"${localurl}\">${content}</a>";
          rswkswt_done.${thiscontent} = 1;
 
@@ -130,14 +120,10 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-
-         searchterm    = item.content;
-         searchprefix  = config.get('searchfield').swtstring.prefix;
-
-         globalurl = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-         localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;swt=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchsingleswt=${thisid}";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;
 
@@ -149,13 +135,9 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-
-         searchterm    = item.content;
-         searchprefix  = config.get('searchfield').notstring.prefix;
-
-         localurl  = "${config.get('virtualsearch_loc')}?view=${view};${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchsinglenot=${thisid}";
          content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T1600";
@@ -169,10 +151,10 @@ FOREACH category IN categories;
          content   = content ;
 
     CASE "T5001";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?view=${view};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('search_loc')}?view=${view};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

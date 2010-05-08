@@ -53,7 +53,7 @@ FOREACH category IN categories;
         content    = "<a href=\"http://commons.wikimedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
 
     CASE "P5000";
-         content   = "<a href=\"${config.get('search_loc')}?view=${view};database=${normset.database};searchtitofaut=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofaut=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
     END;
 
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
@@ -76,7 +76,7 @@ END;
 [%
     searchterm        = normset.${"P0001"}.first.content;
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-    globalurl         = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;verf=%22${searchterm}%22";
+    globalurl         = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;verf=%22${searchterm}%22";
 %]
 
 <p> <img style="vertical-align:bottom" src="[% config.get('hint_img')

@@ -21,7 +21,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('dbis_loc') %]?view=[% view %];action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Datenbanken (DBIS)") %]</span></a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Datenbanken (DBIS)") %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -31,7 +31,7 @@
 <h1>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h1>
 <p/>
 <div class="listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.get('dbis_loc') %]?view=[% view %];view=[% view %];action=show_subjects;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.get('dbis_loc') %]?view=[% view %];view=[% view %];action=show_subjects;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?action=show_subjects;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?action=show_subjects;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
 <div class="left_side23">
@@ -53,14 +53,14 @@
 [%- classnr   = subject.class;
     itemclass = css_classes.$classnr;
 -%]
-<li class="[% itemclass %]"><span>[% subject.count %] Titel sind in der Fachgruppe</span><a href="[% config.get('dbis_loc') %]?view=[% view %];view=[% view %];notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs"  class="tag" title="[% subject.count %] Datenbanken sind in der Fachgruppe [% subject.desc %]">[% subject.desc %]</a></li>
+<li class="[% itemclass %]"><span>[% subject.count %] Titel sind in der Fachgruppe</span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs"  class="tag" title="[% subject.count %] Datenbanken sind in der Fachgruppe [% subject.desc %]">[% subject.desc %]</a></li>
 [% END %]
 </ol>
 <!-- Ende Tag-Cloud -->
 [% ELSE %]
 <ul class="subjectlist">
 [% FOREACH subject IN subjects %]
-<li><a href="[% config.get('dbis_loc') %]?view=[% view %];view=[% view %];notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs">[% subject.desc %]</a> ([% subject.count %])</li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs">[% subject.desc %]</a> ([% subject.count %])</li>
 [% END %]
 </ul>
 [% END %]
@@ -71,9 +71,9 @@
 <div class="boxedclear">
 <div class="headline">[% msg.maketext("Suche nach Datenbanken") %]</div>
 <p/>
-<form method="get" action="[% config.get('dbis_loc') %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]">
 
-<input type="hidden" name="view"      value="[% view %]" />
+
 <input type="hidden" name="lett"      value="[% subject.lett %]" />
 <input type="hidden" name="action"    value="search_dbs" />
 

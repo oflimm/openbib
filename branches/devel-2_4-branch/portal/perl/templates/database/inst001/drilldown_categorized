@@ -1,4 +1,4 @@
-[%     IF drilldown_categorized %]
+[%     IF drilldown_categorized && fullresultcount >= 10 %]
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -126,7 +126,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_db_[% database %]_toggle"></span>
 <div id="dd_db_[% database %]">
 [% END %]
-<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% termitem.0 %];fs=[% lastquery %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% termitem.0 %];fs=[% lastquery %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.8.size > 5 %]
 </div>
@@ -147,11 +147,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_aut_[% database %]_toggle"></span>
 <div id="dd_aut_[% database %]">
 [% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').verfstring.prefix;
--%]
-<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %]fs=ddper:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.3.size > 5 %]
 </div>
@@ -172,11 +168,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_kor_[% database %]_toggle"></span>
 <div id="dd_kor_[% database %]">
 [% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').korstring.prefix;
--%]
-<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %]fs=ddcorp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.7.size > 5 %]
 </div>
@@ -197,11 +189,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_swt_[% database %]_toggle"></span>
 <div id="dd_swt_[% database %]">
 [% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').swtstring.prefix;
--%]
-<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %]fs=ddswt:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.1.size > 5 %]
 </div>
@@ -225,11 +213,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_not_[% database %]_toggle"></span>
 <div id="dd_not_[% database %]">
 [% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').notstring.prefix;
--%]
-<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>[% bkdesk = bklookup.${termitem.0} %][% IF bkdesk %]&nbsp;/&nbsp;[% bkdesk %]&nbsp;[% END %]&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %]fs=ddnot:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>[% bkdesk = bklookup.${termitem.0} %][% IF bkdesk %]&nbsp;/&nbsp;[% bkdesk %]&nbsp;[% END %]&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.2.size > 5 %]
 </div>
@@ -250,11 +234,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_year_[% database %]_toggle"></span>
 <div id="dd_year_[% database %]">
 [% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').ejahrstring.prefix;
--%]
-<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %]fs=ddyear:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
 [% IF category_map.5.size > 5 %]
 </div>
@@ -275,11 +255,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_mart_[% database %]_toggle"></span>
 <div id="dd_mart_[% database %]">
 [% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').martstring.prefix;
--%]
-<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %]fs=ddtyp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.4.size > 5 %]
 </div>
@@ -300,62 +276,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_spr_[% database %]_toggle"></span>
 <div id="dd_spr_[% database %]">
 [% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').sprstring.prefix;
-
-    spr_mapping = {
-        "de"       => msg.maketext("Deutsch"),
-        "dt."      => msg.maketext("Deutsch"),
-        "ger"      => msg.maketext("Deutsch"),
-        "en"       => msg.maketext("Englisch"),
-        "eng"      => msg.maketext("Englisch"),
-        "engl."    => msg.maketext("Englisch"),
-        "fr"       => msg.maketext("Französisch"),
-        "fre"       => msg.maketext("Französisch"),
-        "franz."       => msg.maketext("Französisch"),
-        "lat"      => msg.maketext("Latein"),
-        "lats"     => msg.maketext("Latein"),
-        "gre"      => msg.maketext("Griechisch"),
-        "griech."  => msg.maketext("Griechisch"),
-        "neugriech."  => msg.maketext("Neu-Griechisch"),
-        "hun"      => msg.maketext("Ungarisch"),
-        "ungar."   => msg.maketext("Ungarisch"),
-        "ita"      => msg.maketext("Italienisch"),
-        "ital."      => msg.maketext("Italienisch"),
-        "spa"      => msg.maketext("Spanisch"),
-        "span."    => msg.maketext("Spanisch"),
-        "rus"      => msg.maketext("Russisch"),
-        "russ."    => msg.maketext("Russisch"),
-        "jpn"      => msg.maketext("Japanisch"),
-        "swe"      => msg.maketext("Schwedisch"),
-        "tur"      => msg.maketext("Türkisch"),
-        "tschech." => msg.maketext("Tschechisch"),
-        "pol"      => msg.maketext("Polnisch"),
-        "niederlaend." => msg.maketext("Niederländisch"),
-        "dut." => msg.maketext("Niederländisch"),
-        "islaend." => msg.maketext("Isländisch"),
-        "finn." => msg.maketext("Finnisch"),
-        "chi" => msg.maketext("Chinesisch"),
-        "arab." => msg.maketext("Arabisch"),
-
-    };
-
-    spr_tmp = termitem.0.split(';');
-    spr = [ ];
-
-    FOREACH thisspr IN spr_tmp ;
-       IF spr_mapping.${thisspr} ;
-          spr.push(spr_mapping.${thisspr});
-       ELSE;
-          spr.push(thisspr);
-       END;
-    END ;
-
-    sprstring = spr.join(';');
-
--%]
-<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %]fs=ddspr:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.6.size > 5 %]
 </div>

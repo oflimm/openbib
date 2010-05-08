@@ -6,11 +6,11 @@
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 
     <rdf:Description
-rdf:about="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/library/[% id %]">
+rdf:about="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/library/[% id %]">
         <rdf:type
 rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
         <rdfs:isDefinedBy
-rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('resource_loc') %]/library/[% id %]"/>
+rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/library/[% id %]"/>
 [% FOREACH item IN libinfo.${"I0010"} %]
         <foaf:name>[% item.content %]</foaf:name>
 [% END %]

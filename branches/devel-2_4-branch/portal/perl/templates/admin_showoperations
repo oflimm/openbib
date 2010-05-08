@@ -25,9 +25,9 @@
 
 <div class="content">
 
-<form method="get" action="[%config.get('admin_loc') %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
 <input type="hidden" name="do_editserver" value="1" />
-<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuen Rechner zur Lastverteilung hinzuf&uuml;gen") %]</th></tr>
@@ -60,7 +60,7 @@ type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
  bgcolor="aliceblue"
 [% END %]
 ><td>[% loadbalancertarget.host %]</td>
-<td align="center">[%- IF loadbalancertarget.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td>[% IF loadbalancertarget.active == 0 %]<a href="[% config.get('admin_loc') %]?view=[% view %];do_editserver=1;hostid=[% loadbalancertarget.id %];active=1;do_change=1" class="cssbutton glass kug"><span>[% msg.maketext("An") %]</span></a>[% ELSE %]<a href="[% config.get('admin_loc') %]?view=[% view %];do_editserver=1;hostid=[% loadbalancertarget.id %];active=0;do_change=1" class="cssbutton glass kug"><span>[% msg.maketext("Aus") %]</span></a>[% END %]</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href="[% config.get('admin_loc') %]?view=[% view %];do_editserver=1;hostid=[% loadbalancertarget.id %];do_del=1" class="cssbutton glass kug"><span>[% msg.maketext("L&ouml;schen") %]</span></a></td></tr>
+<td align="center">[%- IF loadbalancertarget.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td>[% IF loadbalancertarget.active == 0 %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_editserver=1;hostid=[% loadbalancertarget.id %];active=1;do_change=1" class="cssbutton glass kug"><span>[% msg.maketext("An") %]</span></a>[% ELSE %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_editserver=1;hostid=[% loadbalancertarget.id %];active=0;do_change=1" class="cssbutton glass kug"><span>[% msg.maketext("Aus") %]</span></a>[% END %]</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_editserver=1;hostid=[% loadbalancertarget.id %];do_del=1" class="cssbutton glass kug"><span>[% msg.maketext("L&ouml;schen") %]</span></a></td></tr>
 [% END %]
 
 </table>

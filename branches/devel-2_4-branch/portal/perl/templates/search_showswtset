@@ -43,7 +43,7 @@ FOREACH category IN categories;
     SWITCH category;
 
     CASE "S5000";
-         content   = "<a href=\"${config.get('search_loc')}?view=${view};database=${normset.database};searchtitofswt=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofswt=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
     END;
 
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
@@ -66,7 +66,7 @@ END;
 [%
     searchterm        = normset.${"S0001"}.first.content;
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-    globalurl         = "${config.get('virtualsearch_loc')}?view=${view};searchall=1;swt=%22${searchterm}%22";
+    globalurl         = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;swt=%22${searchterm}%22";
 
 %]
 

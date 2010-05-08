@@ -31,7 +31,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('info_loc') %]?view=[% view %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -59,27 +59,31 @@ r>
 -krach schleif schneid brat schmalz<br />
 und der liebe Bauch ist lecker Sonne<br />
 
-<br />
-H.C. Artmann: Der handkolorierte Menschenfresser<br />
-</span>
-<p>
-Am 8. Februar 2006 schenkte der Geschäftsführer des Auktionshauses Venator und Hanstein Karl-Heinz Knupfer der Universitäts- und Stadtbibliothek Köln seine umfangreiche Sammlung von Werken des österreichischen Schriftstellers H.C. Artmann.
-</p>
-<p>
-Die Schenkung umfasst insgesamt 239 Titel. Damit ist die USB Köln im Besitz des umfangreichsten Artmann-Bestandes in deutschen wissenschaftlichen Bibliotheken.
-</p>
+<br /> H.C. Artmann: Der handkolorierte Menschenfresser<br /> </span>
+<p> Am 8. Februar 2006 schenkte der Geschäftsführer des Auktionshauses
+Venator und Hanstein Karl-Heinz Knupfer der Universitäts- und
+Stadtbibliothek Köln seine umfangreiche Sammlung von Werken des
+österreichischen Schriftstellers H.C. Artmann.  </p> <p> Die Schenkung
+umfasst insgesamt 239 Titel. Damit ist die USB Köln im Besitz des
+umfangreichsten Artmann-Bestandes in deutschen wissenschaftlichen
+Bibliotheken.  </p>
 
 <h1>Die Sammlung in der USB</h1>
 
-<p>
-Die Titel wurden geschlossen unter der Signatur KNUP aufgestellt. Sie sind vollständig in ihrer ursprünglichen Form mit den Originalumschlägen erhalten. Signaturen und Etiketten sind den Büchern beigelegt und nicht eingeklebt. Alle Titel wurden in der Hausbuchbinderei durchgesehen und ggf. repariert. Elf Bücher wurden von den Buchbindermeisterinnen, die bereits eine Anzahl bedeutender Preise gewonnen haben, und ihren Lehrlingen mit handwerklich gekonnten und künstlerisch interessanten Einbänden und Kassetten versehen.
-</p>
+<p> Die Titel wurden geschlossen unter der Signatur KNUP
+aufgestellt. Sie sind vollständig in ihrer ursprünglichen Form mit den
+Originalumschlägen erhalten. Signaturen und Etiketten sind den Büchern
+beigelegt und nicht eingeklebt. Alle Titel wurden in der
+Hausbuchbinderei durchgesehen und ggf. repariert. Elf Bücher wurden
+von den Buchbindermeisterinnen, die bereits eine Anzahl bedeutender
+Preise gewonnen haben, und ihren Lehrlingen mit handwerklich gekonnten
+und künstlerisch interessanten Einbänden und Kassetten versehen.  </p>
 
-<p>
-Die Einsichtnahme für Forschungszwecke erfolgt im Historischen Lesesaal. Alle Titel sind in Suchen & Bestellen der USB und im Verbundkatalog NRW erfasst.[<a href="[% config.get('info_loc') %]?view=[% view %];&stid=21">mehr</a>]
-</p>
+<p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
+Lesesaal. Alle Titel sind in Suchen & Bestellen der USB und im
+Verbundkatalog NRW erfasst.[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?&stid=21">Weitere Informationen</a>] </p>
 
-<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?view=[% view %];&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 
 </td></tr>
 </table>

@@ -36,16 +36,16 @@ function update_fak(yourform, checked, fak) {
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('databasechoice_loc') %]?view=[% view %];view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databasechoice_loc.name %]?">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div class="content">
 
 <p/>
 
-<form method="post" action="[% config.get('databasechoice_loc') %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databasechoice_loc.name %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="hitrange" value="-1" />
-<input type="hidden" name="view" value="[% view %]" />
+
 
 
 <table>
@@ -74,11 +74,11 @@ function update_fak(yourform, checked, fak) {
 [%- FOREACH db = catdb -%]
 [%- IF db.category == category.short -%]
 [%- IF db.column == 1 -%]
-<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('info_loc') %]?view=[% view %];id=[% db.db %];stid=60">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% db.db %];stid=60">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- END -%]
 [%- IF db.column > 1 && db.column < maxcolumn -%]
 [%- IF db.db -%]
-<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('info_loc') %]?view=[% view %];id=[% db.db %];stid=60">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% db.db %];stid=60">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]
@@ -88,7 +88,7 @@ function update_fak(yourform, checked, fak) {
 [%- IF db.column != 1 -%]
 
 [%- IF db.db -%]
-<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('info_loc') %]?view=[% view %];id=[% db.db %];stid=60">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% db.db %];stid=60">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]

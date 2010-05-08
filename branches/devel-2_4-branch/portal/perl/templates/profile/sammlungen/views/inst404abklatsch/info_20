@@ -31,7 +31,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('info_loc') %]?view=[% view %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -73,9 +73,9 @@ herausgegebenen <a href="http://www.uni-koeln.de/phil-fak/ifa/epanat" target="_b
 </p>
 
 <p>
-Zur Zeit erhält die Abklatsch-Sammlung stetigen Zuwachs durch die in
-Gemeinschaft mit dem Deutschen Archäologischen Institut (Abteilung
-Istanbul) seit 2007 laufenden Feld-Forschungen zur philosophischen <a
+Zur Zeit erhält die Abklatsch-Sammlung stetigen Zuwachs durch die
+unter der Leitung des Deutschen Archäologischen Instituts (Abteilung Istanbul) seit
+2007 laufenden Feld-Forschungen zur philosophischen <a
 href="http://www.dainst.de/index_76085265bb1f14a136940017f0000011_de.html"
 target="_blank">Monumentalinschrift des Diogenes aus Oinoanda</a> in
 Lykien.
@@ -97,7 +97,7 @@ und deren Digitalisate an Interessenten verschickt werden.
 </p>
 
 <h3>
-<a href="[% config.get('info_loc') %]?view=[% view %];&stid=21">Was ist ein Abklatsch?</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?&stid=21">Was ist ein Abklatsch?</a>
 </h3>
 
 

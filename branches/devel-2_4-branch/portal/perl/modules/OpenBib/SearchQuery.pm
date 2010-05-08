@@ -808,9 +808,9 @@ sub to_xapian_querystring {
     my $xapianquerystring  = "";
 
     my $ops_ref = {
-        'AND'     => '+',
-        'AND NOT' => '-',
-        'OR'      => '',
+        'AND'     => 'AND ',
+        'AND NOT' => 'NOT ',
+        'OR'      => 'OR ',
     };
 
     foreach my $field (keys %{$config->{searchfield}}){
@@ -858,6 +858,9 @@ sub to_xapian_querystring {
 
     $xapianquerystring = join(" ",@xapianquerystrings);
 
+    $xapianquerystring=~s/^OR /FALSE OR /;
+    $xapianquerystring=~s/^NOT /TRUE NOT /;
+    
     $logger->debug("Xapian-Querystring: $xapianquerystring");
     return $xapianquerystring;
 }

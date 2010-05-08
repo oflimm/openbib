@@ -115,14 +115,7 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     unless($user->{ID}){
         OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
@@ -208,12 +201,12 @@ sub handler {
             user      => $bibsonomy_user,
             key       => $bibsonomy_key,
         });        
-        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
     }
     elsif ($action eq "bibsonomy_sync_all") {
         $user->sync_all_to_bibsonomy;
 
-        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
     }
     elsif ($action eq "delaccount_ask") {
         # TT-Data erzeugen
@@ -257,7 +250,7 @@ sub handler {
             password => $password1,
         });
     
-        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
     }
     elsif ($action eq "changemask") {
         if ($setmask eq "") {
@@ -268,7 +261,7 @@ sub handler {
         $user->set_mask($setmask);
         $session->set_mask($setmask);
 
-        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
     }
     elsif ($action eq "changespelling") {
         $user->set_spelling_suggestion({
@@ -276,7 +269,7 @@ sub handler {
             resultlist         => $spelling_resultlist,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
     }
     elsif ($action eq "changelivesearch") {
         $user->set_livesearch({
@@ -286,12 +279,12 @@ sub handler {
             exact     => $livesearch_exact,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
     }
     elsif ($action eq "changeautocompletion") {
         $user->set_autocompletion($setautocompletion);
 
-        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);

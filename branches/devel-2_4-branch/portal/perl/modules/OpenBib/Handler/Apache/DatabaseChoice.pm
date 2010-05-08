@@ -96,14 +96,7 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
     
     my $idnresult="";
   
@@ -120,7 +113,7 @@ sub handler {
         # Neue Datenbankauswahl ist voreingestellt
         $session->set_profile('dbauswahl');
       
-        $r->internal_redirect("http://$config->{servername}$config->{searchmask_loc}?sessionID=$session->{ID}&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{searchmask_loc}{name}");
     }
     # ... sonst anzeigen
     else {

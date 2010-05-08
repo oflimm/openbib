@@ -61,8 +61,9 @@ sub handler {
     my $query  = Apache2::Request->new($r);
 
     my $session = OpenBib::Session->instance({ apreq => $r });     
-    
-    my $view      = ($query->param('view'))?$query->param('view'):'';
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+
     my $queryid   = $query->param('queryid') || '';
 
     # Main-Actions
@@ -83,15 +84,15 @@ sub handler {
     }
 
     if    ($do_newquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{searchmask_loc}?sessionID=$session->{ID}&queryid=$queryid&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{searchmask_loc}{name}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_resultlist) {
-        $r->internal_redirect("http://$config->{servername}$config->{resultlists_loc}?sessionID=$session->{ID}&view=$view&action=choice&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resultlists_loc}{name}?action=choice&queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_externalquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{externaljump_loc}?sessionID=$session->{ID}&view=$view&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{externaljump_loc}{name}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     else {

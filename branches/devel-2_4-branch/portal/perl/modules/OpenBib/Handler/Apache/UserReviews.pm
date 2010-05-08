@@ -117,15 +117,8 @@ sub handler {
 
         return Apache2::Const::OK;
     }
-    
-    my $view="";
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
@@ -188,7 +181,7 @@ sub handler {
             rating    => $rating,
         });
         
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
 
@@ -233,7 +226,7 @@ sub handler {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
 
     }
@@ -250,7 +243,7 @@ sub handler {
             loginname => $loginname,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{userreviews_loc}?sessionID=$session->{ID};do_show=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userreviews_loc}{name}?do_show=1");
         return Apache2::Const::OK;
 
     }

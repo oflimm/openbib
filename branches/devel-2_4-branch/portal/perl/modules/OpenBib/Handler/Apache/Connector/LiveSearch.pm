@@ -76,7 +76,7 @@ sub handler {
     my $word  = $query->param('q')     || '';
     my $type  = $query->param('type')  || '';
     my $exact = $query->param('exact') || '';
-
+    
     if (!$word || $word=~/\d/){
         return Apache2::Const::OK;
     }
@@ -84,22 +84,33 @@ sub handler {
     if (!$exact){
         $word = "$word*";
     }
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
     
+    my $viewdb_lookup_ref = {};
+    foreach my $viewdb ($config->get_viewdbs($view)){
+        $viewdb_lookup_ref->{$viewdb}=1;
+    }
+
     my @livesearch_suggestions = ();
 
     # Verbindung zur SQL-Datenbank herstellen
     my $enrichdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
             or $logger->error_die($DBI::errstr);
+
+    my $in_select_string = join(',',map {'?'} keys %{$viewdb_lookup_ref});
     
-    my $sql_request = "select distinct content,type from all_normdata where match (fs) against (? in boolean mode)";
-    my @sql_args = ($word);
+    my $sql_request = "select distinct content,type from all_normdata where dbname in ($in_select_string) and match (fs) against (? in boolean mode)";
+    
+    my @sql_args = (keys %{$viewdb_lookup_ref},$word);
     
     if ($type){
         $sql_request.=" and type = ?";
         push @sql_args, $type;
     }
-    
+
+    $logger->debug("Request: $sql_request / Args: ".YAML::Dump(\@sql_args));
     my $request=$enrichdbh->prepare($sql_request);
 
     $request->execute(@sql_args);

@@ -645,6 +645,8 @@ sub get_loadbalanced_servername {
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
+
+    my $view=$config->{defaultview};
     
     my $ua=new LWP::UserAgent(timeout => 5);
 
@@ -670,7 +672,7 @@ sub get_loadbalanced_servername {
     # Fuer jeden Server, auf den verteilt werden soll, wird nun
     # per LWP der Load bestimmt.
     foreach my $targethost (@servertab) {
-        my $request  = new HTTP::Request GET => "http://$targethost$config->{serverload_loc}";
+        my $request  = new HTTP::Request GET => "http://$targethost$config->{base_loc}/$view/$config->{handler}{serverload_loc}{name}";
         my $response = $ua->request($request);
 
         if ($response->is_success) {

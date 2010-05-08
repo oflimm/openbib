@@ -116,6 +116,8 @@ sub handler {
     # database = Datenbank
     # tosearch = Langanzeige
 
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     my $hitrange   = 20;
     my $idn        = $query->param('idn')        || '';
@@ -126,11 +128,11 @@ sub handler {
     my $sorttype   = $query->param('sorttype')   || 'author';
     my $sortorder  = $query->param('sortorder')  || '';;
     my $tosearch   = $query->param('tosearch')   || '';
-    my $view       = $query->param('view')       || 'institute';
     my $serien     = $query->param('serien')     || 0;
     my $sb         = $query->param('sb')         || 'xapian';
     my $up         = $query->param('up')         || '0';
     my $down       = $query->param('down')       || '0';
+
     
     # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
 

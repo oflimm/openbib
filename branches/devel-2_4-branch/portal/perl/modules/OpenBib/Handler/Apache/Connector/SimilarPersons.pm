@@ -82,6 +82,8 @@ sub handler {
     my $format         = $query->param('format')          || 'ajax';
     my $sessionID      = $query->param('sessionID')       || '';
 
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+    
     if (!$database || !$type){
         OpenBib::Common::Util::print_warning($msg->maketext("Fehler."),$r,$msg);
         return Apache2::Const::OK;
@@ -232,6 +234,7 @@ sub handler {
     
     
     my $ttdata = {
+        view            => $view,
         record          => OpenBib::Record::Title->new,
         format          => $format,
         similar_persons => $sorted_similar_persons_ref,

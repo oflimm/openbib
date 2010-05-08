@@ -132,15 +132,8 @@ sub handler {
 
         return Apache2::Const::OK;
     }
-    
-    my $view="";
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
     
@@ -152,7 +145,7 @@ sub handler {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -174,10 +167,10 @@ sub handler {
             # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
             # der soeben erzeugten Literaturliste hinzugefuegt.
             if ($titid && $titdb && $litlistid){
-                $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&do_addentry=1&titid=$titid&titdb=$titdb&litlistid=$litlistid");
+                $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&do_addentry=1&titid=$titid&titdb=$titdb&litlistid=$litlistid");
             }
             
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage");
             return Apache2::Const::OK;
             
 	}
@@ -186,7 +179,7 @@ sub handler {
             
             $user->del_litlist({ litlistid => $litlistid});
 
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage");
             return Apache2::Const::OK;
             
 	}
@@ -211,7 +204,7 @@ sub handler {
                 $user->change_litlist({ title => $title, type => $type, lecture => $lecture, litlistid => $litlistid, subjectids => \@subjectids });
             }
             
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage");
             return Apache2::Const::OK;
             
 	}
@@ -229,7 +222,7 @@ sub handler {
                 $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
             }
             
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&do_showlitlist=1&litlistid=$litlistid");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&do_showlitlist=1&litlistid=$litlistid");
             return Apache2::Const::OK;
 	  
 	}
@@ -247,7 +240,7 @@ sub handler {
                 $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
             }
 
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&litlistid=$litlistid&do_showlitlist=1");
             return Apache2::Const::OK;
 	  
 	}

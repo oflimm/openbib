@@ -66,11 +66,14 @@ sub handler {
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
     
     # Basisipfad entfernen
-    my $basepath = $config->{redirect_loc};
+    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{redirect_loc}{name};
     $path=~s/$basepath//;
 
+    $logger->debug("Path: $path without basepath $basepath");
     $logger->debug("Path: $path URI: $uri");
 
     # Parameter aus URI bestimmen

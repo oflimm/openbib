@@ -106,13 +106,7 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    } else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
     if (! $user->is_authenticated && $do_addlitlist) {
@@ -211,7 +205,7 @@ sub handler {
                 }
             }
 
-            my $redirecturl   = "http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}";
+            my $redirecturl   = "http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{managecollection_loc}{name}";
 
             if ($view ne "") {
                 $redirecturl.=";view=$view";
@@ -231,7 +225,7 @@ sub handler {
                 }
             }
 
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&litlistid=$litlistid&do_showlitlist=1");
             return Apache2::Const::OK;
 
 	}
@@ -244,7 +238,7 @@ sub handler {
 	  
             $user->add_litlist({ title =>$title, type => $littype});
 
-            $r->internal_redirect("http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}&action=show&type=HTML");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{managecollection_loc}{name}?action=show&type=HTML");
             return Apache2::Const::OK;
 	}
         elsif ($do_addtags) {
@@ -279,7 +273,7 @@ sub handler {
                 OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
             }
             
-            my $redirecturl   = "http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}";
+            my $redirecturl   = "http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{managecollection_loc}{name}";
 
             if ($view ne "") {
                 $redirecturl.=";view=$view";

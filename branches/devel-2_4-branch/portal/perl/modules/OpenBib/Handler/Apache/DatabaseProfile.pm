@@ -91,14 +91,7 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     unless($user->{ID}){
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
@@ -180,14 +173,14 @@ sub handler {
             # ... und dann eintragen
             $user->add_profiledb($profilid,$database);
         }
-        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{databaseprofile_loc}{name}?do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
         $user->delete_dbprofile($profilid);
         $user->delete_profiledbs($profilid);
 
-        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{databaseprofile_loc}{name}?do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {

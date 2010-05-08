@@ -82,12 +82,20 @@ sub handler {
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+
+    my $viewdb_lookup_ref = {};
+    foreach my $viewdb ($config->get_viewdbs($view)){
+        $viewdb_lookup_ref->{$viewdb}=1;
+    }
     
     # Basisipfad entfernen
-    my $basepath = $config->{connector_availability_loc};
+    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{connector_availability_loc}{name};
     $path=~s/$basepath//;
 
     $logger->debug("Path: $path without basepath $basepath");
+    $logger->debug("Viewdbs: ".YAML::Dump($viewdb_lookup_ref));
     
     # Feedparameter aus URI bestimmen
     my $key;
@@ -147,8 +155,12 @@ sub handler {
         while (my $res=$request->fetchrow_hashref) {
             my $id         = $res->{id};
             my $database   = $res->{dbname};
-            
-            $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+
+            # Verfuegbarkeit ist immer im Kontext des Views zu sehen!
+            if ($viewdb_lookup_ref->{$database}){
+                $logger->debug("Adding Title with ID $id in DB $database");
+                $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+            }
         }
 
         $recordlist->load_brief_records;
@@ -185,10 +197,11 @@ sub handler {
             while (my $res=$request->fetchrow_hashref) {
                 my $id         = $res->{id};
                 my $database   = $res->{dbname};
-                
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+
+                if (exists $viewdb_lookup_ref->{$database}){
+                    $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                }
             }
-            
         }
         
         $similar_recordlist->load_brief_records;
@@ -225,8 +238,10 @@ sub handler {
             my $id         = $res->{id};
             my $database   = $res->{dbname};
 
-           ($this_id,$this_database)=($id,$database);
-            $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+            if (exists $viewdb_lookup_ref->{$database}){
+                ($this_id,$this_database)=($id,$database);
+                $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+            }
         }
 
         $recordlist->load_brief_records;
@@ -273,10 +288,11 @@ sub handler {
             while (my $res=$request->fetchrow_hashref) {
                 my $id         = $res->{id};
                 my $database   = $res->{dbname};
-                
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+
+                if (exists $viewdb_lookup_ref->{$database}){                    
+                    $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                }
             }
-            
         }
         
         $similar_recordlist->load_brief_records;

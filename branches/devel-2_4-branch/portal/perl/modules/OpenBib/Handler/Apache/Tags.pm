@@ -124,15 +124,8 @@ sub handler {
 
         return Apache2::Const::OK;
     }
-    
-    my $view="";
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
@@ -144,7 +137,7 @@ sub handler {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -163,7 +156,7 @@ sub handler {
             type      => $type,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
@@ -179,10 +172,10 @@ sub handler {
 
         if ($tags =~/^\w+$/){
             my $tagid = $user->get_id_of_tag({tag => $tags});
-            $r->internal_redirect("http://$config->{servername}$config->{tags_loc}?sessionID=$session->{ID};searchtitoftag=$tagid;private_tags=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{tags_loc}{name}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         }
         return Apache2::Const::OK;
 
@@ -202,7 +195,7 @@ sub handler {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$config->{servername}$config->{tags_loc}?sessionID=$session->{ID};show_usertags=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{tags_loc}{name}?show_usertags=1");
         return Apache2::Const::OK;
 
     }

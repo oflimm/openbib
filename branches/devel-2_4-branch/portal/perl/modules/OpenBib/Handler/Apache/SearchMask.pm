@@ -94,14 +94,8 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view="";
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
 
     my $showfs        = "1";
     my $showhst       = "1";

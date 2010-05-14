@@ -1,0 +1,81 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_31
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=30">Redaktion</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=31">Dokumentation</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=33">Bibliographie</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=34">Buchpaten gesucht</a></li>
+</ul>
+
+<div class="content">
+<p />
+<center><span style="font-size:1.4em;font-weight:bold">Als 15. Band ihrer Schriftenreihe stellt die Universit&auml;ts- und Stadtbibliothek K&ouml;ln eine
+Auswahl der historischen  und k&uuml;nstlerischen Bucheinb&auml;nde aus der Digitalen Einbandsammlung in einem Ausstellungskatalog vor:
+</span></center>
+<br />
+<br />
+
+<table cellpadding="10">
+
+<tr class="listrow2">
+ <td><a href="/images/openbib/views/einbaende/1Katalog-Mattleinen_Voll.jpg"><img src="/images/openbib/views/einbaende/1Katalog-Mattleinen.jpg" alt="Katalog-Mattleinen" /></a>
+  </td>
+ <td><font size="+1">Sch&auml;tze aus der Einbandsammlung der Universit&auml;ts- und Stadtbibliothek K&ouml;ln. K&ouml;ln 2005, 117&nbsp;S. 4°, ISBN:&nbsp;3-931596-28-1<br />
+<br /><i>Handeinband aus der Hausbuchbinderei der USB, Mattleinen mit Titelpr&auml;gung, geheftet, Eur.&nbsp;45,-</i></font>
+
+</td>
+</tr>
+<tr>
+ <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+ <td> </td>
+</tr>
+<tr class="listrow2">
+ <td><a href="/images/openbib/views/einbaende/2Katalog Hausbuchbinder_Voll.jpg"><img src="/images/openbib/views/einbaende/2Katalog Hausbuchbinder.jpg" alt="Katalog Hausbuchbinder" /></a></td>
+ <td><font size="+1"><b><span style="color:red">Leider vergriffen!</span></b> Eine Liebhaber-Ausgabe der Ver&ouml;ffentlichung in 85 gez&auml;hlten Exemplaren bietet die USB anl&auml;sslich der  10.&nbsp;Jahrestagung des Arbeitskreises f&uuml;r die Erfassung und Erschlie&szlig;ung Historischer Bucheinb&auml;nde in K&ouml;ln an:
+
+<br /><br /><i>Signierter Handeinband nach Art einer Koperte. Entworfen und gefertigt in der Hausbuchbinderei.<br /> Umschlag aus handgefertigtem Kiebitz-Papier, Langstichheftung &uuml;ber Lederschiene, Eur.&nbsp;85.-</i></font>
+ </td>
+</tr>
+<tr>
+ <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+ <td> </td>
+</tr>
+
+<tr class="listrow2">
+ <td>
+<table> 
+<tr><td> &nbsp;&nbsp; <a href="/images/openbib/views/einbaende/3Katalog-Kasette-stehend-aufgekl_Voll.jpg"><img src="/images/openbib/views/einbaende/3Katalog-Kasette-stehend-aufgekl.jpg" alt="Katalog Kasette stehend aufgeklappt" /></a></td>
+ <td> <a href="/images/openbib/views/einbaende/4Katalog-Kasette-aufgekl_Voll.jpg"><img src="/images/openbib/views/einbaende/4Katalog-Kasette-aufgekl.jpg" alt="Katalog Kasette stehend aufgeklappt Voll" /></a> </td></tr>
+</table>
+ </td>
+ <td><font size="+1">Zu den bibliophilen Exemplaren ist auf Bestellung eine <i>handgefertigte Schlagkassette aus Mattleinen und Papier f&uuml;r Eur.&nbsp;25,- erh&auml;ltlich.</i></font> </td>
+
+</tr>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

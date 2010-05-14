@@ -1,0 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: circset
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Ausleih/Explar-Informationen (via OLWS)
+#
+#######################################################################
+-%]
+
+<table width="100%">
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
+[% FOREACH mex IN circset %]
+[%- mex.Ausleihurl = "${mex.Ausleihurl}?Query=0000=%22${normset.id}%22" -%]
+<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
+<td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
+<td><strong>[% mex.Status %]</strong></td>
+<td class="circurl">
+[%
+     IF mex.Ausleihurl %]
+   <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.get('redirect_loc') %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+[%   ELSE %]
+[%      IF mex.Statuscode != 0 %]
+     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>
+[%      ELSE %]
+     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_order;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel bestellen">Bestellen</a>
+[%      END %]
+[%   END %]
+</td></tr>
+[% END %]
+</table>
+

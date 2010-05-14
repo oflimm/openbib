@@ -1,0 +1,20 @@
+[%#-
+#######################################################################
+#
+# Templatename: testsystem_info
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen ueber den Status als Testsystem
+#
+#######################################################################
+-%]
+<table width="100%">
+<tr><th>[% msg.maketext("Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.8em">
+[% msg.maketext("Sie befinden sich derzeit auf einem Testsystem, das nicht f&uuml;r den produktiven Einsatz gedacht ist. Stattdessen k&ouml;nnen Sie hier die neuen in Entwicklung befindlichen Funktionen des KUG austesten. Da der KUG auf diesem System kontinuierlich verbessert wird, k&ouml;nnen w&auml;hrend dieser &Auml;nderungen zeitweise sicherlich auch schon einmal 'Internal Server Errors' beobachtet werden. Dies ist vollkommen normal, solange die aktuelle Version auf diesem System nicht eingefroren und in eine offiziell bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist.") %]<br /><br />
+<b>[% msg.maketext("Als User-Agent verwenden Sie") %]:</b>&nbsp; [% useragent %]
+</td></tr>
+</table>

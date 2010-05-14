@@ -1,0 +1,192 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_manage_lists
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Neuanlegen und Ausgabe bestehender Literaturlisten
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="userprefs_navigation" active="litlists" %]
+
+<div class="content">
+
+<p />
+
+<form method="get" action="[% config.get('litlists_loc') %]">
+<input type="hidden" name="action"     value="manage" />
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="litlistid"  value="[% litlist.properties.id %]" />
+
+[% userrole = user.get_roles_of_user(litlist.properties.userid) %]
+
+[%# USE dumper;dumper.dump(litlist)%]
+<table width="100%">
+<tr><th>[% msg.maketext("Einstellungen &auml;ndern") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td>[%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]<td><b>[% msg.maketext("Offiziell") %]</b></td>[%- END -%]</tr>
+<tr><td><input type="text" name="title" value="[% litlist.properties.title %]" size="50"/></td><td><select name="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select></td>[%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]<td><select name="lecture"><option value="1" [% IF litlist.properties.lecture == 1%] selected="selected"[% END %]>[% msg.maketext("Ja") %]</option><option value="0"[% IF litlist.properties.lecture == 0 %] selected="selected"[% END %]>[% msg.maketext("Nein") %]</option></select></td>[%- END -%]<td><div class="cssbutton glass kug"><input type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
+<tr><td colspan="3"></td></tr>
+
+<tr><td colspan="3">Ordnen Sie Ihre Literaturliste thematisch ein</td></tr>
+<tr><td colspan="3">
+<select name="subjectids" multiple="multiple" size="5">
+
+[% FOREACH subject IN subjects %]
+<option value="[% subject.id %]"
+
+[% IF litlist.properties.subject_selected.${subject.id} %]
+selected="selected"
+[% END %]
+
+>[% subject.name %][% IF subject.description%] ([% subject.description %])[% END %]</option>
+
+[% END %]
+
+
+</select>
+</td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[%# USE dumper; dumper.dump(litlist)%]
+[% IF litlist.recordlist.get_size > 0 %]
+
+<!-- Titlelist begins here -->
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[% litlist.properties.title %]
+    </div>
+    <div class="hits">
+[% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
+    </div>
+[% IF offset >= 0 && hitrange > 0 %]
+    <div class="navigation">
+[%- FOREACH navitem IN nav ;
+      IF navitem.active ;
+        previouspage = lastpage;
+        nextpage = loop.next;
+      END ;
+      lastpage = navitem; 
+    END ;
+-%]
+[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
+[%- IF nav.first.active -%]<img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
+[%- FOREACH navitem IN nav -%]
+<a href="[% navitem.url %]">
+[%- IF navitem.active ;
+    previouspage = nav.prev;
+    nexpage      = nav.next;
+-%]
+<span class="paging_active">[% loop.count %]</span>
+[%- ELSE -%]
+[% loop.count %]
+[%- END -%]
+</a>&nbsp;&nbsp;
+[%- END -%]
+
+[% IF nav.last.active %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
+
+[%- IF hits <= 1000 -%]
+<a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
+[%- END -%]
+    </div>
+[%-    END -%]
+  </div>
+[%- IF format == 'HTML' && show == 'short' -%]
+  <div class="listoptions">
+<!-- Titlelist begins here -->
+<form method="get" action="[% config.get('litlists_loc') %]">
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
+<input type="hidden" name="sortall"         value="1" />
+<input type="hidden" name="do_showlitlist"  value="1" />
+<input type="hidden" name="action"          value="manage" />
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('litlists_loc') %]
+
+</form>
+  </div>
+[% END %]
+  <div class="rightoptions">
+[% IF NOT hide_options %]
+<div class="reuse_data"><!-- Begin Reuse -->
+
+[% IF litlist.properties.type == 1 %]
+<b>[% msg.maketext("Verweisen Sie auf diese Liste") %]:</b><p/>
+
+<table>
+<tr>
+<th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
+<td><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% litlist.properties.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
+</tr>
+</table>
+
+<p />
+[% END %]
+<div class="headline">[% msg.maketext("Andere Formate") %]</div>
+
+<p>
+<a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+</p>
+</div>
+</div>
+[% END %]
+  <div class="resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[% IF format == 'HTML' && show == 'short' %]
+
+[% PROCESS common/subtemplate name="litlists_tit_as_html_short" %] 
+
+[% ELSIF format == 'HTML' && show == 'full' %]
+
+[% PROCESS common/subtemplate name="litlists_tit_as_html_full" %]
+
+[% ELSIF format == 'Text' %]
+
+[% PROCESS common/subtemplate name="litlists_tit_as_text" %]
+
+[% ELSIF format == 'BibTeX' %]
+
+[% PROCESS common/subtemplate name="litlists_tit_as_bibtex" %]
+
+[% ELSIF format == 'EndNote' %]
+
+[% PROCESS common/subtemplate name="litlists_tit_as_endnote" %]
+
+[%- END # Ende Endnote/Alles -%]
+
+</div>
+</div>
+<!-- Titlelist ends here -->
+
+[% END %]
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

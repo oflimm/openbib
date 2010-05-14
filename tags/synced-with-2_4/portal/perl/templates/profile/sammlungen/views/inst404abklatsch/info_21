@@ -1,0 +1,65 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_21
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der weitergehenden Sammlungsinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div class="boxedclear">
+
+<table>
+<tr><td colspan="5">
+
+<h3>Was ist ein Abklatsch?</h3>
+
+Zur Dokumentation antiker Inschriften auf Stein sind sogenannte
+Abklatsche (frz. estampage, engl. squeeze) noch vor der
+fotographischen Aufnahme von erstrangiger Bedeutung. Zur Herstellung
+eines Abklatsches wird auf die gereinigte Oberfläche eines Steines ein
+spezielles säure- und leimfreies Löschpapier aufgelegt, benetzt und
+mit einer robusten Bürste in die Vertiefungen des Steines
+"eingeschlagen." Nach der Trocknung liegt in dem Papierbogen eine
+beständige und gut transportable Negativ-Kopie der Steinoberfläche
+vor.
+
+</td></tr>
+<tr><td colspan="5"></td></tr>
+<tr style="align:center;">
+<td>
+<img src="/images/openbib/views/inst404abklatsch/abklatsch1.jpg" class="img" alt="" />
+</td>
+<td>
+<img src="/images/openbib/views/inst404abklatsch/abklatsch2.jpg" class="img" alt="" />
+</td>
+<td>
+<img src="/images/openbib/views/inst404abklatsch/abklatsch3.jpg" class="img" alt="" />
+</td>
+<td>
+<img src="/images/openbib/views/inst404abklatsch/abklatsch4.jpg" class="img" alt="" />
+</td>
+<td>
+<img src="/images/openbib/views/inst404abklatsch/abklatsch5.jpg" class="img" alt="" />
+</td>
+
+</tr>
+</table>
+
+</div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

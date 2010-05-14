@@ -1,0 +1,16 @@
+etc/apache-perl/conf.d
+etc/openbib
+usr/bin
+usr/lib/perl5/OpenBib
+usr/share/doc/openbib
+usr/share/openbib
+usr/share/openbib/autoconv/bin
+usr/share/openbib/autoconv/data
+usr/share/openbib/autoconv/filter
+usr/share/openbib/autoconv/pools
+usr/share/openbib/bin
+usr/share/openbib/conv
+usr/share/openbib/db/mysql
+usr/share/openbib/templates
+var/www/styles
+var/www/images

@@ -134,7 +134,7 @@
     titleinfo = titleinfos.join(" | ");
 -%]
     <div class="item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
-      <div class="numbering">[% loop.count+offset %]</div>
+      <div class="numbering">[% start_range+loop.count - 1 %]</div>
       <div class="thumbnail">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 

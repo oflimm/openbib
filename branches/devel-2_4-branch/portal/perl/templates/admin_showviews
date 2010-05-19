@@ -35,7 +35,7 @@
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
 <tr><td><input type="text" name="viewname" /></td><td><input type="text" name="description" size="20" />
 </td>
-<td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview %]<option value="[% profile.profilename %]" [% IF view.profilename == profile.profilename %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td>
+<td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview %]<option value="[% profile.profilename %]">[% profile.description %]</option>[% END %]</select></td>
 <td><select name=active><option value="1">[% msg.maketext("Ja") %]</option><option value="0" selected>[% msg.maketext("Nein") %]</option></select></td><td><div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 </table>
 </td></tr>
@@ -56,10 +56,9 @@
 <table>
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Profil") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
 
-[% FOREACH view IN views %]
+[% FOREACH viewinfo IN views %]
 
-<tr><td>[% view.viewname %]</td><td align="center"><a href="http://[%
-config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?&do_editview_rss=1&viewname=[% view.viewname %];do_edit=1"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?&do_editview=1&viewname=[% view.viewname %]&do_edit=1">[% view.description %]</a></td><td>[% view.profile %]</td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
+<tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?&do_editview_rss=1&viewname=[% viewinfo.viewname %];do_edit=1"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?&do_editview=1&viewname=[% viewinfo.viewname %]&do_edit=1">[% viewinfo.description %]</a></td><td>[% viewinfo.profile %]</td><td>[% viewinfo.viewdb %]</td><td>[% viewinfo.active %]</td></tr>
 [% END %]
 
 </table>

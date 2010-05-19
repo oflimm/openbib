@@ -49,7 +49,7 @@
 <tr><td class="boxedclear">
 <ul class="subjectlist">
 [% FOREACH classification IN user.get_classifications_of_subject({ type => 'BK', subjectid => id}) %]
-<li><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=51;category=[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=51;category=[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
 [% END %]
 </ul>
 </td></tr>
@@ -71,7 +71,7 @@
 <ul class="subjectlist">
 [% FOREACH subject IN ezb_subjects %]
 [%   IF ezb_mapping.${subject.notation} %]
-<li><a href="[% config.get('ezb_loc') %]?sessionID=[% sessionID %];view=[% view %];notation=[% subject.notation %];action=show_journals">[% subject.desc %]</a> / [% subject.notation %] ([% msg.maketext("[_1] Zeitschriften",subject.count) %])</li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').ezb_loc.name %]?notation=[% subject.notation %];action=show_journals">[% subject.desc %]</a> / [% subject.notation %] ([% msg.maketext("[_1] Zeitschriften",subject.count) %])</li>
 [%   END %]
 [% END %]
 </ul>
@@ -95,7 +95,7 @@
 <ul class="subjectlist">
 [% FOREACH subject IN dbis_subjects %]
 [%   IF dbis_mapping.${subject.notation} %]
-<li><a href="[% config.get('dbis_loc') %]?sessionID=[% sessionID %];view=[% view %];notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs">[% subject.desc %]</a> / [% subject.notation %] ([% msg.maketext("[_1] Datenbanken",subject.count) %])</li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs">[% subject.desc %]</a> / [% subject.notation %] ([% msg.maketext("[_1] Datenbanken",subject.count) %])</li>
 [%   END %]
 [% END %]
 </ul>
@@ -112,7 +112,7 @@
 <tr><td class="boxedclear">
 <ul class="subjectlist">
 [% FOREACH thisitem IN litlists%]
-<li><a href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %];action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% END %]
 </ul>
 </td></tr>

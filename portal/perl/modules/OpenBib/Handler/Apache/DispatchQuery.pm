@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::DispatchQuery
 #
-#  Dieses File ist (C) 2005-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -60,17 +60,10 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
+    my $session = OpenBib::Session->instance({ apreq => $r });     
 
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
-    
-    my $view      = ($query->param('view'))?$query->param('view'):'';
     my $queryid   = $query->param('queryid') || '';
 
     # Main-Actions
@@ -91,15 +84,15 @@ sub handler {
     }
 
     if    ($do_newquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{searchmask_loc}?sessionID=$session->{ID}&queryid=$queryid&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{searchmask_loc}{name}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_resultlist) {
-        $r->internal_redirect("http://$config->{servername}$config->{resultlists_loc}?sessionID=$session->{ID}&view=$view&action=choice&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resultlists_loc}{name}?action=choice&queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_externalquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{externaljump_loc}?sessionID=$session->{ID}&view=$view&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{externaljump_loc}{name}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     else {

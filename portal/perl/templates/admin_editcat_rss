@@ -29,8 +29,8 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <!-- Anfang: RSS Feed fuer Neuaufnahmen (generell) -->
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="1" />
@@ -86,8 +86,8 @@ selected
 <!-- Ende: RSS Feed fuer Neuaufnahmen (generell) -->
 
 <!-- Anfang: RSS Feed fuer Neuaufnahmen nach Verfasser -->
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="2" />
@@ -143,8 +143,8 @@ selected
 <!-- Ende: RSS Feed fuer Neuaufnahmen nach Verfasser -->
 
 <!-- Anfang: RSS Feed fuer Neuaufnahmen nach Koerperschaft -->
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="3" />
@@ -200,8 +200,8 @@ selected
 <!-- Ende: RSS Feed fuer Neuaufnahmen nach Koerperschaft -->
 
 <!-- Anfang: RSS Feed fuer Neuaufnahmen nach Schlagwort -->
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="4" />
@@ -257,8 +257,8 @@ selected
 <!-- Ende: RSS Feed fuer Neuaufnahmen nach Schlagwort -->
 
 <!-- Anfang: RSS Feed fuer Neuaufnahmen nach Systematik -->
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="5" />
@@ -315,8 +315,8 @@ selected
 
 
 <!--
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="2" />

@@ -29,7 +29,7 @@
 [% FOREACH mex IN circset %]
 <tr align="center"><td>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% record.database %];stid=60">
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]

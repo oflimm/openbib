@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::UserReviews.pm
 #
-#  Copyright 2007-2009 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -66,15 +66,7 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -125,15 +117,8 @@ sub handler {
 
         return Apache2::Const::OK;
     }
-    
-    my $view="";
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
@@ -196,7 +181,7 @@ sub handler {
             rating    => $rating,
         });
         
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
 
@@ -241,7 +226,7 @@ sub handler {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
 
     }
@@ -258,7 +243,7 @@ sub handler {
             loginname => $loginname,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{userreviews_loc}?sessionID=$session->{ID};do_show=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userreviews_loc}{name}?do_show=1");
         return Apache2::Const::OK;
 
     }

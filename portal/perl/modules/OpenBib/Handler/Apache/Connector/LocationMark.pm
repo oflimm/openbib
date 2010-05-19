@@ -98,7 +98,8 @@ sub handler {
     my $hitrange   = $query->param('hitrange')   || 50;;
 
     my $database   = $query->param('database')   || '';
-    my $view       = $query->param('view')       || 'kug';
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     return Apache2::Const::OK unless (defined $base);
 

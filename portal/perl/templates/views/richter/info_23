@@ -21,17 +21,17 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=20">Elise und Helene Richter</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=22">Biographien</a></li>
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=21">Die Bibliothek Richter heute</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=20">Elise und Helene Richter</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=22">Biographien</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=21">Die Bibliothek Richter heute</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=22">Elise Richter</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=23">Helene Richter</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=22">Elise Richter</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=23">Helene Richter</a></li>
 </ul>
 
 <div class="content">

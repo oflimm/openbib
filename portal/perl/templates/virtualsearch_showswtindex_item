@@ -19,7 +19,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr><td align="left" class="headline">&nbsp;<b>[% loop.count %]</b>&nbsp;&nbsp;[% item.content %]</td><td align="right" class="headline">[% item.titcount %]</td></tr>
 [% FOREACH dbitem IN item.databases %]
-<tr><td align="left"><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% dbitem.dbname %];searchtitofswt=[% dbitem.id %]">[% dbitem.dbdesc.full %]</a></td><td align="right">[% dbitem.titcount %]</td></tr>
+<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=[% dbitem.dbname %];searchtitofswt=[% dbitem.id %]">[% dbitem.dbdesc.full %]</a></td><td align="right">[% dbitem.titcount %]</td></tr>
 [% END %]
 </table>
 

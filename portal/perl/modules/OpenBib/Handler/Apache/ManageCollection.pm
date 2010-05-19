@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::ManageCollection
 #
-#  Dieses File ist (C) 2001-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -68,15 +68,7 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
     
@@ -114,13 +106,7 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    } else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
     if (! $user->is_authenticated && $do_addlitlist) {
@@ -219,7 +205,7 @@ sub handler {
                 }
             }
 
-            my $redirecturl   = "http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}";
+            my $redirecturl   = "http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{managecollection_loc}{name}";
 
             if ($view ne "") {
                 $redirecturl.=";view=$view";
@@ -239,7 +225,7 @@ sub handler {
                 }
             }
 
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&litlistid=$litlistid&do_showlitlist=1");
             return Apache2::Const::OK;
 
 	}
@@ -252,7 +238,7 @@ sub handler {
 	  
             $user->add_litlist({ title =>$title, type => $littype});
 
-            $r->internal_redirect("http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}&action=show&type=HTML");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{managecollection_loc}{name}?action=show&type=HTML");
             return Apache2::Const::OK;
 	}
         elsif ($do_addtags) {
@@ -287,7 +273,7 @@ sub handler {
                 OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
             }
             
-            my $redirecturl   = "http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}";
+            my $redirecturl   = "http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{managecollection_loc}{name}";
 
             if ($view ne "") {
                 $redirecturl.=";view=$view";

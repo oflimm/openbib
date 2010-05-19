@@ -25,7 +25,7 @@ PACK_KEYS=1;
 
 drop table IF EXISTS aut_ft;
 create table aut_ft (
- id            VARCHAR(255)  NOT NULL,
+ id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
  INDEX         (id),
@@ -39,7 +39,7 @@ PACK_KEYS=1;
 
 drop table IF EXISTS aut_string;
 create table aut_string (
- id            VARCHAR(255)  NOT NULL,
+ id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT ,
  INDEX         (id),
@@ -306,51 +306,14 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
--------------------------------------------------
------------------ Initiale Suche ----------------
--------------------------------------------------
-
-drop table IF EXISTS search;
-create table search (
-verwidn   VARCHAR(255) NOT NULL,
-verf      TEXT,
-hst       TEXT,
-kor       TEXT,
-swt       TEXT,
-notation  TEXT,
-sign      TEXT,
-ejahr     SMALLINT,
-ejahrft   TEXT,
-gtquelle  TEXT,
-inhalt    TEXT,
-isbn      TEXT,
-issn      TEXT,
-artinh    TEXT,
-INDEX     (verwidn),
-FULLTEXT  (verf),
-FULLTEXT  (hst),
-FULLTEXT  (kor),
-FULLTEXT  (swt),
-FULLTEXT  (notation),
-FULLTEXT  (sign),
-INDEX     (ejahr),
-FULLTEXT  (inhalt),
-FULLTEXT  (isbn),
-FULLTEXT  (issn),
-FULLTEXT  (artinh),
-FULLTEXT  (verf,hst,kor,swt,notation,sign,inhalt,isbn,issn,ejahrft)
-)
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
-PACK_KEYS=1;
-
 drop table IF EXISTS titlistitem;
 create table titlistitem (
 id       VARCHAR(255) NOT NULL,
 listitem BLOB,
-INDEX (id)
+PRIMARY KEY (id)
 )
-DEFAULT CHARACTER SET latin1
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
 PACK_KEYS=1;
 
 drop table IF EXISTS popularity;

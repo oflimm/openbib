@@ -24,9 +24,9 @@
 
 <div class="content">
 
-<form method="get" action="[%config.get('admin_loc') %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
 <input type="hidden" name="do_editsession" value="1" />
-<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+
 
 <table width="100%">
 <tr><th>[% msg.maketext("Allgemeine Informationen") %]</th></tr>

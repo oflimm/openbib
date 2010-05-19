@@ -1015,7 +1015,7 @@ sub get_viewdbs {
         = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
     
-    my $idnresult=$dbh->prepare("select * from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select viewdbs.dbname from viewdbs,dbinfo where viewdbs.viewname = ? and viewdbs.dbname = dbinfo.dbname and dbinfo.active=1 order by dbname") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
     
     my @viewdbs=();

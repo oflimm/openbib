@@ -32,9 +32,9 @@
 
 <p />
 
-<form method="get" action="[% config.get('litlists_loc') %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]">
 <input type="hidden" name="action"     value="manage" />
-<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+
 <input type="hidden" name="litlistid"  value="[% litlist.properties.id %]" />
 
 [% userrole = user.get_roles_of_user(litlist.properties.userid) %]
@@ -122,8 +122,8 @@ selected="selected"
 [%- IF format == 'HTML' && show == 'short' -%]
   <div class="listoptions">
 <!-- Titlelist begins here -->
-<form method="get" action="[% config.get('litlists_loc') %]">
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]">
+
 <input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
 <input type="hidden" name="sortall"         value="1" />
 <input type="hidden" name="do_showlitlist"  value="1" />
@@ -144,7 +144,7 @@ selected="selected"
 <table>
 <tr>
 <th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
-<td><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% litlist.properties.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
+<td><a href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_permalink_loc.name %]/[% litlist.properties.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
 </table>
 
@@ -153,7 +153,7 @@ selected="selected"
 <div class="headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
-<a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %];action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 </div>

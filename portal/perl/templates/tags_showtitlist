@@ -74,10 +74,10 @@
 [%-    END -%]
   </div>
   <div class="listoptions">
-<form method="get" action="[% config.get('tags_loc') %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
 <input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+
 [%- IF query.param('searchtitoftag')    -%]<input type="hidden" name="searchtitoftag" value="[% query.param('searchtitoftag') %]" />[% END %]
 [%- IF query.param('private_tags')      -%]<input type="hidden" name="private_tags"   value="[% query.param('private_tags') %]" />[% END %]
 [%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]

@@ -58,7 +58,7 @@ FOREACH category IN categories;
 END ;-%]
 </table>
 [%-   IF dbinfo.get('use_libinfo').${thisviewdb} %]
-[<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% thisviewdb %];stid=60">
+[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% thisviewdb %];stid=60">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -74,8 +74,8 @@ zugeh&ouml;rigen digitalisierten Karten-Katalogen:
 </p>
 
 <ul>
-<li><a href="[% config.get('redirect_loc') %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=420a" target="_blank">Historisches Seminar</a>. </li>
-<li><a href="[% config.get('redirect_loc') %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=424e" target="_blank">Historisches Seminar / Arbeitskreis Nationalismusforschung</a>. </li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=420a" target="_blank">Historisches Seminar</a>. </li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=424e" target="_blank">Historisches Seminar / Arbeitskreis Nationalismusforschung</a>. </li>
 </ul>
 
 <h3><img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="[% msg.maketext("Neuerwerbungslisten") %]"/>&nbsp;[% msg.maketext("Neuerwerbungslisten") %]</h3>

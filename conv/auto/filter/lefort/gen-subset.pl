@@ -83,24 +83,6 @@ foreach my $key (keys %titidns){
 
 print "### $pool: Gefundene Titel-ID's $count\n";
 
-print "### $pool: Bestimme Titel-ID's anhand des Schlagworts 'Le Fort, Gertrud%'\n";
-
-$request=$dbh->prepare("select distinct conn.sourceid as titid from conn,swt where swt.category=1 and swt.content like 'Le Fort, Gertrud%' and conn.targetid=swt.id and conn.sourcetype=1 and conn.targettype=4") or $logger->error($DBI::errstr);
-
-$request->execute() or $logger->error($DBI::errstr);;
-
-while (my $result=$request->fetchrow_hashref()){
-  $titidns{$result->{'titid'}}=1;
-}
-
-my $count=0;
-
-foreach my $key (keys %titidns){
-    $count++;
-}
-
-print "### $pool: Gefundene Titel-ID's $count\n";
-
 # IDN's uebergeordneter Titel finden
 
 print "### $pool: Bestimme uebergeordnete Titel\n";

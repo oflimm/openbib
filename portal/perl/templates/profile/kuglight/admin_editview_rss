@@ -28,8 +28,8 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <!-- Anfang: Primaerer RSS Feed fuer diesen View -->
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="viewname"        value="[% view.name %]" />
 <input type="hidden" name="do_editview_rss" value="1" />
 <input type="hidden" name="rss_type"        value="primary" />
@@ -84,8 +84,8 @@ neinja = ["Nein","Ja"];
 <!-- Ende: Primaerer RSS Feed fuer diesen View -->
 
 <!-- Anfang: Alle RSS Feeds fuer diesen View -->
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="viewname"        value="[% view.name %]" />
 <input type="hidden" name="do_editview_rss" value="1" />
 <input type="hidden" name="rss_type"        value="all" />

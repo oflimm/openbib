@@ -47,8 +47,8 @@
 <tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
 <tr><td class="boxedclear">
 
-<form method="get" action="[% config.get('virtualsearch_loc') %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+
 <input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
 <input type="hidden" name="profil"    value="alldbs" />
 

@@ -35,7 +35,7 @@
 [%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');- %]
 [%- i = ret.min -%]
 [%- WHILE i <= ret.max -%]
-<a href="[% config.get('admin_loc')%]?sessionID=[% sessionID %];do_showstat=1;year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
 [%- i = i+1 -%]
 [%- END -%]
 </div>
@@ -46,9 +46,9 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
-<tr><td>Anzahl Recherchen mit Benutzereingabe</td><td><b>[% ret = statistics.get_number_of_event({ type => 1, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showstat=1;stid=51">Grafik</a></td></tr>
-<tr><td>Anzahl Einzeltrefferaufrufe</td><td><b>[% ret = statistics.get_number_of_event({ type => 10, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showstat=1;stid=53">Grafik</a></td></tr>
-<tr><td>Anzahl Sessions</td><td><b>[% ret = statistics.get_number_of_event({ type => 102, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showstat=1;stid=50">Grafik</a></td></tr>
+<tr><td>Anzahl Recherchen mit Benutzereingabe</td><td><b>[% ret = statistics.get_number_of_event({ type => 1, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=51">Grafik</a></td></tr>
+<tr><td>Anzahl Einzeltrefferaufrufe</td><td><b>[% ret = statistics.get_number_of_event({ type => 10, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=53">Grafik</a></td></tr>
+<tr><td>Anzahl Sessions</td><td><b>[% ret = statistics.get_number_of_event({ type => 102, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=50">Grafik</a></td></tr>
 </table>
 </td></td>
 </table>

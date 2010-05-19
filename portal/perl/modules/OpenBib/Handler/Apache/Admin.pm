@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Admin
 #
-#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -74,60 +74,47 @@ sub handler {
 
     my $query=Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $session;
-    
-    if ($query->param('sessionID')){
-        $session   = OpenBib::Session->instance({
-            sessionID => $query->param('sessionID'),
-        });
-    }
-    else {
-        $session = OpenBib::Session->instance;
-    }
+    my $session = OpenBib::Session->instance({ apreq => $r });    
 
     # Standardwerte festlegen
   
     my $adminuser   = $config->{adminuser};
     my $adminpasswd = $config->{adminpasswd};
 
-    my $view        = $query->param('view') || $config->{adminview};
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
     
     # Main-Actions
-    my $do_login        = $query->param('do_login')        || '';
-    my $do_loginmask    = $query->param('do_loginmask')    || '';
-    my $do_showcat      = $query->param('do_showcat')      || '';
-    my $do_editcat      = $query->param('do_editcat')      || '';
-    my $do_showlibinfo  = $query->param('do_showlibinfo')  || '';
-    my $do_editlibinfo  = $query->param('do_editlibinfo')  || '';
-    my $do_showops      = $query->param('do_showops')      || '';
-    my $do_editserver   = $query->param('do_editserver')   || '';
-    my $do_editcat_rss  = $query->param('do_editcat_rss')  || '';
-    my $do_showprofiles = $query->param('do_showprofiles') || '';
-    my $do_editprofile  = $query->param('do_editprofile')  || '';
-    my $do_showsubjects = $query->param('do_showsubjects') || '';
-    my $do_editsubject  = $query->param('do_editsubject')  || '';
-    my $do_showviews    = $query->param('do_showviews')    || '';
-    my $do_editview     = $query->param('do_editview')     || '';
-    my $do_editview_rss = $query->param('do_editview_rss') || '';
-    my $do_showimx      = $query->param('do_showimx')      || '';
-    my $do_showsessions = $query->param('do_showsessions') || '';
-    my $do_editsession  = $query->param('do_editsession')  || '';
-    my $do_exploresessions = $query->param('do_exploresessions') || '';
-    my $do_showstat     = $query->param('do_showstat')     || '';
-    my $do_showuser     = $query->param('do_showuser')     || '';
-    my $do_edituser     = $query->param('do_edituser')     || '';
-    my $do_searchuser   = $query->param('do_searchuser')   || '';
-    my $do_showlogintarget  = $query->param('do_showlogintarget')     || '';
-    my $do_editlogintarget  = $query->param('do_editlogintarget')     || '';
-    my $do_logout       = $query->param('do_logout')       || '';
+    my $do_login                   = $query->param('do_login')        || '';
+    my $do_loginmask               = $query->param('do_loginmask')    || '';
+    my $do_showcat                 = $query->param('do_showcat')      || '';
+    my $do_editcat                 = $query->param('do_editcat')      || '';
+    my $do_showlibinfo             = $query->param('do_showlibinfo')  || '';
+    my $do_editlibinfo             = $query->param('do_editlibinfo')  || '';
+    my $do_showops                 = $query->param('do_showops')      || '';
+    my $do_editserver              = $query->param('do_editserver')   || '';
+    my $do_editcat_rss             = $query->param('do_editcat_rss')  || '';
+    my $do_showprofiles            = $query->param('do_showprofiles') || '';
+    my $do_editprofile             = $query->param('do_editprofile')  || '';
+    my $do_editorgunits            = $query->param('do_editorgunits')  || '';
+    my $do_editcat2orgunit         = $query->param('do_editcat2orgunit')  || '';
+    my $do_showsubjects            = $query->param('do_showsubjects') || '';
+    my $do_editsubject             = $query->param('do_editsubject')  || '';
+    my $do_showviews               = $query->param('do_showviews')    || '';
+    my $do_editview                = $query->param('do_editview')     || '';
+    my $do_editview_rss            = $query->param('do_editview_rss') || '';
+    my $do_showimx                 = $query->param('do_showimx')      || '';
+    my $do_showsessions            = $query->param('do_showsessions') || '';
+    my $do_editsession             = $query->param('do_editsession')  || '';
+    my $do_exploresessions         = $query->param('do_exploresessions') || '';
+    my $do_showstat                = $query->param('do_showstat')     || '';
+    my $do_showuser                = $query->param('do_showuser')     || '';
+    my $do_edituser                = $query->param('do_edituser')     || '';
+    my $do_searchuser              = $query->param('do_searchuser')   || '';
+    my $do_showlogintarget         = $query->param('do_showlogintarget')     || '';
+    my $do_editlogintarget         = $query->param('do_editlogintarget')     || '';
+    my $do_logout                  = $query->param('do_logout')       || '';
 
     # Sub-Actions
     my $do_new          = $query->param('do_new')          || 0;
@@ -413,7 +400,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editcat_del",{ dbname => $dbname }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
 
         }
@@ -430,7 +417,7 @@ sub handler {
 						     dboptions => $thisdboptions_ref,
 						 }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
         }
         elsif ($do_new) {
@@ -453,7 +440,7 @@ sub handler {
             
 	    my $ret_ref = dist_cmd("editcat_new",{ dbinfo => $thisdbinfo_ref }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -558,7 +545,7 @@ sub handler {
 							 rssid   => $rssid,
 							}) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return Apache2::Const::OK;
         }
         elsif ($do_new){
@@ -569,7 +556,7 @@ sub handler {
 						      rsstype => $rsstype,
 						     }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return Apache2::Const::OK;              
         }
         
@@ -625,7 +612,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editlibinfo_del",{ dbname => $dbname }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
 
         }
@@ -641,7 +628,7 @@ sub handler {
 						     libinfo    => $thislibinfo_ref,
 						 }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -690,7 +677,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editprofile_del",{ profilename => $profilename }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showprofiles=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
             return Apache2::Const::OK;
       
         }
@@ -708,7 +695,7 @@ sub handler {
                 viewname    => $viewname,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showprofiles=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
       
             return Apache2::Const::OK;
         }
@@ -736,7 +723,7 @@ sub handler {
 	      return Apache2::Const::OK;
 	    }
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editprofile=1&do_edit=1&profilename=$profilename");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editprofile=1&do_edit=1&profilename=$profilename");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -800,7 +787,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editsubject_del",{ id => $subjectid }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showsubjects=1");
             return Apache2::Const::OK;
       
         }
@@ -821,7 +808,7 @@ sub handler {
                 type                 => $type,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editsubject=1;subjectid=$subjectid;do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editsubject=1;subjectid=$subjectid;do_edit=1");
       
             return Apache2::Const::OK;
         }
@@ -849,7 +836,7 @@ sub handler {
 	      return Apache2::Const::OK;
 	    }
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showsubjects=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -898,7 +885,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editserver_del",{ id => $hostid }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showops=1");
             return Apache2::Const::OK;
       
         }
@@ -913,7 +900,7 @@ sub handler {
                 active               => $active,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showops=1");
       
             return Apache2::Const::OK;
         }
@@ -937,7 +924,7 @@ sub handler {
                 active               => $active,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showops=1");
             return Apache2::Const::OK;
         }
 
@@ -981,7 +968,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editview_del",{ viewname => $viewname }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showviews=1");
             return Apache2::Const::OK;
       
         }
@@ -1010,7 +997,7 @@ sub handler {
 						      rssfeeds    => \@rssfeeds,
 						     }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showviews=1");
       
             return Apache2::Const::OK;
         }
@@ -1045,7 +1032,7 @@ sub handler {
 	      return Apache2::Const::OK;
 	    }
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview=1&do_edit=1&viewname=$viewname");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editview=1&do_edit=1&viewname=$viewname");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -1124,11 +1111,11 @@ sub handler {
 						       }) if ($do_dist);
 
           if ($rsstype eq "primary"){
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview_rss=1&do_edit=1&viewname=$viewname");
+              $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editview_rss=1&do_edit=1&viewname=$viewname");
               return Apache2::Const::OK;
           }
           elsif ($rsstype eq "all") {
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
+              $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showviews=1");
               return Apache2::Const::OK;
           }
       }
@@ -1519,7 +1506,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editlogintarget_del",{ targetid => $targetid }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showlogintarget=1");
             return Apache2::Const::OK;
 
         }
@@ -1531,7 +1518,7 @@ sub handler {
 						     logintarget => $thislogintarget_ref,
 						 }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showlogintarget=1");
             return Apache2::Const::OK;
         }
         elsif ($do_new) {
@@ -1554,7 +1541,7 @@ sub handler {
             
 	    my $ret_ref = dist_cmd("editlogintarget_new",{ logintarget => $thislogintarget_ref }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showlogintarget=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -1612,7 +1599,7 @@ sub handler {
 						     userinfo  => $thisuserinfo_ref,
 						 }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showuser=1;stid=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showuser=1;stid=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {

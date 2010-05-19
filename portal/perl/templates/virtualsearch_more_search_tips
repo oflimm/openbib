@@ -66,16 +66,16 @@
 <b><span style="font-size:1.2em">[% msg.maketext("B&uuml;cher") %]</span></b>
 <ul>
 <li>[% msg.maketext("Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber den KUG recherchierbar.") %]</li>
-<li>[% msg.maketext("F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem [_1]Online-Kartenkatalog[_2]","<a href=\"${config.get('redirect_loc')}/${sessionID}/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %].</li>
-[% IF mono_querystring %]<li>[% msg.maketext("Bestellen Sie das Buch per [_1]Fernleihe[_2] (Buchbestellungen) in der Digitalen Bibliothek.","<a href=\"${config.get('redirect_loc')}/${sessionID}/540/${hbzmonofernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>[% END %]
+<li>[% msg.maketext("F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem [_1]Online-Kartenkatalog[_2]","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %].</li>
+[% IF mono_querystring %]<li>[% msg.maketext("Bestellen Sie das Buch per [_1]Fernleihe[_2] (Buchbestellungen) in der Digitalen Bibliothek.","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/540/${hbzmonofernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>[% END %]
 </ul>
 <b><span style="font-size:1.2em">[% msg.maketext("Zeitschriftenartikel") %]</span></b>
 <ul>
 <li>[% msg.maketext("Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem Katalog aufnehmen") %]</li>
-[% IF searchquery.issn.val || searchquery.hst.val || searchquery.hststring.val %]<li>[% msg.maketext("Suchen Sie in den [_1]elektronisch verf&uuml;gbaren Zeitschriften[_2] der Universit&auml;tsbibliothek nach dem Zeitschriftentitel.","<a href=\"${config.get('redirect_loc')}/${sessionID}/530/${config.get('ezb_exturl')}&jq_term1=${searchquery.issn.val}&jq_term2=${searchquery.hst.val}%20${searchquery.hststring.val}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>[% END %]
+[% IF searchquery.issn.val || searchquery.hst.val || searchquery.hststring.val %]<li>[% msg.maketext("Suchen Sie in den [_1]elektronisch verf&uuml;gbaren Zeitschriften[_2] der Universit&auml;tsbibliothek nach dem Zeitschriftentitel.","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/530/${config.get('ezb_exturl')}&jq_term1=${searchquery.issn.val}&jq_term2=${searchquery.hst.val}%20${searchquery.hststring.val}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>[% END %]
 <li>[% msg.maketext("Haben Sie sich &uuml;ber unser
-[_1]Datenbankangebot[_2] informiert? Auch hier finden Sie Volltexte.","<a href=\"${config.get('redirect_loc')}/${sessionID}/531/${config.get('dbis_exturl')}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
-[% IF zeit_querystring %]<li>[% msg.maketext("Bestellen Sie den Artikel per [_1]Fernleihe[_2] (Aufsatzbestellungen/ZDB) in der Digitalen Bibliothek.","<a href=\"${config.get('redirect_loc')}/${sessionID}/541/${hbzzeitfernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>[% END %]
+[_1]Datenbankangebot[_2] informiert? Auch hier finden Sie Volltexte.","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/531/${config.get('dbis_exturl')}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
+[% IF zeit_querystring %]<li>[% msg.maketext("Bestellen Sie den Artikel per [_1]Fernleihe[_2] (Aufsatzbestellungen/ZDB) in der Digitalen Bibliothek.","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/541/${hbzzeitfernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>[% END %]
 </ul>
 </td></tr>
 </table>

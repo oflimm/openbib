@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::BibSonomy.pm
 #
-#  Copyright 2008 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2008-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -66,15 +66,7 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status = $query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });    
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -123,15 +115,8 @@ sub handler {
 
         return Apache2::Const::OK;
     }
-    
-    my $view="";
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     if ($action eq "get_tags"){
         my @local_tags=split('\s+',$tags);
@@ -294,7 +279,7 @@ sub handler {
         if ($id && $database){
             my $title = uri_escape(OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex);
             
-            my $bibsonomy_uri = "$config->{redirect_loc}/$session->{ID}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=selection=$title";
+            my $bibsonomy_uri = "$config->{base_loc}/$view/$config->{handler}{redirect_loc}{name}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=selection=$title";
 
             $logger->debug($bibsonomy_uri);
             

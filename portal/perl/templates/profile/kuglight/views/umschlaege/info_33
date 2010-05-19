@@ -21,10 +21,10 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=30">Redaktion</a></li>
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=31">Dokumentation</a></li>
-<!--   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a></li>-->
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=33">Bibliographie</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=30">Redaktion</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=31">Dokumentation</a></li>
+<!--   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=32">Publikationen</a></li>-->
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=33">Bibliographie</a></li>
 </ul>
 
 <div class="content">

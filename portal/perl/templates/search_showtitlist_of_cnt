@@ -38,7 +38,7 @@
   <div class="resultheader">
     <div class="catalogue">
 [%-   IF dbinfo.get('use_libinfo').${database} %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% database %];stid=60">
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% database %];stid=60">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -78,10 +78,10 @@
 [%-    END -%]
   </div>
   <div class="listoptions">
-<form method="get" action="[% config.get('search_loc') %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
 <input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+
 [%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
 [%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
 [%- IF query.param('supertit')          -%]<input type="hidden" name="supertit"      value="[% query.param('supertit') %]" />[% END %]

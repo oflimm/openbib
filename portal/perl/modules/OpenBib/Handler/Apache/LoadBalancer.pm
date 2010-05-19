@@ -49,7 +49,6 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
-use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -61,22 +60,14 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => -1,
-    });
-
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+    
     my $urlquery=$r->args;      #query->url(-query=>1);
 
     $urlquery=~s/^.+?\?//;
@@ -101,7 +92,7 @@ sub handler {
     }
 
     $r->content_type('text/html');
-    $r->headers_out->add("Location" => "http://$bestserver$config->{startopac_loc}?$urlquery");
+    $r->headers_out->add("Location" => "http://$bestserver$config->{base_loc}/$view/$config->{handler}{startopac_loc}{name}?$urlquery");
 
     return Apache2::Const::REDIRECT;
 }

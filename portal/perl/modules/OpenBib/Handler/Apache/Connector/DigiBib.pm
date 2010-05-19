@@ -116,6 +116,8 @@ sub handler {
     # database = Datenbank
     # tosearch = Langanzeige
 
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     my $hitrange   = 20;
     my $idn        = $query->param('idn')        || '';
@@ -126,11 +128,11 @@ sub handler {
     my $sorttype   = $query->param('sorttype')   || 'author';
     my $sortorder  = $query->param('sortorder')  || '';;
     my $tosearch   = $query->param('tosearch')   || '';
-    my $view       = $query->param('view')       || 'institute';
     my $serien     = $query->param('serien')     || 0;
     my $sb         = $query->param('sb')         || 'xapian';
     my $up         = $query->param('up')         || '0';
     my $down       = $query->param('down')       || '0';
+
     
     # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
 
@@ -323,9 +325,19 @@ sub handler {
                     foreach my $match (@matches) {
                         last if ($i > $maxhits);
                         my $document        = $match->get_document();
-                        my $titlistitem_raw = pack "H*", $document->get_data();
-                        my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+
+                        my $titlistitem_ref;
                         
+                        if ($config->{internal_serialize_type} eq "packed_storable"){
+                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                        }
+                        elsif ($config->{internal_serialize_type} eq "json"){
+                            $titlistitem_ref = decode_json $document->get_data();
+                        }
+                        else {
+                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                        }
+
                         $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
                         $i++;
                     }

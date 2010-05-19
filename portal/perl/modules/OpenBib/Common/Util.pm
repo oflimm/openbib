@@ -383,7 +383,7 @@ sub grundform {
     # Fall: C++, C# und .Net
     $content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
-    $content=~s/\.(net)\#/dot$1/ig;
+    $content=~s/\.(net)/dot$1/ig;
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
@@ -645,6 +645,8 @@ sub get_loadbalanced_servername {
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
+
+    my $view=$config->{defaultview};
     
     my $ua=new LWP::UserAgent(timeout => 5);
 
@@ -670,7 +672,7 @@ sub get_loadbalanced_servername {
     # Fuer jeden Server, auf den verteilt werden soll, wird nun
     # per LWP der Load bestimmt.
     foreach my $targethost (@servertab) {
-        my $request  = new HTTP::Request POST => "http://$targethost$config->{serverload_loc}";
+        my $request  = new HTTP::Request GET => "http://$targethost$config->{base_loc}/$view/$config->{handler}{serverload_loc}{name}";
         my $response = $ua->request($request);
 
         if ($response->is_success) {
@@ -1087,37 +1089,34 @@ sub get_cascaded_templatepath {
     my $config = OpenBib::Config->instance;
 
     if ($profile && -e "$config->{tt_include_path}/profile/$profile") {
-        if ($view && -e "$config->{tt_include_path}/profile/$profile/views/$view/$templatename") {
-            $templatename="profile/$profile/views/$view/$templatename";
-        }
 
         # Database-Template ist spezifischer als View-Template und geht vor
         if ($database && -e "$config->{tt_include_path}/profile/$profile/database/$database/$templatename") {
             $templatename="profile/$profile/database/$database/$templatename";
         }
-
-        if ($view && -e "$config->{tt_include_path}/profile/$profile/$templatename") {
+        elsif ($view && -e "$config->{tt_include_path}/profile/$profile/views/$view/$templatename") {
+            $templatename="profile/$profile/views/$view/$templatename";
+        }
+        elsif ($view && -e "$config->{tt_include_path}/profile/$profile/$templatename") {
             $templatename="profile/$profile/$templatename";
         }
-
-        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
-            $templatename="views/$view/$templatename";
-        }
-        
         # Database-Template ist spezifischer als View-Template und geht vor
-        if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
+        elsif ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
             $templatename="database/$database/$templatename";
         }                
-    }
-    else {
-        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+        elsif ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
             $templatename="views/$view/$templatename";
         }
         
+    }
+    else {
         # Database-Template ist spezifischer als View-Template und geht vor
         if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
             $templatename="database/$database/$templatename";
         }
+        elsif ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+            $templatename="views/$view/$templatename";
+        }        
     }
 
     return $templatename;

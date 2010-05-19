@@ -29,7 +29,7 @@ pers:
 
 # Koerperschaften
 corp:
-  'KÖRPERSCHAFT': '0201:'        # Verfasser
+  'KÖRPERSCHAFT': '0200:'        # Verfasser
 
 # Systematik
 sys: 
@@ -45,9 +45,9 @@ title:
   'VERLAG': '0412.001:'
   'ORT': '0410.001:'
   'SERIE': '0451.001:'
-  'AUSGABE': '0501.001:'
+  'AUSGABE': '0403:'
   'SEITEN': '0433.001:'
-#  'DATUM': '0002:'
+  'DATUM': '0002:'
   'EXTRAAUSGABE': '0335.001:'
   'ISBN / ISSN': '0540.001:'
   'SPRACHE': '0015.001:'

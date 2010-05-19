@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Resource.pm
 #
-#  Copyright 2009 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -70,9 +70,13 @@ sub handler {
 
     my $query  = Apache2::Request->new($r);
 
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+
     # Basisipfad entfernen
-    my $basepath = $config->{resource_loc};
+    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name};
     $path=~s/$basepath//;
+
+    $logger->debug("Path: $path without basepath $basepath");
     
     # Service-Parameter aus URI bestimmen
     my $key;
@@ -121,7 +125,7 @@ sub handler {
         foreach my $information_resource_type (keys %{$content_type_map_ref}){            
             if (any { $_ eq $information_resource_type } @accept_types) {
                 $r->content_type($information_resource_type);
-                my $new_location = $config->{resource_loc}."/$type/$key/".$content_type_map_ref->{$information_resource_type};
+                my $new_location = $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name}."/$type/$key/".$content_type_map_ref->{$information_resource_type};
                 $logger->debug("Redirecting HTTP_SEE_OTHER to $new_location");
                 $r->headers_out->add("Location" => $new_location);
                 $information_resource_found = 1;
@@ -132,7 +136,7 @@ sub handler {
         if (!$information_resource_found){
             my $information_resource_type="text/html";
             $r->content_type($information_resource_type);
-            $r->headers_out->add("Location" => $config->{resource_loc}."/$type/$key/html");
+            $r->headers_out->add("Location" => $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name}."/$type/$key/html");
             $logger->debug("Information Resource Type: $information_resource_type");
         }
 

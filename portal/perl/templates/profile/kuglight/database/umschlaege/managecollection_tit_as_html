@@ -41,11 +41,11 @@
 <tr><td class="boxedclear">
 <div style="float:right;padding:10px;">
 <p>
-<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="Google BookSearch"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="Google BookSearch"><img src="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 <p>
 [%- IF bibkey -%]
-<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="BibSonomy"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="BibSonomy"><img src="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
 </div>
@@ -164,7 +164,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% END %]
 [% IF show_bibsonomy %]
 <p />
-<img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/>&nbsp;<a href="[% config.get('redirect_loc') %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+<img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/>&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
 <p />
 [% END %]
 

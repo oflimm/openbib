@@ -42,13 +42,13 @@ Gefundene Schlagworte zur Anfrage <b>'[% swt %]'</b> in diesem Katalog: <b>[% sw
 
 [% FOREACH item IN swtindex %]
 [% IF loop.index % 3 == 0 %]
-<tr><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
+<tr><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
 [% END %]
 [% IF loop.index % 3 == 1 %]
-<td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
+<td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
 [% END %]
 [% IF loop.index % 3 == 2 %]
-<td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td></tr>
+<td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td></tr>
 [% END %]
 
 [% END %]
@@ -71,8 +71,8 @@ In diesem Katalog konnte leider kein Schlagwort zur Ihrer Anfrage <b>'[% swt %]'
 
 <hr />
 
-<form method="get" action="[% config.get('search_loc') %]">
-<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
+
 <input type="hidden" name="searchmode" value="[% searchmode %]" />
 <input type="hidden" name="hitrange"   value="[% hitrange %]" />
 <input type="hidden" name="database"   value="[% database %]" />

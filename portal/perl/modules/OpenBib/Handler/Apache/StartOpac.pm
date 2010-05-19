@@ -60,17 +60,11 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->instance;    
 
-    my $session = OpenBib::Session->instance;
+    my $session = OpenBib::Session->instance({ apreq => $r });
     
     my $query   = Apache2::Request->new($r);
-
-#     my $status = $query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
 
     my $fs   = $query->param('fs')      || '';
 
@@ -85,9 +79,13 @@ sub handler {
     my $action          = $query->param('action') || '';
     my $setmask         = $query->param('setmask') || '';
     my $searchsingletit = $query->param('searchsingletit') || '';
+    my $searchsingleaut = $query->param('searchsingleaut') || '';
+    my $searchsinglekor = $query->param('searchsinglekor') || '';
+    my $searchsingleswt = $query->param('searchsingleswt') || '';
+    my $searchsinglenot = $query->param('searchsinglenot') || '';
     my $searchlitlist   = $query->param('searchlitlist')   || '';
   
-    my $view="";
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
 
@@ -109,18 +107,15 @@ sub handler {
         content   => $r->connection->remote_ip,
     });
     
-    if ($query->param('view')) {
-        $view=$query->param('view');
-
+    if ($view) {
         # Loggen der View-Auswahl
         $session->log_event({
             type      => 100,
             content   => $view,
         });
-
     }
     else {
-        $view=$session->get_viewname();
+        $logger->error("No view given");
     }
 
     if ($setmask) {
@@ -176,14 +171,14 @@ sub handler {
     $logger->debug("StartOpac-sID: $session->{ID}");
 
     # Standard-URL
-    my $redirecturl = "$config->{searchmask_loc}?sessionID=$session->{ID};view=$view;setmask=$setmask";
+    my $redirecturl = "$config->{base_loc}/$view/$config->{handler}{searchmask_loc}{name}?setmask=$setmask";
 
     my $viewstartpage_ref = $config->get_startpage_of_view($view);
 
     $logger->debug(YAML::Dump($viewstartpage_ref));
     
     if ($viewstartpage_ref->{start_loc}){
-        $redirecturl = "$config->{$viewstartpage_ref->{start_loc}}?sessionID=$session->{ID};view=$view";
+        $redirecturl = "$config->{$viewstartpage_ref->{start_loc}}?view=$view";
 
         if ($viewstartpage_ref->{start_stid}){
             $redirecturl.=";stid=$viewstartpage_ref->{start_stid}";
@@ -191,15 +186,31 @@ sub handler {
     }
     
     if ($searchsingletit && $database ){
-        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsingletit=$searchsingletit;view=$view";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$database;searchsingletit=$searchsingletit;search=1";
+    }
+    
+    if ($searchsingleaut && $database ){
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?search=Mehrfachauswahl;database=$database;searchsingleaut=$searchsingleaut;view=$view";
     }
 
+    if ($searchsinglekor && $database ){
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?search=Mehrfachauswahl;database=$database;searchsinglekor=$searchsinglekor;view=$view";
+    }
+
+    if ($searchsingleswt && $database ){
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?search=Mehrfachauswahl;database=$database;searchsingleswt=$searchsingleswt;view=$view";
+    }
+
+    if ($searchsinglenot && $database ){
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?search=Mehrfachauswahl;database=$database;searchsinglenot=$searchsinglenot;view=$view";
+    }
+    
     if ($fs){
-        $redirecturl = "$config->{virtualsearch_loc}?view=$view;sessionID=$session->{ID};fs=".uri_escape($fs).";hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{virtualsearch_loc}{name}?view=$view;fs=".uri_escape($fs).";hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
     }
 
     if ($searchlitlist){
-        $redirecturl = "$config->{litlists_loc}?view=$view;sessionID=$session->{ID};action=show;litlistid=$searchlitlist";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?view=$view;action=show;litlistid=$searchlitlist";
     }
 
     if ($config->{drilldown}){

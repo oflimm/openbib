@@ -1,0 +1,109 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=20">Elise und Helene Richter</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=22">Biographien</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=21">Die Bibliothek Richter heute</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+
+<p />
+<h1>Die Virtuelle Bibliothek Elise und Helene Richter an der USB K&ouml;ln</h1>
+
+An dieser Stelle entsteht der Virtuelle Katalog der Bibliothek von Elise und Helene Richter. In ihm sollen die Best&auml;nde der einstigen Bibliothek der Schwestern Richter wieder zusammengef&uuml;gt werden.
+
+<p />
+<center>
+<br/>
+Aktuelle Publikation: <b><a href="http://www.ub.uni-koeln.de/bibliothek/pub/schriften/index_ger.html"
+target="_blank">Bücherspuren - Das Schicksal von Elise und Helene
+Richter und ihrer Bibliothek im "Dritten Reich"</a></b>
+<p/>
+</center>
+<br />
+<br />
+
+<table width="100%">
+<tr align="center">
+  <td><img src="/images/openbib/views/richter/EliseRichteralt.jpg" width="250" height="353" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; Handschriftensammlung der Wien-Bibliothek</span></td>
+  <td><img src="/images/openbib/views/richter/HeleneRichter.jpg" width="250" height="353" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; &Ouml;sterreichische Nationalbibliothek</span></td>
+</tr>
+<tr align="center">
+  <td><span style="font-size:1.1em;text-align:center">Prof. Dr. Elise Richter</span></td>
+  <td><span style="font-size:1.1em;text-align:center">Dr. h.c. Helene Richter</span></td>
+</tr>
+</table>
+
+<p> <b>Prof. Dr. Elise Richter</b> (2. M&auml;rz 1865 - 21. Juni 1943)
+war die erste Frau in Deutschland und &Ouml;sterreich, die als
+Dozentin f&uuml;r romanische Philologie an einer Universit&auml;t
+lehrte. Sie habilitierte 1905 an der Universit&auml;t Wien und lehrte
+dort von 1907 bis 1938.</p>
+
+<p> 1938 erfolgte der "Anschlu&szlig;" &Ouml;sterreichs. Im gleichen
+Jahr wurde Elise Richter die Lehrbefugnis aufgrund der N&uuml;rnberger
+Gesetze entzogen.  Der Zutritt zur Universit&auml;tsbibliothek Wien
+sowie zu allen anderen Bibliotheken wurde ihr verwehrt.  Bis 1941
+setzte sie ihr wissenschaftliches Arbeiten fort.</p>
+
+<p> <b>Dr. h.c. Helene Richter</b> (4. August 1861 - 8. November 1942)
+hatte nie an einer Hochschule gelehrt. Die Autodidaktin publizierte
+als Anglistin und Theaterhistorikerin. Sie erhielt 1931 die
+Ehrendoktorw&uuml;rde der Universit&auml;ten von Heidelberg und
+Erlangen.</p>
+
+<p> Die Schwestern lebten 47 Jahre lang in ihrem Haus in Wien. 1942
+m&uuml;ssen sie ihr Domizil verlassen. Sie wurden in ein
+j&uuml;disches Altersheim, und von dort aus, am 10. Oktober 1942 in
+das Konzentrationslager Theresienstadt deportiert.</p>
+
+<p> Einen Monat sp&auml;ter, am 8. November 1942 starb Helene Richter
+im Alter von 82 Jahren.</p>
+
+<p> Elise Richter stirbt im folgenden Jahr am 21. Juni 1943 im Alter
+von 78 Jahren.</p>
+
+<p> 1939 hatte die "International Federation of University Women"
+Hilfe und Unterst&uuml;tzung f&uuml;r die Auswanderung nach England
+angeboten.</p>
+
+<p> Elise und Helene Richter lehnten eine Auswanderung ab.</p>
+
+<p> <i>"Einen alten Baum verpflanzt man nicht."</i></p>
+
+<p> Die gemeinsame umfangreiche romanistische, anglistische und
+sprachwissenschaftliche Bibliothek wurde ab 1938 verkauft. Den
+gr&ouml;ssten Teil der B&uuml;cher verkauften die Schwestern 1941 an
+die Universit&auml;ts- und Stadtbibliothek K&ouml;ln.</p>
+
+<p>Dieser Kauf stellt eine Erwerbung im Sinne von
+NS-verfolgungsbedingt entzogenem Kulturgut dar.</p>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

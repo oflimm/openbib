@@ -1,0 +1,205 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: $poolname" %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
+</ul>
+
+<div class="content">
+
+<table width="100%"  class="titlenav">
+<tr>
+[%- IF prevurl -%]
+<td align="left"><a href="[% prevurl %];queryid=[% queryid %]">[[% msg.maketext("Vorheriger Titel") %]]</a></td>
+[%- ELSE -%]
+<td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
+[%- END -%]
+<td align="center">
+	<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=mail;database=[% database %];singleidn=[% titidn %]" title="Als Mail verschicken"><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
+        <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=print;database=[% database %];singleidn=[% titidn %]" target="print" title="Ausdrucken"><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
+</td>
+[%- IF nexturl -%]
+<td align="right"><a href="[% nexturl %];queryid=[% queryid %]">[[% msg.maketext("N&auml;chster Titel") %]]</a></td>
+[%- ELSE -%]
+<td align="right"><span style="color:slategrey">[[% msg.maketext("N&auml;chster Titel") %]]</span></td>
+[%- END -%]
+</tr>
+</table>
+
+<p />
+<!-- Title begins here -->
+<table width="100%">
+<tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
+<tr><td class="boxedclear">
+
+<div style="float:right;padding:10px">
+<a class="invisible" href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft_web.jpg"><img src="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft_web.jpg" height="300" title="(c) "/></a>
+<p>
+<a href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
+<br /><br />
+<a href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft.tif"><span style="font-size:0.7em">Als Tiff-Datei (Original)</span></a>
+</p>
+</div>
+
+<table cellpadding="2">
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+<tr><td class="category">id</td><td>[% normset.id %]</td></tr>
+
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
+[%-
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE [ "T0100" "T0101" "T0103" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsingleaut=${thisid}";
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE [ "T0200" "T0201" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsinglekor=${thisid}";
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE "T0331";
+         content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+    CASE [ "T0662" ];
+         content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
+
+    CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsingleswt=${thisid}";
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE "T0700";
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsinglenot=${thisid}";
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE "T0800";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         content   = "<a href=\"${localurl}\">${content}</a>";
+
+    CASE "T5001";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
+
+    CASE "T5002";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
+
+    CASE ;
+         content   = highlightquery(searchquery,item.content);
+   END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').$database.$category ;
+      thiscategory = "${category}-${normset.database}" ;
+   END;
+
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+</table>
+
+
+[% IF mexnormset.size > 0 %]
+<p />
+<table width="100%">
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Signatur") %]</td></tr>
+
+[% FOREACH mex IN mexnormset %]
+<tr align="center"><td><strong>Universit&auml;ts- und Stadtbibliothek Köln</strong>
+</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td></tr>
+[% END %]
+</table>
+[% END %]
+
+</td></tr>
+</table>
+
+[% IF circset.size > 0 %]
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
+<tr><td class="boxedclear">
+[% PROCESS common/subtemplate name="circset" %]
+</td></tr>
+</table>
+[% END %]
+<p />
+
+[% IF normset.exists('T4000') %]
+<p />
+<table width="100%">
+<tr><th>Das könnte Sie interessieren:</th></tr>
+<tr><td class="boxedclear">
+Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#enrichrelevance">Weitere Informationen</a> finden Sie in der Suchhilfe.
+<table>
+[%-   isbnitems = normset.${"T4000"} -%]
+[%-   hstitems  = normset.${"T4001"} -%]
+[%- FOREACH isbnitem IN isbnitems -%]
+[%-   isbnidx = loop.index -%]
+[%-   hstitem = hstitems.${isbnidx} -%]
+[%-   globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;isbn=${isbnitem.content}" -%]
+[%-   IF hstitem.content.defined -%]
+<tr><td><a href="[% globalurl %]"><span class="globalsearch">G</span></a></td><td>[% hstitem.content %]</td></tr>
+[%-   END -%]
+[%- END -%]
+</table>
+</td></tr>
+</table>
+[% END %]
+
+<!-- Title ends here -->
+
+<p />
+
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

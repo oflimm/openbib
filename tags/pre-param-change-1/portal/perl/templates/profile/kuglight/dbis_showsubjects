@@ -1,0 +1,70 @@
+[%#-
+#######################################################################
+#
+# Templatename: dbis_showsubjects
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der DBIS Fachgebiete
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Datenbanken (DBIS)") %]</span></a></li>
+</ul>
+
+<div class="content">
+
+[%# USE dumper; dumper.dump(subjects) %]
+
+<h3>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h3>
+<p/>
+<div class="boxed">
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?action=show_subjects;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?action=show_subjects;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+</div>
+<p/>
+[% IF show_cloud %]
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+<ol class="cloud">
+[% FOREACH subject IN subjects %]
+[%- classnr   = subject.class;
+    itemclass = css_classes.$classnr;
+-%]
+<li class="[% itemclass %]"><span>[% subject.count %] Titel sind in der Fachgruppe</span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs"  class="tag" title="[% subject.count %] Datenbanken sind in der Fachgruppe [% subject.desc %]">[% subject.desc %]</a></li>
+[% END %]
+</ol>
+<!-- Ende Tag-Cloud -->
+[% ELSE %]
+<ul class="subjectlist">
+[% FOREACH subject IN subjects %]
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dbis_loc.name %]?notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs">[% subject.desc %]</a> ([% subject.count %])</li>
+[% END %]
+</ul>
+[% END %]
+<p/>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,92 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+<!-- Beginn Result Item -->
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
+    dburl    = dbinfo.get('urls').${database} ;
+    request_base    = "sb=xapian;drilldown=1;dd_categorized=1;" ;
+    start_range     = nav.current_page*qopts.hitrange-qopts.hitrange + 1;
+    end_range       = nav.current_page*qopts.hitrange;
+    IF end_range >= fullresultcount ;
+       end_range       = fullresultcount;
+    END;
+-%]
+
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[%-   IF dbinfo.get('use_libinfo').${database} %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% database %];stid=60">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+     [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
+    </div>
+    <div class="hits">
+[% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% fullresultcount %]
+    </div>
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+    </div>
+  </div>
+[% IF drilldown && fullresultcount <= config.get('xapian_option').maxmatch %]
+  <div class="resultdrilldown">
+[% PROCESS common/subtemplate name="drilldown_categorized" %][% PROCESS common/subtemplate name="drilldown_cloud" %]
+  </div>
+[% END %]
+  <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
+[%- END -%]
+  <div class="footer">
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+    </div>
+    <div class="resulttime">
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
+    </div>
+  </div>
+</div>
+<div class="resultfooter">
+&nbsp;
+</div>
+
+<p/>

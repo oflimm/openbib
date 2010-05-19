@@ -1,0 +1,42 @@
+[%#-
+#######################################################################
+#
+# Templatename: startopac
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des view-spezifischen initialen Framesets beim Aufruf des Katalogs
+# mit parameterabhaengigem Sprung in verschiedene Funktionsbereiche
+# des Portals,
+#
+# derzeit z.B. 
+#
+# - Sprung zu einem einzelnen Titel in einer einzelnen Datenbank
+#   anhand der Titel-ID und des Datenbanknamens
+#
+# - Sprung in eine Suchanfrage (Freie Suche)
+#
+#######################################################################
+-%]
+[%-
+# Aufruf der Frames mit den gewuenschten Inhalten
+
+IF NOT headerframeurl;
+headerframeurl = "${config.get('base_loc')}/${view}/${config.get('handler').headerframe_loc.name}?" ;
+END;
+
+IF NOT bodyframeurl;
+bodyframeurl   = "${config.get('base_loc')}/${view}/${config.get('handler').info_loc.name}?stid=20" ;
+END;
+
+IF searchsingletit && database;
+    bodyframeurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit}";
+END;
+
+IF fs;
+    bodyframeurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;fs=${fs};hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=1";
+END;
+-%]
+[% PROCESS common/subtemplate name="frameset" %]

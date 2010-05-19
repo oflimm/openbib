@@ -1,0 +1,132 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=20" title="Die Portrait-Sammlung">Die Portrait-Sammlung</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=21" title="Weitere Portrait-Quellen">Weitere Portrait-Quellen</a></li>
+</ul>
+
+<div class="content">
+<p />
+<h1>Tipps zur weiteren Suche nach Portraits</h1>
+
+<p>
+Die Portraitsammlung der USB Köln umfasst zurzeit ca. 650
+Einzelportraits aus unterschiedlichen Sammlungen, die in diesem Portal
+erfasst, recherchierbar und bestellbar sind.
+</p>
+
+<h2>Historische Sammelbände</h2>
+
+<p>
+Darüber hinaus besitzt die USB einige historische Sammelbände mit
+Portraits, zum Beispiel:
+</p>
+
+<pre>
+Desrochers, Étienne Jehandier
+[Recueil des portraits de personnes qui se sont distinguées tant dans
+les armes que dans les belles lettres & arts ...]
+[rangé ... par Charles Henri de Heinecken]
+6 Bände
+[S.l.] [ca. 1800]
+Titel fingiert; aufgezogene Porträts fraglicher Herkunft
+Signatur: GBXII117+A
+	
+Brucker, Johann Jakob
+Ehren-Tempel der deutschen Gelehrsamkeit in welchem die Bildnisse
+gelehrter und um die schönen und philologischen Wissenschaften
+verdienter Männer unter den Deutschen aus dem XV., XVI. und XVII.
+Jahrhunderte aufgestellet und ihre Geschichte, Verdienste und
+Merckwürdigkeiten entworfen sind
+In Kupfer gebracht von Johann Jacob Haid
+Augspurg: bey Johann Jacob Haid 1747
+210 S. : Ill. (50 Taf.)
+Signatur:G22/276
+
+Khevenhüller, Franz Christoph
+Annales Ferdinandei oder wahrhaffte Beschreibung Kaysers Ferdinandi des Andern
+Leipzig: Weidmann 1721 - 1726
+Signatur: GD6+A4390
+
+Schrenck von Notzing, Jakob
+Augustissimorum Imperatorum, Serenissimorum Regum, Archiducum,
+Illustrissimorum Principum ... aliorumque clarissimorum virorum ...
+Verissimae Imagines et rerum a ipsis ... gestarum succinctae
+descriptiones, quorum arma ... in celebri Ambrasianae arcis
+Armamentario ... conspiciuntur
+Excudebat Joannes Agricola
+Oeniponti:Agricola 1601
+[1, 125] Bl. : zahlr. Ill. (Kupfterst.) ; 2-o
+Signatur: SB1024
+</pre>
+
+<h2>Standardwerke zum Nachweis von Portraits sind</h2>
+
+<pre>
+Mortzfeld, Peter
+Die Porträtsammlung der Herzog-August-Bibliothek Wolfenbüttel
+München [u.a.]: Saur 1986 - 2007
+(Katalog der graphischen Porträts in der Herzog-August-Bibliothek Wolfenbüttel ; A)
+Signatur: LS/K1594
+	
+Singer, Hans Wolfgang
+Allgemeiner Bildnis-Katalog 
+15 Bände
+Stuttgart: Hiersemann 1930 - 1936 (auch spätere Reprint-Ausgaben) 
+Signatur: LS/K1590
+
+Singer, Hans Wolfgang
+Neuer Bildnis-Katalog 
+5 Bände
+Stuttgart: Hiersemann 1937 - 1938 (auch spätere Reprint-Ausgaben) 
+Signatur: LS/K1591
+</pre>
+
+<h2>Ausgewählte Internet-Quellen</h2>
+
+<p> Das Internet bietet viele weitere interessante Sucheinstiege für
+personale Abbildungen; hier nur einige Adressen: </p>
+
+<dl>
+<dt>Bildarchiv der Marburger  Philipps-Universität:</dt><dd><a href="http://www.bildindex.de/" target="_blank">http://www.bildindex.de/</a></dd>
+
+<dt>Universitätsbibliothek der Humboldt-Universität Berlin:</dt><dd><a href="http://allegro.ub.hu-berlin.de/portraet/" target="_blank">http://allegro.ub.hu-berlin.de/portraet/</a></dd>
+
+<dt>Universitätsbibliothek Frankfurt:</dt><dd><a href="http://www.ub.uni-frankfurt.de/wertvoll/portrait.html" target="_blank">http://www.ub.uni-frankfurt.de/wertvoll/portrait.html</a></dd>
+
+<dt>Spezialsammlung Manskopf</dt><dd><a href="http://edocs.ub.uni-frankfurt.de/manskopf/" target="_blank">http://edocs.ub.uni-frankfurt.de/manskopf/</a></dd>
+<dt>SLUB Dresden</dt><dd><a href="http://www.deutschefotothek.de/" target="_blank">http://www.deutschefotothek.de/</a></dd>
+</dl>
+
+<h2>Weitere Fragen?</h2>
+
+<p> Bei Fragen können Sie uns unter der E-Mail-Adresse
+<a
+href="mailto:portraitsammlung@ub.uni-koeln.de">portraitsammlung@ub.uni-koeln.de</a>
+erreichen </p>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

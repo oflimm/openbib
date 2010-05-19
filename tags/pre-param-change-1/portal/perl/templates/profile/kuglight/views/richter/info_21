@@ -1,0 +1,119 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=20">Elise und Helene Richter</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=22">Biographien</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=21">Die Bibliothek Richter heute</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Die Bibliothek Richter heute</h1>
+
+
+<table width="100%" cellpadding="10">
+<tr>
+<td><a href="/images/openbib/views/richter/richterexlibris.jpg"><img src="/images/openbib/views/richter/richterexlibris.jpg" width="200" alt="Ex Libris der Schwestern Richter"></a></td>
+<td>
+
+<p> Heute ist sicher, dass nicht die komplette Bibliothek der
+Schwestern Richter in den Bestand der USB K&ouml;ln eingegangen
+ist. Helene Richter hatte 1938/39 bereits 1700 B&auml;nde verkauft,
+somit befanden sich 1941 noch ca. 750 B&auml;nde in der "englischen
+Bibliothek" der Schwestern. Dies geht aus einem Brief hervor, den
+Elise Richter am 24. August 1941 dem Direktor der
+Universit&auml;tsbibliothek K&ouml;ln geschrieben hat. Der Kaufpreis
+f&uuml;r die romanistische Bibliothek betrug 4.000
+Reichsmark. F&uuml;r die anglistischen B&uuml;cher wurden 500
+Reichsmark geboten. Der Kaufvertrag &uuml;ber die B&uuml;chersammlung
+datiert vom 21.10. 1941. Die Anzahl der B&uuml;cher wurde mit
+&uuml;ber 3000 B&auml;nden angegeben. [Quelle: Briefwechsel Corsten /
+Richter; Akte Richter, Bl&auml;tter 4 und 46] Die erworbenen
+B&uuml;cher sind in mindestens drei Sendungen nach K&ouml;ln
+gelangt. Im Mai 1942 kam die letzte Lieferung in K&ouml;ln an. Die
+B&uuml;cher wurden in die Aufstellungssystematik der USB
+eingearbeitet.  </p>
+
+<p> Das von Elise und Helene Richter verwendete Exlibris des Wiener
+Graphikers <a href="http://de.wikipedia.org/wiki/Alfred_Cossmann"
+target="_blank">Alfred Cossmann</a> (2.10.1870 Graz - 31.3.1951 Wien)
+stellte bei der Recherche neben erhaltenen Widmungen das
+auff&auml;lligste Provenienz-Merkmal dar. In unserer Bibliothek kommt
+es f&uuml;r die Provenienzrecherche erschwerend hinzu, dass die
+Inventarisierungsb&uuml;cher (Akzessionsjournale) der Erwerbungsjahre
+bis 1948 in den Kriegswirren verloren gegangen sind.  </p>
+
+</td>
+</tr>
+</table>
+
+<p> Im Mai 2005 begann die Rekonstruktion der Richterbibliothek die im
+September 2007 weitestgehend abgeschlossen wurde. Alle gefundenden
+B&uuml;cher, Sonderdrucke, Zeitschriftenhefte etc. wurden in der
+Virtuellen Bibliothek Elise und Helene Richter" erfasst. Die Grundlage
+f&uuml;r die Recherche bilden die 1941 von Elise und Helene Richter
+erstellten <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=30">Listen</a>.</p>
+
+<p> Neben der bibliographischen Verzeichnung der B&uuml;cher wurde
+eine rudiment&auml;re Verschlagwortung der Titel vorgenommen. Der
+"Fundort" in den Richter-Listen ist als Notation erfasst worden. Des
+weiteren werden spezifische Hinweise zum Buchbesitz der Schwestern
+(Widmungen, Exlibris etc.) in der Kategorie "Richter-Indiz"
+dokumentiert.</p>
+
+<p> Aus 2720 (errechneter Mittelwert der B&uuml;cherlisten)
+gelieferten B&uuml;chern ergaben sich 2235 in der USB vorhandene
+Titel. Davon stammen 534 aus der Richter-Bibliothek. Letztlich ist in
+der USB K&ouml;ln nur noch ein Viertel der urspr&uuml;nglichen
+Bibliothek nachzuweisen.</p>
+
+<p> Alle gefundenen B&uuml;cher wurden aus dem Magazin herausgenommen
+und zun&auml;chst auf einem Sonderstandort gestellt. Die B&uuml;cher
+stehen weiterhin - so wie es Elise Richter gew&uuml;nscht hatte - der
+Wissenschaft zur Verf&uuml;gung.</p>
+
+<p> Sofern sich ein begr&uuml;ndeter Restitutionsanspruch seitens
+Erben der Schwestern ergibt, ist die USB K&ouml;ln
+selbstverst&auml;ndlich bereit zu restituieren.</p>
+
+<p> Alle gefunden B&uuml;cher wurden an die <a
+href="http://www.lostart.de/" target="_blank">LostArt-Datenbank</a>
+der Koordinierungsstelle f&uuml;r Kulturgutverluste gemeldet.</p>
+
+<p> Diese Informationsseite wird durch st&auml;ndige Aktualisierung
+&uuml;ber den Stand der Entwicklung der "Virtuellen Bibliothek Elise
+und Helene Richter" Aufschluss geben.</p>
+
+<p>
+Falls Sie &uuml;ber Informationen verf&uuml;gen oder Fragen zur
+Richter-Bibliothek haben, mailen Sie bitte an: <a
+href="mailto:hoffrath@ub.uni-koeln.de">hoffrath@ub.uni-koeln.de</a>
+</p>
+
+Christiane Hoffrath, USB K&ouml;ln
+<p />
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

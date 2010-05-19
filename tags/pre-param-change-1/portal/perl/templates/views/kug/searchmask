@@ -1,0 +1,278 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der erweiterten Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+  <body>
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_fak(yourform, checked, fak) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(fak) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+function clear_alldbs(yourform) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].name.indexOf('database') != -1) {
+              yourform.elements[i].checked = '';
+         }
+         if (yourform.elements[i].name.indexOf('fakult') != -1) {
+              yourform.elements[i].checked = '';
+         }
+    }
+}
+
+function update_dbchoice(yourform, value) {
+
+[% FOREACH profile IN userprofile %]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+    user[% pid %] = ['[%-  pdata.databases.join("','") -%]'] ;
+[% END %]
+
+    dbchoice = ['[%-  dbchoice.join("','") -%]'] ;
+
+    if (value == "alldbs"){
+       update_fak(yourform, 'checked', 'inst');
+    }
+[% FOREACH unit IN config.get('orgunits') %]
+    else if (value == "[% unit.short %]"){
+       clear_alldbs(yourform);
+       update_fak(yourform, 'checked', 'inst[% unit.nr %]');
+    }
+[% END %]
+[% FOREACH profile IN userprofile %]
+[%     pid   = profile.key %]
+    else if (value =="user[% pid %]"){
+       clear_alldbs(yourform);
+       for (var i = 0; i < yourform.elements.length; i++) {
+           if (yourform.elements[i].name.indexOf('database') != -1) {
+              for (var j = 0; j < user[% pid %].length; j++){
+                 if (user[% pid %][j].indexOf(yourform.elements[i].value) != -1) {
+                    yourform.elements[i].checked = 'checked';
+                 }
+              }
+           }
+       }
+    }
+[% END %]
+    else if (value == 'dbauswahl'){
+       clear_alldbs(yourform);
+       for (var i = 0; i < yourform.elements.length; i++) {
+           if (yourform.elements[i].name.indexOf('database') != -1) {
+              for (var j = 0; j < dbchoice.length; j++){
+                 if (dbchoice[j].indexOf(yourform.elements[i].value) != -1) {
+                    yourform.elements[i].checked = 'checked';
+                 }
+              }
+           }
+       }
+    }
+    else if (value == 'cleardbs'){
+       clear_alldbs(yourform);
+    }
+}
+
+function submitViaEnter(evt){
+  evt = (evt) ?  evt : event;
+  var target = (evt.target) ? evt.target : evt.srcElement;
+  var form = target.form;
+  var charCode = (evt.charCode) ? evt.charCode :
+      ((evt.which) ? evt.which : evt.keyCode);
+  if (charCode == 13 || charCode == 3){
+     form.submit();
+     return false;
+  }
+  return true;
+}
+
+
+// -->
+</script>
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchmask" %] 
+
+<div id="maincontent">
+
+[% IF config.get('testsystem') %]
+<div id="testsystem">
+[%# PROCESS common/subtemplate name="testsystem_info" %]
+</div>
+<p />
+[% END %]
+
+[% IF queries.size > 0 %]
+<div id="searchmask_history"><!-- Begin searchmask_history -->
+<p />
+
+<form method="get" id="queries" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').dispatchquery_loc.name %]">
+
+
+
+
+<table>
+<tr>
+<td><b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;</td>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_newquery" value="[% msg.maketext("Als Suchvorlage") %]" /></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_externalquery" value="[% msg.maketext("Weiter als externe Recherche") %]" style="background-color:#99CCFF" /></div></td>
+</tr>
+</table>
+
+</form>
+<p />
+
+</div><!-- End searchmask_history -->
+[% END %]
+
+<form method="post" id="openbib" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]" enctype="application/x-www-form-urlencoded">
+
+
+<input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="2" />
+
+<div id="searchmask_advanced"><!-- Begin searchmask_advanced -->
+
+<div id="searchmask_query"><!-- Begin searchmask_query -->
+
+<!-- Erste Spalte -->
+
+<table width="100%">
+<tr><th>[% msg.maketext("Suchbegriffe") %]</th></tr>
+<tr><td class="boxedclear">
+[% PROCESS common/subtemplate name="searchmask_query" %]
+
+<p />
+
+<table width="100%">
+<tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
+<tr><td class="boxedclear" id="searchoptions">
+[% PROCESS common/subtemplate name="searchmask_options" %]
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+<p />
+<span class="bigtext">oder:</span>
+
+<p/>
+
+<table width="100%">
+<tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
+<tr><td class="boxedclear">
+<table>
+<tr><td><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="searchindex" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</td></tr>
+</table>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+
+</div><!-- End searchmask_query -->
+<div id="searchmask_dbchoice"><!-- Begin searchmask_dbchoice -->
+
+<table>
+<tr><th>[% msg.maketext("Katalogauswahl") %]</th></tr>
+<tr><td>
+
+[%# USE dumper; dumper.dump(userprofile) %]
+<table>
+<tr><td colspan="[% colspan %]"><b>Profil:</b>&nbsp;<select name="js_profil" onchange="update_dbchoice(this.form,this.options[this.selectedIndex].value)" >
+<option value="">W&auml;hlen Sie hier ein bestehendes Profil aus</option>
+<option value="cleardbs">Katalogauswahl l&ouml;schen</option>
+[%- IF dbchoice.size > 0 -%]
+<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
+[%  END %]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option>
+[% FOREACH unit IN config.get('orgunits') %]
+<option value="[% unit.short %]"
+[%- IF prevprofile == unit.short -%]
+ selected="selected"
+[%- END -%]
+>[% unit.desc %]</option>
+[% END %]
+</select></td></tr>
+</table>
+
+<table>
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
+
+[%- FOREACH category = config.get('orgunits') -%]
+[%- IF category.nr >= 1 -%]
+<tr><td colspan="[% colspan %]">&nbsp;</td></tr>
+[%- END -%]
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
+
+[%- FOREACH db IN catdb -%]
+[%- IF db.category == category.short -%]
+[%- IF db.column == 1 -%]
+<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>&nbsp;</td><td>[%- IF dbinfo.get('use_libinfo').${db.db} -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% db.db %];stid=60">[%- ELSE -%]<a href="[% db.url %]" target="_blank">[%- END -%][% db.name %]</a></td>
+[%- END -%]
+[%- IF db.column > 1 && db.column < maxcolumn -%]
+[%- IF db.db -%]
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>&nbsp;</td><td>[%- IF dbinfo.get('use_libinfo').${db.db} -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% db.db %];stid=60">[%- ELSE -%]<a href="[% db.url %]" target="_blank">[%- END -%][% db.name %]</a></td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+[%- IF db.column == maxcolumn -%]
+[%- IF db.column != 1 -%]
+
+[%- IF db.db -%]
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>&nbsp;</td><td>[%- IF dbinfo.get('use_libinfo').${db.db} -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% db.db %];stid=60">[%- ELSE -%]<a href="[% db.url %]" target="_blank">[%- END -%][% db.name %]</a></td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+</tr>
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+</table>
+
+<p />
+<div class="cssbutton glass kug" style="float:left"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div>
+
+</td></tr>
+</table>
+
+</div><!-- End searchmask_dbchoice -->
+
+</div><!-- End searchmask_advanced -->
+
+</form>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,152 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;browsecat=T0101" title="Bl&auml;ttern">Bl&auml;ttern</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?[% IF viewdbs.size == 1 %]database=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+</ul>
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a[%- IF browsecat == 'M0101' -%] class="active"[%- END -%] href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;browsecat=T0101">Buchbinder/Werkstatt</a></li>
+   <li><a[%- IF browsecat == 'M0700' -%] class="active"[%- END -%] href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;browsecat=T0700">Einband</a></li>
+   <li><a[%- IF browsecat == 'M0200' -%] class="active"[%- END -%] href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;browsecat=T0200">Region</a></li>
+   <li><a[%- IF browsecat == 'M0710' -%] class="active"[%- END -%] href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;browsecat=T0710">Jahrhundert</a></li>
+   <li><a[%- IF browsecat == 'M0413' -%] class="active"[%- END -%] href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;browsecat=T0413">Drucker/Verleger/Verlag</a></li>
+</ul>
+
+<div class="content">
+<p />
+<p />
+
+<table width="100%">
+<tr><th>Suche nach '[% browsecontent %]' / [% result.size %] Treffer </th></tr>
+
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+[% listrow = 'listrow2' %]
+<table width="100%">
+[% FOREACH iteminfo IN result %]
+[% item = iteminfo.item %]
+[% thisimages = iteminfo.images %]
+[% thisimage  = thisimages.first %]
+[% thismeta   = iteminfo.meta %]
+
+<tr class="[% listrow %]"><td align="center">
+[% IF thisimage.thumb %]
+ <a class="invisible" href="http://einbandsammlung.ub.uni-koeln.de/digiarchive/[% collection %]/[% item %]/
+[%- IF thisimage.web -%]
+[% thisimage.web %]
+[%- ELSE -%]
+[% thisimage.name %]
+[%- END -%]
+"><img src="http://einbandsammlung.ub.uni-koeln.de/digiarchive/[% collection %]/[% item %]/[% thisimage.thumb %]" alt="Bild [% thisimage.name %]" /></a>
+[% END %]
+</td><td>
+
+[%# USE dumper; dumper.dump(result)%]
+<table>
+[%# PROCESS common/subtemplate name="kurzinfo" %]
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td colspan="2">&nbsp;</td></tr>
+<tr><td><b>Id</b></td><td colspan="2">[% item %]</td></tr>
+
+[%- FOREACH cat IN thismeta -%]
+[%- IF cat.category == 'M0101' -%]
+<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg | uri %];browsecat=M0101">[% cat.content | html %]</a></td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thismeta -%]
+[%- IF cat.category == 'M0700' -%]
+<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0700">[% cat.content | html %]</a></td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thismeta -%]
+[%- IF cat.category == 'M0710' -%]
+<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0710">[% cat.content | html %]</a></td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thismeta -%]
+[%- IF cat.category == 'M0200' -%]
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0200">[% cat.content | html %]</a></td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thismeta -%]
+[%- IF cat.category == 'M0413' -%]
+<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0413">[% cat.content | html %]</a></td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thismeta -%]
+[%- IF cat.category == 'M0435' -%]
+<tr><td><b>Ma&szlig;e</b></td><td colspan="2">[% cat.content | html %]</td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thismeta -%]
+[%- IF cat.category == 'M0014' -%]
+<tr><td><b>Signatur</b></td><td colspan="2">[% cat.content | html %]</td></tr>
+[%- END -%]
+[%- END -%]
+
+<tr><td><b>Anzahl Abbildungen</b></td><td colspan="2">[% thisimages.size %]</td></tr>
+
+<tr><td><b>Beschreibung als PDF</b></td><td colspan="2"><a href="http://einbandsammlung.ub.uni-koeln.de/digiarchive/einbaende/[% item %]/[% item %].pdf">[ Download ]</a></td></tr>
+<tr><td width="200"></td><td colspan="2"></td></tr>
+<tr><td><b>Biobibliographie als PDF</b></td><td colspan="2"><a href="http://einbandsammlung.ub.uni-koeln.de/digiarchive/einbaende/[% item %]/biobibliographie.pdf">[ Download ]</a></td></tr>
+<tr><td width="200"></td><td colspan="2"></td></tr>
+
+<tr><td colspan="3">&nbsp;</td></tr>
+
+
+
+<tr><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;searchsingletit=[% item %]">[ Beschreibung ]</a>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?collection=einbaende;item=[% item %];action=showsingleitem;view=kug;remotehost=[% remotehost %]">[ Abbildung(en) ]</a></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+</table>
+
+</td></tr>
+
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+
+[% END %]
+</table>
+
+</td></tr>
+</table>
+
+</div>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

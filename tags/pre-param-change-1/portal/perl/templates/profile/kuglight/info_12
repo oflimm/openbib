@@ -1,0 +1,65 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+      funcargs = { id => 'all', type => 2 } ;
+      resultlist = statistics.get_result(funcargs);
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% database %];stid=11" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% database %];stid=11" title="Top 20">[% msg.maketext("Titel pro Katalog") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% database %];stid=12" title="Meistgenutzte Kataloge">[% msg.maketext("Meistgenutzte Kataloge") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe") %]</th></tr>
+<tr><td class="boxedclear">
+<table>
+<!-- Beginn Result Item -->
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+%]
+<tr><td><b>[% loop.count %]</b></td><td><strong>[% dbinfo.${item} %]</td><td><b>[% itemcount %]&nbsp;[% msg.maketext("Titelzugriffe") %]</b></td></tr>
+[% END %]
+</table>
+</td></tr>
+</table>
+<p />
+</div>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

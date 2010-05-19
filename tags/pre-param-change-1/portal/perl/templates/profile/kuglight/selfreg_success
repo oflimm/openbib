@@ -1,0 +1,43 @@
+[%#-
+#######################################################################
+#
+# Templatename: selfreg_success
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Meldung bei erfolgreicher Selbstregistrierung
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').login_loc.name %]?do_login=1">[% msg.maketext("Login") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').selfreg_loc.name %]?action=show">[% msg.maketext("Selbstregistrierung") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').mailpassword_loc.name %]?action=show">[% msg.maketext("Passwort vergessen?") %]</a></li>
+</ul>
+
+<div class="content">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Sie sind erfolgreich registriert") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.8em">
+[% msg.maketext("Klicken Sie nun [_1]hier[_2], um sich anzumelden.","<a href=\"http://${config.get('servername')}${config.get('base_loc')}/${view}/${config.get('handler').login_loc.name}?&do_login=1&loginname=${loginname}\">","</a>") %]
+</td></tr>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

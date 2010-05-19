@@ -1,0 +1,92 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+<table cellpadding="10">
+
+<tr>
+
+<td style="vertical-align:top;padding:30px;"> <center> <img src="/images/openbib/views/syndikatsbibliothek/syndikatsbibliothek.jpg"
+alt="Wallraf" /><br /><br /><i
+style="font-size:0.8em">Bände der Syndikatsbibliothek in der
+Universitäts- und Stadtbibliothek Köln</i></center>
+</td>
+
+<td valign="top" style="padding-top:25px;">
+
+<h1>Die Syndikatsbibliothek - Bibliothek des Rates der Stadt Köln</h1>
+
+<p>
+Die Kölner Ratsbibliothek (Syndikatsbibliothek) wurde 1602 als
+"Handbibliothek" für den Rat der Stadt Köln und seine
+Verwaltungsbeamten gegründet.Sie existierte mit dieser
+Aufgabe, aber mit wechselnder finanzieller Ausstattung bis zum Ende
+der Freien Reichsstadt 1794. Bis ins 18. Jahrhundert hatte sie sich in
+eher bescheidenem Maße entwickelt und erst im 19. Jahrhundert erfolgte
+die Erweiterung zu einer wissenschaftlichen Stadtbibliothek, die den Bedarf des
+Wirtschafts- und Bildungsbürgertums abdeckte. Auf diesem Wege gelangte
+die ehemalige Ratsbibliothek als Fundament der späteren Kölner  Stadtbibliothek in den Besitz der heutigen
+Universitäts- und Stadtbibliothek.
+</p>
+<p>
+Die Syndikatsbibliothek wird heute in der USB  wieder in ihrer ursprünglich
+geschlossenen Aufstellung unter der Signaturengruppe "SB" aubewahrt. 
+[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?&stid=21">Weitere Informationen</a>]
+
+</p>
+
+<p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
+Lesesaal.
+</p>
+
+
+
+
+
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,52 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_31
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=30">Redaktion</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=31">Dokumentation</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=32">Publikationen</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=33">Bibliographie</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=34">Buchpaten gesucht</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>K&ouml;lnische Bibliotheksgesellschaft: Buchpaten gesucht!</h1>
+<p align="justify">Selten verursacht bei historisch relevanten und k&uuml;nstlerisch wertvollen Bucheinb&auml;nden unsachgem&auml;&szlig;e Benutzung restaurierungsbed&uuml;rftige Sch&auml;den. Sorgf&auml;ltig in objektgerechten Kassetten untergebracht und nur im Lesesaal f&uuml;r historische Sammlungen unter Aufsicht benutzbar, gilt diesem wertvollen Bestand unsere besondere Aufmerksamkeit. Dennoch finden sich auch unter den Einb&auml;nden restaurierungsbed&uuml;rftige Exemplare. Etliche davon gelangten bereits besch&auml;digt als Geschenke in die Bibliothek, waren in Kriegszeiten die Opfer h&ouml;herer Gewalt oder unterliegen, angenagt vom "Zahn der Zeit", nat&uuml;rlichen Alterungsprozessen.</p>
+
+<p align="justify">Die Einb&auml;nde unseres Bestandes lassen erkennen, dass sich die Gepflogenheiten in der Einbandrestaurierung in den letzten Jahrzehnten ge&auml;ndert haben. Fr&uuml;her erfolgte die Sanierung meist im Hinblick auf die Haltbarkeit der B&uuml;cher. Dabei versuchten die Buchbinder auch, die B&auml;nde bei Neubindungen zu sch&ouml;nen. Alte Vorsatzpapiere entfielen, und neue Werkzeuge und Einbandmaterialien kamen zum Einsatz. Heute geht es darum, das Erscheinungsbild historischer Einb&auml;nde m&ouml;glichst originalgetreu wiederherzustellen. Der Bearbeiter wird sogar die Gebrauchsspuren nicht tilgen: sie bezeugen die Wertsch&auml;tzung, die ein Buch erfuhr, und informieren &uuml;ber die H&auml;ufigkeit seiner Benutzung im Kontext einer Sammlung. Die gesamte Originalsubstanz ist komplett zu erhalten, dazu geh&ouml;ren die Makulatur und die Vorsatzpapiere, die &uuml;ber ihre Herkunft, ihre Wasserzeichen und die Besitzeintr&auml;ge ein Kapitel zur individuellen Buchgeschichte beitragen. Das vorhandene Einbandmaterial, auch sehr abgeriebenes, wird vor der Instandsetzung dokumentiert und sp&auml;ter an der entsprechenden Stelle wieder fixiert. Dabei f&auml;llt die Entscheidung f&uuml;r einen Eingriff in die Originalsubstanz nur dann, wenn der Einband aus konservatorischen Gr&uuml;nden nicht mehr zu benutzen und sein Fortbestand gef&auml;hrdet ist.</p>
+
+<p align="justify">Besch&auml;digte historische und k&uuml;nstlerische Bucheinb&auml;nde bed&uuml;rfen der kundigen Hand eines Fachmanns, eines Restaurators.</p>
+
+<p align="justify"><b>Die Universit&auml;ts- und Stadtbibliothek K&ouml;ln kann die Kosten f&uuml;r die zeitaufwendige und kostenintensive Behandlung nicht allein tragen. Deshalb suchen wir nun Paten f&uuml;r die Restaurierung einiger kostbarer Bucheinb&auml;nde.
+Bitte helfen Sie uns, mit zweckgebundenen Spenden das wertvolle Kulturgut zu erhalten. Sie k&ouml;nnen die Patenschaft f&uuml;r einen Bucheinband &uuml;bernehmen oder verschenken. Buchpatenschaften sind steuerlich absetzbar. Die Digitale Einbandsammlung wird die Namen der Paten mit ihrem Einverst&auml;ndnis an dieser Stelle der Datenbank, bei der Beschreibung des Einbands und auf seiner Konservierungskassette verzeichnen.</b></p>
+
+<br />
+Weitere Informationen zu Buchpatenschaften finden Sie <a href="http://www.ub.uni-koeln.de/bibliothek/buchpaten/index_ger.html" target="_blank"><span style="font-size:1.3em">hier</span></a> oder &uuml;ber die <a href="http://www.ub.uni-koeln.de/bibliothek/kbg/index_ger.html" target="_blank">K&ouml;lnische Bibliotheksgesellschaft e.V.</a>.
+<br />
+<br />
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

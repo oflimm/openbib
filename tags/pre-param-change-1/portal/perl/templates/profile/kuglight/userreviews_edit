@@ -1,0 +1,132 @@
+[%#-
+#######################################################################
+#
+# Templatename: userreviews_show
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Rezensionen eines Benutzers fuer diesen in Mein KUG
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="userprefs_navigation" active="userreviews" %] 
+
+<div class="content">
+
+[%# USE dumper; dumper.dump(review)%]
+
+<p />
+<table width="100%">
+<tr><th>Rezension bearbeiten</th></tr>
+<tr><td class="boxedclear">
+
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN review.titnormset.${'P0100'}  -%]
+[%- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${review.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN review.titnormset.${'P0101'}  -%]
+[%- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${review.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN review.titnormset.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${review.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN review.titnormset.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${review.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+
+[%# Titel konstruieren %]
+[%- title = review.titnormset.${'T0331'}.first.content -%]
+[%- IF review.titnormset.${'T0310'}.first.content -%]
+[%- title = review.titnormset.${'T0310'}.first.content -%]
+[%- END -%]
+
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && review.titnormset.${'T5100'}.first.content -%]
+[%-    order = review.titnormset.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+
+[%# Verlage konstruieren %]
+[%- publisher = review.titnormset.${'T0412'}.first.content -%]
+
+[%# Ejahr konstruieren %]
+[%- yearofpub = review.titnormset.${'T0425'}.first.content -%]
+
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN review.titnormset.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- dbdesc   = dbinfo.get('dbnames').${review.titnormset.database}.full -%]
+[%- dburl    = dbinfo.get('urls').${review.titnormset.database} -%]
+
+<span class="rlauthor">[% person %]</span><br /><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% review.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
+<p />
+
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userreviews_loc.name %]">
+
+<input type="hidden" name="titdb"      value="[% review.titdb %]" />
+<input type="hidden" name="titid"      value="[% review.titid %]" />
+
+
+<h3>Bewertung</h3>
+<table>
+<tr><td>schlecht&nbsp;
+<input type="radio" name="rating" value="0" [% IF review.rating == 1 %]checked="checked"[% END %]/>&nbsp;
+<input type="radio" name="rating" value="1" [% IF review.rating == 1 %]checked="checked"[% END %]/>&nbsp;
+<input type="radio" name="rating" value="2" [% IF review.rating == 2 %]checked="checked"[% END %]/>&nbsp;
+<input type="radio" name="rating" value="3" [% IF review.rating == 3 %]checked="checked"[% END %]/>&nbsp;
+<input type="radio" name="rating" value="4" [% IF review.rating == 4 %]checked="checked"[% END %]/>&nbsp;
+<input type="radio" name="rating" value="5" [% IF review.rating == 5 %]checked="checked"[% END %]/>&nbsp;sehr gut
+</td></tr>
+</table>
+
+<h3>Rezension</h3>
+<table>
+<tr><td><b>Pseudonym</b></td>
+<td><input type="text" name="nickname" value="[% review.nickname %]" size="30" maxlenth="30" /></td></tr>
+<tr><td><b>Titel</b></td>
+<td><input type="text" name="title" value="[% review.title %]" size="30" maxlenth="100" /></td></tr>
+<tr><td><b>Text</b></td><td><textarea cols="80" rows="10"
+name="review" />[% review.review %]</textarea></td></tr>
+</table>
+<p />
+<input type="submit" name="do_change" value="&Auml;ndern"/>&nbsp;&nbsp;&nbsp;<input type="reset" value="Zur&uuml;cksetzen"/>
+</td></tr>
+</table>
+
+</form>
+
+</td></tr>
+</table>
+<p />
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

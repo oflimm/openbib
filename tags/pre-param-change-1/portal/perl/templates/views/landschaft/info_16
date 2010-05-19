@@ -1,0 +1,97 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+      funcargs = { id => database, type => 4 } ;
+      resultlist = statistics.get_result(funcargs);
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=landschaft;browsecat=T0101" title="Register">Register</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=14" title="Wolken">Wolken</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=14" title="K&uuml;nstler">K&uuml;nstler</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=15" title="Topograph. Schlagwort">Topograph. Schlagwort</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=16" title="1. Ikonograph. Schlagwort">1. Ikonograph. Schlagwort</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=landschaft;stid=17" title="2. Ikonograph. Schlagwort">2. Ikonograph. Schlagwort</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<table width="100%">
+<tr><th>Wolke der 1. Ikonograph. Schlagworte</th></tr>
+<tr><td class="boxedclear">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.size > 5 -%]
+<ol class="cloud">
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+topograph. verschlagwortet mit </span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=sql;notation=%22[% item.replace('"','') | uri %]%22;database=[% database %];searchprofile=1" class="tag">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke f&uuml;r
+1. Ikonograph. Schlagworte anbieten.
+[% END %]
+</td></tr>
+</table>
+<p />
+
+</div>
+</div>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

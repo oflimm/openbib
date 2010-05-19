@@ -1,0 +1,95 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showstat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="statistics" %] 
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1">Allgemein</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=1">Weiterleitungen</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=2">Views</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=3">Recherchen</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=4">Klienten</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=5">Browser</a></li>
+</ul>
+
+<div class="content">
+
+<p>
+<div class="boxed">
+<b>Jahr:</b>&nbsp;
+[%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');- %]
+[%- i = ret.min -%]
+[%- WHILE i <= ret.max -%]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=4;year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
+[%- i = i+1 -%]
+[%- END -%]
+</div>
+</p>
+
+<table width="100%">
+<tr><th>Zugreifende IP's nach Region</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table>
+[% 
+   allcount = statistics.get_number_of_event({ type => 102, from => "${year}0101", to => "${year}1231" }) ;
+
+   ubcount1 = statistics.get_number_of_event({ type => 102, content => '134.95.52.%', from => "${year}0101", to => "${year}1231"}) ; 
+   ubcount2 = statistics.get_number_of_event({ type => 102, content => '134.95.54.%', from => "${year}0101", to => "${year}1231"}) ; 
+   ubcount  = ubcount1.number + ubcount2.number ;
+
+   unicount1 = statistics.get_number_of_event({ type => 102, content => '134.95.%', from => "${year}0101", to => "${year}1231"}) ; 
+
+   unicount = unicount1.number - ubcount ;
+
+   externcount = allcount.number - ubcount - unicount ; 
+%]
+
+<tr><td>Bibliothek</td><td><b>[% ubcount %]</b> </td><td>([% ubcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><td>Universit&auml;t</td><td><b>[% unicount %]</b> </td><td>([% unicount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><td>Extern</td><td><b>[% externcount %]</b> </td><td>([% externcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+</table>
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>Zugreifende IP's nach H&auml;ufigkeit</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table>
+[% clients = statistics.get_ranking_of_event({ type => 102, limit => 50, from => "${year}0101", to => "${year}1231"}) %]
+[% FOREACH client IN clients %]
+<tr><td>[% client.content %]</td><td><b>[% client.number %]</b> </td><td>([% client.number * 100 / allcount.number | format ("%.3f") %]) Prozent</td></tr>
+[% END %]
+</table>
+</td></td>
+</table>
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

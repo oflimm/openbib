@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_end
+#
+# Typ         : Mastertemplate (3/3)
+#
+# Aufgabe:
+#
+# Ausgabe das unteren Teils der initialen Trefferliste
+#
+#######################################################################
+-%]
+
+<div class="refine_query">
+[% IF gesamttreffer == 0 %]
+<span style="font-size:1.7em;font-face:bold">[% msg.maketext("Es wurden keine Treffer gefunden") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').searchmask_loc.name}?queryid=${queryid}\">","</a>") %]</span>
+[% ELSE %]
+<span style="font-size:1.5em;font-face:bold">[% msg.maketext("M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').searchmask_loc.name}?queryid=${queryid}\">","</a>") %]</span>
+[% END %]
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="virtualsearch_more_search_tips" %]
+
+
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

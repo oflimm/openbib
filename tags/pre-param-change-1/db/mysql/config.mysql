@@ -1,0 +1,214 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+drop table IF EXISTS dbinfo;
+CREATE TABLE dbinfo (
+ orgunit     VARCHAR(20),
+ description TEXT,
+ shortdesc   TEXT,
+ system      TEXT, 
+ dbname      VARCHAR(25) PRIMARY KEY,
+ sigel       VARCHAR(20),
+ url         TEXT,
+ use_libinfo BOOL,
+ active      BOOL,
+
+ INDEX (orgunit),
+ INDEX (dbname),
+ INDEX (active),
+ INDEX (description(255))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS dboptions;
+CREATE TABLE dboptions (
+ dbname       VARCHAR(255),
+ host         VARCHAR(255),
+ protocol     VARCHAR(255),
+ remotepath   TEXT,
+ remoteuser   VARCHAR(255),
+ remotepasswd VARCHAR(255),
+ filename     VARCHAR(255),
+ titfilename  VARCHAR(255),
+ autfilename  VARCHAR(255),
+ korfilename  VARCHAR(255),
+ swtfilename  VARCHAR(255),
+ notfilename  VARCHAR(255),
+ mexfilename  VARCHAR(255),
+ autoconvert  BOOL,
+ circ         BOOL,
+ circurl      TEXT,
+ circcheckurl TEXT,
+ circdb       TEXT,
+ INDEX(dbname)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS libraryinfo;
+create table libraryinfo (
+ dbname        VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (dbname),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (dbname,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS titcount;
+create table titcount (
+ dbname VARCHAR(255),
+ count  BIGINT,
+ type   TINYINT,
+ 
+ INDEX (dbname),
+ INDEX (type)
+);
+
+drop table IF EXISTS profileinfo;
+CREATE TABLE profileinfo (
+ profilename VARCHAR(20),
+ description TEXT,
+
+ INDEX (profilename)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS profiledbs;
+CREATE TABLE profiledbs (
+ profilename VARCHAR(20),
+ dbname      VARCHAR(255),
+
+ INDEX(profilename),
+ INDEX(dbname)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS orgunits;
+CREATE TABLE orgunits (
+ id          VARCHAR(20),
+ profilename VARCHAR(20),
+ description TEXT,
+ nr          INT,
+
+ INDEX (nr),
+ INDEX (profilename)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS db2orgunit;
+CREATE TABLE db2orgunit (
+ profilename VARCHAR(20),
+ dbname      VARCHAR(255),
+ orgunitid   VARCHAR(20),
+
+ INDEX (dbname),
+ INDEX (orgunitid),
+ INDEX (profilename)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS viewinfo;
+CREATE TABLE viewinfo (
+ viewname    VARCHAR(20),
+ description TEXT,
+ rssfeed     BIGINT,
+ start_loc   TEXT,
+ start_stid  TEXT,
+ profilename VARCHAR(20),
+ active      BOOL,
+
+ INDEX (viewname)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS viewdbs;
+CREATE TABLE viewdbs (
+ viewname VARCHAR(20),
+ dbname   VARCHAR(255),
+
+ INDEX(viewname),
+ INDEX(dbname)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS viewrssfeeds;
+CREATE TABLE viewrssfeeds (
+ viewname VARCHAR(20),
+ rssfeed   BIGINT NOT NULL,
+
+ INDEX(viewname),
+ INDEX(rssfeed)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS rssfeeds;
+create table rssfeeds (
+ id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ dbname      VARCHAR(255) NOT NULL,
+ type        SMALLINT,
+ subtype     SMALLINT,
+ subtypedesc TEXT,
+ active      TINYINT,
+
+ INDEX (dbname),
+ INDEX (type),
+ INDEX (subtype)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS rsscache;
+create table rsscache (
+dbname  VARCHAR(255) NOT NULL,
+tstamp  TIMESTAMP,
+type    TINYINT  NOT NULL,
+subtype SMALLINT,
+content TEXT,
+INDEX   (dbname),
+INDEX   (tstamp),
+INDEX   (type),
+INDEX   (subtype)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS loadbalancertargets;
+CREATE TABLE loadbalancertargets (
+ id         INT(11) AUTO_INCREMENT PRIMARY KEY,
+ host       TEXT,
+ active     INT(1),
+ INDEX(id,active)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+

@@ -1,0 +1,46 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showuser
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsseite zur Nutzerverwaltung
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Nutzerverwaltung anzeigen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="users" %] 
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+</ul>
+
+<div class="content">
+
+<table>
+<tr><td>Anzahl der Nutzer</td><td><b>[% user.get_number_of_users %]</b></td><td></td></tr>
+<tr><td>Anzahl der Suchprofile von Nutzern</td><td><b>[% user.get_number_of_dbprofiles %]</b></td><td></td></tr>
+<tr><td>Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)</td><td><b>[% user.get_number_of_collection_entries %] / [% user.get_number_of_collections %]</b></td><td></td></tr> 
+<tr><td>Anzahl der Anmeldeziele</td><td><b>[% user.get_number_of_logintargets %]</b></td><td></td></tr> 
+</table>
+</td></td>
+</table>
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

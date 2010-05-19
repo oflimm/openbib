@@ -1,0 +1,168 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der erweiterten Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% IF config.get('testsystem') %]
+[% PROCESS common/subtemplate name="testsystem_info" %]
+[% END %]
+
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<p />
+
+[% IF queries.size > 0 %]
+
+<form method="get" id="queries" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').dispatchquery_loc.name %]">
+<table width="100%">
+<tr><th>[% msg.maketext("Suchhistorie") %]</th></tr>
+<tr><td class="boxed">
+
+
+
+[% PROCESS common/subtemplate name="select_queries" %]
+
+<input type="submit" name="do_newquery" value="[% msg.maketext("Als Suchvorlage") %]" />&nbsp;&nbsp;<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />&nbsp;&nbsp;<input type="submit" name="do_externalquery" value="[% msg.maketext("Weiter als externe Recherche") %]" style="background-color:#99CCFF" />
+</td></tr>
+</table>
+</form>
+[% END %]
+
+<p />
+<p />
+
+<form method="get" id="openbib" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+
+
+<input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="2" />
+
+[% IF view %]
+
+[% msg.maketext("Sie können entweder direkt im vorausgewählten Katalog <b>[_1]</b> recherchieren, oder die Suche auf weitere [_2]Kataloge[_3] ausdehnen.","${viewdesc}","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').databasechoice_loc.name}?\">","</a>") %]
+<p />
+Dar&uuml;berhinaus finden Sie weitere Best&auml;nde dieses Katalogs in dem
+zugeh&ouml;rigen digitalisierten Karten-Katalog
+
+<table>
+<tr>
+<td>
+<img src="/images/openbib/views/logophilfak.gif">
+</td>
+<td>
+<ul>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=411d" target="_blank">Englisches Seminar</a>. </li>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=412t" target="_blank">Romanisches Seminar</a>. </li>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=413r" target="_blank">Portugiesisch-Brasilianisches Institut</a>. </li>
+</ul>
+</td>
+</tr>
+</table>
+
+<p />
+
+<p />
+<p />
+
+<table class="submitbuttons">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+[% ELSE %]
+[% msg.maketext("Sie können entweder durch entsprechende Auswahl in den insgesamt [_1] einzelnen [_2]Katalogen[_3] recherchieren oder auch sofort in allen zusammen.","${alldbs}","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').databasechoice_loc.name}?\">","</a>") %]
+<p />
+<table class="submitbuttons">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+[% END %]
+
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Suchbegriffe") %]</th><td width="25">&nbsp;</td><th>[% msg.maketext("Suchhinweise") %]</th></tr>
+<tr><td class="boxed" valign="top">
+[% PROCESS common/subtemplate name="searchmask_query" %]
+</td>
+<td>
+<table>
+<tr><td>&nbsp;</td></tr>
+</table></td>
+<td class="boxed" valign="top" style="font-size:0.8em">
+<table>
+<tr><td>[% PROCESS common/subtemplate name="search_info" %]</td></tr>
+</table>
+</td></tr>
+</table>
+
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Suchoptionen") %]</th></tr>
+<tr><td class="boxed">
+[% PROCESS common/subtemplate name="searchmask_options" %]
+</td></tr>
+</table>
+<p />
+
+[% IF view %]
+<table class="submitbuttons">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+[% ELSE %]
+<table class="submitbuttons">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+[% END %]
+
+</form>
+
+<p />
+
+<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount.all}","${alldbs}") %]</b>
+<p />
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+</div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

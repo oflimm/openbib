@@ -1,0 +1,77 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=20" title="Die Portrait-Sammlung">Die Portrait-Sammlung</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=21" title="Weitere Portrait-Quellen">Weitere Portrait-Quellen</a></li>
+</ul>
+
+<div class="content">
+
+<h1>Die Porträtsammlung der USB Köln</h1>
+
+<table cellpadding="10">
+
+<tr>
+
+<td> <center> <img src="/images/openbib/views/portrait/portrait.jpg"
+alt="Portrait von J. Heinr. Richartz" /><br /><br /><i
+style="font-size:0.8em">Johann Heinrich Richartz - Stahlstich um 1850</i></center>
+</td>
+
+<td valign="top">
+<p>
+Die USB Köln besitzt eine ansehnliche Sammlung von Porträts
+aus dem 16. bis 20. Jahrhundert. Die Porträts stammen aus den
+Sammlungen Oidtmann, Mevissen, Dirksen, Wolff und der ehemaligen
+Stadtbibliothek Köln. Es handelt sich um Kupfer- und Stahlstiche,
+Schabkunst, Lithografien, Radierungen und Fotografien. Die meisten der
+abgebildeten Personen aus den Beständen der Stadtbibliothek Köln sind
+auf ganz unterschiedliche Art und Weise mit der Stadt und / oder dem
+Erzbistum Köln und dem Rheinland verbunden gewesen.
+<p/>
+<p>
+Die Porträts der
+Sammlungen Oidtmann und Mevissen zeigen Persönlichkeiten aus dem
+gesamten deutschen Reich und darüber hinaus. Das Spektrum umfasst
+Herrscher und Staatsmänner, Erz- und Weihbischöfe, Bischöfe, Pfarrer,
+Pastoren, Mönche, Äbte, Dichter, Musiker und Künstler, Wissenschaftler
+und Mäzene, Adelige und Feldherren.
+</p>
+<p>
+Anfang April 2006 wurde das
+Projekt gestartet. Die Erfassung der Porträts erfolgt zunächst durch
+die Katalogisierung der Bilder. Neben den reinen Katalogdaten werden
+weitere Informationen wie Lebensdaten, Beruf und Weltanschauung,
+Region und Bildtexte erfasst.
+</p>
+</td></tr>
+</table>
+
+<p />
+
+</div>
+
+<p />
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

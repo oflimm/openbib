@@ -1,0 +1,21 @@
+[% IF circset.size <= 0 %]
+<table width="100%">
+<tr align="center"><td class="headline">Institut</td><td class="headline">[% msg.maketext("Inventarnummer") %]</td></tr>
+
+[% FOREACH mex IN mexnormset %]
+<tr align="center"><td><strong>
+[%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
+[%-   thisdbname = mex.${"X4000"}.content.dbname -%]
+[%-   IF dbinfo.get('use_libinfo').${thisdbname} %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% thisdbname %];stid=60">[% mex.${"X4000"}.content.full %]</a>
+[%-   ELSE -%]
+<a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>
+[%-   END -%]
+[%- ELSE -%]
+[% mex.${"X4000"}.content.full %]
+[%- END -%]
+</strong>
+</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td></tr>
+[% END %]
+</table>
+[% END %]

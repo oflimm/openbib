@@ -645,6 +645,41 @@ while (my $line=<IN>){
                 }
             }   
 
+            # Elektronisches Medium mit Online-Zugriff
+            # Besetzung der folgenden Kategorien
+            # [02]807:g
+            # 0334:Elektronische Ressource
+            # 0652:Online-Ressource
+            #
+            # Lizensiert:
+            # [02]663.001:Info: Zugriff nur im Hochschulnetz der Universitaet Koeln bzw.
+            #          fuer autorisierte Benutzer moeglich
+            
+            if (((exists $thisitem_ref->{'T0807'} && $thisitem_ref->{'T0807'}[0]{content} eq "g") || (exists $thisitem_ref->{'T2807'} && $thisitem_ref->{'T2807'}[0]{content} eq "g"))
+                && exists $thisitem_ref->{'T0334'} && $thisitem_ref->{'T0334'}[0]{content} eq "Elektronische Ressource"
+                    && exists $thisitem_ref->{'T0652'} && $thisitem_ref->{'T0652'}[0]{content} eq "Online-Ressource"){
+                # Steht Medientyp schon auf Online-Zugriff?
+                my $have_ebook=0;
+                my $type_indicator = 1;
+                foreach my $item (@{$thisitem_ref->{'T0800'}}){
+                    if ($item->{content} eq "E-Medium mit Online-Zugriff"){
+                        $have_ebook = 1 ;
+                    }
+                    $type_indicator++;
+                }
+
+                if (!$have_ebook){
+                    push @{$normdata_ref->{mart}}, "E-Medium mit Online-Zugriff";
+
+                    print OUT       "$id800$type_indicatorE-Medium mit Online-Zugriff\n";
+                    my $contentnormtmp = OpenBib::Common::Util::grundform({
+                        category => '800',
+                        content  => 'E-Medium mit Online-Zugriff',
+                    });
+                    print OUTSTRING "$id800$contentnormtmp\n";
+                }
+            }   
+            
             # mit Inhaltsverzeichnis
             # Anreicherungskategorie 4110
             if (exists $thisitem_ref->{'T4110'}) {

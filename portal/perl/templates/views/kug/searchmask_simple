@@ -501,6 +501,17 @@ Literaturlisten usw.<p/>") %]
 <h3>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h3>
 [% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
 lizenzierten Datenbanken[_2]","<a href=\"${config.get('dbis_loc')}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
+
+<h3>Digitalisierte Kartenkataloge</h3>
+
+Zahlreiche &auml;ltere Best&auml;nde verschiedener Institute sind hier
+nicht recherchierbar, werden jedoch digitalisierte
+Katalogkarten-Bilder erschlossen.
+
+<ul>
+<li><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=63">Philosophische Fakult&auml;t</a></li>
+</ul>
+
 </td><!-- End overview -->
 <td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
 <h3><img style="vertical-align:bottom" src="[% config.get('note_img') %]" alt="Notieren"/>&nbsp;[% msg.maketext("Legen Sie Literaturlisten an und vergeben Sie Tags") %]</h3>

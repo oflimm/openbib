@@ -34,7 +34,7 @@
      FOREACH part IN item.${'P0100'} ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
-         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
+         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').resource_loc.name}/person/${item.database}/${part.id}/html\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -46,7 +46,7 @@
        END ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
-         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
+         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').resource_loc.name}/person/${item.database}/${part.id}/html\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -55,7 +55,7 @@
      FOREACH part IN item.${'C0200'}  ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
-         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
+         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').resource_loc.name}/corporatebody/${item.database}/${part.id}/html\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -64,7 +64,7 @@
      FOREACH part IN item.${'C0201'}  ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
-         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
+         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').resource_loc.name}/corporatebody/${item.database}/${part.id}/html\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -139,7 +139,7 @@
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-         <span class="rlperson">[% person %]</span><br /><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+         <span class="rlperson">[% person %]</span><br /><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% item.database %]/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>   
 [% IF multiple_dbs == 1 %]
          <br />[% msg.maketext("aus:") %]
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]

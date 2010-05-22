@@ -24,8 +24,8 @@
 <ul class="tabbingmenu">
    <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=kapsel;browsecat=T0710" title="Register">Register</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=kapsel;stid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=kapselbrowsecat=T0710" title="Register">Register</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?db=kapselstid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 
 
 </ul>
@@ -58,7 +58,7 @@
 <form method="get" id="openbib" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
 
 
-<input type="hidden" name="sb"        value="sql" />
+
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="profil"    value="dbauswahl" />
 
@@ -86,10 +86,10 @@
 
 <p />
 
-<input type="hidden" name="hitrange"  value="50" />
-<input type="hidden" name="autoplus"  value="1" />
-<input type="hidden" name="sorttype"  value="author" />
-<input type="hidden" name="sortorder" value="up" />
+<input type="hidden" name="num"  value="50" />
+
+<input type="hidden" name="srt"  value="author" />
+<input type="hidden" name="srto" value="up" />
 
 [% IF view %]
 <table class="submitbuttons">

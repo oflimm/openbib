@@ -15,32 +15,31 @@
 <tr><td>
 <table>
 <tr><td><b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="sorttype">
-[% IF query.param('sb') == 'xapian' %]  <option value="relevance"[%- IF query.param('sorttype') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
-  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
-  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
-  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
-  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
-  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
-  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+<select name="srt">
+  <option value="relevance"[%- IF query.param('srt') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>
+  <option value="author"[%- IF query.param('srt') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title"[%- IF query.param('srt') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('srt') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="yearofpub"[%- IF query.param('srt') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
+  <option value="publisher"[%- IF query.param('srt') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
+  <option value="signature"[%- IF query.param('srt') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
+  <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
 </select>&nbsp;
-<select name="sortorder">
-  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+<select name="srto">
+  <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
 &nbsp;
-[% IF show_sortall == 1 %]
-<select name="sortall">
-  <option value="0"[%- IF query.param('sortall') == '0' -%] selected="selected"[%- END -%]>[% msg.maketext("pro Katalog") %]</option>
-  <option value="1"[%- IF query.param('sortall') == '1' -%] selected="selected"[%- END -%]>[% msg.maketext("katalogübergreifend") %]</option>
+&nbsp;
+<select name="combinedbs">
+  <option value="0"[%- IF query.param('combinedbs') == '0' -%] selected="selected"[%- END -%]>[% msg.maketext("pro Katalog") %]</option>
+  <option value="1"[%- IF query.param('combinedbs') == '1' && NOT database -%] selected="selected"[%- END -%]>[% msg.maketext("katalogübergreifend") %]</option>
 </select>
-[% END %]
 </td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td>
 </tr>
 </table>
 </td>
 <td>&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;</td>
 
-<td><b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.listtype == 'cover' %]style="font-weight:bold"[% END %]><img style="vertical-align:bottom" src="[% config.get('liststyle_cover_img') %]" />&nbsp;<a href="[% this_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' && qparam != 'database' %][% qparam %]=[% query.param(qparam) | html_entity %];[%- END -%][% IF qparam == 'database' %][%- FOREACH qpdbname IN query.param(qparam) -%]database=[% qpdbname %];[%- END -%][%- END -%][%- END -%]listtype=cover">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.listtype == 'list' %]style="font-weight:bold"[% END%]><img style="vertical-align:bottom" src="[% config.get('liststyle_list_img') %]" />&nbsp;<a href="[% this_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' && qparam != 'database' %][% qparam %]=[% query.param(qparam) | html_entity %];[%- END -%][% IF qparam == 'database' %][%- FOREACH qpdbname IN query.param(qparam) -%]database=[% qpdbname %];[%- END -%][%- END -%][%- END -%]listtype=list">[% msg.maketext("Listen-Ansicht") %]</a></span></td></tr>
+<td><b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.listtype == 'cover' %]style="font-weight:bold"[% END %]><img style="vertical-align:bottom" src="[% config.get('liststyle_cover_img') %]" />&nbsp;<a href="[% this_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' && qparam != 'database' %][% qparam %]=[% query.param(qparam) | html_entity %];[%- END -%][% IF qparam == 'database' %][%- FOREACH qpdbname IN query.param(qparam) -%]db=[% qpdbname %];[%- END -%][%- END -%][%- END -%]listtype=cover">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.listtype == 'list' %]style="font-weight:bold"[% END%]><img style="vertical-align:bottom" src="[% config.get('liststyle_list_img') %]" />&nbsp;<a href="[% this_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' && qparam != 'database' %][% qparam %]=[% query.param(qparam) | html_entity %];[%- END -%][% IF qparam == 'database' %][%- FOREACH qpdbname IN query.param(qparam) -%]db=[% qpdbname %];[%- END -%][%- END -%][%- END -%]listtype=list">[% msg.maketext("Listen-Ansicht") %]</a></span></td></tr>
 </table>

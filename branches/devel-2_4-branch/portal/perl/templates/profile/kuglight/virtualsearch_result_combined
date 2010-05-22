@@ -31,7 +31,7 @@
 <p />
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
 [%- FOREACH qparam IN query.param -%]
-[%-   IF qparam != 'sortorder' && qparam != 'sorttype' %]
+[%-   IF qparam != 'srto' && qparam != 'srt' %]
 <input type="hidden" name="[% qparam %]" value="[% query.param(qparam) %]" />
 [%-   END -%]
 [%- END -%]
@@ -40,19 +40,19 @@
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>
 <tr><td class="boxed">
 <b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="sorttype">
-  <option value="relevance"[%- IF query.param('sorttype') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>
-  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
-  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
-  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
-  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
-  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
-  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+<select name="srt">
+  <option value="relevance"[%- IF query.param('srt') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>
+  <option value="author"[%- IF query.param('srt') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title"[%- IF query.param('srt') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('srt') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="yearofpub"[%- IF query.param('srt') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
+  <option value="publisher"[%- IF query.param('srt') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
+  <option value="signature"[%- IF query.param('srt') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
+  <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
 </select>&nbsp;
-<select name="sortorder">
-  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+<select name="srto">
+  <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
 &nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
 
@@ -67,7 +67,7 @@
 
 [% suggestion = searchquery.get_spelling_suggestion %]
 [% IF suggestion %]
-[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=[% query.param('combinedbs') %];searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;combinedbs=[% query.param('combinedbs') %];searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
 [% END %]
 
 <table>
@@ -76,21 +76,21 @@
 [% ELSE %]
 [%# USE dumper;dumper.dump(offsets) %]
 <!-- Beginn Result Item -->
-<!-- <tr class="titlerow"><td>&nbsp;</td><td colspan="3">[%- IF treffer == qopts.hitrange -%]<b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?combinedbs=1;queryid=[% queryid %];offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>[% END %]</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>-->
+<!-- <tr class="titlerow"><td>&nbsp;</td><td colspan="3">[%- IF treffer == qopts.num -%]<b>[1 - [% qopts.num %]]</b>&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?combinedbs=1;queryid=[% queryid %];offset=[% qopts.num %];num=[% qopts.num %];sb=[% qopts.sb %]">[weitere Treffer...]</a>[% END %]</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.num %][% fullresultcount+3 %][% ELSE %][% qopts.num+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>-->
 [%-     IF offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="3">
 [%          FOREACH singleoffset IN offsets %]
 [%-             IF singleoffset.type == 'getnext' -%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?dd=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];num=[% num %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
 [%-             ELSE -%]
 [%-                 IF singleoffset.offset == offset -%]
 <b>[[% singleoffset.start %] - [% singleoffset.end %]]</b>&nbsp;
 [%-                 ELSE -%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?dd=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];num=[% num %];sb=[% qopts.sb %]">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
 [%-                 END -%]
 [%-             END -%]
 [%-         END -%]
-</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>
+</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.num %][% fullresultcount+3 %][% ELSE %][% qopts.num+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>
 [%-     END -%]
 
 [% listrow = 'listrow2' %]

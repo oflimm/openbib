@@ -54,11 +54,11 @@
 </table>
 <ul class="tabbingmenu">
 [% IF normset.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle|Werkzeug)',1) %]
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Werkzeug-Abbildungen") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=einbaendesearchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=einbaendesearchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Werkzeug-Abbildungen") %]</a></li>
 [% ELSE %]
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Einband-Abbildungen") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=einbaendesearchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=einbaendesearchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Einband-Abbildungen") %]</a></li>
 [% END %]
 </ul>
 <div class="content">

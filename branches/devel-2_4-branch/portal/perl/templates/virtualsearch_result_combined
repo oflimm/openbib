@@ -14,7 +14,7 @@
 <!-- Beginn Result Item -->
 [%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
 [%- dburl    = dbinfo.get('urls').${database} -%]
-[%- request_base    = "sb=xapian;drilldown=1;dd_categorized=1;"  -%]
+[%- request_base    = "dd=1;"  -%]
 
 <div class="resultlist">
   <div class="resultheader">
@@ -22,7 +22,7 @@
         Trefferliste
     </div>
     <div class="hits">
-[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
+[%- IF treffer == qopts.num && qopts.sb == 'sql' -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
     </div>
     <div class="navigation">
 [% msg.maketext("Seite:") %]&nbsp;
@@ -34,7 +34,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %];combinedbs=1">[% page %]</a>
+&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];num=[% qopts.num %];srt=[% srt %];srto=[% srto %];combinedbs=1">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]
@@ -62,7 +62,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];hitrange=[% qopts.hitrange %];sorttype=[% sorttype %];sortorder=[% sortorder %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% config.get('virtualsearch_loc') %]?view=[% view %];[% request_base %];searchprofile=1;dbauswahl=1;database=[% database %];queryid=[% queryid %];page=[% page %];num=[% qopts.num %];srt=[% srt %];srto=[% srto %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]

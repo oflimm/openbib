@@ -51,7 +51,7 @@
 <input type="hidden" name="singleidn" value="[% singleidn %]" />
 [% END %]
 [% IF database %]
-<input type="hidden" name="database" value="[% database %]" />
+<input type="hidden" name="db" value="[% database %]" />
 [% END %]	
 
 </form>

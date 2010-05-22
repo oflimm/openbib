@@ -95,7 +95,7 @@ END ;
 <tr><td><b>Id</b></td><td colspan="2">[% item.${'id'} %]</td></tr>
 
 [%- FOREACH part IN item.${'T0102'}  -%]
-<tr><td><b>Werkstatt</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0102;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+<tr><td><b>Werkstatt</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0102;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0310'}  -%]
@@ -103,7 +103,7 @@ END ;
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0304'}  -%]
-<tr><td><b>Motiv</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0304;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+<tr><td><b>Motiv</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0304;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0335'}  -%]
@@ -111,7 +111,7 @@ END ;
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0201'}  -%]
-<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0201;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0201;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0435'}  -%]
@@ -192,23 +192,23 @@ END ;
 <tr><td><b>Id</b></td><td colspan="2">[% item.${'id'} %]</td></tr>
 
 [%- FOREACH part IN item.${'T0101'}  -%]
-<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0101;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0101;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0700'}  -%]
-<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0700;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0700;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0710'}  -%]
-<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0710;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0710;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0200'}  -%]
-<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0200;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0200;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0413'}  -%]
-<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0413;olws=Viewer;stid=1">[% part.content %]</td></tr>
+<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0413;olws=Viewer;stid=1">[% part.content %]</td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0435'}  -%]
@@ -234,7 +234,7 @@ END ;
 [%- ELSE -%]
 <tr><td width="200"></td><td colspan="2"></td></tr>
 [%- END -%]
-<tr><td><b>[% msg.maketext("Textangaben") %]</b></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;searchsingletit=[% titidn %]" class="cssbutton glass kug"><span>[% msg.maketext("Anzeigen") %]</span></a></td></tr>
+<tr><td><b>[% msg.maketext("Textangaben") %]</b></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=einbaendesearchsingletit=[% titidn %]" class="cssbutton glass kug"><span>[% msg.maketext("Anzeigen") %]</span></a></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
 </table>
 

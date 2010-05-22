@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%- request_base    = "sb=xapian;drilldown=1;dd_categorized=1;" -%]
+[%- request_base    = "dd=1;" -%]
 [%- IF format == 'ajax' -%]
 [%- IF similar_subjects.size > 1 %]
 <!-- Beginn Tag-Cloud -->

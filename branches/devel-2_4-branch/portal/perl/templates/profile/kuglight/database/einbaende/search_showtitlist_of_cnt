@@ -31,9 +31,9 @@
 <!--
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
-<input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
+<input type="hidden" name="num"        value="[% IF num %][% num %][% ELSE %][% qopts.num %][% END %]" />
 
-[%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
+[%- IF query.param('database')          -%]<input type="hidden" name="db"      value="[% query.param('database') %]" />[% END %]
 [%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
 [%- IF query.param('supertit')          -%]<input type="hidden" name="supertit"      value="[% query.param('supertit') %]" />[% END %]
 [%- IF query.param('generalsearch')     -%]<input type="hidden" name="generalsearch" value="[% query.param('generalsearch') %]" />[% END %]
@@ -48,18 +48,18 @@
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>
 <tr><td class="boxed">
 <b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="sorttype">
-  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
-  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
-  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
-  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
-  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
-  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+<select name="srt">
+  <option value="author"[%- IF query.param('srt') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title"[%- IF query.param('srt') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('srt') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="yearofpub"[%- IF query.param('srt') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
+  <option value="publisher"[%- IF query.param('srt') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
+  <option value="signature"[%- IF query.param('srt') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
+  <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
 </select>&nbsp;
-<select name="sortorder">
-  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+<select name="srto">
+  <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
 <select name="sortall">
   <option value="0" selected="selected">[% msg.maketext("pro Katalog") %]</option>
@@ -69,7 +69,7 @@
 <p />
 -->
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
-<input type="hidden" name="database"  value="[% database %]" />
+<input type="hidden" name="db"  value="[% database %]" />
 
 
 <p />
@@ -80,7 +80,7 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 [%#  USE dumper;dumper.dump(recordlist)%]
 <table  width="100%" cellpadding="2">
-[% IF offset >= 0 && hitrange > 0 %]
+[% IF offset >= 0 && num > 0 %]
 <tr class="titlerow"><td>
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
@@ -92,7 +92,7 @@
 </a>&nbsp;
 [%- END -%]
 [%- IF hits <= 1000 -%]
-<a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
+<a href="[% baseurl %];num=-1;offset=0">[ Alles ]</a>
 [%- END -%]
 </td><td align="left" colspan="3"></td><td></td></tr>
 [% END %]
@@ -118,7 +118,7 @@
 <tr><td><b>Id</b></td><td colspan="2">[% item.${'id'} %]</td></tr>
 
 [%- FOREACH part IN item.${'P0102'}  -%]
-<tr><td><b>Werkstatt</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0102;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+<tr><td><b>Werkstatt</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0102;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0310'}  -%]
@@ -126,7 +126,7 @@
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0304'}  -%]
-<tr><td><b>Motiv</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0304;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+<tr><td><b>Motiv</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0304;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0335'}  -%]
@@ -134,7 +134,7 @@
 [%- END -%]
 
 [%- FOREACH part IN item.${'C0201'}  -%]
-<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0201;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0201;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0435'}  -%]
@@ -163,23 +163,23 @@
 <tr><td><b>Id</b></td><td colspan="2">[% item.${'id'} %]</td></tr>
 
 [%- FOREACH part IN item.${'P0101'}  -%]
-<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0101;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0101;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'N0700'}  -%]
-<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0700;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0700;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'S0710'}  -%]
-<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0710;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0710;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'C0200'}  -%]
-<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0200;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0200;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0413'}  -%]
-<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0413;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% part.content.replace('&amp;','%26') %]db=einbaende;category=T0413;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0435'}  -%]

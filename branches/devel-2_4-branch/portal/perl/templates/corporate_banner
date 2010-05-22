@@ -39,28 +39,24 @@ $(document).ready(function(){
 	<div id="header2">
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
 
-<input type="hidden" name="hitrange"  value="50" />
+<input type="hidden" name="num"  value="50" />
 
-<input type="hidden" name="sorttype"  value="author" />
-<input type="hidden" name="sortorder" value="up" />
-<input type="hidden" name="sb"        value="xapian" />
+<input type="hidden" name="srt"  value="author" />
+<input type="hidden" name="srto" value="up" />
+
 <input type="hidden" name="st"        value="1" />
 [% IF config.get('drilldown') %]
-<input type="hidden" name="drilldown"      value="1" />
+<input type="hidden" name="dd"      value="1" />
 [% END %]
-[% IF config.get('drilldown_option').cloud %]
-<input type="hidden" name="dd_cloud"       value="1" />
-[% END %]
-[% IF config.get('drilldown_option').categorized %]
-<input type="hidden" name="dd_categorized" value="1" />
-[% END %]
-<input type="hidden" name="autoplus"  value="0" />
+
+
+
 <input type="hidden" name="profil"  value="alldbs" />
 
 		<div id="header_logo"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
                 <div id="header_simplesearch">
-<table><tr><td><span class="bigtext">[% msg.maketext("Suche") %]</span>&nbsp;</td><td><input id="input_box_all" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></div>&nbsp;&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a><!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
-  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+<table><tr><td><span class="bigtext">[% msg.maketext("Suche") %]</span>&nbsp;</td><td><input id="input_box_all" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></div>&nbsp;&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a>[% IF config.get('bix') %]<!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>[% END %]
 </td></tr></table>
 </div>
 </form>

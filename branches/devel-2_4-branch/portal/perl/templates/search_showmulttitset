@@ -144,8 +144,8 @@ END;
 
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
 
-<input type="hidden" name="hitrange"   value="[% qopts.hitrange %]" />
-<input type="hidden" name="database"   value="[% database %]" />
+<input type="hidden" name="num"   value="[% qopts.num %]" />
+<input type="hidden" name="db"   value="[% database %]" />
 
 <table>
 <tr><td class="category">Schlagwortindex dieses Katalogs</td><td>&nbsp;<input type="text" name="swtindex" value="" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein" />&nbsp;<input type="submit" value="Suchen" />&nbsp;</td></tr>

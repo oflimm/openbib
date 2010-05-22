@@ -32,7 +32,7 @@
 <p />
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]">
 <input type="hidden" name="offset"     value="[% query.param('offset') %]" />
-<input type="hidden" name="hitrange"   value="[% query.param('hitrange') %]" />
+<input type="hidden" name="num"   value="[% query.param('num') %]" />
 <input type="hidden" name="action"     value="showall" />
 
 <input type="hidden" name="queryid"    value="[% queryid %]" />
@@ -45,6 +45,6 @@
 
 [% suggestion = sq.get_spelling_suggestion %]
 [% IF spelling_suggestion.resultlist && suggestion  %]
-[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
 [% END %]
 

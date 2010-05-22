@@ -90,17 +90,17 @@
       END ;
    END ;
 %]
-[%- request_base    = "sb=xapian;drilldown=1;dd_categorized=1;" -%]
+[%- request_base    = "dd=1;" -%]
 
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];queryid=[% thisquery.id %];hitrange=50;sorttype=author;sortorder=up;combinedbs=1;page=1"><b>kombinierte</b></a> / <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];queryid=[% thisquery.id %];hitrange=50;sorttype=author;sortorder=up;combinedbs=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;combinedbs=1;page=1"><b>kombinierte</b></a> / <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;combinedbs=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];queryid=[% thisquery.id %];database=[% resultdb.trefferdb %];hitrange=50;sorttype=author;sortorder=up;page=1"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
+<tr><td class="[% listrow %]"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];queryid=[% thisquery.id %];database=[% resultdb.trefferdb %];num=50;srt=author;srto=up;page=1"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
 [%   IF resultdb.trefferzahl == qopts.maxhits %]
 [% msg.maketext("mind.") %]&nbsp;
 [%   END %]

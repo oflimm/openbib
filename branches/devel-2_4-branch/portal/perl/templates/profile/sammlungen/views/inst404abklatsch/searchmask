@@ -109,11 +109,11 @@ $(document).ready(function(){
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
 
 
-<input type="hidden" name="sb"        value="sql" />
+
 <input type="hidden" name="st"        value="2" />
-<input type="hidden" name="hitrange"  value="100" />
-<input type="hidden" name="sorttype"  value="author" />
-<input type="hidden" name="autoplus"  value="1" />
+<input type="hidden" name="num"  value="100" />
+<input type="hidden" name="srt"  value="author" />
+
 <input type="hidden" name="profil"    value="dbauswahl" />
 
 <center>
@@ -162,14 +162,14 @@ in der Regel nach der Edition in der IK-Reihe oder in Epigraphica Anatolica
 
 <dd>
 z.B. Ephesos, Knidos, Oinoanda; Zugang auch über  <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?view=[% view
-%];database=inst404abklatsch;browsecat=T0200">Register</a>
+%]db=inst404abklatsch;browsecat=T0200">Register</a>
 </dd>
 
 <dt>3. Kategorie</dt>
 
 <dd>z.B. Ehrendekret, Grabinschrift; Zugang &uuml;ber Eingabemaske
 sowie <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?view=[% view
-%];database=inst404abklatsch;browsecat=T0710">Register</a> </dd>
+%]db=inst404abklatsch;browsecat=T0710">Register</a> </dd>
 
 <dt>4. Edition / SEG-Eintrag</dt>
 
@@ -178,7 +178,7 @@ z.B. "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p. 3-5, Nr. 496"-
 SEG-Eintrag nach M&ouml;glichkeit gem&auml;&szlig; letztem Eintrag im
 Supplementum Epigraphicum Graecum, "SEG 39, 1989, Nr. 1132" <br/>
 Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?view=[% view
-%];database=inst404abklatsch;browsecat=T0335">Register</a> </dd>
+%]db=inst404abklatsch;browsecat=T0335">Register</a> </dd>
 
 <dt>5. Inventarnummer</dt>
 
@@ -190,13 +190,13 @@ Inventarnummer des Abklatsches
 
 <dd> z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"; Zugang hierzu
 &uuml;ber <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?view=[% view
-%];database=inst404abklatsch;browsecat=T0425">Register</a> und "Freie Suche".
+%]db=inst404abklatsch;browsecat=T0425">Register</a> und "Freie Suche".
 
 </dd>
 <dt>7. Aufbewahrungsort der Inschrift</dt>
 
 <dd> Zugang ausschlie&szlig;lich &uuml;ber <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?view=[% view
-%];database=inst404abklatsch;browsecat=T0410">Register</a>
+%]db=inst404abklatsch;browsecat=T0410">Register</a>
 </dd>
 
 <br />

@@ -136,7 +136,7 @@ FOREACH category IN categories;
          content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0800";
-         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
          content   = "<a href=\"${localurl}\">${content}</a>";
 
     CASE "T5001";

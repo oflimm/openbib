@@ -32,9 +32,9 @@
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]">
 
 <input type="hidden" name="offset"    value="[% query.param('offset') %]" />
-<input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
+<input type="hidden" name="num"  value="[% qopts.num %]" />
 <input type="hidden" name="action"    value="showrange" />
-<input type="hidden" name="database"  value="[% database %]" />
+<input type="hidden" name="db"  value="[% database %]" />
 
 <input type="hidden" name="queryid"   value="[% queryid %]" />
 
@@ -66,12 +66,12 @@
     <div class="navigation">
 [%          FOREACH singleoffset IN offsets %]
 [%-             IF singleoffset.type == 'getnext' -%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?database=[% database %];queryid=[% queryid %];action=getnext;offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?database=[% database %];queryid=[% queryid %];action=getnext;offset=[% singleoffset.offset %];num=[% num %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
 [%-             ELSE -%]
 [%-                 IF singleoffset.offset == offset -%]
 <b>[[% singleoffset.start %] - [% singleoffset.end %]]</b>&nbsp;
 [%-                 ELSE -%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];hitrange=[% hitrange %];action=showrange">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];num=[% num %];action=showrange">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
 [%-                 END -%]
 [%-             END -%]
 [%-         END -%]

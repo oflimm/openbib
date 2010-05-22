@@ -32,7 +32,7 @@
 
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]">
 <input type="hidden" name="offset"    value="[% query.param('offset') %]" />
-<input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
+<input type="hidden" name="num"  value="[% qopts.num %]" />
 <input type="hidden" name="action"    value="showall" />
 
 <input type="hidden" name="queryid"   value="[% query.param('queryid') %]" />

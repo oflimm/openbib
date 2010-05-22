@@ -86,7 +86,7 @@ selected="selected"
     <div class="hits">
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>
-[% IF offset >= 0 && hitrange > 0 %]
+[% IF offset >= 0 && num > 0 %]
     <div class="navigation">
 [%- FOREACH navitem IN nav ;
       IF navitem.active ;
@@ -114,7 +114,7 @@ selected="selected"
 [% IF nav.last.active %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
 
 [%- IF hits <= 1000 -%]
-<a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
+<a href="[% baseurl %];num=-1;offset=0">[ Alles ]</a>
 [%- END -%]
     </div>
 [%-    END -%]

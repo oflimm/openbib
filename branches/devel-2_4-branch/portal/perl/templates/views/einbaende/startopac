@@ -36,7 +36,7 @@ IF searchsingletit && database;
 END;
 
 IF fs;
-    bodyframeurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?fs=${fs};hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
+    bodyframeurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?fs=${fs};num=50;srt=author;srto=up;profil=;autoplus=0;st=3";
 END;
 
 IF searchlitlist;
@@ -44,7 +44,7 @@ IF searchlitlist;
 END;
 
 IF config.get('drilldown') ;
-    bodyframeurl = "${bodyframeurl};drilldown=1";
+    bodyframeurl = "${bodyframeurl};dd=1";
 END ;
 IF config.get('drilldown_option').cloud ;
     bodyframeurl = "${bodyframeurl};dd_cloud=1";

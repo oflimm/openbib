@@ -31,8 +31,8 @@
 <ul class="tabbingmenu">
    <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=portrait;browsecat=T0102" title="Register">Register</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?[% IF viewdbs.size == 1 %]database=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=portraitbrowsecat=T0102" title="Register">Register</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?[% IF viewdbs.size == 1 %]db=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">
@@ -63,7 +63,7 @@
 <form method="get" id="openbib" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
 
 
-<input type="hidden" name="sb"        value="sql" />
+
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="profil"    value="dbauswahl" />
 
@@ -106,7 +106,7 @@
 <tr><td class="boxed">
 <table>
 [% FOREACH sammlung IN sammlungen %]
-<tr><td><a style="font-weight:bold" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=portrait;searchtitofcnt=[% sammlung %];category=T0200">[% sammlung %]</a></td></tr>
+<tr><td><a style="font-weight:bold" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=portraitsearchtitofcnt=[% sammlung %];category=T0200">[% sammlung %]</a></td></tr>
 [% END %]
 </table>
 </td></tr>

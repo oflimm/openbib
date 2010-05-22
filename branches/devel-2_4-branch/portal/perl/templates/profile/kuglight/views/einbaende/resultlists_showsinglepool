@@ -35,9 +35,9 @@
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]">
 
 <input type="hidden" name="offset"    value="[% query.param('offset') %]" />
-<input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
+<input type="hidden" name="num"  value="[% qopts.num %]" />
 <input type="hidden" name="action"    value="showrange" />
-<input type="hidden" name="database"  value="[% database %]" />
+<input type="hidden" name="db"  value="[% database %]" />
 
 <input type="hidden" name="queryid"   value="[% queryid %]" />
 <input type="hidden" name="sortall"   value="0" />
@@ -46,18 +46,18 @@
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>
 <tr><td class="boxed">
 <b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="sorttype">
-  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person/Region") %]</option>
-  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
-  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
-  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
-  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
-  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+<select name="srt">
+  <option value="author"[%- IF query.param('srt') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person/Region") %]</option>
+  <option value="title"[%- IF query.param('srt') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('srt') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="yearofpub"[%- IF query.param('srt') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
+  <option value="publisher"[%- IF query.param('srt') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
+  <option value="signature"[%- IF query.param('srt') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
+  <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
 </select>&nbsp;
-<select name="sortorder">
-  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+<select name="srto">
+  <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
 &nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
 
@@ -77,12 +77,12 @@
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4">
 [%          FOREACH singleoffset IN offsets %]
 [%-             IF singleoffset.type == 'getnext' -%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?database=[% database %];queryid=[% queryid %];action=getnext;offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?database=[% database %];queryid=[% queryid %];action=getnext;offset=[% singleoffset.offset %];num=[% num %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
 [%-             ELSE -%]
 [%-                 IF singleoffset.offset == offset -%]
 <b>[[% singleoffset.start %] - [% singleoffset.end %]]</b>&nbsp;
 [%-                 ELSE -%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];hitrange=[% hitrange %];action=showrange">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];num=[% num %];action=showrange">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
 [%-                 END -%]
 [%-             END -%]
 [%-         END -%]
@@ -133,11 +133,11 @@
 [%- signatur = signaturen.sort.unique.join(' ; ') -%]
 
 <tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td colspan="2"><span class="rlauthor">[% person
-%]</span><br /><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=;sorttype=[%
-sorttype %]&database=[% item.${"database"} %];searchsingletit=[% item.id
+%]</span><br /><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];num=;srt=[%
+srt %]&database=[% item.${"database"} %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-id="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border=0></a></span></td><td align=left><b>[% signatur %]</b></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=;sorttype=[%
-sorttype %]&database=[% item.${"database"} %];searchsingletit=[% item.id %];stid=1;olws=Viewer">[&nbsp;[% msg.maketext("Abb.") %]&nbsp;]</a></td></tr>
+id="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border=0></a></span></td><td align=left><b>[% signatur %]</b></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];num=;srt=[%
+srt %]&database=[% item.${"database"} %];searchsingletit=[% item.id %];stid=1;olws=Viewer">[&nbsp;[% msg.maketext("Abb.") %]&nbsp;]</a></td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

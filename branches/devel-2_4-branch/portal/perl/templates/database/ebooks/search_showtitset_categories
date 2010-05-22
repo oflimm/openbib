@@ -22,7 +22,7 @@
 
 [%-
 
-request_base = "sb=xapian;drilldown=1;dd_categorized=1;";
+request_base = "dd=1;";
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
@@ -83,7 +83,7 @@ FOREACH category IN categories;
          content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/502/${content}\" target=\"_blank\">Greifen Sie hier online auf den Volltext zu</a>";
 
     CASE "E4100";
-         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -106,7 +106,7 @@ FOREACH category IN categories;
          thiscontent = item.content;
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
-         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
 	 content       = "<a href=\"${localurl}\">${content}</a>";
          rswkswt_done.${thiscontent} = 1;
 

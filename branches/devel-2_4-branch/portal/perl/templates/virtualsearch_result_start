@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
-[%- request_base    = "sb=xapian;drilldown=1;dd_categorized=1;"  -%]
+[%- request_base    = "dd=1;"  -%]
 <body>
 
 
@@ -30,11 +30,14 @@
 
 <p />
   <div class="listoptions">
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]">
-<input type="hidden" name="offset"     value="[% query.param('offset') %]" />
-<input type="hidden" name="hitrange"   value="[% query.param('hitrange') %]" />
-<input type="hidden" name="action"     value="showall" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<input type="hidden" name="page"      value="[% page %]" />
+<input type="hidden" name="st"        value="1" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"      value="1" />
+[% END %]
 
+<input type="hidden" name="num"   value="[% query.param('num') %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 
 [% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.get('virtualsearch_loc') %]
@@ -45,6 +48,6 @@
 
 [% suggestion = sq.get_spelling_suggestion %]
 [% IF spelling_suggestion.resultlist && suggestion  %]
-[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
 [% END %]
 

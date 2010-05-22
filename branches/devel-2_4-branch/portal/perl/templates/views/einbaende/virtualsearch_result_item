@@ -25,12 +25,12 @@
      [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
     </div>
     <div class="hits">
-[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
+[%- IF treffer == qopts.num && qopts.sb == 'sql' -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
     </div>
     <div class="navigation">
-[%- IF treffer == qopts.hitrange -%]
-<b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>
-[%- ELSIF treffer < qopts.hitrange -%]
+[%- IF treffer == qopts.num -%]
+<b>[1 - [% qopts.num %]]</b>&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.num %];num=[% qopts.num %];sb=[% qopts.sb %]">[weitere Treffer...]</a>
+[%- ELSIF treffer < qopts.num -%]
 <b>[1 - [% treffer %]]</b>
 [%- END -%]
     </div>

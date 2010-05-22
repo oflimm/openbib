@@ -78,7 +78,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit </span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=xapian;[%- IF config.get('drilldown') && itemcount < config.get('xapian_option').maxmatch -%]drilldown=1;[%- IF config.get('drilldown_option').cloud -%]dd_cloud=1;[%- END -%][%- IF config.get('drilldown_option').categorized -%]dd_categorized=1;[%- END -%][%- END -%]fs=[% searchprefix %]:|[% item %]|;database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[%- IF config.get('drilldown') && itemcount < config.get('xapian_option').maxmatch -%]dd=1;[%- END -%]fs=[% searchprefix %]:|[% item %]|;database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

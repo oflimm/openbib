@@ -15,9 +15,9 @@
 [%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
 [%- dburl    = dbinfo.get('urls').${database} -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></td><td
-align="right" colspan="2"><strong>[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td><td class="popularitycount"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#popularity">P</a></td></tr>
-[%- IF treffer == qopts.hitrange -%]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="5"><b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td><td>&nbsp;</td></tr>
+align="right" colspan="2"><strong>[%- IF treffer == qopts.num && qopts.sb == 'sql' -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td><td class="popularitycount"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#popularity">P</a></td></tr>
+[%- IF treffer == qopts.num -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="5"><b>[1 - [% qopts.num %]]</b>&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.num %];num=[% qopts.num %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td><td>&nbsp;</td></tr>
 [%- END -%]
 [% listrow = 'listrow2' %]
 [%- FOREACH record IN recordlist.get_records -%]
@@ -77,7 +77,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% END %]
 <tr><td class="listnr"></td><td colspan="4"><b><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 
-[% IF drilldown && fullresultcount > qopts.hitrange %]
+[% IF drilldown && fullresultcount > qopts.num %]
 <tr><td class="listnr"><td colspan="4">
 <table width="100%">
 <tr><th colspan="4">[% msg.maketext("Suchverfeinerung mit relevanten Begriffen") %]</th></tr>
@@ -88,7 +88,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><th>[% msg.maketext("Verfasser") %]</th></tr>
 <tr><td class="boxedclear">
 [% FOREACH termitem IN relevantaut %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?dd=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br />
 [% END %]
 </td></tr>
 </table>
@@ -99,7 +99,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><th>[% msg.maketext("K&ouml;rperschaften") %]</th></tr>
 <tr><td class="boxedclear">
 [% FOREACH termitem IN relevantkor %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?dd=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br />
 [% END %]
 </td></tr>
 </table>
@@ -111,7 +111,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><th>[% msg.maketext("Titel") %]</th></tr>
 <tr><td class="boxedclear">
 [% FOREACH termitem IN termfeedback.${"hst"} %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?dd=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
 [% END %]
 </td></tr>
 </table>
@@ -122,7 +122,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><th>[% msg.maketext("Schlagworte") %]</th></tr>
 <tr><td class="boxedclear">
 [% FOREACH termitem IN relevantswt %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?dd=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br />
 [% END %]
 </td></tr>
 </table>
@@ -133,7 +133,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><th>[% msg.maketext("Jahre") %]</th></tr>
 <tr><td class="boxedclear">
 [% FOREACH termitem IN termfeedback.${"ejahr"} %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?dd=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
 [% END %]
 </td></tr>
 </table>

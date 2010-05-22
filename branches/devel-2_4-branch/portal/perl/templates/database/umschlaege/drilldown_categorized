@@ -100,7 +100,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <h2>[% msg.maketext("Treffermenge eingrenzen") %]</h2>
 <table>
 
-[% request_base = "sb=xapian;drilldown=1;dd_categorized=1;";
+[% request_base = "dd=1;";
    IF combinedbs ;
       request_base = "${request_base}combinedbs=1;";
       IF searchall ;
@@ -126,7 +126,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <span id="dd_db_[% database %]_toggle"></span>
 <div id="dd_db_[% database %]">
 [% END %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% termitem.0 %];fs=[% lastquery %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?dd=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% termitem.0 %];fs=[% lastquery %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.8.size > 5 %]
 </div>

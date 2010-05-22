@@ -234,7 +234,7 @@ END;
 <div class="headline">[% msg.maketext("Einband-Daten") %]</div>
 
 <table cellpadding="2">
-<tr><td class="category">[% msg.maketext("Einband-Abbildungen") %]</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer" class="cssbutton glass kug"><span>[% msg.maketext("Anzeigen") %]</span></a></td></tr>
+<tr><td class="category">[% msg.maketext("Einband-Abbildungen") %]</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=einbaendesearchsingletit=[% titidn %];stid=1;olws=Viewer" class="cssbutton glass kug"><span>[% msg.maketext("Anzeigen") %]</span></a></td></tr>
 
 [% PROCESS common/subtemplate name="visible_categories_coverset" %]
 

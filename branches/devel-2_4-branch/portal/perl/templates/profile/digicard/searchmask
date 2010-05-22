@@ -72,7 +72,7 @@
 <form method="get" id="openbib" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
 
 
-<input type="hidden" name="sb"        value="sql" />
+
 <input type="hidden" name="st"        value="2" />
 
 <p />

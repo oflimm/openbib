@@ -649,7 +649,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
       thiscontent = item.content;
 
       NEXT IF rswkswt_done.${thiscontent} == 1;
-      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${thiscontent.replace('&amp;','%26')};category=E4300;hitrange=${qopts.hitrange}";
+      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${thiscontent.replace('&amp;','%26')};category=E4300;num=${qopts.num}";
       content       = "<a href=\"${localurl}\">${thiscontent}</a>";
       rswkswt_done.${thiscontent} = 1;
 %]

@@ -169,7 +169,7 @@ FOREACH category IN categories;
          END ;
 
    # CASE "E4100";
-   #      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+   #      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
    #      bklookup    = config.load_bk ;
    #      bkdesc      = bklookup.${content};
    #      content     = "<a href=\"${localurl}\">${content}</a>";
@@ -275,8 +275,8 @@ END;
 
 <form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
 
-<input type="hidden" name="hitrange"   value="[% qopts.hitrange %]" />
-<input type="hidden" name="database"   value="[% record.database %]" />
+<input type="hidden" name="num"   value="[% qopts.num %]" />
+<input type="hidden" name="db"   value="[% record.database %]" />
 
 <table>
 <tr><td class="category">[% msg.maketext("Schlagwortindex diese Katalogs") %]</td><td>&nbsp;<input

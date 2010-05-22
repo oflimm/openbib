@@ -53,7 +53,7 @@ FOREACH category IN categories;
         content    = "<a href=\"http://commons.wikimedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
 
     CASE "P5000";
-         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofaut=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofaut=${normset.id};offset=0;num=${qopts.num}\">${content}</a>";
     END;
 
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind

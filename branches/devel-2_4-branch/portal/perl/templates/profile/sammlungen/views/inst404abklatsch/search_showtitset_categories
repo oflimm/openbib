@@ -62,7 +62,7 @@ FOREACH category IN categories;
     CASE [ "T0531" "T0533" ];
          IF content.match("---&gt;: ") ;
             previssues = content.split("---&gt;: ");
-            localurl   = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;hitrange=${qopts.hitrange}";
+            localurl   = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
             content    = "${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
          END ;
           
@@ -99,7 +99,7 @@ FOREACH category IN categories;
          END ;
 
     CASE [ "E4100" "T4100" ];
-         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -122,7 +122,7 @@ FOREACH category IN categories;
          thiscontent = item.content;
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
-         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
 	 content       = "<a href=\"${localurl}\">${content}</a>";
          rswkswt_done.${thiscontent} = 1;
 

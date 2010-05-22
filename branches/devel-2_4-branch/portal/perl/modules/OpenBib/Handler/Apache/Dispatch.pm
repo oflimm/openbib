@@ -105,33 +105,48 @@ sub handler {
     my $dispatch_ref = {};
 
     foreach my $loc (grep /\_loc$/, keys %{$config->{handler}}){
-        $dispatch_ref->{$config->{handler}{$loc}{name}}=$config->{handler}{$loc}{module};
+        $dispatch_ref->{$config->{handler}{$loc}{name}}{$config->{handler}{$loc}{realm}}=$config->{handler}{$loc}{module};
     }
 
-    $logger->debug(YAML::Dump($dispatch_ref));
+#    $logger->debug(YAML::Dump($dispatch_ref));
+
     # Basisipfad entfernen
     my $basepath = $config->{base_loc};
     $path=~s/$basepath//;
 
     my ($view,$location)=(undef,undef);
-    
-    if ($path=~m/^\/([^\/]+)\/([^\/]+\/[^\/]+)/){
+
+    # View-spezifische URI's
+    if ($path=~m/^\/([^\/]+)\/(connector\/[^\/]+)/){
         ($view,$location)=($1,$2);
     }
     elsif ($path=~m/^\/([^\/]+)\/([^\/]+)/){
         ($view,$location)=($1,$2);
     }
 
-    $logger->debug("View: $view - Location: $location");
-    if (exists $dispatch_ref->{$location}){
-        $logger->debug("Dispatch to ".$dispatch_ref->{$location});
+    return Apache2::Const::OK unless ($view && $location);
+
+    $logger->debug("Got view $view and location $location");
+
+    my $dispatch_target = "";
+    
+    if ($view eq "common" && exists $dispatch_ref->{$location}{common}){
+        $dispatch_target = $dispatch_ref->{$location}{common};
+    }
+    elsif (exists $dispatch_ref->{$location}{view}){
+        $dispatch_target = $dispatch_ref->{$location}{view};
+    }
+
+    if ($dispatch_target){
+        $logger->debug("Dispatch to $dispatch_target");
         
         $r->handler('modperl');
-        $r->set_handlers(PerlResponseHandler => $dispatch_ref->{$location});
+        $r->set_handlers(PerlResponseHandler => $dispatch_target);
 
         $r->subprocess_env('openbib_view' => $view);
 
     }
+    
     return Apache2::Const::OK;
 }
 

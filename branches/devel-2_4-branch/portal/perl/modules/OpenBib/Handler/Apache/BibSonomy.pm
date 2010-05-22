@@ -75,16 +75,16 @@ sub handler {
     #####################################################################
 
     my $offset         = $query->param('offset')           || 0;
-    my $hitrange       = $query->param('hitrange')         || 50;
-    my $sorttype       = $query->param('sorttype')         || "author";
-    my $sortorder      = $query->param('sortorder')        || "up";
+    my $hitrange       = $query->param('num')              || 50;
+    my $sorttype       = $query->param('srt')         || "author";
+    my $sortorder      = $query->param('srto')        || "up";
     my $titisbn        = $query->param('titisbn')          || '';
     my $bibkey         = $query->param('bibkey')           || '';
     my $isbn           = $query->param('isbn')             || '';
     my $start          = $query->param('start')            || '';
     my $end            = $query->param('end')              || '';
     my $id             = $query->param('id')               || '';
-    my $database       = $query->param('database')         || '';
+    my $database       = $query->param('db')               || '';
     my $format         = decode_utf8($query->param('format')) || '';
     my $tag            = decode_utf8($query->param('tag')) || '';
     my $tags           = decode_utf8($query->param('tags')) || '';

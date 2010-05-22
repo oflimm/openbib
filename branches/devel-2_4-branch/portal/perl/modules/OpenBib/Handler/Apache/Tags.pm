@@ -78,10 +78,10 @@ sub handler {
     #####################################################################
 
     my $offset         = $query->param('offset')      || 0;
-    my $hitrange       = $query->param('hitrange')    || 50;
-    my $database       = $query->param('database')    || '';
-    my $sorttype       = $query->param('sorttype')    || "author";
-    my $sortorder      = $query->param('sortorder')   || "up";
+    my $hitrange       = $query->param('num')    || 50;
+    my $database       = $query->param('db')    || '';
+    my $sorttype       = $query->param('srt')    || "author";
+    my $sortorder      = $query->param('srto')   || "up";
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
@@ -156,7 +156,7 @@ sub handler {
             type      => $type,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
@@ -175,7 +175,7 @@ sub handler {
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{tags_loc}{name}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         }
         return Apache2::Const::OK;
 

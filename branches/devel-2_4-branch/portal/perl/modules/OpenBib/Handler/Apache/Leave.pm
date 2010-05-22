@@ -64,7 +64,7 @@ sub handler {
     
     my $cookie = Apache2::Cookie->new($r,
                                       -name    => "sessionID",
-                                      -value   => $session->{ID},
+                                      -value   => "",
                                       -expires => 'now',
                                   );
     

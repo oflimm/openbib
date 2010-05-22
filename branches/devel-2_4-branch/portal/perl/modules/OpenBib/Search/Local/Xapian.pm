@@ -136,8 +136,8 @@ sub initial_search {
         ? $arg_ref->{hitrange}      : 50;
     my $offset            = exists $arg_ref->{offset}
         ? $arg_ref->{offset}        : 0;
-    my $dd_categorized    = exists $arg_ref->{dd_categorized}
-        ? $arg_ref->{dd_categorized} : 0;
+    my $drilldown         = exists $arg_ref->{drilldown}
+        ? $arg_ref->{drilldown}     : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -231,13 +231,13 @@ sub initial_search {
       $singletermcount = $dbh->get_termfreq($is_singleterm);
 
       if ($singletermcount > $maxmatch){
-	$dd_categorized = "";
+	$drilldown = "";
       }
     }
 
     my $rset = Search::Xapian::RSet->new();
     
-    my $mset = ($dd_categorized)?$enq->get_mset($offset,$hitrange,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$hitrange,$maxmatch);
+    my $mset = ($drilldown)?$enq->get_mset($offset,$hitrange,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$hitrange,$maxmatch);
 
     $logger->debug("DB: $database") if (defined $database);
     

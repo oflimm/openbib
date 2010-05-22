@@ -76,7 +76,7 @@ sub handler {
 
     # Sub-Template ID
     my $stid     = $query->param('stid')     || '';
-    my $database = $query->param('database') || '';
+    my $database = $query->param('db')       || '';
     my $id       = $query->param('id')       || '';
     my $format   = $query->param('format')   || '';
 

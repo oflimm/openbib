@@ -76,7 +76,7 @@ sub handler {
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $session = OpenBib::Session->instance({ apreq => $r });    
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     # Standardwerte festlegen
   
@@ -150,7 +150,7 @@ sub handler {
     my $profilename     = $query->param('profilename')     || '';
     my @profiledb       = ($query->param('profiledb'))?$query->param('profiledb'):();
 
-    my @databases       = ($query->param('database'))?$query->param('database'):();
+    my @databases       = ($query->param('db'))?$query->param('db'):();
 
     # dboptions
     my $host            = $query->param('host')            || '';

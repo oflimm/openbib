@@ -71,7 +71,7 @@ sub handler {
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # CGI-Uebergabe
-    my @databases     = ($query->param('database'))?$query->param('database'):();
+    my @databases     = ($query->param('db'))?$query->param('db'):();
     my $singleidn     = $query->param('singleidn')     || '';
     my $action        = ($query->param('action'))?$query->param('action'):'';
     my $fs            = $query->param('fs')            || ''; # Freie Suche

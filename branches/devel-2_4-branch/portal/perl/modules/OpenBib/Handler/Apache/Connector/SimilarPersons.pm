@@ -78,7 +78,7 @@ sub handler {
     my $id             = $query->param('id')              || '';
     my $content        = $query->param('content')         || '';
     my $isbn           = $query->param('isbn')            || '';
-    my $database       = $query->param('database')        || '';
+    my $database       = $query->param('db')        || '';
     my $format         = $query->param('format')          || 'ajax';
     my $sessionID      = $query->param('sessionID')       || '';
 

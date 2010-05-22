@@ -74,7 +74,7 @@ sub handler {
     my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
-    my $database        = ($query->param('database'))?$query->param('database'):'';
+    my $database        = ($query->param('db'))?$query->param('db'):'';
     my $singleidn       = $query->param('singleidn') || '';
     my $action          = $query->param('action') || '';
     my $setmask         = $query->param('setmask') || '';
@@ -206,23 +206,15 @@ sub handler {
     }
     
     if ($fs){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{virtualsearch_loc}{name}?view=$view;fs=".uri_escape($fs).";hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{virtualsearch_loc}{name}?fs=".uri_escape($fs).";num=50;srt=author;srto=up;profil=;st=3";
     }
 
     if ($searchlitlist){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?view=$view;action=show;litlistid=$searchlitlist";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=show;litlistid=$searchlitlist";
     }
 
     if ($config->{drilldown}){
-        $redirecturl .= ";drilldown=1";
-    }
-
-    if ($config->{drilldown_option}{cloud}){
-        $redirecturl .= ";dd_cloud=1";
-    }
-
-    if ($config->{drilldown_option}{categorized}){
-        $redirecturl .= ";dd_categorized=1";
+        $redirecturl .= ";dd=1";
     }
 
     $logger->info("Redirecting to $redirecturl");

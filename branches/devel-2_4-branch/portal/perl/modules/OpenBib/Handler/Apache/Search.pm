@@ -85,7 +85,7 @@ sub handler {
     ##          >0  - gibt die maximale Zahl an
     ##          <=0 - gibt immer alle Treffer aus
   
-    my $hitrange=($query->param('hitrange'))?$query->param('hitrange'):-1;
+    my $hitrange=($query->param('num'))?$query->param('num'):-1;
     ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
   
     #####################################################################
@@ -98,13 +98,13 @@ sub handler {
     #####################################################################
     ## Database: Name der verwendeten SQL-Datenbank
   
-    my $database=($query->param('database'))?$query->param('database'):'inst001';
+    my $database=($query->param('db'))?$query->param('db'):'inst001';
   
     #####################################################################
     ## Sortierung der Titellisten
   
-    my $sorttype  = ($query->param('sorttype'))?$query->param('sorttype'):"author";
-    my $sortorder = ($query->param('sortorder'))?$query->param('sortorder'):"up";
+    my $sorttype  = ($query->param('srt'))?$query->param('srt'):"author";
+    my $sortorder = ($query->param('srto'))?$query->param('srto'):"up";
 
     my $benchmark=0;
 

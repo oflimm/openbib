@@ -77,9 +77,9 @@ sub handler {
     my $offset         = $query->param('offset')      || 0;
     my $hitrange       = $query->param('hitrange')    || 50;
     my $queryid        = $query->param('queryid')     || '';
-    my $database       = $query->param('database')    || '';
-    my $sorttype       = $query->param('sorttype')    || "author";
-    my $sortorder      = $query->param('sortorder')   || "up";
+    my $database       = $query->param('db')    || '';
+    my $sorttype       = $query->param('srt')    || "author";
+    my $sortorder      = $query->param('srto')   || "up";
     my $reviewid       = $query->param('reviewid')    || '';
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';

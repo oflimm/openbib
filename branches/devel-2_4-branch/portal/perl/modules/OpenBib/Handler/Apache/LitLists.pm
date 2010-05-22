@@ -76,10 +76,10 @@ sub handler {
     #####################################################################
 
     my $offset         = $query->param('offset')      || 0;
-    my $hitrange       = $query->param('hitrange')    || 50;
-    my $database       = $query->param('database')    || '';
-    my $sorttype       = $query->param('sorttype')    || "author";
-    my $sortorder      = $query->param('sortorder')   || "up";
+    my $hitrange       = $query->param('num')         || 50;
+    my $database       = $query->param('db')    || '';
+    my $sorttype       = $query->param('srt')    || "author";
+    my $sortorder      = $query->param('srto')   || "up";
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
     my $titisbn        = $query->param('titisbn')     || '';

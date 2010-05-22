@@ -77,7 +77,7 @@ sub handler {
     my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';
     my $singleidn = $query->param('singleidn');
     my $mail      = $query->param('mail');
-    my $database  = $query->param('database');
+    my $database  = $query->param('db');
     my $type      = $query->param('type')||'HTML';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);

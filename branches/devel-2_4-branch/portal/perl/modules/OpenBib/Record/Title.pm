@@ -1125,7 +1125,7 @@ sub print_to_handler {
     };
 
     $stid=~s/[^0-9]//g;
-    my $templatename = ($stid)?"tt_search_showtitset_".$stid."_tname":"tt_search_showtitset_tname";
+    my $templatename = ($stid)?"tt_resource_title_".$stid."_tname":"tt_resource_title_tname";
     
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 

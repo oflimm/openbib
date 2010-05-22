@@ -51,11 +51,14 @@ use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
 use OpenBib::Record::Classification;
+use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -69,7 +72,15 @@ sub handler {
     my $path = $uri->path;
 
     my $query  = Apache2::Request->new($r);
+    
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
+    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
+
+    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
+        
     my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     # Basisipfad entfernen
@@ -79,18 +90,21 @@ sub handler {
     $logger->debug("Path: $path without basepath $basepath");
     
     # Service-Parameter aus URI bestimmen
-    my $key;
-    my $type;
+    my $id;
+    my $type; # (title,person,corporatebody,subject,classification,tag,litlist)
+    my $database;
     my $representation;
 
-    if ($path=~m/^\/(\w+)\/([^\/]+?)\/([^\/]*)/){
-        $type   = $1;
-        $key    = $2;
-        $representation = $3;
+    if ($path=~m/^\/(\w+)\/([^\/]+?)\/([^\/]+?)\/([^\/]*)/){
+        $type     = $1;
+        $database = $2;
+        $id       = $3;
+        $representation = $4;
     }
-    elsif ($path=~m/^\/(\w+)\/([^\/]+)/){
-        $type   = $1;
-        $key    = $2;
+    elsif ($path=~m/^\/(\w+)\/([^\/]+)\/([^\/]+)/){
+        $type     = $1;
+        $database = $2;
+        $id       = $3;
         $representation = '';
     }
 
@@ -102,9 +116,7 @@ sub handler {
         'classification' => 1,
     };
     
-    my ($database,$id)=("","");
-
-    $logger->debug("Type: $type - Key: $key - Representation: $representation");
+    $logger->debug("Type: $type - Database: $database - Key: $id - Representation: $representation");
 
     my $content_type_map_ref = {
         "application/rdf+xml" => "rdf+xml",
@@ -125,7 +137,7 @@ sub handler {
         foreach my $information_resource_type (keys %{$content_type_map_ref}){            
             if (any { $_ eq $information_resource_type } @accept_types) {
                 $r->content_type($information_resource_type);
-                my $new_location = $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name}."/$type/$key/".$content_type_map_ref->{$information_resource_type};
+                my $new_location = $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name}."/$type/$database/$id/".$content_type_map_ref->{$information_resource_type};
                 $logger->debug("Redirecting HTTP_SEE_OTHER to $new_location");
                 $r->headers_out->add("Location" => $new_location);
                 $information_resource_found = 1;
@@ -136,7 +148,7 @@ sub handler {
         if (!$information_resource_found){
             my $information_resource_type="text/html";
             $r->content_type($information_resource_type);
-            $r->headers_out->add("Location" => $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name}."/$type/$key/html");
+            $r->headers_out->add("Location" => $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name}."/$type/$database/$id/html");
             $logger->debug("Information Resource Type: $information_resource_type");
         }
 
@@ -145,9 +157,13 @@ sub handler {
     }
     
     my $callback   = $query->param('callback')  || '';
-    my $lang       = $query->param('lang')      || 'de';
+    my $lang       = $query->param('lang') || $queryoptions->get_option('l') || 'de';
     my $stid       = $query->param('stid')      || '';
 
+    my $queryid    = $query->param('queryid')   || '';
+    my $format     = $query->param('format')    || 'full';
+
+    
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
     #####                                                          ######
@@ -160,29 +176,36 @@ sub handler {
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     # TT-Data erzeugen
     
-    my $ttdata= {
+    my $ttdata = {
         dbinfo         => $dbinfotable,
         callback       => $callback,
         lang           => $lang,
         representation => $representation,
+
+        format         => $format,
+        
+        view           => $view,
+        stylesheet     => $stylesheet,
+        
+        qopts          => $queryoptions->get_options,
         
         config         => $config,
+        user           => $user,
+        msg            => $msg,
     };
     
     #####################################################################
         
     
-    if ($is_bibtype_ref->{$type} ){ # Valider Typ?
-        ($database,$id) = $key =~/^([^:]+):(.+)/;
-    
-        $logger->debug("Path: $path - Key: $key - DB: $database - ID: $id");
-        
-        if (!$database){
-            return Apache2::Const::OK;
-        }
+    if ($is_bibtype_ref->{$type} && $database && $id ){ # Valider Typ etc.?
+        $logger->debug("Path: $path - Key: $id - DB: $database - ID: $id");
 
         #####################################################################
         # Verbindung zur SQL-Datenbank herstellen
@@ -205,21 +228,30 @@ sub handler {
         elsif ($type eq "person"){
             my $record = OpenBib::Record::Person->new({database => $database, id => $id})
                 ->load_full_record({dbh => $dbh});
-            
+
             $ttdata->{record} = $record;
 
-            my $recordlist = new OpenBib::RecordList::Title();
+#             my $recordlist = new OpenBib::RecordList::Title();
 
-            # Bestimmung der Titel
-            my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=2 ") or $logger->error($DBI::errstr);
-            $request->execute($id);
+#             # Bestimmung der Titel
+#             my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=2 ") or $logger->error($DBI::errstr);
+#             $request->execute($id);
             
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-            }
-            $request->finish();
+#             while (my $res=$request->fetchrow_hashref){
+#                 $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
+#             }
+#             $request->finish();
 
-            $ttdata->{title_records} = $recordlist;
+#             $ttdata->{title_records} = $recordlist;
+            
+            $session->log_event({
+                type      => 11,
+                content   => {
+                    id       => $id,
+                    database => $database,
+                },
+                serialize => 1,
+            });
 
         }
         elsif ($type eq "corporatebody"){
@@ -227,6 +259,16 @@ sub handler {
                 ->load_full_record({dbh => $dbh});
             
             $ttdata->{record} = $record;
+
+            $session->log_event({
+            type      => 12,
+            content   => {
+                id       => $id,
+                database => $database,
+            },
+            serialize => 1,
+        });
+
         }
         elsif ($type eq "subject"){
             my $record = OpenBib::Record::Subject->new({database => $database, id => $id})
@@ -259,7 +301,7 @@ sub handler {
         $dbh->disconnect;
     }
     elsif ($type eq "library"){
-        $ttdata->{id}       = $key;
+        $ttdata->{id}       = $id;
     }
 
     $stid=~s/[^0-9]//g;

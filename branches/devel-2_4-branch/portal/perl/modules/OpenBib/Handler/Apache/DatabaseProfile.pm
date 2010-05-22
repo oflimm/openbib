@@ -67,7 +67,7 @@ sub handler {
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # CGI-Uebergabe
-    my @databases  = ($query->param('database'))?$query->param('database'):();
+    my @databases  = ($query->param('db'))?$query->param('db'):();
 
     # Main-Actions
     my $do_showprofile = $query->param('do_showprofile') || '';

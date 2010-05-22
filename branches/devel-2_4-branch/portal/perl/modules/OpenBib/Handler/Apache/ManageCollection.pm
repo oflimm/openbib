@@ -74,7 +74,7 @@ sub handler {
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $database                = $query->param('database')                || '';
+    my $database                = $query->param('db')                || '';
     my $singleidn               = $query->param('singleidn')               || '';
     my $litlistid               = $query->param('litlistid')               || '';
     my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';

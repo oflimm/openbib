@@ -89,20 +89,19 @@ sub handler {
     # CGI-Input auslesen
     my $serien        = decode_utf8($query->param('serien'))        || 0;
 
-    my @databases     = ($query->param('database'))?$query->param('database'):();
+    my @databases     = ($query->param('db'))?$query->param('db'):();
 
-    my $hitrange      = ($query->param('hitrange' ))?$query->param('hitrange'):50;
+    my $hitrange      = ($query->param('num' ))?$query->param('num'):50;
     my $offset        = ($query->param('offset'   ))?$query->param('offset'):0;
     my $page          = undef ;
-
+    
     if ($query->param('page')){
         $page   = $query->param('page');
         $offset = $page*$hitrange-$hitrange;
     }
     
-    my $sorttype      = ($query->param('sorttype' ))?$query->param('sorttype'):"author";
-    my $sortorder     = ($query->param('sortorder'))?$query->param('sortorder'):'up';
-    my $autoplus      = $query->param('autoplus')      || 1;
+    my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
+    my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
     my $combinedbs    = $query->param('combinedbs')    || 0;
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
@@ -124,10 +123,8 @@ sub handler {
     my $profil        = $query->param('profil')        || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
-    my $sb            = $query->param('sb')            || 'xapian'; # Search backend
     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
-    my $drilldown             = $query->param('drilldown')      || 0;     # Drill-Down?
-    my $drilldown_categorized = $query->param('dd_categorized') || 0;     # Categorized?
+    my $drilldown             = $query->param('dd')      || 0;     # Drill-Down?
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
@@ -140,6 +137,8 @@ sub handler {
     
     my $is_orgunit=0;
 
+    my $sb = $config->{local_search_backend};
+    
   ORGUNIT_SEARCH:
     foreach my $orgunit_ref (@{$config->{orgunits}}){
         if ($orgunit_ref->{short} eq $profil){
@@ -166,7 +165,7 @@ sub handler {
     # Loggen des Recherche-Backends
     $session->log_event({
 		type      => 21,
-                content   => $sb,
+                content   => 'xapian',
     });
 
     my $sysprofile   = $config->get_viewinfo($view)->{profilename};
@@ -647,7 +646,7 @@ sub handler {
                 hitrange        => $hitrange,
                 offset          => $offset,
 
-                dd_categorized  => $drilldown_categorized,
+                drilldown       => $drilldown,
             });
             
             $fullresultcount = $request->{resultcount};
@@ -687,7 +686,7 @@ sub handler {
                     $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
                 }
                 
-                if ($drilldown && $drilldown_categorized) {
+                if ($drilldown) {
                     $category_map_ref = $request->get_categorized_drilldown;
                 }
             }
@@ -753,7 +752,6 @@ sub handler {
                 
                 qopts           => $queryoptions->get_options,
                 drilldown             => $drilldown,
-                drilldown_categorized => $drilldown_categorized,
                 
                 offset         => $offset,
                 hitrange       => $hitrange,
@@ -943,7 +941,7 @@ sub handler {
                             hitrange        => $hitrange,
                             offset          => $offset,
 
-                            dd_categorized  => $drilldown_categorized,
+                            drilldown       => $drilldown,
                         });
 
                         my $fullresultcount = $request->{resultcount};
@@ -1039,7 +1037,6 @@ sub handler {
 
                                 qopts           => $queryoptions->get_options,
                                 drilldown             => $drilldown,
-                                drilldown_categorized => $drilldown_categorized,
 
                                 cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
 

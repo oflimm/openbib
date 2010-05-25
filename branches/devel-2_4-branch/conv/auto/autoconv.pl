@@ -293,6 +293,22 @@ my $atime = new Benchmark;
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
+# Suchmaschinen-Index aufbauen
+
+{
+    my $atime = new Benchmark;
+
+    $logger->info("### $database: Importing data into searchengine");   
+    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-fields -with-sorting -with-positions --database=$database");
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
+}
+
 # Potentiell Blockierende Prozesse entfernen
 
 {
@@ -356,29 +372,12 @@ ENDE
     system("$config->{'base_dir'}/bin/updatetitcount.pl --database=$database");
 }
 
-# Daten aus SQL-Datenbank durch Suchmachinenkonnektor extrahieren und
-# Suchmaschinen-Index aufbauen
-
-{
-    my $atime = new Benchmark;
-
-    $logger->info("### $database: Importing data into searchengine");   
-    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-fields -with-sorting -with-positions --database=$database");
-
-    my $btime      = new Benchmark;
-    my $timeall    = timediff($btime,$atime);
-    my $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-
-    $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
-}
-
 CLEANUP:
 
 $logger->info("### $database: Cleanup");
 
 system("$mysqladminexe drop   $databasetmp");
-#system("rm $rootdir/data/$database/*");
+system("rm $rootdir/data/$database/*");
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

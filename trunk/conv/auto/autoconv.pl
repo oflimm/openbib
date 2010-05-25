@@ -291,6 +291,22 @@ my $atime = new Benchmark;
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
+# Suchmaschinen-Index aufbauen
+
+{
+    my $atime = new Benchmark;
+
+    $logger->info("### $database: Importing data into searchengine");   
+    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --with-fields --database=$database");
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
+}
+
 # Potentiell Blockierende Prozesse entfernen
 
 {
@@ -352,23 +368,6 @@ ENDE
 {
     $logger->info("### $database: Updating Titcount");    
     system("$config->{'base_dir'}/bin/updatetitcount.pl --database=$database");
-}
-
-# Daten aus SQL-Datenbank durch Suchmachinenkonnektor extrahieren und
-# Suchmaschinen-Index aufbauen
-
-{
-    my $atime = new Benchmark;
-
-    $logger->info("### $database: Importing data into searchengine");   
-    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --with-fields --database=$database");
-
-    my $btime      = new Benchmark;
-    my $timeall    = timediff($btime,$atime);
-    my $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-
-    $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
 CLEANUP:

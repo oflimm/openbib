@@ -108,17 +108,19 @@ open(TITLISTITEM, "<:utf8","titlistitem.mysql" ) || die "TITLISTITEM konnte nich
 my $dbbasedir=$config->{xapian_index_base_path};
 
 my $thisdbpath="$dbbasedir/$database";
-if (! -d "$thisdbpath"){
-    mkdir "$thisdbpath";
+my $thistmpdbpath="$dbbasedir/$database.temp";
+
+if (! -d "$thistmpdbpath"){
+    mkdir "$thistmpdbpath";
 }
 
-$logger->info("Loeschung des alten Index fuer Datenbank $database");
+$logger->info("Loeschung des alten temporaeren Index fuer Datenbank $database");
 
-system("rm -f $thisdbpath/*");
+system("rm -f $thistmpdbpath/*");
 
-$logger->info("Aufbau eines neuen  Index fuer Datenbank $database");
+$logger->info("Aufbau eines neuen temporaeren Index fuer Datenbank $database");
 
-my $db = Search::Xapian::WritableDatabase->new( $thisdbpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
+my $db = Search::Xapian::WritableDatabase->new( $thistmpdbpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
 
 my $stopword_ref={};
 
@@ -516,6 +518,10 @@ my $count = 1;
         $count++;
     }
 }
+
+$logger->info("Aktiviere temporaeren Suchindex");
+
+system("rm $thisdbpath/* ; rmdir $thisdbpath ; mv $thistmpdbpath $thisdbpath");
 
 my $btime      = new Benchmark;
 my $timeall    = timediff($btime,$atime);

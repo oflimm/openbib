@@ -339,11 +339,9 @@ my $atime = new Benchmark;
 
     system("$mysqladminexe drop $database ");
     system("$mysqladminexe create $database ");
-    #system("mv /var/lib/mysql/$databasetmp /var/lib/mysql/$database");
-
 
     open(COPYIN, "echo \"show tables;\" | $mysqlexe -s $databasetmp |");
-    open(COPYOUT,"| $mysqlexe -s $databasetmp |");
+    open(COPYOUT,"| $mysqlexe -s $databasetmp");
 
     while (<COPYIN>){
         chomp();

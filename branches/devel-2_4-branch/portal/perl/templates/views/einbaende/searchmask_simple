@@ -489,9 +489,9 @@ Literaturlisten usw.<p/>") %]
 
 <a style="font-size: 1.5em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?[%- IF viewdbs.size == 1 -%]db=[% viewdbs.first %];stid=14[%- ELSE -%]stid=13[%- END -%]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
 <a style="font-size: 1.3em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?&action=show_public_lists[% IF view_config.${view}.subjectid %];subjectid=[% view_config.${view}.subjectid %][%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
-<a style="font-size: 1.1em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
-<a                           href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% viewdbs.first %];stid=10" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
-<a style="font-size: 1.2em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
+<a style="font-size: 1.1em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
+<a                           href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% viewdbs.first %]" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
+<a style="font-size: 1.2em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
 
 <h3>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h3>
 [% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').ezb_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]

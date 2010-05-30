@@ -27,14 +27,14 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% database %];stid=41" title="[% msg.maketext("Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/41?database=[% database %]" title="[% msg.maketext("Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
 </ul>
 
 <div class="content">

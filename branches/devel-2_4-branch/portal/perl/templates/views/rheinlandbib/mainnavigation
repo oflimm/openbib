@@ -14,7 +14,7 @@
 <div id="mainnavigation">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr><td align="left">&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databasechoice_loc.name %]?">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?">[% msg.maketext("Recherche") %]</a>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?action=choice">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=show">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></td><td height="25">&nbsp;</td><td align="right">
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=20">[% msg.maketext("Home") %]</a>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?">[% msg.maketext("Hilfe") %]</a>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').leave_loc.name %]?" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/20">[% msg.maketext("Home") %]</a>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?">[% msg.maketext("Hilfe") %]</a>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').leave_loc.name %]?" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 [%- IF username -%]
  [[% username %]]
 [%- END -%]

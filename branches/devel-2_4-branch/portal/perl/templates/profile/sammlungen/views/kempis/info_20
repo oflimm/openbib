@@ -31,7 +31,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[% stid %]?id=[% id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -75,7 +75,7 @@ Regularkanoniker auf dem Agnetenberg bei Zwolle. Er verfasste
 zahlreiche religiöse Schriften in lateinischer Sprache, darunter das
 weltberühmte Erbauungsbuch "De imitatione Christi", eines der am
 meisten verbreiteten Bücher des ausgehenden Mittelalters.
-[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?&stid=21">Weitere Informationen</a>]
+[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/21">Weitere Informationen</a>]
 </p>
 
 <p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen

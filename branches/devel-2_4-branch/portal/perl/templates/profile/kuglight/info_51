@@ -35,8 +35,8 @@
 <ul class="tabbingmenu">
    <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?category=[% thisbk %];stid=51" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?[% IF viewdbs.size == 1 %]db=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/51?category=[% thisbk %]" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[% IF viewdbs.size == 1 %]14?db=[% viewdbs.first %][% ELSE %]13[% END %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
 </ul>
 
 <div class="content">
@@ -59,7 +59,7 @@ bklist = bklist.sort;
 [% FOREACH bk IN bklist %]
 [%   IF thisbklist.${bk}.defined %] 
 [%      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${viewdbs.first};searchtitofcnt=${bk};category=E4100;num=${qopts.num}" %]
-[% bk %] / <a href="[% IF viewdbs.size == 1 %][% localurl %][% ELSE %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=52;category=[% bk %][% END %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)<br/>
+[% bk %] / <a href="[% IF viewdbs.size == 1 %][% localurl %][% ELSE %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/52?category=[% bk %][% END %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)<br/>
 [%   END %]
 [% END %]
 

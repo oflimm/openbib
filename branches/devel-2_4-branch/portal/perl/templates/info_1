@@ -21,10 +21,10 @@
 <div id="maincontent">
 
     <ul class="tabbingmenu">
-      <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?">[% msg.maketext("Suchhilfe") %]</a></li>
-      <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=1">[% msg.maketext("Projekt") %]</a></li>
-      <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=2">[% msg.maketext("KUG-Versionen") %]</a></li>
-      <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=3">Artikel/Stimmen</a></li>
+      <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/0">[% msg.maketext("Suchhilfe") %]</a></li>
+      <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/1">[% msg.maketext("Projekt") %]</a></li>
+      <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/2">[% msg.maketext("KUG-Versionen") %]</a></li>
+      <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/3">Artikel/Stimmen</a></li>
     </ul>
     
     <div class="content">

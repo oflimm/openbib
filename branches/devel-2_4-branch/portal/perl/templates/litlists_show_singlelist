@@ -46,7 +46,7 @@
 <b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.subjects.size -%]
 [%- FOREACH subject IN litlist.properties.subjects-%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=54;id=[% subject.id %]">[% subject.name %]</a>&nbsp;&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/54?id=[% subject.id %]">[% subject.name %]</a>&nbsp;&nbsp;
 [%- END-%]
 [%- ELSE -%]
 [% msg.maketext("Keine") %]

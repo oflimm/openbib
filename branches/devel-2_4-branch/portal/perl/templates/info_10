@@ -29,14 +29,14 @@
 [% IF database %]
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% database %];stid=10" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% database %]" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% database %];stid=10" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% database %]" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -155,14 +155,14 @@ Die 20 meist aufgerufenen Titel
 </div>
 [%- ELSE -%]
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=13" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div class="content">
@@ -183,11 +183,11 @@ Die 20 meist aufgerufenen Titel
   [%- FOREACH db = catdb -%]
     [%- IF db.category == category.short -%]
       [%- IF db.column == 1 -%]
-<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% db.db %];stid=10" title="Schlagworte">[% db.name %]</a></td>
+<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% db.db %]" title="Schlagworte">[% db.name %]</a></td>
       [%- END -%]
       [%- IF db.column > 1 && db.column < maxcolumn -%]
         [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% db.db %];stid=10" title="Schlagworte">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% db.db %]" title="Schlagworte">[% db.name %]</a></td>
         [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
         [%- END -%]
@@ -197,7 +197,7 @@ Die 20 meist aufgerufenen Titel
         [%- IF db.column != 1 -%]
 
           [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% db.db %];stid=10" title="Schlagworte">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% db.db %]" title="Schlagworte">[% db.name %]</a></td>
           [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
           [%- END -%]

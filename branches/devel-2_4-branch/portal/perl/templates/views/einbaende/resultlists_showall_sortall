@@ -110,7 +110,7 @@ Gesamtanzeige aller Treffer
 <span class="rlperson">[% person %]</span><br /><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br />[% msg.maketext("aus:") %]
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% record.database %];stid=60">
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% record.database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]

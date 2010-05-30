@@ -909,7 +909,7 @@ $(document).ready(function(){
 <div class="headline"><span id="misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="misc_do"><!-- Begin misc do -->
 <ul style="list-style-type: square">
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% record.database %]" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 </div>
 </div>

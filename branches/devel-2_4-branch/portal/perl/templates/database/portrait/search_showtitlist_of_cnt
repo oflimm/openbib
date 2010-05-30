@@ -36,7 +36,7 @@
   <div class="resultheader">
     <div class="catalogue">
 [%-   IF dbinfo.get('use_libinfo').${database} %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% database %];stid=60">
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]

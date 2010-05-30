@@ -49,7 +49,7 @@
 <tr><td class="boxedclear">
 <ul class="subjectlist">
 [% FOREACH classification IN user.get_classifications_of_subject({ type => 'BK', subjectid => id}) %]
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=51;category=[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/51?category=[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
 [% END %]
 </ul>
 </td></tr>

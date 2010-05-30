@@ -56,7 +56,7 @@ FOREACH category IN categories;
 END ;-%]
 </table>
 [%-   IF dbinfo.get('use_libinfo').${viewdbs.first} %]
-[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% viewdbs.first %];stid=60">
+[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% viewdbs.first %]">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]

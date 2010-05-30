@@ -43,7 +43,7 @@
 <ul class="tabbingmenu">
    <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?[% IF viewdbs.size == 1 %]db=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[% IF viewdbs.size == 1 %]14?db=[% viewdbs.first %][% ELSE %]13[% END %]" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">

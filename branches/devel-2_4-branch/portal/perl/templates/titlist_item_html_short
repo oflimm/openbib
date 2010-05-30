@@ -143,7 +143,7 @@
 [% IF multiple_dbs == 1 %]
          <br />[% msg.maketext("aus:") %]
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-         <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?id=[% record.database %];stid=60">
+         <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% record.database %]">
 [%-   ELSE -%]
          <a href="[% dburl %]" target="_blank">
 [%-   END -%]

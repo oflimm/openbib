@@ -22,7 +22,7 @@
         Trefferliste
     </div>
     <div class="hits">
-[%- IF treffer == qopts.num && qopts.sb == 'sql' -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
+[%- IF treffer == qopts.num && qopts.sb == 'sql' -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/0#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
     </div>
     <div class="navigation">
 [% msg.maketext("Seite:") %]&nbsp;

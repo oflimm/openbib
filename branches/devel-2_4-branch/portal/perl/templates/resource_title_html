@@ -173,7 +173,7 @@ END ;
 <script type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=62;id=[% normset.${"E4115"}.first.content %];format=ajax",
+  $.get("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/62?id=[% normset.${"E4115"}.first.content %];format=ajax",
          function (txt){
            $("#tictocs").html(txt); 
   });
@@ -183,7 +183,7 @@ $(document).ready(function(){
 <h2 class="nojs_show">[% msg.maketext("Letzte Artikel") %]</h2>
 
 <div id="tictocs"><!-- Begin TicTocs -->
-[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').info_loc.name}?stid=62;id=${tictocs_feed}\">","</a>") %]
+[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').info_loc.name}/62?id=${tictocs_feed}\">","</a>") %]
 </div><!-- End TicTocs -->
 [% END %]
 <!-- Begin: Reviews -->
@@ -732,7 +732,7 @@ $(document).ready(function(){
 <div class="headline"><span id="misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="misc_do"><!-- Begin misc do -->
 <ul style="list-style-type: square">
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% record.database %]" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 </div>
 </div>

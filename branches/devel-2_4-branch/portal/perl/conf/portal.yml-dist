@@ -1,5 +1,5 @@
 # Versionsnummer
-version: OpenBib v2.3
+version: OpenBib v2.4alpha
 
 # Unter diesem Namen wird der lokale Server angesprochen
 servername: server.openbib.org
@@ -58,10 +58,15 @@ statisticsdbname: statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
+# Standard-Recherche-Backend (derzeit nur xapian)
+local_search_backend: xapian
+
 # Benutzer, Passwort und default view fuer die Administration
 adminuser: adminuser
 adminpasswd: StrengGeheim
-adminview: kugng
+
+# Standardview, wenn ueber die URI-Kodierung kein URI bestimmt werden konnte
+defaultview: kug
 
 # Verteilte Administration mit einer Masteradmin?
 distadmin:
@@ -118,7 +123,7 @@ base_loc: /portal
 handler:
   admin_loc:
      name: admin
-     realm: global
+     realm: common
      module: 'OpenBib::Handler::Apache::Admin'
   bibsonomy_loc:
      name: bibsonomy
@@ -130,15 +135,15 @@ handler:
      module: 'OpenBib::Handler::Apache::Circulation'
   connector_availabilityimage_loc: 
      name: connector/availabilityimage
-     realm: global
+     realm: common
      module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
   connector_availability_loc:
      name: connector/availability
-     realm: global
+     realm: view
      module: 'OpenBib::Handler::Apache::Connector::Availability'
   connector_bibmanager_loc:
      name: connector/literaturverwaltung
-     realm: global
+     realm: view
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
   connector_digibib_loc:
      name:  connector/digibib
@@ -162,7 +167,7 @@ handler:
      module: 'OpenBib::Handler::Apache::Connector::PermaLink'
   connector_rss_loc:
      name: connector/rss
-     realm: global
+     realm: common
      module: 'OpenBib::Handler::Apache::Connector::RSS'
   connector_seealso_loc:
      name: connector/seealso
@@ -274,7 +279,7 @@ handler:
      module: 'OpenBib::Handler::Apache::SelfReg'
   serverload_loc:
      name:  getload
-     realm: global
+     realm: common
      module: 'OpenBib::Handler::Apache::ServerLoad'
   startopac_loc:
      name: opac
@@ -506,7 +511,8 @@ dbis_yellow_red_img: /images/openbib/dbis/z5.gif
 dbis_de_img: /images/openbib/dbis/z-de.gif
 delete_img: /images/openbib/cancel.png
 follow_img: /images/openbib/solidrightarrow.png
-info_img: /images/openbib/info.png
+infotopic_img: /images/openbib/info.png
+info_img: /images/openbib/info_small.png
 help_img: /images/openbib/help.png
 hint_img: /images/openbib/hint.png
 home_img: /images/openbib/home.png
@@ -655,6 +661,10 @@ tt_info_54_tname: info_54
 tt_info_60_tname: info_60
 tt_info_61_tname: info_61
 tt_info_62_tname: info_62
+tt_info_63_tname: info_63
+tt_info_64_tname: info_64
+tt_info_65_tname: info_65
+tt_info_66_tname: info_66
 tt_info_9_tname: info_9
 tt_info_message_tname: info_message
 tt_info_tname: info
@@ -775,9 +785,6 @@ maxlength_dbname: 70
 use_https: 1
 use_admin_https: 1
 
-# Standardview, wenn ueber die URI-Kodierung kein URI bestimmt werden konnte
-defaultview: kug
-
 # Testsystem
 testsystem: 0
 
@@ -796,15 +803,19 @@ drilldown_option:
   cloud: 0
   cloud_min: 6
 
+# Repraesentationen
+
+representation:
+   'rdf+xml': 'application/rdf+xml'
+   'rdf+n3': 'application/rdf+n3'
+   'html': 'text/html'
+
 # Default Query-Options (Session)
 default_query_options:
-  hitrange: 50
-  offset: 1
+  num: 50
   l: 'de'
+  page: 1
   profil: ''
-  autoplus: ''
-  sb: 'sql'
-  js: 0
   listtype: 'list'
 
 # Generierte BestOf-Daten
@@ -837,6 +848,9 @@ reviews: 1
 coverscans:
   all: 1
 
+# BIX
+bix: 0
+
 # unAPI
 unAPI: 1
 unAPI_formats:
@@ -849,6 +863,7 @@ unAPI_formats:
 categorymapping:
   ebooks:
     T0662: 1
+    T0663: 1
   einbaende:
     T0100: 1
     T0101: 1

@@ -30,7 +30,7 @@ use warnings;
 use utf8;
 
 BEGIN {
-    $ENV{XAPIAN_PREFER_FLINT}    = '1';
+#    $ENV{XAPIAN_PREFER_CHERT}    = '1';
     $ENV{XAPIAN_FLUSH_THRESHOLD} = '200000';
 }
 

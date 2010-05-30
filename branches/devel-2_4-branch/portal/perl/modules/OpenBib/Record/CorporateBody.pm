@@ -276,4 +276,95 @@ sub name_as_string {
     return $self->{name};
 }
 
+sub print_to_handler {
+    my ($self,$arg_ref)=@_;
+
+    my $r                  = exists $arg_ref->{apachereq}
+        ? $arg_ref->{apachereq}          : undef;
+    my $representation     = exists $arg_ref->{representation}
+        ? $arg_ref->{representation}    : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config        = OpenBib::Config->instance;
+    my $session       = OpenBib::Session->instance({ apreq => $r });
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $user          = OpenBib::User->instance({sessionID => $session->{ID}});
+    my $searchquery   = OpenBib::SearchQuery->instance;
+    my $query         = Apache2::Request->new($r);
+
+    my $queryoptions  = OpenBib::QueryOptions->instance($query);
+    
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+    
+    my $stid          = $query->param('stid')              || '';
+    my $callback      = $query->param('callback')  || '';
+    my $lang          = $query->param('lang') || $queryoptions->get_option('l') || 'de';
+
+    my $format     = $query->param('format')    || 'full';
+    my $no_log     = $query->param('no_log')    || '';
+    
+    my $loginname     = $user->get_username();
+    my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
+
+    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
+    my $content_type = (exists $config->{representation}{$representation})?$config->{representation}{$representation}:"text/html";     
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        content_type   => $content_type,
+        representation => $representation,
+
+        view        => $view,
+        stylesheet  => $stylesheet,
+        database    => $self->{database}, # Zwingend wegen common/subtemplate
+        dbinfo      => $dbinfotable,
+
+        qopts       => $queryoptions->get_options,
+        sessionID   => $session->{ID},
+        session     => $session,
+        record      => $self,
+        id          => $self->{id},
+
+        format      => $format,
+
+        searchquery => $searchquery,
+        activefeed  => $config->get_activefeeds_of_db($self->{database}),
+
+        loginname     => $loginname,
+        logintargetdb => $logintargetdb,
+
+        config      => $config,
+        user        => $user,
+        msg         => $msg,
+    };
+
+    $stid=~s/[^0-9]//g;
+    my $templatename = ($stid)?"tt_resource_corporatebody_".$stid."_tname":"tt_resource_corporatebody_tname";
+    
+    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+    # Log Event
+
+    if (!$no_log){
+        $session->log_event({
+            type      => 12,
+            content   => {
+                id       => $self->{id},
+                database => $self->{database},
+            },
+            serialize => 1,
+        });
+    }
+
+    return;
+}
+
 1;

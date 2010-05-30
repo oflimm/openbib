@@ -50,6 +50,7 @@ use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Database::DBI;
+use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
@@ -1011,45 +1012,56 @@ sub set_brief_normdata_from_storable {
 sub print_to_handler {
     my ($self,$arg_ref)=@_;
 
-    my $format             = exists $arg_ref->{format}
-        ? $arg_ref->{format}             : 'full';
-    my $queryid            = exists $arg_ref->{queryid}
-        ? $arg_ref->{queryid}            : undef;
     my $r                  = exists $arg_ref->{apachereq}
         ? $arg_ref->{apachereq}          : undef;
-    my $stylesheet         = exists $arg_ref->{stylesheet}
-        ? $arg_ref->{stylesheet}         : undef;
-    my $view               = exists $arg_ref->{view}
-        ? $arg_ref->{view}               : undef;
-    my $msg                = exists $arg_ref->{msg}
-        ? $arg_ref->{msg}                : undef;
-    my $no_log             = exists $arg_ref->{no_log}
-        ? $arg_ref->{no_log}             : 0;
+    my $representation     = exists $arg_ref->{representation}
+        ? $arg_ref->{representation}    : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config        = OpenBib::Config->instance;
-    my $session       = OpenBib::Session->instance;
-    my $queryoptions  = OpenBib::QueryOptions->instance;
+    my $session       = OpenBib::Session->instance({ apreq => $r });
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $user          = OpenBib::User->instance;
+    my $user          = OpenBib::User->instance({sessionID => $session->{ID}});
     my $searchquery   = OpenBib::SearchQuery->instance;
     my $query         = Apache2::Request->new($r);
 
+    my $queryoptions  = OpenBib::QueryOptions->instance($query);
+    
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+    
     my $stid          = $query->param('stid')              || '';
+    my $callback      = $query->param('callback')  || '';
+    my $lang          = $query->param('lang') || $queryoptions->get_option('l') || 'de';
 
+    my $queryid    = $query->param('queryid')   || '';
+    my $format     = $query->param('format')    || 'full';
+    my $no_log     = $query->param('no_log')    || '';
+    
     my $loginname     = $user->get_username();
     my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
+    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    
     my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
         session    => $session,
         database   => $self->{database},
         titidn     => $self->{id},
     });
 
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
+    my $content_type = (exists $config->{representation}{$representation})?$config->{representation}{$representation}:"text/html";     
+    
     my $poolname=$dbinfotable->{dbnames}{$self->{database}};
+
+    if ($queryid){
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+    }
 
     # Literaturlisten finden
 
@@ -1086,8 +1098,13 @@ sub print_to_handler {
         }
     }
 
+    # Dann Ausgabe des neuen Headers
+    
     # TT-Data erzeugen
     my $ttdata={
+        content_type   => $content_type,
+        representation => $representation,
+
         view        => $view,
         stylesheet  => $stylesheet,
         database    => $self->{database}, # Zwingend wegen common/subtemplate
@@ -1118,7 +1135,6 @@ sub print_to_handler {
         litlists          => $litlists_ref,
         highlightquery    => \&highlightquery,
 
-        record      => $self,
         config      => $config,
         user        => $user,
         msg         => $msg,

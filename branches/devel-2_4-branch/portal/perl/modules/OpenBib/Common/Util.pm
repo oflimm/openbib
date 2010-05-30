@@ -246,11 +246,13 @@ sub print_page {
     my $logger = get_logger();
 
     my $config  = OpenBib::Config->instance;
+
+    my $content_type = $ttdata->{'content_type'} || 'text/html';
     
     # View- und Datenbank-spezifisches Templating
     my $database  = $ttdata->{'database'};
     my $sessionID = $ttdata->{'sessionID'};
-
+    
     my $session   = OpenBib::Session->instance({ sessionID => $sessionID });
 
     my $view;
@@ -305,7 +307,7 @@ sub print_page {
     });
   
     # Dann Ausgabe des neuen Headers
-    $r->content_type("text/html");
+    $r->content_type($content_type);
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);

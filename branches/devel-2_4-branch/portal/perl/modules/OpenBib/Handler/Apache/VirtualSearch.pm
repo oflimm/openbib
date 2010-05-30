@@ -750,7 +750,6 @@ sub handler {
                 
                 combinedbs      => $combinedbs,
                 
-                qopts           => $queryoptions->get_options,
                 drilldown             => $drilldown,
                 
                 offset         => $offset,
@@ -1036,7 +1035,7 @@ sub handler {
                                 recordlist      => $recordlist,
 
                                 qopts           => $queryoptions->get_options,
-                                drilldown             => $drilldown,
+                                drilldown       => $drilldown,
 
                                 cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
 
@@ -1066,11 +1065,12 @@ sub handler {
 
                             # flush output buffer
                             eval {
-			      $r->rflush(); 
+                                $logger->error("Flushing");
+                                $r->rflush();
 			    };
 
 			    if($@) { 
-			      $logger->error("Flush-Error") 
+                                $logger->error("Flush-Error");
 			    }
                         }
                     }

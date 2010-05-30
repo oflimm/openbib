@@ -68,21 +68,28 @@ sub handler {
 
     my $config = OpenBib::Config->instance;
 
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+    
     my $uri  = $r->parsed_uri;
     my $path = $uri->path;
 
-    my $query  = Apache2::Request->new($r);
+    # Datenstrukturen
+    ######################################################################
+    my $is_bibtype_ref = {
+        'title'          => 1,
+        'person'         => 1,
+        'corporatebody'  => 1,
+        'subject'        => 1,
+        'classification' => 1,
+    };
     
-    my $session = OpenBib::Session->instance({ apreq => $r });
+    my $content_type_map_ref = {
+        "application/rdf+xml" => "rdf+xml",
+        "text/rdf+n3"         => "rdf+n3",
+    };
 
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-        
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
-
+    ######################################################################
+    
     # Basisipfad entfernen
     my $basepath = $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name};
     $path=~s/$basepath//;
@@ -107,28 +114,13 @@ sub handler {
         $id       = $3;
         $representation = '';
     }
+    else {
+        return Apache2::Const::OK;        
+    }
 
-    my $is_bibtype_ref = {
-        'title'          => 1,
-        'person'         => 1,
-        'corporatebody'  => 1,
-        'subject'        => 1,
-        'classification' => 1,
-    };
-    
     $logger->debug("Type: $type - Database: $database - Key: $id - Representation: $representation");
 
-    my $content_type_map_ref = {
-        "application/rdf+xml" => "rdf+xml",
-        "text/rdf+n3"         => "rdf+n3",
-    };
-
-    my $content_type_map_rev_ref = {
-        "rdf+xml" => "application/rdf+xml",
-        "rdf+n3"  => "text/rdf+n3",
-        "html"    => "text/html",
-    };
-
+    # Content-Weiche, wenn Resource-URI direkt angesprochen wird
     if (!$representation){
         my $accept       = $r->headers_in->{Accept} || '';
         my @accept_types = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
@@ -156,14 +148,6 @@ sub handler {
         return Apache2::Const::HTTP_SEE_OTHER;
     }
     
-    my $callback   = $query->param('callback')  || '';
-    my $lang       = $query->param('lang') || $queryoptions->get_option('l') || 'de';
-    my $stid       = $query->param('stid')      || '';
-
-    my $queryid    = $query->param('queryid')   || '';
-    my $format     = $query->param('format')    || 'full';
-
-    
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
     #####                                                          ######
@@ -173,38 +157,10 @@ sub handler {
     ###########                                               ###########
 
     $logger->debug("Type: $type - Representation: $representation");
-
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    # TT-Data erzeugen
-    
-    my $ttdata = {
-        dbinfo         => $dbinfotable,
-        callback       => $callback,
-        lang           => $lang,
-        representation => $representation,
-
-        format         => $format,
-        
-        view           => $view,
-        stylesheet     => $stylesheet,
-        
-        qopts          => $queryoptions->get_options,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
-    };
     
     #####################################################################
-        
     
-    if ($is_bibtype_ref->{$type} && $database && $id ){ # Valider Typ etc.?
+    if ($is_bibtype_ref->{$type} && $database && $id ){ # Valider Typ etc.
         $logger->debug("Path: $path - Key: $id - DB: $database - ID: $id");
 
         #####################################################################
@@ -214,126 +170,45 @@ sub handler {
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                 or $logger->error_die($DBI::errstr);
         
-
-        $ttdata->{database} = $database;
-        $ttdata->{id}       = $id;
-        
         if ($type eq "title") {
-            my $record = OpenBib::Record::Title->new({database => $database, id => $id})
-                ->load_full_record({dbh => $dbh});
-            
-            $ttdata->{record} = $record;
-            
+            OpenBib::Record::Title->new({database => $database, id => $id})
+                  ->load_full_record({dbh => $dbh})->print_to_handler({
+                      apachereq          => $r,
+                      representation     => $representation
+                  });
         }
         elsif ($type eq "person"){
-            my $record = OpenBib::Record::Person->new({database => $database, id => $id})
-                ->load_full_record({dbh => $dbh});
-
-            $ttdata->{record} = $record;
-
-#             my $recordlist = new OpenBib::RecordList::Title();
-
-#             # Bestimmung der Titel
-#             my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=2 ") or $logger->error($DBI::errstr);
-#             $request->execute($id);
-            
-#             while (my $res=$request->fetchrow_hashref){
-#                 $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-#             }
-#             $request->finish();
-
-#             $ttdata->{title_records} = $recordlist;
-            
-            $session->log_event({
-                type      => 11,
-                content   => {
-                    id       => $id,
-                    database => $database,
-                },
-                serialize => 1,
-            });
-
+            OpenBib::Record::Person->new({database => $database, id => $id})
+                  ->load_full_record({dbh => $dbh})->print_to_handler({
+                      apachereq          => $r,
+                      representation     => $representation
+                  });            
         }
         elsif ($type eq "corporatebody"){
-            my $record = OpenBib::Record::CorporateBody->new({database => $database, id => $id})
-                ->load_full_record({dbh => $dbh});
-            
-            $ttdata->{record} = $record;
-
-            $session->log_event({
-            type      => 12,
-            content   => {
-                id       => $id,
-                database => $database,
-            },
-            serialize => 1,
-        });
-
+            OpenBib::Record::CorporateBody->new({database => $database, id => $id})
+                  ->load_full_record({dbh => $dbh})->print_to_handler({
+                      apachereq          => $r,
+                      representation     => $representation
+                  });
         }
         elsif ($type eq "subject"){
-            my $record = OpenBib::Record::Subject->new({database => $database, id => $id})
-                ->load_full_record({dbh => $dbh});
-            
-            $ttdata->{record} = $record;
-
-            my $recordlist = new OpenBib::RecordList::Title();
-
-            # Bestimmung der Titel
-            my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=4 ") or $logger->error($DBI::errstr);
-            $request->execute($id);
-            
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-            }
-            $request->finish();
-
-            $ttdata->{title_records} = $recordlist;
-
+            OpenBib::Record::Subject->new({database => $database, id => $id})
+                  ->load_full_record({dbh => $dbh})->print_to_handler({
+                      apachereq          => $r,
+                      representation     => $representation
+                  });
         }
         elsif ($type eq "classification"){
-            my $record = OpenBib::Record::Classification->new({database => $database, id => $id})
-                ->load_full_record({dbh => $dbh});
-            
-            $ttdata->{record} = $record;
-        }
-        
+            OpenBib::Record::Classification->new({database => $database, id => $id})
+                  ->load_full_record({dbh => $dbh})->print_to_handler({
+                      apachereq          => $r,
+                      representation     => $representation
+                  });
+        }        
         
         $dbh->disconnect;
     }
-    elsif ($type eq "library"){
-        $ttdata->{id}       = $id;
-    }
 
-    $stid=~s/[^0-9]//g;
-    
-    my $templatename = ($stid)?"tt_resource_".$type."_".$stid."_tname":"tt_resource_".$type."_tname";
-    
-    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => $database,
-        templatename => $templatename,
-    });
-    
-    $logger->debug("Using database specific Template $templatename");
-    
-    my $template = Template->new({ 
-        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config->{tt_include_path},
-            ABSOLUTE       => 1,
-        }) ],
-        OUTPUT         => $r,    # Output geht direkt an Apache Request
-        RECURSION      => 1,
-    });
-    
-    # Dann Ausgabe des neuen Headers
-    my $content_type = (exists $content_type_map_rev_ref->{$representation})?$content_type_map_rev_ref->{$representation}:"text/html";
-    
-    $r->content_type($content_type);
-    
-    $template->process($config->{$templatename}, $ttdata) || do {
-        $r->log_reason($template->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
-    };
-    
     return Apache2::Const::OK;
 }
 

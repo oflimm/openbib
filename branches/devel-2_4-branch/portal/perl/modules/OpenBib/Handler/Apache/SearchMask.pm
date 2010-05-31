@@ -74,13 +74,39 @@ sub handler {
 
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
+    my $useragent = $r->subprocess_env('HTTP_USER_AGENT');
   
     my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    my @databases = ($query->param('db'))?$query->param('db'):();
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+
+    my $uri  = $r->parsed_uri;
+    my $path = $uri->path;
+    
+    # Basisipfad entfernen
+    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{searchmask_loc}{name};
+    $path=~s/$basepath//;
+
+    $logger->debug("Path: $path without basepath $basepath");
+    
+    # Service-Parameter aus URI bestimmen
+    my $type = '';
+
+    if ($path=~m/^\/recent/){
+        $type = $session->get_mask();
+    }    
+    elsif ($path=~m/^\/([^\/]+)/){
+        $type     = $1;
+        $session->set_mask($type);
+    }
+    else {
+        return Apache2::Const::OK;
+    }
+
+    $logger->debug("Got Type: $type");
+    
+    my @databases  = ($query->param('db'))?$query->param('db'):();
     my $singleidn = $query->param('singleidn') || '';
-    my $setmask   = $query->param('setmask') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
@@ -93,9 +119,6 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return Apache2::Const::OK;
     }
-
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
-
 
     my $showfs        = "1";
     my $showhst       = "1";
@@ -186,13 +209,6 @@ sub handler {
     
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
-    if ($setmask) {
-        $session->set_mask($setmask);
-    }
-    else {
-        $setmask = $session->get_mask();
-    }
-
     # Wenn Datenbanken uebergeben wurden, dann werden diese eingetragen
     if ($#databases >= 0) {
         $session->clear_dbchoice();
@@ -280,7 +296,7 @@ sub handler {
         msg           => $msg,
     };
 
-    my $templatename = ($setmask)?"tt_searchmask_".$setmask."_tname":"tt_searchmask_tname";
+    my $templatename = ($type)?"tt_searchmask_".$type."_tname":"tt_searchmask_tname";
     
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 

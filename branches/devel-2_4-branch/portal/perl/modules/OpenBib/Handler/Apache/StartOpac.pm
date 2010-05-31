@@ -124,6 +124,7 @@ sub handler {
     # Standard ist 'einfache Suche'
     else {
         $session->set_mask('simple');
+        $setmask="simple";
     }
   
     # BEGIN View (Institutssicht)
@@ -171,38 +172,38 @@ sub handler {
     $logger->debug("StartOpac-sID: $session->{ID}");
 
     # Standard-URL
-    my $redirecturl = "$config->{base_loc}/$view/$config->{handler}{searchmask_loc}{name}?setmask=$setmask";
+    my $redirecturl = "$config->{base_loc}/$view/$config->{handler}{searchmask_loc}{name}/$setmask";
 
     my $viewstartpage_ref = $config->get_startpage_of_view($view);
 
     $logger->debug(YAML::Dump($viewstartpage_ref));
     
     if ($viewstartpage_ref->{start_loc}){
-        $redirecturl = "$config->{$viewstartpage_ref->{start_loc}}?view=$view";
+        $redirecturl = "$config->{base_loc}/$view/$config->{$viewstartpage_ref->{start_loc}}";
 
         if ($viewstartpage_ref->{start_stid}){
-            $redirecturl.=";stid=$viewstartpage_ref->{start_stid}";
+            $redirecturl.="/$viewstartpage_ref->{start_stid}";
         }
     }
     
     if ($searchsingletit && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$database;searchsingletit=$searchsingletit;search=1";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/title/$database/$searchsingletit/html";
     }
     
     if ($searchsingleaut && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?search=Mehrfachauswahl;database=$database;searchsingleaut=$searchsingleaut;view=$view";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/person/$database/$searchsingleaut/html";
     }
 
     if ($searchsinglekor && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?search=Mehrfachauswahl;database=$database;searchsinglekor=$searchsinglekor;view=$view";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/corporatebody/$database/$searchsinglekor/html";
     }
 
     if ($searchsingleswt && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?search=Mehrfachauswahl;database=$database;searchsingleswt=$searchsingleswt;view=$view";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/subject/$database/$searchsingleswt/html";
     }
 
     if ($searchsinglenot && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?search=Mehrfachauswahl;database=$database;searchsinglenot=$searchsinglenot;view=$view";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/classification/$database/$searchsinglenot/html";
     }
     
     if ($fs){
@@ -211,10 +212,6 @@ sub handler {
 
     if ($searchlitlist){
         $redirecturl = "$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=show;litlistid=$searchlitlist";
-    }
-
-    if ($config->{drilldown}){
-        $redirecturl .= ";dd=1";
     }
 
     $logger->info("Redirecting to $redirecturl");

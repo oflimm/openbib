@@ -88,7 +88,7 @@ sub handler {
     # Service-Parameter aus URI bestimmen
     my $stid = 0;
     
-    if ($path=~m/^\/([^\/]+?)/){
+    if ($path=~m/^\/([^\/]+)/){
         $stid     = $1;
     }
     else {

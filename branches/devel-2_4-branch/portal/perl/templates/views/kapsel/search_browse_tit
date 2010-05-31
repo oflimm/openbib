@@ -22,8 +22,8 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
    <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=kapselbrowsecat=T0700" title="Register">Register</a></li>
    <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?db=kapselstid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>

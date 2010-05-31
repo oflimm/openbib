@@ -48,7 +48,7 @@
 [% IF user.is_authenticated && config.get('lang').size > 1 %]
 <div class="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -125,7 +125,8 @@ $(document).ready(function(){
 
 
 
-<input type="hidden" name="st"        value="2" />
+<input type="hidden" name="combinedbs" value="1" />
+<input type="hidden" name="st"         value="2" />
 
 [% PROCESS common/subtemplate name="searchmask_query" %]
 
@@ -199,6 +200,7 @@ $(document).ready(function(){
 
 
 
+<input type="hidden" name="combinedbs" value="1" />
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="mart"      value="Zeitschrift_Serie" />
 <input type="hidden" name="boolmart"  value="AND" />
@@ -258,6 +260,7 @@ $(document).ready(function(){
 
 
 
+<input type="hidden" name="combinedbs" value="1" />
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="mart"      value="Aufsatz" />
 <input type="hidden" name="boolmart"  value="AND" />
@@ -326,7 +329,7 @@ $(document).ready(function(){
 [% IF config.get('lang').size > 1 %]
 <div class="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]

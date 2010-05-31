@@ -51,7 +51,7 @@
 [% IF user.is_authenticated && config.get('lang').size > 1 %]
 <div class="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -167,7 +167,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -256,7 +256,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -347,7 +347,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -406,7 +406,7 @@ $(document).ready(function(){
 [% IF config.get('lang').size > 1 %]
 <div class="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]

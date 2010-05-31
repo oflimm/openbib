@@ -50,7 +50,7 @@
 
 <div class="categories"><!-- Begin Categories -->
 
-[% PROCESS common/subtemplate name="visible_categories_titset" %]
+[% PROCESS common/subtemplate name="visible_categories_title" %]
 
 [%
   css_classes = [

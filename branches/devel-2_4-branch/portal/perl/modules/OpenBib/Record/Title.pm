@@ -1956,4 +1956,16 @@ sub to_drilldown_term {
     return $term;
 }
 
+sub to_json {
+    my ($self)=@_;
+
+    my $title_ref = {
+        'metadata'    => $self->{_normset},
+        'items'       => $self->{_mexset},
+        'circulation' => $self->{_circset},
+    };
+
+    return encode_json $title_ref
+}
+    
 1;

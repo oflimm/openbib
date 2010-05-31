@@ -282,7 +282,7 @@ handler:
      realm: common
      module: 'OpenBib::Handler::Apache::ServerLoad'
   startopac_loc:
-     name: opac
+     name: home
      realm: view
      module: 'OpenBib::Handler::Apache::StartOpac'
   tags_loc:
@@ -808,6 +808,9 @@ drilldown_option:
 representation:
    'rdf+xml': 'application/rdf+xml'
    'rdf+n3': 'application/rdf+n3'
+   'json': 'text/plain'
+   'bibtex': 'text/plain'
+   'refer': 'text/plain'
    'html': 'text/html'
 
 # Default Query-Options (Session)

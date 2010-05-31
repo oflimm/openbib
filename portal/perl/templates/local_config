@@ -28,6 +28,9 @@
                     defaultlogintarget = 4,
                     validlogintargets  = { "2" => 1, "4" => 1, }
                   },
+       "inst404" = {
+                    subjectid          = 2,
+                  },
        "inst420" = {
                     subjectid          = 2,
                     defaultlogintarget = 4,

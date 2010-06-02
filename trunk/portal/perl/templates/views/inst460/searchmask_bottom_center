@@ -29,7 +29,7 @@ Sie finden weitere Best&auml;nde dieses Katalogs in dem
 zugeh&ouml;rigen <a href="[% config.get('redirect_loc') %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=460z" target="_blank">digitalisierten Karten-Katalog der Altertumskunde - Abteilung Byzantinistik und Neogr&auml;zistik</a>.
 </p>
 
-[%- IF viewdbs.size == 1 && viewdbs.first.match("^inst[0-6]") -%]
+[%- IF 0 == 1 && viewdbs.size == 1 && viewdbs.first.match("^inst[0-6]") -%]
 <h4>Zeitschriften in der Bibliothek</h4>
 
 Eine Aufstellung der Zeitschriften in dieser Bibliothek stellen wir

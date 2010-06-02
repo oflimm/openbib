@@ -184,8 +184,10 @@ function submitViaEnter(evt){
 </td></tr>
 </table>
 
+[% IF config.get('bix') %]
   <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+[% END %]
 
 </div><!-- End searchmask_query -->
 <div id="searchmask_dbchoice"><!-- Begin searchmask_dbchoice -->

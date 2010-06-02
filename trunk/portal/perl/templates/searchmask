@@ -394,8 +394,10 @@ Literaturlisten usw.<p/>") %]
 
 <div id="searchmask_bottom"><!-- Begin searchmask_bottom -->
 
+[% IF config.get('bix') %]
 <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+[% END %]
 
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr valign="top">

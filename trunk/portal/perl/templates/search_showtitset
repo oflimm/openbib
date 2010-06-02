@@ -379,7 +379,7 @@ href="[% config.get('userreviews_loc') %]?sessionID=[% sessionID
 <th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
 <td><a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
 <th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
-<td><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
+<td><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% record.database %]/[% record.id | uri %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
 </table>
 <p />

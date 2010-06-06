@@ -929,14 +929,13 @@ while (my $line=<IN>){
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
             my $supplement = "";
-            my $category   = "";
 
             if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{init}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{init}}){
                     push @{$normdata_ref->{$searchfield}}, $targetid;
                 }
             }
-
+            
             if (exists $stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{tit}{inverted_ref}{$category}->{facet}}){
                     push @{$normdata_ref->{"facet_".$searchfield}}, $content;

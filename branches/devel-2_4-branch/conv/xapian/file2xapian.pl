@@ -175,8 +175,26 @@ my $atime = new Benchmark;
             foreach my $searchfield (keys %{$config->{searchfield}}) {
                 
                 $logger->debug("Processing Searchfield $searchfield for id $s_id");
+
+                # IDs
+                if ($config->{searchfield}{$searchfield}{type} eq 'id'){
+                    # Tokenize
+                    next if (! exists $searchcontent_ref->{$searchfield});
+
+                    foreach my $thisid (@{$searchcontent_ref->{$searchfield}}){
+                        # Naechstes, wenn keine ID
+                        next if (!$thisid);
+                        
+                        my $fieldtoken=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$thisid;
+                        
+                        my $fieldtoken_octet = encode_utf8($fieldtoken); 
+                        $fieldtoken=(length($fieldtoken_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
+                        
+                        $doc->add_term($fieldtoken);
+                    }
+                }
                 # Einzelne Worte (Fulltext)
-                if ($config->{searchfield}{$searchfield}{type} eq 'ft'){
+                elsif ($config->{searchfield}{$searchfield}{type} eq 'ft'){
                     # Tokenize
                     next if (! exists $searchcontent_ref->{$searchfield});
                     
@@ -405,7 +423,7 @@ $logger->info("Aktiviere temporaeren Suchindex");
 
 #my $cmd = "rm $thisddbpath/* ; xapian-compact -n $thistmpdbpath $thisdbpath";
 #my $cmd = "rm -f $thisdbpath/* ; copydatabase $thistmpdbpath $thisdbpath";
-my $cmd = "rm -f $thisdbpath/* ; rmdir $thisdbpath ; cp -a $thistmpdbpath $thisdbpath";
+my $cmd = "rm -f $thisdbpath/* ; rmdir $thisdbpath ; mv $thistmpdbpath $thisdbpath";
 
 $logger->info($cmd);
 

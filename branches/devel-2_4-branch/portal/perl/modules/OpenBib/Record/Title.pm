@@ -1965,7 +1965,7 @@ sub to_json {
         'circulation' => $self->{_circset},
     };
 
-    return encode_json $title_ref
+    return encode_json $title_ref;
 }
     
 1;

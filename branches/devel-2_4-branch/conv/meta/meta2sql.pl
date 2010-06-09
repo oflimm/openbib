@@ -271,13 +271,17 @@ foreach my $type (keys %{$stammdateien_ref}){
     if ($category && $content){
       print OUT       "$id$category$indicator$content\n";
     }
+
     if ($category && $contentnorm){
       print OUTSTRING "$id$category$contentnorm\n";
     }
+
     if ($category && $contentnormft){
       print OUTFT     "$id$category$contentnormft\n";
     }
+
   }
+
   close(OUT);
   close(OUTFT);
   close(OUTSTRING);
@@ -942,6 +946,7 @@ while (my $line=<IN>){
                 }
             }
 
+            print OUT           "$id$category$indicator$content\n";
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0100/){

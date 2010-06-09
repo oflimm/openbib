@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%- request_base    = "dd=1;" -%]
+[%- request_base    = "page=1;num=50;srt=author;srto=up;dd=1;" -%]
 [%- IF format == 'ajax' -%]
 [%- IF similar_persons.size > 0 %]
 <!-- Beginn Tag-Cloud -->

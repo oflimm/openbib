@@ -134,8 +134,10 @@ sub initial_search {
         ? $arg_ref->{sortorder}     : undef;
     my $hitrange          = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}      : 50;
-    my $offset            = exists $arg_ref->{offset}
-        ? $arg_ref->{offset}        : 0;
+    my $defaultop         = exists $arg_ref->{defaultop}
+        ? $arg_ref->{defaultop}     : "and";
+    my $page              = exists $arg_ref->{page}
+        ? $arg_ref->{page}          : 0;
     my $drilldown         = exists $arg_ref->{drilldown}
         ? $arg_ref->{drilldown}     : 0;
 
@@ -173,9 +175,14 @@ sub initial_search {
 
     my ($is_singleterm) = $querystring =~m/^(\w+)$/;
 
+    my $default_op_ref = {
+        'and' => Search::Xapian::OP_AND,
+        'or'  => Search::Xapian::OP_OR,
+    };
+    
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
     $qp->set_database($dbh);
-    $qp->set_default_op(Search::Xapian::OP_AND);
+    $qp->set_default_op($default_op_ref->{$defaultop});
 
     foreach my $prefix (keys %{$config->{xapian_search_prefix}}){
         $qp->add_prefix($prefix,$config->{xapian_search_prefix}{$prefix});
@@ -236,7 +243,9 @@ sub initial_search {
     }
 
     my $rset = Search::Xapian::RSet->new();
-    
+
+    my $offset = $page*$hitrange-$hitrange;
+
     my $mset = ($drilldown)?$enq->get_mset($offset,$hitrange,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$hitrange,$maxmatch);
 
     $logger->debug("DB: $database") if (defined $database);

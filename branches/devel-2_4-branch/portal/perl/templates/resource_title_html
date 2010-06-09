@@ -286,7 +286,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${same_record.database};searchsingletit=${same_record.id}" %]
+[% same_url = "${config.get('base_loc')}/${view}/${config.get('handler').resource_loc.name}/title/${same_record.database}/${same_record.id}/html" %]
 <li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
 [% END %]
 </ol>
@@ -302,7 +302,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <ol>
 [% FOREACH similar_record IN similar_records.get_records %]
 [% item = similar_record.get_brief_normdata %]
-[% similar_url = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${similar_record.database};searchsingletit=${similar_record.id}" %]
+[% similar_url = "${config.get('base_loc')}/${view}/${config.get('handler').resource_loc.name}/title/${similar_record.database}/${similar_record.id}/html" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
@@ -383,7 +383,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <div class="headline"><span id="formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="formats_do"><!-- Begin formats do -->
 <p>
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchsingletit=[% record.id %];database=[% record.database %];format=full;queryid=[% queryid %]" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchsingletit=[% record.id %];database=[% record.database %];format=Text;queryid=[% queryid %]" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchsingletit=[% record.id %];database=[% record.database %];format=BibTeX;queryid=[% queryid %]" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?searchsingletit=[% record.id %];database=[% record.database %];format=EndNote;queryid=[% queryid %]" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %]/html?format=full;queryid=[% queryid %]" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %]/html?format=Text;queryid=[% queryid %]" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %]/html?format=BibTeX;queryid=[% queryid %]" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %]/html?format=EndNote;queryid=[% queryid %]" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 <p/>
@@ -778,8 +778,7 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?queryid=[% queryid %];database=[% item.database
-%];searchsingletit=[% item.id %]"><strong><span class="rltitle">[%
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% item.database %]/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="rltitle">[%
 title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
 [% END %]
 [% IF recent_titles.get_size > 5 %]

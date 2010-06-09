@@ -92,16 +92,12 @@ sub handler {
     my @databases     = ($query->param('db'))?$query->param('db'):();
 
     my $hitrange      = ($query->param('num' ))?$query->param('num'):50;
-    my $offset        = ($query->param('offset'   ))?$query->param('offset'):0;
-    my $page          = undef ;
-    
-    if ($query->param('page')){
-        $page   = $query->param('page');
-        $offset = $page*$hitrange-$hitrange;
-    }
-    
+
+    my $page          = ($query->param('page' ))?$query->param('page'):1;
+
     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
+    my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
     my $combinedbs    = $query->param('combinedbs')    || 0;
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
@@ -124,7 +120,7 @@ sub handler {
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
-    my $drilldown             = $query->param('dd')      || 0;     # Drill-Down?
+    my $drilldown     = $query->param('dd')            || 0;     # Drill-Down?
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
@@ -419,6 +415,8 @@ sub handler {
 
         my @nav=();
 
+        my $offset = $page*$hitrange-$hitrange;
+    
         if ($hitrange > 0) {
             $logger->debug("Navigation wird erzeugt: Hitrange: $hitrange Hits: $hits");
 
@@ -458,6 +456,7 @@ sub handler {
             index      => \@sortedindex,
             nav        => \@nav,
             offset     => $offset,
+            page       => $page,
             hitrange   => $hitrange,
             baseurl    => $baseurl,
             profil     => $profil,
@@ -475,7 +474,6 @@ sub handler {
     ####################################################################
     # ENDE Indizes
     #
-
 
     if ($searchquery->get_searchfield('ejahr')->{norm}) {
         my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
@@ -562,6 +560,11 @@ sub handler {
         qopts          => $queryoptions->get_options,
         
         spelling_suggestion => $spelling_suggestion_ref,
+
+        hitrange       => $hitrange,
+        page           => $page,
+        sortorder      => $sortorder,
+        sorttype       => $sorttype,
         
         sysprofile     => $sysprofile,
         config         => $config,
@@ -644,7 +647,8 @@ sub handler {
                 sorttype        => $sorttype,
 
                 hitrange        => $hitrange,
-                offset          => $offset,
+                page            => $page,
+                defaultop       => $defaultop,
 
                 drilldown       => $drilldown,
             });
@@ -668,7 +672,6 @@ sub handler {
                 
                 my @matches = $request->matches;
                 foreach my $match (@matches) {
-#                foreach my $match (splice(@matches,$offset,$hitrange)) {
                     my $document        = $match->get_document();
 
                     my $titlistitem_ref;
@@ -752,12 +755,13 @@ sub handler {
                 
                 drilldown             => $drilldown,
                 
-                offset         => $offset,
+                page           => $page,
                 hitrange       => $hitrange,
                 
                 lastquery       => $request->querystring,
                 sorttype        => $sorttype,
                 sortorder       => $sortorder,
+                defaultop       => $defaultop,
                 resulttime      => $resulttime,
                 sysprofile      => $sysprofile,
                 config          => $config,
@@ -934,11 +938,12 @@ sub handler {
                             dbh             => $dbh,
                             database        => $database,
 
+                            defaultop       => $defaultop,
                             sortorder       => $sortorder,
                             sorttype        => $sorttype,
 
                             hitrange        => $hitrange,
-                            offset          => $offset,
+                            page            => $page,
 
                             drilldown       => $drilldown,
                         });
@@ -964,7 +969,6 @@ sub handler {
 
                             my @matches = $request->matches;
                             foreach my $match (@matches) {
-#                            foreach my $match (splice(@matches,$offset,$hitrange)) {
                                 # Es werden immer nur $hitrange Titelinformationen
                                 # zur Ausgabe aus dem MSet herausgeholt
                                 my $document        = $match->get_document();
@@ -1040,7 +1044,9 @@ sub handler {
                                 cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
 
                                 nav             => $nav,
-                                
+
+                                page            => $page,
+                                hitrange        => $hitrange,
                                 lastquery       => $request->querystring,
                                 sorttype        => $sorttype,
                                 sortorder       => $sortorder,

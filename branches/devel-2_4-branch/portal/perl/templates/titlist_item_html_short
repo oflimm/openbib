@@ -141,7 +141,7 @@
       <div class="brieftitle">
          <span class="rlperson">[% person %]</span><br /><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% item.database %]/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>   
 [% IF multiple_dbs == 1 %]
-         <br />[% msg.maketext("aus:") %]
+         <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
          <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% record.database %]">
 [%-   ELSE -%]

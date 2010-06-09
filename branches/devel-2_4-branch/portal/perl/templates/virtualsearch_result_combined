@@ -13,7 +13,7 @@
 -%]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "dd=1;combinedbs=1;" ;
+    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};dd=1;" ;
     start_range     = nav.current_page*qopts.num-qopts.num + 1;
     end_range       = nav.current_page*qopts.num;
     IF end_range >= fullresultcount ;
@@ -39,7 +39,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %]searchprofile=1;queryid=[% queryid %];page=[% qopts.page %];num=[% qopts.num %];srt=[% qopts.srt %];srto=[% qopts.srto %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?page=[% page %];[% request_base %];searchprofile=1;queryid=[% queryid %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]
@@ -67,7 +67,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %]searchprofile=1;queryid=[% queryid %];page=[% qopts.page %];num=[% qopts.num %];srt=[% qopts.srt %];srto=[% qopts.srto %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?page=[% page %];[% request_base %]searchprofile=1;queryid=[% queryid %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]

@@ -79,7 +79,7 @@ sub new {
     }   
     
     if (!defined $sessionID){
-        $self->{ID} = $self->_init_new_session();
+        $self->{ID} = $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
@@ -89,7 +89,7 @@ sub new {
             $logger->debug("SessionID is NOT valid");
             
             # Wenn uebergebene SessionID nicht ok, dann neue generieren
-            $self->{ID} = $self->_init_new_session();
+            $self->{ID} = $self->_init_new_session($r);
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
@@ -145,7 +145,7 @@ sub _new_instance {
     }   
     
     if (!defined $sessionID){
-        $self->{ID} = $self->_init_new_session();
+        $self->{ID} = $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
@@ -156,7 +156,7 @@ sub _new_instance {
             $logger->debug("SessionID is NOT valid");
             
             # Wenn uebergebene SessionID nicht ok, dann neue generieren
-            $self->{ID} = $self->_init_new_session();
+            $self->{ID} = $self->_init_new_session($r);
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
@@ -182,7 +182,7 @@ sub _new_instance {
 }
 
 sub _init_new_session {
-    my $self = shift;
+    my ($self,$r) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -193,6 +193,68 @@ sub _init_new_session {
     my $dbh
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+
+    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
+
+    # Loggen des Brower-Types
+    $self->log_event({
+        type      => 101,
+        content   => $useragent,
+    });
+
+    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+    # Client-IP setzen
+    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $r->connection->remote_ip($1);
+    }
+    
+    # Loggen der Client-IP
+    $self->log_event({
+        type      => 102,
+        content   => $r->connection->remote_ip,
+    });
+    
+    if ($view) {
+        # Loggen der View-Auswahl
+        $self->log_event({
+            type      => 100,
+            content   => $view,
+        });
+    }
+
+        # BEGIN View (Institutssicht)
+    #
+    ####################################################################
+    # Wenn ein View aufgerufen wird, muss fuer die aktuelle Session
+    # die Datenbankauswahl vorausgewaehlt und das Profil geaendert werden.
+    ####################################################################
+  
+    if ($view) {
+        # 1. Gibt es diesen View?
+        if ($config->view_exists($view)) {
+            # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
+            #    keine Auswahl getroffen hat
+      
+
+            # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
+            # Auswahl auf die zum View gehoerenden Datenbanken
+            if ($self->get_number_of_dbchoice == 0) {
+                my @viewdbs=$config->get_dbs_of_view($view);
+
+                foreach my $dbname (@viewdbs){
+                    $self->set_dbchoice($dbname);
+                }
+            }
+            # 3. Assoziiere den View mit der Session (fuer Merkliste);
+            $self->set_view($view);
+        }
+        # Wenn es den View nicht gibt, dann wird gestartet wie ohne view
+        else {
+            $view="";
+        }
+    }
 
     my $sessionID="";
 

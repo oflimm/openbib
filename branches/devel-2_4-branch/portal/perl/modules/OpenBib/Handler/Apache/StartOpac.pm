@@ -87,37 +87,6 @@ sub handler {
   
     my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
-
-    # Loggen des Brower-Types
-    $session->log_event({
-        type      => 101,
-        content   => $useragent,
-    });
-
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $r->connection->remote_ip($1);
-    }
-    
-    # Loggen der Client-IP
-    $session->log_event({
-        type      => 102,
-        content   => $r->connection->remote_ip,
-    });
-    
-    if ($view) {
-        # Loggen der View-Auswahl
-        $session->log_event({
-            type      => 100,
-            content   => $view,
-        });
-    }
-    else {
-        $logger->error("No view given");
-    }
-
     if ($setmask) {
         $session->set_mask($setmask);
     }
@@ -127,38 +96,6 @@ sub handler {
         $setmask="simple";
     }
   
-    # BEGIN View (Institutssicht)
-    #
-    ####################################################################
-    # Wenn ein View aufgerufen wird, muss fuer die aktuelle Session
-    # die Datenbankauswahl vorausgewaehlt und das Profil geaendert werden.
-    ####################################################################
-  
-    if ($view ne "") {
-        # 1. Gibt es diesen View?
-        if ($config->view_exists($view)) {
-            # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
-            #    keine Auswahl getroffen hat
-      
-
-            # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
-            # Auswahl auf die zum View gehoerenden Datenbanken
-            if ($session->get_number_of_dbchoice == 0) {
-                my @viewdbs=$config->get_dbs_of_view($view);
-
-                foreach my $dbname (@viewdbs){
-                    $session->set_dbchoice($dbname);
-                }
-            }
-            # 3. Assoziiere den View mit der Session (fuer Merkliste);
-            $session->set_view($view);
-        }
-        # Wenn es den View nicht gibt, dann wird gestartet wie ohne view
-        else {
-            $view="";
-        }
-    }
-
     # Wenn effektiv kein valider View uebergeben wurde, dann wird
     # ein 'leerer' View mit der Session assoziiert.
 

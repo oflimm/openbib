@@ -53,7 +53,7 @@
 [%- END -%]
     </div>
   </div>
-[% IF drilldown && fullresultcount <= config.get('xapian_option').maxmatch %]
+[% IF drilldown %]
   <div class="resultdrilldown">
 [% PROCESS common/subtemplate name="drilldown_categorized" %]
   </div>

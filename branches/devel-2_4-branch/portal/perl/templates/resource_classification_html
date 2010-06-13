@@ -23,6 +23,7 @@
 
 dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata;   
+request_base = "page=1;num=50;srt=author;srto=up;dd=1;";
 
 -%]
 
@@ -48,7 +49,11 @@ FOREACH category IN categories;
     SWITCH category;
 
     CASE "N5000";
-         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofnot=${normset.id};offset=0;num=${qopts.num}\">${content}</a>";
+         searchterm    = record.id;
+         searchprefix  = config.get('searchfield').notid.prefix;
+
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?${request_base}db=${database};fs=${searchprefix}:${searchterm}";
+         content   = "<a href=\"${localurl}\">${content}</a>";
     END;
 
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind

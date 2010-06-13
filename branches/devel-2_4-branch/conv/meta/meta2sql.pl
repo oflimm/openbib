@@ -716,6 +716,9 @@ while (my $line=<IN>){
         foreach my $item (@verf){
             next if (exists $seen_verf{$item});
 
+            # ID-Merken fuer Recherche ueber Suchmaschine
+            push @{$normdata_ref->{'verfid'}}, $item;
+
             foreach my $searchfield (keys %{$stammdateien_ref->{aut}{data}{$item}}){
                 push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{aut}{data}{$item}{$searchfield}};
             }
@@ -724,18 +727,27 @@ while (my $line=<IN>){
         }
 
         foreach my $item (@kor){
+            # ID-Merken fuer Recherche ueber Suchmaschine
+            push @{$normdata_ref->{'korid'}}, $item;
+
             foreach my $searchfield (keys %{$stammdateien_ref->{kor}{data}{$item}}){
                 push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{kor}{data}{$item}{$searchfield}};
             }
         }
 
         foreach my $item (@swt){
+            # ID-Merken fuer Recherche ueber Suchmaschine
+            push @{$normdata_ref->{'swtid'}}, $item;
+
             foreach my $searchfield (keys %{$stammdateien_ref->{swt}{data}{$item}}){
                 push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{swt}{data}{$item}{$searchfield}};
             }
         }
 
         foreach my $item (@notation){
+            # ID-Merken fuer Recherche ueber Suchmaschine
+            push @{$normdata_ref->{'notid'}}, $item;
+
             foreach my $searchfield (keys %{$stammdateien_ref->{notation}{data}{$item}}){
                 push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{notation}{data}{$item}{$searchfield}};
             }

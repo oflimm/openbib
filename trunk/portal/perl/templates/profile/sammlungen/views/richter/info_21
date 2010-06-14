@@ -1,0 +1,262 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_21
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation_info" active_menu="standard" %]
+
+<div class="content"><!-- Begin Content -->
+
+<p />
+<h1>Ehemaliger Richter-Besitz in anderen Institutionen </h1>
+
+<p>
+Kulturgut aus dem ehemaligen Besitz der Schwestern Richter befindet sich heute nicht nur in der USB
+Köln. Mit Ausnahme des österreichischen Richterbesitzes sind die hier
+aufgeführten Fundtücke für die "Virtuelle Bibliothek Elise und Helene
+Richter" katalogisiert worden. 
+</p>
+
+
+<table width="100%" cellpadding="2" cellspacing="1">
+
+<tr><td colspan="2"><h2>Österreichische Nationalbibliothek (ÖNB)</h2></td></tr>
+
+ <tr>
+  <td>
+Etwa 100 Bücher aus dem Besitz von Elise und Helene Richter befinden
+im Bestand der <a
+href="http://www.onb.ac.at/"target="_blank">ÖNB</a>.
+  </td>
+  <td>
+Sie gelten in der ÖNB als NS-verfolgungsbedingt enzogenes Kulturgut und
+sind zur Restituion vorgesehen. <a href="http://www.onb.ac.at/about/provenienzforschung.htm"target="_blank">
+Weitere Informationen.</a>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+Auch in der Sammlung <a
+href="http://www.onb.ac.at/sammlungen/hschrift.htm"target="_blank">ÖNB
+Handschriften, Autographen und Nachlässe</a> befinden sich Stücke aus ehemaligem Richterbesitz.
+   </td>
+   <td>
+Sie sind im <a  href="http://aleph18.onb.ac.at/"target="_blank">ÖNB-HANNA-Katalog</a>
+ recherchierbar.
+  </td>
+ </tr>
+
+
+<tr><td colspan="2"><h2>Österreichisches Theatermuseum</h2></td></tr>
+
+<tr>
+  <td>
+Die 1942 von der USB Köln für die Theaterabteilung der Österreichischen Nationalbibliothek
+erworbenen Theatermappen von Helene Richter befinden sich heute im <a href="http://www.khm.at/oetm/"target="_blank"> Österreichischen
+Theatermuseum</a>.
+  </td>
+
+  <td>
+Helene Richter ist im Verzeichnis <a href="http://www.khm.at/oetm/sammlungen/handschriften-und-nachlaesse//"target="_blank">"Handschriften
+und Nachlässe"</a> aufgeführt. Gleich den Büchern im Besitz der ÖNB
+sind auch die Theatermappen zur Restitution vorgesehen.
+  </td>
+ </tr>
+
+<tr><td colspan="2">&nbsp;</td></tr>
+
+
+<tr><td colspan="2"><h2>Universitätsbibliothek Wien</h2></td></tr>
+
+<tr>
+  <td>
+Die in der Univesitätsbibliothek Wien durchgeführte <a
+href="http://bibliothek.univie.ac.at/provenienzforschung/"target="_blank">Provenienzforschung</a>
+hat in drei Fachbibliotheken <br /> zehn Bücher aus der Bibliothek Richter ermitteln können.
+  </td>
+
+  <td>
+ <a
+href="http://bibliothek.univie.ac.at/fb-anglistik/"target="_blank">Fachbereichsbibliothek Anglistik und
+Amerikanistik</a>,  <a
+href="http://bibliothek.univie.ac.at/fb-klass_philologie/"target="_blank">Fachbereichsbibliothek Klassische Philologie, Mittel-
+und Neulatein</a>,  <a
+href="http://bibliothek.univie.ac.at/fb-theater_film_medienwissenschaft/"target="_blank">Fachbereichsbibliothek Theater-, Film- und Medienwissenschaft
+</a>
+  </td>
+ </tr>
+
+
+<tr><td colspan="2">&nbsp;</td></tr>
+
+<tr><td colspan="2"><h2>Wienbibliothek im Rathhaus</h2></td></tr>
+
+<tr>
+  <td>
+Die  <a
+href="http://www.wienbibliothek.at/"target="_blank">Wienbibliothek</a> bewahrt den privaten Nachlass von Elise Richter
+auf. Es handelt sich um mehr als 1.800 Stücke, darunter Postkarten,
+Briefe, Druckschriften und das Typoskript von Elise Richters Autobiographie "Summe
+des Lebens".
+  </td>
+
+  <td>
+Der vollständig erfasste Bestand ist online in der <br /><a
+href="http://www.wienbibliothek.at/bestaende-und-sammlungen/index.html"target="_blank"> Handschriftensammlung / Eintrag Helene und Elise Richter</a> recherchierbar.
+  </td>
+ </tr>
+
+
+<tr><td colspan="2">&nbsp;</td></tr>
+
+<tr><td colspan="2"><h2>Moses Mendelssohn Zentrum für
+europäisch-jüdische Studien (MMZ)</h2></td></tr>
+
+<tr>
+  <td>
+Die Bibliothek des <a
+href="http://www.uni-potsdam.de/db/mmz-potsdam/"target="_blank">Moses
+Mendelssohn Zentrum</a> der Universität Potsdam besitzt zwei Bände aus
+ehemaligem Richterbesitz. Es handelt sich um Bücher, die sich im
+Nachlass von Walter Boehlich befanden.
+  </td>
+  <td>
+Wie und wo Walter Boehlich die Bände erwarb ist nicht bekannt. Weitere
+Informationen zu Walter Boehlich und seiner Bibliothek: <a
+href="http://www.j-zeit.de/archiv/artikel.981.html/"target="_blank">
+Walter Boehlichs Bücher</a>.
+  </td>
+ </tr>
+
+
+<tr><td colspan="2"><h2>Hochschulbibliothek der RWTH Aachen</h2></td></tr>
+
+<tr>
+  <td>
+In der Bibliothek der <a
+href="http://www.bth.rwth-aachen.de/"target="_blank">RWTH Aachen</a>
+befindet sich ein Buch aus der Bibliothek Richter.
+Es handelt sich um das Werk "England" von Eduard Meyer, Stuttgart 1915.
+  </td>
+
+  <td>
+Das Buch gehörte zu den von Elise Richter für die USB Köln bestimmten Bänden. Es wurde
+in den 80er Jahren als Dublette nach Aachen abgegeben.
+Das Buch ist in der  Virtuellen Bibliothek recherchierbar bzw. über das
+Register der Provenienzen aufzurufen.
+</td>
+ </tr>
+
+
+<tr><td colspan="2"><h2>Deutsche Zentralbibliothek für Medizin</h2></td></tr>
+
+<tr>
+  <td>
+Eins von drei Büchern von Branco van Dantzig. "Over spraakgebreken en
+hunne bestrijding", Groningen 1927 wurde von der USB 1942 an ihre damalige
+Medizinische Abteilung abgegeben. Die heutige  <a
+href="http://www.zbmed.de/"target="_blank">ZB MED</a> bewahrt aktuell
+eine Kopie des Werkes auf. Das Original wurde der USB für die Richterbibliothek zurückgegeben. 
+  </td>
+
+  <td>
+Alle drei Bände von Branco van Dantzig gehörten zur Phonetik-Sammlung
+der Richterbibliothek.
+</td>
+ </tr>
+
+
+
+<tr><td colspan="2"><h2>Romanisches Seminar der Universität zu Köln</h2></td></tr>
+
+<tr> <td> Zwei einst von der USB als Dubletten abgegebene Bände wurden
+vom <a
+href="http://www.romanistik.uni-koeln.de/library/index.shtml"target="_blank">Romanischen
+Seminar der Universität zu Köln</a> für die Richterbibliothek</a>
+zurückgegeben.
+</td>
+
+  <td>
+Beide Bände sind auf den Richterlisten für die USB verzeichnet. Eines
+der beiden Bücher enthält handschriftliche Notizen von Elise Richter.
+Die Bücher sind in der  Virtuellen Bibliothek recherchierbar bzw. über
+das Register der Provenienzen aufzurufen. 
+</td>
+ </tr>
+
+
+<tr><td colspan="2"><h2>Antiquariats-Funde</h2></td></tr>
+
+<tr>
+  <td>
+Regelmäßig wird seitens der USB recherchiert, ob Richterbücher im
+Antiquariatsbuchhandel auftauchen. 2008 konte so der Prachtband
+von Richard Andree "Der Weltverkehr und seine Mittel", Leipzig 1875
+erworben werden.
+Dieses Buch gehörte nie zu den für die USB bestimmten Bänden, trotzdem
+sind wir bemüht, die Richterbibliothek um solche Exemplare zu
+vervollständigen.
+  </td>
+
+  <td>Diese nachträglich erworbenen Bücher würden im Falle einer Restituion
+nicht ausgenommen.
+</td>
+ </tr>
+
+
+<tr><td colspan="2"><h2>Aus Privatbesitz</h2></td></tr>
+
+<tr>
+  <td>
+Aus privtem Besitz wurde der USB die Kopie eines Bandes für die
+Richterbibliothek überlassen.
+  </td>
+
+  <td>
+Es handelt sich um das Buch von Adolf Mussafia "Zur Erinnerung an
+Ferdinand Wolf", Wien 1866.
+</td>
+ </tr>
+
+
+</table>
+
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

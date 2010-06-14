@@ -1,0 +1,115 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+<table cellpadding="10">
+
+<tr>
+
+<td style="vertical-align:top;padding:40px;"> <center> <img src="/images/openbib/views/richter/richterexlibris_270px.jpg"
+alt="Ex Libris" /><br /><br /><i
+style="font-size:0.8em">Exlibris der Richter-Bibliothek<br/></center>
+</td>
+
+<td valign="top" style="padding-top:25px;">
+
+<h1>Die Virtuelle Bibliothek Elise und Helene Richter</h1>
+
+
+<p> Die Bibliothek der Schwestern Elise und Helene Richter wurde im Rahmen der NS-Provenienzforschung
+in der USB Köln rekonstruiert und dokumentiert. Ausführliche
+Informationen in: <a href="[%
+config.get('info_loc') %]?sessionID=[% sessionID
+%];stid=22">Die Richterbibliothek heute</a>. Das Ziel der "Virtuellen
+Bibliothek" ist, alle noch physisch fassbaren
+Bücher der ehemaligen Privatbibliothek zu erfassen. Dabei stellt die
+Erfassung und Beschreibung der USB-Bestände den ersten Schritt dar. Bücher aus dem
+Besitz der Schwestern befinden sich heute nicht nur in Köln, sondern u.a in der Österreichischen
+Nationalbibliothek, im Österreichischen Theatermuseum und in <a href="[%
+config.get('info_loc') %]?sessionID=[% sessionID
+%];stid=21">weiteren Institutionen</a>.
+</p>
+
+
+<h2> Elise und Helene Richter</h2>
+
+<p>
+Die Wiener Philologinnen <a href="[%
+config.get('info_loc') %]?sessionID=[% sessionID
+%];stid=23">Elise und Helene Richter</a> besaßen gemeinsam
+eine umfangreiche Bibliothek mit anglistischem, romanistischem,
+sprachwissenschaftlichem und theaterwissenschaftlichem
+Schwerpunkt. Durch den 1938 erfolgten "Anschluss" ihrer österreichischen Heimat an
+das Deutsche Reich wurden die beiden Jüdinnen nahezu mittellos und sahen sich
+gezwungen, ihren Besitz, darunter auch ihre Bücher zu verkaufen. Aus
+diesem Grund nahm Elise Richter 1941 Kontakt
+zu Hermann Corsten, dem damaligen Direktor der Universitäts- und Stadtbibliothek Köln auf.
+Bei einem Treffen in Wien wurde der Kauf von etwa 2.700 Bänden zum
+Preis von 4.500 Reichsmark vereinbart. Bevor es zu einer Überweisung
+des Betrages kam, wurden die Schwestern nach Theresienstadt
+deportiert. Die betagten Damen starben beide im
+Konzentrationslager.
+<br / >
+Die Bücher ihrer Bibliothek kamen 1942 in die USB
+Köln und wurden in den Bestand eingefügt.
+Diese Erwerbung zählt zu den NS-verfolgungsbedingt entzogenen
+Kulturgütern.
+Die USB Köln ist nach Rücksprache mit der Universität zu
+Köln, sowie nach der Einverständniserklärung des Oberbürgermeisters der
+Stadt Köln bereit, die Richter-Bibliothek zu restituieren. Die Suche
+nach möglichen Erben verlief allerdings bislang ergebnislos.
+</p>
+
+<p />
+Aktuelle Publikation: <b><a href="http://www.ub.uni-koeln.de/bibliothek/pub/schriften/index_ger.html#e15780"
+target="_blank">Bücherspuren - Das Schicksal von Elise und Helene
+Richter und ihrer Bibliothek im "Dritten Reich"</a></b>
+<p/>
+
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+</td></tr>
+</table>
+</div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

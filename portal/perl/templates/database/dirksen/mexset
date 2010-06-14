@@ -1,0 +1,47 @@
+[% IF circset.size <= 0 %]
+<table width="100%">
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Bestand") %]</td></tr>
+
+[% FOREACH mex IN mexnormset %]
+<tr align="center"><td><strong>USB Köln</strong></td><td>
+[% IF mex.${"X0014"}.content.match('^FHM ') %]USB-Freihandmagazin (1. OG) (<i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^EWA Z') %]Zeitschriftenbestand
+der Humanwissenschaftlichen Abteilung,
+Gronewaldstr. 2. Erh&auml;ltlich &uuml;ber EWA-LS-Theke (<i>sofort
+einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^USB-Zeitschr.-Stelle ')
+%]USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der
+angegebenen P-Nummer (z.B. P1234, <i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^USB-Zeitschr.-Lesesaal ')
+%]USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der
+angegebenen Fachgruppe (<i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^LS ') %]USB-Lesesaal (1. OG, 
+<i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^KS ') %]USB-Katalogsaal
+(2. OG, <i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^EDZ ') %]USB-Lesesaal (1. OG):
+Europ&auml;isches Dokumentationszentrum (<i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^EWA-LS-Theke ')
+%]Humanwissenschaftliche Abteilung, Lesesaaltheke, Gronewaldstr. 2
+(<i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^EWA-LS ')
+%]Humanwissenschaftliche Abteilung, Lesesaal, Gronewaldstr. 2 (<i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^HP ') ||
+mex.${"X0014"}.content.match('^HP-LS ')%]Humanwissenschaftliche
+Abteilung, Lesesaal Heilp&auml;dagogik, Frangenheimstr. 4 (<i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^FC ') %]Fachbibliothek Chemie,
+Greinstr. 4 (<i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^FBV ') %]Fachbibliothek
+Versicherungswissenschaft, Kerpener Str. 30 (<i>sofort einsehbar</i>)
+[% ELSIF mex.${"X0014"}.content.match('^B ') %]ausgelagerter
+Bestand. Lieferzeit ca. 14. Tage (<i>ausleihbar nach Bestellung</i>)
+[% ELSIF mex.${"X0014"}.content.match('^ZTG ')
+%]Zeitungsbestand. USB-Magazin (<i>ausleihbar nach Bestellung</i> mit
+konventionellem Bestellschein der Auskunft o. Lesesaal-Theke im 1.OG)
+[% ELSIF NOT mex.${"X0014"}.content.match('^-') && mex.${"X0016"}.content.match('^-') %]USB Magazin (<i>ausleihbar
+nach Bestellung</i>, siehe B&auml;nde)
+[% ELSE %][% mex.${"X0016"}.content %][% END %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% IF mex.${"X1200"} %][% mex.${"X1200"}.content %] [% END %][% mex.${"X1204"}.content %][% IF mex.${"X1203"} %] ([% mex.${"X1203"}.content %])[% END %]</td></tr>
+
+[% END %]
+</table>
+[% END %]

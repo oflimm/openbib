@@ -516,101 +516,6 @@ dt.review {
 /* Kopf */
 
 #header {
-  height: 120px;
-  width: 100%;
-/*  position: absolute;
-  top: 0;
-  left: 0; */
-  background: white ;
-  padding: 0px;
-}
-
-#header_uni_siegel {
-  background: white url(/images/openbib/usb-logo.png) center no-repeat;
-  width: 120px;
-  height: 90px;
-  position: absolute;
-  top: 2px;
-  right: 0px;
-}
-
-#header_uni_siegel_small {
-  background: url(/images/openbib/usblogotrans190.png) center no-repeat;
-  width: 200px;
-  height: 80px;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
-#header_usb_siegel {
-  background: url(/images/openbib/views/dirksen/logo.png) center no-repeat;
-  width: 400px;
-  height: 58px;
-  position: absolute;
-  top: 10px;
-  left: 15px;
-}
-
-#header_usb_siegel_small {
-  background: url(/images/openbib/views/dirksen/logo.png) center no-repeat;
-  width: 400px;
-  height: 105px;
-  position: absolute;
-  top: 5px;
-  left: -40px;
-}
-
-#header_usb_siegel_light {
-  background: url(/images/openbib/kuglightlogo.png) center no-repeat;
-  width: 150px;
-  height: 68px;
-  position: absolute;
-  top: 15px;
-  left: 15px;
-}
-
-#header_uni_schriftzug {
-  border-bottom: 4px solid #00089e; /* Linie im Kopf */
-  padding-bottom: 3px;
-  display: block;
-  margin: 7px 0 0 190px;
-}
-#header_uni_schriftzug,
-#header_uni_schriftzug span {
-/*  font-family: "Arial Narrow", "DejaVu Sans Condensed", Arial, Verdana, Helvetica, sans-serif; */
-  font-family: Arial,helv,Helvetica,Verdana,sans-serif;
-  font-size: 20px;
-  font-weight: bold;
-  color: #000000;
-  text-decoration: none;
-}
-#header_uni_schriftzug span:hover,
-#header_uni_schriftzug:focus span {
-  color: #000000;
-  text-decoration: underline;
-}
-
-#header_usb_schriftzug {
-  display: block;
-  margin: 4px 0 0 190px;
-}	
-#header_usb_schriftzug,
-#header_usb_schriftzug span {
-/*  font-family: "Arial Narrow", "DejaVu Sans Condensed", Arial, Verdana, Helvetica, sans-serif; */
-  font-family: Arial,helv,Helvetica,Verdana,sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  color: #000000;
-  text-decoration: none;
-}
-#header_usb_schriftzug span:hover,
-#header_usb_schriftzug:focus span {
-  color: #000000;
-  text-decoration: underline;
-}
-
-#header2 {
   height: 110px;
   width: 99.5%;
 /*  position: absolute;
@@ -619,79 +524,33 @@ dt.review {
   padding: 0px;
 }
 
-#header2 #header_logo {
+#header #header_logo {
   float: left;
   width: 120px;
 }
 
-#header2_uni_schriftzug {
-  border-bottom: 2px solid #00089e; /* Linie im Kopf */
-  padding-bottom: 3px;
-  display: block;
-  margin: 16px 85px 0 150px;
-}
-#header2_uni_schriftzug,
-#header2_uni_schriftzug span {
-/*  font-family: "Arial Narrow", "DejaVu Sans Condensed", Arial, Verdana, Helvetica, sans-serif; */
-  font-family: Arial,helv,Helvetica,Verdana,sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  color: #000000;
-  text-decoration: none;
-}
-#header2_uni_schriftzug span:hover,
-#header2_uni_schriftzug:focus span {
-  color: #000000;
-  text-decoration: underline;
-}
-
-#header2_usb_schriftzug {
-  display: block;
-  margin: 3px 0 0 150px;
-}	
-#header2_usb_schriftzug,
-#header2_usb_schriftzug span {
-/*  font-family: "Arial Narrow", "DejaVu Sans Condensed", Arial, Verdana, Helvetica, sans-serif; */
-  font-family: Arial,helv,Helvetica,Verdana,sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  color: #000000;
-  text-decoration: none;
-}
-#header2_usb_schriftzug span:hover,
-#header2_usb_schriftzug:focus span {
-  color: #000000;
-  text-decoration: underline;
-}
-
-#header2 #header_simplesearch {
-  float: right;
-  width: auto;
-/*  text-align: right; */
-  vertical-align: middle;
-  padding:10px;
-  margin-top:17px;
-  margin-right: 10px; 
-  
-  border-top-style: solid;
-  border-top-color: lightblue;
-  border-top-width: 1px;
-  border-left-style: solid;
-  border-left-color: lightblue;
-  border-left-width: 1px;
-  border-right-style: solid;
-  border-right-color: lightblue;
-  border-right-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: lightblue;
-  border-bottom-width: 1px;  
-
-}
-
-#header2 #header_right {
+#header #header_right {
   float: right;
   width: 99.8%;
   padding:0px;
+}
+
+#header_right_image {
+  background: url(/images/openbib/usblogotrans190.png) center no-repeat;
+  width: 200px;
+  height: 80px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+#header_logo_image {
+  background: url(/images/openbib/views/dirksen/logo.png) center no-repeat;
+  width: 400px;
+  height: 105px;
+  position: absolute;
+  top: 5px;
+  left: -40px;
 }
 
 .listnavigation {

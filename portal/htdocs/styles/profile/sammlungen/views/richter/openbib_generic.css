@@ -535,15 +535,6 @@ dt.review {
   padding:0px;
 }
 
-#header_uni_siegel {
-  background: white url(/images/openbib/usb-logo.png) center no-repeat;
-  width: 120px;
-  height: 90px;
-  position: absolute;
-  top: 2px;
-  right: 0px;
-}
-
 #header_right_image {
   background: url(/images/openbib/usblogotrans190.png) center no-repeat;
   width: 200px;

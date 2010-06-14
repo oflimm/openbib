@@ -117,7 +117,7 @@ table {
 }
 
 .listrow2 { 
-  background-color: aliceblue;
+  background-color: #fef6e2;
 }
 
 .category { 
@@ -728,18 +728,18 @@ dt.review {
   width: 98%;  
   padding: 10px;
   height: 35px;
-  background-color: aliceblue;
+  background-color: #fef6e2;
   border-left-style: solid;
-  border-left-color: lightblue;
+  border-left-color: #edebe3;
   border-left-width: 1px;
   border-right-style: solid;
-  border-right-color: lightblue;
+  border-right-color: #edebe3;
   border-right-width: 1px;
   border-top-style: solid;
-  border-top-color: lightblue;
+  border-top-color: #edebe3;
   border-top-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #edebe3;
   border-bottom-width: 1px;
   -moz-border-radius-topright: 12px;
   -moz-border-radius-topleft: 12px;
@@ -780,16 +780,16 @@ dt.review {
   margin-top: 5px; 
   margin-right: 5px; 
   border-top-style: solid;
-  border-top-color: lightblue;
+  border-top-color: #edebe3;
   border-top-width: 1px;
   border-left-style: solid;
-  border-left-color: lightblue;
+  border-left-color: #edebe3;
   border-left-width: 1px;
   border-right-style: solid;
-  border-right-color: lightblue;
+  border-right-color: #edebe3;
   border-right-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #edebe3;
   border-bottom-width: 1px;
   -moz-border-radius-bottomright: 12px;
   -moz-border-radius-bottomleft: 12px;
@@ -819,7 +819,7 @@ dt.review {
   width: 100%;
   position: relative;
   border-style: solid;
-  border-color: lightblue;
+  border-color: #edebe3;
   border-width: 1px;
   margin-bottom: 5px;
 }
@@ -975,16 +975,16 @@ dt.review {
 .reuse_data {
   padding: 5px;
   border-top-style: solid;
-  border-top-color: lightblue;
+  border-top-color: #edebe3;
   border-top-width: 1px;
   border-left-style: solid;
-  border-left-color: lightblue;
+  border-left-color: #edebe3;
   border-left-width: 1px;
   border-right-style: solid;
-  border-right-color: lightblue;
+  border-right-color: #edebe3;
   border-right-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #edebe3;
   border-bottom-width: 1px;
   -moz-border-radius: 12px;
   -webkit-border-radius: 12px;
@@ -993,16 +993,16 @@ dt.review {
 .discover_sources {
   padding: 5px;
   border-top-style: solid;
-  border-top-color: lightblue;
+  border-top-color: #edebe3;
   border-top-width: 1px;
   border-left-style: solid;
-  border-left-color: lightblue;
+  border-left-color: #edebe3;
   border-left-width: 1px;
   border-right-style: solid;
-  border-right-color: lightblue;
+  border-right-color: #edebe3;
   border-right-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #edebe3;
   border-bottom-width: 1px;  
   -moz-border-radius: 12px;
   -webkit-border-radius: 12px;
@@ -1011,16 +1011,16 @@ dt.review {
 .session_history {
   padding: 5px;
   border-top-style: solid;
-  border-top-color: lightblue;
+  border-top-color: #edebe3;
   border-top-width: 1px;
   border-left-style: solid;
-  border-left-color: lightblue;
+  border-left-color: #edebe3;
   border-left-width: 1px;
   border-right-style: solid;
-  border-right-color: lightblue;
+  border-right-color: #edebe3;
   border-right-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #edebe3;
   border-bottom-width: 1px;  
   -moz-border-radius: 12px;
   -webkit-border-radius: 12px;
@@ -1085,16 +1085,16 @@ dt.review {
 .boxedclear {
   padding: 5px;
   border-top-style: solid;
-  border-top-color: lightblue;
+  border-top-color: #edebe3;
   border-top-width: 1px;
   border-left-style: solid;
-  border-left-color: lightblue;
+  border-left-color: #edebe3;
   border-left-width: 1px;
   border-right-style: solid;
-  border-right-color: lightblue;
+  border-right-color: #edebe3;
   border-right-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #edebe3;
   border-bottom-width: 1px;
   -moz-border-radius: 12px;
   -webkit-border-radius: 12px;
@@ -1109,7 +1109,7 @@ dt.review {
   border-top-color: lightblue;
   border-top-width: 1px; */
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #edebe3;
   border-bottom-width: 1px;
   font-weight:bold;
 /*  background: lightblue;
@@ -1503,14 +1503,14 @@ ul.recent_tags {
 
 .listoptions {
   overflow: hidden;   
-  background: aliceblue;
+  background: #fef6e2;
   margin-top: 5px;
   width: 99.7%;
   border-top-style: solid;
-  border-top-color: lightblue;
+  border-top-color: #edebe3;
   border-top-width: 1px; 
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #edebe3;
   border-bottom-width: 1px; 
 
 }

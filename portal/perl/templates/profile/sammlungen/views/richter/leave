@@ -31,7 +31,7 @@
 
   <center>
     <p>
-      <a href="http://richterbibliothek.ub.uni-koeln.de/" target="_parent"><span style="font-size:1.8em;text-weight:bold">[% msg.maketext("Neue Sitzung beginnen?") %]</span></a>
+      <a href="http://richterbibliothek.ub.uni-koeln.de/" target="_parent"><span style="font-size:2.5em;font-weight:bold">[% msg.maketext("Neue Sitzung starten") %]</span></a>
     </p>
   </center>
 <br />

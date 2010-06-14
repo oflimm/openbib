@@ -30,14 +30,11 @@
   </center>
 
   <center>
-    <p>
-      <a class="invisible" href="http://syndikatsbibliothek.ub.uni-koeln.de/" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="[% msg.maketext("Neue Sitzung beginnen?") %]" /></a>
-    </p>
-  </center>
-<br />
-<br />
-<br />
-<br />
-</div>
+        <p>
+<a href="http://syndikatsbibliothek.ub.uni-koeln.de/"
+  target="_parent"><span style="font-size:2.0em;font-weight:bold">Neue
+  Sitzung starten</span></a> </p> </center>
+
+<br /> <br /> <br /> <br /> </div>
 
 [% PROCESS common/subtemplate name="std_footer" hide_foot_banner=1 %]

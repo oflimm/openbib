@@ -106,6 +106,7 @@ CREATE TABLE orgunits (
  description TEXT,
  nr          INT,
 
+ INDEX (id),
  INDEX (nr),
  INDEX (profilename)
 )
@@ -113,11 +114,11 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
-drop table IF EXISTS db2orgunit;
-CREATE TABLE db2orgunit (
+drop table IF EXISTS orgunitdbs;
+CREATE TABLE orgunitdbs (
+ orgunitid   VARCHAR(20),
  profilename VARCHAR(20),
  dbname      VARCHAR(255),
- orgunitid   VARCHAR(20),
 
  INDEX (dbname),
  INDEX (orgunitid),

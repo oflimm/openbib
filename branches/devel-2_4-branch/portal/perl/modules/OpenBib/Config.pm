@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -937,6 +937,31 @@ sub get_profileinfo {
             or $logger->error_die($DBI::errstr);
     
     my $idnresult=$dbh->prepare("select * from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
+    
+    my $result=$idnresult->fetchrow_hashref();
+
+    my $profileinfo_ref = {    
+        profilename => decode_utf8($result->{'profilename'}),
+        description => decode_utf8($result->{'description'}),
+    };
+    
+    return $profileinfo_ref;
+}
+
+sub get_orgunits {
+    my $self        = shift;
+    my $profilename = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+    my $idnresult=$dbh->prepare("select * from orgunits where profilename = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename) or $logger->error($DBI::errstr);
     
     my $result=$idnresult->fetchrow_hashref();

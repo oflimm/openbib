@@ -762,6 +762,105 @@ sub handler {
         }
     
     }
+    elsif ($do_editorgunits) {
+    
+        # Zuerst schauen, ob Aktionen gefordert sind
+    
+        if ($do_del) {
+	    editorgunits_del($profilename,$orgunitname);
+
+	    my $ret_ref = dist_cmd("editorgunits_del",{ profilename => $profilename, orgunitname => $orgunitname }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
+            return Apache2::Const::OK;
+      
+        }
+        elsif ($do_change) {
+	    editorgunits_change({
+                profilename => $profilename,
+                description => $description,
+                profiledb   => \@profiledb,
+            });
+            
+	    my $ret_ref = dist_cmd("editprofile_change",{ 
+                profilename => $profilename,
+                description => $description,
+                profiledb   => \@profiledb,
+                viewname    => $viewname,
+            }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
+      
+            return Apache2::Const::OK;
+        }
+        elsif ($do_new) {
+
+            if ($profilename eq "" || $orgunit eq "" || $description eq "") {
+
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen, den Namen einer Organisationseinheit und deren Beschreibung eingeben."),$r,$msg);
+
+                return Apache2::Const::OK;
+            }
+
+	    my $ret = editorgunits_new({
+                profilename => $profilename,
+                orgunit => $orgunit,
+                description => $description,
+            });
+
+	    my $ret_ref = dist_cmd("editorgunits_new",{ 
+                profilename => $profilename,
+                orgunit => $orgunit,
+                description => $description,
+            }) if ($do_dist);
+
+	    if ($ret == -1){
+	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits eine Organisationseinheit unter diesem Namen"),$r,$msg);
+	      return Apache2::Const::OK;
+	    }
+
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editorgunits=1&do_edit=1&profilename=$profilename&orgunit=$orgunit");
+            return Apache2::Const::OK;
+        }
+        elsif ($do_edit) {
+
+	    my $profileinfo_ref = $config->get_profileinfo($profilename);
+
+            my $profilename = $profileinfo_ref->{'profilename'};
+            my $description = $profileinfo_ref->{'description'};
+            
+            my @profiledbs  = $config->get_profiledbs($profilename);
+
+            my $orgunits_ref = $config->get_orgunits($profilename);
+
+            my $profile={
+		profilename  => $profilename,
+		description  => $description,
+		profiledbs   => \@profiledbs,
+                orgunits     => $orgunits_ref,
+            };
+
+            my $ttdata={
+                view       => $view,
+
+                stylesheet => $stylesheet,
+                sessionID  => $session->{ID},
+
+                profile    => $profile,
+
+                dbnames    => \@dbnames,
+
+                config     => $config,
+                session    => $session,
+                user       => $user,
+                msg        => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_admin_editorgunits_tname},$ttdata,$r);
+      
+        }
+    
+    }
     elsif ($do_showsubjects) {
         my $subjects_ref = OpenBib::User->get_subjects;
 
@@ -2170,6 +2269,114 @@ sub editprofile_new {
     
     $idnresult=$dbh->prepare("insert into profileinfo values (?,?)") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$description) or $logger->error($DBI::errstr);
+    
+    return 1;
+}
+
+sub editorgunits_del {
+    my ($profilename,$orgunit)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("delete from orgunits where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    $idnresult=$dbh->prepare("delete from orgunitdbs where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
+sub editorgunits_change {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}         : undef;
+    my $orgunit                = exists $arg_ref->{orgunit}
+        ? $arg_ref->{orgunit}             : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+    my $orgunitdb_ref          = exists $arg_ref->{orgunitdb}
+        ? $arg_ref->{orgunitdb}           : undef;
+
+    my @profiledb = (defined $profiledb_ref)?@$profiledb_ref:();
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    # Zuerst die Aenderungen in der Tabelle Orgunits vornehmen
+    
+    my $idnresult=$dbh->prepare("update orgunits set description = ? where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$profilename,$orgunit) or $logger->error($DBI::errstr);
+    
+    # Datenbanken zunaechst loeschen
+    
+    $idnresult=$dbh->prepare("delete from orgunitdbs where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    
+    
+    # Dann die zugehoerigen Datenbanken eintragen
+    foreach my $singleorgunitdb (@orgunitdb) {
+        $idnresult=$dbh->prepare("insert into orgunitdbs values (?,?,?)") or $logger->error($DBI::errstr);
+        $idnresult->execute($profilename,$orgunit,$singleorgunitdb) or $logger->error($DBI::errstr);
+    }
+    
+    $idnresult->finish();
+
+    return;
+}
+
+sub editorgunits_new {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}            : undef;
+    my $orgunit                = exists $arg_ref->{orgunit}
+        ? $arg_ref->{orgunit}                : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}            : undef;
+    my $nr                     = exists $arg_ref->{nr}
+        ? $arg_ref->{nr}                     : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("select count(*) as rowcount from orgunits where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    my $res=$idnresult->fetchrow_hashref;
+    my $rows=$res->{rowcount};
+    
+    if ($rows > 0) {
+      $idnresult->finish();
+      return -1;
+    }
+    
+    $idnresult=$dbh->prepare("insert into orgunits values (?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit,$description) or $logger->error($DBI::errstr);
     
     return 1;
 }

@@ -14,7 +14,7 @@
 #
 #######################################################################
 -%]
-<a class="invisible" href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg" height="270" /></a>
+<a class="invisible" href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web_200x.jpg" /></a>
 <p>
 <a href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
 <br /><br />

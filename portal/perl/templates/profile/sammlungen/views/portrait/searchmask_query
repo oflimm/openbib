@@ -1,0 +1,40 @@
+<table>
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
+
+[% IF showfs %]
+<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showhst %]
+<tr><td class="category">[% msg.maketext("Bildtitelwort(e)") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showverf %]
+<tr><td class="category">[% msg.maketext("Person") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="[% msg.maketext("Index") %]" /></td></tr>
+[% END %]
+
+[% IF showkor %]
+<tr><td class="category">[% msg.maketext("Körperschaft") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val | html %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index" /></td></tr>
+[% END %]
+
+[% IF showswt %]
+<tr><td class="category">[% msg.maketext("Region") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td><input type="submit" name="swtindex" value="Index" /></td></tr>
+[% END %]
+
+[% IF shownotation %]
+<tr><td class="category">[% msg.maketext("Beruf/Weltanschauung") %]</td><td class="category"><select name="boolnotation"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% searchquery.notation.val | html %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
+[% END %]
+
+[% IF showsign %]
+<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val | html %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
+[% END %]
+
+<tr><td class="category">[% msg.maketext("Portraitart") %]</td><td class="category"><select name="boolmart"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><select name="mart"><option value="" selected="selected">Keine ausgewählt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Fotografie">Fotografie</option><option value="Holzschnitt">Holzschnitt</option><option value="Kupferstich">Kupferstich</option><option value="Lithografie">Lithografie</option><option value="Punktierstich">Punktierstich</option><option value="Radierung">Radierung</option><option value="Schabkunst">Schabkunst</option><option value="Stahlstich">Stahlstich</option></select>&nbsp;</td><td></td></tr>
+
+[% IF showejahr %]
+<tr><td class="category">[% msg.maketext("Jahr") %]</td><td class="category">und<input type="hidden" name="boolejahr" value="AND" /></td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val | html %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
+[% END %]
+
+<tr><td colspan="4"><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></td>
+
+</table>

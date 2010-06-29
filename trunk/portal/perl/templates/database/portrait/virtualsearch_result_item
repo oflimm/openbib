@@ -132,7 +132,7 @@
     <div class="item">
       <div class="numbering">[% loop.count %]</div>
       <div class="thumbnail">
-[%- IF qopts.listtype == 'cover' -%]<img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% item.id %]/portrait_thumb.jpg" height="80" />[%- END -%]
+       [% IF qopts.listtype == 'cover' %] <img src="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% item.id %]/portrait_thumb_65x80.jpg"/>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    

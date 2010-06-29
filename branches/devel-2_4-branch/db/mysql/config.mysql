@@ -4,7 +4,6 @@
 
 drop table IF EXISTS dbinfo;
 CREATE TABLE dbinfo (
- orgunit     VARCHAR(20),
  description TEXT,
  shortdesc   TEXT,
  system      TEXT, 
@@ -89,39 +88,28 @@ COLLATE utf8_general_ci
 
 drop table IF EXISTS profiledbs;
 CREATE TABLE profiledbs (
- profilename VARCHAR(20),
- dbname      VARCHAR(255),
+ profilename VARCHAR(20) NOT NULL,
+ orgunitname VARCHAR(20),
+ dbname      VARCHAR(255) NOT NULL,
 
  INDEX(profilename),
+ INDEX(profilename,orgunitname),
  INDEX(dbname)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
+drop table IF EXISTS orgunitinfo;
 drop table IF EXISTS orgunits;
-CREATE TABLE orgunits (
- id          VARCHAR(20),
- profilename VARCHAR(20),
+CREATE TABLE orgunitinfo (
+ orgunitname VARCHAR(20) NOT NULL,
+ profilename VARCHAR(20) NOT NULL,
  description TEXT,
  nr          INT,
 
- INDEX (id),
+ INDEX (orgunitname),
  INDEX (nr),
- INDEX (profilename)
-)
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
-;
-
-drop table IF EXISTS orgunitdbs;
-CREATE TABLE orgunitdbs (
- orgunitid   VARCHAR(20),
- profilename VARCHAR(20),
- dbname      VARCHAR(255),
-
- INDEX (dbname),
- INDEX (orgunitid),
  INDEX (profilename)
 )
 DEFAULT CHARACTER SET utf8

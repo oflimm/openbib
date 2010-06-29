@@ -548,12 +548,12 @@ dt.review {
 }
 
 #header_logo_image {
-  background: url(/images/openbib/views/richter/logo.png) center no-repeat;
-  width: 300px;
+  background: url(/images/openbib/views/landschaft/logo.png) center no-repeat;
+  width: 500px;
   height: 110px;
   position: absolute;
   top: 6px;
-  left: 7px;
+  left:-15px;
 }
 
 .listnavigation {

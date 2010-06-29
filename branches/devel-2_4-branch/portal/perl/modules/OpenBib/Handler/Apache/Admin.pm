@@ -97,8 +97,7 @@ sub handler {
     my $do_editcat_rss             = $query->param('do_editcat_rss')  || '';
     my $do_showprofiles            = $query->param('do_showprofiles') || '';
     my $do_editprofile             = $query->param('do_editprofile')  || '';
-    my $do_editorgunits            = $query->param('do_editorgunits')  || '';
-    my $do_editcat2orgunit         = $query->param('do_editcat2orgunit')  || '';
+    my $do_editorgunit             = $query->param('do_editorgunit')  || '';
     my $do_showsubjects            = $query->param('do_showsubjects') || '';
     my $do_editsubject             = $query->param('do_editsubject')  || '';
     my $do_showviews               = $query->param('do_showviews')    || '';
@@ -137,6 +136,8 @@ sub handler {
     my $use_libinfo     = $query->param('use_libinfo')     || 0;
     my $active          = $query->param('active')          || 0;
 
+    my $nr              = $query->param('nr')              || 0;
+
     my $roleid          = $query->param('roleid')          || '';
     my @roles           = ($query->param('roles'))?$query->param('roles'):();
     
@@ -150,6 +151,8 @@ sub handler {
     my $profilename     = $query->param('profilename')     || '';
     my @profiledb       = ($query->param('profiledb'))?$query->param('profiledb'):();
 
+    my @orgunitdb       = ($query->param('orgunitdb'))?$query->param('orgunitdb'):();
+    
     my @databases       = ($query->param('db'))?$query->param('db'):();
 
     # dboptions
@@ -685,7 +688,6 @@ sub handler {
 	    editprofile_change({
                 profilename => $profilename,
                 description => $description,
-                profiledb   => \@profiledb,
             });
             
 	    my $ret_ref = dist_cmd("editprofile_change",{ 
@@ -762,34 +764,37 @@ sub handler {
         }
     
     }
-    elsif ($do_editorgunits) {
+    elsif ($do_editorgunit) {
     
         # Zuerst schauen, ob Aktionen gefordert sind
     
         if ($do_del) {
-	    editorgunits_del($profilename,$orgunitname);
+	    editorgunit_del($profilename,$orgunit);
 
-	    my $ret_ref = dist_cmd("editorgunits_del",{ profilename => $profilename, orgunitname => $orgunitname }) if ($do_dist);
+	    my $ret_ref = dist_cmd("editorgunit_del",{ profilename => $profilename, orgunit => $orgunit }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editprofile=1;profilename=$profilename;do_edit=1");
             return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
-	    editorgunits_change({
+	    editorgunit_change({
                 profilename => $profilename,
+                orgunit     => $orgunit,
                 description => $description,
-                profiledb   => \@profiledb,
+                orgunitdb   => \@orgunitdb,
+                nr          => $nr,
             });
             
-	    my $ret_ref = dist_cmd("editprofile_change",{ 
+	    my $ret_ref = dist_cmd("editorgunit_change",{ 
                 profilename => $profilename,
+                orgunit     => $orgunit,                
                 description => $description,
-                profiledb   => \@profiledb,
-                viewname    => $viewname,
+                orgunitdb   => \@orgunitdb,
+                view        => $viewname,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editprofile=1;profilename=$profilename;do_edit=1");
       
             return Apache2::Const::OK;
         }
@@ -802,15 +807,15 @@ sub handler {
                 return Apache2::Const::OK;
             }
 
-	    my $ret = editorgunits_new({
+	    my $ret = editorgunit_new({
                 profilename => $profilename,
-                orgunit => $orgunit,
+                orgunit     => $orgunit,
                 description => $description,
             });
 
-	    my $ret_ref = dist_cmd("editorgunits_new",{ 
+	    my $ret_ref = dist_cmd("editorgunit_new",{ 
                 profilename => $profilename,
-                orgunit => $orgunit,
+                orgunit     => $orgunit,
                 description => $description,
             }) if ($do_dist);
 
@@ -819,35 +824,28 @@ sub handler {
 	      return Apache2::Const::OK;
 	    }
 
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editorgunits=1&do_edit=1&profilename=$profilename&orgunit=$orgunit");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editorgunit=1&do_edit=1&profilename=$profilename&orgunit=$orgunit");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
 
 	    my $profileinfo_ref = $config->get_profileinfo($profilename);
+            my $orgunitinfo_ref = $config->get_orgunitinfo($profilename,$orgunit);
+           
+            my @orgunitdbs   = $config->get_profiledbs($profilename,$orgunit);
 
-            my $profilename = $profileinfo_ref->{'profilename'};
-            my $description = $profileinfo_ref->{'description'};
+            $orgunitinfo_ref->{dbnames} = \@orgunitdbs;
             
-            my @profiledbs  = $config->get_profiledbs($profilename);
-
-            my $orgunits_ref = $config->get_orgunits($profilename);
-
-            my $profile={
-		profilename  => $profilename,
-		description  => $description,
-		profiledbs   => \@profiledbs,
-                orgunits     => $orgunits_ref,
-            };
-
             my $ttdata={
                 view       => $view,
 
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
 
-                profile    => $profile,
+                profileinfo    => $profileinfo_ref,
 
+                orgunitinfo    => $orgunitinfo_ref,
+                
                 dbnames    => \@dbnames,
 
                 config     => $config,
@@ -856,7 +854,7 @@ sub handler {
                 msg        => $msg,
             };
       
-            OpenBib::Common::Util::print_page($config->{tt_admin_editorgunits_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_admin_editorgunit_tname},$ttdata,$r);
       
         }
     
@@ -1300,11 +1298,11 @@ sub handler {
         while (my $result=$idnresult->fetchrow_hashref()) {
             my $orgunit = decode_utf8($result->{'orgunit'});
 
-            my $orgunits_ref=$config->{orgunits};
+            my $orgunit_ref=$config->{orgunit};
 
-            my @orgunits=@$orgunits_ref;
+            my @orgunit=@$orgunit_ref;
 
-            foreach my $unit_ref (@orgunits) {
+            foreach my $unit_ref (@orgunit) {
                 my %unit=%$unit_ref;
                 if ($unit{short} eq $orgunit) {
                     $orgunit=$unit{desc};
@@ -2186,8 +2184,13 @@ sub editprofile_del {
 
     my $idnresult=$dbh->prepare("delete from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
+
+    my $orgunits_ref=$config->get_orgunits($profilename);
+
+    foreach my $thisorgunit (@{$orgunits_ref}){
+        editorgunit_del($profilename,$thisorgunit->{orgunitname});
+    }
+    
     $idnresult->finish();
 
     return;
@@ -2201,10 +2204,6 @@ sub editprofile_change {
         ? $arg_ref->{profilename}         : undef;
     my $description            = exists $arg_ref->{description}
         ? $arg_ref->{description}         : undef;
-    my $profiledb_ref          = exists $arg_ref->{profiledb}
-        ? $arg_ref->{profiledb}           : undef;
-
-    my @profiledb = (defined $profiledb_ref)?@$profiledb_ref:();
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -2220,18 +2219,6 @@ sub editprofile_change {
     
     my $idnresult=$dbh->prepare("update profileinfo set description = ? where profilename = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($description,$profilename) or $logger->error($DBI::errstr);
-    
-    # Datenbanken zunaechst loeschen
-    
-    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
-    
-    
-    # Dann die zugehoerigen Datenbanken eintragen
-    foreach my $singleprofiledb (@profiledb) {
-        $idnresult=$dbh->prepare("insert into profiledbs values (?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($profilename,$singleprofiledb) or $logger->error($DBI::errstr);
-    }
     
     $idnresult->finish();
 
@@ -2273,7 +2260,7 @@ sub editprofile_new {
     return 1;
 }
 
-sub editorgunits_del {
+sub editorgunit_del {
     my ($profilename,$orgunit)=@_;
 
     # Log4perl logger erzeugen
@@ -2286,16 +2273,16 @@ sub editorgunits_del {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult=$dbh->prepare("delete from orgunits where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("delete from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("delete from orgunitdbs where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
+    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
     $idnresult->finish();
 
     return;
 }
 
-sub editorgunits_change {
+sub editorgunit_change {
     my ($arg_ref) = @_;
 
     # Set defaults
@@ -2306,9 +2293,11 @@ sub editorgunits_change {
     my $description            = exists $arg_ref->{description}
         ? $arg_ref->{description}         : undef;
     my $orgunitdb_ref          = exists $arg_ref->{orgunitdb}
-        ? $arg_ref->{orgunitdb}           : undef;
+        ? $arg_ref->{orgunitdb}           : [];
+    my $nr                     = exists $arg_ref->{nr}
+        ? $arg_ref->{nr}                  : 0;
 
-    my @profiledb = (defined $profiledb_ref)?@$profiledb_ref:();
+    my @orgunitdb = (defined $orgunitdb_ref)?@$orgunitdb_ref:();
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -2320,20 +2309,20 @@ sub editorgunits_change {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    # Zuerst die Aenderungen in der Tabelle Orgunits vornehmen
+    # Zuerst die Aenderungen in der Tabelle Orgunit vornehmen
     
-    my $idnresult=$dbh->prepare("update orgunits set description = ? where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$profilename,$orgunit) or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("update orgunitinfo set description = ?, nr = ? where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$nr,$profilename,$orgunit) or $logger->error($DBI::errstr);
     
     # Datenbanken zunaechst loeschen
     
-    $idnresult=$dbh->prepare("delete from orgunitdbs where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
+    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
     
     
     # Dann die zugehoerigen Datenbanken eintragen
     foreach my $singleorgunitdb (@orgunitdb) {
-        $idnresult=$dbh->prepare("insert into orgunitdbs values (?,?,?)") or $logger->error($DBI::errstr);
+        $idnresult=$dbh->prepare("insert into profiledbs values (?,?,?)") or $logger->error($DBI::errstr);
         $idnresult->execute($profilename,$orgunit,$singleorgunitdb) or $logger->error($DBI::errstr);
     }
     
@@ -2342,7 +2331,7 @@ sub editorgunits_change {
     return;
 }
 
-sub editorgunits_new {
+sub editorgunit_new {
     my ($arg_ref) = @_;
 
     # Set defaults
@@ -2365,7 +2354,7 @@ sub editorgunits_new {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult=$dbh->prepare("select count(*) as rowcount from orgunits where profilename = ? and orgunit = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select count(*) as rowcount from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
     my $res=$idnresult->fetchrow_hashref;
     my $rows=$res->{rowcount};
@@ -2374,9 +2363,14 @@ sub editorgunits_new {
       $idnresult->finish();
       return -1;
     }
-    
-    $idnresult=$dbh->prepare("insert into orgunits values (?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit,$description) or $logger->error($DBI::errstr);
+
+    $idnresult=$dbh->prepare("select max(nr) as maxnr from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    $res=$idnresult->fetchrow_hashref;
+    my $nextnr=$res->{maxnr}+1;
+
+    $idnresult=$dbh->prepare("insert into orgunitinfo (profilename,orgunitname,description,nr) values (?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit,$description,$nextnr) or $logger->error($DBI::errstr);
     
     return 1;
 }

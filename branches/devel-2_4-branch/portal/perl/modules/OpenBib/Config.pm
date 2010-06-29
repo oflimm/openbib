@@ -355,7 +355,7 @@ sub get_dbs_of_view {
             or $logger->error_die($DBI::errstr);
 
     my @dblist=();
-    my $idnresult=$dbh->prepare("select viewdbs.dbname from viewdbs,dbinfo where viewdbs.viewname = ? and viewdbs.dbname=dbinfo.dbname and dbinfo.active=1 order by dbinfo.orgunit ASC, dbinfo.description ASC") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select viewdbs.dbname from viewdbs,dbinfo,profiledbs where viewdbs.viewname = ? and viewdbs.dbname=dbinfo.dbname and profiledbs.dbname=viewdbs.dbname and dbinfo.active=1 order by profiledbs.orgunitname ASC, dbinfo.description ASC") or $logger->error($DBI::errstr);
     $idnresult->execute($view) or $logger->error($DBI::errstr);
 
     my @idnres;
@@ -581,11 +581,11 @@ sub get_rssfeedinfo  {
         = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $sql_select="select dbinfo.dbname,dbinfo.description,dbinfo.orgunit,rssfeeds.type";
+    my $sql_select="select dbinfo.dbname,dbinfo.description,orgunitinfo.description as orgunitdescription,rssfeeds.type";
 
-    my @sql_from  = ('dbinfo','rssfeeds');
+    my @sql_from  = ('dbinfo','rssfeeds','profiledbs','orgunitinfo');
 
-    my @sql_where = ('dbinfo.active=1','rssfeeds.active=1','dbinfo.dbname=rssfeeds.dbname','rssfeeds.type = 1');
+    my @sql_where = ('dbinfo.active=1','rssfeeds.active=1','dbinfo.dbname=rssfeeds.dbname','rssfeeds.type = 1','orgunitinfo.orgunitname=profiledbs.orgunitname','profiledbs.dbname=dbinfo.dbname');
 
     my @sql_args  = ();
 
@@ -603,7 +603,7 @@ sub get_rssfeedinfo  {
     $request->execute(@sql_args);
     
     while (my $result=$request->fetchrow_hashref){
-        my $orgunit    = decode_utf8($result->{'orgunit'});
+        my $orgunit    = decode_utf8($result->{'orgunitdescription'});
         my $name       = decode_utf8($result->{'description'});
         my $pool       = decode_utf8($result->{'dbname'});
         my $rsstype    = decode_utf8($result->{'type'});
@@ -670,7 +670,6 @@ sub get_dbinfo {
     my $dbinfo_ref;
 
     $dbinfo_ref = {
-        orgunit     => decode_utf8($result->{'orgunit'}),
         description => decode_utf8($result->{'description'}),
         shortdesc   => decode_utf8($result->{'shortdesc'}),
         system      => decode_utf8($result->{'system'}),
@@ -699,24 +698,12 @@ sub get_dbinfo_overview {
 
     my $dbinfo_ref = [];
 
-    my $idnresult=$dbh->prepare("select dbinfo.*,titcount.count,dboptions.autoconvert from dbinfo,titcount,dboptions where dbinfo.dbname=titcount.dbname and titcount.dbname=dboptions.dbname and titcount.type = 1 order by orgunit,dbname") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select dbinfo.*,titcount.count,dboptions.autoconvert from dbinfo,titcount,dboptions where dbinfo.dbname=titcount.dbname and titcount.dbname=dboptions.dbname and titcount.type = 1 order by dbname") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
     
     my $katalog;
     while (my $result=$idnresult->fetchrow_hashref()) {
-        my $orgunit     = decode_utf8($result->{'orgunit'});
         my $autoconvert = decode_utf8($result->{'autoconvert'});
-        
-        my $orgunits_ref = $self->{orgunits};
-        
-        my @orgunits=@$orgunits_ref;
-        
-        foreach my $unit_ref (@orgunits) {
-            my %unit=%$unit_ref;
-            if ($unit{short} eq $orgunit) {
-                $orgunit=$unit{desc};
-            }
-        }
         
         my $description = decode_utf8($result->{'description'});
         my $system      = decode_utf8($result->{'system'});
@@ -732,7 +719,6 @@ sub get_dbinfo_overview {
         }
         
         $katalog={
-            orgunit     => $orgunit,
             description => $description,
             system      => $system,
             dbname      => $dbname,
@@ -961,22 +947,39 @@ sub get_orgunits {
         = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
     
-    my $idnresult=$dbh->prepare("select * from orgunits where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select * from orgunitinfo where profilename = ? order by nr ASC") or $logger->error($DBI::errstr);
+    $request->execute($profilename) or $logger->error($DBI::errstr);
     
-    my $result=$idnresult->fetchrow_hashref();
+    my $orgunitinfo_ref = [];
 
-    my $profileinfo_ref = {    
-        profilename => decode_utf8($result->{'profilename'}),
-        description => decode_utf8($result->{'description'}),
-    };
+    while (my $result=$request->fetchrow_hashref()){
+
+        my $request2=$dbh->prepare("select dbname from profiledbs where profilename = ? and orgunitname = ? order by dbname ASC") or $logger->error($DBI::errstr);
+        $request2->execute($profilename,$result->{'orgunitname'}) or $logger->error($DBI::errstr);
+
+        my @orgunitdbs = ();
+        while (my $result2=$request2->fetchrow_hashref()){
+            push @orgunitdbs, $result2->{dbname};
+        }        
+        
+        my $thisorgunitinfo_ref = {
+            profilename => decode_utf8($result->{'profilename'}),
+            orgunitname => decode_utf8($result->{'orgunitname'}),
+            description => decode_utf8($result->{'description'}),
+            nr          => decode_utf8($result->{'nr'}),
+            dbnames     => \@orgunitdbs,
+        };
+        
+        push @{$orgunitinfo_ref}, $thisorgunitinfo_ref;
+    }
     
-    return $profileinfo_ref;
+    return $orgunitinfo_ref;
 }
 
-sub get_profiledbs {
+sub get_orgunitinfo {
     my $self        = shift;
     my $profilename = shift;
+    my $orgunitname = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -986,8 +989,55 @@ sub get_profiledbs {
         = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
     
-    my $idnresult=$dbh->prepare("select * from profiledbs where profilename = ? order by dbname") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select * from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunitname) or $logger->error($DBI::errstr);
+    
+    my $result=$idnresult->fetchrow_hashref();
+
+    my $request2=$dbh->prepare("select dbname from profiledbs where profilename = ? and orgunitname = ? order by dbname ASC") or $logger->error($DBI::errstr);
+    $request2->execute($profilename,$orgunitname) or $logger->error($DBI::errstr);
+    
+    my @orgunitdbs = ();
+    while (my $result2=$request2->fetchrow_hashref()){
+        push @orgunitdbs, $result2->{dbname};
+    }
+    
+
+    my $orgunitinfo_ref = {
+        profilename => decode_utf8($result->{'profilename'}),       
+        orgunitname => decode_utf8($result->{'orgunitname'}),       
+        description => decode_utf8($result->{'description'}),
+        nr          => decode_utf8($result->{'nr'}),
+        dbname      => \@orgunitdbs,
+    };
+    
+    return $orgunitinfo_ref;
+}
+
+sub get_profiledbs {
+    my $self        = shift;
+    my $profilename = shift;
+    my $orgunitname = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $sql="select * from profiledbs where profilename = ?";
+
+    my @sql_args = ($profilename);
+    
+    if ($orgunitname){
+        $sql.=" and orgunitname = ?";
+        push @sql_args, $orgunitname;
+    }
+    
+    my $idnresult=$dbh->prepare("$sql order by dbname") or $logger->error($DBI::errstr);
+    $idnresult->execute(@sql_args) or $logger->error($DBI::errstr);
     
     my @profiledbs=();
     while (my $result=$idnresult->fetchrow_hashref()) {
@@ -1130,7 +1180,7 @@ sub get_active_databases_of_systemprofile {
             or $logger->error_die($DBI::errstr);
 
     my @dblist=();
-    my $request=$dbh->prepare("select dbinfo.dbname as dbname from dbinfo,viewinfo,profiledbs where dbinfo.active=1 and dbinfo.dbname=profiledbs.dbname and profiledbs.profilename=viewinfo.profilename and viewinfo.viewname = ? order by orgunit ASC, dbname ASC") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select dbinfo.dbname as dbname from dbinfo,viewinfo,profiledbs where dbinfo.active=1 and dbinfo.dbname=profiledbs.dbname and profiledbs.profilename=viewinfo.profilename and viewinfo.viewname = ? order by dbname ASC") or $logger->error($DBI::errstr);
     $request->execute($view) or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};
@@ -1152,7 +1202,7 @@ sub get_active_database_names {
             or $logger->error_die($DBI::errstr);
 
     my @dblist=();
-    my $request=$dbh->prepare("select dbname,description,orgunit from dbinfo where active=1 order by orgunit,description") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select dbname,description from dbinfo where active=1 order by description") or $logger->error($DBI::errstr);
 
     $request->execute() or $logger->error($DBI::errstr);
     while (my $result   = $request->fetchrow_hashref){
@@ -1191,6 +1241,7 @@ sub get_active_views {
     return @viewlist;
 }
 
+####################### TODO ###################### weg
 sub get_active_databases_of_orgunit {
     my ($self,$orgunit) = @_;
     

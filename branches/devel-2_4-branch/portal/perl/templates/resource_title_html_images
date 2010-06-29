@@ -31,6 +31,8 @@
 <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.get('base_loc') %]/common/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;id=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
+[% IF normset.${"E4122"} %]
 <p>
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/512/http://paperc.de/search?query=[% isbn %]&commit=Suchen" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('base_loc') %]/common/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;id=[% isbn %];target=paperc" alt="Bei PaperC vorhanden?" border="0" /></a><br/>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/512/[% normset.${"E4122"}.first.content %]" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('paperc_img') %]" alt="Bei PaperC vorhanden" border="0" /></a><br/>
 </p>
+[% END %]

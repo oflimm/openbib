@@ -249,6 +249,12 @@ sub process_file {
             print TIT "0750:$content\n";
         }
 
+        # Fussnote
+        foreach my $item ($node->findnodes ('status//text()')) {
+            my $content = $item->textContent;
+            print TIT "0501:$content\n";
+        }
+
         # Ueberordnung
         foreach my $item ($node->findnodes ('ispartof/collection')) {
             my $id = $item->getAttribute ('ref');

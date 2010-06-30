@@ -31,6 +31,8 @@
 <a href="[% config.get('redirect_loc') %]/[% sessionID %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;id=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
+[% IF normset.${"E4122"} %]
 <p>
-<a href="[% config.get('redirect_loc') %]/[% sessionID %]/512/http://paperc.de/search?query=[% isbn %]&commit=Suchen" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;id=[% isbn %];target=paperc" alt="Bei PaperC vorhanden?" border="0" /></a><br/>
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/512/[% normset.${"E4122"}.first.content %]" target="_blank" title="Online Lesen bei PaperC"><img src="/images/openbib/paperc.png" alt="Bei PaperC vorhanden" border="0" /></a><br/>
 </p>
+[% END %]

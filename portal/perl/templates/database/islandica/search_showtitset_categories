@@ -23,6 +23,7 @@
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
+url_done          = {};
 
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
@@ -81,6 +82,10 @@ FOREACH category IN categories;
     CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
          thiscontent   = '' ;
+
+         NEXT IF url_done.${content} == 1;
+         url_done.${content} = 1;
+
          IF category == 'T0662' ;
            FOREACH thisitem IN normset.${"T0663"} ;
              IF thisitem.indicator == thisindicator ;
@@ -115,6 +120,10 @@ FOREACH category IN categories;
 
     CASE "E4110";
          thisindicator = item.indicator ;
+
+         NEXT IF url_done.${thiscontent} == 1;
+         url_done.${thiscontent} = 1;
+
          thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
          content       = "${config.get('redirect_loc')}/${sessionID}/500/${content}" ;
          content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";

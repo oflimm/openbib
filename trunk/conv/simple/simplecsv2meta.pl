@@ -99,12 +99,18 @@ open (MEX,     ">:encoding($outputencoding)","unload.MEX");
 my $titid = 1;
 my $have_titid_ref = {};
 while (my $result=$request->fetchrow_hashref){
+    print YAML::Dump($result);
     if ($convconfig->{uniqueidfield}){
         my $id = $result->{$convconfig->{uniqueidfield}};
         if ($convconfig->{uniqueidmatch}){
             my $uniquematchregexp = $convconfig->{uniqueidmatch};
             ($id)=$id=~m/$uniquematchregexp/;
         }
+        unless ($id){
+            print STDERR  "KEINE ID\n";
+            next;
+        }
+        
         if ($have_titid_ref->{$id}){
             print STDERR  "Doppelte ID: $id\n";
 	    next;
@@ -122,7 +128,11 @@ while (my $result=$request->fetchrow_hashref){
         if ($convconfig->{filter}{$kateg}{filter_junk}){
             $content = filter_junk($content);
         }
-        
+
+        if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+            $content = filter_newline2br($content);
+        }
+
         if ($content){
             my $multiple = 0;
             my @parts = ();
@@ -359,6 +369,8 @@ close(NOTATION);
 close(SWT);
 close(MEX);
 
+# Filter
+
 sub filter_junk {
     my ($content) = @_;
 
@@ -366,6 +378,14 @@ sub filter_junk {
     $content=~s/\s+/ /g;
     $content=~s/\s\D\s/ /g;
 
+    
+    return $content;
+}
+
+sub filter_newline2br {
+    my ($content) = @_;
+
+    $content=~s/\n/<br\/>/g;
     
     return $content;
 }

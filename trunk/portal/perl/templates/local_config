@@ -30,6 +30,8 @@
                   },
        "inst404" = {
                     subjectid          = 2,
+                    ezb_subjects       = ['E'],
+                    dbis_subjects      = ['13'],
                   },
        "inst405" = {
                     subjectid          = 7,
@@ -56,7 +58,10 @@
        "inst431" = {
                     subjectid          = 20,
                     defaultlogintarget = 4,
-                    validlogintargets  = { "3" => 1, "4" => 1, }
+                    validlogintargets  = { "3" => 1, "4" => 1, },
+                    ezb_subjects       = ['LA-LC'],
+                    dbis_subjects      = ['29'],
+
                   },
        "inst526" = {
                     subjectid          = 15,

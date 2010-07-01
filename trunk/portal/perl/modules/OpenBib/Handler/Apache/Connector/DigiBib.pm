@@ -656,7 +656,7 @@ sub handler {
         my $templatename=$config->{tt_connector_digibib_showtitset_tname};
 
         $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-            database     => '', # Template nicht datenbankabhaengig
+            database     => $database, # Template ist datenbankabhaengig !
             view         => $view,
             profile      => $sysprofile,
             templatename => $templatename,

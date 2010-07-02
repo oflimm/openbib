@@ -1,8 +1,12 @@
 #!/usr/bin/perl
 
+use YAML::Syck;
+
 my @buffer  = ();
 my $id      = 0;
 my $localid = 0;
+
+my %id2zdbid = ();
 
 while (<>){
        
@@ -21,6 +25,8 @@ while (<>){
     
     if (/^9999/){
         if ($id){
+            $id2zdbid{$localid}=$id;
+            
             $buffer[0]="0000:$id\n";
             print STDOUT join("",@buffer);
         }
@@ -30,3 +36,6 @@ while (<>){
     }
         
 }
+
+unlink "/tmp/instzs-id2zdbid.yml";
+DumpFile("/tmp/instzs-id2zdbid.yml",\%id2zdbid);

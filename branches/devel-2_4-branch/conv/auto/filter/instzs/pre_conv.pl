@@ -43,3 +43,5 @@ print "### $pool: ZDBID wird zur ID\n";
 
 system("$rootdir/filter/$pool/zdbid2id.pl < $rootdir/data/$pool/tit.exp > $rootdir/data/$pool/tit.exp.tmp");
 system("mv -f $rootdir/data/$pool/tit.exp.tmp $rootdir/data/$pool/tit.exp");
+system("$rootdir/filter/$pool/zdbid2id-mex.pl < $rootdir/data/$pool/mex.exp > $rootdir/data/$pool/mex.exp.tmp");
+system("mv -f $rootdir/data/$pool/mex.exp.tmp $rootdir/data/$pool/mex.exp");

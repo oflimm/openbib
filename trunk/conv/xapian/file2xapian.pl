@@ -151,7 +151,7 @@ my $atime = new Benchmark;
         while (my $search=<SEARCH>, my $titlistitem=<TITLISTITEM>) {
             my ($s_id,$verf,$hst,$kor,$swt,$notation,$sign,$ejahrint,$ejahr,$gtquelle,$inhalt,$isbn,$issn,$artinh)=split("",$search);
             my ($t_id,$listitem)=split ("",$titlistitem);
-            if ($s_id != $t_id) {
+            if ($s_id ne $t_id) {
                 $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
                 next;
             }

@@ -153,7 +153,7 @@ my $atime = new Benchmark;
             my ($s_id,$searchcontent)=split ("",$searchengine);
             my ($t_id,$listitem)=split ("",$titlistitem);
             
-            if ($s_id != $t_id) {
+            if ($s_id ne $t_id) {
                 $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
                 next;
             }

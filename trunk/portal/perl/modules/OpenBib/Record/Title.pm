@@ -37,7 +37,9 @@ use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS qw(encode_json decode_json);
 use Log::Log4perl qw(get_logger :levels);
+use LWP::UserAgent;
 use SOAP::Lite;
 use Storable;
 use XML::LibXML;
@@ -1939,6 +1941,37 @@ sub to_drilldown_term {
     $term=~s/\W/_/g;
 
     return $term;
+}
+
+sub enrich_cdm {
+    my ($self,$id,$url)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Wenn kein URI, dann Default-URI
+    $url = $config->{cdm_base}.$config->{cdm_path} unless ($url);
+
+    $url.=$id;
+    
+    my $ua = new LWP::UserAgent;
+    $ua->agent("OpenBib/1.0");
+    $ua->timeout(1);
+    my $request = new HTTP::Request('GET', $url);
+    my $response = $ua->request($request);
+
+    my $content = $response->content;
+
+    my $enrich_data_ref = {};
+    
+    if ($content){
+        $enrich_data_ref = decode_json($content);
+    }
+
+    return $enrich_data_ref;
+    
 }
 
 1;

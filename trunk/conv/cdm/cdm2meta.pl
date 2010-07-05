@@ -35,17 +35,14 @@ use utf8;
 use Encode 'decode';
 use Getopt::Long;
 use XML::Twig;
+use XML::Simple;
+
 use YAML::Syck;
 
 use OpenBib::Config;
+use OpenBib::Conv::Common::Util;
 
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf,$mexidn);
-
-@autdubbuf = ();
-@kordubbuf = ();
-@swtdubbuf = ();
-@notdubbuf = ();
-$mexidn  =  1;
+our $mexidn  =  1;
 
 my ($inputfile,$configfile);
 
@@ -80,7 +77,7 @@ my $twig= XML::Twig->new(
  );
 
 
-$twig->parsefile($inputfile);
+$twig->safe_parsefile($inputfile);
 
 close(TIT);
 close(AUT);
@@ -143,7 +140,7 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my $autidn=get_autidn($part);
+                    my $autidn=OpenBib::Conv::Common::Util::get_autidn($part);
                     
                     if ($autidn > 0){
                         print AUT "0000:$autidn\n";
@@ -177,7 +174,7 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my $koridn=get_koridn($part);
+                    my $koridn=OpenBib::Conv::Common::Util::get_koridn($part);
                 
                     if ($koridn > 0){
                         print KOR "0000:$koridn\n";
@@ -211,7 +208,7 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my $notidn=get_notidn($part);
+                    my $notidn=OpenBib::Conv::Common::Util::get_notidn($part);
                 
                     if ($notidn > 0){
                         print NOTATION "0000:$notidn\n";
@@ -244,7 +241,7 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my $swtidn=get_swtidn($part);
+                    my $swtidn=OpenBib::Conv::Common::Util::get_swtidn($part);
                     
                     if ($swtidn > 0){	  
                         print SWT "0000:$swtidn\n";
@@ -260,6 +257,64 @@ sub parse_titset {
         }
     }
     # Schlagworte abarbeiten Ende
+
+    # Strukturdaten    
+    if (defined $titset->first_child('structure')){
+        my $structure = $titset->first_child('structure')->sprint();
+        
+        my $xs = new XML::Simple(ForceArray => ['page','pagefile']);
+        
+        my $structure_ref = $xs->XMLin($structure);
+        
+        print YAML::Syck::Dump($structure_ref);
+
+
+         if (@{$structure_ref->{node}{page}} > 0){
+             my $i = 1;
+            
+             foreach my $page_ref (@{$structure_ref->{node}{page}}){
+                 printf TIT "6050.%03d:%s\n",$i,$page_ref->{pagetitle} if (exists $page_ref->{pagetitle});
+
+                 foreach my $pagefile_ref (@{$page_ref->{pagefile}}){
+                     if ($pagefile_ref->{pagefiletype} eq "access"){
+                         printf TIT "6051.%03d:%s\n",$i,$pagefile_ref->{pagefilelocation} if (exists $pagefile_ref->{pagefilelocation});
+                     }
+
+                     
+                     if ($pagefile_ref->{pagefiletype} eq "thumbnail"){
+                         printf TIT "6052.%03d:%s\n",$i,$pagefile_ref->{pagefilelocation} if (exists $pagefile_ref->{pagefilelocation});
+                     }
+                 }
+
+                 printf TIT "6053.%03d:%s\n",$i,$page_ref->{pagetext} if (exists $page_ref->{pagetext} && keys %{page_ref->{pagetext}});
+                 printf TIT "6054.%03d:%s\n",$i,$page_ref->{pageptr} if (exists $page_ref->{pageptr});
+                 $i++;
+             }   
+         }
+        
+        
+#         m
+#         my $structure_ref = {};
+#         foreach my $node ($structure->children('node'){
+#             if(defined $titset->first_child('nodetitle') && $titset->first_child('nodetitle')->text()){
+#                 $structure_ref->{nodetitle} = konv($titset->first_child('nodetitle')->text());
+#             }
+
+#             my $page_ref = [];
+#             foreach my $page ($node->children('page'){
+#                 my $thispage_ref = {};
+#                 if(defined $titset->first_child('pagetitle') && $titset->first_child('pagetitle')->text()){
+#                     $thispage_ref->{pagetitle} = konv($titset->first_child('pagetitle')->text());
+#                 }
+#                 if(defined $titset->first_child('pageptr') && $titset->first_child('pageptr')->text()){
+#                     $thispage_ref->{pageptr} = konv($titset->first_child('pageptr')->text());
+#                 }
+
+                
+#             }            
+#         }                
+    }
+
     
     # Exemplardaten abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{exempl}}){
@@ -294,96 +349,6 @@ sub parse_titset {
     $t->purge();
 }
                                    
-sub get_autidn {
-    ($autans)=@_;
-    
-    $autdubidx=1;
-    $autdubidn=0;
-                                   
-    while ($autdubidx < $autdublastidx){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;      
-            
-            # print STDERR "AutIDN schon vorhanden: $autdubidn\n";
-        }
-        $autdubidx++;
-    }
-    if (!$autdubidn){
-        $autdubbuf[$autdublastidx]=$autans;
-        $autdubidn=$autdublastidx;
-        #print STDERR "AutIDN noch nicht vorhanden: $autdubidn\n";
-        $autdublastidx++;
-        
-    }
-    return $autdubidn;
-}
-                                   
-sub get_swtidn {
-    ($swtans)=@_;
-    
-    $swtdubidx=1;
-    $swtdubidn=0;
-    #  print "Swtans: $swtans\n";
-    
-    while ($swtdubidx < $swtdublastidx){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;      
-            
-            #            print "SwtIDN schon vorhanden: $swtdubidn, $swtdublastidx\n";
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdublastidx]=$swtans;
-        $swtdubidn=$swtdublastidx;
-        #        print "SwtIDN noch nicht vorhanden: $swtdubidn, $swtdubidx, $swtdublastidx\n";
-        $swtdublastidx++;
-        
-    }
-    return $swtdubidn;
-}
-                                   
-sub get_koridn {
-    ($korans)=@_;
-    
-    $kordubidx=1;
-    $kordubidn=0;
-    #  print "Korans: $korans\n";
-    
-    while ($kordubidx < $kordublastidx){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;
-        }
-        $kordubidx++;
-    }
-    if (!$kordubidn){
-        $kordubbuf[$kordublastidx]=$korans;
-        $kordubidn=$kordublastidx;
-        #    print "KorIDN noch nicht vorhanden: $kordubidn\n";
-        $kordublastidx++;
-    }
-    return $kordubidn;
-}
-
-sub get_notidn {
-    my ($notans)=@_;
-    
-    my $notdubidx=1;
-    my $notdubidn=0;
-    
-    while ($notdubidx <= $#notdubbuf){
-        if ($notans eq $notdubbuf[$notdubidx]){
-            $notdubidn=(-1)*$notdubidx;      
-        }
-        $notdubidx++;
-    }
-    if (!$notdubidn){
-        $notdubbuf[$notdubidx]=$notans;
-        $notdubidn=$notdubidx;
-    }
-    return $notdubidn;
-}
-
 sub konv {
     my ($content)=@_;
 

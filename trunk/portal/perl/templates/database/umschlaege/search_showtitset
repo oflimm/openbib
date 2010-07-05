@@ -47,7 +47,21 @@
 <table width="100%" cellpadding="2">
 <tr><th>[% msg.maketext("Bild des Umschlages") %]</th></tr>
 <tr><td class="boxedclear">
-<center><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% record.id %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% record.id %]&DMSCALE=25.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="600"/></center>
+[% IF normset.${"T6054"} ;
+     FOREACH item IN normset.${"T6054"} ;
+       cdm_ptr = item.content ;
+       thisindicator = item.indicator ;
+       FOREACH thisitem IN normset.${"T6050"} ;
+           IF thisitem.indicator == thisindicator ;
+              description = thisitem.content ;
+           END ;
+       END ;
+%]
+<center style="padding:10px;"><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% cdm_ptr %]&DMSCALE=25.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="600"/></a><br/><i>[% description %]</i></center>
+[%   END %]
+[% ELSE %]
+<center><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% record.id %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% record.id %]&DMSCALE=25.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="600"/></a></center>
+[% END %]
 
 </td></tr>
 </table>

@@ -85,7 +85,10 @@ auch auf das Einkleben von Etiketten verzichtet.
 <p>
 Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
 Lesesaal. Alle Titel sind auch im Katalog der USB und im
-Verbundkatalog NRW erfasst.[<a href="[% config.get('info_loc')
+Verbundkatalog NRW erfasst.
+</p>
+<p>
+[<a href="[% config.get('info_loc')
 %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 </p>
 </td></tr>

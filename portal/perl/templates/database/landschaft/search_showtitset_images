@@ -14,9 +14,10 @@
 # 
 #######################################################################
 -%]
-<a class="invisible" href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft_web.jpg"><img src="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft_web.jpg" width="220" title=""/></a>
+<a class="invisible" href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft_web.jpg"><img src="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft_web_200x.jpg" title=""/></a>
 <p>
 <a href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
 <br /><br />
 <a href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% normset.id %]/landschaft.tif"><span style="font-size:0.7em">Als Tiff-Datei (Original)</span></a>
 </p>
+

@@ -45,7 +45,7 @@
 
 <tr>
 
-<td style="vertical-align:top;padding:40px;"> <center> <img src="/images/openbib/views/landschaft/landschaft.jpg"
+<td style="vertical-align:center;padding:40px;"> <center> <img src="/images/openbib/views/landschaft/landschaft.jpg"
 alt="Aachen um 1616" /><br /><br /><i
 style="font-size:0.8em">Aachen um 1616</i><br/></center>
 </td>
@@ -92,7 +92,9 @@ Sozialwissenschaft, Wissenschafts-, Kultur- und Rechtsgeschichte, für
 das Projekt genutzt werden. Es geht um ein inhaltlich und in seinen
 Ausmaßen offenes Konzept. Nach Abschluss dieser Digitalisierungen wäre
 die Ausdehnung des Verfahrens auf Bildbestände des 18. Jahrhunderts
-ein weiteres wünschenswertes Ziel.  </p>
+ein weiteres wünschenswertes Ziel.
+<!-- [<a href="[%
+config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]--></p>
 
 <!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 

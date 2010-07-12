@@ -269,10 +269,10 @@ sub parse_titset {
         print YAML::Syck::Dump($structure_ref);
 
 
-         if (@{$structure_ref->{node}{page}} > 0){
+         if (@{$structure_ref->{page}} > 0){
              my $i = 1;
             
-             foreach my $page_ref (@{$structure_ref->{node}{page}}){
+             foreach my $page_ref (@{$structure_ref->{page}}){
                  printf TIT "6050.%03d:%s\n",$i,$page_ref->{pagetitle} if (exists $page_ref->{pagetitle});
 
                  foreach my $pagefile_ref (@{$page_ref->{pagefile}}){

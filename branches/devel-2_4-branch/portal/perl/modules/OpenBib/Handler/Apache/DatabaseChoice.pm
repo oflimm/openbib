@@ -96,8 +96,10 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
-    
+    my $view    = $r->subprocess_env('openbib_view') || $config->{defaultview};
+
+    my $profile = $config->get_viewinfo($view)->{profilename};
+
     my $idnresult="";
   
     # Wenn Kataloge ausgewaehlt wurden
@@ -131,6 +133,7 @@ sub handler {
 
         my $ttdata={
             view       => $view,
+            profile    => $profile,
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             maxcolumn  => $maxcolumn,

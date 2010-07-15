@@ -252,7 +252,6 @@ sub handler {
     my @dbnames = $config->get_active_database_names();
   
     my $thisdbinfo_ref = {
-        orgunit     => $orgunit,
         description => $description,
         shortdesc   => $shortdesc,
         system      => $system,
@@ -449,7 +448,6 @@ sub handler {
         elsif ($do_edit) {
             my $dbinfo_ref = $config->get_dbinfo($dbname);
       
-            my $orgunit     = $dbinfo_ref->{'orgunit'};
             my $description = $dbinfo_ref->{'description'};
             my $shortdesc   = $dbinfo_ref->{'shortdesc'};
             my $system      = $dbinfo_ref->{'system'};
@@ -482,7 +480,6 @@ sub handler {
             my $rssfeed_ref  = $config->get_rssfeeds_of_db_by_type($dbname);
             
             my $katalog={
-                orgunit     => $orgunit,
                 description => $description,
                 shortdesc   => $shortdesc,
                 system      => $system,
@@ -1287,73 +1284,6 @@ sub handler {
           OpenBib::Common::Util::print_page($config->{tt_admin_editview_rss_tname},$ttdata,$r);
       }
   }
-    elsif ($do_showimx) {
-
-        my @kataloge=();
-
-        my $idnresult=$dbh->prepare("select dbinfo.*,titcount.count from dbinfo,titcount where dbinfo.dbname=titcount.dbname order by orgunit,dbname") or $logger->error($DBI::errstr);
-        $idnresult->execute() or $logger->error($DBI::errstr);
-
-        my $katalog;
-        while (my $result=$idnresult->fetchrow_hashref()) {
-            my $orgunit = decode_utf8($result->{'orgunit'});
-
-            my $orgunit_ref=$config->{orgunit};
-
-            my @orgunit=@$orgunit_ref;
-
-            foreach my $unit_ref (@orgunit) {
-                my %unit=%$unit_ref;
-                if ($unit{short} eq $orgunit) {
-                    $orgunit=$unit{desc};
-                }
-            }
-
-            my $description = decode_utf8($result->{'description'});
-            my $system      = decode_utf8($result->{'system'});
-            my $dbname      = decode_utf8($result->{'dbname'});
-            my $sigel       = decode_utf8($result->{'sigel'});
-            my $url         = decode_utf8($result->{'url'});
-            my $use_libinfo = decode_utf8($result->{'use_libinfo'});
-            my $active      = decode_utf8($result->{'active'});
-
-            $active="Ja"   if ($active eq "1");
-            $active="Nein" if ($active eq "0");
-
-            my $count       = decode_utf8($result->{'count'});
-
-            $katalog={
-		orgunit     => $orgunit,
-		description => $description,
-		system      => $system,
-		dbname      => $dbname,
-		sigel       => $sigel,
-		active      => $active,
-		url         => $url,
-                use_libinfo => $use_libinfo,
-		count       => $count,
-            };
-
-            push @kataloge, $katalog;
-        }
-
-        my $ttdata={
-            view       => $view,
-
-            stylesheet => $stylesheet,
-            sessionID  => $session->{ID},
-            kataloge   => \@kataloge,
-
-            config     => $config,
-            session    => $session,
-            user       => $user,
-            msg        => $msg,
-        };
-    
-        OpenBib::Common::Util::print_page($config->{tt_admin_showimx_tname},$ttdata,$r);
-
-        $idnresult->finish();
-    }
     elsif ($do_showsessions) {
 
         my @sessions=$session->get_info_of_all_active_sessions();
@@ -1867,8 +1797,8 @@ sub editcat_change {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $request=$dbh->prepare("update dbinfo set orgunit = ?, description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, use_libinfo = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
-    $request->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("update dbinfo set description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, use_libinfo = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
+    $request->execute($dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
 
     # Konvertierung
     $request=$dbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ? where dbname= ?") or $logger->error($DBI::errstr);
@@ -1896,8 +1826,8 @@ sub editcat_new {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult=$dbh->prepare("insert into dbinfo values (?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{dbname},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active}) or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("insert into dbinfo values (?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{dbname},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active}) or $logger->error($DBI::errstr);
     $idnresult=$dbh->prepare("insert into titcount values (?,'0',?)") or $logger->error($DBI::errstr);
     $idnresult->execute($dbinfo_ref->{dbname},1) or $logger->error($DBI::errstr);
     $idnresult->execute($dbinfo_ref->{dbname},2) or $logger->error($DBI::errstr);

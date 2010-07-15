@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
+use Apache2::Const -compile => qw(:common :http);
 use Apache2::Log;
 use Apache2::Reload;
 use Apache2::RequestRec ();
@@ -1177,6 +1177,50 @@ sub gen_cloud_class {
 
     $logger->debug(YAML::Dump($items_ref));
     return $items_ref;
+}
+
+sub dispatch_to_content_type {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $uri          = exists $arg_ref->{uri}
+        ? $arg_ref->{uri}     : undef;
+    my $r            = exists $arg_ref->{apreq}
+        ? $arg_ref->{apreq}   : 0;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $content_type_map_ref = {
+        "application/rdf+xml" => "rdf+xml",
+        "text/rdf+n3"         => "rdf+n3",
+    };
+
+    my $accept       = $r->headers_in->{Accept} || '';
+    my @accept_types = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
+        
+    my $information_resource_found = 0;
+    foreach my $information_resource_type (keys %{$content_type_map_ref}){            
+        if (any { $_ eq $information_resource_type } @accept_types) {
+            $r->content_type($information_resource_type);
+            my $new_location = $uri."/".$content_type_map_ref->{$information_resource_type};
+            $logger->debug("Redirecting to $new_location");
+            $r->headers_out->add("Location" => $new_location);
+            $information_resource_found = 1;
+            $logger->debug("Information Resource Type: $information_resource_type");
+        }                                                
+    }
+    
+    if (!$information_resource_found){
+        my $information_resource_type="text/html";
+        $r->content_type($information_resource_type);
+        $r->headers_out->add("Location" => "$uri/html");
+        $logger->debug("Information Resource Type: $information_resource_type");
+    }
+    
+    $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accept_types));
+
+    return Apache2::Const::HTTP_SEE_OTHER;
 }
 
 1;

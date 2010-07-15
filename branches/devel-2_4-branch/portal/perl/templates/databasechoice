@@ -52,14 +52,15 @@ function update_fak(yourform, checked, fak) {
 <tr><td><div class="cssbutton glass kug"><input type="submit" name="do_choose" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
 </table>
 
+[% USE dumper;dumper.dump(catdb)%]
 <p />
 <table>
 <tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
 
-[%- FOREACH category = config.get('orgunits') -%]
+[%- FOREACH category = config.get_orgunits(profile) -%]
 [%- is_empty = 1 ;
     FOREACH db = catdb ;
-      IF db.category == category.short && db.db != '' ; 
+      IF db.category == category.description && db.db != '' ; 
         is_empty = 0 ;
       END ;
     END ;
@@ -69,10 +70,10 @@ function update_fak(yourform, checked, fak) {
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
 [%- END -%]
 
-<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.description %]</b></td></tr>
 
 [%- FOREACH db = catdb -%]
-[%- IF db.category == category.short -%]
+[%- IF db.category == category.description -%]
 [%- IF db.column == 1 -%]
 <tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- END -%]

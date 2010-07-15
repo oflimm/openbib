@@ -111,6 +111,15 @@ rss_types:
   neuzugang_nach_swt: 4
   neuzugang_nach_sys: 5
 
+source_systems:
+  - Sisis
+  - Aleph
+  - Allegro
+  - Lars
+  - OAI
+  - MAB
+  - Anderes
+
 # Spracheinstellungen
 lang:
   - de
@@ -257,6 +266,38 @@ handler:
      name: resource
      realm: view
      module: 'OpenBib::Handler::Apache::Resource'
+  resource_title_loc:
+     name: resource/title
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+  resource_person_loc:
+     name: resource/person
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Person'
+  resource_corporatebody_loc:
+     name: resource/corporatebody
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::CorporateBody'
+  resource_subject_loc:
+     name: resource/subject
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Subject'
+  resource_classification_loc:
+     name: resource/classification
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Classification'
+  resource_tag_loc:
+     name: resource/tag
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Tag'
+  resource_litlist_loc:
+     name: resource/litlist
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Litlist'
+  resource_library_loc:
+     name: resource/library
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Library'
   resultlists_loc:
      name: resultlists
      realm: view
@@ -356,7 +397,19 @@ tt_include_path: /opt/openbib/templates
 searchfield:
   'id':
      'prefix': 'id'
-     'type': 'ft'
+     'type': 'id'
+  'verfid':
+     'prefix': 'perid'
+     'type': 'id'
+  'korid':
+     'prefix': 'corpid'
+     'type': 'id'
+  'notid':
+     'prefix': 'sysid'
+     'type': 'id'
+  'swtid':
+     'prefix': 'subjid'
+     'type': 'id'
   'fs':
      'prefix': 'fs'
      'type': 'ft'
@@ -405,7 +458,7 @@ searchfield:
      'type': 'ft'
   'subid':
      'prefix': 'fsub'
-     'type': 'ft'
+     'type': 'id'
   'hststring':
      'prefix': 'ftit'
      'type': 'string'
@@ -446,6 +499,10 @@ xapian_option:
 # entsprechend searchfield_prefix
 xapian_search_prefix:
   'id': 'Q'
+  'perid': 'I1'
+  'corpid': 'I2'
+  'subjid': 'I3'
+  'sysid': 'I4'
 
   'fs': ''
 
@@ -513,12 +570,14 @@ delete_img: /images/openbib/cancel.png
 follow_img: /images/openbib/solidrightarrow.png
 infotopic_img: /images/openbib/info.png
 info_img: /images/openbib/info_small.png
+global_img: /images/openbib/globus.png
 help_img: /images/openbib/help.png
 hint_img: /images/openbib/hint.png
 home_img: /images/openbib/home.png
+home_small_img: /images/openbib/home3.png
 lang_de_img: /images/openbib/de.gif
 lang_en_img: /images/openbib/en.gif
-listofinterest_img: /images/openbib/note.png
+listofinterest_img: /images/openbib/bookmark.png
 liststyle_cover_img: /images/openbib/view_detailed.png
 liststyle_list_img: /images/openbib/view_text.png
 mail_img: /images/openbib/3d-file-blue-mailbox.png
@@ -530,6 +589,7 @@ no_next_img: /images/openbib/no_next.png
 no_previous_img: /images/openbib/no_previous.png
 note_img: /images/openbib/note.png
 openbib_img: /images/openbib/openbib-powered.png
+paperc_img: /images/openbib/paperc.png
 pdf_img: /images/openbib/pdf-document.png
 permalink_img: /images/openbib/3d-file-blue-permalink.png
 previous_img: /images/openbib/previous.png
@@ -695,6 +755,8 @@ tt_resource_corporatebody_tname: resource_corporatebody
 tt_resource_subject_tname: resource_subject
 tt_resource_classification_tname: resource_classification
 tt_resource_library_tname: resource_library
+tt_resource_tag_tname: resource_tag
+tt_resource_litlist_tname: resource_litlist
 tt_resultlists_choice_tname: resultlists_choice
 tt_resultlists_empty_tname: resultlists_empty
 tt_resultlists_showall_sortall_tname: resultlists_showall_sortall

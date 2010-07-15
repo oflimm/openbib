@@ -429,9 +429,10 @@ sub load_full_record {
             @isbn_refs = grep { ! $seen_isbns{$_} ++ } @isbn_refs_tmp;
 
             $logger->debug(YAML::Dump(\@isbn_refs));
-           
+
+            my %seen_content = ();            
             foreach my $isbn (@isbn_refs){
-                my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
+                my $reqstring="select distinct category,content from normdata where isbn=? order by category,indicator";
                 my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                 $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
                 
@@ -439,6 +440,13 @@ sub load_full_record {
                 while (my $res=$request->fetchrow_hashref) {
                     my $category   = "E".sprintf "%04d",$res->{category };
                     my $content    =        decode_utf8($res->{content});
+
+                    if ($seen_content{$content}){
+                        next;
+                    }
+                    else {
+                        $seen_content{$content} = 1;
+                    }                    
                     
                     push @{$normset_ref->{$category}}, {
                         content    => $content,

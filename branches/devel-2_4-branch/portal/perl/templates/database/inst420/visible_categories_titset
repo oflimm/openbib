@@ -121,7 +121,7 @@
 [%
 tmpcircset = [] ;
 FOREACH circ IN circset ;
-  IF circ.Signatur.match('^420') ;
+  IF circ.Signatur.match('^420') || circ.Signatur.match('^424');
      tmpcircset.push(circ);
   END;
 END;

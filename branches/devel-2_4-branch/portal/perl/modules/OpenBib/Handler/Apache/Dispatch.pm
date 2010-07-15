@@ -82,6 +82,13 @@ use OpenBib::Handler::Apache::Connector::SimilarSubjects;
 use OpenBib::Handler::Apache::Connector::SpellCheck;
 use OpenBib::Handler::Apache::Connector::UnAPI;
 use OpenBib::Handler::Apache::LitLists;
+use OpenBib::Handler::Apache::Resource::Title;
+use OpenBib::Handler::Apache::Resource::Person;
+use OpenBib::Handler::Apache::Resource::CorporateBody;
+use OpenBib::Handler::Apache::Resource::Subject;
+use OpenBib::Handler::Apache::Resource::Classification;
+use OpenBib::Handler::Apache::Resource::Tag;
+use OpenBib::Handler::Apache::Resource::Litlist;
 use OpenBib::Handler::Apache::RSSFeeds;
 use OpenBib::Handler::Apache::Redirect;
 use OpenBib::Handler::Apache::Resource;
@@ -118,6 +125,9 @@ sub handler {
 
     # View-spezifische URI's
     if ($path=~m/^\/([^\/]+)\/(connector\/[^\/]+)/){
+        ($view,$location)=($1,$2);
+    }
+    elsif ($path=~m/^\/([^\/]+)\/(resource\/[^\/]+)/){
         ($view,$location)=($1,$2);
     }
     elsif ($path=~m/^\/([^\/]+)\/([^\/]+)/){

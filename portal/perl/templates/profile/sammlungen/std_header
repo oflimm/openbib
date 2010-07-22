@@ -92,6 +92,7 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.pack.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/cloud-zoom.1.0.2.min.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
 <!-- <script language="JavaScript" type="text/javascript" src="/js/jtip.js"></script> -->
 

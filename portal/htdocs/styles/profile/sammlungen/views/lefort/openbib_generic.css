@@ -10,7 +10,7 @@ body {
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 0px; */
 
-  background-color: white;
+/*  background-color: white; */
 
   font-family: trebuchet ms,verdana,tahoma,arial,sans-serif;  
   font-size: 84%;
@@ -23,7 +23,7 @@ body {
   margin: 0px; 
   padding: 0px; 
 
- /* background: white url("/images/openbib/bgsiegel.gif") top right no-repeat; */
+  background: white url("/images/openbib/bgsiegel.gif") top right no-repeat;
 
 }
 
@@ -360,6 +360,7 @@ h2[class=nojs_show] {
   width: 99%; 
   overflow: hidden; 
 /*  position: static; */
+  background-color: #ffffff;
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 5px;
   border: 1px solid lightblue;
@@ -540,7 +541,7 @@ dt.review {
 }
 
 #header_right_image {
-  background: url(/images/openbib/views/lefort/usb-logo.png) center no-repeat;
+  background: url(/images/openbib/usblogotrans190.png) center no-repeat;
   width: 235px;
   height: 100px;
   position: absolute;
@@ -1553,4 +1554,42 @@ a.ext {
 *:first-child+html .ui-tabs-nav  { /* @ IE 7 Standards Mode - do not group selectors, otherwise IE 6 will ignore complete rule (because of the unknown + combinator)... */
     display: inline-block;
 }
+
+/* This is the moving lens square underneath the mouse pointer. */
+.cloud-zoom-lens {
+	border: 4px solid #888;
+	margin:-4px;	/* Set this to minus the border thickness. */
+	background-color:#fff;	
+	cursor:move;		
+}
+
+/* This is for the title text. */
+.cloud-zoom-title {
+	font-family:Arial, Helvetica, sans-serif;
+	position:absolute !important;
+	background-color:#000;
+	color:#fff;
+	padding:3px;
+	width:100%;
+	text-align:center;	
+	font-weight:bold;
+	font-size:10px;
+	top:0px;
+}
+
+/* This is the zoom window. */
+.cloud-zoom-big {
+	border:4px solid #ccc;
+	overflow:hidden;
+}
+
+/* This is the loading message. */
+.cloud-zoom-loading {
+	color:white;	
+	background:#222;
+	padding:3px;
+	border:1px solid #000;
+}
+
+
 

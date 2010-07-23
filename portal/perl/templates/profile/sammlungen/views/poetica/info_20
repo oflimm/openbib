@@ -47,7 +47,7 @@
 
 <td style="vertical-align:top;padding:40px;"> <center> <img src="/images/openbib/views/poetica/startseite.png"
 alt="Poetica-Sammlung" /><br /><br /><i style="font-size:0.8em"> <a href="/images/openbib/views/poetica/bild1.jpg">
-Bildunterschrift startseite.jpg</a></a>
+</a></a>
 </center>
 </td>
 
@@ -83,9 +83,10 @@ erschienenen Drucke des 17. Jahrhunderts (VD17).
 Die Drucke sind online in der Nordrhein-Westfälischen
 Verbunddatenbank katalogisiert. Die Deutsche Forschungsgemeinschaft
 unterstützte dieses Erschließungsprojekt in den Jahren 1999 bis
-2002. [<a href="[%
+2002.
+<!--[<a href="[%
 config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere
-Informationen]</a>
+Informationen]</a>-->
 </p>
 
 
@@ -95,10 +96,7 @@ Historischen Lesesaal.
 </p>
 <br />
 
-<b>Ansprechpartner:</b><br />
-
-Dr. K.-F. Beßelmann <br />
-Tel.: 0221-470 3877  
+<!--<b>Ansprechpartner:</b><br />Dr. K.-F. Beßelmann <br />Tel.: 0221-470 3877-->  
 
 
 

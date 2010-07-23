@@ -23,7 +23,7 @@ body {
   margin: 0px; 
   padding: 0px; 
 
- /* background: white url("/images/openbib/bgsiegel.gif") top right no-repeat; */
+  background: #FFFDF3 url("/images/openbib/bgsiegel.gif") top right no-repeat; 
 
 }
 
@@ -358,6 +358,7 @@ h2[class=nojs_show] {
 .content {
   width: 99%; 
   overflow: hidden; 
+  background-color: #FFFDF3;
 /*  position: static; */
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 5px;
@@ -945,21 +946,14 @@ dt.review {
 }
 
 .boxedclear {
+  background-color: #FFFDF3;
   padding: 5px;
-  border-top-style: solid;
-  border-top-color: #edebe3;
-  border-top-width: 1px;
-  border-left-style: solid;
-  border-left-color: #edebe3;
-  border-left-width: 1px;
-  border-right-style: solid;
-  border-right-color: #edebe3;
-  border-right-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: #edebe3;
-  border-bottom-width: 1px;
-  -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
+  border: 1px solid #919191;
+
+  -moz-border-radius-bottomleft: 12px;
+  -moz-border-radius-bottomright: 12px;
+  -webkit-border-radius-bottomleft: 12px;
+  -webkit-border-radius-bottomright: 12px;
 }
 
 .tagging {

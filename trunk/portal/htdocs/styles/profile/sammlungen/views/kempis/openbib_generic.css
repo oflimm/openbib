@@ -944,20 +944,12 @@ dt.review {
 
 .boxedclear {
   padding: 5px;
-  border-top-style: solid;
-  border-top-color: #edebe3;
-  border-top-width: 1px;
-  border-left-style: solid;
-  border-left-color: edebe3;
-  border-left-width: 1px;
-  border-right-style: solid;
-  border-right-color: #edebe3;
-  border-right-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: #edebe3;
-  border-bottom-width: 1px;
-  -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
+  background-color:#FFFDF3;
+  border: 1px solid #919191;
+  -moz-border-radius-bottomleft: 12px;
+  -moz-border-radius-bottomright: 12px;
+  -webkit-border-radius-bottomleft: 12px;
+  -webkit-border-radius-bottomright: 12px;
 }
 
 .tagging {

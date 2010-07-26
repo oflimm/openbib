@@ -10,7 +10,7 @@ body {
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 0px; */
 
-  background-color: white;
+  /* background-color: white; */
 
   font-family: trebuchet ms,verdana,tahoma,arial,sans-serif;  
   font-size: 84%;
@@ -23,7 +23,7 @@ body {
   margin: 0px; 
   padding: 0px; 
 
- /* background: white url("/images/openbib/bgsiegel.gif") top right no-repeat; */
+  background: white url("/images/openbib/bgsiegel.gif") top right no-repeat;
 
 }
 
@@ -358,7 +358,8 @@ h2[class=nojs_show] {
 
 .content {
   width: 99%; 
-  overflow: hidden; 
+  overflow: hidden;
+  background-color: #ffffff;
 /*  position: static; */
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 5px;
@@ -540,7 +541,7 @@ dt.review {
 }
 
 #header_right_image {
-  background: url(/images/openbib/usb-logo_small.png) center no-repeat;
+  background: url(/images/openbib/usblogotrans141.png) center no-repeat;
   width: 140px;
   height: 58px;
   position: absolute;
@@ -947,20 +948,12 @@ dt.review {
 
 .boxedclear {
   padding: 5px;
-  border-top-style: solid;
-  border-top-color: lightblue;
-  border-top-width: 1px;
-  border-left-style: solid;
-  border-left-color: lightblue;
-  border-left-width: 1px;
-  border-right-style: solid;
-  border-right-color: lightblue;
-  border-right-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: lightblue;
-  border-bottom-width: 1px;
-  -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
+  background-color: #ffffff;
+  border: 1px solid lightblue;
+  -moz-border-radius-bottomleft: 12px;
+  -moz-border-radius-bottomright: 12px;
+  -webkit-border-radius-bottomleft: 12px;
+  -webkit-border-radius-bottomright: 12px;
 }
 
 .tagging {

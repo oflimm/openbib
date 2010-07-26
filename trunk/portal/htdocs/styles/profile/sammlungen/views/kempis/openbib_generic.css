@@ -20,7 +20,7 @@ body {
   margin: 0px; 
   padding: 0px; 
 
- /* background: white url("/images/openbib/bgsiegel.gif") top right no-repeat; */
+  background: #FFFDF3 url("/images/openbib/bgsiegel.gif") top right no-repeat; 
 
 }
 
@@ -353,8 +353,9 @@ h2[class=nojs_show] {
 }
 
 .content {
-  width: 99%; 
-  overflow: hidden; 
+  width: 99%;
+  overflow: hidden;
+  background-color:#FFFDF3;
 /*  position: static; */
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 5px;

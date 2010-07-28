@@ -389,3 +389,11 @@ sub filter_newline2br {
     
     return $content;
 }
+
+sub filter_match {
+    my ($content,$regexp) = @_;
+
+    my ($match)=$content=~m/($regexp)/g;
+    
+    return $match;
+}

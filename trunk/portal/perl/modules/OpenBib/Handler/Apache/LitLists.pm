@@ -300,6 +300,12 @@ sub handler {
                     config     => $config,
                     user       => $user,
                     msg        => $msg,
+
+                    decode_utf8    => sub {
+                        my $string=shift;
+                        return decode_utf8($string);
+                    },
+
                 };
               
                 OpenBib::Common::Util::print_page($config->{tt_litlists_manage_singlelist_tname},$ttdata,$r);
@@ -329,6 +335,12 @@ sub handler {
                 config     => $config,
                 user       => $user,
                 msg        => $msg,
+
+                decode_utf8    => sub {
+                    my $string=shift;
+                    return decode_utf8($string);
+                },
+                
             };
 
             OpenBib::Common::Util::print_page($config->{tt_litlists_manage_lists_tname},$ttdata,$r);
@@ -380,6 +392,11 @@ sub handler {
                 config         => $config,
                 user           => $user,
                 msg            => $msg,
+
+                decode_utf8    => sub {
+                    my $string=shift;
+                    return decode_utf8($string);
+                },
             };
 	    
 	    OpenBib::Common::Util::print_page($config->{tt_litlists_show_singlelist_tname},$ttdata,$r);
@@ -409,6 +426,12 @@ sub handler {
             config         => $config,
             user           => $user,
             msg            => $msg,
+
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
+
         };
 	    
         OpenBib::Common::Util::print_page($config->{tt_litlists_show_publiclists_tname},$ttdata,$r);

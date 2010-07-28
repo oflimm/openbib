@@ -150,6 +150,12 @@ sub handler {
             config         => $config,
             user           => $user,
             msg            => $msg,
+
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
+            
         };
         
         OpenBib::Common::Util::print_page($config->{tt_resultlists_empty_tname},$ttdata,$r);
@@ -373,6 +379,12 @@ sub handler {
             config         => $config,
             user           => $user,
             msg            => $msg,
+
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
+            
         };
         
         OpenBib::Common::Util::print_page($config->{tt_resultlists_showsinglepool_tname},$ttdata,$r);
@@ -448,6 +460,12 @@ sub handler {
             config         => $config,
             user           => $user,
             msg            => $msg,
+
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
+
         };
         
         OpenBib::Common::Util::print_page($config->{tt_resultlists_showsinglepool_tname},$ttdata,$r);
@@ -502,6 +520,12 @@ sub handler {
             config     => $config,
             user       => $user,
             msg        => $msg,
+
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
+            
         };
         OpenBib::Common::Util::print_page($config->{tt_resultlists_choice_tname},$ttdata,$r);
         
@@ -569,6 +593,12 @@ sub handler {
                 config         => $config,
                 user           => $user,
                 msg            => $msg,
+
+                decode_utf8    => sub {
+                    my $string=shift;
+                    return decode_utf8($string);
+                },
+
             };
             
             OpenBib::Common::Util::print_page($config->{tt_resultlists_showall_sortall_tname},$ttdata,$r);
@@ -638,6 +668,12 @@ sub handler {
                 config         => $config,
                 user           => $user,
                 msg            => $msg,
+
+                decode_utf8    => sub {
+                    my $string=shift;
+                    return decode_utf8($string);
+                },
+
             };
             
             OpenBib::Common::Util::print_page($config->{tt_resultlists_showall_tname},$ttdata,$r);

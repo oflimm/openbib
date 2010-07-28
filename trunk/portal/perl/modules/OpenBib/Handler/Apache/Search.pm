@@ -994,6 +994,7 @@ sub handler {
             content  => $searchtitofcnt,
         });
 
+        $logger->debug("CNT-Content: $searchtitofcnt / CNT-Norm: $searchtitofcntnorm");
         my $limits="";
         if ($hitrange > 0){
             $limits="limit $offset,$hitrange";
@@ -1094,6 +1095,8 @@ sub handler {
                 while (my $res=$request->fetchrow_hashref){
                     $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
                 }        
+
+                $logger->debug("CNT-Titel",YAML::Dump($recordlist));
                 
                 # Bestimmung der Titelzahl
                 $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where category=? and content=?") or $logger->error($DBI::errstr);

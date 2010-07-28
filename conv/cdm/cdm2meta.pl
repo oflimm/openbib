@@ -107,6 +107,23 @@ sub parse_titset {
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
             my $content = konv($titset->first_child($kateg)->text());
 #            my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
+
+            if ($convconfig->{filter}{$kateg}{filter_junk}){
+                $content = filter_junk($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+                $content = filter_newline2br($content);
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_match}){
+                $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_add_year}){
+                my $new_content = filter_match($content,$convconfig->{filter}{$kateg}{filter_add_year}{regexp});
+                print TIT $convconfig->{filter}{$kateg}{filter_add_year}{category}.$new_content."\n";
+            }
             
             if ($content){
                 my @parts = ();
@@ -262,35 +279,62 @@ sub parse_titset {
     if (defined $titset->first_child('structure')){
         my $structure = $titset->first_child('structure')->sprint();
         
-        my $xs = new XML::Simple(ForceArray => ['page','pagefile']);
+        my $xs = new XML::Simple(ForceArray => ['node','page','pagefile']);
         
         my $structure_ref = $xs->XMLin($structure);
         
         print YAML::Syck::Dump($structure_ref);
-
-
-         if (@{$structure_ref->{page}} > 0){
-             my $i = 1;
+        
+        
+        if (@{$structure_ref->{page}} > 0){
+            my $i = 1;
             
-             foreach my $page_ref (@{$structure_ref->{page}}){
-                 printf TIT "6050.%03d:%s\n",$i,$page_ref->{pagetitle} if (exists $page_ref->{pagetitle});
+            foreach my $page_ref (@{$structure_ref->{page}}){
+                printf TIT "6050.%03d:%s\n",$i,$page_ref->{pagetitle} if (exists $page_ref->{pagetitle});
+                
+                foreach my $pagefile_ref (@{$page_ref->{pagefile}}){
+                    if ($pagefile_ref->{pagefiletype} eq "access"){
+                        printf TIT "6051.%03d:%s\n",$i,$pagefile_ref->{pagefilelocation} if (exists $pagefile_ref->{pagefilelocation});
+                    }
+                    
+                    
+                    if ($pagefile_ref->{pagefiletype} eq "thumbnail"){
+                        printf TIT "6052.%03d:%s\n",$i,$pagefile_ref->{pagefilelocation} if (exists $pagefile_ref->{pagefilelocation});
+                    }
+                }
+                
+                printf TIT "6053.%03d:%s\n",$i,$page_ref->{pagetext} if (exists $page_ref->{pagetext} && keys %{page_ref->{pagetext}});
+                printf TIT "6054.%03d:%s\n",$i,$page_ref->{pageptr} if (exists $page_ref->{pageptr});
+                $i++;
+            }   
+        }
 
-                 foreach my $pagefile_ref (@{$page_ref->{pagefile}}){
-                     if ($pagefile_ref->{pagefiletype} eq "access"){
-                         printf TIT "6051.%03d:%s\n",$i,$pagefile_ref->{pagefilelocation} if (exists $pagefile_ref->{pagefilelocation});
-                     }
+        if (@{$structure_ref->{node}} > 0){
 
-                     
-                     if ($pagefile_ref->{pagefiletype} eq "thumbnail"){
-                         printf TIT "6052.%03d:%s\n",$i,$pagefile_ref->{pagefilelocation} if (exists $pagefile_ref->{pagefilelocation});
-                     }
-                 }
-
-                 printf TIT "6053.%03d:%s\n",$i,$page_ref->{pagetext} if (exists $page_ref->{pagetext} && keys %{page_ref->{pagetext}});
-                 printf TIT "6054.%03d:%s\n",$i,$page_ref->{pageptr} if (exists $page_ref->{pageptr});
-                 $i++;
-             }   
-         }
+            foreach my $node_ref (@{$structure_ref->{node}}){
+                my $i = 1;
+            
+                foreach my $page_ref (@{$node_ref->{page}}){
+                    printf TIT "6050.%03d:%s\n",$i,$page_ref->{pagetitle} if (exists $page_ref->{pagetitle});
+                    
+                    foreach my $pagefile_ref (@{$page_ref->{pagefile}}){
+                        if ($pagefile_ref->{pagefiletype} eq "access"){
+                            printf TIT "6051.%03d:%s\n",$i,$pagefile_ref->{pagefilelocation} if (exists $pagefile_ref->{pagefilelocation});
+                        }
+                        
+                        
+                        if ($pagefile_ref->{pagefiletype} eq "thumbnail"){
+                            printf TIT "6052.%03d:%s\n",$i,$pagefile_ref->{pagefilelocation} if (exists $pagefile_ref->{pagefilelocation});
+                        }
+                    }
+                    
+                    printf TIT "6053.%03d:%s\n",$i,$page_ref->{pagetext} if (exists $page_ref->{pagetext} && keys %{page_ref->{pagetext}});
+                    printf TIT "6054.%03d:%s\n",$i,$page_ref->{pageptr} if (exists $page_ref->{pageptr});
+                    $i++;
+                }   
+            }
+        }
+    }
         
         
 #         m
@@ -313,33 +357,54 @@ sub parse_titset {
                 
 #             }            
 #         }                
-    }
 
+
+    my $mexdaten_ref = {};
     
     # Exemplardaten abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{exempl}}){
+        my ($new_category)=$convconfig->{exempl}{$kateg}=~m/^(\d\d\d\d)/;
+        my ($new_mult)    =$convconfig->{exempl}{$kateg}=~m/^\d\d\d\d\.(\d\d\d)/;
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
             my $content = konv($titset->first_child($kateg)->text());
             
             if ($content){
-                my @parts = ();
-                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                if (exists $convconfig->{category_split_chars}{$kateg}){
+                    my @parts = ();
+                    if ($content=~/$convconfig->{category_split_chars}{$kateg}/){
+                        push @parts, split($convconfig->{category_split_chars}{$kateg},$content);
+                    }
+                    else {
+                        push @parts, $content;
+                    }
+                    
+                    my $idx=1;
+                    foreach my $part (@parts){
+                        $f_idx=sprintf "%03d", $idx;;
+                        $mexdaten_ref->{$f_idx}{$new_category}=$part;
+                        $idx++;
+                    }
+
                 }
                 else {
-                    push @parts, $content;
-                }
-
-                foreach my $part (@parts){
-                    print MEX "0000:$mexidn\n";
-                    print MEX "0004:".$titset->first_child($convconfig->{uniqueidfield})->text()."\n";
-                    print MEX $convconfig->{exempl}{$kateg}.$part."\n";
-                    print MEX "9999:\n";
-                    $mexidn++;
+                    $mexdaten_ref->{$new_mult}{$new_category}=$content;
                 }
             }
         }
     }
+
+    foreach my $idx (keys %$mexdaten_ref){        
+        print MEX "0000:$mexidn\n";
+        print MEX "0004:".$titset->first_child($convconfig->{uniqueidfield})->text()."\n";
+
+        foreach my $new_category (keys %{$mexdaten_ref->{$idx}}){
+            print MEX "$new_category:$mexdaten_ref->{$idx}->{$new_category}\n";
+        }
+        
+        print MEX "9999:\n";
+        $mexidn++;
+    }
+
     # Exemplardaten abarbeiten Ende
 
     print TIT "9999:\n";
@@ -358,3 +423,33 @@ sub konv {
 
     return $content;
 }
+
+# Filter
+
+sub filter_junk {
+    my ($content) = @_;
+
+    $content=~s/\W/ /g;
+    $content=~s/\s+/ /g;
+    $content=~s/\s\D\s/ /g;
+
+    
+    return $content;
+}
+
+sub filter_newline2br {
+    my ($content) = @_;
+
+    $content=~s/\n/<br\/>/g;
+    
+    return $content;
+}
+
+sub filter_match {
+    my ($content,$regexp) = @_;
+
+    my ($match)=$content=~m/($regexp)/g;
+    
+    return $match;
+}
+

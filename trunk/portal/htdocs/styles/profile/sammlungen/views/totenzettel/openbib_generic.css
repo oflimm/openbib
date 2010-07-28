@@ -854,6 +854,7 @@ dt.review {
 }
 
 .discover_sources {
+  display: none;
   padding: 5px;
   border-top-style: solid;
   border-top-color: #edebe3;

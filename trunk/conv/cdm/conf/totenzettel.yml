@@ -1,0 +1,52 @@
+# Tracelevel
+#tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'cdmid'
+
+category_split_chars:
+
+# Personen
+pers:
+  'name': '0100:'      # Verfasser
+  'vater': '0101:'     # Vater
+  'mutter': '0102:'    # Mutter
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys:
+  'provenienz': '0700:'
+
+# Schlagworte
+subj:
+
+# Titel
+title:
+  'name': '0331:'
+  'vorname': '0370:'
+  'sterbeort': '0410:'
+  'sterbedatum': '0424:'
+  'geburtsort': '0411:'
+  'geburtsdatum': '0595:'
+  'thumbnailURL': '2662:'
+  'viewerURL': '0662:'
+
+# Exemplare
+exempl:
+  'ehepartner1': '0014.001:'
+  'ehepartner2': '0014.002:'
+  'ehepartner3': '0014.003:'
+  'heiratsort1': '0016.001:'
+  'heiratsort2': '0016.002:'
+  'heiratsort3': '0016.003:'
+  'heiratsdatum1': '0005.001:'
+  'heiratsdatum2': '0005.002:'
+  'heiratsdatum3': '0005.003:'
+
+filter:
+  'sterbedatum':
+     filter_add_year:
+         category: '0425:'
+         regexp: '\d\d\d\d'

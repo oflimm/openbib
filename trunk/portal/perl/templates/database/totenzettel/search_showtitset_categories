@@ -61,6 +61,16 @@ FOREACH category IN categories;
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
+    CASE "T0410";
+         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=T0410";
+         content   = "<b>${highlightquery(searchquery,content)}</b>";
+         content   = "<a href=\"${localurl}\">${content}</a>";
+
+    CASE "T0411";
+         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=T0411";
+         content   = "<b>${highlightquery(searchquery,content)}</b>";
+         content   = "<a href=\"${localurl}\">${content}</a>";
+
     CASE [ "T0531" "T0533" ];
          IF content.match("---&gt;: ") ;
             previssues = content.split("---&gt;: ");

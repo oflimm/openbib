@@ -853,6 +853,10 @@ dt.review {
   -webkit-border-radius: 12px;
 }
 
+.reuse_data .formats {
+  display: none;
+}
+
 .discover_sources {
   display: none;
   padding: 5px;

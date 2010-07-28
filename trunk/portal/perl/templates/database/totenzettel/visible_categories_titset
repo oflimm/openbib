@@ -14,8 +14,6 @@
 [%# Ausgabekategorien %]
 [% categories = [
                 #'T0100', # msg.maketext("T0100-totenzettel") Name
-                'T0101', # msg.maketext("T0101-totenzettel") Vater
-                'T0102', # msg.maketext("T0102-totenzettel") Mutter
                 #'T0200', # msg.maketext("T0200-totenzettel") 
                 #'T0201', # msg.maketext("T0201-totenzettel")
                 'T0331', # msg.maketext("T0331-totenzettel") Name
@@ -24,6 +22,8 @@
                 'T0410', # msg.maketext("T0410-totenzettel") Sterbeort
                 'T0595', # msg.maketext("T0595-totenzettel") Geburtsdatum
                 'T0411', # msg.maketext("T0411-totenzettel") Geburtsort
+                'T0101', # msg.maketext("T0101-totenzettel") Vater
+                'T0102', # msg.maketext("T0102-totenzettel") Mutter
                 #'T0425', # msg.maketext("T0425") ErschJahr
                  'T0700', # msg.maketext("T0700-totenzettel") Provenienz
                 'T0662', # msg.maketext("T0662") EDVurl

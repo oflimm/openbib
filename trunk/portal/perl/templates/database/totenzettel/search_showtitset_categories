@@ -211,7 +211,7 @@ END;
 </table>
 <p/>
 
-[% IF mexset.size >= 0 %]
+[% IF mexnormset.size > 0 %]
 <div class="boxed">
 <table width="100%">
 <tr align="center"><td class="headline">Ehepartner</td><td class="headline">Heiratsdatum</td><td class="headline">Heiratsort</td></tr>

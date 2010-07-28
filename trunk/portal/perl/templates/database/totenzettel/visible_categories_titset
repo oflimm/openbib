@@ -15,7 +15,7 @@
 [% categories = [
                 'T0100', # msg.maketext("T0100-totenzettel") Name
                 'T0101', # msg.maketext("T0101-totenzettel") Vater
-                'T0103', # msg.maketext("T0102-totenzettel") Mutter
+                'T0102', # msg.maketext("T0102-totenzettel") Mutter
                 #'T0200', # msg.maketext("T0200-totenzettel") Vater
                 #'T0201', # msg.maketext("T0201-totenzettel") Mutter
                 'T0331', # msg.maketext("T0331-totenzettel") Name
@@ -26,8 +26,8 @@
                 'T0411', # msg.maketext("T0411-totenzettel") Geburtsort
                 #'T0425', # msg.maketext("T0425") ErschJahr
                  'T0700', # msg.maketext("T0700-totenzettel") Provenienz
-                #'T0662', # msg.maketext("T0662") EDVurl
-                #'T1664', # msg.maketext("T1664") Provenienz
+                'T0662', # msg.maketext("T0662") EDVurl
+                'T1664', # msg.maketext("T1664") Provenienz
                 #'T2662', # msg.maketext("T2662") USB EDVurl
                 #'T2663', # msg.maketext("T2663") USB URLInfo
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis

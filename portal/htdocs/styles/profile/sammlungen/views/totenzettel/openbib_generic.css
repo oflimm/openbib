@@ -704,8 +704,8 @@ dt.review {
   position: relative;
   top: 5px;
   left:40px;
-  width: 60px;
-  height: 90px;
+  width: 170px;
+  height: 130px;
   
   background: none repeat scroll 0 0; 
 
@@ -725,7 +725,7 @@ dt.review {
 .item .brieftitle {
   position: absolute;
   top: 20px;
-  left:120px;
+  left:220px;
   width: auto; 
 }
 

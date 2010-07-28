@@ -452,6 +452,8 @@ sub handler {
             stylesheet => $stylesheet,		
             sessionID  => $session->{ID},
 
+            query      => $query,
+            
             qopts      => $queryoptions->get_options,
             
             resulttime => $resulttime,
@@ -466,6 +468,11 @@ sub handler {
             config     => $config,
             user       => $user,
             msg        => $msg,
+
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
         };
 
         OpenBib::Common::Util::print_page($template,$ttdata,$r);
@@ -859,6 +866,12 @@ sub handler {
                     config          => $config,
                     user            => $user,
                     msg             => $msg,
+
+                    decode_utf8    => sub {
+                        my $string=shift;
+                        return decode_utf8($string);
+                    },
+
                 };
                 
                 $itemtemplate->process($itemtemplatename, $ttdata) || do {
@@ -927,6 +940,11 @@ sub handler {
             config         => $config,
             user           => $user,
             msg            => $msg,
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
+
         };
         
         $starttemplate->process($starttemplatename, $startttdata) || do {
@@ -1030,6 +1048,8 @@ sub handler {
                         dbinfo          => $dbinfotable,
                         
                         treffer         => $treffer,
+
+                        query           => $query,
                         
                         database        => $database,
                         queryid         => $queryid,
@@ -1044,6 +1064,11 @@ sub handler {
                         config          => $config,
                         user            => $user,
                         msg             => $msg,
+                        decode_utf8    => sub {
+                            my $string=shift;
+                            return decode_utf8($string);
+                        },
+                        
                     };
                     
                     $itemtemplate->process($itemtemplatename, $ttdata) || do {
@@ -1225,7 +1250,9 @@ sub handler {
 
                                 fullresultcount => $fullresultcount,
                                 recordlist      => $recordlist,
-                            
+
+                                query           => $query,
+
                                 qopts           => $queryoptions->get_options,
                                 drilldown             => $drilldown,
                                 drilldown_categorized => $drilldown_categorized,
@@ -1241,6 +1268,12 @@ sub handler {
                                 config          => $config,
                                 user            => $user,
                                 msg             => $msg,
+                                
+                                decode_utf8    => sub {
+                                    my $string=shift;
+                                    return decode_utf8($string);
+                                },
+                                
                             };
                         
                             $itemtemplate->process($itemtemplatename, $ttdata) || do {
@@ -1345,6 +1378,8 @@ sub handler {
 
                             treffer         => $treffer,
 
+                            query           => $query,
+                            
                             database        => $database,
                             queryid         => $queryid,
                             qopts           => $queryoptions->get_options,
@@ -1358,6 +1393,12 @@ sub handler {
                             config          => $config,
                             user            => $user,
                             msg             => $msg,
+
+                            decode_utf8    => sub {
+                                my $string=shift;
+                                return decode_utf8($string);
+                            },
+                            
                         };
 
                         $itemtemplate->process($itemtemplatename, $ttdata) || do {
@@ -1438,6 +1479,11 @@ sub handler {
             config        => $config,
             user          => $user,
             msg           => $msg,
+
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
         };
         
         $endtemplate->process($endtemplatename, $endttdata) || do {

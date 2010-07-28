@@ -83,6 +83,9 @@ sub handler {
         ($id1,$id2,$type,$view)=($1,$2,$3,$4);
     }
 
+    $logger->debug("Parsed Path: $path");
+    $logger->debug("ID1: $id1 ID2: $id2 Type: $type View: $view");
+
     # Zugriffe loggen
     if ($type == 1){
         # Titel

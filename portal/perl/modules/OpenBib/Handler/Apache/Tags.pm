@@ -231,6 +231,12 @@ sub handler {
             config     => $config,
             user       => $user,
             msg        => $msg,
+
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
+
         };
         OpenBib::Common::Util::print_page($config->{tt_tags_editusertags_tname},$ttdata,$r);
     }
@@ -252,6 +258,12 @@ sub handler {
             config     => $config,
             user       => $user,
             msg        => $msg,
+
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
+
         };
         OpenBib::Common::Util::print_page($config->{tt_tags_showusertags_tname},$ttdata,$r);
     }

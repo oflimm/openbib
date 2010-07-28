@@ -82,6 +82,10 @@ $(document).ready(function(){
 <tr><td class="category">Kompletter Name</td><td class="category"><select name="boolhststring"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% searchquery.hststring.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
+[% IF showinhalt %]
+<tr><td class="category">Geburts-/Sterbeorte</td><td class="category"><select name="boolinhalt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="inhalt" value="[% searchquery.inhalt.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
 [% IF showejahr %]
 <tr><td class="category">Sterbejahr</td><td class="category">und<input type="hidden" name="boolejahr" value="AND" /></td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val | html %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
 [% END %]

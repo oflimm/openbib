@@ -90,29 +90,7 @@ Vergangenheit und tiefe Einblicke in die Geistes- und Gefühlswelt
 unserer Vorfahren.
 </p>
 
-<p>
-Grundstock der aus ca.1450 Totenzetteln bestehenden Sammlung der USB
-Köln sind die Zettel (ca.1200) aus dem Nachlass des rheinischen
-Heimatforschers Peter Paul Trippen, die einen Zeitraum vom Beginn des
-18. Jahrhunderts bis ca.1939 abdecken. Aus diesem Nachlass stammt auch
-ein Konvolut von Todesanzeigen aus Zeitungen, die er ausgeschnitten
-und in ein Album eingeklebt hatte. Die übrigen Totenzettel (ca.250)
-sind unterschiedlicher Provenienz - meist Geschenke von Bürgern,
-teilweise eingegangen aufgrund eines Zeitungsaufrufes in den 1980er
-Jahren - und reichen bis zum Anfang des 21.Jahrhunderts. Erfasst ist
-die ganze Breite unserer Gesellschaft, vom Adeligen über den
-Geistlichen bis hin zum Akademiker und einfachen Bürger und
-Handwerker.
-</p>
-
-<h3>Ansprechpartner:</h3>
-<strong>Michael Osieka, Gertrud Schmitt-Bauermeister<br />
-Tel.: 0221/470-3333</strong>, 
-<br />
-<a href="http://www.ub.uni-koeln.de/res/listen_e_mail/kollektionsmanagement/?preview=preview" target="_blank">E-Mail</a><br /></p>
-
-<!-- [<a href="[% config.get('info_loc')
-%]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>] -->
+[<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 
 </td></tr>
 </table>

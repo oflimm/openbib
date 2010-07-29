@@ -32,6 +32,8 @@ class="img" alt="1716" />
 <center>1716</center>
 </p>
 
+<!--
+
 <p> <img
 src="/images/openbib/views/totenzettel/1818.png"
 class="img" alt="1818" />
@@ -47,7 +49,7 @@ class="img" alt="1917" />
 class="img" alt="2004" /> 
 <center>2004</center>
 </p>
-
+-->
 
 
 
@@ -56,7 +58,7 @@ class="img" alt="2004" />
 </td>
 <td style="vertical-align: top;padding-left:20px;">
 
-<h2>Überschrift</h2>
+<h2>Der Bestand in der USB</h2>
 
 <p>
 Grundstock der aus ca.1450 Totenzetteln bestehenden Sammlung der USB

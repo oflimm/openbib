@@ -87,11 +87,11 @@ use OpenBib::Handler::Apache::Resource::Person;
 use OpenBib::Handler::Apache::Resource::CorporateBody;
 use OpenBib::Handler::Apache::Resource::Subject;
 use OpenBib::Handler::Apache::Resource::Classification;
+use OpenBib::Handler::Apache::Resource::Library;
 use OpenBib::Handler::Apache::Resource::Tag;
 use OpenBib::Handler::Apache::Resource::Litlist;
 use OpenBib::Handler::Apache::RSSFeeds;
 use OpenBib::Handler::Apache::Redirect;
-use OpenBib::Handler::Apache::Resource;
 use OpenBib::Handler::Apache::Tags;
 use OpenBib::Handler::Apache::UserReviews;
 

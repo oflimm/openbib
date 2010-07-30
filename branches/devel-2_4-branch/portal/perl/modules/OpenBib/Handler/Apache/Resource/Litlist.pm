@@ -152,12 +152,12 @@ sub handler {
     if ($path=~m/^\/(\d+)\/($valid_representations_regexp)$/){
         $litlistid       = $1;
         $representation = $2;
-        $action         = "show";
+        $action         = "single_list";
     }
     elsif ($path=~m/^\/(\d+)/){
         $litlistid       = $1;
         $representation = '';
-        $action         = "show";
+        $action         = "single_list";
     }
     elsif ($path=~m/^\/public_all\/($valid_representations_regexp)$/){
         $litlistid       = $1;
@@ -184,12 +184,12 @@ sub handler {
     elsif ($path=~m/^\/private\/($valid_representations_regexp)$/){
         $litlistid       = $1;
         $representation = $2;
-        $action   = "manage";
+        $action   = "manage_private_lists";
     }    
     elsif ($path=~m/^\/private/){
         $litlistid       = $1;
         $representation = '';
-        $action   = "manage";
+        $action   = "manage_private_lists";
     }    
     elsif ($path=~m/^\/($valid_representations_regexp)$/){
         $litlistid       = $1;
@@ -223,8 +223,10 @@ sub handler {
 
     my $subjects_ref = OpenBib::User->get_subjects;
 
-    if ($action eq "manage" && $user->{ID}){
-        
+    if ($action eq "manage_private_lists" && $user->{ID}){
+
+        my $userrole_ref = $user->get_roles_of_user($user->{ID});
+
 	if ($do_addlist) {
             
             if ($title eq ""){
@@ -234,7 +236,7 @@ sub handler {
             }
             
             my $litlistid = $user->add_litlist({ title =>$title, type => $type, subjectids => \@subjectids });
-
+            
             # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
             # der soeben erzeugten Literaturliste hinzugefuegt.
             if ($titid && $titdb && $litlistid){
@@ -244,18 +246,16 @@ sub handler {
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlists_loc}{name}/private/");
             return Apache2::Const::OK;
             
-	}
-
-	if ($do_dellist) {
+	}        
+	elsif ($do_dellist) {
             
             $user->del_litlist({ litlistid => $litlistid});
-
+            
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}/private/");
             return Apache2::Const::OK;
             
 	}
-
-        if ($do_changelist) {
+        elsif ($do_changelist) {
             
             if (!$title || !$type || !$litlistid){
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
@@ -263,7 +263,6 @@ sub handler {
                 return Apache2::Const::OK;
             }
 
-            my $userrole_ref = $user->get_roles_of_user($user->{ID});
 
             if (!$userrole_ref->{librarian} && !$userrole_ref->{lecturer}){
                 $lecture = 0;
@@ -279,95 +278,6 @@ sub handler {
             return Apache2::Const::OK;
             
 	}
-	elsif ($do_addentry) {
-            
-            if (!$litlistid || !$titid || !$titdb ){
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben oder Titel und Datenbank existieren nicht."),$r,$msg);
-                
-                return Apache2::Const::OK;
-            }
-            
-            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
-            
-            if ($litlist_properties_ref->{userid} eq $user->{ID}){
-                $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
-            }
-            
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/?action=manage&do_showlitlist=1");
-            return Apache2::Const::OK;
-	  
-	}
-        elsif ($do_delentry) {
-	  
-            if (!$titid || !$titdb || !$litlistid) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."),$r,$msg);
-	    
-                return Apache2::Const::OK;
-            }
-
-            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
-
-            if ($litlist_properties_ref->{userid} eq $user->{ID}) {
-                $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
-            }
-
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/?action=manage&do_showlitlist=1");
-            return Apache2::Const::OK;
-	  
-	}
-        elsif ($do_showlitlist) {
-	  
-            if (!$litlistid || !$user->{ID} ) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste oder Sie sind nicht authentifiziert."),$r,$msg);
-	    
-                return Apache2::Const::OK;
-            }
-	  
-            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
-	  
-            if ($litlist_properties_ref->{userid} eq $user->{ID}) {
-
-                my $targettype    = $user->get_targettype_of_session($session->{ID});
-
-                my $singlelitlist = {
-                    id         => $litlistid,
-                    recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype }),
-                    properties => $litlist_properties_ref,
-                };
-
-                # TT-Data erzeugen
-                my $ttdata={
-                    representation  => $representation,
-                    
-                    view       => $view,
-                    stylesheet => $stylesheet,
-                    sessionID  => $session->{ID},
-
-                    subjects     => $subjects_ref,
-                    query        => $query,
-                    qopts        => $queryoptions->get_options,
-                    user         => $user,
-
-                    format         => $format,
-                    show           => $show,
-
-                    litlist      => $singlelitlist,
-                    dbinfo       => $dbinfotable,
-                    targettype   => $targettype,
-                    
-                    config     => $config,
-                    user       => $user,
-                    msg        => $msg,
-                };
-              
-                OpenBib::Common::Util::print_page($config->{tt_litlists_manage_singlelist_tname},$ttdata,$r);
-            }
-            else {
-                OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
-            }
-            return Apache2::Const::OK;
-	  
-        }
         else {
             
             my $litlists   = $user->get_litlists();
@@ -395,10 +305,49 @@ sub handler {
             return Apache2::Const::OK;
 	}
     }
-    elsif ($action eq "show") {
-        if ($user->litlist_is_public({litlistid => $litlistid}) || $user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid})) {
+    elsif ($action eq "single_list"){
+        my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
+        my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
+        my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
         
+        if ($litlist_is_public || $user_owns_litlist) {
+
+            # Aktionen moeglich, wenn dem Nutzer die Liste gehoert
+            if ($user_owns_litlist){
+
+                if ($do_addentry) {
+            
+                    if (!$litlistid || !$titid || !$titdb ){
+                        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben oder Titel und Datenbank existieren nicht."),$r,$msg);
+                        
+                        return Apache2::Const::OK;
+                    }
+                    
+                    $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
+                    
+                    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/?action=manage&do_showlitlist=1");
+                    return Apache2::Const::OK;
+                    
+                }
+                elsif ($do_delentry) {
+                    
+                    if (!$titid || !$titdb || !$litlistid) {
+                        OpenBib::Common::Util::print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."),$r,$msg);
+                        
+                        return Apache2::Const::OK;
+                    }
+                    
+                    $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
+                    
+                    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/");
+                    return Apache2::Const::OK;
+                    
+                }
+            }
+            
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+
+            my $targettype    = $user->get_targettype_of_session($session->{ID});
             
 	    my $singlelitlist = {
                 id         => $litlistid,
@@ -406,12 +355,14 @@ sub handler {
                 properties => $litlist_properties_ref,
             };
 
-            # Aufruf der Literaturlisten loggen
-            $session->log_event({
-                type      => 800,
-                content   => $litlistid,
-            });
-
+            if (!$user_owns_litlist){
+                # Aufruf der Literaturlisten durch "Andere" loggen
+                $session->log_event({
+                    type      => 800,
+                    content   => $litlistid,
+                });
+            }
+            
             # Thematische Einordnung
 
             my $litlist_subjects_ref   = OpenBib::User->get_subjects_of_litlist({id => $litlistid});
@@ -420,6 +371,8 @@ sub handler {
             # TT-Data erzeugen
 	    my $ttdata={
                 representation  => $representation,
+
+                user_owns_litlist => $user_owns_litlist,
                 
                 view           => $view,
                 stylesheet     => $stylesheet,
@@ -431,6 +384,8 @@ sub handler {
                 qopts          => $queryoptions->get_options,
                 user           => $user,
 
+                userrole       => $userrole_ref,
+                
                 format         => $format,
                 show           => $show,
                 
@@ -438,7 +393,8 @@ sub handler {
                 other_litlists => $other_litlists_of_user,
                 
                 dbinfo         => $dbinfotable,
-                
+                targettype     => $targettype,
+
                 config         => $config,
                 user           => $user,
                 msg            => $msg,

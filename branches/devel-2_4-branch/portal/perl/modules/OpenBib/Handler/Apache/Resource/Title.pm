@@ -80,7 +80,15 @@ sub handler {
     my $database;
     my $representation;
 
-    if ($path=~m/^\/([^\/]+?)\/([^\/]+?)\/([^\/]*)/){
+    my @valid_representations = (
+        'html',
+        'bibtex',
+        'json',
+    );
+
+    my $valid_representations_regexp = join("\|",@valid_representations);
+    
+    if ($path=~m/^\/([^\/]+?)\/([^\/]+?)\/($valid_representations_regexp)$/){
         $database = $1;
         $id       = $2;
         $representation = $3;

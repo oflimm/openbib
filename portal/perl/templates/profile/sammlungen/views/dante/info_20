@@ -31,7 +31,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[% stid %]?id=[% id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -70,10 +70,7 @@ Titel der Sammlung sind Kommentare, Forschungsberichte, biographische
 Werke und Literatur über die Renaissance. Die Sammlung Reiners brachte
 also für die USB eine aussergewöhnliche Bereichung ihres
 Dante-Bestandes, so dass sie seither eine der umfassendsten und besten
-Dante-Kollektionen Deutschlands verwahrt. Die Sammlung wird von der USB
-Köln stetig erweitert.
-[<a href="[%
-config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
+Dante-Kollektionen Deutschlands verwahrt.[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/21">Weitere Informationen</a>]
 </p>
 
 <h1>Dante Alighieri</h1>
@@ -94,7 +91,7 @@ Wissenschaften (Artes liberales) seiner Zeit.
 Lesesaal.
 </p>
 
-<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 
 </td></tr>
 </table>

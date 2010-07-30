@@ -40,10 +40,10 @@ Bibliothek authentifizieren.") %]
 
 <p />
 
-<form method="post" action="[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="view"      value="[% view %]" />
+
+
 
 <table width="100%">
 <tr><th>[% msg.maketext("Login mit einem Benutzerausweis") %]</th></tr>

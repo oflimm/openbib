@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Search.pm
 #
-#  Copyright 1997-2009 Oliver Flimm <flimm@openbib.org>
+#  Copyright 1997-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -70,15 +70,7 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
 
@@ -93,7 +85,7 @@ sub handler {
     ##          >0  - gibt die maximale Zahl an
     ##          <=0 - gibt immer alle Treffer aus
   
-    my $hitrange=($query->param('hitrange'))?$query->param('hitrange'):-1;
+    my $hitrange=($query->param('num'))?$query->param('num'):-1;
     ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
   
     #####################################################################
@@ -106,13 +98,13 @@ sub handler {
     #####################################################################
     ## Database: Name der verwendeten SQL-Datenbank
   
-    my $database=($query->param('database'))?$query->param('database'):'inst001';
+    my $database=($query->param('db'))?$query->param('db'):'inst001';
   
     #####################################################################
     ## Sortierung der Titellisten
   
-    my $sorttype  = ($query->param('sorttype'))?$query->param('sorttype'):"author";
-    my $sortorder = ($query->param('sortorder'))?$query->param('sortorder'):"up";
+    my $sorttype  = ($query->param('srt'))?$query->param('srt'):"author";
+    my $sortorder = ($query->param('srto'))?$query->param('srto'):"up";
 
     my $benchmark=0;
 
@@ -127,22 +119,6 @@ sub handler {
     my $swtindex          = decode_utf8($query->param('swtindex'))          || '';
     my $swtindexall       = $query->param('swtindexall')       || '';
 
-    my $searchsingletit   = $query->param('searchsingletit')   || '';
-    my $searchsingleaut   = $query->param('searchsingleaut')   || '';
-    my $searchsingleswt   = $query->param('searchsingleswt')   || '';
-    my $searchsinglenot   = $query->param('searchsinglenot')   || '';
-    my $searchsinglekor   = $query->param('searchsinglekor')   || '';
-
-    my $searchmultipleaut = $query->param('searchmultipleaut') || '';
-    my $searchmultipletit = $query->param('searchmultipletit') || '';
-    my $searchmultiplekor = $query->param('searchmultiplekor') || '';
-    my $searchmultiplenot = $query->param('searchmultiplenot') || '';
-    my $searchmultipleswt = $query->param('searchmultipleswt') || '';
-
-    my $searchtitofaut    = $query->param('searchtitofaut')    || '';
-    my $searchtitofurhkor = $query->param('searchtitofurhkor') || '';
-    my $searchtitofnot    = $query->param('searchtitofnot')    || '';
-    my $searchtitofswt    = $query->param('searchtitofswt')    || '';
     my $searchtitofcnt    = decode_utf8($query->param('searchtitofcnt'))    || '';
 
     my $browsecat         = $query->param('browsecat')         || '';
@@ -191,16 +167,8 @@ sub handler {
 
         return Apache2::Const::OK;
     }
-    
-    my $view="";
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
-
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
   
     #####################################################################
     ## Eigentliche Suche (default)
@@ -297,36 +265,6 @@ sub handler {
     # gefunden wurde, geht es nun exklusiv in der SQL-DB weiter
 
     if ($generalsearch) { 
-        if (($generalsearch=~/^verf/)||($generalsearch=~/^pers/)) {
-            my $verfidn=$query->param("$generalsearch");
-
-            my $normset=OpenBib::Record::Person->new({database => $database, id => $verfidn})->load_full_record({dbh => $dbh})->to_rawdata;
-            
-	    my $poolname=$dbinfotable->{sigel}{
-	      $dbinfotable->{dbases}{$database}};
-            
-            # TT-Data erzeugen
-            my $ttdata={
-                view             => $view,
-                stylesheet       => $stylesheet,
-                database         => $database,
-		poolname         => $poolname,
-                queryoptions_ref => $queryoptions->get_options,
-                sessionID        => $session->{ID},
-                normset          => $normset,
-                
-                config     => $config,
-                user       => $user,
-                msg        => $msg,
-            };
-
-            $stid=~s/[^0-9]//g;
-            my $templatename = ($stid)?"tt_search_showautset_".$stid."_tname":"tt_search_showautset_tname";
-            
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-            return Apache2::Const::OK;
-        }
-    
         if ($generalsearch=~/^supertit/) {
             my $recordlist = new OpenBib::RecordList::Title();
 
@@ -419,567 +357,8 @@ sub handler {
 
             return Apache2::Const::OK;
         }
-
-        if ($generalsearch=~/^hst/) {
-            my $titidn=$query->param("$generalsearch");
-
-            OpenBib::Record::Title->new({database=>$database, id=>$titidn})
-                  ->load_full_record({dbh => $dbh})
-                      ->print_to_handler({
-                          apachereq          => $r,
-                          stylesheet         => $stylesheet,
-                          view               => $view,
-                          msg                => $msg,
-                      });
-
-            return Apache2::Const::OK;
-        }
-    
-        if ($generalsearch=~/^swt/) {
-            my $swtidn=$query->param("$generalsearch");
-
-            my $normset=OpenBib::Record::Subject->new({database => $database, id => $swtidn})->load_full_record({dbh => $dbh})->to_rawdata;
-
-	    my $poolname=$dbinfotable->{sigel}{
-	      $dbinfotable->{dbases}{$database}};
-
-            # TT-Data erzeugen
-            my $ttdata={
-                view       => $view,
-                stylesheet => $stylesheet,
-                database   => $database,
-	        poolname   => $poolname,
-                qopts      => $queryoptions->get_options,
-                sessionID  => $session->{ID},
-                normset    => $normset,
-
-                config     => $config,
-                user       => $user,
-                msg        => $msg,
-            };
-
-            $stid=~s/[^0-9]//g;
-            my $templatename = ($stid)?"tt_search_showswtset_".$stid."_tname":"tt_search_showswtset_tname";
-
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-            return Apache2::Const::OK;
-        }
-    
-        if ($generalsearch=~/^not/) {
-            my $notidn=$query->param("notation");
-            
-            my $normset=OpenBib::Record::Classification->new({database => $database, id => $notidn})->load_full_record({dbh => $dbh})->to_rawdata;
-
-	    my $poolname=$dbinfotable->{sigel}{
-	      $dbinfotable->{dbases}{$database}};
-
-            # TT-Data erzeugen
-            my $ttdata={
-                view       => $view,
-                stylesheet => $stylesheet,
-                database   => $database,
-		poolname   => $poolname,
-                qopts      => $queryoptions->get_options,
-                sessionID  => $session->{ID},
-                normset    => $normset,
-                
-                config     => $config,
-                user       => $user,
-                msg        => $msg,
-            };
-
-            $stid=~s/[^0-9]//g;
-            my $templatename = ($stid)?"tt_search_shownotset_".$stid."_tname":"tt_search_shownotset_tname";
-            
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-            return Apache2::Const::OK;
-        }
-    
     }
   
-    #####################################################################
-    if ($searchmultipletit) {
-        my @mtitidns=$query->param('searchmultipletit');
-
-        OpenBib::Search::Util::print_mult_tit_set_by_idn({
-            titidns_ref        => \@mtitidns,
-            dbh                => $dbh,
-            database           => $database,
-            apachereq          => $r,
-            stylesheet         => $stylesheet,
-            view               => $view,
-            msg                => $msg,
-        });
-        return Apache2::Const::OK;
-    }
-
-    #####################################################################
-    # Wird derzeit nicht unterstuetzt
-
-#     if ($searchmultipleaut){
-#         my @mautidns=$query->param('searchmultipleaut');
-#         OpenBib::Search::Util::print_mult_aut_set_by_idn({
-#             autidns_ref        => \@mautidns,
-#             dbh                => $dbh,
-#             sessiondbh         => $session->{dbh},
-#             searchmultipleaut  => $searchmultipleaut,
-#             hitrange           => $hitrange,
-#             sorttype           => $sorttype,
-#             sortorder          => $sortorder,
-#             database           => $database,
-#             sessionID          => $session->{ID},
-#             apachereq          => $r,
-#             stylesheet         => $stylesheet,
-#             view               => $view,
-#         });
-#         return Apache2::Const::OK;
-#     }
-    
-    #####################################################################
-    # Wird derzeit nicht unterstuetzt
-
-#     if ($searchmultiplekor){
-#         my @mkoridns=$query->param('searchmultiplekor');
-#         OpenBib::Search::Util::print_mult_kor_set_by_idn({
-#             koridns_ref        => \@mkoridns,
-#             dbh                => $dbh,
-#             sessiondbh         => $session->{dbh},
-#             searchmultiplekor  => $searchmultiplekor,
-#             hitrange           => $hitrange,
-#             sorttype           => $sorttype,
-#             sortorder          => $sortorder,
-#             database           => $database,
-#             sessionID          => $session->{ID},
-#             apachereq          => $r,
-#             stylesheet         => $stylesheet,
-#             view               => $view,
-#         });
-#         return Apache2::Const::OK;
-#     }
-  
-    #####################################################################
-    # Wird derzeit nicht unterstuetzt
-  
-#    if ($searchmultiplenot){
-#         my @mnotidns=$query->param('searchmultiplenot');
-#         OpenBib::Search::Util::print_mult_not_set_by_idn({
-#             notidns_ref        => \@mnotidns,
-#             dbh                => $dbh,
-#             sessiondbh         => $session->{dbh},
-#             searchmultiplekor  => $searchmultiplekor,
-#             hitrange           => $hitrange,
-#             sorttype           => $sorttype,
-#             sortorder          => $sortorder,
-#             database           => $database,
-#             sessionID          => $session->{ID},
-#             apachereq          => $r,
-#             stylesheet         => $stylesheet,
-#             view               => $view,
-#         });
-#         return Apache2::Const::OK;
-#    }
-    #####################################################################
-    # Wird derzeit nicht unterstuetzt
-  
-#    if ($searchmultipleswt){
-#         my @mswtidns=$query->param('searchmultipleswt');
-#         OpenBib::Search::Util::print_mult_swt_set_by_idn({
-#             swtidns_ref        => \@mswtidns,
-#             dbh                => $dbh,
-#             sessiondbh         => $session->{dbh},
-#             searchmultiplekor  => $searchmultiplekor,
-#             hitrange           => $hitrange,
-#             sorttype           => $sorttype,
-#             sortorder          => $sortorder,
-#             database           => $database,
-#             sessionID          => $session->{ID},
-#             apachereq          => $r,
-#             stylesheet         => $stylesheet,
-#             view               => $view,
-#         });
-#         return Apache2::Const::OK;
-#    }
-  
-    #####################################################################
-    
-    if ($searchsingletit) {
-        # Zuerst die zugehoerige Suchanfrage bestimmen
-
-        my $searchquery = OpenBib::SearchQuery->instance;
-
-        if ($queryid){
-            $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
-        }
-
-        if ($config->get_system_of_db($database) eq "Z39.50"){
-            my $z3950dbh = new OpenBib::Search::Z3950($database);
-
-            my ($normset,$mexnormset) = $z3950dbh->get_singletitle($searchsingletit);
-            
-            my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-                session    => $session,
-                database   => $database,
-                titidn     => $searchsingletit,
-            });
-            
-            my $poolname=$dbinfotable->{sigel}{
-                $dbinfotable->{dbases}{$database}};
-            
-            # TT-Data erzeugen
-            my $ttdata={
-                view        => $view,
-                stylesheet  => $stylesheet,
-                database    => $database,
-                poolname    => $poolname,
-                format      => $format,
-                prevurl     => $prevurl,
-                nexturl     => $nexturl,
-                qopts       => $queryoptions->get_options,
-                sessionID   => $session->{ID},
-                titidn      => $searchsingletit,
-                normset     => $normset,
-                mexnormset  => $mexnormset,
-                circset     => {},
-
-                searchquery => $searchquery,
-                
-                config      => $config,
-                user        => $user,
-                msg         => $msg,
-            };
-
-            $stid=~s/[^0-9]//g;
-            my $templatename = ($stid)?"tt_search_showtitset_".$stid."_tname":"tt_search_showtitset_tname";
-            
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-
-        }
-        else {
-            OpenBib::Record::Title->new({database => $database, id => $searchsingletit})
-                  ->load_full_record({dbh => $dbh})->print_to_handler({
-                          apachereq          => $r,
-                          format             => $format,
-                          stylesheet         => $stylesheet,
-                          view               => $view,
-                          msg                => $msg,
-                          no_log             => $no_log,
-                      });
-        }
-        return Apache2::Const::OK;
-    }
-  
-    #####################################################################
-    if ($searchsingleswt) {
-        my $normset=OpenBib::Record::Subject->new({database => $database, id => $searchsingleswt})->load_full_record({dbh => $dbh})->to_rawdata;
-        
-	my $poolname=$dbinfotable->{sigel}{
-	  $dbinfotable->{dbases}{$database}};
-
-        # TT-Data erzeugen
-        my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            database   => $database,
-            poolname   => $poolname,
-            qopts      => $queryoptions->get_options,
-            sessionID  => $session->{ID},
-            normset    => $normset,
-            
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
-        };
-        OpenBib::Common::Util::print_page($config->{tt_search_showswtset_tname},$ttdata,$r);
-
-        $session->log_event({
-            type      => 14,
-            content   => {
-                id       => $searchsingleswt,
-                database => $database,
-            },
-            serialize => 1,
-        });
-
-        return Apache2::Const::OK;
-    }
-  
-    ######################################################################
-    if ($searchsinglekor) {
-        my $normset=OpenBib::Record::CorporateBody->new({database => $database, id => $searchsinglekor})->load_full_record({dbh => $dbh})->to_rawdata;  
-        
-	my $poolname=$dbinfotable->{sigel}{
-	  $dbinfotable->{dbases}{$database}};
-
-        # TT-Data erzeugen
-        my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            database   => $database,
-	    poolname   => $poolname,
-            qopts      => $queryoptions->get_options,
-            sessionID  => $session->{ID},
-            normset    => $normset,
-            
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
-        };
-        OpenBib::Common::Util::print_page($config->{tt_search_showkorset_tname},$ttdata,$r);
-
-        $session->log_event({
-            type      => 12,
-            content   => {
-                id       => $searchsinglekor,
-                database => $database,
-            },
-            serialize => 1,
-        });
-
-        return Apache2::Const::OK;
-    }
-    
-    ######################################################################
-    if ($searchsinglenot) {
-        my $normset=OpenBib::Record::Classification->new({database => $database, id => $searchsinglenot})->load_full_record({dbh => $dbh})->to_rawdata;
-	
-	my $poolname=$dbinfotable->{sigel}{
-	  $dbinfotable->{dbases}{$database}};
-
-        # TT-Data erzeugen
-        my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            database   => $database,
-            poolname   => $poolname,
-            qopts      => $queryoptions->get_options,
-            sessionID  => $session->{ID},
-            normset    => $normset,
-            
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
-        };
-        OpenBib::Common::Util::print_page($config->{tt_search_shownotset_tname},$ttdata,$r);
-
-        $session->log_event({
-            type      => 13,
-            content   => {
-                id       => $searchsinglenot,
-                database => $database,
-            },
-            serialize => 1,
-        });
-
-        return Apache2::Const::OK;
-    }
-  
-    #####################################################################
-    if ($searchsingleaut) {
-        my $normset=OpenBib::Record::Person->new({database => $database, id => $searchsingleaut})->load_full_record()->to_rawdata;
-
-        my $poolname=$dbinfotable->{sigel}{
-            $dbinfotable->{dbases}{$database}};
-        
-        # TT-Data erzeugen
-        my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            database   => $database,
-            poolname   => $poolname,
-            qopts      => $queryoptions->get_options,
-            sessionID  => $session->{ID},
-            normset    => $normset,
-            
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
-        };
-        OpenBib::Common::Util::print_page($config->{tt_search_showautset_tname},$ttdata,$r);
-
-        $session->log_event({
-            type      => 11,
-            content   => {
-                id       => $searchsingleaut,
-                database => $database,
-            },
-            serialize => 1,
-        });
-
-        return Apache2::Const::OK;
-    }
-    
-    if ($searchtitofaut) {
-        my $recordlist = new OpenBib::RecordList::Title();
-
-        my $hits      = 0;
-
-        # Zuerst Gesamtzahl bestimmen
-        my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
-        $request->execute($searchtitofaut);
-        
-        my $res=$request->fetchrow_hashref;
-        $hits = $res->{conncount};
-        
-        my $limits="";
-        if ($hitrange > 0){
-            $limits="limit $offset,$hitrange";
-        }
-        
-        # Bestimmung der Titel
-        $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=2 $limits") or $logger->error($DBI::errstr);
-        $request->execute($searchtitofaut);
-        
-        
-        while (my $res=$request->fetchrow_hashref){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-        }
-        $request->finish();            
-        
-        $recordlist->print_to_handler({
-            database         => $database,
-            sortorder        => $sortorder,
-            sorttype         => $sorttype,
-            apachereq        => $r,
-            stylesheet       => $stylesheet,
-            view             => $view,
-            hits             => $hits,
-            offset           => $offset,
-            hitrange         => $hitrange,
-            msg              => $msg,
-        });
-
-        return Apache2::Const::OK;
-    }
-  
-    #####################################################################
-    if ($searchtitofurhkor) {
-        my $recordlist = new OpenBib::RecordList::Title();
-
-        my $hits      = 0;
-
-        # Zuerst Gesamtzahl bestimmen
-        my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
-        $request->execute($searchtitofurhkor);
-        
-        my $res=$request->fetchrow_hashref;
-        $hits = $res->{conncount};
-        
-        my $limits="";
-        if ($hitrange > 0){
-            $limits="limit $offset,$hitrange";
-        }
-        
-        # Bestimmung der Titel
-        $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=3 $limits") or $logger->error($DBI::errstr);
-        $request->execute($searchtitofurhkor);
-        
-        while (my $res=$request->fetchrow_hashref){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-        }
-        $request->finish();            
-
-        $recordlist->print_to_handler({
-            database         => $database,
-            sortorder        => $sortorder,
-            sorttype         => $sorttype,
-            apachereq        => $r,
-            stylesheet       => $stylesheet,
-            view             => $view,
-            hits             => $hits,
-            offset           => $offset,
-            hitrange         => $hitrange,
-            msg              => $msg,
-        });
-
-        return Apache2::Const::OK;
-    }
-  
-    #######################################################################
-    if ($searchtitofswt) {
-        my $recordlist = new OpenBib::RecordList::Title();
-
-        my $hits      = 0;
-
-        # Zuerst Gesamtzahl bestimmen
-        my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
-        $request->execute($searchtitofswt);
-        
-        my $res=$request->fetchrow_hashref;
-        $hits = $res->{conncount};
-        
-        my $limits="";
-        if ($hitrange > 0){
-            $limits="limit $offset,$hitrange";
-        }
-        
-        # Bestimmung der Titel
-        $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=4 $limits") or $logger->error($DBI::errstr);
-        $request->execute($searchtitofswt);
-        
-        while (my $res=$request->fetchrow_hashref){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-        }
-        $request->finish();            
-
-        $recordlist->print_to_handler({
-            database         => $database,
-            sortorder        => $sortorder,
-            sorttype         => $sorttype,
-            apachereq        => $r,
-            stylesheet       => $stylesheet,
-            view             => $view,
-            hits             => $hits,
-            offset           => $offset,
-            hitrange         => $hitrange,
-            msg              => $msg,
-        });
-
-        
-        return Apache2::Const::OK;
-    }
-  
-    #######################################################################
-    if ($searchtitofnot) {
-        my $recordlist = new OpenBib::RecordList::Title();
-
-        my $hits      = 0;
-
-        # Zuerst Gesamtzahl bestimmen
-        my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
-        $request->execute($searchtitofnot);
-        
-        my $res=$request->fetchrow_hashref;
-        $hits = $res->{conncount};
-        
-        my $limits="";
-        if ($hitrange > 0){
-            $limits="limit $offset,$hitrange";
-        }
-        
-        # Bestimmung der Titel
-        $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=5 $limits") or $logger->error($DBI::errstr);
-        $request->execute($searchtitofnot);
-        
-        while (my $res=$request->fetchrow_hashref){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-        }
-        $request->finish();
-
-        $recordlist->print_to_handler({
-            database         => $database,
-            sortorder        => $sortorder,
-            sorttype         => $sorttype,
-            apachereq        => $r,
-            stylesheet       => $stylesheet,
-            view             => $view,
-            hits             => $hits,
-            offset           => $offset,
-            hitrange         => $hitrange,
-            msg              => $msg,
-        });
-
-        return Apache2::Const::OK;
-    }
 
     #######################################################################
     # Titel zu einem gegebenen Kategorie-Inhalt
@@ -994,7 +373,6 @@ sub handler {
             content  => $searchtitofcnt,
         });
 
-        $logger->debug("CNT-Content: $searchtitofcnt / CNT-Norm: $searchtitofcntnorm");
         my $limits="";
         if ($hitrange > 0){
             $limits="limit $offset,$hitrange";
@@ -1095,8 +473,6 @@ sub handler {
                 while (my $res=$request->fetchrow_hashref){
                     $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
                 }        
-
-                $logger->debug("CNT-Titel",YAML::Dump($recordlist));
                 
                 # Bestimmung der Titelzahl
                 $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where category=? and content=?") or $logger->error($DBI::errstr);

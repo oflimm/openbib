@@ -21,7 +21,7 @@
     <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
 [% END %]
-    <meta name="sessionID"           content="[% sessionID %]" />
+    
 [% IF record %]
     <meta name="Bibkey"              content="[% record.to_bibkey %]" />
     <meta name="Tags"                content="[% record.to_tags %]" />
@@ -31,10 +31,10 @@
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]" />
 [% END %]
 [% IF LinkedData == "title" %]
-<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% config.get('servername') %][% config.get('resource_loc') %]/title/[%- record.database -%]:[%- record.id -%]/rdf+xml"/>
+<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[%- record.database -%]:[%- record.id -%]/rdf+xml"/>
 [% END %]
 [% IF unapi && config.get('unAPI') %]
-    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% config.get('connector_unapi_loc') %]" />
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_unapi_loc.name %]" />
 [% END %]
 
   [%- TRY -%]
@@ -72,6 +72,7 @@
     [%- END -%]
   [%- END -%]
 
+<!--
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic_print.css" -%]
     <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic_print.css" %]" media="print" />
@@ -88,17 +89,13 @@
       [%- END -%]
     [%- END -%]
   [%- END -%]
+-->
 
     <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.pack.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
-<!-- <script language="JavaScript" type="text/javascript" src="/js/jtip.js"></script> -->
 
-  <link rel="stylesheet" href="[% "${config.get('css_loc')}/jquery.autocomplete.css" %]" type="text/css" />
-  <link rel="stylesheet" href="[% "${config.get('css_loc')}/ui.tabs.css" %]" type="text/css" media="print, projection, screen" />
-<!--  <link rel="stylesheet" href="[% "${config.get('css_loc')}/ui.accordion.css" %]" type="text/css" media="print, projection, screen" /> -->
-<!-- <link rel="stylesheet" href="[% "${config.get('css_loc')}/jtip.css" %]" type="text/css" media="print, projection, screen" /> -->
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
 <!--[if lt IE 7.]>

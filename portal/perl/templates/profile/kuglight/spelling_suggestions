@@ -42,5 +42,5 @@
 
 k
 [% IF suggestion.size > 0 %]
-Meinten Sie vielleicht: <b><a href="[% virtualsearch_loc %]?sessionID=[% sessionID %];hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=[% query.param('sb') %];st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion_term %]">[% suggestion_term %]</b>
+Meinten Sie vielleicht: <b><a href="[% virtualsearch_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;sb=[% query.param('sb') %];st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion_term %]">[% suggestion_term %]</b>
 [% END %]

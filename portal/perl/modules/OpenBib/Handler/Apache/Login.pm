@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Login
 #
-#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -65,15 +65,7 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
     
@@ -104,14 +96,7 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     my $return_url = $session->get_returnurl();
 
@@ -119,7 +104,7 @@ sub handler {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID};view=$view;action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
 
         return Apache2::Const::OK;
     }
@@ -271,7 +256,7 @@ sub handler {
         }
 
         my $redirecturl
-            = "http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID};action=showfields";
+            = "http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields";
         
         if ($view ne "") {
             $redirecturl.=";view=$view";
@@ -286,7 +271,7 @@ sub handler {
         
         # Fehlerbehandlung
         if ($loginfailed) {
-            $redirecturl="http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};do_loginfailed=1;code=$loginfailed";
+            $redirecturl="http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_loginfailed=1;code=$loginfailed";
         }
 
         $logger->debug("Redirecting to $redirecturl");

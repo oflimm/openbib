@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- request_base    = "page=1;num=50;srt=author;srto=up;dd=1;" -%]
 [%- IF format == 'ajax' -%]
 [%- IF similar_persons.size > 0 %]
 <!-- Beginn Tag-Cloud -->
@@ -32,8 +33,14 @@
    itemcount = thisitem.count;
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
+
+   searchterm    = item;
+   searchprefix  = config.get('searchfield').verfstring.prefix;
+
+   localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
+
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]
@@ -76,8 +83,14 @@
    itemcount = thisitem.count;
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
+
+   searchterm    = item;
+   searchprefix  = config.get('searchfield').verfstring.prefix;
+
+   localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
+
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

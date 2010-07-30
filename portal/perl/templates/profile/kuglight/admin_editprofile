@@ -23,8 +23,8 @@
 
 <div class="content">
 
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="profilename" value="[% profile.profilename %]" />
 <input type="hidden" name="do_editprofile" value="1" />
 

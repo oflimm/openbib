@@ -38,7 +38,7 @@
   <div class="resultheader">
     <div class="catalogue">
 [%-   IF dbinfo.get('use_libinfo').${database} %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% database %];stid=60">
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -47,7 +47,7 @@
     <div class="hits">
 [% recordlist.get_size %]  [% msg.maketext("Treffer") %]
     </div>
-[% IF offset >= 0 && hitrange > 0 %]
+[% IF offset >= 0 && num > 0 %]
     <div class="navigation">
 [%- FOREACH navitem IN nav ;
       IF navitem.active ;
@@ -72,17 +72,17 @@
 [% IF nav.last.active %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
 
 [%- IF hits <= 1000 -%]
-<a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
+<a href="[% baseurl %];num=-1;offset=0">[ Alles ]</a>
 [%- END -%]
     </div>
 [%-    END -%]
   </div>
   <div class="listoptions">
-<form method="get" action="[% config.get('search_loc') %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
-<input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
-[%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
+<input type="hidden" name="num"        value="[% IF num %][% num %][% ELSE %][% qopts.num %][% END %]" />
+
+[%- IF query.param('database')          -%]<input type="hidden" name="db"      value="[% query.param('database') %]" />[% END %]
 [%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
 [%- IF query.param('supertit')          -%]<input type="hidden" name="supertit"      value="[% query.param('supertit') %]" />[% END %]
 [%- IF query.param('generalsearch')     -%]<input type="hidden" name="generalsearch" value="[% query.param('generalsearch') %]" />[% END %]

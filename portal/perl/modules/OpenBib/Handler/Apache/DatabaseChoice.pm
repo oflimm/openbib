@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::DatabaseChoice
 #
-#  Dieses File ist (C) 2001-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -53,29 +53,21 @@ sub handler {
     my $r=shift;
   
     # Log4perl logger erzeugen
-    my $logger = get_logger();
+    my $logger  = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query   = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
+    my $session = OpenBib::Session->instance({ apreq => $r });    
 
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
+    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # CGI-Uebergabe
 
-    my @databases = ($query->param('database'))?$query->param('database'):();
+    my @databases = ($query->param('db'))?$query->param('db'):();
     my $singleidn = $query->param('singleidn') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
     my $do_choose = $query->param('do_choose') || '';
@@ -104,15 +96,10 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view="";
+    my $view    = $r->subprocess_env('openbib_view') || $config->{defaultview};
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
-    
+    my $profile = $config->get_viewinfo($view)->{profilename};
+
     my $idnresult="";
   
     # Wenn Kataloge ausgewaehlt wurden
@@ -128,7 +115,7 @@ sub handler {
         # Neue Datenbankauswahl ist voreingestellt
         $session->set_profile('dbauswahl');
       
-        $r->internal_redirect("http://$config->{servername}$config->{searchmask_loc}?sessionID=$session->{ID}&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{searchmask_loc}{name}");
     }
     # ... sonst anzeigen
     else {
@@ -146,6 +133,7 @@ sub handler {
 
         my $ttdata={
             view       => $view,
+            profile    => $profile,
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             maxcolumn  => $maxcolumn,

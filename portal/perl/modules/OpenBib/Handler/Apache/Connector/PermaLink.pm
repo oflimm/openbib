@@ -68,23 +68,23 @@ sub handler {
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
     
     # Basisipfad entfernen
-    my $basepath = $config->{connector_permalink_loc};
+    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{connector_permalink_loc}{name};
     $path=~s/$basepath//;
 
-    # Parameter aus URI bestimmen
+    $logger->debug("Path: $path without basepath $basepath");
 
-    my ($id1,$id2,$type,$view);
-    if ($path=~m/^\/(\w+?)\/([^\/]+?)\/(\d+?)\/index.html$/){
+    # RSS-Feedparameter aus URI bestimmen
+    #
+    # 
+
+    my ($id1,$id2,$type);
+    if ($path=~m/^\/([^\/]+?)\/([^\/]+?)\/(\d+?)\/index.html$/){
         ($id1,$id2,$type)=($1,$2,$3);
     }
-    elsif ($path=~m/^\/(\w+?)\/([^\/]+?)\/(\d+?)\/(\w+?)\/index.html$/){
-        ($id1,$id2,$type,$view)=($1,$2,$3,$4);
-    }
-
-    $logger->debug("Parsed Path: $path");
-    $logger->debug("ID1: $id1 ID2: $id2 Type: $type View: $view");
 
     # Zugriffe loggen
     if ($type == 1){

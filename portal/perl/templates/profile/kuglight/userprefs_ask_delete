@@ -23,16 +23,16 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('userprefs_loc') %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
-   <li><a                href="[% config.get('databaseprofile_loc') %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userprefs_loc.name %]?action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databaseprofile_loc.name %]?do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
 <div class="content">
 
 <p />
 
-<form method="POST" action="[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<form method="POST" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userprefs_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
+
 <input type="hidden" name="action" value="delaccount" />
 
 <table width="100%">

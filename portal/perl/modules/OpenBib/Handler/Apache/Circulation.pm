@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Circulation
 #
-#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -67,15 +67,7 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session    = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
     
@@ -103,14 +95,7 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
   
     my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
 
@@ -123,17 +108,17 @@ sub handler {
         $session->set_returnurl($return_url);
 
         if ($validtarget){
-            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1;type=circulation;validtarget=$validtarget");
         }
         else {
-            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1");
         }
         return Apache2::Const::OK;
     }
     # wenn der Benutzer bereits fuer ein anderes Target authentifiziert ist
     else {
         if ($validtarget && $validtarget ne $sessionlogintarget){
-            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1;type=circulation;validtarget=$validtarget");
             return Apache2::Const::OK;
         }
         
@@ -370,7 +355,7 @@ sub handler {
             
             $session->set_returnurl($return_url);
             
-            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1;type=circulation;validtarget=$validtarget");
             
             return Apache2::Const::OK;
         }
@@ -430,7 +415,7 @@ sub handler {
             
             $session->set_returnurl($return_url);
             
-            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1;type=circulation;validtarget=$validtarget");
             
             return Apache2::Const::OK;
         }
@@ -463,7 +448,7 @@ sub handler {
             $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
         }
 
-        $r->internal_redirect("http://$config->{servername}$config->{circulation_loc}?sessionID=$session->{ID};action=showcirc;circaction=reservations");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{circulation_loc}{name}?action=showcirc;circaction=reservations");
 
         return Apache2::Const::OK;
     }
@@ -477,7 +462,7 @@ sub handler {
             
             $session->set_returnurl($return_url);
             
-            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1;type=circulation;validtarget=$validtarget");
             
             return Apache2::Const::OK;
         }
@@ -537,7 +522,7 @@ sub handler {
             
             $session->set_returnurl($return_url);
             
-            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1;type=circulation;validtarget=$validtarget");
             
             return Apache2::Const::OK;
         }

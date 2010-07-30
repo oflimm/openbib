@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::MailCollection
 #
-#  Dieses File ist (C) 2001-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -67,15 +67,7 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
     
@@ -85,7 +77,7 @@ sub handler {
     my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';
     my $singleidn = $query->param('singleidn');
     my $mail      = $query->param('mail');
-    my $database  = $query->param('database');
+    my $database  = $query->param('db');
     my $type      = $query->param('type')||'HTML';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
@@ -98,15 +90,8 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return Apache2::Const::OK;
     }
-    
-    my $view="";
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
   
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist

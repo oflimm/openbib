@@ -20,7 +20,7 @@
     <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
 [% END %]
-    <meta name="sessionID"           content="[% sessionID %]" />
+    
 [% IF record %]
     <meta name="Bibkey"              content="[% record.to_bibkey %]" />
     <meta name="Tags"                content="[% record.to_tags %]" />

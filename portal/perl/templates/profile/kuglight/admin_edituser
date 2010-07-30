@@ -24,9 +24,9 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
-   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
 </ul>
 
 <div class="content">
@@ -66,8 +66,8 @@
 </td></tr>
 </table>
 
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="userid"     value="[% userinfo.id %]" />
 <input type="hidden" name="do_edituser" value="1" />
 

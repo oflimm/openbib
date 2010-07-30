@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::LitLists.pm
 #
-#  Copyright 2007-2009 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -67,15 +67,7 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -84,10 +76,10 @@ sub handler {
     #####################################################################
 
     my $offset         = $query->param('offset')      || 0;
-    my $hitrange       = $query->param('hitrange')    || 50;
-    my $database       = $query->param('database')    || '';
-    my $sorttype       = $query->param('sorttype')    || "author";
-    my $sortorder      = $query->param('sortorder')   || "up";
+    my $hitrange       = $query->param('num')         || 50;
+    my $database       = $query->param('db')    || '';
+    my $sorttype       = $query->param('srt')    || "author";
+    my $sortorder      = $query->param('srto')   || "up";
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
@@ -140,15 +132,8 @@ sub handler {
 
         return Apache2::Const::OK;
     }
-    
-    my $view="";
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
     
@@ -160,7 +145,7 @@ sub handler {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -182,10 +167,10 @@ sub handler {
             # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
             # der soeben erzeugten Literaturliste hinzugefuegt.
             if ($titid && $titdb && $litlistid){
-                $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&do_addentry=1&titid=$titid&titdb=$titdb&litlistid=$litlistid");
+                $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&do_addentry=1&titid=$titid&titdb=$titdb&litlistid=$litlistid");
             }
             
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage");
             return Apache2::Const::OK;
             
 	}
@@ -194,7 +179,7 @@ sub handler {
             
             $user->del_litlist({ litlistid => $litlistid});
 
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage");
             return Apache2::Const::OK;
             
 	}
@@ -219,7 +204,7 @@ sub handler {
                 $user->change_litlist({ title => $title, type => $type, lecture => $lecture, litlistid => $litlistid, subjectids => \@subjectids });
             }
             
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage");
             return Apache2::Const::OK;
             
 	}
@@ -237,7 +222,7 @@ sub handler {
                 $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
             }
             
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&do_showlitlist=1&litlistid=$litlistid");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&do_showlitlist=1&litlistid=$litlistid");
             return Apache2::Const::OK;
 	  
 	}
@@ -255,7 +240,7 @@ sub handler {
                 $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
             }
 
-            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&litlistid=$litlistid&do_showlitlist=1");
             return Apache2::Const::OK;
 	  
 	}
@@ -300,12 +285,6 @@ sub handler {
                     config     => $config,
                     user       => $user,
                     msg        => $msg,
-
-                    decode_utf8    => sub {
-                        my $string=shift;
-                        return decode_utf8($string);
-                    },
-
                 };
               
                 OpenBib::Common::Util::print_page($config->{tt_litlists_manage_singlelist_tname},$ttdata,$r);
@@ -335,12 +314,6 @@ sub handler {
                 config     => $config,
                 user       => $user,
                 msg        => $msg,
-
-                decode_utf8    => sub {
-                    my $string=shift;
-                    return decode_utf8($string);
-                },
-                
             };
 
             OpenBib::Common::Util::print_page($config->{tt_litlists_manage_lists_tname},$ttdata,$r);
@@ -392,11 +365,6 @@ sub handler {
                 config         => $config,
                 user           => $user,
                 msg            => $msg,
-
-                decode_utf8    => sub {
-                    my $string=shift;
-                    return decode_utf8($string);
-                },
             };
 	    
 	    OpenBib::Common::Util::print_page($config->{tt_litlists_show_singlelist_tname},$ttdata,$r);
@@ -426,12 +394,6 @@ sub handler {
             config         => $config,
             user           => $user,
             msg            => $msg,
-
-            decode_utf8    => sub {
-                my $string=shift;
-                return decode_utf8($string);
-            },
-
         };
 	    
         OpenBib::Common::Util::print_page($config->{tt_litlists_show_publiclists_tname},$ttdata,$r);

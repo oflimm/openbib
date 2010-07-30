@@ -12,43 +12,81 @@
 #######################################################################
 -%]
 <!-- Beginn Result Item -->
-[%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
-[%- dburl    = dbinfo.get('urls').${database} -%]
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
+    dburl    = dbinfo.get('urls').${database} ;
+    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};dd=1;" ;
+    start_range     = nav.current_page*qopts.num-qopts.num + 1;
+    end_range       = nav.current_page*qopts.num;
+    IF end_range >= fullresultcount ;
+       end_range       = fullresultcount;
+    END;
+-%]
 
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
 [%-   IF dbinfo.get('use_libinfo').${database} %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% database %];stid=60">
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
      [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
     </div>
     <div class="hits">
-[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
+[% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% fullresultcount %]
     </div>
     <div class="navigation">
-[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
-[%- IF treffer == qopts.hitrange -%]
-<span class="paging_active">1</span>&nbsp;...&nbsp;&nbsp;<a href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]"><img src="[% config.get('next_img') %]" title="[Weitere Treffer...]" height="12"/></a>
-[%- ELSIF treffer < qopts.hitrange -%]
-<span class="paging_active">1</span>
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];db=[% database %];queryid=[% queryid %];page=[% page %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
 [%- END -%]
     </div>
   </div>
-[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %]
+[% IF drilldown %]
   <div class="resultdrilldown">
-[% PROCESS common/subtemplate name="drilldown_categorized" %][% PROCESS common/subtemplate name="drilldown_cloud" %]
+[% PROCESS common/subtemplate name="drilldown_categorized" %]
   </div>
 [% END %]
   <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
 [%- END -%]
-  </div>
-  <div class="resultfooter">
+  <div class="footer">
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];db=[% database %];queryid=[% queryid %];page=[% page %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+    </div>
+    <div class="resulttime">
 in: [% resulttime %] [% msg.maketext("Sekunden") %]
+    </div>
   </div>
 </div>
+<div class="resultfooter">
+&nbsp;
+</div>
+
 <p/>

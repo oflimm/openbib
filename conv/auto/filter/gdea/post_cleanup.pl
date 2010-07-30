@@ -42,7 +42,7 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Unterstuetzung alter PermaLinks\n";
 
-my $numericidmapping_ref = LoadFile("$rootdir/filter/$pool/$pool".".yml");
+my $numericidmapping_ref = LoadFile($pool.".yml");
 
 
 open(OUT,">:utf8","$rootdir/filter/$pool/${pool}.sql");

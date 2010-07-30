@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::SimilarSubjects
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -48,6 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::Record::Subject;
+use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
@@ -77,10 +78,11 @@ sub handler {
     my $id             = $query->param('id')              || '';
     my $content        = $query->param('content')         || '';
     my $isbn           = $query->param('isbn')            || '';
-    my $database       = $query->param('database')        || '';
+    my $database       = $query->param('db')        || '';
     my $format         = $query->param('format')          || 'ajax';
-    my $sessionID      = $query->param('sessionID')       || '';
 
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+    
     if (!$database || !$type){
         OpenBib::Common::Util::print_warning($msg->maketext("Fehler."),$r,$msg);
         return Apache2::Const::OK;
@@ -309,10 +311,11 @@ sub handler {
                     @{$similar_subjects_ref};
 
     my $ttdata = {
+        view             => $view,
+        record           => OpenBib::Record::Title->new,
         format           => $format,
         similar_subjects => $sorted_similar_subjects_ref,
         database         => $database,
-        sessionID        => $sessionID,
         config           => $config,
         msg              => $msg,
     };

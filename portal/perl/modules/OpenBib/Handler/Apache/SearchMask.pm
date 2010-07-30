@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::SearchMask
 #
-#  Dieses File ist (C) 2001-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -49,6 +49,7 @@ use YAML;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
+use Apache2::Cookie;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::SearchQuery;
@@ -62,6 +63,8 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $session = OpenBib::Session->instance({ apreq => $r });    
+
     my $config      = OpenBib::Config->instance;
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
@@ -69,25 +72,41 @@ sub handler {
 
     my $statistics  = new OpenBib::Statistics();
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
-
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
+    my $useragent = $r->subprocess_env('HTTP_USER_AGENT');
   
     my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    my @databases = ($query->param('database'))?$query->param('database'):();
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+
+    my $uri  = $r->parsed_uri;
+    my $path = $uri->path;
+    
+    # Basisipfad entfernen
+    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{searchmask_loc}{name};
+    $path=~s/$basepath//;
+
+    $logger->debug("Path: $path without basepath $basepath");
+    
+    # Service-Parameter aus URI bestimmen
+    my $type = '';
+
+    if ($path=~m/^\/recent/){
+        $type = $session->get_mask();
+    }    
+    elsif ($path=~m/^\/([^\/]+)/){
+        $type     = $1;
+        $session->set_mask($type);
+    }
+    else {
+        return Apache2::Const::OK;
+    }
+
+    $logger->debug("Got Type: $type");
+    
+    my @databases  = ($query->param('db'))?$query->param('db'):();
     my $singleidn = $query->param('singleidn') || '';
-    my $setmask   = $query->param('setmask') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
@@ -99,15 +118,6 @@ sub handler {
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return Apache2::Const::OK;
-    }
-
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
     }
 
     my $showfs        = "1";
@@ -199,13 +209,6 @@ sub handler {
     
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
-    if ($setmask) {
-        $session->set_mask($setmask);
-    }
-    else {
-        $setmask = $session->get_mask();
-    }
-
     # Wenn Datenbanken uebergeben wurden, dann werden diese eingetragen
     if ($#databases >= 0) {
         $session->clear_dbchoice();
@@ -293,7 +296,7 @@ sub handler {
         msg           => $msg,
     };
 
-    my $templatename = ($setmask)?"tt_searchmask_".$setmask."_tname":"tt_searchmask_tname";
+    my $templatename = ($type)?"tt_searchmask_".$type."_tname":"tt_searchmask_tname";
     
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 

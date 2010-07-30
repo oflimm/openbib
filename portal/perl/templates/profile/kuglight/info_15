@@ -25,18 +25,18 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Sichten") %]">[% msg.maketext("Sichten") %]</a></li>
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/15?database=[% database %]" title="[% msg.maketext("Sichten") %]">[% msg.maketext("Sichten") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/11?database=[% database %]" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">

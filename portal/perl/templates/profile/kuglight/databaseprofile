@@ -37,8 +37,8 @@ function update_fak(yourform, checked, fak) {
 
 <div id="maincontent">
 
-<form method="post" action="[% config.get('databaseprofile_loc') %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databaseprofile_loc.name %]" enctype="application/x-www-form-urlencoded">
+
 
 [% PROCESS common/subtemplate name="userprefs_navigation" active="databaseprofile" %]
 

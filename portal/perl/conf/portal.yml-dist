@@ -1,5 +1,5 @@
 # Versionsnummer
-version: OpenBib v2.3
+version: OpenBib v2.4alpha
 
 # Unter diesem Namen wird der lokale Server angesprochen
 servername: server.openbib.org
@@ -58,10 +58,15 @@ statisticsdbname: statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
+# Standard-Recherche-Backend (derzeit nur xapian)
+local_search_backend: xapian
+
 # Benutzer, Passwort und default view fuer die Administration
 adminuser: adminuser
 adminpasswd: StrengGeheim
-adminview: kugng
+
+# Standardview, wenn ueber die URI-Kodierung kein URI bestimmt werden konnte
+defaultview: kug
 
 # Verteilte Administration mit einer Masteradmin?
 distadmin:
@@ -106,58 +111,237 @@ rss_types:
   neuzugang_nach_swt: 4
   neuzugang_nach_sys: 5
 
+source_systems:
+  - Sisis
+  - Aleph
+  - Allegro
+  - Lars
+  - OAI
+  - MAB
+  - Anderes
+
 # Spracheinstellungen
 lang:
   - de
   - en
 
+# Basis-Pfad
+base_loc: /portal
+
 # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
-admin_loc: /portal/admin
-bibsonomy_loc: /portal/bibsonomy
-catalogue_loc: /portal/katalogisierung
-circulation_loc: /portal/benutzerkonto
-connector_availabilityimage_loc: /portal/connector/availabilityimage
-connector_availability_loc: /portal/connector/availability
-connector_bibmanager_loc: /portal/connector/literaturverwaltung
-connector_digibib_loc: /portal/connector/digibib
-connector_olws_loc: /portal/connector/olws
-connector_permalink_loc: /portal/connector/permalink
-connector_livesearch_loc: /portal/connector/livesearch
-connector_locationmark_loc: /portal/connector/sykasignatur
-connector_rss_loc: /portal/connector/rss
-connector_seealso_loc: /portal/connector/seealso
-connector_similarpersons_loc: /portal/connector/similarpersons
-connector_similarsubjects_loc: /portal/connector/similarsubjects
-connector_spellcheck_loc: /portal/connector/spellcheck
-connector_ukonline_loc: /portal/connector/uk-online
-connector_unapi_loc: /portal/connector/unapi
-databasechoice_loc: /portal/katalogauswahl
-databaseprofile_loc: /portal/katalogprofile
-dbis_loc: /portal/dbis
-dispatchquery_loc: /portal/anfrageverteilen
-externaljump_loc: /portal/externersprung
-ezb_loc: /portal/ezb
-info_loc: /portal/info
-leave_loc: /portal/beenden
-litlists_loc: /portal/literaturlisten
-loadbalancer_loc: /portal/lastverteilung
-login_loc: /portal/login
-mailcollection_loc: /portal/merklistemailen
-mailpassword_loc: /portal/passwortmailen
-managecollection_loc: /portal/merkliste
-redirect_loc: /portal/weiterleitung
-resource_loc: /portal/resource
-resultlists_loc: /portal/trefferlisten
-rssfeeds_loc: /portal/rssfeeds
-search_loc: /portal/recherche
-searchmask_loc: /portal/eingabe
-selfreg_loc: /portal/selbstregistrierung
-serverload_loc: /portal/getload
-startopac_loc: /portal/opac
-tags_loc: /portal/tags
-userprefs_loc: /portal/benutzereinstellungen
-userreviews_loc: /portal/benutzerbewertungen
-virtualsearch_loc: /portal/virtuellerecherche
+handler:
+  admin_loc:
+     name: admin
+     realm: common
+     module: 'OpenBib::Handler::Apache::Admin'
+  bibsonomy_loc:
+     name: bibsonomy
+     realm: view
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+  circulation_loc:
+     name: benutzerkonto
+     realm: view
+     module: 'OpenBib::Handler::Apache::Circulation'
+  connector_availabilityimage_loc: 
+     name: connector/availabilityimage
+     realm: common
+     module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
+  connector_availability_loc:
+     name: connector/availability
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::Availability'
+  connector_bibmanager_loc:
+     name: connector/literaturverwaltung
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+  connector_digibib_loc:
+     name:  connector/digibib
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+  connector_livesearch_loc:
+     name: connector/livesearch
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
+  connector_locationmark_loc:
+     name: connector/sykasignatur
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector:LocationMark'
+  connector_olws_loc:
+     name: connector/olws
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::OLWS'
+  connector_permalink_loc:
+     name: connector/permalink
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::PermaLink'
+  connector_rss_loc:
+     name: connector/rss
+     realm: common
+     module: 'OpenBib::Handler::Apache::Connector::RSS'
+  connector_seealso_loc:
+     name: connector/seealso
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::SeeAlso'
+  connector_similarpersons_loc:
+     name: connector/similarpersons
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
+  connector_similarsubjects_loc:
+     name: connector/similarsubjects
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
+  connector_spellcheck_loc:
+     name: connector/spellcheck
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
+  connector_ukonline_loc:
+     name: connector/uk-online
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+  connector_unapi_loc:
+     name: connector/unapi
+     realm: view
+     module: 'OpenBib::Handler::Apache::Connector::UnAPI'
+  databasechoice_loc:
+     name: dbchoice
+     realm: view
+     module: 'OpenBib::Handler::Apache::DatabaseChoice'
+  databaseprofile_loc:
+     name:  dbprofile
+     realm: view
+     module: 'OpenBib::Handler::Apache::DatabaseProfile'
+  dispatchquery_loc:
+     name: dispatchquery
+     realm: view
+     module: 'OpenBib::Handler::Apache::DispatchQuery'
+  externaljump_loc:
+     name: jumpto
+     realm: view
+     module: 'OpenBib::Handler::Apache::ExternalJump'
+  ezb_loc:
+     name: ezb 
+     realm: view
+     module: 'OpenBib::Handler::Apache::EZB'
+  dbis_loc:
+     name: dbis
+     realm: view
+     module: 'OpenBib::Handler::Apache::DBIS'
+  info_loc:
+     name: info
+     realm: view
+     module: 'OpenBib::Handler::Apache::Info'
+  leave_loc:
+     name: leave
+     realm: view
+     module: 'OpenBib::Handler::Apache::Leave'
+  litlists_loc: 
+     name: litlists
+     realm: view
+     module: 'OpenBib::Handler::Apache::LitLists'
+  loadbalancer_loc:
+     name: lastverteilung
+     realm: view
+     module: 'OpenBib::Handler::Apache::LoadBalancer'
+  login_loc:
+     name: login
+     realm: view
+     module: 'OpenBib::Handler::Apache::Login'
+  mailcollection_loc:
+     name: mailcollectin
+     realm: view
+     module: 'OpenBib::Handler::Apache::Mailcollectio'
+  mailpassword_loc:
+     name: mailpassword
+     realm: view
+     module: 'OpenBib::Handler::Apache::MailPassword'
+  managecollection_loc:
+     name: collection
+     realm: view
+     module: 'OpenBib::Handler::Apache::ManageCollection'
+  redirect_loc:
+     name: redirect
+     realm: view
+     module: 'OpenBib::Handler::Apache::Redirect'
+  resource_loc:
+     name: resource
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource'
+  resource_title_loc:
+     name: resource/title
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+  resource_person_loc:
+     name: resource/person
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Person'
+  resource_corporatebody_loc:
+     name: resource/corporatebody
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::CorporateBody'
+  resource_subject_loc:
+     name: resource/subject
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Subject'
+  resource_classification_loc:
+     name: resource/classification
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Classification'
+  resource_tag_loc:
+     name: resource/tag
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Tag'
+  resource_litlist_loc:
+     name: resource/litlist
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Litlist'
+  resource_library_loc:
+     name: resource/library
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::Library'
+  resultlists_loc:
+     name: resultlists
+     realm: view
+     module: 'OpenBib::Handler::Apache::ResultLists'
+  rssfeeds_loc:
+     name: rssfeeds
+     realm: view
+     module: 'OpenBib::Handler::Apache::RSSFeeds'
+  search_loc:
+     name:  search
+     realm: view
+     module: 'OpenBib::Handler::Apache::Search'
+  searchmask_loc:
+     name: searchmask
+     realm: view
+     module: 'OpenBib::Handler::Apache::SearchMask'
+  selfreg_loc:
+     name: selfreg
+     realm: view
+     module: 'OpenBib::Handler::Apache::SelfReg'
+  serverload_loc:
+     name:  getload
+     realm: common
+     module: 'OpenBib::Handler::Apache::ServerLoad'
+  startopac_loc:
+     name: home
+     realm: view
+     module: 'OpenBib::Handler::Apache::StartOpac'
+  tags_loc:
+     name: tags
+     realm: view
+     module: 'OpenBib::Handler::Apache::Tags'
+  userprefs_loc:
+     name: userprefs
+     realm: view
+     module: 'OpenBib::Handler::Apache::UserPrefs'
+  userreviews_loc:
+     name: review
+     realm: view
+     module: 'OpenBib::Handler::Apache::UserReviews'
+  virtualsearch_loc:
+     name: virtualsearch
+     realm: view
+     module: 'OpenBib::Handler::Apache::VirtualSearch'
 
 css_loc: /styles
 
@@ -168,12 +352,10 @@ mail_prog: /bin/mailx
 admin_email: admin@openbib.org
 contact_email: contact@openbib.org
 
-# Externe Links zum direkten Einsprung in die Digitale
-# Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
-# sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
-# fuer den entsprechenden Standort (hier 038)
-hbzmonofernleih_exturl: http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038
-hbzzeitfernleih_exturl: http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038
+# Externe Links zum direkten Einsprung in das USB-Portal,
+# das auf der Digitale Bibliothek NRW aufbaut
+hbzmonofernleih_exturl: http://www.ub.uni-koeln.de/usbportal?service=search&dbgroup=DeutschlandKataloge
+hbzzeitfernleih_exturl: http://www.ub.uni-koeln.de/usbportal?service=search&dbgroup=Zeitschriften
 
 # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
 # fuer den entsprechenden Standort (hier USBK)
@@ -211,10 +393,164 @@ locale_base_path: /opt/openbib/locales
 # Pfad zu den Portal-Templates (Template Toolkit)
 tt_include_path: /opt/openbib/templates
 
+# Suchprefixe in der Rercherche fuer die internen Felder verf, hst usw.
+searchfield:
+  'id':
+     'prefix': 'id'
+     'type': 'id'
+  'verfid':
+     'prefix': 'perid'
+     'type': 'id'
+  'korid':
+     'prefix': 'corpid'
+     'type': 'id'
+  'notid':
+     'prefix': 'sysid'
+     'type': 'id'
+  'swtid':
+     'prefix': 'subjid'
+     'type': 'id'
+  'fs':
+     'prefix': 'fs'
+     'type': 'ft'
+     'option':
+        'filter_isbn': 1
+        'filter_issn': 1
+  'verf':
+     'prefix': 'per'
+     'type': 'ft'
+  'hst':
+     'prefix': 'tit'
+     'type': 'ft'
+  'swt': 
+     'prefix': 'subj'
+     'type': 'ft'
+  'kor':
+     'prefix': 'corp'
+     'type': 'ft'
+  'notation':
+     'prefix': 'sys'
+     'type': 'ft'
+  'sign':
+     'prefix': 'mark'
+     'type': 'ft'
+  'isbn':
+     'prefix': 'isbn'
+     'type': 'ft'
+     'option':
+        'filter_isbn': 1
+  'issn':
+     'prefix': 'issn'
+     'type': 'ft'
+     'option':
+        'filter_issn': 1
+  'mart':
+     'prefix': 'typ'
+     'type': 'ft'
+  'inhalt':
+     'prefix': 'cnt'
+     'type': 'ft'
+  'gtquelle':
+     'prefix': 'src'
+     'type': 'ft'
+  'ejahr':
+     'prefix': 'year'
+     'type': 'ft'
+  'subid':
+     'prefix': 'fsub'
+     'type': 'id'
+  'hststring':
+     'prefix': 'ftit'
+     'type': 'string'
+     'option':
+       'strip_first_stopword': 1
+  'swtstring':
+     'prefix': 'fsubj'
+     'type': 'string'
+  'sprstring':
+     'prefix': 'flang'
+     'type': 'string'
+  'notstring':
+     'prefix': 'fsys'
+     'type': 'string'
+  'verfstring':
+     'prefix': 'fper'
+     'type': 'string'
+  'korstring':
+     'prefix': 'fcorp'
+     'type': 'string'
+  'martstring':
+     'prefix': 'ftyp'
+     'type': 'string'
+  'signstring':
+     'prefix': 'fsign'
+     'type': 'string'
+  'ejahrstring':
+     'prefix': 'fyear'
+     'type': 'string'
+
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
 xapian_option:
   maxmatch: 2000
+  max_key_length: 240
+
+# Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
+# entsprechend searchfield_prefix
+xapian_search_prefix:
+  'id': 'Q'
+  'perid': 'I1'
+  'corpid': 'I2'
+  'subjid': 'I3'
+  'sysid': 'I4'
+
+  'fs': ''
+
+# Volltext
+  'per': 'X1'
+  'tit': 'X2'
+  'corp': 'X3'
+  'subj': 'X4'
+  'sys': 'X5'
+  'mark': 'X6'
+  'year': 'X7'
+  'isbn': 'X8'
+  'issn': 'X9'
+  'typ': 'Y1'
+  'cnt': 'Y2'
+  'src': 'Y3'
+
+  # String / Drilldowns
+  'fsubj': 'D1'
+  'fsys': 'D2'
+  'fper': 'D3'
+  'ftyp' : 'D4'
+  'fyear': 'D5'
+  'flang': 'D6'
+  'fcorp': 'D7'
+  'fdb': 'D8'
+  'ftit': 'D9'
+  'fsign': 'E1'
+  'fsub': 'E2'
+
+xapian_drilldown_value:
+  verf: 3
+  mart: 4
+  notation: 2
+  spr: 6
+  swt: 1
+  year: 5
+  kor: 7
+  db: 8
+
+xapian_sorttype_value:
+  'author': 20
+  'title': 21
+  'order': 22
+  'yearofpub': 23
+  'publisher': 24
+  'signature': 25
+  'popularity': 26
 
 # Stopwort-Liste
 stopword_filename: /opt/openbib/ft/stopwords.txt
@@ -232,12 +568,16 @@ dbis_yellow_red_img: /images/openbib/dbis/z5.gif
 dbis_de_img: /images/openbib/dbis/z-de.gif
 delete_img: /images/openbib/cancel.png
 follow_img: /images/openbib/solidrightarrow.png
-info_img: /images/openbib/info.png
+infotopic_img: /images/openbib/info.png
+info_img: /images/openbib/info_small.png
+global_img: /images/openbib/globus.png
 help_img: /images/openbib/help.png
 hint_img: /images/openbib/hint.png
+home_img: /images/openbib/home.png
+home_small_img: /images/openbib/home3.png
 lang_de_img: /images/openbib/de.gif
 lang_en_img: /images/openbib/en.gif
-listofinterest_img: /images/openbib/note.png
+listofinterest_img: /images/openbib/bookmark.png
 liststyle_cover_img: /images/openbib/view_detailed.png
 liststyle_list_img: /images/openbib/view_text.png
 mail_img: /images/openbib/3d-file-blue-mailbox.png
@@ -249,6 +589,7 @@ no_next_img: /images/openbib/no_next.png
 no_previous_img: /images/openbib/no_previous.png
 note_img: /images/openbib/note.png
 openbib_img: /images/openbib/openbib-powered.png
+paperc_img: /images/openbib/paperc.png
 pdf_img: /images/openbib/pdf-document.png
 permalink_img: /images/openbib/3d-file-blue-permalink.png
 previous_img: /images/openbib/previous.png
@@ -296,6 +637,7 @@ tt_admin_showstat_51_tname: admin_showstat_51
 tt_admin_showstat_52_tname: admin_showstat_52
 tt_admin_showstat_53_tname: admin_showstat_53
 tt_admin_showstat_5_tname: admin_showstat_5
+tt_admin_showstat_6_tname: admin_showstat_6
 tt_admin_showstat_tname: admin_showstat
 tt_admin_showsubjects_tname: admin_showsubjects
 tt_admin_editsubject_tname: admin_editsubject
@@ -379,6 +721,10 @@ tt_info_54_tname: info_54
 tt_info_60_tname: info_60
 tt_info_61_tname: info_61
 tt_info_62_tname: info_62
+tt_info_63_tname: info_63
+tt_info_64_tname: info_64
+tt_info_65_tname: info_65
+tt_info_66_tname: info_66
 tt_info_9_tname: info_9
 tt_info_message_tname: info_message
 tt_info_tname: info
@@ -409,6 +755,8 @@ tt_resource_corporatebody_tname: resource_corporatebody
 tt_resource_subject_tname: resource_subject
 tt_resource_classification_tname: resource_classification
 tt_resource_library_tname: resource_library
+tt_resource_tag_tname: resource_tag
+tt_resource_litlist_tname: resource_litlist
 tt_resultlists_choice_tname: resultlists_choice
 tt_resultlists_empty_tname: resultlists_empty
 tt_resultlists_showall_sortall_tname: resultlists_showall_sortall
@@ -485,9 +833,13 @@ benchmark: 0
 # Kurztiteltabelle verwenden?
 use_titlistitem_table: 1
 
+# Internes Serialisierungsformat, z.B. zur Ablage-Format in der Tabelle (json oder packed_storable)
+internal_serialize_type: 'json'
+
 # Maximale Laenge an Inhalt in Kurztitelliste, ab der Personen
 # gekuerzt werden soll
 maxlength_pers: 100
+maxlength_tit: 100
 maxlength_sign: 70
 maxlength_dbname: 70
 
@@ -502,26 +854,33 @@ testsystem: 0
 drilldown: 1
 drilldown_option:
   categorized: 1
-  categorized_db: 1
-  categorized_aut: 1
-  categorized_kor: 1
-  categorized_mart: 1
-  categorized_not: 1
-  categorized_spr: 1
+  categorized_aut: 3
+  categorized_mart: 4
+  categorized_not: 2
+  categorized_spr: 6
   categorized_swt: 1
-  categorized_year: 1
-  cloud: 1
+  categorized_year: 5
+  categorized_kor: 7
+  categorized_db: 8
+  cloud: 0
   cloud_min: 6
+
+# Repraesentationen
+
+representation:
+   'rdf+xml': 'application/rdf+xml'
+   'rdf+n3': 'application/rdf+n3'
+   'json': 'text/plain'
+   'bibtex': 'text/plain'
+   'refer': 'text/plain'
+   'html': 'text/html'
 
 # Default Query-Options (Session)
 default_query_options:
-  hitrange: 50
-  offset: 1
+  num: 50
   l: 'de'
+  page: 1
   profil: ''
-  autoplus: ''
-  sb: 'sql'
-  js: 0
   listtype: 'list'
 
 # Generierte BestOf-Daten
@@ -554,6 +913,9 @@ reviews: 1
 coverscans:
   all: 1
 
+# BIX
+bix: 0
+
 # unAPI
 unAPI: 1
 unAPI_formats:
@@ -566,6 +928,7 @@ unAPI_formats:
 categorymapping:
   ebooks:
     T0662: 1
+    T0663: 1
   einbaende:
     T0100: 1
     T0101: 1

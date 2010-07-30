@@ -1,48 +1,38 @@
 [%#-
 #######################################################################
 #
-# Templatename: helpframe
+# Templatename: info_60
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe von Hilfe- bzw. weiteren Information
+# Ausgabe der Bibliotheksinformationen
 #
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
-[% show_foot_banner = 1%]
-<body>
-[%
-  bks         = config.load_bk;
-  thisbklist = statistics.get_result({id => view, type => 10}); 
-
-  bklist = [];
-  FOREACH bk IN bks;
-    IF bk.key.length == 2;
-      bklist.push(bk.key);
-    END ;
-  END ;
-
-  bklist = bklist.sort;
-
-  thissubject = user.get_subject({ id => id });
-
-%]
+  <body>
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "tutorial" %] 
 
 <div id="maincontent">
 
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[% stid %]?id=[% id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+
 <ul class="tabbingmenu">
-   <li><a class="active" href="#" title="Digitalisierte Kartenkataloge">Digitalisierte Kartenkataloge</a></li>
+   <li><a class="active" href="#" title="[% msg.maketext("Digitalisierte Kartenkataloge") %]"><span class="dbdescshort">[% msg.maketext("Digitalisierte Kartenkataloge") %]</span></a></li>
 </ul>
 
 <div class="content">
-<p />
 
 <h1 id="philfak">Philosophische Fakult&auml;t</h1>
 

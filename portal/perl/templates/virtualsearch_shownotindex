@@ -26,8 +26,8 @@
 <tr><td class="boxedclear">
 [%- PROCESS common/subtemplate name="common/navitembar" -%]
 [%- FOREACH item IN index -%]
-[%-   IF offset >= 0 && hitrange > 0 -%]
-[%-     IF loop.count > offset && loop.count <= offset+hitrange -%]
+[%-   IF offset >= 0 && num > 0 -%]
+[%-     IF loop.count > offset && loop.count <= offset+num -%]
 [%-       PROCESS common/subtemplate name="virtualsearch_shownotindex_item" -%]
 [%-     END -%]
 [%-   ELSE -%]
@@ -47,9 +47,9 @@
 <tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
 <tr><td class="boxedclear">
 
-<form method="get" action="[% config.get('virtualsearch_loc') %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+
+<input type="hidden" name="num"  value="[% qopts.num %]" />
 <input type="hidden" name="profil"    value="alldbs" />
 
 <table>

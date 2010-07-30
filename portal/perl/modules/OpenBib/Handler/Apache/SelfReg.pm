@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::SelfReg
 #
-#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -64,15 +64,7 @@ sub handler {
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $recaptcha = Captcha::reCAPTCHA->new;
 
@@ -104,15 +96,8 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return Apache2::Const::OK;
     }
-  
-    my $view="";
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
   
     if ($action eq "show") {
         # TT-Data erzeugen
@@ -143,12 +128,12 @@ sub handler {
 
         # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
         unless (Email::Valid->address($loginname)){
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID}&action=show\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{selfreg_loc}{name}?action=show\">","</a>"),$r,$msg);
             return Apache2::Const::OK;
         }
 
         if ($user->user_exists($loginname)) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{selfreg_loc}{name}?action=show\">","</a>"),$r,$msg);
             return Apache2::Const::OK;
         }
 
@@ -161,7 +146,7 @@ sub handler {
             );
             
             unless ( $recaptcha_result->{is_valid} ) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{selfreg_loc}{name}?action=show\">","</a>"),$r,$msg);
                 return Apache2::Const::OK;
             }
         }

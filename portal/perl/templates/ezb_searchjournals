@@ -21,7 +21,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('ezb_loc') %]?sessionID=[% sessionID %];action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').ezb_loc.name %]?action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -31,7 +31,7 @@
 
 <ul class="tabbingmenu">
 [% FOREACH navitem IN journals.other_pages %]
-  <li><a [% IF navitem.desc == journals.current_page.desc %]class="active" [% END %]href="[% config.get('ezb_loc') %]?sessionID=[% sessionID %];bibid=[% config.get('ezb_bibid') %];access_green=[% access_green %];access_yellow=[% access_yellow %];access_red=[% access_red %];lang=de;fs=[% journals.current_page.term %];sc=[% navitem.sc %];lc=[% navitem.lc %];action=search_journals">[% navitem.desc %]</a></li>
+  <li><a [% IF navitem.desc == journals.current_page.desc %]class="active" [% END %]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').ezb_loc.name %]?bibid=[% config.get('ezb_bibid') %];access_green=[% access_green %];access_yellow=[% access_yellow %];access_red=[% access_red %];lang=de;fs=[% journals.current_page.term %];sc=[% navitem.sc %];lc=[% navitem.lc %];action=search_journals">[% navitem.desc %]</a></li>
 [% END %]
 </ul>
 
@@ -49,7 +49,7 @@ Suchbegriff(e): [% journals.current_page.term %]
     </div>
     <div class="navigation">
 [% FOREACH thisnav IN journals.nav %]
-<a href="[% config.get('ezb_loc')%]?sessionID=[% sessionID %];fs=[% journals.current_page.term %];sc=[% thisnav.sc %];lc=[% thisnav.lc %];sindex=[% thisnav.sindex %];action=search_journals">[[% thisnav.sindex+1 %] - [% thisnav.sindex+50 %]]</a> 
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').ezb_loc.name %]?fs=[% journals.current_page.term %];sc=[% thisnav.sc %];lc=[% thisnav.lc %];sindex=[% thisnav.sindex %];action=search_journals">[[% thisnav.sindex+1 %] - [% thisnav.sindex+50 %]]</a> 
 [% END %]
     </div>
   </div>
@@ -57,9 +57,9 @@ Suchbegriff(e): [% journals.current_page.term %]
     <div class="drilldown">
 
        <div class="headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
-<form method="get" action="[% config.get('ezb_loc') %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="view"      value="[% view %]" />
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').ezb_loc.name %]">
+
+
 <input type="hidden" name="lett"      value="[% journals.current_page.lett %]" />
 <input type="hidden" name="action"    value="search_journals" />
 
@@ -86,10 +86,10 @@ Suchbegriff(e): [% journals.current_page.term %]
 <img src="[%- IF journal.color.code == 1 -%][% config.get('dbis_green_img') %][%- ELSIF journal.color.code == 2 -%][% config.get('dbis_yellow_img') %][% ELSIF journal.color.code == 3 %][% config.get('dbis_green_yellow_img') %][% ELSIF journal.color.code == 4 %][% config.get('dbis_red_img') %][% ELSIF journal.color.code == 5 %][% config.get('dbis_green_green_red_img') %][% ELSIF journal.color.code == 6 %][% config.get('dbis_yellow_red_img') %][%- ELSE -%][% config.get('dbis_green_yellow_red_img') %][%- END -%]" alt="[% journal.color.desc %]" />
       </div> 
       <div class="brieftitle">
-<a href="[% config.get('ezb_loc') %]?sessionID=[% sessionID %];action=show_journalinfo;id=[% journal.id %]">[% journal.title %]</a>
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').ezb_loc.name %]?action=show_journalinfo;id=[% journal.id %]">[% journal.title %]</a>
       </div>
       <div class="titlemark">
-[%- IF journal.color.code != 1 -%]<a href="[% config.get('ezb_loc') %]?sessionID=[% sessionID %];action=show_journalreadme;id=[% journal.id %]">[[% msg.maketext("ReadMe") %]]</a>[% END %]
+[%- IF journal.color.code != 1 -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').ezb_loc.name %]?action=show_journalreadme;id=[% journal.id %]">[[% msg.maketext("ReadMe") %]]</a>[% END %]
       </div>
       <div class="titleactions">
       </div>

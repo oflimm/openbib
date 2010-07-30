@@ -27,14 +27,14 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=41" title="[% msg.maketext("Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/41?database=[% database %]" title="[% msg.maketext("Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -67,7 +67,7 @@
    properties = thisitem.properties;
    itemclass  = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten die Literaturliste</span><a href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %]&action=show;litlistid=[% id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
+<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten die Literaturliste</span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?&action=show;litlistid=[% id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
 die Literaturliste [% item %]">[% item %] ([% properties.itemcount %])</a></li>
 [% END %]
 </ol>

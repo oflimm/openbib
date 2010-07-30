@@ -90,7 +90,7 @@ sub _new_instance {
             # werden - speziell nicht bei einer anfaenglichen Suche
             # Dennoch darf - derzeit ausgehend von den Normdaten - alles
             # geholt werden
-            unless ($option eq "hitrange" && $query->param($option) eq "-1"){
+            unless ($option eq "num" && $query->param($option) eq "-1"){
                 $self->{option}->{$option}=$query->param($option);
                 $logger->debug("Option $option received via HTTP");
                 $altered=1;
@@ -198,7 +198,7 @@ OpenBib::QueryOptions - Apache-Singleton zur Behandlung von Recherche-Optionen
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton Verwaltet die Recherche-Optionen wie hitrange,
+Dieses Apache-Singleton Verwaltet die Recherche-Optionen wie num,
 offset, Sprache l, Profil profil, Automatische Und-Verknuepfung
 autoplus, Such-Backend sb sowie den Trefferlistentyp listtype.
 

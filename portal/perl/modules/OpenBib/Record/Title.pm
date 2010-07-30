@@ -37,9 +37,8 @@ use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBI;
 use Encode 'decode_utf8';
-use JSON::XS qw(encode_json decode_json);
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
 use SOAP::Lite;
 use Storable;
 use XML::LibXML;
@@ -51,6 +50,7 @@ use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Database::DBI;
+use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
@@ -430,9 +430,9 @@ sub load_full_record {
 
             $logger->debug(YAML::Dump(\@isbn_refs));
 
-            my %seen_content = ();
+            my %seen_content = ();            
             foreach my $isbn (@isbn_refs){
-                my $reqstring="select distinct category, content from normdata where isbn=? order by category,indicator";
+                my $reqstring="select distinct category,content from normdata where isbn=? order by category,indicator";
                 my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                 $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
                 
@@ -446,7 +446,7 @@ sub load_full_record {
                     }
                     else {
                         $seen_content{$content} = 1;
-                    }
+                    }                    
                     
                     push @{$normset_ref->{$category}}, {
                         content    => $content,
@@ -644,23 +644,23 @@ sub load_brief_record {
         $request->execute($id);
         
         if (my $res=$request->fetchrow_hashref){
-            my $titlistitem     = $res->{listitem};
+            my $titlistitem     = decode_utf8($res->{listitem});
             
-            $logger->debug("Storable::listitem: $titlistitem");
+            $logger->debug("Stored listitem: $titlistitem");
 
-            my $encoding_type="hex";
+            my $titlistitem_ref;
 
-            if    ($encoding_type eq "base64"){
-                $titlistitem = MIME::Base64::decode($titlistitem);
+            if ($config->{internal_serialize_type} eq "packed_storable"){
+                $titlistitem_ref = Storable::thaw(pack "H*", $titlistitem);
             }
-            elsif ($encoding_type eq "hex"){
-                $titlistitem = pack "H*",$titlistitem;
+            elsif ($config->{internal_serialize_type} eq "json"){
+                $titlistitem_ref = decode_json $titlistitem;
             }
-            elsif ($encoding_type eq "uu"){
-                $titlistitem = unpack "u",$titlistitem;
+            else {
+                $titlistitem_ref = Storable::thaw(pack "H*", $titlistitem);
             }
 
-            my %titlistitem = %{ Storable::thaw($titlistitem) };
+            my %titlistitem = %{ $titlistitem_ref };
             
             $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
             %$listitem_ref=(%$listitem_ref,%titlistitem);
@@ -1020,45 +1020,56 @@ sub set_brief_normdata_from_storable {
 sub print_to_handler {
     my ($self,$arg_ref)=@_;
 
-    my $format             = exists $arg_ref->{format}
-        ? $arg_ref->{format}             : 'full';
-    my $queryid            = exists $arg_ref->{queryid}
-        ? $arg_ref->{queryid}            : undef;
     my $r                  = exists $arg_ref->{apachereq}
         ? $arg_ref->{apachereq}          : undef;
-    my $stylesheet         = exists $arg_ref->{stylesheet}
-        ? $arg_ref->{stylesheet}         : undef;
-    my $view               = exists $arg_ref->{view}
-        ? $arg_ref->{view}               : undef;
-    my $msg                = exists $arg_ref->{msg}
-        ? $arg_ref->{msg}                : undef;
-    my $no_log             = exists $arg_ref->{no_log}
-        ? $arg_ref->{no_log}             : 0;
+    my $representation     = exists $arg_ref->{representation}
+        ? $arg_ref->{representation}    : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config        = OpenBib::Config->instance;
-    my $session       = OpenBib::Session->instance;
-    my $queryoptions  = OpenBib::QueryOptions->instance;
+    my $session       = OpenBib::Session->instance({ apreq => $r });
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $user          = OpenBib::User->instance;
+    my $user          = OpenBib::User->instance({sessionID => $session->{ID}});
     my $searchquery   = OpenBib::SearchQuery->instance;
     my $query         = Apache2::Request->new($r);
 
+    my $queryoptions  = OpenBib::QueryOptions->instance($query);
+    
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+    
     my $stid          = $query->param('stid')              || '';
+    my $callback      = $query->param('callback')  || '';
+    my $lang          = $query->param('lang') || $queryoptions->get_option('l') || 'de';
 
+    my $queryid    = $query->param('queryid')   || '';
+    my $format     = $query->param('format')    || 'full';
+    my $no_log     = $query->param('no_log')    || '';
+    
     my $loginname     = $user->get_username();
     my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
+    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    
     my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
         session    => $session,
         database   => $self->{database},
         titidn     => $self->{id},
     });
 
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
+    my $content_type = (exists $config->{representation}{$representation})?$config->{representation}{$representation}:"text/html";     
+    
     my $poolname=$dbinfotable->{dbnames}{$self->{database}};
+
+    if ($queryid){
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+    }
 
     # Literaturlisten finden
 
@@ -1095,8 +1106,13 @@ sub print_to_handler {
         }
     }
 
+    # Dann Ausgabe des neuen Headers
+    
     # TT-Data erzeugen
     my $ttdata={
+        content_type   => $content_type,
+        representation => $representation,
+
         view        => $view,
         stylesheet  => $stylesheet,
         database    => $self->{database}, # Zwingend wegen common/subtemplate
@@ -1127,14 +1143,13 @@ sub print_to_handler {
         litlists          => $litlists_ref,
         highlightquery    => \&highlightquery,
 
-        record      => $self,
         config      => $config,
         user        => $user,
         msg         => $msg,
     };
 
     $stid=~s/[^0-9]//g;
-    my $templatename = ($stid)?"tt_search_showtitset_".$stid."_tname":"tt_search_showtitset_tname";
+    my $templatename = ($stid)?"tt_resource_title_".$stid."_tname":"tt_resource_title_tname";
     
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 
@@ -1932,7 +1947,9 @@ sub record_exists {
 
 sub to_drilldown_term {
     my ($self,$term)=@_;
-    
+
+    my $config = OpenBib::Config->instance;
+
     $term = OpenBib::Common::Util::grundform({
         content   => $term,
         searchreq => 1,
@@ -1940,38 +1957,23 @@ sub to_drilldown_term {
 
     $term=~s/\W/_/g;
 
+    if (length($term) > $config->{xapian_option}{max_key_length}){
+        $term=substr($term,0,$config->{xapian_option}{max_key_length}-2); # 2 wegen Prefix
+    }
+
     return $term;
 }
 
-sub enrich_cdm {
-    my ($self,$id,$url)=@_;
+sub to_json {
+    my ($self)=@_;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
+    my $title_ref = {
+        'metadata'    => $self->{_normset},
+        'items'       => $self->{_mexset},
+        'circulation' => $self->{_circset},
+    };
 
-    my $config = OpenBib::Config->instance;
-    
-    # Wenn kein URI, dann Default-URI
-    $url = $config->{cdm_base}.$config->{cdm_path} unless ($url);
-
-    $url.=$id;
-    
-    my $ua = new LWP::UserAgent;
-    $ua->agent("OpenBib/1.0");
-    $ua->timeout(1);
-    my $request = new HTTP::Request('GET', $url);
-    my $response = $ua->request($request);
-
-    my $content = $response->content;
-
-    my $enrich_data_ref = {};
-    
-    if ($content){
-        $enrich_data_ref = decode_json($content);
-    }
-
-    return $enrich_data_ref;
-    
+    return encode_json $title_ref;
 }
-
+    
 1;

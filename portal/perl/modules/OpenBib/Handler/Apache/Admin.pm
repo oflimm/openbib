@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Admin
 #
-#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -74,60 +74,46 @@ sub handler {
 
     my $query=Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $session;
-    
-    if ($query->param('sessionID')){
-        $session   = OpenBib::Session->instance({
-            sessionID => $query->param('sessionID'),
-        });
-    }
-    else {
-        $session = OpenBib::Session->instance;
-    }
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     # Standardwerte festlegen
   
     my $adminuser   = $config->{adminuser};
     my $adminpasswd = $config->{adminpasswd};
 
-    my $view        = $query->param('view') || $config->{adminview};
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
     
     # Main-Actions
-    my $do_login        = $query->param('do_login')        || '';
-    my $do_loginmask    = $query->param('do_loginmask')    || '';
-    my $do_showcat      = $query->param('do_showcat')      || '';
-    my $do_editcat      = $query->param('do_editcat')      || '';
-    my $do_showlibinfo  = $query->param('do_showlibinfo')  || '';
-    my $do_editlibinfo  = $query->param('do_editlibinfo')  || '';
-    my $do_showops      = $query->param('do_showops')      || '';
-    my $do_editserver   = $query->param('do_editserver')   || '';
-    my $do_editcat_rss  = $query->param('do_editcat_rss')  || '';
-    my $do_showprofiles = $query->param('do_showprofiles') || '';
-    my $do_editprofile  = $query->param('do_editprofile')  || '';
-    my $do_showsubjects = $query->param('do_showsubjects') || '';
-    my $do_editsubject  = $query->param('do_editsubject')  || '';
-    my $do_showviews    = $query->param('do_showviews')    || '';
-    my $do_editview     = $query->param('do_editview')     || '';
-    my $do_editview_rss = $query->param('do_editview_rss') || '';
-    my $do_showimx      = $query->param('do_showimx')      || '';
-    my $do_showsessions = $query->param('do_showsessions') || '';
-    my $do_editsession  = $query->param('do_editsession')  || '';
-    my $do_exploresessions = $query->param('do_exploresessions') || '';
-    my $do_showstat     = $query->param('do_showstat')     || '';
-    my $do_showuser     = $query->param('do_showuser')     || '';
-    my $do_edituser     = $query->param('do_edituser')     || '';
-    my $do_searchuser   = $query->param('do_searchuser')   || '';
-    my $do_showlogintarget  = $query->param('do_showlogintarget')     || '';
-    my $do_editlogintarget  = $query->param('do_editlogintarget')     || '';
-    my $do_logout       = $query->param('do_logout')       || '';
+    my $do_login                   = $query->param('do_login')        || '';
+    my $do_loginmask               = $query->param('do_loginmask')    || '';
+    my $do_showcat                 = $query->param('do_showcat')      || '';
+    my $do_editcat                 = $query->param('do_editcat')      || '';
+    my $do_showlibinfo             = $query->param('do_showlibinfo')  || '';
+    my $do_editlibinfo             = $query->param('do_editlibinfo')  || '';
+    my $do_showops                 = $query->param('do_showops')      || '';
+    my $do_editserver              = $query->param('do_editserver')   || '';
+    my $do_editcat_rss             = $query->param('do_editcat_rss')  || '';
+    my $do_showprofiles            = $query->param('do_showprofiles') || '';
+    my $do_editprofile             = $query->param('do_editprofile')  || '';
+    my $do_editorgunit             = $query->param('do_editorgunit')  || '';
+    my $do_showsubjects            = $query->param('do_showsubjects') || '';
+    my $do_editsubject             = $query->param('do_editsubject')  || '';
+    my $do_showviews               = $query->param('do_showviews')    || '';
+    my $do_editview                = $query->param('do_editview')     || '';
+    my $do_editview_rss            = $query->param('do_editview_rss') || '';
+    my $do_showimx                 = $query->param('do_showimx')      || '';
+    my $do_showsessions            = $query->param('do_showsessions') || '';
+    my $do_editsession             = $query->param('do_editsession')  || '';
+    my $do_exploresessions         = $query->param('do_exploresessions') || '';
+    my $do_showstat                = $query->param('do_showstat')     || '';
+    my $do_showuser                = $query->param('do_showuser')     || '';
+    my $do_edituser                = $query->param('do_edituser')     || '';
+    my $do_searchuser              = $query->param('do_searchuser')   || '';
+    my $do_showlogintarget         = $query->param('do_showlogintarget')     || '';
+    my $do_editlogintarget         = $query->param('do_editlogintarget')     || '';
+    my $do_logout                  = $query->param('do_logout')       || '';
 
     # Sub-Actions
     my $do_new          = $query->param('do_new')          || 0;
@@ -150,6 +136,8 @@ sub handler {
     my $use_libinfo     = $query->param('use_libinfo')     || 0;
     my $active          = $query->param('active')          || 0;
 
+    my $nr              = $query->param('nr')              || 0;
+
     my $roleid          = $query->param('roleid')          || '';
     my @roles           = ($query->param('roles'))?$query->param('roles'):();
     
@@ -163,7 +151,9 @@ sub handler {
     my $profilename     = $query->param('profilename')     || '';
     my @profiledb       = ($query->param('profiledb'))?$query->param('profiledb'):();
 
-    my @databases       = ($query->param('database'))?$query->param('database'):();
+    my @orgunitdb       = ($query->param('orgunitdb'))?$query->param('orgunitdb'):();
+    
+    my @databases       = ($query->param('db'))?$query->param('db'):();
 
     # dboptions
     my $host            = $query->param('host')            || '';
@@ -262,7 +252,6 @@ sub handler {
     my @dbnames = $config->get_active_database_names();
   
     my $thisdbinfo_ref = {
-        orgunit     => $orgunit,
         description => $description,
         shortdesc   => $shortdesc,
         system      => $system,
@@ -413,7 +402,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editcat_del",{ dbname => $dbname }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
 
         }
@@ -430,7 +419,7 @@ sub handler {
 						     dboptions => $thisdboptions_ref,
 						 }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
         }
         elsif ($do_new) {
@@ -453,13 +442,12 @@ sub handler {
             
 	    my $ret_ref = dist_cmd("editcat_new",{ dbinfo => $thisdbinfo_ref }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
             my $dbinfo_ref = $config->get_dbinfo($dbname);
       
-            my $orgunit     = $dbinfo_ref->{'orgunit'};
             my $description = $dbinfo_ref->{'description'};
             my $shortdesc   = $dbinfo_ref->{'shortdesc'};
             my $system      = $dbinfo_ref->{'system'};
@@ -492,7 +480,6 @@ sub handler {
             my $rssfeed_ref  = $config->get_rssfeeds_of_db_by_type($dbname);
             
             my $katalog={
-                orgunit     => $orgunit,
                 description => $description,
                 shortdesc   => $shortdesc,
                 system      => $system,
@@ -558,7 +545,7 @@ sub handler {
 							 rssid   => $rssid,
 							}) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return Apache2::Const::OK;
         }
         elsif ($do_new){
@@ -569,7 +556,7 @@ sub handler {
 						      rsstype => $rsstype,
 						     }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return Apache2::Const::OK;              
         }
         
@@ -625,7 +612,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editlibinfo_del",{ dbname => $dbname }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
 
         }
@@ -641,7 +628,7 @@ sub handler {
 						     libinfo    => $thislibinfo_ref,
 						 }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -690,7 +677,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editprofile_del",{ profilename => $profilename }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showprofiles=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
             return Apache2::Const::OK;
       
         }
@@ -698,7 +685,6 @@ sub handler {
 	    editprofile_change({
                 profilename => $profilename,
                 description => $description,
-                profiledb   => \@profiledb,
             });
             
 	    my $ret_ref = dist_cmd("editprofile_change",{ 
@@ -708,7 +694,7 @@ sub handler {
                 viewname    => $viewname,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showprofiles=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
       
             return Apache2::Const::OK;
         }
@@ -736,7 +722,7 @@ sub handler {
 	      return Apache2::Const::OK;
 	    }
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editprofile=1&do_edit=1&profilename=$profilename");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editprofile=1&do_edit=1&profilename=$profilename");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -775,6 +761,101 @@ sub handler {
         }
     
     }
+    elsif ($do_editorgunit) {
+    
+        # Zuerst schauen, ob Aktionen gefordert sind
+    
+        if ($do_del) {
+	    editorgunit_del($profilename,$orgunit);
+
+	    my $ret_ref = dist_cmd("editorgunit_del",{ profilename => $profilename, orgunit => $orgunit }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editprofile=1;profilename=$profilename;do_edit=1");
+            return Apache2::Const::OK;
+      
+        }
+        elsif ($do_change) {
+	    editorgunit_change({
+                profilename => $profilename,
+                orgunit     => $orgunit,
+                description => $description,
+                orgunitdb   => \@orgunitdb,
+                nr          => $nr,
+            });
+            
+	    my $ret_ref = dist_cmd("editorgunit_change",{ 
+                profilename => $profilename,
+                orgunit     => $orgunit,                
+                description => $description,
+                orgunitdb   => \@orgunitdb,
+                view        => $viewname,
+            }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editprofile=1;profilename=$profilename;do_edit=1");
+      
+            return Apache2::Const::OK;
+        }
+        elsif ($do_new) {
+
+            if ($profilename eq "" || $orgunit eq "" || $description eq "") {
+
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen, den Namen einer Organisationseinheit und deren Beschreibung eingeben."),$r,$msg);
+
+                return Apache2::Const::OK;
+            }
+
+	    my $ret = editorgunit_new({
+                profilename => $profilename,
+                orgunit     => $orgunit,
+                description => $description,
+            });
+
+	    my $ret_ref = dist_cmd("editorgunit_new",{ 
+                profilename => $profilename,
+                orgunit     => $orgunit,
+                description => $description,
+            }) if ($do_dist);
+
+	    if ($ret == -1){
+	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits eine Organisationseinheit unter diesem Namen"),$r,$msg);
+	      return Apache2::Const::OK;
+	    }
+
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editorgunit=1&do_edit=1&profilename=$profilename&orgunit=$orgunit");
+            return Apache2::Const::OK;
+        }
+        elsif ($do_edit) {
+
+	    my $profileinfo_ref = $config->get_profileinfo($profilename);
+            my $orgunitinfo_ref = $config->get_orgunitinfo($profilename,$orgunit);
+           
+            my @orgunitdbs   = $config->get_profiledbs($profilename,$orgunit);
+
+            $orgunitinfo_ref->{dbnames} = \@orgunitdbs;
+            
+            my $ttdata={
+                view       => $view,
+
+                stylesheet => $stylesheet,
+                sessionID  => $session->{ID},
+
+                profileinfo    => $profileinfo_ref,
+
+                orgunitinfo    => $orgunitinfo_ref,
+                
+                dbnames    => \@dbnames,
+
+                config     => $config,
+                session    => $session,
+                user       => $user,
+                msg        => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_admin_editorgunit_tname},$ttdata,$r);
+      
+        }
+    
+    }
     elsif ($do_showsubjects) {
         my $subjects_ref = OpenBib::User->get_subjects;
 
@@ -800,7 +881,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editsubject_del",{ id => $subjectid }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showsubjects=1");
             return Apache2::Const::OK;
       
         }
@@ -821,7 +902,7 @@ sub handler {
                 type                 => $type,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editsubject=1;subjectid=$subjectid;do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editsubject=1;subjectid=$subjectid;do_edit=1");
       
             return Apache2::Const::OK;
         }
@@ -849,7 +930,7 @@ sub handler {
 	      return Apache2::Const::OK;
 	    }
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showsubjects=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -898,7 +979,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editserver_del",{ id => $hostid }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showops=1");
             return Apache2::Const::OK;
       
         }
@@ -913,7 +994,7 @@ sub handler {
                 active               => $active,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showops=1");
       
             return Apache2::Const::OK;
         }
@@ -937,7 +1018,7 @@ sub handler {
                 active               => $active,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showops=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showops=1");
             return Apache2::Const::OK;
         }
 
@@ -981,7 +1062,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editview_del",{ viewname => $viewname }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showviews=1");
             return Apache2::Const::OK;
       
         }
@@ -1010,7 +1091,7 @@ sub handler {
 						      rssfeeds    => \@rssfeeds,
 						     }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showviews=1");
       
             return Apache2::Const::OK;
         }
@@ -1045,7 +1126,7 @@ sub handler {
 	      return Apache2::Const::OK;
 	    }
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview=1&do_edit=1&viewname=$viewname");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editview=1&do_edit=1&viewname=$viewname");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -1124,11 +1205,11 @@ sub handler {
 						       }) if ($do_dist);
 
           if ($rsstype eq "primary"){
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview_rss=1&do_edit=1&viewname=$viewname");
+              $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editview_rss=1&do_edit=1&viewname=$viewname");
               return Apache2::Const::OK;
           }
           elsif ($rsstype eq "all") {
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
+              $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showviews=1");
               return Apache2::Const::OK;
           }
       }
@@ -1203,73 +1284,6 @@ sub handler {
           OpenBib::Common::Util::print_page($config->{tt_admin_editview_rss_tname},$ttdata,$r);
       }
   }
-    elsif ($do_showimx) {
-
-        my @kataloge=();
-
-        my $idnresult=$dbh->prepare("select dbinfo.*,titcount.count from dbinfo,titcount where dbinfo.dbname=titcount.dbname order by orgunit,dbname") or $logger->error($DBI::errstr);
-        $idnresult->execute() or $logger->error($DBI::errstr);
-
-        my $katalog;
-        while (my $result=$idnresult->fetchrow_hashref()) {
-            my $orgunit = decode_utf8($result->{'orgunit'});
-
-            my $orgunits_ref=$config->{orgunits};
-
-            my @orgunits=@$orgunits_ref;
-
-            foreach my $unit_ref (@orgunits) {
-                my %unit=%$unit_ref;
-                if ($unit{short} eq $orgunit) {
-                    $orgunit=$unit{desc};
-                }
-            }
-
-            my $description = decode_utf8($result->{'description'});
-            my $system      = decode_utf8($result->{'system'});
-            my $dbname      = decode_utf8($result->{'dbname'});
-            my $sigel       = decode_utf8($result->{'sigel'});
-            my $url         = decode_utf8($result->{'url'});
-            my $use_libinfo = decode_utf8($result->{'use_libinfo'});
-            my $active      = decode_utf8($result->{'active'});
-
-            $active="Ja"   if ($active eq "1");
-            $active="Nein" if ($active eq "0");
-
-            my $count       = decode_utf8($result->{'count'});
-
-            $katalog={
-		orgunit     => $orgunit,
-		description => $description,
-		system      => $system,
-		dbname      => $dbname,
-		sigel       => $sigel,
-		active      => $active,
-		url         => $url,
-                use_libinfo => $use_libinfo,
-		count       => $count,
-            };
-
-            push @kataloge, $katalog;
-        }
-
-        my $ttdata={
-            view       => $view,
-
-            stylesheet => $stylesheet,
-            sessionID  => $session->{ID},
-            kataloge   => \@kataloge,
-
-            config     => $config,
-            session    => $session,
-            user       => $user,
-            msg        => $msg,
-        };
-    
-        OpenBib::Common::Util::print_page($config->{tt_admin_showimx_tname},$ttdata,$r);
-
-        $idnresult->finish();
-    }
     elsif ($do_showsessions) {
 
         my @sessions=$session->get_info_of_all_active_sessions();
@@ -1519,7 +1533,7 @@ sub handler {
 
 	    my $ret_ref = dist_cmd("editlogintarget_del",{ targetid => $targetid }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showlogintarget=1");
             return Apache2::Const::OK;
 
         }
@@ -1531,7 +1545,7 @@ sub handler {
 						     logintarget => $thislogintarget_ref,
 						 }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showlogintarget=1");
             return Apache2::Const::OK;
         }
         elsif ($do_new) {
@@ -1554,7 +1568,7 @@ sub handler {
             
 	    my $ret_ref = dist_cmd("editlogintarget_new",{ logintarget => $thislogintarget_ref }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showlogintarget=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -1612,7 +1626,7 @@ sub handler {
 						     userinfo  => $thisuserinfo_ref,
 						 }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showuser=1;stid=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showuser=1;stid=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
@@ -1783,8 +1797,8 @@ sub editcat_change {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $request=$dbh->prepare("update dbinfo set orgunit = ?, description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, use_libinfo = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
-    $request->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("update dbinfo set description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, use_libinfo = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
+    $request->execute($dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
 
     # Konvertierung
     $request=$dbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ? where dbname= ?") or $logger->error($DBI::errstr);
@@ -1812,8 +1826,8 @@ sub editcat_new {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult=$dbh->prepare("insert into dbinfo values (?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{dbname},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active}) or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("insert into dbinfo values (?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{dbname},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active}) or $logger->error($DBI::errstr);
     $idnresult=$dbh->prepare("insert into titcount values (?,'0',?)") or $logger->error($DBI::errstr);
     $idnresult->execute($dbinfo_ref->{dbname},1) or $logger->error($DBI::errstr);
     $idnresult->execute($dbinfo_ref->{dbname},2) or $logger->error($DBI::errstr);
@@ -2100,8 +2114,13 @@ sub editprofile_del {
 
     my $idnresult=$dbh->prepare("delete from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
+
+    my $orgunits_ref=$config->get_orgunits($profilename);
+
+    foreach my $thisorgunit (@{$orgunits_ref}){
+        editorgunit_del($profilename,$thisorgunit->{orgunitname});
+    }
+    
     $idnresult->finish();
 
     return;
@@ -2115,10 +2134,6 @@ sub editprofile_change {
         ? $arg_ref->{profilename}         : undef;
     my $description            = exists $arg_ref->{description}
         ? $arg_ref->{description}         : undef;
-    my $profiledb_ref          = exists $arg_ref->{profiledb}
-        ? $arg_ref->{profiledb}           : undef;
-
-    my @profiledb = (defined $profiledb_ref)?@$profiledb_ref:();
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -2134,18 +2149,6 @@ sub editprofile_change {
     
     my $idnresult=$dbh->prepare("update profileinfo set description = ? where profilename = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($description,$profilename) or $logger->error($DBI::errstr);
-    
-    # Datenbanken zunaechst loeschen
-    
-    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
-    
-    
-    # Dann die zugehoerigen Datenbanken eintragen
-    foreach my $singleprofiledb (@profiledb) {
-        $idnresult=$dbh->prepare("insert into profiledbs values (?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($profilename,$singleprofiledb) or $logger->error($DBI::errstr);
-    }
     
     $idnresult->finish();
 
@@ -2183,6 +2186,121 @@ sub editprofile_new {
     
     $idnresult=$dbh->prepare("insert into profileinfo values (?,?)") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$description) or $logger->error($DBI::errstr);
+    
+    return 1;
+}
+
+sub editorgunit_del {
+    my ($profilename,$orgunit)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("delete from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
+sub editorgunit_change {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}         : undef;
+    my $orgunit                = exists $arg_ref->{orgunit}
+        ? $arg_ref->{orgunit}             : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+    my $orgunitdb_ref          = exists $arg_ref->{orgunitdb}
+        ? $arg_ref->{orgunitdb}           : [];
+    my $nr                     = exists $arg_ref->{nr}
+        ? $arg_ref->{nr}                  : 0;
+
+    my @orgunitdb = (defined $orgunitdb_ref)?@$orgunitdb_ref:();
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    # Zuerst die Aenderungen in der Tabelle Orgunit vornehmen
+    
+    my $idnresult=$dbh->prepare("update orgunitinfo set description = ?, nr = ? where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$nr,$profilename,$orgunit) or $logger->error($DBI::errstr);
+    
+    # Datenbanken zunaechst loeschen
+    
+    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    
+    
+    # Dann die zugehoerigen Datenbanken eintragen
+    foreach my $singleorgunitdb (@orgunitdb) {
+        $idnresult=$dbh->prepare("insert into profiledbs values (?,?,?)") or $logger->error($DBI::errstr);
+        $idnresult->execute($profilename,$orgunit,$singleorgunitdb) or $logger->error($DBI::errstr);
+    }
+    
+    $idnresult->finish();
+
+    return;
+}
+
+sub editorgunit_new {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}            : undef;
+    my $orgunit                = exists $arg_ref->{orgunit}
+        ? $arg_ref->{orgunit}                : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}            : undef;
+    my $nr                     = exists $arg_ref->{nr}
+        ? $arg_ref->{nr}                     : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("select count(*) as rowcount from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    my $res=$idnresult->fetchrow_hashref;
+    my $rows=$res->{rowcount};
+    
+    if ($rows > 0) {
+      $idnresult->finish();
+      return -1;
+    }
+
+    $idnresult=$dbh->prepare("select max(nr) as maxnr from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    $res=$idnresult->fetchrow_hashref;
+    my $nextnr=$res->{maxnr}+1;
+
+    $idnresult=$dbh->prepare("insert into orgunitinfo (profilename,orgunitname,description,nr) values (?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$orgunit,$description,$nextnr) or $logger->error($DBI::errstr);
     
     return 1;
 }

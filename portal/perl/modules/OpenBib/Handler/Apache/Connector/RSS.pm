@@ -79,10 +79,14 @@ sub handler {
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
+
+    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+
     # Basisipfad entfernen
-    my $basepath = $config->{connector_rss_loc};
+    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{connector_rss_loc}{name};
     $path=~s/$basepath//;
+
+    $logger->debug("Path: $path without basepath $basepath");
 
     # RSS-Feedparameter aus URI bestimmen
     #
@@ -190,7 +194,7 @@ sub handler {
         
         $rss->channel(
             title         => "$dbdesc: ".$rssfeedinfo_ref->{$type}{channel_title},
-            link          => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database",
+            link        => "http://".$config->{loadbalancerservername}.$config->{base_loc}."/$view/".$config->{handler}{loadbalancer_loc}{name},            
             language      => "de",
             description   => $rssfeedinfo_ref->{$type}{channel_desc},
         );
@@ -278,7 +282,7 @@ sub handler {
 
             $rss->add_item(
                 title       => $title,
-                link        => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database;database=$database;searchsingletit=".$record->{id},
+                link        => "http://".$config->{loadbalancerservername}.$config->{base_loc}."/$view/".$config->{handler}{loadbalancer_loc}{name}."?database=$database;searchsingletit=".$record->{id},
                 description => $desc
             );
         }

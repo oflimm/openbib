@@ -9,7 +9,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]" target="_blank">[% msg.maketext("Fehler") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/0" target="_blank">[% msg.maketext("Fehler") %]</a></li>
 </ul>
 
 <div class="content">

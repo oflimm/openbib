@@ -24,7 +24,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.get('resultlists_loc') %]?view=[% view %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div class="content">
@@ -90,31 +90,27 @@
       END ;
    END ;
 %]
+[%- request_base    = "page=1;num=50;srt=author;srto=up;dd=1;" -%]
+
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-[% IF combinedbs %]
-<tr><td class="listrow2"><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% thisquery.id %];offset=0;hitrange=[% hitrange %];sb=[% qopts.sb %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
-[% ELSE %]
-<tr><td class="listrow2"><a href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];action=showall;sortall=0;sorttype=author;queryid=[% thisquery.id %];view=[% view %];offset=0"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;combinedbs=1;page=1"><b>kombinierte</b></a> / <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;combinedbs=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
-
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];database=[% resultdb.trefferdb %];action=showrange;offset=0;queryid=[% thisquery.id %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
-[% IF resultdb.trefferzahl == qopts.maxhits %]
+<tr><td class="[% listrow %]"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[% request_base %];queryid=[% thisquery.id %];database=[% resultdb.trefferdb %];num=50;srt=author;srto=up;page=1"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
+[%   IF resultdb.trefferzahl == qopts.maxhits %]
 [% msg.maketext("mind.") %]&nbsp;
-[% END %]
+[%   END %]
 [% resultdb.trefferzahl %]
 </td></tr>
-[% IF listrow == 'listrow1' %]
-[% listrow = 'listrow2' %]
-[% ELSE %]
-[% listrow = 'listrow1' %]
-[% END %]
-[% END %]
-
+[%   IF listrow == 'listrow1' %]
+[%     listrow = 'listrow2' %]
+[%   ELSE %]
+[%     listrow = 'listrow1' %]
+[%   END %]
 [% END %]
 
 </table>
@@ -125,7 +121,7 @@
 <p />
 
 [% IF queryids.size >= 0 %]
-<form method="get" action="[% config.get('resultlists_loc') %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]">
 <input type="hidden" name="sessionID"    value="[% sessionID %]" />
 <input type="hidden" name="action"       value="choice" />
 <input type="hidden" name="view"         value="[% view %]" />

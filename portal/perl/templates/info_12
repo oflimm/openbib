@@ -26,17 +26,17 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/11?database=[% database %]" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" title="Top 20">[% msg.maketext("Titel pro Katalog") %]</a></li>
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=12" title="Meistgenutzte Kataloge">[% msg.maketext("Meistgenutzte Kataloge") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/11?database=[% database %]" title="Top 20">[% msg.maketext("Titel pro Katalog") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/12?database=[% database %]" title="Meistgenutzte Kataloge">[% msg.maketext("Meistgenutzte Kataloge") %]</a></li>
 </ul>
 
 <div class="content">

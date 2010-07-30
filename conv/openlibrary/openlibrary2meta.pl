@@ -44,13 +44,7 @@ use YAML::Syck;
 use JSON::XS;
 
 use OpenBib::Config;
-
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
-
-@autdubbuf = ();
-@kordubbuf = ();
-@swtdubbuf = ();
-@notdubbuf = ();
+use OpenBib::Conv::Common::Util;
 
 my $config = OpenBib::Config->instance;
 
@@ -78,9 +72,6 @@ open (SWT,     ">:utf8","unload.SWD");
 
 my %author = ();
 
-#tie %author,        'MLDBM', "./data_aut.db"
-#        or die "Could not tie data_aut.\n";
-
 print "### Processing Titles: 1st pass - getting authors\n";
 open(OL,"<:utf8",$inputfile_titles);
 
@@ -91,6 +82,11 @@ while (<OL>){
     eval {
         $recordset = decode_json $_;
     };
+
+    # Einschraenkung auf Titelaufnahmen mit Digitalisaten
+    if (!exists $recordset->{ocaid}){
+        next;
+    }
 
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){
@@ -150,18 +146,23 @@ while (<OL>){
 
 #    print YAML::Dump($recordset);
 
-    if (!$recordset->{id}){
+    # Einschraenkung auf Titelaufnahmen mit Digitalisaten
+    if (!exists $recordset->{ocaid}){
+        next;
+    }
+    
+    if (!$recordset->{key}){
         print STDERR  "Keine ID\n".YAML::Dump($recordset)."\n";
         next;
     }
 
-    if (!$recordset->{id} || $have_titid_ref->{$recordset->{id}}){
-        print STDERR  "Doppelte ID: ".$recordset->{id}."\n";
+    if (!$recordset->{key} || $have_titid_ref->{$recordset->{key}}){
+        print STDERR  "Doppelte ID: ".$recordset->{key}."\n";
         next;
     }
 
-    printf TIT "0000:%d\n", $recordset->{id};
-    $have_titid_ref->{$recordset->{id}} = 1;
+    printf TIT "0000:%s\n", $recordset->{key};
+    $have_titid_ref->{$recordset->{key}} = 1;
 
     if (exists $recordset->{languages}){
         foreach my $item_ref (@{$recordset->{languages}}){
@@ -230,7 +231,7 @@ while (<OL>){
 	my $content = $author{$key}{name};
 	
 	if ($content){	  
-	  my $autidn=get_autidn($content);
+	  my $autidn=OpenBib::Conv::Common::Util::get_autidn($content);
 	  
 	  if ($autidn > 0){
 	    print AUT "0000:$autidn\n";
@@ -252,7 +253,7 @@ while (<OL>){
       foreach my $content (@{$recordset->{contributions}}){
 	
 	if ($content){
-	  my $autidn=get_autidn($content);
+	  my $autidn=OpenBib::Conv::Common::Util::get_autidn($content);
 	  
 	  if ($autidn > 0){
 	    print AUT "0000:$autidn\n";
@@ -274,7 +275,7 @@ while (<OL>){
     if (exists $recordset->{dewey_decimal_class}){
       foreach my $content (@{$recordset->{dewey_decimal_class}}){
 	if ($content){	  
-	  my $notidn=get_notidn($content);
+	  my $notidn=OpenBib::Conv::Common::Util::get_notidn($content);
 	  
 	  if ($notidn > 0){
 	    print NOTATION "0000:$notidn\n";
@@ -299,7 +300,7 @@ while (<OL>){
 	  # Punkt am Ende entfernen
 	  $content=~s/\.\s*$//;
 
-	  my $swtidn=get_swtidn($content);
+	  my $swtidn=OpenBib::Conv::Common::Util::get_swtidn($content);
 	  
 	  if ($swtidn > 0){	  
 	    print SWT "0000:$swtidn\n";
@@ -328,96 +329,4 @@ close(AUT);
 close(KOR);
 close(NOTATION);
 close(SWT);
-
-sub get_autidn {
-    my ($autans)=@_;
-
-#    print "AUT $autans\n";
-
-    my $autdubidx=1;
-    my $autdubidn=0;
-
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-
-    while ($autdubidx <= $#autdubbuf){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;      
-        }
-        $autdubidx++;
-    }
-    if (!$autdubidn){
-        $autdubbuf[$autdubidx]=$autans;
-        $autdubidn=$autdubidx;
-    }
-
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-    
-#    print $autdubidn,"\n";
-    return $autdubidn;
-}
-
-sub get_swtidn {
-    my ($swtans)=@_;
-
-#    print "SWT $swtans\n";
-    
-    my $swtdubidx=1;
-    my $swtdubidn=0;
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-    
-    while ($swtdubidx <= $#swtdubbuf){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;      
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdubidx]=$swtans;
-        $swtdubidn=$swtdubidx;
-    }
-#    print $swtdubidn,"\n";
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-#    print "-----\n";
-    return $swtdubidn;
-}
-
-sub get_koridn {
-    my ($korans)=@_;
-    
-    my $kordubidx=1;
-    my $kordubidn=0;
-    
-    while ($kordubidx <= $#kordubbuf){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;      
-        }
-        $kordubidx++;
-    }
-    if (!$kordubidn){
-        $kordubbuf[$kordubidx]=$korans;
-        $kordubidn=$kordubidx;
-    }
-    return $kordubidn;
-}
-
-sub get_notidn {
-    my ($notans)=@_;
-    
-    my $notdubidx=1;
-    my $notdubidn=0;
-    
-    while ($notdubidx <= $#notdubbuf){
-        if ($notans eq $notdubbuf[$notdubidx]){
-            $notdubidn=(-1)*$notdubidx;      
-        }
-        $notdubidx++;
-    }
-    if (!$notdubidn){
-        $notdubbuf[$notdubidx]=$notans;
-        $notdubidn=$notdubidx;
-    }
-    return $notdubidn;
-}
 

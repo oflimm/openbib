@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchmask_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="newsflash" %]
+
+[% IF viewdbs.size == 1 && config.have_libinfo(viewdbs.first) %]
+<h3><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;[% msg.maketext("Steckbrief der Bibliothek") %]</h3>
+
+[%- libinfo = config.get_libinfo(viewdbs.first); -%]
+
+[% categories = [
+                'I0010', # msg.maketext("I0010") # Institutsname
+                'I0020', # msg.maketext("I0020") # Strasse
+                'I0030', # msg.maketext("I0030") # Gebäude
+                'I0110', # msg.maketext("I0110") # Öffnungszeiten
+                'I0230', # msg.maketext("I0230") # Katalogisierung seit...
+                'I0235', # msg.maketext("I0235") # Katalogisierung seit...
+                ]
+%]
+
+<table>
+[%-
+
+FOREACH category IN categories;
+
+      FOREACH item IN libinfo.$category;
+        content = item.content.replace('%22','"');
+
+        SWITCH category;
+
+          CASE [ "I0010" "I0230" "I0235" ];
+            content   = "<b>${content}</b>";
+
+        END;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%-   END ;
+END ;-%]
+</table>
+[%-   IF dbinfo.get('use_libinfo').${viewdbs.first} %]
+[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% viewdbs.first %]">
+[%-   ELSE -%]
+[<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% msg.maketext("Mehr") %]</a>]
+[% END %]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="[% msg.maketext("Neuerwerbungslisten") %]"/>&nbsp;[% msg.maketext("Neuerwerbungslisten") %]</h3>
+
+<p>
+Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://kug.ub.uni-koeln.de/neuerwerbungslisten/inst526/index.html" target="_blank">Neuerwerbungslisten</a> angeboten.
+</p>

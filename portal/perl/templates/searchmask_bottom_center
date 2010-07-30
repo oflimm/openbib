@@ -7,18 +7,17 @@
 #
 # Aufgabe:
 #
-# Ausgabe Unten-Links
+# Ausgabe Unten-Mitte
 #
 #######################################################################
 -%]
 <h3><img style="vertical-align:bottom" src="[% config.get('search_img') %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[%- IF viewdbs.size == 1 -%][% msg.maketext("In den Institutsbestand eintauchen") %][%- ELSE -%][% msg.maketext("In den Gesamtbestand eintauchen") %][%- END -%]</h3>
 
-<a style="font-size: 1.5em;" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];[%- IF viewdbs.size == 1 -%]database=[% viewdbs.first %];stid=9[%- ELSE -%]stid=13[%- END -%]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
-<a style="font-size: 1.3em;" href="[% config.get('litlists_loc') %]?sessionID=[% sessionID %]&action=show_public_lists[% IF view_config.${view}.subjectid %];subjectid=[% view_config.${view}.subjectid %][%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
-<a style="font-size: 1.1em;" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
-<a                           href="[% config.get('info_loc')
-%]?sessionID=[% sessionID %];view=[% view %];[%- IF viewdbs.size == 1 -%]database=[% viewdbs.first %];[%- END -%]stid=10" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
-<a style="font-size: 1.2em;" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
+<a style="font-size: 1.5em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[%- IF viewdbs.size == 1 -%]9?db=[% viewdbs.first %][%- ELSE -%]13[%- END -%]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
+<a style="font-size: 1.3em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?&action=show_public_lists[% IF view_config.${view}.subjectid %];subjectid=[% view_config.${view}.subjectid %][%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
+<a style="font-size: 1.1em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
+<a                           href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10[%- IF viewdbs.size == 1 -%]?db=[% viewdbs.first %];[%- END -%]" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
+<a style="font-size: 1.2em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
 
 [%- IF viewdbs.size == 1 && viewdbs.first.match("^inst[0-6]") -%]
 
@@ -33,8 +32,9 @@ f&uuml;r Sie als <a href="http://kug.ub.uni-koeln.de/zsstlisten/zsstlist-[% view
 <h3><img style="vertical-align:bottom" src="[% config.get('global_img') %]" alt="Externe Angebote" />&nbsp;Allgemeine Informationsquellen</h3>
 
 <h4>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h4>
-[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${config.get('ezb_loc')}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').ezb_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
 
 <h4>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h4>
 [% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
-lizenzierten Datenbanken[_2]","<a href=\"${config.get('dbis_loc')}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
+lizenzierten Datenbanken[_2]","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').dbis_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
+

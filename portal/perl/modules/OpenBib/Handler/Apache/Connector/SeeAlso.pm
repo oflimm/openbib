@@ -121,29 +121,6 @@ sub handler {
                 return $response;
             }
         },
-        'isbn2paperc' => {
-            'description' => 'Available Title in PaperC for a given ISBN',
-            'query_proc'  => sub {
-                my $identifier = shift;
-
-                my $logger = get_logger();
-
-                my $response = SeeAlso::Response->new($identifier);
-
-                my $enrichmnt = new OpenBib::Enrichment;
-
-                my $result_ref = $enrichmnt->get_additional_normdata({isbn => $identifier});
-
-                # PaperC
-                foreach my $content (@{$result_ref->{E4122}}){
-                    my $uri = URI->new( "$content" )->canonical;
-                    $response->add($content,"Title in PaperC","$uri");
-                    $logger->debug("Added $content");
-                }
-
-                return $response;
-            }
-        },
         'isbn2subjects' => {
             'description' => 'Subjects of a given ISBN',
             'query_proc'  => sub {

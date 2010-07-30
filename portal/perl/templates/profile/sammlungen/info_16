@@ -69,7 +69,7 @@
    itemclass = css_classes.$classnr;
    bkdesc      = bklookup.${item};
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=sql;profil=dbauswahl;notation=[% item %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% IF bkdesc %][% bkdesc %] ([% item %])[% ELSE %][% item %][% END %]">[% IF bkdesc %][% bkdesc %] ([% item %])[% ELSE %][% item %][% END %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?profil=dbauswahl;notation=[% item %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% IF bkdesc %][% bkdesc %] ([% item %])[% ELSE %][% item %][% END %]">[% IF bkdesc %][% bkdesc %] ([% item %])[% ELSE %][% item %][% END %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

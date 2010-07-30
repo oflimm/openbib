@@ -28,7 +28,7 @@
 <tr><td class="boxedclear">
 [% msg.maketext("Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht") %]
 <p />
-[% msg.maketext("Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte [_1]<b>hier</b>[_2}, um eine neue Sitzung zu beginnen.","<a href=\"http://${config.get('loadbalancerservername')}${config.get('loadbalancer_loc')}?view=${view}\">","</a>") %]
+[% msg.maketext("Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte [_1]<b>hier</b>[_2}, um eine neue Sitzung zu beginnen.","<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').loadbalancer_loc.name}?\">","</a>") %]
 </td></tr>
 </table>
 

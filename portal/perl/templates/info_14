@@ -33,14 +33,14 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/13?database=[% database %]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/14?database=[% database %]" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -68,6 +68,8 @@
 %]
 
 [%- IF resultlist.size > 5 -%]
+[%- searchprefix  = config.get('searchfield').swtstring.prefix -%]
+
 <ol class="cloud">
 [%- FOREACH thisitem IN resultlist -%]
 [% item      = thisitem.item;
@@ -76,7 +78,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit </span><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;[%- IF config.get('drilldown') && itemcount < config.get('xapian_option').maxmatch -%]drilldown=1;[%- IF config.get('drilldown_option').cloud -%]dd_cloud=1;[%- END -%][%- IF config.get('drilldown_option').categorized -%]dd_categorized=1;[%- END -%][%- END -%]fs=ddswt:[% utils.normalize_drilldown(item) %];database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]?[%- IF config.get('drilldown') && itemcount < config.get('xapian_option').maxmatch -%]dd=1;[%- END -%]fs=[% searchprefix %]:|[% item %]|;database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

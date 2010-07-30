@@ -238,10 +238,10 @@ sub handler {
             # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
             # der soeben erzeugten Literaturliste hinzugefuegt.
             if ($titid && $titdb && $litlistid){
-                $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&do_addentry=1&titid=$titid&titdb=$titdb&litlistid=$litlistid");
+                $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlists_loc}{name}/$litlistid/?action=manage&do_addentry=1&titid=$titid&titdb=$titdb");
             }
             
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlists_loc}{name}/private/");
             return Apache2::Const::OK;
             
 	}
@@ -250,7 +250,7 @@ sub handler {
             
             $user->del_litlist({ litlistid => $litlistid});
 
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}/private/");
             return Apache2::Const::OK;
             
 	}
@@ -275,7 +275,7 @@ sub handler {
                 $user->change_litlist({ title => $title, type => $type, lecture => $lecture, litlistid => $litlistid, subjectids => \@subjectids });
             }
             
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/private/");
             return Apache2::Const::OK;
             
 	}
@@ -293,7 +293,7 @@ sub handler {
                 $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
             }
             
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&do_showlitlist=1&litlistid=$litlistid");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/?action=manage&do_showlitlist=1");
             return Apache2::Const::OK;
 	  
 	}
@@ -311,7 +311,7 @@ sub handler {
                 $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
             }
 
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&litlistid=$litlistid&do_showlitlist=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/?action=manage&do_showlitlist=1");
             return Apache2::Const::OK;
 	  
 	}
@@ -337,6 +337,8 @@ sub handler {
 
                 # TT-Data erzeugen
                 my $ttdata={
+                    representation  => $representation,
+                    
                     view       => $view,
                     stylesheet => $stylesheet,
                     sessionID  => $session->{ID},
@@ -373,6 +375,8 @@ sub handler {
 
             # TT-Data erzeugen
             my $ttdata={
+                representation  => $representation,
+                
                 view       => $view,
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
@@ -413,8 +417,10 @@ sub handler {
             my $litlist_subjects_ref   = OpenBib::User->get_subjects_of_litlist({id => $litlistid});
             my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
                 
-                # TT-Data erzeugen
+            # TT-Data erzeugen
 	    my $ttdata={
+                representation  => $representation,
+                
                 view           => $view,
                 stylesheet     => $stylesheet,
                 sessionID      => $session->{ID},
@@ -438,7 +444,7 @@ sub handler {
                 msg            => $msg,
             };
 	    
-	    OpenBib::Common::Util::print_page($config->{tt_litlists_show_singlelist_tname},$ttdata,$r);
+	    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_tname},$ttdata,$r);
             return Apache2::Const::OK;
         }
         else {
@@ -451,6 +457,8 @@ sub handler {
 
         # TT-Data erzeugen
         my $ttdata={
+            representation => $representation,
+            
             view           => $view,
             stylesheet     => $stylesheet,
             sessionID      => $session->{ID},
@@ -467,7 +475,7 @@ sub handler {
             msg            => $msg,
         };
 	    
-        OpenBib::Common::Util::print_page($config->{tt_litlists_show_publiclists_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_resource_litlist_public_tname},$ttdata,$r);
         return Apache2::Const::OK;
     }
     

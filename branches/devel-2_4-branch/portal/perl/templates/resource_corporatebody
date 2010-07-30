@@ -1,4 +1,4 @@
-[% IF representation == 'html'%]
+[% IF representation == '' || representation == 'html'%]
 [%- PROCESS common/subtemplate name="resource_corporatebody_html" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]

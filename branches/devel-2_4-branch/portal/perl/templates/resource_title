@@ -1,4 +1,4 @@
-[%- IF representation == 'html' -%]
+[%- IF representation == '' || representation == 'html' -%]
 [%- PROCESS common/subtemplate name="resource_title_html" -%]
 [%- ELSIF representation == 'rdf+xml' -%]
 [%- PROCESS common/subtemplate name="resource_title_rdf+xml" -%]

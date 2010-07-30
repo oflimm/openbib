@@ -27,9 +27,7 @@
 
 <p />
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]">
-<input type="hidden" name="action"     value="manage" />
-
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_litlist_loc.name %]/private/">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neue Literaturliste anlegen") %]</th></tr>
@@ -70,7 +68,7 @@
 [% listrow = 'listrow1' %]
 [% FOREACH litlist IN litlists %]
 <tr class="[% listrow %]"><td><a href="http://[%
-config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?&action=manage;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
+config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.id %]/?action=manage"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
 [% msg.maketext("&ouml;ffentlich") %]
 [% ELSE %] 
 [% msg.maketext("privat") %]

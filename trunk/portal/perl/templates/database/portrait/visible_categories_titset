@@ -24,7 +24,6 @@
                    'T0501', # msg.maketext("T0501-portrait") Lebensdaten
                    'T0700', # msg.maketext("T0700-portrait") Beruf / Weltanschauung
                    'T0710', # msg.maketext("T0710-portrait") Region
-                   'T0200', # msg.maketext("T0200-portrait") Provenienz
                    'T0201', # msg.maketext("T0201-portrait") Koerperschaft
                    'T3001', # msg.maketext("T3001-portrait") Fruehere Signatur
                    'T3000', # msg.maketext("T3000-portrait") Besitzer

@@ -1,0 +1,95 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Sammlungsinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[% stid %]?id=[% id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+<table cellpadding="10">
+
+<tr>
+
+<td style="vertical-align:top;padding:10px;"> <center> <img src="/images/openbib/views/lefort/lefort_start.gif"
+alt="Sammlung Gertrud von Le Fort" /><br /><br /><i
+style="font-size:0.8em">Gedenkmarke Gertrud von Le Fort</i></center>
+</td>
+
+<td valign="top">
+<h1>Die Sammlung Gertrud von Le Fort</h1>
+
+
+<span style="color:#6262b5; font-weight:bold">"Gerechtigkeit ist nur
+in der Hölle,<br/>
+im Himmel ist Gnade,<br/>
+und auf Erden ist das Kreuz."<br/><br/>  »Aphorismen«, München 1962
+</span>
+<p>
+Die Bibliothek hat 2006 von Dr. Heribert Hilgers eine Sammlung von 55
+Monographien von Gertrud von Le Fort geschenkt bekommen. Darunter
+befinden sich 24 Erstausgaben.
+</p>
+<p>
+Zusammen mit den 31 bereits vorhandenen Titeln verfügt die USB Köln in
+Nordrhein-Westfalen über die umfangreichste Sammlung von Titeln dieser
+Autorin.
+</p>
+<p>
+Die USB wird diese Sammlung weiterführen und die Titel von Gertrud von
+Le Fort und selbständig erscheinende Sekundärliteratur zu ihr und
+ihrem Werk möglichst vollständig erwerben.
+</p>
+<p>
+Die Monographien der Schenkung sind als geschlossener Bestand mit der
+Sonderstandortsignatur LEFO aufgestellt. Die Bücher sind im
+Originalzustand mit den Originalumschlägen erhalten. Um eine möglichst
+hohe Authentizität zu gewährleisten, sind bibliothekarische
+Bearbeitungsmerkmale sehr zurückhaltend angebracht worden. So wurde
+auch auf das Einkleben von Etiketten verzichtet.
+</p>
+<p>
+Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
+Lesesaal. Alle Titel sind auch im Katalog der USB und im
+Verbundkatalog NRW erfasst.[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/21">Weitere Informationen</a>]
+</p>
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

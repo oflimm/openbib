@@ -1,0 +1,19 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_result_end
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ende der Trefferausgabe in der Kurztitelanzeige
+#
+#######################################################################
+-%]
+</OL>
+
+<!-- end result -->
+
+</BODY>
+</HTML>

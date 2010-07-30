@@ -1,0 +1,7 @@
+[% IF representation == '' || representation == 'html'%]
+[%- PROCESS common/subtemplate name="resource_person_html" -%]
+[% ELSIF representation == 'rdf+xml' %]
+[%- PROCESS common/subtemplate name="resource_person_rdf+xml" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

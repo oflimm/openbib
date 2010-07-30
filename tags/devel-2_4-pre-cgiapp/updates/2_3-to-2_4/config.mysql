@@ -1,0 +1,2 @@
+alter table profiledbs add orgunitname varchar(20) not null after profilename;
+alter table dbinfo drop orgunit;

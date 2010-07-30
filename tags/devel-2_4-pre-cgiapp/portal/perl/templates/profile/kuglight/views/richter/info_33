@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_33
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/30">Die B&uuml;cherlisten</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/31">Arbeitsablauf / Aktuelles</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/32">Publikationen</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/34">Internetquellen</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/33">Ansprechpartner</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Ansprechpartner</h1>
+
+<h2>Inhaltliche Realisierung</h2>
+
+<table>
+<tr>
+<td><b>Christiane Hoffrath</b><br />
+Recherche, Beschreibung, Erfassung<br />
+Abt. Universit&auml;tsGesamtKatalog<br />
+Tel:   0221/470-3306<br />
+Email: <a href="mailto:hoffrath@ub.uni-koeln.de">hoffrath@ub.uni-koeln.de</a></td>
+</tr>
+</table>
+
+<br />
+<br />
+
+<h2>Technische Realisierung</h2>
+
+<table>
+<tr><td><b>Oliver Flimm</b><br />
+Programmierung<br />
+IT-Dienste / Abt. Universit&auml;tsGesamtKatalog<br />
+Tel:   0221/470-3330<br />
+Email: <a href="mailto:flimm@ub.uni-koeln.de">flimm@ub.uni-koeln.de</a></td>
+</tr>
+</table>
+<br />
+<br />
+<br />
+
+
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

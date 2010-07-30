@@ -1,0 +1,90 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showautset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Verfasser-Normdatensatzes
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = "KUG Recherche" %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+<table cellpadding="2">
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+
+[% PROCESS common/subtemplate name="visible_categories_autset" %]
+
+[%-
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE "P0308";
+        content    = "<a href=\"http://de.wikisource.org/wiki/Bild:${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P0309";
+        content    = "<a href=\"http://de.wikipedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P0310";
+        content    = "<a href=\"http://de.wikiquote.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P0311";
+        content    = "<a href=\"http://commons.wikimedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P5000";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofaut=${normset.id};offset=0;num=${qopts.num}\">${content}</a>";
+    END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
+</table>
+[%# USE dumper;dumper.dump(normset)%]
+[%
+    searchterm        = normset.${"P0001"}.first.content;
+    globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+    globalurl         = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;verf=%22${searchterm}%22";
+%]
+
+<p> <img style="vertical-align:bottom" src="[% config.get('hint_img')
+%]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Dehnen Sie Ihre Recherche nach <i>[_1]</i> über die
+[_2]G[_3] lobale Suche auf alle
+vorhandenen Kataloge aus.","${searchterm}","<a href=\"${globalurl}\"><span
+class=\"globalsearch\">","</span></a>") %]</p>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

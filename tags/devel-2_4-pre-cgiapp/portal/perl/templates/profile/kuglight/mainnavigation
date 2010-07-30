@@ -1,0 +1,34 @@
+[%#-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+#######################################################################
+-%]
+[%- username = user.get_username -%]
+<div id="mainnavigation">
+<div id="mainnavigation_left">
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databasechoice_loc.name %]?">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/recent">[% msg.maketext("Recherche") %]</a>&nbsp;::&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?action=choice">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=show">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
+</div>
+<div id="mainnavigation_right">
+[% IF config.get('login_active') == 1 %]
+[% IF username %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userprefs_loc.name %]?action=showfields">[% msg.maketext("Mein KUG") %] light</a>
+[% ELSE %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').login_loc.name %]?do_login=1">[% msg.maketext("Mein KUG") %]</a>
+[% END %]
+&nbsp;::&nbsp;
+[% END %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/0">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').leave_loc.name %]?"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+[%- IF username -%]
+ [[% username %]]
+[%- END -%]
+</span></b></a>
+</div>
+</div>

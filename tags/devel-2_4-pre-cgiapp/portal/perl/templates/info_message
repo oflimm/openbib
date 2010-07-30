@@ -1,0 +1,42 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_message
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Informations-Meldung
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/0" target="_blank">[% msg.maketext("Information") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Meldung") %]</th></tr>
+<tr><td class="boxedclear">
+[% info_msg %]
+</td></tr>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

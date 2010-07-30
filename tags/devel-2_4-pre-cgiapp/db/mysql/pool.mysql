@@ -1,0 +1,327 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+-------------------------------------------------
+-------------- Autorenstammdatei ----------------
+-------------------------------------------------
+
+drop table IF EXISTS aut;
+create table aut (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS aut_ft;
+create table aut_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS aut_string;
+create table aut_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT ,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content(10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+-------------------------------------------------
+------------Koerperschaftsstammdatei ------------
+-------------------------------------------------
+
+drop table IF EXISTS kor;
+create table kor (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS kor_ft;
+create table kor_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS kor_string;
+create table kor_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+-------------------------------------------------
+------------ Schlagwortstammdatei ---------------
+-------------------------------------------------
+
+drop table IF EXISTS swt;
+create table swt (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS swt_ft;
+create table swt_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS swt_string;
+create table swt_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+-------------------------------------------------
+-------------- Notationstammdatei ---------------
+-------------------------------------------------
+
+drop table IF EXISTS notation;
+create table notation (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS notation_ft;
+create table notation_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS notation_string;
+create table notation_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+-------------------------------------------------
+--------------- Titelstammdatei -----------------
+-------------------------------------------------
+
+drop table IF EXISTS tit;
+create table tit (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS tit_ft;
+create table tit_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS tit_string;
+create table tit_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+-------------------------------------------------
+-------------- Exemplarstammdatei ---------------
+-------------------------------------------------
+
+drop table IF EXISTS mex;
+create table mex (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS mex_ft;
+create table mex_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS mex_string;
+create table mex_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+-------Genereller Connector
+
+drop table IF EXISTS conn;
+create table conn (
+category   SMALLINT,
+sourceid   VARCHAR(255) NOT NULL,
+sourcetype TINYINT   NOT NULL,
+targetid   VARCHAR(255) NOT NULL,
+targettype TINYINT   NOT NULL,
+supplement TEXT,
+index      (targetid,sourcetype,targettype),
+index      (sourceid,sourcetype,targettype)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS titlistitem;
+create table titlistitem (
+id       VARCHAR(255) NOT NULL,
+listitem BLOB,
+INDEX (id)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS popularity;
+create table popularity (
+id        VARCHAR(255) NOT NULL,
+idcount   INT,
+INDEX     (id)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

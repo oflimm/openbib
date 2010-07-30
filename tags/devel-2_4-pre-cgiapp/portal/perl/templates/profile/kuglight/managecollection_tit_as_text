@@ -1,0 +1,54 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_text
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im Text-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
+[%- FOREACH record IN recordlist.get_records -%]
+[%- normset    = record.get_normdata -%]
+[%- mexnormset = record.get_mexdata -%]
+[%-
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+    thiscategory = category ;
+    IF config.get('categorymapping').$database.$category ;
+       thiscategory = "${category}-${normset.database}" ;
+    END;
+
+-%]
+[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
+[% END -%]
+[%- END -%]
+[%- IF mexnormset.size > 0 -%]
+[%- FOREACH mex IN mexnormset -%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% mex.${"X4000"}.content.full %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% mex.${"X0016"}.content %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% mex.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% mex.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% mex.${"X1204"}.content %]
+[% END %]
+[%- END -%]
+[%   IF show_bibsonomy %]
+</pre>
+<p />
+<img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/>&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+<p />
+<p />
+<pre>
+[%   END %]
+[% END %]

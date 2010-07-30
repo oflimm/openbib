@@ -1,0 +1,82 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="project"%] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/30">Kontakt</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h2>Inhaltliche Realisierung</h2>
+
+<table>
+<tr><td>
+<b>Ansprechpartner:</b><br/>
+<br/>
+Dr. Gregor Staab<br/>
+Universität zu Köln<br/>
+Institut für Altertumskunde<br/>
+Arbeitsstelle für Papyrologie, Epigraphik und Numismatik der Nordrhein-Westfälischen Akademie der Wissenschaften und der Künste<br/>
+Philosophikum<br/>
+Albertus-Magnus-Platz<br/>
+50923 Köln<br/>
+Tel. +49 221 470 3024<br/>
+E-Mail: <a href="mailto:gstaab@uni-koeln.de">gstaab@uni-koeln.de</a><br/>
+<br/>
+Mitarbeiter: stud. phil. Hermann Koop<br/>
+</td>
+</tr>
+</table>
+
+<br />
+<br />
+
+<h2>Technische Realisierung</h2>
+
+<table>
+
+<tr><td><b>Oliver Flimm</b><br />
+Programmierung<br />
+Abt.EDV<br />
+Tel:   0221/470-3330<br />
+Email:<a href="http://www.ub.uni-koeln.de/res/personen_e_mail/flimm/index_ger.html" target="_blank"> flimm@ub.uni-koeln.de</a></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td><b>Christiane Hoffrath</b><br />
+Workflow-Konzept<br />
+
+Abt. Universit&auml;tsGesamtKatalog<br />
+Tel:   0221/470-3306<br />
+Email: <a href="http://www.ub.uni-koeln.de/res/personen_e_mail/hoffrath/index_ger.html" target="_blank">hoffrath@ub.uni-koeln.de</a></td>
+</tr>
+</table>
+<br />
+<br />
+<br />
+
+
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

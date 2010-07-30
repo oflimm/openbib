@@ -1,0 +1,52 @@
+[%#-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# databasechoice
+# searchmask
+# resultlists
+# collection
+# startpage
+# rssfeeds
+# login
+# info
+# tutorial
+#
+#######################################################################
+-%]
+[%- username  = user.get_username ;
+    startpage = config.get_startpage_of_view(view);
+-%]
+<div id="mainnavigation">
+<div id="mainnavigation_left">
+<a [%- IF active_menu == "searchmask" -%]class="active_menu" [%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?action=choice">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=show">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
+</div>
+<div id="mainnavigation_right">
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showcat=1">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
+<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% IF startpage.start_loc %][% config.get("${startpage.start_loc}") %]?[% IF startpage.start_stid %];stid=[% startpage.start_stid %][% END %][% ELSE %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced[% END %]">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
+<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_rss_loc.name %]/neuzugang/[% config.get_viewdbs(view).first %].rdf" target="_blank">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
+[% IF config.get('login_active') == 1 %]
+[% IF username %]
+<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userprefs_loc.name %]?action=showfields">Meine Sammlung</a>
+[% ELSE %]
+<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').login_loc.name %]?do_login=1">Meine Sammlung</a>
+[%- END -%]
+&nbsp;::&nbsp;
+[% END %]
+<a [%- IF active_menu == "project" -%]class="active_menu"[%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/30">Kontakt</a>&nbsp;::&nbsp;
+<a [%- IF active_menu == "info" -%]class="active_menu"[%- END -%]href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/0">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').leave_loc.name %]?" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+[%- IF username -%]
+ [[% username %]]
+[%- END -%]
+</span></b></a>
+</div>
+</div>

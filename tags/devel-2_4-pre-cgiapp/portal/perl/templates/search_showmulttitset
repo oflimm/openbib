@@ -1,0 +1,159 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showmulttitset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe *mehrerer* Titel-Normdatensaetze
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Datenbank: $poolname " disable_cache_control=1 %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+[% FOREACH titset IN titsets %]
+[% normset = titset.normset %]
+[% mexnormset = titset.mexnormset %]
+[% circset = titset.circset %]
+
+<!-- Title begins here -->
+<table width="100%">
+<tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
+<tr><td class="boxedclear">
+
+<table cellpadding="2">
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+<tr><td class="category">id</td><td>[% normset.id %]</td></tr>
+
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
+[%-
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE [ "T0100" "T0101" "T0103" ];
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;verf=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsingleaut=${item.id}";
+         content   = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE [ "T0200" "T0201" ];
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;kor=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsinglekor=${item.id}";
+         content   = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T0331";
+         content   = "<b>${content}</b>";
+
+    CASE [ "T0662" "T2662" "T3001" "T3002" "T3003" ];
+         content   = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
+
+    CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;swt=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsingleswt=${item.id}";
+         content   = " <a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in
+allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T0700";
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;notation=%22${item.content}%22";
+         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchsinglenot=${item.id}";
+         content   = " <a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+
+    CASE "T5001";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
+
+    CASE "T5002";
+         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
+
+    END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').$database.$category ;
+     thiscategory = "${category}-${normset.database}" ;
+   END;
+
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
+</table>
+
+[% IF mexnormset.size > 0 %]
+<p />
+<table width="100%">
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestand") %]</td></tr>
+
+[% FOREACH mex IN mexnormset %]
+<tr align="center"><td><strong>
+[%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
+<a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>
+[%- ELSE -%]
+[% mex.${"X4000"}.content.full %]
+[%- END -%]
+</strong>
+</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
+[% END %]
+</table>
+[% END %]
+
+</td></tr>
+</table>
+
+[% IF circset.size > 0 %]
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
+<tr><td class="boxedclear">
+[% PROCESS common/subtemplate name="circset" %]
+</td></tr>
+</table>
+[% END %]
+<p />
+<!-- Title ends here -->
+
+[% END %]
+
+<p />
+
+<hr />
+
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
+
+<input type="hidden" name="num"   value="[% qopts.num %]" />
+<input type="hidden" name="db"   value="[% database %]" />
+
+<table>
+<tr><td class="category">Schlagwortindex dieses Katalogs</td><td>&nbsp;<input type="text" name="swtindex" value="" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein" />&nbsp;<input type="submit" value="Suchen" />&nbsp;</td></tr>
+</table>
+
+</form>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

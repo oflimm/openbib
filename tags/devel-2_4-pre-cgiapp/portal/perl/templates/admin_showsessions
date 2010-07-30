@@ -1,0 +1,59 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showsessions
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Bestehende Sessions anzeigen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="sessions" %] 
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showsessions=1">Aktive Sessions (lokal)</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showsessions=1;stid=1">Explorer</a></li>
+</ul>
+
+<div class="content">
+
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<input type="hidden" name="do_editsession" value="1" />
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bestehende Sessions") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table cellpadding="2">
+<tr><td><b>[% msg.maketext("Session-ID") %]</b></td><td><b>[% msg.maketext("Beginn") %]</b></td><td align="middle"><b>[% msg.maketext("Benutzer") %]</b></td><td align="middle">
+<b>[% msg.maketext("Initiale Suchen") %]</b></td></tr>
+
+[% FOREACH session IN sessions %]
+
+<tr><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_editsession=1;do_show=1;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
+
+[% END %]
+
+</table>
+</td></tr>
+</table>
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

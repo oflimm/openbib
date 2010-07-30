@@ -1,0 +1,182 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="catalogues" %] 
+
+<div class="content">
+
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+
+<input type="hidden" name="dbname"     value="[% katalog.dbname %]" />
+<input type="hidden" name="do_editcat" value="1" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Katalog bearbeiten") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Fakult&auml;t") %]</b></td><td>
+<select name="orgunit">
+[% FOREACH item IN config.get('orgunits') %]
+<option value="[% item.short %]"
+[% IF katalog.orgunit == item.short %]
+ selected
+[% END %]
+>[% item.desc %]</option>
+[% END %]
+</select>
+</td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% katalog.description %]" size="60" /></td></tr>
+<tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td><input type="text" name="shortdesc" value="[% katalog.shortdesc %]" size="60" /></td></tr>
+<tr><td><b>[% msg.maketext("System") %]</b></td><td>
+<select name="system">
+<option value="Lars" 
+[% IF katalog.system == 'Lars' %]
+selected
+[% END %]
+>Lars</option><option value="Allegro"
+[% IF katalog.system == 'Allegro' %]
+selected
+[% END %]
+>Allegro</option><option value="Bis-lok" 
+[% IF katalog.system == 'Bis-lok' %]
+selected
+[% END %]
+>Bis-lok</option><option value="Sisis"
+[% IF katalog.system == 'Sisis' %]
+selected
+[% END %]
+>Sisis</option><option value="Z39.50" 
+[% IF katalog.system == 'Z39.50' %]
+selected
+[% END %]
+>Z39.50</option></select>
+</td></tr>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% katalog.dbname %]</td></tr>
+<tr><td><b>[% msg.maketext("Sigel") %]</b></td><td><input type="text" name="sigel" value="[% katalog.sigel %]" size="3" /></td></tr>
+<tr><td><b>[% msg.maketext("URL") %]</b></td><td><input type="text" name="url" value="[% katalog.url %]" size="60" /></td></tr>
+<tr><td><b>[% msg.maketext("Bibliotheksinformationen statt URL") %]</b></td><td>
+<select name="use_libinfo">
+<option value="1" [%- IF katalog.use_libinfo == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+<option value="0" [%- IF katalog.use_libinfo == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+</td></tr>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>
+<select name="active">
+<option value="1" [%- IF katalog.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+<option value="0" [%- IF katalog.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+</td></tr>
+</table>
+<p />
+
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Import-Einstellungen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Protokoll") %]</b></td><td><select name="protocol"><option value="ftp" 
+[% IF katalog.imxconfig.protocol == 'ftp' %]
+selected
+[% END %]
+>[% msg.maketext("FTP") %]</option><option value="http" 
+[% IF katalog.imxconfig.protocol == 'http' %]
+selected
+[% END %]
+>[% msg.maketext("HTTP") %]</option><option value="lokal" 
+[% IF katalog.imxconfig.protocol == 'lokal' %]
+selected
+[% END %]
+>[% msg.maketext("Lokal") %]</option></td></tr>
+<tr><td><b>[% msg.maketext("Entfernter Rechnername") %]</b></td><td><input type="text" size="20" name="host" value="[% katalog.imxconfig.host %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entferntes Verz.") %]</b></td><td><input type="text" size="20" name="remotepath" value="[% katalog.imxconfig.remotepath %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entfernter Nutzername") %]</b></td><td><input type="text" size="20" name="remoteuser" value="[% katalog.imxconfig.remoteuser %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entferntes Passwort") %]</b></td><td><input type="password" size="20" name="remotepasswd" value="[% katalog.imxconfig.remotepasswd %]" /></td></tr>
+<tr><td><b></b></td><td></td></tr>
+
+    
+[% IF katalog.system == 'Sisis' %]
+<tr><td><b>[% msg.maketext("Tit-Datei") %]</b></td><td><input type="text" size="20" name="titfilename" value="[% katalog.imxconfig.titfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Aut-Datei") %]</b></td><td><input type="text" size="20" name="autfilename" value="[% katalog.imxconfig.autfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Kor-Datei") %]</b></td><td><input type="text" size="20" name="korfilename" value="[% katalog.imxconfig.korfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Swt-Datei") %]</b></td><td><input type="text" size="20" name="swtfilename" value="[% katalog.imxconfig.swtfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Not-Datei") %]</b></td><td><input type="text" size="20" name="notfilename" value="[% katalog.imxconfig.notfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Mex-Datei") %]</b></td><td><input type="text" size="20" name="mexfilename" value="[% katalog.imxconfig.mexfilename %]" /></td></tr>
+[% END %]
+    
+<tr><td><b>[% msg.maketext("DB-Datei") %]</b></td><td><input type="text" size="50" name="filename" value="[% katalog.imxconfig.filename %]" /></td></tr>
+
+<tr><td><b>[% msg.maketext("Autokonvertierung (cron)") %]</b></td><td><select name="autoconvert"><option value="0"
+
+[% IF katalog.imxconfig.autoconvert == '0' %]
+selected
+[% END %]
+
+>[% msg.maketext("Nein") %]</option><option value="1" 
+
+[% IF katalog.imxconfig.autoconvert == '1' %]
+selected
+[% END %]
+
+>[% msg.maketext("Ja") %]</option></td></tr>
+</table>
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</b></td><td><select name="circ"><option value="0"
+
+[% IF katalog.circconfig.circ == '0' %]
+selected
+[% END %]
+
+>[% msg.maketext("Nein") %]</option><option value="1" 
+
+[% IF katalog.circconfig.circ == '1' %]
+selected
+[% END %]
+
+>[% msg.maketext("Ja") %]</option></td></tr>
+<tr><td><b>[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</b></td><td><input type="text" size="50" name="circdb" value="[% katalog.circconfig.circdb %]" /></td></tr>
+<tr><td><b>[% msg.maketext("OLWS Zugriffs-URL") %]</b></td><td><input type="text" size="50" name="circcheckurl" value="[% katalog.circconfig.circcheckurl %]" /></td></tr>
+<tr><td><b>[% msg.maketext("WebOPAC-URL") %]</b></td><td><input type="text" size="50" name="circurl" value="[% katalog.circconfig.circurl %]" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change"
+value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]"></td></tr>
+</table>
+
+</form>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

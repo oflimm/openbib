@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_31
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/30">Redaktion</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/31">Dokumentation</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/32">Publikationen</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/33">Bibliographie</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/34">Buchpaten gesucht</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Bibliographie zur K&ouml;lner Buch- und Einbandgeschichte</h1>
+<br /><br />
+
+Das alphabetische Verzeichnis der Bibliographie zur K&ouml;lner Buch- und Einbandgeschichte finden Sie <a href="http://www.ub.uni-koeln.de/einbandsammlung/content/biblio" target="_blank">hier</a>.
+
+<p />
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

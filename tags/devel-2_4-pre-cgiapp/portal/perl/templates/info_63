@@ -1,0 +1,165 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_60
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "tutorial" %] 
+
+<div id="maincontent">
+
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[% stid %]?id=[% id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#" title="[% msg.maketext("Digitalisierte Kartenkataloge") %]"><span class="dbdescshort">[% msg.maketext("Digitalisierte Kartenkataloge") %]</span></a></li>
+</ul>
+
+<div class="content">
+
+<h1 id="philfak">Philosophische Fakult&auml;t</h1>
+
+      <table>
+        <tr><td colspan="2"><h3>&Uuml;bersicht der Alphabetischen Kataloge</h3></td></tr>
+
+<!---->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=419a">Afrikanistik</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2"
+class="naviteam">&raquo;&nbsp;Katalog des Altbestandes der Bibliothek Klassische Philologie - Alte Geschichte (bis Anschaffungsjahr 1998)
+<ul>
+<li><a
+href="http://retro-philfak.ub.uni-koeln.de/portal/opac?view=inst404card" target="_blank">Kartenkatalog
+recherchierbar nach Verfasser- und Titelworten</a></li>
+<li><a
+href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=404b" target="_blank">Kartenkatalog
+- durchbl&auml;tterbar</a></li>
+</ul>
+
+</td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=460z">Altertumskunde - Abteilung Byzantinistik und Neogräzistik</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405c">Deutsche Sprache und Literatur</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405a">Deutsche Sprache und Literatur; mittelalterliches Drama; geistl. und weltl. Spiele</a></td></tr>
+
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405b">Deutsche Sprache und Literatur; mittelalterliches Drama; Sekundärliteratur</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=411d">Englisches Seminar</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=623e">Evangelische Theologie (Wilhelm-Backhaus-Str.)</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=420a">Historisches Seminar</a></td></tr>
+	 
+
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=424e">Historisches Seminar / Arbeitskreis Nationalismusforschung</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=423f">Historisches Seminar / Abteilung für iberische und lateinamerikanische Geschichte</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=425g">Historisches Seminar / Abteilung für Osteuropäische Geschichte</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=408h">Indologie und Tamilistik</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=325k">Katholische Theologie - Bibliothek Brosseder (Klosterstr.)</a></td></tr>
+
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=311g">Katholische / Evangelische Theologie - Gemeinsame Bibliothek (Klosterstr.)</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=410i">Linguistik - Abteilung Phonetik</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=415k">Martin-Buber-Institut für Judaistik 1</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=415l">Martin-Buber-Institut für Judaistik 2</a></td></tr>
+	 
+
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430n">Musikwissenschaftliches Institut / Notenkatalog</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430s">Musikwissenschaftliches Institut / Schriftenkatalog</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430t">Musikwissenschaftliches Institut / Tonträgerkatalog</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=414o">Orientalisches Seminar</a></td></tr>
+	 
+<!--
+        -->
+
+             <tr>
+	        <td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=417p">Ostasiatisches Seminar - Sinologie (Älteres China)</a><span class="instruction">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/suchhinweis.html" target="_blank"><b>[Benutzerhinweis]</b></a></span></td>
+	     </tr>
+
+          
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=403q">Pädagogisches Seminar</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=403a">Pädagogisches Seminar Zeitschriften</a></td></tr>
+
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=413r">Portugiesisch-Brasilianisches Institut</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=412t">Romanisches Seminar</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=418u">Slavisches Institut</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=429v">Theater-, Film- und Fernsehwissenschaft</a></td></tr>
+	 
+
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=429w">Theaterwissenschaftliche Sammlung</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=426x">Ur- und Frühgeschichte</a></td></tr>
+	 
+<!--
+        -->             <tr><td colspan="2">&raquo;&nbsp;<a target="_blank" href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=431y">Völkerkunde</a></td></tr>
+	 
+<!--
+        -->
+      </table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

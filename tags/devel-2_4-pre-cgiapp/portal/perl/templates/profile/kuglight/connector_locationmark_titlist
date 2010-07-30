@@ -1,0 +1,78 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <title>USB K&ouml;ln</title>
+   <link rel="stylesheet" type="text/css" href="http://www.ub.uni-koeln.de/stylesheet_default.css" />
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#000080" vlink="#003300" alink="#FF0000">
+
+<h3>[% signaturdesc %]</h3>
+
+[%# USE dumper ; dumper.dump (itemlist) %]
+[% IF itemlist.size > 0 %]
+<table>
+<tr><td><b>Verfasser/Personen</b></td><td><b>Titel</b></td><td><b>Jahr</b></td><td><b>Signatur</b></td></tr>
+[%    FOREACH item IN itemlist %]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%#- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%#- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%- persons.push("${part.content}") -%]
+[%#- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%- persons.push("${part.content}") -%]
+[%#- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%-    order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+[%# Gesamttitel eingeziehen %]
+[%- IF item.${'T0451'}.first.content -%]
+[%- gt = item.${'T0451'}.first.content -%]
+[%- title = "${title} (${gt})" -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+<tr><td>[% IF person %][% person %][% ELSE %]Nicht vorhanden[% END %]</td><td><a href="http://kug.ub.uni-koeln.de/portal/lastverteilung?&database=[% database %]&searchsingletit=[% item.id %]" target="_blank"><b>[% IF title %][% title %][% ELSE %]Nicht vorhanden[% END %]</b></a></td><td>[% yearofpub %]</td><td><b>[% signatur %]</b></td></tr>
+[%    END %]
+</table>
+[% ELSE %]
+<h1>Es wurden keine Treffer zu dieser Grundsignatur gefunden.</h1>
+[% END %]
+
+<p>
+<b><font color="red">Achtung:</font></b>&nbsp;In dieser Datenbank existieren derzeit keine Verkn&uuml;pfungen zwischen &uuml;ber- und untergeordneten Titels&auml;tzen. Dadurch kann es vorkommen, da&szlig; bei einigen Titeln keine Verfasserinformationen ermittelt werden konnten und dann eine entsprechende Eintragung in der Liste erfolgt. Ebenso k&ouml;nnen in diesen F&auml;llen weitere Informationen fehlen. 
+ 
+<!---------------------- Inhalt Ende --------------------------------------->
+
+
+</body>
+</html>

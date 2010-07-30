@@ -1,0 +1,166 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der erweiterten Suchmaske
+#
+# Anpassungen:
+#
+# - Sprachauswahl entfernt
+# - Register-Tab hinuzgefuegt
+# - Entfernen der Suchhinweise
+# - submit-Felder aus der view-Variante fest definieren und umbenenne
+#   (Suche starten)
+# - Eingabekategorien umbenennen/loeschen und Verlinkung nach OpenDIA
+# - Entfernung der Verlinkung zur externen Recherche
+# - Entfernung der Suchoptionen und Festlegung ueber hidden-Tag
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0710" title="[% msg.maketext("Register") %]">[% msg.maketext("Register") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?[% IF viewdbs.size == 1 %]db=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<p />
+
+[% IF queries.size > 0 %]
+
+<form method="get" id="queries" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').dispatchquery_loc.name %]">
+<table width="100%">
+<tr><th>[% msg.maketext("Suchhistorie") %]</th></tr>
+<tr><td class="boxed">
+
+
+
+[% PROCESS common/subtemplate name="select_queries" %]
+
+<input type="submit" name="do_newquery" value="[% msg.maketext("Als Suchvorlage") %]" />&nbsp;&nbsp;<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
+</td></tr>
+</table>
+</form>
+[% END %]
+
+<p />
+<p />
+
+
+<p />
+<p />
+
+<table>
+<tr><th>Recherche</th></tr>
+<tr><td class="boxed" valign="top">
+
+<form method="get" id="openbib" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<input type="hidden" name="num"  value="50" />
+
+
+<input type="hidden" name="db"  value="umschlaege" />
+
+<input type="hidden" name="st"        value="1" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"      value="1" />
+[% END %]
+
+
+
+<table>
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suche starten") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]"></td></tr>
+</table>
+
+<p />
+
+<input type="hidden" name="srt"  value="yearofpub" />
+<input type="hidden" name="srto" value="up" />
+
+<input type="hidden" name="profil"    value="dbauswahl" />
+
+<table>
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
+
+[% IF showfs %]
+<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showhst %]
+<tr><td class="category">[% msg.maketext("Titel") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showverf %]
+<tr><td class="category">[% msg.maketext("Autor") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0100">[% msg.maketext("Index") %]</a></td></tr>
+[% END %]
+
+[% IF showswt %]
+<tr><td class="category">[% msg.maketext("Am Umschlag Beteiligte") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0710">[% msg.maketext("Index") %]</a></td></tr>
+[% END %]
+
+[% IF showkor %]
+<tr><td class="category">[% msg.maketext("Zusammenarbeit") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0200">[% msg.maketext("Index") %]</a></td></tr>
+[% END %]
+
+[% IF showgtquelle %]
+<tr><td class="category">[% msg.maketext("T0412") %]</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0412">[% msg.maketext("Index") %]</a></td></tr>
+[% END %]
+
+[% IF showejahr %]
+<tr><td class="category">[% msg.maketext("Jahr") %]</td><td class="category">und<input type="hidden" name="boolejahr" value="AND" /></td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val | html %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0425">[% msg.maketext("Index") %]</a></td></tr>
+[% END %]
+
+</table>
+
+<input type="hidden" name="srt"  value="yearofpub" />
+<input type="hidden" name="srto" value="up" />
+
+<input type="hidden" name="profil"    value="dbauswahl" />
+
+<p />
+<table>
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suche starten") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+</table>
+</form>
+
+</td>
+</tr>
+</table>
+
+<p />
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+</div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

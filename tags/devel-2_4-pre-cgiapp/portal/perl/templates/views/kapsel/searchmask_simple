@@ -1,0 +1,93 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchframe_simple
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der einfachen Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?db=kapselbrowsecat=T0710" title="Register">Register</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?db=kapselstid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+</ul>
+
+<div class="content">
+
+<form method="get" id="openbib" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+
+<input type="hidden" name="num"  value="50" />
+
+<input type="hidden" name="srt"  value="author" />
+<input type="hidden" name="srto" value="up" />
+
+<input type="hidden" name="st"        value="1" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"      value="1" />
+[% END %]
+
+
+<input type="hidden" name="profil"    value="dbauswahl" />
+
+<p />
+<p />
+
+<p />
+<table width="100%">
+<tr><th style="text-align: center">[% msg.maketext("Geben Sie hier bitte Ihre Suchbegriffe ein") %]</th></tr>
+<tr><td class="boxed" valign="top" align="center">
+<input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="80" maxlength="200" />
+</td></tr>
+</table>
+
+<center>
+<table class="submitbuttons">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+</center>
+<p />
+</form>
+
+[% IF queries.size > 0 %]
+
+<form method="get" id="queries" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').dispatchquery_loc.name %]">
+<table width="100%">
+<tr><th style="text-align: center">[% msg.maketext("Rufen Sie hier die Ergebnisse frührerer Recherchen auf") %]</th></tr>
+<tr><td align="center" class="boxed">
+
+
+[% PROCESS common/subtemplate name="select_queries" %]
+
+<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
+</td></tr>
+</table>
+</form>
+[% END %]
+
+
+<p />
+
+</div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,109 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_31
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/30">Redaktion</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/31">Dokumentation</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/32">Publikationen</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/33">Bibliographie</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/34">Buchpaten gesucht</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Eine Dokumentation zur Beschreibung der Einbandsammlung der Universitäts- und Stadtbibliothek Köln</h1>
+
+<h2>Die Vorgeschichte</h2>
+<p align="justify">Seit dem Ende des 19. Jahrhunderts erwachte mit der Erneuerung der Buch- und Einbandkunst das Interesse am historischen Einband. Um 1900 legte der Kölner Direktor Adolf Keysser (von 1874 bis 1915 im Bibliotheksdienst) ein Album mit Durchreibungen an, das er der Bibliothek unkommentiert und teilweise ohne den Vermerk der Signaturen überließ. Die betreffenden Einbände sonderte er damals nicht vom übrigen Bestand ab, sie stehen noch heute überwiegend im geschlossenen Magazintrakt für alte Drucke. Den »Einbandschrank«, der auf alten Katalogaufnahmen als Standort mancher Bände verzeichnet ist, dürfte Joseph Theele (in Köln 1920 bis 1927), einer der Begründer der wissenschaftlichen Einbandkunde, eingerichtet haben; seitdem sekretierten die Kölner Bibliothekare besonders wertvolle und bemerkenswerte Bände.</p>
+
+<p align="justify">Auf ihre gotischen Einzelstempel hin untersuchte der Einbandkundler Ernst Kyriss (1881&#8211;1974) von 1928 bis 1948 u. a. die Kölner Altbestände, den Zugriff auf seine umfassende Sammlung von Durchreibungen ermöglicht heute schon weitgehend die Einbanddatenbank zu Berlin. Auch der Erste Direktor der Preußischen Staatsbibliothek Paul Schwenke (1853&#8211;1921), der auf seinen Ferienreisen und immer, wenn sich eine Gelegenheit ergab, Stempel abrieb, sammelte Durchreibungen Kölner Provenienz. Seinen Nachlass bearbeitete die Einbandforscherin Ilse Schunke (1892&#8211;1979),  die sich in den 1930er Jahren mit den Kölner Rollen- und Plattenbänden des 16. Jahrhunderts beschäftigt hatte. Davon fanden einige, wahrscheinlich erst im Nachhinein, Aufnahme in die Einbandsammlung. Ilse Schunke erwähnt in ihrem Festschriftenbeitrag für Konrad Haebler, dass Joseph Theele ihr während ihrer Recherchen freundlicherweise die Einsicht in seine Dokumente gestattete. Deren Verbleib ist bis heute unbekannt. Möglicherweise fielen auch den Kölner Direktoren Rudolf Juchhoff und Severin Corsten (von 1955 bis 1959 und von 1971 bis 1985) im Zusammenhang mit ihren Arbeiten über die Kölner Drucker einige Einbände auf, die sie dann in die Sammlung integrierten. Vor allem aber hat der Abteilungsleiter der Einbandstelle Hans Blum (von 1947 bis 1982), der nebenamtlich seit 1949 als Dozent am Kölner Bibliothekarlehrinstitut Einbandkunde lehrte, die Einbandsammlung ausgebaut und bestückt. Ein Katalog der Einbände oder eine Sammlung der zu ihnen sporadisch veröffentlichten Aufsätze existierten bisher nicht.</p>
+
+<h2>Das Projekt</h2>
+
+<p align="justify">Anlässlich der passiven Konservierung einiger für eine Ausstellung vorgesehener Bände im Sommer des Jahres 2003 fiel auf, dass die meisten Bücher der Einbandsammlung unzureichend geschützt in säurehaltigen, nicht maßgerechten Schubern Aufbewahrung fanden. Mit der Aufgabe betraut, die 215 kostbaren Bücher systematisch mit objektgerechten Kassetten zu versehen, planten die Mitarbeiterinnen der Einbandstelle, die Provenienzen, Werkstätten und Fertigungsdaten der Einbände zu ermitteln und fanden &#8211; unter der Bedingung, das Tagesgeschäft dabei nicht zu vernachlässigen &#8211; die Zustimmung der Direktion.</p>
+<p align="justify">Die Bearbeiterinnen nahmen sich vor, nach abgeschlossener Arbeit für jeden Band der Einbandsammlung eine Mappe anzulegen, die seine bibliographischen Angaben, die technischen Daten, eine Notiz über den gegenwärtigen Zustand, eine Fotografie und gegebenenfalls angefertigte Durchreibungen enthalten sollte. Eine Einbandbeschreibung mit allen Quellen- und eventuell weiterführenden Literaturangaben war hinzuzufügen, außerdem sollten die kopierten Fundstellen, die Recherche ergänzend, griffbereit zur Verfügung stehen.</p>
+
+<h2>Zum Vorgang</h2>
+
+<p align="justify">Das Procedere der Einbandbestimmung einer historisch gewachsenen Kollektion war eine große Herausforderung. Hier bestand der Anspruch nicht in der Auswahl interessanter Bände zur Vorbereitung eines Ausstellungskataloges, sondern in der präzisen Dokumentation einer mehr oder weniger zufälligen Ansammlung von Einbänden aller Herren Länder und Zeiten. Einbandverzeichnisse und Richtlinien zur Terminologie wurden herangezogen. Eine kurze Einführung in die Heraldik vermittelte Herr Dr. Gunter Quarg, dessen zahlreiche Kataloge und Schriften, auch über Bucheinbände, den Bearbeiterinnen den Einstieg in die Materie boten. Als hilfsbereitem Ansprechpartner in Einbandfragen ist ihm die Abteilung zu großem Dank verpflichtet.</p>
+
+<p align="justify">Ilse Schunke empfiehlt in ihrem Vademecum den Dialog mit den Einbänden über ein manuelles und daraus entstehendes intelligentes »Begreifen«. Vermutlich fehlte den drei Bearbeiterinnen die Intuition (die Bände schwiegen sich beharrlich aus), und so suchten sie nach einer für sie geeigneteren Methode, um zu ermitteln, warum man diese Bücher, die sich meist auf den ersten Blick kaum von denen des Magazinbestandes unterschieden, als Rarität erachtet hatte. </p>
+
+<p align="justify">Um die Bände sinnvoll und möglichst zügig zuzuordnen, bedarf es in der Regel wissenschaftlichen Personals, im günstigen Fall der Kooperation mehrerer, auf einzelne Epochen und Wissenschaftsgebiete spezialisierter Fachkräfte. Die Mitarbeiterinnen der Einbandstelle, die eine entsprechende Ausbildung nicht vorweisen können, haben eine andere Form der Bearbeitung konzipiert. Die ungewöhnliche Methode findet vielleicht das Interesse derjenigen Bibliothekare, die, buchhistorisch ungeschult, wertvolle Bestände verwalten. Möglicherweise dient sie auch manchen Kolleginnen und Kollegen als Anregung, den Wissenschaftlern zuzuarbeiten. </p>
+
+<p align="justify">Die Bearbeiterinnen sammelten zunächst umfangreiches Quellenmaterial und werteten es in Hinsicht auf die Signaturen des gesamten Bestandes der Kölner USB hin aus. Die hauseigenen Ausstellungskataloge und einschlägige Dissertationen und Hausarbeiten boten sich als wertvolle Quellen an, bibliotheksspezifische Zeitschriften und Bücher, Periodika und Schrifttum zur Einband- und Buchforschung, zur Stadt-, Landes- und Kunstgeschichte, zur Bibliophilie, aber auch die Veröffentlichungen aus der Feder der Mitarbeiter des Hauses, sofern sie mit dem Themenkreis beschäftigt waren und sind, erwiesen sich als wahre Fundgruben. Nicht selten beschaffte die Fernleihe das fehlende Material. Darüber hinaus lohnte sich das systematische Durchforsten der Literatur über die Klosterbibliotheken der Region und die Kölner Sammler. Damit sollte kein Katalog für Sekundärliteratur entstehen, sondern eine Zusammenstellung von Quellen zu bemerkenswerten und seltenen Büchern der USB Köln, darunter möglichst vieler Bände der Einbandkollektion.</p>
+
+<p align="justify">Die bisher über 1800 Fundstellen stehen als wichtiges Arbeitsinstrument im Handapparat der Einbandstelle zur Verfügung; eine lange Liste der in der Literatur erwähnten, nach Signaturen geordneten Kölner Bücher verzeichnet heute 18500 Einträge. </p>
+
+<p align="justify">Konkordant entstand eine gleichermaßen sortierte Aufstellung der 215 Bände der Sammlung. Im Vergleich beider Auflistungen fanden sich bereits, noch ohne die Autopsie eines Bandes, Belege, vom einfachen Provenienznachweis bis zur vollständigen Einbandbeschreibung, zu 117 der Einbände. So ließen sich nicht nur überflüssige Recherchen für die in Zeitschriftenaufsätzen, Rezensionen und Katalogen bereits beschriebenen Bände vermeiden (die Konkordanz ergab z. B., dass Gunter Quarg bereits 48 der Einbände in seinen Katalogen <i>Vom Kettenbuch zur Collage</i> und <i>Heidelbergae nunc Coloniae</i> erfasst hatte); das umfangreiche Material ermöglichte vor allem Rückschlüsse von den bereits ermittelten auf etliche der noch unbekannten Werkstätten und Provenienzen. </p>
+
+<p align="justify">Im Dezember 2003 nahm die Fotostelle die Bände der Sammlung auf; die Fotos erlaubten einen zunächst oberflächlichen Einbandvergleich und eine provisorische chronologische Sortierung der Arbeiten, ohne die wertvollen Bücher unnötig zu strapazieren.</p>
+
+<p align="justify">Mittlerweile ist die Mehrzahl der Einbände lokalisiert und datiert; zahlreiche ihrer Werkstätten und Buchbinder ließen sich nachweisen.</p>
+
+<p align="justify">Der Ordner für die Einbanddokumentationen umfasst bisher bereits über 300 Seiten, die endgültige Formulierung einiger Ergebnisse und das Anfertigen der Mappen ist noch in Vorbereitung. Nach Signaturen sortiert bieten die fertigen Beschreibungen einen, sofern dieser nicht bereits vorlag, ausführlichen Text, d. h. mit der Möglichkeit einer Zuordnung auch ohne das vorhandene Bildmaterial. Hier schließt sich &#8211; sofern nachvollziehbar &#8211; eine Interpretation der Zusammenhänge der Einbandprovenienz mit dem Verfasser, Vorbesitzer oder Drucker an, wenigstens aber folgt eine kurze Information über die Autoren und Werke. Danach finden sich die gesammelten Quellen zum Bucheinband, zu seiner Provenienz und zur Vita der Buchbinder, Drucker und Autoren. Kurze Hinweise zu weiteren Einbänden der beschriebenen Werkstatt aus dem Bestand der USB oder Notizen und Korrekturen zu den Einzelstempeln im Vergleich mit den Angaben der Einbanddatenbank zu Berlin vervollständigen den Text. Schließlich ermöglicht eine Auflistung der abgekürzten der Fundstellen-Titel den Zugriff auf die Aufsatzsammlung. </p>
+
+<p align="justify">Zusammen mit dem Abkürzungsverzeichnis entstanden ein Autorenregister von bisher 2050 Einträgen und ein Index, der 2900 Stichwörter aufweist. Wöchentlich aktualisiert, bieten sie die Grundlage für schnelle und effektive Materialrecherchen auch zu unbekannten Einbänden.</p>
+
+<p align="justify">Ein ergänzendes Excel-Register erlaubt wahlweise den Zugriff auf die Autoren, Drucker, Vorbesitzer und Klosterprovenienzen der in der Einbandsammlung vorhandenen Bücher. Es erleichterte den Mitarbeiterinnen die statistische Erfassung der Sammlung.</p>
+
+<p align="justify">Wenn irgend möglich beschränkten sich die Bearbeiterinnen auf die Dokumentation der aus den Belegen zusammengestellten Nachweise und enthielten sich wohlweislich der forschenden Tätigkeit. Dennoch haben sie auch die in der Literatur nicht nachgewiesenen Einbände anhand der zur Verfügung stehenden Informationen aus den Quellen oder der Spuren am Buch selbst vorsichtig und »nach bestem Wissen und Gewissen« bestimmt und dementsprechend die Beschreibungen vorsorglich mit einem Fragezeichen versehen. Gelegentlich ließen nur die Besitz- und Kaufvermerke, die Makulatur, die Stempel, Marginalien, Wasserzeichen, die geschäftlichen wie freundschaftlichen Beziehungen von Autoren und Druckern oder auch ein sinnvoller Zusammenhang einiger, selten aller dieser Faktoren Rückschlüsse auf das Datum und den Ort der Herstellung zu. In manchen Fällen vermittelte auch das Studium der in der Literatur erwähnten, aber noch nicht nachgewiesenen Bände im Vergleich mit den eigenen Beständen die Einsicht in die Provenienz. Folgerichtig könnten demnach jedem externen Bearbeiter eine Abbildung und die &#8211; mit Fragezeichen gespickte &#8211; Beschreibung eines Kölner Pendants seines vorliegenden unbekannten Einbands nützlich sein und gegebenenfalls die eigenen Ermittlungen unterstützen.</p>
+
+<p align="justify">Da eine Einbandsammlung selten mehrere Einbände aus der gleichen Werkstatt bietet, sollte der endgültige Beleg der erreichten Resultate erst mit der Recherche nach adäquaten Bänden im Magazinbestand erfolgen. Es wäre schön, wenn sich dazu später eine Gelegenheit fände.</p>
+
+<h2>Der Bestand der Kölner Einbandsammlung</h2>
+
+<h3>Die Provenienzen der Einbände</h3>
+
+<p align="justify">Unter den 140 deutschen Einbänden, die 65,12% des gesamten Bestandes der Einbandkollektion ausmachen, bilden die Kölner Arbeiten mit 62 Bänden (28,84 % der Sammlung) den Schwerpunkt: Acht davon stammen aus Klosterwerkstätten, einer wurde für einen Verlag hergestellt und die restlichen  fertigten überwiegend die früheren Kölner Meister. Sie sind wegen verlorener Archivakten meist nur mit ihren Initialen oder den Notnamen, die ihnen die Einbandforscher verliehen haben, und leider selten mit vollem Namen bekannt. Zu den Kölner Bänden zählen weiterhin die künstlerischen, neuen Einbände, die in der hauseigenen Werkstatt der USB entstanden sind.</p>
+
+<p align="justify">Mit Stolz sei auf diesen Ausbildungsbetrieb hingewiesen, der zeigt, dass man auch in Köln versteht, die Tradition des Bucheinbands zu pflegen und die moderne Einbandkunst zu fördern. Einige der hier gefertigten Einbände ergänzten die Exponate einer Ausstellung, mit der die USB im Jahre 2003 die Kölner Sammler und ihre Bücherkollektionen würdigte. Fünf der Arbeiten umschließen ehemals broschierte oder reparaturbedürftige Werke privater Stifter. Das kostbare Material, die ausgefallenen Einbandentwürfe und deren meisterhafte Umsetzung bringen deutlich die Wertschätzung der Bibliothek für die ihr anvertrauten Kollektionen zum Ausdruck. Inzwischen fertigte die Hausbuchbinderei auch die Kassetten zum Schutz der wertvollen Einbände an.</p>
+
+<p align="justify">Die nächste Gruppe bilden mit 22 Bänden (10,23%) die flämischen und niederländischen Arbeiten, 8,37% der Bucheinbände sind französischer Provenienz. Der Rest des Bestandes der Sammlung (16,28%) stammt aus aller Welt, Europa, Amerika, Japan, China, und dem Nahen Osten. Die Einbände der ausländischen Werkstätten lassen die seit alters her überregionale Bedeutung der Kölner Bestände erkennen.</p>
+
+<p align="justify">Die Vorbesitzer mancher Bände ließen sich nicht ermitteln, die meisten aber hatten mehrere Eigentümer aufzuweisen: 75 der Drucke (nicht der Einbände!) kamen aus der Kölner Gymnasialbibliothek in die Einbandsammlung, 70 befanden sich nachweislich im Besitz der hiesigen Klöster. Aus der alten Kölner Stadtbibliothek stammen 68 der Schriften, die bekannteren Sammler wie Rinck, Jabach, Bäumker, von Mevissen und Wallraf steuerten 75 Titel bei. Nur sieben der Werke gehörten in die Kölner Syndikatsbibliothek; das städtische Oberbürgermeisteramt besaß laut behördlichem Stempel ein einziges Exemplar der Sammlung. Von den 77 in Köln verwahrten, bisher bekannten Bänden aus der Bibliotheca Palatina wurden 17 ihres Einbands wegen sekretiert. Es fanden sich 112 weitere Besitzeinträge, Supralibros, Exlibris und Stempel aus den Bibliotheken des Adels und dem Eigentum der Bürger und Studenten.</p>
+
+<p align="justify">Die Einbände aus Klosterbesitz umschließen die erwartungsgemäß überwiegend vertretene katholische Literatur und Werke der klassischen Autoren, vereinzelt aber auch die Schriften der Reformatoren und ihres Umkreises. Das Wissen um die Taktik des Gegners gehörte sicher zu den wirksamen Strategien im Glaubenskampf, vielleicht ist hier aber auch der Reiz des Verbotenen nicht zu unterschätzen, denn der Kölner Rat hatte den Druck und den Vertrieb des protestantischen Schrifttums streng untersagt.</p>
+
+<p align="justify">Spätestens beim Studium der Namen einiger Vorbesitzer wird offensichtlich, warum die Bibliothekare die Bände der Einbandsammlung nicht immer nach ästhetischen Kriterien auswählten. Waren die Herkunft und der Inhalt eines Buches von lokalhistorischer Brisanz, zogen sie gelegentlich das abgeriebene oder sehr schlichte Exemplar dem wohlerhaltenen aus der gleichen Werkstatt vor.</p>
+
+<h3>Die Fertigungsdaten</h3>
+
+<p align="justify">Vom spätgotischen Einzelstempel-Einband bis hin zu den in jüngster Zeit entstandenen experimentellen Arbeiten vermittelt der Bestand der Kölner Sammlung einen Einblick in die stilistische und technische Entwicklung des Bucheinbands über sieben Jahrhunderte.</p>
+
+<p align="justify">Einschließlich ihrer Beibände finden sich hier 25 Inkunabeln, die ihren Einband zum Teil erst wesentlich später erhielten. Meist zeitgenössische Arbeiten umschließen vor allem die Wiegendrucke, die von Mevissen aus dem Dublettenbestand der Stadtbibliothek Trier erworben hat. Angesichts des Umfangs und der Einbandqualität des Kölner Inkunabelbestandes ist es erstaunlich, nur 17 Einbände (7,91%) aus dem 15. Jahrhundert vorzufinden. Das Augenmerk der Bibliothekare lag eindeutig auf den Arbeiten des 16. Jahrhunderts, die fast die Hälfte (45,12%) der Sammlung ausmachen. Bis zum Jahre 1700 wurden 24 der Stücke (11,16%) gefertigt, das 18. Jahrhundert ist mit 22 (10,23%) vertreten. Einiger historistischer Einbände wegen stieg der Prozentsatz im 19. Jahrhundert mit 35 Bänden auf 16,28%. Von da an bis heute wurden nur noch 20 Einbände (9,30%) sekretiert. </p>
+
+<p align="justify">Nicht, dass der Kölner Bestand die wertvollen Bucheinbände vermissen ließe! Als im Jahre 2002 der Katalog <i>Vom Kettenbuch zur Collage</i> entstand, erwies sich, dass nur 32 der hundert beschriebenen Arbeiten in der Einbandsammlung aufbewahrt wurden. Das Problem liegt im akuten Platzmangel &#8211; der Architekt, der die Räumlichkeiten für die Aufbewahrung der Rara, d. h. der Wiegendrucke, Faksimiles und sammelnswerten Einbände plante, hat die Anzahl der Kostbarkeiten eindeutig unterschätzt. So blieb der vorhandene Platz vor allem den Inkunabeln vorbehalten. </p>
+
+<p align="justify">Bisher sind wenigstens 500 weitere Einbände bekannt, die es zu veröffentlichen lohnte. Eine Einbanddatenbank soll diesen Bestand in nächster Zeit im Internet präsentieren.</p>
+
+<p align="justify">Anlässlich des 10. Treffens des Arbeitskreises für die Erfassung und Erschließung historischer Bucheinbände möchte die USB Köln zunächst eine Auswahl der beschriebenen Bücher einem größeren Interessentenkreis vorstellen.</p>
+
+<p align="justify" style="text-size:1.1em"><i>Regine Boeff, am 21. 5. 2005</i></p>
+<p align="left" style="text-size:1.1em"><i>Aus: Schätze aus der  Einbandsammlung der Universitäts- und Stadtbibliothek Köln. Köln 2005.</i></p>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

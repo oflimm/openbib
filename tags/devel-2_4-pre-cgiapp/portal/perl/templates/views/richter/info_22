@@ -1,0 +1,162 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_22
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/20">Elise und Helene Richter</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/22">Biographien</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/21">Die Bibliothek Richter heute</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/22">Elise Richter</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/23">Helene Richter</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<table width="100%">
+<tr align="center">
+  <td><img src="/images/openbib/views/richter/Elise_Richter_aus_Wiener_Bilder_Nr_38_1907_frei.jpg" height="350" height="353" border="1"></td>
+  <td><img src="/images/openbib/views/richter/Elise.jpg" height="350" border="1"></td>
+</tr>
+<tr align="center">
+  <td><p/><span style="font-size:1.1em;text-align:center">Elise Richter
+in <i>Wiener Bilder Nr. 38, 1907</i></span></td>
+  <td><p/><span style="font-size:1.1em;text-align:center">Elise Richter in
+<i>Kern, Elga (Hg.): F&uuml;hrende Frauen Europas, M&uuml;nchen,
+1927</i> </span></td>
+</tr>
+</table>
+
+<p/>
+
+<table width="100%" border="2" bgcolor="#FFFFFF" cellpadding="6" cellspacing="2">
+  <tr>
+   <td>2. M&auml;rz 1865 </td>
+  <td>Elise Richter wird in Wien geboren.</td>
+ </tr>
+  <tr>
+  <td>1889</td>
+  <td>Tod der Mutter Emilie Richter.</td>
+ </tr>
+  <td>1890</td>
+  <td>Tod des Vaters Dr. Maximilian Richter.</td>
+ </tr>
+ <tr>
+  <td>1891</td>
+  <td>Erste Begegnung mit Adolf Mussafia.</td>
+ </tr>
+ <tr>
+  <td>1892</td>
+  <td>Umzug in die Florianigasse 1 hinter dem Wiener Rathaus.</td>
+ </tr>
+ <tr>
+  <td>Winter 1895</td>
+  <td>Umzug ins selbst entworfene Haus im W&auml;hringer-D&ouml;bliner-Cottage-Viertel, Weimarer Stra&szlig;e 83.</td>
+ </tr>
+  <tr>
+  <td>15. Juli 1897</td>
+  <td>Matura  als "Externe" am Akademischen Gymnasium Wien.</td>
+ </tr>
+ <tr>
+  <td>7. Oktober 1897</td>
+  <td>Immatrikulation an der Philosophischen Fakult&auml;t der Universit&auml;t Wien.</td>
+ </tr>
+ <tr>
+  <td>1901</td>
+  <td>Promotion.</td>
+ </tr>
+ <tr>
+  <td>1903</td>
+  <td>Die Dissertation erscheint bei Niemeyer in Halle.</td>
+ </tr>
+ <tr>
+  <td>1904</td>
+  <td>Habilitation.</td>
+ </tr>
+ <tr>
+  <td>1907</td>
+  <td>Venia legendi. Es dauerte &uuml;ber zwei Jahre bis Elise Richter die Lehrerlaubnis erhielt.
+  Am 23. Oktober hielt sie ihre erste Vorlesung.</td>
+ </tr>
+ <tr>
+  <td>1921</td>
+  <td>Nach 14 Jahren (!) Ernennung zum Au&szlig;erordentlichen Professor. </td>
+ </tr>
+ <tr>
+  <td>1922</td>
+  <td>Elise Richter gr&uuml;ndet den "Verband der akademischen Frauen  &Ouml;sterreichs".</td>
+ </tr>
+ <tr>
+  <td>1927</td>
+  <td>Erteilung eines Lehrauftrags f&uuml;r Sprachwissenschaften und Phonetik an der Universit&auml;t Wien.</td>
+ </tr>
+ <tr>
+  <td>2. M&auml;rz 1935</td>
+  <td>Feierstunde in der Universit&auml;t Wien anl&auml;sslich Elise Richters 70. Geburtstag.</td>
+ </tr>
+ <tr>
+  <td>10. M&auml;rz 1938</td>
+  <td>Letzte Vorlesung. Sie endete mit den Worten: <i>"Beim n&auml;chsten Mal mehr davon"</i>.
+</td>
+ </tr>
+ <tr>
+  <td>15. M&auml;rz 1938</td>
+  <td>Entzug der Lehrerlaubnis. Es folgt das Bibliotheksverbot.</td>
+ </tr>
+ <tr>
+  <td>1940</td>
+  <td>Niederschrift der "Summe des Lebens".</td>
+ </tr>
+ <tr>
+  <td>24. August 1941</td>
+  <td>Elise Richter wendet sich bez&uuml;glich des Verkaufs der gemeinsamen Bibliothek nach K&ouml;ln.</td>
+ </tr>
+ <tr>
+  <td>21. Oktober 1941</td>
+  <td>Kaufvertrag zwischen Elise Richter und der Universit&auml;ts- und Stadtbibliothek K&ouml;ln
+  f&uuml;r die romanistischen B&uuml;cher. Sp&auml;ter folgt die Vereinbarung &uuml;ber den Verkauf der anglistischen B&uuml;cher.</td>
+ </tr>
+ <tr>
+  <td>10. M&auml;rz 1942</td>
+  <td>Elise und Helene Richter m&uuml;ssen ins J&uuml;dische Altersheim umziehen.</td>
+ </tr>
+ <tr>
+  <td>9. Oktober 1942</td>
+  <td>Deportation nach Theresienstadt.</td>
+ </tr>
+ <tr>
+  <td>21. Juni 1943</td>
+  <td>Elise Richter stirbt mit 78 Jahren in Theresienstadt.</td>
+ </tr>
+ </table>
+
+</div>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

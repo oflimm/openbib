@@ -1,0 +1,74 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showviews
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Views
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Views anzeigen' %]
+
+  <body bgcolor="#FFFFFF">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="views" %] 
+
+<div class="content">
+
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<input type="hidden" name="do_editview" value="1" />
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuen View anlegen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="viewname" /></td><td><input type="text" name="description" size="20" />
+</td>
+<td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview %]<option value="[% profile.profilename %]" [% IF view.profilename == profile.profilename %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td>
+<td><select name=active><option value="1">[% msg.maketext("Ja") %]</option><option value="0" selected>[% msg.maketext("Nein") %]</option></select></td><td><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[% IF views.size > 0 %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende Views") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+[% msg.maketext("Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen.") %]
+<p />
+
+<table>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Profil") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
+
+[% FOREACH view IN views %]
+
+<tr><td>[% view.viewname %]</td><td align="center"><a href="http://[%
+config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?&do_editview_rss=1&viewname=[% view.viewname %];do_edit=1"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?&do_editview=1&viewname=[% view.viewname %]&do_edit=1">[% view.description %]</a></td><td>[% view.profile %]</td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
+[% END %]
+
+</table>
+
+[% END %]
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

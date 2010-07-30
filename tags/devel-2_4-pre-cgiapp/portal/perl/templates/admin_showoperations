@@ -1,0 +1,75 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showoperations
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der aktuellen Einstellungen des Betriebs
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Kataloge anzeigen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="operations" %] 
+
+<div class="content">
+
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<input type="hidden" name="do_editserver" value="1" />
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuen Rechner zur Lastverteilung hinzuf&uuml;gen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Rechnername") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="host" /></td><td><select name="active"><option value="1">[%
+msg.maketext("Ja") %]</option><option value="0"
+selected>[% msg.maketext("Nein") %]</option></select></td><td><div class="cssbutton glass kug"><input
+type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[%# USE dumper;dumper.dump(loadbalancertargets)%]
+[% IF loadbalancertargets.size > 0 %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende Rechner zur Lastverteilung") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
+[% FOREACH loadbalancertarget IN loadbalancertargets %]
+<tr
+[% IF loadbalancertarget.active == 1%]
+ bgcolor="aliceblue"
+[% END %]
+><td>[% loadbalancertarget.host %]</td>
+<td align="center">[%- IF loadbalancertarget.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td>[% IF loadbalancertarget.active == 0 %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_editserver=1;hostid=[% loadbalancertarget.id %];active=1;do_change=1" class="cssbutton glass kug"><span>[% msg.maketext("An") %]</span></a>[% ELSE %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_editserver=1;hostid=[% loadbalancertarget.id %];active=0;do_change=1" class="cssbutton glass kug"><span>[% msg.maketext("Aus") %]</span></a>[% END %]</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_editserver=1;hostid=[% loadbalancertarget.id %];do_del=1" class="cssbutton glass kug"><span>[% msg.maketext("L&ouml;schen") %]</span></a></td></tr>
+[% END %]
+
+</table>
+
+[% END %]
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

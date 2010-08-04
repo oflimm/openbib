@@ -1,0 +1,100 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+<table cellpadding="10">
+
+<tr>
+
+<td style="vertical-align:top;padding:40px;"> <center> <a class="invisible cloud-zoom" rel="zoomWidth:400, zoomHeight:400, position:'right'" href="/images/openbib/views/wikisource/Narrenschiff_1499.jpg"><img src="/images/openbib/views/wikisource/Narrenschiff.jpg"
+alt="Doctor Brants Narrenschiff" /></a><br /><br /><i
+style="font-size:0.8em">Doctor Brants Narrenschiff 1499<br/></center>
+</td>
+
+<td valign="top" style="padding-top:25px;">
+
+<h1>Willkommen bei Wikisource, der freien Quellensammlung</h1>
+
+<p>In <a class="ext"
+href="http://de.wikisource.org/" target="_blank">Wikisource</a> werden gemeinfreie
+Texte und solche, die unter einer Freien Lizenz stehen, in einem
+Online-Portal gesammelt und gemeinschaftlich ausgehend von ihren
+Original-Scans transkribiert.  </p>
+
+<p> Anders als in anderen Projekten, wie z.B. dem internationalen
+Projekt Gutenberg, die ebenfalls gemeinfreie Texte bereitstellen,
+stehen dem Nutzer bei Wikisource jedoch parallel - Scan und Text - zur
+Verfügung. Dem Scan als Quelle (=source) kommt bei Wikisource also eine ganz
+besondere Bedeutung zu.</p>
+
+<p>Dieser Schatz an Digitalisaten und Texten wurde an der
+Universit&auml;ts- und Stadtbibliothek K&ouml;ln in einen lokalen
+Katalog &uuml;berf&uuml;hrt und so f&uuml;r alle Nutzer - innerhalb
+und ausserhalb der Universit&auml;t zu K&ouml;ln - in einem modernen
+Recherche-Portal erschlossen. In der deutschen Wikisource
+verf&uuml;gen die Texte insbesondere &uuml;ber hochwertige
+bibliographische Daten, die sich gut weiter verarbeiten lassen. Daher
+beschr&auml;nkt sich die Wikisource-Recherche in diesem Portal derzeit
+auf die deutschen Wikisource-Texte.</p>
+
+<p> In den recherchierbaren bibliographischen Daten der Texte befinden
+sich immer auch Verweise zu den Original-Texten und -Scans in
+Wikisource und Wikimedia Commons. Zus&auml;tzlich k&ouml;nnen viele
+Digitalisaten direkt &uuml;ber den DFG-Viewer - einem web-basierten
+Standard-Anzeigeprogramm f&uuml;r Digitalisate - gelesen werden. Diese
+sind an folgendem Icon zu erkennen, &uuml;ber das Sie per Klick direkt
+den DFG-Viewer mit dem betreffenden Dokument aufrufen:<br/><br/>
+
+<img
+src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif"
+alt="Logo DFG-Viewer" />
+
+</p>
+
+<!-- <h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

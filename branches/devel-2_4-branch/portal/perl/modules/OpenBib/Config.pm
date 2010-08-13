@@ -524,7 +524,7 @@ sub get_rssfeedinfo  {
         push @sql_args,  $view;
     }
     
-    my $sqlrequest = $sql_select.' from '.join(',',@sql_from).' where '.join(' and ',@sql_where).' order by orgunit ASC, description ASC';
+    my $sqlrequest = $sql_select.' from '.join(',',@sql_from).' where '.join(' and ',@sql_where).' order by description ASC';
     
     $logger->debug("SQL-Request: $sqlrequest");
     

@@ -37,6 +37,7 @@ use utf8;
 use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::Request ();
+use Apache2::RequestRec ();
 use Apache2::URI ();
 use APR::URI ();
 use Log::Log4perl qw(get_logger :levels);
@@ -44,120 +45,110 @@ use YAML;
 
 use OpenBib::Config;
 
-use OpenBib::Handler::Apache::Admin;
-use OpenBib::Handler::Apache::BibSonomy;
-use OpenBib::Handler::Apache::DBIS;
-use OpenBib::Handler::Apache::EZB;
-use OpenBib::Handler::Apache::Circulation;
-use OpenBib::Handler::Apache::Search;
-use OpenBib::Handler::Apache::VirtualSearch;
-use OpenBib::Handler::Apache::ResultLists;
-use OpenBib::Handler::Apache::StartOpac;
-use OpenBib::Handler::Apache::SearchMask;
-use OpenBib::Handler::Apache::Info;
-use OpenBib::Handler::Apache::ExternalJump;
-use OpenBib::Handler::Apache::DispatchQuery;
-use OpenBib::Handler::Apache::DatabaseChoice;
-use OpenBib::Handler::Apache::Login;
-use OpenBib::Handler::Apache::LoadBalancer;
-use OpenBib::Handler::Apache::Leave;
-use OpenBib::Handler::Apache::ManageCollection;
-use OpenBib::Handler::Apache::MailCollection;
-use OpenBib::Handler::Apache::MailPassword;
-use OpenBib::Handler::Apache::DatabaseProfile;
-use OpenBib::Handler::Apache::SelfReg;
-use OpenBib::Handler::Apache::UserPrefs;
-use OpenBib::Handler::Apache::ServerLoad;
-use OpenBib::Handler::Apache::Connector::Availability;
-use OpenBib::Handler::Apache::Connector::AvailabilityImage;
-use OpenBib::Handler::Apache::Connector::DigiBib;
-use OpenBib::Handler::Apache::Connector::LiveSearch;
-use OpenBib::Handler::Apache::Connector::LocationMark;
-use OpenBib::Handler::Apache::Connector::OLWS;
-use OpenBib::Handler::Apache::Connector::PermaLink;
-use OpenBib::Handler::Apache::Connector::RSS;
-use OpenBib::Handler::Apache::Connector::SeeAlso;
-use OpenBib::Handler::Apache::Connector::SimilarPersons;
-use OpenBib::Handler::Apache::Connector::SimilarSubjects;
-use OpenBib::Handler::Apache::Connector::SpellCheck;
-use OpenBib::Handler::Apache::Connector::UnAPI;
-use OpenBib::Handler::Apache::LitLists;
-use OpenBib::Handler::Apache::Resource::Title;
-use OpenBib::Handler::Apache::Resource::Person;
-use OpenBib::Handler::Apache::Resource::CorporateBody;
-use OpenBib::Handler::Apache::Resource::Subject;
-use OpenBib::Handler::Apache::Resource::Classification;
-use OpenBib::Handler::Apache::Resource::Library;
-use OpenBib::Handler::Apache::Resource::Tag;
-use OpenBib::Handler::Apache::Resource::Litlist;
-use OpenBib::Handler::Apache::RSSFeeds;
-use OpenBib::Handler::Apache::Redirect;
-use OpenBib::Handler::Apache::Tags;
-use OpenBib::Handler::Apache::UserReviews;
+use base 'CGI::Application::Dispatch';
 
-sub handler {
-    my $r=shift;
+# sub cgiapp_init() {       # overrides
+#   my $self = shift;
+#   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
+# }
 
-    # Log4perl logger erzeugen
+sub handler : method {
+    my ($self, $r) = @_;
+
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    # set the PATH_INFO
+    $ENV{PATH_INFO} = $r->uri(); # was $r->path_info();
 
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
-
-
-    # Initialisierung von OpenBib
-
-    my $dispatch_ref = {};
-
-    foreach my $loc (grep /\_loc$/, keys %{$config->{handler}}){
-        $dispatch_ref->{$config->{handler}{$loc}{name}}{$config->{handler}{$loc}{realm}}=$config->{handler}{$loc}{module};
+    # setup our args to dispatch()
+    my %args;
+    my $config_args = $r->dir_config();
+    foreach my $var qw(DEFAULT PREFIX ERROR_DOCUMENT) {
+        my $dir_var = "CGIAPP_DISPATCH_$var";
+        $args{lc($var)} = $config_args->{$dir_var}
+          if($config_args->{$dir_var});
     }
 
-#    $logger->debug(YAML::Dump($dispatch_ref));
+    # add $r to the args_to_new's PARAMS
+    $args{args_to_new}->{PARAMS}->{r} = $r;
 
-    # Basisipfad entfernen
-    my $basepath = $config->{base_loc};
-    $path=~s/$basepath//;
-
-    my ($view,$location)=(undef,undef);
-
-    # View-spezifische URI's
-    if ($path=~m/^\/([^\/]+)\/(connector\/[^\/]+)/){
-        ($view,$location)=($1,$2);
-    }
-    elsif ($path=~m/^\/([^\/]+)\/(resource\/[^\/]+)/){
-        ($view,$location)=($1,$2);
-    }
-    elsif ($path=~m/^\/([^\/]+)\/([^\/]+)/){
-        ($view,$location)=($1,$2);
+    # set debug if we need to
+    $DEBUG = 1 if($config_args->{CGIAPP_DISPATCH_DEBUG});
+    if($DEBUG) {
+        require Data::Dumper;
+        warn "[Dispatch] Calling dispatch() with the following arguments: "
+          . Data::Dumper::Dumper(\%args) . "\n";
     }
 
-    return Apache2::Const::OK unless ($view && $location);
+    $self->dispatch(%args);
 
-    $logger->debug("Got view $view and location $location");
-
-    my $dispatch_target = "";
-    
-    if ($view eq "common" && exists $dispatch_ref->{$location}{common}){
-        $dispatch_target = $dispatch_ref->{$location}{common};
+    if($r->status == 404) {
+        return Apache2::Const::NOT_FOUND;
+    } elsif($r->status == 500) {
+        return Apache2::Const::SERVER_ERROR;
+    } elsif($r->status == 400) {
+        return Apache2::Const::HTTP_BAD_REQUEST;
+    } else {
+        return Apache2::Const::OK;
     }
-    elsif (exists $dispatch_ref->{$location}{view}){
-        $dispatch_target = $dispatch_ref->{$location}{view};
-    }
-
-    if ($dispatch_target){
-        $logger->debug("Dispatch to $dispatch_target");
-        
-        $r->handler('modperl');
-        $r->set_handlers(PerlResponseHandler => $dispatch_target);
-
-        $r->subprocess_env('openbib_view' => $view);
-
-    }
-    
-    return Apache2::Const::OK;
 }
+
+
+sub dispatch_args {
+
+#     my $config  = OpenBib::Config->instance;
+
+#     my $logger=get_logger();
+
+#     my $table_ref = [];
+
+#     foreach my $loc (grep /\_loc$/, keys %{$config->{handler}}){
+#         my $rule    = $config->{handler}{$loc}{rule};
+#         my $module  = $config->{handler}{$loc}{module};
+#         my $runmode = $config->{handler}{$loc}{runmode};
+
+#         $logger->debug("CGI Dispatching");
+        
+#         push @{$table_ref}, {
+#             "$rule" => {
+#                 'app' => "$module",
+#                 'rm'  => "$runmode",
+#             }
+#         };
+#     }
+
+    my $table_ref = [
+        '/portal/:view/searchmask/:type?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::SearchMask',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/home'
+            => {
+                'app' => 'OpenBib::Handler::Apache::StartOpac',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/logout'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Leave',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/info/:stid/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Info',
+                'rm'  => 'show',
+            }
+
+    ];
+    
+    return {
+        debug => 1,
+        table => $table_ref,
+    };
+}
+
 
 1;

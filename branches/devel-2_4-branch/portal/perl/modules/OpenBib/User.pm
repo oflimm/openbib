@@ -67,6 +67,7 @@ sub new {
             $self->{ID} = $userid ;
             $logger->debug("Got UserID $userid for session $sessionID");
         }
+
     }
     elsif (defined $id) {
         $self->{ID} = $id ;
@@ -384,6 +385,8 @@ sub get_userid_of_session {
         $userid = decode_utf8($res->{'userid'});
     }
 
+    $logger->debug("Got UserID $userid for Global SessionID $globalsessionID");
+    
     return $userid;
 }
 

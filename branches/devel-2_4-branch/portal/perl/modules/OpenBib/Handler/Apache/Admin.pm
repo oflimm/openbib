@@ -58,12 +58,31 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-sub handler {
+use base 'OpenBib::Handler::Apache';
 
-    my $r=shift;
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config = OpenBib::Config->instance;
 
@@ -83,8 +102,6 @@ sub handler {
     my $adminuser   = $config->{adminuser};
     my $adminpasswd = $config->{adminpasswd};
 
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
-    
     # Main-Actions
     my $do_login                   = $query->param('do_login')        || '';
     my $do_loginmask               = $query->param('do_loginmask')    || '';

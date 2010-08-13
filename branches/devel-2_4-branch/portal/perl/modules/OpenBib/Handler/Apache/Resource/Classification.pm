@@ -34,94 +34,46 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request;
-use Benchmark ':hireswallclock';
-use Encode qw(decode_utf8);
-use DBI;
-use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
-use POSIX;
-use Template;
 
-use OpenBib::Search::Util;
-use OpenBib::Common::Util;
-use OpenBib::Config;
-use OpenBib::Config::CirculationInfoTable;
-use OpenBib::Config::DatabaseInfoTable;
-use OpenBib::L10N;
-use OpenBib::QueryOptions;
 use OpenBib::Record::Classification;
-use OpenBib::Session;
-use OpenBib::User;
 
-sub handler {
-    my $r=shift;
+use base 'CGI::Application';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show' => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
+    my $r    = $self->param('r');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
-    
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
-
-    # Basisipfad entfernen
-    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name};
-    $path=~s/$basepath//;
-    
-    $logger->debug("Path: $path without basepath $basepath");
-
-    # Service-Parameter aus URI bestimmen
-    my $id;
-    my $database;
-    my $representation;
-
-    my @valid_representations = (
-        'html',
-        'bibtex',
-        'json',
-    );
-
-    my $valid_representations_regexp = join("\|",@valid_representations);
-    
-    if ($path=~m/^\/([^\/]+?)\/([^\/]+?)\/($valid_representations_regexp)$/){
-        $database = $1;
-        $id       = $2;
-        $representation = $3;
-    }
-    elsif ($path=~m/^\/([^\/]+)\/([^\/]+)/){
-        $database = $1;
-        $id       = $2;
-        $representation = '';
-    }
-    else {
-        return Apache2::Const::OK;        
-    }
-
-
-    $logger->debug("Type: classification - Database: $database - Key: $id - Representation: $representation");
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $id             = $self->param('id');
+    my $representation = $self->param('representation');
 
     if ($database && $id ){ # Valide Informationen etc.
-        $logger->debug("Path: $path - Key: $id - DB: $database - ID: $id");
-
-        #####################################################################
-        # Verbindung zur SQL-Datenbank herstellen
-        
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
+        $logger->debug("Key: $id - DB: $database - ID: $id");
 
         OpenBib::Record::Classification->new({database => $database, id => $id})
-              ->load_full_record({dbh => $dbh})->print_to_handler({
+              ->load_full_record->print_to_handler({
                   apachereq          => $r,
                   representation     => $representation
               });
-        
-        $dbh->disconnect;
     }
 
     return Apache2::Const::OK;

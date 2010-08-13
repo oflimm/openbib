@@ -58,11 +58,31 @@ use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::User;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config = OpenBib::Config->instance;
     
@@ -99,8 +119,6 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return Apache2::Const::OK;
     }
-
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
@@ -141,67 +159,53 @@ sub handler {
         return Apache2::Const::OK;
     }
     
-    # BEGIN Weitere Treffer holen und cachen
-    #
-    ####################################################################
-
-    if ($action eq "choice"){
-        my @queryids     = ();
-        my @querystrings = ();
-        my @queryhits    = ();
-        
-        my @queries      = $session->get_all_searchqueries({
-            offset => '0',
-        });
-        
-        # Finde den aktuellen Query
-        my $thisquery_ref={};
-        
-        # Wenn keine Queryid angegeben wurde, dann nehme den ersten Eintrag,
-        # da dieser der aktuellste ist
-        if ($queryid eq "") {
-            $thisquery_ref=$queries[0];
-        }
-        # ansonsten nehmen den ausgewaehlten
-        else {
-            foreach my $query_ref (@queries) {
-                if (@{$query_ref}{id} eq "$queryid") {
-                    $thisquery_ref=$query_ref;
-                }
+    my @queryids     = ();
+    my @querystrings = ();
+    my @queryhits    = ();
+    
+    my @queries      = $session->get_all_searchqueries({
+        offset => '0',
+    });
+    
+    # Finde den aktuellen Query
+    my $thisquery_ref={};
+    
+    # Wenn keine Queryid angegeben wurde, dann nehme den ersten Eintrag,
+    # da dieser der aktuellste ist
+    if ($queryid eq "") {
+        $thisquery_ref=$queries[0];
+    }
+    # ansonsten nehmen den ausgewaehlten
+    else {
+        foreach my $query_ref (@queries) {
+            if (@{$query_ref}{id} eq "$queryid") {
+                $thisquery_ref=$query_ref;
             }
         }
-
-        my ($resultdbs_ref,$hitcount)=$session->get_db_histogram_of_query(@{$thisquery_ref}{id}) ;
-        
-        # TT-Data erzeugen
-        my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            sessionID  => $session->{ID},
-            
-            
-            thisquery  => $thisquery_ref,
-            queryid    => $queryid,
-            
-            qopts      => $queryoptions->get_options,
-            hitcount   => $hitcount,
-            resultdbs  => $resultdbs_ref,
-            queries    => \@queries,
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
-        };
-        OpenBib::Common::Util::print_page($config->{tt_resultlists_choice_tname},$ttdata,$r);
-        
-        return Apache2::Const::OK;
     }
-
-    ####################################################################
-    # ENDE Trefferliste
-    #
-
-    OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
-
+    
+    my ($resultdbs_ref,$hitcount)=$session->get_db_histogram_of_query(@{$thisquery_ref}{id}) ;
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        view       => $view,
+        stylesheet => $stylesheet,
+        sessionID  => $session->{ID},
+        
+        
+        thisquery  => $thisquery_ref,
+        queryid    => $queryid,
+        
+        qopts      => $queryoptions->get_options,
+        hitcount   => $hitcount,
+        resultdbs  => $resultdbs_ref,
+        queries    => \@queries,
+        config     => $config,
+        user       => $user,
+        msg        => $msg,
+    };
+    OpenBib::Common::Util::print_page($config->{tt_resultlists_choice_tname},$ttdata,$r);
+    
     return Apache2::Const::OK;
 }
 

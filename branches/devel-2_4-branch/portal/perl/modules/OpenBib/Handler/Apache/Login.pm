@@ -55,11 +55,31 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config = OpenBib::Config->instance;
     
@@ -96,15 +116,13 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
-
     my $return_url = $session->get_returnurl();
 
     # Wenn die Session schon authentifiziert ist, dann wird
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/[% user.ID %]/preference");
 
         return Apache2::Const::OK;
     }

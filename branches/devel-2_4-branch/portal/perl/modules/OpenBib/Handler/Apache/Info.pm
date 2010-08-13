@@ -40,6 +40,7 @@ use Apache2::RequestRec ();
 use Apache2::Request ();
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Template;
 
@@ -53,11 +54,33 @@ use OpenBib::Statistics;
 use OpenBib::User;
 use OpenBib::Template::Utilities;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $stid           = $self->param('stid')           || '';
+    my $view           = $self->param('view')           || '';
+    my $representation = $self->param('representation') || 'html';
 
     my $config      = OpenBib::Config->instance;
     my $statistics  = new OpenBib::Statistics();
@@ -74,31 +97,21 @@ sub handler {
   
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
-
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
+    my $is_valid_representation = {
+        'html'   => 1,
+        'bibtex' => 1,
+        'json'   => 1,
+    };
     
-    # Basisipfad entfernen
-    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{info_loc}{name};
-    $path=~s/$basepath//;
-
-    $logger->debug("Path: $path without basepath $basepath");
-    
-    # Service-Parameter aus URI bestimmen
-    my $stid = 0;
-    
-    if ($path=~m/^\/([^\/]+)/){
-        $stid     = $1;
-    }
-    else {
+    unless ($is_valid_representation->{$representation}){
         return Apache2::Const::OK;
     }
 
+    
     # Sub-Template ID
-    my $database = $query->param('db')       || '';
-    my $id       = $query->param('id')       || '';
-    my $format   = $query->param('format')   || '';
+    my $database = $self->param('db')       || '';
+    my $id       = $self->param('id')       || '';
+    my $format   = $self->param('format')   || '';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
@@ -115,6 +128,7 @@ sub handler {
 
     # TT-Data erzeugen
     my $ttdata={
+        representation=> $representation,
         format        => $format,
         stid          => $stid,
         database      => $database,
@@ -132,6 +146,10 @@ sub handler {
         utils         => $utils,
         user          => $user,
         msg           => $msg,
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
     };
 
     $stid=~s/[^0-9]//g;

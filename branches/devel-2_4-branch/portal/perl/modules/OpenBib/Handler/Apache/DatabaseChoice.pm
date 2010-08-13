@@ -49,11 +49,31 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
-  
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
+
     # Log4perl logger erzeugen
-    my $logger  = get_logger();
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config  = OpenBib::Config->instance;
     
@@ -95,8 +115,6 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return Apache2::Const::OK;
     }
-
-    my $view    = $r->subprocess_env('openbib_view') || $config->{defaultview};
 
     my $profile = $config->get_viewinfo($view)->{profilename};
 

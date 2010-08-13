@@ -57,11 +57,32 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
+    my $type           = $self->param('type')           || 'simple';
 
     my $session = OpenBib::Session->instance({ apreq => $r });    
 
@@ -78,36 +99,16 @@ sub handler {
   
     my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
-
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
-    
-    # Basisipfad entfernen
-    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{searchmask_loc}{name};
-    $path=~s/$basepath//;
-
-    $logger->debug("Path: $path without basepath $basepath");
-    
-    # Service-Parameter aus URI bestimmen
-    my $type = '';
-
-    if ($path=~m/^\/recent/){
+    if ($type eq "recent"){
         $type = $session->get_mask();
     }    
-    elsif ($path=~m/^\/([^\/]+)/){
-        $type     = $1;
-        $session->set_mask($type);
-    }
     else {
-        return Apache2::Const::OK;
+        $session->set_mask($type);
     }
 
     $logger->debug("Got Type: $type");
     
     my @databases  = ($query->param('db'))?$query->param('db'):();
-    my $singleidn = $query->param('singleidn') || '';
-    my $action    = ($query->param('action'))?$query->param('action'):'';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 

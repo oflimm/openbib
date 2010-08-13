@@ -95,14 +95,10 @@ sub print_warning {
 
     my $query=Apache2::Request->new($r);
 
-    my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
-
-    my $session = OpenBib::Session->instance({
-        sessionID => $sessionID,
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
     
-    my $view    = $session->get_viewname();
-
+    my $view = $r->subprocess_env('openbib_view') || $config->{defaultview};
+    
     my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
 
     my $sysprofile= $config->get_viewinfo($view)->{profilename};

@@ -70,7 +70,6 @@ sub new {
     $self->{servername} = $config->{servername};
 
     # Setzen der Defaults
-
     if ($r){
         my $cookiejar = Apache2::Cookie::Jar->new($r);
         $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
@@ -105,6 +104,7 @@ sub new {
                                           -name    => "sessionID",
                                           -value   => $self->{ID},
                                           -expires => '+24h',
+                                          -path    => '/',
                                       );
         
         $r->err_headers_out->set('Set-Cookie', $cookie);
@@ -172,6 +172,7 @@ sub _new_instance {
                                           -name    => "sessionID",
                                           -value   => $self->{ID},
                                           -expires => '+24h',
+                                          -path    => '/',
                                       );
         
         $r->err_headers_out->set('Set-Cookie', $cookie);

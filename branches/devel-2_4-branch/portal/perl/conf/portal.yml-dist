@@ -58,6 +58,13 @@ statisticsdbname: statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
+# Einstellungen fuer Memcached
+
+memcached:
+  servers:
+     - '127.0.0.1:11211'
+  compress_threshold: 10000
+
 # Standard-Recherche-Backend (derzeit nur xapian)
 local_search_backend: xapian
 
@@ -134,214 +141,319 @@ handler:
      name: admin
      realm: common
      module: 'OpenBib::Handler::Apache::Admin'
+     rule: '/portal/:view/admin'
+     runmode: 'show'
   bibsonomy_loc:
      name: bibsonomy
      realm: view
      module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy'
   circulation_loc:
      name: benutzerkonto
      realm: view
      module: 'OpenBib::Handler::Apache::Circulation'
+     rule: '/portal/:view/circulation'
+     runmode: 'show'
   connector_availabilityimage_loc: 
      name: connector/availabilityimage
      realm: common
      module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
+     rule: '/portal/:view/connector/availabilityimage/:rm/:id/:representation?'
+     runmode: 'gbs'
   connector_availability_loc:
      name: connector/availability
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::Availability'
+     rule: '/portal/:view/availability'
+     runmode: 'show'
   connector_bibmanager_loc:
      name: connector/literaturverwaltung
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+     rule: '/portal/:view/connector/literaturverwaltung'
+     runmode: 'show'
   connector_digibib_loc:
      name:  connector/digibib
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+     rule: '/portal/:view/connector/digibib'
+     runmode: 'show'
   connector_livesearch_loc:
      name: connector/livesearch
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
+     rule: '/portal/:view/connector/livesearch'
+     runmode: 'show'
   connector_locationmark_loc:
      name: connector/sykasignatur
      realm: view
      module: 'OpenBib::Handler::Apache::Connector:LocationMark'
+     rule: '/portal/:view/connector/locationmark'
+     runmode: 'show'
   connector_olws_loc:
      name: connector/olws
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::OLWS'
+     rule: '/portal/:view/connector/olws'
+     runmode: 'show'
   connector_permalink_loc:
      name: connector/permalink
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::PermaLink'
+     rule: '/portal/:view/connector/permalink'
+     runmode: 'show'
   connector_rss_loc:
      name: connector/rss
      realm: common
      module: 'OpenBib::Handler::Apache::Connector::RSS'
+     rule: '/portal/:view/connector/rss'
+     runmode: 'show'
   connector_seealso_loc:
      name: connector/seealso
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::SeeAlso'
+     rule: '/portal/:view/connector/seealso'
+     runmode: 'show'
   connector_similarpersons_loc:
      name: connector/similarpersons
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
+     rule: '/portal/:view/connector/similarpersons'
+     runmode: 'show'
   connector_similarsubjects_loc:
      name: connector/similarsubjects
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
+     rule: '/portal/:view/connector/similarsubjects'
+     runmode: 'show'
   connector_spellcheck_loc:
      name: connector/spellcheck
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
+     rule: '/portal/:view/connector/spellcheck'
+     runmode: 'show'
   connector_ukonline_loc:
      name: connector/uk-online
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+     rule: '/portal/:view/connector/uk-online'
+     runmode: 'show'
   connector_unapi_loc:
      name: connector/unapi
      realm: view
      module: 'OpenBib::Handler::Apache::Connector::UnAPI'
+     rule: '/portal/:view/connector/unapi'
+     runmode: 'show'
   databasechoice_loc:
      name: dbchoice
      realm: view
      module: 'OpenBib::Handler::Apache::DatabaseChoice'
+     rule: '/portal/:view/dbchoice'
+     runmode: 'show'
   databaseprofile_loc:
      name:  dbprofile
      realm: view
      module: 'OpenBib::Handler::Apache::DatabaseProfile'
+     rule: '/portal/:view/dbprofile'
+     runmode: 'show'
   dispatchquery_loc:
      name: dispatchquery
      realm: view
      module: 'OpenBib::Handler::Apache::DispatchQuery'
+     rule: '/portal/:view/dispatchquery'
+     runmode: 'show'
   externaljump_loc:
      name: jumpto
      realm: view
      module: 'OpenBib::Handler::Apache::ExternalJump'
+     rule: '/portal/:view/jumpto'
+     runmode: 'show'
   ezb_loc:
      name: ezb 
      realm: view
      module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb'
+     runmode: 'show'
   dbis_loc:
      name: dbis
      realm: view
      module: 'OpenBib::Handler::Apache::DBIS'
+     rule: '/portal/:view/dbis'
+     runmode: 'show'
   info_loc:
      name: info
      realm: view
      module: 'OpenBib::Handler::Apache::Info'
+     rule: '/portal/:view/info/:stid/:representation?'
+     runmode: 'show'
   leave_loc:
-     name: leave
+     name: logout
      realm: view
      module: 'OpenBib::Handler::Apache::Leave'
+     rule: '/portal/:view/logout'
+     runmode: 'show'
   litlists_loc: 
      name: litlists
      realm: view
      module: 'OpenBib::Handler::Apache::LitLists'
+     rule: '/portal/:view/litlists'
+     runmode: 'show'
   loadbalancer_loc:
      name: lastverteilung
      realm: view
      module: 'OpenBib::Handler::Apache::LoadBalancer'
+     rule: '/portal/:view/loadbalancer'
+     runmode: 'show'
   login_loc:
      name: login
      realm: view
      module: 'OpenBib::Handler::Apache::Login'
+     rule: '/portal/:view/login'
+     runmode: 'show'
   mailcollection_loc:
-     name: mailcollectin
+     name: mailcollection
      realm: view
      module: 'OpenBib::Handler::Apache::Mailcollectio'
+     rule: '/portal/:view/mailcollection'
+     runmode: 'show'
   mailpassword_loc:
      name: mailpassword
      realm: view
      module: 'OpenBib::Handler::Apache::MailPassword'
+     rule: '/portal/:view/mailpassword'
+     runmode: 'show'
   managecollection_loc:
      name: collection
      realm: view
      module: 'OpenBib::Handler::Apache::ManageCollection'
+     rule: '/portal/:view/collection'
+     runmode: 'show'
   redirect_loc:
      name: redirect
      realm: view
      module: 'OpenBib::Handler::Apache::Redirect'
-  resource_loc:
-     name: resource
-     realm: view
-     module: 'OpenBib::Handler::Apache::Resource'
+     rule: '/portal/:view/redirect'
+     runmode: 'show'
   resource_title_loc:
      name: resource/title
      realm: view
      module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/:database/:id/:representation?'
+     runmode: 'show'
   resource_person_loc:
      name: resource/person
      realm: view
      module: 'OpenBib::Handler::Apache::Resource::Person'
+     rule: '/portal/:view/resource/person/:database/:id/:representation?'
+     runmode: 'show'
   resource_corporatebody_loc:
      name: resource/corporatebody
      realm: view
      module: 'OpenBib::Handler::Apache::Resource::CorporateBody'
+     rule: '/portal/:view/resource/corporatebody/:database/:id/:representation?'
+     runmode: 'show'
   resource_subject_loc:
      name: resource/subject
      realm: view
      module: 'OpenBib::Handler::Apache::Resource::Subject'
+     rule: '/portal/:view/resource/subject/:database/:id/:representation?'
+     runmode: 'show'
   resource_classification_loc:
      name: resource/classification
      realm: view
      module: 'OpenBib::Handler::Apache::Resource::Classification'
+     rule: '/portal/:view/resource/classification/:database/:id/:representation?'
+     runmode: 'show'
   resource_tag_loc:
      name: resource/tag
      realm: view
      module: 'OpenBib::Handler::Apache::Resource::Tag'
+     rule: '/portal/:view/resource/tag/:database/:id/:representation?'
+     runmode: 'show'
   resource_litlist_loc:
      name: resource/litlist
      realm: view
      module: 'OpenBib::Handler::Apache::Resource::Litlist'
+     rule: '/portal/:view/resource/litlist/:database/:id/:representation?'
+     runmode: 'show'
   resource_library_loc:
      name: resource/library
      realm: view
      module: 'OpenBib::Handler::Apache::Resource::Library'
+     rule: '/portal/:view/resource/library/:database/:id/:representation?'
+     runmode: 'show'
+  resource_user_loc:
+     name: resource/user
+     realm: view
+     module: 'OpenBib::Handler::Apache::Resource::User'
+     rule: '/portal/:view/resource/user/:id/:representation?'
+     runmode: 'show'
   resultlists_loc:
      name: resultlists
      realm: view
      module: 'OpenBib::Handler::Apache::ResultLists'
+     rule: '/portal/:view/resultlists'
+     runmode: 'show'
   rssfeeds_loc:
      name: rssfeeds
      realm: view
      module: 'OpenBib::Handler::Apache::RSSFeeds'
+     rule: '/portal/:view/rssfeeds'
+     runmode: 'show'
   search_loc:
      name:  search
      realm: view
      module: 'OpenBib::Handler::Apache::Search'
+     rule: '/portal/:view/search'
+     runmode: 'show'
   searchmask_loc:
      name: searchmask
      realm: view
      module: 'OpenBib::Handler::Apache::SearchMask'
+     rule: '/portal/:view/searchmask'
+     runmode: 'show'
   selfreg_loc:
      name: selfreg
      realm: view
      module: 'OpenBib::Handler::Apache::SelfReg'
+     rule: '/portal/:view/selfreg'
+     runmode: 'show'
   serverload_loc:
      name:  getload
      realm: common
      module: 'OpenBib::Handler::Apache::ServerLoad'
+     rule: '/portal/common/getload'
+     runmode: 'show'
   startopac_loc:
      name: home
      realm: view
      module: 'OpenBib::Handler::Apache::StartOpac'
+     rule: '/portal/:view/home'
+     runmode: 'show'
   tags_loc:
      name: tags
      realm: view
      module: 'OpenBib::Handler::Apache::Tags'
+     rule: '/portal/:view/tags'
+     runmode: 'show'
   userprefs_loc:
      name: userprefs
      realm: view
      module: 'OpenBib::Handler::Apache::UserPrefs'
+     rule: '/portal/:view/userprefs'
+     runmode: 'show'
   userreviews_loc:
      name: review
      realm: view
      module: 'OpenBib::Handler::Apache::UserReviews'
+     rule: '/portal/:view/review'
+     runmode: 'show'
   virtualsearch_loc:
      name: virtualsearch
      realm: view
      module: 'OpenBib::Handler::Apache::VirtualSearch'
+     rule: '/portal/:view/virtualsearch'
+     runmode: 'show'
 
 css_loc: /styles
 
@@ -610,6 +722,7 @@ tt_admin_editcat_rss_tname: admin_editcat_rss
 tt_admin_editcat_tname: admin_editcat
 tt_admin_editlibinfo_tname: admin_editlibinfo
 tt_admin_editlogintarget_tname: admin_editlogintarget
+tt_admin_editorgunit_tname: admin_editorgunit
 tt_admin_editprofile_tname: admin_editprofile
 tt_admin_editsession_tname: admin_editsession
 tt_admin_edituser_tname: admin_edituser
@@ -729,8 +842,8 @@ tt_info_9_tname: info_9
 tt_info_message_tname: info_message
 tt_info_tname: info
 tt_leave_tname: leave
-tt_litlists_manage_lists_tname: litlists_manage_lists
-tt_litlists_manage_singlelist_tname: litlists_manage_singlelist
+#tt_litlists_manage_lists_tname: litlists_manage_lists
+#tt_litlists_manage_singlelist_tname: litlists_manage_singlelist
 tt_litlists_show_publiclists_tname: litlists_show_publiclists
 tt_litlists_show_singlelist_tname: litlists_show_singlelist
 tt_loadbalancer_tname: loadbalancer

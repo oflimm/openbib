@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
+use Apache2::Const -compile => qw(:common :http);
 use Apache2::Reload;
 use Apache2::Request ();
 use Apache2::RequestRec ();
@@ -124,12 +124,318 @@ sub dispatch_args {
                 'rm'  => 'show',
             },
 
+        '/portal/:view/admin'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Admin',
+                'rm'  => 'show',
+            },
+
         '/portal/:view/home'
             => {
                 'app' => 'OpenBib::Handler::Apache::StartOpac',
                 'rm'  => 'show',
             },
+        
+        '/portal/:view/bibsonomy'
+            => {
+                'app' => 'OpenBib::Handler::Apache::BibSonomy',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/circulation'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Circulation',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/availabilityimage/:rm/:id/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::AvailabilityImage',
+                'rm'  => 'gbs',
+            },
+        
+        '/portal/:view/connector/availability'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::Availability',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/literaturverwaltung'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::DigiBib',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/digibib'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::DigiBib',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/livesearch'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::LiveSearch',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/sykasignatur'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::LocationMark',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/olws'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::OLWS',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/permalink'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::PermaLink',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/seealso'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::SeeAlso',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/similarpersons'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::SimilarPersons',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/similarsubjects'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::SimilarSubjects',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/spellcheck'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::SpellCheck',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/rss'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::RSS',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/uk-online'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::DigiBib',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/connector/unapi'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Connector::UnAPI',
+                'rm'  => 'show',
+            },
 
+        '/portal/:view/databasechoice'
+            => {
+                'app' => 'OpenBib::Handler::Apache::DatabaseChoice',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/databaseprofile'
+            => {
+                'app' => 'OpenBib::Handler::Apache::DatabaseProfile',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/dispatchquery'
+            => {
+                'app' => 'OpenBib::Handler::Apache::DispatchQuery',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/jumpto'
+            => {
+                'app' => 'OpenBib::Handler::Apache::ExternalJump',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/ezb'
+            => {
+                'app' => 'OpenBib::Handler::Apache::EZB',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/dbis'
+            => {
+                'app' => 'OpenBib::Handler::Apache::DBIS',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/info/:stid/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Info',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/litlists'
+            => {
+                'app' => 'OpenBib::Handler::Apache::LitLists',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/loadbalancer'
+            => {
+                'app' => 'OpenBib::Handler::Apache::LoadBalancer',
+                'rm'  => 'show',
+            },
+
+        '/portal/:view/login'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Login',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/mailcollection'
+            => {
+                'app' => 'OpenBib::Handler::Apache::MailCollection',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/mailpassword'
+            => {
+                'app' => 'OpenBib::Handler::Apache::MailPassword',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/collection'
+            => {
+                'app' => 'OpenBib::Handler::Apache::ManageCollection',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/redirect'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Redirect',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resource/title/:database/:id/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::Title',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resource/person/:database/:id/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::Person',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resource/corporatebody/:database/:id/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::CorporateBody',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resource/subject/:database/:id/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::Subject',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resource/classification/:database/:id/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::Classification',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resource/litlist/:id/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::LitList',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resource/tag/:id/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::Tag',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resource/library/:id/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::Library',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resource/user/:id/:rm/:representation?'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::User',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/resultlists'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Resource::ResultLists',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/rssfeeds'
+            => {
+                'app' => 'OpenBib::Handler::Apache::RSSFeeds',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/search'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Search',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/virtualsearch'
+            => {
+                'app' => 'OpenBib::Handler::Apache::VirtualSearch',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/searchmask/:type'
+            => {
+                'app' => 'OpenBib::Handler::Apache::SearchMask',
+                'rm'  => 'simple',
+            },
+        
+        '/portal/:view/selfreg'
+            => {
+                'app' => 'OpenBib::Handler::Apache::SelfReg',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/getload'
+            => {
+                'app' => 'OpenBib::Handler::Apache::ServerLoad',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/tags'
+            => {
+                'app' => 'OpenBib::Handler::Apache::Tags',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/userprefs'
+            => {
+                'app' => 'OpenBib::Handler::Apache::UserPrefs',
+                'rm'  => 'show',
+            },
+        
+        '/portal/:view/userreviews'
+            => {
+                'app' => 'OpenBib::Handler::Apache::UserReviews',
+                'rm'  => 'show',
+            },
+        
         '/portal/:view/logout'
             => {
                 'app' => 'OpenBib::Handler::Apache::Leave',

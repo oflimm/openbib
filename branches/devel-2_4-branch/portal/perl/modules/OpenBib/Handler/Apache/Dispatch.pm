@@ -238,7 +238,7 @@ sub dispatch_args {
                 'rm'  => 'show',
             },
 
-        '/portal/:view/databasechoice'
+        '/portal/:view/dbchoice'
             => {
                 'app' => 'OpenBib::Handler::Apache::DatabaseChoice',
                 'rm'  => 'show',

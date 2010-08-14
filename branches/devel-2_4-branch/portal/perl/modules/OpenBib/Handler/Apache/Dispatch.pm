@@ -189,8 +189,9 @@ sub dispatch_args {
                 'app' => 'OpenBib::Handler::Apache::Connector::OLWS',
                 'rm'  => 'show',
             },
-        
-        '/portal/:view/connector/permalink'
+
+        # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
+        '/portal/connector/permalink/:id1/:id2/:type/:view/index.html
             => {
                 'app' => 'OpenBib::Handler::Apache::Connector::PermaLink',
                 'rm'  => 'show',
@@ -354,7 +355,7 @@ sub dispatch_args {
         
         '/portal/:view/resource/litlist/:id/:representation?'
             => {
-                'app' => 'OpenBib::Handler::Apache::Resource::LitList',
+                'app' => 'OpenBib::Handler::Apache::Resource::Litlist',
                 'rm'  => 'show',
             },
         

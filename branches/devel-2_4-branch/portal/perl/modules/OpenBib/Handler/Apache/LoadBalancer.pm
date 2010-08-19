@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::Request ();
 use Apache2::RequestRec ();
@@ -109,10 +109,8 @@ sub show {
         return Apache2::Const::OK;
     }
 
-    $r->content_type('text/html');
-    $r->headers_out->add("Location" => "http://$bestserver$config->{base_loc}/$view/$config->{handler}{startopac_loc}{name}?$urlquery");
-
-    return Apache2::Const::REDIRECT;
+    $self->header_type('redirect');
+    $self->header_props(-type => 'text/html', -url => "http://$bestserver$config->{base_loc}/$view/$config->{handler}{startopac_loc}{name}?$urlquery");
 }
 
 1;

@@ -65,6 +65,8 @@ sub get_result_navigation {
         ? $arg_ref->{sortorder}             : undef;
     my $sorttype              = exists $arg_ref->{sorttype}
         ? $arg_ref->{sorttype}              : undef;
+    my $view                  = exists $arg_ref->{view}
+        ? $arg_ref->{view}                  : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -83,7 +85,7 @@ sub get_result_navigation {
     if ($lastresultstring=~m/(\w+:\d+)\|$database:$titidn/) {
         $lasttiturl=$1;
         my ($lastdatabase,$lastkatkey)=split(":",$lasttiturl);
-        $lasttiturl="$config->{search_loc}?sessionID=$session->{ID};database=$lastdatabase;searchsingletit=$lastkatkey";
+        $lasttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$lastdatabase/$lastkatkey/html";
     }
     
     if ($lastresultstring=~m/$database:$titidn\|(\w+:\d+)/) {
@@ -92,7 +94,7 @@ sub get_result_navigation {
 
 	$logger->debug("NextDB: $nextdatabase - NextKatkey: $nextkatkey");
 
-        $nexttiturl="$config->{search_loc}?sessionID=$session->{ID};database=$nextdatabase;searchsingletit=$nextkatkey";
+        $nexttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$nextdatabase/$nextkatkey/html";
     }
 
     return ($lasttiturl,$nexttiturl);
@@ -117,12 +119,12 @@ sub get_index {
     my $config = OpenBib::Config->instance;
     
     my $type_ref = {
-        tit      => 1,
-        aut      => 2,
-        kor      => 3,
-        swt      => 4,
-        notation => 5,
-        mex      => 6,
+        tit            => 1,
+        aut            => 2,
+        kor            => 3,
+        swt            => 4,
+        notation       => 5,
+        mex            => 6,
     };
     
     my ($atime,$btime,$timeall);

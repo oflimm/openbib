@@ -34,19 +34,30 @@
      FOREACH part IN item.${'P0100'} ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
-         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').resource_person_loc.name}/${item.database}/${part.id}/html\">${part.content}</a>");
+         searchterm    = part.content;
+         searchprefix  = config.get('searchfield').verfstring.prefix;
+
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+
+         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
        END ;
      END ;
      FOREACH part IN item.${'P0101'}  ;
+       thiscontent = part.content;
        IF part.supplement ;
-          part.content = "${part.content} ${part.supplement}" ;
+          thiscontent = "${thiscontent} ${part.supplement}" ;
        END ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
-         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').resource_person_loc.name}/${item.database}/${part.id}/html\">${part.content}</a>");
+         searchterm    = part.content;
+         searchprefix  = config.get('searchfield').verfstring.prefix;
+
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+
+         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -55,7 +66,12 @@
      FOREACH part IN item.${'C0200'}  ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
-         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').resource_corporatebody_loc.name}/${item.database}/${part.id}/html\">${part.content}</a>");
+         searchterm    = part.content;
+         searchprefix  = config.get('searchfield').korstring.prefix;
+
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+
+         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -64,7 +80,12 @@
      FOREACH part IN item.${'C0201'}  ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
-         persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').resource_corporatebody_loc.name}/${item.database}/${part.id}/html\">${part.content}</a>");
+         searchterm    = part.content;
+         searchprefix  = config.get('searchfield').korstring.prefix;
+
+         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+
+         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;

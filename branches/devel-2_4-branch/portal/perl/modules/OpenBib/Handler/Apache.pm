@@ -34,11 +34,51 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use CGI::Application::Plugin::Apache qw(:all);
+use Log::Log4perl qw(get_logger :levels);
+
+use OpenBib::Config;
+use OpenBib::Common::Util;
+use OpenBib::L10N;
+use OpenBib::QueryOptions;
+use OpenBib::Session;
+use OpenBib::User;
+
 use base 'CGI::Application';
 
 sub cgiapp_init() {       # overrides
    my $self = shift;
-   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
+
+   # Log4perl logger erzeugen
+   my $logger = get_logger();
+
+   $logger->debug("Entering cgiapp_init");
+   
+   my $r          = $self->param('r');
+
+   my $config     = OpenBib::Config->instance;
+   my $session    = OpenBib::Session->instance({ apreq => $r , view => $self->param('view') });
+   my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
+
+   my $useragent  = $r->subprocess_env('HTTP_USER_AGENT');
+   my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
+
+   my $queryoptions = OpenBib::QueryOptions->instance($self->query());
+
+   # Message Katalog laden
+   my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
+   $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
+   $self->param('config',$config);
+   $self->param('session',$session);
+   $self->param('user',$user);
+   $self->param('useragent',$useragent);
+   $self->param('stylesheet',$stylesheet);
+   $self->param('msg',$msg);
+   $self->param('qopts',$queryoptions);
+
+   $logger->debug("Exit cgiapp_init");
+   #   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
 }
 
 1;

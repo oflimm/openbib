@@ -290,6 +290,9 @@ sub print_to_handler {
     my $representation     = exists $arg_ref->{representation}
         ? $arg_ref->{representation}    : undef;
 
+    my $view               = exists $arg_ref->{view}
+        ? $arg_ref->{view}               : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -302,8 +305,6 @@ sub print_to_handler {
     my $query         = Apache2::Request->new($r);
 
     my $queryoptions  = OpenBib::QueryOptions->instance($query);
-    
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
     
     my $stid          = $query->param('stid')              || '';
     my $callback      = $query->param('callback')  || '';

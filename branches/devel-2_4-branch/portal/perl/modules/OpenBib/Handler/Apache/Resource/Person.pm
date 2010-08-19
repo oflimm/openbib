@@ -38,7 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Record::Person;
 
-use base 'CGI::Application';
+use base 'OpenBib::Handler::Apache';
 
 # Run at startup
 sub setup {
@@ -72,7 +72,8 @@ sub show {
         OpenBib::Record::Person->new({database => $database, id => $id})
               ->load_full_record->print_to_handler({
                   apachereq          => $r,
-                  representation     => $representation
+                  representation     => $representation,
+                  view               => $view,
               });
     }
 

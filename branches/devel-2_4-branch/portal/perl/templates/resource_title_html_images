@@ -23,9 +23,11 @@
 <a id="cover_full_url" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/526/[% config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn) %]" target="_blank"><img id="cover_full" src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>
 </p>
 [% END %]
+[%- IF isbn -%]
 <p>
 <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/525/http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.get('base_loc') %]/common/[% config.get('handler').connector_availabilityimage_loc.name %]/gbs/[% isbn %]/" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
+[%- END -%]
 <p>
 [%- IF bibkey -%]
 <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.get('base_loc') %]/common/[% config.get('handler').connector_availabilityimage_loc.name %]/bibsonomy/[% bibkey %]/" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>

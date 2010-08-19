@@ -121,7 +121,7 @@ $(document).ready(function(){
 
 <h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
 
 
 
@@ -196,7 +196,7 @@ $(document).ready(function(){
 
 <h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
 
 
 
@@ -256,7 +256,7 @@ $(document).ready(function(){
 
 <h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
 
 
 

@@ -75,27 +75,32 @@ sub show {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
     my $r              = $self->param('r');
-
-    my $stid           = $self->param('stid')           || '';
     my $view           = $self->param('view')           || '';
+    my $stid           = $self->param('stid')           || '';
     my $representation = $self->param('representation') || 'html';
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');    
+    
+    # CGI Args
 
-    my $config      = OpenBib::Config->instance;
+    my $database       = $query->param('db')             || '';
+    my $id             = $query->param('id')             || '';
+    my $format         = $query->param('format')         || '';
+    
     my $statistics  = new OpenBib::Statistics();
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
-
-    my $query       = Apache2::Request->new($r);
-
-    my $session     = OpenBib::Session->instance({ apreq => $r });
-
-    my $user        = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
-  
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     my $is_valid_representation = {
         'html'   => 1,
@@ -104,23 +109,6 @@ sub show {
     };
     
     unless ($is_valid_representation->{$representation}){
-        return Apache2::Const::OK;
-    }
-
-    
-    # Sub-Template ID
-    my $database = $self->param('db')       || '';
-    my $id       = $self->param('id')       || '';
-    my $format   = $self->param('format')   || '';
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return Apache2::Const::OK;
     }
 

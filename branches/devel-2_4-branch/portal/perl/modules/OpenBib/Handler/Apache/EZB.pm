@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
@@ -301,10 +301,8 @@ sub show {
             $logger->debug("ReadME-Daten: ".YAML::Dump($journalreadme_ref));
 
             if ($journalreadme_ref->{location}){
-                $r->content_type('text/html');
-                $r->headers_out->add("Location" => $journalreadme_ref->{location});
-                
-                return Apache2::Const::REDIRECT;
+                $self->header_type('redirect');
+                $self->header_props(-type => 'text/html', -url => $journalreadme_ref->{location});
             }
             else {
 

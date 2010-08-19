@@ -88,40 +88,23 @@ sub show {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $type           = $self->param('type')           || '';
+    my $subtype        = $self->param('subtype')        || '-1';
 
+    my ($database)     = $self->param('dispatch_url_remainder') =~/^(.+?)\.rdf/;
+    
     my $config = OpenBib::Config->instance;
     
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
-
     my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-    # Basisipfad entfernen
-    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{connector_rss_loc}{name};
-    $path=~s/$basepath//;
-
-    $logger->debug("Path: $path without basepath $basepath");
-
-    # RSS-Feedparameter aus URI bestimmen
-    #
-    # 
-
-    my ($type,$subtype,$database);
-    if ($path=~m/^\/(\w+?)\/(\w+?).rdf$/){
-        ($type,$subtype,$database)=($1,"-1",$2);
-    }
-    elsif ($path=~m/^\/(\w+?)\/(\w+?)\/(\w+?).rdf$/){
-        ($type,$subtype,$database)=($1,$2,$3);
-    }
-
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
-    my $session     = OpenBib::Session->instance;
+    my $session     = OpenBib::Session->instance({apreq => $r});
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     # Check
@@ -319,8 +302,10 @@ sub show {
     else {
         $logger->debug("Verwende Eintrag aus RSS-Cache");
     }
+
+    $self->header_props(-type => 'application/xml');
     #print $r->content_type("application/rdf+xml");
-    $r->content_type("application/xml");
+    #$r->content_type("application/xml");
 
     $r->print($rss_content);
 
@@ -330,6 +315,7 @@ sub show {
         content   => "$database:$type:$subtype",
     });
 
+#    return $rss_content;
     return Apache2::Const::OK;
 }
 

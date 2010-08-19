@@ -75,6 +75,9 @@ sub show {
 
     my $view           = $self->param('view')           || '';
 
+    my $type           = $self->param('type');
+    my $url            = $self->param('dispatch_url_remainder');
+    
     my $config = OpenBib::Config->instance;
 
     my $uri   = $r->parsed_uri;
@@ -86,22 +89,6 @@ sub show {
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    # Basisipfad entfernen
-    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{redirect_loc}{name};
-    $path=~s/$basepath//;
-
-    $logger->debug("Path: $path without basepath $basepath");
-    $logger->debug("Path: $path URI: $uri");
-
-    # Parameter aus URI bestimmen
-    #
-    # 
-
-    my ($type,$url);
-    if ($path=~m/^\/(\w+?)\/(.+?)$/){
-        ($type,$url)=($1,$2);
-    }
 
     if ($query){
         $url = $url."?".$query;
@@ -149,10 +136,11 @@ sub show {
             content   => $url,
         });
 
-        $r->content_type('text/html');
-        $r->headers_out->add("Location" => $url);
+#        $self->header_type('redirect');
+#        $self->header_props(-url => $url);
 
-        return Apache2::Const::REDIRECT;
+        $self->query->headers_out->add(Location => $url);
+        $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         OpenBib::Common::Util::print_warning("Typ $type nicht definiert",$r,$msg);

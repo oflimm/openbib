@@ -115,9 +115,6 @@ sub lookup_gbs {
             $logger->info("ISBN $isbn->{isbn13} NOT found in Google BookSearch");
             $logger->debug("Error-Code:".$response->code());
             $logger->debug("Fehlermeldung:".$response->message());
-            
-            $r->headers_out->add("Location" => "http://$config->{servername}/images/openbib/no_img.png");
-            return Apache2::Const::REDIRECT;
         }
         else {
             $logger->info("ISBN $isbn->{isbn13} found in Google BookSearch");
@@ -154,9 +151,13 @@ sub lookup_gbs {
         }
     }
 
-    $self->header_type('redirect');
-    $self->header_props(-url => $redirect_url);
-    return;
+#    $self->header_type('redirect');
+#    $self->header_props(-url => $redirect_url);
+
+    $self->query->headers_out->add(Location => $redirect_url);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return '';
 }
 
 sub lookup_bibsonomy {
@@ -203,9 +204,13 @@ sub lookup_bibsonomy {
         }
     }
 
-    $self->header_type('redirect');
-    $self->header_props(-url => $redirect_url);
-    return;
+#    $self->header_type('redirect');
+#    $self->header_props(-url => $redirect_url);
+
+    $self->query->headers_out->add(Location => $redirect_url);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return '';
 }
 
 sub lookup_ebooks {
@@ -249,9 +254,13 @@ sub lookup_ebooks {
         
     }
 
-    $self->header_type('redirect');
-    $self->header_props(-url => $redirect_url);
-    return;
+#    $self->header_type('redirect');
+#    $self->header_props(-url => $redirect_url);
+
+    $self->query->headers_out->add(Location => $redirect_url);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return '';
 }
 
 sub lookup_ol {
@@ -333,9 +342,13 @@ sub lookup_ol {
         $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
     }
 
-    $self->header_type('redirect');
-    $self->header_props(-url => $redirect_url);
-    return;
+#    $self->header_type('redirect');
+#    $self->header_props(-url => $redirect_url);
+
+    $self->query->headers_out->add(Location => $redirect_url);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return '';
 }
 
 sub lookup_unifloh {
@@ -388,9 +401,13 @@ sub lookup_unifloh {
         }
     }
 
-    $self->header_type('redirect');
-    $self->header_props(-url => $redirect_url);
-    return;
+#    $self->header_type('redirect');
+#    $self->header_props(-url => $redirect_url);
+
+    $self->query->headers_out->add(Location => $redirect_url);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return '';
 }
 
 sub lookup_wikipedia {
@@ -440,9 +457,13 @@ sub lookup_wikipedia {
         }
     }
 
-    $self->header_type('redirect');
-    $self->header_props(-url => $redirect_url);
-    return;
+#    $self->header_type('redirect');
+#    $self->header_props(-type => 'image/png', -url => $redirect_url);
+
+    $self->query->headers_out->add(Location => $redirect_url);
+    $self->query->status(Apache2::Const::REDIRECT);
+    
+    return '';
 }
 
 sub lookup_paperc {
@@ -496,9 +517,13 @@ sub lookup_paperc {
         }
     }
 
-    $self->header_type('redirect');
-    $self->header_props(-url => $redirect_url);
-    return;
+#    $self->header_type('redirect');
+#    $self->header_props(-url => $redirect_url);
+ 
+    $self->query->headers_out->add(Location => $redirect_url);
+    $self->query->status(Apache2::Const::REDIRECT);
+   
+    return '';
 }
 
 sub id2isbnX {

@@ -55,8 +55,11 @@ sub new {
     my $sessionID   = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
 
+    my $view        = exists $arg_ref->{view}
+        ? $arg_ref->{view}                  : undef;
+
     my $r           = exists $arg_ref->{apreq}
-        ? $arg_ref->{apreq}             : undef;
+        ? $arg_ref->{apreq}                 : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -68,6 +71,7 @@ sub new {
     bless ($self, $class);
 
     $self->{servername} = $config->{servername};
+    $self->{view}       = $view;
 
     # Setzen der Defaults
     if ($r){
@@ -121,6 +125,9 @@ sub _new_instance {
     my $sessionID   = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
 
+    my $view        = exists $arg_ref->{view}
+        ? $arg_ref->{view}                  : undef;
+
     my $r           = exists $arg_ref->{apreq}
         ? $arg_ref->{apreq}             : undef;
     
@@ -134,7 +141,8 @@ sub _new_instance {
     bless ($self, $class);
 
     $self->{servername} = $config->{servername};
-
+    $self->{view}       = $view;
+    
     # Setzen der Defaults
 
     if ($r){
@@ -195,9 +203,9 @@ sub _init_new_session {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $view=$r->subprocess_env('openbib_view') || $config->{defaultview};
+    $logger->debug("Request Object: ".YAML::Dump($r));
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
+    my $useragent=$r->pnotes('useragent') || '';
 
     # Loggen des Brower-Types
     $self->log_event({
@@ -217,24 +225,24 @@ sub _init_new_session {
         content   => $r->connection->remote_ip,
     });
     
-    if ($view) {
+    if ($self->{view}) {
         # Loggen der View-Auswahl
         $self->log_event({
             type      => 100,
-            content   => $view,
+            content   => $self->{view},
         });
     }
 
-        # BEGIN View (Institutssicht)
+    # BEGIN View (Institutssicht)
     #
     ####################################################################
     # Wenn ein View aufgerufen wird, muss fuer die aktuelle Session
     # die Datenbankauswahl vorausgewaehlt und das Profil geaendert werden.
     ####################################################################
   
-    if ($view) {
+    if ($self->{view}) {
         # 1. Gibt es diesen View?
-        if ($config->view_exists($view)) {
+        if ($config->view_exists($self->{view})) {
             # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
             #    keine Auswahl getroffen hat
       
@@ -242,18 +250,18 @@ sub _init_new_session {
             # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
             # Auswahl auf die zum View gehoerenden Datenbanken
             if ($self->get_number_of_dbchoice == 0) {
-                my @viewdbs=$config->get_dbs_of_view($view);
+                my @viewdbs=$config->get_dbs_of_view($self->{view});
 
                 foreach my $dbname (@viewdbs){
                     $self->set_dbchoice($dbname);
                 }
             }
             # 3. Assoziiere den View mit der Session (fuer Merkliste);
-            $self->set_view($view);
+            $self->set_view($self->{view});
         }
         # Wenn es den View nicht gibt, dann wird gestartet wie ohne view
         else {
-            $view="";
+            $self->{view}="";
         }
     }
 
@@ -354,13 +362,13 @@ sub get_viewname {
   
     # Entweder wurde ein 'echter' View gefunden oder es wird
     # kein spezieller View verwendet (view='')
-    my $view = decode_utf8($result->{'viewname'}) || '';
+    my $self->{view} = decode_utf8($result->{'viewname'}) || '';
 
     $idnresult->finish();
 
-    $logger->debug("Got view: $view");
+    $logger->debug("Got view: $self->{view}");
 
-    return $view;
+    return $self->{view};
 }
 
 sub get_profile {

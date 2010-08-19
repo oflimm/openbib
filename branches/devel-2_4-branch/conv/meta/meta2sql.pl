@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -853,6 +853,20 @@ while (my $line=<IN>){
         push @{$listitem_ref->{'PC0001'}}, {
             content   => join(" ; ",@autkor),
         };
+        
+        # Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel
+        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ normdata => $thisitem_ref});
+        my $bibkey      = OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base });
+        
+        if ($bibkey){
+            print OUT       "$id50501$bibkey\n";            
+            print OUTSTRING "$id5050$bibkey\n" if (exists $stammdateien_ref->{tit}{inverted_ref}->{'5050'}{string});
+            print OUTSTRING "$id5051$bibkey_base\n" if (exists $stammdateien_ref->{tit}{inverted_ref}->{'5051'}{string});
+
+            # Bibkey merken fuer Recherche ueber Suchmaschine
+            push @{$normdata_ref->{'bkey'}}, $bibkey;
+        }
+
         # Hinweis: Weder das verpacken via pack "u" noch Base64 koennten
         # eventuell fuer die Recherche schnell genug sein. Allerdings
         # funktioniert es sehr gut.
@@ -875,20 +889,11 @@ while (my $line=<IN>){
         }
 
         print TITLISTITEM "$id$listitem\n";
-
+        
         my $normdatastring = encode_json $normdata_ref;
         print SEARCHENGINE "$id$normdatastring\n";
-        
-        # Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel
-        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ normdata => $thisitem_ref});
-        my $bibkey      = OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base });
-        
-        if ($bibkey){
-            print OUT       "$id50501$bibkey\n";            
-            print OUTSTRING "$id5050$bibkey\n" if (exists $stammdateien_ref->{tit}{inverted_ref}->{'5050'}{string});
-            print OUTSTRING "$id5051$bibkey_base\n" if (exists $stammdateien_ref->{tit}{inverted_ref}->{'5051'}{string});
-        }
-       
+
+
         if ($count % 1000 == 0) {
 	     $logger->debug("$count Titelsaetze bearbeitet");
         } 

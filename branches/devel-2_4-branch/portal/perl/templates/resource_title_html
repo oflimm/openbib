@@ -327,14 +327,14 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <div class="listnavigation"><!-- Begin Navigation -->
 <div class="previous_title">
 [%- IF prevurl -%]
-<a href="[% prevurl %];queryid=[% queryid %]" ><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorheriger Titel") %]]"/></a>
+<a href="[% prevurl %]?queryid=[% queryid %]" ><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorheriger Titel") %]]"/></a>
 [%- ELSE -%]
 <img src="[% config.get('no_previous_img') %]" alt="[[% msg.maketext("Vorheriger Titel") %]]"/>
 [%- END -%]
 </div>
 <div class="next_title">
 [%- IF nexturl -%]
-<a href="[% nexturl %];queryid=[% queryid %]" ><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chster Titel") %]]"/></a>
+<a href="[% nexturl %]?queryid=[% queryid %]" ><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chster Titel") %]]"/></a>
 [%- ELSE -%]
 <img src="[% config.get('no_next_img') %]" alt="[[% msg.maketext("N&auml;chster Titel") %]]"/>
 [%- END -%]
@@ -361,7 +361,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <table>
 <tr>
 <th><img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
-<td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
+<td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]/add_item?id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
 <th><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
 <td><a class="collection" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
 </tr>
@@ -606,7 +606,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?searchall=1;isbn=${isbnitem.content}" -%]
+[%-   globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?searchall=1;isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
 <tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
 [%-   END -%]
@@ -649,7 +649,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
       thiscontent = item.content;
 
       NEXT IF rswkswt_done.${thiscontent} == 1;
-      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${thiscontent.replace('&amp;','%26')};category=E4300;num=${qopts.num}";
+      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').browse_loc.name}?database=${record.database};searchtitofcnt=${thiscontent.replace('&amp;','%26')};category=E4300;num=${qopts.num}";
       content       = "<a href=\"${localurl}\">${thiscontent}</a>";
       rswkswt_done.${thiscontent} = 1;
 %]
@@ -682,7 +682,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
 <div class="headline"><span id="bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="bibsonomy_tags"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span>
+<span id="bibsonomy_tags"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]/lookup?bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
 </div>
 <p/>
 </div>
@@ -692,7 +692,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarpersons_loc.name %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarpersons_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarpersons").html(txt); 
   });
@@ -702,7 +702,7 @@ $(document).ready(function(){
 <div class="similarpersons"><!-- Begin Verwandte Personen -->
 <div class="headline"><span id="similarpersons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarpersons_do"><!-- Begin similarpersons do -->
-<span id="similarpersons"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarpersons_loc.name %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarpersons"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarpersons_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -712,7 +712,7 @@ $(document).ready(function(){
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Themen
-  $.get("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarsubjects_loc.name %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarsubjects_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarsubjects").html(txt); 
   });
@@ -721,7 +721,7 @@ $(document).ready(function(){
 <div class="similarsubjects"><!-- Begin Verwandte Themen -->
 <div class="headline"><span id="similarsubjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarsubjects_do"><!-- Begin similarsubjects do -->
-<span id="similarsubjects"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarsubjects_loc.name %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarsubjects"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarsubjects_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -732,7 +732,7 @@ $(document).ready(function(){
 <div class="headline"><span id="misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="misc_do"><!-- Begin misc do -->
 <ul style="list-style-type: square">
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% record.database %]" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10/?db=[% record.database %]" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 </div>
 </div>
@@ -778,7 +778,7 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% item.database %]/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="rltitle">[%
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_title_loc.name %]/[% item.database %]/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="rltitle">[%
 title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
 [% END %]
 [% IF recent_titles.get_size > 5 %]

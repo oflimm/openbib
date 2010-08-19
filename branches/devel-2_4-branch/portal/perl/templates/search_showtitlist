@@ -78,7 +78,7 @@
 [%-    END -%]
   </div>
   <div class="listoptions">
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').browse_loc.name %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
 <input type="hidden" name="num"        value="[% IF num %][% num %][% ELSE %][% qopts.num %][% END %]" />
 

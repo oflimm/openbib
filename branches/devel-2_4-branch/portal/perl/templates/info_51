@@ -58,7 +58,7 @@ bklist = bklist.sort;
 <ul class="subjectlist">
 [% FOREACH bk IN bklist %]
 [%   IF thisbklist.${bk}.defined %] 
-[%      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${viewdbs.first};searchtitofcnt=${bk};category=E4100;num=${qopts.num}" %]
+[%      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').browse_loc.name}?database=${viewdbs.first};searchtitofcnt=${bk};category=E4100;num=${qopts.num}" %]
 <li>[% bk %] / <a style="font-weight:bold;font-size:1.2em;" href="[% IF viewdbs.size == 1 %][% localurl %][% ELSE %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/52?category=[% bk %][% END %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
 [%   END %]
 [% END %]

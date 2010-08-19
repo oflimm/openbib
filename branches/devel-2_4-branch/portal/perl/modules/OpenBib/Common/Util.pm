@@ -249,7 +249,7 @@ sub print_page {
     my $database  = $ttdata->{'database'};
     my $sessionID = $ttdata->{'sessionID'};
     
-    my $session   = OpenBib::Session->instance({ sessionID => $sessionID });
+    my $session   = OpenBib::Session->instance({ apreq => $r });
 
     my $view;
     if ($ttdata->{'view'}){

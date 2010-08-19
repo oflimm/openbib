@@ -37,7 +37,7 @@ $(document).ready(function(){
 [% END %]
 
 	<div id="header2">
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
 
 <input type="hidden" name="num"  value="50" />
 

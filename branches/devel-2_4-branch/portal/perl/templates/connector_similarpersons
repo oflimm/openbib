@@ -37,7 +37,7 @@
    searchterm    = item;
    searchprefix  = config.get('searchfield').verfstring.prefix;
 
-   localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
+   localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
@@ -87,7 +87,7 @@
    searchterm    = item;
    searchprefix  = config.get('searchfield').verfstring.prefix;
 
-   localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').virtualsearch_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
+   localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>

@@ -36,6 +36,7 @@ no warnings 'redefine';
 use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::Request ();
+use Apache2::RequestUtil;
 use Business::ISBN;
 use Benchmark;
 use DBI;
@@ -50,7 +51,6 @@ use OpenBib::L10N;
 use OpenBib::Record::Person;
 use OpenBib::Record::Title;
 use OpenBib::Search::Util;
-use OpenBib::Session;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -100,7 +100,6 @@ sub show {
     my $isbn           = $query->param('isbn')            || '';
     my $database       = $query->param('db')        || '';
     my $format         = $query->param('format')          || 'ajax';
-    my $sessionID      = $query->param('sessionID')       || '';
 
     if (!$database || !$type){
         OpenBib::Common::Util::print_warning($msg->maketext("Fehler."),$r,$msg);
@@ -257,7 +256,6 @@ sub show {
         format          => $format,
         similar_persons => $sorted_similar_persons_ref,
         database        => $database,
-        sessionID       => $sessionID,
         config          => $config,
         msg             => $msg,
     };

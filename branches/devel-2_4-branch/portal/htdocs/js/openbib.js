@@ -4,6 +4,7 @@ var sessionID = $("meta[@name='sessionID']").attr("content");
 
 var Bibkey    = $("meta[@name='Bibkey']").attr("content");
 var Tags      = $("meta[@name='Tags']").attr("content");
+var View      = $("meta[@name='View']").attr("content");
 
 // Focus auf erstes Eingabefeld
 //$(":input:visible:enabled:first").focus();
@@ -31,7 +32,7 @@ $('.nojs_show').css('display','none');
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
 // fest eingetragen und muss gegebenenfalls angepasst werden
  if (sessionID){
-$.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+$.get("/portal/"+View+"/merkliste?action=show;do_collection_showcount=1",
 function (txt){
  $("#collectioncount").html("["+txt+"]"); 
 }
@@ -44,7 +45,7 @@ $(".rlcollect a").click(function(){
    $.get(this.href);
 
    // Merklistenfuellstand aktualisieren
-   $.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+   $.get("/portal/"+View+"/merkliste?action=show;do_collection_showcount=1",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
    return false;
@@ -56,7 +57,7 @@ $("a.collection").click(function(){
    $.get(this.href);
 
    // Merklistenfuellstand aktualisieren
-   $.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+   $.get("/portal/"+View+"/merkliste?action=show;do_collection_showcount=1",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
    return false;
@@ -67,7 +68,7 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
 // Begin BibSonomy Tags
  if (Bibkey || Tags){
-   $.get("/portal/bibsonomy?sessionID="+sessionID+";action=get_tags;format=ajax;bibkey="+Bibkey+";tags="+Tags,
+   $.get("/portal/"+View+"/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
          function (txt){
            $("#bibsonomy_tags").html(txt); 
          }

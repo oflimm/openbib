@@ -1228,7 +1228,7 @@ dt.review {
   width:99%;
 }
 
-#searchmask_types #alltypes, #searchmask #only_articles, #searchmask #only_serials{
+#searchmask_types #alltypes, #searchmask #only_articles, #searchmask #only_serials, #searchmask #only_online {
   padding: 20px;
 }
 

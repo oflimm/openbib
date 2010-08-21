@@ -250,10 +250,10 @@ sub search_databases {
             ($type eq "notation" )?"notation=$contentreq;notindex=Index":undef;
 
         my $template =
-            ($type eq "aut"      )?$config->{"tt_virtualsearch_showverfindex_tname"}:
-            ($type eq "kor"      )?$config->{"tt_virtualsearch_showkorindex_tname"}:
-            ($type eq "swt"      )?$config->{"tt_virtualsearch_showswtindex_tname"}:
-            ($type eq "notation" )?$config->{"tt_virtualsearch_shownotindex_tname"}:undef;
+            ($type eq "aut"      )?$config->{"tt_search_person_tname"}:
+            ($type eq "kor"      )?$config->{"tt_search_corporatebody_tname"}:
+            ($type eq "swt"      )?$config->{"tt_search_subject_tname"}:
+            ($type eq "notation" )?$config->{"tt_search_classification_tname"}:undef;
             
         $contentreq=~s/\+//g;
         $contentreq=~s/%2B//g;
@@ -455,7 +455,7 @@ sub search_databases {
 
     my $atime=new Benchmark;
     
-    my $starttemplatename=$config->{tt_virtualsearch_result_start_tname};
+    my $starttemplatename=$config->{tt_search_title_start_tname};
     
     $starttemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
         database     => '', # Template ist nicht datenbankabhaengig
@@ -645,7 +645,7 @@ sub search_databases {
             
             my $treffer=$fullresultcount;
             
-            my $itemtemplatename=$config->{tt_virtualsearch_result_combined_tname};
+            my $itemtemplatename=$config->{tt_search_title_combined_tname};
             
             $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
                 database     => '', # Template ist nicht datenbankabhaengig
@@ -792,7 +792,7 @@ sub search_databases {
                 
                     my $treffer=$fullresultcount;
 
-                    my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
+                    my $itemtemplatename=$config->{tt_search_title_item_tname};
                     
                     $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
                         database     => $database,
@@ -956,7 +956,7 @@ sub search_databases {
                         
                             my $treffer=$fullresultcount;
 
-                            my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
+                            my $itemtemplatename=$config->{tt_search_title_item_tname};
 
                             $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
                                 database     => $database,
@@ -1064,7 +1064,7 @@ sub search_databases {
     }
     
     # Ausgabe des letzten HTML-Bereichs
-    my $endtemplatename=$config->{tt_virtualsearch_result_end_tname};
+    my $endtemplatename=$config->{tt_search_title_end_tname};
     
     $endtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
         database     => '', # Template ist nicht datenbankabhaengig
@@ -1251,10 +1251,10 @@ sub search_index {
                     ($type eq "notation" )?"notation=$contentreq;notindex=Index":undef;
     
     my $template =
-        ($type eq "person"        )?$config->{"tt_virtualsearch_showverfindex_tname"}:
-            ($type eq "corporatebody" )?$config->{"tt_virtualsearch_showkorindex_tname"}:
-                ($type eq "subject"       )?$config->{"tt_virtualsearch_showswtindex_tname"}:
-                    ($type eq "classification")?$config->{"tt_virtualsearch_shownotindex_tname"}:undef;
+        ($type eq "person"        )?$config->{"tt_search_person_tname"}:
+            ($type eq "corporatebody" )?$config->{"tt_search_corporatebody_showkorindex_tname"}:
+                ($type eq "subject"       )?$config->{"tt_search_subject_tname"}:
+                    ($type eq "classification")?$config->{"tt_search_classification_tname"}:undef;
     
     $contentreq=~s/\+//g;
     $contentreq=~s/%2B//g;

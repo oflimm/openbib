@@ -249,7 +249,7 @@ sub show {
                 };
 
                 $stid=~s/[^0-9]//g;
-                my $templatename = ($stid)?"tt_search_olws_browse_".$stid."_tname":"tt_search_olws_browse_tname";
+                my $templatename = ($stid)?"tt_browse_olws_".$stid."_tname":"tt_browse_olws_tname";
 
                 OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
                 return Apache2::Const::OK;
@@ -384,176 +384,178 @@ sub show {
     # Titel zu einem gegebenen Kategorie-Inhalt
     # Voraussetzung: Diese Kategorie muss String-Invertiert sein (convert.yml)
     #                Ausnahme: Anreicherung enrich
-    if ($searchtitofcnt) {
-        my $recordlist = new OpenBib::RecordList::Title();
 
-        my $hits      = 0;
+    # Jetzt ueber Suchmaschine in Search.pm
+    #     if ($searchtitofcnt) {
+#         my $recordlist = new OpenBib::RecordList::Title();
 
-        my $searchtitofcntnorm = OpenBib::Common::Util::grundform({
-            content  => $searchtitofcnt,
-        });
+#         my $hits      = 0;
 
-        my $limits="";
-        if ($hitrange > 0){
-            $limits="limit $offset,$hitrange";
-        }
+#         my $searchtitofcntnorm = OpenBib::Common::Util::grundform({
+#             content  => $searchtitofcnt,
+#         });
 
-        $logger->debug("Categories ".YAML::Dump(\@category)." ... ".$#category);
-        if ($#category == 0){
-            my $category = $category[0];
-            my ($type,$thiscategory)=$category=~/^([A-Z])(\d+)/;
-            
-            $type =
-                ($type eq "U")?'user':
-                    ($type eq "E")?'enrich':
-                        ($type eq "P")?'aut':
-                            ($type eq "C")?'kor':
-                                ($type eq "S")?'swt':
-                                    ($type eq "N")?'notation':'tit';
-            
-            my $conn_cat_ref = {
-                'T0100' => 'aut',
-                'T0101' => 'aut',
-                'T0102' => 'aut',
-                'T0103' => 'aut',
-                'T0200' => 'kor',
-                'T0201' => 'kor',
-                'T0700' => 'notation',
-                'T0710' => 'swt',
-                'T0902' => 'swt',
-                'T0902' => 'swt',
-                'T0907' => 'swt',
-                'T0912' => 'swt',
-                'T0917' => 'swt',
-                'T0922' => 'swt',
-                'T0927' => 'swt',
-                'T0932' => 'swt',
-                'T0937' => 'swt',
-                'T0942' => 'swt',
-                'T0947' => 'swt',
-            };
-            
-            if ($type eq "tit" && exists $conn_cat_ref->{$category}){
-                # Bestimmung der Titel
-                my $normtable  = $conn_cat_ref->{$category};
-                my $targettype =
-                    ($normtable eq "aut")?2:
-                    ($normtable eq "kor")?3:
-                    ($normtable eq "swt")?4:
-                    ($normtable eq "notation")?5:1;
-                
-                my $sqlstring="select distinct conn.sourceid as sourceid from ".$normtable."_string as norm, conn where conn.category=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.category=1 and norm.content=?";
-                my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-                $request->execute($thiscategory,$targettype,$searchtitofcntnorm);
-                
-                $logger->debug("$thiscategory/$targettype/$searchtitofcntnorm");
-                while (my $res=$request->fetchrow_hashref){
-                    $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
-                }
-                
-                # Bestimmung der Titelzahl
-                $request=$dbh->prepare("select count(distinct conn.sourceid) as rowcount from ".$normtable."_string as norm, conn where conn.category=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.category=1 and norm.content=?") or $logger->error($DBI::errstr);
-                $request->execute($thiscategory,$targettype,$searchtitofcntnorm);
-                
-                my $res=$request->fetchrow_hashref;
-                $hits=$res->{rowcount};
-                
-                $request->finish();
-            }
-            elsif ($type eq "enrich"){
-                my $enrichdbh
-                    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-                        or $logger->error_die($DBI::errstr);
-                
-                my $sqlstring="select distinct ai.id as id from all_isbn as ai, normdata as n where n.category=? and n.content=? and n.isbn=ai.isbn and ai.dbname=? $limits ";
-                my $request=$enrichdbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-                $request->execute($thiscategory,$searchtitofcnt,$database);
-                
-                $logger->debug("Enrich: $sqlstring");
-                $logger->debug("Enrich: $thiscategory/$type/$searchtitofcnt");
-                while (my $res=$request->fetchrow_hashref){
-                    $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
-                }
-                
-                # Bestimmung der Titelzahl
-                $request=$enrichdbh->prepare("select count(distinct ai.id) as rowcount from all_isbn as ai, normdata as n where n.category=? and n.content=? and n.isbn=ai.isbn and ai.dbname=?") or $logger->error($DBI::errstr);
-                $request->execute($thiscategory,$searchtitofcnt,$database);
-                
-                my $res=$request->fetchrow_hashref;
-                $hits=$res->{rowcount};
-                
-                $request->finish();
-                
-            }
-            else {
-                # Bestimmung der Titel
-                my $request=$dbh->prepare("select distinct id from tit_string where category=? and content=? $limits ") or $logger->error($DBI::errstr);
-                $request->execute($thiscategory,$searchtitofcntnorm);
-                
-                while (my $res=$request->fetchrow_hashref){
-                    $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
-                }        
-                
-                # Bestimmung der Titelzahl
-                $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where category=? and content=?") or $logger->error($DBI::errstr);
-                $request->execute($thiscategory,$searchtitofcntnorm);
-                
-                my $res=$request->fetchrow_hashref;
-                $hits=$res->{rowcount};
-                
-                $request->finish();
-            }
-        }
-        elsif ($#category > 0){
-            my @sql_categories = ();
-            my @this_categories = ();
+#         my $limits="";
+#         if ($hitrange > 0){
+#             $limits="limit $offset,$hitrange";
+#         }
 
-            foreach my $category (@category){
-                push @sql_categories, "category=?";
-                my ($thiscategory)=$category=~/^T(\d+)/;
-                push @this_categories, $thiscategory;
-            }
+#         $logger->debug("Categories ".YAML::Dump(\@category)." ... ".$#category);
+#         if ($#category == 0){
+#             my $category = $category[0];
+#             my ($type,$thiscategory)=$category=~/^([A-Z])(\d+)/;
+            
+#             $type =
+#                 ($type eq "U")?'user':
+#                     ($type eq "E")?'enrich':
+#                         ($type eq "P")?'aut':
+#                             ($type eq "C")?'kor':
+#                                 ($type eq "S")?'swt':
+#                                     ($type eq "N")?'notation':'tit';
+            
+#             my $conn_cat_ref = {
+#                 'T0100' => 'aut',
+#                 'T0101' => 'aut',
+#                 'T0102' => 'aut',
+#                 'T0103' => 'aut',
+#                 'T0200' => 'kor',
+#                 'T0201' => 'kor',
+#                 'T0700' => 'notation',
+#                 'T0710' => 'swt',
+#                 'T0902' => 'swt',
+#                 'T0902' => 'swt',
+#                 'T0907' => 'swt',
+#                 'T0912' => 'swt',
+#                 'T0917' => 'swt',
+#                 'T0922' => 'swt',
+#                 'T0927' => 'swt',
+#                 'T0932' => 'swt',
+#                 'T0937' => 'swt',
+#                 'T0942' => 'swt',
+#                 'T0947' => 'swt',
+#             };
+            
+#             if ($type eq "tit" && exists $conn_cat_ref->{$category}){
+#                 # Bestimmung der Titel
+#                 my $normtable  = $conn_cat_ref->{$category};
+#                 my $targettype =
+#                     ($normtable eq "aut")?2:
+#                     ($normtable eq "kor")?3:
+#                     ($normtable eq "swt")?4:
+#                     ($normtable eq "notation")?5:1;
+                
+#                 my $sqlstring="select distinct conn.sourceid as sourceid from ".$normtable."_string as norm, conn where conn.category=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.category=1 and norm.content=?";
+#                 my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+#                 $request->execute($thiscategory,$targettype,$searchtitofcntnorm);
+                
+#                 $logger->debug("$thiscategory/$targettype/$searchtitofcntnorm");
+#                 while (my $res=$request->fetchrow_hashref){
+#                     $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
+#                 }
+                
+#                 # Bestimmung der Titelzahl
+#                 $request=$dbh->prepare("select count(distinct conn.sourceid) as rowcount from ".$normtable."_string as norm, conn where conn.category=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.category=1 and norm.content=?") or $logger->error($DBI::errstr);
+#                 $request->execute($thiscategory,$targettype,$searchtitofcntnorm);
+                
+#                 my $res=$request->fetchrow_hashref;
+#                 $hits=$res->{rowcount};
+                
+#                 $request->finish();
+#             }
+#             elsif ($type eq "enrich"){
+#                 my $enrichdbh
+#                     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+#                         or $logger->error_die($DBI::errstr);
+                
+#                 my $sqlstring="select distinct ai.id as id from all_isbn as ai, normdata as n where n.category=? and n.content=? and n.isbn=ai.isbn and ai.dbname=? $limits ";
+#                 my $request=$enrichdbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+#                 $request->execute($thiscategory,$searchtitofcnt,$database);
+                
+#                 $logger->debug("Enrich: $sqlstring");
+#                 $logger->debug("Enrich: $thiscategory/$type/$searchtitofcnt");
+#                 while (my $res=$request->fetchrow_hashref){
+#                     $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
+#                 }
+                
+#                 # Bestimmung der Titelzahl
+#                 $request=$enrichdbh->prepare("select count(distinct ai.id) as rowcount from all_isbn as ai, normdata as n where n.category=? and n.content=? and n.isbn=ai.isbn and ai.dbname=?") or $logger->error($DBI::errstr);
+#                 $request->execute($thiscategory,$searchtitofcnt,$database);
+                
+#                 my $res=$request->fetchrow_hashref;
+#                 $hits=$res->{rowcount};
+                
+#                 $request->finish();
+                
+#             }
+#             else {
+#                 # Bestimmung der Titel
+#                 my $request=$dbh->prepare("select distinct id from tit_string where category=? and content=? $limits ") or $logger->error($DBI::errstr);
+#                 $request->execute($thiscategory,$searchtitofcntnorm);
+                
+#                 while (my $res=$request->fetchrow_hashref){
+#                     $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
+#                 }        
+                
+#                 # Bestimmung der Titelzahl
+#                 $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where category=? and content=?") or $logger->error($DBI::errstr);
+#                 $request->execute($thiscategory,$searchtitofcntnorm);
+                
+#                 my $res=$request->fetchrow_hashref;
+#                 $hits=$res->{rowcount};
+                
+#                 $request->finish();
+#             }
+#         }
+#         elsif ($#category > 0){
+#             my @sql_categories = ();
+#             my @this_categories = ();
 
-            my $sql_category_string = "( ".join(" or ",@sql_categories)." ) ";
-            my $sql_statement = "select distinct id from tit_string where $sql_category_string and content=? $limits ";
+#             foreach my $category (@category){
+#                 push @sql_categories, "category=?";
+#                 my ($thiscategory)=$category=~/^T(\d+)/;
+#                 push @this_categories, $thiscategory;
+#             }
 
-            $logger->debug($sql_statement. "Args: ".join(" / ",@this_categories)." / ".$searchtitofcntnorm);
+#             my $sql_category_string = "( ".join(" or ",@sql_categories)." ) ";
+#             my $sql_statement = "select distinct id from tit_string where $sql_category_string and content=? $limits ";
+
+#             $logger->debug($sql_statement. "Args: ".join(" / ",@this_categories)." / ".$searchtitofcntnorm);
             
-            # Bestimmung der Titel
-            my $request=$dbh->prepare($sql_statement) or $logger->error($DBI::errstr);
-            $request->execute(@this_categories,$searchtitofcntnorm);
+#             # Bestimmung der Titel
+#             my $request=$dbh->prepare($sql_statement) or $logger->error($DBI::errstr);
+#             $request->execute(@this_categories,$searchtitofcntnorm);
             
-            while (my $res=$request->fetchrow_hashref){
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
-            }        
+#             while (my $res=$request->fetchrow_hashref){
+#                 $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
+#             }        
             
-            # Bestimmung der Titelzahl
-            $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where $sql_category_string and content=?") or $logger->error($DBI::errstr);
-            $request->execute(@this_categories,$searchtitofcntnorm);
+#             # Bestimmung der Titelzahl
+#             $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where $sql_category_string and content=?") or $logger->error($DBI::errstr);
+#             $request->execute(@this_categories,$searchtitofcntnorm);
             
-            my $res=$request->fetchrow_hashref;
-            $hits=$res->{rowcount};
+#             my $res=$request->fetchrow_hashref;
+#             $hits=$res->{rowcount};
             
-            $request->finish();
+#             $request->finish();
     
-        }
+#         }
     
-        $recordlist->print_to_handler({
-            database         => $database,
-            sortorder        => $sortorder,
-            sorttype         => $sorttype,
-            apachereq        => $r,
-            stylesheet       => $stylesheet,
-            template         => 'tt_search_showtitlist_of_cnt_tname',
-            view             => $view,
-            hits             => $hits,
-            offset           => $offset,
-            hitrange         => $hitrange,
-            msg              => $msg,
-        });
+#         $recordlist->print_to_handler({
+#             database         => $database,
+#             sortorder        => $sortorder,
+#             sorttype         => $sorttype,
+#             apachereq        => $r,
+#             stylesheet       => $stylesheet,
+#             template         => 'tt_search_showtitlist_of_cnt_tname',
+#             view             => $view,
+#             hits             => $hits,
+#             offset           => $offset,
+#             hitrange         => $hitrange,
+#             msg              => $msg,
+#         });
 
-        return Apache2::Const::OK;
-    }
+#         return Apache2::Const::OK;
+#     }
 
     #######################################################################
     # Browsen ueber alle Inhalte von Kategorien
@@ -658,7 +660,7 @@ sub show {
             user       => $user,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config->{"tt_search_browse_".$type."_tname"},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{"tt_browse_".$type."_tname"},$ttdata,$r);
         return Apache2::Const::OK;
     }
 

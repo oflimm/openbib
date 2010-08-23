@@ -35,7 +35,7 @@
 
      IF     mex.Zweigstelle == 0 ;
 
-        IF mex.Signatur.match('^2[3-9]A') || mex.Signatur.match('[3-9][0-9]A') ;
+        IF mex.Signatur.match('^2[4-9]A') || mex.Signatur.match('[3-9][0-9]A') ;
            IF mex.Status == "bestellbar" ;
               mex.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
            ELSIF mex.Status == "entliehen" ;

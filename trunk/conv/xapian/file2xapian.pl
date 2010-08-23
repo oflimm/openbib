@@ -526,7 +526,9 @@ my $atime = new Benchmark;
 
 $logger->info("Aktiviere temporaeren Suchindex");
 
-system("rm $thisdbpath/* ; rmdir $thisdbpath ; cp -a  $thistmpdbpath $thisdbpath");
+if ($thisdbpath && $thistmpdbpath){
+    system("rm $thisdbpath/* ; rmdir $thisdbpath ; mv  $thistmpdbpath $thisdbpath");
+}
 
 my $btime      = new Benchmark;
 my $timeall    = timediff($btime,$atime);

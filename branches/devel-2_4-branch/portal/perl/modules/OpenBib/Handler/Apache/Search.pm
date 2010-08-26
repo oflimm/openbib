@@ -1446,12 +1446,16 @@ sub get_databases {
     my $swtindex      = $query->param('swtindex')      || '';
     my $notindex      = $query->param('notindex')      || '';
 
-    my $searchquery = OpenBib::SearchQuery->instance;
+    my $searchquery  = OpenBib::SearchQuery->instance;
 
+    my $sysprofile   = $config->get_viewinfo($view)->{profilename};
+
+    my $orgunits_ref = $config->get_orgunits($sysprofile);
+    
     my $is_orgunit  = 0;
   ORGUNIT_SEARCH:
-    foreach my $orgunit_ref (@{$config->{orgunits}}){
-        if ($orgunit_ref->{short} eq $profil){
+    foreach my $orgunit_ref (@{$orgunits_ref}){
+        if ($orgunit_ref->{orgunitname} eq $profil){
             $is_orgunit=1;
             last ORGUNIT_SEARCH;
         }
@@ -1539,7 +1543,7 @@ sub get_databases {
                     }
                     # ansonsten orgunit
                     else {
-                        @databases = $config->get_active_databases_of_orgunit($profil);
+                        @databases = $config->get_active_databases_of_orgunit($sysprofile,$profil);
                     }
                 }
                 # Kein Profil

@@ -109,7 +109,7 @@ sub load_full_record {
 
     my $sqlrequest;
 
-    $sqlrequest="select category,content,indicator from notation where id = ?";
+    $sqlrequest="select category,content,indicator from classification where id = ?";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
 
@@ -194,7 +194,7 @@ sub load_name {
     
     my $sqlrequest;
 
-    $sqlrequest="select content from notation where id = ? and category=0001";
+    $sqlrequest="select content from classification where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     
@@ -209,17 +209,17 @@ sub load_name {
         undef $timeall;
     }
     
-    my $notation="Unbekannt";
+    my $classification="Unbekannt";
     
     if ($res->{content}) {
-        $notation = decode_utf8($res->{content});
+        $classification = decode_utf8($res->{content});
     }
 
     $request->finish();
 
     $dbh->disconnect() if ($local_dbh);
     
-    $self->{name}=$notation;
+    $self->{name}=$classification;
 
     return $self;
 }

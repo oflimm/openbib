@@ -109,7 +109,7 @@ sub load_full_record {
     
     my $sqlrequest;
 
-    $sqlrequest="select category,content,indicator from swt where id = ?";
+    $sqlrequest="select category,content,indicator from subject where id = ?";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
 
@@ -194,7 +194,7 @@ sub load_name {
     
     my $sqlrequest;
 
-    $sqlrequest="select content from swt where id = ? and category=0001";
+    $sqlrequest="select content from subject where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     
@@ -209,16 +209,16 @@ sub load_name {
         undef $timeall;
     }
     
-    my $schlagwort="";
+    my $subject="";
   
     if ($res->{content}) {
-        $schlagwort = decode_utf8($res->{content});
+        $subject = decode_utf8($res->{content});
     }
 
-    $logger->debug("Schlagwort-Name: $schlagwort");
+    $logger->debug("Schlagwort-Name: $subject");
     $request->finish();
   
-    $self->{name}=$schlagwort;
+    $self->{name}=$subject;
 
     $dbh->disconnect() if ($local_dbh);
     

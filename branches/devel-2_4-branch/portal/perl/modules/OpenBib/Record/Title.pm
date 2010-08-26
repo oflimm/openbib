@@ -155,7 +155,7 @@ sub load_full_record {
             $atime=new Benchmark;
         }
         
-        my $reqstring="select * from tit where id = ?";
+        my $reqstring="select * from title where id = ?";
         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
@@ -641,7 +641,7 @@ sub load_brief_record {
         $logger->debug("Getting cached titlistitem");
         
         # Bestimmung des Satzes
-        my $request=$dbh->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select listitem from title_listitem where id = ?") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         if (my $res=$request->fetchrow_hashref){
@@ -677,8 +677,8 @@ sub load_brief_record {
         }
 
         # Bestimmung der Titelinformationen
-        my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
-        #    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select category,indicator,content from title where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
+        #    my $request=$dbh->prepare("select category,indicator,content from title where id = ? ") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -708,7 +708,7 @@ sub load_brief_record {
         }
         
         # Bestimmung der Exemplarinformationen
-        $request=$dbh->prepare("select mex.category,mex.indicator,mex.content from mex,conn where conn.sourceid = ? and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6 and mex.category=0014") or $logger->error($DBI::errstr);
+        $request=$dbh->prepare("select holding.category,holding.indicator,holding.content from holding,conn where conn.sourceid = ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6 and holding.category=0014") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -1222,7 +1222,7 @@ sub _get_mex_set_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $sqlrequest="select category,content,indicator from mex where id = ?";
+    my $sqlrequest="select category,content,indicator from holding where id = ?";
     my $result=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $result->execute($id);
 

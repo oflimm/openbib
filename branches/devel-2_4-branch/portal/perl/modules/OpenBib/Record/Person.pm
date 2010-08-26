@@ -115,7 +115,7 @@ sub load_full_record {
     
     my $sqlrequest;
 
-    $sqlrequest="select category,content,indicator from aut where id = ?";
+    $sqlrequest="select category,content,indicator from person where id = ?";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
 
@@ -201,7 +201,7 @@ sub load_name {
     
     my $sqlrequest;
 
-    $sqlrequest="select content from aut where id = ? and category=0001";
+    $sqlrequest="select content from person where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     

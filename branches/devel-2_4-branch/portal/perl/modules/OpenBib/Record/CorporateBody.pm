@@ -109,7 +109,7 @@ sub load_full_record {
     
     my $sqlrequest;
 
-    $sqlrequest="select category,content,indicator from kor where id = ?";
+    $sqlrequest="select category,content,indicator from corporatebody where id = ?";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
 
@@ -194,7 +194,7 @@ sub load_name {
     
     my $sqlrequest;
 
-    $sqlrequest="select content from kor where id = ? and category=0001";
+    $sqlrequest="select content from corporatebody where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     

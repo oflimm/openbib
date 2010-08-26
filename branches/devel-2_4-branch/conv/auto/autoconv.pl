@@ -183,12 +183,12 @@ my $atime = new Benchmark;
     }
     
     system("rm $rootdir/data/$database/*");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{titfilename} > $rootdir/data/$database/tit.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{autfilename} > $rootdir/data/$database/aut.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{swtfilename} > $rootdir/data/$database/swt.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{notfilename} > $rootdir/data/$database/not.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{korfilename} > $rootdir/data/$database/kor.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{mexfilename} > $rootdir/data/$database/mex.exp");
+    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{titfilename} > $rootdir/data/$database/title.meta");
+    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{autfilename} > $rootdir/data/$database/person.meta");
+    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{swtfilename} > $rootdir/data/$database/subject.meta");
+    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{notfilename} > $rootdir/data/$database/classification.meta");
+    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{korfilename} > $rootdir/data/$database/corporatebody.meta");
+    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{mexfilename} > $rootdir/data/$database/holding.meta");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
@@ -197,7 +197,7 @@ my $atime = new Benchmark;
 
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");
 
-    if (! -e "$rootdir/data/$database/tit.exp" || ! -s "$rootdir/data/$database/tit.exp"){
+    if (! -e "$rootdir/data/$database/title.meta" || ! -s "$rootdir/data/$database/title.meta"){
         $logger->error("### $database: Keine Daten vorhanden");
 
         goto CLEANUP;
@@ -377,7 +377,7 @@ CLEANUP:
 $logger->info("### $database: Cleanup");
 
 system("$mysqladminexe drop   $databasetmp");
-system("rm $rootdir/data/$database/*");
+system("rm $rootdir/data/$database/*") unless ($database eq "inst006");
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

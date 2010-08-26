@@ -206,68 +206,6 @@ sub show_public_lists_by_subject {
     return Apache2::Const::OK;
 }
 
-sub add_private_list {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $arg            = $self->param('arg')            || '';
-    my $representation = $self->param('representation') || '';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    
-    # CGI Args
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
-    my $title          = decode_utf8($query->param('title'))        || '';
-    my $type           = $query->param('type')        || 1;
-    my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
-
-    if (! $user->{ID}){
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-        
-        # Return-URL in der Session abspeichern
-        
-        $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}?do_login=1");
-        
-        return Apache2::Const::OK;
-    }
-    
-    my $userrole_ref = $user->get_roles_of_user($user->{ID});
-    
-    if ($title eq ""){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-    
-    my $litlistid = $user->add_litlist({ title =>$title, type => $type, subjectids => \@subjectids });
-    
-    # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
-    # der soeben erzeugten Literaturliste hinzugefuegt.
-    if ($titid && $titdb && $litlistid){
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlists_loc}{name}/$litlistid/?action=manage&do_addentry=1&titid=$titid&titdb=$titdb");
-    }
-    
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlists_loc}{name}/private/");
-    return Apache2::Const::OK;
-}
-
 sub show_private_lists {
     my $self = shift;
     

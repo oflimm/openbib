@@ -121,20 +121,7 @@ sub show {
         return Apache2::Const::OK;
     }
 
-    my $showfs        = "1";
-    my $showhst       = "1";
-    my $showverf      = "1";
-    my $showkor       = "1";
-    my $showswt       = "1";
-    my $shownotation  = "1";
-    my $showisbn      = "1";
-    my $showissn      = "1";
-    my $showsign      = "1";
-    my $showmart      = "0";
-    my $showhststring = "1";
-    my $showinhalt    = "1";
-    my $showgtquelle  = "1";
-    my $showejahr     = "1";
+    my $fieldchoice_ref = $config->{default_fieldchoice};
   
     my $userprofiles  = "";
 
@@ -144,10 +131,10 @@ sub show {
     };
 
     my $livesearch_ref = {
-        fs     => 0,
-        verf   => 0,
-        swt    => 0,
-        exact  => 1,
+        freesearch => 0,
+        person     => 0,
+        subject    => 0,
+        exact      => 1,
     };
 
     # Wurde bereits ein Profil bei einer vorangegangenen Suche ausgewaehlt?
@@ -156,23 +143,8 @@ sub show {
     my $userprofile_ref = {};
 
     if ($user->{ID}) {
-        my $fieldchoice_ref = $user->get_fieldchoice();
+        $fieldchoice_ref = $user->get_fieldchoice();
     
-        $showfs        = $fieldchoice_ref->{'fs'};
-        $showhst       = $fieldchoice_ref->{'hst'};
-        $showverf      = $fieldchoice_ref->{'verf'};
-        $showkor       = $fieldchoice_ref->{'kor'};
-        $showswt       = $fieldchoice_ref->{'swt'};
-        $shownotation  = $fieldchoice_ref->{'notation'};
-        $showisbn      = $fieldchoice_ref->{'isbn'};
-        $showissn      = $fieldchoice_ref->{'issn'};
-        $showsign      = $fieldchoice_ref->{'sign'};
-        $showmart      = $fieldchoice_ref->{'mart'};
-        $showhststring = $fieldchoice_ref->{'hststring'};
-        $showinhalt    = $fieldchoice_ref->{'inhalt'};
-        $showgtquelle  = $fieldchoice_ref->{'gtquelle'};
-        $showejahr     = $fieldchoice_ref->{'ejahr'};
-
         $spelling_suggestion_ref = $user->get_spelling_suggestion();
         $livesearch_ref          = $user->get_livesearch();
 
@@ -255,21 +227,8 @@ sub show {
         dbchoice      => $dbchoice_ref,
         dbinfo        => $dbinfotable,
         prevprofile   => $prevprofile,
-        showfs        => $showfs,
-        showhst       => $showhst,
-        showverf      => $showverf,
-        showkor       => $showkor,
-        showswt       => $showswt,
-        shownotation  => $shownotation,
-        showisbn      => $showisbn,
-        showissn      => $showissn,
-        showsign      => $showsign,
-        showmart      => $showmart,
-        showhststring => $showhststring,
-        showinhalt    => $showinhalt,
-        showgtquelle  => $showgtquelle,
-        showejahr     => $showejahr,
 
+        fieldchoice         => $fieldchoice_ref,
         spelling_suggestion => $spelling_suggestion_ref,
         livesearch          => $livesearch_ref,
         

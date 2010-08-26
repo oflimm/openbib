@@ -6,8 +6,8 @@
 -------------- Autorenstammdatei ----------------
 -------------------------------------------------
 
-drop table IF EXISTS aut;
-create table aut (
+drop table IF EXISTS person;
+create table person (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  indicator     SMALLINT,
@@ -20,11 +20,12 @@ create table aut (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 ;
 
-drop table IF EXISTS aut_ft;
-create table aut_ft (
+drop table IF EXISTS person_ft;
+create table person_ft (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -34,11 +35,12 @@ create table aut_ft (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
-drop table IF EXISTS aut_string;
-create table aut_string (
+drop table IF EXISTS person_string;
+create table person_string (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT ,
@@ -48,6 +50,7 @@ create table aut_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 ;
 
@@ -55,8 +58,8 @@ PACK_KEYS=1;
 ------------Koerperschaftsstammdatei ------------
 -------------------------------------------------
 
-drop table IF EXISTS kor;
-create table kor (
+drop table IF EXISTS corporatebody;
+create table corporatebody (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  indicator     SMALLINT,
@@ -69,11 +72,12 @@ create table kor (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 ;
 
-drop table IF EXISTS kor_ft;
-create table kor_ft (
+drop table IF EXISTS corporatebody_ft;
+create table corporatebody_ft (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -83,11 +87,12 @@ create table kor_ft (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
-drop table IF EXISTS kor_string;
-create table kor_string (
+drop table IF EXISTS corporatebody_string;
+create table corporatebody_string (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -97,6 +102,7 @@ create table kor_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 ;
 
@@ -104,8 +110,8 @@ PACK_KEYS=1;
 ------------ Schlagwortstammdatei ---------------
 -------------------------------------------------
 
-drop table IF EXISTS swt;
-create table swt (
+drop table IF EXISTS subject;
+create table subject (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  indicator     SMALLINT,
@@ -118,11 +124,12 @@ create table swt (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 ;
 
-drop table IF EXISTS swt_ft;
-create table swt_ft (
+drop table IF EXISTS subject_ft;
+create table subject_ft (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -132,11 +139,12 @@ create table swt_ft (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
-drop table IF EXISTS swt_string;
-create table swt_string (
+drop table IF EXISTS subject_string;
+create table subject_string (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -146,6 +154,7 @@ create table swt_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 ;
 
@@ -153,8 +162,8 @@ PACK_KEYS=1;
 -------------- Notationstammdatei ---------------
 -------------------------------------------------
 
-drop table IF EXISTS notation;
-create table notation (
+drop table IF EXISTS classification;
+create table classification (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  indicator     SMALLINT,
@@ -167,11 +176,12 @@ create table notation (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 ;
 
-drop table IF EXISTS notation_ft;
-create table notation_ft (
+drop table IF EXISTS classification_ft;
+create table classification_ft (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -181,11 +191,12 @@ create table notation_ft (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
-drop table IF EXISTS notation_string;
-create table notation_string (
+drop table IF EXISTS classification_string;
+create table classification_string (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -195,14 +206,15 @@ create table notation_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 
 -------------------------------------------------
 --------------- Titelstammdatei -----------------
 -------------------------------------------------
 
-drop table IF EXISTS tit;
-create table tit (
+drop table IF EXISTS title;
+create table title (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  indicator     SMALLINT,
@@ -215,10 +227,11 @@ create table tit (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 
-drop table IF EXISTS tit_ft;
-create table tit_ft (
+drop table IF EXISTS title_ft;
+create table title_ft (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -228,10 +241,11 @@ create table tit_ft (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=MyISAM
 PACK_KEYS=1;
 
-drop table IF EXISTS tit_string;
-create table tit_string (
+drop table IF EXISTS title_string;
+create table title_string (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -241,14 +255,15 @@ create table tit_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 
 -------------------------------------------------
 -------------- Exemplarstammdatei ---------------
 -------------------------------------------------
 
-drop table IF EXISTS mex;
-create table mex (
+drop table IF EXISTS holding;
+create table holding (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  indicator     SMALLINT,
@@ -261,10 +276,11 @@ create table mex (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 
-drop table IF EXISTS mex_ft;
-create table mex_ft (
+drop table IF EXISTS holding_ft;
+create table holding_ft (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -274,10 +290,11 @@ create table mex_ft (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=MyISAM
 PACK_KEYS=1;
 
-drop table IF EXISTS mex_string;
-create table mex_string (
+drop table IF EXISTS holding_string;
+create table holding_string (
  id            VARCHAR(255) NOT NULL,
  category      SMALLINT  NOT NULL,
  content       TEXT NOT NULL,
@@ -287,6 +304,7 @@ create table mex_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 
 -------Genereller Connector
@@ -304,16 +322,18 @@ index      (sourceid,sourcetype,targettype)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 
-drop table IF EXISTS titlistitem;
-create table titlistitem (
+drop table IF EXISTS title_listitem;
+create table title_listitem (
 id       VARCHAR(255) NOT NULL,
 listitem BLOB,
-INDEX (id)
+PRIMARY KEY (id)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;
 
 drop table IF EXISTS popularity;
@@ -324,4 +344,5 @@ INDEX     (id)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
+ENGINE=Innodb
 PACK_KEYS=1;

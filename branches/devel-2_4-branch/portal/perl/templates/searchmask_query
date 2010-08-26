@@ -1,3 +1,4 @@
+[%- searchfield = config.get('searchfield') -%]
 [% IF user.is_authenticated %]
 [% autocompletion_type = user.get_autocompletion %]
 [% livesearch = user.get_livesearch %]
@@ -5,21 +6,21 @@
 <script type="text/javascript">
 $(document).ready(function(){
 [%   IF showfs %]
-  $("#autocomplete_fs").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#autocomplete_[% searchfield.freesearch.prefix %]").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
 [%   END %]
 [%   IF showverf %]
-  $("#autocomplete_verf").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#autocomplete_[% searchfield.person.prefix %]").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
 [%   END %]
 [%   IF showswt %]
-  $("#autocomplete_swt").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#autocomplete_[% searchfield.subject.prefix %]").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -31,14 +32,14 @@ $(document).ready(function(){
 <script type="text/javascript">
 $(document).ready(function(){
 [%   IF showfs %]
-  $("#autocomplete_fs").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+  $("#autocomplete_[% searchfield.freesearch.prefix %]").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
 [%   END %]
 [%   IF showverf %]
-  $("#autocomplete_verf").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+  $("#autocomplete_[% searchfield.person.prefix %]").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -48,7 +49,7 @@ $(document).ready(function(){
                   type: "2" }});
 [%   END %]
 [%   IF showswt %]
-  $("#autocomplete_swt").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+  $("#autocomplete_[% searchfield.subject.prefix %]").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -61,64 +62,80 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
+
 <table>
-[% IF showfs %]
-<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input id="autocomplete_fs" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.freesearch %]
+[%- cgiparam = searchfield.freesearch.prefix -%]
+<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showhst %]
-<tr><td class="category">[% msg.maketext("Titelworte") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.title %]
+[%- cgiparam = searchfield.title.prefix -%]
+<tr><td class="category">[% msg.maketext("Titelworte") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showverf %]
-<tr><td class="category">[% msg.maketext("Personen") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input id="autocomplete_verf" type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.person %]
+[%- cgiparam = searchfield.person.prefix -%]
+<tr><td class="category">[% msg.maketext("Personen") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showkor %]
-<tr><td class="category">[% msg.maketext("Institutionen") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.corporatebody %]
+[%- cgiparam = searchfield.corporatebody.prefix -%]
+<tr><td class="category">[% msg.maketext("Institutionen") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showswt %]
-<tr><td class="category">[% msg.maketext("Schlagworte") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input id="autocomplete_swt" type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.subject %]
+[%- cgiparam = searchfield.subject.prefix -%]
+<tr><td class="category">[% msg.maketext("Schlagworte") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF shownotation %]
-<tr><td class="category">[% msg.maketext("Notation") %]</td><td class="category"><select name="boolnotation"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% searchquery.notation.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.classification %]
+[%- cgiparam = searchfield.classification.prefix -%]
+<tr><td class="category">[% msg.maketext("Notation") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showisbn %]
-<tr><td class="category">[% msg.maketext("ISBN") %]</td><td class="category"><select name="boolisbn"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="isbn" value="[% searchquery.isbn.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.isbn %]
+[%- cgiparam = searchfield.isbn.prefix -%]
+<tr><td class="category">[% msg.maketext("ISBN") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showissn %]
-<tr><td class="category">[% msg.maketext("ISSN") %]</td><td class="category"><select name="boolissn"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="issn" value="[% searchquery.issn.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.issn %]
+[%- cgiparam = searchfield.issn.prefix -%]
+<tr><td class="category">[% msg.maketext("ISSN") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showsign %]
-<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.mark %]
+[%- cgiparam = searchfield.mark.prefix -%]
+<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showhststring %]
-<tr><td class="category">[% msg.maketext("Kompletter Titel") %]</td><td class="category"><select name="boolhststring"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% searchquery.hststring.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.titlestring %]
+[%- cgiparam = searchfield.titlestring.prefix -%]
+<tr><td class="category">[% msg.maketext("Kompletter Titel") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showinhalt %]
-<tr><td class="category">[% msg.maketext("Abstrakt/Inhalt") %]</td><td class="category"><select name="boolinhalt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="inhalt" value="[% searchquery.inhalt.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.content %]
+[%- cgiparam = searchfield.content.prefix -%]
+<tr><td class="category">[% msg.maketext("Abstrakt/Inhalt") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showgtquelle %]
-<tr><td class="category">[% msg.maketext("Serie/Band/Quelle") %]</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% IF fieldchoice.source %]
+[%- cgiparam = searchfield.source.prefix -%]
+<tr><td class="category">[% msg.maketext("Serie/Band/Quelle")
+%]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF showmart %]
-<tr><td class="category">[% msg.maketext("Medienart") %]</td><td class="category"><select name="boolmart"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><select name="mart"><option value="" selected="selected">Keine ausgewählt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Hochschulangehoerige">Hochschulangehörige(r)</option><option value="Audio CD">Audio-CD</option><option value="%22Audio Mitschnitt%22">Audio Mitschnitt</option><option value="%22audiovisuelle Materialien%22">Audiovisuelle Materialien</option><option value="Aufsatz">Aufsatz</option><option value="%22Aufsatz-Fotokopie%22">Aufsatz-Fotokopie</option><option value="%22CD-ROM%22">CD-ROM</option><option value="Diskette">Diskette</option><option value="Dissertation">Dissertation</option><option value="DVD">DVD</option><option value="Festschrift">Festschrift</option><option value="Fotokopie">Fotokopie</option><option value="Geschaeftsbericht">Geschäftsbericht</option><option value="Kassette">Kassette</option><option value="Loseblattsammlung">Loseblattsammlung</option><option value="%22masch.Schr.%22">Masch.Schr.</option><option value="Medienkombination">Medienkombination</option><option value="Musikdruck Noten">Musikdruck / Noten</option><option value="Original">Original</option><option value="%22Reisefuehrer, Karte oder Atlas%22">Reiseführer, Karte oder Atlas</option><option value="Sprachkassette">Sprachkassette</option><option value="Standardmonographie">Standardmonographie</option><option value="Video">Video</option><option value="Zeitschrift">Zeitschrift</option><option value="Zeitung">Zeitung</option></select>&nbsp;</td><td></td></tr>
+[% IF fieldchoice.mediatype %]
+[%- cgiparam = searchfield.mediatypestring.prefix -%]
+<tr><td class="category">[% msg.maketext("Medienart") %]</td><td class="category"><select name="b[% cgiparam %]"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><select name="[% cgiparam %]"><option value="" selected="selected">Keine ausgewählt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Hochschulangehoerige">Hochschulangehörige(r)</option><option value="Audio CD">Audio-CD</option><option value="Audio Mitschnitt">Audio Mitschnitt</option><option value="audiovisuelle Materialien">Audiovisuelle Materialien</option><option value="Aufsatz">Aufsatz</option><option value="Aufsatz-Fotokopie">Aufsatz-Fotokopie</option><option value="CD-ROM">CD-ROM</option><option value="Diskette">Diskette</option><option value="Dissertation">Dissertation</option><option value="DVD">DVD</option><option value="Festschrift">Festschrift</option><option value="Fotokopie">Fotokopie</option><option value="Geschaeftsbericht">Geschäftsbericht</option><option value="Kassette">Kassette</option><option value="Loseblattsammlung">Loseblattsammlung</option><option value="masch.Schr.">Masch.Schr.</option><option value="Medienkombination">Medienkombination</option><option value="Musikdruck Noten">Musikdruck / Noten</option><option value="Original">Original</option><option value="Reisefuehrer, Karte oder Atlas">Reiseführer, Karte oder Atlas</option><option value="Sprachkassette">Sprachkassette</option><option value="Standardmonographie">Standardmonographie</option><option value="Video">Video</option><option value="Zeitschrift">Zeitschrift</option><option value="Zeitung">Zeitung</option></select>&nbsp;</td><td></td></tr>
 [% END %]
 
-[% IF showejahr %]
-<tr><td class="category">[% msg.maketext("Jahr") %]</td><td class="category">und<input type="hidden" name="boolejahr" value="AND" /></td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val | html %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
+[% IF fieldchoice.year %]
+[%- cgiparam = searchfield.year.prefix -%]
+<tr><td class="category">[% msg.maketext("Jahr") %]</td><td class="category">und<input type="hidden" name="b[% cgiparam %]" value="AND" /></td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.${cgiparam}.val | html %]" size="4" maxlength="4" />&nbsp;<select name="yearop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
 [% END %]
 
-<tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr>
+<!-- <tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr> -->
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td class="bigtext">[% msg.maketext("in:") %]</td><td colspan="2"><select name="profil">

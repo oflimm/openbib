@@ -1082,14 +1082,14 @@ sub get_active_views {
 
 ####################### TODO ###################### weg
 sub get_active_databases_of_orgunit {
-    my ($self,$orgunit) = @_;
+    my ($self,$systemprofile,$orgunit) = @_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select dbname from dbinfo where active=1 and orgunit = ? order by dbname ASC") or $logger->error($DBI::errstr);
-    $request->execute($orgunit) or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select dbinfo.dbname from dbinfo,orgunitdbs where dbinfo.active=1 and dbinfo.dbname=orgunitdbs.dbname and orgunitdbs.profilename = ? and orgunitdbs.orgunitid = ? order by dbinfo.description ASC") or $logger->error($DBI::errstr);
+    $request->execute($systemprofile,$orgunit) or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};
     }

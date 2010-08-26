@@ -99,7 +99,7 @@ my %xapian_idmapping;
 
 tie %xapian_idmapping, 'DB_File', $config->{'autoconv_dir'}."/pools/$database/xapian_idmapping.db";
 
-open(TITLISTITEM,  "<:utf8","titlistitem.mysql" ) || die "TITLISTITEM konnte nicht geoeffnet werden";
+open(TITLE_LISTITEM,  "<:utf8","title_listitem.mysql" ) || die "TITLE_LISTITEM konnte nicht geoeffnet werden";
 open(SEARCHENGINE, "<:utf8","searchengine.csv"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
 
 my $dbbasedir=$config->{xapian_index_base_path};
@@ -149,9 +149,9 @@ my $atime = new Benchmark;
 
     {
         my $atime = new Benchmark;
-        while (my $titlistitem=<TITLISTITEM>, my $searchengine=<SEARCHENGINE>) {
+        while (my $title_listitem=<TITLE_LISTITEM>, my $searchengine=<SEARCHENGINE>) {
             my ($s_id,$searchcontent)=split ("",$searchengine);
-            my ($t_id,$listitem)=split ("",$titlistitem);
+            my ($t_id,$listitem)=split ("",$title_listitem);
             
             if ($s_id ne $t_id) {
                 $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
@@ -296,7 +296,7 @@ my $atime = new Benchmark;
                 my $sorting_ref = [
                     {
                         # Verfasser/Koepeschaft
-                        id         => $config->{xapian_sorttype_value}{'author'},
+                        id         => $config->{xapian_sorttype_value}{'person'},
                         category   => 'PC0001',
                         type       => 'stringcategory',
                     },
@@ -314,7 +314,7 @@ my $atime = new Benchmark;
                     },
                     {
                         # Jahr
-                        id         => $config->{xapian_sorttype_value}{'yearofpub'},
+                        id         => $config->{xapian_sorttype_value}{'year'},
                         category   => 'T0425',
                         type       => 'integercategory',
                     },
@@ -326,7 +326,7 @@ my $atime = new Benchmark;
                     },
                     {
                         # Signatur
-                        id         => $config->{xapian_sorttype_value}{'signature'},
+                        id         => $config->{xapian_sorttype_value}{'mark'},
                         category   => 'X0014',
                         type       => 'stringcategory',
                     },
@@ -339,22 +339,22 @@ my $atime = new Benchmark;
                     
                 ];
                 
-                my $titlistitem_ref;
+                my $title_listitem_ref;
                 
                 if ($config->{internal_serialize_type} eq "packed_storable"){
-                    $titlistitem_ref = Storable::thaw(pack "H*", $listitem);
+                    $title_listitem_ref = Storable::thaw(pack "H*", $listitem);
                 }
                 elsif ($config->{internal_serialize_type} eq "json"){
-                    $titlistitem_ref = decode_json $listitem;
+                    $title_listitem_ref = decode_json $listitem;
                 }
                 else {
-                    $titlistitem_ref = Storable::thaw(pack "H*", $listitem);
+                    $title_listitem_ref = Storable::thaw(pack "H*", $listitem);
                 }
                 
                 foreach my $this_sorting_ref (@{$sorting_ref}){
                     
                     if ($this_sorting_ref->{type} eq "stringcategory"){
-                        my $content = (exists $titlistitem_ref->{$this_sorting_ref->{category}}[0]{content})?$titlistitem_ref->{$this_sorting_ref->{category}}[0]{content}:"";
+                        my $content = (exists $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content})?$title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}:"";
                         next unless ($content);
                         
                         $content = OpenBib::Common::Util::grundform({
@@ -368,8 +368,8 @@ my $atime = new Benchmark;
                     }
                     elsif ($this_sorting_ref->{type} eq "integercategory"){
                         my $content = 0;
-                        if (exists $titlistitem_ref->{$this_sorting_ref->{category}}[0]{content}){
-                            ($content) = $titlistitem_ref->{$this_sorting_ref->{category}}[0]{content}=~m/^(\d+)/;
+                        if (exists $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}){
+                            ($content) = $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}=~m/^(\d+)/;
                         }
                         if ($content){
                             $content = sprintf "%08d", $content;
@@ -379,8 +379,8 @@ my $atime = new Benchmark;
                     }
                     elsif ($this_sorting_ref->{type} eq "integervalue"){
                         my $content = 0 ;
-                        if (exists $titlistitem_ref->{$this_sorting_ref->{category}}){
-                            ($content) = $titlistitem_ref->{$this_sorting_ref->{category}}=~m/^(\d+)/;
+                        if (exists $title_listitem_ref->{$this_sorting_ref->{category}}){
+                            ($content) = $title_listitem_ref->{$this_sorting_ref->{category}}=~m/^(\d+)/;
                         }
                         if ($content){                    
                             $content = sprintf "%08d",$content;
@@ -413,7 +413,7 @@ my $atime = new Benchmark;
     
 }
 
-close(TITLISTITEM);
+close(TITLE_LISTITEM);
 close(SEARCHENGINE);
 
 untie(%xapian_idmapping);

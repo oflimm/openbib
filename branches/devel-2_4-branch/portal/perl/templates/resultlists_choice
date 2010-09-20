@@ -83,10 +83,10 @@
 [%- END -%]
 )</td></tr>
 
-[% combinedbs = 0 ;
+[% jn = 0 ;
    FOREACH resultdb IN resultdbs ;
       IF resultdb.trefferdb == 'combined' ;
-         combinedbs = 1;
+         jn = 1;
       END ;
    END ;
 %]
@@ -95,7 +95,7 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;combinedbs=1;page=1"><b>kombinierte</b></a> / <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;combinedbs=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;jn=1;page=1"><b>kombinierte</b></a> / <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;jn=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 [% listrow = 'listrow2' %]

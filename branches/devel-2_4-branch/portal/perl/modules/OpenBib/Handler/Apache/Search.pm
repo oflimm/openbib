@@ -112,11 +112,11 @@ sub search_databases {
     my @databases     = ($query->param('db'))?$query->param('db'):();
     my $hitrange      = ($query->param('num' ))?$query->param('num'):50;
     my $page          = ($query->param('page' ))?$query->param('page'):1;
-    my $listtype      = ($query->param('lt' ))?$query->param('lt'):"author";
+    my $listtype      = ($query->param('lt' ))?$query->param('lt'):"cover";
     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
     my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
-    my $combinedbs    = $query->param('combinedbs')    || 0;
+    my $joindbs    = $query->param('jn') || $query->param('combinedbs')    || 0;
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 
@@ -145,19 +145,7 @@ sub search_databases {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $searchquery = OpenBib::SearchQuery->instance;
     
-    my $is_orgunit=0;
-
     my $sb = $config->{local_search_backend};
-    
-  ORGUNIT_SEARCH:
-    foreach my $orgunit_ref (@{$config->{orgunits}}){
-        if ($orgunit_ref->{short} eq $profil){
-            $is_orgunit=1;
-            last ORGUNIT_SEARCH;
-        }
-    }
-    
-    $profil="" if (!$is_orgunit && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
 
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
@@ -531,7 +519,7 @@ sub search_databases {
     
     # Kombinierte Suche ueber alle Kataloge
 
-    if ($combinedbs){
+    if ($joindbs){
         # Trefferliste
         my $recordlist;
         
@@ -696,7 +684,7 @@ sub search_databases {
                 
                 nav             => $nav,
                 
-                combinedbs      => $combinedbs,
+                joindbs      => $joindbs,
                 
                 drilldown             => $drilldown,
                 
@@ -1165,7 +1153,7 @@ sub search_databases {
             results  => \%trefferpage,
             dbhits   => \%dbhits,
             hitrange => $hitrange,
-        }) unless ($combinedbs);
+        }) unless ($joindbs);
 
     }
     
@@ -1199,7 +1187,7 @@ sub search_index {
     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
     my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
-    my $combinedbs    = $query->param('combinedbs')    || 0;
+    my $joindbs       = $query->param('jn') || $query->param('combinedbs')    || 0;
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 

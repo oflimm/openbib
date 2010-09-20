@@ -125,7 +125,7 @@ $(document).ready(function(){
 
 
 
-<input type="hidden" name="combinedbs" value="1" />
+<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"         value="2" />
 
 [% PROCESS common/subtemplate name="searchmask_query" %]
@@ -200,7 +200,7 @@ $(document).ready(function(){
 
 
 
-<input type="hidden" name="combinedbs" value="1" />
+<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="mart"      value="Zeitschrift_Serie" />
 <input type="hidden" name="boolmart"  value="AND" />
@@ -260,7 +260,7 @@ $(document).ready(function(){
 
 
 
-<input type="hidden" name="combinedbs" value="1" />
+<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="mart"      value="Aufsatz" />
 <input type="hidden" name="boolmart"  value="AND" />

@@ -144,7 +144,7 @@ function submitViaEnter(evt){
 <form method="post" id="openbib" action="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]" enctype="application/x-www-form-urlencoded">
 
 
-<input type="hidden" name="combinedbs" value="1" />
+<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="2" />
 
 <div id="searchmask_advanced"><!-- Begin searchmask_advanced -->

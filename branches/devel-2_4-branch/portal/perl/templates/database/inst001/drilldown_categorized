@@ -100,8 +100,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <table>
 
 [% request_base = "dd=1;";
-   IF combinedbs ;
-      request_base = "${request_base}combinedbs=1;";
+   IF jn ;
+      request_base = "${request_base}jn=1;";
       IF searchall ;
          request_base = "${request_base}searchall=1;";
       ELSE ;
@@ -113,7 +113,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
       request_base = "${request_base}searchprofile=1;dbauswahl=1;database=${database};";
    END ;
 %] 
-[%         IF combinedbs == 1 && category_map.8.size > 0 %]
+[%         IF jn == 1 && category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_db_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>

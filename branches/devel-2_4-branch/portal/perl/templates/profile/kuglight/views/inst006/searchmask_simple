@@ -129,7 +129,7 @@
 </table>
 
 <p />
-<center><select name="combinedbs"><option value="1"
+<center><select name="jn"><option value="1"
 selected="selected">[% msg.maketext("Kataloge kombinieren") %]</option><option
 value="0">[% msg.maketext("getrennte Kataloge") %]</option></select>
 </center>

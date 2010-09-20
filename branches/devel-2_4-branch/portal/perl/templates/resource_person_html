@@ -76,10 +76,10 @@ END;
 [%# USE dumper;dumper.dump(normset)%]
 [%
 
-    request_base = "page=1;num=50;srt=author;srto=up;dd=1;combinedbs=1;";
+    request_base = "page=1;num=50;srt=author;srto=up;dd=1;jn=1;";
 
     searchterm        = normset.${"P0001"}.first.content;
-    searchprefix      = config.get('searchfield').verfstring.prefix;
+    searchprefix      = config.get('searchfield').personstring.prefix;
 
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
     globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";

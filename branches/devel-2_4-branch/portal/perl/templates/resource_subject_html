@@ -77,8 +77,14 @@ END;
 
 [%
     searchterm        = normset.${"S0001"}.first.content;
+    searchprefix      = config.get('searchfield').subjectstring.prefix;
+
+
+
+
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-    globalurl         = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?searchall=1;swt=%22${searchterm}%22";
+
+    globalurl         = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
 %]
 

@@ -101,8 +101,8 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <table>
 
 [% request_base = "page=1;num=50;srt=author;srto=up;dd=1;";
-   IF combinedbs ;
-      request_base = "${request_base}combinedbs=1;";
+   IF jn ;
+      request_base = "${request_base}jn=1;";
       IF searchall ;
          request_base = "${request_base}searchall=1;";
       ELSE ;
@@ -114,7 +114,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
       request_base = "${request_base}searchprofile=1;dbauswahl=1;db=${database};";
    END ;
 %]
-[%         IF combinedbs == 1 && category_map.8.size > 0 %]
+[%         IF jn == 1 && category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_db_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>
@@ -149,7 +149,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [% END %]
 [%-
     searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').verfstring.prefix;
+    searchprefix  = config.get('searchfield').personstring.prefix;
 -%]
 <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
@@ -174,7 +174,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [% END %]
 [%-
     searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').korstring.prefix;
+    searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 -%]
 <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
@@ -199,7 +199,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 [% END %]
 [%-
     searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').swtstring.prefix;
+    searchprefix  = config.get('searchfield').subjectstring.prefix;
 -%]
 <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]

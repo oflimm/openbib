@@ -99,7 +99,6 @@ sub show {
     my $sorttype     = ($query->param('srt'))?$query->param('srt'):"author";
     my $sortall      = ($query->param('sortall'))?$query->param('sortall'):'0';
     my $sortorder    = ($query->param('srto'))?$query->param('srto'):'up';
-    my $combinedbs   = $query->param('combinedbs')   || 0;
     my $queryid      = $query->param('queryid')      || '';
     my $offset       = (defined $query->param('offset'))?$query->param('offset'):0;
     ($offset)=$offset=~/^(-?\d+)$/; # offset muss numerisch sein (SQL-Injection)

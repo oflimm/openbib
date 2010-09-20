@@ -37,7 +37,7 @@
    classnr = classnr - 1;
 
    searchterm    = item;
-   searchprefix  = config.get('searchfield').swtstring.prefix;
+   searchprefix  = config.get('searchfield').subjectstring.prefix;
 
    localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
 
@@ -89,7 +89,7 @@
    classnr = classnr - 1;
 
    searchterm    = item;
-   searchprefix  = config.get('searchfield').swtstring.prefix;
+   searchprefix  = config.get('searchfield').subjectstring.prefix;
 
    localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
 

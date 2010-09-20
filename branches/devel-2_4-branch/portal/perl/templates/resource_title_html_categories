@@ -18,7 +18,7 @@
 <tr><td class="category">id</td><td>[% record.id %]</td></tr>
 
 [%-
-request_base = "page=1;num=50;srt=author;srto=up;dd=1;";
+request_base = config.get('search_defaultparams');
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
@@ -44,7 +44,7 @@ FOREACH category IN categories;
          END ;
 
          searchterm    = item.content;
-         searchprefix  = config.get('searchfield').verfstring.prefix;
+         searchprefix  = config.get('searchfield').personstring.prefix;
 
          resourceurl = "${config.get('base_loc')}/${view}/${config.get('handler').resource_person_loc.name}/${record.database}/${thisid}/html";
          globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
@@ -63,7 +63,7 @@ FOREACH category IN categories;
          END ;
 
          searchterm    = item.content;
-         searchprefix  = config.get('searchfield').korstring.prefix;
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          resourceurl = "${config.get('base_loc')}/${view}/${config.get('handler').resource_corporatebody_loc.name}/${record.database}/${thisid}/html";
          globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
@@ -164,7 +164,7 @@ FOREACH category IN categories;
          END ;
 
          searchterm    = item.content;
-         searchprefix  = config.get('searchfield').swtstring.prefix;
+         searchprefix  = config.get('searchfield').subjectstring.prefix;
 
          resourceurl = "${config.get('base_loc')}/${view}/${config.get('handler').resource_subject_loc.name}/${record.database}/${thisid}/html";
          globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
@@ -184,7 +184,7 @@ FOREACH category IN categories;
          END ;
 
          searchterm    = item.content;
-         searchprefix  = config.get('searchfield').sysstring.prefix;
+         searchprefix  = config.get('searchfield').classificationstring.prefix;
 
          resourceurl = "${config.get('base_loc')}/${view}/${config.get('handler').resource_classification_loc.name}/${record.database}/${thisid}/html";
          localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";

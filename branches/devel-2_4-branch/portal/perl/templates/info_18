@@ -68,7 +68,7 @@
 %]
 
 [%- IF resultlist.size > 5 -%]
-[%- searchprefix  = config.get('searchfield').verfstring.prefix -%]
+[%- searchprefix  = config.get('searchfield').personstring.prefix -%]
 
 <ol class="cloud">
 [%- FOREACH thisitem IN resultlist -%]

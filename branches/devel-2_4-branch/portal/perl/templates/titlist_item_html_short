@@ -35,7 +35,7 @@
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
          searchterm    = part.content;
-         searchprefix  = config.get('searchfield').verfstring.prefix;
+         searchprefix  = config.get('searchfield').personstring.prefix;
 
          globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
@@ -53,7 +53,7 @@
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
          searchterm    = part.content;
-         searchprefix  = config.get('searchfield').verfstring.prefix;
+         searchprefix  = config.get('searchfield').personstring.prefix;
 
          globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
@@ -67,7 +67,7 @@
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
          searchterm    = part.content;
-         searchprefix  = config.get('searchfield').korstring.prefix;
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
@@ -81,7 +81,7 @@
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_pers') ;
          searchterm    = part.content;
-         searchprefix  = config.get('searchfield').korstring.prefix;
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 

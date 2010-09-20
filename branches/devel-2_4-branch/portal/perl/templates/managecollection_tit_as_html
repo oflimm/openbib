@@ -170,7 +170,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
 [%-  searchterm    = part.content;
-     searchprefix  = config.get('searchfield').verfstring.prefix;
+     searchprefix  = config.get('searchfield').personstring.prefix;
 
      globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
@@ -179,7 +179,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- END -%]
 [%- FOREACH part IN item.${'P0101'}  -%]
 [%-  searchterm    = part.content;
-     searchprefix  = config.get('searchfield').verfstring.prefix;
+     searchprefix  = config.get('searchfield').personstring.prefix;
 
      globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
@@ -189,7 +189,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- FOREACH part IN item.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
 [%-  searchterm    = part.content;
-     searchprefix  = config.get('searchfield').korstring.prefix;
+     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
      globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
@@ -198,7 +198,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- FOREACH part IN item.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
 [%-  searchterm    = part.content;
-     searchprefix  = config.get('searchfield').korstring.prefix;
+     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
      globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]

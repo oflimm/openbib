@@ -35,7 +35,7 @@
    itemclass = css_classes.$classnr;
 
    searchterm    = item;
-   searchprefix  = config.get('searchfield').verfstring.prefix;
+   searchprefix  = config.get('searchfield').personstring.prefix;
 
    localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
 
@@ -85,7 +85,7 @@
    itemclass = css_classes.$classnr;
 
    searchterm    = item;
-   searchprefix  = config.get('searchfield').verfstring.prefix;
+   searchprefix  = config.get('searchfield').personstring.prefix;
 
    localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchprofile=1;dbauswahl=1;database=${database};fs=${searchprefix}:|${searchterm}|";
 

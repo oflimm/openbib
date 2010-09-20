@@ -46,8 +46,10 @@
   </div>
 <p/>
 
-[% suggestion = sq.get_spelling_suggestion %]
-[% IF spelling_suggestion.resultlist && suggestion  %]
-[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% search_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% IF spelling_suggestion.resultlist %]
+[%    suggestion = sq.get_spelling_suggestion %]
+[%     IF suggestion%]
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% search_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;jn=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[%     END %]
 [% END %]
 

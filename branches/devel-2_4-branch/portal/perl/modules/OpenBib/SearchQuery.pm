@@ -31,6 +31,7 @@ no warnings 'redefine';
 use utf8;
 
 use base qw(Apache::Singleton);
+#use base qw(Class::Singleton);
 
 use Apache2::Request ();
 use Benchmark ':hireswallclock';
@@ -138,7 +139,7 @@ sub set_from_apache_request {
         #####################################################################
         ## searchfield_content: Inhalt der Suchfelder des Nutzers
 
-        $self->{_searchquery}->{$searchfieldprefix}->{val}  = $searchfield_content;
+        $self->{_searchquery}->{$searchfield}->{val}  = $searchfield_content;
 
         #####################################################################
         ## searchfield_bool_op: Verknuepfung der Eingabefelder (leere Felder werden ignoriert)
@@ -146,12 +147,12 @@ sub set_from_apache_request {
         ##        OR   - Oder-Verknuepfung
         ##        NOT  - Und Nicht-Verknuepfung
 
-        $self->{_searchquery}->{$searchfieldprefix}->{bool} = $searchfield_bool_op;
+        $self->{_searchquery}->{$searchfield}->{bool} = $searchfield_bool_op;
 
         if ($searchfield_norm_content){
             # Zuerst Stringsuchen in der Freie Suche
 
-            if ($searchfieldprefix eq "fs" || $searchfield_norm_content=~/:|.+?|/){
+            if ($searchfield eq "freesearch" || $searchfield_norm_content=~/:|.+?|/){
                 while ($searchfield_norm_content=~m/^([^\|]+)\|([^\|]+)\|(.*)$/){
                     my $first = $1;
                     my $string = $2;
@@ -203,7 +204,7 @@ sub set_from_apache_request {
             
             if ($searchfield_norm_content){
                 $self->{_have_searchterms} = 1;
-                $self->{_searchquery}{$searchfieldprefix}{norm} = $searchfield_norm_content;
+                $self->{_searchquery}{$searchfield}{norm} = $searchfield_norm_content;
             }
 
             $logger->debug("Added searchterm $searchfield_bool_op - $searchfield_content - $searchfield_norm_content");
@@ -450,7 +451,7 @@ sub to_xapian_querystring {
         my $searchtermop     = (defined $self->{_searchquery}->{$field}->{bool} && defined $ops_ref->{$self->{_searchquery}->{$field}->{bool}})?$ops_ref->{$self->{_searchquery}->{$field}->{bool}}:'';
         if ($searchtermstring) {
             # Freie Suche einfach uebernehmen
-            if ($field eq "fs" && $searchtermstring) {
+            if ($field eq "freesearch" && $searchtermstring) {
 #                 my @searchterms = split('\s+',$searchtermstring);
                 
 #                 # Inhalte von @searchterms mit Suchprefix bestuecken
@@ -462,7 +463,7 @@ sub to_xapian_querystring {
                 push @xapianquerystrings, $searchtermstring;
             }
             # Titelstring mit _ ersetzten
-            elsif (($field eq "hststring" || $field eq "sign") && $searchtermstring) {
+            elsif (($field eq "titlestring" || $field eq "mark") && $searchtermstring) {
                 my @chars = split("",$searchtermstring);
                 my $newsearchtermstring = "";
                 foreach my $char (@chars){

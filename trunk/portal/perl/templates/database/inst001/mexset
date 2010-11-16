@@ -4,6 +4,7 @@
 
 [% listrow = 'listrow1' %]
 [% FOREACH mex IN mexnormset %]
+[% NEXT IF mex.${"X0014"}.content.match('^-') && mex.${"X0016"}.content.match('^-') && mex.${"X1204"}.content.match('^-') %]
 <tr class="[% listrow %]" align="center"><td><strong>
 [%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
 <a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>
@@ -48,9 +49,11 @@ Bestand. Lieferzeit ca. 14. Tage (<i>ausleihbar nach Bestellung</i>)
 [% ELSIF mex.${"X0014"}.content.match('^ZTG ')
 %]Zeitungsbestand. USB-Magazin (<i>ausleihbar nach Bestellung</i> mit
 konventionellem Bestellschein der Auskunft o. Lesesaal-Theke im 1.OG)
+[% ELSIF mex.${"X0014"}.content.match('^P ') %]
+Zeitschriftenlesesaal (1.OG) (<i>sofort einsehbar</i>)
 [% ELSIF NOT mex.${"X0014"}.content.match('^-') && mex.${"X0016"}.content.match('^-') %]USB Magazin (<i>ausleihbar
 nach Bestellung</i>, siehe B&auml;nde)
-[% ELSE %][% mex.${"X0016"}.content %][% END %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% IF mex.${"X1200"} %][% mex.${"X1200"}.content %] [% END %][% mex.${"X1204"}.content %][% IF mex.${"X1203"} %] ([% mex.${"X1203"}.content %])[% END %]</td></tr>
+[% ELSE %][% mex.${"X0016"}.content %][% END %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% IF mex.${"X1200"} %][% mex.${"X1200"}.content %] [% END %][% IF mex.${"X0014"}.content.match('^P ') %]Ungeb. Hefte[% ELSE %][% mex.${"X1204"}.content %][% IF mex.${"X1203"} %] ([% mex.${"X1203"}.content %])[% END %][% END %]</td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

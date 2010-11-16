@@ -20,7 +20,12 @@
 
 <div id="maincontent">
 
-<div class="boxedclear">
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=21">Quelleninformationen</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=portrait;stid=22" title="Unbekannte">Unbekannte Portraits</a></li>
+</ul>
+
+<div class="content">
 
 <table>
 <tr><td style="vertical-align: top;padding-top:10px;">

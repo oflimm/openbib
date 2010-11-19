@@ -10,7 +10,7 @@ my %id2zdbid = ();
 
 while (<>){
        
-    if (/^0000:(\d+)/){
+    if (/^0000:(.+)/){
         $localid=$1;
         $id = 0;
         @buffer=($_);

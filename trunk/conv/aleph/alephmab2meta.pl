@@ -31,6 +31,8 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
+use utf8;
+
 use Getopt::Long;
 use Encode::MAB2;
 use MAB2::Record::Base;
@@ -66,57 +68,63 @@ my $perdefs_ref = {
 };
 
 print "Bearbeite Personen\n";
-open(PEROUT,'>:utf8','unload.PER');
 
-tie @mab2perdata, 'Tie::MAB2::Recno', file => "tmp.PER";
-
-foreach my $rawrec (@mab2perdata){
-    my $rec = MAB2::Record::Base->new($rawrec);
-#    print $rec->readable."\n----------------------\n";    
-    my $multcount_ref = {};
+if (-e "tmp.PER"){
+    open(PEROUT,'>:utf8','unload.PER');
     
-    foreach my $category_ref (@{$rec->_struct->[1]}){
-        my $category  = $category_ref->[0];
-        my $indicator = $category_ref->[1];
-        my $content   = konv($category_ref->[2]);
-
-        my $newcategory = "";
+    tie @mab2perdata, 'Tie::MAB2::Recno', file => "tmp.PER";
+    
+    foreach my $rawrec (@mab2perdata){
+        my $rec = MAB2::Record::Base->new($rawrec);
+        #    print $rec->readable."\n----------------------\n";    
+        my $multcount_ref = {};
         
-        if (!exists $perdefs_ref->{$category}){
-            next;
+        foreach my $category_ref (@{$rec->_struct->[1]}){
+            my $category  = $category_ref->[0];
+            my $indicator = $category_ref->[1];
+            my $content   = konv($category_ref->[2]);
+            
+            my $newcategory = "";
+            
+            if (!exists $perdefs_ref->{$category}){
+                next;
+            }
+            
+            # Vorabfilterung
+            #        if ($category =~ /^001$/){
+            #            $content=~s/\D//g;
+            #        }
+            
+            if ($category =~ /^002$/){
+                $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
+            }
+            
+            # Standard-Konvertierung mit perkonv
+            
+            if (!$perdefs_ref->{$category}{mult}){
+                $indicator="";
+            }
+            
+            if (exists $perdefs_ref->{$category}{newcat}){
+                $newcategory = $perdefs_ref->{$category}{newcat};
+            }
+            
+            if ($newcategory && $perdefs_ref->{$category}{mult} && $content){
+                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
+                print PEROUT "$newcategory.$multcount:$content\n";
+            }
+            elsif ($newcategory && $content){
+                print PEROUT "$newcategory:$content\n";
+            }
         }
-        
-        # Vorabfilterung
-        if ($category =~ /^001$/){
-            $content=~s/\D//g;
-        }
-
-        if ($category =~ /^002$/){
-            $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
-        }
-
-        # Standard-Konvertierung mit perkonv
-
-        if (!$perdefs_ref->{$category}{mult}){
-            $indicator="";
-        }
-
-        if (exists $perdefs_ref->{$category}{newcat}){
-            $newcategory = $perdefs_ref->{$category}{newcat};
-        }
-
-        if ($newcategory && $perdefs_ref->{$category}{mult} && $content){
-            my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-            print PEROUT "$newcategory.$multcount:$content\n";
-        }
-        elsif ($newcategory && $content){
-            print PEROUT "$newcategory:$content\n";
-        }
+        print PEROUT "9999:\n\n";
     }
-    print PEROUT "9999:\n\n";
+    
+    close(PEROUT);
 }
-
-close(PEROUT);
+else {
+    print STDERR "Keine Persoenendaten vorhanden\n";
+}
 
 ######################################################################
 # Koerperschafts-Daten
@@ -278,57 +286,63 @@ my $kordefs_ref = {
 };
 
 print "Bearbeite Koerperschaften\n";
-open(KOROUT,'>:utf8','unload.KOE');
 
-tie @mab2kordata, 'Tie::MAB2::Recno', file => "tmp.KOE";
-
-foreach my $rawrec (@mab2kordata){
-    my $rec = MAB2::Record::Base->new($rawrec);
-#    print $rec->readable."\n----------------------\n";    
-    my $multcount_ref = {};
+if (-e "tmp.KOE"){
+    open(KOROUT,'>:utf8','unload.KOE');
     
-    foreach my $category_ref (@{$rec->_struct->[1]}){
-        my $category  = $category_ref->[0];
-        my $indicator = $category_ref->[1];
-        my $content   = konv($category_ref->[2]);
-
-        my $newcategory = "";
+    tie @mab2kordata, 'Tie::MAB2::Recno', file => "tmp.KOE";
+    
+    foreach my $rawrec (@mab2kordata){
+        my $rec = MAB2::Record::Base->new($rawrec);
+        #    print $rec->readable."\n----------------------\n";    
+        my $multcount_ref = {};
         
-        if (!exists $kordefs_ref->{$category}){
-            next;
+        foreach my $category_ref (@{$rec->_struct->[1]}){
+            my $category  = $category_ref->[0];
+            my $indicator = $category_ref->[1];
+            my $content   = konv($category_ref->[2]);
+            
+            my $newcategory = "";
+            
+            if (!exists $kordefs_ref->{$category}){
+                next;
+            }
+            
+            # Vorabfilterung
+            #        if ($category =~ /^001$/){
+            #            $content=~s/\D//g;
+            #        }
+            
+            if ($category =~ /^002$/){
+                $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
+            }
+            
+            # Standard-Konvertierung mit perkonv
+            
+            if (!$kordefs_ref->{$category}{mult}){
+                $indicator="";
+            }
+            
+            if (exists $kordefs_ref->{$category}{newcat}){
+                $newcategory = $kordefs_ref->{$category}{newcat};
+            }
+            
+            if ($newcategory && $kordefs_ref->{$category}{mult} && $content){
+                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
+                print KOROUT "$newcategory.$multcount:$content\n";
+            }
+            elsif ($newcategory && $content){
+                print KOROUT "$newcategory:$content\n";
+            }
         }
-        
-        # Vorabfilterung
-        if ($category =~ /^001$/){
-            $content=~s/\D//g;
-        }
-
-        if ($category =~ /^002$/){
-            $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
-        }
-
-        # Standard-Konvertierung mit perkonv
-
-        if (!$kordefs_ref->{$category}{mult}){
-            $indicator="";
-        }
-
-        if (exists $kordefs_ref->{$category}{newcat}){
-            $newcategory = $kordefs_ref->{$category}{newcat};
-        }
-
-        if ($newcategory && $kordefs_ref->{$category}{mult} && $content){
-            my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-            print KOROUT "$newcategory.$multcount:$content\n";
-        }
-        elsif ($newcategory && $content){
-            print KOROUT "$newcategory:$content\n";
-        }
+        print KOROUT "9999:\n\n";
     }
-    print KOROUT "9999:\n\n";
+    
+    close(KOROUT);
 }
-
-close(KOROUT);
+else {
+    print "Keine Koerperschaftsdaten vorhanden\n";
+}
 
 ######################################################################
 # Schlagwort-Daten
@@ -374,220 +388,66 @@ my $swtdefs_ref = {
 };
 
 print "Bearbeite Schlagworte\n";
-open(SWTOUT,'>:utf8','unload.SWD');
 
-tie @mab2swtdata, 'Tie::MAB2::Recno', file => "tmp.SWD";
-
-SWTLOOP: foreach my $rawrec (@mab2swtdata){
-    my $rec = MAB2::Record::Base->new($rawrec);
-#    print $rec->readable."\n----------------------\n";    
-    my $multcount_ref = {};
+if (-e "tmp.SWD"){
+    open(SWTOUT,'>:utf8','unload.SWD');
     
-    foreach my $category_ref (@{$rec->_struct->[1]}){
-        my $category  = $category_ref->[0];
-        my $indicator = $category_ref->[1];
-        my $content   = konv($category_ref->[2]);
-
-        my $newcategory = "";
+    tie @mab2swtdata, 'Tie::MAB2::Recno', file => "tmp.SWD";
+    
+  SWTLOOP: foreach my $rawrec (@mab2swtdata){
+        my $rec = MAB2::Record::Base->new($rawrec);
+        #    print $rec->readable."\n----------------------\n";    
+        my $multcount_ref = {};
         
-        if (!exists $swtdefs_ref->{$category}){
-            next;
+        foreach my $category_ref (@{$rec->_struct->[1]}){
+            my $category  = $category_ref->[0];
+            my $indicator = $category_ref->[1];
+            my $content   = konv($category_ref->[2]);
+            
+            my $newcategory = "";
+            
+            if (!exists $swtdefs_ref->{$category}){
+                next;
+            }
+            
+            # Vorabfilterung
+            #        if ($category =~ /^001$/){
+            #            $content=~s/\D//g;
+            #            $content = sprintf "%d", $content;
+            #            next SWTLOOP if ($content > 10000000);
+            #        }
+            
+            if ($category =~ /^002$/){
+                $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
+            }
+            
+            # Standard-Konvertierung mit perkonv
+            
+            if (!$swtdefs_ref->{$category}{mult}){
+                $indicator="";
+            }
+            
+            if (exists $swtdefs_ref->{$category}{newcat}){
+                $newcategory = $swtdefs_ref->{$category}{newcat};
+            }
+            
+            if ($newcategory && $swtdefs_ref->{$category}{mult} && $content){
+                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
+                print SWTOUT "$newcategory.$multcount:$content\n";
+            }
+            elsif ($newcategory && $content){
+                print SWTOUT "$newcategory:$content\n";
+            }
         }
-        
-        # Vorabfilterung
-        if ($category =~ /^001$/){
-            $content=~s/\D//g;
-            $content = sprintf "%d", $content;
-            next SWTLOOP if ($content > 10000000);
-        }
-
-        if ($category =~ /^002$/){
-            $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
-        }
-
-        # Standard-Konvertierung mit perkonv
-
-        if (!$swtdefs_ref->{$category}{mult}){
-            $indicator="";
-        }
-
-        if (exists $swtdefs_ref->{$category}{newcat}){
-            $newcategory = $swtdefs_ref->{$category}{newcat};
-        }
-
-        if ($newcategory && $swtdefs_ref->{$category}{mult} && $content){
-            my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-            print SWTOUT "$newcategory.$multcount:$content\n";
-        }
-        elsif ($newcategory && $content){
-            print SWTOUT "$newcategory:$content\n";
-        }
+        print SWTOUT "9999:\n\n";
     }
-    print SWTOUT "9999:\n\n";
+    
+    close(SWTOUT);
+}
+else {
+    print "Keine Schlagwortdaten vorhanden\n";
 }
 
-close(SWTOUT);
-
-
-######################################################################
-# Titel-Daten
-
-my $titdefs_ref = {
-    '001'  => {
-        newcat => '0000', # ID
-        mult   => 0,
-    },    
-    '002'  => {
-        newcat => '0002', # SDN
-        mut    => 0,
-    },
-    '010'  => {           # identifikationsnummer des direkt uebergeordneten datensatzes
-        newcat => '0004', # Uebergeordn. Satz
-        mut    => 1,
-    },
-    '089' => {            # bandangaben in vorlageform
-        newcat => '0089', # bandangaben in vorlageform
-        mult   => 1,
-    },
-    '331' => {            # hauptsachtitel in vorlageform oder mischform
-        newcat => '0331', # hauptsachtitel in vorlageform oder mischform
-        mult   => 1,
-    },
-    '403' => {            # ausgabebezeichnung in vorlageform
-        newcat => '0403', # ausgabebezeichnung in vorlageform
-        mult   => 1,
-    },
-    '425' => {            # erscheinungsjahr(e)
-        newcat => '0425', # erscheinungsjahr(e)
-        mult   => 1,
-    },
-    '433' => {            # umfangsangabe
-        newcat => '0433', # umfangsangabe
-        mult   => 1,
-    },
-    '540' => {            # internationale standardbuchnummer (isbn)
-        newcat => '0540', # internationale standardbuchnummer (isbn)
-        mult   => 1,
-    },
-    '335' => {            # zusaetze zum hauptsachtitel
-        newcat => '0335', # zusaetze zum hauptsachtitel
-        mult   => 1,
-    },
-    '359' => {            # verfasserangabe
-        newcat => '0359', # verfasserangabe
-        mult   => 1,
-    },
-    '410' => {            # ort(e) des 1. verlegers, druckers usw.
-        newcat => '0410', # ort(e) des 1. verlegers, druckers usw.
-        mult   => 1,
-    },
-    '412' => {            # name des 1. verlegers, druckers usw.
-        newcat => '0412', # name des 1. verlegers, druckers usw.
-        mult   => 1,
-    },
-    '710' => {            # schlagwoerter und schlagwortketten
-        newcat => '0710', # schlagwoerter und schlagwortketten
-        mult   => 1,
-        ref    => 1,
-    },
-    '451' => {            # 1. gesamttitel in vorlageform
-        newcat => '0451', # 1. gesamttitel in vorlageform
-        mult   => 1,
-    },
-    '100' => {            # name der 1. person in ansetzungsform
-        newcat => '0100', # verfasser
-        mult   => 1,
-        ref    => 1,
-    },
-    '104' => {            # name der 2. person in ansetzungsform
-        newcat => '0100', # verfasser
-        mult   => 1,
-        ref    => 1,
-    },
-    '108' => {            # name der 3. person in ansetzungsform
-        newcat => '0100', # verfasser
-        mult   => 1,
-        ref    => 1,
-    },
-    '200' => {            # name der 1. koerperschaft in ansetzungsform
-        newcat => '0200', # koerperschaft
-        mult   => 1,
-        ref    => 1,
-    },
-    '204' => {            # name der 2. koerperschaft in ansetzungsform
-        newcat => '0200', # koerperschaft
-        mult   => 1,
-        ref    => 1,
-    },
-    '208' => {            # name der 3. koerperschaft in ansetzungsform
-        newcat => '0200', # koerperschaft
-        mult   => 1,
-        ref    => 1,
-    },
-};
-
-print "Bearbeite Titel\n";
-open(TITOUT,'>:utf8','unload.TIT');
-
-tie @mab2titdata, 'Tie::MAB2::Recno', file => "tmp.TIT";
-
-foreach my $rawrec (@mab2titdata){
-    my $rec = MAB2::Record::Base->new($rawrec);
-    #print $rec->readable."\n----------------------\n";    
-    my $multcount_ref = {};
-    
-    foreach my $category_ref (@{$rec->_struct->[1]}){
-        my $category  = $category_ref->[0];
-        my $indicator = $category_ref->[1];
-        my $content   = konv($category_ref->[2]);
-
-        my $newcategory = "";
-        
-        if (!exists $titdefs_ref->{$category}){
-            next;
-        }
-        
-        # Vorabfilterung
-
-        # Titel-ID sowie Ueberordnungs-ID
-        if ($category =~ /^001$/ || $category =~ /^010$/){
-            $content=~s/\D//g;
-        }
-
-        if ($category =~ /^002$/){
-            $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
-        }
-
-        # Standard-Konvertierung mit perkonv
-
-        if (!$titdefs_ref->{$category}{mult}){
-            $indicator="";
-        }
-
-        if (exists $titdefs_ref->{$category}{newcat}){
-            $newcategory = $titdefs_ref->{$category}{newcat};
-        }
-
-        if (exists $titdefs_ref->{$category}{ref}){
-            my $tmpcontent=$content;
-            ($content)=$tmpcontent=~m/\$\$9\D*?(\d+)/;
-            $content="IDN: $content";
-        }
-
-        if ($newcategory && $titdefs_ref->{$category}{mult} && $content){
-            my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-            print TITOUT "$newcategory.$multcount:$content\n";
-        }
-        elsif ($newcategory && $content){
-            print TITOUT "$newcategory:$content\n";
-        }
-    }
-    print TITOUT "9999:\n\n";
-}
-
-close(TITOUT);
-
-exit;
 
 ######################################################################
 # Systematik-Daten
@@ -632,82 +492,391 @@ my $notdefs_ref = {
 
 };
 
+
 print "Bearbeite Systematik\n";
-open(NOTOUT,'>:utf8','unload.SYS');
 
-tie @mab2notdata, 'Tie::MAB2::Recno', file => "tmp.SYS";
+if (-e "tmp.SYS"){
+    open(NOTOUT,'>:utf8','unload.SYS');
 
-foreach my $rawrec (@mab2notdata){
-    my $rec = MAB2::Record::Base->new($rawrec);
-    print $rec->readable."\n----------------------\n";    
-    my $multcount_ref = {};
+    tie @mab2notdata, 'Tie::MAB2::Recno', file => "tmp.SYS";
     
-    foreach my $category_ref (@{$rec->_struct->[1]}){
-        my $category  = $category_ref->[0];
-        my $indicator = $category_ref->[1];
-        my $content   = konv($category_ref->[2]);
-
-        my $newcategory = "";
+    foreach my $rawrec (@mab2notdata){
+        my $rec = MAB2::Record::Base->new($rawrec);
+        print $rec->readable."\n----------------------\n";    
+        my $multcount_ref = {};
         
-        if (!exists $notdefs_ref->{$category}){
-            next;
+        foreach my $category_ref (@{$rec->_struct->[1]}){
+            my $category  = $category_ref->[0];
+            my $indicator = $category_ref->[1];
+            my $content   = konv($category_ref->[2]);
+            
+            my $newcategory = "";
+            
+            if (!exists $notdefs_ref->{$category}){
+                next;
+            }
+            
+            # Vorabfilterung
+            #         if ($category =~ /^001$/){
+            #             $content=~s/\D//g;
+            #         }
+            
+            if ($category =~ /^002$/){
+                $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
+            }
+            
+            # Standard-Konvertierung mit perkonv
+            
+            if (!$notdefs_ref->{$category}{mult}){
+                $indicator="";
+            }
+            
+            if (exists $notdefs_ref->{$category}{newcat}){
+                $newcategory = $notdefs_ref->{$category}{newcat};
+            }
+            
+            if ($newcategory && $notdefs_ref->{$category}{mult} && $content){
+                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
+                print NOTOUT "$newcategory.$multcount:$content\n";
+            }
+            elsif ($newcategory && $content){
+                print NOTOUT "$newcategory:$content\n";
+            }
         }
-        
-        # Vorabfilterung
-        if ($category =~ /^001$/){
-            $content=~s/\D//g;
-        }
-
-        if ($category =~ /^002$/){
-            $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
-        }
-
-        # Standard-Konvertierung mit perkonv
-
-        if (!$notdefs_ref->{$category}{mult}){
-            $indicator="";
-        }
-
-        if (exists $notdefs_ref->{$category}{newcat}){
-            $newcategory = $notdefs_ref->{$category}{newcat};
-        }
-
-        if ($newcategory && $notdefs_ref->{$category}{mult} && $content){
-            my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-            print NOTOUT "$newcategory.$multcount:$content\n";
-        }
-        elsif ($newcategory && $content){
-            print NOTOUT "$newcategory:$content\n";
-        }
+        print NOTOUT "9999:\n\n";
     }
-    print NOTOUT "9999:\n\n";
+    
+    close(NOTOUT);
+}
+else {
+    print STDERR "Keine Systemaitkdaten vorhanden\n";
 }
 
-close(NOTOUT);
+######################################################################
+# Titel-Daten
+
+my $titdefs_ref = {
+    '001 '  => {
+        newcat => '0000', # ID
+        mult   => 0,
+    },    
+    '002a'  => {
+        newcat => '0002', # SDN
+        mut    => 0,
+    },
+    '010'  => {           # identifikationsnummer des direkt uebergeordneten datensatzes
+        newcat => '0004', # Uebergeordn. Satz
+        mut    => 1,
+    },
+    '026 ' => {            # ZDBID
+        newcat => '0572', # ZDBID
+        mult   => 1,
+    },
+    '036a' => {            # Erschland
+        newcat => '0035', # Erschland
+        mult   => 1,
+    },
+    '037b'  => {           # Sprache
+        newcat => '0015', # Sprache
+        mut    => 1,
+    },
+    '089' => {            # bandangaben in vorlageform
+        newcat => '0089', # bandangaben in vorlageform
+        mult   => 1,
+    },
+    '310 ' => {            # ansetzungssachtitel
+        newcat => '0310' , # ansetzungssachtitel
+        mult   => 1,
+    },    
+    '331 ' => {            # hauptsachtitel in vorlageform oder mischform
+        newcat => '0331', # hauptsachtitel in vorlageform oder mischform
+        mult   => 1,
+    },
+    '333 ' => {            # Zu erg. URH
+        newcat => '0333', # Zu erg. URH
+        mult   => 1,
+    },
+    '335 ' => {            # zusaetze zum hauptsachtitel
+        newcat => '0335', # zusaetze zum hauptsachtitel
+        mult   => 1,
+    },
+    '359 ' => {            # Vorl. Verf/Koerp
+        newcat => '0359', # Vorl. Verf/Koerp
+        mult   => 1,
+    },
+    '370a' => {            # WST
+        newcat => '0370', # WST
+        mult   => 1,
+    },
+    '403' => {            # ausgabebezeichnung in vorlageform
+        newcat => '0403', # ausgabebezeichnung in vorlageform
+        mult   => 1,
+    },
+    '405 ' => {            # Erschverlauf
+        newcat => '0405', # Erschverlauf
+        mult   => 1,
+    },
+    '410 ' => {            # ort(e) des 1. verlegers, druckers usw.
+        newcat => '0410', # ort(e) des 1. verlegers, druckers usw.
+        mult   => 1,
+    },
+    '412 ' => {            # name des 1. verlegers, druckers usw.
+        newcat => '0412', # name des 1. verlegers, druckers usw.
+        mult   => 1,
+    },
+    '425c' => {            # erscheinungsjahr(e)
+        newcat => '0425', # erscheinungsjahr(e)
+        mult   => 1,
+    },
+    '433' => {            # umfangsangabe
+        newcat => '0433', # umfangsangabe
+        mult   => 1,
+    },
+    '451' => {            # 1. gesamttitel in vorlageform
+        newcat => '0451', # 1. gesamttitel in vorlageform
+        mult   => 1,
+    },
+    '507 ' => {            # Titelangaben
+        newcat => '0507', # Titelangaben
+        mult   => 1,
+    },
+    '523 ' => {            # Erscheinungsweise
+        newcat => '0523', # Erscheinungsweise
+        mult   => 1,
+    },
+    '527z' => {            # Parallele Ausg.
+        newcat => '0527', # Parallele Ausg.
+        mult   => 1,
+    },
+    '529z' => {            # Tit beilage
+        newcat => '0529', # Tit beilage
+        mult   => 1,
+    },
+    '530z' => {            # Bezugswerk
+        newcat => '0530', # Bezugswerk
+        mult   => 1,
+    },
+    '531z' => {            # FruehAusg.
+        newcat => '0531', # FruehAusg.
+        mult   => 1,
+    },
+    '532z' => {            # FruehTit.
+        newcat => '0532', # FruehTit.
+        mult   => 1,
+    },
+    '533z' => {            # SpaetAusg.
+        newcat => '0533', # SpaetAusg.
+        mult   => 1,
+    },
+    '534' => {            # Titelkonk.
+        newcat => '0534', # Titelkonk.
+        mult   => 1,
+    },
+    '540' => {            # internationale standardbuchnummer (isbn)
+        newcat => '0540', # internationale standardbuchnummer (isbn)
+        mult   => 1,
+    },
+    '542a' => {            # ISSN
+        newcat => '0543', # ISSN
+        mult   => 1,
+    },
+    
+#     '710' => {            # schlagwoerter und schlagwortketten
+#         newcat => '0710', # schlagwoerter und schlagwortketten
+#         mult   => 1,
+#         ref    => 1,
+#     },
+    '902k' => {            # schlagwoerter mit ID's
+         newcat => '0710', # schlagwoerter und schlagwortketten
+         mult   => 1,
+         ref    => 1,
+     },
+    '902g' => {            # schlagwoerter mit ID's
+         newcat => '0710', # schlagwoerter und schlagwortketten
+         mult   => 1,
+         ref    => 1,
+     },
+    '902s' => {            # schlagwoerter mit ID's
+         newcat => '0710', # schlagwoerter und schlagwortketten
+         mult   => 1,
+         ref    => 1,
+     },
+#     '100' => {            # name der 1. person in ansetzungsform
+#         newcat => '0100', # verfasser
+#         mult   => 1,
+#         ref    => 1,
+#     },
+    '102' => {            # ID der 1. person
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 1,
+    },
+#     '104' => {            # name der 2. person in ansetzungsform
+#         newcat => '0100', # verfasser
+#         mult   => 1,
+#         ref    => 1,
+#     },
+    '106' => {            # ID der 2. person
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 1,
+    },
+#     '108' => {            # name der 3. person in ansetzungsform
+#         newcat => '0100', # verfasser
+#         mult   => 1,
+#         ref    => 1,
+#     },
+    '110' => {            # ID der 3. person
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 1,
+    },
+#    '200' => {            # name der 1. koerperschaft in ansetzungsform
+#        newcat => '0200', # koerperschaft
+#        mult   => 1,
+#    },
+    '202a' => {            # ID der 1. koerperschaft
+        newcat => '0200', # koerperschaft
+        mult   => 1,
+        ref    => 1,
+    },
+#     '204' => {            # name der 2. koerperschaft in ansetzungsform
+#         newcat => '0200', # koerperschaft
+#         mult   => 1,
+#         ref    => 1,
+#     },
+    '206a' => {            # ID der 2. koerperschaft
+        newcat => '0200', # koerperschaft
+        mult   => 1,
+        ref    => 1,
+    },
+#     '208' => {            # name der 3. koerperschaft in ansetzungsform
+#         newcat => '0200', # koerperschaft
+#         mult   => 1,
+#         ref    => 1,
+#     },
+    '210a' => {            # ID der 3. koerperschaft
+        newcat => '0200', # koerperschaft
+        mult   => 1,
+        ref    => 1,
+    },
+
+};
+
+print "Bearbeite Titel\n";
+
+if (-e "tmp.TIT"){
+    open(TITOUT,'>:utf8','unload.TIT');
+    
+    tie @mab2titdata, 'Tie::MAB2::Recno', file => "tmp.TIT";
+    
+    foreach my $rawrec (@mab2titdata){
+        my $rec = MAB2::Record::Base->new($rawrec);
+        #print $rec->readable."\n----------------------\n";    
+        my $multcount_ref = {};
+        
+        foreach my $category_ref (@{$rec->_struct->[1]}){
+            my $category  = $category_ref->[0];
+            my $indicator = $category_ref->[1];
+            my $content   = konv($category_ref->[2]);
+            
+#            print "$category - $indicator - $content\n";
+
+            $category = $category.$indicator;
+            
+            my $newcategory = "";
+            
+            if (!exists $titdefs_ref->{$category}){
+                next;
+            }
+            
+            # Vorabfilterung
+            
+#             # Titel-ID sowie Ueberordnungs-ID
+#             if ($category =~ /^001$/ || $category =~ /^010$/){
+#                 $content=~s/\D//g;
+#             }
+            
+            if ($category =~ /^002a$/){
+                $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
+            }
+
+            if ($category =~ /^026 $/){
+                $content=~s/^\D+//;
+            }
+            
+            if ($category =~ /^542a$/){
+                $content=~s/^\D+//;
+            }
+
+            if ($category =~ /^52[79]z$/  || $category =~ /^53[0123]z$/){
+                $content=substr($content,20);
+            }
+
+            
+            # Standard-Konvertierung mit perkonv
+            
+            if (!$titdefs_ref->{$category}{mult}){
+                $indicator="";
+            }
+            
+            if (exists $titdefs_ref->{$category}{newcat}){
+                $newcategory = $titdefs_ref->{$category}{newcat};
+            }
+            
+            if (exists $titdefs_ref->{$category}{ref}){
+                
+                if ($category =~/^9[0123][27][kgs]/){
+                    my $tmpcontent=$content;
+                    ($content)=$tmpcontent=~m/(\d+-.)/;
+                }
+                #            print "REF: Category $category Content $content\n";
+                #            my $tmpcontent=$content;
+                #            ($content)=$tmpcontent=~m/^(\d+.*)/;
+                $content="IDN: $content" if ($content);
+            }
+            
+            if ($newcategory && $titdefs_ref->{$category}{mult} && $content){
+                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
+                print TITOUT "$newcategory.$multcount:$content\n";
+            }
+            elsif ($newcategory && $content){
+                print TITOUT "$newcategory:$content\n";
+            }
+        }
+        print TITOUT "9999:\n\n";
+    }
+    
+    close(TITOUT);
+}
+else {
+    print "Keine Titeldaten vorhanden. EXIT!!!!\n";
+    exit;
+}
 
 ######################################################################
 # Exemplar-Daten
 
 my $mexdefs_ref = {
-    '001'  => {
+    '001 '  => {
         newcat => '0000', # ID
         mult   => 0,
     },    
-    '002'  => {
-        newcat => '0100', # SDN
+    '012 '  => {
+        newcat => '0004', # TitelID
         mut => 0,
     },
-    '800' => {
-        newcat => '0001', # Ansetzung
+    '200 ' => {
+         # Bestandsverlauf
         mult => 0,
+        subfields => {
+            '1204' => [ 'b', 'c'],
+            '0014' => [ 'f' ],
+        }
     },
-    '820' => {
-        newcat => '0102', # ansetzungsform nach einem weiteren regelwerk => verweisungsform
-        mult => 1,
-    },
-    '830' => {
-        newcat => '0102', # verweisungsform 
-        mult => 1,
+    '071 ' => {
+        newcat => '3330', # Bestandsverlauf
+        mult => 0,
     },
 
 };
@@ -725,8 +894,21 @@ foreach my $rawrec (@mab2mexdata){
     foreach my $category_ref (@{$rec->_struct->[1]}){
         my $category  = $category_ref->[0];
         my $indicator = $category_ref->[1];
-        my $content   = konv($category_ref->[2]);
+        my $content   = $category_ref->[2];
 
+#        print "$category - $indicator - $content\n";
+        
+        $category = $category.$indicator;
+
+        my %subfield=();        
+        if (exists $mexdefs_ref->{$category}{subfields}){
+            foreach my $item (split("",$content)){
+                if ($item=~/^(.)(.+)/){
+                    $subfield{$1}=$2;
+                }
+            }
+        }
+        
         my $newcategory = "";
         
         if (!exists $mexdefs_ref->{$category}){
@@ -734,12 +916,17 @@ foreach my $rawrec (@mab2mexdata){
         }
         
         # Vorabfilterung
-        if ($category =~ /^001$/){
-            $content=~s/\D//g;
+#         if ($category =~ /^001$/){
+#             $content=~s/\D//g;
+#         }
+
+        
+        if ($category =~ /^002 $/){
+            $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
         }
 
-        if ($category =~ /^002$/){
-            $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
+        if ($category =~ /^071 $/){
+            $content=~s/^38\///;
         }
 
         # Standard-Konvertierung mit perkonv
@@ -748,17 +935,43 @@ foreach my $rawrec (@mab2mexdata){
             $indicator="";
         }
 
-        if (exists $mexdefs_ref->{$category}{newcat}){
-            $newcategory = $mexdefs_ref->{$category}{newcat};
-        }
+#        print YAML::Dump(\%subfield);
+        
+        if (exists $mexdefs_ref->{$category}{subfields}){
+            foreach my $newcategory (keys %{$mexdefs_ref->{$category}{subfields}}){
+                my @newcontent=();
+                foreach my $thissubfield (@{$mexdefs_ref->{$category}{subfields}{$newcategory}}){
+                    if ($subfield{$thissubfield}){
+                        push @newcontent,$subfield{$thissubfield};
+                    }
+                }
 
-        if ($newcategory && $mexdefs_ref->{$category}{mult} && $content){
-            my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-            print MEXOUT "$newcategory.$multcount:$content\n";
+                $content=konv(join(" ",@newcontent));
+                
+                if ($newcategory && $mexdefs_ref->{$category}{mult} && $content){
+                    my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
+                    print MEXOUT "$newcategory.$multcount:$content\n";
+                }
+                elsif ($newcategory && $content){
+                    print MEXOUT "$newcategory:$content\n";
+                }
+            }
         }
-        elsif ($newcategory && $content){
-            print MEXOUT "$newcategory:$content\n";
+        else {
+            $content=konv($content);
+            if (exists $mexdefs_ref->{$category}{newcat}){
+                $newcategory = $mexdefs_ref->{$category}{newcat};
+            }
+            
+            if ($newcategory && $mexdefs_ref->{$category}{mult} && $content){
+                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
+                print MEXOUT "$newcategory.$multcount:$content\n";
+            }
+            elsif ($newcategory && $content){
+                print MEXOUT "$newcategory:$content\n";
+            }
         }
+        
     }
     print MEXOUT "9999:\n\n";
 }
@@ -773,6 +986,7 @@ sub konv {
   $line=~s/</&lt;/g;
   $line=~s/\x{0088}//g;
   $line=~s/\x{0089}//g;
-
+  $line=~s/‡/ /g;
+  $line=~s/^\|//;
   return $line;
 }

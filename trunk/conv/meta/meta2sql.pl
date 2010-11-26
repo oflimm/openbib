@@ -85,6 +85,8 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
+$logger->debug("Conv_Config: ".YAML::Dump($conv_config));
+
 my $dir=`pwd`;
 chop $dir;
 
@@ -428,7 +430,7 @@ if ($addsuperpers){
                 $listitemdata_superid{$id}=join(":",@persids);
             }
         }
-        elsif ($line=~m/^010[0123].*?:IDN: (\d+)/){
+        elsif ($line=~m/^010[0123].*?:IDN: (\S+)/){
             my $persid=$1;
             if (exists $listitemdata_superid{$id}){
                 push @persids, $persid;
@@ -528,8 +530,11 @@ while (my $line=<IN>){
     }
     elsif ($line=~m/^9999:/){
 
+        $logger->debug("Ende: Bearbeitung");
+        
         # Personen der Ueberordnung anreichern (Schiller-Raeuber)
         if ($addsuperpers){
+            $logger->debug("Uebergeordnete Personen abrufen");
             foreach my $superid (@superids){
                 if (exists $listitemdata_superid{$superid}){
                     my @superpersids = split (":",$listitemdata_superid{$superid}); 
@@ -540,6 +545,8 @@ while (my $line=<IN>){
         
         # Zentrale Anreicherungsdaten lokal einspielen
         if ($local_enrichmnt && (exists $normdata_ref->{isbn13} || exists $normdata_ref->{issn})){
+            $logger->debug("Anreicherung in lokelen Daten");
+
             foreach my $category (keys %{$conv_config->{local_enrichmnt}}){
                 my $enrichmnt_data_ref = (exists $enrichmntdata{$normdata_ref->{isbn13}}{$category})?$enrichmntdata{$normdata_ref->{isbn13}}{$category}:
                     ($enrichmntdata{$normdata_ref->{issn}}{$category})?$enrichmntdata{$normdata_ref->{issn}}{$category}:undef;
@@ -612,7 +619,7 @@ while (my $line=<IN>){
 
         # Medientypen erkennen und anreichern
         if ($addmediatype){
-
+            $logger->debug("Medientyp anreichern");
             # Zeitschriften/Serien:
             # ISSN und/oder ZDB-ID besetzt
             if (exists $thisitem_ref->{'T0572'} || exists $thisitem_ref->{'T0543'}) {
@@ -720,12 +727,16 @@ while (my $line=<IN>){
             }   
             
         }
+
+        $logger->debug("Gespeicherte Normdaten holen");
         
         my @temp=();
 
         # Im Falle einer Personenanreicherung durch Ueberordnungen mit
         # -add-superpers sollen Dubletten entfernt werden.
         my %seen_verf=();
+
+        $logger->debug("Verfasser");
         foreach my $item (@verf){
             next if (exists $seen_verf{$item});
             push @temp, join(" ",@{$stammdateien_ref->{aut}{data}{$item}});
@@ -734,6 +745,7 @@ while (my $line=<IN>){
         push @temp, join(" ",@titverf);
         my $verf     = join(" ",@temp);
 
+        $logger->debug("Koerperschaften");
         @temp=();
         foreach my $item (@kor){
             push @temp, join(" ",@{$stammdateien_ref->{kor}{data}{$item}});
@@ -741,6 +753,7 @@ while (my $line=<IN>){
         push @temp, join(" ",@titkor);
         my $kor      = join(" ",@temp);
 
+        $logger->debug("Schlagworte");
         @temp=();
         foreach my $item (@swt){
             push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}});
@@ -748,12 +761,14 @@ while (my $line=<IN>){
         push @temp, join(" ",@titswt);
         my $swt      = join(" ",@temp);
 
+        $logger->debug("Notationen");
         @temp=();
         foreach my $item (@notation){
             push @temp, join(" ",@{$stammdateien_ref->{notation}{data}{$item}});
         }
         my $notation = join(" ",@temp);
 
+        $logger->debug("Exemplare");
         @temp=();
 	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}{$id}});
         my $mex = join(" ",@temp);
@@ -917,7 +932,8 @@ while (my $line=<IN>){
     chomp($content);
     
     if ($category && $content){
-        
+
+        $logger->debug("$category - $content");
         # Kategorien in der Blacklist werden generell nicht uebernommen
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
 
@@ -962,7 +978,7 @@ while (my $line=<IN>){
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0100/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 2; # AUT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1007,13 +1023,13 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0101/){
-            my ($targetid)  = $content=~m/^IDN: (\d+)/;
+            my ($targetid)  = $content=~m/^IDN: (\S+)/;
             my $targettype  = 2; # AUT
             my $sourceid    = $id;
             my $sourcetype  = 1; # TIT
             my $supplement  = "";
 
-            if ($content=~m/^IDN: \d+ ; (.+)/){
+            if ($content=~m/^IDN: \S+ ; (.+)/){
                 $supplement = $1;
             }
             
@@ -1059,13 +1075,13 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0102/){
-            my ($targetid)  = $content=~m/^IDN: (\d+)/;
+            my ($targetid)  = $content=~m/^IDN: (\S+)/;
             my $targettype  = 2; # AUT
             my $sourceid    = $id;
             my $sourcetype  = 1; # TIT
             my $supplement  = "";
 
-            if ($content=~m/^IDN: \d+ ; (.+)/){
+            if ($content=~m/^IDN: \S+ ; (.+)/){
                 $supplement = $1;
             }
             
@@ -1105,13 +1121,13 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0103/){
-            my ($targetid)  = $content=~m/^IDN: (\d+)/;
+            my ($targetid)  = $content=~m/^IDN: (\S+)/;
             my $targettype  = 2; # AUT
             my $sourceid    = $id;
             my $sourcetype  = 1; # TIT
             my $supplement  = "";
 
-            if ($content=~m/^IDN: \d+ ; (.+)/){
+            if ($content=~m/^IDN: \S+ ; (.+)/){
                 $supplement = $1;
             }
 
@@ -1151,7 +1167,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0200/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 3; # KOR
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1200,7 +1216,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0201/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 3; # KOR
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1240,7 +1256,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0700/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 5; # NOTATION
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1278,7 +1294,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0710/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1325,7 +1341,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0902/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1372,7 +1388,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0907/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1419,7 +1435,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0912/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1466,7 +1482,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0917/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1513,7 +1529,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0922/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1560,7 +1576,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0927/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1607,7 +1623,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0932/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1654,7 +1670,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0937/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1701,7 +1717,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0942/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT
@@ -1748,7 +1764,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0947/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SWT
             my $sourceid   = $id;
             my $sourcetype = 1; # TIT

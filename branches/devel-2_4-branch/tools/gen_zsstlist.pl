@@ -197,6 +197,7 @@ sub filterchars {
   $content=~s/#/\\\#/g;
 
   # Entfernen
+  $content=~s/đ//g;
   $content=~s/±//g;
   $content=~s/÷//g;
   $content=~s/·//g;
@@ -215,7 +216,29 @@ sub filterchars {
   $content=~s/\%/\\\%/g;
   $content=~s/ð/d/g;      # eth
 
+  $content=~s/\x{02b9}//g;      #
+  $content=~s/\x{02ba}//g;      #
+  $content=~s/\x{02bb}//g;      #
+  $content=~s/\x{02bc}//g;      #
+  $content=~s/\x{0332}//g;      #
+  $content=~s/\x{02b9}//g;      #
+
   $content = encode("utf8",$content);
+
+  $content=~s/\x{cc}\x{8a}//g;  
+  $content=~s/\x{cc}\x{81}//g;
+  $content=~s/\x{cc}\x{82}//g;
+  $content=~s/\x{cc}\x{84}//g;
+  $content=~s/\x{cc}\x{85}//g;
+  $content=~s/\x{cc}\x{86}//g;
+  $content=~s/\x{cc}\x{87}//g;  
+  $content=~s/\x{cc}\x{a7}//g;
+  $content=~s/\x{c4}\x{99}/e/g;
+  $content=~s/\x{c4}\x{90}/D/g;
+  $content=~s/\x{c4}\x{85}/\\c{a}/g;
+  $content=~s/\x{c5}\x{b3}/u/g;
+  $content=~s/c\x{cc}\x{a8}/\\c{c}/g;
+
   # Umlaute
   #$content=~s/\&uuml\;/ü/g;
   #$content=~s/\&auml\;/ä/g;

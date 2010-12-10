@@ -170,7 +170,9 @@ while (<DAT>){
  
       foreach my $char (@chars) {
 	if (length($char) == 2) { # 2-byte Zeichen
-	  $newcontent .= Encode::decode("euc-cn",$char)." ";
+#	  $newcontent .= Encode::decode("euc-cn",$char)." ";
+          # Sonderwunsch: Keine Leerzeichen
+          $newcontent .= Encode::decode("euc-cn",$char);
 	} 
 	else {  # 1-byte Zeichen
 	  $newcontent .= Encode::decode("cp437",$char);
@@ -178,7 +180,7 @@ while (<DAT>){
       }
     
       if (exists $title_ref->{$category_dst} && exists $mergecat_ref->{$category_dst}){
-	$title_ref->{$category_dst}[0].=" $newcontent";
+          $title_ref->{$category_dst}[0].=" $newcontent";
       }
       else {
 	push @{$title_ref->{$category_dst}}, $newcontent; 

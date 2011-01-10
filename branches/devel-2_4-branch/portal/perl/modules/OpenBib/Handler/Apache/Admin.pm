@@ -52,6 +52,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::Database::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -88,7 +89,7 @@ sub show {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{configdbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $query=Apache2::Request->new($r);
@@ -269,34 +270,30 @@ sub show {
     my @dbnames = $config->get_active_database_names();
   
     my $thisdbinfo_ref = {
-        description => $description,
-        shortdesc   => $shortdesc,
-        system      => $system,
-        dbname      => $dbname,
-        sigel       => $sigel,
-        url         => $url,
-        use_libinfo => $use_libinfo,
-        active      => $active,
-    };
-        
-    my $thisdboptions_ref = {
-        host         => $host,
-        protocol     => $protocol,
-        remotepath   => $remotepath,
-        remoteuser   => $remoteuser,
-        remotepasswd => $remotepasswd,
-        filename     => $filename,
-        titfilename  => $titfilename,
-        autfilename  => $autfilename,
-        korfilename  => $korfilename,
-        swtfilename  => $swtfilename,
-        notfilename  => $notfilename,
-        mexfilename  => $mexfilename,
-        autoconvert  => $autoconvert,
-        circ         => $circ,
-        circurl      => $circurl,
-        circcheckurl => $circcheckurl,
-        circdb       => $circdb,
+        description        => $description,
+        shortdesc          => $shortdesc,
+        system             => $system,
+        dbname             => $dbname,
+        sigel              => $sigel,
+        url                => $url,
+        use_libinfo        => $use_libinfo,
+        active             => $active,
+        host               => $host,
+        protocol           => $protocol,
+        remotepath         => $remotepath,
+        remoteuser         => $remoteuser,
+        remotepassword     => $remotepasswd,
+        titlefile          => $titfilename,
+        personfile         => $autfilename,
+        corporatebodyfile  => $korfilename,
+        subjectfile        => $swtfilename,
+        classificationfile => $notfilename,
+        holdingsfile       => $mexfilename,
+        autoconvert        => $autoconvert,
+        circ               => $circ,
+        circurl            => $circurl,
+        circwsurl          => $circcheckurl,
+        circdb             => $circdb,
     };
 
     my $thislibinfo_ref = {
@@ -415,9 +412,7 @@ sub show {
     
         # Zuerst schauen, ob Aktionen gefordert sind
         if ($do_del) {
-            editcat_del($dbname);
-
-	    my $ret_ref = dist_cmd("editcat_del",{ dbname => $dbname }) if ($do_dist);
+            $config->del_databaseinfo($dbname);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
@@ -427,14 +422,8 @@ sub show {
             $logger->debug("do_editcat: $do_editcat do_change: $do_change");
 
             $logger->debug("Info: ".YAML::Dump($thisdbinfo_ref));
-            $logger->debug("Options: ".YAML::Dump($thisdboptions_ref));
 
-            editcat_change($thisdbinfo_ref,$thisdboptions_ref);
-
-	    my $ret_ref = dist_cmd("editcat_change",{ 
-						     dbinfo    => $thisdbinfo_ref,
-						     dboptions => $thisdboptions_ref,
-						 }) if ($do_dist);
+            $config->update_databaseinfo($thisdbinfo_ref);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
@@ -455,91 +444,20 @@ sub show {
                 return Apache2::Const::OK;
             }
 
-            editcat_new($thisdbinfo_ref);
+            $config->new_databaseinfo($thisdbinfo_ref);
             
-	    my $ret_ref = dist_cmd("editcat_new",{ dbinfo => $thisdbinfo_ref }) if ($do_dist);
-
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
         }
         elsif ($do_edit) {
-            my $dbinfo_ref = $config->get_dbinfo($dbname);
-      
-            my $description = $dbinfo_ref->{'description'};
-            my $shortdesc   = $dbinfo_ref->{'shortdesc'};
-            my $system      = $dbinfo_ref->{'system'};
-            my $dbname      = $dbinfo_ref->{'dbname'};
-            my $sigel       = $dbinfo_ref->{'sigel'};
-            my $url         = $dbinfo_ref->{'url'};
-            my $use_libinfo = $dbinfo_ref->{'use_libinfo'};
-            my $active      = $dbinfo_ref->{'active'};
-
-            my $dboptions_ref = $config->get_dboptions($dbname);
-
-            my $host         = $dboptions_ref->{'host'};
-            my $protocol     = $dboptions_ref->{'protocol'};
-            my $remotepath   = $dboptions_ref->{'remotepath'};
-            my $remoteuser   = $dboptions_ref->{'remoteuser'};
-            my $remotepasswd = $dboptions_ref->{'remotepasswd'};
-            my $filename     = $dboptions_ref->{'filename'};
-            my $titfilename  = $dboptions_ref->{'titfilename'};
-            my $autfilename  = $dboptions_ref->{'autfilename'};
-            my $korfilename  = $dboptions_ref->{'korfilename'};
-            my $swtfilename  = $dboptions_ref->{'swtfilename'};
-            my $notfilename  = $dboptions_ref->{'notfilename'};
-            my $mexfilename  = $dboptions_ref->{'mexfilename'};
-            my $autoconvert  = $dboptions_ref->{'autoconvert'};
-            my $circ         = $dboptions_ref->{'circ'};
-            my $circurl      = $dboptions_ref->{'circurl'};
-            my $circcheckurl = $dboptions_ref->{'circcheckurl'};
-            my $circdb       = $dboptions_ref->{'circdb'};
-
-            my $rssfeed_ref  = $config->get_rssfeeds_of_db_by_type($dbname);
-            
-            my $katalog={
-                description => $description,
-                shortdesc   => $shortdesc,
-                system      => $system,
-                dbname      => $dbname,
-                sigel       => $sigel,
-                active      => $active,
-                url         => $url,
-                use_libinfo => $use_libinfo,
-
-                imxconfig   => {
-                    host         => $host,
-                    protocol     => $protocol,
-                    remotepath   => $remotepath,
-                    remoteuser   => $remoteuser,
-                    remotepasswd => $remotepasswd,
-                    filename     => $filename,
-                    titfilename  => $titfilename,
-                    autfilename  => $autfilename,
-                    korfilename  => $korfilename,
-                    swtfilename  => $swtfilename,
-                    notfilename  => $notfilename,
-                    mexfilename  => $mexfilename,
-                    autoconvert  => $autoconvert,
-                },
-
-                circconfig  => {
-                    circ         => $circ,
-                    circurl      => $circurl,
-                    circcheckurl => $circcheckurl,
-                    circdb       => $circdb,
-                },
-
-                rssfeeds    => $rssfeed_ref,
-            };
-      
+            my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
       
             my $ttdata={
                 view       => $view,
 
                 stylesheet => $stylesheet,
-                sessionID  => $session->{ID},
 		  
-                katalog    => $katalog,
+                databaseinfo    => $dbinfo_ref,
 		  
                 config     => $config,
                 session    => $session,
@@ -553,25 +471,13 @@ sub show {
     elsif ($do_editcat_rss){
         
         if ($do_change) {
-	    editcat_rss_change($dbname,$rsstype,$active,$rssid);
-
-	    my $ret_ref = dist_cmd("editcat_rss_change",{ 
-							 dbname  => $dbname,
-							 rsstype => $rsstype,
-							 active  => $active,
-							 rssid   => $rssid,
-							}) if ($do_dist);
+	    $config->update_databaseinfo_rss($dbname,$rsstype,$active,$rssid);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return Apache2::Const::OK;
         }
         elsif ($do_new){
-	    editcat_rss_new($dbname,$rsstype);
-
-	    my $ret_ref = dist_cmd("editcat_rss_new",{ 
-						      dbname  => $dbname,
-						      rsstype => $rsstype,
-						     }) if ($do_dist);
+	    $config->new_databaseinfo_rss($dbname,$rsstype);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return Apache2::Const::OK;              
@@ -625,9 +531,7 @@ sub show {
     
         # Zuerst schauen, ob Aktionen gefordert sind
         if ($do_del) {
-            editlibinfo_del($dbname);
-
-	    my $ret_ref = dist_cmd("editlibinfo_del",{ dbname => $dbname }) if ($do_dist);
+            $config->del_libinfo($dbname);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
@@ -638,12 +542,7 @@ sub show {
 
             $logger->debug("Info: ".YAML::Dump($thislibinfo_ref));
 
-            editlibinfo_change($dbname,$thislibinfo_ref);
-
-	    my $ret_ref = dist_cmd("editlibinfo_change",{
-               
-						     libinfo    => $thislibinfo_ref,
-						 }) if ($do_dist);
+            $config->update_libinfo($dbname,$thislibinfo_ref);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showcat=1");
             return Apache2::Const::OK;
@@ -690,27 +589,18 @@ sub show {
         # Zuerst schauen, ob Aktionen gefordert sind
     
         if ($do_del) {
-	    editprofile_del($profilename);
-
-	    my $ret_ref = dist_cmd("editprofile_del",{ profilename => $profilename }) if ($do_dist);
+	    $config->del_profile($profilename);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
             return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
-	    editprofile_change({
+	    $config->update_profile({
                 profilename => $profilename,
                 description => $description,
             });
             
-	    my $ret_ref = dist_cmd("editprofile_change",{ 
-                profilename => $profilename,
-                description => $description,
-                profiledb   => \@profiledb,
-                viewname    => $viewname,
-            }) if ($do_dist);
-
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showprofiles=1");
       
             return Apache2::Const::OK;
@@ -724,15 +614,10 @@ sub show {
                 return Apache2::Const::OK;
             }
 
-	    my $ret = editprofile_new({
+	    my $ret = $config->new_profile({
                 profilename => $profilename,
                 description => $description,
             });
-
-	    my $ret_ref = dist_cmd("editprofile_new",{ 
-                profilename => $profilename,
-                description => $description,
-            }) if ($do_dist);
 
 	    if ($ret == -1){
 	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
@@ -744,10 +629,10 @@ sub show {
         }
         elsif ($do_edit) {
 
-	    my $profileinfo_ref = $config->get_profileinfo($profilename);
+	    my $profileinfo_ref = $config->get_profileinfo({ profilename => $profilename })->single();
 
-            my $profilename = $profileinfo_ref->{'profilename'};
-            my $description = $profileinfo_ref->{'description'};
+            my $profilename = $profileinfo_ref->profilename;
+            my $description = $profileinfo_ref->description;
             
             my @profiledbs  = $config->get_profiledbs($profilename);
 
@@ -783,16 +668,14 @@ sub show {
         # Zuerst schauen, ob Aktionen gefordert sind
     
         if ($do_del) {
-	    editorgunit_del($profilename,$orgunit);
-
-	    my $ret_ref = dist_cmd("editorgunit_del",{ profilename => $profilename, orgunit => $orgunit }) if ($do_dist);
+	    $config->del_orgunit($profilename,$orgunit);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editprofile=1;profilename=$profilename;do_edit=1");
             return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
-	    editorgunit_change({
+	    $config->update_orgunit({
                 profilename => $profilename,
                 orgunit     => $orgunit,
                 description => $description,
@@ -800,14 +683,6 @@ sub show {
                 nr          => $nr,
             });
             
-	    my $ret_ref = dist_cmd("editorgunit_change",{ 
-                profilename => $profilename,
-                orgunit     => $orgunit,                
-                description => $description,
-                orgunitdb   => \@orgunitdb,
-                view        => $viewname,
-            }) if ($do_dist);
-
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editprofile=1;profilename=$profilename;do_edit=1");
       
             return Apache2::Const::OK;
@@ -821,17 +696,11 @@ sub show {
                 return Apache2::Const::OK;
             }
 
-	    my $ret = editorgunit_new({
+	    my $ret = $config->new_orgunit({
                 profilename => $profilename,
                 orgunit     => $orgunit,
                 description => $description,
             });
-
-	    my $ret_ref = dist_cmd("editorgunit_new",{ 
-                profilename => $profilename,
-                orgunit     => $orgunit,
-                description => $description,
-            }) if ($do_dist);
 
 	    if ($ret == -1){
 	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits eine Organisationseinheit unter diesem Namen"),$r,$msg);
@@ -843,7 +712,7 @@ sub show {
         }
         elsif ($do_edit) {
 
-	    my $profileinfo_ref = $config->get_profileinfo($profilename);
+	    my $profileinfo_ref = $config->get_profileinfo({ profilename => $profilename })->single();
             my $orgunitinfo_ref = $config->get_orgunitinfo($profilename,$orgunit);
            
             my @orgunitdbs   = $config->get_profiledbs($profilename,$orgunit);
@@ -894,16 +763,14 @@ sub show {
         # Zuerst schauen, ob Aktionen gefordert sind
     
         if ($do_del) {
-	    editsubject_del($subject);
-
-	    my $ret_ref = dist_cmd("editsubject_del",{ id => $subjectid }) if ($do_dist);
+	    $config->del_subject($subject);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showsubjects=1");
             return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
-	    editsubject_change({
+	    $config->update_subject({
                 name                 => $subject,
                 description          => $description,
                 id                   => $subjectid,
@@ -911,14 +778,6 @@ sub show {
                 type                 => $type,
             });
             
-	    my $ret_ref = dist_cmd("editsubject_change",{ 
-                name                 => $subject,
-                description          => $description,
-                id                   => $subjectid,
-                classifications      => \@classifications,
-                type                 => $type,
-            }) if ($do_dist);
-
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editsubject=1;subjectid=$subjectid;do_edit=1");
       
             return Apache2::Const::OK;
@@ -932,15 +791,10 @@ sub show {
                 return Apache2::Const::OK;
             }
 
-	    my $ret = editsubject_new({
+	    my $ret = $config->new_subject({
                 name        => $subject,
                 description => $description,
             });
-
-	    my $ret_ref = dist_cmd("editsubject_new",{ 
-                name        => $subject,
-                description => $description,
-            }) if ($do_dist);
 
 	    if ($ret == -1){
 	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Themengebiet unter diesem Namen"),$r,$msg);
@@ -992,25 +846,18 @@ sub show {
     elsif ($do_editserver) {
 
         if ($do_del) {
-	    editserver_del({id => $hostid});
-
-	    my $ret_ref = dist_cmd("editserver_del",{ id => $hostid }) if ($do_dist);
+	    $config->del_server({id => $hostid});
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showops=1");
             return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
-	    editserver_change({
+	    $config->update_server({
                 id                   => $hostid,
                 active               => $active,
             });
             
-	    my $ret_ref = dist_cmd("editserver_change",{ 
-                id                   => $hostid,
-                active               => $active,
-            }) if ($do_dist);
-
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showops=1");
       
             return Apache2::Const::OK;
@@ -1025,15 +872,10 @@ sub show {
             }
             $logger->debug("Host: $host Active: $active");
             
-	    my $ret = editserver_new({
+	    my $ret = $config->new_server({
                 host                 => $host,
                 active               => $active,
             });
-
-	    my $ret_ref = dist_cmd("editserver_new",{ 
-                host                 => $host,
-                active               => $active,
-            }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showops=1");
             return Apache2::Const::OK;
@@ -1075,16 +917,14 @@ sub show {
         # Zuerst schauen, ob Aktionen gefordert sind
     
         if ($do_del) {
-	    editview_del($viewname);
-
-	    my $ret_ref = dist_cmd("editview_del",{ viewname => $viewname }) if ($do_dist);
+	    $config->del_view($viewname);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showviews=1");
             return Apache2::Const::OK;
       
         }
         elsif ($do_change) {
-	    editview_change({
+	    $config->update_view({
 			     viewname    => $viewname,
 			     description => $description,
 			     active      => $active,
@@ -1095,18 +935,6 @@ sub show {
 			     viewdb      => \@viewdb,
 			     rssfeeds    => \@rssfeeds,
 			    });
-
-	    my $ret_ref = dist_cmd("editview_change",{ 
-						      viewname    => $viewname,
-						      description => $description,
-						      active      => $active,
-						      primrssfeed => $primrssfeed,
-                                                      start_loc   => $viewstart_loc,
-                                                      start_stid  => $viewstart_stid,
-                                                      profilename => $profilename,
-						      viewdb      => \@viewdb,
-						      rssfeeds    => \@rssfeeds,
-						     }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showviews=1");
       
@@ -1121,7 +949,7 @@ sub show {
                 return Apache2::Const::OK;
             }
 
-	    my $ret = editview_new({
+	    my $ret = $config->new_view({
 				    viewname    => $viewname,
 				    description => $description,
                                     profilename => $profilename,
@@ -1129,14 +957,6 @@ sub show {
                                     start_loc   => $viewstart_loc,
                                     start_stid  => $viewstart_stid,
                                 });
-
-	    my $ret_ref = dist_cmd("editview_new",{ 
-						   viewname    => $viewname,
-						   description => $description,
-                                                   profilename => $profilename,						   active      => $active,
-                                                   start_loc   => $viewstart_loc,
-                                                   start_stid  => $viewstart_stid,
-						  }) if ($do_dist);
 
 	    if ($ret == -1){
 	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
@@ -1149,15 +969,15 @@ sub show {
         elsif ($do_edit) {
             my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-	    my $viewinfo_ref = $config->get_viewinfo($viewname);
+	    my $viewinfo_obj  = $config->get_viewinfo($viewname);
 
-            my $viewname    = $viewinfo_ref->{'viewname'};
-            my $description = $viewinfo_ref->{'description'};
-            my $primrssfeed = $viewinfo_ref->{'primrssfeed'};
-            my $start_loc   = $viewinfo_ref->{'start_loc'};
-            my $start_stid  = $viewinfo_ref->{'start_stid'};
-            my $profilename = $viewinfo_ref->{'profilename'};
-            my $active      = $viewinfo_ref->{'active'};
+            my $viewname    = $viewinfo_obj->viewname;
+            my $description = $viewinfo_obj->description;
+            my $primrssfeed = $viewinfo_obj->rssfeed;
+            my $start_loc   = $viewinfo_obj->start_loc;
+            my $start_stid  = $viewinfo_obj->start_stid;
+            my $profilename = $viewinfo_obj->profilename;
+            my $active      = $viewinfo_obj->active;
              
             my @profiledbs       = $config->get_profiledbs($profilename);
 
@@ -1207,19 +1027,12 @@ sub show {
 
       if ($do_change) {
 
-	  editview_rss_change({
+	  $config->update_view_rss({
 			       viewname => $viewname,
 			       rsstype  => $rsstype,
 			       rssid    => $rssid,
 			       rssids   => \@rssids,
 			      });
-
-	  my $ret_ref = dist_cmd("editview_rss_change",{ 
-							viewname => $viewname,
-							rsstype  => $rsstype,
-							rssid    => $rssid,
-							rssids   => \@rssids,
-						       }) if ($do_dist);
 
           if ($rsstype eq "primary"){
               $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_editview_rss=1&do_edit=1&viewname=$viewname");
@@ -1546,9 +1359,7 @@ sub show {
 
         # Zuerst schauen, ob Aktionen gefordert sind
         if ($do_del) {
-            editlogintarget_del($targetid);
-
-	    my $ret_ref = dist_cmd("editlogintarget_del",{ targetid => $targetid }) if ($do_dist);
+            $config->del_logintarget($targetid);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showlogintarget=1");
             return Apache2::Const::OK;
@@ -1556,11 +1367,7 @@ sub show {
         }
         elsif ($do_change) {
 
-            editlogintarget_change($thislogintarget_ref);
-
-	    my $ret_ref = dist_cmd("editlogintarget_change",{ 
-						     logintarget => $thislogintarget_ref,
-						 }) if ($do_dist);
+            $config->update_logintarget($thislogintarget_ref);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showlogintarget=1");
             return Apache2::Const::OK;
@@ -1581,10 +1388,8 @@ sub show {
                 return Apache2::Const::OK;
             }
 
-            editlogintarget_new($thislogintarget_ref);
+            $config->new_logintarget($thislogintarget_ref);
             
-	    my $ret_ref = dist_cmd("editlogintarget_new",{ logintarget => $thislogintarget_ref }) if ($do_dist);
-
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showlogintarget=1");
             return Apache2::Const::OK;
         }
@@ -1637,11 +1442,7 @@ sub show {
 
         # Zuerst schauen, ob Aktionen gefordert sind
         if ($do_change) {
-            edituser_change($thisuserinfo_ref);
-
-	    my $ret_ref = dist_cmd("edituser_change",{ 
-						     userinfo  => $thisuserinfo_ref,
-						 }) if ($do_dist);
+            $config->update_user($thisuserinfo_ref);
 
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_loc}{name}?do_showuser=1;stid=1");
             return Apache2::Const::OK;
@@ -1772,836 +1573,6 @@ sub show {
     return Apache2::Const::OK;
 }
 
-sub editcat_del {
-    my ($dbname)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("delete from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("delete from titcount where dbname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("delete from dboptions where dbname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-    $idnresult->finish();
-    
-    if ($config->get_system_of_db($dbname) ne "Z39.50"){
-        # Und nun auch die Datenbank komplett loeschen
-        system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
-    }
-
-    return;
-}
-
-sub editcat_change {
-    my ($dbinfo_ref,$dboptions_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $request=$dbh->prepare("update dbinfo set description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, use_libinfo = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
-    $request->execute($dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
-
-    # Konvertierung
-    $request=$dbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ? where dbname= ?") or $logger->error($DBI::errstr);
-    $request->execute($dboptions_ref->{protocol},$dboptions_ref->{host},$dboptions_ref->{remotepath},$dboptions_ref->{remoteuser},$dboptions_ref->{remotepasswd},$dboptions_ref->{titfilename},$dboptions_ref->{autfilename},$dboptions_ref->{korfilename},$dboptions_ref->{swtfilename},$dboptions_ref->{notfilename},$dboptions_ref->{mexfilename},$dboptions_ref->{filename},$dboptions_ref->{autoconvert},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
-
-    # OLWS
-    $request=$dbh->prepare("update dboptions set circ = ?, circurl = ?, circcheckurl=?, circdb = ? where dbname= ?") or $logger->error($DBI::errstr);
-    $request->execute($dboptions_ref->{circ},$dboptions_ref->{circurl},$dboptions_ref->{circcheckurl},$dboptions_ref->{circdb},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
-
-    $request->finish();
-
-    return;
-}
-
-sub editcat_new {
-    my ($dbinfo_ref)=@_;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("insert into dbinfo values (?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{dbname},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active}) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("insert into titcount values (?,'0',?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbinfo_ref->{dbname},1) or $logger->error($DBI::errstr);
-    $idnresult->execute($dbinfo_ref->{dbname},2) or $logger->error($DBI::errstr);
-    $idnresult->execute($dbinfo_ref->{dbname},3) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','','')") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
-    $idnresult->finish();
-    
-    if ($config->get_system_of_db($dbinfo_ref->{dbname}) ne "Z39.50"){
-        # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
-        system("$config->{tool_dir}/destroypool.pl $dbinfo_ref->{dbname} > /dev/null 2>&1");
-        
-        # ... und dann wieder anlegen
-        system("$config->{tool_dir}/createpool.pl $dbinfo_ref->{dbname} > /dev/null 2>&1");
-    }
-    return;
-}
-
-sub editcat_rss_change {
-    my ($dbname,$rsstype,$active,$rssid)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $request=$dbh->prepare("update rssfeeds set dbname = ?, type = ?, active = ? where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($dbname,$rsstype,$active,$rssid) or $logger->error($DBI::errstr);
-    $request->finish();
-
-    return;
-}
-
-sub editcat_rss_new {
-    my ($dbname,$rsstype,$active,$rssid)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $request=$dbh->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
-    $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
-    $request->finish();
-
-    return;
-}
-
-sub editview_del {
-    my ($viewname)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("delete from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-    $idnresult->finish();
-
-    return;
-}
-
-sub editlibinfo_change {
-    my ($dbname,$libinfo_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $del_request    = $dbh->prepare("delete from libraryinfo where dbname=? and category=?") or $logger->error($DBI::errstr); # 
-    my $insert_request = $dbh->prepare("insert into libraryinfo values (?,?,NULL,?)") or $logger->error($DBI::errstr); # 
-
-    foreach my $category (keys %$libinfo_ref){
-        my ($category_num)=$category=~/^I(\d+)$/;
-
-        $logger->debug("Changing Category $category_num to $libinfo_ref->{$category}");
-        $del_request->execute($dbname,$category_num);
-        $insert_request->execute($dbname,$category_num,$libinfo_ref->{$category});
-    }
-
-    $del_request->finish();
-    $insert_request->finish();
-
-    return;
-}
-
-sub editview_change {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $viewname               = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}            : undef;
-    my $description            = exists $arg_ref->{description}
-        ? $arg_ref->{description}         : undef;
-    my $active                 = exists $arg_ref->{active}
-        ? $arg_ref->{active}              : undef;
-    my $primrssfeed            = exists $arg_ref->{primrssfeed}
-        ? $arg_ref->{primrssfeed}         : undef;
-    my $viewdb_ref             = exists $arg_ref->{viewdb}
-        ? $arg_ref->{viewdb}              : undef;
-    my $start_loc              = exists $arg_ref->{start_loc}
-        ? $arg_ref->{start_loc}           : undef;
-    my $start_stid             = exists $arg_ref->{start_stid}
-        ? $arg_ref->{start_stid}          : undef;
-    my $profilename            = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}         : undef;
-    my $rssfeeds_ref           = exists $arg_ref->{rssfeeds}
-        ? $arg_ref->{rssfeeds}            : undef;
-
-    my @viewdb   = (defined $viewdb_ref)?@$viewdb_ref:();
-    my @rssfeeds = (defined $rssfeeds_ref)?@$rssfeeds_ref:();
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    
-    my $idnresult=$dbh->prepare("update viewinfo set description = ?, start_loc = ?, start_stid = ?, profilename = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$start_loc,$start_stid,$profilename,$active,$viewname) or $logger->error($DBI::errstr);
-    
-    # Primary RSS-Feed fuer Autodiscovery eintragen
-    if ($primrssfeed){
-        $idnresult=$dbh->prepare("update viewinfo set rssfeed = ? where viewname = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($primrssfeed,$viewname) or $logger->error($DBI::errstr);
-    }
-    
-    # Datenbanken zunaechst loeschen
-    
-    $idnresult=$dbh->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-    
-    
-    # Dann die zugehoerigen Datenbanken eintragen
-    foreach my $singleviewdb (@viewdb) {
-        $idnresult=$dbh->prepare("insert into viewdbs values (?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($viewname,$singleviewdb) or $logger->error($DBI::errstr);
-    }
-    
-    # RSS-Feeds zunaechst loeschen
-    $idnresult=$dbh->prepare("delete from viewrssfeeds where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-    
-    # Dann die zugehoerigen Feeds eintragen
-    foreach my $singleviewrssfeed (@rssfeeds) {
-        $idnresult=$dbh->prepare("insert into viewrssfeeds values (?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($viewname,$singleviewrssfeed) or $logger->error($DBI::errstr);
-    }
-    
-    $idnresult->finish();
-
-    return;
-}
-
-sub editview_new {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $viewname               = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}            : undef;
-    my $description            = exists $arg_ref->{description}
-        ? $arg_ref->{description}         : undef;
-    my $profilename            = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}         : undef;
-    my $start_loc              = exists $arg_ref->{start_loc}
-        ? $arg_ref->{start_loc}           : undef;
-    my $start_stid             = exists $arg_ref->{stid_loc}
-        ? $arg_ref->{start_stid}           : undef;
-    my $active                 = exists $arg_ref->{active}
-        ? $arg_ref->{active}              : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("select count(*) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-    
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
-    
-    $idnresult=$dbh->prepare("insert into viewinfo values (?,?,NULL,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname,$description,$start_loc,$start_stid,$profilename,$active) or $logger->error($DBI::errstr);
-    
-    return 1;
-}
-
-sub editview_rss_change {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $viewname               = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname }           : undef;
-    my $rsstype                = exists $arg_ref->{rsstype}
-        ? $arg_ref->{rsstype }            : undef;
-    my $rssid                  = exists $arg_ref->{rssid}
-        ? $arg_ref->{rssid}               : undef;
-    my $rssids_ref             = exists $arg_ref->{rssids}
-        ? $arg_ref->{rssids}              : undef;
-
-    my @rssids = (defined $rssids_ref)?@$rssids_ref:();
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    if ($rsstype eq "primary"){
-      my $request=$dbh->prepare("update viewinfo set rssfeed = ? where viewname = ?") or $logger->error($DBI::errstr);
-      $request->execute($rssid,$viewname) or $logger->error($DBI::errstr);
-      $request->finish();
-    }
-    elsif ($rsstype eq "all") {
-      my $request=$dbh->prepare("delete from viewrssfeeds where viewname = ?");
-      $request->execute($viewname);
-      
-      $request=$dbh->prepare("insert into viewrssfeeds values (?,?)") or $logger->error($DBI::errstr);
-      foreach my $rssid (@rssids){
-	$request->execute($viewname,$rssid) or $logger->error($DBI::errstr);
-      }
-      $request->finish();
-    }
-    
-    return;
-}
-
-sub editprofile_del {
-    my ($profilename)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("delete from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
-
-    my $orgunits_ref=$config->get_orgunits($profilename);
-
-    foreach my $thisorgunit (@{$orgunits_ref}){
-        editorgunit_del($profilename,$thisorgunit->{orgunitname});
-    }
-    
-    $idnresult->finish();
-
-    return;
-}
-
-sub editprofile_change {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $profilename            = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}         : undef;
-    my $description            = exists $arg_ref->{description}
-        ? $arg_ref->{description}         : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
-    
-    my $idnresult=$dbh->prepare("update profileinfo set description = ? where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$profilename) or $logger->error($DBI::errstr);
-    
-    $idnresult->finish();
-
-    return;
-}
-
-sub editprofile_new {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $profilename            = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}            : undef;
-    my $description            = exists $arg_ref->{description}
-        ? $arg_ref->{description}         : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("select count(*) as rowcount from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-    
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
-    
-    $idnresult=$dbh->prepare("insert into profileinfo values (?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$description) or $logger->error($DBI::errstr);
-    
-    return 1;
-}
-
-sub editorgunit_del {
-    my ($profilename,$orgunit)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("delete from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    $idnresult->finish();
-
-    return;
-}
-
-sub editorgunit_change {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $profilename            = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}         : undef;
-    my $orgunit                = exists $arg_ref->{orgunit}
-        ? $arg_ref->{orgunit}             : undef;
-    my $description            = exists $arg_ref->{description}
-        ? $arg_ref->{description}         : undef;
-    my $orgunitdb_ref          = exists $arg_ref->{orgunitdb}
-        ? $arg_ref->{orgunitdb}           : [];
-    my $nr                     = exists $arg_ref->{nr}
-        ? $arg_ref->{nr}                  : 0;
-
-    my @orgunitdb = (defined $orgunitdb_ref)?@$orgunitdb_ref:();
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    # Zuerst die Aenderungen in der Tabelle Orgunit vornehmen
-    
-    my $idnresult=$dbh->prepare("update orgunitinfo set description = ?, nr = ? where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$nr,$profilename,$orgunit) or $logger->error($DBI::errstr);
-    
-    # Datenbanken zunaechst loeschen
-    
-    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    
-    
-    # Dann die zugehoerigen Datenbanken eintragen
-    foreach my $singleorgunitdb (@orgunitdb) {
-        $idnresult=$dbh->prepare("insert into profiledbs values (?,?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($profilename,$orgunit,$singleorgunitdb) or $logger->error($DBI::errstr);
-    }
-    
-    $idnresult->finish();
-
-    return;
-}
-
-sub editorgunit_new {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $profilename            = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}            : undef;
-    my $orgunit                = exists $arg_ref->{orgunit}
-        ? $arg_ref->{orgunit}                : undef;
-    my $description            = exists $arg_ref->{description}
-        ? $arg_ref->{description}            : undef;
-    my $nr                     = exists $arg_ref->{nr}
-        ? $arg_ref->{nr}                     : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("select count(*) as rowcount from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-    
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
-
-    $idnresult=$dbh->prepare("select max(nr) as maxnr from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    $res=$idnresult->fetchrow_hashref;
-    my $nextnr=$res->{maxnr}+1;
-
-    $idnresult=$dbh->prepare("insert into orgunitinfo (profilename,orgunitname,description,nr) values (?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit,$description,$nextnr) or $logger->error($DBI::errstr);
-    
-    return 1;
-}
-
-sub editsubject_del {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $id                       = exists $arg_ref->{id}
-        ? $arg_ref->{id}                  : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $request=$dbh->prepare("delete from subjects where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($id) or $logger->error($DBI::errstr);
-    $request->finish();
-
-    return;
-}
-
-sub editsubject_change {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $name                     = exists $arg_ref->{name}
-        ? $arg_ref->{name}                : undef;
-    my $description              = exists $arg_ref->{description}
-        ? $arg_ref->{description}         : undef;
-    my $id                       = exists $arg_ref->{id}
-        ? $arg_ref->{id}                  : undef;
-    my $classifications_ref      = exists $arg_ref->{classifications}
-        ? $arg_ref->{classifications}     : [];
-    my $type                      = exists $arg_ref->{type}
-        ? $arg_ref->{type}                : 'BK';
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
-    
-    my $request=$dbh->prepare("update subjects set name = ?, description = ? where id = ?") or $logger->error($DBI::errstr);
-    $request->execute(encode_utf8($name),encode_utf8($description),$id) or $logger->error($DBI::errstr);
-    $request->finish();
-
-    if (@{$classifications_ref}){       
-        $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
-
-        OpenBib::User->set_classifications_of_subject({
-            subjectid       => $id,
-            classifications => $classifications_ref,
-            type            => $type,
-        });
-    }
-
-    return;
-}
-
-sub editsubject_new {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $name                   = exists $arg_ref->{name}
-        ? $arg_ref->{name}                : undef;
-    my $description            = exists $arg_ref->{description}
-        ? $arg_ref->{description}         : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("select count(*) as rowcount from subjects where name = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($name) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-    
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
-    
-    $idnresult=$dbh->prepare("insert into subjects (name,description) values (?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute(encode_utf8($name),encode_utf8($description)) or $logger->error($DBI::errstr);
-    
-    return 1;
-}
-
-sub editserver_del {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $id                       = exists $arg_ref->{id}
-        ? $arg_ref->{id}                  : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    $logger->debug("About to delete id $id");
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-    
-    my $request=$dbh->prepare("delete from loadbalancertargets where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($id) or $logger->error($DBI::errstr);
-    $request->finish();
-
-    return;
-}
-
-sub editserver_change {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $id                       = exists $arg_ref->{id}
-        ? $arg_ref->{id}                  : undef;
-    my $active                   = exists $arg_ref->{active}
-        ? $arg_ref->{active}              : 0;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
-    
-    my $request=$dbh->prepare("update loadbalancertargets set active = ? where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($active,$id) or $logger->error($DBI::errstr);
-    $request->finish();
-
-    return;
-}
-
-sub editserver_new {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $host                   = exists $arg_ref->{host}
-        ? $arg_ref->{host}                : undef;
-    my $active                 = exists $arg_ref->{active}
-        ? $arg_ref->{active}              : 0;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    if (!$host){
-        return -1;
-    }
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("select count(*) as rowcount from loadbalancertargets where host = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($host) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-    
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
-    
-    $idnresult=$dbh->prepare("insert into loadbalancertargets (id,host,active) values (NULL,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute(encode_utf8($host),encode_utf8($active)) or $logger->error($DBI::errstr);
-    
-    return 1;
-}
-
-sub editlogintarget_del {
-    my ($targetid)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $user = OpenBib::User->instance;
-
-    $user->delete_logintarget($targetid);
-
-    return;
-}
-
-sub editlogintarget_change {
-    my ($logintarget_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    $logger->debug(YAML::Dump($logintarget_ref));
-    
-    my $user = OpenBib::User->instance;
-
-    $user->update_logintarget({
-        targetid    => $logintarget_ref->{id},
-        hostname    => $logintarget_ref->{hostname},
-        port        => $logintarget_ref->{port},
-        username    => $logintarget_ref->{username},
-        dbname      => $logintarget_ref->{dbname},
-        description => $logintarget_ref->{description},
-        type        => $logintarget_ref->{type}
-    });
-    
-    return;
-}
-
-sub editlogintarget_new {
-    my ($logintarget_ref)=@_;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $user = OpenBib::User->instance;
-
-    $user->new_logintarget({
-        hostname    => $logintarget_ref->{hostname},
-        port        => $logintarget_ref->{port},
-        username    => $logintarget_ref->{username},
-        dbname      => $logintarget_ref->{dbname},
-        description => $logintarget_ref->{description},
-        type        => $logintarget_ref->{type}
-    });
-
-    return;
-}
-
-sub edituser_change {
-    my ($userinfo_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $del_request    = $dbh->prepare("delete from userrole where userid=?") or $logger->error($DBI::errstr); # 
-    my $insert_request = $dbh->prepare("insert into userrole values (?,?)") or $logger->error($DBI::errstr); # 
-
-    $del_request->execute($userinfo_ref->{id});
-    
-    foreach my $roleid (@{$userinfo_ref->{roles}}){
-        $logger->debug("Adding Role $roleid to user $userinfo_ref->{id}");
-        $insert_request->execute($userinfo_ref->{id},$roleid);
-    }
-
-    $del_request->finish();
-    $insert_request->finish();
-
-    return;
-}
 
 sub dist_cmd {
   my ($cmd,$args_ref)=@_;

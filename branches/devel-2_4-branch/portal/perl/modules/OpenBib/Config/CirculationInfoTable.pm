@@ -57,7 +57,7 @@ sub _new_instance {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{configdbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $dbinforesult=$dbh->prepare("select dbname,circ,circurl,circcheckurl,circdb from dboptions where circ = 1") or $logger->error($DBI::errstr);

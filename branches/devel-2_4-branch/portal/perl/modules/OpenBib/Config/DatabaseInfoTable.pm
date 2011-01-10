@@ -59,10 +59,10 @@ sub _new_instance {
   
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{configdbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $dbinforesult=$dbh->prepare("select dbname,sigel,url,description,shortdesc,use_libinfo from dbinfo") or $logger->error($DBI::errstr);
+    my $dbinforesult=$dbh->prepare("select dbname,sigel,url,description,shortdesc,use_libinfo from databaseinfo") or $logger->error($DBI::errstr);
     $dbinforesult->execute() or $logger->error($DBI::errstr);;
   
     while (my $result=$dbinforesult->fetchrow_hashref()) {

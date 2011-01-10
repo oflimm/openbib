@@ -1,0 +1,96 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+drop table IF EXISTS relevance;
+CREATE TABLE relevance (
+ tstamp      TIMESTAMP,
+ id          VARCHAR(100),
+ isbn        VARCHAR(15),
+ dbname      VARCHAR(25),
+ katkey      INT,
+ origin      INT
+);
+
+create index relevance_id on relevance (id);
+create index relevance_isbn on relevance (isbn);
+create index relevance_dbname on relevance (dbname);
+create index relevance_katkey on relevance (katkey);
+create index relevance_origin on relevance (origin);
+
+drop table IF EXISTS result_data;
+CREATE TABLE result_data (
+ id          VARCHAR(100),
+ tstamp      TIMESTAMP,
+ type        INT,
+ subkey      VARCHAR(50),
+ data        TEXT
+);
+
+create index result_data_id on result_data (id);
+create index result_data_tstamp on result_data (tstamp);
+create index result_data_subkey on result_data (subkey);
+create index result_data_type on result_data (type);
+
+drop table IF EXISTS eventlog;
+CREATE TABLE eventlog (
+ sessionid  VARCHAR(255) NOT NULL,
+ tstamp     TIMESTAMP,
+ type       INT,
+ content    TEXT
+);
+
+create index eventlog_sessionid on eventlog (sessionid);
+create index eventlog_tstamp on eventlog (tstamp);
+create index eventlog_type on eventlog (type);
+create index eventlog_content on eventlog (content);
+create index eventlog_type_tstamp_content on eventlog (type,tstamp,content);
+
+drop table IF EXISTS queryterm;
+CREATE TABLE queryterm (
+ tstamp     TIMESTAMP,
+ viewname   VARCHAR(20),
+ type       INT,
+ content    VARCHAR(40)
+);
+
+create index queryterm_tstamp on queryterm (tstamp);
+create index queryterm_viewname on queryterm (viewname);
+create index queryterm_type on queryterm (type);
+create index queryterm_content on queryterm (content);
+
+drop table IF EXISTS querycategory;
+CREATE TABLE querycategory (
+ tstamp     TIMESTAMP,
+ viewname   VARCHAR(20),
+ fs        BOOL,
+ hst       BOOL,
+ verf      BOOL,
+ kor       BOOL,
+ swt       BOOL,
+ notation  BOOL,
+ isbn      BOOL,
+ issn      BOOL,
+ sign      BOOL,
+ mart      BOOL,
+ hststring BOOL,
+ inhalt    BOOL,
+ gtquelle  BOOL,
+ ejahr     BOOL
+);
+
+create index querycategory_tstamp on querycategory (tstamp);
+create index querycategory_viewname on querycategory (viewname);
+create index querycategory_fs on querycategory (fs);
+create index querycategory_hst on querycategory (hst);
+create index querycategory_verf on querycategory (verf);
+create index querycategory_kor on querycategory (kor);
+create index querycategory_swt on querycategory (swt);
+create index querycategory_notation on querycategory (notation);
+create index querycategory_isbn on querycategory (isbn);
+create index querycategory_issn on querycategory (issn);
+create index querycategory_sign on querycategory (sign);
+create index querycategory_mart on querycategory (mart);
+create index querycategory_hststring on querycategory (hststring);
+create index querycategory_gtquelle on querycategory (gtquelle);
+create index querycategory_ejahr on querycategory (ejahr);

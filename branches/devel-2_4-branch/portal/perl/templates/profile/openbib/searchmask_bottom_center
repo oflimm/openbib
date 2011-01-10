@@ -1,0 +1,40 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchmask_bottom_center
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Mitte
+#
+#######################################################################
+-%]
+<h3><img style="vertical-align:bottom" src="[% config.get('search_img') %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[%- IF viewdbs.size == 1 -%][% msg.maketext("In den Institutsbestand eintauchen") %][%- ELSE -%][% msg.maketext("In den Gesamtbestand eintauchen") %][%- END -%]</h3>
+
+<a style="font-size: 1.5em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[%- IF viewdbs.size == 1 -%]9?db=[% viewdbs.first %][%- ELSE -%]13[%- END -%]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
+<a style="font-size: 1.3em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %][% IF view_config.${view}.subjectid %]/public_by_subject/[% view_config.${view}.subjectid %]/html[% ELSE %]/public/html[%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
+<a style="font-size: 1.1em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
+<a                           href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10[%- IF viewdbs.size == 1 -%]?db=[% viewdbs.first %];[%- END -%]" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
+<a style="font-size: 1.2em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/15" title="[% msg.maketext("spezialisierte OpenBib-Portale") %]">[% msg.maketext("spezialisierte OpenBib-Portale") %]</a>.<p/>
+
+[%- IF viewdbs.size == 1 && viewdbs.first.match("^inst[0-6]") -%]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="Bibliotheksangebote" />&nbsp;Weitere Angebote der Bibliothek</h3>
+
+<h4>Zeitschriften der Bibliothek</h4>
+
+Eine Aufstellung der Zeitschriften in dieser Bibliothek stellen wir
+f&uuml;r Sie als <a href="http://kug.ub.uni-koeln.de/zsstlisten/zsstlist-[% viewdbs.first.replace('inst','') %]-all.pdf" target="_blank">E-Book</a> bereit.
+[% END %]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('global_img') %]" alt="Externe Angebote" />&nbsp;Allgemeine Informationsquellen</h3>
+
+<h4>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h4>
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').ezb_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
+
+<h4>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h4>
+[% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
+lizenzierten Datenbanken[_2]","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').dbis_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
+

@@ -16,9 +16,24 @@ __PACKAGE__->add_columns(
     size => 255,
   },
   "count",
-  { data_type => "BIGINT", default_value => undef, is_nullable => 1, size => 20 },
+  {
+      data_type => "BIGINT",
+      default_value => undef,
+      is_nullable => 1,
+      size => 20
+  },
   "type",
-  { data_type => "TINYINT", default_value => undef, is_nullable => 1, size => 4 },
+  {
+      data_type => "TINYINT",
+      default_value => undef,
+      is_nullable => 1,
+      size => 4
+  },
+);
+
+__PACKAGE__->belongs_to(
+    'databaseinfo' => 'OpenBib::Database::Config::DatabaseInfo',
+    { 'foreign.dbname' => 'self.dbname' }
 );
 
 1;

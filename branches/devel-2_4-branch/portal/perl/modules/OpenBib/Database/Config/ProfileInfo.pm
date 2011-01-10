@@ -24,8 +24,15 @@ __PACKAGE__->add_columns(
   },
 );
 
+__PACKAGE__->set_primary_key("profilename");
+
 __PACKAGE__->has_many(
     'profiledbs' => 'OpenBib::Database::Config::ProfileDB',
+    { 'foreign.profilename' => 'self.profilename' }
+);
+
+__PACKAGE__->has_many(
+    'orgunitinfo' => 'OpenBib::Database::Config::OrgunitInfo',
     { 'foreign.profilename' => 'self.profilename' }
 );
 

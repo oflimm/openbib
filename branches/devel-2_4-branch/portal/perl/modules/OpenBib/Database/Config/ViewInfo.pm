@@ -49,4 +49,26 @@ __PACKAGE__->add_columns(
   { data_type => "TINYINT", default_value => undef, is_nullable => 1, size => 1 },
 );
 
+__PACKAGE__->set_primary_key("viewname");
+
+__PACKAGE__->belongs_to(
+    'profileinfo' => 'OpenBib::Database::Config::ProfileInfo',
+    { 'foreign.profilename' => 'self.profilename' }
+);
+
+__PACKAGE__->has_many(
+    'profiledbs' => 'OpenBib::Database::Config::ProfileDB',
+    { 'foreign.profilename' => 'self.profilename' }
+);
+
+__PACKAGE__->has_many(
+    'viewdbs' => 'OpenBib::Database::Config::ViewDB',
+    { 'foreign.viewname' => 'self.viewname' }
+);
+
+__PACKAGE__->has_many(
+    'viewrssfeeds' => 'OpenBib::Database::Config::ViewRSSFeeds',
+    { 'foreign.viewname' => 'self.viewname' }
+);
+
 1;

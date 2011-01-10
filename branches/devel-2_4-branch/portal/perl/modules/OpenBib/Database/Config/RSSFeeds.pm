@@ -36,7 +36,20 @@ __PACKAGE__->add_columns(
   "active",
   { data_type => "TINYINT", default_value => undef, is_nullable => 1, size => 4 },
 );
+
 __PACKAGE__->set_primary_key("id");
+
+__PACKAGE__->has_many(
+    'viewrssfeeds' => 'OpenBib::Database::Config::ViewRSSFeeds',
+    { 'foreign.rssfeed' => 'self.id' }
+);
+
+__PACKAGE__->has_one(
+    'viewdbs' => 'OpenBib::Database::Config::RSSCache',
+    { 'foreign.dbname'  => 'self.dbname',
+      'foreign.type'    => 'self.type',
+      'foreign.subtype' => 'self.subtype',}
+);
 
 
 1;

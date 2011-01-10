@@ -19,4 +19,14 @@ __PACKAGE__->add_columns(
   { data_type => "BIGINT", default_value => 0, is_nullable => 0, size => 20 },
 );
 
+__PACKAGE__->belongs_to(
+    'rssfeeds' => 'OpenBib::Database::Config::RSSFeeds',
+    { 'foreign.id' => 'self.rssfeed' }
+);
+
+__PACKAGE__->belongs_to(
+    'viewinfo' => 'OpenBib::Database::Config::ViewInfo',
+    { 'foreign.viewname' => 'self.viewname' }
+);
+
 1;

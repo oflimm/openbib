@@ -20,6 +20,7 @@ __PACKAGE__->add_columns(
   "active",
   { data_type => "INT", default_value => undef, is_nullable => 1, size => 1 },
 );
+
 __PACKAGE__->set_primary_key("id");
 
 1;

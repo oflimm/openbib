@@ -35,4 +35,11 @@ __PACKAGE__->add_columns(
   },
 );
 
+__PACKAGE__->belongs_to(
+    'viewdbs' => 'OpenBib::Database::Config::RSSCache',
+    { 'foreign.dbname'  => 'self.dbname',
+      'foreign.type'    => 'self.type',
+      'foreign.subtype' => 'self.subtype',}
+);
+
 1;

@@ -12,7 +12,9 @@ CREATE TABLE session (
  queryoptions  TEXT,
  returnurl     TEXT,
 
- bibsonomy_user TEXT,
+ searchmask     TEXT,
+
+bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
  bibsonomy_sync TEXT,
 

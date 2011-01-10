@@ -38,4 +38,9 @@ __PACKAGE__->add_columns(
   },
 );
 
+__PACKAGE__->belongs_to(
+    'databaseinfo' => 'OpenBib::Database::Config::DatabaseInfo',
+    { 'foreign.dbname' => 'self.dbname' }
+);
+
 1;

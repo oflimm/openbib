@@ -33,12 +33,16 @@
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]
-<strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
+<strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
 </tr>
 [% END %]
 </table>
+<p align="center"> <img style="vertical-align:bottom" src="[% config.get('hint_img')
+%]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;In dieser Bibliothek
+ist lediglich eine Tages- und Wochenendausleihe m&ouml;glich. 
+</p>
 [% ELSIF Aquisition == 1 %]
 <table width="100%">
 <tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>

@@ -429,7 +429,7 @@ if ($addsuperpers){
                 $listitemdata_superid{$id}=join(":",@persids);
             }
         }
-        elsif ($line=~m/^010[0123].*?:IDN: (\d+)/){
+        elsif ($line=~m/^010[0123].*?:IDN: (\S+)/){
             my $persid=$1;
             if (exists $listitemdata_superid{$id}){
                 push @persids, $persid;
@@ -967,7 +967,7 @@ while (my $line=<IN>){
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0100/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 2; # PERSON
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1026,13 +1026,13 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0101/){
-            my ($targetid)  = $content=~m/^IDN: (\d+)/;
+            my ($targetid)  = $content=~m/^IDN: (\S+)/;
             my $targettype  = 2; # PERSON
             my $sourceid    = $id;
             my $sourcetype  = 1; # TITLE
             my $supplement  = "";
 
-            if ($content=~m/^IDN: \d+ ; (.+)/){
+            if ($content=~m/^IDN: \S+ ; (.+)/){
                 $supplement = $1;
             }
             
@@ -1092,13 +1092,13 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0102/){
-            my ($targetid)  = $content=~m/^IDN: (\d+)/;
+            my ($targetid)  = $content=~m/^IDN: (\S+)/;
             my $targettype  = 2; # PERSON
             my $sourceid    = $id;
             my $sourcetype  = 1; # TITLE
             my $supplement  = "";
 
-            if ($content=~m/^IDN: \d+ ; (.+)/){
+            if ($content=~m/^IDN: \S+ ; (.+)/){
                 $supplement = $1;
             }
             
@@ -1152,13 +1152,13 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0103/){
-            my ($targetid)  = $content=~m/^IDN: (\d+)/;
+            my ($targetid)  = $content=~m/^IDN: (\S+)/;
             my $targettype  = 2; # PERSON
             my $sourceid    = $id;
             my $sourcetype  = 1; # TITLE
             my $supplement  = "";
 
-            if ($content=~m/^IDN: \d+ ; (.+)/){
+            if ($content=~m/^IDN: \S+ ; (.+)/){
                 $supplement = $1;
             }
 
@@ -1212,7 +1212,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0200/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 3; # CORPORATEBODY
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1275,7 +1275,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0201/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 3; # CORPORATEBODY
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1329,7 +1329,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0700/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 5; # CLASSIFICATION
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1381,7 +1381,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0710/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1433,7 +1433,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0902/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1485,7 +1485,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0907/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1537,7 +1537,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0912/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1589,7 +1589,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0917/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1641,7 +1641,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0922/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1693,7 +1693,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0927/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1745,7 +1745,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0932/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1797,7 +1797,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0937/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1849,7 +1849,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0942/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE
@@ -1901,7 +1901,7 @@ while (my $line=<IN>){
             }
         }
         elsif ($category=~m/^0947/){
-            my ($targetid) = $content=~m/^IDN: (\d+)/;
+            my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 4; # SUBJECT
             my $sourceid   = $id;
             my $sourcetype = 1; # TITLE

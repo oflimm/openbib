@@ -35,6 +35,8 @@ use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS qw(encode_json decode_json);
+use List::MoreUtils qw(after before);
 use Log::Log4perl qw(get_logger :levels);
 use MIME::Base64 ();
 use SOAP::Lite;
@@ -78,25 +80,28 @@ sub get_result_navigation {
     # vorausgegangenen Kurztitelliste
 
     my $lastresultstring = $session->get_lastresultset();
-  
+
+    my $lastresult_ref = decode_json($lastresultstring);
+    my @lastresult = @{$lastresult_ref};
+
     my $lasttiturl="";
     my $nexttiturl="";
-  
-    if ($lastresultstring=~m/(\w+:\d+)\|$database:$titidn/) {
-        $lasttiturl=$1;
-        my ($lastdatabase,$lastkatkey)=split(":",$lasttiturl);
-        $lasttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$lastdatabase/$lastkatkey/html";
+
+    my @previous = before { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
+
+    my @last=(exists $previous[-1])?$previous[-1]:();
+    
+    my @after = after { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
+    my @next=(exists $after[0])?$after[0]:();
+
+    if (@last) {
+        $lasttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$last[0]->{database}/$last[0]->{id}/";
     }
     
-    if ($lastresultstring=~m/$database:$titidn\|(\w+:\d+)/) {
-        $nexttiturl=$1;
-        my ($nextdatabase,$nextkatkey)=split(":",$nexttiturl);
-
-	$logger->debug("NextDB: $nextdatabase - NextKatkey: $nextkatkey");
-
-        $nexttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$nextdatabase/$nextkatkey/html";
+    if (@next) {
+        $nexttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$next[0]->{database}/$next[0]->{id}/";
     }
-
+    
     return ($lasttiturl,$nexttiturl);
 }
 

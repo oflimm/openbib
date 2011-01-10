@@ -4,7 +4,7 @@
 #
 #  Koerperschaft
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -365,6 +365,30 @@ sub print_to_handler {
     }
 
     return;
+}
+
+sub set_category {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $category          = exists $arg_ref->{category}
+        ? $arg_ref->{category}          : undef;
+
+    my $indicator         = exists $arg_ref->{indicator}
+        ? $arg_ref->{indicator}         : undef;
+
+    my $content            = exists $arg_ref->{content}
+        ? $arg_ref->{content}           : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    push @{$self->{_normset}{$category}}, {
+        indicator => $indicator,
+        content   => $content,
+    };
+
+    return $self;
 }
 
 1;

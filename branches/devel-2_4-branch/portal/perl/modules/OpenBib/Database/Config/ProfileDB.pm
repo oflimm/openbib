@@ -31,4 +31,19 @@ __PACKAGE__->add_columns(
   },
 );
 
+__PACKAGE__->belongs_to(
+    'orgunitinfo' => 'OpenBib::Database::Config::OrgunitInfo',
+    { 'foreign.orgunitname' => 'self.orgunitname' }
+);
+
+__PACKAGE__->belongs_to(
+    'profileinfo' => 'OpenBib::Database::Config::ProfileInfo',
+    { 'foreign.profilename' => 'self.profilename' }
+);
+
+__PACKAGE__->belongs_to(
+    'databaseinfo' => 'OpenBib::Database::Config::DatabaseInfo',
+    { 'foreign.dbname' => 'self.dbname' }
+);
+
 1;

@@ -6,55 +6,58 @@ servername: server.openbib.org
 
 # Unter diesem Name wird der Servers, der die Lastverteilung
 # vornimmt, angesprochen
-loadbalancerservername: loadbalancer.openbib.org
+loadbalancerservername: mainserver.openbib.org
 
 # Auf folgende Server werden die Benutzer verteilt
 loadbalancertargets:
-  - target1.openbib.org
-  - target2.openbib.org
-
-# Name des Datenbanksystems und des verwendeten DBI/DBD-Moduls
-dbms: mysql
-dbimodule: mysql
+  - server.openbib.org
 
 # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
+dbimodule: mysql
+#dbimodule: Pg
 dbhost: localhost
 dbport: 3306
 dbuser: root
 dbpasswd: StrengGeheim
 
 # Einstellungen fuer den Zugriff auf die Session-Datenbank
+sessiondbimodule: mysql
 sessiondbhost: localhost
 sessiondbport: 3306
-sessiondbname: session
+sessiondbname: openbib_session
 sessiondbuser: root
 sessiondbpasswd: StrengGeheim
 
 # Einstellungen fuer den Zugriff auf die Config-Datenbank
+configdbimodule: mysql
 configdbhost: localhost
 configdbport: 3306
-configdbname: config
+configdbname: openbib_config
 configdbuser: root
 configdbpasswd: StrengGeheim
 
 # Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
+userdbimodule: mysql
 userdbhost: localhost
+#userdbhost: localhost
 userdbport: 3306
-userdbname: kuguser
+userdbname: openbib_user
 userdbuser: root
 userdbpasswd: StrengGeheim
 
 # Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
+enrichmntdbimodule: mysql
 enrichmntdbhost: localhost
 enrichmntdbport: 3306
-enrichmntdbname: enrichmnt
+enrichmntdbname: openbib_enrichmnt
 enrichmntdbuser: root
 enrichmntdbpasswd: StrengGeheim
 
 # Einstellungen fuer den Zugriff auf die Statistik-Datenbank
+statisticsdbimodule: mysql
 statisticsdbhost: localhost
 statisticsdbport: 3306
-statisticsdbname: statistics
+statisticsdbname: openbib_statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
@@ -65,22 +68,13 @@ memcached:
      - '127.0.0.1:11211'
   compress_threshold: 10000
 
-# Standard-Recherche-Backend (derzeit nur xapian)
 local_search_backend: xapian
 
-# Benutzer, Passwort und default view fuer die Administration
-adminuser: adminuser
+# Benutzer, Passwort und Default view fuer die Administration
+adminuser: admin
 adminpasswd: StrengGeheim
 
-# Standardview, wenn ueber die URI-Kodierung kein URI bestimmt werden konnte
-defaultview: kug
-
-# Verteilte Administration mit einer Masteradmin?
-distadmin:
-  master: admin.openbib.org
-  slave:
-    - slaveadmin1.openbib.org
-    - slaveadmin2.openbib.org
+defaultview: openbib
 
 # RSS-Typen
 rss_types:
@@ -112,326 +106,543 @@ base_loc: /portal
 handler:
   admin_loc:
      name: admin
-     realm: common
+  admin_databaseinfo_loc:
+     name: admin/database
+  admin_view_loc:
+     name: admin/view
+  admin_library_loc:
+     name: admin/library
+  admin_profile_loc:
+     name: admin/profile
+  admin_session_loc:
+     name: admin/session
+  admin_user_loc:
+     name: admin/user
+  admin_statistics_loc:
+     name: admin/statistics
+  admin_subjects_loc:
+     name: admin/subjects
+  admin_status_loc:
+     name: admin/status
+  admin_server_loc:
+     name: admin/server
+  admin_subject_loc:
+     name: admin/subject
+  admin_login_loc:
+     name: admin/login
+  admin_logout_loc:
+     name: admin/logout
+  bibsonomy_loc:
+     name: bibsonomy
+  circulation_loc:
+     name: benutzerkonto
+  connector_availabilityimage_loc: 
+     name: connector/availabilityimage
+  connector_availability_loc:
+     name: connector/availability
+  connector_bibmanager_loc:
+     name: connector/literaturverwaltung
+  connector_digibib_loc:
+     name:  connector/digibib
+  connector_livesearch_loc:
+     name: connector/livesearch
+  connector_locationmark_loc:
+     name: connector/sykasignatur
+  connector_olws_loc:
+     name: connector/olws
+  # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
+  connector_permalink_loc:
+     name: connector/permalink
+  connector_rss_loc:
+     name: connector/rss
+  connector_seealso_loc:
+     name: connector/seealso
+  connector_similarpersons_loc:
+     name: connector/similarpersons
+  connector_similarsubjects_loc:
+     name: connector/similarsubjects
+  connector_spellcheck_loc:
+     name: connector/spellcheck
+  connector_ukonline_loc:
+     name: connector/uk-online
+  connector_unapi_loc:
+     name: connector/unapi
+  databasechoice_loc:
+     name: dbchoice
+  databaseprofile_loc:
+     name:  dbprofile
+  dispatchquery_loc:
+     name: dispatchquery
+  externaljump_loc:
+     name: jumpto
+  ezb_loc:
+     name: ezb 
+  dbis_loc:
+     name: dbis
+  info_loc:
+     name: info
+  leave_loc:
+     name: logout
+  litlists_loc: 
+     name: litlists
+  loadbalancer_loc:
+     name: lastverteilung
+  login_loc:
+     name: login
+  mailcollection_loc:
+     name: mailcollection
+  mailpassword_loc:
+     name: mailpassword
+  managecollection_loc:
+     name: collection
+  redirect_loc:
+     name: redirect
+  resource_title_loc:
+     name: resource/title
+  resource_person_loc:
+     name: resource/person
+  resource_corporatebody_loc:
+     name: resource/corporatebody
+  resource_subject_loc:
+     name: resource/subject
+  resource_classification_loc:
+     name: resource/classification
+  resource_tag_loc:
+     name: resource/tag
+  resource_litlist_loc:
+     name: resource/litlist
+  resource_library_loc:
+     name: resource/library
+  resource_user_loc:
+     name: resource/user
+  resultlists_loc:
+     name: resultlists
+  rssfeeds_loc:
+     name: rssfeeds
+  browse_loc:
+     name:  browse
+  searchmask_loc:
+     name: searchmask
+  selfreg_loc:
+     name: selfreg
+  serverload_loc:
+     name:  getload
+  startopac_loc:
+     name: home
+  tags_loc:
+     name: tags
+  userprefs_loc:
+     name: userprefs
+  userreviews_loc:
+     name: review
+  index_loc:
+     name: index
+  search_loc:
+     name: search
+
+dispatch_rules:
+  - # admin_database_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database.html[get]'
+     runmode: 'show_collection_as_html'
+  - # admin_database_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database.json[get]'
+     runmode: 'show_collection_as_json'
+  - # admin_database_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database.rdf[get]'
+     runmode: 'show_collection_as_rdf'
+  - # admin_database_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database[get]'
+     runmode: 'show_collection_negotiate'
+#  - # admin_database_loc: Collection show from
+#     module: 'OpenBib::Handler::Apache::Admin::Database'
+#     rule: '/portal/:view/admin/database/new[get]'
+#     runmode: 'show_collection_form'
+  - # admin_database_loc: Creat Record in Collection
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database[post]'
+     runmode: 'create_record'
+  - # admin_database_loc: Show Record
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database/:id[get]'
+     runmode: 'show_record_negotiate'
+  - # admin_database_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database/:id/edit[get]'
+     runmode: 'show_record_form'
+  - # admin_database_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database/:id[post]'
+     runmode: 'update_record'
+  - # admin_database_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database/:id[put]'
+     runmode: 'update_record'
+  - # admin_database_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Database'
+     rule: '/portal/:view/admin/database/:id[delete]'
+     runmode: 'delete_record'
+
+
+  - # admin_profile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile.html[get]'
+     runmode: 'show_collection_as_html'
+  - # admin_profile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile.json[get]'
+     runmode: 'show_collection_as_json'
+  - # admin_profile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile.rdf[get]'
+     runmode: 'show_collection_as_rdf'
+  - # admin_profile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile[get]'
+     runmode: 'show_collection_negotiate'
+#  - # admin_profile_loc: Collection show from
+#     module: 'OpenBib::Handler::Apache::Admin::Profile'
+#     rule: '/portal/:view/admin/profile/new[get]'
+#     runmode: 'show_collection_form'
+  - # admin_profile_loc: Creat Record in Collection
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile[post]'
+     runmode: 'create_record'
+  - # admin_profile_loc: Show Record
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile/:id[get]'
+     runmode: 'show_record_negotiate'
+  - # admin_profile_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile/:id/edit[get]'
+     runmode: 'show_record_form'
+  - # admin_profile_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile/:id[post]'
+     runmode: 'update_record'
+  - # admin_profile_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile/:id[put]'
+     runmode: 'update_record'
+  - # admin_profile_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Profile'
+     rule: '/portal/:view/admin/profile/:id[delete]'
+     runmode: 'delete_record'
+
+
+  - # admin_profile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit.html[get]'
+     runmode: 'show_collection_as_html'
+  - # admin_profile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit.json[get]'
+     runmode: 'show_collection_as_json'
+  - # admin_profile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit.rdf[get]'
+     runmode: 'show_collection_as_rdf'
+  - # admin_profile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit[get]'
+     runmode: 'show_collection_negotiate'
+#  - # admin_profile_loc: Collection show from
+#     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+#     rule: '/portal/:view/admin/profile/:profileid/orgunit/new[get]'
+#     runmode: 'show_collection_form'
+  - # admin_profile_loc: Creat Record in Collection
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit[post]'
+     runmode: 'create_record'
+  - # admin_profile_loc: Show Record
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit/:id[get]'
+     runmode: 'show_record_negotiate'
+  - # admin_profile_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit/:id/edit[get]'
+     runmode: 'show_record_form'
+  - # admin_profile_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit/:id[post]'
+     runmode: 'update_record'
+  - # admin_profile_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit/:id[put]'
+     runmode: 'update_record'
+  - # admin_profile_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/profile/:profileid/orgunit/:id[delete]'
+     runmode: 'delete_record'
+
+
+  - # admin_view_loc:
+     module: 'OpenBib::Handler::Apache::Admin::View'
+     rule: '/portal/:view/admin/viewinfo/:stid/:rm/:representation?'
+     runmode: 'show'
+  - # admin_library_loc:
+     module: 'OpenBib::Handler::Apache::Admin::LibraryInfo'
+     rule: '/portal/:view/admin/libraryinfo/:stid/:rm/:representation?'
+     runmode: 'show'
+  - # admin_session_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/:view/admin/session/:stid/:rm/:representation?'
+     runmode: 'show'
+  - # admin_user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::User'
+     rule: '/portal/:view/admin/user/:stid/:rm/:representation?'
+     runmode: 'show'
+  - # admin_orgunit_loc:
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
+     rule: '/portal/:view/admin/orgunit/:stid/:rm/:representation?'
+     runmode: 'show'
+  - # admin_statistics_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Statistics'
+     rule: '/portal/:view/admin/statistics/:stid/:rm/:representation?'
+     runmode: 'show'
+  - # admin_subjects_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Subjects'
+     rule: '/portal/:view/admin/subject/:stid/:rm/:representation?'
+     runmode: 'show'
+  - # admin_status_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Status'
+     rule: '/portal/:view/admin/status/:stid/:rm/:representation?'
+     runmode: 'show'
+  - # admin_server_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Server'
+     rule: '/portal/:view/admin/server/:stid/:id/:rm/:representation?'
+     runmode: 'show'
+  - # admin_subject_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Subject'
+     rule: '/portal/:view/admin/subject/:stid/:rm/:representation?'
+     runmode: 'show'
+  - # admin_login_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Login'
+     rule: '/portal/:view/admin/login/:rm/:representation?'
+     runmode: 'show'
+  - # admin_logout_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Logout'
+     rule: '/portal/:view/admin/logout/:representation?'
+     runmode: 'show'
+
+  - # admin_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin'
      rule: '/portal/:view/admin'
      runmode: 'show'
-  bibsonomy_loc:
-     name: bibsonomy
-     realm: view
+
+  - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
      rule: '/portal/:view/bibsonomy/:rm'
      runmode: 'lookup'
-  circulation_loc:
-     name: benutzerkonto
-     realm: view
+  - # circulation_loc:
      module: 'OpenBib::Handler::Apache::Circulation'
      rule: '/portal/:view/circulation'
      runmode: 'show'
-  connector_availabilityimage_loc: 
-     name: connector/availabilityimage
-     realm: common
+  - # connector_availabilityimage_loc: 
      module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
      rule: '/portal/:view/connector/availabilityimage/:rm/:id/:representation?'
      runmode: 'gbs'
-  connector_availability_loc:
-     name: connector/availability
-     realm: view
+  - # connector_availability_loc:
      module: 'OpenBib::Handler::Apache::Connector::Availability'
      rule: '/portal/:view/availability'
      runmode: 'show'
-  connector_bibmanager_loc:
-     name: connector/literaturverwaltung
-     realm: view
+  - # connector_bibmanager_loc:
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
      rule: '/portal/:view/connector/literaturverwaltung'
      runmode: 'show'
-  connector_digibib_loc:
-     name:  connector/digibib
-     realm: view
+  - # connector_digibib_loc:
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
      rule: '/portal/:view/connector/digibib'
      runmode: 'show'
-  connector_livesearch_loc:
-     name: connector/livesearch
-     realm: view
+  - # connector_livesearch_loc:
      module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
      rule: '/portal/:view/connector/livesearch'
      runmode: 'show'
-  connector_locationmark_loc:
-     name: connector/sykasignatur
-     realm: view
+  - # connector_locationmark_loc:
      module: 'OpenBib::Handler::Apache::Connector:LocationMark'
      rule: '/portal/:view/connector/locationmark'
      runmode: 'show'
-  connector_olws_loc:
-     name: connector/olws
-     realm: view
+  - # connector_olws_loc:
      module: 'OpenBib::Handler::Apache::Connector::OLWS'
      rule: '/portal/:view/connector/olws'
      runmode: 'show'
   # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
-  connector_permalink_loc:
-     name: connector/permalink
-     realm: view
+  - # connector_permalink_loc:
      module: 'OpenBib::Handler::Apache::Connector::PermaLink'
      rule: '/portal/connector/permalink/:id1/:id2/:type/:view/index.html'
      runmode: 'show'
-  connector_rss_loc:
-     name: connector/rss
-     realm: common
+  - # connector_rss_loc:
      module: 'OpenBib::Handler::Apache::Connector::RSS'
      rule: '/portal/connector/rss/:type/:subtype?/*'
      runmode: 'show'
-  connector_seealso_loc:
-     name: connector/seealso
-     realm: view
+  - # connector_seealso_loc:
      module: 'OpenBib::Handler::Apache::Connector::SeeAlso'
      rule: '/portal/:view/connector/seealso'
      runmode: 'show'
-  connector_similarpersons_loc:
-     name: connector/similarpersons
-     realm: view
+  - # connector_similarpersons_loc:
      module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
      rule: '/portal/:view/connector/similarpersons'
      runmode: 'show'
-  connector_similarsubjects_loc:
-     name: connector/similarsubjects
-     realm: view
+  - # connector_similarsubjects_loc:
      module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
      rule: '/portal/:view/connector/similarsubjects'
      runmode: 'show'
-  connector_spellcheck_loc:
-     name: connector/spellcheck
-     realm: view
+  - # connector_spellcheck_loc:
      module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
      rule: '/portal/:view/connector/spellcheck'
      runmode: 'show'
-  connector_ukonline_loc:
-     name: connector/uk-online
-     realm: view
+  - # connector_ukonline_loc:
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
      rule: '/portal/:view/connector/uk-online'
      runmode: 'show'
-  connector_unapi_loc:
-     name: connector/unapi
-     realm: view
+  - # connector_unapi_loc:
      module: 'OpenBib::Handler::Apache::Connector::UnAPI'
      rule: '/portal/:view/connector/unapi'
      runmode: 'show'
-  databasechoice_loc:
-     name: dbchoice
-     realm: view
+  - # databasechoice_loc:
      module: 'OpenBib::Handler::Apache::DatabaseChoice'
      rule: '/portal/:view/dbchoice'
      runmode: 'show'
-  databaseprofile_loc:
-     name:  dbprofile
-     realm: view
+  - # databaseprofile_loc:
      module: 'OpenBib::Handler::Apache::DatabaseProfile'
      rule: '/portal/:view/dbprofile'
      runmode: 'show'
-  dispatchquery_loc:
-     name: dispatchquery
-     realm: view
+  - # dispatchquery_loc:
      module: 'OpenBib::Handler::Apache::DispatchQuery'
      rule: '/portal/:view/dispatchquery'
      runmode: 'show'
-  externaljump_loc:
-     name: jumpto
-     realm: view
+  - # externaljump_loc:
      module: 'OpenBib::Handler::Apache::ExternalJump'
      rule: '/portal/:view/jumpto'
      runmode: 'show'
-  ezb_loc:
-     name: ezb 
-     realm: view
+  - # ezb_loc:
      module: 'OpenBib::Handler::Apache::EZB'
      rule: '/portal/:view/ezb'
      runmode: 'show'
-  dbis_loc:
-     name: dbis
-     realm: view
+  - # dbis_loc:
      module: 'OpenBib::Handler::Apache::DBIS'
      rule: '/portal/:view/dbis'
      runmode: 'show'
-  info_loc:
-     name: info
-     realm: view
+  - # info_loc:
      module: 'OpenBib::Handler::Apache::Info'
      rule: '/portal/:view/info/:stid/:representation?'
      runmode: 'show'
-  leave_loc:
-     name: logout
-     realm: view
+  - # leave_loc:
      module: 'OpenBib::Handler::Apache::Leave'
      rule: '/portal/:view/logout'
      runmode: 'show'
-  litlists_loc: 
-     name: litlists
-     realm: view
+  - # litlists_loc: 
      module: 'OpenBib::Handler::Apache::LitLists'
      rule: '/portal/:view/litlists/:rm/*'
      runmode: 'show'
-  loadbalancer_loc:
-     name: lastverteilung
-     realm: view
+  - # loadbalancer_loc:
      module: 'OpenBib::Handler::Apache::LoadBalancer'
      rule: '/portal/:view/loadbalancer'
      runmode: 'show'
-  login_loc:
-     name: login
-     realm: view
+  - # login_loc:
      module: 'OpenBib::Handler::Apache::Login'
      rule: '/portal/:view/login'
      runmode: 'show'
-  mailcollection_loc:
-     name: mailcollection
-     realm: view
+  - # mailcollection_loc:
      module: 'OpenBib::Handler::Apache::Mailcollectio'
      rule: '/portal/:view/mailcollection'
      runmode: 'show'
-  mailpassword_loc:
-     name: mailpassword
-     realm: view
+  - # mailpassword_loc:
      module: 'OpenBib::Handler::Apache::MailPassword'
      rule: '/portal/:view/mailpassword'
      runmode: 'show'
-  managecollection_loc:
-     name: collection
-     realm: view
+  - # managecollection_loc:
      module: 'OpenBib::Handler::Apache::ManageCollection'
      rule: '/portal/:view/collection'
      runmode: 'show'
-  redirect_loc:
-     name: redirect
-     realm: view
+  - # redirect_loc:
      module: 'OpenBib::Handler::Apache::Redirect'
      rule: '/portal/:view/redirect/:type/*'
      runmode: 'show'
-  resource_title_loc:
-     name: resource/title
-     realm: view
+  - # resource_title_loc:
      module: 'OpenBib::Handler::Apache::Resource::Title'
      rule: '/portal/:view/resource/title/:database/:id/:representation?'
      runmode: 'show'
-  resource_person_loc:
-     name: resource/person
-     realm: view
+  - # resource_person_loc:
      module: 'OpenBib::Handler::Apache::Resource::Person'
      rule: '/portal/:view/resource/person/:database/:id/:representation?'
      runmode: 'show'
-  resource_corporatebody_loc:
-     name: resource/corporatebody
-     realm: view
+  - # resource_corporatebody_loc:
      module: 'OpenBib::Handler::Apache::Resource::CorporateBody'
      rule: '/portal/:view/resource/corporatebody/:database/:id/:representation?'
      runmode: 'show'
-  resource_subject_loc:
-     name: resource/subject
-     realm: view
+  - # resource_subject_loc:
      module: 'OpenBib::Handler::Apache::Resource::Subject'
      rule: '/portal/:view/resource/subject/:database/:id/:representation?'
      runmode: 'show'
-  resource_classification_loc:
-     name: resource/classification
-     realm: view
+  - # resource_classification_loc:
      module: 'OpenBib::Handler::Apache::Resource::Classification'
      rule: '/portal/:view/resource/classification/:database/:id/:representation?'
      runmode: 'show'
-  resource_tag_loc:
-     name: resource/tag
-     realm: view
+  - # resource_tag_loc:
      module: 'OpenBib::Handler::Apache::Resource::Tag'
      rule: '/portal/:view/resource/tag/:id/:representation?'
      runmode: 'show'
-  resource_litlist_loc:
-     name: resource/litlist
-     realm: view
+  - # resource_litlist_loc:
      module: 'OpenBib::Handler::Apache::Resource::LitList'
      rule: '/portal/:view/resource/litlist/:id/:representation?'
      runmode: 'show'
-  resource_library_loc:
-     name: resource/library
-     realm: view
+  - # resource_library_loc:
      module: 'OpenBib::Handler::Apache::Resource::Library'
      rule: '/portal/:view/resource/library/:id/:representation?'
      runmode: 'show'
-  resource_user_loc:
-     name: resource/user
-     realm: view
+  - # resource_user_loc:
      module: 'OpenBib::Handler::Apache::Resource::User'
      rule: '/portal/:view/resource/user/:id/:representation?'
      runmode: 'show'
-  resultlists_loc:
-     name: resultlists
-     realm: view
+  - # resultlists_loc:
      module: 'OpenBib::Handler::Apache::ResultLists'
      rule: '/portal/:view/resultlists'
      runmode: 'show'
-  rssfeeds_loc:
-     name: rssfeeds
-     realm: view
+  - # rssfeeds_loc:
      module: 'OpenBib::Handler::Apache::RSSFeeds'
      rule: '/portal/:view/rssfeeds'
      runmode: 'show'
-  browse_loc:
-     name:  browse
-     realm: view
+  - # browse_loc:
      module: 'OpenBib::Handler::Apache::Browse'
      rule: '/portal/:view/browse'
      runmode: 'show'
-  searchmask_loc:
-     name: searchmask
-     realm: view
+  - # searchmask_loc:
      module: 'OpenBib::Handler::Apache::SearchMask'
      rule: '/portal/:view/searchmask/:type'
      runmode: 'show'
-  selfreg_loc:
-     name: selfreg
-     realm: view
+  - # selfreg_loc:
      module: 'OpenBib::Handler::Apache::SelfReg'
      rule: '/portal/:view/selfreg'
      runmode: 'show'
-  serverload_loc:
-     name:  getload
-     realm: common
+  - # serverload_loc:
      module: 'OpenBib::Handler::Apache::ServerLoad'
      rule: '/portal/common/getload'
      runmode: 'show'
-  startopac_loc:
-     name: home
-     realm: view
+  - # startopac_loc:
      module: 'OpenBib::Handler::Apache::StartOpac'
      rule: '/portal/:view/home'
      runmode: 'show'
-  tags_loc:
-     name: tags
-     realm: view
+  - # tags_loc:
      module: 'OpenBib::Handler::Apache::Tags'
      rule: '/portal/:view/tags'
      runmode: 'show'
-  userprefs_loc:
-     name: userprefs
-     realm: view
+  - # userprefs_loc:
      module: 'OpenBib::Handler::Apache::UserPrefs'
      rule: '/portal/:view/userprefs'
      runmode: 'show'
-  userreviews_loc:
-     name: review
-     realm: view
+  - # userreviews_loc:
      module: 'OpenBib::Handler::Apache::UserReviews'
      rule: '/portal/:view/review'
      runmode: 'show'
-  index_loc:
-     name: index
-     realm: view
+  - # index_loc:
      module: 'OpenBib::Handler::Apache::Search'
      rule: '/portal/:view/index/:type/*'
      runmode: 'index'
-  search_loc:
-     name: search
-     realm: view
+  - # search_loc:
      module: 'OpenBib::Handler::Apache::Search'
      rule: '/portal/:view/search'
      runmode: 'search'
@@ -439,14 +650,16 @@ handler:
 css_loc: /styles
 
 # Programm zum Versenden von Mails
-mail_prog: /bin/mailx
+mail_prog: /usr/bin/mailx
 
 # Email-Adressen fuer den Admin und generellen Kontakt
 admin_email: admin@openbib.org
 contact_email: contact@openbib.org
 
-# Externe Links zum direkten Einsprung in das USB-Portal,
-# das auf der Digitale Bibliothek NRW aufbaut
+# Externe Links zum direkten Einsprung in die Digitale
+# Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
+# sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
+# fuer den entsprechenden Standort (hier 038)
 hbzmonofernleih_exturl: http://www.ub.uni-koeln.de/usbportal?service=search&dbgroup=DeutschlandKataloge
 hbzzeitfernleih_exturl: http://www.ub.uni-koeln.de/usbportal?service=search&dbgroup=Zeitschriften
 
@@ -486,7 +699,22 @@ locale_base_path: /opt/openbib/locales
 # Pfad zu den Portal-Templates (Template Toolkit)
 tt_include_path: /opt/openbib/templates
 
-# Suchprefixe in der Rercherche fuer die internen Felder verf, hst usw.
+# Content-Type Maps
+
+content_type_map:
+ 'application/rdf+xml': 'rdf+xml'
+ 'text/rdf+n3': 'rdf+n3'
+ 'text/html': 'html'
+ 'application/json': 'json'
+
+content_type_map_rev:
+ 'rdf+xml': 'application/rdf+xml'
+ 'rdf+n3': 'text/rdf+n3'
+ 'html': 'text/html'
+ 'json': 'application/json'
+
+# Suchprefixe in der Rercherche fuer die internen Felder person, title usw.
+# Zuordnung: Interner Bezeichnung -> Suchprefix
 searchfield:
   'id':
      'prefix': 'id'
@@ -607,6 +835,7 @@ xapian_option:
 
 # Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
 # entsprechend searchfield_prefix
+# Zuordnung: Suchprefix ->  Xapian-Term/Posting-Prefix
 xapian_search_prefix:
   'id': 'Q'
   'bkey': 'B'
@@ -734,10 +963,10 @@ rssfeed_img: /images/openbib/rssfeed.png
 save_img: /images/openbib/3d-file-blue-disk35.png
 search_img: /images/openbib/search.png
 share_img: /images/openbib/share.png
-toggle_show_img: /images/openbib/toggle_plus.png
 top20_img: /images/openbib/top20-12px.png
 thumbnail_img: /images/openbib/thumbnail.png
 tutorial_img: /images/openbib/tutorial.png
+toggle_show_img: /images/openbib/toggle_plus.png
 wikipedia_img:  /images/openbib/wikipedia.png
 university_img:  /images/openbib/university.png
 
@@ -759,10 +988,14 @@ tt_admin_login_tname: admin_login
 tt_admin_logout_tname: admin_logout
 tt_admin_searchuser_tname: admin_searchuser
 tt_admin_showcat_tname: admin_showcat
+tt_admin_showcat_record_tname: admin_showcat_record
 tt_admin_showlibinfo_tname: admin_showlibinfo
 tt_admin_showoperations_tname: admin_showoperations
 tt_admin_showprofiles_tname: admin_showprofiles
+tt_admin_showprofile_record_tname: admin_showprofile_record
 tt_admin_showlogintarget_tname: admin_showlogintarget
+tt_admin_showorgunits_tname: admin_showorgunits
+tt_admin_showorgunit_record_tname: admin_showorgunit_record
 tt_admin_showsessions_1_tname: admin_showsessions_1
 tt_admin_showsessions_tname: admin_showsessions
 tt_admin_showstat_1_tname: admin_showstat_1
@@ -948,6 +1181,7 @@ bibsonomy_api_key: ''
 bibsonomy_api_user: ''
 
 # Zugriffsinformationen fuer ReCaptcha
+recaptcha_user: ''
 recaptcha_public_key: ''
 recaptcha_private_key: ''
 
@@ -956,7 +1190,7 @@ google_maps_api_key: ''
 
 # Aktivierung verschiedener Funktionalitaeten
 login_active: 1
-newsflash: 0
+newsflash: 1
 
 # Sollen Performance-Benchmarks durchgefuehrt werden
 benchmark: 0
@@ -975,11 +1209,11 @@ maxlength_sign: 70
 maxlength_dbname: 70
 
 # https fuer Admin und Nutzer verwenden
-use_https: 1
-use_admin_https: 1
+use_https: 0
+use_admin_https: 0
 
 # Testsystem
-testsystem: 0
+testsystem: 1
 
 # Drill-Down
 drilldown: 1
@@ -997,6 +1231,7 @@ drilldown_option:
   cloud_min: 6
 
 # Repraesentationen
+
 representation:
    'rdf+xml': 'application/rdf+xml'
    'rdf+n3': 'application/rdf+n3'
@@ -1019,16 +1254,18 @@ best_of:
   3:
     cloud: log
   4:
-    cloud: linear
+    cloud: log
   5:
-    cloud: linear
+    cloud: log
   6:
-    cloud: linear
+    cloud: log
   7:
-    cloud: linear
+    cloud: log
   8:
     cloud: log
   9:
+    cloud: log
+  12:
     cloud: log
 
 # Social-Tagging
@@ -1038,7 +1275,7 @@ social_tagging: 1
 litlists: 1
 
 # Reviews/Ratings
-reviews: 1
+reviews: 0
 
 # Cover-Scans
 coverscans:
@@ -1067,7 +1304,6 @@ categorymapping:
     T0200: 1
     T0201: 1
     T0304: 1
-    T0310: 1
     T0331: 1
     T0335: 1
     T0361: 1
@@ -1147,5 +1383,4 @@ categorymapping:
     T0710: 1
   wikisource_de:
     T0101: 1
-
 

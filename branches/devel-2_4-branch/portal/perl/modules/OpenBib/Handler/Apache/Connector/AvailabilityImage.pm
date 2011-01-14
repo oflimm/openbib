@@ -61,15 +61,15 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('lookup_gbs');
+    $self->start_mode('process_gbs');
     $self->run_modes(
-        'gbs'        => 'lookup_gbs',
-        'bibsonomy'  => 'lookup_bibsonomy',
-        'ebook'      => 'lookup_ebook',
-        'ol'         => 'lookup_ol',
-        'wikipedia'  => 'lookup_wikipedia',
-        'paperc'     => 'lookup_paperc',
-        'unifloh'    => 'lookup_unifloh',
+        'gbs'        => 'process_gbs',
+        'bibsonomy'  => 'process_bibsonomy',
+        'ebook'      => 'process_ebook',
+        'ol'         => 'process_ol',
+        'wikipedia'  => 'process_wikipedia',
+        'paperc'     => 'process_paperc',
+        'unifloh'    => 'process_unifloh',
     );
 
     # Use current path as template path,
@@ -77,7 +77,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub lookup_gbs {
+sub process_gbs {
     my $self = shift;
     my $r    = $self->param('r');
 
@@ -160,7 +160,7 @@ sub lookup_gbs {
     return '';
 }
 
-sub lookup_bibsonomy {
+sub process_bibsonomy {
     my $self = shift;
     my $r    = $self->param('r');
 
@@ -213,7 +213,7 @@ sub lookup_bibsonomy {
     return '';
 }
 
-sub lookup_ebooks {
+sub process_ebooks {
     my $self = shift;
     my $r    = $self->param('r');
 
@@ -263,7 +263,7 @@ sub lookup_ebooks {
     return '';
 }
 
-sub lookup_ol {
+sub process_ol {
     my $self = shift;
     my $r    = $self->param('r');
 
@@ -351,7 +351,7 @@ sub lookup_ol {
     return '';
 }
 
-sub lookup_unifloh {
+sub process_unifloh {
     my $self = shift;
     my $r    = $self->param('r');
 
@@ -410,7 +410,7 @@ sub lookup_unifloh {
     return '';
 }
 
-sub lookup_wikipedia {
+sub process_wikipedia {
     my $self = shift;
     my $r    = $self->param('r');
 
@@ -466,7 +466,7 @@ sub lookup_wikipedia {
     return '';
 }
 
-sub lookup_paperc {
+sub process_paperc {
     my $self = shift;
     my $r    = $self->param('r');
 

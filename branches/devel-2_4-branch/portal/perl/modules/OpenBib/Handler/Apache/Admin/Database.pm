@@ -201,7 +201,7 @@ sub show_collection {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_showcat_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_database_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -283,7 +283,7 @@ sub show_record_negotiate {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_showcat_record_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_database_record_tname},$ttdata,$r);
 }
 
 sub create_record {
@@ -464,7 +464,7 @@ sub show_record_form {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_editcat_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_database_record_edit_tname},$ttdata,$r);
         
     return Apache2::Const::OK;
 }

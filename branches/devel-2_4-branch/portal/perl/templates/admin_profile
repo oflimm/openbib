@@ -1,0 +1,23 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_profile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Profile
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%- IF representation == '' || representation == 'html' -%]
+[%- PROCESS common/subtemplate name="admin_profile_html" -%]
+[%- ELSIF representation == 'rdf+xml' -%]
+[%- PROCESS common/subtemplate name="admin_profile_rdf+xml" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="admin_profile_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

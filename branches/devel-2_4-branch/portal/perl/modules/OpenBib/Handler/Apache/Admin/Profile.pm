@@ -199,7 +199,7 @@ sub show_collection {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_showprofiles_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_profile_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -448,7 +448,7 @@ sub show_record_form {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_editprofile_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_profile_record_edit_tname},$ttdata,$r);
         
     return Apache2::Const::OK;
 }

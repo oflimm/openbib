@@ -1,0 +1,70 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showviews
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Views
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog-Profile anzeigen' %]
+
+  <body bgcolor="#FFFFFF">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="profiles" %] 
+
+<div class="content">
+
+<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_profile_loc.name %]">
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neues Katalog-Profil anlegen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="profilename" /></td><td><input type="text" name="description" size="20" />
+</td><td><div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[% IF profiles.size > 0 %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende Katalog-Profile") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+[% msg.maketext("Um einen bereits existierendes Katalog-Profil zu bearbeiten klicken Sie bitte auf den Profil-Namen.") %]
+<p />
+
+<table>
+<tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td></tr>
+
+[% FOREACH profile IN profiles %]
+
+<tr><td>[% profile.profilename %]</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_profile_loc.name %]/[% profile.profilename %]/edit">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
+[% END %]
+
+</table>
+
+[% END %]
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

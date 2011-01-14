@@ -284,6 +284,40 @@ sub view_exists {
     return $rowcount;
 }
 
+sub profile_exists {
+    my $self     = shift;
+    my $profilename = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(profilename) as rowcount from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
+    $request->execute($profilename) or $logger->error($DBI::errstr);
+    my $res       = $request->fetchrow_hashref;
+    my $rowcount  = $res->{rowcount};
+    $request->finish();
+    
+    return $rowcount;
+}
+
+sub orgunit_exists {
+    my $self     = shift;
+    my $profilename = shift;
+    my $orgunitname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(orgunitname) as rowcount from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $request->execute($profilename,$orgunitname) or $logger->error($DBI::errstr);
+    my $res       = $request->fetchrow_hashref;
+    my $rowcount  = $res->{rowcount};
+    $request->finish();
+    
+    return $rowcount;
+}
+
+
 sub get_valid_rsscache_entry {
     my ($self,$arg_ref) = @_;
 
@@ -1354,9 +1388,17 @@ sub del_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('DatabaseInfo')->search({ dbname => $dbname})->single->delete;
+    eval {
+        $self->{schema}->resultset('DatabaseInfo')->search({ dbname => $dbname})->single->delete;
 
-#    $self->{schema}->resultset('Titcount')->search({ dbname => $dbname})->delete;
+        foreach my $titcount ($self->{schema}->resultset('Titcount')->search({ dbname => $dbname})){
+            $titcount->delete;
+        };
+    };
+    
+    if ($@){
+        $logger->fatal("Error deleting Record $@");
+    }
     
     if ($self->get_system_of_db($dbname) ne "Z39.50"){
         # Und nun auch die Datenbank komplett loeschen

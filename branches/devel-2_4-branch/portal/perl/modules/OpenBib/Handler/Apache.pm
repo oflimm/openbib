@@ -36,6 +36,7 @@ use utf8;
 
 use CGI::Application::Plugin::Apache qw(:all);
 use Log::Log4perl qw(get_logger :levels);
+use List::MoreUtils qw(none any);
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
@@ -79,6 +80,49 @@ sub cgiapp_init() {       # overrides
 
    $logger->debug("Exit cgiapp_init");
    #   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
+}
+
+sub negotiate_type {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+    
+    my $accept       = $r->headers_in->{Accept} || '';
+    my @accept_types = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
+
+    $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accept_types));
+    
+#     my $content_type_map_ref = {
+#         "application/rdf+xml" => "rdf+xml",
+#         "text/rdf+n3"         => "rdf+n3",
+#         "text/html"           => "html",
+#         "application/json"    => "json",
+#     };
+
+#     my $content_type_map_rev_ref = {
+#         "rdf+xml" => "application/rdf+xml",
+#         "rdf+n3"  => "text/rdf+n3",
+#         "html"    => "text/html",
+#         "json"    => "application/json",
+#     };
+
+    my $information_resource_found = 0;
+    foreach my $information_resource_type (keys %{$self->param('config')->{content_type_map}}){            
+        if (any { $_ eq $information_resource_type } @accept_types) {            
+            return {
+                content_type => $information_resource_type,
+                suffix       => $self->param('config')->{content_type_map}->{$information_resource_type},
+            };
+        }                                                
+    }
+    
+    return {
+        content_type   => 'text/html',
+        suffix => 'html',
+    };
 }
 
 1;

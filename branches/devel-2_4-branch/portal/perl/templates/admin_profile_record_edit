@@ -23,10 +23,8 @@
 
 <div class="content">
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
-
-<input type="hidden" name="profilename" value="[% profile.profilename %]" />
-<input type="hidden" name="do_editprofile" value="1" />
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% profile.profilename %]">
+<input type="hidden" name="_method"    value="PUT" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Katalog-Profil bearbeiten") %]</th></tr>
@@ -41,7 +39,7 @@
 </form>
 <p />
 
-<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_profile_loc.name %]/[% profile.profilename %]/orgunit">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% profile.profilename %]/orgunit">
 
 <table width="100%">
 <tr><th>Neue Organisationseinheit anlegen</th></tr>
@@ -65,7 +63,7 @@
 <table>
 <tr><td><b>Name</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>Kataloge</b></td><td></td></tr>
 [% FOREACH thisorgunit IN orgunits %]
-<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_profile_loc.name %]/[% profile.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% thisorgunit.dbnames.join(',') %]</td></tr>
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% profile.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% thisorgunit.dbnames.join(',') %]</td></tr>
 [% END %]
 </table>
 </td></tr>

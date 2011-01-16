@@ -23,7 +23,7 @@
 
 <div class="content">
 
-<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_databaseinfo_loc.name %]/[% databaseinfo.dbname %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_databaseinfo_loc.name %]/[% databaseinfo.dbname %]">
 <input type="hidden" name="_method"    value="PUT" />
 
 <table width="100%">
@@ -116,7 +116,7 @@
 
 </form>
 
-<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_databaseinfo_loc.name %]/[% databaseinfo.dbname %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_databaseinfo_loc.name %]/[% databaseinfo.dbname %]">
 <input type="hidden" name="_method"    value="DELETE" />
 
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Löschen") %]"></div></td></tr>

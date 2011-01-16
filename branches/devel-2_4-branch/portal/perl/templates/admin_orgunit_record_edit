@@ -25,10 +25,7 @@
 
 <h1>[% orgunitinfo.description %]</h1>
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
-<input type="hidden" name="profilename" value="[% orgunitinfo.profilename %]" />
-<input type="hidden" name="orgunit"     value="[% orgunitinfo.orgunitname %]" />
-<input type="hidden" name="do_editorgunit" value="1" />
+<form method="get" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
 
 <table width="100%">
 <tr><th>Organisationseinheit bearbeiten</th></tr>

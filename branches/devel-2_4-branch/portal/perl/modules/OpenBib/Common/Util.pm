@@ -257,10 +257,19 @@ sub print_page {
     }
     else {
         $view = $session->get_viewname;
-        $ttdata->{'view'} = $view;
+        if ($view){
+            $ttdata->{'view'} = $view;
+        }
+        else {
+            $ttdata->{'view'} = '';
+        }
     }
 
-    my $sysprofile= $config->get_viewinfo($view)->{profilename};
+    my $sysprofile= '';
+
+    if ($view){
+        $sysprofile = $config->get_viewinfo($view)->{profilename};
+    }
     
     my $user      = OpenBib::User->instance({sessionID => $sessionID});
 

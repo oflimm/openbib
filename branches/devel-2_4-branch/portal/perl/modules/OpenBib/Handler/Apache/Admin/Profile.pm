@@ -101,7 +101,7 @@ sub show_collection_negotiate {
     
     $r->content_type($negotiated_type_ref->{content_type});
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}.$negotiated_type_ref->{suffix}";
     $r->headers_out->add("Location" => $new_location);
     $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
     
@@ -361,9 +361,12 @@ sub create_record {
         OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
         return Apache2::Const::OK;
     }
-    
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}/$profilename/edit");
-    return Apache2::Const::OK;
+
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/edit");
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 sub show_record_form {
@@ -508,7 +511,7 @@ sub update_record {
 
     if ($method eq "DELETE"){
         $self->query->method('DELETE');
-        $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}/$profilename");
+        $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
         $self->query->status(Apache2::Const::REDIRECT);
     }
 
@@ -519,7 +522,7 @@ sub update_record {
         description => $description,
     });
     
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}");
+    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}");
     
     return Apache2::Const::OK;
 }
@@ -572,7 +575,7 @@ sub delete_record {
 
     $config->del_profile($profilename);
     
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}");
+    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}");
     return Apache2::Const::OK;
 }
 

@@ -102,7 +102,7 @@ sub show_collection_negotiate {
     
     $r->content_type($negotiated_type_ref->{content_type});
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit.$negotiated_type_ref->{suffix}";
     $r->headers_out->add("Location" => $new_location);
     $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
     
@@ -385,7 +385,7 @@ sub create_record {
         return Apache2::Const::OK;
     }
     
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunit/edit");
+    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunit/edit");
     return Apache2::Const::OK;
 }
 
@@ -542,7 +542,7 @@ sub update_record {
 
     if ($method eq "DELETE"){
         $self->query->method('DELETE');
-        $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunitname");
+        $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunitname");
         $self->query->status(Apache2::Const::REDIRECT);
     }
 
@@ -570,7 +570,7 @@ sub update_record {
         nr          => $nr,
     });
     
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}/$profilename");
+    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
     
     return Apache2::Const::OK;
 }
@@ -636,7 +636,7 @@ sub delete_record {
 
     $config->del_orgunit($profilename,$orgunitname);
     
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_profile_loc}{name}/$profilename");
+    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
     return Apache2::Const::OK;
 }
 

@@ -102,7 +102,7 @@ sub show_collection_negotiate {
     
     $r->content_type($negotiated_type_ref->{content_type});
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{admin_databaseinfo_loc}{name}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$config->{handler}{admin_databaseinfo_loc}{name}.$negotiated_type_ref->{suffix}";
     $r->headers_out->add("Location" => $new_location);
     $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
     
@@ -399,7 +399,7 @@ sub create_record {
     
     $config->new_databaseinfo($thisdbinfo_ref);
 
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{handler}{admin_databaseinfo_loc}{name}/$dbname/edit");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_databaseinfo_loc}{name}/$dbname/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return Apache2::Const::OK;
@@ -524,7 +524,7 @@ sub update_record {
 
     if ($method eq "DELETE"){
         $self->query->method('DELETE');    
-        $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{handler}{admin_databaseinfo_loc}{name}");
+        $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_databaseinfo_loc}{name}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     
@@ -585,7 +585,7 @@ sub update_record {
     
     $config->update_databaseinfo($thisdbinfo_ref);
 
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{handler}{admin_databaseinfo_loc}{name}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_databaseinfo_loc}{name}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return Apache2::Const::OK;
@@ -639,7 +639,7 @@ sub delete_record {
 
     $config->del_databaseinfo($dbname);
     
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{admin_databaseinfo_loc}{name}");
+    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_databaseinfo_loc}{name}");
     return Apache2::Const::OK;
 }
 

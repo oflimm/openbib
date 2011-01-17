@@ -117,7 +117,8 @@
 </form>
 
 <form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_databaseinfo_loc.name %]/[% databaseinfo.dbname %]">
-<input type="hidden" name="_method"    value="DELETE" />
+<input type="hidden" name="_method"     value="DELETE" />
+<input type="hidden" name="confirm"     value="1" />
 
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Löschen") %]"></div></td></tr>
 

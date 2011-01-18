@@ -1405,6 +1405,8 @@ sub del_databaseinfo {
         system("$self->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
     }
 
+    $logger->debug("Database $dbname deleted");
+    
     return;
 }
 
@@ -1461,6 +1463,19 @@ sub new_databaseinfo_rss {
     my $logger = get_logger();
 
     my $request=$self->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
+    $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
+    $request->finish();
+
+    return;
+}
+
+sub del_databaseinfo_rss {
+    my ($self,$dbname,$rsstype)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("delete from rssfeeds where dbname = ? and rsstype = ?") or $logger->error($DBI::errstr);
     $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
     $request->finish();
 

@@ -210,7 +210,7 @@ sub show_record_negotiate {
     
     my $r              = $self->param('r');
 
-    my $id             = $self->param('id')             || '';
+    my $id             = $self->param('viewid')             || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -410,7 +410,7 @@ sub show_record_form {
     
     my $r              = $self->param('r');
 
-    my $viewname       = $self->param('id')             || '';
+    my $viewname       = $self->param('viewid')             || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -510,7 +510,7 @@ sub update_record {
     
     my $r              = $self->param('r');
 
-    my $viewname         = $self->param('id')             || '';
+    my $viewname         = $self->param('viewid')             || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -546,6 +546,12 @@ sub update_record {
     }
 
     $logger->debug("Server: ".$r->get_server_name);
+
+    if (!$config->view_exists($viewname)) {        
+        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        
+        return Apache2::Const::OK;
+    }
 
     # Variables
 
@@ -559,11 +565,11 @@ sub update_record {
         $logger->debug("About to delete $viewname");
         
         if ($confirm){
-            my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $viewname})->single;
+            my $viewinfo_ref = $config->get_viewinfo->search({ viewname => $viewname})->single;
             
             my $ttdata={
-                stylesheet   => $stylesheet,
-                databaseinfo => $dbinfo_ref,
+                stylesheet => $stylesheet,
+                viewinfo   => $viewinfo_ref,
                 
                 config     => $config,
                 session    => $session,
@@ -572,79 +578,56 @@ sub update_record {
             };
 
             $logger->debug("Asking for confirmation");
-            OpenBib::Common::Util::print_page($config->{tt_admin_database_record_delete_confirm_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_admin_view_record_delete_confirm_tname},$ttdata,$r);
 
             return Apache2::Const::OK;
         }
         else {
             $logger->debug("Redirecting to delete location");
             $self->query->method('DELETE');    
-            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_databaseinfo_loc}{name}/$viewname");
+            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_view_loc}{name}/$viewname");
             $self->query->status(Apache2::Const::REDIRECT);
             return;
         }
     }
 
     # Ansonsten POST oder PUT => Aktualisieren
-    
+
     my $description     = decode_utf8($query->param('description'))     || '';
-    my $shortdesc       = $query->param('shortdesc')       || '';
-    my $system          = $query->param('system')          || '';
-    my $sigel           = $query->param('sigel')           || '';
-    my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('use_libinfo')     || 0;
     my $active          = $query->param('active')          || 0;
+    my $primrssfeed     = $query->param('primrssfeed')     || '';
+    my $viewstart_loc   = $query->param('viewstart_loc')             || '';
+    my $viewstart_stid  = $query->param('viewstart_stid')            || '';
+    my $profilename     = $query->param('profilename')     || '';
+    my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
+    my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
 
-    my $host            = $query->param('host')            || '';
-    my $protocol        = $query->param('protocol')        || '';
-    my $remotepath      = $query->param('remotepath')      || '';
-    my $remoteuser      = $query->param('remoteuser')      || '';
-    my $remotepasswd    = $query->param('remotepasswd')    || '';
-    my $titfilename     = $query->param('titfilename')     || '';
-    my $autfilename     = $query->param('autfilename')     || '';
-    my $korfilename     = $query->param('korfilename')     || '';
-    my $swtfilename     = $query->param('swtfilename')     || '';
-    my $notfilename     = $query->param('notfilename')     || '';
-    my $mexfilename     = $query->param('mexfilename')     || '';
-    my $autoconvert     = $query->param('autoconvert')     || '';
-    my $circ            = $query->param('circ')            || '';
-    my $circurl         = $query->param('circurl')         || '';
-    my $circcheckurl    = $query->param('circcheckurl')    || '';
-    my $circdb          = $query->param('circdb')          || '';
 
+    # Profile muss vorhanden sein.
+    if (!$config->profile_exists($profilename)) {
+        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"),$r,$msg);
+
+        return Apache2::Const::OK;
+    }
+
+    my $thisviewinfo_ref = {
+        viewname    => $viewname,
+        description => $description,
+        active      => $active,
+        primrssfeed => $primrssfeed,
+        start_loc   => $viewstart_loc,
+        start_stid  => $viewstart_stid,
+        profilename => $profilename,
+        viewdb      => \@viewdb,
+        rssfeeds    => \@rssfeeds,
+    };        
+
+    $logger->debug("Info: ".YAML::Dump($thisviewinfo_ref));
     
-    my $thisdbinfo_ref = {
-        description        => $description,
-        shortdesc          => $shortdesc,
-        system             => $system,
-        sigel              => $sigel,
-        url                => $url,
-        use_libinfo        => $use_libinfo,
-        active             => $active,
-        host               => $host,
-        protocol           => $protocol,
-        remotepath         => $remotepath,
-        remoteuser         => $remoteuser,
-        remotepassword     => $remotepasswd,
-        titlefile          => $titfilename,
-        personfile         => $autfilename,
-        corporatebodyfile  => $korfilename,
-        subjectfile        => $swtfilename,
-        classificationfile => $notfilename,
-        holdingsfile       => $mexfilename,
-        autoconvert        => $autoconvert,
-        circ               => $circ,
-        circurl            => $circurl,
-        circwsurl          => $circcheckurl,
-        circdb             => $circdb,
-    };
-        
-    $logger->debug("Info: ".YAML::Dump($thisdbinfo_ref));
-    
-    $config->update_databaseinfo($thisdbinfo_ref);
+    $config->update_view($thisviewinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_databaseinfo_loc}{name}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_view_loc}{name}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -656,9 +639,9 @@ sub delete_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
+    my $r                = $self->param('r');
 
-    my $viewname         = $self->param('id')             || '';
+    my $viewname         = $self->param('viewid')             || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -695,10 +678,10 @@ sub delete_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    $config->del_databaseinfo($viewname);
-
+    $config->del_view($viewname);
+    
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_databaseinfo_loc}{name}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_view_loc}{name}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

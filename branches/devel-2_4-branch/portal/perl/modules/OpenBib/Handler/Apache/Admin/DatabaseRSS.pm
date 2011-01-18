@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Database
+#  OpenBib::Handler::Apache::Admin::DatabaseRSS
 #
 #  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Database;
+package OpenBib::Handler::Apache::Admin::DatabaseRSS;
 
 use strict;
 use warnings;
@@ -79,7 +79,7 @@ sub setup {
         'show_record_negotiate'     => 'show_record_negotiate',
         'show_record_form'          => 'show_record_form',
         'update_record'             => 'update_record',
-        'delete_record'             => 'delete_record',        
+        'delete_record'             => 'delete_record',
     );
 
     # Use current path as template path,
@@ -94,12 +94,13 @@ sub show_collection_negotiate {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $dbname         = $self->param('databaseid')          || '';
 
     my $config  = OpenBib::Config->instance;
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -148,6 +149,7 @@ sub show_collection {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $dbname         = $self->param('databaseid')     || '';
 
     my $representation = $self->param('representation') || '';
 
@@ -179,8 +181,20 @@ sub show_collection {
     }
 
     $logger->debug("Server: ".$r->get_server_name."Representation: $representation");
-           
-    my $dbinfo_ref = $config->get_dbinfo_overview();
+
+    if (!$config->db_exists($dbname)) {        
+        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        
+        return Apache2::Const::OK;
+    }
+
+    my $rssfeed_ref= $config->get_rssfeeds_of_db($dbname);;
+    
+    my $katalog={
+        dbname      => $dbname,
+        rssfeeds    => $rssfeed_ref,
+    };
+    
     
     my $ttdata={
         representation => $representation,
@@ -192,7 +206,8 @@ sub show_collection {
         
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
-        kataloge   => $dbinfo_ref,
+        
+        katalog    => $katalog,
         
         config     => $config,
         session    => $session,
@@ -200,7 +215,7 @@ sub show_collection {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_database_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_database_rss_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -213,7 +228,8 @@ sub show_record_negotiate {
     
     my $r              = $self->param('r');
 
-    my $id             = $self->param('databaseid')             || '';
+    my $dbname         = $self->param('databaseid')     || '';
+    my $id             = $self->param('rssid')          || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -244,26 +260,32 @@ sub show_record_negotiate {
 
     $logger->debug("Server: ".$r->get_server_name);
 
+    if (!$config->db_exists($dbname)) {        
+        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        
+        return Apache2::Const::OK;
+    }
+
     # Mit Suffix, dann keine Aushandlung des Typs
 
     my $representation = "";
     my $content_type   = "";
 
-    my $dbname         = "";
+    my $rssid          = "";
     if ($id=~/^(.+?)(\.html|\.json|\.rdf\+xml)$/){
-        $dbname           = $1;
+        $rssid            = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $config->{'content_type_map_rev'}{$representation};
     }
     # Sonst Aushandlung
     else {
-        $dbname = $id;
+        $rssid = $id;
         my $negotiated_type = $self->negotiate_type;
         $representation = $negotiated_type->{suffix};
         $content_type   = $negotiated_type->{content_type};
     }
     
-    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
+    my $rssinfo_ref = $config->get_rssfeeds_of_db_by_type($dbname)->{$rssid};
     
     my $ttdata={
         representation => $representation,
@@ -271,7 +293,7 @@ sub show_record_negotiate {
         
         stylesheet => $stylesheet,
         
-        databaseinfo => $dbinfo_ref,
+        rssinfo    => $rssinfo_ref,
         
         config     => $config,
         session    => $session,
@@ -289,6 +311,7 @@ sub create_record {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $dbname         = $self->param('databaseid')          || '';
 
     my $representation = $self->param('representation') || '';
 
@@ -322,63 +345,11 @@ sub create_record {
     $logger->debug("Server: ".$r->get_server_name);
 
     # Variables
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $shortdesc       = $query->param('shortdesc')       || '';
-    my $system          = $query->param('system')          || '';
-    my $dbname          = $query->param('dbname')          || '';
-    my $sigel           = $query->param('sigel')           || '';
-    my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('use_libinfo')     || 0;
-    my $active          = $query->param('active')          || 0;
+    my $rssid           = $query->param('rssid') || '';
 
-    my $host            = $query->param('host')            || '';
-    my $protocol        = $query->param('protocol')        || '';
-    my $remotepath      = $query->param('remotepath')      || '';
-    my $remoteuser      = $query->param('remoteuser')      || '';
-    my $remotepasswd    = $query->param('remotepasswd')    || '';
-    my $titfilename     = $query->param('titfilename')     || '';
-    my $autfilename     = $query->param('autfilename')     || '';
-    my $korfilename     = $query->param('korfilename')     || '';
-    my $swtfilename     = $query->param('swtfilename')     || '';
-    my $notfilename     = $query->param('notfilename')     || '';
-    my $mexfilename     = $query->param('mexfilename')     || '';
-    my $autoconvert     = $query->param('autoconvert')     || '';
-    my $circ            = $query->param('circ')            || '';
-    my $circurl         = $query->param('circurl')         || '';
-    my $circcheckurl    = $query->param('circcheckurl')    || '';
-    my $circdb          = $query->param('circdb')          || '';
-
-    
-    my $thisdbinfo_ref = {
-        description        => $description,
-        shortdesc          => $shortdesc,
-        system             => $system,
-        dbname             => $dbname,
-        sigel              => $sigel,
-        url                => $url,
-        use_libinfo        => $use_libinfo,
-        active             => $active,
-        host               => $host,
-        protocol           => $protocol,
-        remotepath         => $remotepath,
-        remoteuser         => $remoteuser,
-        remotepassword     => $remotepasswd,
-        titlefile          => $titfilename,
-        personfile         => $autfilename,
-        corporatebodyfile  => $korfilename,
-        subjectfile        => $swtfilename,
-        classificationfile => $notfilename,
-        holdingsfile       => $mexfilename,
-        autoconvert        => $autoconvert,
-        circ               => $circ,
-        circurl            => $circurl,
-        circwsurl          => $circcheckurl,
-        circdb             => $circdb,
-    };
-    
-    if ($dbname eq "" || $description eq "") {
+    if ($rssid eq "") {
         
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."),$r,$msg);
+        OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen RSS-Typ eingeben."),$r,$msg);
         
         return Apache2::Const::OK;
     }
@@ -389,11 +360,11 @@ sub create_record {
         
         return Apache2::Const::OK;
     }
-    
-    $config->new_databaseinfo($thisdbinfo_ref);
 
+    $config->new_databaseinfo_rss($dbname,$rssid);
+    
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/edit");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss/$rssid/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -408,6 +379,7 @@ sub show_record_form {
     my $r              = $self->param('r');
 
     my $dbname         = $self->param('databaseid')             || '';
+    my $id             = $self->param('rssid')          || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -444,12 +416,19 @@ sub show_record_form {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
+    if (!$config->db_exists($dbname)) {        
+        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        
+        return Apache2::Const::OK;
+    }
+
+    my $rssinfo_ref = $config->get_rssfeeds_of_db_by_type($dbname)->{$id};
     
     my $ttdata={
         stylesheet   => $stylesheet,        
-        databaseinfo => $dbinfo_ref,
-        
+        rssinfo    => $rssinfo_ref,
+
+        rssinfo    => $rssinfo_ref,
         config     => $config,
         session    => $session,
         user       => $user,
@@ -470,6 +449,7 @@ sub update_record {
     my $r              = $self->param('r');
 
     my $dbname         = $self->param('databaseid')             || '';
+    my $id             = $self->param('rssid')          || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -518,11 +498,11 @@ sub update_record {
         $logger->debug("About to delete $dbname");
         
         if ($confirm){
-            my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
-            
+            my $rssinfo_ref = $config->get_rssfeeds_of_db_by_type($dbname)->{$id};
+
             my $ttdata={
                 stylesheet   => $stylesheet,
-                databaseinfo => $dbinfo_ref,
+                rssinfo      => $rssinfo_ref,
                 
                 config     => $config,
                 session    => $session,
@@ -531,80 +511,28 @@ sub update_record {
             };
 
             $logger->debug("Asking for confirmation");
-            OpenBib::Common::Util::print_page($config->{tt_admin_database_record_delete_confirm_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_admin_database_rss_record_delete_confirm_tname},$ttdata,$r);
 
             return Apache2::Const::OK;
         }
         else {
             $logger->debug("Redirecting to delete location");
             $self->query->method('DELETE');    
-            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname");
+            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss/$id");
             $self->query->status(Apache2::Const::REDIRECT);
             return;
         }
     }
 
     # Ansonsten POST oder PUT => Aktualisieren
-    
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $shortdesc       = $query->param('shortdesc')       || '';
-    my $system          = $query->param('system')          || '';
-    my $sigel           = $query->param('sigel')           || '';
-    my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('use_libinfo')     || 0;
+    my $rsstype         = $query->param('rss_type')        || '';
     my $active          = $query->param('active')          || 0;
 
-    my $host            = $query->param('host')            || '';
-    my $protocol        = $query->param('protocol')        || '';
-    my $remotepath      = $query->param('remotepath')      || '';
-    my $remoteuser      = $query->param('remoteuser')      || '';
-    my $remotepasswd    = $query->param('remotepasswd')    || '';
-    my $titfilename     = $query->param('titfilename')     || '';
-    my $autfilename     = $query->param('autfilename')     || '';
-    my $korfilename     = $query->param('korfilename')     || '';
-    my $swtfilename     = $query->param('swtfilename')     || '';
-    my $notfilename     = $query->param('notfilename')     || '';
-    my $mexfilename     = $query->param('mexfilename')     || '';
-    my $autoconvert     = $query->param('autoconvert')     || '';
-    my $circ            = $query->param('circ')            || '';
-    my $circurl         = $query->param('circurl')         || '';
-    my $circcheckurl    = $query->param('circcheckurl')    || '';
-    my $circdb          = $query->param('circdb')          || '';
 
+    $config->update_databaseinfo_rss($dbname,$rsstype,$active,$id);
     
-    my $thisdbinfo_ref = {
-        description        => $description,
-        shortdesc          => $shortdesc,
-        system             => $system,
-        dbname             => $dbname,
-        sigel              => $sigel,
-        url                => $url,
-        use_libinfo        => $use_libinfo,
-        active             => $active,
-        host               => $host,
-        protocol           => $protocol,
-        remotepath         => $remotepath,
-        remoteuser         => $remoteuser,
-        remotepassword     => $remotepasswd,
-        titlefile          => $titfilename,
-        personfile         => $autfilename,
-        corporatebodyfile  => $korfilename,
-        subjectfile        => $swtfilename,
-        classificationfile => $notfilename,
-        holdingsfile       => $mexfilename,
-        autoconvert        => $autoconvert,
-        circ               => $circ,
-        circurl            => $circurl,
-        circwsurl          => $circcheckurl,
-        circdb             => $circdb,
-    };
-        
-    $logger->debug("Info: ".YAML::Dump($thisdbinfo_ref));
-    
-    $config->update_databaseinfo($thisdbinfo_ref);
-
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -619,6 +547,7 @@ sub delete_record {
     my $r              = $self->param('r');
 
     my $dbname         = $self->param('databaseid')             || '';
+    my $id             = $self->param('rssid')          || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -655,7 +584,14 @@ sub delete_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    $config->del_databaseinfo($dbname);
+    if (!$config->db_exists($dbname)) {        
+        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        
+        return Apache2::Const::OK;
+    }
+
+    
+    $config->del_databaseinfo_rss($dbname,$id);
 
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}");

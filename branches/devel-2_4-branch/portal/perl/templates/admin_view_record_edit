@@ -23,10 +23,8 @@
 
 <div class="content">
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
-
-<input type="hidden" name="viewname"    value="[% viewinfo.viewname %]" />
-<input type="hidden" name="do_editview" value="1" />
+<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_view_loc.name %]/[% viewinfo.viewname %]">
+<input type="hidden" name="_method"     value="PUT" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("View bearbeiten") %]</th></tr>

@@ -93,19 +93,21 @@ sub show_collection_negotiate {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
 
     my $config  = OpenBib::Config->instance;
 
     my $negotiated_type_ref = $self->negotiate_type;
     
-    $r->content_type($negotiated_type_ref->{content_type});
-
     my $new_location = "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}.$negotiated_type_ref->{suffix}";
-    $r->headers_out->add("Location" => $new_location);
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
     $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-    
-    return Apache2::Const::HTTP_SEE_OTHER;
+
+    return;
 }
 
 sub show_collection_as_html {
@@ -146,7 +148,6 @@ sub show_collection {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
     my $representation = $self->param('representation') || '';
 
     my $config  = OpenBib::Config->instance;
@@ -181,8 +182,6 @@ sub show_collection {
     my $profileinfo_ref = $config->get_profileinfo_overview();
 
     my $ttdata={
-        view       => $view,
-
         representation => $representation,
 
         to_json       => sub {
@@ -212,8 +211,7 @@ sub show_record_negotiate {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $id             = $self->param('id')             || '';
+    my $id             = $self->param('profileid')             || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -285,8 +283,6 @@ sub show_record_negotiate {
     };
     
     my $ttdata={
-        view       => $view,
-        
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
         
@@ -300,7 +296,7 @@ sub show_record_negotiate {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_showprofile_record_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_profile_record_tname},$ttdata,$r);
 }
 
 sub create_record {
@@ -311,7 +307,6 @@ sub create_record {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -377,8 +372,7 @@ sub show_record_form {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $profilename    = $self->param('id')             || '';
+    my $profilename    = $self->param('profileid')             || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -436,8 +430,6 @@ sub show_record_form {
     };
     
     my $ttdata={
-        view       => $view,
-        
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
         
@@ -464,8 +456,7 @@ sub update_record {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $profilename    = $self->param('id')             || '';
+    my $profilename    = $self->param('profileid')             || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -508,11 +499,37 @@ sub update_record {
     # zu verwenden
     
     my $method          = decode_utf8($query->param('_method')) || '';
+    my $confirm         = $query->param('confirm') || 0;
 
     if ($method eq "DELETE"){
-        $self->query->method('DELETE');
-        $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
-        $self->query->status(Apache2::Const::REDIRECT);
+        $logger->debug("About to delete $profilename");
+        
+        if ($confirm){
+            my $profileinfo_ref = $config->get_profileinfo({ profilename => $profilename })->single();
+
+            my $ttdata={
+                stylesheet => $stylesheet,
+                profileinfo => $profileinfo_ref,
+                
+                config     => $config,
+                session    => $session,
+                user       => $user,
+                msg        => $msg,
+            };
+
+            $logger->debug("Asking for confirmation");
+            OpenBib::Common::Util::print_page($config->{tt_admin_profile_record_delete_confirm_tname},$ttdata,$r);
+
+            return Apache2::Const::OK;
+        }
+        else {
+            $logger->debug("Redirecting to delete location");
+            $self->delete_record;
+#             $self->query->method('DELETE');
+#             $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
+#             $self->query->status(Apache2::Const::REDIRECT);
+            return;
+        }
     }
 
     my $description     = decode_utf8($query->param('description'))     || '';
@@ -521,10 +538,12 @@ sub update_record {
         profilename => $profilename,
         description => $description,
     });
-    
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}");
-    
-    return Apache2::Const::OK;
+
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}");
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 sub delete_record {
@@ -535,8 +554,7 @@ sub delete_record {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $profilename    = $self->param('id')             || '';
+    my $profilename    = $self->param('profileid')             || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -574,9 +592,12 @@ sub delete_record {
     $logger->debug("Server: ".$r->get_server_name);
 
     $config->del_profile($profilename);
-    
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}");
-    return Apache2::Const::OK;
+
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}");
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 1;

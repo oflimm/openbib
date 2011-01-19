@@ -301,7 +301,7 @@ sub show_record_negotiate {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_database_record_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_database_rss_record_tname},$ttdata,$r);
 }
 
 sub create_record {
@@ -345,26 +345,27 @@ sub create_record {
     $logger->debug("Server: ".$r->get_server_name);
 
     # Variables
-    my $rssid           = $query->param('rssid') || '';
+    my $rsstype         = $query->param('rss_type')        || '';
+    my $active          = $query->param('active')          || 0;
 
-    if ($rssid eq "") {
+    if ($rsstype eq "") {
         
         OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen RSS-Typ eingeben."),$r,$msg);
         
         return Apache2::Const::OK;
     }
     
-    if ($config->db_exists($dbname)) {
+    if (!$config->db_exists($dbname)) {
         
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Katalog unter diesem Namen"),$r,$msg);
+        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
         
         return Apache2::Const::OK;
     }
 
-    $config->new_databaseinfo_rss($dbname,$rssid);
+    $config->new_databaseinfo_rss($dbname,$rsstype);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss/$rssid/edit");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -422,20 +423,20 @@ sub show_record_form {
         return Apache2::Const::OK;
     }
 
-    my $rssinfo_ref = $config->get_rssfeeds_of_db_by_type($dbname)->{$id};
+    my $rssinfo_ref = $config->get_rssfeed_by_id($id);
     
     my $ttdata={
         stylesheet   => $stylesheet,        
+        
         rssinfo    => $rssinfo_ref,
-
-        rssinfo    => $rssinfo_ref,
+        dbname     => $dbname,
         config     => $config,
         session    => $session,
         user       => $user,
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_database_record_edit_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_database_rss_record_edit_tname},$ttdata,$r);
         
     return Apache2::Const::OK;
 }
@@ -498,12 +499,12 @@ sub update_record {
         $logger->debug("About to delete $dbname");
         
         if ($confirm){
-            my $rssinfo_ref = $config->get_rssfeeds_of_db_by_type($dbname)->{$id};
+            my $rssinfo_ref = $config->get_rssfeed_by_id($id);
 
             my $ttdata={
                 stylesheet   => $stylesheet,
                 rssinfo      => $rssinfo_ref,
-                
+                dbname       => $dbname,
                 config     => $config,
                 session    => $session,
                 user       => $user,
@@ -516,11 +517,12 @@ sub update_record {
             return Apache2::Const::OK;
         }
         else {
-            $logger->debug("Redirecting to delete location");
-            $self->query->method('DELETE');    
-            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss/$id");
-            $self->query->status(Apache2::Const::REDIRECT);
-            return;
+            $self->delete_record;
+#            $logger->debug("Redirecting to delete location");
+#            $self->query->method('DELETE');    
+#            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss/$id");
+#            $self->query->status(Apache2::Const::REDIRECT);
+#            return;
         }
     }
 
@@ -591,10 +593,10 @@ sub delete_record {
     }
 
     
-    $config->del_databaseinfo_rss($dbname,$id);
+    $config->del_databaseinfo_rss($id);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

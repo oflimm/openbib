@@ -99,13 +99,16 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
     
-    $r->content_type($negotiated_type_ref->{content_type});
-
     my $new_location = "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit.$negotiated_type_ref->{suffix}";
-    $r->headers_out->add("Location" => $new_location);
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
     $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-    
-    return Apache2::Const::HTTP_SEE_OTHER;
+
+    return;
 }
 
 sub show_collection_as_html {
@@ -376,9 +379,12 @@ sub create_record {
         OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits eine Organisationseinheit unter diesem Namen"),$r,$msg);
         return Apache2::Const::OK;
     }
-    
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunit/edit");
-    return Apache2::Const::OK;
+
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunit/edit");
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 sub show_record_form {
@@ -484,7 +490,7 @@ sub update_record {
     my $r              = $self->param('r');
 
     my $profilename    = $self->param('profileid')      || '';
-    my $orgunitname    = $self->param('orgunitid')             || '';
+    my $orgunitname    = $self->param('orgunitid')      || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -527,12 +533,7 @@ sub update_record {
     # zu verwenden
     
     my $method          = decode_utf8($query->param('_method')) || '';
-
-    if ($method eq "DELETE"){
-        $self->query->method('DELETE');
-        $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunitname");
-        $self->query->status(Apache2::Const::REDIRECT);
-    }
+    my $confirm         = $query->param('confirm') || 0;
 
     if (!$config->profile_exists($profilename)) {        
         OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"),$r,$msg);
@@ -546,6 +547,37 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
+    if ($method eq "DELETE"){
+        $logger->debug("About to delete $orgunitname");
+        
+        if ($confirm){
+            my $orgunitinfo_ref = $config->get_orgunitinfo($profilename,$orgunitname);
+
+            my $ttdata={
+                stylesheet => $stylesheet,
+                orgunitinfo => $orgunitinfo_ref,
+                
+                config     => $config,
+                session    => $session,
+                user       => $user,
+                msg        => $msg,
+            };
+
+            $logger->debug("Asking for confirmation");
+            OpenBib::Common::Util::print_page($config->{tt_admin_orgunit_record_delete_confirm_tname},$ttdata,$r);
+
+            return Apache2::Const::OK;
+        }
+        else {
+            $logger->debug("Redirecting to delete location");
+            $self->delete_record;
+#             $self->query->method('DELETE');
+#             $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunitname");
+#             $self->query->status(Apache2::Const::REDIRECT);
+            return;
+        }
+    }
+
     my $description     = decode_utf8($query->param('description'))     || '';
     my @orgunitdb       = ($query->param('orgunitdb'))?$query->param('orgunitdb'):();
     my $nr              = $query->param('nr')              || 0;
@@ -557,10 +589,12 @@ sub update_record {
         orgunitdb   => \@orgunitdb,
         nr          => $nr,
     });
-    
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
-    
-    return Apache2::Const::OK;
+
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 sub delete_record {
@@ -622,9 +656,12 @@ sub delete_record {
     $logger->debug("Server: ".$r->get_server_name);
 
     $config->del_orgunit($profilename,$orgunitname);
-    
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
-    return Apache2::Const::OK;
+
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 1;

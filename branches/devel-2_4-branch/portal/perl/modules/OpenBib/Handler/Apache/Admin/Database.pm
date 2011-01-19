@@ -536,10 +536,11 @@ sub update_record {
             return Apache2::Const::OK;
         }
         else {
-            $logger->debug("Redirecting to delete location");
-            $self->query->method('DELETE');    
-            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname");
-            $self->query->status(Apache2::Const::REDIRECT);
+            $self->delete_record;
+#             $logger->debug("Redirecting to delete location");
+#             $self->query->method('DELETE');    
+#             $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname");
+#             $self->query->status(Apache2::Const::REDIRECT);
             return;
         }
     }

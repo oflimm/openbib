@@ -416,6 +416,37 @@ sub get_rssfeed_overview {
     return $rssfeed_ref;
 }
 
+sub get_rssfeed_by_id {
+    my ($self,$id) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $rssfeed_ref = {};
+    
+    my $request=$self->{dbh}->prepare("select * from rssfeeds where id = ? order by type,subtype") or $logger->error($DBI::errstr);
+    $request->execute($id) or $logger->error($DBI::errstr);
+    while (my $result=$request->fetchrow_hashref()){
+        my $id           = decode_utf8($result->{'id'});
+        my $type         = decode_utf8($result->{'type'});
+        my $subtype      = decode_utf8($result->{'subtype'});
+        my $subtypedesc  = decode_utf8($result->{'subtypedesc'});
+        my $active       = decode_utf8($result->{'active'});
+        
+        $rssfeed_ref = {
+            id          => $id,
+            type        => $type,
+            subtype     => $subtype,
+            subtypedesc => $subtypedesc,
+            active      => $active
+        };
+    }
+    
+    $request->finish();
+    
+    return $rssfeed_ref;
+}
+
 sub get_rssfeeds_of_db {
     my ($self,$dbname) = @_;
     
@@ -1470,13 +1501,13 @@ sub new_databaseinfo_rss {
 }
 
 sub del_databaseinfo_rss {
-    my ($self,$dbname,$rsstype)=@_;
+    my ($self,$id)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("delete from rssfeeds where dbname = ? and rsstype = ?") or $logger->error($DBI::errstr);
-    $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("delete from rssfeeds where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($id) or $logger->error($DBI::errstr);
     $request->finish();
 
     return;

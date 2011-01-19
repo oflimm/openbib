@@ -19,7 +19,7 @@
 
 <div id="maincontent">
 
-[% PROCESS common/subtemplate name="admin_navigation" active="catalogues" %] 
+[% PROCESS common/subtemplate name="admin_navigation" active="profiles" %] 
 
 <div class="content">
 
@@ -30,7 +30,7 @@
 <table>
 <tr>
 <td>
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_databaseinfo_loc.name %]/[% databaseinfo.dbname %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% profileinfo.profilename %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="0" />
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ja") %]"></div>
@@ -38,7 +38,7 @@
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>
-<form method="get" action="[% config.get('base_loc') %]/[% config.get('handler').admin_databaseinfo_loc.name %]/[% databaseinfo.dbname %]/edit">
+<form method="get" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% profileinfo.profilename %]/edit">
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Nein") %]"></div>
 </form>
 </td>

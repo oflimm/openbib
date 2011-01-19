@@ -25,7 +25,8 @@
 
 <h1>[% orgunitinfo.description %]</h1>
 
-<form method="get" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<input type="hidden" name="_method"    value="PUT" />
 
 <table width="100%">
 <tr><th>Organisationseinheit bearbeiten</th></tr>
@@ -35,13 +36,13 @@
 
 <tr><td><span style="color:blue">[% orgunitinfo.orgunitname %]</span></td><td><input type="text" name="description" value="[% orgunitinfo.description %]" size="40" /></td><td><input type="text" name="nr" value="[% orgunitinfo.nr %]" size="40" /></td></tr>
 </table>
-</form>
+
 <p />
 
 <p />
 <h2>Katalogauswahl der Organisationseinheit</h2>
 
-[% USE dumper;dumper.dump(orgunitinfo)%]
+[%# USE dumper;dumper.dump(orgunitinfo)%]
 
 <select name="orgunitdb" multiple="multiple">
 
@@ -67,14 +68,20 @@ selected="selected"
 
 <p />
 
-<table width="100%">
-<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td><td>&nbsp;</td><td align="right"><div class="cssbutton glass kug"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]" /></div></td></tr>
-</table>
 </td></tr>
 </table>
 
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ändern") %]"></div>
+
 </form>
 
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<input type="hidden" name="_method"     value="DELETE" />
+<input type="hidden" name="confirm"     value="1" />
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Löschen") %]"></div></td></tr>
+
+</form>
 
 
 </div>

@@ -1025,6 +1025,8 @@ sub print_to_handler {
         ? $arg_ref->{apachereq}          : undef;
     my $representation     = exists $arg_ref->{representation}
         ? $arg_ref->{representation}     : undef;
+    my $content_type       = exists $arg_ref->{content_type}
+        ? $arg_ref->{content_type}       : undef;
     my $view               = exists $arg_ref->{view}
         ? $arg_ref->{view}               : undef;
     
@@ -1064,8 +1066,6 @@ sub print_to_handler {
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $content_type = (exists $config->{representation}{$representation})?$config->{representation}{$representation}:"text/html";     
     
     my $poolname=$dbinfotable->{dbnames}{$self->{database}};
 

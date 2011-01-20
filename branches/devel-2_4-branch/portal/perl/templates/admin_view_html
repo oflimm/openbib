@@ -24,7 +24,7 @@
 
 <div class="content">
 
-<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_view_loc.name %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_view_loc.name %]">
 
 
 <table width="100%">

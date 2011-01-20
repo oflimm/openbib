@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- IF representation == 'html' -%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 [%- request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};dd=1;"  -%]
 <body>
@@ -53,3 +54,4 @@
 [%     END %]
 [% END %]
 
+[%- END -%]

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Resource::Library.pm
 #
-#  Copyright 2009-2010 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,6 +40,7 @@ use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
+use JSON::XS;
 use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
@@ -85,6 +86,7 @@ sub show {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $id             = $self->param('libraryid')      || '';
 
     my $config = OpenBib::Config->instance;
 
@@ -100,31 +102,34 @@ sub show {
     
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
-
-    # Basisipfad entfernen
-    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{resource_library_loc}{name};
-    $path=~s/$basepath//;
+    # Mit Suffix, dann keine Aushandlung des Typs
     
-    $logger->debug("Path: $path without basepath $basepath");
-
-    # Service-Parameter aus URI bestimmen
-    my $id;
-    my $representation;
-
-    if ($path=~m/^\/([^\/]+?)\/([^\/]*)/){
-        $id = $1;
-        $representation = $2;
+    my $representation = "";
+    my $content_type   = "";
+    
+    my $libraryid             = "";
+    
+    if ($id=~/^(.+?)(\.html|\.json|\.rdf)$/){
+        $libraryid        = $1;
+        ($representation) = $2 =~/^\.(.+?)$/;
+        $content_type   = $self->param('config')->{'content_type_map_rev'}{$representation};
     }
-    elsif ($path=~m/^\/([^\/]+)/){
-        $id = $1;
-        $representation = '';
-    }
+    # Sonst Aushandlung
     else {
-        return Apache2::Const::OK;
-    }
+        $libraryid = $id;
+        my $negotiated_type_ref = $self->negotiate_type;
 
+        my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_library_loc}{name}/$libraryid.$negotiated_type_ref->{suffix}";
+
+        $self->query->method('GET');
+        $self->query->content_type($negotiated_type_ref->{content_type});
+        $self->query->headers_out->add(Location => $new_location);
+        $self->query->status(Apache2::Const::REDIRECT);
+        
+        $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+        return;
+    }
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
@@ -137,16 +142,23 @@ sub show {
         return Apache2::Const::OK;
     }
 
-    $logger->debug("Type: library - Key: $id - Representation: $representation");
+    $logger->debug("Type: library - Key: $libraryid - Representation: $representation");
 
-    if ( $id ){ # Valide Informationen etc.
-        $logger->debug("Path: $path - Key: $id");
+    if ( $libraryid ){ # Valide Informationen etc.
+        $logger->debug("Key: $libraryid");
 
-        my $libinfo_ref = $config->get_libinfo($id);
+        my $libinfo_ref = $config->get_libinfo($libraryid);
 
 
         my $ttdata = {
             representation => $representation,
+            content_type   => $content_type,
+            
+            to_json       => sub {
+                my $ref = shift;
+                return encode_json $ref;
+            },
+            
             libinfo        => $libinfo_ref,
             
             config         => $config,

@@ -63,16 +63,46 @@ sub show {
 
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->param('id');
-    my $representation = $self->param('representation');
+    my $titleid        = $self->param('titleid');
 
+    my $config  = OpenBib::Config->instance;
+    
+    # Mit Suffix, dann keine Aushandlung des Typs
+    
+    my $representation = "";
+    my $content_type   = "";
+    
+    my $id             = "";
+    if ($titleid=~/^(.+?)(\.html|\.json|\.rdf)$/){
+        $id            = $1;
+        ($representation) = $2 =~/^\.(.+?)$/;
+        $content_type   = $self->param('config')->{'content_type_map_rev'}{$representation};
+    }
+    # Sonst Aushandlung
+    else {
+        $id = $titleid;
+        my $negotiated_type_ref = $self->negotiate_type;
+
+        my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$id.$negotiated_type_ref->{suffix}";
+
+        $self->query->method('GET');
+        $self->query->content_type($negotiated_type_ref->{content_type});
+        $self->query->headers_out->add(Location => $new_location);
+        $self->query->status(Apache2::Const::REDIRECT);
+        
+        $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+        return;
+    }
+    
     if ($database && $id ){ # Valide Informationen etc.
         $logger->debug("Key: $id - DB: $database - ID: $id");
-
+        
         OpenBib::Record::Title->new({database => $database, id => $id})
               ->load_full_record->print_to_handler({
                   apachereq          => $r,
                   representation     => $representation,
+                  content_type       => $content_type,
                   view               => $view,
               });
     }

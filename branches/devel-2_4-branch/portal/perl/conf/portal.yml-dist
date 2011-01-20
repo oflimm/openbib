@@ -501,11 +501,59 @@ dispatch_rules:
      rule: '/portal/admin/view/:viewid[delete]'
      runmode: 'delete_record'
 
-
-  - # admin_session_loc:
+  - # admin_session_loc: Search form for archived sessions
      module: 'OpenBib::Handler::Apache::Admin::Session'
-     rule: '/portal/admin/session/:stid/:rm/:representation?'
-     runmode: 'show'
+     rule: '/portal/admin/session/search/form[get]'
+     runmode: 'show_search_form'
+  - # admin_session_loc: Search results
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session/search'
+     runmode: 'show_search_result'
+  - # admin_session_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session.html[get]'
+     runmode: 'show_collection_as_html'
+  - # admin_session_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session.json[get]'
+     runmode: 'show_collection_as_json'
+  - # admin_session_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session.rdf[get]'
+     runmode: 'show_collection_as_rdf'
+  - # admin_session_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session[get]'
+     runmode: 'show_collection_negotiate'
+#  - # admin_session_loc: Collection show from
+#     module: 'OpenBib::Handler::Apache::Admin::Session'
+#     rule: '/portal/admin/session/new[get]'
+#     runmode: 'show_collection_form'
+  - # admin_session_loc: Creat Record in Collection
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session[post]'
+     runmode: 'create_record'
+  - # admin_session_loc: Show Record
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session/:sessionid[get]'
+     runmode: 'show_record_negotiate'
+  - # admin_session_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session/:sessionid/edit[get]'
+     runmode: 'show_record_form'
+  - # admin_session_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session/:sessionid[post]'
+     runmode: 'update_record'
+  - # admin_session_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session/:sessionid[put]'
+     runmode: 'update_record'
+  - # admin_session_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/admin/session/:sessionid[delete]'
+     runmode: 'delete_record'
+
   - # admin_user_loc:
      module: 'OpenBib::Handler::Apache::Admin::User'
      rule: '/portal/admin/user/:stid/:rm/:representation?'
@@ -536,8 +584,12 @@ dispatch_rules:
      runmode: 'show'
   - # admin_login_loc:
      module: 'OpenBib::Handler::Apache::Admin::Login'
-     rule: '/portal/admin/login/:rm/:representation?'
-     runmode: 'show'
+     rule: '/portal/admin/login/form'
+     runmode: 'form'
+  - # admin_login_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Login'
+     rule: '/portal/admin/login'
+     runmode: 'authenticate'
   - # admin_logout_loc:
      module: 'OpenBib::Handler::Apache::Admin::Logout'
      rule: '/portal/admin/logout/:representation?'
@@ -547,6 +599,62 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Admin'
      rule: '/portal/admin'
      runmode: 'show'
+
+
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/:database/:titleid'
+     runmode: 'show'
+  - # resource_person_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Person'
+     rule: '/portal/:view/resource/person/:database/:personid'
+     runmode: 'show'
+  - # resource_corporatebody_loc:
+     module: 'OpenBib::Handler::Apache::Resource::CorporateBody'
+     rule: '/portal/:view/resource/corporatebody/:database/:corporatebodyid'
+     runmode: 'show'
+  - # resource_subject_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Subject'
+     rule: '/portal/:view/resource/subject/:database/:subjectid'
+     runmode: 'show'
+  - # resource_classification_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Classification'
+     rule: '/portal/:view/resource/classification/:database/:classificationid'
+     runmode: 'show'
+  - # resource_tag_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Tag'
+     rule: '/portal/:view/resource/tag/:tagid'
+     runmode: 'show'
+  - # resource_litlist_loc:
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/:litlistid'
+     runmode: 'show'
+  - # resource_library_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Library'
+     rule: '/portal/:view/resource/library/:libraryid'
+     runmode: 'show'
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User'
+     rule: '/portal/:view/resource/user/:id'
+     runmode: 'show'
+
+  - # search_loc:
+     module: 'OpenBib::Handler::Apache::Search'
+     rule: '/portal/:view/search.html'
+     runmode: 'search_as_html'
+  - # search_loc:
+     module: 'OpenBib::Handler::Apache::Search'
+     rule: '/portal/:view/search.json'
+     runmode: 'search_as_json'
+  - # search_loc:
+     module: 'OpenBib::Handler::Apache::Search'
+     rule: '/portal/:view/search.rdf'
+     runmode: 'search_as_rdf'
+  - # search_loc:
+     module: 'OpenBib::Handler::Apache::Search'
+     rule: '/portal/:view/search'
+     runmode: 'search_negotiate'
+
 
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
@@ -677,42 +785,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Redirect'
      rule: '/portal/:view/redirect/:type/*'
      runmode: 'show'
-  - # resource_title_loc:
-     module: 'OpenBib::Handler::Apache::Resource::Title'
-     rule: '/portal/:view/resource/title/:database/:id/:representation?'
-     runmode: 'show'
-  - # resource_person_loc:
-     module: 'OpenBib::Handler::Apache::Resource::Person'
-     rule: '/portal/:view/resource/person/:database/:id/:representation?'
-     runmode: 'show'
-  - # resource_corporatebody_loc:
-     module: 'OpenBib::Handler::Apache::Resource::CorporateBody'
-     rule: '/portal/:view/resource/corporatebody/:database/:id/:representation?'
-     runmode: 'show'
-  - # resource_subject_loc:
-     module: 'OpenBib::Handler::Apache::Resource::Subject'
-     rule: '/portal/:view/resource/subject/:database/:id/:representation?'
-     runmode: 'show'
-  - # resource_classification_loc:
-     module: 'OpenBib::Handler::Apache::Resource::Classification'
-     rule: '/portal/:view/resource/classification/:database/:id/:representation?'
-     runmode: 'show'
-  - # resource_tag_loc:
-     module: 'OpenBib::Handler::Apache::Resource::Tag'
-     rule: '/portal/:view/resource/tag/:id/:representation?'
-     runmode: 'show'
-  - # resource_litlist_loc:
-     module: 'OpenBib::Handler::Apache::Resource::LitList'
-     rule: '/portal/:view/resource/litlist/:id/:representation?'
-     runmode: 'show'
-  - # resource_library_loc:
-     module: 'OpenBib::Handler::Apache::Resource::Library'
-     rule: '/portal/:view/resource/library/:id/:representation?'
-     runmode: 'show'
-  - # resource_user_loc:
-     module: 'OpenBib::Handler::Apache::Resource::User'
-     rule: '/portal/:view/resource/user/:id/:representation?'
-     runmode: 'show'
   - # resultlists_loc:
      module: 'OpenBib::Handler::Apache::ResultLists'
      rule: '/portal/:view/resultlists'
@@ -757,10 +829,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Search'
      rule: '/portal/:view/index/:type/*'
      runmode: 'index'
-  - # search_loc:
-     module: 'OpenBib::Handler::Apache::Search'
-     rule: '/portal/:view/search'
-     runmode: 'search'
 
 css_loc: /styles
 
@@ -1121,11 +1189,17 @@ tt_admin_view_record_delete_confirm_tname: admin_view_record_delete_confirm
 tt_admin_library_record_tname: admin_library_record
 tt_admin_library_record_edit_tname: admin_library_record_edit
 tt_admin_library_record_delete_confirm_tname: admin_library_record_delete_confirm
+tt_admin_session_tname: admin_session
+tt_admin_session_record_tname: admin_session_record
+tt_admin_session_record_edit_tname: admin_session_record_edit
+tt_admin_session_record_delete_confirm_tname: admin_session_record_delete_confirm
+tt_admin_session_search_form_tname: admin_session_search_form
+tt_admin_session_search_result_tname: admin_session_search_result
 
 tt_admin_showoperations_tname: admin_showoperations
 tt_admin_showlogintarget_tname: admin_showlogintarget
 tt_admin_showsessions_1_tname: admin_showsessions_1
-tt_admin_showsessions_tname: admin_showsessions
+
 tt_admin_showstat_1_tname: admin_showstat_1
 tt_admin_showstat_2_tname: admin_showstat_2
 tt_admin_showstat_3_tname: admin_showstat_3

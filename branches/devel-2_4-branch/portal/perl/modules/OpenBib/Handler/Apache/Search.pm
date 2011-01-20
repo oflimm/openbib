@@ -78,13 +78,77 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'search'       => 'search_databases',
-        'index'        => 'search_index',
+        'search_negotiate' => 'search_negotiate',
+        'search_as_html'   => 'search_as_html',
+        'search_as_json'   => 'search_as_json',
+        'search_as_rdf'    => 'search_as_rdf',
+        'index_negotiate'  => 'index_negotiate',
+        'index_as_html'    => 'index_as_html',
+        'index_as_json'    => 'index_as_json',
+        'index_as_rdf'     => 'index_as_rdf',
+        
     );
 
     # Use current path as template path,
     # i.e. the template is in the same directory as this script
 #    $self->tmpl_path('./');
+}
+
+sub search_negotiate {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+
+    my $config  = OpenBib::Config->instance;
+
+    my $negotiated_type_ref = $self->negotiate_type;
+
+    my $args="?".$self->query->args();
+    
+    my $new_location = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}.$negotiated_type_ref->{suffix}$args";
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+    return;
+}
+
+sub search_as_html {
+    my $self = shift;
+
+    $self->param('representation','html');
+
+    $self->search_databases;
+
+    return;
+}
+
+sub search_as_json {
+    my $self = shift;
+
+    $self->param('representation','json');
+
+    $self->search_databases;
+
+    return;
+}
+
+sub search_as_rdf {
+    my $self = shift;
+
+    $self->param('representation','rdf');
+
+    $self->search_databases;
+
+    return;
 }
 
 sub search_databases {
@@ -96,6 +160,7 @@ sub search_databases {
     # Dispatched Args
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
+    my $representation = $self->param('representation') || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -364,6 +429,13 @@ sub search_databases {
         
         # TT-Data erzeugen
         my $ttdata={
+            representation => $representation,
+
+            to_json       => sub {
+                my $ref = shift;
+                return encode_json $ref;
+            },
+
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $session->{ID},
@@ -470,6 +542,13 @@ sub search_databases {
     # TT-Data erzeugen
     
     my $startttdata={
+        representation => $representation,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+        
         view           => $view,
         stylesheet     => $stylesheet,
         sessionID      => $session->{ID},
@@ -660,6 +739,13 @@ sub search_databases {
             
             # TT-Data erzeugen
             my $ttdata={
+                representation => $representation,
+
+                to_json       => sub {
+                    my $ref = shift;
+                    return encode_json $ref;
+                },
+                
                 view            => $view,
                 sessionID       => $session->{ID},
                 
@@ -801,6 +887,13 @@ sub search_databases {
                     
                     # TT-Data erzeugen
                     my $ttdata={
+                        representation => $representation,
+                        
+                        to_json       => sub {
+                            my $ref = shift;
+                            return encode_json $ref;
+                        },
+                        
                         view            => $view,
                         sessionID       => $session->{ID},
                         database        => $database,
@@ -968,6 +1061,13 @@ sub search_databases {
                         
                             # TT-Data erzeugen
                             my $ttdata={
+                                representation => $representation,
+                                
+                                to_json       => sub {
+                                    my $ref = shift;
+                                    return encode_json $ref;
+                                },
+
                                 view            => $view,
                                 sessionID       => $session->{ID},
 
@@ -1074,6 +1174,13 @@ sub search_databases {
     
     # TT-Data erzeugen
     my $endttdata={
+        representation => $representation,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+        
         view          => $view,
         sessionID     => $session->{ID},
         
@@ -1160,6 +1267,61 @@ sub search_databases {
     return Apache2::Const::OK;
 }
 
+sub index_negotiate {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $config  = OpenBib::Config->instance;
+
+    my $negotiated_type_ref = $self->negotiate_type;
+
+    my $new_location = "$config->{base_loc}/$config->{handler}{index_loc}{name}.$negotiated_type_ref->{suffix}";
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+    return;
+}
+
+sub index_as_html {
+    my $self = shift;
+
+    $self->param('representation','html');
+
+    $self->index_index;
+
+    return;
+}
+
+sub index_as_json {
+    my $self = shift;
+
+    $self->param('representation','json');
+
+    $self->search_index;
+
+    return;
+}
+
+sub index_as_rdf {
+    my $self = shift;
+
+    $self->param('representation','rdf');
+
+    $self->search_index;
+
+    return;
+}
+
+
 # Auf Grundlage der <form>-Struktur im Template searchmask derzeit nicht verwendet
 sub search_index {
     my $self = shift;
@@ -1170,6 +1332,7 @@ sub search_index {
     # Dispatched Args
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
+    my $representation = $self->param('representation') || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -1365,6 +1528,13 @@ sub search_index {
     
     # TT-Data erzeugen
     my $ttdata={
+        representation => $representation,
+        
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+
         view       => $view,
         stylesheet => $stylesheet,		
         sessionID  => $session->{ID},

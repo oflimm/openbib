@@ -250,7 +250,7 @@ sub show_record_negotiate {
     my $content_type   = "";
 
     my $dbname         = "";
-    if ($id=~/^(.+?)(\.html|\.json|\.rdf\+xml)$/){
+    if ($id=~/^(.+?)(\.html|\.json|\.rdf)$/){
         $dbname           = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $config->{'content_type_map_rev'}{$representation};
@@ -268,7 +268,12 @@ sub show_record_negotiate {
     my $ttdata={
         representation => $representation,
         content_type   => $content_type,
-        
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+
         stylesheet => $stylesheet,
         
         databaseinfo => $dbinfo_ref,

@@ -112,7 +112,7 @@ sub show {
     if ($id=~/^(.+?)(\.html|\.json|\.rdf)$/){
         $libraryid        = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $self->param('config')->{'content_type_map_rev'}{$representation};
+        $content_type   = $config->{'content_type_map_rev'}{$representation};
     }
     # Sonst Aushandlung
     else {
@@ -151,6 +151,7 @@ sub show {
 
 
         my $ttdata = {
+            view          => $view,
             representation => $representation,
             content_type   => $content_type,
             

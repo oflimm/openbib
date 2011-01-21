@@ -36,6 +36,7 @@ use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 use Storable;
@@ -157,7 +158,7 @@ sub load_full_record {
 
     $dbh->disconnect() if ($local_dbh);
     
-    $self->{normset}=$normset_ref;
+    $self->{_normset}=$normset_ref;
 
     return $self;
 }
@@ -268,7 +269,17 @@ sub get_number_of_titles {
 sub to_rawdata {
     my ($self) = @_;
 
-    return $self->{normset};
+    return $self->{_normset};
+}
+
+sub to_json {
+    my ($self)=@_;
+
+    my $title_ref = {
+        'metadata'    => $self->{_normset},
+    };
+
+    return encode_json $title_ref;
 }
 
 sub name_as_string {
@@ -284,6 +295,8 @@ sub print_to_handler {
         ? $arg_ref->{apachereq}          : undef;
     my $representation     = exists $arg_ref->{representation}
         ? $arg_ref->{representation}    : undef;
+    my $content_type       = exists $arg_ref->{content_type}
+        ? $arg_ref->{content_type}       : 'text/html';
     my $view               = exists $arg_ref->{view}
         ? $arg_ref->{view}               : undef;
 
@@ -315,8 +328,6 @@ sub print_to_handler {
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $content_type = (exists $config->{representation}{$representation})?$config->{representation}{$representation}:"text/html";     
     
     # TT-Data erzeugen
     my $ttdata={

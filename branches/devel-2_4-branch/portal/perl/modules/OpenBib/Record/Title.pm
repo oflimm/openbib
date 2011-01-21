@@ -1026,7 +1026,7 @@ sub print_to_handler {
     my $representation     = exists $arg_ref->{representation}
         ? $arg_ref->{representation}     : undef;
     my $content_type       = exists $arg_ref->{content_type}
-        ? $arg_ref->{content_type}       : undef;
+        ? $arg_ref->{content_type}       : 'text/html';
     my $view               = exists $arg_ref->{view}
         ? $arg_ref->{view}               : undef;
     

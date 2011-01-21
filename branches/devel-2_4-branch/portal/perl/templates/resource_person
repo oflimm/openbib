@@ -1,5 +1,7 @@
 [% IF representation == '' || representation == 'html'%]
 [%- PROCESS common/subtemplate name="resource_person_html" -%]
+[% ELSIF representation == 'json' %]
+[%- PROCESS common/subtemplate name="resource_person_json" -%]
 [% ELSIF representation == 'rdf' %]
 [%- PROCESS common/subtemplate name="resource_person_rdf" -%]
 [%- ELSE -%]

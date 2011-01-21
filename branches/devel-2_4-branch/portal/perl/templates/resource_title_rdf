@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: resource_title_rdf+xml
+# Templatename: resource_title_rdf
 #
 # Typ         : Mastertemplate
 #
@@ -24,7 +24,7 @@
     xmlns:libris="http://libris.kb.se/vocabulary/experimental#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" >
   <rdf:Description
-rdf:about="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_title_loc.name %]/[%- database -%]/[%- id -%]">
+rdf:about="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_title_loc.name %]/[%- database -%]/[%- record.id -%]">
 [% FOREACH category IN [ "T0100" "T0101" "T0102" "T0103"] %]
 [%   FOREACH item IN normset.${category} %]
 <dc:creator>[% item.content%]</dc:creator>
@@ -62,7 +62,7 @@ rdf:about="http://[% config.get('loadbalancerservername') %][% config.get('base_
 <libris:held_by
 rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_library_loc.name %]/[% database %]"/>
 <rdfs:isDefinedBy
-rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_title_loc.name %]/[% database %]/[% id %]/rdf+xml"/>
+rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_title_loc.name %]/[% database %]/[% record.id %].rdf"/>
 [% FOREACH similar_record IN similar_records.get_records %]
 <libris:frbr_related
 rdf:resource="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_title_loc.name %]/[%- similar_record.database -%]/[%- similar_record.id-%]"/>

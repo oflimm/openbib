@@ -93,6 +93,6 @@
 
        };
 
-  path_prefix = "${path_prefix}";
+  path_prefix = "${config.get('base_loc')}/${view}";
 
 -%]

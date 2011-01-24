@@ -523,9 +523,12 @@ sub search_databases {
         profile      => $sysprofile,
         templatename => $starttemplatename,
     });
-    
+
+    my $content_type = $config->{content_type_map_rev}->{$representation};
+
+    $logger->debug("Content-Type $content_type");
     # Start der Ausgabe mit korrektem Header
-    $r->content_type("text/html");
+    $r->content_type("$content_type");
     
     # Ausgabe des ersten HTML-Bereichs
     my $starttemplate = Template->new({
@@ -722,7 +725,7 @@ sub search_databases {
             });
             
             # Start der Ausgabe mit korrektem Header
-            $r->content_type("text/html");
+            $r->content_type($content_type);
             
             # Es kann kein Datenbankabhaengiges Template geben
             

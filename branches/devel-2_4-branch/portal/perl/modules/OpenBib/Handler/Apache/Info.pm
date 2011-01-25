@@ -60,9 +60,9 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('show_negotiate');
     $self->run_modes(
-        'show'       => 'show',
+        'show_negotiate'       => 'show_negotiate',
     );
 
     # Use current path as template path,
@@ -70,7 +70,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show {
+sub show_negotiate {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -79,8 +79,9 @@ sub show {
     # Dispatched Args
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
+    my $id             = $self->param('id')             || '';
+    my $database       = $self->param('database')       || '';
     my $stid           = $self->param('stid')           || '';
-    my $representation = $self->param('representation') || 'html';
     
     # Shared Args
     my $query          = $self->query();
@@ -94,23 +95,33 @@ sub show {
     
     # CGI Args
 
-    my $database       = $query->param('db')             || '';
-    my $id             = $query->param('id')             || '';
     my $format         = $query->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
-    my $is_valid_representation = {
-        'html'   => 1,
-        'bibtex' => 1,
-        'json'   => 1,
-    };
-    
-    unless ($is_valid_representation->{$representation}){
-        return Apache2::Const::OK;
+
+        # Mit Suffix, dann keine Aushandlung des Typs
+
+    my $representation = "";
+    my $content_type   = "";
+
+    my $this_stid         = "";
+    if ($stid=~/^(.+?)(\.html|\.json|\.rdf)$/){
+        $thisstid         = $1;
+        ($representation) = $2 =~/^\.(.+?)$/;
+        $content_type   = $config->{'content_type_map_rev'}{$representation};
     }
+    # Sonst Aushandlung
+    else {
+        $thisstid = $id;
+        my $negotiated_type = $self->negotiate_type;
+        $representation = $negotiated_type->{suffix};
+        $content_type   = $negotiated_type->{content_type};
+    }
+
+    $stid = $thisstid;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
@@ -140,9 +151,7 @@ sub show {
         },
     };
 
-    $stid=~s/[^0-9]//g;
-
-    my $templatename = ($stid)?"tt_info_".$stid."_tname":"tt_info_tname";
+    my $templatename = ($stid && $stid ne "default")?"tt_info_".$stid."_tname":"tt_info_tname";
 
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 

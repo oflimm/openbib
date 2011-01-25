@@ -25,7 +25,7 @@
 [%# USE dumper;dumper.dump(libinfo)%]
 [% PROCESS common/subtemplate name="visible_categories_libinfoset" %]
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
 
 <input type="hidden" name="dbname"         value="[% dbname %]" />
 <input type="hidden" name="do_editlibinfo" value="1" />

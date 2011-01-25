@@ -33,9 +33,9 @@
     </body>
    </noframes>
 [% IF type == 1%]
-   <frame name="Weiter zur Lastverteilung" src="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_title_loc.name %]/[% id1 %]/[% id2 %]/" noresize="noresize" frameborder="0"/>
+   <frame name="Weiter zur Lastverteilung" src="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[% id1 %]/[% id2 %]/" noresize="noresize" frameborder="0"/>
 [% ELSIF type == 6 %]
-   <frame name="Weiter zur Lastverteilung" src="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_litlist_loc.name %]/[% id2 %]/" noresize="noresize" frameborder="0"/>
+   <frame name="Weiter zur Lastverteilung" src="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% id2 %]/" noresize="noresize" frameborder="0"/>
 [% END %]
  </frameset>
 

@@ -33,10 +33,10 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/52?category=[% thisbk %]" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[% IF viewdbs.size == 1 %]14?db=[% viewdbs.first %][% ELSE %]13[% END %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/52?category=[% thisbk %]" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/[% IF viewdbs.size == 1 %]14?db=[% viewdbs.first %][% ELSE %]13[% END %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
 </ul>
 
 <div class="content">
@@ -47,7 +47,7 @@
 [% FOREACH bkinfo IN thisbklist %]
 [%   thisdb    = bkinfo.key %]
 [%   thiscount = bkinfo.value %]
-<tr><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;num=50">[% dbinfo.get('dbnames').${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Treffer</td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;num=50">[% dbinfo.get('dbnames').${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Treffer</td></tr>
 [% END %]
 </table>
 

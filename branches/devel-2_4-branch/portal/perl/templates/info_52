@@ -33,7 +33,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/52?category=[% thisbk %]">[% thisbk %] / [% bks.${thisbk.chunk(2).first} %] / [% bks.${thisbk} %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/52?category=[% thisbk %]">[% thisbk %] / [% bks.${thisbk.chunk(2).first} %] / [% bks.${thisbk} %]</a></li>
 </ul>
 
 <div class="content">
@@ -44,7 +44,7 @@
 [% FOREACH bkinfo IN thisbklist %]
 [%   thisdb    = bkinfo.key %]
 [%   thiscount = bkinfo.value %]
-<tr><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').browse_loc.name %]?database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;num=50">[% dbinfo.get('dbnames').${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Titel</td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('handler').browse_loc.name %]?database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;num=50">[% dbinfo.get('dbnames').${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Titel</td></tr>
 [% END %]
 </table>
 

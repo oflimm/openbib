@@ -21,7 +21,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').ezb_loc.name %]?action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').ezb_loc.name %]?action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
 </ul>
 
 <div class="content">

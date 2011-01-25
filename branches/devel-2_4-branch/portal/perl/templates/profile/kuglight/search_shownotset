@@ -41,7 +41,7 @@ FOREACH category IN categories;
     SWITCH category;
 
     CASE "N5000";
-         content   = "<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofnot=${normset.id};offset=0;num=${qopts.num}\">${content}</a>";
+         content   = "<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${normset.database};searchtitofnot=${normset.id};offset=0;num=${qopts.num}\">${content}</a>";
     END;
 
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind

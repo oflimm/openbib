@@ -45,7 +45,7 @@ start_range     = nav.current_page*qopts.num-qopts.num + 1;
   <div class="resultheader">
     <div class="catalogue">
 [%-   IF dbinfo.get('use_libinfo').${database} %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% database %]">
+<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -64,7 +64,7 @@ start_range     = nav.current_page*qopts.num-qopts.num + 1;
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %];page=[% page %];[% searchquery.to_cgi_params %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];page=[% page %];[% searchquery.to_cgi_params %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]
@@ -92,7 +92,7 @@ start_range     = nav.current_page*qopts.num-qopts.num + 1;
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %];page=[% page %];[% searchquery.to_cgi_params %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];page=[% page %];[% searchquery.to_cgi_params %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]

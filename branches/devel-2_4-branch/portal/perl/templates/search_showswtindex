@@ -45,7 +45,7 @@ Gefundene Schlagworte zur Anfrage <b>'[% swt %]'</b> in diesem Katalog: <b>[% sw
 [% FOREACH item IN swtindex %]
 [%   searchterm    = item.content;
      searchprefix  = config.get('searchfield').swtstring.prefix;
-     localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
+     localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
 %]
 [% IF loop.index % 3 == 0 %]
 <tr><td><a href="[% localurl %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
@@ -77,7 +77,7 @@ In diesem Katalog konnte leider kein Schlagwort zur Ihrer Anfrage <b>'[% swt %]'
 
 <hr />
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').browse_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').browse_loc.name %]">
 
 <input type="hidden" name="searchmode" value="[% searchmode %]" />
 <input type="hidden" name="num"   value="[% num %]" />

@@ -47,7 +47,7 @@
 <tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
 <tr><td class="boxedclear">
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').search_loc.name %]">
 
 <input type="hidden" name="num"  value="[% qopts.num %]" />
 <input type="hidden" name="profil"    value="alldbs" />

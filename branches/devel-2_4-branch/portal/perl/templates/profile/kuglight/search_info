@@ -40,6 +40,6 @@ m&ouml;glich. Sie k&ouml;nnen jedoch das Trunkierungszeichen am Ende
 Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*).") %]
 <p />
 <b>[% msg.maketext("Hinweise und Beispiele zu weiteren
-Suchm&ouml;glichkeiten erhalten Sie [_1]hier[_2]","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').info_loc.name}?#profisuche\">","</a>") %]
+Suchm&ouml;glichkeiten erhalten Sie [_1]hier[_2]","<a href=\"${path_prefix}/${config.get('handler').info_loc.name}?#profisuche\">","</a>") %]
 </b>.
 <p />

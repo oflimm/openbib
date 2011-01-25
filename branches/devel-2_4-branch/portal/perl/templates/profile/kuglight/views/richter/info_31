@@ -21,11 +21,11 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/30">Die B&uuml;cherlisten</a></li>
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/31">Arbeitsablauf / Aktuelles</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/32">Publikationen</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/34">Internetquellen</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/33">Ansprechpartner</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/30">Die B&uuml;cherlisten</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/31">Arbeitsablauf / Aktuelles</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/32">Publikationen</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/34">Internetquellen</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/33">Ansprechpartner</a></li>
 </ul>
 
 <div class="content">
@@ -68,14 +68,14 @@ Sprachwissenschaft ; Folklore ; Wörterbücher ; Theater und Reisebücher)</li>
 
 <ul>
  <li>Ver&ouml;ffentlichung verschiedener
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/32">Publikationen</a> zum Thema: 'Die Bibliothek von Elise und Helene Richter'</li>
+<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/32">Publikationen</a> zum Thema: 'Die Bibliothek von Elise und Helene Richter'</li>
 </ul>
 
 <h2>Januar - M&auml;rz 2006:</h2>
 
 <ul>
  <li>Fertigstellung der <a
-href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=30#Romanistik">Romanistik-Listen-frz.Dichtung</a>. Von
+href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?stid=30#Romanistik">Romanistik-Listen-frz.Dichtung</a>. Von
 436 im Magazin der USB &uuml;berpr&uuml;ften Titel konnten 51 Werke<br> als Richterbesitz identifiziert werden. </li>
 </ul>
 
@@ -90,7 +90,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.
 <ul>
 <li>
 <p>Die Bearbeitung der <a
-href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]?stid=30#Anglistik">Anglistik-Listen</a> ist abgeschlossen. Von
+href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?stid=30#Anglistik">Anglistik-Listen</a> ist abgeschlossen. Von
 344 im Magazin der USB &uuml;berpr&uuml;ften Titel konnten lediglich
 36 Werke<br> als Richterbesitz identifiziert werden.
 </p>

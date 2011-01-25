@@ -14,7 +14,7 @@
 [%- IF format == 'ajax' -%]
 [% IF tags.first %]
 [% FOREACH tag IN tags %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?tag=[% tag.name |uri %];action=get_tit_of_tag">[% tag.name %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?tag=[% tag.name |uri %];action=get_tit_of_tag">[% tag.name %]</a>&nbsp;
 [% END %]
 [% ELSE %]
 [% msg.maketext("Titel/Schlagworte nicht in BibSonomy enthalten") %]
@@ -38,7 +38,7 @@
 <p/>
 <ul>
 [% FOREACH tag IN tags %]
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?tag=[% tag.name |uri %];action=get_tit_of_tag">[% tag.name %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?tag=[% tag.name |uri %];action=get_tit_of_tag">[% tag.name %]</a></li>
 [% END %]
 </ul>
 <p/>

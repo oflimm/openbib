@@ -23,14 +23,14 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]?trefferliste=choice">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]?trefferliste=choice">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div class="content">
 
 <p />
   <div class="listoptions">
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').search_loc.name %]">
 <input type="hidden" name="page"      value="[% page %]" />
 <input type="hidden" name="st"        value="1" />
 [% IF config.get('drilldown') %]

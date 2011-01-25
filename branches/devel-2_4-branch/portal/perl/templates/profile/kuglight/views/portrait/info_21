@@ -21,8 +21,8 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/20" title="Die Portrait-Sammlung">Die Portrait-Sammlung</a></li>
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/21" title="Weitere Portrait-Quellen">Weitere Portrait-Quellen</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/20" title="Die Portrait-Sammlung">Die Portrait-Sammlung</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/21" title="Weitere Portrait-Quellen">Weitere Portrait-Quellen</a></li>
 </ul>
 
 <div class="content">

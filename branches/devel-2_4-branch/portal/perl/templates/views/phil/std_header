@@ -26,7 +26,7 @@
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]">
 [% END %]
 [% IF unapi && config.get('unAPI') %]
-    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_unapi_loc.name %]"/>
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('handler').connector_unapi_loc.name %]"/>
 [% END %]
 
   [%- TRY -%]

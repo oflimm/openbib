@@ -36,12 +36,12 @@ function update_fak(yourform, checked, fak) {
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databasechoice_loc.name %]?">[% msg.maketext("Katalogauswahl") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').databasechoice_loc.name %]?">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div class="content">
 
-<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').databasechoice_loc.name %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% path_prefix %]/[% config.get('handler').databasechoice_loc.name %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="num" value="-1" />
 
 

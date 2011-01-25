@@ -54,7 +54,7 @@ FOREACH category IN categories;
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').swtid.prefix;
 
-         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:${searchterm}";
+         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:${searchterm}";
          content   = "<a href=\"${localurl}\">${content}</a>";
     END;
 
@@ -84,7 +84,7 @@ END;
 
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 
-    globalurl         = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+    globalurl         = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
 %]
 

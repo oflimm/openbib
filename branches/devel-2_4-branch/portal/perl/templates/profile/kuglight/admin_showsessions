@@ -25,13 +25,13 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showsessions=1">Aktive Sessions (lokal)</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_showsessions=1;stid=1">Explorer</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?do_showsessions=1">Aktive Sessions (lokal)</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?do_showsessions=1;stid=1">Explorer</a></li>
 </ul>
 
 <div class="content">
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
 <input type="hidden" name="do_editsession" value="1" />
 
 
@@ -45,7 +45,7 @@
 
 [% FOREACH session IN sessions %]
 
-<tr><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_editsession=1;do_show=1;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?do_editsession=1;do_show=1;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
 
 [% END %]
 

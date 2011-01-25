@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/0" target="_blank">[% msg.maketext("Information") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/0" target="_blank">[% msg.maketext("Information") %]</a></li>
 </ul>
 
 <div class="content">

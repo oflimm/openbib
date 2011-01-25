@@ -38,7 +38,7 @@
   <div class="resultheader">
     <div class="catalogue">
 [%-   IF dbinfo.get('use_libinfo').${database} %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/60?id=[% database %]">
+<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -78,7 +78,7 @@
 [%-    END -%]
   </div>
   <div class="listoptions">
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').browse_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').browse_loc.name %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
 <input type="hidden" name="num"        value="[% IF num %][% num %][% ELSE %][% qopts.num %][% END %]" />
 

@@ -33,7 +33,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]
@@ -77,7 +77,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?database=[% database %];searchsingleaut=[% autid %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

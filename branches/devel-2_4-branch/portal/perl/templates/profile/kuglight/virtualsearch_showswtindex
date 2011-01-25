@@ -43,7 +43,7 @@
 
 <hr />
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').virtualsearch_loc.name %]">
 
 <input type="hidden" name="num"  value="[% qopts.num %]" />
 <input type="hidden" name="profil"    value="[% profil %]" />

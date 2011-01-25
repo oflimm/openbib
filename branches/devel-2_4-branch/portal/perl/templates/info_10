@@ -29,14 +29,14 @@
 [% IF database %]
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% database %]" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/10?database=[% database %]" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% database %]" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/10?database=[% database %]" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -65,7 +65,7 @@ Die 20 meist aufgerufenen Titel
 [%-  searchterm    = part.content;
      searchprefix  = config.get('searchfield').personstring.prefix;
 
-     globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+     globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
 [%-  persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
@@ -74,7 +74,7 @@ Die 20 meist aufgerufenen Titel
 [%-  searchterm    = part.content;
      searchprefix  = config.get('searchfield').personstring.prefix;
 
-     globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+     globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
 [%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
@@ -84,7 +84,7 @@ Die 20 meist aufgerufenen Titel
 [%-  searchterm    = part.content;
      searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-     globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+     globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
 [%- persons.push("<a href=\"${globalurl\">${part.content}</a>")-%]
 [%- END -%]
@@ -93,7 +93,7 @@ Die 20 meist aufgerufenen Titel
 [%-  searchterm    = part.content;
      searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-     globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+     globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
 [%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
 [%- END -%]
@@ -131,12 +131,12 @@ Die 20 meist aufgerufenen Titel
     toc       = item.${'T4110'}.first.content ;
 
     IF ebook ;
-      ebook = "${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/503/${ebook}" ;
+      ebook = "${path_prefix}/${config.get('handler').redirect_loc.name}/503/${ebook}" ;
       titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${"ebook_i18n"}</a>") ;
     END ;
 
     IF toc ;
-      toc = "${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/500/${toc}" ;
+      toc = "${path_prefix}/${config.get('handler').redirect_loc.name}/500/${toc}" ;
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
@@ -152,12 +152,12 @@ Die 20 meist aufgerufenen Titel
     [% IF (config.get('coverscans').all || config.get('coverscans').${item.database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-<span class="rlperson">[% person %]</span><br /><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_title_loc.name %]/[% item.database %]/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[% item.database %]/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br />[ [% itemcount %] Nutzer [%- IF titleinfo -%] | [% titleinfo %] [%- END -%]]
       </div>
       <div class="titlemark">[% signatur %]</div>
       <div class="titleactions">
-<a class="collection" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>
+<a class="collection" href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>
       </div>
     </div>
 <!-- Ende einzelner Treffer -->
@@ -175,14 +175,14 @@ Die 20 meist aufgerufenen Titel
 </div>
 [%- ELSE -%]
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div class="content">
@@ -203,11 +203,11 @@ Die 20 meist aufgerufenen Titel
   [%- FOREACH db = catdb -%]
     [%- IF db.category == category.short -%]
       [%- IF db.column == 1 -%]
-<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% db.db %]" title="Schlagworte">[% db.name %]</a></td>
+<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/10?database=[% db.db %]" title="Schlagworte">[% db.name %]</a></td>
       [%- END -%]
       [%- IF db.column > 1 && db.column < maxcolumn -%]
         [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% db.db %]" title="Schlagworte">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/10?database=[% db.db %]" title="Schlagworte">[% db.name %]</a></td>
         [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
         [%- END -%]
@@ -217,7 +217,7 @@ Die 20 meist aufgerufenen Titel
         [%- IF db.column != 1 -%]
 
           [%- IF db.db -%]
-<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10?database=[% db.db %]" title="Schlagworte">[% db.name %]</a></td>
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/10?database=[% db.db %]" title="Schlagworte">[% db.name %]</a></td>
           [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
           [%- END -%]

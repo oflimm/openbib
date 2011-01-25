@@ -95,12 +95,12 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;jn=1;page=1"><b>kombinierte</b></a> / <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;jn=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;jn=1;page=1"><b>kombinierte</b></a> / <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;jn=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];database=[% resultdb.trefferdb %];num=50;srt=author;srto=up;page=1"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
+<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];database=[% resultdb.trefferdb %];num=50;srt=author;srto=up;page=1"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
 [%   IF resultdb.trefferzahl == qopts.maxhits %]
 [% msg.maketext("mind.") %]&nbsp;
 [%   END %]
@@ -121,7 +121,7 @@
 <p />
 
 [% IF queryids.size >= 0 %]
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resultlists_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]">
 <input type="hidden" name="sessionID"    value="[% sessionID %]" />
 <input type="hidden" name="action"       value="choice" />
 <input type="hidden" name="view"         value="[% view %]" />

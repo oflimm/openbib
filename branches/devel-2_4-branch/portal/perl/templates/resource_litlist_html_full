@@ -17,11 +17,11 @@
 </p>
 [% END %]
 <p>
-<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 <p>
 [%- IF bibkey -%]
-<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
 </div><!-- End Images -->
@@ -53,16 +53,16 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         resourceurl = "${config.get('base_loc')}/${view}/${config.get('handler').resource_person_loc.name}/${record.database}/${thisid}/html";
-         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
-         content   = "${rssfeed}<a href=\"${resourceurl}\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('base_loc')}/common/${config.get('handler').connector_availabilityimage_loc.name}/wikipedia/${wikicontent}/?lang=${qopts.l}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         resourceurl = "${path_prefix}/${config.get('handler').resource_person_loc.name}/${record.database}/${thisid}/html";
+         globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
+         content   = "${rssfeed}<a href=\"${resourceurl}\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${path_prefix}/${config.get('handler').redirect_loc.name}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('base_loc')}/common/${config.get('handler').connector_availabilityimage_loc.name}/wikipedia/${wikicontent}/?lang=${qopts.l}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -72,25 +72,25 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         resourceurl = "${config.get('base_loc')}/${view}/${config.get('handler').resource_corporatebody_loc.name}/${record.database}/${thisid}/html";
-         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
+         resourceurl = "${path_prefix}/${config.get('handler').resource_corporatebody_loc.name}/${record.database}/${thisid}/html";
+         globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
          content   = "${rssfeed}&nbsp;<a href=\"${resourceurl}\" Title=\"K&ouml;rperschafts-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${content}</b>";
 
     CASE "T0540";
-         content   = "<a class=\"isbn\" href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${content}";
+         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('handler').redirect_loc.name}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${content}";
 
     CASE "T0543";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('handler').redirect_loc.name}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
@@ -111,7 +111,7 @@ FOREACH category IN categories;
          IF thiscontent ;
             IF content.match('digitool.hbz-nrw.de') ;
                thiscontent = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
-               content     = "${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/500/${content}" ;
+               content     = "${path_prefix}/${config.get('handler').redirect_loc.name}/500/${content}" ;
             END ;
             content   = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
          ELSE ;
@@ -119,7 +119,7 @@ FOREACH category IN categories;
          END ;
 
     CASE "E4100";
-         localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').browse_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
+         localurl    = "${path_prefix}/${config.get('handler').browse_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -130,12 +130,12 @@ FOREACH category IN categories;
     CASE "E4110";
          thisindicator = item.indicator ;
          thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
-         content       = "${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/500/${content}" ;
+         content       = "${path_prefix}/${config.get('handler').redirect_loc.name}/500/${content}" ;
          content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 
     CASE "E4120";
          thiscontent   = "Greifen Sie hier online auf den Volltext zu";
-	 content       = "${config.get('base_loc')}/${view}/${config.get('handler').redirect_loc.name}/503/${content}" ;
+	 content       = "${path_prefix}/${config.get('handler').redirect_loc.name}/503/${content}" ;
 	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
@@ -150,15 +150,15 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-         resourceurl = "${config.get('base_loc')}/${view}/${config.get('handler').resource_subject_loc.name}/${record.database}/${thisid}/html";
-         globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
+         resourceurl = "${path_prefix}/${config.get('handler').resource_subject_loc.name}/${record.database}/${thisid}/html";
+         globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
          content   = " ${rssfeed}<a href=\"${resourceurl}\" Title=\"Schlagwort-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;
 
@@ -170,14 +170,14 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${config.get('base_loc')}/${view}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
-         resourceurl = "${config.get('base_loc')}/${view}/${config.get('handler').resource_classification_loc.name}/${record.database}/${thisid}/html";
-         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
+         resourceurl = "${path_prefix}/${config.get('handler').resource_classification_loc.name}/${record.database}/${thisid}/html";
+         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
          content   = " ${rssfeed}<a href=\"${resourceurl}\" title=\"Systematik-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T1600";
@@ -196,14 +196,14 @@ FOREACH category IN categories;
             searchterms.push("id:${superid.content}");
          END;
 
-         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}db=${database};dop=or;fs=${searchterms.join(' ')}";
+         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}db=${database};dop=or;fs=${searchterms.join(' ')}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         localurl  = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:${record.id}";
+         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
    END;

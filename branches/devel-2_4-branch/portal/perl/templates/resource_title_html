@@ -80,7 +80,7 @@
        itemid        = thisitem.id;
        itemclass     = css_classes.$classnr;
 
-       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${config.get('base_loc')}/${view}/${config.get('handler').tags_loc.name}?searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
+       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('handler').tags_loc.name}?searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
      END ;
      alltags_cloud = "${alltags_cloud}\n</ol>" ;
      cloud_item = {
@@ -107,17 +107,17 @@ END ;
 <img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
 [%-   IF normset.${"E4200"} %]
 [%-    FOREACH item IN normset.${"E4200"}-%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/522/http://de.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/522/http://de.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
 [%-   IF normset.${"E4201"} %]
 [%-     FOREACH item IN normset.${"E4201"}-%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/522/http://en.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/522/http://en.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normset.${"E4202"} %]
 [%-     FOREACH item IN normset.${"E4202"}-%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').redirect_loc.name %]/522/http://fr.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/522/http://fr.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>
@@ -173,7 +173,7 @@ END ;
 <script type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/62?id=[% normset.${"E4115"}.first.content %];format=ajax",
+  $.get("[% path_prefix %]/[% config.get('handler').info_loc.name %]/62?id=[% normset.${"E4115"}.first.content %];format=ajax",
          function (txt){
            $("#tictocs").html(txt); 
   });
@@ -183,7 +183,7 @@ $(document).ready(function(){
 <h2 class="nojs_show">[% msg.maketext("Letzte Artikel") %]</h2>
 
 <div id="tictocs"><!-- Begin TicTocs -->
-[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').info_loc.name}/62?id=${tictocs_feed}\">","</a>") %]
+[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('handler').info_loc.name}/62?id=${tictocs_feed}\">","</a>") %]
 </div><!-- End TicTocs -->
 [% END %]
 <!-- Begin: Reviews -->
@@ -199,7 +199,7 @@ $(document).ready(function(){
 <p />
 
 [% IF NOT ownreviewid %]
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userreviews_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
@@ -257,12 +257,12 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 <dd class="review">[%    IF item.review %][% item.review %][% END %]
 [% IF item.id == ownreviewid %]
 <p />
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userreviews_loc.name %]?reviewid=[% item.id %];do_edit=1">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userreviews_loc.name %]?reviewid=[% item.id %];do_del=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+<a href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewid=[% item.id %];do_edit=1">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewid=[% item.id %];do_del=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF loginname %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userreviews_loc.name %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userreviews_loc.name %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]
@@ -286,7 +286,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${config.get('base_loc')}/${view}/${config.get('handler').resource_loc.name}/title/${same_record.database}/${same_record.id}.html" %]
+[% same_url = "${path_prefix}/${config.get('handler').resource_loc.name}/title/${same_record.database}/${same_record.id}.html" %]
 <li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
 [% END %]
 </ol>
@@ -302,7 +302,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <ol>
 [% FOREACH similar_record IN similar_records.get_records %]
 [% item = similar_record.get_brief_normdata %]
-[% similar_url = "${config.get('base_loc')}/${view}/${config.get('handler').resource_loc.name}/title/${similar_record.database}/${similar_record.id}.html" %]
+[% similar_url = "${path_prefix}/${config.get('handler').resource_loc.name}/title/${similar_record.database}/${similar_record.id}.html" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
@@ -361,21 +361,21 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <table>
 <tr>
 <th><img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
-<td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]/add_item?id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/add_item?id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
 <th><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
-<td><a class="collection" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
+<td><a class="collection" href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
-<td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
 <th><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
-<td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
-<td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').managecollection_loc.name %]?action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
 <th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
-<td><a href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_permalink_loc.name %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
+<td><a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_permalink_loc.name %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
 </table>
 <p />
@@ -383,7 +383,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <div class="headline"><span id="formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="formats_do"><!-- Begin formats do -->
 <p>
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %].html?format=full;queryid=[% queryid %]" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %].html?format=Text;queryid=[% queryid %]" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %].html?format=BibTeX;queryid=[% queryid %]" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %].html?format=EndNote;queryid=[% queryid %]" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %].html?format=full;queryid=[% queryid %]" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %].html?format=Text;queryid=[% queryid %]" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %].html?format=BibTeX;queryid=[% queryid %]" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('handler').resource_loc.name %]/title/[% record.database %]/[% record.id %].html?format=EndNote;queryid=[% queryid %]" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 <p/>
@@ -393,7 +393,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <div class="litlists"><!-- Begin Litlist -->
 <div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]">
 <input type="hidden" name="action"          value="manage" />
 <input type="hidden" name="titid"           value="[% record.id %]" />
 <input type="hidden" name="titdb"           value="[% record.database %]" />
@@ -435,7 +435,7 @@ href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').userrevie
 <tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').tags_loc.name %]">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
@@ -510,7 +510,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 [% ELSIF loginname && private_tags_of_tit.size > 0 %]
 <p />
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').tags_loc.name %]">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
@@ -606,7 +606,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?searchall=1;isbn=${isbnitem.content}" -%]
+[%-   globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?searchall=1;isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
 <tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
 [%-   END -%]
@@ -623,7 +623,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="headline">[% msg.maketext("Literaturlisten") %]</div>
 <ul style="list-style-type: square">
 [% FOREACH litlist IN litlists %]
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
+<li><a href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
 [% END %]
 </ul>
 </div>
@@ -649,7 +649,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
       thiscontent = item.content;
 
       NEXT IF rswkswt_done.${thiscontent} == 1;
-      localurl    = "${config.get('base_loc')}/${view}/${config.get('handler').browse_loc.name}?database=${record.database};searchtitofcnt=${thiscontent.replace('&amp;','%26')};category=E4300;num=${qopts.num}";
+      localurl    = "${path_prefix}/${config.get('handler').browse_loc.name}?database=${record.database};searchtitofcnt=${thiscontent.replace('&amp;','%26')};category=E4300;num=${qopts.num}";
       content       = "<a href=\"${localurl}\">${thiscontent}</a>";
       rswkswt_done.${thiscontent} = 1;
 %]
@@ -670,7 +670,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [% IF loginname && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:
 [%- FOREACH tag IN private_tags_of_tit -%]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
 [%- END -%]
 [% END %]
 </div>
@@ -682,7 +682,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
 <div class="headline"><span id="bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="bibsonomy_tags"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]/lookup?bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
+<span id="bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/lookup?bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
 </div>
 <p/>
 </div>
@@ -692,7 +692,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarpersons_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% path_prefix %]/[% config.get('handler').connector_similarpersons_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarpersons").html(txt); 
   });
@@ -702,7 +702,7 @@ $(document).ready(function(){
 <div class="similarpersons"><!-- Begin Verwandte Personen -->
 <div class="headline"><span id="similarpersons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarpersons_do"><!-- Begin similarpersons do -->
-<span id="similarpersons"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarpersons_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarpersons"><a href="[% path_prefix %]/[% config.get('handler').connector_similarpersons_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -712,7 +712,7 @@ $(document).ready(function(){
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Themen
-  $.get("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarsubjects_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% path_prefix %]/[% config.get('handler').connector_similarsubjects_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarsubjects").html(txt); 
   });
@@ -721,7 +721,7 @@ $(document).ready(function(){
 <div class="similarsubjects"><!-- Begin Verwandte Themen -->
 <div class="headline"><span id="similarsubjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarsubjects_do"><!-- Begin similarsubjects do -->
-<span id="similarsubjects"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_similarsubjects_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarsubjects"><a href="[% path_prefix %]/[% config.get('handler').connector_similarsubjects_loc.name %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -732,7 +732,7 @@ $(document).ready(function(){
 <div class="headline"><span id="misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="misc_do"><!-- Begin misc do -->
 <ul style="list-style-type: square">
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/10/?db=[% record.database %]" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/10/?db=[% record.database %]" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 </div>
 </div>
@@ -778,7 +778,7 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_title_loc.name %]/[% item.database %]/[% item.id %].html?queryid=[% queryid %]"><strong><span class="rltitle">[%
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[% item.database %]/[% item.id %].html?queryid=[% queryid %]"><strong><span class="rltitle">[%
 title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
 [% END %]
 [% IF recent_titles.get_size > 5 %]

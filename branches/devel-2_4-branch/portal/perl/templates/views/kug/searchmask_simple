@@ -51,7 +51,7 @@
 [% IF user.is_authenticated && config.get('lang').size > 1 %]
 <div class="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -74,17 +74,17 @@
 [% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#to_focus").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
-  $("#input_box_serials").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
-  $("#input_box_articles").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -94,7 +94,7 @@ $(document).ready(function(){
 [% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#to_focus").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -102,7 +102,7 @@ $(document).ready(function(){
                 extraParams: {
                   exact: "[% livesearch.exact %]"
                 }});
-  $("#input_box_serials").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -110,7 +110,7 @@ $(document).ready(function(){
                 extraParams: {
                   exact: "[% livesearch.exact %]"
                 }});
-  $("#input_box_articles").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('handler').connector_livesearch_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -125,7 +125,7 @@ $(document).ready(function(){
 
 <h1>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').virtualsearch_loc.name %]">
 
 <input type="hidden" name="num"  value="50" />
 
@@ -167,14 +167,14 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
 
 [% IF queries.size > 0 %]
 <p />
-<form method="get" id="queries" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dispatchquery_loc.name %]">
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('handler').dispatchquery_loc.name %]">
 <b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
 
 
@@ -198,7 +198,7 @@ $(document).ready(function(){
 [% IF spelling_suggestion.as_you_type %]
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#input_box_serials").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -209,7 +209,7 @@ $(document).ready(function(){
 
 <h1>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').virtualsearch_loc.name %]">
 
 <input type="hidden" name="num"  value="50" />
 
@@ -253,7 +253,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -261,7 +261,7 @@ $(document).ready(function(){
 [% IF queries.size > 0 %]
 <p />
 
-<form method="get" id="queries" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dispatchquery_loc.name %]">
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('handler').dispatchquery_loc.name %]">
 <b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
 
 
@@ -285,7 +285,7 @@ $(document).ready(function(){
 [% IF spelling_suggestion.as_you_type %]
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#input_box_articles").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -296,7 +296,7 @@ $(document).ready(function(){
 
 <h1>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').virtualsearch_loc.name %]">
 
 <input type="hidden" name="num"  value="50" />
 
@@ -340,7 +340,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -348,7 +348,7 @@ $(document).ready(function(){
 [% IF queries.size > 0 %]
 <p />
 
-<form method="get" id="queries" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dispatchquery_loc.name %]">
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('handler').dispatchquery_loc.name %]">
 <b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
 
 
@@ -373,7 +373,7 @@ $(document).ready(function(){
 [% IF spelling_suggestion.as_you_type %]
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#input_box_serials").autocomplete("[% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -384,7 +384,7 @@ $(document).ready(function(){
 
 <h1>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').virtualsearch_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').virtualsearch_loc.name %]">
 
 <input type="hidden" name="num"  value="50" />
 
@@ -428,7 +428,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -436,7 +436,7 @@ $(document).ready(function(){
 [% IF queries.size > 0 %]
 <p />
 
-<form method="get" id="queries" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').dispatchquery_loc.name %]">
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('handler').dispatchquery_loc.name %]">
 <b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
 
 
@@ -466,7 +466,7 @@ $(document).ready(function(){
      titlecount = titlecount + thisbklist.${classification};
   END ;
 %]
-<li><a style="font-weight:bold;font-size:1.2em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/54?id=[% subject.id %]">[% subject.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,subject.litlistcount.public) %])</li>
+<li><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/54?id=[% subject.id %]">[% subject.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,subject.litlistcount.public) %])</li>
 [% END %]
 </ul>
 </div><!-- End Themengebiete -->
@@ -483,7 +483,7 @@ $(document).ready(function(){
 [% IF config.get('lang').size > 1 %]
 <div class="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -491,7 +491,7 @@ $(document).ready(function(){
 <div id="login"><!-- Begin login-->
 <img style="vertical-align:bottom" src="/images/openbib/persons.png" alt="[% msg.maketext("Einloggen") %]"/>&nbsp;&nbsp;[% msg.maketext("<b>Einloggen</b> f&uuml;r Tagging,
 Literaturlisten usw.<p/>") %]
-<form method="post" action="[% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="post" action="[% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% path_prefix %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 
 
@@ -536,7 +536,7 @@ Literaturlisten usw.<p/>") %]
 <tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
 </table>
 <p />
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').selfreg_loc.name %]?action=show">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').mailpassword_loc.name %]?action=show">[% msg.maketext("Registriertes Passwort vergessen?") %]</a>
+<a href="[% path_prefix %]/[% config.get('handler').selfreg_loc.name %]?action=show">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').mailpassword_loc.name %]?action=show">[% msg.maketext("Registriertes Passwort vergessen?") %]</a>
 
 </form>
 
@@ -566,18 +566,18 @@ Literaturlisten usw.<p/>") %]
 <td class="overview"><!-- Begin overview-->
 <h3><img style="vertical-align:bottom" src="[% config.get('search_img') %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[%- IF viewdbs.size == 1 -%][% msg.maketext("In den Institutsbestand eintauchen") %][%- ELSE -%][% msg.maketext("In den Gesamtbestand eintauchen") %][%- END -%]</h3>
 
-<a style="font-size: 1.5em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[%- IF viewdbs.size == 1 -%]9?db=[% viewdbs.first %][%- ELSE -%]13[%- END -%]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
-<a style="font-size: 1.3em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?&action=show_public_lists[% IF subjectid %];subjectid=[% subjectid %][%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
-<a style="font-size: 1.1em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
-<a                           href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[%- IF viewdbs.size == 1 -%]10?db=[% viewdbs.first %][%- ELSE -%]0[%- END -%]" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
-<a style="font-size: 1.2em;" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
+<a style="font-size: 1.5em;" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/[%- IF viewdbs.size == 1 -%]9?db=[% viewdbs.first %][%- ELSE -%]13[%- END -%]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
+<a style="font-size: 1.3em;" href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?&action=show_public_lists[% IF subjectid %];subjectid=[% subjectid %][%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
+<a style="font-size: 1.1em;" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
+<a                           href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/[%- IF viewdbs.size == 1 -%]10?db=[% viewdbs.first %][%- ELSE -%]0[%- END -%]" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
+<a style="font-size: 1.2em;" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
 
 <h3>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h3>
-[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').ezb_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('handler').ezb_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
 
 <h3>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h3>
 [% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
-lizenzierten Datenbanken[_2]","<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').dbis_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
+lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('handler').dbis_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
 
 <h3>Digitalisierte Kartenkataloge</h3>
 
@@ -586,7 +586,7 @@ nicht recherchierbar, werden jedoch durch digitalisierte
 Katalogkarten-Bilder erschlossen.
 
 <ul>
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/63">Philosophische Fakult&auml;t</a></li>
+<li><a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/63">Philosophische Fakult&auml;t</a></li>
 </ul>
 
 </td><!-- End overview -->
@@ -605,7 +605,7 @@ Katalogkarten-Bilder erschlossen.
 [% IF lastlitlists.size > 0 %]
 <ul class="recent_litlists">
 [%   FOREACH litlist IN lastlitlists %]
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% litlist.id%];do_showlitlist=1">[% litlist.title %]</a> ([% litlist.itemcount %])[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><a href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% litlist.id%];do_showlitlist=1">[% litlist.title %]</a> ([% litlist.itemcount %])[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [%   END %]
 </ul>
 [% END %]
@@ -623,7 +623,7 @@ Katalogkarten-Bilder erschlossen.
 [% IF lasttags.size > 0 %]
 <ul class="recent_tags">
 [%   FOREACH thistag IN lasttags %]
-<li><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% thistag.id %]">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
+<li><a href="[% path_prefix %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% thistag.id %]">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
 [%   END %]
 </ul>
 [% END %]

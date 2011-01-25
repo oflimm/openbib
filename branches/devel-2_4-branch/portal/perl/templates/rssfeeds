@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').rssfeeds_loc.name %]?">[% msg.maketext("RSS-Feeds") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').rssfeeds_loc.name %]?">[% msg.maketext("RSS-Feeds") %]</a></li>
 </ul>
 
 <div class="content">
@@ -53,8 +53,8 @@ dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm.") %]
 <table>
 [% IF item.type == 'neuzugang' %]
 <tr><td><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
-href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_rss_loc.name %]/[% item.type %]/[% item.pool
-%].rdf" target="_blank">http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_rss_loc.name %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
+href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_rss_loc.name %]/[% item.type %]/[% item.pool
+%].rdf" target="_blank">http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_rss_loc.name %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
 [% END %]
 </table>
 </td></tr></table>
@@ -81,8 +81,8 @@ Keine
 <table>
 [% IF item.type == 'neuzugang' %]
 <tr><td><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
-href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_rss_loc.name %]/[% item.type %]/[% item.pool
-%].rdf" target="_blank">http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_rss_loc.name %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
+href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_rss_loc.name %]/[% item.type %]/[% item.pool
+%].rdf" target="_blank">http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_rss_loc.name %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
 [% END %]
 </table>
 </td></tr></table>

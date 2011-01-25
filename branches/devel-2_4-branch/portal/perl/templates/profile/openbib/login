@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').login_loc.name %]?do_login=1">[% msg.maketext("Mein KUG") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').login_loc.name %]?do_login=1">[% msg.maketext("Mein KUG") %]</a></li>
 </ul>
 
 <div class="content">
@@ -32,11 +32,11 @@
 
 <div id="login_container">
 <div class="left_side">
-<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% END %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% END %][% path_prefix %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 
 <div class="left_side">
-<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% END %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% END %][% path_prefix %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 
 
@@ -60,7 +60,7 @@
 <tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
 </table>
 <p/>
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').selfreg_loc.name %]?action=show">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').mailpassword_loc.name %]?action=show">[% msg.maketext("Passwort vergessen?") %]</a>
+<a href="[% path_prefix %]/[% config.get('handler').selfreg_loc.name %]?action=show">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').mailpassword_loc.name %]?action=show">[% msg.maketext("Passwort vergessen?") %]</a>
 </td></tr>
 </table>
 </div><!-- End right_side -->

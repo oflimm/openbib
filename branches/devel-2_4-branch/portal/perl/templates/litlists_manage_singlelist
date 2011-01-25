@@ -85,7 +85,7 @@
 [%- IF format == 'HTML' && show == 'short' -%]
   <div class="listoptions">
 <!-- Titlelist begins here -->
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]">
 
 <input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
 <input type="hidden" name="sortall"         value="1" />
@@ -107,7 +107,7 @@
 <table>
 <tr>
 <th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
-<td><a href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_permalink_loc.name %]/[% litlist.properties.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
+<td><a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_permalink_loc.name %]/[% litlist.properties.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
 </table>
 
@@ -116,11 +116,11 @@
 <div class="headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=short" [%- IF show == 'short' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;type=HTML;show=full" [%- IF show == 'full' && format == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=Text;show=full" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=BibTeX;show=full" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('handler').listlists_loc.name %]?action=manage;litlistid=[% litlist.id %];do_showlitlist=1;format=EndNote;show=full" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %]/">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %]/">
 <input type="hidden" name="action"     value="manage" />
 
 [%# USE dumper;dumper.dump(litlist)%]

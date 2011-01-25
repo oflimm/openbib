@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% litlist.properties.id %]">[% msg.maketext("Literaturliste") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% litlist.properties.id %]">[% msg.maketext("Literaturliste") %]</a></li>
 </ul>
 
 <div class="content">
@@ -37,7 +37,7 @@
 <tr><th>[% litlist.properties.title %]</th></tr>
 <tr><td class="boxedclear">
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]">
 
 <input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
 <input type="hidden" name="sortall"         value="1" />
@@ -66,11 +66,11 @@
 
 &nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;
 
-<b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.listtype == 'cover' %]style="font-weight:bold"[% END %]><img style="vertical-align:bottom" src="[% config.get('liststyle_cover_img') %]" />&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=cover">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.listtype == 'list' %]style="font-weight:bold"[% END%]><img style="vertical-align:bottom" src="[% config.get('liststyle_list_img') %]" />&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=list">[% msg.maketext("Listen-Ansicht") %]</a></span>
+<b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.listtype == 'cover' %]style="font-weight:bold"[% END %]><img style="vertical-align:bottom" src="[% config.get('liststyle_cover_img') %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=cover">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.listtype == 'list' %]style="font-weight:bold"[% END%]><img style="vertical-align:bottom" src="[% config.get('liststyle_list_img') %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=list">[% msg.maketext("Listen-Ansicht") %]</a></span>
 
 &nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;
 
-<b>[% msg.maketext("PermaLink") %]:</b>&nbsp;<a href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_permalink_loc.name %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img style="vertical-align:bottom" src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+<b>[% msg.maketext("PermaLink") %]:</b>&nbsp;<a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_permalink_loc.name %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img style="vertical-align:bottom" src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 
 </td></tr></table><p />
 </form>
@@ -86,20 +86,20 @@
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
-[%- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'P0101'}  -%]
-[%- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.get('base_loc')}/${view}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
 
@@ -135,7 +135,7 @@
 [%- dbdesc   = dbinfo.get('dbnames').${item.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${item.database} -%]
 
-<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.get('coverscans').all || config.get('coverscans').${record.database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlauthor">[% person %]</span><br /><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.get('coverscans').all || config.get('coverscans').${record.database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
 class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i></td><td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td><td>[% record.tstamp %]</td></tr>
 
 [% IF listrow == 'listrow1' %]
@@ -184,7 +184,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% FOREACH litlist IN other_litlists.same_user %]
 [%   IF litlist.type == 1 %]
 <tr class="[% listrow %]"><td><a href="http://[%
-config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?&action=show;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a>&nbsp([% litlist.itemcount %] Titel)</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_permalink_loc.name %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+config.get('servername') %][% path_prefix %]/[% config.get('handler').litlists_loc.name %]?&action=show;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a>&nbsp([% litlist.itemcount %] Titel)</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_permalink_loc.name %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 
 [%     IF listrow == 'listrow1' %]
 [%       listrow = 'listrow2' %]
@@ -212,7 +212,7 @@ config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get
 [% FOREACH litlist IN other_litlists.same_title %]
 [%   IF litlist.type == 1 %]
 <tr class="[% listrow %]"><td><a href="http://[%
-config.get('servername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').litlists_loc.name %]?&action=show;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a>&nbsp([% litlist.itemcount %] Titel)</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('base_loc') %]/[% view %]/[% config.get('handler').connector_permalink_loc.name %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+config.get('servername') %][% path_prefix %]/[% config.get('handler').litlists_loc.name %]?&action=show;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a>&nbsp([% litlist.itemcount %] Titel)</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_permalink_loc.name %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 
 [%     IF listrow == 'listrow1' %]
 [%       listrow = 'listrow2' %]

@@ -23,7 +23,7 @@
 
 <div class="content">
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
 
 <input type="hidden" name="profilename" value="[% profile.profilename %]" />
 <input type="hidden" name="do_editprofile" value="1" />
@@ -41,7 +41,7 @@
 </form>
 <p />
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
 <input type="hidden" name="profilename" value="[% profile.profilename %]" />
 <input type="hidden" name="do_editorgunit" value="1" />
 
@@ -67,7 +67,7 @@
 <table>
 <tr><td><b>Name</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>Kataloge</b></td><td></td></tr>
 [% FOREACH thisorgunit IN orgunits %]
-<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]?do_editorgunit=1;profilename=[% profile.profilename %];orgunit=[% thisorgunit.orgunitname %];do_edit=1">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% thisorgunit.dbnames.join(',') %]</td></tr>
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?do_editorgunit=1;profilename=[% profile.profilename %];orgunit=[% thisorgunit.orgunitname %];do_edit=1">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% thisorgunit.dbnames.join(',') %]</td></tr>
 [% END %]
 </table>
 </td></tr>

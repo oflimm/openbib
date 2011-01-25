@@ -40,7 +40,7 @@ Bibliothek authentifizieren.") %]
 
 <p />
 
-<form method="post" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="post" action="[% path_prefix %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 
 

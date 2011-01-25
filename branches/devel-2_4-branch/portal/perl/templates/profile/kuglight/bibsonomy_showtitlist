@@ -43,7 +43,7 @@
 [% END %]
 <p />
 
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]">
 
 <input type="hidden" name="action"     value="get_tit_of_tag" />
 <input type="hidden" name="type"       value="[% type %]" />
@@ -59,8 +59,8 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 </table>
 
 <ul class="tabbingmenu">
-   <li><a [% IF type == 'bibtex' %]class="active"[% END %] href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]type=bibtex">[% msg.maketext("Publikationen") %]</a></li>
-   <li><a [% IF type == 'bookmark' %]class="active"[% END %] href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]type=bookmark">[% msg.maketext("Web") %]</a></li>
+   <li><a [% IF type == 'bibtex' %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]type=bibtex">[% msg.maketext("Publikationen") %]</a></li>
+   <li><a [% IF type == 'bookmark' %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]type=bookmark">[% msg.maketext("Web") %]</a></li>
 </ul>
 
 <div class="content">
@@ -73,16 +73,16 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 [%- record = thistitle.record -%]
 [% IF type == 'bibtex' %]
 <tr class="[% listrow %]"><td colspan="2"><span class="rlauthor">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="rltitle">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span><br />
-Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;[% msg.maketext("Nutzer") %]: <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
+Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;[% msg.maketext("Nutzer") %]: <a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
 [% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar") %]</span><br/>(&nbsp;&nbsp;[% FOREACH dbname IN
-thistitle.local_dbs %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').search_loc.name %]?database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050">[% dbinfo.get('dbnames').${dbname}.short %]</a>&nbsp;&nbsp;[% END %])<br/>[% ELSE %]<span
+thistitle.local_dbs %]<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050">[% dbinfo.get('dbnames').${dbname}.short %]</a>&nbsp;&nbsp;[% END %])<br/>[% ELSE %]<span
 style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!") %]</span><br/>[% END %]
 </td></tr>
 [% ELSIF type == 'bookmark' %]
 <tr class="[% listrow %]"><td colspan="2"><b><a href="[% record.${'url'} %]" target="_blank">[%
 record.${'title'} %]</a></b><br />
 [%- IF thistitle.${'desc'} -%][% thistitle.${'desc'} %]<br/>[%- END -%]
-[% msg.maketext("Tags") %]: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;Nutzer: <a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
+[% msg.maketext("Tags") %]: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;Nutzer: <a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
 </td></tr>
 [% END %]
 
@@ -100,7 +100,7 @@ record.${'title'} %]</a></b><br />
 <p/>
 
 [% IF posts.next.start %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').bibsonomy_loc.name %]?[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]start=[% posts.next.start %];end=[% posts.next.end %];type=[% type %]">Weiter</a>
+<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]start=[% posts.next.start %];end=[% posts.next.end %];type=[% type %]">Weiter</a>
 [% END %]
 
 </div>

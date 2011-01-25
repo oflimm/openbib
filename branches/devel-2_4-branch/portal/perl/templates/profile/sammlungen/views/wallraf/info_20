@@ -31,7 +31,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/[% stid %]?id=[% id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/[% stid %]?id=[% id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -91,7 +91,7 @@ einziges Bekenntnis war sein unverbrüchlicher reichsstädtischer
 Patriotismus und seine Liebe zur Vaterstadt Köln, unabhängig von den
 herrschenden politischen Verhältnissen. Seine wissenschaftliche Arbeit
 und seine Sammeltätigkeit schützten ihn in den vielfältigen Umbrüchen
-seiner Zeit.[<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').info_loc.name %]/21">Weitere Informationen</a>]
+seiner Zeit.[<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/21">Weitere Informationen</a>]
 </p>
 
 <p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
@@ -102,7 +102,7 @@ Lesesaal.
 
 
 
-<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').searchmask_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 
 </td></tr>
 </table>

@@ -39,7 +39,7 @@
 <div class="content">
 
 <div class="boxedclear">
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
 
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
 <input type="hidden" name="do_editsubject" value="1" />
@@ -93,7 +93,7 @@ selected="selected"
 
 <p/>
 <div class="boxedclear">
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
 
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
 <input type="hidden" name="do_editsubject" value="1" />
@@ -140,7 +140,7 @@ selected="selected"
 
 <p/>
 <div class="boxedclear">
-<form method="get" action="[% config.get('base_loc') %]/[% view %]/[% config.get('handler').admin_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
 
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
 <input type="hidden" name="do_editsubject" value="1" />

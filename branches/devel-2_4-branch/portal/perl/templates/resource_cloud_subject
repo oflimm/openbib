@@ -1,0 +1,7 @@
+[%- IF representation == '' || representation == 'html' -%]
+[%- PROCESS common/subtemplate name="resource_cloud_subject_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="resource_cloud_subject_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

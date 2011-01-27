@@ -215,6 +215,8 @@ handler:
      name: resource/library
   resource_user_loc:
      name: resource/user
+  resource_cloud_loc:
+     name: resource/cloud
   resultlists_loc:
      name: resultlists
   rssfeeds_loc:
@@ -241,6 +243,8 @@ handler:
      name: search
 
 dispatch_rules:
+
+# Web-Administration
   - # admin_database_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin::DatabaseRSS'
      rule: '/portal/admin/database/:databaseid/rss.html[get]'
@@ -600,6 +604,68 @@ dispatch_rules:
      rule: '/portal/admin'
      runmode: 'show'
 
+# Konnektoren
+  - # connector_availabilityimage_loc: 
+     module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
+     rule: '/portal/connector/availabilityimage/:rm/:id/:representation?'
+     runmode: 'gbs'
+  - # connector_availability_loc:
+     module: 'OpenBib::Handler::Apache::Connector::Availability'
+     rule: '/portal/connector/availability'
+     runmode: 'show'
+  - # connector_bibmanager_loc:
+     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+     rule: '/portal/connector/literaturverwaltung'
+     runmode: 'show'
+  - # connector_digibib_loc:
+     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+     rule: '/portal/connector/digibib'
+     runmode: 'show'
+  - # connector_livesearch_loc:
+     module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
+     rule: '/portal/connector/livesearch'
+     runmode: 'show'
+  - # connector_locationmark_loc:
+     module: 'OpenBib::Handler::Apache::Connector:LocationMark'
+     rule: '/portal/connector/locationmark'
+     runmode: 'show'
+  - # connector_olws_loc:
+     module: 'OpenBib::Handler::Apache::Connector::OLWS'
+     rule: '/portal/connector/olws'
+     runmode: 'show'
+  # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
+  - # connector_permalink_loc:
+     module: 'OpenBib::Handler::Apache::Connector::PermaLink'
+     rule: '/portal/connector/permalink/:id1/:id2/:type/:view/index.html'
+     runmode: 'show'
+  - # connector_rss_loc:
+     module: 'OpenBib::Handler::Apache::Connector::RSS'
+     rule: '/portal/connector/rss/:type/:subtype?/*'
+     runmode: 'show'
+  - # connector_seealso_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SeeAlso'
+     rule: '/portal/connector/seealso'
+     runmode: 'show'
+  - # connector_similarpersons_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
+     rule: '/portal/connector/similarpersons'
+     runmode: 'show'
+  - # connector_similarsubjects_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
+     rule: '/portal/connector/similarsubjects'
+     runmode: 'show'
+  - # connector_spellcheck_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
+     rule: '/portal/connector/spellcheck'
+     runmode: 'show'
+  - # connector_ukonline_loc:
+     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+     rule: '/portal/connector/uk-online'
+     runmode: 'show'
+  - # connector_unapi_loc:
+     module: 'OpenBib::Handler::Apache::Connector::UnAPI'
+     rule: '/portal/connector/unapi'
+     runmode: 'show'
 
   - # resource_title_loc:
      module: 'OpenBib::Handler::Apache::Resource::Title'
@@ -655,6 +721,17 @@ dispatch_rules:
      rule: '/portal/:view/search'
      runmode: 'search_negotiate'
 
+  - # resource_cloud_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Cloud'
+     rule: '/portal/:view/resource/cloud/:stid/:database?'
+     runmode: 'show_negotiate'
+
+  - # resource_cloud_loc:
+     module: 'OpenBib::Handler::Apache::Info'
+     rule: '/portal/:view/info/:stid'
+     runmode: 'show_negotiate'
+
+# Ab hier noch umzustellen
 
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
@@ -663,67 +740,6 @@ dispatch_rules:
   - # circulation_loc:
      module: 'OpenBib::Handler::Apache::Circulation'
      rule: '/portal/:view/circulation'
-     runmode: 'show'
-  - # connector_availabilityimage_loc: 
-     module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
-     rule: '/portal/:view/connector/availabilityimage/:rm/:id/:representation?'
-     runmode: 'gbs'
-  - # connector_availability_loc:
-     module: 'OpenBib::Handler::Apache::Connector::Availability'
-     rule: '/portal/:view/availability'
-     runmode: 'show'
-  - # connector_bibmanager_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/literaturverwaltung'
-     runmode: 'show'
-  - # connector_digibib_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/digibib'
-     runmode: 'show'
-  - # connector_livesearch_loc:
-     module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
-     rule: '/portal/:view/connector/livesearch'
-     runmode: 'show'
-  - # connector_locationmark_loc:
-     module: 'OpenBib::Handler::Apache::Connector:LocationMark'
-     rule: '/portal/:view/connector/locationmark'
-     runmode: 'show'
-  - # connector_olws_loc:
-     module: 'OpenBib::Handler::Apache::Connector::OLWS'
-     rule: '/portal/:view/connector/olws'
-     runmode: 'show'
-  # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
-  - # connector_permalink_loc:
-     module: 'OpenBib::Handler::Apache::Connector::PermaLink'
-     rule: '/portal/connector/permalink/:id1/:id2/:type/:view/index.html'
-     runmode: 'show'
-  - # connector_rss_loc:
-     module: 'OpenBib::Handler::Apache::Connector::RSS'
-     rule: '/portal/connector/rss/:type/:subtype?/*'
-     runmode: 'show'
-  - # connector_seealso_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SeeAlso'
-     rule: '/portal/:view/connector/seealso'
-     runmode: 'show'
-  - # connector_similarpersons_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
-     rule: '/portal/:view/connector/similarpersons'
-     runmode: 'show'
-  - # connector_similarsubjects_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
-     rule: '/portal/:view/connector/similarsubjects'
-     runmode: 'show'
-  - # connector_spellcheck_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
-     rule: '/portal/:view/connector/spellcheck'
-     runmode: 'show'
-  - # connector_ukonline_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/uk-online'
-     runmode: 'show'
-  - # connector_unapi_loc:
-     module: 'OpenBib::Handler::Apache::Connector::UnAPI'
-     rule: '/portal/:view/connector/unapi'
      runmode: 'show'
   - # databasechoice_loc:
      module: 'OpenBib::Handler::Apache::DatabaseChoice'
@@ -748,10 +764,6 @@ dispatch_rules:
   - # dbis_loc:
      module: 'OpenBib::Handler::Apache::DBIS'
      rule: '/portal/:view/dbis'
-     runmode: 'show'
-  - # info_loc:
-     module: 'OpenBib::Handler::Apache::Info'
-     rule: '/portal/:view/info/:stid/:representation?'
      runmode: 'show'
   - # leave_loc:
      module: 'OpenBib::Handler::Apache::Leave'
@@ -885,14 +897,14 @@ tt_include_path: /opt/openbib/templates
 # Content-Type Maps
 
 content_type_map:
- 'application/rdf+xml': 'rdf+xml'
- 'text/rdf+n3': 'rdf+n3'
+ 'application/rdf+xml': 'rdf'
+ 'text/rdf+n3': 'n3'
  'text/html': 'html'
  'application/json': 'json'
 
 content_type_map_rev:
- 'rdf+xml': 'application/rdf+xml'
- 'rdf+n3': 'text/rdf+n3'
+ 'rdf': 'application/rdf+xml'
+ 'n3': 'text/rdf+n3'
  'html': 'text/html'
  'json': 'application/json'
 
@@ -992,7 +1004,7 @@ searchfield:
   'yearstring':
      'prefix': 'fyear'
      'type': 'string'
-  'bkey':
+  'bibkey':
      'prefix': 'bkey'
      'type': 'string'
 
@@ -1333,6 +1345,15 @@ tt_resource_classification_tname: resource_classification
 tt_resource_library_tname: resource_library
 tt_resource_tag_tname: resource_tag
 tt_resource_litlist_tname: resource_litlist
+tt_resource_cloud_tname: resource_cloud
+tt_resource_cloud_person_tname: resource_cloud_person
+tt_resource_cloud_corporatebody_tname: resource_cloud_corporatebody
+tt_resource_cloud_subject_tname: resource_cloud_subject
+tt_resource_cloud_classification_tname: resource_cloud_classification
+tt_resource_cloud_year_tname: resource_cloud_year
+tt_resource_cloud_searchterm_tname: resource_cloud_searchterm
+tt_resource_cloud_litlist_tname: resource_cloud_litlist
+tt_resource_cloud_tag_tname: resource_cloud_tag
 tt_resultlists_choice_tname: resultlists_choice
 tt_resultlists_empty_tname: resultlists_empty
 tt_resultlists_showall_sortall_tname: resultlists_showall_sortall

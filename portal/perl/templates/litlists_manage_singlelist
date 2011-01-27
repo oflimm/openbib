@@ -16,7 +16,6 @@
 [%- ebook_i18n      = msg.maketext("E-Book") -%]
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]
-
   <body>
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
@@ -161,23 +160,23 @@ selected="selected"
   <div class="resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% IF format == 'HTML' && show == 'short' %]
 
-[% PROCESS common/subtemplate name="litlists_tit_as_html_short" %] 
+[% PROCESS common/subtemplate name="litlists_tit_as_html_short" private_list=1 %] 
 
 [% ELSIF format == 'HTML' && show == 'full' %]
 
-[% PROCESS common/subtemplate name="litlists_tit_as_html_full" %]
+[% PROCESS common/subtemplate name="litlists_tit_as_html_full" private_list=1 %]
 
 [% ELSIF format == 'Text' %]
 
-[% PROCESS common/subtemplate name="litlists_tit_as_text" %]
+[% PROCESS common/subtemplate name="litlists_tit_as_text" private_list=1 %]
 
 [% ELSIF format == 'BibTeX' %]
 
-[% PROCESS common/subtemplate name="litlists_tit_as_bibtex" %]
+[% PROCESS common/subtemplate name="litlists_tit_as_bibtex" private_list=1 %]
 
 [% ELSIF format == 'EndNote' %]
 
-[% PROCESS common/subtemplate name="litlists_tit_as_endnote" %]
+[% PROCESS common/subtemplate name="litlists_tit_as_endnote" private_list=1 %]
 
 [%- END # Ende Endnote/Alles -%]
 

@@ -51,7 +51,7 @@
 [% item      = thisitem.item;
    itemcount = thisitem.count;
 %]
-<tr><td><b>[% loop.count %]</b></td><td><strong>[% dbinfo.${item} %]</td><td><b>[% itemcount %]&nbsp;[% msg.maketext("Titelzugriffe") %]</b></td></tr>
+<tr><td><b>[% loop.count %]</b></td><td><strong>[% dbinfo.get('dbnames').${item}.short %]</td><td><b>[% itemcount %]&nbsp;[% msg.maketext("Titelzugriffe") %]</b></td></tr>
 [% END %]
 </table>
 </td></tr>

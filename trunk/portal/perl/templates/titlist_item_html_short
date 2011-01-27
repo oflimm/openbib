@@ -155,6 +155,9 @@
       <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
       <div class="titleactions">
 <a class="collection" href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
+[% IF private_list %]
+&nbsp;&nbsp;<a href="[% config.get('listlists_loc') %]?sessionID=[% sessionID %]&do_delentry=1;titid=[% item.id %];titdb=[% item.database %];litlistid=[% litlist.id %];action=manage" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+[% END %]
 [% IF parameter.private_tags %]
 &nbsp;&nbsp;<a href="[% config.get('tags_loc') %]?sessionID=[% sessionID %]&do_del=1;tags=[% parameter.tag %];titid=[% item.id %];titdb=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]

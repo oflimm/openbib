@@ -27,6 +27,7 @@ CREATE TABLE treffer (
  sessionid VARCHAR(255) NOT NULL,
  dbname    TEXT,
  singleidn VARCHAR(255),
+ titcache  BLOB,
 
  INDEX (sessionid),
  INDEX (dbname(255)),

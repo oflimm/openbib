@@ -164,7 +164,8 @@ DROP TABLE IF EXISTS treffer;
 CREATE TABLE treffer (
  userid    VARCHAR(255) NOT NULL,
  dbname    TEXT,
- singleidn VARCHAR(255)
+ singleidn VARCHAR(255),
+ titcache  BLOB
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
@@ -188,6 +189,7 @@ CREATE TABLE tittag (
  titid     VARCHAR(255) NOT NULL default '0',
  titisbn   CHAR(14)    NOT NULL default '',
  titdb     VARCHAR(25) NOT NULL default '',
+ titcache  BLOB,
  loginname TEXT,
  type      INT(3)      NOT NULL default '1',
  PRIMARY KEY  (ttid),
@@ -265,6 +267,7 @@ CREATE TABLE litlistitems (
  titid     VARCHAR(255) NOT NULL,
  titisbn   CHAR(14)    NOT NULL default '',
  titdb     VARCHAR(25) NOT NULL,
+ titcache  BLOB,
  INDEX (litlistid),
  INDEX (titid),
  INDEX (titisbn),

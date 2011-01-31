@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
 <!-- Beginn Result Item -->
 [%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
     dburl    = dbinfo.get('urls').${database} ;

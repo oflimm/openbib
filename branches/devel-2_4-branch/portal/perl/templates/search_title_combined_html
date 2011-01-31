@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
 <!-- Beginn Result Item -->
 [%-
     request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};dd=1;" ;

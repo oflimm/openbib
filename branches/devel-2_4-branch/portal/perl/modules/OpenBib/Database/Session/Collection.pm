@@ -29,6 +29,13 @@ __PACKAGE__->add_columns(
     is_nullable => 1,
     size => 255,
   },
+  "titcache",
+  {
+    data_type => "BLOB",
+    default_value => undef,
+    is_nullable => 1,
+    size => 65535,
+  },  
 );
 
 1;

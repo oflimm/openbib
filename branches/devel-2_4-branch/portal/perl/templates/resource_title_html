@@ -393,8 +393,7 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <div class="litlists"><!-- Begin Litlist -->
 <div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
-<form method="get" action="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]">
-<input type="hidden" name="action"          value="manage" />
+<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/litlist">
 <input type="hidden" name="titid"           value="[% record.id %]" />
 <input type="hidden" name="titdb"           value="[% record.database %]" />
 
@@ -407,18 +406,24 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <table>
 <tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</td></tr>
 <tr><td><select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select></td><tr>
-<td><div class="cssbutton glass kug"><input type="submit" name="do_addentry" value="[% msg.maketext("Los") %]" /></div></td></tr>
-</table>
-</p>
-[% END %]
-<p>
-<table>
-<tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</td></tr>
-<tr><td><input type="text" name="title" size="20" /> <select name="littype"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> </td></tr>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_addlist" value="[% msg.maketext("Los") %]" /></div></td></tr>
+<td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td></tr>
 </table>
 </p>
 </form>
+[% END %]
+
+<p>
+<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/litlist">
+<input type="hidden" name="titid"           value="[% record.id %]" />
+<input type="hidden" name="titdb"           value="[% record.database %]" />
+<table>
+<tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</td></tr>
+<tr><td><input type="text" name="title" size="20" /> <select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> </td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td></tr>
+</table>
+</form>
+</p>
+
 </div><!-- End Litlist do-->
 </div><!-- End Litlist -->
 

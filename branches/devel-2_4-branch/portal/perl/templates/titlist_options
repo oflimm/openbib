@@ -29,17 +29,19 @@
   <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
   <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
+[% IF NOT no_jn %]
 &nbsp;
 &nbsp;
 <select name="jn">
   <option value="0"[%- IF query.param('jn') == '0' -%] selected="selected"[%- END -%]>[% msg.maketext("pro Katalog") %]</option>
   <option value="1"[%- IF query.param('jn') == '1' && NOT database -%] selected="selected"[%- END -%]>[% msg.maketext("katalogübergreifend") %]</option>
 </select>
+[% END %]
 </td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td>
 </tr>
 </table>
 </td>
 <td>&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;</td>
 
-<td><b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.lt == 'cover' %]style="font-weight:bold"[% END %]><img style="vertical-align:bottom" src="[% config.get('liststyle_cover_img') %]" />&nbsp;<a href="[% this_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'lt' && qparam != 'database' %][% qparam %]=[% decode_utf8(query.param(qparam)) | html_entity %];[%- END -%][% IF qparam == 'database' %][%- FOREACH qpdbname IN query.param(qparam) -%]db=[% qpdbname %];[%- END -%][%- END -%][%- END -%]lt=cover">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.lt == 'list' %]style="font-weight:bold"[% END%]><img style="vertical-align:bottom" src="[% config.get('liststyle_list_img') %]" />&nbsp;<a href="[% this_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'lt' && qparam != 'database' %][% qparam %]=[% decode_utf8(query.param(qparam)) | html_entity %];[%- END -%][% IF qparam == 'database' %][%- FOREACH qpdbname IN query.param(qparam) -%]db=[% qpdbname %];[%- END -%][%- END -%][%- END -%]lt=list">[% msg.maketext("Listen-Ansicht") %]</a></span></td></tr>
+<td><b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.lt == 'cover' %]style="font-weight:bold"[% END %]><img style="vertical-align:bottom" src="[% config.get('liststyle_cover_img') %]" />&nbsp;<a href="[% this_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'lt' && qparam != 'database' %][% qparam %]=[% query.param(qparam) | html_entity %];[%- END -%][% IF qparam == 'database' %][%- FOREACH qpdbname IN query.param(qparam) -%]db=[% qpdbname %];[%- END -%][%- END -%][%- END -%]lt=cover">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.lt == 'list' %]style="font-weight:bold"[% END%]><img style="vertical-align:bottom" src="[% config.get('liststyle_list_img') %]" />&nbsp;<a href="[% this_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'lt' && qparam != 'database' %][% qparam %]=[% query.param(qparam) | html_entity %];[%- END -%][% IF qparam == 'database' %][%- FOREACH qpdbname IN query.param(qparam) -%]db=[% qpdbname %];[%- END -%][%- END -%][%- END -%]lt=list">[% msg.maketext("Listen-Ansicht") %]</a></span></td></tr>
 </table>

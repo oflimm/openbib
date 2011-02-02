@@ -1854,6 +1854,8 @@ sub get_review_of_user {
     my $request=$dbh->prepare("select id,titid,titdb,nickname,loginname,title,review,rating from reviews where id=? and loginname=?") or $logger->error($DBI::errstr);
     $request->execute($id,$loginname) or $logger->error($DBI::errstr);
 
+    $logger->debug("Getting Review $id for User $loginname");
+    
     my $review_ref = {};
 
     while (my $result=$request->fetchrow_hashref){
@@ -1877,7 +1879,9 @@ sub get_review_of_user {
             rating    => $rating,
         };
     }
-    
+
+    $logger->debug("Got Review: ".YAML::Dump($review_ref));
+
     return $review_ref;
 }
 
@@ -3685,6 +3689,7 @@ sub set_fieldchoice {
     return undef if (!defined $dbh);
 
     $logger->debug("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ?, inhalt=?, gtquelle=? where userid = ? - $fs,$hst,$hststring,$verf,$kor,$swt,$notation,$isbn,$issn,$sign,$mart,$ejahr,$inhalt,$gtquelle,$self->{ID}");
+
     my $targetresult=$dbh->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ?, inhalt=?, gtquelle=? where userid = ?") or $logger->error($DBI::errstr);
     $targetresult->execute($fs,$hst,$hststring,$verf,$kor,$swt,$notation,$isbn,$issn,$sign,$mart,$ejahr,$inhalt,$gtquelle,$self->{ID}) or $logger->error($DBI::errstr);
     $targetresult->finish();

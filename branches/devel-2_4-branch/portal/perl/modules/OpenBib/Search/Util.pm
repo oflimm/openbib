@@ -81,25 +81,28 @@ sub get_result_navigation {
 
     my $lastresultstring = $session->get_lastresultset();
 
-    my $lastresult_ref = decode_json($lastresultstring);
-    my @lastresult = @{$lastresult_ref};
-
     my $lasttiturl="";
     my $nexttiturl="";
 
-    my @previous = before { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
-
-    my @last=(exists $previous[-1])?$previous[-1]:();
-    
-    my @after = after { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
-    my @next=(exists $after[0])?$after[0]:();
-
-    if (@last) {
-        $lasttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$last[0]->{database}/$last[0]->{id}/";
-    }
-    
-    if (@next) {
-        $nexttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$next[0]->{database}/$next[0]->{id}/";
+    if ($lastresultstring){
+        my $lastresult_ref = decode_json($lastresultstring);
+        my @lastresult = @{$lastresult_ref};
+        
+        
+        my @previous = before { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
+        
+        my @last=(exists $previous[-1])?$previous[-1]:();
+        
+        my @after = after { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
+        my @next=(exists $after[0])?$after[0]:();
+        
+        if (@last) {
+            $lasttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$last[0]->{database}/$last[0]->{id}/";
+        }
+        
+        if (@next) {
+            $nexttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$next[0]->{database}/$next[0]->{id}/";
+        }
     }
     
     return ($lasttiturl,$nexttiturl);

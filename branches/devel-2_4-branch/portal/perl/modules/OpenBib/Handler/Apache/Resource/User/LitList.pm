@@ -599,12 +599,7 @@ sub create_record {
         $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
     }
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/litlist.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    $self->return_baseurl;
     
     return;
 }
@@ -722,12 +717,7 @@ sub delete_record {
 
     $user->del_litlist({ litlistid => $litlistid});
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$user->{ID}/litlist.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    $self->return_baseurl;
 
     return;
 }
@@ -931,12 +921,12 @@ sub update_entry {
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
     # CGI Args
@@ -1028,6 +1018,27 @@ sub delete_entry {
 
     return;
 
+}
+
+sub return_baseurl {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $view           = $self->param('view')           || '';
+    my $userid         = $self->param('userid')         || '';
+
+    my $config = OpenBib::Config->instance;
+
+    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/litlist.html";
+
+    $self->query->method('GET');
+    $self->query->content_type('text/html');
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 1;

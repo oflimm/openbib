@@ -77,14 +77,8 @@ sub setup {
         'show_public_collection_by_subject_as_json'   => 'show_public_collection_by_subject_as_json',
         'show_public_collection_by_subject_as_rdf'    => 'show_public_collection_by_subject_as_rdf',
         'show_public_record_by_subject_negotiate'     => 'show_public_record_by_subject_negotiate',
-        'show_record_negotiate'                       => 'show_record_negotiate',
+        'show_public_record_negotiate'                => 'show_public_record_negotiate',
         'create_record'                               => 'create_record',
-        'update_record'                               => 'update_record',
-        'delete_record'                               => 'delete_record',
-        'create_entry'                                => 'create_entry',
-        'update_entry'                                => 'update_entry',
-        'delete_entry'                                => 'delete_entry',
-        
     );
 
     # Use current path as template path,
@@ -316,7 +310,6 @@ sub show_public_record_by_subject_negotiate {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $subjectid      = $self->param('subjectid')      || '';
-    my $representation = $self->param('representation') || 'html';
 
     # Shared Args
     my $query          = $self->query();
@@ -421,8 +414,6 @@ sub show_public_record_negotiate {
     my $subjects_ref   = OpenBib::User->get_subjects;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
-    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
-    my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
 
     # Mit Suffix, dann keine Aushandlung des Typs
 
@@ -445,7 +436,7 @@ sub show_public_record_negotiate {
 
     $litlistid = $thisid;
 
-    if (!$user_owns_litlist && !$litlist_is_public){
+    if (!$litlist_is_public){
         OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
 
         # Aufruf der privaten Literaturlisten durch "Andere" loggen
@@ -477,8 +468,6 @@ sub show_public_record_negotiate {
     my $ttdata={
         representation  => $representation,
         
-        user_owns_litlist => $user_owns_litlist,
-        
         view           => $view,
         stylesheet     => $stylesheet,
         
@@ -487,8 +476,6 @@ sub show_public_record_negotiate {
         query          => $query,
         qopts          => $queryoptions->get_options,
         user           => $user,
-        
-        userrole       => $userrole_ref,
         
         format         => $format,
         show           => $show,
@@ -709,7 +696,6 @@ sub create_record {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $arg            = $self->param('arg')            || '';
-    my $representation = $self->param('representation') || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -757,7 +743,7 @@ sub create_record {
         $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
     }
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$titdb/$titid.html";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -765,303 +751,6 @@ sub create_record {
     $self->query->status(Apache2::Const::REDIRECT);
     
     return;
-}
-
-sub update_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || 'html';
-    my $litlistid      = $self->param('litlistid')      || '';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    
-    # CGI Args
-    my $title          = decode_utf8($query->param('title'))        || '';
-    my $type           = $query->param('type')        || 1;
-    my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
-    my $lecture        = $query->param('lecture')     || 0;
-
-    if (!$title || !$type || !$litlistid){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-
-    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
-    
-    if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
-        
-        # Aufruf der Literaturlisten durch "Andere" loggen
-        $session->log_event({
-            type      => 800,
-            content   => $litlistid,
-        });
-        
-        return;
-    }
-    
-    my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
-
-    if (!$userrole_ref->{librarian} && !$userrole_ref->{lecturer}){
-        $lecture = 0;
-    }
-    
-    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
-    
-    if ($litlist_properties_ref->{userid} eq $user->{ID}){
-        $user->change_litlist({ title => $title, type => $type, lecture => $lecture, litlistid => $litlistid, subjectids => \@subjectids });
-    }
-
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
-    
-#    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/private/");
-#    return Apache2::Const::OK;            
-
-}
-
-sub delete_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->param('litlistid')             || '';
-    my $representation = $self->param('representation') || 'html';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    
-    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
-    
-    if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
-        
-        # Aufruf der Literaturlisten durch "Andere" loggen
-        $session->log_event({
-            type      => 800,
-            content   => $litlistid,
-        });
-        
-        return;
-    }
-
-    $user->del_litlist({ litlistid => $litlistid});
-
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$user->{ID}/litlist.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
-}
-
-
-sub create_entry {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->param('litlistid')             || '';
-    my $representation = $self->param('representation') || 'html';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    
-    # CGI Args
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
-    my $comment        = decode_utf8($query->param('comment'))      || '';
-    
-    my $type           = $query->param('type')        || 1;
-    my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
-    
-    if (!$litlistid || !$titid || !$titdb ){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben oder Titel und Datenbank existieren nicht."),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-    
-    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
-    
-    if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
-        
-        # Aufruf der Literaturlisten durch "Andere" loggen
-        $session->log_event({
-            type      => 800,
-            content   => $litlistid,
-        });
-        
-        return;
-    }
-    
-    $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb, comment => $comment});
-
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
-}
-
-sub update_entry {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->param('litlistid')             || '';
-    my $representation = $self->param('representation') || 'html';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-
-    # CGI Args
-    my $titid           = $query->param('titid')       || '';
-    my $titdb           = $query->param('titdb')       || '';
-    my $private_comment = decode_utf8($query->param('private_comment')) || '';
-
-    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
-
-    if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
-
-        # Aufruf der Literaturlisten durch "Andere" loggen
-        $session->log_event({
-            type      => 800,
-            content   => $litlistid,
-        });
-
-        return;
-    }
-
-    # Anpassen eines Kommentars
-    
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
-
-}
-
-sub delete_entry {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->param('litlistid')      || '';
-    my $representation = $self->param('representation') || 'html';
-    my $titid          = $self->param('id')             || '';
-    my $titdb          = $self->param('database')       || '';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-
-    if (!$titid || !$titdb || !$litlistid) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-
-    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
-
-    if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
-
-        # Aufruf der Literaturlisten durch "Andere" loggen
-        $session->log_event({
-            type      => 800,
-            content   => $litlistid,
-        });
-        
-        return;
-    }
-
-    
-    $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
-    
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
-
 }
 
 1;

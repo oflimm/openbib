@@ -199,7 +199,7 @@ $(document).ready(function(){
 <p />
 
 [% IF NOT ownreviewid %]
-<form method="get" action="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]">
+<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/review">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
@@ -230,7 +230,7 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 <p />
 <table>
 <tr>
-<td><div class="cssbutton glass kug"><input type="submit" name="do_add" value="[% msg.maketext("Aufnehmen") %]"/></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Löschen") %]"/></div></td>
+<td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Löschen") %]"/></div></td>
 </tr>
 </table>
 </td></tr>
@@ -257,12 +257,12 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 <dd class="review">[%    IF item.review %][% item.review %][% END %]
 [% IF item.id == ownreviewid %]
 <p />
-<a href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewid=[% item.id %];do_edit=1">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewid=[% item.id %];do_del=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+<a href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/review/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/review/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF loginname %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resource_review_loc.name %]/[% item.id %]?_method=PUT;titid=[% record.id %];titdb=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').resource_review_loc.name %]/[% item.id %]?titid=[% record.id %];titdb=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]
@@ -393,15 +393,14 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <div class="litlists"><!-- Begin Litlist -->
 <div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
-<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/litlist">
-<input type="hidden" name="titid"           value="[% record.id %]" />
-<input type="hidden" name="titdb"           value="[% record.database %]" />
-
 [%
       userlitlists = user.get_litlists();
 
       IF userlitlists.size > 0 ;
 %]
+<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/litlist">
+<input type="hidden" name="titid"           value="[% record.id %]" />
+<input type="hidden" name="titdb"           value="[% record.database %]" />
 <p>
 <table>
 <tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</td></tr>
@@ -413,7 +412,11 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 [% END %]
 
 <p>
+[% IF user.ID %]
 <form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/litlist">
+[% ELSE %]
+<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]">
+[% END %]
 <input type="hidden" name="titid"           value="[% record.id %]" />
 <input type="hidden" name="titdb"           value="[% record.database %]" />
 <table>
@@ -439,9 +442,11 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <table width="100%">
 <tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
 <tr><td class="boxedclear">
-
-<form method="get" action="[% path_prefix %]/[% config.get('handler').tags_loc.name %]">
-
+[% IF user.ID %]
+<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag">
+[% ELSE %]
+<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_tag_loc.name %]">
+[% END %]
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
@@ -515,7 +520,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 [% ELSIF loginname && private_tags_of_tit.size > 0 %]
 <p />
-<form method="get" action="[% path_prefix %]/[% config.get('handler').tags_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />

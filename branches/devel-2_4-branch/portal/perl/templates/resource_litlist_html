@@ -87,50 +87,6 @@
 </p>
 </div>
 
-[% IF user_owns_litlist %]
-<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %]/">
-<input type="hidden" name="action"     value="manage" />
-
-[%# USE dumper;dumper.dump(litlist)%]
-<table width="100%">
-<tr><th>[% msg.maketext("Einstellungen &auml;ndern") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr>
-<td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><input type="text" name="title" value="[% litlist.properties.title %]" size="20"/></td></tr>
-</tr>
-<tr>
-<td><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td><select name="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select></td></tr>
-</tr>
-<tr>
-[%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]<td><b>[% msg.maketext("Offiziell") %]</b></td><td><select name="lecture"><option value="1" [% IF litlist.properties.lecture == 1%] selected="selected"[% END %]>[% msg.maketext("Ja") %]</option><option value="0"[% IF litlist.properties.lecture == 0 %] selected="selected"[% END %]>[% msg.maketext("Nein") %]</option></select></td>[%- END -%]
-</tr>
-
-<tr><td colspan="2">&nbsp;</td></tr>
-
-<tr><td colspan="2">Ordnen Sie Ihre Literaturliste thematisch ein</td></tr>
-<tr><td colspan="2">
-<select name="subjectids" multiple="multiple" size="5">
-
-[% FOREACH subject IN subjects %]
-<option value="[% subject.id %]" [% IF litlist.properties.subject_selected.${subject.id} %] selected="selected"[% END %]>[% subject.name | truncate(40) %]</option>
-[% END %]
-
-</select>
-</td></tr>
-
-<tr>
-<td colspan="2"><div class="cssbutton glass kug"><input type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
-</tr>
-
-</table>
-</td></tr>
-</table>
-
-</form>
-
-[% END %]
-
 </div>
 [% END %]
   <div class="resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">

@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::DatabaseProfile
+#  OpenBib::Handler::Apache::Resource::User::Profile
 #
 #  Dieses File ist (C) 2005-2010 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::DatabaseProfile;
+package OpenBib::Handler::Apache::Resource::User::Profile;
 
 use strict;
 use warnings;
@@ -58,7 +58,7 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show'       => 'show',
+        'show_profile_as_html'       => 'show_profile_as_html',
     );
 
     # Use current path as template path,
@@ -66,7 +66,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show {
+sub show_profile_as_html {
     my $self = shift;
 
     # Log4perl logger erzeugen

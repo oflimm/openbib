@@ -142,6 +142,10 @@ my $kordefs_ref = {
         newcat => '0001', # Ansetzung
         mult => 0,
     },
+    '801' => {
+        newcat => '0110', # Abkuerzung der Ansetzung
+        mult => 0,
+    },
     '810' => {            # 1. verweisungsform zum namen der koerperschaft
         newcat => '0102', # Verweisung
         mult => 1,

@@ -177,7 +177,7 @@ sub show_collection {
     my $newtag         = $query->param('newtag')      || '';
     
     # Actions
-    my $show_cloud     = $query->param('show_cloud');
+    my $format         = $query->param('format')      || 'cloud';
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
     my $edit_usertags  = $query->param('edit_usertags')  || '';
@@ -235,7 +235,7 @@ sub show_collection {
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
         
-        show_cloud => $show_cloud,
+        format     => $format,
         targettype => $targettype,
         loginname  => $loginname,
         user       => $user,
@@ -243,7 +243,7 @@ sub show_collection {
         user       => $user,
         msg        => $msg,
     };
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_tag_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_resource_user_tag_collection_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -287,7 +287,7 @@ sub show_record_negotiate {
     my $newtag         = $query->param('newtag')      || '';
     
     # Actions
-    my $show_cloud     = $query->param('show_cloud');
+    my $format         = $query->param('format')      || 'cloud';
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
     my $edit_usertags  = $query->param('edit_usertags')  || '';
@@ -397,7 +397,7 @@ sub show_record_negotiate {
         hitrange         => $hitrange,
         
         query            => $query,
-        template         => 'tt_resource_user_tag_single_tname',
+        template         => 'tt_resource_user_tag_tname',
         location         => 'resource_user_loc',
         parameter        => {
             loginname    => $loginname,
@@ -449,7 +449,7 @@ sub show_collection_form {
     my $newtag         = $query->param('newtag')      || '';
     
     # Actions
-    my $show_cloud     = $query->param('show_cloud');
+    my $format         = $query->param('format')      || 'cloud';
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
     my $edit_usertags  = $query->param('edit_usertags')  || '';
@@ -555,7 +555,7 @@ sub showyyy {
     my $newtag         = $query->param('newtag')      || '';
     
     # Actions
-    my $show_cloud     = $query->param('show_cloud');
+    my $format         = $query->param('format')      || 'cloud';
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
     my $edit_usertags  = $query->param('edit_usertags')  || '';
@@ -691,7 +691,7 @@ sub showyyy {
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
 
-            show_cloud => $show_cloud,
+            format     => $format,
             targettype => $targettype,
             loginname  => $loginname,
             user       => $user,
@@ -809,7 +809,7 @@ sub showyyy {
     my $newtag         = $query->param('newtag')      || '';
     
     # Actions
-    my $show_cloud     = $query->param('show_cloud');
+    my $format         = $query->param('format')      || 'format';
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
     my $edit_usertags  = $query->param('edit_usertags')  || '';
@@ -945,7 +945,7 @@ sub showyyy {
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
 
-            show_cloud => $show_cloud,
+            format     => $format,
             targettype => $targettype,
             loginname  => $loginname,
             user       => $user,
@@ -1063,7 +1063,7 @@ sub showzzz {
     my $newtag         = $query->param('newtag')      || '';
     
     # Actions
-    my $show_cloud     = $query->param('show_cloud');
+    my $format         = $query->param('format')      || 'format';
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
     my $edit_usertags  = $query->param('edit_usertags')  || '';
@@ -1199,7 +1199,7 @@ sub showzzz {
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
 
-            show_cloud => $show_cloud,
+            format     => $format,
             targettype => $targettype,
             loginname  => $loginname,
             user       => $user,

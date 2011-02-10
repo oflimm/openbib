@@ -256,7 +256,7 @@ sub show {
         msg           => $msg,
     };
 
-    my $templatename = ($type)?"tt_searchmask_".$type."_tname":"tt_searchmask_tname";
+    my $templatename = ($type)?"tt_searchform_".$type."_tname":"tt_searchfrom_tname";
     
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 

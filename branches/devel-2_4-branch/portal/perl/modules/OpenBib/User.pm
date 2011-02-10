@@ -1654,6 +1654,77 @@ sub vote_for_review {
     return;
 }
 
+sub get_review_properties {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $reviewid           = exists $arg_ref->{reviewid}
+        ? $arg_ref->{reviewid}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return {} if (!defined $dbh);
+
+    return {} if (!$reviewid);
+
+    my $request=$dbh->prepare("select * from reviews where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($reviewid) or $logger->error($DBI::errstr);
+
+    my $result=$request->fetchrow_hashref;
+
+    my $title     = decode_utf8($result->{title});
+    my $titid     = $result->{titid};
+    my $titdb     = $result->{titdb};
+    my $titisbn   = $result->{titisbn};
+    my $tstamp    = $result->{tstamp};
+    my $nickname  = $result->{nickname};
+    my $review    = $result->{review};
+    my $rating    = $result->{rating};
+    my $loginname = $result->{loginname};
+
+    my $userid    = $self->get_userid_for_username($loginname);
+    
+    my $review_ref = {
+			id               => $reviewid,
+			userid           => $userid,
+                        loginname        => $loginname,
+			title            => $title,
+                        titdb            => $titdb,
+                        titid            => $titid,
+			tstamp           => $tstamp,
+                        review           => $review,
+                        rating           => $rating,
+		       };
+
+    $logger->debug("Review Properties: ".YAML::Dump($review_ref));
+
+    return $review_ref;
+}
+
+sub get_review_owner {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $reviewid           = exists $arg_ref->{reviewid}
+        ? $arg_ref->{reviewid}           : undef;
+
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return $self->get_review_properties({ reviewid => $reviewid })->{userid};
+}
+
 sub add_review {
     my ($self,$arg_ref)=@_;
 

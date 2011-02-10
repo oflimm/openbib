@@ -217,7 +217,7 @@ sub show_collection {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_litlist_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_resource_user_litlist_collection_tname},$ttdata,$r);
     return Apache2::Const::OK;
 }
 

@@ -730,15 +730,7 @@ sub show_record_negotiate {
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
     my $lecture        = $query->param('lecture')     || 0;
-    my $format         = $query->param('format')      || 'HTML';
-    my $show           = $query->param('show')        || 'short';
-    my $do_addentry    = $query->param('do_addentry')    || '';
-    my $do_showlitlist = $query->param('do_showlitlist') || '';
-    my $do_changelist  = $query->param('do_changelist')  || '';
-    my $do_change      = $query->param('do_change')      || '';
-    my $do_delentry    = $query->param('do_delentry')    || '';
-    my $do_addlist     = $query->param('do_addlist')     || '';
-    my $do_dellist     = $query->param('do_dellist')     || '';
+    my $format         = $query->param('format')      || 'short';
     my $sorttype       = $query->param('srt')    || "author";
     my $sortorder      = $query->param('srto')   || "up";
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
@@ -844,7 +836,6 @@ sub show_record_negotiate {
         userrole       => $userrole_ref,
         
         format         => $format,
-        show           => $show,
         
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
@@ -872,7 +863,6 @@ sub show_record_form {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $litlistid      = $self->param('litlistid')      || '';
-    my $userid         = $self->param('userid')         || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -890,8 +880,7 @@ sub show_record_form {
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
     my $lecture        = $query->param('lecture')     || 0;
-    my $format         = $query->param('format')      || 'HTML';
-    my $show           = $query->param('show')        || 'short';
+    my $format         = $query->param('format')      || 'short';
     my $do_addentry    = $query->param('do_addentry')    || '';
     my $do_showlitlist = $query->param('do_showlitlist') || '';
     my $do_changelist  = $query->param('do_changelist')  || '';
@@ -983,7 +972,6 @@ sub show_record_form {
         userrole       => $userrole_ref,
         
         format         => $format,
-        show           => $show,
         
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
@@ -996,7 +984,7 @@ sub show_record_form {
         msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_litlist_single_edit_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_edit_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -1010,7 +998,6 @@ sub create_record {
     # Dispatched Args
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -1043,6 +1030,8 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
+    $self->param('userid',$user->{ID});
+    
     # Wenn Litlistid mitgegeben wurde, dann Shortcut zu create_entry
     # Hintergrund: So kann der Nutzer im Web-UI auch eine bestehende Literaturliste
     #              auswaehlen
@@ -1088,7 +1077,6 @@ sub update_record {
     my $view           = $self->param('view')           || '';
     my $representation = $self->param('representation') || 'html';
     my $litlistid      = $self->param('litlistid')      || '';
-    my $userid         = $self->param('userid')           || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -1125,6 +1113,8 @@ sub update_record {
         
         return;
     }
+
+    $self->param('userid',$user->{ID});
     
     my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
 
@@ -1138,18 +1128,9 @@ sub update_record {
         $user->change_litlist({ title => $title, type => $type, lecture => $lecture, litlistid => $litlistid, subjectids => \@subjectids });
     }
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    $self->return_baseurl;
 
     return;
-    
-#    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/private/");
-#    return Apache2::Const::OK;            
-
 }
 
 sub delete_record {
@@ -1162,7 +1143,6 @@ sub delete_record {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $litlistid      = $self->param('litlistid')             || '';
-    my $userid         = $self->param('userid')           || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -1175,7 +1155,7 @@ sub delete_record {
     my $useragent      = $self->param('useragent');
     
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
-    
+
     if (!$user_owns_litlist) {
         OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
         
@@ -1187,6 +1167,8 @@ sub delete_record {
         
         return;
     }
+
+    $self->param('userid',$user->{ID});    
 
     $user->del_litlist({ litlistid => $litlistid});
 
@@ -1205,7 +1187,6 @@ sub show_entry_negotiate {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $litlistid      = $self->param('litlistid')      || '';
-    my $userid         = $self->param('userid')         || '';
     my $titdb          = $self->param('database')       || '';
     my $titid          = $self->param('id')             || '';
 
@@ -1311,7 +1292,7 @@ sub show_entry_negotiate {
         msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_litlist_item_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_item_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -1326,7 +1307,6 @@ sub create_entry {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $litlistid      = $self->param('litlistid')             || '';
-    my $userid         = $self->param('userid')           || '';
     my $representation = $self->param('representation') || 'html';
 
     # Shared Args
@@ -1366,10 +1346,12 @@ sub create_entry {
         
         return;
     }
+
+    $logger->debug("Adding entry ($titdb/$titid) to litlist $litlistid");
     
     $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb, comment => $comment});
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/litlist/$litlistid.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1389,7 +1371,6 @@ sub update_entry {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $litlistid      = $self->param('litlistid')             || '';
-    my $userid         = $self->param('userid')           || '';
     my $representation = $self->param('representation') || 'html';
 
     # Shared Args
@@ -1423,7 +1404,7 @@ sub update_entry {
 
     # Anpassen eines Kommentars
     
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/litlist/$litlistid.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1444,7 +1425,6 @@ sub delete_entry {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $litlistid      = $self->param('litlistid')      || '';
-    my $userid         = $self->param('userid')           || '';
     my $representation = $self->param('representation') || 'html';
     my $titid          = $self->param('id')             || '';
     my $titdb          = $self->param('database')       || '';
@@ -1482,7 +1462,7 @@ sub delete_entry {
     
     $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
     
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/litlist/$litlistid.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');

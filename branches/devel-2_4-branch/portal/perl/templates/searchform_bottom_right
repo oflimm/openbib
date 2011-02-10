@@ -1,0 +1,55 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchmask_bottom_right
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Rechts
+#
+#######################################################################
+-%]
+<h3><img style="vertical-align:bottom" src="[% config.get('note_img') %]" alt="Notieren"/>&nbsp;[% msg.maketext("Legen Sie Literaturlisten an und vergeben Sie Tags") %]</h3>
+
+<h4>[% msg.maketext("Die 5 zuletzt angelegten Literaturlisten") %]</h4>
+
+[%- IF view_config.${view}.subjectid ;
+       lastlitlists = user.get_recent_litlists({count => 5, subjectid => view_config.${view}.subjectid }) ;
+    ELSE ;
+       lastlitlists = user.get_recent_litlists({count => 5 }) ;
+    END ;
+-%]
+
+[% IF lastlitlists.size > 0 %]
+<ul class="recent_litlists">
+[%   FOREACH litlist IN lastlitlists %]
+<li><a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.id%]/">[% litlist.title %]</a> ([% litlist.itemcount %])[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+[%   END %]
+</ul>
+[% ELSE %]
+Es wurden diesem Katalog noch keine Literaturlisten 
+thematisch zugeordnet.
+[% END %]
+
+<h4>[% msg.maketext("Die 5 zuletzt vergebenen Tags") %]</h4>
+
+[%-
+   IF viewdbs.size == 1 ;
+      lasttags = user.get_recent_tags({count => 5, database => viewdbs.first }) ;
+   ELSE ;
+      lasttags = user.get_recent_tags({count => 5 }) ;
+   END ;
+-%]
+
+[% IF lasttags.size > 0 %]
+<ul class="recent_tags">
+[%   FOREACH thistag IN lasttags %]
+<li><a href="[% path_prefix %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% thistag.id %]">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
+[%   END %]
+</ul>
+[% ELSE %]
+Es wurden noch keine Titel aus diesem Katalog getaggt.
+[% END %]
+

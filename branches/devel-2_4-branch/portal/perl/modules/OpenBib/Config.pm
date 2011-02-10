@@ -894,6 +894,8 @@ sub get_orgunits {
 
     while (my $result=$request->fetchrow_hashref()){
 
+        $logger->debug("Orgunits found: ".$result->{'orgunitname'});
+            
         my $request2=$self->{dbh}->prepare("select dbname from profiledbs where profilename = ? and orgunitname = ? order by dbname ASC") or $logger->error($DBI::errstr);
         $request2->execute($profilename,$result->{'orgunitname'}) or $logger->error($DBI::errstr);
 
@@ -912,6 +914,8 @@ sub get_orgunits {
         
         push @{$orgunitinfo_ref}, $thisorgunitinfo_ref;
     }
+
+    $logger->debug("Orgunits for profile $profilename ".YAML::Dump($orgunitinfo_ref));
     
     return $orgunitinfo_ref;
 }

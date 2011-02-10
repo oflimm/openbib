@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::SearchMask
+#  OpenBib::Handler::Apache::SearchForm
 #
 #  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::SearchMask;
+package OpenBib::Handler::Apache::SearchForm;
 
 use strict;
 use warnings;

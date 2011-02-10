@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Info
 #
-#  Dieses File ist (C) 2006-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -79,8 +79,6 @@ sub show_negotiate {
     # Dispatched Args
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
-    my $id             = $self->param('id')             || '';
-    my $database       = $self->param('database')       || '';
     my $stid           = $self->param('stid')           || '';
     
     # Shared Args
@@ -102,12 +100,12 @@ sub show_negotiate {
     my $utils       = new OpenBib::Template::Utilities;
 
 
-        # Mit Suffix, dann keine Aushandlung des Typs
+    # Mit Suffix, dann keine Aushandlung des Typs
 
     my $representation = "";
     my $content_type   = "";
 
-    my $this_stid         = "";
+    my $thisstid         = "";
     if ($stid=~/^(.+?)(\.html|\.json|\.rdf)$/){
         $thisstid         = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
@@ -115,7 +113,7 @@ sub show_negotiate {
     }
     # Sonst Aushandlung
     else {
-        $thisstid = $id;
+        $thisstid = $stid;
         my $negotiated_type = $self->negotiate_type;
         $representation = $negotiated_type->{suffix};
         $content_type   = $negotiated_type->{content_type};
@@ -124,15 +122,12 @@ sub show_negotiate {
     $stid = $thisstid;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
-
+    
     # TT-Data erzeugen
     my $ttdata={
         representation=> $representation,
         format        => $format,
         stid          => $stid,
-        database      => $database,
-        query         => $query,
-        id            => $id,
         view          => $view,
         stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,

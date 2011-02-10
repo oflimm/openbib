@@ -49,10 +49,11 @@ function update_fak(yourform, checked, fak) {
 
 
 <table>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_choose" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
 </table>
 
 [%# USE dumper;dumper.dump(catdb)%]
+[%# USE dumper;dumper.dump(config.get_orgunits(profile)) %]
 <p />
 <table>
 <tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
@@ -104,7 +105,7 @@ function update_fak(yourform, checked, fak) {
 </table>
 <p />
 <table>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_choose" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
 </table>
 </form>
 <p />

@@ -80,7 +80,7 @@
        itemid        = thisitem.id;
        itemclass     = css_classes.$classnr;
 
-       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('handler').tags_loc.name}?searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
+       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('handler').resource_tag_loc.name}/${itemid}.html\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
      END ;
      alltags_cloud = "${alltags_cloud}\n</ol>" ;
      cloud_item = {
@@ -398,7 +398,7 @@ href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% us
 
       IF userlitlists.size > 0 ;
 %]
-<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/litlist">
+<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]">
 <input type="hidden" name="titid"           value="[% record.id %]" />
 <input type="hidden" name="titdb"           value="[% record.database %]" />
 <p>
@@ -412,11 +412,7 @@ href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% us
 [% END %]
 
 <p>
-[% IF user.ID %]
-<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/litlist">
-[% ELSE %]
 <form method="post" action="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]">
-[% END %]
 <input type="hidden" name="titid"           value="[% record.id %]" />
 <input type="hidden" name="titdb"           value="[% record.database %]" />
 <table>
@@ -442,11 +438,7 @@ href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% us
 <table width="100%">
 <tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
 <tr><td class="boxedclear">
-[% IF user.ID %]
-<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag">
-[% ELSE %]
-<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_tag_loc.name %]">
-[% END %]
+<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_tag_loc.name %]">
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
@@ -520,7 +512,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 [% ELSIF loginname && private_tags_of_tit.size > 0 %]
 <p />
-<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_tag_loc.name %]">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
@@ -633,7 +625,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="headline">[% msg.maketext("Literaturlisten") %]</div>
 <ul style="list-style-type: square">
 [% FOREACH litlist IN litlists %]
-<li><a href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
+<li><a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.id %].html">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
 [% END %]
 </ul>
 </div>
@@ -680,7 +672,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [% IF loginname && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:
 [%- FOREACH tag IN private_tags_of_tit -%]
-<a href="[% path_prefix %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag/[% tag.id %].html">[% tag.name %]</a>&nbsp;
 [%- END -%]
 [% END %]
 </div>

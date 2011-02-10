@@ -155,12 +155,12 @@
     titleinfo = titleinfos.join(" | ");
 -%]
     <div class="item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
-      <div class="numbering">[% start_range+loop.count - 1 %]</div>
+      <div class="numbering"></div>
       <div class="thumbnail">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-         <span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[% item.database %]/[% item.id %].html?queryid=[% queryid %]"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>   
+         <span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>   
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]

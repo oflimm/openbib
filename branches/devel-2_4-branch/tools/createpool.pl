@@ -39,6 +39,8 @@ my $config = OpenBib::Config->instance;
 
 # Anlegen des Mysql-Pools
 
+print "Creating Pool $pool\n";
+
 system("/usr/bin/mysqladmin -u $config->{'dbuser'} --password=$config->{'dbpasswd'} create $pool");
 
 # Einladen der Datenbankdefinitionen

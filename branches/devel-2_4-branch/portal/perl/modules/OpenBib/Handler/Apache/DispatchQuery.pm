@@ -102,7 +102,7 @@ sub show {
     }
 
     if    ($do_newquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{searchmask_loc}{name}?queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{searchform_loc}{name}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_resultlist) {

@@ -127,7 +127,7 @@ sub show {
     $logger->debug("StartOpac-sID: $session->{ID}");
 
     # Standard-URL
-    my $redirecturl = "$config->{base_loc}/$view/$config->{handler}{searchmask_loc}{name}/$setmask";
+    my $redirecturl = "$config->{base_loc}/$view/$config->{handler}{searchform_loc}{name}/$setmask";
 
     my $viewstartpage_ref = $config->get_startpage_of_view($view);
 

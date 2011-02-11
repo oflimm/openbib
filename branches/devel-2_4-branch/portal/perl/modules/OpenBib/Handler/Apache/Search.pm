@@ -1325,7 +1325,7 @@ sub index_as_rdf {
 }
 
 
-# Auf Grundlage der <form>-Struktur im Template searchmask derzeit nicht verwendet
+# Auf Grundlage der <form>-Struktur im Template searchform derzeit nicht verwendet
 sub search_index {
     my $self = shift;
 

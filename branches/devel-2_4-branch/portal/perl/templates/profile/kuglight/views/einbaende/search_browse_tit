@@ -29,8 +29,8 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
    <li><a class="active" href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=einbaendebrowsecat=T0101" title="[% msg.maketext("Register") %]">[% msg.maketext("Register") %]</a></li>
    <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?[% IF viewdbs.size == 1 %]db=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
 </ul>
@@ -82,7 +82,7 @@
 <tr><td><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% item.replace('&amp;','%26') %]db=einbaende;category=[% browsecat %];stid=1;olws=Viewer">[% item %]</a></td>
 [% IF querycat%]
 <td align="right" style="font-weight:bold">&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]?setmask=advanced[% querycat | replace('[(]
+href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]?setmask=advanced[% querycat | replace('[(]
 .*?[)]','') %]">[% msg.maketext("&Uuml;bernahme&nbsp;in&nbsp;Recherche") %]</a>&nbsp;&nbsp;&nbsp;</td>
 [%- END -%]
 </tr>

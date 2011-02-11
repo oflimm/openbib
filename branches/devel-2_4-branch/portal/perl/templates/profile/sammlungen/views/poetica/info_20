@@ -105,7 +105,7 @@ Tel.: 0221-470 3877
 
 
 
-<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 
 </td></tr>
 </table>

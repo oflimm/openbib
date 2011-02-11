@@ -14,7 +14,7 @@
 [%- username = user.get_username -%]
 <div id="mainnavigation">
 <div id="mainnavigation_left">
-<a href="[% path_prefix %]/[% config.get('handler').databasechoice_loc.name %]?">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/recent">[% msg.maketext("Recherche") %]</a>&nbsp;::&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]?action=choice">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=show">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
+<a href="[% path_prefix %]/[% config.get('handler').databasechoice_loc.name %]?">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/recent">[% msg.maketext("Recherche") %]</a>&nbsp;::&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]?action=choice">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=show">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
 </div>
 <div id="mainnavigation_right">
 [% IF config.get('login_active') == 1 %]

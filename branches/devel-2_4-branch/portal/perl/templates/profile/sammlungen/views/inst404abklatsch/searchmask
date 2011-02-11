@@ -17,7 +17,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchmask" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
 
 <div id="maincontent">
 
@@ -38,13 +38,13 @@
 <!--<div class="langchoice">
 [% IF config.get('lang').size > 1 %]
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
 -->
 
-[% PROCESS common/subtemplate name="subnavigation" active_menu="searchmask" %]
+[% PROCESS common/subtemplate name="subnavigation" active_menu="searchform" %]
 
 <div class="content">
 
@@ -119,7 +119,7 @@ $(document).ready(function(){
 <center>
 <table width="70%">
 <tr><td style="vertical-align:top;padding:20px;">
-[% PROCESS common/subtemplate name="searchmask_query" %]
+[% PROCESS common/subtemplate name="searchform_query" %]
 
 </form>
 

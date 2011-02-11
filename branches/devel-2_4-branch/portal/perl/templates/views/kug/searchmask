@@ -107,7 +107,7 @@ function submitViaEnter(evt){
 
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchmask" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
 
 <div id="maincontent">
 
@@ -119,7 +119,7 @@ function submitViaEnter(evt){
 [% END %]
 
 [% IF queries.size > 0 %]
-<div id="searchmask_history"><!-- Begin searchmask_history -->
+<div id="searchform_history"><!-- Begin searchform_history -->
 <p />
 
 <form method="get" id="queries" action="http://[% config.get('servername') %][% path_prefix %]/[% config.get('handler').dispatchquery_loc.name %]">
@@ -138,7 +138,7 @@ function submitViaEnter(evt){
 </form>
 <p />
 
-</div><!-- End searchmask_history -->
+</div><!-- End searchform_history -->
 [% END %]
 
 <form method="post" id="openbib" action="http://[% config.get('servername') %][% path_prefix %]/[% config.get('handler').virtualsearch_loc.name %]" enctype="application/x-www-form-urlencoded">
@@ -147,23 +147,23 @@ function submitViaEnter(evt){
 <input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="2" />
 
-<div id="searchmask_advanced"><!-- Begin searchmask_advanced -->
+<div id="searchform_advanced"><!-- Begin searchform_advanced -->
 
-<div id="searchmask_query"><!-- Begin searchmask_query -->
+<div id="searchform_query"><!-- Begin searchform_query -->
 
 <!-- Erste Spalte -->
 
 <table width="100%">
 <tr><th>[% msg.maketext("Suchbegriffe") %]</th></tr>
 <tr><td class="boxedclear">
-[% PROCESS common/subtemplate name="searchmask_query" %]
+[% PROCESS common/subtemplate name="searchform_query" %]
 
 <p />
 
 <table width="100%">
 <tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
 <tr><td class="boxedclear" id="searchoptions">
-[% PROCESS common/subtemplate name="searchmask_options" %]
+[% PROCESS common/subtemplate name="searchform_options" %]
 </td></tr>
 </table>
 
@@ -189,8 +189,8 @@ function submitViaEnter(evt){
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 [% END %]
 
-</div><!-- End searchmask_query -->
-<div id="searchmask_dbchoice"><!-- Begin searchmask_dbchoice -->
+</div><!-- End searchform_query -->
+<div id="searchform_dbchoice"><!-- Begin searchform_dbchoice -->
 
 <table>
 <tr><th>[% msg.maketext("Katalogauswahl") %]</th></tr>
@@ -269,9 +269,9 @@ function submitViaEnter(evt){
 </td></tr>
 </table>
 
-</div><!-- End searchmask_dbchoice -->
+</div><!-- End searchform_dbchoice -->
 
-</div><!-- End searchmask_advanced -->
+</div><!-- End searchform_advanced -->
 
 </form>
 

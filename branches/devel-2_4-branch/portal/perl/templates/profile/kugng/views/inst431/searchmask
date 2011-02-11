@@ -17,7 +17,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchmask" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
 
 <div id="maincontent">
 
@@ -41,14 +41,14 @@
 [% END %]
 
 
-<div id="searchmask" [%- IF user.is_authenticated -%]style="width:99.5%"[%- END -%]><!-- Begin searchmask -->
+<div id="searchform" [%- IF user.is_authenticated -%]style="width:99.5%"[%- END -%]><!-- Begin searchform -->
 
-<div id="searchmask_types" ><!-- Begin searchmask_types -->
+<div id="searchform_types" ><!-- Begin searchform_types -->
 
 [% IF user.is_authenticated && config.get('lang').size > 1 %]
 <div class="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -127,14 +127,14 @@ $(document).ready(function(){
 
 <input type="hidden" name="st"        value="2" />
 
-[% PROCESS common/subtemplate name="searchmask_query" %]
+[% PROCESS common/subtemplate name="searchform_query" %]
 
 <p />
 
 <table width="100%">
 <tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
 <tr><td class="boxedclear" id="searchoptions">
-[% PROCESS common/subtemplate name="searchmask_options" %]
+[% PROCESS common/subtemplate name="searchform_options" %]
 </td></tr>
 </table>
 
@@ -203,14 +203,14 @@ $(document).ready(function(){
 <input type="hidden" name="mart"      value="Zeitschrift_Serie" />
 <input type="hidden" name="boolmart"  value="AND" />
 
-[% PROCESS common/subtemplate name="searchmask_query" %]
+[% PROCESS common/subtemplate name="searchform_query" %]
 
 <p />
 
 <table width="100%">
 <tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
 <tr><td class="boxedclear" id="searchoptions">
-[% PROCESS common/subtemplate name="searchmask_options" %]
+[% PROCESS common/subtemplate name="searchform_options" %]
 </td></tr>
 </table>
 
@@ -262,14 +262,14 @@ $(document).ready(function(){
 <input type="hidden" name="mart"      value="Aufsatz" />
 <input type="hidden" name="boolmart"  value="AND" />
 
-[% PROCESS common/subtemplate name="searchmask_query" %]
+[% PROCESS common/subtemplate name="searchform_query" %]
 
 <p />
 
 <table width="100%">
 <tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
 <tr><td class="boxedclear" id="searchoptions">
-[% PROCESS common/subtemplate name="searchmask_options" %]
+[% PROCESS common/subtemplate name="searchform_options" %]
 </td></tr>
 </table>
 
@@ -316,9 +316,9 @@ $(document).ready(function(){
 
 <p />
 
-</div><!-- End searchmask_types -->
+</div><!-- End searchform_types -->
 
-</div><!-- End searchmask -->
+</div><!-- End searchform -->
 
 [% IF NOT user.is_authenticated %]
 <div id="teaser"><!-- Begin teaser-->
@@ -326,7 +326,7 @@ $(document).ready(function(){
 [% IF config.get('lang').size > 1 %]
 <div class="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -392,7 +392,7 @@ Literaturlisten usw.<p/>") %]
 </div><!-- End teaser -->
 [% END %]
 
-<div id="searchmask_bottom"><!-- Begin searchmask_bottom -->
+<div id="searchform_bottom"><!-- Begin searchform_bottom -->
 
 <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
@@ -401,7 +401,7 @@ Literaturlisten usw.<p/>") %]
 <tr valign="top">
 
 <td class="newsflash"><!-- Begin bottom_left -->
-[% PROCESS common/subtemplate name="searchmask_bottom_left" %]
+[% PROCESS common/subtemplate name="searchform_bottom_left" %]
 </td><!-- End bottom_left -->
 
 <td class="overview"><!-- Begin overview-->
@@ -461,6 +461,6 @@ lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('handler').
 </td><!-- End Literaturlisten/Tags -->
 </tr>
 </table>
-</div><!-- End searchmask_bottom -->
+</div><!-- End searchform_bottom -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -28,7 +28,7 @@ headerframeurl = "${path_prefix}/${config.get('handler').headerframe_loc.name}?"
 END;
 
 IF NOT bodyframeurl;
-bodyframeurl   = "${path_prefix}/${config.get('handler').searchmask_loc.name}?setmask=${setmask}" ;
+bodyframeurl   = "${path_prefix}/${config.get('handler').searchform_loc.name}?setmask=${setmask}" ;
 END;
 
 IF searchsingletit && database;

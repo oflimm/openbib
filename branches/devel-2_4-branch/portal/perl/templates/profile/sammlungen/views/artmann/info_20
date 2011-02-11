@@ -83,7 +83,7 @@ und künstlerisch interessanten Einbänden und Kassetten versehen.  </p>
 Lesesaal. Alle Titel sind in Suchen & Bestellen der USB und im
 Verbundkatalog NRW erfasst.[<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/21">Weitere Informationen</a>] </p>
 
-<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchmask_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 
 </td></tr>
 </table>

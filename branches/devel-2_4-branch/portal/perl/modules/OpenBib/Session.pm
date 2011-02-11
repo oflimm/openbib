@@ -919,8 +919,13 @@ sub set_item_in_collection {
     $idnresult->finish();
     
     if ($anzahl == 0) {
-        my $idnresult=$dbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($self->{ID},$database,$id) or $logger->error($DBI::errstr);
+        my $cached_title = new OpenBib::Record::Title({ database => $database , id => $id});
+        $cached_title->load_brief_record->to_json;
+
+        $logger->debug("Adding Title to Collection: $cached_title");
+                    
+        my $idnresult=$dbh->prepare("insert into treffer values (?,?,?,?)") or $logger->error($DBI::errstr);
+        $idnresult->execute($self->{ID},$database,$id,$cached_title) or $logger->error($DBI::errstr);
         $idnresult->finish();
     }
     

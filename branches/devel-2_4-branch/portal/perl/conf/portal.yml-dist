@@ -672,6 +672,38 @@ dispatch_rules:
 
   - # resource_title_loc:
      module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/popular.html'
+     runmode: 'show_popular_as_html'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/popular.json'
+     runmode: 'show_popular_as_json'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/popular.rdf'
+     runmode: 'show_popular_as_json'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/popular'
+     runmode: 'show_popular_negotiate'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/:database/popular.html'
+     runmode: 'show_popular_as_html'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/:database/popular.json'
+     runmode: 'show_popular_as_json'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/:database/popular.rdf'
+     runmode: 'show_popular_as_rdf'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/:database/popular'
+     runmode: 'show_popular_negotiate'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
      rule: '/portal/:view/resource/title/:database/:titleid'
      runmode: 'show'
   - # resource_person_loc:
@@ -1031,7 +1063,6 @@ dispatch_rules:
      rule: '/portal/:view/resource/user/:userid/preferences/autocompletion[put]'
      runmode: 'update_autocompletion'
 
-
   - # resource_user_loc:
      module: 'OpenBib::Handler::Apache::Resource::User::Collection'
      rule: '/portal/:view/resource/user/:userid/collection.html[get]'
@@ -1193,6 +1224,10 @@ dispatch_rules:
   - # browse_loc:
      module: 'OpenBib::Handler::Apache::Browse'
      rule: '/portal/:view/browse'
+     runmode: 'show'
+  - # searchform_loc:
+     module: 'OpenBib::Handler::Apache::SearchForm'
+     rule: '/portal/:view/searchform.html'
      runmode: 'show'
   - # searchform_loc:
      module: 'OpenBib::Handler::Apache::SearchForm'
@@ -1654,11 +1689,10 @@ tt_ezb_showjournals_tname: ezb_showjournals
 tt_ezb_searchjournals_tname: ezb_searchjournals
 tt_ezb_showjournalinfo_tname: ezb_showjournalinfo
 tt_ezb_showjournalreadme_tname: ezb_showjournalreadme
-tt_info_10_tname: info_10
 tt_info_11_tname: info_11
-tt_info_12_tname: info_12
+tt_info_popular_databases_tname: info_popular_databases
 tt_info_13_tname: info_13
-tt_info_15_tname: info_15
+tt_info_other_portals_tname: info_other_portals
 tt_info_20_tname: info_20
 tt_info_21_tname: info_21
 tt_info_22_tname: info_22
@@ -1715,6 +1749,8 @@ tt_managecollection_save_html_tname: managecollection_save_html
 tt_managecollection_save_plain_tname: managecollection_save_plain
 tt_managecollection_show_tname: managecollection_show
 tt_resource_title_tname: resource_title
+tt_resource_title_popular_by_database_tname: resource_title_popular_by_database
+tt_resource_title_popular_tname: resource_title_popular
 tt_resource_person_tname: resource_person
 tt_resource_corporatebody_tname: resource_corporatebody
 tt_resource_subject_tname: resource_subject

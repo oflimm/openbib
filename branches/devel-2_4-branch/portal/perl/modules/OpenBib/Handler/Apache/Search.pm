@@ -773,12 +773,12 @@ sub search_databases {
                 
                 nav             => $nav,
                 
-                joindbs      => $joindbs,
+                jn              => $joindbs,
                 
-                drilldown             => $drilldown,
+                drilldown       => $drilldown,
                 
-                page           => $page,
-                hitrange       => $hitrange,
+                page            => $page,
+                hitrange        => $hitrange,
                 
                 lastquery       => $request->querystring,
                 sorttype        => $sorttype,
@@ -1353,7 +1353,7 @@ sub search_index {
     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
     my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
-    my $joindbs       = $query->param('jn') || $query->param('combinedbs')    || 0;
+    my $joindbs       = $query->param('jn') || $query->param('combinedbs')    || 1;
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 
@@ -1725,6 +1725,7 @@ sub get_databases {
     my %seen_dbases = ();
     @databases = grep { ! $seen_dbases{$_} ++ } @databases;
 
+    $logger->debug("Database List: ".YAML::Dump(\@databases));
     return @databases;
 }
 

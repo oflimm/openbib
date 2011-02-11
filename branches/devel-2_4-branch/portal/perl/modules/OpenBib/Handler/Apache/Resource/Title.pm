@@ -37,6 +37,7 @@ use utf8;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Record::Title;
+use OpenBib::Template::Utilities;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -47,11 +48,137 @@ sub setup {
     $self->start_mode('show');
     $self->run_modes(
         'show' => 'show',
+        'show_popular_negotiate' => 'show_popular_negotiate',
+        'show_popular_as_html'   => 'show_popular_as_html',
+        'show_popular_as_json'   => 'show_popular_as_json',
+        'show_popular_as_rdf'    => 'show_popular_as_rdf',
     );
 
     # Use current path as template path,
     # i.e. the template is in the same directory as this script
 #    $self->tmpl_path('./');
+}
+
+sub show_popular_negotiate {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+    my $database       = $self->param('database')       || '';
+
+    my $config  = OpenBib::Config->instance;
+
+    my $negotiated_type_ref = $self->negotiate_type;
+
+    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}";
+
+    if ($database){
+        $new_location.="/$database";
+    }
+    
+    $new_location.=".$negotiated_type_ref->{suffix}";
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+    return;
+}
+
+sub show_popular_as_html {
+    my $self = shift;
+
+    $self->param('representation','html');
+
+    $self->show_popular;
+
+    return;
+}
+
+sub show_popular_as_json {
+    my $self = shift;
+
+    $self->param('representation','json');
+
+    $self->show_popular;
+
+    return;
+}
+
+sub show_popular_as_rdf {
+    my $self = shift;
+
+    $self->param('representation','rdf');
+
+    $self->show_popular;
+
+    return;
+}
+
+sub show_popular {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+    my $database       = $self->param('database')       || '';
+    my $representation = $self->param('representation') || 'html';
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');    
+    
+    # CGI Args
+
+    my $statistics  = new OpenBib::Statistics();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $utils       = new OpenBib::Template::Utilities;
+
+    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
+    my $profile       = $config->get_viewinfo($view)->profilename;
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        representation=> $representation,
+        database      => $database,
+        profile       => $profile,
+        view          => $view,
+        stylesheet    => $stylesheet,
+        viewdesc      => $viewdesc,
+        sessionID     => $session->{ID},
+	session       => $session,
+        useragent     => $useragent,
+        config        => $config,
+        dbinfo        => $dbinfotable,
+        statistics    => $statistics,
+        utils         => $utils,
+        user          => $user,
+        msg           => $msg,
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+    };
+
+    my $templatename = "tt_resource_title_popular".(($database)?'_by_database':'')."_tname";
+    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+    return Apache2::Const::OK;
 }
 
 sub show {

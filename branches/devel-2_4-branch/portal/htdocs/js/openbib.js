@@ -14,7 +14,7 @@ $("input[@id='to_focus']").focus();
 $('#additional_title_info > ul').tabs();
 
 // Tabs fuer Suchmaske nach Formaten 
-$('#searchmask_types > ul').tabs();
+$('#searchform_types > ul').tabs();
 
 // Accordion fuer Datenbankauswahl
 $('.ui-accordion').accordion({ 

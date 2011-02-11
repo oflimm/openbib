@@ -224,7 +224,7 @@ sub search_databases {
                 content   => 'xapian',
     });
 
-    my $sysprofile   = $config->get_viewinfo($view)->{profilename};
+    my $sysprofile   = $config->get_viewinfo($view)->profilename;
 
     @databases       = $self->get_databases();
     
@@ -1382,7 +1382,7 @@ sub search_index {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $searchquery = OpenBib::SearchQuery->instance;
 
-    my $sysprofile   = $config->get_viewinfo($view)->{profilename};
+    my $sysprofile   = $config->get_viewinfo($view)->profilename;
 
     @databases = $self->get_databases();
     
@@ -1609,7 +1609,7 @@ sub get_databases {
 
     my $searchquery  = OpenBib::SearchQuery->instance;
 
-    my $sysprofile   = $config->get_viewinfo($view)->{profilename};
+    my $sysprofile   = $config->get_viewinfo($view)->profilename;
 
     my $orgunits_ref = $config->get_orgunits($sysprofile);
     

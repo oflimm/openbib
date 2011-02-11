@@ -138,8 +138,9 @@ $(document).ready(function(){
 <input type="hidden" name="dd"         value="1" />
 [% END %]
 
-[%# USE dumper; dumper.dump(config.get_orgunits(sysprofile)) ; %]
-[% USE dumper; dumper.dump(config.get_orgunits(dbchoice)) ; %]
+[% sysprofile%]
+[% USE dumper; dumper.dump(config.get_orgunits(sysprofile)) ; %]
+[%# USE dumper; dumper.dump(config.get_orgunits(dbchoice)) ; %]
 
 <table>
 <tr><td colspan="2"><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>

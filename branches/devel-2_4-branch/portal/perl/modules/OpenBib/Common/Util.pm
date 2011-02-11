@@ -101,7 +101,7 @@ sub print_warning {
     
     my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    my $sysprofile= $config->get_viewinfo($view)->{profilename};
+    my $sysprofile= $config->get_viewinfo($view)->profilename;
 
     # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
     # Einloggen/Mein KUG automatisch deaktiviert
@@ -268,7 +268,7 @@ sub print_page {
     my $sysprofile= '';
 
     if ($view){
-        $sysprofile = $config->get_viewinfo($view)->{profilename};
+        $sysprofile = $config->get_viewinfo($view)->profilename;
     }
     
     my $user      = OpenBib::User->instance({sessionID => $sessionID});

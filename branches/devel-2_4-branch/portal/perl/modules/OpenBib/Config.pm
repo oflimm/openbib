@@ -1180,7 +1180,7 @@ sub get_infomatrix_of_active_databases {
     my $lastcategory="";
     my $count=0;
 
-    my $profile = $self->get_viewinfo($view)->{profilename};
+    my $profile = $self->get_viewinfo($view)->profilename;
     
     $maxcolumn=(defined $maxcolumn)?$maxcolumn:$self->{databasechoice_maxcolumn};
     

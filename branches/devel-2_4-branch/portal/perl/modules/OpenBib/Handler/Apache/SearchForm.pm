@@ -198,8 +198,8 @@ sub show {
         push @$dbchoice_ref, $dbname;
     }
 
-    my $alldbs     = $config->get_number_of_dbs($config->get_viewinfo($view)->{profilename});
-    my $alldbcount = $config->get_number_of_titles({ profile => $config->get_viewinfo($view)->{profilename}});
+    my $alldbs     = $config->get_number_of_dbs($config->get_viewinfo($view)->profilename);
+    my $alldbcount = $config->get_number_of_titles({ profile => $config->get_viewinfo($view)->profilename});
 
     my @queries    = $session->get_all_searchqueries();
 

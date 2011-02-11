@@ -1109,7 +1109,7 @@ dt.review {
   text-align: center;
 }
 
-#searchmask {
+#searchform {
   float: left; 
   padding: 0px;
   width: 65%;
@@ -1124,15 +1124,15 @@ dt.review {
   width: 99.5%;
 }
 
-#searchmask_types {
+#searchform_types {
   width:99%;
 }
 
-#searchmask_types #alltypes, #searchmask #only_articles, #searchmask #only_serials{
+#searchform_types #alltypes, #searchform #only_articles, #searchform #only_serials{
   padding: 20px;
 }
 
-#searchmask_advanced {
+#searchform_advanced {
   width: 99.5%;
   float:left;
   height: auto;
@@ -1142,7 +1142,7 @@ dt.review {
 */
 }
 
-#searchmask_history {
+#searchform_history {
   width: 99.5%;
   text-align: center;
   height: auto;
@@ -1154,7 +1154,7 @@ dt.review {
 
 }
 
-#searchmask_query {
+#searchform_query {
   float: left;
   padding: 20px;
   width: 45%;
@@ -1165,7 +1165,7 @@ dt.review {
   -webkit-border-radius: 12px; */
 }
 
-#searchmask_dbchoice {
+#searchform_dbchoice {
   float: right;
   padding: 20px;
   width: 45%;
@@ -1215,7 +1215,7 @@ dt.review {
   -webkit-border-radius: 12px; */
 }
 
-#searchmask_types .langchoice {
+#searchform_types .langchoice {
   float:right;
   width:auto;
   text-align: right; 
@@ -1275,14 +1275,14 @@ td.mostrecent {
   border-left: 1px dashed #ADD8E6;
 }
 
-#searchmask_types {
+#searchform_types {
   float:left;
   width:99.9%;
 
   padding: 0px;
 }
 
-#searchmask_bottom {
+#searchform_bottom {
   float:left;
 
   width:99%;

@@ -44,10 +44,11 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$database,$view,$help,$logfile);
+my ($type,$database,$profile,$view,$help,$logfile);
 
 &GetOptions("type=s"          => \$type,
             "database=s"      => \$database,
+            "profile=s"       => \$profile,
             "view=s"          => \$view,
             "logfile=s"       => \$logfile,
 	    "help"            => \$help
@@ -785,6 +786,48 @@ if ($type == 12){
     });
 }
 
+# Typ 12 => Meistaufgerufene Titel allgemein
+if ($type == 12){
+    my @profiles = ();
+    if ($profile){
+        push @profiles, $profile;
+    }
+    else {
+        foreach my $profile_ref (@{$config->get_profileinfo_overview}){
+            push @profiles, $profile_ref->{profilename};
+        }
+    }
+
+    foreach my $profile (@profiles){
+        $logger->info("Generating Type 12 BestOf-Values for profile $profile");
+
+        my $profilestring = "('".join('\',\'',$config->get_profiledbs($profile))."')";
+
+        $logger->info($profilestring);
+        my $bestof_ref=[];
+        my $request=$statisticsdbh->prepare("select katkey, dbname, count(id) as idcount from relevance where origin=2 and dbname in $profilestring and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
+        $request->execute();
+        while (my $result=$request->fetchrow_hashref){
+            my $katkey   = $result->{katkey};
+            my $database = $result->{dbname};
+            my $count    = $result->{idcount};
+
+            my $item=OpenBib::Record::Title->new({database => $database, id => $katkey})->load_brief_record();
+
+            push @$bestof_ref, {
+                item  => $item,
+                count => $count,
+            };
+        }
+
+        $statistics->store_result({
+            type => 13,
+            id   => $profile,
+            data => $bestof_ref,
+        });
+    }
+}
+
 sub gen_cloud_class {
     my ($arg_ref) = @_;
     
@@ -864,7 +907,7 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
   10 => Titel nach BK pro View
   11 => Titel nach BK pro Katalog pro Sicht
   12 => Meistaufgerufene Literaturlisten
-       
+  13 => Meistaufgerufene Titel allgemein       
 ENDHELP
     exit;
 }

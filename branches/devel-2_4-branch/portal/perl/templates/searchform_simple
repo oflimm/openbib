@@ -138,8 +138,8 @@ $(document).ready(function(){
 <input type="hidden" name="dd"         value="1" />
 [% END %]
 
-[% sysprofile%]
-[% USE dumper; dumper.dump(config.get_orgunits(sysprofile)) ; %]
+[%# sysprofile%]
+[%# USE dumper; dumper.dump(config.get_orgunits(sysprofile)) ; %]
 [%# USE dumper; dumper.dump(config.get_orgunits(dbchoice)) ; %]
 
 <table>

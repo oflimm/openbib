@@ -155,7 +155,7 @@
     titleinfo = titleinfos.join(" | ");
 -%]
     <div class="item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
-      <div class="numbering"></div>
+      <div class="numbering">[% start_range+loop.count - 1 %]</div>
       <div class="thumbnail">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
@@ -175,7 +175,7 @@
       </div>
       <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
       <div class="titleactions">
-<a class="collection" href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
+<a class="collection" href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=insert;db=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
 [% IF user_owns_litlist %]
 &nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/litlist/[% litlist.properties.id %]/item/[% item.database %]/[% item.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]

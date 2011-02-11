@@ -665,16 +665,16 @@ sub get_databaseinfo {
     return $object;
 }
 
-sub get_profiledbs {
-    my ($self,@args) = @_;
+# sub get_profiledbs {
+#     my ($self,@args) = @_;
     
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
+#     # Log4perl logger erzeugen
+#     my $logger = get_logger();
 
-    my $object = $self->{schema}->resultset('ProfileDB');
+#     my $object = $self->{schema}->resultset('ProfileDB');
     
-    return $object;
-}
+#     return $object;
+# }
 
 sub get_dbinfo_overview {
     my $self   = shift;
@@ -1134,7 +1134,7 @@ sub get_active_databases_of_orgunit {
     my $logger = get_logger();
 
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select databaseinfo.dbname from databaseinfo,orgunitdbs where databaseinfo.active is true and databaseinfo.dbname=orgunitdbs.dbname and orgunitdbs.profilename = ? and orgunitdbs.orgunitid = ? order by databaseinfo.description ASC") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select databaseinfo.dbname from databaseinfo,profiledbs where databaseinfo.active is true and databaseinfo.dbname=profiledbs.dbname and profiledbs.profilename = ? and profiledbs.orgunitname = ? order by databaseinfo.description ASC") or $logger->error($DBI::errstr);
     $request->execute($systemprofile,$orgunit) or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};

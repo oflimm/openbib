@@ -142,31 +142,31 @@ sub show {
     }
     
     if ($searchsingletit && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/title/$database/$searchsingletit/html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$database/$searchsingletit.html";
     }
     
     if ($searchsingleaut && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/person/$database/$searchsingleaut/html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_person_loc}{name}/$database/$searchsingleaut.html";
     }
 
     if ($searchsinglekor && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/corporatebody/$database/$searchsinglekor/html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_corporatebody_loc}{name}/$database/$searchsinglekor.html";
     }
 
     if ($searchsingleswt && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/subject/$database/$searchsingleswt/html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_subject_loc}{name}/$database/$searchsingleswt.html";
     }
 
     if ($searchsinglenot && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_loc}{name}/classification/$database/$searchsinglenot/html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_classification_loc}{name}/$database/$searchsinglenot.html";
     }
     
     if ($fs){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{virtualsearch_loc}{name}?fs=".uri_escape($fs).";num=50;srt=author;srto=up;profil=;st=3";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?fs=".uri_escape($fs).";num=50;srt=author;srto=up;profil=;st=3";
     }
 
     if ($searchlitlist){
-        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=show;litlistid=$searchlitlist";
+        $redirecturl = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$searchlitlist.html";
     }
 
     $logger->info("Redirecting to $redirecturl");

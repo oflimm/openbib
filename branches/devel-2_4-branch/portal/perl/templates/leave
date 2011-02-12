@@ -23,8 +23,8 @@
   <br />
   <center>
     <p style="font-size:1.5em">
-      [% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
-        <br />[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;tsGesamtkatalog.") %]
+[% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
+        <br />[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch.") %]
 
     </p>
   </center>

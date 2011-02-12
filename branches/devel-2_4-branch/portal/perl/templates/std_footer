@@ -15,7 +15,7 @@
 
 [% IF NOT hide_foot_banner %]
 <div class="footer"><!-- Begin footer -->
-<b>KUG</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>KUG v2.3</tt>
+<b>www.openbib-search.org</b> [% msg.maketext("demonstriert ein Recherche-Portal") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/20">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>OpenBib v2.4</tt>
 </div><!-- End footer -->
 [% END %]
 

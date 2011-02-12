@@ -60,7 +60,7 @@ sub _new_instance {
         = OpenBib::Database::DBI->connect("DBI:$config->{configdbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $dbinforesult=$dbh->prepare("select dbname,circ,circurl,circcheckurl,circdb from dboptions where circ = 1") or $logger->error($DBI::errstr);
+    my $dbinforesult=$dbh->prepare("select dbname,circ,circurl,circwsurl,circdb from databaseinfo where circ = 1") or $logger->error($DBI::errstr);
     $dbinforesult->execute() or $logger->error($DBI::errstr);;
 
     while (my $result=$dbinforesult->fetchrow_hashref()) {
@@ -68,7 +68,7 @@ sub _new_instance {
 
         $self->{$dbname}{circ}         = decode_utf8($result->{'circ'});
         $self->{$dbname}{circurl}      = decode_utf8($result->{'circurl'});
-        $self->{$dbname}{circcheckurl} = decode_utf8($result->{'circcheckurl'});
+        $self->{$dbname}{circcheckurl} = decode_utf8($result->{'circwsurl'});
         $self->{$dbname}{circdb}       = decode_utf8($result->{'circdb'});
     }
 

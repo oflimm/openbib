@@ -28,7 +28,7 @@
 <p />
 
 <table width="100%">
-<tr><th>OpenBib Benutzerinformationen</th></tr>
+<tr><th>[% msg.maketext("KUG Benutzerinformationen") %]</th></tr>
 <tr><td class="boxed" 
 >
 <table>

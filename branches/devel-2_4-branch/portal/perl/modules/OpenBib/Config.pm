@@ -1019,7 +1019,7 @@ sub get_dboptions {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select * from dboptions where dbname=?") or die "Error -- $DBI::errstr";
+    my $request=$self->{dbh}->prepare("select * from databaseinfo where dbname=?") or die "Error -- $DBI::errstr";
     $request->execute($dbname);
     my $result=$request->fetchrow_hashref();
 
@@ -1030,18 +1030,18 @@ sub get_dboptions {
         protocol      => $result->{'protocol'},
         remotepath    => $result->{'remotepath'},
         remoteuser    => $result->{'remoteuser'},
-        remotepassword => $result->{'remotepasswd'},
+        remotepassword => $result->{'remotepassword'},
         filename      => $result->{'filename'},
-        titfilename   => $result->{'titfilename'},
-        autfilename   => $result->{'autfilename'},
-        korfilename   => $result->{'korfilename'},
-        swtfilename   => $result->{'swtfilename'},
-        notfilename   => $result->{'notfilename'},
-        mexfilename   => $result->{'mexfilename'},
+        titfilename   => $result->{'titlefile'},
+        autfilename   => $result->{'personfile'},
+        korfilename   => $result->{'coproratebodyfile'},
+        swtfilename   => $result->{'subjectfile'},
+        notfilename   => $result->{'classificationfile'},
+        mexfilename   => $result->{'holdingsfile'},
         autoconvert   => $result->{'autoconvert'},
         circ          => $result->{'circ'},
         circurl       => $result->{'circurl'},
-        circcheckurl  => $result->{'circcheckurl'},
+        circcheckurl  => $result->{'circwsurl'},
         circdb        => $result->{'circdb'},
     };
     

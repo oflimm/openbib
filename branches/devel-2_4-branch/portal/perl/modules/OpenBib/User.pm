@@ -3039,8 +3039,13 @@ sub add_item_to_collection {
     my $res  = $userresult->fetchrow_hashref;
     my $rows = $res->{rowcount};
     if ($rows <= 0) {
+        my $cached_title = new OpenBib::Record::Title({ database => $item_ref->{dbname} , id => $item_ref->{singleidn}});
+        $cached_title->load_brief_record->to_json;
+
+        $logger->debug("Adding Title to Collection: $cached_title");
+
         $userresult=$dbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
-        $userresult->execute($thisuserid,$item_ref->{dbname},$item_ref->{singleidn}) or $logger->error($DBI::errstr);
+        $userresult->execute($thisuserid,$item_ref->{dbname},$item_ref->{singleidn},$cached_title) or $logger->error($DBI::errstr);
     }
 
     return ;

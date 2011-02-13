@@ -84,8 +84,6 @@ sub process_logout {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
-    my $stid           = $self->param('stid')           || '';
-    my $representation = $self->param('representation') || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -127,9 +125,8 @@ sub process_logout {
         msg        => $msg,
     };
     
-    my $templatename = ($stid && $stid ne "default")?"tt_admin_logout_".$stid."_tname":"tt_admin_logout_tname";
     
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_admin_logout_tname},$ttdata,$r);
 
     $session->logout_user($adminuser);
 

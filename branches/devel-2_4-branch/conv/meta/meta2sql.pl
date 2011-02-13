@@ -2051,9 +2051,9 @@ ITEMTRUNC
     }
 
     print CONTROL << "ITEM";
-load data infile '$dir/$stammdateien_ref->{$type}{outfile}'        into table $type        fields terminated by '' ;
-load data infile '$dir/$stammdateien_ref->{$type}{outfile_ft}'     into table ${type}_ft     fields terminated by '' ;
-load data infile '$dir/$stammdateien_ref->{$type}{outfile_string}' into table ${type}_string fields terminated by '' ;
+load data local infile '$dir/$stammdateien_ref->{$type}{outfile}'        into table $type        fields terminated by '' ;
+load data local infile '$dir/$stammdateien_ref->{$type}{outfile_ft}'     into table ${type}_ft     fields terminated by '' ;
+load data local infile '$dir/$stammdateien_ref->{$type}{outfile_string}' into table ${type}_string fields terminated by '' ;
 ITEM
 }
 
@@ -2066,9 +2066,9 @@ TITLEITEMTRUNC
 }
     
 print CONTROL << "TITLEITEM";
-load data infile '$dir/conn.mysql'        into table conn   fields terminated by '' ;
-load data infile '$dir/popularity.mysql'  into table popularity fields terminated by '' ;
-load data infile '$dir/title_listitem.mysql' into table title_listitem fields terminated by '' escaped by '';
+load data local infile '$dir/conn.mysql'        into table conn   fields terminated by '' ;
+load data local infile '$dir/popularity.mysql'  into table popularity fields terminated by '' ;
+load data local infile '$dir/title_listitem.mysql' into table title_listitem fields terminated by '' escaped by '';
 TITLEITEM
 
 foreach my $type (keys %{$stammdateien_ref}){

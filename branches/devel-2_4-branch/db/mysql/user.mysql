@@ -311,3 +311,6 @@ CREATE TABLE classification2subject (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
+
+/* Standard ist Selbstregistrierung */
+insert into logintarget values(1,NULL,NULL,NULL,NULL,'Registrierte E-Mail Adresse','self');

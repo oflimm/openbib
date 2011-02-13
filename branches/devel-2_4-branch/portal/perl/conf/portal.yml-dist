@@ -596,16 +596,24 @@ dispatch_rules:
      runmode: 'show'
   - # admin_login_loc:
      module: 'OpenBib::Handler::Apache::Admin::Login'
-     rule: '/portal/admin/login/form'
+     rule: '/portal/admin/login.html[get]'
      runmode: 'form'
   - # admin_login_loc:
      module: 'OpenBib::Handler::Apache::Admin::Login'
-     rule: '/portal/admin/login'
+     rule: '/portal/admin/login[get]'
+     runmode: 'form'
+  - # admin_login_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Login'
+     rule: '/portal/admin/login[post]'
      runmode: 'authenticate'
   - # admin_logout_loc:
      module: 'OpenBib::Handler::Apache::Admin::Logout'
-     rule: '/portal/admin/logout/:representation?'
-     runmode: 'show'
+     rule: '/portal/admin/logout.html'
+     runmode: 'logout'
+  - # admin_logout_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Logout'
+     rule: '/portal/admin/logout'
+     runmode: 'logout'
 
 # Konnektoren
   - # connector_availabilityimage_loc: 
@@ -1693,6 +1701,7 @@ tt_info_11_tname: info_11
 tt_info_popular_databases_tname: info_popular_databases
 tt_info_13_tname: info_13
 tt_info_other_portals_tname: info_other_portals
+tt_info_impressum_tname: info_impressum
 tt_info_20_tname: info_20
 tt_info_21_tname: info_21
 tt_info_22_tname: info_22

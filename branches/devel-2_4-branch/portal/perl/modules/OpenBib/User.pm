@@ -3044,7 +3044,7 @@ sub add_item_to_collection {
 
         $logger->debug("Adding Title to Collection: $cached_title");
 
-        $userresult=$dbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
+        $userresult=$dbh->prepare("insert into treffer values (?,?,?,?)") or $logger->error($DBI::errstr);
         $userresult->execute($thisuserid,$item_ref->{dbname},$item_ref->{singleidn},$cached_title) or $logger->error($DBI::errstr);
     }
 

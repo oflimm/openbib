@@ -363,17 +363,17 @@ href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% us
 <th><img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
 <td><a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/add_item?id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
 <th><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
-<td><a class="collection" href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
+<td><a class="collection" href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]?_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=mail;db=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]?action=mail;db=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
 <th><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=save;db=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]?action=save;db=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=print;db=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]?action=print;db=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
 <th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
 <td><a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_permalink_loc.name %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>

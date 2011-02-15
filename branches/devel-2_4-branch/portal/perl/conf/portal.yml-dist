@@ -193,7 +193,7 @@ handler:
      name: mailcollection
   mailpassword_loc:
      name: mailpassword
-  managecollection_loc:
+  collection_loc:
      name: collection
   redirect_loc:
      name: redirect
@@ -251,7 +251,6 @@ handler:
      name: search
 
 dispatch_rules:
-
 # Web-Administration
   - # admin_database_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin::DatabaseRSS'
@@ -1193,18 +1192,62 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Login'
      rule: '/portal/:view/login/failure'
      runmode: 'failure'
-  - # mailcollection_loc:
-     module: 'OpenBib::Handler::Apache::Mailcollectio'
-     rule: '/portal/:view/mailcollection'
-     runmode: 'show'
   - # mailpassword_loc:
      module: 'OpenBib::Handler::Apache::MailPassword'
      rule: '/portal/:view/mailpassword'
      runmode: 'show'
-  - # managecollection_loc:
-     module: 'OpenBib::Handler::Apache::ManageCollection'
-     rule: '/portal/:view/collection'
-     runmode: 'show'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection.html[get]'
+     runmode: 'show_collection_as_html'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection.json[get]'
+     runmode: 'show_collection_as_json'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection.rdf[get]'
+     runmode: 'show_collection_as_rdf'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection[get]'
+     runmode: 'show_collection_negotiate'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/save[get]'
+     runmode: 'save_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/mail[get]'
+     runmode: 'mail_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/mail[post]'
+     runmode: 'mail_collection_send'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/print[get]'
+     runmode: 'print_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection[post]'
+     runmode: 'create_record'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/:database/:id[get]'
+     runmode: 'show_record_negotiate'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/:database/:id/edit[get]'
+     runmode: 'edit_record'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/:database/:id[put]'
+     runmode: 'update_record'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/:database/:id[delete]'
+     runmode: 'delete_record'
   - # redirect_loc:
      module: 'OpenBib::Handler::Apache::Redirect'
      rule: '/portal/:view/redirect/:type/*'
@@ -1744,19 +1787,19 @@ tt_resource_litlist_collection_by_single_user_tname: resource_litlist_collection
 tt_loadbalancer_tname: loadbalancer
 tt_login_circulation_tname: login_circulation
 tt_login_tname: login
-tt_mailcollection_mail_html_tname: mailcollection_mail_html
-tt_mailcollection_mail_main_tname: mailcollection_mail_main
-tt_mailcollection_mail_plain_tname: mailcollection_mail_plain
-tt_mailcollection_success_tname: mailcollection_success
 tt_mailpassword_mail_main_tname: mailpassword_mail_main
 tt_mailpassword_success_tname: mailpassword_success
 tt_mailpassword_tname: mailpassword
-tt_managecollection_empty_tname: managecollection_empty
-tt_managecollection_mail_tname: managecollection_mail
-tt_managecollection_print_tname: managecollection_print
-tt_managecollection_save_html_tname: managecollection_save_html
-tt_managecollection_save_plain_tname: managecollection_save_plain
-tt_managecollection_show_tname: managecollection_show
+tt_collection_empty_tname: collection_empty
+tt_collection_mail_tname: collection_mail
+tt_collection_mail_html_tname: collection_mail_html
+tt_collection_mail_message_tname: collection_mail_message
+tt_collection_mail_plain_tname: collection_mail_plain
+tt_collection_mail_success_tname: collection_mail_success
+tt_collection_print_tname: collection_print
+tt_collection_save_html_tname: collection_save_html
+tt_collection_save_plain_tname: collection_save_plain
+tt_collection_tname: collection
 tt_resource_title_tname: resource_title
 tt_resource_title_popular_by_database_tname: resource_title_popular_by_database
 tt_resource_title_popular_tname: resource_title_popular

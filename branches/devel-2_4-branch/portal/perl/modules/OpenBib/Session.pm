@@ -919,8 +919,8 @@ sub set_item_in_collection {
     $idnresult->finish();
     
     if ($anzahl == 0) {
-        my $cached_title = new OpenBib::Record::Title({ database => $database , id => $id});
-        $cached_title->load_brief_record->to_json;
+        my $record        = new OpenBib::Record::Title({ database => $database , id => $id});
+        my $cached_title  = $record->load_full_record->to_json;
 
         $logger->debug("Adding Title to Collection: $cached_title");
                     
@@ -955,7 +955,9 @@ sub clear_item_in_collection {
     if (!$database || !$id){
         return;
     }
-    
+
+    $logger->debug("Deleting item $database - $id");
+
     my $idnresult=$dbh->prepare("delete from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID},$database,$id) or $logger->error($DBI::errstr);
     

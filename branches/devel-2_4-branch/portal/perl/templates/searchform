@@ -382,7 +382,7 @@ Literaturlisten usw.<p/>") %]
 <tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
 </table>
 <p />
-<a href="[% path_prefix %]/[% config.get('handler').selfreg_loc.name %]?action=show">[% msg.maketext("E-Mail Adresse registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').mailpassword_loc.name %]?action=show">[% msg.maketext("Registriertes Passwort vergessen?") %]</a>
+<a href="[% path_prefix %]/[% config.get('handler').registration_loc.name %].html">[% msg.maketext("E-Mail Adresse registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').mailpassword_loc.name %]?action=show">[% msg.maketext("Registriertes Passwort vergessen?") %]</a>
 
 </form>
 

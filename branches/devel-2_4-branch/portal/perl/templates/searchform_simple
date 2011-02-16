@@ -512,7 +512,7 @@ $(document).ready(function(){
 <div id="login"><!-- Begin login-->
 <img style="vertical-align:bottom" src="/images/openbib/persons.png" alt="[% msg.maketext("Einloggen") %]"/>&nbsp;&nbsp;[% msg.maketext("<b>Einloggen</b> f&uuml;r Tagging,
 Literaturlisten usw.<p/>") %]
-<form method="post" action="[% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% path_prefix %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="post" action="[% IF config.get('use_https') %]https://[% config.get('servername') %][%- END -%][% path_prefix %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 
 
@@ -557,7 +557,7 @@ Literaturlisten usw.<p/>") %]
 <tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
 </table>
 <p />
-<a href="[% path_prefix %]/[% config.get('handler').selfreg_loc.name %]?action=show">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').mailpassword_loc.name %]?action=show">[% msg.maketext("Registriertes Passwort vergessen?") %]</a>
+<a href="[% path_prefix %]/[% config.get('handler').registration_loc.name %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').mailpassword_loc.name %]?action=show">[% msg.maketext("Registriertes Passwort vergessen?") %]</a>
 
 </form>
 

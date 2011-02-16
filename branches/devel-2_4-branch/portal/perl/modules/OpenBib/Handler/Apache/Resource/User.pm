@@ -119,7 +119,9 @@ sub update_account {
             
             my $ttdata={
                 stylesheet   => $stylesheet,
-                
+
+                userid     => $userid,
+                view       => $view,
                 config     => $config,
                 session    => $session,
                 user       => $user,
@@ -135,7 +137,7 @@ sub update_account {
             $user->wipe_account();
         }
     }
-
+    
     my $new_location = "$config->{base_loc}/$view/$config->{handler}{logout_loc}{name}";
 
     $self->query->method('GET');

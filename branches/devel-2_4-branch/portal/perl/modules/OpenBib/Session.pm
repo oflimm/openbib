@@ -33,6 +33,7 @@ use utf8;
 use base qw(Apache::Singleton);
 
 use Apache2::Cookie;
+use Digest::MD5;
 use Encode 'decode_utf8';
 use JSON::XS qw(encode_json decode_json);
 use Log::Log4perl qw(get_logger :levels);

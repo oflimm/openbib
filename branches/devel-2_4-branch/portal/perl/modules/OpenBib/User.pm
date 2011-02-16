@@ -269,6 +269,101 @@ sub add {
     return;
 }
 
+sub add_confirmation_request {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $registrationid = exists $arg_ref->{registrationid}
+        ? $arg_ref->{registrationid}             : undef;
+
+    my $loginname   = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}             : undef;
+
+    my $password    = exists $arg_ref->{password}
+        ? $arg_ref->{password}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+    
+    return undef if (!defined $dbh);
+
+    my $userresult=$dbh->prepare("insert into userregistration values (?,NULL,?,?)") or $logger->error($DBI::errstr);
+    $userresult->execute($registrationid,$loginname,$password) or $logger->error($DBI::errstr);
+
+    $userresult->finish();
+    
+    return;
+}
+
+sub get_confirmation_request {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $registrationid = exists $arg_ref->{registrationid}
+        ? $arg_ref->{registrationid}             : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+    
+    return undef if (!defined $dbh);
+
+    my $userresult=$dbh->prepare("select * from userregistration where registrationid = ?") or $logger->error($DBI::errstr);
+    $userresult->execute($registrationid) or $logger->error($DBI::errstr);
+
+    my $result = $userresult->fetchrow_hashref;
+
+    my $confirmation_info_ref = {
+        loginname => $result->{loginname},
+        password  => $result->{password},
+    };
+    
+    $userresult->finish();
+    
+    return $confirmation_info_ref;
+}
+
+sub clear_confirmation_request {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $registrationid = exists $arg_ref->{registrationid}
+        ? $arg_ref->{registrationid}             : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+    
+    return undef if (!defined $dbh);
+
+    my $userresult=$dbh->prepare("delete from userregistration where registrationid = ?") or $logger->error($DBI::errstr);
+    $userresult->execute($registrationid) or $logger->error($DBI::errstr);
+
+    return;
+}
+
 sub get_username {
     my ($self)=@_;
 

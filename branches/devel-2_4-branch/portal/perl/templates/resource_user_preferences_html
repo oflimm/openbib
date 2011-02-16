@@ -35,7 +35,7 @@
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% loginname %]</td>
 
 [% IF targettype == 'self' %]
-<td><form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="confirm" value="1" /><input type="hidden" name="method" value="_DELETE" /><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></div></form></td>
+<td><form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="confirm" value="1" /><input type="hidden" name="_method" value="DELETE" /><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></div></form></td>
 [% END %]
 
 </tr>

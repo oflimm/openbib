@@ -31,9 +31,9 @@
 
 <p />
 
-<form method="POST" action="[% path_prefix %]/[% config.get('handler').userprefs_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="POST" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% userid %]" enctype="application/x-www-form-urlencoded" target="_parent">
 
-<input type="hidden" name="action" value="delaccount" />
+<input type="hidden" name="_method" value="DELETE" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Soll die Kennung wirklich gel&ouml;scht werden?") %]</th></tr>

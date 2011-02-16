@@ -181,7 +181,7 @@ handler:
      name: dbis
   info_loc:
      name: info
-  leave_loc:
+  logout_loc:
      name: logout
   litlists_loc: 
      name: litlists
@@ -233,8 +233,8 @@ handler:
      name:  browse
   searchform_loc:
      name: searchform
-  selfreg_loc:
-     name: selfreg
+  registration_loc:
+     name: registration
   serverload_loc:
      name:  getload
   startopac_loc:
@@ -935,7 +935,7 @@ dispatch_rules:
 
   - # resource_user_loc:
      module: 'OpenBib::Handler::Apache::Resource::User'
-     rule: '/portal/:view/resource/user/:userid'
+     rule: '/portal/:view/resource/user/:userid[get]'
      runmode: 'show_user'
 
   - # resource_user_loc:
@@ -1165,7 +1165,7 @@ dispatch_rules:
      rule: '/portal/:view/dbis'
      runmode: 'show'
   - # leave_loc:
-     module: 'OpenBib::Handler::Apache::Leave'
+     module: 'OpenBib::Handler::Apache::Logout'
      rule: '/portal/:view/logout'
      runmode: 'show'
   - # litlists_loc: 
@@ -1284,10 +1284,22 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::SearchForm'
      rule: '/portal/:view/searchform/:type'
      runmode: 'show'
-  - # selfreg_loc:
-     module: 'OpenBib::Handler::Apache::SelfReg'
-     rule: '/portal/:view/selfreg'
+  - # registration_loc:
+     module: 'OpenBib::Handler::Apache::Registration'
+     rule: '/portal/:view/registration.html[get]'
      runmode: 'show'
+  - # registration_loc:
+     module: 'OpenBib::Handler::Apache::Registration'
+     rule: '/portal/:view/registration[get]'
+     runmode: 'show'
+  - # registration_loc:
+     module: 'OpenBib::Handler::Apache::Registration'
+     rule: '/portal/:view/registration[post]'
+     runmode: 'mail_confirmation'
+  - # registration_loc:
+     module: 'OpenBib::Handler::Apache::Registration'
+     rule: '/portal/:view/registration/:registrationid[get]'
+     runmode: 'register'
   - # serverload_loc:
      module: 'OpenBib::Handler::Apache::ServerLoad'
      rule: '/portal/common/getload'
@@ -1841,8 +1853,10 @@ tt_browse_title_tname: browse_title
 tt_browse_olws_tname: browse_olws
 tt_searchform_advanced_tname: searchform
 tt_searchform_simple_tname: searchform_simple
-tt_selfreg_success_tname: selfreg_success
-tt_selfreg_tname: selfreg
+tt_registration_success_tname: registration_success
+tt_registration_mail_message_tname: registration_mail_message
+tt_registration_confirmation_tname: registration_confirmation
+tt_registration_tname: registration
 tt_startopac_tname: startopac
 tt_resource_user_tag_edit_tname: resource_user_tag_edit
 tt_resource_user_tag_tname: resource_user_tag

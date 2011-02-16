@@ -45,6 +45,7 @@ use APR::URI ();
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use MIME::Lite;
 use POSIX;
 
 use OpenBib::Common::Util;

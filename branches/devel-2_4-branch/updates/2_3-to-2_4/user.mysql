@@ -5,3 +5,16 @@ alter table litlistitems modify titid varchar(255) not null
 alter table treffer add titcache blob after singleidn;
 alter table tittag add titcache blob after titdb;
 alter table litlistitems add titcache blob after titdb;
+
+DROP TABLE IF EXISTS userregistration;
+CREATE TABLE userregistration (
+  registrationid      VARCHAR(60) NOT NULL,
+  tstamp              TIMESTAMP,
+ 
+  loginname           TEXT,
+  password            TEXT,
+  INDEX (registrationid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

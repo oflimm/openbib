@@ -64,6 +64,19 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
+DROP TABLE IF EXISTS userregistration;
+CREATE TABLE userregistration (
+  registrationid      VARCHAR(60) NOT NULL,
+  tstamp              TIMESTAMP,
+ 
+  loginname           TEXT,
+  password            TEXT,
+  INDEX (registrationid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
 DROP TABLE IF EXISTS usersession;
 CREATE TABLE usersession (
   sessionid VARCHAR(255) NOT NULL,

@@ -35,7 +35,11 @@
 <div class="left_side">
 <form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% END %][% path_prefix %]/[% config.get('handler').login_loc.name %]" enctype="application/x-www-form-urlencoded" target="_parent">
 
-<input type="hidden" name="targetid" value="1">
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.type == 'self' -%]
+<input type="hidden" name="targetid" value="[% target.id %]">
+[%-   END -%]
+[%- END -%]
 
 <table width="100%">
 <tr><th>Login mit E-Mail Adresse</th></tr>

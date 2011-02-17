@@ -71,7 +71,8 @@ sub setup {
         'mail_collection'                      => 'mail_collection',
         'mail_collection_send'                 => 'mail_collection_send',
         'print_collection'                     => 'print_collection',
-                
+
+        'show_collection_count'                => 'show_collection_count',
         'show_collection_negotiate'            => 'show_collection_negotiate',
         'show_collection_as_html'              => 'show_collection_as_html',
         'show_collection_as_json'              => 'show_collection_as_json',
@@ -217,9 +218,12 @@ sub show_collection {
         $session->set_returnurl($return_url);
 
         $logger->debug("Nicht authentifizierter Nutzer versucht Literaturliste anzulegen");
-        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
 
-        return Apache2::Const::OK;
+        $self->return_loginurl;
+#        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+
+#        return Apache2::Const::OK;
+        return;
     }
     elsif (! $user->is_authenticated && $do_addtags) {
         # Aufruf-URL
@@ -230,9 +234,13 @@ sub show_collection {
         $session->set_returnurl($return_url);
 
         $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
-        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
 
-        return Apache2::Const::OK;
+        $self->return_loginurl;
+
+#        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+
+#        return Apache2::Const::OK;
+        return;
     }
 
     $logger->info("SessionID: $session->{ID}");
@@ -264,7 +272,7 @@ sub show_collection {
     }
     elsif ($do_collection_delentry) {
         foreach my $tit ($query->param('titid')) {
-            my ($titdb,$titid)=split(":",$tit);
+            my ($titdb,$titid)=$tit=~m/^(\w+?):(.+)$/;
             
             if ($user->{ID}) {
                 $user->delete_item_from_collection({
@@ -412,6 +420,87 @@ sub show_collection {
     return Apache2::Const::OK;
 }
 
+sub show_collection_count {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
+    my $representation = $self->param('representation') || '';
+
+    my $config = OpenBib::Config->instance;
+    
+    my $query  = Apache2::Request->new($r);
+
+    my $session = OpenBib::Session->instance({ apreq => $r });
+
+    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
+    
+    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+
+    my $database                = $query->param('db')                || '';
+    my $singleidn               = $query->param('singleidn')               || '';
+    my $litlistid               = $query->param('litlistid')               || '';
+    my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
+    my $do_collection_showcount = $query->param('do_collection_showcount') || '';
+    my $do_litlist_addentry     = $query->param('do_litlist_addentry')     || '';
+    my $do_addlitlist           = $query->param('do_addlitlist')           || '';
+    my $do_addtags              = $query->param('do_addtags')              || '';
+    my $title                   = $query->param('title')                   || '';
+    my $action                  = $query->param('action')                  || 'show';
+    my $show                    = $query->param('show')                    || 'short';
+    my $type                    = $query->param('type')                    || 'HTML';
+    my $tags                    = $query->param('tags')                    || '';
+    my $tags_type               = $query->param('tags_type')               || 1;
+    my $littype                 = $query->param('littype')                 || 1;
+
+    my $format                  = $query->param('format')                  || 'short';
+    
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
+    
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+    # die Session nicht authentifiziert ist
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+
+    if (!$session->is_valid()) {
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        return Apache2::Const::OK;
+    }
+
+    $logger->info("SessionID: $session->{ID}");
+    
+    my $idnresult="";
+
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+    # die Session nicht authentifiziert ist
+    # Dementsprechend einen LoginLink oder ein ProfilLink ausgeben
+    my $anzahl="";
+    
+    if ($user->{ID}) {
+        # Anzahl Eintraege der privaten Merkliste bestimmen
+        # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
+        $anzahl =    $user->get_number_of_items_in_collection();
+    } else {
+        #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
+        $anzahl = $session->get_number_of_items_in_collection();
+    }
+    
+    # Start der Ausgabe mit korrektem Header
+    $r->content_type("text/plain");
+    
+    $r->print($anzahl);
+    
+    return Apache2::Const::OK;
+}
+
 sub show_record_negotiate {
     my $self = shift;
 
@@ -550,9 +639,10 @@ sub create_record {
         $session->set_returnurl($return_url);
 
         $logger->debug("Nicht authentifizierter Nutzer versucht Literaturliste anzulegen");
-        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
 
-        return Apache2::Const::OK;
+        $self->return_loginurl;
+
+        return;
     }
     elsif (! $user->is_authenticated && $do_addtags) {
         # Aufruf-URL
@@ -563,13 +653,103 @@ sub create_record {
         $session->set_returnurl($return_url);
 
         $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
-        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
 
-        return Apache2::Const::OK;
+        $self->return_loginurl;
+
+        return;
     }
 
     $logger->info("SessionID: $session->{ID}");
-    
+
+    if ($do_collection_delentry) {
+        foreach my $tit ($query->param('titid')) {
+            my ($titdb,$titid)=split(":",$tit);
+            
+            if ($user->{ID}) {
+                $user->delete_item_from_collection({
+                    item => {
+                        dbname    => $titdb,
+                        singleidn => $titid,
+                    },
+                });
+            } else {
+                $session->clear_item_in_collection({
+                    database => $titdb,
+                    id       => $titid,
+                });
+            }
+        }
+
+        $self->return_baseurl;
+
+        return;
+    }
+    elsif ($do_litlist_addentry) {
+        my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+        
+        foreach my $tit ($query->param('titid')) {
+            my ($titdb,$titid)=split(":",$tit);
+	    
+            if ($litlist_properties_ref->{userid} eq $user->{ID}) {
+                $user->add_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
+            }
+        }
+
+        $self->return_baseurl;
+#        $r->internal_redirect("$config->{base_loc}/$config->{handler}{resource_user_loc}{name}/$user->{ID}/$litlistid.html");
+#        return Apache2::Const::OK;
+        return
+    }
+    elsif ($do_addlitlist) {
+        if (!$title) {
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+	    
+            return Apache2::Const::OK;
+        }
+        
+        $user->add_litlist({ title =>$title, type => $littype});
+
+        $self->return_baseurl;
+
+        return;
+    }
+    elsif ($do_addtags) {
+        if (!$tags) {
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."),$r,$msg);
+            return Apache2::Const::OK;
+        }
+        
+        if ($user->{ID}){
+            my $loginname = $user->get_username;
+            
+            if ($query->param('titid')){
+                foreach my $tit ($query->param('titid')) {
+                    my ($titdb,$titid)=split(":",$tit);
+                    
+                    $user->add_tags({
+                        tags      => $tags,
+                        titid     => $titid,
+                        titdb     => $titdb,
+                        loginname => $loginname,
+                        type      => $tags_type,
+                    });
+                    
+                }
+            }
+            else {
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."),$r,$msg);
+                return Apache2::Const::OK;
+            }
+        }
+        else {
+            OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
+        }
+
+        $self->return_baseurl;
+
+        return;
+    }
+
     my $idnresult="";
 
     # Einfuegen eines Titels ind die Merkliste
@@ -1494,6 +1674,27 @@ sub return_baseurl {
     my $config = OpenBib::Config->instance;
 
     my $new_location = "$config->{base_loc}/$view/$config->{handler}{collection_loc}{name}.html";
+
+    $self->query->method('GET');
+    $self->query->content_type('text/html');
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
+}
+
+sub return_loginurl {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $view           = $self->param('view')           || '';
+    my $userid         = $self->param('userid')         || '';
+
+    my $config = OpenBib::Config->instance;
+
+    my $new_location = "$config->{base_loc}/$view/$config->{handler}{login_loc}{name}.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

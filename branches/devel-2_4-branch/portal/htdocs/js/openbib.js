@@ -32,7 +32,7 @@ $('.nojs_show').css('display','none');
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
 // fest eingetragen und muss gegebenenfalls angepasst werden
  if (sessionID){
-$.get("/portal/"+View+"/collection?action=show;do_collection_showcount=1",
+$.get("/portal/"+View+"/collection/count",
 function (txt){
  $("#collectioncount").html("["+txt+"]"); 
 }
@@ -45,7 +45,7 @@ $(".rlcollect a").click(function(){
    $.get(this.href);
 
    // Merklistenfuellstand aktualisieren
-   $.get("/portal/"+View+"/collection?action=show;do_collection_showcount=1",
+   $.get("/portal/"+View+"/collection/count",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
    return false;
@@ -57,7 +57,7 @@ $("a.collection").click(function(){
    $.get(this.href);
 
    // Merklistenfuellstand aktualisieren
-   $.get("/portal/"+View+"/collection?action=show;do_collection_showcount=1",
+   $.get("/portal/"+View+"/collection/count",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
    return false;

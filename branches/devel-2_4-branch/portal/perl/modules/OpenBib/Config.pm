@@ -1034,7 +1034,7 @@ sub get_dboptions {
         filename      => $result->{'filename'},
         titfilename   => $result->{'titlefile'},
         autfilename   => $result->{'personfile'},
-        korfilename   => $result->{'coproratebodyfile'},
+        korfilename   => $result->{'corporatebodyfile'},
         swtfilename   => $result->{'subjectfile'},
         notfilename   => $result->{'classificationfile'},
         mexfilename   => $result->{'holdingsfile'},

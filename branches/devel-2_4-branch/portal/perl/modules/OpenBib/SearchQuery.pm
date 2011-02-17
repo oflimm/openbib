@@ -60,6 +60,7 @@ sub _new_instance {
 
     my $self = {
         _databases             => [],
+        _filter                => [],
         _have_searchterms      => 0,
     };
 
@@ -212,6 +213,32 @@ sub set_from_apache_request {
         
     }
 
+    # Filter einlesen
+    foreach my $filter ($query->param('filter')) {
+        if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
+            my $facet = $1;
+            my $term = $2;
+
+            my $string = $term;
+            
+            $string = OpenBib::Common::Util::grundform({
+                content   => $string,
+                searchreq => 1,
+            });
+            
+            $string=~s/\W/_/g;
+            
+            $logger->debug("Facet: $facet Norm: $string Term: $term");
+            
+            push @{$self->{_filter}}, {
+                val    => $filter,
+                term   => $term,
+                norm   => $string,
+                facet  => $facet,
+            };            
+        }
+    }
+    
     # Parameter einlesen
     $yearop    =                  decode_utf8($query->param('yearop'))       || $query->param('yearop') || 'eq';    
     $indexterm = $indextermnorm = decode_utf8($query->param('indexterm'))     || $query->param('indexterm')|| '';
@@ -353,6 +380,12 @@ sub get_searchquery {
     return $self->{_searchquery};
 }
 
+sub get_filter {
+    my ($self)=@_;
+
+    return $self->{_filter};
+}
+
 sub to_cgi_params {
     my ($self)=@_;
 
@@ -440,6 +473,10 @@ sub to_xapian_querystring {
     my @xapianquerystrings = ();
     my $xapianquerystring  = "";
 
+    # Aufbau des xapianfilterstrings
+    my @xapianfilterstrings = ();
+    my $xapianfilterstring  = "";
+
     my $ops_ref = {
         'AND'     => 'AND ',
         'AND NOT' => 'NOT ',
@@ -489,13 +526,22 @@ sub to_xapian_querystring {
         }
     }
 
-    $xapianquerystring = join(" ",@xapianquerystrings);
+    # Filter
+    foreach my $filter_ref (@{$self->get_filter}){
+        push @xapianfilterstrings, "$filter_ref->{facet}:$filter_ref->{norm}";
+    }
+    
+    $xapianquerystring  = join(" ",@xapianquerystrings);
+    $xapianfilterstring = join(" ",@xapianfilterstrings);
 
     $xapianquerystring=~s/^OR /FALSE OR /;
     $xapianquerystring=~s/^NOT /TRUE NOT /;
     
-    $logger->debug("Xapian-Querystring: $xapianquerystring");
-    return $xapianquerystring;
+    $logger->debug("Xapian-Querystring: $xapianquerystring - Xapian-Filterstring: $xapianfilterstring");
+    return {
+        query  => $xapianquerystring,
+        filter => $xapianfilterstring
+    };
 }
 
 sub get_spelling_suggestion {

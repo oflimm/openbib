@@ -14,7 +14,7 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};dd=1;" ;
+    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};jn=${jn};dd=1;" ;
     start_range     = nav.current_page*qopts.num-qopts.num + 1;
     end_range       = nav.current_page*qopts.num;
     IF end_range >= fullresultcount ;

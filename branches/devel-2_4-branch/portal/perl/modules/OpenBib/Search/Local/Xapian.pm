@@ -173,7 +173,9 @@ sub initial_search {
     
     my $querystring    = $searchquery->to_xapian_querystring;
 
-    my ($is_singleterm) = $querystring =~m/^(\w+)$/;
+    my $fullquerystring = $querystring->{query}." ".$querystring->{filter};
+    
+    my ($is_singleterm) = $fullquerystring =~m/^(\w+)$/;
 
     my $default_op_ref = {
         'and' => "Search::Xapian::OP_AND",
@@ -189,7 +191,7 @@ sub initial_search {
     }
     
     my $category_map_ref = {};
-    my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
+    my $enq       = $dbh->enquire($qp->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
 
     # Sorting
     if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
@@ -252,7 +254,8 @@ sub initial_search {
     
     $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
 
-    $self->{_querystring} = $querystring;
+    $self->{_querystring} = $querystring->{query};
+    $self->{_filter}      = $querystring->{filter};
     $self->{_enq}         = $enq;
 
     if ($singletermcount > $maxmatch){
@@ -277,7 +280,7 @@ sub initial_search {
       $self->{categories}   = \%decider_map;
     }
 
-    $logger->info("Running query ".$self->{_querystring});
+    $logger->info("Running query ".$self->{_querystring}." with filters ".$self->{_filter});
 
     $logger->info("Found ".scalar(@matches)." matches in database $database") if (defined $database);
     return;

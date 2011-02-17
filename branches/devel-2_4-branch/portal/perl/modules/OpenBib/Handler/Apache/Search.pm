@@ -559,8 +559,7 @@ sub search_databases {
         loginname      => $loginname,
         password       => $password,
         
-        searchquery    => $searchquery->get_searchquery,
-        sq             => $searchquery,
+        searchquery    => $searchquery,
         
         queryid        => $queryid,
         query          => $query,
@@ -1192,7 +1191,7 @@ sub search_databases {
         loginname     => $loginname,
         password      => $password,
         
-        searchquery   => $searchquery->get_searchquery,
+        searchquery   => $searchquery,
         query         => $query,
         queryid       => $queryid,
         qopts         => $queryoptions->get_options,

@@ -113,7 +113,47 @@ $("#dd_database_[% database %]_toggle").click(function(){
    ELSE ;
       request_base = "${request_base}searchprofile=1;dbauswahl=1;db=${database};";
    END ;
+
+   all_filters = [];
+       FOREACH filter IN searchquery.get_filter ;
+          all_filters.push("filter=${filter.val}");
+   END ;
+   allfilterstring = ";${all_filters.join(';')}";
 %]
+
+[%         IF searchquery.get_filter.size > 0 %]
+<tr><td valign="top">
+<table width="100%">
+<tr><th class="headline" >[% msg.maketext("Aktive Filter") %]</th></tr>
+<tr><td>
+[%
+    filter_prefix_map = {
+          ${config.get('searchfield').personstring.prefix} = msg.maketext("Person")
+          ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
+          ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
+          ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
+          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
+          ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
+          ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
+};
+
+%]
+[%             FOREACH filter IN searchquery.get_filter ;
+                   this_filters = [];
+                   this_filterstring = "filter=${filter.val}";
+                   FOREACH all_filter IN all_filters;
+                       IF all_filter != this_filterstring ;
+                           this_filters.push(all_filter);
+                       END;
+                   END ;
+%]
+[%# USE dumper;dumper.dump(this_filters); dumper.dump(all_filters)%]
+<p><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];fs=[% lastquery %][% IF this_filters.size > 0 %];[% this_filters.join(';')%][% END %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.facet} %]: [% filter.term %]</p>
+[%             END %]
+</td></tr>
+</table>
+</td></tr>
+[%         END %]
 [%         IF jn == 1 && category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -126,7 +166,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
 <span id="dd_database_[% database %]_toggle"></span>
 <div id="dd_database_[% database %]">
 [% END %]
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];db=[% termitem.0 %];fs=[% lastquery %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];db=[% termitem.0 %];fs=[% lastquery %][% allfilterstring %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.8.size > 5 %]
 </div>
@@ -151,7 +191,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').personstring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.3.size > 5 %]
 </div>
@@ -176,7 +216,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.7.size > 5 %]
 </div>
@@ -201,7 +241,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').subjectstring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.1.size > 5 %]
 </div>
@@ -226,7 +266,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').classificationstring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.2.size > 5 %]
 </div>
@@ -251,7 +291,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').yearstring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
 [% IF category_map.5.size > 5 %]
 </div>
@@ -276,7 +316,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').mediatypestring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.4.size > 5 %]
 </div>
@@ -352,7 +392,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     sprstring = spr.join(';');
 
 -%]
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% IF NOT lastquery.match("${searchprefix}:${searchterm}") %][% searchprefix %]:|[% searchterm %]| [% END %][% lastquery %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.6.size > 5 %]
 </div>

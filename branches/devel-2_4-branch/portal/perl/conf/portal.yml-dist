@@ -1198,6 +1198,10 @@ dispatch_rules:
      runmode: 'show'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/count[get]'
+     runmode: 'show_collection_count'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection.html[get]'
      runmode: 'show_collection_as_html'
   - # collection_loc:
@@ -1954,7 +1958,7 @@ default_query_options:
   l: 'de'
   profil: ''
   js: 0
-  lt: 'list'
+  lt: 'cover'
 
 # Generierte BestOf-Daten
 best_of:
@@ -1982,7 +1986,7 @@ social_tagging: 1
 litlists: 1
 
 # Reviews/Ratings
-reviews: 0
+reviews: 1
 
 # Cover-Scans
 coverscans:

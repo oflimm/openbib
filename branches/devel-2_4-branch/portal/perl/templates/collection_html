@@ -34,10 +34,8 @@ function update_collection(yourform, checked, item) {
 // -->
 </script>
     
-    <form method="get" action="[% path_prefix %]/[% config.get('handler').collection_loc.name %]">
+    <form method="post" action="[% path_prefix %]/[% config.get('handler').collection_loc.name %]">
       
-      <input type="hidden" name="action"    value="show" />
-
 <div id="maincontent">
 
       <ul class="tabbingmenu">

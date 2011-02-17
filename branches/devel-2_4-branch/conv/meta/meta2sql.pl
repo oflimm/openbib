@@ -157,7 +157,7 @@ if ($incremental){
 my $stammdateien_ref = {
     person => {
         type           => "person",
-        infile         => "person.meta",
+        infile         => "meta.person",
         outfile        => "person.mysql",
         outfile_ft     => "person_ft.mysql",
         outfile_string => "person_string.mysql",
@@ -166,7 +166,7 @@ my $stammdateien_ref = {
     },
     
     corporatebody => {
-        infile         => "corporatebody.meta",
+        infile         => "meta.corporatebody",
         outfile        => "corporatebody.mysql",
         outfile_ft     => "corporatebody_ft.mysql",
         outfile_string => "corporatebody_string.mysql",
@@ -175,7 +175,7 @@ my $stammdateien_ref = {
     },
     
     subject => {
-        infile         => "subject.meta",
+        infile         => "meta.subject",
         outfile        => "subject.mysql",
         outfile_ft     => "subject_ft.mysql",
         outfile_string => "subject_string.mysql",
@@ -184,7 +184,7 @@ my $stammdateien_ref = {
     },
     
     classification => {
-        infile         => "classification.meta",
+        infile         => "meta.classification",
         outfile        => "classification.mysql",
         outfile_ft     => "classification_ft.mysql",
         outfile_string => "classification_string.mysql",
@@ -292,16 +292,16 @@ foreach my $type (keys %{$stammdateien_ref}){
 #######################
 
 $stammdateien_ref->{holding} = {
-    infile         => "holding.meta",
+    infile         => "meta.holding",
     outfile        => "holding.mysql",
     outfile_ft     => "holding_ft.mysql",
     outfile_string => "holding_string.mysql",
     inverted_ref   => $conv_config->{inverted_holding},
 };
 
-$logger->info("Bearbeite holding.meta");
+$logger->info("Bearbeite meta.holding");
 
-open(IN ,          "<:utf8","holding.meta"         ) || die "IN konnte nicht geoeffnet werden";
+open(IN ,          "<:utf8","meta.holding"        ) || die "IN konnte nicht geoeffnet werden";
 open(OUT,          ">:utf8","holding.mysql"       ) || die "OUT konnte nicht geoeffnet werden";
 open(OUTFT,        ">:utf8","holding_ft.mysql"    ) || die "OUTFT konnte nicht geoeffnet werden";
 open(OUTSTRING,    ">:utf8","holding_string.mysql") || die "OUTSTRING konnte nicht geoeffnet werden";
@@ -393,7 +393,7 @@ close(OUTSTRING);
 close(IN);
 
 $stammdateien_ref->{title} = {
-    infile         => "title.meta",
+    infile         => "meta.title",
     outfile        => "title.mysql",
     outfile_ft     => "title_ft.mysql",
     outfile_string => "title_string.mysql",
@@ -404,7 +404,7 @@ $stammdateien_ref->{title} = {
 if ($addsuperpers){
     $logger->info("Option addsuperpers ist aktiviert");
     $logger->info("1. Durchgang: Uebergeordnete Titel-ID's finden");
-    open(IN ,           "<:utf8","title.meta"          ) || die "IN konnte nicht geoeffnet werden";
+    open(IN ,           "<:utf8","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
 
     while (my $line=<IN>){
         if ($line=~m/^0004.*?:(.+)/){
@@ -415,7 +415,7 @@ if ($addsuperpers){
     close(IN);
 
     $logger->info("2. Durchgang: Verfasser-ID's in uebergeordneten Titeln finden");
-    open(IN ,           "<:utf8","title.meta"          ) || die "IN konnte nicht geoeffnet werden";
+    open(IN ,           "<:utf8","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
 
     my ($id,@persids);
 
@@ -440,9 +440,9 @@ if ($addsuperpers){
     close(IN);
 }
 
-$logger->info("Bearbeite title.meta");
+$logger->info("Bearbeite meta.title");
 
-open(IN ,           "<:utf8","title.meta"          ) || die "IN konnte nicht geoeffnet werden";
+open(IN ,           "<:utf8","meta.title"         ) || die "IN konnte nicht geoeffnet werden";
 open(OUT,           ">:utf8","title.mysql"        ) || die "OUT konnte nicht geoeffnet werden";
 open(OUTFT,         ">:utf8","title_ft.mysql"     ) || die "OUTFT konnte nicht geoeffnet werden";
 open(OUTSTRING,     ">:utf8","title_string.mysql" ) || die "OUTSTRING konnte nicht geoeffnet werden";

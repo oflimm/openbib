@@ -50,9 +50,9 @@ my $dboptions_ref = $config->get_dboptions($pool);
 
 my $configfile = $confdir."/wikisource_de.yml";
 
-my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{filename}";
+my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{titfilename}";
 
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm *");
 system("$wgetexe -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; bzcat $dboptions_ref->{filename} > pool.dat ; $wikisource2metaexe --inputfile=pool.dat --configfile=$configfile ; gzip unload.* ; gzip *.yml ; rm pool.dat");
+system("cd $pooldir/$pool; bzcat $dboptions_ref->{titfilename} > pool.dat ; $wikisource2metaexe --inputfile=pool.dat --configfile=$configfile ; gzip meta.* ; gzip *.yml ; rm pool.dat");

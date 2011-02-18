@@ -62,7 +62,11 @@ sub setup {
 
     $self->start_mode('show_negotiate');
     $self->run_modes(
-        'show_negotiate'       => 'show_negotiate',
+        'show_collection_negotiate'            => 'show_collection_negotiate',
+        'show_collection_as_html'              => 'show_collection_as_html',
+        'show_collection_as_json'              => 'show_collection_as_json',
+        'show_collection_as_rdf'               => 'show_collection_as_rdf',
+        'show_record_negotiate'                => 'show_record_negotiate',
     );
 
     # Use current path as template path,
@@ -70,7 +74,129 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show_negotiate {
+sub show_collection_negotiate {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+
+    my $config  = OpenBib::Config->instance;
+
+    my $negotiated_type_ref = $self->negotiate_type;
+
+    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_cloud_loc}{name}.$negotiated_type_ref->{suffix}";
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+    return;
+}
+
+sub show_collection_as_html {
+    my $self = shift;
+
+    $self->param('representation','html');
+
+    $self->show_collection;
+
+    return;
+}
+
+sub show_collection_as_json {
+    my $self = shift;
+
+    $self->param('representation','json');
+
+    $self->show_collection;
+
+    return;
+}
+
+sub show_collection_as_rdf {
+    my $self = shift;
+
+    $self->param('representation','rdf');
+
+    $self->show_collection;
+
+    return;
+}
+
+sub show_collection {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+    my $representation = $self->param('representation') || '';
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    
+    # CGI Args
+
+    my $format         = $query->param('format')         || '';
+    
+    my $statistics  = new OpenBib::Statistics();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $utils       = new OpenBib::Template::Utilities;
+
+    my $profile = $config->get_viewinfo($view)->profilename;
+
+    my $content_type  = $config->{'content_type_map_rev'}{$representation};
+    
+    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
+
+    # TT-Data erzeugen
+    my $ttdata={
+        representation=> $representation,
+        content_type  => $content_type,
+        format        => $format,
+        profile       => $profile,
+        query         => $query,
+        view          => $view,
+        stylesheet    => $stylesheet,
+        viewdesc      => $viewdesc,
+        sessionID     => $session->{ID},
+	session       => $session,
+        useragent     => $useragent,
+        config        => $config,
+        dbinfo        => $dbinfotable,
+        statistics    => $statistics,
+        utils         => $utils,
+        user          => $user,
+        msg           => $msg,
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+    };
+
+    my $templatename = "tt_resource_cloud_collection_tname";
+
+    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+    return Apache2::Const::OK;
+}
+
+sub show_record_negotiate {
     my $self = shift;
 
     # Log4perl logger erzeugen

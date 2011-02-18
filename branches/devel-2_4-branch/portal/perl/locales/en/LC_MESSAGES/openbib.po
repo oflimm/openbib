@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2011-02-18 10:23+0100\n"
+"PO-Revision-Date: 2011-02-18 11:00+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -142,7 +142,6 @@ msgstr "%1 titles in %2 groups"
 #. (titlecount,thisclassifications.size,subject.litlistcount.public)
 #: ../templates/info_53:55
 #: ../templates/profile/kug/views/kug/searchform_simple:468
-#: ../templates/profile/kug/views/kug/searchform_simple~:468
 #: ../templates/searchform:315 ../templates/searchform_simple:491
 #: ../templates/views/einbaende/searchmask:312
 #: ../templates/views/einbaende/searchmask_simple:392
@@ -291,10 +290,7 @@ msgstr "Overview"
 #: ../templates/profile/kug/views/kug/info.old:85
 #: ../templates/profile/kug/views/kug/info.old:935
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:14
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:14
-#: ../templates/profile/kug/views/kug/searchform_simple~:566
 #: ../templates/searchform:413 ../templates/searchform_bottom_center:14
-#: ../templates/searchform_bottom_center~:14
 #: ../templates/views/einbaende/searchmask:408
 #: ../templates/views/einbaende/searchmask_simple:488
 #: ../templates/views/umschlaege/search_browse_tit:35
@@ -370,7 +366,6 @@ msgstr ""
 "boxes. Only the truncation operator <b>*</b> is allowed."
 
 #: ../templates/profile/kug/views/kug/searchform_simple:491
-#: ../templates/profile/kug/views/kug/searchform_simple~:491
 #: ../templates/searchform:338 ../templates/searchform_simple:514
 #: ../templates/views/einbaende/searchmask:335
 #: ../templates/views/einbaende/searchmask_simple:415
@@ -653,7 +648,6 @@ msgid "Alle Fachgebiete"
 msgstr "All subjects"
 
 #: ../templates/profile/kug/views/kug/searchform_simple:67
-#: ../templates/profile/kug/views/kug/searchform_simple~:67
 #: ../templates/searchform:63 ../templates/searchform_simple:67
 #: ../templates/views/einbaende/searchmask:63
 #: ../templates/views/einbaende/searchmask_simple:66
@@ -670,10 +664,6 @@ msgstr "All types"
 #: ../templates/profile/kug/views/kug/searchform_simple:243
 #: ../templates/profile/kug/views/kug/searchform_simple:330
 #: ../templates/profile/kug/views/kug/searchform_simple:418
-#: ../templates/profile/kug/views/kug/searchform_simple~:157
-#: ../templates/profile/kug/views/kug/searchform_simple~:243
-#: ../templates/profile/kug/views/kug/searchform_simple~:330
-#: ../templates/profile/kug/views/kug/searchform_simple~:418
 #: ../templates/searchform_query:154 ../templates/searchform_simple:162
 #: ../templates/searchform_simple:252 ../templates/searchform_simple:344
 #: ../templates/searchform_simple:437
@@ -709,7 +699,6 @@ msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr "Mirror all tagged titles to BibSonomy"
 
 #: ../templates/profile/kug/views/kug/searchform_simple:60
-#: ../templates/profile/kug/views/kug/searchform_simple~:60
 #: ../templates/searchform:57 ../templates/searchform_simple:60
 #: ../templates/views/einbaende/searchmask:57
 #: ../templates/views/einbaende/searchmask_simple:60
@@ -851,7 +840,6 @@ msgstr "On"
 #: ../templates/resource_review_edit:185 ../templates/resource_title_html:363
 #: ../templates/resource_title_html:364
 #: ../templates/titlist_item_html_short:178
-#: ../templates/titlist_item_html_short~:178
 #: ../templates/views/einbaende/resultlists_showall:138
 #: ../templates/views/einbaende/resultlists_showall_sortall:121
 #: ../templates/views/einbaende/resultlists_showsinglepool:139
@@ -1085,7 +1073,7 @@ msgstr ""
 msgid "Aufnehmen"
 msgstr "Save"
 
-#: ../templates/info_15:72 ../templates/info_other_portals:72
+#: ../templates/info_15:72 ../templates/info_other_portals:71
 msgid "Aufruf dieser Spezial-Sicht"
 msgstr "Use this view"
 
@@ -1097,8 +1085,6 @@ msgstr "Use without aquisition of search terms"
 
 #: ../templates/profile/kug/views/kug/searchform_simple:280
 #: ../templates/profile/kug/views/kug/searchform_simple:62
-#: ../templates/profile/kug/views/kug/searchform_simple~:280
-#: ../templates/profile/kug/views/kug/searchform_simple~:62
 #: ../templates/searchform:241 ../templates/searchform:59
 #: ../templates/searchform_simple:292 ../templates/searchform_simple:62
 #: ../templates/views/einbaende/searchmask:239
@@ -1278,10 +1264,6 @@ msgstr "Start"
 #: ../templates/profile/kug/views/kug/searchform_simple:255
 #: ../templates/profile/kug/views/kug/searchform_simple:342
 #: ../templates/profile/kug/views/kug/searchform_simple:430
-#: ../templates/profile/kug/views/kug/searchform_simple~:169
-#: ../templates/profile/kug/views/kug/searchform_simple~:255
-#: ../templates/profile/kug/views/kug/searchform_simple~:342
-#: ../templates/profile/kug/views/kug/searchform_simple~:430
 #: ../templates/searchform_query:166 ../templates/searchform_simple:174
 #: ../templates/searchform_simple:264 ../templates/searchform_simple:356
 #: ../templates/searchform_simple:449
@@ -1341,7 +1323,6 @@ msgstr ""
 "By <b>deactivating</b> the setting <i>automatic AND-operator within search "
 "fields</i>, the OR-operator becomes the default setting."
 
-#: ../templates/.#search_showtitset_images.1.1.2.1:35
 #: ../templates/database/nationallizenzen/search_showtitset_images:41
 msgid "Bei Unifloh vorhanden?"
 msgstr "Available in Unifloh?"
@@ -1457,10 +1438,6 @@ msgstr "User"
 #: ../templates/profile/kug/views/kug/searchform_simple:237
 #: ../templates/profile/kug/views/kug/searchform_simple:324
 #: ../templates/profile/kug/views/kug/searchform_simple:412
-#: ../templates/profile/kug/views/kug/searchform_simple~:151
-#: ../templates/profile/kug/views/kug/searchform_simple~:237
-#: ../templates/profile/kug/views/kug/searchform_simple~:324
-#: ../templates/profile/kug/views/kug/searchform_simple~:412
 #: ../templates/searchform_query:148 ../templates/searchform_simple:156
 #: ../templates/searchform_simple:246 ../templates/searchform_simple:338
 #: ../templates/searchform_simple:431
@@ -1553,7 +1530,7 @@ msgstr "Profession/world-view"
 msgid "Beschreibung"
 msgstr "Description"
 
-#: ../templates/.#mexset.1.8:3 ../templates/circset:28 ../templates/circset:65
+#: ../templates/circset:28 ../templates/circset:65
 #: ../templates/collection_html_as_text:73
 #: ../templates/database/artmann/circset:31
 #: ../templates/database/artmann/circset:99
@@ -1621,7 +1598,7 @@ msgstr "Characteristics of fields with"
 msgid "Bestaetigen Sie Ihre Registrierung"
 msgstr "Please confirm your registration"
 
-#: ../templates/.#mexset.1.8:3 ../templates/collection_html_simple:60
+#: ../templates/collection_html_simple:60
 #: ../templates/database/artmann/mexset:3 ../templates/database/edz/mexset:3
 #: ../templates/database/inst001/mexset:3
 #: ../templates/database/inst450/mexset:3
@@ -1690,7 +1667,6 @@ msgstr "Ratings/reviews"
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Ratings/reviews from users"
 
-#: ../templates/.#search_showtitset_images.1.1.2.1:31
 #: ../templates/collection_html_full:89
 #: ../templates/database/alff/search_showtitset_images:25
 #: ../templates/database/nationallizenzen/search_showtitset_images:37
@@ -1780,7 +1756,7 @@ msgstr "You didn't enter any tags."
 msgid "Bitte authentifizieren Sie sich unter Mein KUG."
 msgstr "Please use My KUG to authenticate."
 
-#: ../templates/info_15:74 ../templates/info_other_portals:74
+#: ../templates/info_15:74 ../templates/info_other_portals:73
 msgid "Bitte bookmarken unter:"
 msgstr "Please bookmark as:"
 
@@ -1844,7 +1820,7 @@ msgid "Chinesisch"
 msgstr "Chinese"
 
 #: ../templates/database/einbaende/titlist_options:44
-#: ../templates/titlist_options:46 ../templates/titlist_options~:46
+#: ../templates/titlist_options:46
 msgid "Cover-Ansicht"
 msgstr "Cover view"
 
@@ -1985,10 +1961,7 @@ msgstr "The big W"
 #: ../templates/dbis_showdbinfo:29
 #: ../templates/profile/kug/searchform_bottom_center:37
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:46
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:47
-#: ../templates/profile/kug/views/kug/searchform_simple~:577
 #: ../templates/searchform:424 ../templates/searchform_bottom_center:37
-#: ../templates/searchform_bottom_center~:37
 #: ../templates/views/einbaende/searchmask:419
 #: ../templates/views/einbaende/searchmask_simple:499
 #: ../templates/views/usbzsablage/searchmask_simple:264
@@ -2119,14 +2092,12 @@ msgstr "German Wikipedia"
 msgid "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
 msgstr "The 20 most used catalogues regarding title access"
 
-#: ../templates/profile/kug/views/kug/searchform_simple~:595
 #: ../templates/searchform:431 ../templates/searchform_bottom_right:16
 #: ../templates/views/einbaende/searchmask:426
 #: ../templates/views/einbaende/searchmask_simple:506
 msgid "Die 5 zuletzt angelegten Literaturlisten"
 msgstr "Most recent literature lists"
 
-#: ../templates/profile/kug/views/kug/searchform_simple~:612
 #: ../templates/searchform:451 ../templates/searchform_bottom_right:36
 #: ../templates/views/einbaende/searchmask:446
 #: ../templates/views/einbaende/searchmask_simple:526
@@ -2448,7 +2419,6 @@ msgstr ""
 #: ../templates/resource_user_tag_html:15 ../templates/search_showtitlist:15
 #: ../templates/search_showtitlist_of_cnt:15 ../templates/tags_showtitlist:15
 #: ../templates/titlist_item_html_short:22
-#: ../templates/titlist_item_html_short~:22
 msgid "E-Book"
 msgstr "E-Book"
 
@@ -2463,7 +2433,7 @@ msgstr "E-mail"
 msgid "E-Mail Adresse registrieren"
 msgstr "Register E-mail address"
 
-#: ../templates/login:49 ../templates/login~:45 ../templates/mailpassword:46
+#: ../templates/login:49 ../templates/mailpassword:46
 #: ../templates/profile/kug/login:94 ../templates/profile/sammlungen/login:94
 #: ../templates/registration:54
 msgid "E-Mail-Adresse"
@@ -2671,12 +2641,10 @@ msgid "Eingrenzung auf Gesamttitel (Serien)"
 msgstr "Restrict to main entries (series)"
 
 #: ../templates/admin_login:34 ../templates/login:51
-#: ../templates/login_circulation:67 ../templates/login~:47
-#: ../templates/profile/kug/login:64 ../templates/profile/kug/login:96
+#: ../templates/login_circulation:67 ../templates/profile/kug/login:64
+#: ../templates/profile/kug/login:96
 #: ../templates/profile/kug/views/kug/searchform_simple:491
 #: ../templates/profile/kug/views/kug/searchform_simple:535
-#: ../templates/profile/kug/views/kug/searchform_simple~:491
-#: ../templates/profile/kug/views/kug/searchform_simple~:535
 #: ../templates/profile/sammlungen/login:64
 #: ../templates/profile/sammlungen/login:96 ../templates/searchform:338
 #: ../templates/searchform:382 ../templates/searchform_simple:514
@@ -2722,10 +2690,7 @@ msgstr "Elektronically available journals (EZB)"
 #: ../templates/ezb_showsubjects:31
 #: ../templates/profile/kug/searchform_bottom_center:34
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:43
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:44
-#: ../templates/profile/kug/views/kug/searchform_simple~:574
 #: ../templates/searchform:421 ../templates/searchform_bottom_center:34
-#: ../templates/searchform_bottom_center~:34
 #: ../templates/views/einbaende/searchmask:416
 #: ../templates/views/einbaende/searchmask_simple:496
 #: ../templates/views/usbzsablage/searchmask_simple:261
@@ -2799,8 +2764,6 @@ msgstr "Discover other titles using:"
 #: ../templates/resource_user_litlist_collection_html:75
 #: ../templates/titlist_item_html_short:180
 #: ../templates/titlist_item_html_short:183
-#: ../templates/titlist_item_html_short~:180
-#: ../templates/titlist_item_html_short~:183
 msgid "Entfernen"
 msgstr "Remove"
 
@@ -2889,10 +2852,6 @@ msgstr "Advanced search mask"
 #: ../templates/profile/kug/views/kug/searchform_simple:255
 #: ../templates/profile/kug/views/kug/searchform_simple:342
 #: ../templates/profile/kug/views/kug/searchform_simple:430
-#: ../templates/profile/kug/views/kug/searchform_simple~:169
-#: ../templates/profile/kug/views/kug/searchform_simple~:255
-#: ../templates/profile/kug/views/kug/searchform_simple~:342
-#: ../templates/profile/kug/views/kug/searchform_simple~:430
 #: ../templates/searchform_simple:174 ../templates/searchform_simple:264
 #: ../templates/searchform_simple:356 ../templates/searchform_simple:449
 #: ../templates/views/einbaende/corporate_banner:58
@@ -3119,7 +3078,6 @@ msgid "Exemplar-Datei"
 msgstr "Holdings-File"
 
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:41
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:42
 msgid "Externe Angebote"
 msgstr "External search offerings"
 
@@ -3194,10 +3152,6 @@ msgstr "Subject"
 #: ../templates/profile/kug/views/kug/searchform_simple:244
 #: ../templates/profile/kug/views/kug/searchform_simple:331
 #: ../templates/profile/kug/views/kug/searchform_simple:419
-#: ../templates/profile/kug/views/kug/searchform_simple~:158
-#: ../templates/profile/kug/views/kug/searchform_simple~:244
-#: ../templates/profile/kug/views/kug/searchform_simple~:331
-#: ../templates/profile/kug/views/kug/searchform_simple~:419
 #: ../templates/searchform_query:155 ../templates/searchform_simple:253
 #: ../templates/searchform_simple:345 ../templates/searchform_simple:438
 #: ../templates/views/einbaende/searchmask_simple:159
@@ -3327,10 +3281,6 @@ msgstr "Free search"
 #: ../templates/profile/kug/views/kug/searchform_simple:264
 #: ../templates/profile/kug/views/kug/searchform_simple:351
 #: ../templates/profile/kug/views/kug/searchform_simple:439
-#: ../templates/profile/kug/views/kug/searchform_simple~:177
-#: ../templates/profile/kug/views/kug/searchform_simple~:264
-#: ../templates/profile/kug/views/kug/searchform_simple~:351
-#: ../templates/profile/kug/views/kug/searchform_simple~:439
 #: ../templates/profile/sammlungen/views/artmann/searchmask:132
 #: ../templates/profile/sammlungen/views/artmann/searchmask_simple:132
 #: ../templates/profile/sammlungen/views/dante/searchmask:131
@@ -3368,10 +3318,6 @@ msgstr "Earlier requests"
 #: ../templates/profile/kug/views/kug/searchform_simple:276
 #: ../templates/profile/kug/views/kug/searchform_simple:363
 #: ../templates/profile/kug/views/kug/searchform_simple:451
-#: ../templates/profile/kug/views/kug/searchform_simple~:189
-#: ../templates/profile/kug/views/kug/searchform_simple~:276
-#: ../templates/profile/kug/views/kug/searchform_simple~:363
-#: ../templates/profile/kug/views/kug/searchform_simple~:451
 #: ../templates/searchform:177 ../templates/searchform:237
 #: ../templates/searchform:297 ../templates/searchform_simple:196
 #: ../templates/searchform_simple:288 ../templates/searchform_simple:380
@@ -3498,7 +3444,6 @@ msgstr "Renew all titles in your account"
 msgid "Gesamtkonto-Verl&auml;ngerung"
 msgstr "Renew whole account"
 
-#: ../templates/.#search_showtitset_images.1.1.2.1:27
 #: ../templates/collection_html_full:85
 #: ../templates/database/alff/search_showtitset_images:21
 #: ../templates/database/nationallizenzen/search_showtitset_images:33
@@ -3516,13 +3461,9 @@ msgid "Google-Book-Search"
 msgstr "Google-Book-Search"
 
 #. ("<a href=\"${path_prefix}/${config.get('handler')
-#. ("<a href=\"${config.get('ezb_loc')
 #: ../templates/profile/kug/searchform_bottom_center:35
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:44
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:45
-#: ../templates/profile/kug/views/kug/searchform_simple~:575
 #: ../templates/searchform:422 ../templates/searchform_bottom_center:35
-#: ../templates/searchform_bottom_center~:35
 #: ../templates/views/einbaende/searchmask:417
 #: ../templates/views/einbaende/searchmask_simple:497
 #: ../templates/views/usbzsablage/searchmask_simple:262
@@ -3733,10 +3674,6 @@ msgstr ""
 #: ../templates/profile/kug/views/kug/searchform_simple:229
 #: ../templates/profile/kug/views/kug/searchform_simple:316
 #: ../templates/profile/kug/views/kug/searchform_simple:404
-#: ../templates/profile/kug/views/kug/searchform_simple~:143
-#: ../templates/profile/kug/views/kug/searchform_simple~:229
-#: ../templates/profile/kug/views/kug/searchform_simple~:316
-#: ../templates/profile/kug/views/kug/searchform_simple~:404
 #: ../templates/profile/sammlungen/searchmask_query:110
 #: ../templates/profile/sammlungen/views/inst404abklatsch/searchmask_query:78
 #: ../templates/searchform_query:164 ../templates/searchform_simple:147
@@ -3851,11 +3788,8 @@ msgstr "Here you can search in your choice of catalogue,  catalogue profiles, re
 msgid "Hier suchen Sie in allen Katalogen auf einmal"
 msgstr "Here you can search in all catalogues at once"
 
-#: ../templates/mainnavigation:43 ../templates/mainnavigation~:43
-#: ../templates/profile/kug/mainnavigation:43
-#: ../templates/profile/kug/mainnavigation~:43
+#: ../templates/mainnavigation:43 ../templates/profile/kug/mainnavigation:43
 #: ../templates/profile/kug/views/kug/mainnavigation:43
-#: ../templates/profile/kug/views/kug/mainnavigation~:43
 #: ../templates/profile/sammlungen/mainnavigation:45
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:46
 #: ../templates/views/einbaende/mainnavigation:36
@@ -3873,7 +3807,6 @@ msgstr "Here you can search in all catalogues at once"
 #: ../templates/views/umschlaege/mainnavigation:17
 #: ../templates/views/usbzsablage/mainnavigation:43
 #: ../templates/views/xanten/mainnavigation:16
-#: ../templates/views/xanten/mainnavigation~:16
 msgid "Hilfe"
 msgstr "Help"
 
@@ -3884,7 +3817,6 @@ msgstr "Help"
 #: ../templates/info_other_portals:35 ../templates/login_circulation:33
 #: ../templates/mailpassword:33 ../templates/registration:32
 #: ../templates/resource_cloud_collection_html:41
-#: ../templates/resource_cloud_collection_html~:41
 #: ../templates/resource_corporatebody_html:85
 #: ../templates/resource_person_html:90 ../templates/resource_subject_html:92
 #: ../templates/rssfeeds_html:32
@@ -4378,7 +4310,7 @@ msgid "Import-Einstellungen"
 msgstr "Import-Settings"
 
 #: ../templates/info_impressum:32 ../templates/profile/openbib/info_20:32
-#: ../templates/std_footer:18 ../templates/std_footer~:18
+#: ../templates/std_footer:18
 msgid "Impressum"
 msgstr "Legal notice"
 
@@ -4396,7 +4328,6 @@ msgstr ""
 "defined as public can be accessed from anywhere with a PermaLink, that you "
 "can use in external web pages. %1Example%2"
 
-#: ../templates/.#search_showtitset_images.1.1.2.1:31
 #: ../templates/collection_html_full:89
 #: ../templates/database/alff/search_showtitset_images:25
 #: ../templates/database/nationallizenzen/search_showtitset_images:37
@@ -4409,7 +4340,6 @@ msgstr ""
 msgid "In BibSonomy vorhanden?"
 msgstr "Available in BibSonomy?"
 
-#: ../templates/.#search_showtitset_images.1.1.2.1:27
 #: ../templates/collection_html_full:85
 #: ../templates/database/alff/search_showtitset_images:21
 #: ../templates/database/nationallizenzen/search_showtitset_images:33
@@ -4507,10 +4437,7 @@ msgstr "Dive into the structure and contents of the data"
 
 #: ../templates/profile/kug/searchform_bottom_center:14
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:14
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:14
-#: ../templates/profile/kug/views/kug/searchform_simple~:566
 #: ../templates/searchform:413 ../templates/searchform_bottom_center:14
-#: ../templates/searchform_bottom_center~:14
 #: ../templates/views/einbaende/searchmask:408
 #: ../templates/views/einbaende/searchmask_simple:488
 #: ../templates/views/usbzsablage/searchmask_simple:254
@@ -4518,10 +4445,7 @@ msgid "In den Gesamtbestand eintauchen"
 msgstr "Dive into the structure and contents of our catalogues"
 
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:14
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:14
-#: ../templates/profile/kug/views/kug/searchform_simple~:566
-#: ../templates/searchform:413 ../templates/searchform_bottom_center~:14
-#: ../templates/views/einbaende/searchmask:408
+#: ../templates/searchform:413 ../templates/views/einbaende/searchmask:408
 #: ../templates/views/einbaende/searchmask_simple:488
 msgid "In den Institutsbestand eintauchen"
 msgstr "Dive into the structure and contents of this catalogue"
@@ -4655,7 +4579,6 @@ msgstr "In simple search or free search field"
 #: ../templates/resource_title_popular_by_database_html:159
 #: ../templates/resource_title_popular_html:168
 #: ../templates/titlist_item_html_short:178
-#: ../templates/titlist_item_html_short~:178
 #: ../templates/views/einbaende/resultlists_showall:138
 #: ../templates/views/einbaende/resultlists_showall_sortall:121
 #: ../templates/views/einbaende/resultlists_showsinglepool:139
@@ -4769,7 +4692,6 @@ msgstr "Content"
 #: ../templates/resource_user_tag_html:16 ../templates/search_showtitlist:16
 #: ../templates/search_showtitlist_of_cnt:16 ../templates/tags_showtitlist:16
 #: ../templates/titlist_item_html_short:23
-#: ../templates/titlist_item_html_short~:23
 msgid "Inhaltsverzeichnis"
 msgstr "Table of Contents"
 
@@ -4834,7 +4756,7 @@ msgstr "Integration of BibSonomy"
 msgid "Interaktives Tutorium"
 msgstr "Interactive tutorial"
 
-#: ../templates/.#mexset.1.8:3 ../templates/database/inst404abklatsch/mexset:3
+#: ../templates/database/inst404abklatsch/mexset:3
 #: ../templates/database/inst450/mexset:3 ../templates/mexset:16
 #: ../templates/profile/sammlungen/views/inst404abklatsch/searchmask_query:75
 msgid "Inventarnummer"
@@ -5007,7 +4929,6 @@ msgstr "Digital card catalogue (faculty of arts)"
 #: ../templates/resource_review_edit:175
 #: ../templates/resource_title_popular_html:157
 #: ../templates/resultlists_choice:97 ../templates/titlist_item_html_short:165
-#: ../templates/titlist_item_html_short~:165
 #: ../templates/views/openlibrary/searchmask_bottom_left:19
 msgid "Katalog"
 msgstr "Catalogue"
@@ -5032,13 +4953,11 @@ msgstr "Catalogue profile"
 
 #: ../templates/databasechoice:39 ../templates/info_help:246
 #: ../templates/info_help:54 ../templates/mainnavigation:29
-#: ../templates/mainnavigation~:29 ../templates/profile/kug/mainnavigation:29
-#: ../templates/profile/kug/mainnavigation~:29
+#: ../templates/profile/kug/mainnavigation:29
 #: ../templates/profile/kug/views/kug/info.old:251
 #: ../templates/profile/kug/views/kug/info.old:59
 #: ../templates/profile/kug/views/kug/searchform:196
 #: ../templates/resource_cloud_collection_html:32
-#: ../templates/resource_cloud_collection_html~:32
 #: ../templates/resource_cloud_litlist_html:37
 #: ../templates/resource_cloud_searchterm_html:37
 #: ../templates/views/rheinlandbib/databasechoice:39
@@ -5148,7 +5067,6 @@ msgstr "Invalid request id"
 
 #: ../templates/admin_showuser_1:42
 #: ../templates/profile/kug/views/kug/searchform_simple:533
-#: ../templates/profile/kug/views/kug/searchform_simple~:533
 #: ../templates/searchform:380 ../templates/searchform_simple:556
 #: ../templates/views/einbaende/searchmask:377
 #: ../templates/views/einbaende/searchmask_simple:457
@@ -5297,7 +5215,6 @@ msgstr "Removal of selected profile"
 msgid "Latein"
 msgstr "Latin"
 
-#: ../templates/profile/kug/views/kug/searchform_simple~:593
 #: ../templates/searchform:429 ../templates/searchform_bottom_right:14
 #: ../templates/views/einbaende/searchmask:424
 #: ../templates/views/einbaende/searchmask_simple:504
@@ -5339,7 +5256,6 @@ msgid ""
 msgstr "Unfortunately we cannot present a cloud of user tags for this catalogue."
 
 #: ../templates/resource_cloud_litlist_html:77
-#: ../templates/resource_cloud_litlist_html~:75
 msgid ""
 "Leider k&ouml;nnen wir Ihnen keine Wolke der meist genutzten Literaturlisten "
 "anbieten."
@@ -5362,7 +5278,7 @@ msgstr "Most recent articles"
 #: ../templates/database/einbaende/titlist_options:44
 #: ../templates/dbis_showsubjects:34 ../templates/ezb_showsubjects:36
 #: ../templates/resource_user_tag_collection_html:36
-#: ../templates/titlist_options:46 ../templates/titlist_options~:46
+#: ../templates/titlist_options:46
 msgid "Liste"
 msgstr "List"
 
@@ -5378,7 +5294,7 @@ msgid "Listen mit gemeinsamen Titeln"
 msgstr "Other literature lists with common titles"
 
 #: ../templates/database/einbaende/titlist_options:44
-#: ../templates/titlist_options:46 ../templates/titlist_options~:46
+#: ../templates/titlist_options:46
 msgid "Listen-Ansicht"
 msgstr "List view"
 
@@ -5400,13 +5316,9 @@ msgstr "Literature list"
 #: ../templates/litlists_show_publiclists:25
 #: ../templates/profile/kug/searchform_bottom_center:17
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:17
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:17
-#: ../templates/profile/kug/views/kug/searchform_simple~:569
 #: ../templates/profile/sammlungen/userprefs_navigation:16
 #: ../templates/resource_cloud_collection_html:33
-#: ../templates/resource_cloud_collection_html~:33
 #: ../templates/resource_cloud_litlist_html:38
-#: ../templates/resource_cloud_litlist_html~:37
 #: ../templates/resource_cloud_searchterm_html:38
 #: ../templates/resource_litlist_collection_by_single_subject_html:25
 #: ../templates/resource_litlist_collection_by_subject_html:25
@@ -5414,7 +5326,6 @@ msgstr "Literature list"
 #: ../templates/resource_title_html:625
 #: ../templates/resource_user_navigation:16 ../templates/searchform:416
 #: ../templates/searchform_bottom_center:17
-#: ../templates/searchform_bottom_center~:17
 #: ../templates/userprefs_navigation:16
 #: ../templates/views/einbaende/searchmask:411
 #: ../templates/views/einbaende/searchmask_simple:491
@@ -5498,7 +5409,7 @@ msgstr "Local location mark  "
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:36
 #: ../templates/resource_title_html:408 ../templates/resource_title_html:421
 #: ../templates/resource_user_preferences_html:244
-#: ../templates/titlist_options:40 ../templates/titlist_options~:40
+#: ../templates/titlist_options:40
 #: ../templates/views/einbaende/corporate_banner:58
 #: ../templates/views/kapsel/resultlists_showall:58
 #: ../templates/views/kapsel/resultlists_showsinglepool:60
@@ -5746,22 +5657,17 @@ msgstr "Multiple selection"
 #: ../templates/info_tutorials:59 ../templates/profile/kug/login:26
 #: ../templates/profile/kug/mainnavigation:37
 #: ../templates/profile/kug/mainnavigation:39
-#: ../templates/profile/kug/mainnavigation~:37
-#: ../templates/profile/kug/mainnavigation~:39
 #: ../templates/profile/kug/views/kug/info.old:456
 #: ../templates/profile/kug/views/kug/info.old:63
 #: ../templates/profile/kug/views/kug/mainnavigation:37
 #: ../templates/profile/kug/views/kug/mainnavigation:39
-#: ../templates/profile/kug/views/kug/mainnavigation~:37
-#: ../templates/profile/kug/views/kug/mainnavigation~:39
 #: ../templates/views/usbzsablage/mainnavigation:37
 #: ../templates/views/usbzsablage/mainnavigation:39
 msgid "Mein KUG"
 msgstr "My KUG"
 
-#: ../templates/login:26 ../templates/login~:26 ../templates/mainnavigation:37
-#: ../templates/mainnavigation:39 ../templates/mainnavigation~:37
-#: ../templates/mainnavigation~:39
+#: ../templates/login:26 ../templates/mainnavigation:37
+#: ../templates/mainnavigation:39
 msgid "Mein OpenBib"
 msgstr "My OpenBib"
 
@@ -5788,12 +5694,9 @@ msgstr "Message"
 
 #: ../templates/collection_empty:25 ../templates/collection_html:42
 #: ../templates/collection_html_full:25 ../templates/collection_html_short:25
-#: ../templates/collection_html~:44 ../templates/collection_save_html:30
-#: ../templates/info_tutorials:60 ../templates/mainnavigation:29
-#: ../templates/mainnavigation~:29 ../templates/profile/kug/mainnavigation:29
-#: ../templates/profile/kug/mainnavigation~:29
+#: ../templates/collection_save_html:30 ../templates/info_tutorials:60
+#: ../templates/mainnavigation:29 ../templates/profile/kug/mainnavigation:29
 #: ../templates/profile/kug/views/kug/mainnavigation:29
-#: ../templates/profile/kug/views/kug/mainnavigation~:29
 #: ../templates/profile/sammlungen/mainnavigation:31
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:31
 #: ../templates/views/einbaende/mainnavigation:29
@@ -5813,7 +5716,6 @@ msgstr "Message"
 #: ../templates/views/umschlaege/managecollection_show:45
 #: ../templates/views/usbzsablage/mainnavigation:29
 #: ../templates/views/xanten/mainnavigation:16
-#: ../templates/views/xanten/mainnavigation~:16
 msgid "Merkliste"
 msgstr "List of Interest"
 
@@ -5944,7 +5846,7 @@ msgstr ""
 "portal. These entry points into different KUG-variants, which are often "
 "invisible to the user, are centrally listed here."
 
-#: ../templates/info_15:37 ../templates/info_other_portals:37
+#: ../templates/info_15:37
 msgid ""
 "Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an\n"
 "Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgew&auml;hlt\n"
@@ -5953,6 +5855,20 @@ msgid ""
 "eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
 msgstr ""
 "Apart from the standard KUG with all catalogues there exist a lot of special "
+"views with preselected catalogues and additional information. Some of these "
+"even present a separate portal. On this page we give you an overview of all "
+"available special views."
+
+#: ../templates/info_other_portals:37
+msgid ""
+"Neben dem Standard-OpenBib-Portal mit einer Auswahl offener "
+"bibliographischen Daten gibt es weitere\n"
+"Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgew&auml;hlt\n"
+"sind, die weitergehende Informationen anbieten oder ein\n"
+"eigenst&auml;ndiges Fach-Portal bilden. Auf dieser Seite finden Sie\n"
+"eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
+msgstr ""
+"Apart from the standard OpenBib portal with some open bibliographic data there exist some other special "
 "views with preselected catalogues and additional information. Some of these "
 "even present a separate portal. On this page we give you an overview of all "
 "available special views."
@@ -6106,10 +6022,6 @@ msgstr "Start new session"
 #: ../templates/profile/kug/views/kug/searchform_simple:255
 #: ../templates/profile/kug/views/kug/searchform_simple:342
 #: ../templates/profile/kug/views/kug/searchform_simple:430
-#: ../templates/profile/kug/views/kug/searchform_simple~:169
-#: ../templates/profile/kug/views/kug/searchform_simple~:255
-#: ../templates/profile/kug/views/kug/searchform_simple~:342
-#: ../templates/profile/kug/views/kug/searchform_simple~:430
 #: ../templates/searchform_query:166 ../templates/searchform_simple:174
 #: ../templates/searchform_simple:264 ../templates/searchform_simple:356
 #: ../templates/searchform_simple:449
@@ -6274,7 +6186,6 @@ msgstr "Official"
 #: ../templates/litlists_show_singlelist:151
 #: ../templates/litlists_show_singlelist:178
 #: ../templates/litlists_show_singlelist:40
-#: ../templates/profile/kug/views/kug/searchform_simple~:607
 #: ../templates/resource_litlist_collection_by_single_subject_html:46
 #: ../templates/resource_litlist_collection_by_subject_html:46
 #: ../templates/resource_litlist_collection_html:46
@@ -6289,7 +6200,6 @@ msgid "Offizielle Literaturliste des Instituts/Seminars"
 msgstr "Official literature list of the institute/seminar"
 
 #: ../templates/profile/kug/views/kug/searchform_simple:63
-#: ../templates/profile/kug/views/kug/searchform_simple~:63
 #: ../templates/searchform_simple:385 ../templates/searchform_simple:63
 msgid "Online"
 msgstr "Online"
@@ -6384,11 +6294,10 @@ msgid "P5000"
 msgstr "# of titles"
 
 #: ../templates/admin_login:33 ../templates/login:50
-#: ../templates/login_circulation:66 ../templates/login~:46
-#: ../templates/profile/kug/login:63 ../templates/profile/kug/login:95
+#: ../templates/login_circulation:66 ../templates/profile/kug/login:63
+#: ../templates/profile/kug/login:95
 #: ../templates/profile/kug/resource_user_preferences_html:44
 #: ../templates/profile/kug/views/kug/searchform_simple:534
-#: ../templates/profile/kug/views/kug/searchform_simple~:534
 #: ../templates/profile/sammlungen/login:63
 #: ../templates/profile/sammlungen/login:95
 #: ../templates/profile/sammlungen/userprefs:44 ../templates/registration:55
@@ -6414,7 +6323,7 @@ msgstr "Password (again)"
 msgid "Passwort per Mail schicken"
 msgstr "Send password by mail"
 
-#: ../templates/login:54 ../templates/login~:50 ../templates/mailpassword:26
+#: ../templates/login:54 ../templates/mailpassword:26
 #: ../templates/profile/kug/login:99 ../templates/profile/sammlungen/login:99
 #: ../templates/registration_confirmation:27
 #: ../templates/registration_success:27
@@ -6517,7 +6426,6 @@ msgstr "Popularity-Functions"
 #: ../templates/resource_user_tag_html:17 ../templates/search_showtitlist:17
 #: ../templates/search_showtitlist_of_cnt:17 ../templates/tags_showtitlist:17
 #: ../templates/titlist_item_html_short:24
-#: ../templates/titlist_item_html_short~:24
 msgid "Popularität"
 msgstr "Popularity"
 
@@ -6610,11 +6518,8 @@ msgstr "Sources of tag <i>%1</i> in BibSonomy"
 
 #: ../templates/admin_database_html:58 ../templates/admin_showcat:60
 #: ../templates/admin_view_html:56 ../templates/info_tutorials:61
-#: ../templates/mainnavigation:34 ../templates/mainnavigation~:34
-#: ../templates/profile/kug/mainnavigation:34
-#: ../templates/profile/kug/mainnavigation~:34
+#: ../templates/mainnavigation:34 ../templates/profile/kug/mainnavigation:34
 #: ../templates/profile/kug/views/kug/mainnavigation:34
-#: ../templates/profile/kug/views/kug/mainnavigation~:34
 #: ../templates/profile/sammlungen/mainnavigation:36
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:36
 #: ../templates/views/einbaende/mainnavigation:35
@@ -6696,7 +6601,6 @@ msgstr "ReadMe"
 #: ../templates/views/richter/mainnavigation:16
 #: ../templates/views/umschlaege/mainnavigation:16
 #: ../templates/views/xanten/mainnavigation:16
-#: ../templates/views/xanten/mainnavigation~:16
 msgid "Recherche"
 msgstr "Search"
 
@@ -6721,13 +6625,9 @@ msgid "Recherchen"
 msgstr "Search requests"
 
 #. ("<a href=\"${path_prefix}/${config.get('handler')
-#. ("<a href=\"${config.get('dbis_loc')
 #: ../templates/profile/kug/searchform_bottom_center:38
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:47
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:48
-#: ../templates/profile/kug/views/kug/searchform_simple~:578
 #: ../templates/searchform:425 ../templates/searchform_bottom_center:38
-#: ../templates/searchform_bottom_center~:38
 #: ../templates/views/einbaende/searchmask:420
 #: ../templates/views/einbaende/searchmask_simple:500
 #: ../templates/views/usbzsablage/searchmask_simple:265
@@ -6748,7 +6648,6 @@ msgstr "Search KUG with its %1 titles in %2 catalogues"
 
 #. ("${alldbcount.all.chunk(-3)
 #: ../templates/profile/kug/views/kug/searchform_simple:126
-#: ../templates/profile/kug/views/kug/searchform_simple~:126
 #: ../templates/searchform_simple:126
 #: ../templates/views/einbaende/searchmask_simple:125
 msgid "Recherchieren Sie in %1 Titeln und %2 Katalogen"
@@ -6760,7 +6659,6 @@ msgstr "Search all catalogues of the Philosophical Faculty"
 
 #. ("${alldbcount.articles.chunk(-3)
 #: ../templates/profile/kug/views/kug/searchform_simple:296
-#: ../templates/profile/kug/views/kug/searchform_simple~:296
 #: ../templates/searchform_simple:308
 #: ../templates/views/einbaende/searchmask_simple:303
 msgid "Recherchieren Sie nach %1 Aufs&auml;tzen in %2 Katalogen"
@@ -6769,14 +6667,12 @@ msgstr "Search for %1 articles in %2 catalogues"
 #. ("${alldbcount.serials.chunk(-3)
 #. ("${alldbcount.online.chunk(-3)
 #: ../templates/profile/kug/views/kug/searchform_simple:384
-#: ../templates/profile/kug/views/kug/searchform_simple~:384
 #: ../templates/searchform_simple:401
 msgid "Recherchieren Sie nach %1 E-Medien mit Online-Zugriff in %2 Katalogen"
 msgstr "Search for %1 electronically available media in %2 catalogues"
 
 #. ("${alldbcount.serials.chunk(-3)
 #: ../templates/profile/kug/views/kug/searchform_simple:209
-#: ../templates/profile/kug/views/kug/searchform_simple~:209
 #: ../templates/searchform_simple:216
 #: ../templates/views/einbaende/searchmask_simple:212
 msgid "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
@@ -6806,10 +6702,8 @@ msgstr "Region"
 msgid "Register"
 msgstr "Register"
 
-#: ../templates/login:54 ../templates/login~:50
-#: ../templates/profile/kug/login:99
+#: ../templates/login:54 ../templates/profile/kug/login:99
 #: ../templates/profile/kug/views/kug/searchform_simple:538
-#: ../templates/profile/kug/views/kug/searchform_simple~:538
 #: ../templates/profile/sammlungen/login:99 ../templates/registration:57
 #: ../templates/searchform_simple:561
 #: ../templates/views/einbaende/searchmask_simple:462
@@ -6818,7 +6712,6 @@ msgid "Registrieren"
 msgstr "Register"
 
 #: ../templates/profile/kug/views/kug/searchform_simple:538
-#: ../templates/profile/kug/views/kug/searchform_simple~:538
 #: ../templates/searchform:385 ../templates/searchform_simple:561
 #: ../templates/views/einbaende/searchmask:382
 #: ../templates/views/einbaende/searchmask_simple:462
@@ -7056,8 +6949,6 @@ msgstr "Since"
 #: ../templates/search_showtitlist_of_cnt:60
 #: ../templates/search_title_combined_html:34
 #: ../templates/search_title_combined_html:62
-#: ../templates/search_title_combined_html~:34
-#: ../templates/search_title_combined_html~:62
 #: ../templates/search_title_item:59 ../templates/search_title_item:87
 #: ../templates/tags_showtitlist:53
 msgid "Seite:"
@@ -7071,7 +6962,6 @@ msgstr "Page:"
 #: ../templates/search_classification:38 ../templates/search_corporatebody:38
 #: ../templates/search_person:38 ../templates/search_subject:38
 #: ../templates/search_title_combined_html:79
-#: ../templates/search_title_combined_html~:79
 #: ../templates/search_title_item:104
 #: ../templates/views/einbaende/virtualsearch_result_item:147
 #: ../templates/views/portrait/virtualsearch_result_item:149
@@ -7606,10 +7496,9 @@ msgstr ""
 msgid "Sigel"
 msgstr "Library-Code"
 
-#: ../templates/.#mexset.1.8:3 ../templates/circset:28
-#: ../templates/circulation:50 ../templates/circulation_orders:46
-#: ../templates/circulation_remind:65 ../templates/circulation_reserv:46
-#: ../templates/database/artmann/circset:31
+#: ../templates/circset:28 ../templates/circulation:50
+#: ../templates/circulation_orders:46 ../templates/circulation_remind:65
+#: ../templates/circulation_reserv:46 ../templates/database/artmann/circset:31
 #: ../templates/database/artmann/mexset:3
 #: ../templates/database/dante/circset:31 ../templates/database/edz/circset:31
 #: ../templates/database/edz/mexset:3 ../templates/database/inst001/circset:31
@@ -7642,12 +7531,10 @@ msgstr "Library-Code"
 msgid "Signatur"
 msgstr "Location mark"
 
-#: ../templates/mainnavigation:43 ../templates/mainnavigation~:43
+#: ../templates/mainnavigation:43
 #: ../templates/profile/digicard/mainnavigation:34
 #: ../templates/profile/kug/mainnavigation:43
-#: ../templates/profile/kug/mainnavigation~:43
 #: ../templates/profile/kug/views/kug/mainnavigation:43
-#: ../templates/profile/kug/views/kug/mainnavigation~:43
 #: ../templates/profile/sammlungen/mainnavigation:45
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:46
 #: ../templates/views/einbaende/mainnavigation:36
@@ -7665,7 +7552,6 @@ msgstr "Location mark"
 #: ../templates/views/umschlaege/mainnavigation:17
 #: ../templates/views/usbzsablage/mainnavigation:43
 #: ../templates/views/xanten/mainnavigation:16
-#: ../templates/views/xanten/mainnavigation~:16
 msgid "Sitzung beenden"
 msgstr "Quit Session"
 
@@ -7698,7 +7584,7 @@ msgstr "Please use * as the <b>truncation mark</b>."
 #: ../templates/database/einbaende/titlist_options:17
 #: ../templates/profile/digicard/titlist_options:17
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:17
-#: ../templates/titlist_options:17 ../templates/titlist_options~:17
+#: ../templates/titlist_options:17
 #: ../templates/views/kapsel/resultlists_showall:41
 #: ../templates/views/kapsel/resultlists_showsinglepool:43
 #: ../templates/views/kapsel/search_showtitlist:49
@@ -7741,9 +7627,13 @@ msgstr "Spanish"
 msgid "Sperre"
 msgstr "Lockout"
 
-#: ../templates/info_15:28 ../templates/info_other_portals:28
+#: ../templates/info_15:28
 msgid "Spezialisierte KUG-Portale"
 msgstr "Specialized KUG portals"
+
+#: ../templates/info_other_portals:28
+msgid "Spezialisierte OpenBib-Portale"
+msgstr "Specialized OpenBib portals"
 
 #: ../templates/info_help:982 ../templates/profile/kug/views/kug/info.old:987
 msgid "Spezifische KUG-Sichten"
@@ -7757,8 +7647,6 @@ msgstr "Specific KUG entry points, called <i>views</i>:"
 #: ../templates/profile/kug/views/kug/info.old:27
 #: ../templates/profile/kug/views/kug/searchform_simple:485
 #: ../templates/profile/kug/views/kug/searchform_simple:54
-#: ../templates/profile/kug/views/kug/searchform_simple~:485
-#: ../templates/profile/kug/views/kug/searchform_simple~:54
 #: ../templates/profile/openbib/info_20:26
 #: ../templates/profile/sammlungen/views/artmann/info_20:34
 #: ../templates/profile/sammlungen/views/artmann/searchmask:41
@@ -7837,8 +7725,7 @@ msgstr "Jump to external search resources"
 msgid "Sprung zur Trefferliste im KUG"
 msgstr "Jump to KUG's result list"
 
-#: ../templates/.#mexset.1.8:3 ../templates/circset:28
-#: ../templates/database/artmann/circset:31
+#: ../templates/circset:28 ../templates/database/artmann/circset:31
 #: ../templates/database/artmann/mexset:3
 #: ../templates/database/dante/circset:31 ../templates/database/edz/circset:31
 #: ../templates/database/edz/mexset:3 ../templates/database/inst001/circset:31
@@ -7892,12 +7779,10 @@ msgstr "Location             "
 msgid "Standort des Buches"
 msgstr "Book Location"
 
-#: ../templates/mainnavigation:33 ../templates/mainnavigation~:33
+#: ../templates/mainnavigation:33
 #: ../templates/profile/digicard/mainnavigation:33
 #: ../templates/profile/kug/mainnavigation:33
-#: ../templates/profile/kug/mainnavigation~:33
 #: ../templates/profile/kug/views/kug/mainnavigation:33
-#: ../templates/profile/kug/views/kug/mainnavigation~:33
 #: ../templates/profile/sammlungen/mainnavigation:35
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:35
 #: ../templates/views/einbaende/mainnavigation:33
@@ -7967,16 +7852,11 @@ msgstr "Index-Search"
 #: ../templates/profile/kug/searchform_bottom_center:18
 #: ../templates/profile/kug/views/kug/searchform:157
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:18
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:18
-#: ../templates/profile/kug/views/kug/searchform_simple~:570
 #: ../templates/profile/sammlungen/views/inst404abklatsch/clouds_navigation:21
 #: ../templates/resource_cloud_collection_html:34
-#: ../templates/resource_cloud_collection_html~:34
 #: ../templates/resource_cloud_litlist_html:39
-#: ../templates/resource_cloud_searchterm_html:39
-#: ../templates/resource_cloud_searchterm_html~:37 ../templates/searchform:417
+#: ../templates/resource_cloud_searchterm_html:39 ../templates/searchform:417
 #: ../templates/searchform_bottom_center:18
-#: ../templates/searchform_bottom_center~:18
 #: ../templates/views/einbaende/clouds_navigation:21
 #: ../templates/views/einbaende/searchmask:412
 #: ../templates/views/einbaende/searchmask_simple:492
@@ -8027,13 +7907,10 @@ msgstr "Search"
 #: ../templates/dbis_showdbs:71 ../templates/dbis_showsubjects:91
 #: ../templates/ezb_searchjournals:75 ../templates/ezb_showjournals:94
 #: ../templates/ezb_showsubjects:92 ../templates/mainnavigation:29
-#: ../templates/mainnavigation~:29
 #: ../templates/old_search/search_showswtindex:87
 #: ../templates/profile/digicard/mainnavigation:29
 #: ../templates/profile/kug/mainnavigation:29
-#: ../templates/profile/kug/mainnavigation~:29
 #: ../templates/profile/kug/views/kug/mainnavigation:29
-#: ../templates/profile/kug/views/kug/mainnavigation~:29
 #: ../templates/profile/kug/views/kug/searchform:182
 #: ../templates/profile/kug/views/kug/searchform:267
 #: ../templates/profile/kug/views/kug/searchform_query:124
@@ -8041,10 +7918,6 @@ msgstr "Search"
 #: ../templates/profile/kug/views/kug/searchform_simple:229
 #: ../templates/profile/kug/views/kug/searchform_simple:316
 #: ../templates/profile/kug/views/kug/searchform_simple:404
-#: ../templates/profile/kug/views/kug/searchform_simple~:143
-#: ../templates/profile/kug/views/kug/searchform_simple~:229
-#: ../templates/profile/kug/views/kug/searchform_simple~:316
-#: ../templates/profile/kug/views/kug/searchform_simple~:404
 #: ../templates/profile/sammlungen/mainnavigation:31
 #: ../templates/profile/sammlungen/searchmask_query:110
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:31
@@ -11339,8 +11212,6 @@ msgstr "Assign DBIS subjects"
 #: ../templates/litlists_show_singlelist:46
 #: ../templates/profile/kug/views/kug/searchform_simple:455
 #: ../templates/profile/kug/views/kug/searchform_simple:64
-#: ../templates/profile/kug/views/kug/searchform_simple~:455
-#: ../templates/profile/kug/views/kug/searchform_simple~:64
 #: ../templates/resource_litlist_collection_by_single_subject_html:33
 #: ../templates/resource_litlist_collection_by_subject_html:33
 #: ../templates/resource_litlist_collection_html:33
@@ -11540,7 +11411,6 @@ msgstr "Top 20"
 #: ../templates/search_showtitlist:48
 #: ../templates/search_showtitlist_of_cnt:48 ../templates/search_subject:25
 #: ../templates/search_title_combined_html:31
-#: ../templates/search_title_combined_html~:31
 #: ../templates/search_title_item:56 ../templates/select_queries:61
 #: ../templates/views/einbaende/resultlists_showall:62
 #: ../templates/views/einbaende/resultlists_showall_sortall:52
@@ -11561,13 +11431,11 @@ msgstr "Hits"
 msgid "Treffer-, Merk- und Literaturlisten"
 msgstr "Hit Lists, List of Interests and Literature Lists"
 
-#: ../templates/mainnavigation:29 ../templates/mainnavigation~:29
+#: ../templates/mainnavigation:29
 #: ../templates/old_search/search_showtitlist_of_cnt:28
 #: ../templates/profile/digicard/mainnavigation:29
 #: ../templates/profile/kug/mainnavigation:29
-#: ../templates/profile/kug/mainnavigation~:29
 #: ../templates/profile/kug/views/kug/mainnavigation:29
-#: ../templates/profile/kug/views/kug/mainnavigation~:29
 #: ../templates/profile/sammlungen/mainnavigation:31
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:31
 #: ../templates/resultlists_choice:27 ../templates/resultlists_empty:25
@@ -11601,7 +11469,6 @@ msgstr "Hit Lists, List of Interests and Literature Lists"
 #: ../templates/views/umschlaege/virtualsearch_result_start:31
 #: ../templates/views/usbzsablage/mainnavigation:29
 #: ../templates/views/xanten/mainnavigation:16
-#: ../templates/views/xanten/mainnavigation~:16
 msgid "Trefferliste"
 msgstr "Result list"
 
@@ -11648,10 +11515,8 @@ msgid "Tschechisch"
 msgstr "Czech"
 
 #: ../templates/info_tutorials:32 ../templates/mainnavigation:43
-#: ../templates/mainnavigation~:43 ../templates/profile/kug/mainnavigation:43
-#: ../templates/profile/kug/mainnavigation~:43
+#: ../templates/profile/kug/mainnavigation:43
 #: ../templates/profile/kug/views/kug/mainnavigation:43
-#: ../templates/profile/kug/views/kug/mainnavigation~:43
 #: ../templates/views/usbzsablage/mainnavigation:43
 msgid "Tutorien"
 msgstr "Tutorials"
@@ -11846,7 +11711,6 @@ msgstr "Invalid action"
 msgid "Ungültige Session"
 msgstr "Invalid session"
 
-#: ../templates/.#search_showtitset_images.1.1.2.1:35
 #: ../templates/database/nationallizenzen/search_showtitset_images:41
 msgid "Unifloh"
 msgstr "Unifloh"
@@ -12140,7 +12004,6 @@ msgstr "Please select a catalogue to get information about its usage."
 
 #. ("<img src=\"${config.get('wikipedia_img')
 #: ../templates/resource_cloud_collection_html:43
-#: ../templates/resource_cloud_collection_html~:43
 msgid ""
 "W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine\n"
 "<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten\n"
@@ -12512,7 +12375,6 @@ msgid "Wolke der häufigsten Begriffe"
 msgstr "Cloud of relevant terms"
 
 #: ../templates/resource_cloud_litlist_html:47
-#: ../templates/resource_cloud_litlist_html~:45
 msgid "Wolke der meist genutzten Literaturlisten"
 msgstr "Cloud of the most frequently used literature lists"
 
@@ -12525,22 +12387,16 @@ msgstr "Cloud of most frequently used tags"
 #: ../templates/profile/kug/views/kug/info.old:86
 #: ../templates/profile/kug/views/kug/info.old:936
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:16
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:16
-#: ../templates/profile/kug/views/kug/searchform_simple~:568
 #: ../templates/resource_cloud_classification_html:36
 #: ../templates/resource_cloud_collection_html:25
-#: ../templates/resource_cloud_collection_html~:25
 #: ../templates/resource_cloud_corporatebody_html:36
 #: ../templates/resource_cloud_litlist_html:30
-#: ../templates/resource_cloud_litlist_html~:30
 #: ../templates/resource_cloud_person_html:36
 #: ../templates/resource_cloud_searchterm_html:30
-#: ../templates/resource_cloud_searchterm_html~:30
 #: ../templates/resource_cloud_subject_html:36
 #: ../templates/resource_cloud_tag_html:36
 #: ../templates/resource_cloud_year_html:36 ../templates/searchform:415
 #: ../templates/searchform_bottom_center:16
-#: ../templates/searchform_bottom_center~:16
 #: ../templates/views/einbaende/searchmask:410
 #: ../templates/views/einbaende/searchmask_simple:490
 #: ../templates/views/usbzsablage/searchmask_simple:256
@@ -12584,9 +12440,6 @@ msgstr "Please select a view:"
 #: ../templates/profile/kug/views/kug/searchform_simple:193
 #: ../templates/profile/kug/views/kug/searchform_simple:368
 #: ../templates/profile/kug/views/kug/searchform_simple:61
-#: ../templates/profile/kug/views/kug/searchform_simple~:193
-#: ../templates/profile/kug/views/kug/searchform_simple~:368
-#: ../templates/profile/kug/views/kug/searchform_simple~:61
 #: ../templates/searchform:181 ../templates/searchform:58
 #: ../templates/searchform_simple:200 ../templates/searchform_simple:61
 #: ../templates/views/einbaende/searchmask:180
@@ -12639,10 +12492,6 @@ msgstr "Most recent articles published in this journal"
 #: ../templates/profile/kug/views/kug/searchform_simple:269
 #: ../templates/profile/kug/views/kug/searchform_simple:356
 #: ../templates/profile/kug/views/kug/searchform_simple:444
-#: ../templates/profile/kug/views/kug/searchform_simple~:182
-#: ../templates/profile/kug/views/kug/searchform_simple~:269
-#: ../templates/profile/kug/views/kug/searchform_simple~:356
-#: ../templates/profile/kug/views/kug/searchform_simple~:444
 #: ../templates/profile/sammlungen/views/artmann/searchmask:138
 #: ../templates/profile/sammlungen/views/artmann/searchmask_simple:138
 #: ../templates/profile/sammlungen/views/dante/searchmask:137
@@ -12726,7 +12575,6 @@ msgstr ""
 #: ../templates/profile/kug/views/kug/searchform_options:4
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:27
 #: ../templates/searchform_options:4 ../templates/titlist_options:30
-#: ../templates/titlist_options~:30
 #: ../templates/views/gbroich/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
@@ -12750,12 +12598,9 @@ msgid "absteigend"
 msgstr "descending"
 
 #: ../templates/admin_showuser_1:54 ../templates/mainnavigation:32
-#: ../templates/mainnavigation~:32
 #: ../templates/profile/digicard/mainnavigation:32
 #: ../templates/profile/kug/mainnavigation:32
-#: ../templates/profile/kug/mainnavigation~:32
 #: ../templates/profile/kug/views/kug/mainnavigation:32
-#: ../templates/profile/kug/views/kug/mainnavigation~:32
 #: ../templates/profile/sammlungen/mainnavigation:34
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:34
 #: ../templates/views/einbaende/mainnavigation:32
@@ -12768,7 +12613,6 @@ msgstr "Administrator"
 #: ../templates/profile/kug/views/kug/searchform_options:4
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:26
 #: ../templates/searchform_options:4 ../templates/titlist_options:29
-#: ../templates/titlist_options~:29
 #: ../templates/views/gbroich/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
@@ -12870,7 +12714,7 @@ msgstr "order to supplier cancelled"
 msgid "bestellt beim Lieferanten"
 msgstr "ordered from supplier"
 
-#: ../templates/std_footer:18 ../templates/std_footer~:18
+#: ../templates/std_footer:18
 msgid "demonstriert ein Recherche-Portal"
 msgstr "demonstrates a discovery interface"
 
@@ -12926,10 +12770,6 @@ msgstr "in internal course of business"
 #: ../templates/profile/kug/views/kug/searchform_simple:230
 #: ../templates/profile/kug/views/kug/searchform_simple:317
 #: ../templates/profile/kug/views/kug/searchform_simple:405
-#: ../templates/profile/kug/views/kug/searchform_simple~:144
-#: ../templates/profile/kug/views/kug/searchform_simple~:230
-#: ../templates/profile/kug/views/kug/searchform_simple~:317
-#: ../templates/profile/kug/views/kug/searchform_simple~:405
 #: ../templates/searchform_query:141 ../templates/searchform_simple:148
 #: ../templates/searchform_simple:238 ../templates/searchform_simple:330
 #: ../templates/searchform_simple:423
@@ -12941,7 +12781,6 @@ msgid "in:"
 msgstr "in:"
 
 #: ../templates/profile/kug/std_footer:18
-#: ../templates/profile/kug/std_footer~:18
 #: ../templates/profile/sammlungen/views/artmann/std_footer:18
 #: ../templates/profile/sammlungen/views/dante/std_footer:18
 #: ../templates/profile/sammlungen/views/dirksen/std_footer:18
@@ -12965,7 +12804,7 @@ msgstr "yes, since"
 #: ../templates/database/einbaende/titlist_options:35
 #: ../templates/profile/digicard/titlist_options:36
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:33
-#: ../templates/titlist_options:37 ../templates/titlist_options~:37
+#: ../templates/titlist_options:37
 msgid "katalogübergreifend"
 msgstr "spanning several catalogues"
 
@@ -12984,10 +12823,7 @@ msgstr "Librarian"
 
 #: ../templates/profile/kug/searchform_bottom_center:19
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:19
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:20
-#: ../templates/profile/kug/views/kug/searchform_simple~:571
 #: ../templates/searchform:418 ../templates/searchform_bottom_center:19
-#: ../templates/searchform_bottom_center~:19
 #: ../templates/views/einbaende/searchmask:413
 #: ../templates/views/einbaende/searchmask_simple:493
 #: ../templates/views/usbzsablage/searchmask_simple:258
@@ -13007,7 +12843,6 @@ msgstr "at least"
 
 #: ../templates/profile/kug/login:47 ../templates/profile/kug/login:85
 #: ../templates/profile/kug/views/kug/searchform_simple:501
-#: ../templates/profile/kug/views/kug/searchform_simple~:501
 #: ../templates/profile/sammlungen/login:47
 #: ../templates/profile/sammlungen/login:85 ../templates/searchform:348
 #: ../templates/searchform_simple:524
@@ -13097,7 +12932,7 @@ msgstr "by year of production"
 #: ../templates/drilldown_categorized:281
 #: ../templates/profile/digicard/drilldown_categorized:225
 #: ../templates/profile/digicard/titlist_options:23
-#: ../templates/titlist_options:23 ../templates/titlist_options~:23
+#: ../templates/titlist_options:23
 #: ../templates/views/kapsel/resultlists_showall:46
 #: ../templates/views/kapsel/resultlists_showsinglepool:48
 #: ../templates/views/kapsel/search_showtitlist:54
@@ -13135,7 +12970,7 @@ msgid "nach Medienart"
 msgstr "by type of media"
 
 #: ../templates/profile/digicard/titlist_options:20
-#: ../templates/titlist_options:20 ../templates/titlist_options~:20
+#: ../templates/titlist_options:20
 #: ../templates/views/kapsel/resultlists_showall:43
 #: ../templates/views/kapsel/resultlists_showsinglepool:45
 #: ../templates/views/kapsel/search_showtitlist:51
@@ -13159,7 +12994,7 @@ msgstr "by person"
 #: ../templates/database/einbaende/titlist_options:25
 #: ../templates/profile/digicard/titlist_options:26
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:23
-#: ../templates/titlist_options:26 ../templates/titlist_options~:26
+#: ../templates/titlist_options:26
 #: ../templates/views/kapsel/resultlists_showall:49
 #: ../templates/views/kapsel/resultlists_showsinglepool:51
 #: ../templates/views/kapsel/search_showtitlist:57
@@ -13188,13 +13023,13 @@ msgstr "by regions"
 #: ../templates/database/einbaende/titlist_options:19
 #: ../templates/profile/digicard/titlist_options:19
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:19
-#: ../templates/titlist_options:19 ../templates/titlist_options~:19
+#: ../templates/titlist_options:19
 msgid "nach Relevanz"
 msgstr "by relevance"
 
 #: ../templates/database/einbaende/titlist_options:24
 #: ../templates/profile/digicard/titlist_options:25
-#: ../templates/titlist_options:25 ../templates/titlist_options~:25
+#: ../templates/titlist_options:25
 #: ../templates/views/kapsel/resultlists_showall:48
 #: ../templates/views/kapsel/resultlists_showsinglepool:50
 #: ../templates/views/kapsel/search_showtitlist:56
@@ -13232,7 +13067,7 @@ msgstr "by subject"
 
 #: ../templates/profile/digicard/titlist_options:21
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:21
-#: ../templates/titlist_options:21 ../templates/titlist_options~:21
+#: ../templates/titlist_options:21
 #: ../templates/views/kapsel/resultlists_showall:44
 #: ../templates/views/kapsel/resultlists_showsinglepool:46
 #: ../templates/views/kapsel/search_showtitlist:52
@@ -13252,7 +13087,7 @@ msgstr "by title/numbering"
 
 #: ../templates/database/einbaende/titlist_options:23
 #: ../templates/profile/digicard/titlist_options:24
-#: ../templates/titlist_options:24 ../templates/titlist_options~:24
+#: ../templates/titlist_options:24
 #: ../templates/views/kapsel/resultlists_showall:47
 #: ../templates/views/kapsel/resultlists_showsinglepool:49
 #: ../templates/views/kapsel/search_showtitlist:55
@@ -13267,7 +13102,7 @@ msgid "nach Verlag"
 msgstr "per publisher"
 
 #: ../templates/profile/digicard/titlist_options:22
-#: ../templates/titlist_options:22 ../templates/titlist_options~:22
+#: ../templates/titlist_options:22
 #: ../templates/views/kapsel/resultlists_showall:45
 #: ../templates/views/kapsel/resultlists_showsinglepool:47
 #: ../templates/views/kapsel/search_showtitlist:53
@@ -13329,7 +13164,6 @@ msgstr "private"
 #: ../templates/profile/digicard/titlist_options:35
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:32
 #: ../templates/searchform_options:4 ../templates/titlist_options:36
-#: ../templates/titlist_options~:36
 #: ../templates/views/gbroich/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
@@ -13350,7 +13184,6 @@ msgstr "per catalogue"
 
 #: ../templates/profile/digicard/std_footer:18
 #: ../templates/profile/kug/std_footer:18
-#: ../templates/profile/kug/std_footer~:18
 #: ../templates/profile/sammlungen/views/artmann/std_footer:18
 #: ../templates/profile/sammlungen/views/dante/std_footer:18
 #: ../templates/profile/sammlungen/views/dirksen/std_footer:18
@@ -13360,8 +13193,7 @@ msgstr "per catalogue"
 #: ../templates/profile/sammlungen/views/poetica/std_footer:18
 #: ../templates/profile/sammlungen/views/syndikatsbibliothek/std_footer:18
 #: ../templates/profile/sammlungen/views/wallraf/std_footer:18
-#: ../templates/std_footer:18 ../templates/std_footer~:18
-#: ../templates/views/einbaende/std_footer:18
+#: ../templates/std_footer:18 ../templates/views/einbaende/std_footer:18
 msgid "realisiert mit"
 msgstr "powered by"
 
@@ -13381,11 +13213,7 @@ msgstr "very good"
 
 #: ../templates/profile/kug/searchform_bottom_center:20
 #: ../templates/profile/kug/views/kug/searchform_bottom_center:20
-#: ../templates/profile/kug/views/kug/searchform_bottom_center~:21
-#: ../templates/profile/kug/views/kug/searchform_simple~:572
-#: ../templates/searchform:419 ../templates/searchform_bottom_center:20
-#: ../templates/searchform_bottom_center~:20
-#: ../templates/views/einbaende/searchmask:414
+#: ../templates/searchform:419 ../templates/views/einbaende/searchmask:414
 #: ../templates/views/einbaende/searchmask_simple:494
 #: ../templates/views/usbzsablage/searchmask_simple:259
 msgid "spezialisierte KUG-Portale"
@@ -13401,7 +13229,6 @@ msgstr "etc."
 #: ../templates/database/umschlaege/virtualsearch_result_item:32
 #: ../templates/profile/sammlungen/virtualsearch_result_item:32
 #: ../templates/search_title_combined_html:31
-#: ../templates/search_title_combined_html~:31
 #: ../templates/search_title_item:56
 #: ../templates/views/einbaende/virtualsearch_result_item:28
 #: ../templates/views/portrait/virtualsearch_result_item:18

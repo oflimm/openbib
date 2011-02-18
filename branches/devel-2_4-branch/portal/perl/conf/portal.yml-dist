@@ -1106,8 +1106,28 @@ dispatch_rules:
 
   - # resource_cloud_loc:
      module: 'OpenBib::Handler::Apache::Resource::Cloud'
+     rule: '/portal/:view/resource/cloud.html'
+     runmode: 'show_collection_as_html'
+
+  - # resource_cloud_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Cloud'
+     rule: '/portal/:view/resource/cloud.json'
+     runmode: 'show_collection_as_json'
+
+  - # resource_cloud_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Cloud'
+     rule: '/portal/:view/resource/cloud.rdf'
+     runmode: 'show_collection_as_rdf'
+
+  - # resource_cloud_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Cloud'
+     rule: '/portal/:view/resource/cloud'
+     runmode: 'show_collection_negotiate'
+
+  - # resource_cloud_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Cloud'
      rule: '/portal/:view/resource/cloud/:stid/:database?'
-     runmode: 'show_negotiate'
+     runmode: 'show_record_negotiate'
 
   - # resource_cloud_loc:
      module: 'OpenBib::Handler::Apache::Info'
@@ -1783,7 +1803,7 @@ tt_info_53_tname: info_53
 tt_info_54_tname: info_54
 tt_info_60_tname: info_60
 tt_info_62_tname: info_62
-tt_info_63_tname: info_63
+tt_info_cardcatalogues_tname: info_cardcatalogues
 tt_info_64_tname: info_64
 tt_info_65_tname: info_65
 tt_info_66_tname: info_66
@@ -1834,7 +1854,7 @@ tt_resource_user_review_collection_tname: resource_user_review_collection
 tt_resource_review_tname: resource_review
 tt_resource_review_edit_tname: resource_review_edit
 tt_resource_review_collection_by_isbn_tname: resource_review_collection_by_isbn
-tt_resource_cloud_tname: resource_cloud
+tt_resource_cloud_collection_tname: resource_cloud_collection
 tt_resource_cloud_person_tname: resource_cloud_person
 tt_resource_cloud_corporatebody_tname: resource_cloud_corporatebody
 tt_resource_cloud_subject_tname: resource_cloud_subject

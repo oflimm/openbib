@@ -34,7 +34,7 @@
 <table width="100%">
 <tr><th><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an
+[% msg.maketext("Neben dem Standard-OpenBib-Portal mit einer Auswahl offener bibliographischen Daten gibt es weitere
 Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgew&auml;hlt
 sind, die weitergehende Informationen anbieten oder ein
 eigenst&auml;ndiges Fach-Portal bilden. Auf dieser Seite finden Sie
@@ -70,7 +70,7 @@ src="[% config.get('follow_img') %]" alt="[% msg.maketext("Weiterleitungs-Icon")
 />&nbsp;<a
 href="http://search.openbib.org/portal/[% viewname %]/[% config.get('handler').startopac_loc.name %].html" target="_blank"><b>[% msg.maketext("Aufruf dieser Spezial-Sicht") %]</b></a>
 <p />
-([% msg.maketext("Bitte bookmarken unter:") %]<b>http://search.openbib.org/[% viewname %]/[% config.get('handler').startopac_loc.name %].html</b>)
+([% msg.maketext("Bitte bookmarken unter:") %]<b>http://search.openbib.org/portal/[% viewname %]/[% config.get('handler').startopac_loc.name %].html</b>)
 </td></tr>
 </table>
 <p />

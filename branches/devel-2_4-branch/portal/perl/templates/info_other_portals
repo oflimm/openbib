@@ -25,7 +25,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/15?database=[% database %]" title="[% msg.maketext("Spezialisierte KUG-Portale") %]">[% msg.maketext("Spezialisierte KUG-Portale") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/other_portals.html" title="[% msg.maketext("Spezialisierte OpenBib-Portale") %]">[% msg.maketext("Spezialisierte OpenBib-Portale") %]</a></li>
 </ul>
 
 <div class="content">
@@ -68,11 +68,9 @@ eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.") %]
 <img style="vertical-align:bottom"
 src="[% config.get('follow_img') %]" alt="[% msg.maketext("Weiterleitungs-Icon") %]"
 />&nbsp;<a
-href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=[%
-viewname %]" target="_blank"><b>[% msg.maketext("Aufruf dieser Spezial-Sicht") %]</b></a>
+href="http://search.openbib.org/portal/[% viewname %]/[% config.get('handler').startopac_loc.name %].html" target="_blank"><b>[% msg.maketext("Aufruf dieser Spezial-Sicht") %]</b></a>
 <p />
-([% msg.maketext("Bitte bookmarken unter:") %]<b>http://kug.ub.uni-koeln.de/portal/lastverteilung?view=[%
-viewname %]</b>)
+([% msg.maketext("Bitte bookmarken unter:") %]<b>http://search.openbib.org/[% viewname %]/[% config.get('handler').startopac_loc.name %].html</b>)
 </td></tr>
 </table>
 <p />

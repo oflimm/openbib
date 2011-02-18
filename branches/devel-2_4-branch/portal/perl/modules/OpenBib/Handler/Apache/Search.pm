@@ -4,7 +4,7 @@
 #
 #  ehemals VirtualSearch.pm
 #
-#  Dieses File ist (C) 1997-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -151,6 +151,16 @@ sub search_as_rdf {
     return;
 }
 
+sub search_as_rss {
+    my $self = shift;
+
+    $self->param('representation','rss');
+
+    $self->search_databases;
+
+    return;
+}
+
 sub search_databases {
     my $self = shift;
 
@@ -239,14 +249,16 @@ sub search_databases {
     }
     else {
         $searchquery->set_from_apache_request($r,\@databases);
+
+        $queryalreadyexists = 0;
         
-        # Abspeichern des Query und Generierung der Queryid
-        if ($session->{ID} ne "-1") {
-            ($queryalreadyexists,$queryid) = $session->get_queryid({
-                databases   => \@databases,
-                hitrange    => $hitrange,
-            });
-        }
+#         # Abspeichern des Query und Generierung der Queryid
+#         if ($session->{ID} ne "-1") {
+#             ($queryalreadyexists,$queryid) = $session->get_queryid({
+#                 databases   => \@databases,
+#                 hitrange    => $hitrange,
+#             });
+#         }
     }
 
 #     if ($searchindex){
@@ -675,6 +687,8 @@ sub search_databases {
             $resulttime    =~s/(\d+\.\d+) .*/$1/;
             
             $logger->info($fullresultcount . " results found in $resulttime");
+
+            $searchquery->set_hits($fullresultcount);
             
             if ($fullresultcount >= 1) {
                 $nav = Data::Pageset->new({
@@ -705,6 +719,7 @@ sub search_databases {
                 
                 if ($drilldown) {
                     $category_map_ref = $request->get_categorized_drilldown;
+                    $searchquery->set_results($category_map_ref->{8}); # Verteilung nach Datenbanken
                 }
             }
 
@@ -1219,15 +1234,11 @@ sub search_databases {
         $session->updatelastresultset(\@resultset);
     }
 
-    ######################################################################
-    # Bei einer SessionID von -1 wird effektiv keine Session verwendet
-    ######################################################################
-
     # Neuer Query
-    if (!$queryalreadyexists) {
+#    if (!$queryalreadyexists) {
 
         # Jetzt update der Trefferinformationen
-        $searchquery->save({sessionID => $session->{ID}, queryid => $queryid});
+        $searchquery->save({sessionID => $session->{ID}});
 
         # Wurde in allen Katalogen recherchiert?
         
@@ -1252,19 +1263,19 @@ sub search_databases {
             serialize => 1,
         });
         
-        $session->set_hits_of_query({
-            queryid => $queryid,
-            hits    => $gesamttreffer,
-        });
+#         $session->set_hits_of_query({
+#             queryid => $queryid,
+#             hits    => $gesamttreffer,
+#         });
         
-        $session->set_all_searchresults({
-            queryid  => $queryid,
-            results  => \%trefferpage,
-            dbhits   => \%dbhits,
-            hitrange => $hitrange,
-        }) unless ($joindbs);
+#         $session->set_all_searchresults({
+#             queryid  => $queryid,
+#             results  => \%trefferpage,
+#             dbhits   => \%dbhits,
+#             hitrange => $hitrange,
+#         });# unless ($joindbs);
 
-    }
+#    }
     
     return Apache2::Const::OK;
 }

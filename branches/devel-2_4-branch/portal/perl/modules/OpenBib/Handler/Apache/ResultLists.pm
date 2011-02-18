@@ -106,7 +106,6 @@ sub show {
     ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
 
     my $database     = $query->param('db')     || '';
-    my $action       = $query->param('action')       || '';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
@@ -122,7 +121,7 @@ sub show {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     # Gibt es bereits Rechercheergebnisse?
-    if ($session->get_number_of_items_in_resultlist() <= 0) {
+    if ($session->get_number_of_queries() <= 0) {
 
         my $loginname="";
         my $password="";

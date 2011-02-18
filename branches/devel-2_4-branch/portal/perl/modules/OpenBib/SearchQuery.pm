@@ -2,7 +2,7 @@
 #
 #  OpenBib::SearchQuery
 #
-#  Dieses File ist (C) 2008-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -61,6 +61,7 @@ sub _new_instance {
     my $self = {
         _databases             => [],
         _filter                => [],
+        _results               => {},
         _have_searchterms      => 0,
     };
 
@@ -327,13 +328,11 @@ sub save  {
     # Set defaults
     my $sessionID              = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}           : undef;
-    my $hitrange               = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}            : 50;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    unless ($sessionID && $self->{_id}){
+    unless ($sessionID){
         return $self;
     }
     
@@ -350,24 +349,31 @@ sub save  {
         $query_obj_string = unpack "H*", Storable::freeze($self);
     }
     elsif ($config->{internal_serialize_type} eq "json"){
-        $query_obj_string = encode_json $self;
+        $query_obj_string = $self->to_json;
     }
     else {
         $query_obj_string = unpack "H*", Storable::freeze($self);
     }
 
-    my $databases_string = join('\|\|',@{$self->{_databases}});
-
     $logger->debug("Query Object: ".$query_obj_string);
-    $logger->debug("Query Databases: ".$databases_string);
+
+    my $request=$dbh->prepare("select queryid from queries where query = ? and sessionid = ?") or $logger->error($DBI::errstr);
+    $request->execute($query_obj_string,$sessionID) or $logger->error($DBI::errstr);
+    my $result  = $request->fetchrow_hashref;
+    my $queryid = $result->{queryid};
+        
+
+    # Wenn noch nicht vorhanden, dann eintragen
+    if (!$queryid){
+        $request=$dbh->prepare("insert into queries (queryid,sessionid,query) values (NULL,?,?)") or $logger->error($DBI::errstr);
+        $request->execute($sessionID,$query_obj_string) or $logger->error($DBI::errstr);
+
+        $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string");
+    }
+    else {
+        $logger->debug("Query already exists with ID $queryid: $query_obj_string");
+    }
     
-    my $request=$dbh->prepare("delete from queries where queryid=? and sessionid=?") or $logger->error($DBI::errstr);
-    $request->execute($self->{_id},$sessionID) or $logger->error($DBI::errstr);
-
-    $request=$dbh->prepare("insert into queries (queryid,sessionid,query,hitrange,hits,dbases) values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($self->{_id},$sessionID,$query_obj_string,$hitrange,$self->{_hits},$databases_string) or $logger->error($DBI::errstr);
-
-    $logger->debug("Saving SearchQuery: queryid,sessionid,query_obj_string,hitrange,hits,dbases = $self->{_id},$sessionID,$query_obj_string,$hitrange,$self->{_hits},$databases_string");
     $request->finish();
 
     return $self;
@@ -401,10 +407,22 @@ sub to_cgi_params {
     return join(";",@cgiparams);
 }
 
+sub set_results {
+    my ($self,$result_ref)=@_;
+
+    $self->{_results} = $result_ref;
+}
+
 sub get_hits {
     my ($self)=@_;
 
     return $self->{_hits};
+}
+
+sub set_hits {
+    my ($self,$hits)=@_;
+
+    $self->{_hits} = $hits;
 }
 
 sub get_id {
@@ -694,7 +712,7 @@ sub to_json {
         $tmp_ref->{$property} = $self->{$property};
     }
     
-    return encode_json $tmp_ref;
+    return JSON::XS->new->utf8->canonical->encode($tmp_ref);
 }
 
 sub from_json {

@@ -658,6 +658,28 @@ sub get_number_of_items_in_resultlist {
     return $numofitems;
 }
 
+sub get_number_of_queries {
+    my ($self,$arg_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("select count(queryid) as rowcount from queries where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofitems = $res->{rowcount};
+    $idnresult->finish();
+
+    return $numofitems;
+}
+
 sub get_items_in_resultlist_per_db {
     my ($self,$arg_ref)=@_;
 
@@ -788,8 +810,6 @@ sub get_all_searchqueries {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $offset    = exists $arg_ref->{offset}
-        ? $arg_ref->{offset}            : undef;
 
     my $sessionid = exists $arg_ref->{sessionid}
         ? $arg_ref->{sessionid}         : undef;
@@ -806,10 +826,6 @@ sub get_all_searchqueries {
 
     # Ausgabe der vorhandenen queries
     my $sql_request="select * from queries where sessionid = ?";
-
-    if (defined $offset){
-        $sql_request="select distinct searchresults.queryid as queryid,queries.query as query,queries.hits as hits, queries.dbases as dbases from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid and searchresults.offset=$offset order by queryid desc";
-    }
 
     my $thissessionid = (defined $sessionid)?$sessionid:$self->{ID};
     my $idnresult=$dbh->prepare($sql_request) or $logger->error($DBI::errstr);

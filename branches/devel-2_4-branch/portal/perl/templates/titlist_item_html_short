@@ -140,7 +140,7 @@
 
     IF ebook ;
       ebook = "${path_prefix}/${config.get('handler').redirect_loc.name}/503/${ebook}" ;
-      titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${"ebook_i18n"}</a>") ;
+      titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
     END ;
 
     IF toc ;

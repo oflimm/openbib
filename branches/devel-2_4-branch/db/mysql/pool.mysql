@@ -20,7 +20,7 @@ create table person (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
@@ -50,7 +50,7 @@ create table person_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
@@ -72,7 +72,7 @@ create table corporatebody (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
@@ -102,7 +102,7 @@ create table corporatebody_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
@@ -124,7 +124,7 @@ create table subject (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
@@ -154,7 +154,7 @@ create table subject_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
@@ -176,7 +176,7 @@ create table classification (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 ;
 
@@ -206,7 +206,7 @@ create table classification_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 
 /*-------------------------------------------------*/
@@ -227,7 +227,7 @@ create table title (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 
 drop table IF EXISTS title_ft;
@@ -255,7 +255,7 @@ create table title_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 
 /*-------------------------------------------------*/
@@ -276,7 +276,7 @@ create table holding (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 
 drop table IF EXISTS holding_ft;
@@ -304,7 +304,7 @@ create table holding_string (
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 
 /*-------Genereller Connector ---------*/
@@ -322,7 +322,7 @@ index      (sourceid,sourcetype,targettype)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 
 drop table IF EXISTS title_listitem;
@@ -333,7 +333,7 @@ PRIMARY KEY (id)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;
 
 drop table IF EXISTS popularity;
@@ -344,5 +344,5 @@ INDEX     (id)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
-ENGINE=Innodb
+ENGINE=MyISAM
 PACK_KEYS=1;

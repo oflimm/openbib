@@ -31,7 +31,7 @@
 
 <p />
 
-[% USE dumper;dumper.dump(queries); %]
+[%# USE dumper;dumper.dump(queries); %]
 
 <table width="100%">
 <tr>
@@ -47,41 +47,41 @@
 <table>
 
 <tr><td colspan="2">(
-[%- IF thisquery.searchquery.fs.val -%]
-&nbsp;FS: [% thisquery.searchquery.fs.val %] 
+[%- IF thisquery.get_searchquery.freesearch.val -%]
+&nbsp;Freie Suche: [% thisquery.get_searchquery.freesearch.val %] 
 [%- END -%]
-[%- IF thisquery.searchquery.verf.val -%]
-&nbsp;AUT: [% thisquery.searchquery.verf.val %]
+[%- IF thisquery.get_searchquery.person.val -%]
+&nbsp;Person: [% thisquery.get_searchquery.person.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.hst.val -%]
-&nbsp;HST: [% thisquery.searchquery.hst.val %]
+[%- IF thisquery.get_searchquery.title.val -%]
+&nbsp;Titel: [% thisquery.get_searchquery.title.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.swt.val -%]
-&nbsp;SWT: [% thisquery.searchquery.swt.val %]
+[%- IF thisquery.get_searchquery.subject.val -%]
+&nbsp;Schlagwort: [% thisquery.get_searchquery.subject.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.kor.val -%]
-&nbsp;KOR: [% thisquery.searchquery.kor.val %]
+[%- IF thisquery.get_searchquery.corporatebody.val -%]
+&nbsp;K&ouml;perschaft: [% thisquery.get_searchquery.corporatebody.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.notation.val -%]
-&nbsp;NOT: [% thisquery.searchquery.notation.val %] 
+[%- IF thisquery.get_searchquery.classification.val -%]
+&nbsp;Systematik: [% thisquery.get_searchquery.classification.val %] 
 [%- END -%]
-[%- IF thisquery.searchquery.sign.val -%]
-&nbsp;SIG: [% thisquery.searchquery.sign.val %]
+[%- IF thisquery.get_searchquery.mark.val -%]
+&nbsp;Signatur: [% thisquery.get_searchquery.mark.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.ejahr.val -%]
-&nbsp;EJAHR: [% thisquery.searchquery.ejahr.val %]
+[%- IF thisquery.get_searchquery.year.val -%]
+&nbsp;Jahr: [% thisquery.get_searchquery.year.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.isbn.val -%]
-&nbsp;ISBN: [% thisquery.searchquery.isbn.val %]
+[%- IF thisquery.get_searchquery.isbn.val -%]
+&nbsp;ISBN: [% thisquery.get_searchquery.isbn.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.issn.val -%]
-&nbsp;ISSN: [% thisquery.searchquery.issn.val %]
+[%- IF thisquery.get_searchquery.issn.val -%]
+&nbsp;ISSN: [% thisquery.get_searchquery.issn.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.mart.val -%]
-&nbsp;MART: [% thisquery.searchquery.mart.val %]
+[%- IF thisquery.get_searchquery.mediatype.val -%]
+&nbsp;Medientyp: [% thisquery.get_searchquery.mediatype.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.hststring.val -%]
-&nbsp;HSTR: [% thisquery.searchquery.hststring.val %] 
+[%- IF thisquery.get_searchquery.titlestring.val -%]
+&nbsp;Titelstring: [% thisquery.get_searchquery.titlestring.val %] 
 [%- END -%]
 )</td></tr>
 
@@ -97,16 +97,13 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;jn=1;page=1"><b>kombinierte</b></a> / <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];num=50;srt=author;srto=up;jn=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.get_id %];num=50;srt=author;srto=up;jn=1;page=1"><b>kombinierte</b></a> / <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.get_id %];num=50;srt=author;srto=up;jn=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% thisquery.get_hits %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 [% listrow = 'listrow2' %]
-[% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.id %];database=[% resultdb.trefferdb %];num=50;srt=author;srto=up;page=1"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
-[%   IF resultdb.trefferzahl == qopts.maxhits %]
-[% msg.maketext("mind.") %]&nbsp;
-[%   END %]
-[% resultdb.trefferzahl %]
+[% FOREACH result IN thisquery.get_results %]
+<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.get_id %];database=[% result.first %];num=50;srt=author;srto=up;page=1"><b>[% dbinfo.dbnames.${result.first}.full %]</b></a></td><td align="right">
+[% result.1 %]
 </td></tr>
 [%   IF listrow == 'listrow1' %]
 [%     listrow = 'listrow2' %]
@@ -124,9 +121,6 @@
 
 [% IF queryids.size >= 0 %]
 <form method="get" action="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]">
-<input type="hidden" name="sessionID"    value="[% sessionID %]" />
-<input type="hidden" name="action"       value="choice" />
-<input type="hidden" name="view"         value="[% view %]" />
 	  
 <p />
 <table width="100%"><tr>
@@ -144,8 +138,5 @@
 [% END %]
 
 </div>
-
-<p />
-
 
 [% PROCESS common/subtemplate name="std_footer" %]

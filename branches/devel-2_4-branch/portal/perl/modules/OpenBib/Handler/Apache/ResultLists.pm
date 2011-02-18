@@ -112,7 +112,9 @@ sub show {
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-  
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return Apache2::Const::OK;
@@ -161,9 +163,7 @@ sub show {
     my @querystrings = ();
     my @queryhits    = ();
     
-    my @queries      = $session->get_all_searchqueries({
-        offset => '0',
-    });
+    my @queries      = $session->get_all_searchqueries;
     
     # Finde den aktuellen Query
     my $thisquery_ref={};
@@ -176,7 +176,7 @@ sub show {
     # ansonsten nehmen den ausgewaehlten
     else {
         foreach my $query_ref (@queries) {
-            if (@{$query_ref}{id} eq "$queryid") {
+            if ($query_ref->get_id eq "$queryid") {
                 $thisquery_ref=$query_ref;
             }
         }
@@ -193,7 +193,8 @@ sub show {
         
         thisquery  => $thisquery_ref,
         queryid    => $queryid,
-        
+
+        dbinfo     => $dbinfotable,
         qopts      => $queryoptions->get_options,
         hitcount   => $hitcount,
         resultdbs  => $resultdbs_ref,

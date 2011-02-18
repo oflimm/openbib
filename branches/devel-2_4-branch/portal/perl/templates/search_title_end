@@ -23,7 +23,7 @@
 
 <p />
 
-[% PROCESS common/subtemplate name="virtualsearch_more_search_tips" %]
+[% PROCESS common/subtemplate name="search_more_tips" %]
 
 
 </div>

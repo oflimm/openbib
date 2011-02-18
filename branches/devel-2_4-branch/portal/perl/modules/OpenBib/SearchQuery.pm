@@ -78,6 +78,34 @@ sub _new_instance {
     return $self;
 }
 
+sub new {
+    my ($class) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $self = {
+        _databases             => [],
+        _filter                => [],
+        _results               => {},
+        _have_searchterms      => 0,
+    };
+
+    foreach my $searchfield (keys %{$config->{searchfield}}){
+        $self->{_searchquery}{$searchfield} = {
+            norm => '',
+            val  => '',
+            bool => '',
+        };
+    }
+
+    bless ($self, $class);
+
+    return $self;
+}
+
 sub set_from_apache_request {
     my ($self,$r,$dbases_ref)=@_;
     
@@ -304,18 +332,12 @@ sub load  {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult=$dbh->prepare("select query,hits,dbases from queries where sessionID = ? and queryid = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select queryid,query from queries where sessionID = ? and queryid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
     my $res = $idnresult->fetchrow_hashref();
 
     $self->from_json($res->{query});
-
-    $logger->debug("Stored Databases as string: ".$res->{dbases});
-    
-    my @databases         = split('\|\|',$res->{dbases});
-
-    $logger->debug("Stored Databases: ".join(',',@databases));
-    $self->{_databases}   = \@databases;
+    $self->set_id($res->{queryid});
     
     $idnresult->finish();
 
@@ -407,6 +429,12 @@ sub to_cgi_params {
     return join(";",@cgiparams);
 }
 
+sub get_results {
+    my ($self)=@_;
+
+    return $self->{_results};
+}
+
 sub set_results {
     my ($self,$result_ref)=@_;
 
@@ -429,6 +457,12 @@ sub get_id {
     my ($self)=@_;
 
     return $self->{_id};
+}
+
+sub set_id {
+    my ($self,$id)=@_;
+
+    $self->{_id}=$id;
 }
 
 sub get_databases {

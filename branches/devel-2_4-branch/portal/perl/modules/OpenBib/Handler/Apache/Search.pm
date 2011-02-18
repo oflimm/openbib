@@ -245,7 +245,7 @@ sub search_databases {
     if ($queryid){
         $logger->debug("Query exists for SessionID $session->{ID} -> $queryid: Loading");
         $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
-        @databases = @{$searchquery->get_databases};
+        @databases = @{$searchquery->get_databases} unless (@databases);
         
         $queryalreadyexists = 1;
     }

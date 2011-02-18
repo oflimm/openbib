@@ -1165,8 +1165,6 @@ sub get_infomatrix_of_active_databases {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $session           = exists $arg_ref->{session}
-        ? $arg_ref->{session}           : undef;
     my $checkeddb_ref     = exists $arg_ref->{checkeddb_ref}
         ? $arg_ref->{checkeddb_ref}     : undef;
     my $maxcolumn         = exists $arg_ref->{maxcolumn}

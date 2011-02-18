@@ -119,14 +119,16 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h1>[% msg.maketext("Recherchieren Sie in OpenBib in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% path_prefix %]/[% config.get('handler').search_loc.name %]">
 
 
 
 <input type="hidden" name="jn" value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
 <input type="hidden" name="st"         value="2" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
 
 [% PROCESS common/subtemplate name="searchform_query" %]
 
@@ -194,13 +196,14 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h1>[% msg.maketext("Recherchieren Sie in OpenBib in [_1] Titeln und [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% path_prefix %]/[% config.get('handler').search_loc.name %]">
 
 
 
 <input type="hidden" name="jn" value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="mart"      value="Zeitschrift_Serie" />
 <input type="hidden" name="boolmart"  value="AND" />
@@ -254,13 +257,14 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h1>[% msg.maketext("Recherchieren Sie in OpenBib in [_1] Titeln und [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% path_prefix %]/[% config.get('handler').search_loc.name %]">
 
 
 
 <input type="hidden" name="jn" value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="mart"      value="Aufsatz" />
 <input type="hidden" name="boolmart"  value="AND" />
@@ -410,64 +414,10 @@ Literaturlisten usw.<p/>") %]
 </td><!-- End bottom_left -->
 
 <td class="overview"><!-- Begin overview-->
-<h3><img style="vertical-align:bottom" src="[% config.get('search_img') %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[%- IF viewdbs.size == 1 -%][% msg.maketext("In den Institutsbestand eintauchen") %][%- ELSE -%][% msg.maketext("In den Gesamtbestand eintauchen") %][%- END -%]</h3>
-
-<a style="font-size: 1.5em;" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/[%- IF viewdbs.size == 1 -%]14?db=[% viewdbs.first %][%- ELSE -%]13[%- END -%]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
-<a style="font-size: 1.3em;" href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?&action=show_public_lists[% IF view_config.${view}.subjectid %];subjectid=[% view_config.${view}.subjectid %][%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
-<a style="font-size: 1.1em;" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
-<a                           href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/10?database=[% viewdbs.first %]" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
-<a style="font-size: 1.2em;" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
-
-<h3>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h3>
-[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('handler').ezb_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
-
-<h3>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h3>
-[% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
-lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('handler').dbis_loc.name}?action=show_subjects;show_cloud=1\">","</a>") %]
+[% PROCESS common/subtemplate name="searchform_bottom_center" %]
 </td><!-- End overview -->
 <td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
-<h3><img style="vertical-align:bottom" src="[% config.get('note_img') %]" alt="Notieren"/>&nbsp;[% msg.maketext("Legen Sie Literaturlisten an und vergeben Sie Tags") %]</h3>
-
-<h4>[% msg.maketext("Die 5 zuletzt angelegten Literaturlisten") %]</h4>
-
-[%- IF view_config.${view}.subjectid ;
-       lastlitlists = user.get_recent_litlists({count => 5, subjectid => view_config.${view}.subjectid }) ;
-    ELSE ;
-       lastlitlists = user.get_recent_litlists({count => 5 }) ;
-    END ;
--%]
-
-[% IF lastlitlists.size > 0 %]
-<ul class="recent_litlists">
-[%   FOREACH litlist IN lastlitlists %]
-<li><a href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% litlist.id%];do_showlitlist=1">[% litlist.title %]</a> ([% litlist.itemcount %])[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
-[%   END %]
-</ul>
-[% ELSE %]
-Es wurden diesem Katalog noch keine Literaturlisten 
-thematisch zugeordnet.
-[% END %]
-
-<h4>[% msg.maketext("Die 5 zuletzt vergebenen Tags") %]</h4>
-
-[%-
-   IF viewdbs.size == 1 ;
-      lasttags = user.get_recent_tags({count => 5, database => viewdbs.first }) ;
-   ELSE ;
-      lasttags = user.get_recent_tags({count => 5 }) ;
-   END ;
--%]
-
-[% IF lasttags.size > 0 %]
-<ul class="recent_tags">
-[%   FOREACH thistag IN lasttags %]
-<li><a href="[% path_prefix %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% thistag.id %]">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
-[%   END %]
-</ul>
-[% ELSE %]
-Es wurden noch keine Titel aus diesem Katalog getaggt.
-[% END %]
-
+[% PROCESS common/subtemplate name="searchform_bottom_right" %]
 </td><!-- End Literaturlisten/Tags -->
 </tr>
 </table>

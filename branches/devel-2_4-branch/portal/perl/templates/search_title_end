@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == 'html' -%]
 
 <div class="refine_query">

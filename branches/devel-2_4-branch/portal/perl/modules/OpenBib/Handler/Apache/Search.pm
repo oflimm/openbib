@@ -213,7 +213,7 @@ sub search_databases {
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
-    my $drilldown     = $query->param('dd')            || 0;     # Drill-Down?
+    my $drilldown     = $query->param('dd')            || 1;     # Drill-Down?
     
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
@@ -237,6 +237,8 @@ sub search_databases {
     my $sysprofile   = $config->get_viewinfo($view)->profilename;
 
     @databases       = $self->get_databases();
+
+    $logger->debug("Searching backend $sb in databases ".join(',',@databases));
     
     my $queryalreadyexists = 0;
 
@@ -1237,8 +1239,10 @@ sub search_databases {
     # Neuer Query
 #    if (!$queryalreadyexists) {
 
-        # Jetzt update der Trefferinformationen
-        $searchquery->save({sessionID => $session->{ID}});
+    unless ($queryid){
+    
+        # Jetzt update der Trefferinformationen, wenn keine ID
+        $searchquery->save({sessionID => $session->{ID}}); 
 
         # Wurde in allen Katalogen recherchiert?
         
@@ -1275,7 +1279,7 @@ sub search_databases {
 #             hitrange => $hitrange,
 #         });# unless ($joindbs);
 
-#    }
+    }
     
     return Apache2::Const::OK;
 }

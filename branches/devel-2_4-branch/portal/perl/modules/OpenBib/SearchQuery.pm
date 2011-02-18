@@ -534,8 +534,12 @@ sub to_xapian_querystring {
     $xapianquerystring  = join(" ",@xapianquerystrings);
     $xapianfilterstring = join(" ",@xapianfilterstrings);
 
-    $xapianquerystring=~s/^OR /FALSE OR /;
-    $xapianquerystring=~s/^NOT /TRUE NOT /;
+    $xapianquerystring=~s/^AND //;
+    $xapianquerystring=~s/^OR //;
+    $xapianquerystring=~s/^NOT //;
+
+#    $xapianquerystring=~s/^OR /FALSE OR /;
+#    $xapianquerystring=~s/^NOT /TRUE NOT /;
     
     $logger->debug("Xapian-Querystring: $xapianquerystring - Xapian-Filterstring: $xapianfilterstring");
     return {

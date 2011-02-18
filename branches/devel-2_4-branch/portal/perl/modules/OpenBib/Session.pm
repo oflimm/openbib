@@ -659,7 +659,7 @@ sub get_number_of_items_in_resultlist {
 }
 
 sub get_number_of_queries {
-    my ($self,$arg_ref)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -677,6 +677,8 @@ sub get_number_of_queries {
     my $numofitems = $res->{rowcount};
     $idnresult->finish();
 
+    $logger->debug("Found $numofitems queries in Session $self->{ID}");
+    
     return $numofitems;
 }
 
@@ -825,7 +827,7 @@ sub get_all_searchqueries {
             or $logger->error_die($DBI::errstr);
 
     # Ausgabe der vorhandenen queries
-    my $sql_request="select * from queries where sessionid = ?";
+    my $sql_request="select queryid from queries where sessionid = ? order by queryid DESC ";
 
     my $thissessionid = (defined $sessionid)?$sessionid:$self->{ID};
     my $idnresult=$dbh->prepare($sql_request) or $logger->error($DBI::errstr);
@@ -835,15 +837,8 @@ sub get_all_searchqueries {
     my @queries=();
 
     while (my $result=$idnresult->fetchrow_hashref()) {
-        my $dbases = decode_utf8($result->{'dbases'});
-        my $searchquery_ref = decode_json $result->{'query'};
-
-        push @queries, {
-            id          => decode_utf8($result->{queryid}),
-            searchquery => $searchquery_ref->{_searchquery},
-            hits        => decode_utf8($result->{hits}),
-            dbases      => $dbases,            
-        };
+        my $searchquery = OpenBib::SearchQuery->new->load({sessionID => $self->{ID}, queryid => $result->{'queryid'}});
+        push @queries, $searchquery;
     }
 
     $idnresult->finish();

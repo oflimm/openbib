@@ -102,7 +102,7 @@
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 [% listrow = 'listrow2' %]
 [% FOREACH result IN thisquery.get_results %]
-<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.get_id %];database=[% result.first %];num=50;srt=author;srto=up;page=1"><b>[% dbinfo.dbnames.${result.first}.full %]</b></a></td><td align="right">
+<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.get_id %];db=[% result.first %];num=50;srt=author;srto=up;page=1"><b>[% dbinfo.dbnames.${result.first}.full %]</b></a></td><td align="right">
 [% result.1 %]
 </td></tr>
 [%   IF listrow == 'listrow1' %]

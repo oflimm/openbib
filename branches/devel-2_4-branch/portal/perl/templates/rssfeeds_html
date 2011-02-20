@@ -43,11 +43,8 @@ dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm.") %]
 [%- IF view && view !='kug' -%]
 
 [%- FOREACH category = config.get_orgunits(sysprofile) -%]
-[% USE dumper;dumper.dump(category)%]
-
-xxx
-
-[% USE dumper;dumper.dump(rssfeedinfo)%]
+[%# USE dumper;dumper.dump(category)%]
+[%# USE dumper;dumper.dump(rssfeedinfo)%]
 [% IF rssfeedinfo.${category.description} %]
 
 [% FOREACH item IN rssfeedinfo.${category.description} %]

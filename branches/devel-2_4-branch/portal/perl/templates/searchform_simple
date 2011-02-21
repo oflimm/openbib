@@ -231,8 +231,8 @@ $(document).ready(function(){
 
 
 
-<input type="hidden" name="mart"      value="Zeitschrift_Serie" />
-<input type="hidden" name="boolmart"  value="AND" />
+<input type="hidden" name="ftyp"      value="Zeitschrift_Serie" />
+<input type="hidden" name="bftyp"     value="AND" />
 
 <table>
 <tr><td colspan="2"><input id="input_box_serials" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
@@ -324,8 +324,8 @@ $(document).ready(function(){
 
 
 
-<input type="hidden" name="mart"      value="Aufsatz" />
-<input type="hidden" name="boolmart"  value="AND" />
+<input type="hidden" name="ftyp"      value="Aufsatz" />
+<input type="hidden" name="bftyp"     value="AND" />
 
 <table>
 <tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
@@ -418,8 +418,8 @@ $(document).ready(function(){
 
 
 
-<input type="hidden" name="mart"      value="E-Medien mit Online-Zugriff" />
-<input type="hidden" name="boolmart"  value="AND" />
+<input type="hidden" name="ftyp"      value="E-Medien mit Online-Zugriff" />
+<input type="hidden" name="bftyp"  value="AND" />
 
 <table>
 <tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>

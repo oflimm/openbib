@@ -1490,13 +1490,13 @@ sub update_databaseinfo_rss {
 }
 
 sub new_databaseinfo_rss {
-    my ($self,$dbname,$rsstype,$active,$rssid)=@_;
+    my ($self,$dbname,$rsstype,$active)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
-    $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',?)") or $logger->error($DBI::errstr);
+    $request->execute($dbname,$rsstype,$active) or $logger->error($DBI::errstr);
     $request->finish();
 
     return;

@@ -27,7 +27,7 @@
 
 <p />
 
-<h1 id="kugv2.3">Neuerungen mit Version 2.3 (Umstellung am 17.4.2009)</h1>
+<h1 id="openbibv2.3">Neuerungen mit Version 2.3 (Ver&ouml;ffentlicht am 17.4.2009)</h1>
 
 <h2>&Uuml;berarbeitung von Nutzerf&uuml;hrung und Design</h2>
 
@@ -43,11 +43,11 @@ jeweils mit ausgegeben.</li>
 
 <li>In der Einfachen Recherche sind nun auch Teilbest&auml;nde
 recherchierbar. Diese umfassen sowohl die einzelnen Fakult&auml;ten, wie
-auch die vom Nutzer unter 'Mein KUG' angelegten Katalogprofile.</li>
+auch die vom Nutzer unter 'Mein OpenBib' angelegten Katalogprofile.</li>
 
 <li>Die Seite der einfachen Suche bietet nun einen besseren
-&Uuml;berblick von den M&ouml;glichkeiten des KUG und wurde so zur
-zentralen Startseite des KUG ausgebaut.</li>
+&Uuml;berblick von den M&ouml;glichkeiten der OpenBib Software und wurde so zur
+zentralen Startseite von OpenBib ausgebaut.</li>
 
 <li>Die Einzeltrefferanzeige wurde komplett &uuml;berarbeitet und die
 einzelnen Informationen besser gruppiert</li>
@@ -57,10 +57,10 @@ usw.) wurden komplett &uuml;berarbeitet und in einem neuen
 Listen-Design vereinheitlicht.</li>
 
 <li>Auch jenseits der eigentlichen Recherchemasken kann der Nutzer nun
-an allen anderen Stellen im KUG &uuml;ber einen kleinen Suchschlitz
+an allen anderen Stellen in OpenBib &uuml;ber einen kleinen Suchschlitz
 weitere Recherchen anstossen. Um mehr Raum f&uuml;r die eigentlichen
 Inhalte zu gewinnen ging damit eine Verkleinerung des
-KUG-Logo-Bereiches einher.</li>
+OpenBib-Logo-Bereiches einher.</li>
 
 <li>Der Nutzer kann nun direkt in den Trefferlisten auf
 Inhaltsverzeichnisse zu den jeweiligen Titeln zugreifen.</li>
@@ -80,9 +80,11 @@ aufbereitet werden.
 
 <p> Sowohl die Elektronische ZeitschriftenBibliothek (EZB), als auch
 das Datenbank Informationssystem (DBIS), in denen eine Vielzahl freier
-und alle von der USB lizensierten Zeitschriften und Datenbanken
-nachgewiesen sind, wurden voll in den KUG integriert und sind &uuml;ber
-die Einstiegsseite der einfachen Suche sofort zugreifbar. Der
+und alle von den jeweiligen Bibliotheken lizensierten Zeitschriften und Datenbanken
+nachgewiesen sind, wurden voll in OpenBib integriert und sind &uuml;ber
+die Einstiegsseite der einfachen Suche sofort zugreifbar. &Uuml;ber
+die dort registrierte Bibliotheks-ID kann somit immer auch direkt in
+OpenBib auf die eigenen Best&auml;nde zugegriffen werden. Der
 Zugriff kann sowohl &uuml;ber ein Bl&auml;ttern in Fachgruppen, wie
 auch eine direkte Recherche erfolgen, die sich auch auf einzelne
 Fachgruppen begrenzen l&auml;sst.</p>
@@ -105,7 +107,7 @@ Der Nutzer kann seine Literaturlisten nun einem festen Satz an
 Themengebieten zuordnen und so auch f&uuml;r Andere fachlich
 erschlie&szlig;en.</p>
 
-<p>[<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/3146/322/6/kug/index.html" target="_blank">Beispiel</a>]
+<p>[<a href="http://search.openbib.org/portal/openbib/resource/litlist/1.html" target="_blank">Beispiel</a>]
 </p>
 
 <h2>Kennzeichnung offizieller Literaturlisten der Fachbereiche</h2>
@@ -115,7 +117,7 @@ k&ouml;nnen nun von den Dozenten und Bibliothekaren als solche
 kenntlich gemacht werden. Diese Literaturlisten sind an folgendem
 Symbol zu erkennen: <img src="[% config.get('university_img') %]"/> </p>
 
-<p>[<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/3146/312/6/kugng/index.html" target="_blank">Beispiel</a>]
+<p>[<a href="http://search.openbib.org/portal/openbib/resource/litlist/1.html" target="_blank">Beispiel</a>]
 </p>
 
 <h2>Allgemeiner thematischer Zugriff</h2>
@@ -125,7 +127,7 @@ Auf die (systematisierten) Katalogtitel, elektronisch verf&uuml;gbaren
 Zeitschriten (EZB) und Datenbanken (DBIS) sowie die &ouml;ffentlichen
 Literaturlisten kann nun themenspezifisch als Verallgemeinerung des
 <emph>systematischen Bl&auml;tterns</emph> der Version 2.2 zugegriffen
-werden. Hierzu wurden &uuml;ber die KUG Web-Administration von
+werden. Hierzu wurden &uuml;ber die OpenBib Web-Administration von
 uns geeignete Themengebiete definiert und dann den zugeh&ouml;rigen
 Basis-Klassifikationen (f&uuml;r Katalogtitel), EZB-Fachgruppen
 (f&uuml;r elektronisch verf&uuml;gbare Zeitschriften) sowie DBIS-Fachgruppen
@@ -142,22 +144,21 @@ und die Ergebnisse in der Einzeltrefferanzeige ausgegeben.</p><p>[<a href="http:
 target="_blank">Beispiel</a>]
 </p>
 
-<h2>Integration der Informationen des Bibliotheksf&uuml;hrers und Mashup mit Google Maps</h2>
+<h2>Integration der Informationen von Bibliotheksf&uuml;hrern und Mashup mit Google Maps</h2>
 
-<p>
-Die Informationen des Bibliotheksf&uuml;hrers zu den einzelnen
-Instituts- und Seminarbibliotheken wurden nun vollst&auml;ndig in den
-KUG integriert. Hinzugef&uuml;gt wurde eine englische Lokalisierung
-der Kategorie-Namen sowie ein Kartenausschnitt mit der Lage der
-Bibliothek, der &uuml;ber einen Mashup mit Google Maps geliefert wird.
-</p>
+<p> Informationen von lokal gepflegten Bibliotheksf&uuml;hrern zu den
+einzelnen Instituts-, Seminar-, oder Teilbibliotheken wurden nun
+vollst&auml;ndig in OpenBib integriert. Hinzugef&uuml;gt wurde eine
+englische Lokalisierung der Kategorie-Namen sowie ein Kartenausschnitt
+mit der Lage der Bibliothek, der &uuml;ber einen Mashup mit Google
+Maps geliefert wird.  </p>
 
 <p>
 Ausf&uuml;hrliche Informationen finden Sie im zugeh&ouml;rigen <a
 href="http://blog.openbib.org/2009/03/02/neue-version-von-kug-und-openbib-im-beta-test/" target="_blank">Blog-Eintrag zur neuen Version im Beta-Test</a>.
 </p>
 
-<h1 id="kugv2.2">Neuerungen mit Version 2.2 (Umstellung am 8.7.2008)</h1>
+<h1 id="openbibv2.2">Neuerungen mit Version 2.2 (Ver&ouml;ffentlicht am 8.7.2008)</h1>
 
 <h2>Integration des Ausleihsystems</h2>
 
@@ -188,8 +189,8 @@ auf Titel zugegriffen werden.
 
 <h2>Weitere Anreicherungen</h2>
 
-<p> Die zentrale Anreicherung der Katalogdaten für alle Kateloge des
-KUG wurde um weitere Inhalte erweitert. Dazu gehört die Anreicherung
+<p> Die zentrale Anreicherung der Katalogdaten für alle Kateloge in
+OpenBib wurde um weitere Inhalte erweitert. Dazu gehört die Anreicherung
 </p>
 
 <ul>
@@ -201,7 +202,7 @@ nun in einem Katalog andere thematisch benachbarte Titel finden</li>
 href="http://www.gbv.de/wikis/cls/Bibliographic_Hash_Key"
 target="_blank">Bibkey</a>, einem bibliographischen "Fingerabdruck"
 des Titels, über den die systemübergreifende Titelidentifikation,
-z.B. zwischen dem KUG und BibSonomy, ermöglicht wird.</li>
+z.B. zwischen OpenBib und BibSonomy, ermöglicht wird.</li>
 
 <li>mit E-Book URLs, falls die USB den entsprechenden Titel als E-Book
 erworben hat. Damit besteht z.B. auch von einer Titelaufnahme der
@@ -220,25 +221,25 @@ Fall einer nicht vorhandenen ISBN - um den Bibkey erweitert.  </p>
 <h3>Thematische Integration weiterer Quellen</h3>
 
 <p> Die in BibSonomy enthaltenen Quellen - Publikationen wie auch
-Webseiten - werden vollintegriert in den KUG über Schlagworte/Tags
+Webseiten - werden vollintegriert in OpenBib über Schlagworte/Tags
 thematisch erschlossen. Ausgehend von einer Titelliste besteht der
 Zugriff zusätzlich auf Titel eines zugehörigen Nutzers (von BibSonomy)
 wie auch auf Titel, die durch Angabe mehrerer Tags eingegrenzt werden
 können. Bei Publikationen wird zusätzlich instantan überprüft, ob der
-jeweilige Titel in Katalogen des KUG enthalten ist und diese
+jeweilige Titel in Katalogen von OpenBib enthalten ist und diese
 Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben. </p>
 
 <p>
 <a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html" target="_blank">Beispiel</a>
 </p>
 
-<h3>Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy</h3>
+<h3>Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy</h3>
 
-<p> Wenn Titel im KUG getaggt werden, k&ouml;nnen diese Titel
+<p> Wenn Titel in OpenBib getaggt werden, k&ouml;nnen diese Titel
 inkl. Tags und Sichtbarkeitsinformationen (privat/&ouml;ffentlich)
 automatisch in eine entsprechenden BibSonomy-Kennung eingespielt und
 damit effektiv gespiegelt werden. Der Nutzer sucht und erschliesst
-also Titel durch Tagging in der KUG-Oberfl&auml;che, findet diese dann
+also Titel durch Tagging in der OpenBib-Oberfl&auml;che, findet diese dann
 aber auch in BibSonomy wieder und kann damit die dort vorhandenen weitergehenden
 M&ouml;glichkeiten nutzen </p>
 
@@ -248,7 +249,7 @@ M&ouml;glichkeiten nutzen </p>
 <p>
 Für viele Titel werden nun auch auf andere Ausgaben (andere Auflage,
 Sprache usw.) direkt in der Einzeltreffer-Anzeige verwiesen. Ebenso
-wird dort nun auch direkt auf andere KUG-Kataloge verwiesen, die
+wird dort nun auch direkt auf andere OpenBib-Kataloge verwiesen, die
 diese Ausgabe des Titels besitzen. 
 </p>
 
@@ -266,12 +267,12 @@ existieren.  </p>
 <h2>Verfügbarkeit des Titels in Google Book Search (zurückportiert
 nach Version 2.1) und BibSonomy</h2>
 
-<p> Der KUG wurde um eine Integration von Google Book Search
+<p> OpenBib wurde um eine Integration von Google Book Search
 erweitert. Dabei haben wir eine Art 'Ampel-System' wie das der EZB
 integriert.
 </p>
 <p>
-Konkret wird bei einem Einzeltreffer im KUG entsprechend dessen ISBN
+Konkret wird bei einem Einzeltreffer in OpenBib entsprechend dessen ISBN
 nach Zusatzinformationen bei Google Book Search gesucht und dem Nutzer
 mit einem Bild eine Rueckmeldung ueber deren Verfuegbarkeit gegeben.
 </p>
@@ -296,20 +297,20 @@ Verf&uuml;gbarkeit des Titels in BibSonomy angezeigt.
 
 <h2>Verzicht auf Frames</h2>
 
-<p>Die Nutzung von Frames innerhalb der KUG-Anwendung wurde
-entfernt. Damit konnte die Barrierefreiheit des KUG erhöht
-werden. Ebenso ist nun eine uneingeschränkte Nutzung des KUG im Rahmen
+<p>Die Nutzung von Frames innerhalb der OpenBib-Anwendung wurde
+entfernt. Damit konnte die Barrierefreiheit von OpenBib erhöht
+werden. Ebenso ist nun eine uneingeschränkte Nutzung von OpenBib im Rahmen
 der freien Bibliographie-Verwaltungssoftware <a
 href="http://www.zotero.org/" target="_blank">Zotero</a> möglich.</p>
 
 <h2>Verwendung von JavaScript und AJAX</h2>
 
-<p> Der KUG wurde um die Verwendung von JavaScript und AJAX
+<p> OpenBib wurde um die Verwendung von JavaScript und AJAX
 erweitert. Dies wurde so realisiert, dass alle Recherche- und
 Informationsmöglichkeiten auch mit aus Sicherheitsgründen
 abgeschalteten JavaScript im Web-Browser weiterhin nutzbar sind. Für
 alle anderen Nutzer mit aktiviertem JavaScript konnte dadurch die
-Bedienbarkeit des KUG an einigen Stellen verbessert werden. </p>
+Bedienbarkeit von OpenBib an einigen Stellen verbessert werden. </p>
 
 <p> Rufen Sie als Beispiel <a
 href="http://kug.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html"
@@ -319,7 +320,7 @@ mit deaktivierter JavaScript-Unterstützung Ihres Browsers auf.  </p>
 <p>Darüber hinaus wurden weitere tiefgreifende Änderungen im Fundament
 der Anwendung vorgenommen, wie eine Umstellung auf diverse neue Objekte</p>
 
-<h1 id="kugv2.1">Neuerungen mit Version 2.1 (Umstellung am 14.10.2007)</h1>
+<h1 id="openbibv2.1">Neuerungen mit Version 2.1 (Ver&ouml;ffentlicht am 14.10.2007)</h1>
 
 <h2>Vormerkungen</h2>
 
@@ -329,7 +330,7 @@ einsetzen (Heilp&auml;dagogik, Historisches Seminar, Ethnologie) mit
 einem separaten Web-OPAC Vormerkungen durchf&uuml;hren. Nach der
 Migration auf eine neue Version unseres integrierten
 Bibliothekssystems wird dieser Web-OPAC jedoch nicht mehr
-angeboten. Deswegen hat der KUG diese Funktion &uuml;bernommen.  Dies
+angeboten. Deswegen hat OpenBib diese Funktion &uuml;bernommen.  Dies
 hat den Vorteil, dass Nutzer nach der Recherche f&uuml;r Vormerkungen
 nicht mehr in eine andere Anwendung wechseln m&uuml;ssen.
 </p>
@@ -351,7 +352,7 @@ Zugriff auf inhaltlich benachbarte Titel</p>
 
 <h2>Kontextsensitive Hilfe</h2>
 
-<p> Wir haben begonnen, eine kontextbezogene Hilfe in den KUG
+<p> Wir haben begonnen, eine kontextbezogene Hilfe in OpenBib
 einzubauen.  Diese erkennen Sie an einem Fragezeichen <img
 src="[% config.get('info_img') %]" /> am rechten Bildschirmrand. &Uuml;ber
 dieses Fragezeichen k&ouml;nnen Sie zielgenau in den entsprechenden
@@ -381,7 +382,7 @@ weitere Informationen angereichert:</p>
 
 <ul>
 
-<li>Bei einem konkreten Titel im KUG wird nun zu einer vorhandenen
+<li>Bei einem konkreten Titel in OpenBib wird nun zu einer vorhandenen
 10-stelligen ISBN automatisch auch die zugeh&ouml;rige 13-stellige
 ISBN suchbar gemacht - und umgekehrt. Damit k&ouml;nnen nun
 insbesondere auch Titel mit 13-stelliger ISBN gefunden werden - wie
@@ -389,12 +390,12 @@ sie z.B. seit dem 1.1.2007 in Verlagskatalogen in Verwendung sind -
 wenn bei der Erfassung im Katalog lediglich die 10-stellige ISBN
 bekannt war. </li>
 
-<!--<li>Bei einem konkreten Titel im KUG werden nun auch die Verfasser des
+<li>Bei einem konkreten Titel in OpenBib werden nun auch die Verfasser des
 &uuml;bergeordneten Werkes suchbar gemacht. Damit wurde das
-sog. "Schiller-R&auml;ber-Problem" im KUG gel&ouml;st - bei einer
+sog. "Schiller-R&auml;ber-Problem" in OpenBib gel&ouml;st - bei einer
 Recherche nach Schiller und R&auml;ber werden nun also die
 entsprechenden Treffer nun gefunden, was bei korrekter Katalogisierung
-in der Regel nicht der Fall w&auml;re</li>-->
+in der Regel nicht der Fall w&auml;re</li>
 </ul>
 
 <h2>Virtueller Notations-Index</h2>
@@ -429,7 +430,7 @@ den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
 
 </p>
 
-<h1 id="kugv2.0">Neuerungen mit Version 2.0 (Umstellung am 19.3.2007)</h1>
+<h1 id="openbibv2.0">Neuerungen mit Version 2.0 (Ver&ouml;ffentlicht am 19.3.2007)</h1>
 
 <h2>Darstellung der vergebenen Schlagworte, Notationen, Körperschaften
 sowie Personen als Wortwolken
@@ -446,14 +447,14 @@ und Personen.
 
 <h2>Tagging</h2>
 
-<p> Angemeldete Nutzer können nun alle im KUG gefundenen Titel
+<p> Angemeldete Nutzer können nun alle in OpenBib gefundenen Titel
 'taggen', d.h. mit einem eigenen Etikett (= Schlagwort/Tag)
 versehen. Diese Tags sind einzelne Worte, die mit Leerzeichen getrennt
 eingeben müssen. Zur Vereinheitlichung werden sie automatisch normiert
 - d.h. Umlaute werden aufgelöst, es wird Kleinschreibung verwendet und
 unerwünschte Zeichen werden eliminiert (erlaubt sind Alphanumerische
 Zeichen sowie +-_.). Unter dem Reiter 'Tags' erhält der Nutzer dann in
-'Mein KUG' eine Übersicht aller von ihm verwendeten Tags in Form einer
+'Mein OpenBib' eine Übersicht aller von ihm verwendeten Tags in Form einer
 Wortwolke - je mehr Titel sie mit einem entsprechenden Tag versehen
 haben, desto grösser wird es dargestellt. Durch einen Klick auf einen
 Tag gelangt er zu einer Kurztitel-Liste aller Titel, die von ihm mit
@@ -480,14 +481,14 @@ kann, ohne sich mit der jeweiligen Suchoberfläche auseinandersetzen zu
 müssen.
 </p>
 
-<h2>&Uuml;bersicht der Spezial-Sichten des KUG</h2>
+<h2>&Uuml;bersicht der Spezial-Sichten von OpenBib</h2>
 
 <p>
-Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an
+Neben dem Standard OpenBib-Portal mit allen Katalogen gibt es eine Vielzahl an
 Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgewählt sind,
 die weitergehende Informationen anbieten oder ein eigenständiges
 Fach-Portal bilden. Diese f&uuml;r den Nutzer oft unsichtbaren
-speziellen Einstiegspunkte in verschiedene KUG-Varianten werden nun
+speziellen Einstiegspunkte in verschiedene OpenBib-Varianten werden nun
 an zentraler Stelle aufgef&uuml;hrt.
 </p>
 
@@ -552,7 +553,7 @@ die man Spezialanpassungen für einzelne Katalog-Typen ausgelagern
 kann. <!-- Schließlich können neben einem Komplett-Update eines Kataloges
 alternativ neue bzw. geänderte Datensätze von einem Target, das über
 die WebServices OLWS (Open Library WebServices) angesprechbar ist,
-auch live inkrementell aggregiert und in der zugehörigen KUG-Datenbank
+auch live inkrementell aggregiert und in der zugehörigen OpenBib-Datenbank
 aktualisiert werden. -->
 </p>
 
@@ -582,7 +583,7 @@ F&uuml;r den Benutzer direkt sichtbar wurde u.a. folgendes ge&auml;ndert:
 <li>Separate Recherche in Serie/Band/Quelle (Kategorien 089,451,590)</li>
 <li>Beschr&auml;nkung einer Recherche auf &Uuml;berordnungen
   (z.B. Hauptaufnahmen von Serien)</li>
-<li>Die Katalogauswahl ist f&uuml;r die Standard-KUG-Sicht nun direkt in die
+<li>Die Katalogauswahl ist f&uuml;r die Standard-OpenBib-Sicht nun direkt in die
   (komplexe) Rechercheseite integriert</li>
 <li>Erweiterung um das BibTeX-Format f&uuml;r die Merklisten</li>
 <li>Highlighting der Suchbegriffe in der Einzeltitelanzeige</li>
@@ -607,14 +608,14 @@ Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r
 den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
 </p>
 
-<h1 id="kugv1.2.3">Neuerungen mit Version 1.2.3 (Umstellung am 18.12.2006)</h1>
+<h1 id="openbibv1.2.3">Neuerungen mit Version 1.2.3 (Ver&ouml;ffentlicht am 18.12.2006)</h1>
 
 <h2>Recommender-Funktion mit Titelvorschl&auml;gen '...das k&ouml;nnte Sie interessieren' durch
 Nutzungsanalysen</h2>
 
 <p>
 Durch statistische Auswertungen des Ausleihverhaltens im Bestand der
-USB sowie des Nutzungsverhaltens im KUG werden zu einem gegebenen
+USB sowie des Nutzungsverhaltens in OpenBib werden zu einem gegebenen
 Titel gewichtete nutzer- bzw. sessionspezifische
 &Uuml;berschneidungsmengen mit anderen ausgeliehenen/-gew&auml;hlten
 Titeln bestimmt. Dadurch bekommt der Nutzer konkrete
@@ -654,12 +655,12 @@ ist. (R&uuml;ckportiert von Version 2.0)
 <h2>Standardkonformit&auml;t zu XHTML 1.0 transitional</h2>
 
 <p>
-Alle Templates des KUG wurden entsprechend &uuml;berarbeitet, so dass
+Alle Templates in OpenBib wurden entsprechend &uuml;berarbeitet, so dass
 nun &uuml;berall die Standardkonformit&auml;t entsprechend dem
 W3C-Validator gegeben ist.
 </p>
 
-<h1 id="kugv1.2.2">Neuerungen mit Version 1.2.2 (Umstellung am 4.4.2006)</h1>
+<h1 id="openbibv1.2.2">Neuerungen mit Version 1.2.2 (Ver&ouml;ffentlicht am 4.4.2006)</h1>
 
 <h2>RSS-Feeds (Abonnierbare Nachrichtenkan&auml;le)</h2>
 
@@ -679,7 +680,7 @@ Verf&uuml;gung stehen, dann werden sie katalog&uuml;bergreifend in der
 Titelanzeige verlinkt. (R&uuml;ckportiert von Version 2.0)
 </p>
 
-<h1 id="kugv1.2.1">Neuerungen mit Version 1.2.1 (Umstellung am 7.9.2005)</h1>
+<h1 id="openbibv1.2.1">Neuerungen mit Version 1.2.1 (Ver&ouml;ffentlicht am 7.9.2005)</h1>
 
 <h2>Virtueller Index</h2>
 
@@ -696,7 +697,7 @@ Dar&uuml;berhinaus wurden wesentliche Entwicklungen f&uuml;r den Benutzer unsich
 <li>Weitgehende Umstellung auf CSS</li>
 </ul>
 
-<h1 id="kugv1.2">Neuerungen mit Version 1.2 (Umstellung am 2.5.2005)</h1>
+<h1 id="openbibv1.2">Neuerungen mit Version 1.2 (Ver&ouml;ffentlicht am 2.5.2005)</h1>
 
 Die augenf&auml;lligste &Auml;nderung ist eine grunds&auml;tzliche &Uuml;berarbeitung der
 Benutzeroberfl&auml;che im Hinblick auf eine klarere Strukturierung. Hierzu
@@ -714,7 +715,7 @@ Vielfacher Wunsch war eine 'Verschlankung' der Suchmaske, um unn&ouml;tigen
 Ballast wie Hilfetexte zu vermeiden. Ebenso ist eine neue oder schlankere
 Strukturierung im Bereich der Recherche-Kategorien und -Einstellungen als
 Wunsch an uns herangetragen worden. Diese W&uuml;nsche stellen im Hinblick auf
-die bestehende Form der Recherchemaske einen Spagat dar, da der KUG
+die bestehende Form der Recherchemaske einen Spagat dar, da OpenBib
 andererseits nicht um seine umfangreichen M&ouml;glichkeiten f&uuml;r komplexe
 Recherchen beraubt werden soll. Die beste L&ouml;sung sehen wir daher in der
 Einf&uuml;hrung einer zus&auml;tzlichen (vorausgew&auml;hlten) 'einfachen Suchmaske'
@@ -723,7 +724,7 @@ erm&ouml;glicht). Prinzipiell ist es m&ouml;glich, via URL direkt in eine der be
 Suchmasken zu springen. Ebenso bleibt eine Suchmaskenauswahl f&uuml;r den Rest
 einer Sitzung bis zur Neuauswahl einer anderen bestehen. Schliesslich kann
 der Benutzer nach erfolgreichem Login seine preferierte Suchmaske in 'Mein
-KUG' festlegen.
+OpenBib' festlegen.
 
 <h2>Einf&uuml;hrung von viewspezifischen Templates im Kontext der Recherchemasken</h2>
 
@@ -792,7 +793,7 @@ zun&auml;chst vorausgew&auml;hlt ist.
 
 <h2>Anzeige des authentifizierten Benutzers</h2>
 
-Nach erfolgreicher Authentifikation am KUG wird die Nutzerkennung
+Nach erfolgreicher Authentifikation an OpenBib wird die Nutzerkennung
 durchg&auml;ngig angezeigt.
 
 
@@ -812,14 +813,14 @@ Ausleihsystem auf eigens entwickelte WebServices umgestellt.
 
 <h2>Einf&uuml;hrung eines Logging-Frameworks</h2>
 
-Zum besseren Monitoring des KUG-Portals wurde das Logging-Framework log4Perl
+Zum besseren Monitoring des OpenBib-Portals wurde das Logging-Framework log4Perl
 fl&auml;chendeckend eingef&uuml;hrt.
 
 <h2>&Uuml;berarbeitung im Hinblick auf SQL-Injection-Angriffe</h2>
 
 <p />
 
-<h1 id="kugv1.1">Neuerungen mit Version 1.1 (Umstellung am 31.1.2005)</h1>
+<h1 id="openbibv1.1">Neuerungen mit Version 1.1 (Ver&ouml;ffentlicht am 31.1.2005)</h1>
 
 Die wesentlichen &Auml;nderungen haben sich mit Beibehaltung bestehender
 Funktionalit&auml;t vor allem im 'Unterbau' abgespielt. Hier wurden massive
@@ -846,10 +847,10 @@ dabei u.a.:
 <li>Die Sisis-Kategorie 750 (Abstract) ist sichtbar und im Titelfeld
   recherchierbar.</li>
 <li>Wie bereits f&uuml;r den WebOPAC m&ouml;glich, kann &uuml;ber die KC-Aufnahme bestimmt
-  werden, ob ein Titel nun auch im KUG erscheinen soll oder nicht.</li>
+  werden, ob ein Titel nun auch in OpenBib erscheinen soll oder nicht.</li>
 </ul>
 
-<h1>Neuerungen mit Version 1.0 (Umstellung am 23.8.2004)</h1>
+<h1>Neuerungen mit Version 1.0 (Ver&ouml;ffentlicht am 23.8.2004)</h1>
 
 In der Version 1.0 wurden folgende Änderungen und Erweiterungen vorgenommen:
 
@@ -857,7 +858,7 @@ In der Version 1.0 wurden folgende Änderungen und Erweiterungen vorgenommen:
 <li>Einbindung in die DigiBib und UK-Online</li>
 <li>Erweiterung um den Bestand der ZBMED</li>
 
-<li>Erweiterung um einen OAI-Harvester zur Integration von OAI-Repositories in den KUG (Hochschulschriftenserver KUPS)</li>
+<li>Erweiterung um einen OAI-Harvester zur Integration von OAI-Repositories in OpenBib (Hochschulschriftenserver KUPS)</li>
 <li>Erweiterung um die Suchmöglichkeit nach Medienart</li>
 <li>Erweiterung um die Anzeige einer Vielzahl neuer Kategorien</li>
 <li>Verbesserung der Darstellung von verknüpften Kategorien</li>
@@ -866,9 +867,9 @@ In der Version 1.0 wurden folgende Änderungen und Erweiterungen vorgenommen:
 <li>Erweiterung um Tooltips </li>
 </ul>
 
-<h1>Version 0.9 (Umstellung am 23.3.2004)</h1>
+<h1>Version 0.9 (Ver&ouml;ffentlicht am 23.3.2004)</h1>
 
-Ablösung des bisherigen Recherche-Portals durch die Weiterentwicklung des seit 1997 eingesetzten KVIK im Rahmen des Lokalsystem-Updates auf die Version V3.0A20. 
+Weiterentwicklung der seit 1997 eingesetzten Software 'Biblio'. 
 
     </div>
 </div>

@@ -29,7 +29,7 @@
 <a [%- IF active_menu == "databasechoice" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').databasechoice_loc.name %].html">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "searchform" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/recent">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
 </div>
 <div id="mainnavigation_right">
-[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]/database.html">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('base_loc') %]/[% config.get('handler').admin_loc.name %]/database.html">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
 <a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').startopac_loc.name %].html">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
 <a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').rssfeeds_loc.name %].html">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
 [% IF config.get('login_active') == 1 %]

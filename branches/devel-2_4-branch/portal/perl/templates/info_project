@@ -27,206 +27,134 @@
 
       <p />
 
-<h1>Das KUG-Projekt an der Universit&auml;t zu K&ouml;ln</h1>
+<h1>Das OpenBib-Projekt</h1>
 
-<h2>Ziel und Historie</h2>
+<h2>Ziele des Projektes</h2>
 
-Ziel des an der USB initiierten und zusammen mit den Instituten/Seminaren der
-Universit&auml;t zu K&ouml;ln durchgeführten KUG-Projektes
-ist die Schaffung eines universitätsweiten bibliothekarischen
-Gesamtkatalogs, der sowohl die Titelnachweise der einzelnen Institute
-und Seminare an der Universität zu Köln wie auch die Daten der USB und
-der ZBMED umfasst.  KUG ist die Abkürzung von 'Kölner
-UniversitätsGesamtkatalog. 
+<p> Mit dem OpenBib-Projekt wird das Ziel verfolgt, ein OpenSource
+Recherche-Portal zu entwickeln, zu erweitern und zur freien Nutzung
+bereitzustellen. Die Portalsoftware soll so offen und modular sein,
+dass sie mit wenig Aufwand installiert, an eigene Anforderungen
+angepasst, eingesetzt und erweitert werden kann.  </p>
 
-Das KUG-Projekt deckt hierzu verschiedene Aspekte ab. Es sind dies
-u.a.:
+<p> Das Portal soll den gemeinsamen Zugriff auf Daten verschiedener
+Quellen, insbesondere verschiedener Bibliothekssysteme oder
+OAI-Repositories wie z.B. Hochschulschriftenserver ermöglichen. Um die
+Quell-Systeme nicht durch diese Rechercheanfragen zu belasten und so
+die reguläre Arbeit dort zu behindern, soll das Portal einen
+(nächtlichen) Abzug der Daten selbst verwalten und für die Recherchen
+verwenden. Voraussetzung hierfür ist, den physikalischen Zugriff auf
+diese Daten zu besitzen. Sollte dies nicht möglich sein, so soll das
+System unter Abwägung der oben angesprochenen negativen Auswirkungen
+auch selbständig um Online-Recherchemodule für jene Datenquellen
+erweiterbar sein.  </p>
 
-<ul>
-<li> Die Ausstattung der teilnehmenden Institute und Seminare mit
-technischem Gerät in Form von insgesamt mehr als 400 PC's und 60
-sogenannter Thin-Clients. Diese Geräte werden sowohl zur
-Katalogisierung wie auch als Recherche-Instrument für die Besucher der
-jeweiligen Bibliothek eingesetzt.</li>
+<p> Neben der simultanen Recherche in verschiedenen Datenquellen soll
+dem Benutzer eine personalisierte Arbeits-Plattform bereitgestellt
+werden, die er nach eigenen Vorstellungen im Rahmen der angebotenen
+Funktionen organisieren kann. Dazu gehört z.B. die Organisation
+eigener Suchprofile, aber auch eine Anbindung an das jeweilige
+Bibliothekssystem, um über dieses alle ausleihrelevanten Funktionen
+ausführen und z.B. die Daten seines Benutzerkontos einsehen zu können.
+</p>
 
-<li> Die Betreuung eines zentralen Datenbankservers in der USB mit der
-für das Projekt eingesetzten bibliothekarischen Standardsoftware <a
-href="http://www.sisis.de/">Sisis</a> SunRise auf der die
-teilnehmenden Institute und Seminare jeweils in einer eigenständigen
-Datenbank katalogisieren. Auf derzeit zwei weiteren Servern wird ein
-mit Lastverteilung und zus&auml;tzlicher Ausfallsicherheit versehenes
-Suchportal eingesetzt, das den Sucheinstieg in den Gesamtbestand aus
-Instituten, Seminaren, USB und ZBMED
-realisiert. Dar&uuml;berhinaus werden als weitere Kataloge die
-Poetica-Sammlung, die Virtuelle Fachbibliothek Wirtschaftswissenschaften (ECONBIZ) sowie der K&ouml;lner
-Universit&auml;ts-Publikations-Server KUPS via OAI angeboten. 
-<p />
-Ebenso
-wird für jedes Institut und Seminar ein eigenständiger Sucheinstieg
-(Instituts-Sicht/View) bereitgestellt, der zunächst nur die Bestände
-des jeweiligen Instituts umfasst und vom Benutzer sukzessive auf den
-Gesamtbestand erweitert werden kann. Generell k&ouml;nnen beliebige
-Sichten angeboten werden, die aus einer beliebigen Zusammenstellung
-der einzelnen Kataloge bestehen.
-</li>
-<li> Die Migration der Altdaten aus dem bisher genutzten prim&auml;ren
-Katalogisierunssystemen Bislok und entsprechend unserer
-M&ouml;glichkeiten auch aus Allegro in das neue System Sisis SunRise.
-</li>
-<li> Die Schulung und bibliothekarische Betreuung der teilnehmenden
-Institute und Seminare.</li>
-</ul>
+<p> Externe Dienste, wie z.B. die Funktionen der Digitalen Bibliothek
+NRW (DigiBib), sollen mit Hilfe der Personalisierungsfunktionalität
+derart eingebunden werden, dass ohne eine weitere Authentifizierung
+dorthin gesprungen werden kann.  </p>
 
-Die Wurzeln des KUG-Projektes reichen an den Anfang der 90er
-Jahre zurück, als die Entscheidung getroffen wurde, einen
-Gesamtkatalog der Institutsdaten zu schaffen. Der Aufbau und die
-sowohl technische wie auch bibliothekarische Betreuung dieses
-Institutsgesamtkatalogs wurde in der Abteilung 'Dezentrale
-Katalogisierung', jetzt UGK, der USB angesiedelt. 
-<p />
-Die durch das damalige Projekt mit Hardware ausgestatteten Institute
-katalogisierten dezentral mit der Software Bislok. In einem festen
-Turnus wurden diese Daten aus den Instituten zentral in eine einzige
-Datenbank, den Gesamtkatalog, eingespielt. Diese Datenbank wurde dann
-über einen <i>telnet</i>-Zugang mit einem Recherche-Frontend nach
-aussen bereitgestellt. In den folgenden Jahren wurde diese
-Grundkonzeption durch Eigenentwicklungen nach und nach modifiziert und
-durch Hinzunahme der Daten aus weiteren Katalogisierungssystemen wie
-z.B.  Allegro und Lars im Jahr 1997/1998 schließlich zum sog. KVIK,
-dem Kölner Virtuellen InstitutsgesamtKatalog, ausgebaut. Insgesamt
-umfasste der KVIK die Daten von knapp 80 Instituten mit mehr als
-700.000 Titeln.
-<p />
-Im Jahre 2001 wurde mit Sisis SunRise ein bereits in der USB erprobtes
-Nachfolgesystem für das inzwischen veraltete Bislok gefunden und durch
-die Hinzunahme eines Rechercheportals der ehemalige
-Institutsgesamtkatalog unter Einbeziehung der Daten aus USB und ZBMED zu 
-einem Universitätsgesamtkatalog, "dem KUG", ausgebaut.
+<p> Ein Grundprinzip des Portals ist die größtmögliche Integration
+unter Wahrungen der Individualität aller Einzelkomponenten.  </p>
 
-<h2>Projekt- und Produktionsphase</h2>
+<p> Alle Projektziele werden mit der aktuellen Version der
+OpenBib-Software im CVS erreicht.  </p>
 
-Nachdem Ende 2001 zunächst eine Projektgruppe bestehend aus fünf
-Instituten das Nachfolgesystem Sisis SunRise sowie die Migration ihrer
-Daten ausgetestet hatte, wurde im Mai 2002 im KUG-Projekt in den
-Produktionsbetrieb übergegangen und im Laufe des Jahres insgesamt 52
-Institute technisch ausgestattet sowie auf das neue System umgestellt,
-darunter 40 Institute deren Daten von Bislok und Allegro migriert
-wurden. Die Zahl der migrierten Daten aus den 40 Instituten umfasste
-insgesamt 430.213 Titel. Für die Institute, deren Daten noch nicht
-migriert wurden oder die nicht migriert werden können, steht weiterhin
-der KVIK als Rechercheinstrument zur Verfügung. Im Lauf
-fortschreitender Datenmigration in den KUG wird der Umfang des KVIK
-jedoch nach und nach reduziert, bis schließlich nur noch der KUG als
-zentrales Rechercheinstrument angeboten wird.
-<p />
-Heute am 20.1.2005 umfasst der KUG insgesamt 4.702.197 Titel aus
-insgesamt 111 Katalogen, darunter 1.166.660 Titel aus den Instituten, 2.933.754
-Titel aus der USB sowie 645.475 Titel aus der ZBMED.
+<h2>Kooperativer Charakter und OpenSource als sinnvolles Modell</h2>
 
-<h2>Technische Realisierung</h2>
-
-Für das KUG-Projekt wird in der USB als zentraler Datenbankserver eine
-SunFire 3800 (firewater) mit vier 900MHz UltraSparc3-Prozessoren, 16 GB RAM und
-einem T3-RAID-Array mit einer Nutzkapazität von 130 GB eingesetzt. Die
-SunFire ist mit zwei redundanten Systemboards ausgestattet, die
-unabhängig voneinander betrieben werden können. Zur weiteren
-Absicherung hat die SunFire redundante Netzteile sowie eine eigene
-Notstromversorgung.
-
-Für die System- und Datenbanksicherungen der SunFire werden lokal zwei
-DLT-Bandroboter mit 7 bzw. 22 Einschüben und der Software Legato
-Networker eingesetzt. Zusätzlich werden Datenbanksicherungen in einen
-lokalen Plattenbereich gemacht, welcher zusammen mit dem System auf
-den ADSM-Servern des ZAIK dezentral gesichert wird. In einem festen
-Turnus werden darüberhinaus Bänder der Datenbanksicherungen aus dem
-Updatezyklus herausgenommen und dezentral sicher gelagert. Somit wurde
-insgesamt ein dreifaches Sicherungskonzept für die Institutsdaten
-realisiert.
-<p />
-Auf der SunFire wird als Datenbanksystem Sybase und als integrierte
-bibliothekarische Standardsoftware mit den Modulen Katalogisierung,
-Erwerbung sowie Ausleihe und Recherche das Produkt SunRise der Firma
-Sisis eingesetzt, welches bereits in der USB im Einsatz war.
-<p />
-Sisis SunRise basiert auf dem Client-Server-Prinzip. Die Mitarbeiter
-in den Instituten greifen über je einen graphischen Java-Clienten auf
-einen ihm zugeordneten Serverprozess auf der SunFire zu.
-<p />
-
-Diese Java-Clienten werden über die Software Citrix-Metaframe auf
-einer Serverfarm in der USB angeboten. Gründe für den Einsatz von
-Citrix-Metaframe waren:
+<p> Die Möglichkeit der kooperativen Nutzung und Weiterentwicklung von
+OpenBib durch seinen Status als OpenSource-Software stellt einen
+zentralen Faktor dar - speziell im Bereich der öffentlichen Hand. Im
+Spannungsfeld schwindender Geldmittel und hochpreisiger oder
+unausgegorener Standardsoftware-Produkte, bieten sich mit der Wahl von
+OpenSource diverse Vorteile: </p>
 
 <ul>
-<li> Eine dezentrale Betreuung der Clienten in den insgesamt 130
-Instituten des KUG-Projektes ist personell von der USB nicht zu
-leisten. Stattdessen setzen wir auf eine Lösung, die zentral
-administriert werden kann.
-</li>
-<li> Citrix-Metaframe steht für eine Vielzahl an Hardware-Platformen
-zur Verfügung. Damit braucht die lokale System-Infrastruktur eines
-Instituts für eine Teilnahme am KUG-Projekt nicht geändert werden,
-obwohl die SunRise-Clienten selbst nur für die Win32-Platform
-angeboten werden können.
-</li>
-<li> Citrix-Metaframe-Clienten k&ouml;nnen auch auf beliebiger alter
-Hardware in den Instituten eingesetzt werden, da die hinsichtlich der
-Hardwareresourcen anspruchsvollen SunRise-Clienten nicht lokal,
-sondern auf entsprechend dimensionierten Servern in einem Verbund in
-der USB gestartet werden.</li>
+
+   <li>Die Nutzung ist mit keinerlei Lizenzkosten verbunden.</li>
+
+   <li>Die Software ist komplett an die eigenen Bedürfnisse
+   individuell anpassbar.</li>
+
+   <li>Durch die Mitarbeit Vieler ist ein Software-Produkt möglich,
+   dass für einen allein 'zu groß' gewesen wäre.</li>
+
+   <li>Die Konfigurations- und Programmierarbeit, die geleistet werden
+   muss, um ein kommerzielles Standardsoftware-Produkt an die eigenen
+   Anforderungen und Gegebenheiten anzupassen, sollte sinnvoller in
+   eine OpenSource Software fließen, die jeder frei verwenden kann,
+   als dass das eh schon teuer erkaufte Produkt durch die notwendige
+   eigene Arbeit noch verteuert wird und man letztlich effektiv als
+   unbezahlter Helfer des entsprechenden Software-Anbieters
+   fungiert.</li>
+
+   <li>Bei etwaigen Fehlern hat man selbst alle Möglichkeiten an der
+   Hand, diese selbständig zu beheben und ist nicht auf einen
+   kommerziellen Software-Anbieter angewiesen, bei dem die
+   Fehlerbehebung im schlimmsten Fall entweder Monate oder Jahre
+   dauert bzw. einzelne Fehler schlicht ignoriert werden. Gleiches
+   gilt für die Umsetzung neuer Funktionalitäten.</li>
+
+   <li>OpenSource Software ist zukunftssicher. Selbst wenn die
+   Weiterentwicklung oder Fehlerbehebung durch andere stockt, kann
+   jeder dies - nach seinen Möglichkeiten - selbst übernehmen oder
+   extern beauftragen. Wenn hingegen ein Produkt eines
+   Software-Anbieters oder gleich der ganze Anbieter stirbt, so hat
+   man sich mit dem Kauf des entsprechenden kommerziellen Produktes in
+   eine Sackgasse manövriert und sich jeglicher Zukunft (bzgl. des
+   Produktes) beraubt.</li>
+
 </ul>
 
-Insgesamt stehen für die Sisis-Anwendungen wie auch Rechereplätze der
-Institute in der USB acht Citrix-Metaframe-Server mit
-Doppel-Pentium4-CPU's und jeweils 2 GB RAM in einem Farmverbund zur
-Verfügung.
-<p />
-<center>
-<img src="kug_smallS.png" alt="KUG Recherche-Portal" />
+<p> Um die Funktionalität des Portals in alle Richtungen kooperativ
+erweitern zu können, muß einerseits eine Infrastruktur für die
+Entwicklung der Software bereitstehen, andererseits durch eine
+geeignete OpenSource-Lizenz aber auch die Rechte und Pflichten bei der
+Mitarbeit oder Nutzung definiert werden.  </p>
 
-</center>
-<p />
-Die über die Citrix-Serverfarm katalogisierten Titel in den einzelnen
-Datenbanken der Institute werden über einen
-Vierfachprozessor-Pentium3-Server und einen weiteren Doppelprozessor-Pentium4-Server mit dem KUG-Suchportal unter dem URL
+<h2>Infrastruktur von BerliOS für OpenBib</h2>
 
-<center>
-<p />
-<a href="http://kug.ub.uni-koeln.de/" target="_blank">http://kug.ub.uni-koeln.de/</a> 
-<p />
-</center>
+<p> Als Infrastruktur für das Projekt fungiert BerliOS, ein
+OpenSource-Center zur Unterstützung von OpenSource-Software und deren
+Entwicklern, Anwendern und externen Dienstleistern. BerliOS wurde von
+FOKUS, einem Institut der Fraunhofer Gesellschaft, initiiert und wird
+von ihm betrieben. Die von BerliOS bereitgestellte Infrastruktur für
+OpenBib umfasst alles, was für das Projekt benötigt wird. Dazu gehören
+neben einem CVS-Repository z.B. auch Mailinglisten, Diskussions-Foren
+und ein Fehlerverwaltungssystem.  </p>
 
-zur Recherche angeboten. Über diesen zentralen Sucheinstieg ist es dem Benutzer
-mögliche mit einer Suchanfrage gleichzeitig in allen Instituts-Daten
-sowie denen der USB und ZBMED zu suchen. Die Systemsicherungen dieses
-Servers werden wiederum sowohl lokal über Legato Networker wie auch
-dezentral über die ADSM-Server des ZAIK durchgeführt.
+<h2>GPL als Lizenz der Wahl</h2>
 
-<h2>Ausblick</h2>
+<p> Als OpenSource-Lizenz wurde die GNU General Public Licence (GPL)
+in der Version 2 und höher gewählt. Damit ist zum einen die generelle
+Nutzung für alle möglich, andererseits wird aber auch gewährleistet,
+dass Änderungen oder Erweiterungen der Allgemeinheit und speziell dem
+Projekt wieder zugute kommen, da diese ebenso unter der GPL
+veröffentlicht werden müssen und so wieder in das Projekt
+zurückfließen ('Viraler' Charakter der GPL). Insbesondere wird durch
+diese Lizenz ausgeschlossen, dass sich Dritte der Software
+bemächtigen, sie erweitern und dann kommerziell als
+ClosedSource-Produkt vertreiben, ohne ihre eigenen Änderungen selbst
+wieder unter der GPL frei verfügbar zu machen. Auf den Punkt gebracht
+schützt die GPL (im Gegensatz zu anderen OpenSource-Lizenzen, wie
+z.B. der BSD-Lizenz) damit effektiv gegen 'kommerzielle Schmarotzer'.
+</p>
 
-Im Lauf des Jahres 2005 beabsichtigen wir die Daten der verbleibenden
-Institute nach Sisis SunRise zu migrieren und damit die
-Migrationsphase endgültig abzuschließen. Hierbei werden insbesondere
-für die Migration bestimmter Allegro-Versionen nach Sisis SunRise noch
-verschiedene Probleme zu lösen sein. 
-<p />
-Neben der Katalogisierung als Grundanwendung werden 2005 wie auch
-schon in den Vorjahren immer mehr Institute auch die Module Erwerbung
-und Ausleihe einsetzen. Hier wird von der USB durch entsprechende
-Schulungen und Konfigurationsarbeiten den jeweiligen Instituten Hilfe
-angeboten werden.
-
-<p />
-Mit dem KUG-Projekt haben die Universität zu Köln, ihre Institute und
-Seminare sowie die USB deutschlandweit eine Vorreiterrolle für die
-Einführung eines integrierten Bibliothekssystems in dieser
-Größenordnung eingenommen.  Obwohl sich die Einführung an vielen
-Stellen sicherlich langwieriger gestaltete, als wir geplant hatten, so
-sind wir dennoch der festen Überzeugung, dass der Mehrwert für den
-Benutzer und die Universität diesen Aufwand schon jetzt wie auch
-langfristig rechtfertigen wird.
-      <p />
-
+<p> Die GPL wird für alle Teile des OpenBib-Projektes schon seit
+seinen Ursprüngen als 'Freizeitprojekt' im Jahre 1997 verwendet, als
+sein Arbeitstitel noch 'Biblio' hieß und es unter diesem Namen frei
+verbreitet wurde. Damit wurde von Anfang an gewährleistet, dass die
+Software frei ist und für immer frei sein wird.  </p>
+		
 <address>Oliver Flimm (05/01/20)</address>
 
     </div>

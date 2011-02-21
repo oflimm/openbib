@@ -394,7 +394,6 @@
 ../templates/database/portrait/search_showtitset_images
 ../templates/database/portrait/virtualsearch_result_item
 ../templates/database/portrait/visible_categories_titset
-../templates/databaseprofile
 ../templates/database/rheinabt/circset
 ../templates/database/rheinabt/connector_digibib_circset
 ../templates/database/rheinabt/connector_digibib_mexset
@@ -513,6 +512,7 @@
 ../templates/profile/digicard/virtualsearch_more_search_tips
 ../templates/profile/digicard/visible_categories_titset
 ../templates/profile/kug/corporate_banner
+../templates/profile/kug/info_other_portals
 ../templates/profile/kug/login
 ../templates/profile/kug/logout
 ../templates/profile/kug/mainnavigation
@@ -705,6 +705,9 @@
 ../templates/resource_user_navigation
 ../templates/resource_user_preferences
 ../templates/resource_user_preferences_html
+../templates/resource_user_profile
+../templates/resource_user_profile_collection
+../templates/resource_user_profile_edit
 ../templates/resource_user_review_collection
 ../templates/resource_user_review_collection_html
 ../templates/resource_user_tag
@@ -729,6 +732,7 @@
 ../templates/searchform_query
 ../templates/searchform_simple
 ../templates/search_info
+../templates/search_more_tips
 ../templates/search_person
 ../templates/search_person_item
 ../templates/search_showswtindex

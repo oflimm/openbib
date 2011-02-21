@@ -7,6 +7,7 @@ servername: localhost
 # Unter diesem Name wird der Servers, der die Lastverteilung
 # vornimmt, angesprochen
 loadbalancerservername: localhost
+frontendservername: localhost
 
 # Auf folgende Server werden die Benutzer verteilt
 loadbalancertargets:
@@ -565,6 +566,11 @@ dispatch_rules:
      rule: '/portal/admin/session/:sessionid[delete]'
      runmode: 'delete_record'
 
+  - # admin_server_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Server'
+     rule: '/portal/admin/server/:stid/:id/:rm/:representation?'
+     runmode: 'show'
+
   - # admin_user_loc:
      module: 'OpenBib::Handler::Apache::Admin::User'
      rule: '/portal/admin/user/:stid/:rm/:representation?'
@@ -584,10 +590,6 @@ dispatch_rules:
   - # admin_status_loc:
      module: 'OpenBib::Handler::Apache::Admin::Status'
      rule: '/portal/admin/status/:stid/:rm/:representation?'
-     runmode: 'show'
-  - # admin_server_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Server'
-     rule: '/portal/admin/server/:stid/:id/:rm/:representation?'
      runmode: 'show'
   - # admin_subject_loc:
      module: 'OpenBib::Handler::Apache::Admin::Subject'
@@ -941,19 +943,49 @@ dispatch_rules:
   - # resource_user_loc:
      module: 'OpenBib::Handler::Apache::Resource::User::Profile'
      rule: '/portal/:view/resource/user/:userid/profile.html[get]'
-     runmode: 'show_profile_as_html'
+     runmode: 'show_collection_as_html'
   - # resource_user_loc:
      module: 'OpenBib::Handler::Apache::Resource::User::Profile'
      rule: '/portal/:view/resource/user/:userid/profile.json[get]'
-     runmode: 'show_profile_as_json'
+     runmode: 'show_collection_as_json'
   - # resource_user_loc:
      module: 'OpenBib::Handler::Apache::Resource::User::Profile'
      rule: '/portal/:view/resource/user/:userid/profile.rdf[get]'
-     runmode: 'show_profile_as_rdf'
+     runmode: 'show_collection_as_rdf'
   - # resource_user_loc:
      module: 'OpenBib::Handler::Apache::Resource::User::Profile'
      rule: '/portal/:view/resource/user/:userid/profile[get]'
-     runmode: 'show_profile_negotiate'
+     runmode: 'show_collection_negotiate'
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Profile'
+     rule: '/portal/:view/resource/user/:userid/profile[post]'
+     runmode: 'create_record'
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Profile'
+     rule: '/portal/:view/resource/user/:userid/profile/:profileid[get]'
+     runmode: 'show_record_negotiate'
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Profile'
+     rule: '/portal/:view/resource/user/:userid/profile/:profileid[post]'
+     runmode: 'update_record'
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Profile'
+     rule: '/portal/:view/resource/user/:userid/profile/:profileid/edit[get]'
+     runmode: 'show_record_form'
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Profile'
+     rule: '/portal/:view/resource/user/:userid/profile/:profileid[post]'
+     runmode: 'update_record'
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Profile'
+     rule: '/portal/:view/resource/user/:userid/profile/:profileid[put]'
+     runmode: 'update_record'
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Profile'
+     rule: '/portal/:view/resource/user/:userid/profile/:profileid[delete]'
+     runmode: 'delete_record'
+
+
   - # resource_user_loc:
      module: 'OpenBib::Handler::Apache::Resource::User::Tag'
      rule: '/portal/:view/resource/user/:userid/tag.html[get]'
@@ -1763,7 +1795,6 @@ tt_connector_unapi_mods_tname: connector_unapi_mods
 tt_connector_unapi_mets_tname: connector_unapi_mets
 tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
 tt_databasechoice_tname: databasechoice
-tt_databaseprofile_tname: databaseprofile
 tt_error_tname: error
 tt_externaljump_tname: externaljump
 tt_dbis_showsubjects_tname: dbis_showsubjects
@@ -1885,6 +1916,9 @@ tt_startopac_tname: startopac
 tt_resource_user_tag_edit_tname: resource_user_tag_edit
 tt_resource_user_tag_tname: resource_user_tag
 tt_resource_user_tag_collection_tname: resource_user_tag_collection
+tt_resource_user_profile_collection_tname: resource_user_profile_collection
+tt_resource_user_profile_tname: resource_user_profile
+tt_resource_user_profile_edit_tname: resource_user_profile_edit
 
 #tt_userprefs_ask_delete_tname: userprefs_ask_delete
 #tt_userprefs_changefields_tname: userprefs_changefields

@@ -33,6 +33,7 @@
 [% END %]
 [% IF LinkedData == "title" %]
 <link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[%- record.database -%]/[%- record.id -%].rdf"/>
+<link rel="alternate" type="application/json" title="JSON Representation" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[%- record.database -%]/[%- record.id -%].json"/>
 [% END %]
 [% IF unapi && config.get('unAPI') %]
     <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('handler').connector_unapi_loc.name %]" />

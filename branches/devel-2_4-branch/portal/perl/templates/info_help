@@ -43,7 +43,7 @@
 
          <table>
          <tr><td colspan="2"><b>[% msg.maketext("Inhaltsverzeichnis") %]</b></td></tr>
-         <tr><td align="right">1</td><td><a href="#allghinweise">[% msg.maketext("Allgemeine Hinweise zum KUG") %]</a></td></tr>
+         <tr><td align="right">1</td><td><a href="#allghinweise">[% msg.maketext("Allgemeine Hinweise zu OpenBib") %]</a></td></tr>
          <tr><td align="right">2</td><td><a href="#recherche">[% msg.maketext("Recherchearten") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1&nbsp;<a href="#rechercheeinfach">[% msg.maketext("Einfache Recherche") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1.1&nbsp;&nbsp;&nbsp;<a href="#rechercheeinfachallgemein">[% msg.maketext("Allgemeine Informationen") %]</a></td></tr>
@@ -55,7 +55,7 @@
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.4&nbsp;&nbsp;&nbsp;<a href="#indexsuche">[% msg.maketext("Such-Index") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/indexsuche.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.5&nbsp;&nbsp;&nbsp;<a href="#beispiele">[% msg.maketext("Beispiele") %]</a></td></tr>
          <tr><td align="right">3</td><td><a href="#allghinweisesuche">[% msg.maketext("Weitere allgemeine Hinweise zur Suchanfrage") %]</a></td></tr>
-         <tr><td align="right">4</td><td><a href="#perskug">[% msg.maketext("Mein KUG") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/meinkuganmelden.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right">4</td><td><a href="#perskug">[% msg.maketext("Mein OpenBib") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/meinkuganmelden.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
          <tr><td align="right">5</td><td><a href="#buchstandort">[% msg.maketext("Standort des Buches") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/standortsuche.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></td></tr>
          <tr><td align="right">6</td><td><a href="#treffermerkliste">[% msg.maketext("Treffer-, Merk- und Literaturlisten") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
 
@@ -73,7 +73,7 @@
          <tr><td align="right">11</td><td><a href="#mashups">[% msg.maketext("Mashups mit Sozialer Software und externen Diensten") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1&nbsp;<a href="#bibsonomy">[% msg.maketext("Integration von BibSonomy") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.1&nbsp;&nbsp;&nbsp;<a href="#bibsonomyquellen">[% msg.maketext("Thematische Integration weiterer Quellen") %]</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.2&nbsp;&nbsp;&nbsp;<a href="#bibsonomyspiegelung">[% msg.maketext("Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomyabgleich.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.2&nbsp;&nbsp;&nbsp;<a href="#bibsonomyspiegelung">[% msg.maketext("Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomyabgleich.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
 
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">[% msg.maketext("Integration der Wikipedia") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.3&nbsp;<a href="#gbs">[% msg.maketext("Integration der Google Book Search") %]</a></td></tr>
@@ -82,20 +82,20 @@
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="#sichten">[% msg.maketext("Sichten") %]</a></td></tr>
 
          <tr><td align="right">13</td><td><a href="#bilder">[% msg.maketext("Bildliche Funktionselemente") %]</a></td></tr>
-         <tr><td align="right">14</td><td><a href="#verlinkung">[% msg.maketext("Verlinkung und Lastverteilung des KUG") %]</a></td></tr>
-         <tr><td align="right">15</td><td><a href="#suchplugin">[% msg.maketext("KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser") %]</a></td></tr>
+         <tr><td align="right">14</td><td><a href="#verlinkung">[% msg.maketext("Verlinkung und Lastverteilung von OpenBib") %]</a></td></tr>
+         <tr><td align="right">15</td><td><a href="#suchplugin">[% msg.maketext("OpenBib Such-Plugin f&uuml;r Mozilla Firefox-Browser") %]</a></td></tr>
          <tr><td align="right">16</td><td><a href="#kontakt">[% msg.maketext("Kontakt") %]</a></td></tr>
          </table>
       </td></tr>
       </table>
 
 
-      <h1 id="allghinweise">1 [% msg.maketext("Allgemeine Hinweise zum KUG") %]</h1>
+      <h1 id="allghinweise">1 [% msg.maketext("Allgemeine Hinweise zu OpenBib") %]</h1>
       <p>      
-      [% msg.maketext("Mit dem KUG ist eine simultane Suche in den Katalogen
-      <b>aller</b> beteiligten Bibliotheken m&ouml;glich oder in
+      [% msg.maketext("In OpenBib ist eine simultane Suche in
+      <b>aller</b> Katalogen m&ouml;glich oder in
       <b>einzelnen</b>, vorher von Ihnen ausgesuchten. Falls sie sich
-      beim KUG unter <b>Login</b> erfolgreich authentifiziert haben,
+      in OpenBib unter <b>Login</b> erfolgreich authentifiziert haben,
       k&ouml;nnen Sie einzelne ausgew&auml;hlte Kataloge
       dar&uuml;ber hinaus auch in dauerhaft gespeicherten Suchprofilen
       organisieren.") %]
@@ -103,19 +103,19 @@
 
       <p>
       [% msg.maketext("Als Ergebnis einer Recherche erhalten Sie eine
-      Liste aller Treffer, sortiert nach den einzelnen
-      Katalogen. Durch Anwahl eines Titels springen Sie direkt zur
+      katalog&uuml;bergreifend sortierte Liste aller Treffer.
+      Durch Anwahl eines Titels springen Sie direkt zur
       Titelaufnahme im entsprechenden Katalog. Klicken Sie dort dann
       z. B. auf den Verfasser, erhalten Sie weitere Werke des
       Verfassers in diesem Katalog. Klicken Sie auf den
       Gesamttitel, werden Ihnen die einzelnen B&auml;nde angezeigt,
       jeweils immer innerhalb des betreffenden Katalogs. Klicken Sie
       jedoch in der entsprechenden Kategorie auf das gro&szlig;e      
-      <b>G</b> (G = Globale Suche innerhalb aller Kataloge [_1]),
+      <b>G</b> (G = Globale Suche innerhalb aller Kataloge),
       werden Ihnen die zugeh&ouml;rigen Titel in <b>allen</b> Katalogen
       angezeigt. Somit haben Sie die Wahl, ob Sie, ausgehend von einem
       Treffer, <b>katalogspezifisch</b> oder <b>katalog&uuml;bergreifend</b>
-      recherchieren.","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/g.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>") %]
+      recherchieren.") %]
       </p>
       
       <h1 id="recherche">2 [% msg.maketext("Recherchearten") %]</h1>
@@ -129,18 +129,19 @@
 
        <p>
         [% msg.maketext("Ihre eingegebenen Suchbegriffe werden in <b>allen</b>
-        m&ouml;glichen Suchkategorien und in allen verf&uuml;gbaren
-        Datenbanken mit Suchmaschinen-Technologie recherchiert.  Wenn
-        Sie einzelne Kataloge ausw&auml;hlen m&ouml;chten, gehen Sie
-        in die Komplexe Recherche.") %]
+        m&ouml;glichen Suchkategorien und standardm&auml;&szlig;in allen verf&uuml;gbaren
+        Datenbanken mit Suchmaschinen-Technologie
+recherchiert. Zus&auml;tzlich k&ouml;nnen Sie auch in systemweit
+vordefinierten Katalogprofilen recherchieren. Wenn
+        Sie einzelne Kataloge ausw&auml;hlen m&ouml;chten, dann
+w&auml;hlen Sie diese bitte unter Datanbankauswahl aus.") %]
        </p>
 
        <p> [% msg.maketext("Damit Sie nicht mit &uuml;berdimensionierten Trefferlisten
-       konfrontiert werden, <b>ist die maximale Treffermenge pro
-       Katalog zun&auml;chst immer auf 50 begrenzt</b>. Für jeden
-       Katalog können Sie jedoch sukzessife auf die jeweils nächsten
-       50 Treffer durch Klick auf <emph>Weitere Treffer</emph>
-       zugreifen.") %]</p>
+       konfrontiert werden, <b>werden immer nur 50 Treffer
+gleichzeitig angezeigt</b>. In diesen Bl&ouml;cken aus 50 Treffern
+k&ouml;nnen Sie Ihrer Treffermenge dann vor und zur&uuml;ck bl&auml;ttern.") %]
+       </p>
 
       <h3 id="suchlogikeinfach">2.1.2 [% msg.maketext("Suchlogik") %]</h3>
 
@@ -162,17 +163,10 @@
 
          <p>
          [% msg.maketext("Diese Recherchemaske bietet vielf&auml;ltige Suchfelder und
-         -optionen an. Anders als in der Einfachen Recherche kommt
-         hier keine Suchmaschinen-Technologie zum Einsatz.") %]
+         -optionen an. Wie schon in der Einfachen Suche kommt auch 
+         hier Suchmaschinen-Technologie zum Einsatz.") %]
          </p>
 
-        <p>
-        [% msg.maketext("Hier k&ouml;nnen Sie auch
-        Ihre Kataloge festlegen, in denen Sie suchen m&ouml;chten. Sie
-        stellen Ihre Suchanfrage und schicken sie mit <i>In
-        ausgew&auml;hlten Katalogen suchen</i> ab.") %]
-        </p>
-     
       <h3 id="suchlogikkomplex">2.2.2 [% msg.maketext("Suchlogik") %]</h3>
 
       <h4 id="suchfeldverknuepfung">2.2.2.1 [% msg.maketext("Verkn&uuml;pfungen mehrerer Suchfelder") %]</h4>
@@ -254,7 +248,7 @@ Abk&uuml;rzungsoperator <b>*</b> ist erlaubt.") %]
       ein schon bestehendes Profil auswählen. Dann f&uuml;llen Sie die
       Suchmaske aus und klicken auf <i>In ausgew&auml;hlten Katalogen
       suchen</i>. Um sich bei der Katalogauswahl langes Scrollen zu
-      ersparen, k&ouml;nnen Sie diese dauerhaft in <i>Mein KUG</i> als
+      ersparen, k&ouml;nnen Sie diese dauerhaft in <i>Mein OpenBib</i> als
       Katalogprofil festlegen.") %]
 
       </p>
@@ -437,7 +431,7 @@ Kompletter Titel). F&uuml;r die Suche nach dem Titel 'Die
         absteigend), Anzeige pro Katalog oder
         katalog&uuml;bergreifend") %].</li>
 
-        <li>[% msg.maketext("Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: [_1]Mein KUG[_2]) für die 'Suche in einzelnen Katalogen' ausw&auml;hlen.","<a href=\"${path_prefix}/${config.get('handler').info_loc.name}?#perskug\">","</a>") %]</li>
+        <li>[% msg.maketext("Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: [_1]Mein OpenBib[_2]) für die 'Suche in einzelnen Katalogen' ausw&auml;hlen.","<a href=\"${path_prefix}/${config.get('handler').info_loc.name}?#perskug\">","</a>") %]</li>
 
         <li>[% msg.maketext("Die <b>Suchhistorie</b> listet Ihnen Ihre schon gestellten
         Suchanfragen auf mit der Angabe der Trefferzahl. So
@@ -448,11 +442,11 @@ Kompletter Titel). F&uuml;r die Suche nach dem Titel 'Die
     </ul>
 
 
-      <h1 id="perskug">4 [% msg.maketext("Mein KUG") %]</h1>
+      <h1 id="perskug">4 [% msg.maketext("Mein OpenBib") %]</h1>
 
 <p>
-[% msg.maketext("Ihren personalisierten KUG erreichen Sie über den Punkt <b>Mein KUG</b> in der
-KUG-Navigationsleiste. Sie gelangen in eine Anmeldemaske und entscheiden, mit
+[% msg.maketext("Ihr personalisiertes OpenBib erreichen Sie über den Punkt <b>Mein OpenBib</b> in der
+OpenBib-Navigationsleiste. Sie gelangen in eine Anmeldemaske und entscheiden, mit
 welcher Identität (=Anmeldeziel) Sie sich anmelden wollen. Zur Auswahl stehen
 insbesondere Benutzernummern der USB oder der Institute, die eine
 Online-Ausleihe betreiben.") %]
@@ -476,13 +470,13 @@ Anmeldung der betreffenden Bibliothek.") %]
 
 <p id="meinkugvorteile">
 [% msg.maketext("Sobald Sie sich erfolgreich authentifiziert haben, können Sie die Vorteile von
-<b>Mein KUG</b> nutzen:") %]
+<b>Mein OpenBib</b> nutzen:") %]
 </p>
 
 <ul>
-<li>[% msg.maketext("Ihre Merkliste in <b>Mein KUG</b> bleibt Ihnen auch über das Ende einer
+<li>[% msg.maketext("Ihre Merkliste in <b>Mein OpenBib</b> bleibt Ihnen auch über das Ende einer
 Recherchesitzung hinaus erhalten - für einen beliebig langen Zeitraum! Sollten
-Sie sich erst später in <b>Mein KUG</b> einloggen, bleiben Ihnen die Einträge, die
+Sie sich erst später in <b>Mein OpenBib</b> einloggen, bleiben Ihnen die Einträge, die
 Sie <b>anonym</b> in dieser Sitzung gesammelt haben, erhalten. Sie werden Ihnen in
 die <b>persönliche</b> Liste übertragen.") %]</li>
 
@@ -492,7 +486,7 @@ mit Leerzeichen getrennt eingeben müssen. Zur Vereinheitlichung der
 Tags werden sie automatisch normiert - d.h. Umlaute werden aufgelöst,
 es wird Kleinschreibung verwendet und unerwünschte Zeichen werden
 eliminiert (erlaubt sind Alphanumerische Zeichen sowie +-_.). Unter
-dem Reiter 'Tags' erhalten Sie dann in 'Mein KUG' eine Übersicht aller
+dem Reiter 'Tags' erhalten Sie dann in 'Mein OpenBib' eine Übersicht aller
 von Ihnen verwendeten Tags in Form einer Wortwolke - je mehr Titel sie
 mit einem entsprechenden Tag versehen haben, desto grösser wird es
 dargestellt. Durch einen Klick auf einen Tag erhalten Sie eine
@@ -500,7 +494,7 @@ Kurztitel-Liste aller Titel, die sie mit dem jeweiligen Tag versehen
 haben.","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/meinkugtaggen.html\"
 target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>") %]</li>
 
-<li>[% msg.maketext("Wenn Sie sich mit Ihrem USB-Ausweis anmelden, können Sie aus dem KUG heraus
+<li>[% msg.maketext("Wenn Sie sich mit Ihrem USB-Ausweis anmelden, können Sie aus OpenBib heraus
 eine <b>Fernleihe</b> [_1] starten, ohne sich zuvor nochmals authentifizieren zu müssen.","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/fernleihe.html\"
 target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>") %]</li>
 
@@ -605,7 +599,7 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige <i>Pro Katalo
 
       <h1 id="externesuche">7 [% msg.maketext("Sprung in externe Recherchequellen") %]</h1>
       <p>
-      [% msg.maketext("In der Recherchemaske finden Sie unter 'Suchhistorie' eine Aufstellung Ihrer bisherigen Recherche-Anfragen. An dieser Stelle k&ouml;nnen Sie f&uuml;r den Fall, dass eine Anfrage nicht die gew&uuml;nschten Ergebnisse lieferte, diese auf weitere externe Recherchequellen ausweiten. Nach der Auswahl der betreffenden Recherche und Aktivierung von 'Weiter als externe Recherche' gelangen Sie auf eine Seite, auf der zus&auml;tzliche Recherchequellen angeboten werden. Jede dieser Recherchequellen stellt eine Recherche nach bestimmten Suchfeldern zur Verf&uuml;gung. Entsprechend der bei Ihrer KUG-Recherche gew&auml;hlten Suchfelder sind unter 'Übernahme der Anfrage in externe Recherchequellen' verschiedene Links aktiviert. Wenn die Suchfelder/Kategorien Ihrer ausgew&auml;hlten Anfrage nicht von einer externen Recherchequelle verarbeitet werden k&ouml;nnen, erscheint anstelle des Links die rote Meldung '<i>Ungeeignete Suchfelder</i>'. Bei der Aktivierung eines entsprechenden Links springen Sie sofort zur entsprechenden Recherche in der externen Quelle. Dabei wird sowohl Ihre Suchanfrage wie auch eine etwaige Authentifizierung am KUG mit weitergereicht.") %]
+      [% msg.maketext("In der Recherchemaske finden Sie unter 'Suchhistorie' eine Aufstellung Ihrer bisherigen Recherche-Anfragen. An dieser Stelle k&ouml;nnen Sie f&uuml;r den Fall, dass eine Anfrage nicht die gew&uuml;nschten Ergebnisse lieferte, diese auf weitere externe Recherchequellen ausweiten. Nach der Auswahl der betreffenden Recherche und Aktivierung von 'Weiter als externe Recherche' gelangen Sie auf eine Seite, auf der zus&auml;tzliche Recherchequellen angeboten werden. Jede dieser Recherchequellen stellt eine Recherche nach bestimmten Suchfeldern zur Verf&uuml;gung. Entsprechend der bei Ihrer OpenBib-Recherche gew&auml;hlten Suchfelder sind unter 'Übernahme der Anfrage in externe Recherchequellen' verschiedene Links aktiviert. Wenn die Suchfelder/Kategorien Ihrer ausgew&auml;hlten Anfrage nicht von einer externen Recherchequelle verarbeitet werden k&ouml;nnen, erscheint anstelle des Links die rote Meldung '<i>Ungeeignete Suchfelder</i>'. Bei der Aktivierung eines entsprechenden Links springen Sie sofort zur entsprechenden Recherche in der externen Quelle. Dabei wird sowohl Ihre Suchanfrage wie auch eine etwaige Authentifizierung an OpenBib mit weitergereicht.") %]
 
       </p>
 <p>
@@ -655,19 +649,18 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige <i>Pro Katalo
       <h2 id="enrichtoc">8.1 [% msg.maketext("Digitalisierte Inhaltsverzeichnisse") %]</h2>
 
      <p> [% msg.maketext("Im Rahmen eines Projektes wurden Inhaltsverzeichnisse von
-     mehr als 200000 Monographien der USB eingescannt und für alle im
-     KUG beteiligten Bibliotheken nutzbar gemacht. Wenn ein
+     mehr als 200000 Monographien der USB eingescannt und - nach der
+     Freigabe aller des gesamten Katalogbestandes als Open Data unter CC0 für alle in
+     OpenBib vorhandenen Katalogen nutzbar gemacht. Wenn ein
      Inhaltsverzeichnis zu einem Buch existiert, dann wird dies in der
-     Kategorie <b>TOC / Übersicht</b>, <b>TOC / PDF</b>
-     bzw. <b>URL</b> (unter der Bezeichnung Digitalisiertes
-     Inhaltsverzeichnis (PDF-Format/DigiTool)) verlinkt. Die Suche in
-     den Inhaltsverzeichnissen ist im KUG (derzeit) nicht
+     Kategorie <b>Inhaltsverzeichnis</b> verlinkt. Die Suche in
+     den Inhaltsverzeichnissen ist in OpenBib (derzeit) nicht
      m&ouml;glich.") %]</p>
 
       <h2 id="enrichrelevance">8.2 [% msg.maketext("Potentiell interessante andere Titel") %]</h2>
 
       <p> [% msg.maketext("Durch statistische Auswertungen des Ausleihverhaltens im
-      Bestand der USB sowie des Nutzungsverhaltens im KUG werden zu
+      Bestand der USB sowie des Nutzungsverhaltens in OpenBib werden zu
       einem gegebenen Titel gewichtete nutzer- bzw. sessionspezifische
       Überschneidungsmengen mit anderen ausgeliehenen/-gewählten
       Titeln bestimmt. Dadurch bekommt der Nutzer weitere Titel
@@ -704,7 +697,7 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige <i>Pro Katalo
  <h1 id="popularity">9 [% msg.maketext("Popularit&auml;ts-Funktionen") %]</h1>
 
       <p>
-[% msg.maketext("&Auml;hnlich der Recommender-Funktion bietet der KUG verschiedene
+[% msg.maketext("&Auml;hnlich der Recommender-Funktion bietet OpenBib verschiedene
 Popularit&auml;ts-Funktionen an. Es sind dies") %]
 
 <ul>
@@ -719,9 +712,9 @@ Sie in der mit <b>P</b> ausgezeichneten Spalte der Ergebnistabelle. Damit k&ouml
       </p>
 
       <h1 id="rssfeeds">10 [% msg.maketext("RSS-Feeds (abonnierbare Informations-Kan&auml;le)") %]</h1>
-<p>[% msg.maketext("In einem ausgew&auml;hlten Katalog oder einer Institutssicht werden
+<p>[% msg.maketext("In einem ausgew&auml;hlten Katalog oder einer OpenBib-Sicht werden
 sog. [_1]RSS-Feeds[_2] angeboten.  Diese erm&ouml;glichen es
-Ihnen im KUG, sich die letzten 50 Neuzug&auml;nge (generell oder
+Ihnen in OpenBib, sich die letzten 50 Neuzug&auml;nge (generell oder
 eingeschr&auml;nkt auf den Inhalt einer Kategorie) in einem Katalog
 anzeigen zu lassen. Sie sind erkennbar durch das bildliche
 Funktionselement [_3], das mit dem
@@ -754,7 +747,7 @@ einsetzen, usw.") %]
       <h2 id="rssarten">10.1 [% msg.maketext("Angebotene Arten an RSS-Feeds") %]</h2>
 
 <p>
-[% msg.maketext("Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:") %]
+[% msg.maketext("In OpenBib werden derzeit folgende Arten von RSS-Feeds angeboten:") %]
 </p>
       <dl>
         <dt>[% msg.maketext("Die letzten 50 Neuzug&auml;nge in einem Katalog") %]</dt>
@@ -789,7 +782,8 @@ einsetzen, usw.") %]
                 
 
 <p>
-        [% msg.maketext("Haben Sie im KUG recherchiert, sind in einer Bibliothek
+        [% msg.maketext("Haben Sie in OpenBib recherchiert, sind in
+        einem Katalog
         f&uuml;ndig geworden und interessieren sich f&uuml;r neu
         angeschaffte Medien zu einem der gefundenen Autoren,
         K&ouml;rperschaften, Schlagworten oder Notation, klicken Sie
@@ -806,7 +800,7 @@ einsetzen, usw.") %]
       und klicken dort auf <i>Install Now</i>. Es &ouml;ffnet sich dann ein
       Fenster. In diesem best&auml;tigen Sie bitte die
       Installation. Nach dem Neustart von Firefox und einem Klick auf
-      eines der [_2]-Icons im KUG &ouml;ffnet sich der entsprechende RSS-Feed.","<a
+      eines der [_2]-Icons in OpenBib &ouml;ffnet sich der entsprechende RSS-Feed.","<a
       href=\"https://addons.mozilla.org/en-US/firefox/addon/445\"
       target=\"_blank\">Link</a>","<img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\"
       />") %]
@@ -846,27 +840,27 @@ einsetzen, usw.") %]
 
       <p> [% msg.maketext("Die in BibSonomy enthaltenen Quellen - Publikationen wie
       auch Webseiten - werden vollintegriert und über Schlagworte/Tags
-      thematisch erschlossen, im KUG angeboten.") %]</p>
+      thematisch erschlossen, in OpenBib angeboten.") %]</p>
 
       <p>[% msg.maketext("Wenn man in der Rubrik <i>BibSonomy Tags</i> der
       Einzeltrefferanzeige auf ein angebotenes Tag / Schlagwort
       klickt, dann öffnet sich eine Trefferliste aller öffentlich mit
       diesem Begriff getaggten Titel aller Bibsonomy-Nutzer. Bei den
       angebotenen Publikationen wird augenblicklich überprüft, ob der
-      jeweilige Titel in Katalogen des KUG enthalten ist und diese
+      jeweilige Titel in Katalogen von OpenBib enthalten ist und diese
       Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben.") %]</p>
 
       <p> [% msg.maketext("Ein Beispiel hierfür ist [_1]dieser Titel[_2].","<a
       href=\"http://kug5.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html\"
       target=\"_blank\">","</a>") %]</p>
      
-      <h3 id="bibsonomyspiegelung">11.1.2 [% msg.maketext("Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy") %]</h3>
+      <h3 id="bibsonomyspiegelung">11.1.2 [% msg.maketext("Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy") %]</h3>
 
-      <p>[% msg.maketext("Wenn Titel im KUG getaggt werden, können diese Titel
+      <p>[% msg.maketext("Wenn Titel in OpenBib getaggt werden, können diese Titel
       inkl. Tags und Sichtbarkeitsinformationen (privat/öffentlich)
       automatisch in eine entsprechenden BibSonomy-Kennung eingespielt
       und damit effektiv gespiegelt werden. Der Nutzer sucht und
-      erschliesst also Titel durch Tagging in der KUG-Oberfläche,
+      erschliesst also Titel durch Tagging in der OpenBib-Oberfläche,
       findet diese dann aber auch in BibSonomy wieder und kann damit
       die dort vorhandenen weitergehenden Möglichkeiten nutzen") %]</p>
 
@@ -899,12 +893,12 @@ einsetzen, usw.") %]
 
      <h2 id="gbs">11.3 [% msg.maketext("Integration mit Google Book Search") %]</h2>
 
-     <p> [% msg.maketext("Der KUG wurde um eine Integration von Google Book Search
+     <p> [% msg.maketext("OpenBib wurde um eine Integration von Google Book Search
      erweitert. Dabei haben wir zur Anzeige von Verfügbarkeiten des
      Titels ein bildbasiertes 'Ampel-System' wie das der
      Elektronischen Zeitschriftenbibliothek (EZB) integriert.") %]</p>
 
-     <p> [% msg.maketext("Konkret wird bei einem Einzeltreffer im KUG entsprechend
+     <p> [% msg.maketext("Konkret wird bei einem Einzeltreffer in OpenBib entsprechend
      dessen ISBN nach Zusatzinformationen bei Google Book Search
      gesucht und dem Nutzer mit einem Bild eine Rückmeldung über deren
      Verfügbarkeit gegeben.") %]</p>
@@ -939,19 +933,19 @@ einsetzen, usw.") %]
 
       <h2 id="sichten">12.2 [% msg.maketext("Sichten") %]</h2>
 
-      <p> [% msg.maketext("Neben dem Standard-KUG mit allen Katalogen gibt es eine
-      Vielzahl an Spezial-Sichten, bei denen z.B. bestimmte Kataloge
+      <p> [% msg.maketext("Neben dem Standard-OpenBib mit allen
+Katalogen gibt es weitere Spezial-Sichten, bei denen z.B. bestimmte Kataloge
       vorausgewählt sind, die weitergehende Informationen anbieten
       oder ein eigenständiges Fach-Portal bilden. Diese für den Nutzer
       oft unsichtbaren speziellen Einstiegspunkte in verschiedene
-      KUG-Varianten werden an dieser zentralen Stelle aufgeführt.") %]
+      OpenBib-Varianten werden an dieser zentralen Stelle aufgeführt.") %]
       </p>
 
 
       <h1 id="bilder">13 [% msg.maketext("Bildliche Funktionselemente") %]</h1>
      <p>
      [% msg.maketext("In den Kurztrefferlisten, den einzelnen Titeln, der Merkliste
-     oder anderen Stellen im KUG werden verschiedene bildliche
+     oder anderen Stellen in OpenBib werden verschiedene bildliche
      Funktionselemente verwendet. Es sind dies:") %]
     </p>
     <table>
@@ -970,21 +964,18 @@ einsetzen, usw.") %]
      <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>
   </table>
 
-    <h1 id="verlinkung">14 [% msg.maketext("Verlinkung und Lastverteilung des KUG") %]</h1>
+    <h1 id="verlinkung">14 [% msg.maketext("Verlinkung und Lastverteilung in OpenBib") %]</h1>
 
     <p>
-    [% msg.maketext("Das KUG Recherche-Portal ist mit einer zentralen Lastverteilung ausgestattet. Entsprechend der Belastung (und Funktionsf&auml;higkeit) werden Sie auf derzeit einen von drei KUG-Servern (kug1 bis kug3) weitergeleitet. Ebenso werden aus Wartungsgr&uuml;nden oder Problemen einzelne KUG-Server von uns aus der Lastverteilung genommen. Aus diesem Grund ist es sehr problematisch, direkt einen der drei Server zu verlinken (z.B. als URL <tt>http://kug3.ub.uni-koeln.de/portal/opac?view=</tt>) Verwenden Sie daher bitte <b>immer</b> die offiziellen Einsprung-URL's in den KUG. Es sind dies") %]
+    [% msg.maketext("Das OpenBib Recherche-Portal ist
+grunds&auml;tzlich mit einer zentralen Lastverteilung ausgestattet. In
+diesem Demonstrations-Portal werden Anfragen jedoch lediglich auf
+einen Rechner gelenkt. Die Lastverteilung ist f&uuml;r Sie als Nutzer
+vollkommen transparent. Sie k&ouml;nnen also ohne Umwege jeden URL direkt
+&uuml;ber Ihren Webbrowser bookmarken.") %]
     </p>
-    <dl>
-       <dt>[% msg.maketext("Gesamt-KUG") %]</dt>
-       <dd><tt>http://kug.ub.uni-koeln.de/</tt></dd>
 
-       <dt>[% msg.maketext("Spezifische KUG-Sichten") %]</dt>
-       <dd><tt>http://kug.ub.uni-koeln.de/portal/lastverteilung?view=edz</tt> (z.B. f&uuml;r die Sicht <tt>edz</tt>)</dd>
-    </dl>
-  
-
-    <h1 id="suchplugin">15 [% msg.maketext("KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser") %]</h1>
+    <h1 id="suchplugin">15 [% msg.maketext("OpenBib Such-Plugin f&uuml;r Mozilla Firefox-Browser") %]</h1>
 
     <script type="text/javascript">
 <!--
@@ -1000,8 +991,8 @@ function addEngine(name,ext,cat)
     //cat="Web";
     //cat=prompt("In what category should this engine be installed?","Web")
     window.sidebar.addSearchEngine(
-      "http://kug.ub.uni-koeln.de/plugins/"+name+".src",
-      "http://kug.ub.uni-koeln.de/plugins/"+name+"."+ext,
+      "http://search.openbib.org/plugins/"+name+".src",
+      "http://search.openbib.org/plugins/"+name+"."+ext,
       name,
       cat );
   }
@@ -1015,17 +1006,17 @@ function addEngine(name,ext,cat)
 
     <p> [% msg.maketext("Wenn Sie den Internet-Browser [_1] verwenden, dann k&ouml;nnen
     Sie f&uuml;r ihn von [_2]hier[_3] das
-    KUG Such-Plugin installieren (Achtung! Zur Installation muss
+    OpenBib Such-Plugin installieren (Achtung! Zur Installation muss
     JavaScript aktiviert sein und Sie m&uuml;ssen Schreibberechtigung
     im searchplugins-Verzeichnis von Firefox besitzen)","<a
     href=\"http://www.mozilla.org/products/firefox/\"
     target=\"_blank\">Mozilla Firefox</a>","<a
-    href=\"javascript:addEngine('KUG','jpg','Academic')\">","</a>") %].
+    href=\"javascript:addEngine('OpenBib','jpg','Academic')\">","</a>") %].
     </p>
 
     <h1 id="kontakt">16 [% msg.maketext("Kontakt") %]</h1>
     <p>
-    [% msg.maketext("Fragen und Anmerkungen richten Sie bitte an:") %]<a href="http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html">kug@ub.uni-koeln.de</a>
+    [% msg.maketext("Fragen und Anmerkungen richten Sie bitte an:") %]<a href="mailto:flimm@openbib.org">flimm@openbib.org</a>
     </p>
 </div>
 </div>

@@ -362,7 +362,7 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
-    $config->new_databaseinfo_rss($dbname,$rsstype);
+    $config->new_databaseinfo_rss($dbname,$rsstype,$active);
     
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss");

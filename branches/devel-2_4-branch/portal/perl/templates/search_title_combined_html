@@ -12,6 +12,7 @@
 #######################################################################
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
+[% IF fullresultcount > 0 %]
 <!-- Beginn Result Item -->
 [%-
     request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};jn=${jn};dd=1;" ;
@@ -84,3 +85,4 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
    &nbsp;
 </div>
 <p/>
+[% END %]

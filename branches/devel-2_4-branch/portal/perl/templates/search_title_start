@@ -30,6 +30,7 @@
 <div class="content">
 
 <p />
+[% IF fullresultcount > 0 %]
   <div class="listoptions">
 <form method="get" action="[% path_prefix %]/[% config.get('handler').search_loc.name %]">
 <input type="hidden" name="page"      value="[% page %]" />
@@ -45,6 +46,7 @@
 
 </form>
   </div>
+[% END %]
 <p/>
 
 [% IF spelling_suggestion.resultlist %]

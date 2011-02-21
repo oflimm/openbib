@@ -314,7 +314,7 @@ a:active.invisible {
   margin-top: 5px;
 }
 
-#maincontent .langchoice {  
+#maincontent.langchoice {  
   float:right;
   width:auto;
   text-align: right; 

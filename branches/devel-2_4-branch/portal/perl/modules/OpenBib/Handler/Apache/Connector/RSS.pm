@@ -134,7 +134,7 @@ sub show {
     });
     
     if (! $rss_content ){
-        my $bestserver=OpenBib::Common::Util::get_loadbalanced_servername();
+        my $bestserver='localhost';#OpenBib::Common::Util::get_loadbalanced_servername();
 
         $logger->debug("Getting RSS-Data from Server $bestserver");
         
@@ -195,7 +195,7 @@ sub show {
         
         $rss->channel(
             title         => "$dbdesc: ".$rssfeedinfo_ref->{$type}{channel_title},
-            link        => "http://".$config->{loadbalancerservername}.$config->{base_loc}."/$view/".$config->{handler}{loadbalancer_loc}{name},            
+            link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{handler}{loadbalancer_loc}{name},            
             language      => "de",
             description   => $rssfeedinfo_ref->{$type}{channel_desc},
         );
@@ -283,7 +283,7 @@ sub show {
 
             $rss->add_item(
                 title       => $title,
-                link        => "http://".$config->{loadbalancerservername}.$config->{base_loc}."/$view/".$config->{handler}{loadbalancer_loc}{name}."?database=$database;searchsingletit=".$record->{id},
+                link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{handler}{resource_title_loc}{name}."/$database/".$record->{id}.".html",
                 description => $desc
             );
         }
@@ -303,9 +303,9 @@ sub show {
         $logger->debug("Verwende Eintrag aus RSS-Cache");
     }
 
-    $self->header_props(-type => 'application/xml');
+    #$self->header_props(-type => 'application/xml');
     #print $r->content_type("application/rdf+xml");
-    #$r->content_type("application/xml");
+    $r->content_type("application/xml");
 
     $r->print($rss_content);
 

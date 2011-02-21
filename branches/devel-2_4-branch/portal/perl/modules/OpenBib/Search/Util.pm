@@ -341,7 +341,7 @@ sub get_recent_titids {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select id,content from tit_string where category=2 order by content desc limit $limit");
+    my $request=$dbh->prepare("select id,content from title_string where category=2 order by content desc limit $limit");
     $request->execute();
 
     my $recordlist = new OpenBib::RecordList::Title();
@@ -379,7 +379,7 @@ sub get_recent_titids_by_aut {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit $limit");
+    my $request=$dbh->prepare("select title_string.id as id,title_string.content as content from title_string,conn where conn.targetid = ? and title_string.category=2 and title_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit $limit");
     $request->execute($id);
 
     my $recordlist = new OpenBib::RecordList::Title();
@@ -417,7 +417,7 @@ sub get_recent_titids_by_kor {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit $limit");
+    my $request=$dbh->prepare("select title_string.id as id,title_string.content as content from title_string,conn where conn.targetid = ? and title_string.category=2 and title_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit $limit");
     $request->execute($id);
 
     my $recordlist = new OpenBib::RecordList::Title();
@@ -455,7 +455,7 @@ sub get_recent_titids_by_swt {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit $limit");
+    my $request=$dbh->prepare("select title_string.id as id,title_string.content as content from title_string,conn where conn.targetid = ? and title_string.category=2 and title_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit $limit");
     $request->execute($id);
 
     my $recordlist = new OpenBib::RecordList::Title();
@@ -493,7 +493,7 @@ sub get_recent_titids_by_not {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit $limit");
+    my $request=$dbh->prepare("select title_string.id as id,title_string.content as content from title_string,conn where conn.targetid = ? and title_string.category=2 and title_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit $limit");
     $request->execute($id);
 
     my $recordlist = new OpenBib::RecordList::Title();

@@ -50,32 +50,32 @@
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1.2&nbsp;&nbsp;&nbsp;<a href="#suchlogikeinfach">[% msg.maketext("Suchlogik") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2&nbsp;<a href="#recherchekomplex">[% msg.maketext("Komplexe Recherche") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.1&nbsp;&nbsp;&nbsp;<a href="#recherchekomplexallgemein">[% msg.maketext("Allgemeine Informationen") %]</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.2&nbsp;&nbsp;&nbsp;<a href="#suchlogikkomplex">[% msg.maketext("Suchlogik") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/sachlichesuche.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.2&nbsp;&nbsp;&nbsp;<a href="#suchlogikkomplex">[% msg.maketext("Suchlogik") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.3&nbsp;&nbsp;&nbsp;<a href="#auswahl">[% msg.maketext("Katalogauswahl") %]</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.4&nbsp;&nbsp;&nbsp;<a href="#indexsuche">[% msg.maketext("Such-Index") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/indexsuche.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.4&nbsp;&nbsp;&nbsp;<a href="#indexsuche">[% msg.maketext("Such-Index") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.5&nbsp;&nbsp;&nbsp;<a href="#beispiele">[% msg.maketext("Beispiele") %]</a></td></tr>
          <tr><td align="right">3</td><td><a href="#allghinweisesuche">[% msg.maketext("Weitere allgemeine Hinweise zur Suchanfrage") %]</a></td></tr>
-         <tr><td align="right">4</td><td><a href="#perskug">[% msg.maketext("Mein OpenBib") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/meinkuganmelden.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
-         <tr><td align="right">5</td><td><a href="#buchstandort">[% msg.maketext("Standort des Buches") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/standortsuche.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></td></tr>
-         <tr><td align="right">6</td><td><a href="#treffermerkliste">[% msg.maketext("Treffer-, Merk- und Literaturlisten") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right">4</td><td><a href="#perskug">[% msg.maketext("Mein OpenBib") %]</a></td></tr>
+         <tr><td align="right">5</td><td><a href="#buchstandort">[% msg.maketext("Standort des Buches") %]</a></td></tr>
+         <tr><td align="right">6</td><td><a href="#treffermerkliste">[% msg.maketext("Treffer-, Merk- und Literaturlisten") %]</a></td></tr>
 
-         <tr><td align="right">7</td><td><a href="#externesuche">[% msg.maketext("Sprung in externe Recherchequellen") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/externerecherche.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right">7</td><td><a href="#externesuche">[% msg.maketext("Sprung in externe Recherchequellen") %]</a></td></tr>
          <tr><td align="right">8</td><td><a href="#enrichment">[% msg.maketext("Ergebnisanreicherung") %]</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.1&nbsp;<a href="#enrichtoc">[% msg.maketext("Digitalisierte Inhaltsverzeichnisse") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/inhaltsverz.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.1&nbsp;<a href="#enrichtoc">[% msg.maketext("Digitalisierte Inhaltsverzeichnisse") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.2&nbsp;<a href="#enrichrelevance">[% msg.maketext("Weitere potentiell interessante Titel (Recommender-Funktion)") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.3&nbsp;<a href="#enrichweitere">[% msg.maketext("Weitere Anreicherungen") %]</a></td></tr>
 
          <tr><td align="right">9</td><td><a href="#popularity">[% msg.maketext("Popularit&auml;ts-Funktionen") %]</a></td></tr>
 
-         <tr><td align="right">10</td><td><a href="#rssfeeds">[% msg.maketext("RSS-Feeds (abonnierbare Informations-Kan&auml;le)") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right">10</td><td><a href="#rssfeeds">[% msg.maketext("RSS-Feeds (abonnierbare Informations-Kan&auml;le)") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;10.1&nbsp;<a href="#rssarten">[% msg.maketext("Angebotene Arten an RSS-Feeds") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;10.2&nbsp;<a href="#rssinstall">[% msg.maketext("Beispiel: Installation von Feedview f&uuml;r den Browser Firefox") %]</a></td></tr>
          <tr><td align="right">11</td><td><a href="#mashups">[% msg.maketext("Mashups mit Sozialer Software und externen Diensten") %]</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1&nbsp;<a href="#bibsonomy">[% msg.maketext("Integration von BibSonomy") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1&nbsp;<a href="#bibsonomy">[% msg.maketext("Integration von BibSonomy") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.1&nbsp;&nbsp;&nbsp;<a href="#bibsonomyquellen">[% msg.maketext("Thematische Integration weiterer Quellen") %]</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.2&nbsp;&nbsp;&nbsp;<a href="#bibsonomyspiegelung">[% msg.maketext("Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomyabgleich.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.2&nbsp;&nbsp;&nbsp;<a href="#bibsonomyspiegelung">[% msg.maketext("Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy") %]</a></td></tr>
 
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">[% msg.maketext("Integration der Wikipedia") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">[% msg.maketext("Integration der Wikipedia") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.3&nbsp;<a href="#gbs">[% msg.maketext("Integration der Google Book Search") %]</a></td></tr>
          <tr><td align="right">12</td><td><a href="#uebersichten">[% msg.maketext("&Uuml;bersichten") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="#wolken">[% msg.maketext("Wolken") %]</a></td></tr>
@@ -491,12 +491,10 @@ von Ihnen verwendeten Tags in Form einer Wortwolke - je mehr Titel sie
 mit einem entsprechenden Tag versehen haben, desto grösser wird es
 dargestellt. Durch einen Klick auf einen Tag erhalten Sie eine
 Kurztitel-Liste aller Titel, die sie mit dem jeweiligen Tag versehen
-haben.","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/meinkugtaggen.html\"
-target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>") %]</li>
+haben.","") %]</li>
 
 <li>[% msg.maketext("Wenn Sie sich mit Ihrem USB-Ausweis anmelden, können Sie aus OpenBib heraus
-eine <b>Fernleihe</b> [_1] starten, ohne sich zuvor nochmals authentifizieren zu müssen.","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/fernleihe.html\"
-target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>") %]</li>
+eine <b>Fernleihe</b> [_1] starten, ohne sich zuvor nochmals authentifizieren zu müssen.","") %]</li>
 
 <li>[% msg.maketext("Beim Einloggen mit Ihrem Bibliotheksausweis erhalten Sie sofort einen
 Überblick über Ihre Personendaten und Ausleihinformationen. (Rubik
@@ -505,9 +503,7 @@ Bücher haben Sie ausgeliehen, vorgemerkt, bestellt oder überzogen? Müssen Sie
 Gebühren bezahlen? Welche Recherchemaske möchten Sie bei Ihrer Suche
 standardmäßig verwenden, welche Suchfelder? Bei Unstimmigkeiten in den
 Personendaten wenden Sie sich bitte an die Auskunft der betreffenden
-Bibliothek.","<a
-class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/meinkuggrundeinstellungen.html\"
-target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>") %]</li>
+Bibliothek.","") %]</li>
 
 <li>[% msg.maketext("Unter der Rubrik <b>Benutzerkonto</b> erhalten Sie ausführliche Angaben zu Ihren
 Ausleihen (Buchtitel mit Rückgabetermin), Bestellungen, Vormerkungen und
@@ -524,9 +520,7 @@ automatisch in das Abspeicher-Textfeld eingetragen. Es erscheint die
 Katalogauswahl mit den markierten Katalogen, deren Auswahl Sie gemäß Ihrer
 Wünsche ändern und unter gleichem bzw. mit neuem Namen abspeichern können. Ihre
 Profildefinitionen und Suchfeldeinstellungen bleiben gespeichert, auch für
-zukünftige Recherchen.","<a
-class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/meinkugkatalogprofil.html\"
-target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>") %]</li>
+zukünftige Recherchen.","") %]</li>
 </ul>
 
       <h1 id="buchstandort">5 [% msg.maketext("Standort des Buches") %]</h1>
@@ -609,9 +603,9 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige <i>Pro Katalo
 <li>[% msg.maketext("Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)") %]</li>
 <li>[% msg.maketext("Digitale Bibliothek / Zeitschriften (f&uuml;r die Lieferung von Zeitschriftenaufs&auml;tzen)") %]</li>
 <li>[% msg.maketext("Datenbankinformationssystem (DBIS)") %]</li>
-<li>[% msg.maketext("Elektronische Zeitschriftendatenbank (EZB) [_1]","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/e-journal.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" /></a>") %]</li>
+<li>[% msg.maketext("Elektronische Zeitschriftendatenbank (EZB) [_1]","") %]</li>
 <li>[% msg.maketext("MedPilot") %]</li>
-<li>[% msg.maketext("Digitaler Kartenkatalog der Philosophischen Fakutl&auml;t [_1]","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/kartenkat.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" /></a>") %]</li>
+<li>[% msg.maketext("Digitaler Kartenkatalog der Philosophischen Fakutl&auml;t [_1]","") %]</li>
 </ul>
 
       <h1 id="enrichment">8 [% msg.maketext("Ergebnisanreicherung") %]</h1>
@@ -702,7 +696,7 @@ Popularit&auml;ts-Funktionen an. Es sind dies") %]
 
 <ul>
 <li>[% msg.maketext("<b>Top 20</b> Pro Katalog lassen sich die 20 meist aufgerufenen
-Titel unter dem Reiter [_1]&Uuml;bersichten[_2] anzeigen. [_3]","<a href=\"#sichten\">","</a>","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/top20.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" /></a>") %]</li>
+Titel unter dem Reiter [_1]&Uuml;bersichten[_2] anzeigen. [_3]","<a href=\"#sichten\">","</a>","") %]</li>
 <li>[% msg.maketext("<b>Sortierung nach Popularit&auml;t</b> In jeder Titel-Liste
 lassen sich die Titel nach Popularit&auml;t - entsprechend der
 konkreten Aufrufe - (sinnvollerweise absteigend) sortieren. Die Popularit&auml;t eines Titels finden
@@ -949,19 +943,19 @@ Katalogen gibt es weitere Spezial-Sichten, bei denen z.B. bestimmte Kataloge
      Funktionselemente verwendet. Es sind dies:") %]
     </p>
     <table>
-     <tr><td align="center"><img src="[% config.get('listofinterest_img') %]" alt="In die Merkliste" border="0" /></td><td>[% msg.maketext("Titel in die Merkliste eintragen") %]<a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>
+     <tr><td align="center"><img src="[% config.get('listofinterest_img') %]" alt="In die Merkliste" border="0" /></td><td>[% msg.maketext("Titel in die Merkliste eintragen") %]</td></tr>
 
-     <tr><td align="center"><img src="[% config.get('mail_img') %]" alt="Als Mail verschicken" border="0" /></td><td>[% msg.maketext("Titel(liste) als Mail verschicken") %]<a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/speichern.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>
-     <tr><td align="center"><img src="[% config.get('save_img') %]" alt="Abspeichern" border="0" /></td><td>[% msg.maketext("Titel(liste) abspeichern") %]<a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/speichern.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>   
-     <tr><td align="center"><img src="[% config.get('print_img') %]" alt="Ausdrucken" border="0" /></td><td>[% msg.maketext("Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen") %]<a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/drucken.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>   
-     <tr><td align="center"><img src="[% config.get('rssfeed_img') %]"  alt="RSS-Feed" border="0" /></td><td>[% msg.maketext("RSS-Feed") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>   
-     <tr><td align="center"><img src="[% config.get('share_img') %]"  alt="An BibSonomy senden" border="0" /></td><td>[% msg.maketext("An BibSonomy senden") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>   
-     <tr><td align="center"><img src="[% config.get('top20_img') %]"  alt="Top 20" border="0" /></td><td>[% msg.maketext("Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/top20.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>   
+     <tr><td align="center"><img src="[% config.get('mail_img') %]" alt="Als Mail verschicken" border="0" /></td><td>[% msg.maketext("Titel(liste) als Mail verschicken") %]</td></tr>
+     <tr><td align="center"><img src="[% config.get('save_img') %]" alt="Abspeichern" border="0" /></td><td>[% msg.maketext("Titel(liste) abspeichern") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.get('print_img') %]" alt="Ausdrucken" border="0" /></td><td>[% msg.maketext("Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.get('rssfeed_img') %]"  alt="RSS-Feed" border="0" /></td><td>[% msg.maketext("RSS-Feed") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.get('share_img') %]"  alt="An BibSonomy senden" border="0" /></td><td>[% msg.maketext("An BibSonomy senden") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.get('top20_img') %]"  alt="Top 20" border="0" /></td><td>[% msg.maketext("Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog") %]</td></tr>   
      <tr><td align="center"><img src="[% config.get('permalink_img') %]" alt="Permanenter Link" /></td><td>[% msg.maketext("Permanenter Link zu diesem Titel") %]</td></tr>
      <tr><td align="center"><img src="[% config.get('info_img') %]" alt="Kontextsensitive Hilfe" /></td><td>[% msg.maketext("Kontextsensitive Hilfe") %]</td></tr>   
      <tr><td align="center"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></td><td>[% msg.maketext("Interaktives Tutorium") %]</td></tr>
      <tr><td align="center"><img src="[% config.get('wikipedia_img') %]" alt="Wikipedia" /></td><td>Wikipedia</td></tr>
-     <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>
+     <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %]</td></tr>
   </table>
 
     <h1 id="verlinkung">14 [% msg.maketext("Verlinkung und Lastverteilung in OpenBib") %]</h1>

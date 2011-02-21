@@ -314,6 +314,13 @@ a:active.invisible {
   margin-top: 5px;
 }
 
+#maincontent .langchoice {  
+  float:right;
+  width:auto;
+  text-align: right; 
+  margin-top: 10px;
+}
+
 /* .content #langchoice {  
   float: right;
 }*/

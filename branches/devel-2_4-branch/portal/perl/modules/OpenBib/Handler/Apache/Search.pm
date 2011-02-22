@@ -454,7 +454,8 @@ sub search_databases {
             stylesheet => $stylesheet,		
             sessionID  => $session->{ID},
 
-            qopts      => $queryoptions->get_options,
+            qopts        => $queryoptions->get_options,
+            queryoptions => $queryoptions,
             
             resulttime => $resulttime,
             contentreq => $contentreq,
@@ -579,6 +580,7 @@ sub search_databases {
         query          => $query,
         
         qopts          => $queryoptions->get_options,
+        queryoptions   => $queryoptions,
         
         spelling_suggestion => $spelling_suggestion_ref,
 
@@ -775,6 +777,7 @@ sub search_databases {
                 searchquery     => $searchquery,
                 
                 qopts           => $queryoptions->get_options,
+                queryoptions    => $queryoptions,
                 
                 query           => $query,
                 
@@ -926,6 +929,7 @@ sub search_databases {
                         database        => $database,
                         queryid         => $queryid,
                         qopts           => $queryoptions->get_options,
+                        queryoptions    => $queryoptions,
                         fullresultcount => $fullresultcount,
                         recordlist      => $recordlist,
                         
@@ -1105,6 +1109,7 @@ sub search_databases {
                                 recordlist      => $recordlist,
 
                                 qopts           => $queryoptions->get_options,
+                                queryoptions    => $queryoptions,
                                 drilldown       => $drilldown,
 
                                 cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
@@ -1212,7 +1217,7 @@ sub search_databases {
         query         => $query,
         queryid       => $queryid,
         qopts         => $queryoptions->get_options,
-        
+        queryoptions  => $queryoptions,        
         sysprofile    => $sysprofile,
         config        => $config,
         user          => $user,
@@ -1556,7 +1561,8 @@ sub search_index {
         stylesheet => $stylesheet,		
         sessionID  => $session->{ID},
         
-        qopts      => $queryoptions->get_options,
+        qopts        => $queryoptions->get_options,
+        queryoptions => $queryoptions,
         
         resulttime => $resulttime,
         contentreq => $contentreq,

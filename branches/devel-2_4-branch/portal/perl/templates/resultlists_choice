@@ -97,12 +97,12 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.get_id %];num=50;srt=author;srto=up;jn=1;page=1"><b>kombinierte</b></a> / <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.get_id %];num=50;srt=author;srto=up;jn=0;page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% thisquery.get_hits %]</td></tr>
+<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% queryoptions.to_cgi_params({exclude = { profil = 1, page = 1, db = 1, jn = 1}}) %];jn=1;[% thisquery.to_cgi_params({ exclude = { profil = 1 , db = 1 }}) %];page=1"><b>kombinierte</b></a> / <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% queryoptions.to_cgi_params({exclude = { profil = 1, page = 1, db = 1, jn = 1}}) %];jn=0;[% thisquery.to_cgi_params({ exclude = { profil = 1 , db = 1 }}) %];page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% thisquery.get_hits %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 [% listrow = 'listrow2' %]
 [% FOREACH result IN thisquery.get_results %]
-<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% request_base %];queryid=[% thisquery.get_id %];db=[% result.first %];num=50;srt=author;srto=up;page=1"><b>[% dbinfo.dbnames.${result.first}.full %]</b></a></td><td align="right">
+<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% queryoptions.to_cgi_params({exclude = { profil = 1, page = 1, db = 1 }}) %];[% thisquery.to_cgi_params({ exclude = { profil = 1 , db = 1 }}) %];db=[% result.first %];page=1"><b>[% dbinfo.dbnames.${result.first}.full %]</b></a></td><td align="right">
 [% result.1 %]
 </td></tr>
 [%   IF listrow == 'listrow1' %]

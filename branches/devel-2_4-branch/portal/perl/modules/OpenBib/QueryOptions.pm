@@ -2,7 +2,7 @@
 #
 #  OpenBib::QueryOptions
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -188,6 +188,24 @@ sub get_default_options {
 
     return $config->{default_query_options};
 };
+
+sub to_cgi_params {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $exclude_ref       = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}        : {};
+
+    my @cgiparams = ();
+
+    foreach my $param (keys %{$self->{option}}){
+        if ($self->{option}->{$param} && ! exists $exclude_ref->{$param}){
+            push @cgiparams, "$param=".$self->{option}->{$param};
+        }
+    }
+    
+    return join(";",@cgiparams);
+}
 
 1;
 __END__

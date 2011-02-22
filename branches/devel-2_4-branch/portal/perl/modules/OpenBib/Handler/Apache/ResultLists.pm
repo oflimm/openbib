@@ -145,6 +145,8 @@ sub show {
             query          => $query,
             
             qopts          => $queryoptions->get_options,
+            queryoptions   => $queryoptions,
+            
             database       => $database,
             queryid        => $queryid,
             offset         => $offset,
@@ -196,6 +198,8 @@ sub show {
 
         dbinfo     => $dbinfotable,
         qopts      => $queryoptions->get_options,
+        queryoptions => $queryoptions,
+        
         hitcount   => $hitcount,
         resultdbs  => $resultdbs_ref,
         queries    => \@queries,

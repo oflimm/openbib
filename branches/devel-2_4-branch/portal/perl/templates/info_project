@@ -29,6 +29,35 @@
 
 <h1>Das OpenBib-Projekt</h1>
 
+<h2>Leitlinien</h2>
+
+<p> Das OpenBib-Projekt - wie auch die Open Library WebServices -
+orientieren sich an dem <a
+href="http://www.dfg.de/download/pdf/foerderung/programme/lis/strategiepapier_wiss_informationsvers.pdf"
+target="_blank">Strategiepapier</a> der Deutschen
+Forschungsgemeinschaft (DFG) "Aktuelle Anforderungen der
+wissenschaftlichen Informationsversorgung, Empfehlungen des
+Ausschusses für Wissenschaftliche Bibliotheken und Informationssysteme
+und des Unterausschusses für Informationsmanagement" aus dem März
+2004. In diesem Strategiepapier werden insbesondere Forderungen für
+die Softwaresysteme an den Bibliotheken und deren Interoperabilität
+aufgestellt. Die dort genannten Forderungen sind unter anderem: </p>
+
+<ul>
+
+    <li>ein klarer struktureller Aufbau auf der Basis eines Modulkonzeptes bei relativer Selbständigkeit einzelner Komponenten,</li>
+
+    <li>definierte, offen gelegte Schnittstellen, die internationale Standards im vollen Umfang berücksichtigen,</li>
+
+    <li>die Möglichkeit, Module anderer Systeme, wie z.B. Abrechnungsroutinen, Suchmaschine o.Ä., zu integrieren,</li>
+</ul>
+
+<p>
+Unter Konsequenzen lautet es in diesem Papier u.a.: "Eine besondere
+Bedeutung kommt dabei open-source-Entwicklungen zu, die einseitige
+Firmenbindungen vermeiden."
+</p>
+
 <h2>Ziele des Projektes</h2>
 
 <p> Mit dem OpenBib-Projekt wird das Ziel verfolgt, ein OpenSource
@@ -155,10 +184,9 @@ sein Arbeitstitel noch 'Biblio' hieß und es unter diesem Namen frei
 verbreitet wurde. Damit wurde von Anfang an gewährleistet, dass die
 Software frei ist und für immer frei sein wird.  </p>
 		
-<address>Oliver Flimm (05/01/20)</address>
+<address>Oliver Flimm (11/02/22)</address>
 
     </div>
   </div>
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -874,6 +874,4 @@ Weiterentwicklung der seit 1997 eingesetzten Software 'Biblio'.
     </div>
 </div>
 
-<p />
-
 [% PROCESS common/subtemplate name="std_footer" %]

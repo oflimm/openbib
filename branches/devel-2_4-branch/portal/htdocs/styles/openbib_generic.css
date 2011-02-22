@@ -309,12 +309,13 @@ a:active.invisible {
   background: #ffffff; 
 }
 
-#langchoice {  
+/* #langchoice {  
   float: right;
   margin-top: 5px;
 }
+*/
 
-#maincontent.langchoice {  
+#maincontent > #langchoice {  
   float:right;
   width:auto;
   text-align: right; 

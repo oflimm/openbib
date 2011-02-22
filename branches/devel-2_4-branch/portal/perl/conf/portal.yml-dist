@@ -2010,8 +2010,11 @@ default_query_options:
   num: 50
   page: 1
   l: 'de'
+  srto: 'up'
+  srt: 'author'
   profil: ''
-  js: 0
+  dd: 1
+  jn: 1
   lt: 'cover'
 
 # Generierte BestOf-Daten

@@ -415,14 +415,21 @@ sub get_filter {
 }
 
 sub to_cgi_params {
-    my ($self)=@_;
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $exclude_ref       = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}        : {};
+
+    my $config = OpenBib::Config->instance;
 
     my @cgiparams = ();
 
     foreach my $param (keys %{$self->{_searchquery}}){
-        if ($self->{_searchquery}->{$param}{val}){
-            push @cgiparams, "bool$param=".$self->{_searchquery}->{$param}{bool};
-            push @cgiparams, "$param=".$self->{_searchquery}->{$param}{val};
+        if ($self->{_searchquery}->{$param}{val} && !exists $exclude_ref->{$param}){
+            my $searchparam = $config->{searchfield}{$param}{prefix};
+            push @cgiparams, "b$searchparam=".$self->{_searchquery}->{$param}{bool};
+            push @cgiparams, "$searchparam=".$self->{_searchquery}->{$param}{val};
         }
     }
     

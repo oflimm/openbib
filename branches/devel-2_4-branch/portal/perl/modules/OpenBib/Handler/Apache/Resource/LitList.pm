@@ -40,6 +40,7 @@ use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
+use JSON::XS;
 use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;

@@ -44,6 +44,7 @@ use APR::URI ();
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;

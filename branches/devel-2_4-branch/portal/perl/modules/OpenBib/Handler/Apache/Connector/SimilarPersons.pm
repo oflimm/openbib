@@ -81,7 +81,9 @@ sub show {
     my $config      = OpenBib::Config->instance;
 
     my $query  = Apache2::Request->new($r);
-    
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
+
 #     my $status=$query->parse;
     
 #     if ($status){
@@ -254,6 +256,7 @@ sub show {
         view            => $view,
         record          => OpenBib::Record::Title->new,
         format          => $format,
+        queryoptions    => $queryoptions,
         similar_persons => $sorted_similar_persons_ref,
         database        => $database,
         config          => $config,

@@ -1274,7 +1274,15 @@ dispatch_rules:
      runmode: 'save_collection'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/save/:database/:id[get]'
+     runmode: 'save_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/mail[get]'
+     runmode: 'mail_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/mail/:database/:id[get]'
      runmode: 'mail_collection'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
@@ -1283,6 +1291,10 @@ dispatch_rules:
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/print[get]'
+     runmode: 'print_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/print/:database/:id[get]'
      runmode: 'print_collection'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'

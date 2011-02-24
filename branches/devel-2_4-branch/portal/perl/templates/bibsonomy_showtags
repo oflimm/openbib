@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF format == 'ajax' -%]
 [% IF tags.first %]
 [% FOREACH tag IN tags %]

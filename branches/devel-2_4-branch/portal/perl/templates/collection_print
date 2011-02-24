@@ -23,11 +23,7 @@
 <div id="maincontent">
 
       <ul class="tabbingmenu">
-	<li><a class="active" href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/print
-[%- IF id -%]
-;id=[% singleidn %]
-[%- END -%]
-">[% msg.maketext("Druckansicht Titel") %]</a></li>
+	<li><a class="active" href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/print[%- IF id && database -%][% database %]/[% id %][%- END -%]">[% msg.maketext("Druckansicht Titel") %]</a></li>
       </ul>
       
       <div class="content">

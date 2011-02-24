@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF format == 'xml' -%]
 [%- ELSE -%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
@@ -96,7 +97,7 @@ style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen de
 thistitle.local_dbs %]<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=[% dbname %];fs=bkey:|[% thistitle.bibkey %]|" title="[% dbinfo.get('dbnames').${dbname}.short %]">[% loop.count %]</a>&nbsp;&nbsp;[% END %][% END %]
       </div>
       <div class="titleactions">
-<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a>
+<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/items_by_tag?tag=[% thistag | uri %];type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/items_by_user?user=[% thistitle.user %];type=[% type %]">[% thistitle.user %]</a>
       </div>
     </div>
 [% ELSIF type == 'bookmark' %]

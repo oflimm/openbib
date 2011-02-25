@@ -14,7 +14,7 @@
 -%]
 [% IF normset.${"T6051"} %]
 <p>
-<a href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/560/http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F[% config.get('servername') %]%2Fportal%2Fconnector%2Funapi%3Fid%3D[% record.database %]%3A[% record.id %]%26format%3Dmets" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[Online lesen im DFG-Viewer]</center></a>
+<a href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/560/http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F[% config.get('servername') %]%2Fportal%2F[% view %]%2Fconnector%2Funapi%3Fid%3D[% record.database %]%3A[% record.id %]%26format%3Dmets" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[Online lesen im DFG-Viewer]</center></a>
 </p>
 [% END %]
 

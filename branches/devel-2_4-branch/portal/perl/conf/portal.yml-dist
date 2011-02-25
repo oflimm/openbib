@@ -715,6 +715,18 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Resource::Title'
      rule: '/portal/:view/resource/title/:database/:titleid'
      runmode: 'show'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/resource/title/:database/:id/save[get]'
+     runmode: 'save_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/resource/title/:database/:id/mail[get]'
+     runmode: 'mail_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/resource/title/:database/:id/print[get]'
+     runmode: 'print_collection'
   - # resource_person_loc:
      module: 'OpenBib::Handler::Apache::Resource::Person'
      rule: '/portal/:view/resource/person/:database/:personid'
@@ -1274,15 +1286,7 @@ dispatch_rules:
      runmode: 'save_collection'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/save/:database/:id[get]'
-     runmode: 'save_collection'
-  - # collection_loc:
-     module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/mail[get]'
-     runmode: 'mail_collection'
-  - # collection_loc:
-     module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/mail/:database/:id[get]'
      runmode: 'mail_collection'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
@@ -1291,10 +1295,6 @@ dispatch_rules:
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/print[get]'
-     runmode: 'print_collection'
-  - # collection_loc:
-     module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/print/:database/:id[get]'
      runmode: 'print_collection'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'

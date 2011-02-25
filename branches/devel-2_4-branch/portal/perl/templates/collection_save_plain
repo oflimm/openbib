@@ -11,11 +11,11 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="visible_categories_titset" %]
-[% IF type == 'Text' %]
-[% PROCESS common/subtemplate name="managecollection_tit_as_text" data_only=1 %]
-[% ELSIF type == 'BibTeX' %]
-[% PROCESS common/subtemplate name="managecollection_tit_as_bibtex" data_only=1 %]
-[% ELSIF type == 'EndNote' %]
-[% PROCESS common/subtemplate name="managecollection_tit_as_endnote" data_only=1 %]
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+[% IF format == 'Text' %]
+[% PROCESS common/subtemplate name="collection_html_as_text" data_only=1 %]
+[% ELSIF format == 'BibTeX' %]
+[% PROCESS common/subtemplate name="collection_html_as_bibtex" data_only=1 %]
+[% ELSIF format == 'EndNote' %]
+[% PROCESS common/subtemplate name="collection_html_as_endnote" data_only=1 %]
 [% END %]

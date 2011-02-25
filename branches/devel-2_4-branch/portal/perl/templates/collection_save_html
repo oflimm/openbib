@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
-[% PROCESS common/subtemplate name="visible_categories_titset" %]
+[% PROCESS common/subtemplate name="visible_categories_title" %]
 
   <body>
 
@@ -41,8 +41,8 @@
 	<div class="content">
 	  
 	  <p />
-[% IF type == 'HTML' %]
-[%   PROCESS common/subtemplate name="managecollection_tit_as_html" database="${record.database}" %]
+[% IF format == 'full' %]
+[%   PROCESS common/subtemplate name="collection_html_full" database="${record.database}" %]
 [% END %]
 
 	</div>

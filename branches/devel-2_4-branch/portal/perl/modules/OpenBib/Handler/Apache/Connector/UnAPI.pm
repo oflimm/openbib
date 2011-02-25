@@ -70,8 +70,8 @@ sub show {
     my $self = shift;
     my $r    = $self->param('r');
 
-    my $unapiid        = $self->param('id')     || '';
-    my $format         = $self->param('format') || '';
+    my $unapiid        = $self->query->param('id')     || '';
+    my $format         = $self->query->param('format') || '';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();

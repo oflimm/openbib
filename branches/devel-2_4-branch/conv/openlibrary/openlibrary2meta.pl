@@ -64,13 +64,13 @@ HELP
 exit;
 }
 
-open (TIT,     ">:utf8","unload.TIT");
-open (AUT,     ">:utf8","unload.PER");
-open (KOR,     ">:utf8","unload.KOE");
-open (NOTATION,">:utf8","unload.SYS");
-open (SWT,     ">:utf8","unload.SWD");
+open (TIT,     ">:utf8","meta.title");
+open (AUT,     ">:utf8","meta.person");
+open (KOR,     ">:utf8","meta.corporatebody");
+open (NOTATION,">:utf8","meta.classification");
+open (SWT,     ">:utf8","meta.subject");
 
-my %author = ();
+my %have_author = ();
 
 print "### Processing Titles: 1st pass - getting authors\n";
 open(OL,"<:utf8",$inputfile_titles);
@@ -92,7 +92,8 @@ while (<OL>){
     if (exists $recordset->{authors}){
       foreach my $author_ref (@{$recordset->{authors}}){
 	my $key     = $author_ref->{key};
-        $author{$key}=1;
+        $key =~s{/authors/}{};
+        $have_author{$key}=1;
       }
     }
 
@@ -111,15 +112,19 @@ open(OL,"<:utf8",$inputfile_authors);
 
 $count = 1;
 
+my %author = ();
 while (<OL>){
     my $recordset=undef;
     
     eval {
         $recordset = decode_json $_;
     };
+    
+    my $key = $recordset->{key};
+    $key=~s{^/authors/}{};
 
-    if (exists $recordset->{key} && exists $author{$recordset->{key}}){
-        $author{$recordset->{key}}=$recordset;
+    if ( $key && $have_author{$key} == 1){
+        $author{$key}=$recordset;
     }
 
     if ($count % 10000 == 0){
@@ -144,6 +149,9 @@ while (<OL>){
         $recordset = decode_json $_;
     };
 
+    my $key = $recordset->{key} ;
+    $key =~s{^/books/}{};
+
 #    print YAML::Dump($recordset);
 
     # Einschraenkung auf Titelaufnahmen mit Digitalisaten
@@ -151,23 +159,23 @@ while (<OL>){
         next;
     }
     
-    if (!$recordset->{key}){
+    if (!$key){
         print STDERR  "Keine ID\n".YAML::Dump($recordset)."\n";
         next;
     }
 
-    if (!$recordset->{key} || $have_titid_ref->{$recordset->{key}}){
-        print STDERR  "Doppelte ID: ".$recordset->{key}."\n";
+    if (!$key || $have_titid_ref->{$key}){
+        print STDERR  "Doppelte ID: ".$key."\n";
         next;
     }
 
-    printf TIT "0000:%s\n", $recordset->{key};
-    $have_titid_ref->{$recordset->{key}} = 1;
+    printf TIT "0000:%s\n", $key;
+    $have_titid_ref->{$key} = 1;
 
     if (exists $recordset->{languages}){
         foreach my $item_ref (@{$recordset->{languages}}){
             my $lang = $item_ref->{key};
-            $lang =~s/^\/l\///;
+            $lang =~s{^/languages/}{};
             print TIT "0015:$lang\n";
         }
     }
@@ -217,33 +225,27 @@ while (<OL>){
         print TIT "0662:$recordset->{ocaid}\n";
     }
 
-    print TIT "0800:eBook\n";
+    print TIT "0800:ebook\n";
 
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){
       foreach my $author_ref (@{$recordset->{authors}}){
 	my $key     = $author_ref->{key};
-        
+        $key =~s{/authors/}{};
+ 
         if (!exists $author{$key}{name}){
 	  print STDERR "### Key $key existiert nicht\n";
 	}
 
 	my $content = $author{$key}{name};
 	
-	if ($content){	  
-	  my $autidn=OpenBib::Conv::Common::Util::get_autidn($content);
-	  
-	  if ($autidn > 0){
-	    print AUT "0000:$autidn\n";
+	if ($content && !$author{$key}{done}){	  
+	    print AUT "0000:$key\n";
 	    print AUT "0001:$content\n";
 	    print AUT "9999:\n";
-	  }   
-	  else {
-	    $autidn=(-1)*$autidn;
-	  }
-	  
-	  print TIT "0100:IDN: $autidn\n";
-	}
+            $author{$key}{done}=1;
+        } 
+        print TIT "0100:IDN: $key\n";
       }
     }
     # Autoren abarbeiten Ende

@@ -144,11 +144,11 @@ $(document).ready(function(){
 [%# USE dumper; dumper.dump(config.get_orgunits(dbchoice)) ; %]
 
 <table>
-<tr><td colspan="2"><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
-<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profil">
+<tr><td colspan="2"><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profile">
 
 [%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
-<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+<option value="dbchoice"[%- IF prevprofile == 'dbchoice' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
 [%- FOREACH profile IN userprofile -%]
 [%     pid   = profile.key %]
@@ -235,11 +235,11 @@ $(document).ready(function(){
 <input type="hidden" name="bftyp"     value="AND" />
 
 <table>
-<tr><td colspan="2"><input id="input_box_serials" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
-<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profil">
+<tr><td colspan="2"><input id="input_box_serials" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profile">
 
 [%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
-<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+<option value="dbchoice"[%- IF prevprofile == 'dbchoice' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
 [%- FOREACH profile IN userprofile -%]
 [%     pid   = profile.key %]
@@ -328,11 +328,11 @@ $(document).ready(function(){
 <input type="hidden" name="bftyp"     value="AND" />
 
 <table>
-<tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
-<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profil">
+<tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profile">
 
 [%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
-<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+<option value="dbchoice"[%- IF prevprofile == 'dbchoice' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
 [%- FOREACH profile IN userprofile -%]
 [%     pid   = profile.key %]
@@ -422,11 +422,11 @@ $(document).ready(function(){
 <input type="hidden" name="bftyp"  value="AND" />
 
 <table>
-<tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
-<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profil">
+<tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profile">
 
 [%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
-<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+<option value="dbchoice"[%- IF prevprofile == 'dbchoice' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
 [%- FOREACH profile IN userprofile -%]
 [%     pid   = profile.key %]

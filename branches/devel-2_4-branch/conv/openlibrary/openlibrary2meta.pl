@@ -124,7 +124,21 @@ while (<OL>){
     $key=~s{^/authors/}{};
 
     if ( $key && $have_author{$key} == 1){
-        $author{$key}=$recordset;
+        my $name = $recordset->{name};
+        $name = $recordset->{personal_name} if (!$name);
+
+        if ($name){
+            print AUT "0000:$key\n";
+            print AUT "0001:$name\n";
+            print AUT "0304:$recordset->{birth_date}\n" if ($recordset->{birth_date});
+            print AUT "0306:$recordset->{death_date}\n" if ($recordset->{death_date});
+            print AUT "9999:\n";
+
+            OpenBib::Conv::Common::Util::set_person_id($key,$name);
+        }
+        else {
+            $have_author{$key} = 0;
+        }
     }
 
     if ($count % 10000 == 0){
@@ -233,19 +247,7 @@ while (<OL>){
 	my $key     = $author_ref->{key};
         $key =~s{/authors/}{};
  
-        if (!exists $author{$key}{name}){
-	  print STDERR "### Key $key existiert nicht\n";
-	}
-
-	my $content = $author{$key}{name};
-	
-	if ($content && !$author{$key}{done}){	  
-	    print AUT "0000:$key\n";
-	    print AUT "0001:$content\n";
-	    print AUT "9999:\n";
-            $author{$key}{done}=1;
-        } 
-        print TIT "0100:IDN: $key\n";
+        print TIT "0100:IDN: $key\n" if ($have_author{$key} == 1);
       }
     }
     # Autoren abarbeiten Ende
@@ -255,19 +257,16 @@ while (<OL>){
       foreach my $content (@{$recordset->{contributions}}){
 	
 	if ($content){
-	  my $autidn=OpenBib::Conv::Common::Util::get_autidn($content);
+            my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
 	  
-	  if ($autidn > 0){
-	    print AUT "0000:$autidn\n";
-	    print AUT "0001:$content\n";
-	    print AUT "9999:\n";
-	    
-	  }
-	  else {
-	    $autidn=(-1)*$autidn;
-	  }
+            if ($new){
+                print AUT "0000:$person_id\n";
+                print AUT "0001:$content\n";
+                print AUT "9999:\n";
+                
+            }
 	  
-	  print TIT "0101:IDN: $autidn\n";
+            print TIT "0101:IDN: $person_id\n";
         }
       }
     }
@@ -275,23 +274,20 @@ while (<OL>){
 
     # Notationen abarbeiten Anfang
     if (exists $recordset->{dewey_decimal_class}){
-      foreach my $content (@{$recordset->{dewey_decimal_class}}){
-	if ($content){	  
-	  my $notidn=OpenBib::Conv::Common::Util::get_notidn($content);
-	  
-	  if ($notidn > 0){
-	    print NOTATION "0000:$notidn\n";
-	    print NOTATION "0001:$content\n";
-	    print NOTATION "9999:\n";
-	    
-	  }
-	  else {
-	    $notidn=(-1)*$notidn;
-	  }
-	  
-	  print TIT "0700:IDN: $notidn\n";
+        foreach my $content (@{$recordset->{dewey_decimal_class}}){
+            if ($content){	  
+                my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
+                
+                if ($new){
+                    print NOTATION "0000:$classification_id\n";
+                    print NOTATION "0001:$content\n";
+                    print NOTATION "9999:\n";
+                    
+                }
+                
+                print TIT "0700:IDN: $classification_id\n";
+            }
         }
-      }
     }
     # Notationen abarbeiten Ende
 
@@ -302,17 +298,15 @@ while (<OL>){
 	  # Punkt am Ende entfernen
 	  $content=~s/\.\s*$//;
 
-	  my $swtidn=OpenBib::Conv::Common::Util::get_swtidn($content);
+	  my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
 	  
-	  if ($swtidn > 0){	  
-	    print SWT "0000:$swtidn\n";
-	    print SWT "0001:$content\n";
-	    print SWT "9999:\n";
+	  if ($new){	  
+              print SWT "0000:$subject_id\n";
+              print SWT "0001:$content\n";
+              print SWT "9999:\n";
 	  }
-	  else {
-	    $swtidn=(-1)*$swtidn;
-	  }
-	  print TIT "0710:IDN: $swtidn\n";
+
+	  print TIT "0710:IDN: $subject_id\n";
         }
       }
     }

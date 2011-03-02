@@ -128,6 +128,7 @@ while (<OL>){
         $name = $recordset->{personal_name} if (!$name);
 
         if ($name){
+            $name = konv($name);
             print AUT "0000:$key\n";
             print AUT "0001:$name\n";
             print AUT "0304:$recordset->{birth_date}\n" if ($recordset->{birth_date});
@@ -195,44 +196,56 @@ while (<OL>){
     }
     
     if (exists $recordset->{title}){
-        my $title = $recordset->{title};
+        my $title = konv($recordset->{title});
         if (exists $recordset->{title_prefix}){
-            $title=$recordset->{title_prefix}." $title";
+            $title=konv($recordset->{title_prefix})." $title";
         }
         
         print TIT "0331:$title\n";
     }
 
     if (exists $recordset->{subtitle}){
-        print TIT "0335:$recordset->{subtitle}\n";
+        print TIT "0335:".konv($recordset->{subtitle})."\n";
+    }
+
+    if (exists $recordset->{other_titles}){
+        foreach my $item (@{$recordset->{other_titles}}){
+            print TIT "0370:".konv($item)."\n";
+        }
     }
 
     if (exists $recordset->{by_statement}){
-        print TIT "0359:$recordset->{by_statement}\n";
+        print TIT "0359:".konv($recordset->{by_statement})."\n";
     }
 
     if (exists $recordset->{publishing_places}){
         foreach my $item (@{$recordset->{publishing_places}}){
-            print TIT "0410:$item\n";
+            print TIT "0410:".konv($item)."\n";
+        }
+    }
+
+    if (exists $recordset->{series}){
+        foreach my $item (@{$recordset->{series}}){
+            print TIT "0451:".konv($item)."\n";
         }
     }
 
     if (exists $recordset->{publishers}){
         foreach my $item (@{$recordset->{publishers}}){
-            print TIT "0412:$item\n";
+            print TIT "0412:".konv($item)."\n";
         }
     }
 
     if (exists $recordset->{edition_name}){
-        print TIT "0403:$recordset->{edition_name}\n";
+        print TIT "0403:".konv($recordset->{edition_name})."\n";
     }
 
     if (exists $recordset->{publish_date}){
-        print TIT "0425:$recordset->{publish_date}\n";
+        print TIT "0425:".konv($recordset->{publish_date})."\n";
     }
 
     if (exists $recordset->{pagination}){
-        print TIT "0433:$recordset->{pagination}\n";
+        print TIT "0433:".konv($recordset->{pagination})."\n";
     }
 
     if (exists $recordset->{ocaid}){
@@ -243,39 +256,47 @@ while (<OL>){
 
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){
-      foreach my $author_ref (@{$recordset->{authors}}){
-	my $key     = $author_ref->{key};
-        $key =~s{/authors/}{};
- 
-        print TIT "0100:IDN: $key\n" if ($have_author{$key} == 1);
-      }
+        my %processed = ();
+        foreach my $author_ref (@{$recordset->{authors}}){
+            my $key     = $author_ref->{key};
+            $key =~s{/authors/}{};
+            
+            print TIT "0100:IDN: $key\n" if ($have_author{$key} == 1 && !$processed{$key});
+            $processed{$key} = 1;
+        }
     }
     # Autoren abarbeiten Ende
 
     # Personen abarbeiten Anfang
-    if (exists $recordset->{contributions}){    
-      foreach my $content (@{$recordset->{contributions}}){
-	
-	if ($content){
-            my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
-	  
-            if ($new){
-                print AUT "0000:$person_id\n";
-                print AUT "0001:$content\n";
-                print AUT "9999:\n";
+    if (exists $recordset->{contributions}){
+        my %processed = ();
+        
+        foreach my $content (@{$recordset->{contributions}}){
+            
+            if ($content && !$processed{$content}){
+                $content = konv($content);
+                my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                 
+                if ($new){
+                    print AUT "0000:$person_id\n";
+                    print AUT "0001:$content\n";
+                    print AUT "9999:\n";
+                    
+                }
+                
+                print TIT "0101:IDN: $person_id\n";
+                $processed{$content} = 1 ;
             }
-	  
-            print TIT "0101:IDN: $person_id\n";
         }
-      }
     }
     # Personen abarbeiten Ende
 
     # Notationen abarbeiten Anfang
     if (exists $recordset->{dewey_decimal_class}){
+        my %processed = ();
         foreach my $content (@{$recordset->{dewey_decimal_class}}){
-            if ($content){	  
+            if ($content && !$processed{$content}){
+                $content = konv($content);
                 my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
                 
                 if ($new){
@@ -286,6 +307,26 @@ while (<OL>){
                 }
                 
                 print TIT "0700:IDN: $classification_id\n";
+                $processed{$content} = 1;
+            }
+        }
+    }
+    if (exists $recordset->{lc_classifications}){
+        my %processed = ();
+        foreach my $content (@{$recordset->{lc_classifications}}){
+            if ($content && !$processed{$content}){
+                $content = konv($content);
+                my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
+                
+                if ($new){
+                    print NOTATION "0000:$classification_id\n";
+                    print NOTATION "0001:$content\n";
+                    print NOTATION "9999:\n";
+                    
+                }
+                
+                print TIT "0700:IDN: $classification_id\n";
+                $processed{$content} = 1;
             }
         }
     }
@@ -293,26 +334,28 @@ while (<OL>){
 
     # Schlagworte abarbeiten Anfang
     if (exists $recordset->{subjects}){
-      foreach my $content (@{$recordset->{subjects}}){
-	if ($content){
-	  # Punkt am Ende entfernen
-	  $content=~s/\.\s*$//;
-
-	  my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
-	  
-	  if ($new){	  
-              print SWT "0000:$subject_id\n";
-              print SWT "0001:$content\n";
-              print SWT "9999:\n";
-	  }
-
-	  print TIT "0710:IDN: $subject_id\n";
+        my %processed = ();
+        foreach my $content (@{$recordset->{subjects}}){
+            if ($content && !$processed{$content}){
+                $content = konv($content);
+                # Punkt am Ende entfernen
+                $content=~s/\.\s*$//;
+                
+                my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
+                
+                if ($new){	  
+                    print SWT "0000:$subject_id\n";
+                    print SWT "0001:$content\n";
+                    print SWT "9999:\n";
+                }
+                
+                print TIT "0710:IDN: $subject_id\n";
+            }
         }
-      }
     }
     # Schlagworte abarbeiten Ende
     print TIT "9999:\n";
-
+    
     if ($count % 10000 == 0){
         print "$count done\n";
     }
@@ -326,3 +369,14 @@ close(KOR);
 close(NOTATION);
 close(SWT);
 
+
+sub konv {
+    my ($content)=@_;
+
+    $content=~s/\&amp;/&/g; # zuerst etwaige &amp; auf & normieren 
+    $content=~s/\&/&amp;/g; # dann erst kann umgewandet werden (sonst &amp;amp;) 
+    $content=~s/>/&gt;/g;
+    $content=~s/</&lt;/g;
+
+    return $content;
+}

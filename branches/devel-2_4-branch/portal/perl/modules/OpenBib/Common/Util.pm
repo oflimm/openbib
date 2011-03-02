@@ -998,7 +998,7 @@ sub gen_bibkey_base {
     (@$editors_ref)?$editors_ref:[];
 
     my $author = "";
-    $author    = "[".join(",", sort(@$persons_ref))."]" if (@$persons_ref);
+    $author    = "[".join(",", sort(@$persons_ref))."]" if (defined $persons_ref && @$persons_ref);
 
     # Titel
     my $title  = (exists $normdata_ref->{T0331})?lc($normdata_ref->{T0331}[0]{content}):"";

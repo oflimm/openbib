@@ -215,12 +215,10 @@ sub show_collection {
         stylesheet       => $stylesheet,
         queryoptions_ref => $queryoptions->get_options,
         sessionID        => $session->{ID},
-        targettype       => $targettype,
         dbinfo           => $dbinfotable,
         libraries        => $librarylist_ref,
         
         config           => $config,
-        user             => $user,
         msg              => $msg,
     };
     

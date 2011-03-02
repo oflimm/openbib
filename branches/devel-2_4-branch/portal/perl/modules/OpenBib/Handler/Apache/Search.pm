@@ -195,9 +195,6 @@ sub search_databases {
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 
-    my $searchall     = $query->param('searchall')     || '';
-    my $searchprofile = $query->param('searchprofile') || '';
-
     # Index zusammen mit Eingabefelder 
     my $verfindex     = $query->param('verfindex')     || '';
     my $korindex      = $query->param('korindex')      || '';
@@ -209,7 +206,7 @@ sub search_databases {
     my $indexterm    = $query->param('indexterm')     || '';
     my $searchindex  = $query->param('searchindex')     || '';
     
-    my $profil        = $query->param('profil')        || '';
+    my $profile       = $query->param('profile')       || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
@@ -409,7 +406,7 @@ sub search_databases {
             $databasestring.=";database=$database";
         }
         
-        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profil=$profil;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
+        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profile=$profile;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
 
         my @nav=();
 
@@ -465,7 +462,7 @@ sub search_databases {
             page       => $page,
             hitrange   => $hitrange,
             baseurl    => $baseurl,
-            profil     => $profil,
+            profile    => $profile,
             sysprofile => $sysprofile,
             config     => $config,
             user       => $user,
@@ -770,7 +767,7 @@ sub search_databases {
                 view            => $view,
                 sessionID       => $session->{ID},
                 
-                searchall       => $searchall,
+                profile         => $profile,
                 
                 dbinfo          => $dbinfotable,
                 
@@ -1376,9 +1373,6 @@ sub search_index {
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 
-    my $searchall     = $query->param('searchall')     || '';
-    my $searchprofile = $query->param('searchprofile') || '';
-
     # Index zusammen mit Eingabefelder 
     my $verfindex     = $query->param('verfindex')     || '';
     my $korindex      = $query->param('korindex')      || '';
@@ -1390,7 +1384,7 @@ sub search_index {
     my $indexterm    = $query->param('indexterm')     || '';
     my $searchindex  = $query->param('searchindex')     || '';
     
-    my $profil        = $query->param('profil')        || '';
+    my $profile       = $query->param('profile')        || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
@@ -1516,7 +1510,7 @@ sub search_index {
         $databasestring.=";database=$database";
     }
     
-    my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profil=$profil;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
+    my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profile=$profile;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
     
     my @nav=();
     
@@ -1572,7 +1566,7 @@ sub search_index {
         page       => $page,
         hitrange   => $hitrange,
         baseurl    => $baseurl,
-        profil     => $profil,
+        profile    => $profile,
         sysprofile => $sysprofile,
         config     => $config,
         user       => $user,
@@ -1615,11 +1609,9 @@ sub get_databases {
     # CGI Args
     my @databases     = ($query->param('db'))?$query->param('db'):();
     my $queryid       = $query->param('queryid')       || '';
-    my $searchall     = $query->param('searchall')     || '';
-    my $searchprofile = $query->param('searchprofile') || '';
     my $searchindex   = $query->param('searchindex')   || '';
 
-    my $profil        = $query->param('profil')        || '';
+    my $profile       = $query->param('profile')       || '';
 
     # Index zusammen mit Eingabefelder 
     my $verfindex     = $query->param('verfindex')     || '';
@@ -1636,13 +1628,13 @@ sub get_databases {
     my $is_orgunit  = 0;
   ORGUNIT_SEARCH:
     foreach my $orgunit_ref (@{$orgunits_ref}){
-        if ($orgunit_ref->{orgunitname} eq $profil){
+        if ($orgunit_ref->{orgunitname} eq $profile){
             $is_orgunit=1;
             last ORGUNIT_SEARCH;
         }
     }
     
-    $profil="" if (!$is_orgunit && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
+    $profile="" if (!$is_orgunit && $profile ne "dbchoice" && !$profile=~/^user/ && $profile ne "alldbs");
 
     # BEGIN DB-Bestimmung
     ####################################################################
@@ -1665,7 +1657,7 @@ sub get_databases {
         }
         
         # Neue Datenbankauswahl ist voreingestellt
-        $session->set_profile('dbauswahl');
+        $session->set_profile('dbchoice');
     }
     else {
         # Wenn eine Queryid uebergeben wurde, dann werden *immer* die damit
@@ -1677,13 +1669,13 @@ sub get_databases {
         # Wenn nur ein View angegeben wird, aber keine Submit-Funktion (s.u.),
         # z.B. wenn direkt von extern fuer einen View eine Recherche gestartet werden soll,
         # dann wird in den Datenbanken des View recherchiert
-        elsif ($view && !($searchall||$searchprofile||$searchindex||$verfindex||$korindex||$swtindex||$notindex)){
+        elsif ($view && !($profile||$searchindex||$verfindex||$korindex||$swtindex||$notindex)){
             $logger->debug("Selecting databases of view");
             @databases = $config->get_dbs_of_view($view);
         }
         
         else {
-            if ($searchall) {
+            if ($profile eq "alldbs") {
                 if ($view){
                     $logger->debug("Selecting all active databases of views systemprofile");
                     @databases = $config->get_active_databases_of_systemprofile($view);
@@ -1693,25 +1685,25 @@ sub get_databases {
                     @databases = $config->get_active_databases();
                 }
             }
-            elsif ($searchprofile || $searchindex || $verfindex || $korindex || $swtindex || $notindex) {
-                if ($profil eq "dbauswahl") {
+            elsif ($profile || $searchindex || $verfindex || $korindex || $swtindex || $notindex) {
+                if ($profile eq "dbchoice") {
                     $logger->debug("Selecting databases of users choice");
                     # Eventuell bestehende Auswahl zuruecksetzen
                     @databases = $session->get_dbchoice();
                 }
-                # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
-                elsif ($profil) {
-                    $logger->debug("Selecting databases of Profile $profil");
+                # Wenn ein anderes Profil als 'dbchoice' ausgewaehlt wuerde
+                elsif ($profile) {
+                    $logger->debug("Selecting databases of Profile $profile");
                     # Eventuell bestehende Auswahl zuruecksetzen
                     @databases=();
                     
                     # Benutzerspezifische Datenbankprofile
-                    if ($profil=~/^user(\d+)/) {
-                        my $profilid=$1;
-                        @databases = $user->get_profiledbs_of_profileid($profilid);
+                    if ($profile=~/^user(\d+)/) {
+                        my $profileid=$1;
+                        @databases = $user->get_profiledbs_of_profileid($profileid);
                     }
                     # oder alle
-                    elsif ($profil eq "alldbs") {
+                    elsif ($profile eq "alldbs") {
                         # Alle Datenbanken
                         if ($view){
                             $logger->debug("Selecting all active databases of views systemprofile");
@@ -1724,7 +1716,7 @@ sub get_databases {
                     }
                     # ansonsten orgunit
                     else {
-                        @databases = $config->get_active_databases_of_orgunit($sysprofile,$profil);
+                        @databases = $config->get_active_databases_of_orgunit($sysprofile,$profile);
                     }
                 }
                 # Kein Profil
@@ -1734,8 +1726,8 @@ sub get_databases {
                 }
                 
                 # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
-                if ($profil) {
-                    $session->set_profile($profil);
+                if ($profile) {
+                    $session->set_profile($profile);
                 }
             }
         }

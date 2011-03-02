@@ -530,7 +530,9 @@ sub handler {
         
         my $liststart = ($offset<= $treffercount)?$offset:0;
         my $listend   = ($offset+$listlength <= $treffercount)?$offset+$listlength-1:$treffercount-1;
-        
+
+        @ergebnisse = @ergebnisse[$liststart..$listend];
+
         my $itemtemplatename=$config->{tt_connector_digibib_result_item_tname};
 
         $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
@@ -551,11 +553,10 @@ sub handler {
             OUTPUT         => $r,
         });
         
-        
         # TT-Data erzeugen
         my $ttdata={
             dbinfo          => $dbinfotable,
-            resultlist      => \@ergebnisse,#[$liststart..$listend],
+            resultlist      => \@ergebnisse,
 
             utf2iso      => sub {
                 my $string=shift;

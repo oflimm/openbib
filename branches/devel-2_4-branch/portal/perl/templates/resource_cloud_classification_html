@@ -68,7 +68,7 @@
 %]
 
 [%- IF resultlist.size > 5 -%]
-[%- searchprefix  = config.get('searchfield').notstring.prefix -%]
+[%- searchprefix  = config.get('searchfield').classificationstring.prefix -%]
 
 <ol class="cloud">
 [%- FOREACH thisitem IN resultlist -%]

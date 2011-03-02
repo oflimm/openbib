@@ -23,7 +23,7 @@
 
 dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata ;   
-request_base = "page=1;num=50;srt=author;srto=up;dd=1;";
+request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
 
 -%]
 
@@ -51,9 +51,9 @@ FOREACH category IN categories;
 
     CASE "C5000";
          searchterm    = record.id;
-         searchprefix  = config.get('searchfield').korid.prefix;
+         searchprefix  = config.get('searchfield').corporatebodyid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}db=${database};fs=${searchprefix}:${searchterm}";
+         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
          content   = "<a href=\"${localurl}\">${content}</a>";
     END;
 

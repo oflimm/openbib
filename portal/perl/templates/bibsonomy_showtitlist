@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF format == 'xml' -%]
 [%- ELSE -%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
@@ -43,9 +44,8 @@
 [% END %]
 <p />
 
-<form method="get" action="[% config.get('bibsonomy_loc') %]">
-<input type="hidden" name="sessionID"  value="[% sessionID %]" />
-<input type="hidden" name="action"     value="get_tit_of_tag" />
+<form method="get" action="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/items_by_tag">
+
 <input type="hidden" name="type"       value="[% type %]" />
 
 
@@ -59,8 +59,8 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 </table>
 
 <ul class="tabbingmenu">
-   <li><a [% IF type == 'bibtex' %]class="active"[% END %] href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]type=bibtex">[% msg.maketext("Publikationen") %]</a></li>
-   <li><a [% IF type == 'bookmark' %]class="active"[% END %] href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]type=bookmark">[% msg.maketext("Web") %]</a></li>
+   <li><a [% IF type == 'publication' %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %][% IF tag %]/items_by_tag?tag=[% tag %];[% ELSIF bsuser %]/items_by_user?user=[% bsuser %];[% END %]type=publication">[% msg.maketext("Publikationen") %]</a></li>
+   <li><a [% IF type == 'bookmark' %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %][% IF tag %]/items_by_tag?tag=[% tag %];[% ELSIF bsuser %]/items_by_user?user=[% bsuser %];[% END %]type=bookmark">[% msg.maketext("Web") %]</a></li>
 </ul>
 
 <div class="content">
@@ -81,7 +81,7 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 [% listrow = 'listrow1' %]
 [%- FOREACH thistitle IN posts.recordlist -%]
 [%- record = thistitle.record -%]
-[% IF type == 'bibtex' %]
+[% IF type == 'publication' %]
     <div class="item">
       <div class="numbering">[% loop.count+start %]</div>
       <div class="thumbnail">
@@ -94,10 +94,10 @@ style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen de
       </div>
       <div class="titlemark">
 [% IF thistitle.local_availability %]<span style="color:green">KUG-Titel: &nbsp;&nbsp;[% FOREACH dbname IN
-thistitle.local_dbs %]<a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050" title="[% dbinfo.get('dbnames').${dbname}.short %]">[% loop.count %]</a>&nbsp;&nbsp;[% END %][% END %]
+thistitle.local_dbs %]<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=[% dbname %];fs=bkey:|[% thistitle.bibkey %]|" title="[% dbinfo.get('dbnames').${dbname}.short %]">[% loop.count %]</a>&nbsp;&nbsp;[% END %][% END %]
       </div>
       <div class="titleactions">
-<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a>
+<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/items_by_tag?tag=[% thistag | uri %];type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/items_by_user?user=[% thistitle.user %];type=[% type %]">[% thistitle.user %]</a>
       </div>
     </div>
 [% ELSIF type == 'bookmark' %]
@@ -113,7 +113,7 @@ thistitle.local_dbs %]<a href="[% config.get('search_loc') %]?sessionID=[% sessi
       <div class="titlemark">
       </div>
       <div class="titleactions">
-<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a>
+<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/items_by_tag?tag=[% thistag %];type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]/items_by_user?user=[% thistitle.user %];type=[% type %]">[% thistitle.user %]</a>
       </div>
     </div>
 [%-  END -%]
@@ -127,7 +127,7 @@ thistitle.local_dbs %]<a href="[% config.get('search_loc') %]?sessionID=[% sessi
 <p/>
 
 [% IF posts.next.start %]
-<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]start=[% posts.next.start %];end=[% posts.next.end %];type=[% type %]">[% msg.maketext("Weiter") %]</a>
+<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %][% IF tag %]/items_by_tag?tag=[% tag %];[% ELSIF bsuser %]/items_by_user?user=[% bsuser %];[% END %]start=[% posts.next.start %];end=[% posts.next.end %];type=[% type %]">[% msg.maketext("Weiter") %]</a>
 [% END %]
 
 </div>

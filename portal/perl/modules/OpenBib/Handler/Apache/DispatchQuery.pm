@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::DispatchQuery
 #
-#  Dieses File ist (C) 2005-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -50,27 +50,38 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config = OpenBib::Config->instance;
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
+    my $session = OpenBib::Session->instance({ apreq => $r });     
 
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
-    
-    my $view      = ($query->param('view'))?$query->param('view'):'';
     my $queryid   = $query->param('queryid') || '';
 
     # Main-Actions
@@ -91,15 +102,15 @@ sub handler {
     }
 
     if    ($do_newquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{searchmask_loc}?sessionID=$session->{ID}&queryid=$queryid&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{searchform_loc}{name}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_resultlist) {
-        $r->internal_redirect("http://$config->{servername}$config->{resultlists_loc}?sessionID=$session->{ID}&view=$view&action=choice&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resultlists_loc}{name}?action=choice&queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_externalquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{externaljump_loc}?sessionID=$session->{ID}&view=$view&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{externaljump_loc}{name}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     else {

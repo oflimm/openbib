@@ -13,7 +13,7 @@
 -%]
 <div id="mainnavigation">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr><td align="left">&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Recherche") %]</a>&nbsp;&nbsp;<a href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;view=[% view %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></td><td height="25">&nbsp;</td><td align="right"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Hilfe") %]</a>&nbsp;&nbsp;<a href="[% config.get('leave_loc') %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+<tr><td align="left">&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/recent">[% msg.maketext("Recherche") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]?action=choice">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=show">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></td><td height="25">&nbsp;</td><td align="right"><a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/0">[% msg.maketext("Hilfe") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').leave_loc.name %]?" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 [%- IF username -%]
  [[% username %]]
 [%- END -%]

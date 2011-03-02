@@ -27,11 +27,11 @@
 </table>
 
 <p />
-<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_admin_https') %]https[%- ELSE -%]http[%- END -%]://[% IF config.distadmin %][% config.distadmin.master %][% ELSE %][% config.get('servername') %][% END %][% END %][% config.get('admin_loc') %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_admin_https') %]https[%- ELSE -%]http[%- END -%]://[% IF config.distadmin %][% config.distadmin.master %][% ELSE %][% config.get('servername') %][% END %][% END %][% config.get('base_loc') %]/[% config.get('handler').admin_login_loc.name %]" enctype="application/x-www-form-urlencoded">
 <table>
 <tr><td align="right"><b>[% msg.maketext("Benutzername") %]:</b></td><td><input type="text" name="username" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="passwd" /></td></tr>
-<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" name="do_login" value="[% msg.maketext("Einloggen") %]" /></div></td></tr>
+<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td></tr>
 </table>
 </form>
 

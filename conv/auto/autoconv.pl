@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -45,10 +45,11 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
-my ($database,$sync,$genmex,$help,$logfile);
+my ($database,$sync,$genmex,$help,$logfile,$loglevel);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
+            "loglevel=s"      => \$loglevel,
 	    "sync"            => \$sync,
             "gen-mex"         => \$genmex,
 	    "help"            => \$help
@@ -58,10 +59,11 @@ if ($help){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/autoconv.log';
+$logfile  = ($logfile)?$logfile:'/var/log/openbib/autoconv.log';
+$loglevel = ($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -135,13 +137,21 @@ my $atime = new Benchmark;
                 $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepasswd}";
             }
             
-            system("cd $pooldir/$database ; rm unload.*");
+            system("cd $pooldir/$database ; rm meta.* ; rm unload.*");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{titfilename} > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{autfilename} > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{korfilename} > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{swtfilename} > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{notfilename} > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{mexfilename} > /dev/null 2>&1 ");
+
+            # Legacy unload.*
+            system("mv $pooldir/$database/unload.TIT.gz  $pooldir/$database/meta.title.gz")          if ($dboptions_ref->{titfilename} eq "unload.TIT.gz");
+            system("mv $pooldir/$database/unload.PER.gz  $pooldir/$database/meta.person.gz")         if ($dboptions_ref->{autfilename} eq "unload.PER.gz");
+            system("mv $pooldir/$database/unload.KOE.gz  $pooldir/$database/meta.corporatebody.gz")  if ($dboptions_ref->{korfilename} eq "unload.KOE.gz");
+            system("mv $pooldir/$database/unload.SWD.gz  $pooldir/$database/meta.subject.gz")        if ($dboptions_ref->{swtfilename} eq "unload.SWD.gz");
+            system("mv $pooldir/$database/unload.SYS.gz  $pooldir/$database/meta.classification.gz") if ($dboptions_ref->{notfilename} eq "unload.SYS.gz");
+            system("mv $pooldir/$database/unload.MEX.gz  $pooldir/$database/meta.holding.gz")        if ($dboptions_ref->{mexfilename} eq "unload.MEX.gz");
         }
 
     
@@ -172,7 +182,7 @@ my $atime = new Benchmark;
     
     if ($genmex){
         $logger->info("### $database: Erzeuge Exemplardaten aus Titeldaten");
-        system("cd $pooldir/$database/ ; zcat $dboptions_ref->{titfilename} | $meta2mexexe");
+        system("cd $pooldir/$database/ ; zcat meta.title.gz | $meta2mexexe");
     }
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_move.pl"){
@@ -181,12 +191,12 @@ my $atime = new Benchmark;
     }
     
     system("rm $rootdir/data/$database/*");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{titfilename} > $rootdir/data/$database/tit.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{autfilename} > $rootdir/data/$database/aut.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{swtfilename} > $rootdir/data/$database/swt.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{notfilename} > $rootdir/data/$database/not.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{korfilename} > $rootdir/data/$database/kor.exp");
-    system("/bin/gzip -dc $pooldir/$database/$dboptions_ref->{mexfilename} > $rootdir/data/$database/mex.exp");
+    system("/bin/gzip -dc $pooldir/$database/meta.title.gz > $rootdir/data/$database/meta.title");
+    system("/bin/gzip -dc $pooldir/$database/meta.person.gz > $rootdir/data/$database/meta.person");
+    system("/bin/gzip -dc $pooldir/$database/meta.subject.gz > $rootdir/data/$database/meta.subject");
+    system("/bin/gzip -dc $pooldir/$database/meta.classification.gz > $rootdir/data/$database/meta.classification");
+    system("/bin/gzip -dc $pooldir/$database/meta.corporatebody.gz > $rootdir/data/$database/meta.corporatebody");
+    system("/bin/gzip -dc $pooldir/$database/meta.holding.gz > $rootdir/data/$database/meta.holding");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
@@ -195,7 +205,7 @@ my $atime = new Benchmark;
 
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");
 
-    if (! -e "$rootdir/data/$database/tit.exp" || ! -s "$rootdir/data/$database/tit.exp"){
+    if (! -e "$rootdir/data/$database/meta.title" || ! -s "$rootdir/data/$database/meta.title"){
         $logger->error("### $database: Keine Daten vorhanden");
 
         goto CLEANUP;
@@ -220,7 +230,7 @@ my $atime = new Benchmark;
         system("$config->{autoconv_dir}/filter/$database/alt_conv.pl $database");
     }
     else {
-        system("cd $rootdir/data/$database ; $meta2sqlexe -add-superpers -add-mediatype --database=$database");
+        system("cd $rootdir/data/$database ; $meta2sqlexe --loglevel=$loglevel -add-superpers -add-mediatype --database=$database");
     }
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_conv.pl"){
@@ -297,7 +307,7 @@ my $atime = new Benchmark;
     my $atime = new Benchmark;
 
     $logger->info("### $database: Importing data into searchengine");   
-    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --with-fields --database=$database");
+    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-fields -with-sorting -with-positions --database=$database");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
@@ -339,9 +349,11 @@ my $atime = new Benchmark;
 
     system("$mysqladminexe drop $database ");
     system("$mysqladminexe create $database ");
+    #system("mv /var/lib/mysql/$databasetmp /var/lib/mysql/$database");
+
 
     open(COPYIN, "echo \"show tables;\" | $mysqlexe -s $databasetmp |");
-    open(COPYOUT,"| $mysqlexe -s $databasetmp");
+    open(COPYOUT,"| $mysqlexe -s $databasetmp |");
 
     while (<COPYIN>){
         chomp();
@@ -373,7 +385,7 @@ CLEANUP:
 $logger->info("### $database: Cleanup");
 
 system("$mysqladminexe drop   $databasetmp");
-system("rm $rootdir/data/$database/*");
+system("rm $rootdir/data/$database/*") unless ($database eq "openbib");
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

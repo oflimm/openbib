@@ -23,15 +23,15 @@
   <br />
   <center>
     <p style="font-size:1.5em">
-      [% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
-        <br />[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;tsGesamtkatalog.") %]
+[% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
+        <br />[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch.") %]
 
     </p>
   </center>
 
   <center>
     <p>
-      <a class="invisible" href="http://[% config.get('loadbalancerservername') %][% config.get('loadbalancer_loc') %]?view=[% view %]" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="[% msg.maketext("Neue Sitzung beginnen?") %]" /></a>
+      <a class="invisible" href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').startopac_loc.name %]" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="[% msg.maketext("Neue Sitzung beginnen?") %]" /></a>
     </p>
   </center>
 <br />

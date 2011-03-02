@@ -15,33 +15,11 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
-<li><b>30.10.2010</b>: Hintergrundinformationen zum KUG wurden in einem eigenen Beitrag im "Handbuch Bibliothek 2.0" zusammengefasst und k&ouml;nnen mit weiteren Beitr&auml;gen zu aktuellen Entwicklungen im Themenbereich "Nutzerzentrierung in Bibliotheken" (Suchmaschinen, E-Learning, Games, ...) in diesem als Open Access ver&ouml;ffentlichten Buch kostenlos gelesen werden (<a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103.293" target="_blank">KUG-Beitrag</a> oder <a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103" target="_blank">gesamtes Buch</a> im PDF-Format). </li>
-<li><b>12.3.2010</b>: Die USB Köln gibt den Gesamtbestand ihrer
-Katalogdaten unter CC0 zum Download via <a
-href="http://opendata.ub.uni-koeln.de/"
-target="_blank">opendata.ub.uni-koeln.de</a> frei (weitergehende Informationen in diesem
-<a
-href="http://blog.openbib.org/2010/03/12/offene-bibliographische-daten-es-ist-soweit/"
-target="_blank">Blog-Artikel</a> und <a
-href="http://blog.openbib.org/2010/03/18/offene-katalogdaten-reaktionen/"
-target="_blank">Reaktionen</a>).</li>
+<li><b>30.10.2010</b>: Hintergrundinformationen zum Einsatz von OpenBib als K&ouml;lner Universit&auml;tsGesamtkatalog KUG wurden in einem eigenen Beitrag im "Handbuch Bibliothek 2.0" zusammengefasst und k&ouml;nnen mit weiteren Beitr&auml;gen zu aktuellen Entwicklungen im Themenbereich "Nutzerzentrierung in Bibliotheken" (Suchmaschinen, E-Learning, Games, ...) in diesem als Open Access ver&ouml;ffentlichten Buch kostenlos gelesen werden (<a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103.293" target="_blank">OpenBib-Beitrag</a> oder <a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103" target="_blank">gesamtes Buch</a> im PDF-Format). </li>
 <li><b>2.3.2010</b>: &Uuml;ber die Anzeige der Verf&uuml;gbarkeit im
 Online-Dienst PaperC k&ouml;nnen nun viele Lehrb&uuml;cher kostenlos
 aus dem Web-Browser heraus gelesen werden (weitergehende Informationen in diesem
 <a
 href="http://blog.openbib.org/2010/03/02/paperc-im-kug/"
 target="_blank">Blog-Artikel</a>).</li>
-<li><b>22.2.2010</b>: Drei neue Sammlungen - die <a
-href="http://artmann.ub.uni-koeln.de"
-target="_blank">H.C. Artmann-Sammlung Knupfer</a>, die <a
-href="http://lefort.ub.uni-koeln.de"
-target="_blank">Sammlung Gertrud von Le Fort</a> sowie die <a
-href="http://abklatschsammlung.ub.uni-koeln.de"
-target="_blank">Abklatsch-Sammlung des Instituts f&uuml;r Altertumskunde</a> - aus der USB K&ouml;ln und
-der Universit&auml;t wurden &uuml;ber eigenst&auml;ndige Portalsichten
-erschlossen (weitergehende Informationen in diesem
-<a
-href="http://blog.openbib.org/2010/02/20/sammlungen/"
-target="_blank">Blog-Artikel</a>).</li>
-
 </ul>

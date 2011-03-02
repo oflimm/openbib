@@ -128,8 +128,18 @@ sub initial_search {
         ? $arg_ref->{dbh}           : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}      : undef;
-    my $dd_categorized    = exists $arg_ref->{dd_categorized}
-        ? $arg_ref->{dd_categorized} : 0;
+    my $sorttype          = exists $arg_ref->{sorttype}
+        ? $arg_ref->{sorttype}      : undef;
+    my $sortorder         = exists $arg_ref->{sortorder}
+        ? $arg_ref->{sortorder}     : undef;
+    my $hitrange          = exists $arg_ref->{hitrange}
+        ? $arg_ref->{hitrange}      : 50;
+    my $defaultop         = exists $arg_ref->{defaultop}
+        ? $arg_ref->{defaultop}     : "and";
+    my $page              = exists $arg_ref->{page}
+        ? $arg_ref->{page}          : 0;
+    my $drilldown         = exists $arg_ref->{drilldown}
+        ? $arg_ref->{drilldown}     : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -161,52 +171,46 @@ sub initial_search {
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
     $qp->set_stopper($stopper);
     
-#    my $querystring    = $searchquery->get_searchfield('fs')->{norm};
     my $querystring    = $searchquery->to_xapian_querystring;
 
-    my ($is_singleterm) = $querystring =~m/^(\w+)$/;
+    my $fullquerystring = $querystring->{query}." ".$querystring->{filter};
+    
+    my ($is_singleterm) = $fullquerystring =~m/^(\w+)$/;
 
+    my $default_op_ref = {
+        'and' => "Search::Xapian::OP_AND",
+        'or'  => "Search::Xapian::OP_OR",
+    };
+    
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
     $qp->set_database($dbh);
-    $qp->set_default_op(Search::Xapian::OP_AND);
-    $qp->add_prefix('id'       ,'Q');
+    $qp->set_default_op($default_op_ref->{$defaultop});
 
-    $qp->add_prefix('inauth'   ,'X1');
-    $qp->add_prefix('intitle'  ,'X2');
-    $qp->add_prefix('incorp'   ,'X3');
-    $qp->add_prefix('insubj'   ,'X4');
-    $qp->add_prefix('insys'    ,'X5');
-    $qp->add_prefix('inyear'   ,'X7');
-    $qp->add_prefix('inisbn'   ,'X8');
-    $qp->add_prefix('inissn'   ,'X9');
-
-    # Drilldowns
-    $qp->add_prefix('ddswt'   ,'D1');
-    $qp->add_prefix('ddnot'   ,'D2');
-    $qp->add_prefix('ddper'   ,'D3');
-    $qp->add_prefix('ddtyp'   ,'D4');
-    $qp->add_prefix('ddyear'  ,'D5');
-    $qp->add_prefix('ddspr'   ,'D6');
-    $qp->add_prefix('ddcorp'  ,'D7');
-    $qp->add_prefix('dddb'    ,'D8');
+    foreach my $prefix (keys %{$config->{xapian_search_prefix}}){
+        $qp->add_prefix($prefix,$config->{xapian_search_prefix}{$prefix});
+    }
     
     my $category_map_ref = {};
-    my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
-    my $thisquery = $enq->get_query()->get_description();
+    my $enq       = $dbh->enquire($qp->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
 
+    # Sorting
+    if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
+        $sortorder = ($sortorder eq "up")?0:1;
+        $logger->debug("Set Sorting to type ".$config->{xapian_sorttype_value}{$sorttype}." / order ".$sortorder);
+
+        $enq->set_sort_by_value($config->{xapian_sorttype_value}{$sorttype},$sortorder)
+    }
+    
+    my $thisquery = $enq->get_query()->get_description();
+        
     $logger->debug("Internal Xapian Query: $thisquery");
     
     my %decider_map   = ();
     my @decider_types = ();
 
-    push @decider_types, 1 if ($config->{drilldown_option}{categorized_swt});
-    push @decider_types, 2 if ($config->{drilldown_option}{categorized_not});
-    push @decider_types, 3 if ($config->{drilldown_option}{categorized_aut});
-    push @decider_types, 4 if ($config->{drilldown_option}{categorized_mart});
-    push @decider_types, 5 if ($config->{drilldown_option}{categorized_year});
-    push @decider_types, 6 if ($config->{drilldown_option}{categorized_spr});
-    push @decider_types, 7 if ($config->{drilldown_option}{categorized_kor});
-    push @decider_types, 8;# if ($config->{drilldown_option}{categorized_database});
+    foreach my $drilldown_value (keys %{$config->{xapian_drilldown_value}}){
+        push @decider_types, $config->{xapian_drilldown_value}{$drilldown_value};
+    }
 
     my $decider_ref = sub {
       foreach my $value (@decider_types){
@@ -236,28 +240,37 @@ sub initial_search {
       $singletermcount = $dbh->get_termfreq($is_singleterm);
 
       if ($singletermcount > $maxmatch){
-	$dd_categorized = "";
+	$drilldown = "";
       }
     }
 
-    my @matches   = ($dd_categorized)?$enq->matches(0,$maxmatch,$decider_ref):$enq->matches(0,$maxmatch);
+    my $rset = Search::Xapian::RSet->new();
+
+    my $offset = $page*$hitrange-$hitrange;
+
+    my $mset = ($drilldown)?$enq->get_mset($offset,$hitrange,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$hitrange,$maxmatch);
 
     $logger->debug("DB: $database") if (defined $database);
     
-    $logger->debug("Matches: ".YAML::Dump(\@matches));
-
     $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
 
-    $self->{_querystring} = $querystring;
+    $self->{_querystring} = $querystring->{query};
+    $self->{_filter}      = $querystring->{filter};
     $self->{_enq}         = $enq;
 
     if ($singletermcount > $maxmatch){
       $self->{resultcount} = $singletermcount;
     }
     else {
-      $self->{resultcount} = scalar(@matches);
+      $self->{resultcount} = $mset->get_matches_estimated;
     }
 
+    my @matches = ();
+    foreach my $match ($mset->items()) {
+        push @matches, $match;
+    }
+    
+#    my @this_matches      = splice(@matches,$offset,$hitrange);
     $self->{_matches}     = \@matches;
 
     if ($singletermcount > $maxmatch){
@@ -267,7 +280,7 @@ sub initial_search {
       $self->{categories}   = \%decider_map;
     }
 
-    $logger->info("Running query ".$self->{_querystring});
+    $logger->info("Running query ".$self->{_querystring}." with filters ".$self->{_filter});
 
     $logger->info("Found ".scalar(@matches)." matches in database $database") if (defined $database);
     return;
@@ -291,6 +304,55 @@ sub querystring {
 sub enq {
     my $self=shift;
     return $self->{_enq};
+}
+
+sub get_categorized_drilldown {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $ddatime   = new Benchmark;
+    
+    # Transformation Hash->Array zur Sortierung
+
+    my $category_map_ref     = ();
+    my $tmp_category_map_ref = $self->{categories};
+                                
+    foreach my $type (keys %{$tmp_category_map_ref}) {
+        my $contents_ref = [] ;
+        foreach my $content (keys %{$tmp_category_map_ref->{$type}}) {
+            my $normcontent = OpenBib::Common::Util::grundform({
+                content   => decode_utf8($content),
+                searchreq => 1,
+            });
+            
+            $normcontent=~s/\W/_/g;
+            push @{$contents_ref}, [
+                decode_utf8($content),
+                $tmp_category_map_ref->{$type}{$content},
+                $normcontent,
+            ];
+        }
+        
+        $logger->debug(YAML::Dump($contents_ref));
+        
+        # Schwartz'ian Transform
+        
+        @{$category_map_ref->{$type}} = map { $_->[0] }
+            sort { $b->[1] <=> $a->[1] }
+                map { [$_, $_->[1]] }
+                    @{$contents_ref};
+    }
+
+    my $ddbtime       = new Benchmark;
+    my $ddtimeall     = timediff($ddbtime,$ddatime);
+    my $drilldowntime    = timestr($ddtimeall,"nop");
+    $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
+    
+    $logger->debug("Zeit fuer categorized drilldowns $drilldowntime");
+
+    return $category_map_ref;
 }
 
 sub DESTROY {

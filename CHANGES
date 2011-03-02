@@ -1,3 +1,25 @@
+Version 2.4 (in Entwicklung):
+
+- Interner Umbau
+  * Vereinheitlichung der Recherche-Backends fuer die Lokale Suche auf
+    die Xapian Suchmaschine (speziell Erweiterte Suche). Die
+    SQL-Recherche entfaellt.
+    -  Parametrisierung der Felder von Indexierung und Recherche in
+    -  Xapian in portal.yml
+  * Erweiterung der Xapian-Recherche um Sortierung
+  * Auslagerung der Verarbeitung einzelner Resourcen
+    (Normdatenanzeigen) von Search nach Resource
+  * Verschmelzung von VirtualSearch mit Search
+  * Ueberarbeitung der URI-Struktur und CGI-Parameter in Richtung
+    REST. Damit koennen insbesondere alle Seiten sofort gebookmarkt
+    werden.
+    - Erweiterung der Zustandslosigkeit verschiedener Handler
+    - Verwendung von Cookies fuer SessionID anstelle CGI-Parameter
+    - Kein zentraler Einsprungpunkt mehr fuer Session-Handling
+      notwendig (frueher StartOpac)
+    - Veroeffentlichung einer OpenBib-Serverfarm unter einer
+      offiziellen Adresse (mit Apache-Proxy-Modul und REST-Syntax)
+
 Version 2.3:
 
 - Ueberarbeitung von Nutzerfuehrung und Design

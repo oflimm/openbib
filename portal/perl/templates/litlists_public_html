@@ -1,0 +1,46 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+[% show_foot_banner = 1%]
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resource_litlist_public_loc.name %].html" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<div class="listoptions">
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resource_litlist_public_loc.name %].html" [%- IF NOT showsubjects -%]style="font-weight:bold;"[%- END -%]>[% msg.maketext("Alle Listen") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resource_litlist_public_subject_loc.name %].html" [%- IF showsubjects -%]style="font-weight:bold;"[%- END -%]>[% msg.maketext("Themengebiete") %]</a>[%- IF NOT showsubjects -%]&nbsp;&#124;&nbsp;<b>[% msg.maketext("Anzahl") %]</b>:&nbsp;[% public_litlists.size %][%- END -%]
+</div>
+
+[%# USE dumper;dumper.dump(public_litlists)%]
+<ul class="subjectlist">
+[%- FOREACH thisitem IN public_litlists -%]
+<li><a <a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% thisitem.id %].html">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+[% END %]
+</ul>
+
+<p />
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

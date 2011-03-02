@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
+use Apache2::Const -compile => qw(:common :http);
 use Apache2::Log;
 use Apache2::Reload;
 use Apache2::RequestRec ();
@@ -95,17 +95,13 @@ sub print_warning {
 
     my $query=Apache2::Request->new($r);
 
-    my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
-
-    my $session = OpenBib::Session->instance({
-        sessionID => $sessionID,
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
     
-    my $view    = $session->get_viewname();
-
+    my $view = $r->subprocess_env('openbib_view') || $config->{defaultview};
+    
     my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    my $sysprofile= $config->get_viewinfo($view)->{profilename};
+    my $sysprofile= $config->get_viewinfo($view)->profilename;
 
     # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
     # Einloggen/Mein KUG automatisch deaktiviert
@@ -246,12 +242,14 @@ sub print_page {
     my $logger = get_logger();
 
     my $config  = OpenBib::Config->instance;
+
+    my $content_type = $ttdata->{'content_type'} || 'text/html';
     
     # View- und Datenbank-spezifisches Templating
     my $database  = $ttdata->{'database'};
     my $sessionID = $ttdata->{'sessionID'};
-
-    my $session   = OpenBib::Session->instance({ sessionID => $sessionID });
+    
+    my $session   = OpenBib::Session->instance({ apreq => $r });
 
     my $view;
     if ($ttdata->{'view'}){
@@ -259,10 +257,19 @@ sub print_page {
     }
     else {
         $view = $session->get_viewname;
-        $ttdata->{'view'} = $view;
+        if ($view){
+            $ttdata->{'view'} = $view;
+        }
+        else {
+            $ttdata->{'view'} = '';
+        }
     }
 
-    my $sysprofile= $config->get_viewinfo($view)->{profilename};
+    my $sysprofile= '';
+
+    if ($view){
+        $sysprofile = $config->get_viewinfo($view)->profilename;
+    }
     
     my $user      = OpenBib::User->instance({sessionID => $sessionID});
 
@@ -305,7 +312,7 @@ sub print_page {
     });
   
     # Dann Ausgabe des neuen Headers
-    $r->content_type("text/html");
+    $r->content_type($content_type);
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
@@ -383,7 +390,7 @@ sub grundform {
     # Fall: C++, C# und .Net
     $content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
-    $content=~s/\.(net)\#/dot$1/ig;
+    $content=~s/\.(net)/dot$1/ig;
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
@@ -645,6 +652,8 @@ sub get_loadbalanced_servername {
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
+
+    my $view=$config->{defaultview};
     
     my $ua=new LWP::UserAgent(timeout => 5);
 
@@ -670,7 +679,7 @@ sub get_loadbalanced_servername {
     # Fuer jeden Server, auf den verteilt werden soll, wird nun
     # per LWP der Load bestimmt.
     foreach my $targethost (@servertab) {
-        my $request  = new HTTP::Request POST => "http://$targethost$config->{serverload_loc}";
+        my $request  = new HTTP::Request GET => "http://$targethost$config->{base_loc}/$view/$config->{handler}{serverload_loc}{name}";
         my $response = $ua->request($request);
 
         if ($response->is_success) {
@@ -989,7 +998,7 @@ sub gen_bibkey_base {
     (@$editors_ref)?$editors_ref:[];
 
     my $author = "";
-    $author    = "[".join(",", sort(@$persons_ref))."]" if (@$persons_ref);
+    $author    = "[".join(",", sort(@$persons_ref))."]" if (defined $persons_ref && @$persons_ref);
 
     # Titel
     my $title  = (exists $normdata_ref->{T0331})?lc($normdata_ref->{T0331}[0]{content}):"";
@@ -1087,37 +1096,34 @@ sub get_cascaded_templatepath {
     my $config = OpenBib::Config->instance;
 
     if ($profile && -e "$config->{tt_include_path}/profile/$profile") {
-        if ($view && -e "$config->{tt_include_path}/profile/$profile/views/$view/$templatename") {
-            $templatename="profile/$profile/views/$view/$templatename";
-        }
 
         # Database-Template ist spezifischer als View-Template und geht vor
         if ($database && -e "$config->{tt_include_path}/profile/$profile/database/$database/$templatename") {
             $templatename="profile/$profile/database/$database/$templatename";
         }
-
-        if ($view && -e "$config->{tt_include_path}/profile/$profile/$templatename") {
+        elsif ($view && -e "$config->{tt_include_path}/profile/$profile/views/$view/$templatename") {
+            $templatename="profile/$profile/views/$view/$templatename";
+        }
+        elsif ($view && -e "$config->{tt_include_path}/profile/$profile/$templatename") {
             $templatename="profile/$profile/$templatename";
         }
-
-        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
-            $templatename="views/$view/$templatename";
-        }
-        
         # Database-Template ist spezifischer als View-Template und geht vor
-        if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
+        elsif ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
             $templatename="database/$database/$templatename";
         }                
-    }
-    else {
-        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+        elsif ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
             $templatename="views/$view/$templatename";
         }
         
+    }
+    else {
         # Database-Template ist spezifischer als View-Template und geht vor
         if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
             $templatename="database/$database/$templatename";
         }
+        elsif ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+            $templatename="views/$view/$templatename";
+        }        
     }
 
     return $templatename;
@@ -1176,6 +1182,50 @@ sub gen_cloud_class {
 
     $logger->debug(YAML::Dump($items_ref));
     return $items_ref;
+}
+
+sub dispatch_to_content_type {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $uri          = exists $arg_ref->{uri}
+        ? $arg_ref->{uri}     : undef;
+    my $r            = exists $arg_ref->{apreq}
+        ? $arg_ref->{apreq}   : 0;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $content_type_map_ref = {
+        "application/rdf+xml" => "rdf+xml",
+        "text/rdf+n3"         => "rdf+n3",
+    };
+
+    my $accept       = $r->headers_in->{Accept} || '';
+    my @accept_types = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
+        
+    my $information_resource_found = 0;
+    foreach my $information_resource_type (keys %{$content_type_map_ref}){            
+        if (any { $_ eq $information_resource_type } @accept_types) {
+            $r->content_type($information_resource_type);
+            my $new_location = $uri."/".$content_type_map_ref->{$information_resource_type};
+            $logger->debug("Redirecting to $new_location");
+            $r->headers_out->add("Location" => $new_location);
+            $information_resource_found = 1;
+            $logger->debug("Information Resource Type: $information_resource_type");
+        }                                                
+    }
+    
+    if (!$information_resource_found){
+        my $information_resource_type="text/html";
+        $r->content_type($information_resource_type);
+        $r->headers_out->add("Location" => "$uri/html");
+        $logger->debug("Information Resource Type: $information_resource_type");
+    }
+    
+    $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accept_types));
+
+    return Apache2::Const::HTTP_SEE_OTHER;
 }
 
 1;

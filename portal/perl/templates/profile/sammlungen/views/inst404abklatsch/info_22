@@ -50,9 +50,8 @@ werden kann.
 <dd>
 Hier ist die Polis bzw. antike Ortschaft erfasst, in der die auf dem
 Abklatsch dokumentierte Inschrift urspr&uuml;nglich aufgestellt war,
-z.B. Ephesos, Knidos, Oinoanda. Zugang auch über  <a href="[%
-config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view
-%];database=inst404abklatsch;browsecat=T0200">Register</a>
+z.B. Ephesos, Knidos, Oinoanda. Zugang auch über  <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0200">Register</a>
 </dd>
 
 <dt>3. Kategorie</dt>
@@ -61,9 +60,8 @@ config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view
 Die Zuordnung zu den Inschriftengattungen ist m&ouml;glichst
 entsprechend den K&ouml;lner Editions-Reihen IK und EA
 &uuml;bernommen. Eine eventuelle Suche erfolgt am sichersten &uuml;ber
-das  <a href="[% config.get('search_loc') %]?sessionID=[% sessionID
-%];view=[% view
-%];database=inst404abklatsch;browsecat=T0710">Register</a> </dd>
+das  <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0710">Register</a> </dd>
 
 <dt>4. Edition / SEG-Eintrag</dt>
 
@@ -74,9 +72,8 @@ den Mustern "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p.3-5, Nr. 496",
 "SGO 01/15/04". Außerdem ist in der Regel der letzte Eintrag im
 Supplementum Epigraphicum Graecum erfa&szlig;t, in welchem die auf dem
 Abklatsch befindliche Inschrift editiert ist, nach dem Muster "SEG
-39, 1989, Nr. 1132". Zur gezielten Suche ist entweder das <a href="[% config.get('search_loc')
-%]?sessionID=[% sessionID %];view=[% view
-%];database=inst404abklatsch;browsecat=T0335">Register</a> zu
+39, 1989, Nr. 1132". Zur gezielten Suche ist entweder das <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0335">Register</a> zu
 verwenden oder der genaue Suchstring nach obigem Beispiel
 einzugeben. Das Feld erm&ouml;glicht au&erdem eine freie Suche.
 </dd>
@@ -102,9 +99,8 @@ Erfassungsphase noch nicht identifiziert bzw. unpubliziert.
 
 <dt>6. Datierung der Inschrift</dt>
 
-<dd> Zur Orientierung und speziellen Suche ist das <a href="[%
-config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view
-%];database=inst404abklatsch;browsecat=T0425">Register</a>
+<dd> Zur Orientierung und speziellen Suche ist das <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0425">Register</a>
 anzusteuern. Das Datierungsschema ist entsprechend den Vorgaben in den
 Editionen nicht einheitlich formalisiert; neben "Kaiserzeit" existiert
 z.B. auch "2. Jh. n., 2. H&auml;lfte". &Uuml;ber die "Freie Suche"  k&ouml;nnen
@@ -117,9 +113,8 @@ Grobdatierung enthalten, aufgefunden werden.
 <dd> Hier ist, soweit aus den Angaben der Edition ersichtlich, der zur
 Zeit der Publikation aktuelle Aufbewahrungsort der Inschrift, die der
 Abklatsch dokumentiert, vermerkt. Das Feld ist nicht in die "Freie
-Suche" integriert und ausschlie&szlig;lich &uuml;ber das <a href="[% config.get('search_loc') %]?sessionID=[%
-sessionID %];view=[% view
-%];database=inst404abklatsch;browsecat=T0410">Register</a> suchbar
+Suche" integriert und ausschlie&szlig;lich &uuml;ber das <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0410">Register</a> suchbar
 </dd>
 
 <dt>8. Angaben auf dem Abklatsch (nicht &ouml;ffentlich)</dt>

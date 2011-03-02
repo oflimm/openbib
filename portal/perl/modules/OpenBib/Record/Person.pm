@@ -4,7 +4,7 @@
 #
 #  Person
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -36,6 +36,7 @@ use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 use Storable;
@@ -115,7 +116,7 @@ sub load_full_record {
     
     my $sqlrequest;
 
-    $sqlrequest="select category,content,indicator from aut where id = ?";
+    $sqlrequest="select category,content,indicator from person where id = ?";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
 
@@ -201,7 +202,7 @@ sub load_name {
     
     my $sqlrequest;
 
-    $sqlrequest="select content from aut where id = ? and category=0001";
+    $sqlrequest="select content from person where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     
@@ -276,10 +277,136 @@ sub to_rawdata {
     return $self->{_normset};
 }
 
+sub to_json {
+    my ($self)=@_;
+
+    my $title_ref = {
+        'metadata'    => $self->{_normset},
+    };
+
+    return encode_json $title_ref;
+}
+
 sub name_as_string {
     my $self=shift;
     
     return $self->{name};
+}
+
+sub print_to_handler {
+    my ($self,$arg_ref)=@_;
+
+    my $r                  = exists $arg_ref->{apachereq}
+        ? $arg_ref->{apachereq}          : undef;
+    my $representation     = exists $arg_ref->{representation}
+        ? $arg_ref->{representation}    : undef;
+    my $content_type       = exists $arg_ref->{content_type}
+        ? $arg_ref->{content_type}       : 'text/html';
+    my $view               = exists $arg_ref->{view}
+        ? $arg_ref->{view}               : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config        = OpenBib::Config->instance;
+    my $session       = OpenBib::Session->instance({ apreq => $r });
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $user          = OpenBib::User->instance({sessionID => $session->{ID}});
+    my $searchquery   = OpenBib::SearchQuery->instance;
+    my $query         = Apache2::Request->new($r);
+
+    my $queryoptions  = OpenBib::QueryOptions->instance($query);
+    
+    my $stid          = $query->param('stid')              || '';
+    my $callback      = $query->param('callback')  || '';
+    my $lang          = $query->param('lang') || $queryoptions->get_option('l') || 'de';
+
+    my $format     = $query->param('format')    || 'full';
+    my $no_log     = $query->param('no_log')    || '';
+    
+    my $loginname     = $user->get_username();
+    my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
+
+    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        content_type   => $content_type,
+        representation => $representation,
+
+        view        => $view,
+        stylesheet  => $stylesheet,
+        database    => $self->{database}, # Zwingend wegen common/subtemplate
+        dbinfo      => $dbinfotable,
+
+        qopts       => $queryoptions->get_options,
+        queryoptions => $queryoptions,
+        sessionID   => $session->{ID},
+        session     => $session,
+        record      => $self,
+        id          => $self->{id},
+
+        format      => $format,
+
+        searchquery => $searchquery,
+        activefeed  => $config->get_activefeeds_of_db($self->{database}),
+
+        loginname     => $loginname,
+        logintargetdb => $logintargetdb,
+
+        config      => $config,
+        user        => $user,
+        msg         => $msg,
+    };
+
+    $stid=~s/[^0-9]//g;
+    my $templatename = ($stid)?"tt_resource_person_".$stid."_tname":"tt_resource_person_tname";
+    
+    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+    # Log Event
+
+    if (!$no_log){
+        $session->log_event({
+            type      => 11,
+            content   => {
+                id       => $self->{id},
+                database => $self->{database},
+            },
+            serialize => 1,
+        });
+    }
+
+    return;
+}
+
+sub set_category {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $category          = exists $arg_ref->{category}
+        ? $arg_ref->{category}          : undef;
+
+    my $indicator         = exists $arg_ref->{indicator}
+        ? $arg_ref->{indicator}         : undef;
+
+    my $content            = exists $arg_ref->{content}
+        ? $arg_ref->{content}           : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    push @{$self->{_normset}{$category}}, {
+        indicator => $indicator,
+        content   => $content,
+    };
+
+    return $self;
 }
 
 1;

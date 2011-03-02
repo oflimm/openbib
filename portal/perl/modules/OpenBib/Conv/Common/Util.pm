@@ -34,25 +34,139 @@ no warnings 'redefine';
 use utf8;
 
 our (%autdubbuf,%kordubbuf,%swtdubbuf,%notdubbuf);
+our (%person,%corporatebody,%subject,%classification);
 our ($next_autid,$next_korid,$next_swtid,$next_notid) = (1,1,1,1);
+our ($next_person_id,$next_corporatebody_id,$next_subject_id,$next_classification_id) = (1,1,1,1);
 
 %autdubbuf = ();
 %kordubbuf = ();
 %swtdubbuf = ();
 %notdubbuf = ();
 
+%person         = ();
+%corporatebody  = ();
+%subject        = ();
+%classification = ();
+
 sub get_autidn {
     my ($content)=@_;
 
-    if (exists $autdubbuf{$content}){
-        return (-1)*$autdubbuf{$content};
+    if ($content=~/^\d+$/){
+        if (exists $autdubbuf{$content}){
+            return (-1)*$autdubbuf{$content};
+        }
+        else {
+            $autdubbuf{$content}=$next_autid;
+            $next_autid++;
+            return $autdubbuf{$content};
+        }
     }
     else {
-        $autdubbuf{$content}=$next_autid;
-        $next_autid++;
         return $autdubbuf{$content};
-    }
+    }   
+                              
 }
+
+sub get_person_id {
+    my ($content)=@_;
+
+    my $new = 0;
+    
+    if (exists $person{$content}){
+
+    }
+    else {
+        $person{$content}=$next_person_id;
+        $next_person_id++;
+        $new = 1;
+    }
+
+    return ($person{$content},$new);
+}
+
+sub set_person_id {
+    my ($id,$content)=@_;
+
+    $person{$content} = $id;
+
+    return;
+}
+
+sub get_corporatebody_id {
+    my ($content)=@_;
+
+    my $new = 0;
+    
+    if (exists $corporatebody{$content}){
+
+    }
+    else {
+        $corporatebody{$content}=$next_corporatebody_id;
+        $next_corporatebody_id++;
+        $new = 1;
+    }
+
+    return ($corporatebody{$content},$new);
+}
+
+sub set_corporatebody_id {
+    my ($id,$content)=@_;
+
+    $corporatebody{$content} = $id;
+
+    return;
+}
+
+sub get_subject_id {
+    my ($content)=@_;
+
+    my $new = 0;
+    
+    if (exists $subject{$content}){
+
+    }
+    else {
+        $subject{$content}=$next_subject_id;
+        $next_subject_id++;
+        $new = 1;
+    }
+
+    return ($subject{$content},$new);
+}
+
+sub set_subject_id {
+    my ($id,$content)=@_;
+
+    $subject{$content} = $id;
+
+    return;
+}
+
+sub get_classification_id {
+    my ($content)=@_;
+
+    my $new = 0;
+    
+    if (exists $classification{$content}){
+
+    }
+    else {
+        $classification{$content}=$next_classification_id;
+        $next_classification_id++;
+        $new = 1;
+    }
+
+    return ($classification{$content},$new);
+}
+
+sub set_classification_id {
+    my ($id,$content)=@_;
+
+    $classification{$content} = $id;
+
+    return;
+}
+
 
 sub get_koridn {
     my ($content)=@_;

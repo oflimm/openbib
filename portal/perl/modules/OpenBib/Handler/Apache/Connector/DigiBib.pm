@@ -55,13 +55,31 @@ use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::VirtualSearch::Util;
 
-sub handler {
-    
-    my $r=shift;
-    
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
+
     # Log4perl logger erzeugen
-    
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config = OpenBib::Config->instance;
     
@@ -126,11 +144,11 @@ sub handler {
     my $sorttype   = $query->param('sorttype')   || 'author';
     my $sortorder  = $query->param('sortorder')  || '';;
     my $tosearch   = $query->param('tosearch')   || '';
-    my $view       = $query->param('view')       || 'institute';
     my $serien     = $query->param('serien')     || 0;
     my $sb         = $query->param('sb')         || 'xapian';
     my $up         = $query->param('up')         || '0';
     my $down       = $query->param('down')       || '0';
+
     
     # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
 
@@ -176,7 +194,7 @@ sub handler {
         });
     }
 
-    my $sysprofile   = $config->get_viewinfo($view)->{profilename};
+    my $sysprofile   = $config->get_viewinfo($view)->profilename;
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
@@ -323,9 +341,19 @@ sub handler {
                     foreach my $match (@matches) {
                         last if ($i > $maxhits);
                         my $document        = $match->get_document();
-                        my $titlistitem_raw = pack "H*", $document->get_data();
-                        my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+
+                        my $titlistitem_ref;
                         
+                        if ($config->{internal_serialize_type} eq "packed_storable"){
+                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                        }
+                        elsif ($config->{internal_serialize_type} eq "json"){
+                            $titlistitem_ref = decode_json $document->get_data();
+                        }
+                        else {
+                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                        }
+
                         $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
                         $i++;
                     }
@@ -530,9 +558,7 @@ sub handler {
         
         my $liststart = ($offset<= $treffercount)?$offset:0;
         my $listend   = ($offset+$listlength <= $treffercount)?$offset+$listlength-1:$treffercount-1;
-
-        @ergebnisse = @ergebnisse[$liststart..$listend];
-
+        
         my $itemtemplatename=$config->{tt_connector_digibib_result_item_tname};
 
         $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
@@ -553,10 +579,11 @@ sub handler {
             OUTPUT         => $r,
         });
         
+        
         # TT-Data erzeugen
         my $ttdata={
             dbinfo          => $dbinfotable,
-            resultlist      => \@ergebnisse,
+            resultlist      => \@ergebnisse,#[$liststart..$listend],
 
             utf2iso      => sub {
                 my $string=shift;
@@ -657,7 +684,7 @@ sub handler {
         my $templatename=$config->{tt_connector_digibib_showtitset_tname};
 
         $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-            database     => $database, # Template ist datenbankabhaengig !
+            database     => $database, # Template ist datenbankabhaengig!
             view         => $view,
             profile      => $sysprofile,
             templatename => $templatename,

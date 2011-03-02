@@ -15,16 +15,16 @@
 <tr><td>
 <table>
 <tr><td><b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="sorttype">
-[% IF query.param('sb') == 'xapian' %]  <option value="relevance"[%- IF query.param('sorttype') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
-  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>nach Ort der Inschrift</option>
-  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>nach Inventarnummer</option>
-  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+<select name="srt">
+[% IF query.param('sb') == 'xapian' %]  <option value="relevance"[%- IF query.param('srt') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
+  <option value="author"[%- IF query.param('srt') == 'author' -%] selected="selected"[%- END -%]>nach Ort der Inschrift</option>
+  <option value="title"[%- IF query.param('srt') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="signature"[%- IF query.param('srt') == 'signature' -%] selected="selected"[%- END -%]>nach Inventarnummer</option>
+  <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
 </select>&nbsp;
-<select name="sortorder">
-  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+<select name="srto">
+  <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
 &nbsp;
 [% IF show_sortall == 1 %]

@@ -1,0 +1,53 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editorgunit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Zuordnung der Datenbanken zu einer Organisationseinheit eines einzelnen Profiles
+#b
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog-Profil bearbeiten' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="profiles" %] 
+
+<div class="content">
+
+<h1>[% orgunitinfo.description %]</h1>
+
+<table width="100%">
+<tr><th>Organisationseinheit</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>Name</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td></td></tr>
+
+<tr><td><span style="color:blue">[% orgunitinfo.orgunitname %]</span></td><td>[% orgunitinfo.description %]</td><td>[% orgunitinfo.nr %]</td></tr>
+</table>
+</form>
+<p />
+
+<p />
+<h2>Kataloge der Organisationseinheit</h2>
+
+[% FOREACH singledb IN orgunitinfo.dbnames %]
+[% singledb %]<br/>
+[% END %]
+
+<p />
+
+
+
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

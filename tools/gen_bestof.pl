@@ -44,14 +44,14 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$database,$view,$help,$logfile,$disablefilteryear);
+my ($type,$database,$profile,$view,$help,$logfile);
 
-&GetOptions("type=s"              => \$type,
-            "database=s"          => \$database,
-            "view=s"              => \$view,
-            "logfile=s"           => \$logfile,
-            "disable-filter-year" => \$disablefilteryear,
-	    "help"                => \$help
+&GetOptions("type=s"          => \$type,
+            "database=s"      => \$database,
+            "profile=s"       => \$profile,
+            "view=s"          => \$view,
+            "logfile=s"       => \$logfile,
+	    "help"            => \$help
 	    );
 
 if ($help){
@@ -177,7 +177,7 @@ if ($type == 3){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select swt.content , count(distinct sourceid) as scount from conn, swt where sourcetype=1 and targettype=4 and swt.category=1 and swt.id=conn.targetid group by targetid order by scount desc limit 200");
+        my $request=$dbh->prepare("select subject.content , count(distinct sourceid) as scount from conn, subject where sourcetype=1 and targettype=4 and subject.category=1 and subject.id=conn.targetid group by targetid order by scount desc limit 200");
         $request->execute();
         while (my $result=$request->fetchrow_hashref){
             my $content = decode_utf8($result->{content});
@@ -238,7 +238,7 @@ if ($type == 4){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select notation.content , count(distinct sourceid) as scount from conn, notation where sourcetype=1 and targettype=5 and notation.category=1 and notation.id=conn.targetid group by targetid order by scount desc limit 200");
+        my $request=$dbh->prepare("select classification.content , count(distinct sourceid) as scount from conn, classification where sourcetype=1 and targettype=5 and classification.category=1 and classification.id=conn.targetid group by targetid order by scount desc limit 200");
         $request->execute();
         while (my $result=$request->fetchrow_hashref){
             my $content = decode_utf8($result->{content});
@@ -299,7 +299,7 @@ if ($type == 5){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select kor.content , count(distinct sourceid) as scount from conn, kor where sourcetype=1 and targettype=3 and kor.category=1 and kor.id=conn.targetid group by targetid order by scount desc limit 200");
+        my $request=$dbh->prepare("select corporatebody.content , count(distinct sourceid) as scount from conn, corporatebody where sourcetype=1 and targettype=3 and corporatebody.category=1 and corporatebody.id=conn.targetid group by targetid order by scount desc limit 200");
         $request->execute();
         while (my $result=$request->fetchrow_hashref){
             my $content = decode_utf8($result->{content});
@@ -360,7 +360,7 @@ if ($type == 6){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select aut.content , count(distinct sourceid) as scount from conn, aut where sourcetype=1 and targettype=2 and aut.category=1 and aut.id=conn.targetid group by targetid order by scount desc limit 200");
+        my $request=$dbh->prepare("select person.content , count(distinct sourceid) as scount from conn, person where sourcetype=1 and targettype=2 and person.category=1 and person.id=conn.targetid group by targetid order by scount desc limit 200");
         $request->execute();
         while (my $result=$request->fetchrow_hashref){
             my $content = decode_utf8($result->{content});
@@ -576,17 +576,8 @@ if ($type == 9){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-
-        my $sql_string = "select count(distinct id) as scount, content from tit where category=425 and content regexp ? group by content order by scount DESC";
-        my @sql_args   = ("^[0-9][0-9][0-9][0-9]\$");
-        if ($disablefilteryear){
-            $sql_string = "select count(distinct id) as scount, content from tit where category=425 group by content order by scount DESC";
-            pop @sql_args ;
-        }
-        
-        my $request=$dbh->prepare($sql_string);
-        $request->execute(@sql_args);
-
+        my $request=$dbh->prepare("select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC");
+        $request->execute("^[0-9][0-9][0-9][0-9]\$");
         while (my $result=$request->fetchrow_hashref){
             my $content = decode_utf8($result->{content});
             my $count   = $result->{scount};
@@ -795,6 +786,48 @@ if ($type == 12){
     });
 }
 
+# Typ 12 => Meistaufgerufene Titel allgemein
+if ($type == 12){
+    my @profiles = ();
+    if ($profile){
+        push @profiles, $profile;
+    }
+    else {
+        foreach my $profile_ref (@{$config->get_profileinfo_overview}){
+            push @profiles, $profile_ref->{profilename};
+        }
+    }
+
+    foreach my $profile (@profiles){
+        $logger->info("Generating Type 12 BestOf-Values for profile $profile");
+
+        my $profilestring = "('".join('\',\'',$config->get_profiledbs($profile))."')";
+
+        $logger->info($profilestring);
+        my $bestof_ref=[];
+        my $request=$statisticsdbh->prepare("select katkey, dbname, count(id) as idcount from relevance where origin=2 and dbname in $profilestring and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
+        $request->execute();
+        while (my $result=$request->fetchrow_hashref){
+            my $katkey   = $result->{katkey};
+            my $database = $result->{dbname};
+            my $count    = $result->{idcount};
+
+            my $item=OpenBib::Record::Title->new({database => $database, id => $katkey})->load_brief_record();
+
+            push @$bestof_ref, {
+                item  => $item,
+                count => $count,
+            };
+        }
+
+        $statistics->store_result({
+            type => 13,
+            id   => $profile,
+            data => $bestof_ref,
+        });
+    }
+}
+
 sub gen_cloud_class {
     my ($arg_ref) = @_;
     
@@ -874,7 +907,7 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
   10 => Titel nach BK pro View
   11 => Titel nach BK pro Katalog pro Sicht
   12 => Meistaufgerufene Literaturlisten
-       
+  13 => Meistaufgerufene Titel allgemein       
 ENDHELP
     exit;
 }

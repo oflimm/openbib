@@ -35,7 +35,7 @@
 
      IF     mex.Zweigstelle == 0 ;
 
-        IF mex.Signatur.match('^2[4-9]A') || mex.Signatur.match('[3-9][0-9]A') ;
+        IF mex.Signatur.match('^2[3-9]A') || mex.Signatur.match('[3-9][0-9]A') ;
            IF mex.Status == "bestellbar" ;
               mex.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
            ELSIF mex.Status == "entliehen" ;
@@ -74,18 +74,18 @@
      END ;
 
 -%]
-<tr align="center"><td><strong>USB K&ouml;ln</strong></td><td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
+<tr align="center"><td><a href="http://www.ub.uni-koeln.de/" target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[% mex.Status %]</strong></td>
 <td class="circurl">
 [%
      IF mex.Ausleihurl %]
-   <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.get('redirect_loc') %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF mex.Statuscode != 0 %]
-     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>
+     <a href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>
 [%      ELSE %]
-     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_order;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel bestellen">Bestellen</a>
+     <a href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=make_order;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel bestellen">Bestellen</a>
 [%      END %]
 [%   END %]
 </td></tr>
@@ -116,12 +116,12 @@ target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>
 [%   END %]
 </td><td class="circurl">
 [%  IF mex.Ausleihurl %]
-   <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.get('redirect_loc') %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF mex.Statuscode != 0 %]
-     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>
+     <a href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>
 [%      ELSE %]
-     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_order;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel bestellen">Bestellen</a>
+     <a href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=make_order;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel bestellen">Bestellen</a>
 [%      END %]
 [%   END %]
 </td></tr>

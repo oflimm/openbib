@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::EZB.pm
 #
-#  Copyright 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2008-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
@@ -55,26 +55,38 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config      = OpenBib::Config->instance;
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status = $query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });         
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -116,15 +128,6 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
         return Apache2::Const::OK;
-    }
-    
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
     }
 
     my $colors = $access_green + $access_yellow*2 + $access_red*4;
@@ -298,10 +301,8 @@ sub handler {
             $logger->debug("ReadME-Daten: ".YAML::Dump($journalreadme_ref));
 
             if ($journalreadme_ref->{location}){
-                $r->content_type('text/html');
-                $r->headers_out->add("Location" => $journalreadme_ref->{location});
-                
-                return Apache2::Const::REDIRECT;
+                $self->header_type('redirect');
+                $self->header_props(-type => 'text/html', -url => $journalreadme_ref->{location});
             }
             else {
 

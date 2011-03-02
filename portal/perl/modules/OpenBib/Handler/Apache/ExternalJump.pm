@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::ExternalJump
 #
-#  Dieses File ist (C) 2005-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -53,25 +53,37 @@ use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::User;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config = OpenBib::Config->instance();
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });             
 
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
     
@@ -79,7 +91,7 @@ sub handler {
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # CGI-Uebergabe
-    my @databases     = ($query->param('database'))?$query->param('database'):();
+    my @databases     = ($query->param('db'))?$query->param('db'):();
     my $singleidn     = $query->param('singleidn')     || '';
     my $action        = ($query->param('action'))?$query->param('action'):'';
     my $fs            = $query->param('fs')            || ''; # Freie Suche
@@ -117,15 +129,6 @@ sub handler {
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return Apache2::Const::OK;
-    }
-
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
     }
 
     my $viewdesc = $config->get_viewdesc_from_viewname($view);

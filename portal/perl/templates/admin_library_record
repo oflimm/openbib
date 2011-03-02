@@ -1,0 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_database
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+[%- IF representation == '' || representation == 'html' -%]
+[%- PROCESS common/subtemplate name="admin_library_record_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="admin_library_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="admin_library_record_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

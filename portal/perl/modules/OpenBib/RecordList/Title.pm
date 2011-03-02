@@ -371,7 +371,6 @@ sub print_to_handler {
                 my $string=shift;
                 return decode_utf8($string);
             },
-            
         };
         
         OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);

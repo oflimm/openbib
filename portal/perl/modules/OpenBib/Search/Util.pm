@@ -35,6 +35,8 @@ use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS qw(encode_json decode_json);
+use List::MoreUtils qw(after before);
 use Log::Log4perl qw(get_logger :levels);
 use MIME::Base64 ();
 use SOAP::Lite;
@@ -51,72 +53,6 @@ use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::VirtualSearch::Util;
 
-sub print_mult_tit_set_by_idn {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $titidns_ref        = exists $arg_ref->{titidns_ref}
-        ? $arg_ref->{titidns_ref}        : undef;
-    my $dbh                = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}                : undef;
-    my $database           = exists $arg_ref->{database}
-        ? $arg_ref->{database}           : undef;
-    my $r                  = exists $arg_ref->{apachereq}
-        ? $arg_ref->{apachereq}          : undef;
-    my $stylesheet         = exists $arg_ref->{stylesheet}
-        ? $arg_ref->{stylesheet}         : undef;
-    my $view               = exists $arg_ref->{view}
-        ? $arg_ref->{view}               : undef;
-    my $msg                = exists $arg_ref->{msg}
-        ? $arg_ref->{msg}                : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config        = OpenBib::Config->instance;
-    my $session       = OpenBib::Session->instance;
-    my $queryoptions  = OpenBib::QueryOptions->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-
-    my @titsets=();
-
-    my $record = new OpenBib::Record::Title({database=>$database});
-
-    foreach my $titidn (@$titidns_ref) {
-        $record->load_full_record({id=>$titidn});
-
-        my $thisset={
-            titidn     => $titidn,
-            normset    => $record->get_normdata,
-            mexnormset => $record->get_mexdata,
-            circset    => $record->get_circdata,
-        };
-        push @titsets, $thisset;
-    }
-
-    my $poolname=$dbinfotable->{sigel}{
-        $dbinfotable->{dbases}{$database}};
-
-    # TT-Data erzeugen
-    my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        database   => $database,
-        poolname   => $poolname,
-        qopts      => $queryoptions->get_options,
-        sessionID  => $session->{ID},
-        titsets    => \@titsets,
-
-        config     => $config,
-        msg        => $msg,
-    };
-  
-    OpenBib::Common::Util::print_page($config->{tt_search_showmulttitset_tname},$ttdata,$r);
-
-    return;
-}
-
 sub get_result_navigation {
     my ($arg_ref) = @_;
 
@@ -131,6 +67,8 @@ sub get_result_navigation {
         ? $arg_ref->{sortorder}             : undef;
     my $sorttype              = exists $arg_ref->{sorttype}
         ? $arg_ref->{sorttype}              : undef;
+    my $view                  = exists $arg_ref->{view}
+        ? $arg_ref->{view}                  : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -142,25 +80,31 @@ sub get_result_navigation {
     # vorausgegangenen Kurztitelliste
 
     my $lastresultstring = $session->get_lastresultset();
-  
+
     my $lasttiturl="";
     my $nexttiturl="";
-  
-    if ($lastresultstring=~m/(\w+:\d+)\|$database:$titidn/) {
-        $lasttiturl=$1;
-        my ($lastdatabase,$lastkatkey)=split(":",$lasttiturl);
-        $lasttiturl="$config->{search_loc}?sessionID=$session->{ID};database=$lastdatabase;searchsingletit=$lastkatkey";
+
+    if ($lastresultstring){
+        my $lastresult_ref = decode_json($lastresultstring);
+        my @lastresult = @{$lastresult_ref};
+        
+        
+        my @previous = before { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
+        
+        my @last=(exists $previous[-1])?$previous[-1]:();
+        
+        my @after = after { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
+        my @next=(exists $after[0])?$after[0]:();
+        
+        if (@last) {
+            $lasttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$last[0]->{database}/$last[0]->{id}/";
+        }
+        
+        if (@next) {
+            $nexttiturl="$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$next[0]->{database}/$next[0]->{id}/";
+        }
     }
     
-    if ($lastresultstring=~m/$database:$titidn\|(\w+:\d+)/) {
-        $nexttiturl=$1;
-        my ($nextdatabase,$nextkatkey)=split(":",$nexttiturl);
-
-	$logger->debug("NextDB: $nextdatabase - NextKatkey: $nextkatkey");
-
-        $nexttiturl="$config->{search_loc}?sessionID=$session->{ID};database=$nextdatabase;searchsingletit=$nextkatkey";
-    }
-
     return ($lasttiturl,$nexttiturl);
 }
 
@@ -183,12 +127,12 @@ sub get_index {
     my $config = OpenBib::Config->instance;
     
     my $type_ref = {
-        tit      => 1,
-        aut      => 2,
-        kor      => 3,
-        swt      => 4,
-        notation => 5,
-        mex      => 6,
+        tit            => 1,
+        aut            => 2,
+        kor            => 3,
+        swt            => 4,
+        notation       => 5,
+        mex            => 6,
     };
     
     my ($atime,$btime,$timeall);
@@ -373,120 +317,6 @@ sub print_index_by_swt {
     return;
 }
 
-sub initial_search_for_titidns {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $serien            = exists $arg_ref->{serien}
-        ? $arg_ref->{serien}        : undef;
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}           : undef;
-    my $database          = exists $arg_ref->{database}
-        ? $arg_ref->{database}      : undef;
-    my $hitrange          = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}      : 50;
-    my $offset            = exists $arg_ref->{offset}
-        ? $arg_ref->{offset}        : 0;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config      = OpenBib::Config->instance;
-    my $searchquery = OpenBib::SearchQuery->instance;
-
-    my $recordlist = new OpenBib::RecordList::Title();
-
-
-    if (!defined $dbh){
-        eval {
-            # Kein Spooling von DB-Handles!
-            $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd});
-        };
-
-        if ($@){
-           $logger->error($DBI::errstr);          
-           return ($recordlist,0);
-        }
-    }
-
-    my ($atime,$btime,$timeall);
-  
-    if ($config->{benchmark}) {
-        $atime=new Benchmark;
-    }
-    
-    my $request = $dbh->prepare($searchquery->to_sql_querystring({
-        serien   => $serien,
-        offset   => $offset,
-        hitrange => $hitrange,
-    })) or $logger->error("Database: $database - ".$DBI::errstr);
-
-    $request->execute($searchquery->to_sql_queryargs) or $logger->error("Database: $database - ".$DBI::errstr);
-
-    my @tempidns=();
-
-    while (my $res=$request->fetchrow_arrayref){
-        push @tempidns, $res->[0];
-    }
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : initital_search_for_titidns -> ".($#tempidns+1)." : ist ".timestr($timeall));
-        undef $atime;
-        undef $btime;
-        undef $timeall;
-    }
-
-    # Entfernen mehrfacher verwidn's unter Beruecksichtigung von $hitrange
-    my %schon_da=();
-    my $count=0;
-    my @tidns=grep {! $schon_da{$_}++ } @tempidns;
-
-    foreach my $id (splice(@tidns,0,$hitrange)){
-        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
-    }
-    
-    my $fullresultcount = $recordlist->get_size();
-    
-    $logger->info("Treffer: ".$recordlist->get_size()." von ".$fullresultcount);
-
-    # Wenn hitrange Treffer gefunden wurden, ist es wahrscheinlich, dass
-    # die wirkliche Trefferzahl groesser ist.
-    # Diese wird daher getrennt bestimmt, damit sie dem Benutzer als
-    # Hilfestellung fuer eine Praezisierung seiner Suchanfrage
-    # ausgegeben werden kann
-#     if ($#tidns+1 > $hitrange){ # ueberspringen
-
-#         if ($config->{benchmark}) {
-#             $atime=new Benchmark;
-#         }
-        
-#         my $sqlresultcount = "select count(verwidn) as resultcount from $sqlfromstring where $sqlwherestring";
-#         $request         = $dbh->prepare($sqlresultcount);
-        
-#         $request->execute(@sqlargs);
-        
-#         my $fullres         = $request->fetchrow_hashref;
-#         $fullresultcount = $fullres->{resultcount};
-
-        
-#         if ($config->{benchmark}) {
-#             $btime=new Benchmark;
-#             $timeall=timediff($btime,$atime);
-#             $logger->info("Zeit fuer : initital_search_for_titidns / $sqlresultcount -> $fullresultcount : ist ".timestr($timeall));
-#             undef $atime;
-#             undef $btime;
-#             undef $timeall;
-#         }
-        
-#     }
-
-    $request->finish();
-    
-    return ($recordlist,$fullresultcount);
-}
-
 sub get_recent_titids {
     my ($arg_ref) = @_;
 
@@ -511,7 +341,7 @@ sub get_recent_titids {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select id,content from tit_string where category=2 order by content desc limit $limit");
+    my $request=$dbh->prepare("select id,content from title_string where category=2 order by content desc limit $limit");
     $request->execute();
 
     my $recordlist = new OpenBib::RecordList::Title();
@@ -549,7 +379,7 @@ sub get_recent_titids_by_aut {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit $limit");
+    my $request=$dbh->prepare("select title_string.id as id,title_string.content as content from title_string,conn where conn.targetid = ? and title_string.category=2 and title_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit $limit");
     $request->execute($id);
 
     my $recordlist = new OpenBib::RecordList::Title();
@@ -587,7 +417,7 @@ sub get_recent_titids_by_kor {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit $limit");
+    my $request=$dbh->prepare("select title_string.id as id,title_string.content as content from title_string,conn where conn.targetid = ? and title_string.category=2 and title_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit $limit");
     $request->execute($id);
 
     my $recordlist = new OpenBib::RecordList::Title();
@@ -625,7 +455,7 @@ sub get_recent_titids_by_swt {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit $limit");
+    my $request=$dbh->prepare("select title_string.id as id,title_string.content as content from title_string,conn where conn.targetid = ? and title_string.category=2 and title_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit $limit");
     $request->execute($id);
 
     my $recordlist = new OpenBib::RecordList::Title();
@@ -663,7 +493,7 @@ sub get_recent_titids_by_not {
             or $logger->error_die($DBI::errstr);
     }
 
-    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit $limit");
+    my $request=$dbh->prepare("select title_string.id as id,title_string.content as content from title_string,conn where conn.targetid = ? and title_string.category=2 and title_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit $limit");
     $request->execute($id);
 
     my $recordlist = new OpenBib::RecordList::Title();

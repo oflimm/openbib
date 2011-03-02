@@ -23,8 +23,8 @@
 
 <div class="content">
 
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="profilename" value="[% profile.profilename %]" />
 <input type="hidden" name="do_editprofile" value="1" />
 
@@ -35,44 +35,45 @@
 <tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
 
 <tr><td><span style="color:blue">[% profile.profilename %]</span></td><td><input type="text" name="description" value="[% profile.description %]" size="40" /></td>
+</td><td><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td></tr>
 </tr>
 </table>
+</form>
 <p />
 
-<p />
-<b>[% msg.maketext("Katalogauswahl zu diesem Profil") %]</b><br /><br />
-
-<select name="profiledb" multiple="multiple">
-
-[% FOREACH singledb IN dbnames %]
-
-<option value="[% singledb.dbname %]"
-
-[% FOREACH checkeddb IN profile.profiledbs %]
-
-[% IF singledb.dbname == checkeddb %]
-selected="selected"
-[% END %]
-
-[% END %]
-
->[% singledb.dbname %]: [% singledb.description %]</option>
-
-[% END %]
-
-
-</select>
-
-
-<p />
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+<input type="hidden" name="profilename" value="[% profile.profilename %]" />
+<input type="hidden" name="do_editorgunit" value="1" />
 
 <table width="100%">
-<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td><td>&nbsp;</td><td align="right"><div class="cssbutton glass kug"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]" /></div></td></tr>
+<tr><th>Neue Organisationseinheit anlegen</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td>Name der Organisationseinheit</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="orgunit" /></td><td><input type="text" name="description" size="20" />
+</td><td><div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 </table>
 </td></tr>
 </table>
 
 </form>
+
+[% orgunits = config.get_orgunits(profile.profilename) %]
+[% IF orgunits.size > 0 %]
+
+<table width="100%">
+<tr><th>Bereits existierende Organisationseinheiten</th></tr>
+<tr><td class="boxedclear">
+<table>
+<tr><td><b>Name</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>Kataloge</b></td><td></td></tr>
+[% FOREACH thisorgunit IN orgunits %]
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?do_editorgunit=1;profilename=[% profile.profilename %];orgunit=[% thisorgunit.orgunitname %];do_edit=1">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% thisorgunit.dbnames.join(',') %]</td></tr>
+[% END %]
+</table>
+</td></tr>
+</table>
+[% END %]
+
 
 </div>
 

@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,9 +37,8 @@ use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBI;
 use Encode 'decode_utf8';
-use JSON::XS qw(encode_json decode_json);
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
 use SOAP::Lite;
 use Storable;
 use XML::LibXML;
@@ -51,6 +50,7 @@ use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Database::DBI;
+use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
@@ -60,6 +60,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::SearchQuery;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -154,7 +155,7 @@ sub load_full_record {
             $atime=new Benchmark;
         }
         
-        my $reqstring="select * from tit where id = ?";
+        my $reqstring="select * from title where id = ?";
         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
@@ -430,9 +431,9 @@ sub load_full_record {
 
             $logger->debug(YAML::Dump(\@isbn_refs));
 
-            my %seen_content = ();
+            my %seen_content = ();            
             foreach my $isbn (@isbn_refs){
-                my $reqstring="select distinct category, content from normdata where isbn=? order by category,indicator";
+                my $reqstring="select distinct category,content from normdata where isbn=? order by category,indicator";
                 my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                 $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
                 
@@ -446,7 +447,7 @@ sub load_full_record {
                     }
                     else {
                         $seen_content{$content} = 1;
-                    }
+                    }                    
                     
                     push @{$normset_ref->{$category}}, {
                         content    => $content,
@@ -640,27 +641,27 @@ sub load_brief_record {
         $logger->debug("Getting cached titlistitem");
         
         # Bestimmung des Satzes
-        my $request=$dbh->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select listitem from title_listitem where id = ?") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         if (my $res=$request->fetchrow_hashref){
-            my $titlistitem     = $res->{listitem};
+            my $titlistitem     = decode_utf8($res->{listitem});
             
-            $logger->debug("Storable::listitem: $titlistitem");
+            $logger->debug("Stored listitem: $titlistitem");
 
-            my $encoding_type="hex";
+            my $titlistitem_ref;
 
-            if    ($encoding_type eq "base64"){
-                $titlistitem = MIME::Base64::decode($titlistitem);
+            if ($config->{internal_serialize_type} eq "packed_storable"){
+                $titlistitem_ref = Storable::thaw(pack "H*", $titlistitem);
             }
-            elsif ($encoding_type eq "hex"){
-                $titlistitem = pack "H*",$titlistitem;
+            elsif ($config->{internal_serialize_type} eq "json"){
+                $titlistitem_ref = decode_json $titlistitem;
             }
-            elsif ($encoding_type eq "uu"){
-                $titlistitem = unpack "u",$titlistitem;
+            else {
+                $titlistitem_ref = Storable::thaw(pack "H*", $titlistitem);
             }
 
-            my %titlistitem = %{ Storable::thaw($titlistitem) };
+            my %titlistitem = %{ $titlistitem_ref };
             
             $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
             %$listitem_ref=(%$listitem_ref,%titlistitem);
@@ -676,8 +677,8 @@ sub load_brief_record {
         }
 
         # Bestimmung der Titelinformationen
-        my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
-        #    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select category,indicator,content from title where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
+        #    my $request=$dbh->prepare("select category,indicator,content from title where id = ? ") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -707,7 +708,7 @@ sub load_brief_record {
         }
         
         # Bestimmung der Exemplarinformationen
-        $request=$dbh->prepare("select mex.category,mex.indicator,mex.content from mex,conn where conn.sourceid = ? and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6 and mex.category=0014") or $logger->error($DBI::errstr);
+        $request=$dbh->prepare("select holding.category,holding.indicator,holding.content from holding,conn where conn.sourceid = ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6 and holding.category=0014") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -1020,45 +1021,57 @@ sub set_brief_normdata_from_storable {
 sub print_to_handler {
     my ($self,$arg_ref)=@_;
 
-    my $format             = exists $arg_ref->{format}
-        ? $arg_ref->{format}             : 'full';
-    my $queryid            = exists $arg_ref->{queryid}
-        ? $arg_ref->{queryid}            : undef;
     my $r                  = exists $arg_ref->{apachereq}
         ? $arg_ref->{apachereq}          : undef;
-    my $stylesheet         = exists $arg_ref->{stylesheet}
-        ? $arg_ref->{stylesheet}         : undef;
+    my $representation     = exists $arg_ref->{representation}
+        ? $arg_ref->{representation}     : undef;
+    my $content_type       = exists $arg_ref->{content_type}
+        ? $arg_ref->{content_type}       : 'text/html';
     my $view               = exists $arg_ref->{view}
         ? $arg_ref->{view}               : undef;
-    my $msg                = exists $arg_ref->{msg}
-        ? $arg_ref->{msg}                : undef;
-    my $no_log             = exists $arg_ref->{no_log}
-        ? $arg_ref->{no_log}             : 0;
-
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config        = OpenBib::Config->instance;
-    my $session       = OpenBib::Session->instance;
-    my $queryoptions  = OpenBib::QueryOptions->instance;
+    my $session       = OpenBib::Session->instance({ apreq => $r });
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $user          = OpenBib::User->instance;
+    my $user          = OpenBib::User->instance({sessionID => $session->{ID}});
     my $searchquery   = OpenBib::SearchQuery->instance;
     my $query         = Apache2::Request->new($r);
 
+    my $queryoptions  = OpenBib::QueryOptions->instance($query);
+    
     my $stid          = $query->param('stid')              || '';
+    my $callback      = $query->param('callback')  || '';
+    my $lang          = $query->param('lang') || $queryoptions->get_option('l') || 'de';
 
+    my $queryid    = $query->param('queryid')   || '';
+    my $format     = $query->param('format')    || 'full';
+    my $no_log     = $query->param('no_log')    || '';
+    
     my $loginname     = $user->get_username();
     my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
+    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    
     my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
         session    => $session,
         database   => $self->{database},
         titidn     => $self->{id},
+        view       => $view,
     });
 
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
     my $poolname=$dbinfotable->{dbnames}{$self->{database}};
+
+    if ($queryid){
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+    }
 
     # Literaturlisten finden
 
@@ -1095,8 +1108,13 @@ sub print_to_handler {
         }
     }
 
+    # Dann Ausgabe des neuen Headers
+    
     # TT-Data erzeugen
     my $ttdata={
+        content_type   => $content_type,
+        representation => $representation,
+
         view        => $view,
         stylesheet  => $stylesheet,
         database    => $self->{database}, # Zwingend wegen common/subtemplate
@@ -1105,6 +1123,7 @@ sub print_to_handler {
         prevurl     => $prevurl,
         nexturl     => $nexturl,
         qopts       => $queryoptions->get_options,
+        queryoptions => $queryoptions,
         queryid     => $searchquery->get_id,
         sessionID   => $session->{ID},
         session     => $session,
@@ -1127,14 +1146,13 @@ sub print_to_handler {
         litlists          => $litlists_ref,
         highlightquery    => \&highlightquery,
 
-        record      => $self,
         config      => $config,
         user        => $user,
         msg         => $msg,
     };
 
     $stid=~s/[^0-9]//g;
-    my $templatename = ($stid)?"tt_search_showtitset_".$stid."_tname":"tt_search_showtitset_tname";
+    my $templatename = ($stid)?"tt_resource_title_".$stid."_tname":"tt_resource_title_tname";
     
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 
@@ -1205,7 +1223,7 @@ sub _get_mex_set_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $sqlrequest="select category,content,indicator from mex where id = ?";
+    my $sqlrequest="select category,content,indicator from holding where id = ?";
     my $result=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $result->execute($id);
 
@@ -1932,7 +1950,9 @@ sub record_exists {
 
 sub to_drilldown_term {
     my ($self,$term)=@_;
-    
+
+    my $config = OpenBib::Config->instance;
+
     $term = OpenBib::Common::Util::grundform({
         content   => $term,
         searchreq => 1,
@@ -1940,38 +1960,64 @@ sub to_drilldown_term {
 
     $term=~s/\W/_/g;
 
+    if (length($term) > $config->{xapian_option}{max_key_length}){
+        $term=substr($term,0,$config->{xapian_option}{max_key_length}-2); # 2 wegen Prefix
+    }
+
     return $term;
 }
 
-sub enrich_cdm {
-    my ($self,$id,$url)=@_;
+sub to_json {
+    my ($self)=@_;
+
+    my $title_ref = {
+        'metadata'    => $self->{_normset},
+        'items'       => $self->{_mexset},
+        'circulation' => $self->{_circset},
+    };
+
+    return encode_json $title_ref;
+}
+
+sub set_id {
+    my ($self,$id) = @_;
+
+    $self->{id} = $id;
+
+    return $self;
+}
+
+sub set_database {
+    my ($self,$database) = @_;
+
+    $self->{database} = $database;
+
+    return $self;
+}
+
+
+sub set_category {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $category          = exists $arg_ref->{category}
+        ? $arg_ref->{category}          : undef;
+
+    my $indicator         = exists $arg_ref->{indicator}
+        ? $arg_ref->{indicator}         : undef;
+
+    my $content            = exists $arg_ref->{content}
+        ? $arg_ref->{content}           : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
     
-    # Wenn kein URI, dann Default-URI
-    $url = $config->{cdm_base}.$config->{cdm_path} unless ($url);
+    push @{$self->{_normset}{$category}}, {
+        indicator => $indicator,
+        content   => $content,
+    };
 
-    $url.=$id;
-    
-    my $ua = new LWP::UserAgent;
-    $ua->agent("OpenBib/1.0");
-    $ua->timeout(1);
-    my $request = new HTTP::Request('GET', $url);
-    my $response = $ua->request($request);
-
-    my $content = $response->content;
-
-    my $enrich_data_ref = {};
-    
-    if ($content){
-        $enrich_data_ref = decode_json($content);
-    }
-
-    return $enrich_data_ref;
-    
+    return $self;
 }
 
 1;

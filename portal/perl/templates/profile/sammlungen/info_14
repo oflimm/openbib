@@ -67,7 +67,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit </span><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=sql;profil=dbauswahl;swt=%22[% item %]%22" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('handler').virtualsearch_loc.name %]?profil=dbauswahl;swt=%22[% item %]%22" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

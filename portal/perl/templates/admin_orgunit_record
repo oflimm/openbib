@@ -1,0 +1,24 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_orgunit_record
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten
+# Organisationseinheiten eines Profils
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%- IF representation == '' || representation == 'html' -%]
+[%- PROCESS common/subtemplate name="admin_orgunit_record_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="admin_orgunit_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="admin_orgunit_record_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

@@ -94,7 +94,7 @@ sub get_posts {
         ? $arg_ref->{user}       : undef;
 
     my $type   = exists $arg_ref->{type}
-        ? $arg_ref->{type}       : 'bibtex';
+        ? $arg_ref->{type}       : 'publication';
 
     my $start  = exists $arg_ref->{start}
         ? $arg_ref->{start}      : undef;
@@ -106,8 +106,9 @@ sub get_posts {
     my $logger = get_logger();
 
     my %valid_type = (
-        'bibtex'   => 'bibtex',
-        'bookmark' => 'bookmark',
+        #OpenBib      => #Bibsonomy
+        'publication' => 'bibtex',
+        'bookmark'    => 'bookmark',
     );
 
     if (defined $user && $user eq "self"){
@@ -177,7 +178,7 @@ sub get_posts {
             push @{$singlepost_ref->{tags}}, $tag_node->getAttribute('name');
         }
 
-        if ($type eq "bibtex"){
+        if ($type eq "publication"){
             $singlepost_ref->{bibkey}              = "1".$post_node->findvalue('bibtex/@interhash');
             $singlepost_ref->{interhash}           = $post_node->findvalue('bibtex/@interhash');
             $singlepost_ref->{intrahash}           = $post_node->findvalue('bibtex/@intrahash');
@@ -314,7 +315,7 @@ sub change_post {
         ? $arg_ref->{tags}        : undef;
 
     my $type     = exists $arg_ref->{type}
-        ? $arg_ref->{type}       : 'bibtex';
+        ? $arg_ref->{type}       : 'publication';
 
     my $visibility = exists $arg_ref->{visibility}
         ? $arg_ref->{visibility} : 'public';
@@ -323,8 +324,9 @@ sub change_post {
     my $logger = get_logger();
 
     my %valid_type = (
-        'bibtex'   => 'bibtex',
-        'bookmark' => 'bookmark',
+        #OpenBib      => #Bibsonomy
+        'publication' => 'bibtex',
+        'bookmark'    => 'bookmark',
     );
 
     my $posts_ref = $self->get_posts({ user => 'self', bibkey => $bibkey});
@@ -522,7 +524,7 @@ verwendet.
 
 Liefert eine Liste mit Posts aus BibSonomy zu einem Tag $tag, einem
 Nutzer $user oder einem Bibkey $bibkey von $start bis $end. Über $type
-(default: 'bibtex')kann bestimmt werden, ob sich die Liste auf
+(default: 'publication')kann bestimmt werden, ob sich die Liste auf
 bibliographische Informationen bezieht ('bibtex') oder Web-Links
 ('bookmark').
 

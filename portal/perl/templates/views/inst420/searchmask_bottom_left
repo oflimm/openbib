@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: searchmask_bottom_left
+# Templatename: searchform_bottom_left
 #
 # Typ         : Subtemplate
 #
@@ -58,7 +58,7 @@ FOREACH category IN categories;
 END ;-%]
 </table>
 [%-   IF dbinfo.get('use_libinfo').${thisviewdb} %]
-[<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% thisviewdb %];stid=60">
+[<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/60?id=[% thisviewdb %]">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -66,3 +66,20 @@ END ;-%]
 [% END %]
 <p />
 [% END %]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="[% msg.maketext("Tip: Digitaler Kartenkatalog") %]" />&nbsp;[% msg.maketext("Weitere Best&auml;nde im Digitalen Kartenkatalog") %]</h3>
+<p>
+Sie finden weitere Best&auml;nde dieser Kataloge in den
+zugeh&ouml;rigen digitalisierten Karten-Katalogen:
+</p>
+
+<ul>
+<li><a href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=420a" target="_blank">Historisches Seminar</a>. </li>
+<li><a href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=424e" target="_blank">Historisches Seminar / Arbeitskreis Nationalismusforschung</a>. </li>
+</ul>
+
+<h3><img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="[% msg.maketext("Neuerwerbungslisten") %]"/>&nbsp;[% msg.maketext("Neuerwerbungslisten") %]</h3>
+
+<p>
+Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://kug.ub.uni-koeln.de/neuerwerbungslisten/inst420/00/02/index.html" target="_blank">Neuerwerbungslisten</a> angeboten.
+</p>

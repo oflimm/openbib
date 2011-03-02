@@ -33,7 +33,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=51">[% thisbk %] / [% bks.${thisbk} %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/51?category=[% thisbk %]">[% thisbk %] / [% bks.${thisbk} %]</a></li>
 </ul>
 
 <div class="content">
@@ -58,8 +58,8 @@ bklist = bklist.sort;
 <ul class="subjectlist">
 [% FOREACH bk IN bklist %]
 [%   IF thisbklist.${bk}.defined %] 
-[%      localurl    = "${config.get('search_loc')}?sessionID=${sessionID};database=${viewdbs.first};searchtitofcnt=${bk};category=E4100;hitrange=${qopts.hitrange}" %]
-<li>[% bk %] / <a style="font-weight:bold;font-size:1.2em;" href="[% IF viewdbs.size == 1 %][% localurl %][% ELSE %][% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=52;category=[% bk %][% END %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
+[%      localurl    = "${path_prefix}/${config.get('handler').browse_loc.name}?database=${viewdbs.first};searchtitofcnt=${bk};category=E4100;num=${qopts.num}" %]
+<li>[% bk %] / <a style="font-weight:bold;font-size:1.2em;" href="[% IF viewdbs.size == 1 %][% localurl %][% ELSE %][% path_prefix %]/[% config.get('handler').info_loc.name %]/52?category=[% bk %][% END %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
 [%   END %]
 [% END %]
 </ul>

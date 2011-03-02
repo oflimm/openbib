@@ -35,7 +35,6 @@ use Encode;
 use Getopt::Long;
 
 use OpenBib::Config;
-use OpenBib::Conv::Common::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -76,6 +75,9 @@ $titcat_ref = {
 	       '0525' => 1,
 	       '0590' => 1,
 	       '0800' => 1,
+	       '0005' => 1,
+	       '0014' => 1,
+	       '0016' => 1,
 	      };
 
 $autcat_ref = {
@@ -96,16 +98,13 @@ $swtcat_ref = {
 	      };
 
 $mexcat_ref = {
-	       '0014' => 1,
-	       '0016' => 1,
-               '0005' => 1,               
 	      };
 
 $konvtab_ref = {
     'Dokumentennummer:'                        => '0000',
     'Autor:'                                   => '0100', 
     'Band, H.(Zs.) / Tag, Monat (Ztg.):'       => '0089', 
-    'Behï¿½rden, Betriebe, Institutionen:'    => '0200', 
+    'Beh”rden, Betriebe, Institutionen:'    => '0200', 
     'Co-Autor:'                                => '0101', 
     'Deskriptoren:'                            => '0710', 
     'Freie Stichworte:'                        => '0710', 
@@ -170,9 +169,7 @@ while (<DAT>){
  
       foreach my $char (@chars) {
 	if (length($char) == 2) { # 2-byte Zeichen
-#	  $newcontent .= Encode::decode("euc-cn",$char)." ";
-          # Sonderwunsch: Keine Leerzeichen
-          $newcontent .= Encode::decode("euc-cn",$char);
+	  $newcontent .= Encode::decode("euc-cn",$char)." ";
 	} 
 	else {  # 1-byte Zeichen
 	  $newcontent .= Encode::decode("cp437",$char);
@@ -180,7 +177,7 @@ while (<DAT>){
       }
     
       if (exists $title_ref->{$category_dst} && exists $mergecat_ref->{$category_dst}){
-          $title_ref->{$category_dst}[0].=" $newcontent";
+	$title_ref->{$category_dst}[0].=" $newcontent";
       }
       else {
 	push @{$title_ref->{$category_dst}}, $newcontent; 
@@ -225,7 +222,7 @@ foreach my $title_ref (@$titlelist_ref){
                    $supplement = " ; $2";
                 }
 
-                $autidn=OpenBib::Conv::Common::Util::get_autidn($content);
+                $autidn=get_autidn($content);
                 
                 if ($autidn > 0){
                     print PER "0000:$autidn\n";
@@ -244,7 +241,7 @@ foreach my $title_ref (@$titlelist_ref){
          my $mult = 1;
          foreach my $content (@{$title_ref->{$category}}){       
 
-                $koridn=OpenBib::Conv::Common::Util::get_koridn($content);
+                $koridn=get_koridn($content);
                 
                 if ($koridn > 0){
                     print KOR "0000:$koridn\n";
@@ -263,7 +260,7 @@ foreach my $title_ref (@$titlelist_ref){
          my $mult = 1;
          foreach my $content (@{$title_ref->{$category}}){       
 
-                $swtidn=OpenBib::Conv::Common::Util::get_swtidn($content);
+                $swtidn=get_swtidn($content);
                 
                 if ($swtidn > 0){
                     print SWD "0000:$swtidn\n";
@@ -282,7 +279,7 @@ foreach my $title_ref (@$titlelist_ref){
          my $mult = 1;
          foreach my $content (@{$title_ref->{$category}}){       
 
-                $notidn=OpenBib::Conv::Common::Util::get_notidn($content);
+                $notidn=get_notidn($content);
                 
                 if ($notidn > 0){
                     print SYS "0000:$notidn\n";
@@ -328,4 +325,85 @@ close(PER);
 close(KOR);
 close(SWD);
 close(MEX);
+
+sub get_autidn {
+  ($autans)=@_;
+  
+  $autdubidx=0;
+  $autdubidn=0;
+  
+  while ($autdubidx < $autdublastidx){
+    if ($autans eq $autdubbuf[$autdubidx]){
+      $autdubidn=(-1)*$autdubidx;      
+    }
+    $autdubidx++;
+  }
+  if (!$autdubidn){
+    $autdubbuf[$autdublastidx]=$autans;
+    $autdubidn=$autdublastidx;
+    $autdublastidx++;
+  }
+  return $autdubidn;
+}
+
+sub get_swtidn {
+  ($swtans)=@_;
+  
+  $swtdubidx=0;
+  $swtdubidn=0;
+  
+  while ($swtdubidx < $swtdublastidx){
+    if ($swtans eq $swtdubbuf[$swtdubidx]){
+      $swtdubidn=(-1)*$swtdubidx;      
+    }
+    $swtdubidx++;
+  }
+  if (!$swtdubidn){
+    $swtdubbuf[$swtdublastidx]=$swtans;
+    $swtdubidn=$swtdublastidx;
+    $swtdublastidx++;
+  }
+  return $swtdubidn;
+}
+
+sub get_koridn {
+  ($korans)=@_;
+  
+  $kordubidx=0;
+  $kordubidn=0;
+  
+  while ($kordubidx < $kordublastidx){
+    if ($korans eq $kordubbuf[$kordubidx]){
+      $kordubidn=(-1)*$kordubidx;      
+    }
+    $kordubidx++;
+  }
+  if (!$kordubidn){
+    $kordubbuf[$kordublastidx]=$korans;
+    $kordubidn=$kordublastidx;
+    $kordublastidx++;
+  }
+  return $kordubidn;
+}
+
+sub get_notidn {
+  ($notans)=@_;
+  
+  $notdubidx=1;
+  $notdubidn=0;
+  
+  while ($notdubidx < $notdublastidx){
+    if ($notans eq $notdubbuf[$notdubidx]){
+      $notdubidn=(-1)*$notdubidx;      
+    }
+    $notdubidx++;
+  }
+
+  if (!$notdubidn){
+    $notdubbuf[$notdublastidx]=$notans;
+    $notdubidn=$notdublastidx;
+    $notdublastidx++;
+  }
+  return $notdubidn;
+}
 

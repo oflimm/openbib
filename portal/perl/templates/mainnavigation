@@ -12,7 +12,7 @@
 # Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
 #
 # databasechoice
-# searchmask
+# searchform
 # resultlists
 # collection
 # startpage
@@ -26,21 +26,21 @@
 [%- username = user.get_username -%]
 <div id="mainnavigation">
 <div id="mainnavigation_left">
-<a [%- IF active_menu == "databasechoice" -%]class="active_menu" [%- END -%]href="[% config.get('databasechoice_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "searchmask" -%]class="active_menu" [%- END -%]href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;view=[% view %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
+<a [%- IF active_menu == "databasechoice" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').databasechoice_loc.name %].html">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "searchform" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/recent">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
 </div>
 <div id="mainnavigation_right">
-[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
-<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
-<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="[% config.get('rssfeeds_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('base_loc') %]/[% config.get('handler').admin_loc.name %]/database.html">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
+<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').startopac_loc.name %].html">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
+<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').rssfeeds_loc.name %].html">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
 [% IF config.get('login_active') == 1 %]
 [% IF username %]
-<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% config.get('userprefs_loc') %]?sessionID=[% sessionID %];view=[% view %];action=showfields">[% msg.maketext("Mein KUG") %]</a>
+<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/preferences.html">[% msg.maketext("Mein OpenBib") %]</a>
 [% ELSE %]
-<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% config.get('login_loc') %]?sessionID=[% sessionID %];view=[% view %];do_login=1">[% msg.maketext("Mein KUG") %]</a>
+<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('handler').login_loc.name %].html">[% msg.maketext("Mein OpenBib") %]</a>
 [%- END -%]
 &nbsp;::&nbsp;
 [% END %]
-<a [%- IF active_menu == "info" -%]class="active_menu"[%- END -%]href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "tutorial" -%]class="active_menu"[%- END -%]href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=61">[% msg.maketext("Tutorien") %]</a>&nbsp;::&nbsp;<a href="[% config.get('leave_loc') %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+<a [%- IF active_menu == "info" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/help.html">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="[% path_prefix %]/[% config.get('handler').logout_loc.name %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 [%- IF username -%]
  [[% username %]]
 [%- END -%]

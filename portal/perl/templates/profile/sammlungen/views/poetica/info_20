@@ -31,7 +31,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/[% stid %]?id=[% id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -47,7 +47,7 @@
 
 <td style="vertical-align:top;padding:40px;"> <center> <img src="/images/openbib/views/poetica/startseite.png"
 alt="Poetica-Sammlung" /><br /><br /><i style="font-size:0.8em"> <a href="/images/openbib/views/poetica/bild1.jpg">
-</a></a>
+Bildunterschrift startseite.jpg</a></a>
 </center>
 </td>
 
@@ -83,10 +83,8 @@ erschienenen Drucke des 17. Jahrhunderts (VD17).
 Die Drucke sind online in der Nordrhein-Westfälischen
 Verbunddatenbank katalogisiert. Die Deutsche Forschungsgemeinschaft
 unterstützte dieses Erschließungsprojekt in den Jahren 1999 bis
-2002.
-<!--[<a href="[%
-config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere
-Informationen]</a>-->
+2002. [<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/21">Weitere
+Informationen]</a>
 </p>
 
 
@@ -96,7 +94,10 @@ Historischen Lesesaal.
 </p>
 <br />
 
-<!--<b>Ansprechpartner:</b><br />Dr. K.-F. Beßelmann <br />Tel.: 0221-470 3877-->  
+<b>Ansprechpartner:</b><br />
+
+Dr. K.-F. Beßelmann <br />
+Tel.: 0221-470 3877  
 
 
 
@@ -104,7 +105,7 @@ Historischen Lesesaal.
 
 
 
-<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 
 </td></tr>
 </table>

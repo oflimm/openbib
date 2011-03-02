@@ -44,13 +44,7 @@ use YAML::Syck;
 use JSON::XS;
 
 use OpenBib::Config;
-
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
-
-@autdubbuf = ();
-@kordubbuf = ();
-@swtdubbuf = ();
-@notdubbuf = ();
+use OpenBib::Conv::Common::Util;
 
 my $config = OpenBib::Config->instance;
 
@@ -70,16 +64,13 @@ HELP
 exit;
 }
 
-open (TIT,     ">:utf8","unload.TIT");
-open (AUT,     ">:utf8","unload.PER");
-open (KOR,     ">:utf8","unload.KOE");
-open (NOTATION,">:utf8","unload.SYS");
-open (SWT,     ">:utf8","unload.SWD");
+open (TIT,     ">:utf8","meta.title");
+open (AUT,     ">:utf8","meta.person");
+open (KOR,     ">:utf8","meta.corporatebody");
+open (NOTATION,">:utf8","meta.classification");
+open (SWT,     ">:utf8","meta.subject");
 
-my %author = ();
-
-#tie %author,        'MLDBM', "./data_aut.db"
-#        or die "Could not tie data_aut.\n";
+my %have_author = ();
 
 print "### Processing Titles: 1st pass - getting authors\n";
 open(OL,"<:utf8",$inputfile_titles);
@@ -92,11 +83,17 @@ while (<OL>){
         $recordset = decode_json $_;
     };
 
+    # Einschraenkung auf Titelaufnahmen mit Digitalisaten
+    if (!exists $recordset->{ocaid}){
+        next;
+    }
+
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){
       foreach my $author_ref (@{$recordset->{authors}}){
 	my $key     = $author_ref->{key};
-        $author{$key}=1;
+        $key =~s{/authors/}{};
+        $have_author{$key}=1;
       }
     }
 
@@ -115,15 +112,34 @@ open(OL,"<:utf8",$inputfile_authors);
 
 $count = 1;
 
+my %author = ();
 while (<OL>){
     my $recordset=undef;
     
     eval {
         $recordset = decode_json $_;
     };
+    
+    my $key = $recordset->{key};
+    $key=~s{^/authors/}{};
 
-    if (exists $recordset->{key} && exists $author{$recordset->{key}}){
-        $author{$recordset->{key}}=$recordset;
+    if ( $key && $have_author{$key} == 1){
+        my $name = $recordset->{name};
+        $name = $recordset->{personal_name} if (!$name);
+
+        if ($name){
+            $name = konv($name);
+            print AUT "0000:$key\n";
+            print AUT "0001:$name\n";
+            print AUT "0304:$recordset->{birth_date}\n" if ($recordset->{birth_date});
+            print AUT "0306:$recordset->{death_date}\n" if ($recordset->{death_date});
+            print AUT "9999:\n";
+
+            OpenBib::Conv::Common::Util::set_person_id($key,$name);
+        }
+        else {
+            $have_author{$key} = 0;
+        }
     }
 
     if ($count % 10000 == 0){
@@ -148,174 +164,198 @@ while (<OL>){
         $recordset = decode_json $_;
     };
 
+    my $key = $recordset->{key} ;
+    $key =~s{^/books/}{};
+
 #    print YAML::Dump($recordset);
 
-    if (!$recordset->{id}){
+    # Einschraenkung auf Titelaufnahmen mit Digitalisaten
+    if (!exists $recordset->{ocaid}){
+        next;
+    }
+    
+    if (!$key){
         print STDERR  "Keine ID\n".YAML::Dump($recordset)."\n";
         next;
     }
 
-    if (!$recordset->{id} || $have_titid_ref->{$recordset->{id}}){
-        print STDERR  "Doppelte ID: ".$recordset->{id}."\n";
+    if (!$key || $have_titid_ref->{$key}){
+        print STDERR  "Doppelte ID: ".$key."\n";
         next;
     }
 
-    printf TIT "0000:%d\n", $recordset->{id};
-    $have_titid_ref->{$recordset->{id}} = 1;
+    printf TIT "0000:%s\n", $key;
+    $have_titid_ref->{$key} = 1;
 
     if (exists $recordset->{languages}){
         foreach my $item_ref (@{$recordset->{languages}}){
             my $lang = $item_ref->{key};
-            $lang =~s/^\/l\///;
+            $lang =~s{^/languages/}{};
             print TIT "0015:$lang\n";
         }
     }
     
     if (exists $recordset->{title}){
-        my $title = $recordset->{title};
+        my $title = konv($recordset->{title});
         if (exists $recordset->{title_prefix}){
-            $title=$recordset->{title_prefix}." $title";
+            $title=konv($recordset->{title_prefix})." $title";
         }
         
         print TIT "0331:$title\n";
     }
 
     if (exists $recordset->{subtitle}){
-        print TIT "0335:$recordset->{subtitle}\n";
+        print TIT "0335:".konv($recordset->{subtitle})."\n";
+    }
+
+    if (exists $recordset->{other_titles}){
+        foreach my $item (@{$recordset->{other_titles}}){
+            print TIT "0370:".konv($item)."\n";
+        }
     }
 
     if (exists $recordset->{by_statement}){
-        print TIT "0359:$recordset->{by_statement}\n";
+        print TIT "0359:".konv($recordset->{by_statement})."\n";
     }
 
     if (exists $recordset->{publishing_places}){
         foreach my $item (@{$recordset->{publishing_places}}){
-            print TIT "0410:$item\n";
+            print TIT "0410:".konv($item)."\n";
+        }
+    }
+
+    if (exists $recordset->{series}){
+        foreach my $item (@{$recordset->{series}}){
+            print TIT "0451:".konv($item)."\n";
         }
     }
 
     if (exists $recordset->{publishers}){
         foreach my $item (@{$recordset->{publishers}}){
-            print TIT "0412:$item\n";
+            print TIT "0412:".konv($item)."\n";
         }
     }
 
     if (exists $recordset->{edition_name}){
-        print TIT "0403:$recordset->{edition_name}\n";
+        print TIT "0403:".konv($recordset->{edition_name})."\n";
     }
 
     if (exists $recordset->{publish_date}){
-        print TIT "0425:$recordset->{publish_date}\n";
+        print TIT "0425:".konv($recordset->{publish_date})."\n";
     }
 
     if (exists $recordset->{pagination}){
-        print TIT "0433:$recordset->{pagination}\n";
+        print TIT "0433:".konv($recordset->{pagination})."\n";
     }
 
     if (exists $recordset->{ocaid}){
         print TIT "0662:$recordset->{ocaid}\n";
     }
 
-    print TIT "0800:eBook\n";
+    print TIT "0800:ebook\n";
 
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){
-      foreach my $author_ref (@{$recordset->{authors}}){
-	my $key     = $author_ref->{key};
-        
-        if (!exists $author{$key}{name}){
-	  print STDERR "### Key $key existiert nicht\n";
-	}
-
-	my $content = $author{$key}{name};
-	
-	if ($content){	  
-	  my $autidn=get_autidn($content);
-	  
-	  if ($autidn > 0){
-	    print AUT "0000:$autidn\n";
-	    print AUT "0001:$content\n";
-	    print AUT "9999:\n";
-	  }   
-	  else {
-	    $autidn=(-1)*$autidn;
-	  }
-	  
-	  print TIT "0100:IDN: $autidn\n";
-	}
-      }
+        my %processed = ();
+        foreach my $author_ref (@{$recordset->{authors}}){
+            my $key     = $author_ref->{key};
+            $key =~s{/authors/}{};
+            
+            print TIT "0100:IDN: $key\n" if ($have_author{$key} == 1 && !$processed{$key});
+            $processed{$key} = 1;
+        }
     }
     # Autoren abarbeiten Ende
 
     # Personen abarbeiten Anfang
-    if (exists $recordset->{contributions}){    
-      foreach my $content (@{$recordset->{contributions}}){
-	
-	if ($content){
-	  my $autidn=get_autidn($content);
-	  
-	  if ($autidn > 0){
-	    print AUT "0000:$autidn\n";
-	    print AUT "0001:$content\n";
-	    print AUT "9999:\n";
-	    
-	  }
-	  else {
-	    $autidn=(-1)*$autidn;
-	  }
-	  
-	  print TIT "0101:IDN: $autidn\n";
+    if (exists $recordset->{contributions}){
+        my %processed = ();
+        
+        foreach my $content (@{$recordset->{contributions}}){
+            
+            if ($content && !$processed{$content}){
+                $content = konv($content);
+                my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
+                
+                if ($new){
+                    print AUT "0000:$person_id\n";
+                    print AUT "0001:$content\n";
+                    print AUT "9999:\n";
+                    
+                }
+                
+                print TIT "0101:IDN: $person_id\n";
+                $processed{$content} = 1 ;
+            }
         }
-      }
     }
     # Personen abarbeiten Ende
 
     # Notationen abarbeiten Anfang
     if (exists $recordset->{dewey_decimal_class}){
-      foreach my $content (@{$recordset->{dewey_decimal_class}}){
-	if ($content){	  
-	  my $notidn=get_notidn($content);
-	  
-	  if ($notidn > 0){
-	    print NOTATION "0000:$notidn\n";
-	    print NOTATION "0001:$content\n";
-	    print NOTATION "9999:\n";
-	    
-	  }
-	  else {
-	    $notidn=(-1)*$notidn;
-	  }
-	  
-	  print TIT "0700:IDN: $notidn\n";
+        my %processed = ();
+        foreach my $content (@{$recordset->{dewey_decimal_class}}){
+            if ($content && !$processed{$content}){
+                $content = konv($content);
+                my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
+                
+                if ($new){
+                    print NOTATION "0000:$classification_id\n";
+                    print NOTATION "0001:$content\n";
+                    print NOTATION "9999:\n";
+                    
+                }
+                
+                print TIT "0700:IDN: $classification_id\n";
+                $processed{$content} = 1;
+            }
         }
-      }
+    }
+    if (exists $recordset->{lc_classifications}){
+        my %processed = ();
+        foreach my $content (@{$recordset->{lc_classifications}}){
+            if ($content && !$processed{$content}){
+                $content = konv($content);
+                my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
+                
+                if ($new){
+                    print NOTATION "0000:$classification_id\n";
+                    print NOTATION "0001:$content\n";
+                    print NOTATION "9999:\n";
+                    
+                }
+                
+                print TIT "0700:IDN: $classification_id\n";
+                $processed{$content} = 1;
+            }
+        }
     }
     # Notationen abarbeiten Ende
 
     # Schlagworte abarbeiten Anfang
     if (exists $recordset->{subjects}){
-      foreach my $content (@{$recordset->{subjects}}){
-	if ($content){
-	  # Punkt am Ende entfernen
-	  $content=~s/\.\s*$//;
-
-	  my $swtidn=get_swtidn($content);
-	  
-	  if ($swtidn > 0){	  
-	    print SWT "0000:$swtidn\n";
-	    print SWT "0001:$content\n";
-	    print SWT "9999:\n";
-	  }
-	  else {
-	    $swtidn=(-1)*$swtidn;
-	  }
-	  print TIT "0710:IDN: $swtidn\n";
+        my %processed = ();
+        foreach my $content (@{$recordset->{subjects}}){
+            if ($content && !$processed{$content}){
+                $content = konv($content);
+                # Punkt am Ende entfernen
+                $content=~s/\.\s*$//;
+                
+                my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
+                
+                if ($new){	  
+                    print SWT "0000:$subject_id\n";
+                    print SWT "0001:$content\n";
+                    print SWT "9999:\n";
+                }
+                
+                print TIT "0710:IDN: $subject_id\n";
+            }
         }
-      }
     }
     # Schlagworte abarbeiten Ende
     print TIT "9999:\n";
-
+    
     if ($count % 10000 == 0){
         print "$count done\n";
     }
@@ -329,95 +369,14 @@ close(KOR);
 close(NOTATION);
 close(SWT);
 
-sub get_autidn {
-    my ($autans)=@_;
 
-#    print "AUT $autans\n";
+sub konv {
+    my ($content)=@_;
 
-    my $autdubidx=1;
-    my $autdubidn=0;
+    $content=~s/\&amp;/&/g; # zuerst etwaige &amp; auf & normieren 
+    $content=~s/\&/&amp;/g; # dann erst kann umgewandet werden (sonst &amp;amp;) 
+    $content=~s/>/&gt;/g;
+    $content=~s/</&lt;/g;
 
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-
-    while ($autdubidx <= $#autdubbuf){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;      
-        }
-        $autdubidx++;
-    }
-    if (!$autdubidn){
-        $autdubbuf[$autdubidx]=$autans;
-        $autdubidn=$autdubidx;
-    }
-
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-    
-#    print $autdubidn,"\n";
-    return $autdubidn;
+    return $content;
 }
-
-sub get_swtidn {
-    my ($swtans)=@_;
-
-#    print "SWT $swtans\n";
-    
-    my $swtdubidx=1;
-    my $swtdubidn=0;
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-    
-    while ($swtdubidx <= $#swtdubbuf){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;      
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdubidx]=$swtans;
-        $swtdubidn=$swtdubidx;
-    }
-#    print $swtdubidn,"\n";
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-#    print "-----\n";
-    return $swtdubidn;
-}
-
-sub get_koridn {
-    my ($korans)=@_;
-    
-    my $kordubidx=1;
-    my $kordubidn=0;
-    
-    while ($kordubidx <= $#kordubbuf){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;      
-        }
-        $kordubidx++;
-    }
-    if (!$kordubidn){
-        $kordubbuf[$kordubidx]=$korans;
-        $kordubidn=$kordubidx;
-    }
-    return $kordubidn;
-}
-
-sub get_notidn {
-    my ($notans)=@_;
-    
-    my $notdubidx=1;
-    my $notdubidn=0;
-    
-    while ($notdubidx <= $#notdubbuf){
-        if ($notans eq $notdubbuf[$notdubidx]){
-            $notdubidn=(-1)*$notdubidx;      
-        }
-        $notdubidx++;
-    }
-    if (!$notdubidn){
-        $notdubbuf[$notdubidx]=$notans;
-        $notdubidn=$notdubidx;
-    }
-    return $notdubidn;
-}
-

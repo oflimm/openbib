@@ -39,8 +39,8 @@
 <div class="content">
 
 <div class="boxedclear">
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
 <input type="hidden" name="do_editsubject" value="1" />
 <input type="hidden" name="type"           value="BK" />
@@ -93,8 +93,8 @@ selected="selected"
 
 <p/>
 <div class="boxedclear">
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
 <input type="hidden" name="do_editsubject" value="1" />
 <input type="hidden" name="type"           value="EZB" />
@@ -140,8 +140,8 @@ selected="selected"
 
 <p/>
 <div class="boxedclear">
-<form method="get" action="[% config.get('admin_loc') %]">
-<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
 <input type="hidden" name="do_editsubject" value="1" />
 <input type="hidden" name="type"           value="DBIS" />

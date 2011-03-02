@@ -1,0 +1,69 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_start
+#
+# Typ         : Mastertemplate (1/3)
+#
+# Aufgabe:
+#
+# Ausgabe des Anfangs der initialen Trefferliste
+#
+#######################################################################
+-%]
+[%- IF representation == 'html' -%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+[%- request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};dd=1;"  -%]
+<body>
+
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %].html?[% searchquery.to_cgi_params %];[% queryoptions.to_cgi_params({ exclude = ['l']}) %];l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %].rdf?[% searchquery.to_cgi_params %];[% queryoptions.to_cgi_params %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %].json?[% searchquery.to_cgi_params %];[% queryoptions.to_cgi_params %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+</div>
+[% END %]
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]?trefferliste=choice">[% msg.maketext("Trefferliste") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+[% IF fullresultcount > 0 %]
+  <div class="listoptions">
+<form method="get" action="[% path_prefix %]/[% config.get('handler').search_loc.name %]">
+<input type="hidden" name="page"      value="[% page %]" />
+<input type="hidden" name="st"        value="1" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"      value="1" />
+[% END %]
+
+<input type="hidden" name="num"   value="[% hitrange %]" />
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+
+[% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.get('search_loc') %]
+
+</form>
+  </div>
+[% END %]
+<p/>
+
+[% IF spelling_suggestion.resultlist %]
+[%    suggestion = searchquery.get_spelling_suggestion %]
+[%     IF suggestion%]
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% search_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;jn=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[%     END %]
+[% END %]
+
+[%- END -%]

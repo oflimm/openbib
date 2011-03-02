@@ -1,8 +1,8 @@
 <!-- Begin Template: corporate_banner -->
-	<div id="header">
-		<div id="header_logo"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=20" title="Startseite der Sammlung" id="header_logo_image"></a></div>
+	<div id="header2">
+		<div id="header_logo"><a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/20" title="Startseite der Sammlung" id="header_usb_siegel_small"></a></div>
 
-                <div id="header_right"><a href="http://www.ub.uni-koeln.de" title="Startseite der USB Köln" id="header_right_image" target="_blank"></a>
+                <div id="header_right"><a href="http://www.ub.uni-koeln.de" title="Startseite der USB Köln" id="header_uni_siegel_small" target="_blank"></a>
                 </div>
        </div>
 <!-- End Template: corporate_banner -->

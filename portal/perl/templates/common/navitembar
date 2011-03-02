@@ -12,7 +12,7 @@
 #
 #######################################################################
 -%]
-[% IF offset >= 0 && hitrange > 0 %]
+[% IF offset >= 0 && num > 0 %]
 <table>
 [%- FOREACH navitem IN nav ;
       IF navitem.active ;

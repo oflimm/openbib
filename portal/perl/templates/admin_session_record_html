@@ -1,0 +1,107 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editsession
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Meta-Informationen einer einzelnen Session, z.B.
+# die getaetigten Suchanfragen etc.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Bestehende Session bearbeiten' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="sessions" %] 
+
+<div class="content">
+
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+<input type="hidden" name="do_editsession" value="1" />
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Allgemeine Informationen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table cellpadding="3">
+<tr><td><b>[% msg.maketext("Session") %]</b></td><td>[% thissession.sessionid %]</td></tr>
+<tr><td><b>[% msg.maketext("Seit") %]</b></td><td>[% thissession.createtime %]</td></tr>
+<tr><td><b>[% msg.maketext("Anzahl Recherchen") %]</b></td><td>[% thissession.numqueries %]</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Recherchen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+[% IF queries.size > 0 %]
+<table cellpadding="3">
+<tr><td><b>[% msg.maketext("Recherche") %]</b></td><td><b>[% msg.maketext("Treffer") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td></tr>
+
+[% FOREACH query IN queries %]
+
+<tr><td>
+[%- IF query.searchquery.fs.val -%]
+&nbsp;FS: [% query.searchquery.fs.val %] 
+[%- END -%]
+[%- IF query.searchquery.verf.val -%]
+&nbsp;[% query.searchquery.verf.bool %]&nbsp;AUT: [% query.searchquery.verf.val %]
+[%- END -%]
+[%- IF query.searchquery.hst.val -%]
+&nbsp;[% query.searchquery.hst.bool %]&nbsp;HST: [% query.searchquery.hst.val %]
+[%- END -%]
+[%- IF query.searchquery.swt.val -%]
+&nbsp;[% query.searchquery.swt.bool %]&nbsp;SWT: [% query.searchquery.swt.val %]
+[%- END -%]
+[%- IF query.searchquery.kor.val -%]
+&nbsp;[% query.searchquery.kor.bool %]&nbsp;KOR: [% query.searchquery.kor.val %]
+[%- END -%]
+[%- IF query.searchquery.notation.val -%]
+&nbsp;[% query.searchquery.notation.bool %]&nbsp;NOT: [% query.searchquery.notation.val %] 
+[%- END -%]
+[%- IF query.searchquery.sign.val -%]
+&nbsp;[% query.searchquery.sign.bool %]&nbsp;SIG: [% query.searchquery.sign.val %]
+[%- END -%]
+[%- IF query.searchquery.ejahr.val -%]
+&nbsp;[% query.searchquery.ejahr.bool %]&nbsp;EJAHR: [% query.searchquery.ejahr.val %]
+[%- END -%]
+[%- IF query.searchquery.isbn.val -%]
+&nbsp;[% query.searchquery.isbn.bool %]&nbsp;ISBN: [% query.searchquery.isbn.val %]
+[%- END -%]
+[%- IF query.searchquery.issn.val -%]
+&nbsp;[% query.searchquery.issn.bool %]&nbsp;ISSN: [% query.searchquery.issn.val %]
+[%- END -%]
+[%- IF query.searchquery.mart.val -%]
+&nbsp;[% query.searchquery.mart.bool %]&nbsp;MART: [% query.searchquery.mart.val %]
+[%- END -%]
+[%- IF query.searchquery.hststring.val -%]
+&nbsp;[% query.searchquery.hststring.bool %]&nbsp;HSTR: [% query.searchquery.hststring.val %] 
+[%- END -%]
+</td><td align="center">[% query.hits %]</td><td>[% query.dbases %]</td></tr>
+
+[% END %]
+
+
+</table>
+[% ELSE %]
+[% msg.maketext("In dieser Session wurden bisher keine Rechercheanfragen gestellt") %]
+[% END %]
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

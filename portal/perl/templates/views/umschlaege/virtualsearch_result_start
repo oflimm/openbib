@@ -1,0 +1,63 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_start
+#
+# Typ         : Mastertemplate (1/3)
+#
+# Aufgabe:
+#
+# Ausgabe des Anfangs der initialen Trefferliste
+#
+# Anpassungen:
+# 
+# - Kategorietexte fuer die Sortierungsauswahl
+# - Entfernung der weiteren Suchhinweise
+# - Entfernung der Sortierungsoption 'pro Katalog'
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]?action=choice">[% msg.maketext("Trefferliste") %]</a></li>
+</ul>
+
+<div class="content">
+
+<FORM METHOD="GET" action="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]">
+<p>
+
+<p><form method="get" action="[% hostself %]">
+[%- FOREACH i IN queryargs -%]
+<input type="hidden" name="[% i.key %]" value="[% i.value %]">
+[%- END -%]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Optionen") %]</th></tr>
+<tr><td class="boxed">
+<b>[% msg.maketext("Sortierung") %]:<b>&nbsp;
+<select name="srt">
+  <option value="author"[%- IF query.param('srt') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Autor/Zusammenarbeit") %]</option>
+  <option value="title"[%- IF query.param('srt') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel/Z&auml;hlung") %]</option>
+  <option value="yearofpub"[%- IF query.param('srt') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Fert.Jahr") %]</option>
+  <option value="publisher"[%- IF query.param('srt') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
+  <option value="signature"[%- IF query.param('srt') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
+  <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+</select>&nbsp;
+<select name="srto">
+  <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+</select>
+&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" /></td></tr></table><p />
+</form>
+
+<table>

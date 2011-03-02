@@ -36,6 +36,7 @@ no warnings 'redefine';
 use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::Request ();
+use Apache2::RequestUtil;
 use Business::ISBN;
 use Benchmark;
 use DBI;
@@ -48,19 +49,41 @@ use OpenBib::Common::Util;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::Record::Person;
+use OpenBib::Record::Title;
 use OpenBib::Search::Util;
-use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config      = OpenBib::Config->instance;
 
     my $query  = Apache2::Request->new($r);
-    
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
+
 #     my $status=$query->parse;
     
 #     if ($status){
@@ -77,9 +100,8 @@ sub handler {
     my $id             = $query->param('id')              || '';
     my $content        = $query->param('content')         || '';
     my $isbn           = $query->param('isbn')            || '';
-    my $database       = $query->param('database')        || '';
+    my $database       = $query->param('db')        || '';
     my $format         = $query->param('format')          || 'ajax';
-    my $sessionID      = $query->param('sessionID')       || '';
 
     if (!$database || !$type){
         OpenBib::Common::Util::print_warning($msg->maketext("Fehler."),$r,$msg);
@@ -231,10 +253,12 @@ sub handler {
     
     
     my $ttdata = {
+        view            => $view,
+        record          => OpenBib::Record::Title->new,
         format          => $format,
+        queryoptions    => $queryoptions,
         similar_persons => $sorted_similar_persons_ref,
         database        => $database,
-        sessionID       => $sessionID,
         config          => $config,
         msg             => $msg,
     };

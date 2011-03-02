@@ -1,0 +1,132 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat_rss
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen der RSS-Feeds
+# eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="catalogues" %] 
+
+<div class="content">
+
+[%
+typedescription = {
+   '1' = msg.maketext("Neuaufnahmen (generell)")
+   '2' = msg.maketext("Neuaufnahmen nach Verfasser")
+   '3' = msg.maketext("Neuaufnahmen nach K&ouml;rperschaft") 
+   '4' = msg.maketext("Neuaufnahmen nach Schlagwort")
+   '5' = msg.maketext("Neuaufnahmen nach Systematik")
+};
+
+yesno = {
+   '0' = msg.maketext("Nein")
+   '1' = msg.maketext("Ja")
+};
+
+available_types = {
+ '1' = '1'
+ '2' = '2'
+ '3' = '3'
+ '4' = '4'
+ '5' = '5'
+};
+
+FOREACH feed IN katalog.rssfeeds ;
+ available_types.delete(feed.type) ;
+END ;
+%]
+
+<table width="100%">
+<tr><th>[% msg.maketext("RSS-Einstellungen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+[% IF available_types.size > 0 %]
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_database_loc.name %]/[% katalog.dbname %]/rss">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuen RSS-Feed einrichten") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table>
+<tr>
+<th>Art des Feeds</th><!-- <th>Unter-Art</th><th>Beschreibung Unter-Art</th> --><th>Aktiv</th>
+</tr>
+
+<tr>
+<td>
+<select name="rss_type">
+[% FOREACH type IN available_types.keys %]
+<option value="[% type%]">[% typedescription.${type} %]</option>
+[% END %]
+</select>
+</td>
+<!--
+<td><input type="text" /></td>
+<td><input type="text" /></td>
+-->
+<td>
+<select name="active">
+[% FOREACH choice IN ['0','1'] %]
+<option value="[% choice %]">[% yesno.${choice} %]</option>
+[% END %]
+</select>
+</td>
+<td>
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Neu") %]" />
+</td>
+</tr>
+
+</table>
+
+
+</td>
+</tr>
+</table>
+</form>
+[% END %]
+
+[%# USE dumper;dumper.dump(katalog)%]
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende RSS-Feeds") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table>
+<tr>
+<th>Art des Feeds</th><!-- <th>Unter-Art</th><th>Beschreibung Unter-Art</th> --><th>Aktiv</th>
+</tr>
+
+[% FOREACH feed IN katalog.rssfeeds %]
+<tr>
+<td>
+<a href="[% config.get('base_loc') %]/[% config.get('handler').admin_database_loc.name %]/[% katalog.dbname %]/rss/[% feed.id %]/edit">[% typedescription.${feed.type} %]</a>
+</td>
+<!-- <td>[% feed.subtype %]</td>
+<td>[% feed.subtypedesc %]</td>
+-->
+<td>[% yesno.${feed.active} %]</td>
+</tr>
+[% END %]
+</table>
+
+</td>
+</tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

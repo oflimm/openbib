@@ -67,25 +67,7 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$sourcepool;host=$config->
 
 print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs SCHM\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content rlike '^SCHM[0-9]' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
-
-$request->execute() or $logger->error($DBI::errstr);;
-
-while (my $result=$request->fetchrow_hashref()){
-  $titidns{$result->{'titid'}}=1;
-}
-
-my $count=0;
-
-foreach my $key (keys %titidns){
-    $count++;
-}
-
-print "### $pool: Gefundene Titel-ID's $count\n";
-
-print "### $pool: Bestimme Titel-ID's anhand der Notation '%Schmalenbach%'\n";
-
-$request=$dbh->prepare("select distinct conn.sourceid as titid from conn,notation where notation.category=1 and notation.content like '%Schmalenbach%' and conn.targetid=notation.id and conn.sourcetype=1 and conn.targettype=5") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content rlike '^SCHM' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

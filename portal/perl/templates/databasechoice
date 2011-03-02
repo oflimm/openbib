@@ -36,30 +36,32 @@ function update_fak(yourform, checked, fak) {
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('databasechoice_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').databasechoice_loc.name %]?">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div class="content">
 
 <p/>
 
-<form method="post" action="[% config.get('databasechoice_loc') %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="hitrange" value="-1" />
-<input type="hidden" name="view" value="[% view %]" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<form method="post" action="[% path_prefix %]/[% config.get('handler').databasechoice_loc.name %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="num" value="-1" />
+
+
 
 <table>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_choose" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
 </table>
 
+[%# USE dumper;dumper.dump(catdb)%]
+[%# USE dumper;dumper.dump(config.get_orgunits(profile)) %]
 <p />
 <table>
 <tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
 
-[%- FOREACH category = config.get('orgunits') -%]
+[%- FOREACH category = config.get_orgunits(profile) -%]
 [%- is_empty = 1 ;
     FOREACH db = catdb ;
-      IF db.category == category.short && db.db != '' ; 
+      IF db.category == category.description && db.db != '' ; 
         is_empty = 0 ;
       END ;
     END ;
@@ -69,16 +71,16 @@ function update_fak(yourform, checked, fak) {
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
 [%- END -%]
 
-<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.description %]</b></td></tr>
 
 [%- FOREACH db = catdb -%]
-[%- IF db.category == category.short -%]
+[%- IF db.category == category.description -%]
 [%- IF db.column == 1 -%]
-<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% db.db %];stid=60">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+<tr><td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- END -%]
 [%- IF db.column > 1 && db.column < maxcolumn -%]
 [%- IF db.db -%]
-<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% db.db %];stid=60">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]
@@ -88,7 +90,7 @@ function update_fak(yourform, checked, fak) {
 [%- IF db.column != 1 -%]
 
 [%- IF db.db -%]
-<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% db.db %];stid=60">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]
@@ -103,7 +105,7 @@ function update_fak(yourform, checked, fak) {
 </table>
 <p />
 <table>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_choose" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
 </table>
 </form>
 <p />

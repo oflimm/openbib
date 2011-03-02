@@ -1,6 +1,6 @@
--------------------------------------------------
---------------- T A B E L L E N -----------------
--------------------------------------------------
+/*-------------------------------------------------*/
+/*--------------- T A B E L L E N -----------------*/
+/*-------------------------------------------------*/
 
 drop table IF EXISTS session;
 CREATE TABLE session (
@@ -12,7 +12,9 @@ CREATE TABLE session (
  queryoptions  TEXT,
  returnurl     TEXT,
 
- bibsonomy_user TEXT,
+ searchmask     TEXT,
+
+bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
  bibsonomy_sync TEXT,
 
@@ -25,6 +27,7 @@ CREATE TABLE treffer (
  sessionid VARCHAR(255) NOT NULL,
  dbname    TEXT,
  singleidn VARCHAR(255),
+ titcache  BLOB,
 
  INDEX (sessionid),
  INDEX (dbname(255)),

@@ -1,43 +1,10 @@
-this.imagePreview = function(){
-  /* CONFIG */
-  
-  xOffset = 10;
-  yOffset = 30;
-  
-  // these 2 variable determine popup's distance from the cursor
-  // you might want to adjust to get the right result
-  
-  /* END CONFIG */
-  $("a.preview").hover(function(e){
-			 this.t = this.title;
-			 this.title = "";
-			 var c = (this.t != "") ? "<br/>" + this.t : "";
-			 $("body").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' />"+ c +"</p>"); 
-			 $("#preview")
-			   .css("top",(e.pageY - xOffset) + "px")
-			   .css("left",(e.pageX + yOffset) + "px")
-			   .fadeIn("fast");
-		       },
-		       function(){
-			 this.title = this.t;
-			 $("#preview").remove();
-		       });
-  $("a.preview").mousemove(function(e){
-			     $("#preview")
-			       .css("top",(e.pageY - xOffset) + "px")
-			       .css("left",(e.pageX + yOffset) + "px");
-			   });
-};
-
-
 $(document).ready(function(){
 
 var sessionID = $("meta[@name='sessionID']").attr("content");
 
 var Bibkey    = $("meta[@name='Bibkey']").attr("content");
 var Tags      = $("meta[@name='Tags']").attr("content");
-
-imagePreview();
+var View      = $("meta[@name='View']").attr("content");
 
 // Focus auf erstes Eingabefeld
 //$(":input:visible:enabled:first").focus();
@@ -47,7 +14,7 @@ $("input[@id='to_focus']").focus();
 $('#additional_title_info > ul').tabs();
 
 // Tabs fuer Suchmaske nach Formaten 
-$('#searchmask_types > ul').tabs();
+$('#searchform_types > ul').tabs();
 
 // Accordion fuer Datenbankauswahl
 $('.ui-accordion').accordion({ 
@@ -65,7 +32,7 @@ $('.nojs_show').css('display','none');
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
 // fest eingetragen und muss gegebenenfalls angepasst werden
  if (sessionID){
-$.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+$.get("/portal/"+View+"/collection/count",
 function (txt){
  $("#collectioncount").html("["+txt+"]"); 
 }
@@ -78,7 +45,7 @@ $(".rlcollect a").click(function(){
    $.get(this.href);
 
    // Merklistenfuellstand aktualisieren
-   $.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+   $.get("/portal/"+View+"/collection/count",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
    return false;
@@ -90,7 +57,7 @@ $("a.collection").click(function(){
    $.get(this.href);
 
    // Merklistenfuellstand aktualisieren
-   $.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+   $.get("/portal/"+View+"/collection/count",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
    return false;
@@ -101,7 +68,7 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
 // Begin BibSonomy Tags
  if (Bibkey || Tags){
-   $.get("/portal/bibsonomy?sessionID="+sessionID+";action=get_tags;format=ajax;bibkey="+Bibkey+";tags="+Tags,
+   $.get("/portal/"+View+"/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
          function (txt){
            $("#bibsonomy_tags").html(txt); 
          }

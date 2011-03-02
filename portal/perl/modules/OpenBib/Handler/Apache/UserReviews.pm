@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::UserReviews.pm
 #
-#  Copyright 2007-2009 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -56,25 +56,37 @@ use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config = OpenBib::Config->instance;
     
     my $query  = Apache2::Request->new($r);
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
+    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -85,9 +97,9 @@ sub handler {
     my $offset         = $query->param('offset')      || 0;
     my $hitrange       = $query->param('hitrange')    || 50;
     my $queryid        = $query->param('queryid')     || '';
-    my $database       = $query->param('database')    || '';
-    my $sorttype       = $query->param('sorttype')    || "author";
-    my $sortorder      = $query->param('sortorder')   || "up";
+    my $database       = $query->param('db')    || '';
+    my $sorttype       = $query->param('srt')    || "author";
+    my $sortorder      = $query->param('srto')   || "up";
     my $reviewid       = $query->param('reviewid')    || '';
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
@@ -124,15 +136,6 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
         return Apache2::Const::OK;
-    }
-    
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
@@ -196,7 +199,7 @@ sub handler {
             rating    => $rating,
         });
         
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
 
@@ -241,7 +244,7 @@ sub handler {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
 
     }
@@ -258,7 +261,7 @@ sub handler {
             loginname => $loginname,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{userreviews_loc}?sessionID=$session->{ID};do_show=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userreviews_loc}{name}?do_show=1");
         return Apache2::Const::OK;
 
     }

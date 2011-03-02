@@ -63,43 +63,48 @@ use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
 
+    my $view           = $self->param('view')           || '';
+    my $type           = $self->param('type')           || '';
+    my $subtype        = $self->param('subtype')        || '-1';
+
+    my ($database)     = $self->param('dispatch_url_remainder') =~/^(.+?)\.rdf/;
+    
     my $config = OpenBib::Config->instance;
     
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
-
     my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    # Basisipfad entfernen
-    my $basepath = $config->{connector_rss_loc};
-    $path=~s/$basepath//;
-
-    # RSS-Feedparameter aus URI bestimmen
-    #
-    # 
-
-    my ($type,$subtype,$database);
-    if ($path=~m/^\/(\w+?)\/(\w+?).rdf$/){
-        ($type,$subtype,$database)=($1,"-1",$2);
-    }
-    elsif ($path=~m/^\/(\w+?)\/(\w+?)\/(\w+?).rdf$/){
-        ($type,$subtype,$database)=($1,$2,$3);
-    }
 
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
-    my $session     = OpenBib::Session->instance;
+    my $session     = OpenBib::Session->instance({apreq => $r});
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     # Check
@@ -129,7 +134,7 @@ sub handler {
     });
     
     if (! $rss_content ){
-        my $bestserver=OpenBib::Common::Util::get_loadbalanced_servername();
+        my $bestserver='localhost';#OpenBib::Common::Util::get_loadbalanced_servername();
 
         $logger->debug("Getting RSS-Data from Server $bestserver");
         
@@ -190,7 +195,7 @@ sub handler {
         
         $rss->channel(
             title         => "$dbdesc: ".$rssfeedinfo_ref->{$type}{channel_title},
-            link          => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database",
+            link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{handler}{loadbalancer_loc}{name},            
             language      => "de",
             description   => $rssfeedinfo_ref->{$type}{channel_desc},
         );
@@ -278,7 +283,7 @@ sub handler {
 
             $rss->add_item(
                 title       => $title,
-                link        => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database;database=$database;searchsingletit=".$record->{id},
+                link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{handler}{resource_title_loc}{name}."/$database/".$record->{id}.".html",
                 description => $desc
             );
         }
@@ -297,6 +302,8 @@ sub handler {
     else {
         $logger->debug("Verwende Eintrag aus RSS-Cache");
     }
+
+    #$self->header_props(-type => 'application/xml');
     #print $r->content_type("application/rdf+xml");
     $r->content_type("application/xml");
 
@@ -308,6 +315,7 @@ sub handler {
         content   => "$database:$type:$subtype",
     });
 
+#    return $rss_content;
     return Apache2::Const::OK;
 }
 

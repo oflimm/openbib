@@ -74,7 +74,7 @@ foreach $database (@databases){
   my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
 
   # Titel bestimmen;
-  $idnresult=$dbh->prepare("select count(*) as rowcount from search") or die "Error -- $DBI::errstr";
+  $idnresult=$dbh->prepare("select count(*) as rowcount from title_listitem") or die "Error -- $DBI::errstr";
   $idnresult->execute();
 
   my $result=$idnresult->fetchrow_hashref;
@@ -82,7 +82,7 @@ foreach $database (@databases){
   $maxidns=$result->{rowcount};
 
   # Serien/Zeitschriften bestimmen
-  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from tit where category=800 and content = 'Zeitschrift/Serie'") or die "Error -- $DBI::errstr";
+  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'") or die "Error -- $DBI::errstr";
   $idnresult->execute();
 
   my $result=$idnresult->fetchrow_hashref;
@@ -90,19 +90,27 @@ foreach $database (@databases){
   $maxidns_journals=$result->{rowcount};
 
   # Aufsaetze bestimmen
-  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from tit where category=800 and content = 'Aufsatz'") or die "Error -- $DBI::errstr";
+  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'") or die "Error -- $DBI::errstr";
   $idnresult->execute();
 
   my $result=$idnresult->fetchrow_hashref;
   
   $maxidns_articles=$result->{rowcount};
 
+  # E-Median bestimmen
+  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from title where category=800 and content = 'E-Medien mit Online-Zugriff'") or die "Error -- $DBI::errstr";
+  $idnresult->execute();
+
+  my $result=$idnresult->fetchrow_hashref;
+  
+  $maxidns_online=$result->{rowcount};
   
   $idnresult->finish();
 
   $allidns          = $allidns+$maxidns;
   $allidns_journals = $allidns_journals+$maxidns_journals;
   $allidns_articles = $allidns_articles+$maxidns_articles;
+  $allidns_online   = $allidns_online+$maxidns_online;
 
   $idnresult=$configdbh->prepare("delete from titcount where dbname=?") or die "Error -- $DBI::errstr";
 
@@ -112,8 +120,9 @@ foreach $database (@databases){
   $idnresult->execute($database,$maxidns,1);
   $idnresult->execute($database,$maxidns_journals,2);
   $idnresult->execute($database,$maxidns_articles,3);
+  $idnresult->execute($database,$maxidns_online,4);
   
-  print "$database -> $maxidns / $maxidns_journals / $maxidns_articles\n";
+  print "$database -> $maxidns / $maxidns_journals / $maxidns_articles / $maxidns_online\n";
   $idnresult->finish();
   $dbh->disconnect();
   
@@ -129,6 +138,7 @@ if ($database eq ""){
   $idnresult->execute($allidns,1);
   $idnresult->execute($allidns_journals,2);
   $idnresult->execute($allidns_articles,3);
+  $idnresult->execute($allidns_online,4);
 }
 
 $configdbh->disconnect();

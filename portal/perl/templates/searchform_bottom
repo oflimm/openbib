@@ -1,0 +1,38 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+<div id="searchform_bottom"><!-- Begin searchform_bottom -->
+
+[% IF config.get('bix') %]
+<!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+[% END %]
+
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr valign="top">
+
+<td class="newsflash"><!-- Begin bottom_left -->
+[% PROCESS common/subtemplate name="searchform_bottom_left" %]
+</td><!-- End bottom_left -->
+
+<td class="overview"><!-- Begin overview-->
+[% PROCESS common/subtemplate name="searchform_bottom_center" %]
+</td><!-- End overview -->
+
+<td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
+[% PROCESS common/subtemplate name="searchform_bottom_right" %]
+</td><!-- End Literaturlisten/Tags -->
+
+</tr>
+</table>
+</div><!-- End searchform_bottom -->

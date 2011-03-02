@@ -1,0 +1,105 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+      funcargs = { id => database, type => 3 } ;
+      resultlist = statistics.get_result(funcargs);
+%]
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/subject/[% database %].html?l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+<!-- <a href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/subject/[% database %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
+<a href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/subject/[% database %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+</div>
+[% END %]
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %].html" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/subject/[% database %].html" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+
+[% PROCESS common/subtemplate name="clouds_navigation" active=14 %] 
+
+<div class="content">
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Wolke der häufigsten Begriffe") %]</th></tr>
+<tr><td class="boxedclear">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.size > 5 -%]
+[%- searchprefix  = config.get('searchfield').subjectstring.prefix -%]
+
+<ol class="cloud">
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?page=1;[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];fs=[% searchprefix %]:|[% item %]|;db=[% database %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe diese Kategorie anbieten.") %]
+[% END %]
+</td></tr>
+</table>
+<p />
+
+</div>
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

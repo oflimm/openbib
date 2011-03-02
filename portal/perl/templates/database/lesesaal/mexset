@@ -5,7 +5,11 @@
 [% listrow = 'listrow1' %]
 [% FOREACH mex IN mexnormset %]
 <tr class="[% listrow %]" align="center"><td><strong>
-USB K&ouml;n
+[%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
+<a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>
+[%- ELSE -%]
+[% mex.${"X4000"}.content.full %]
+[%- END -%]
 </strong>
 </td><td>
 [% IF mex.${"X0014"}.content.match('^FHM ') %]USB-Freihandmagazin (1. OG) (<i>sofort einsehbar</i>)

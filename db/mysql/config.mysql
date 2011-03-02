@@ -1,10 +1,11 @@
--------------------------------------------------
---------------- T A B E L L E N -----------------
--------------------------------------------------
+/*-------------------------------------------------*/
+/*--------------- T A B E L L E N -----------------*/
+/*-------------------------------------------------*/
 
-drop table IF EXISTS dbinfo;
-CREATE TABLE dbinfo (
- orgunit     VARCHAR(20),
+drop table IF EXISTS databaseinfo;
+CREATE TABLE databaseinfo (
+
+/* Generel Information */
  description TEXT,
  shortdesc   TEXT,
  system      TEXT, 
@@ -14,36 +15,28 @@ CREATE TABLE dbinfo (
  use_libinfo BOOL,
  active      BOOL,
 
- INDEX (orgunit),
- INDEX (dbname),
- INDEX (active),
- INDEX (description(255))
-)
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
-;
+/* Import Configuration */
+ protocol           VARCHAR(255),
+ host               VARCHAR(255),
+ remotepath         TEXT,
+ remoteuser         VARCHAR(255),
+ remotepassword     VARCHAR(255),
+ titlefile          VARCHAR(255),
+ personfile         VARCHAR(255),
+ corporatebodyfile  VARCHAR(255),
+ subjectfile        VARCHAR(255),
+ classificationfile VARCHAR(255),
+ holdingsfile       VARCHAR(255),
 
-drop table IF EXISTS dboptions;
-CREATE TABLE dboptions (
- dbname       VARCHAR(255),
- host         VARCHAR(255),
- protocol     VARCHAR(255),
- remotepath   TEXT,
- remoteuser   VARCHAR(255),
- remotepasswd VARCHAR(255),
- filename     VARCHAR(255),
- titfilename  VARCHAR(255),
- autfilename  VARCHAR(255),
- korfilename  VARCHAR(255),
- swtfilename  VARCHAR(255),
- notfilename  VARCHAR(255),
- mexfilename  VARCHAR(255),
  autoconvert  BOOL,
  circ         BOOL,
  circurl      TEXT,
- circcheckurl TEXT,
+ circwsurl    TEXT,
  circdb       TEXT,
- INDEX(dbname)
+
+ INDEX (dbname),
+ INDEX (active),
+ INDEX (description(255))
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
@@ -89,11 +82,29 @@ COLLATE utf8_general_ci
 
 drop table IF EXISTS profiledbs;
 CREATE TABLE profiledbs (
- profilename VARCHAR(20),
- dbname      VARCHAR(255),
+ profilename VARCHAR(20) NOT NULL,
+ orgunitname VARCHAR(20),
+ dbname      VARCHAR(255) NOT NULL,
 
  INDEX(profilename),
+ INDEX(profilename,orgunitname),
  INDEX(dbname)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS orgunitinfo;
+drop table IF EXISTS orgunitinfo;
+CREATE TABLE orgunitinfo (
+ orgunitname VARCHAR(20) NOT NULL,
+ profilename VARCHAR(20) NOT NULL,
+ description TEXT,
+ nr          INT,
+
+ INDEX (orgunitname),
+ INDEX (nr),
+ INDEX (profilename)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci

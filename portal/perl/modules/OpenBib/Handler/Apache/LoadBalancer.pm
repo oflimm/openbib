@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::Request ();
 use Apache2::RequestRec ();
@@ -49,27 +49,36 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
-use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config = OpenBib::Config->instance;
     
     my $query  = Apache2::Request->new($r);
-
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => -1,
-    });
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
@@ -100,10 +109,8 @@ sub handler {
         return Apache2::Const::OK;
     }
 
-    $r->content_type('text/html');
-    $r->headers_out->add("Location" => "http://$bestserver$config->{startopac_loc}?$urlquery");
-
-    return Apache2::Const::REDIRECT;
+    $self->header_type('redirect');
+    $self->header_props(-type => 'text/html', -url => "http://$bestserver$config->{base_loc}/$view/$config->{handler}{startopac_loc}{name}?$urlquery");
 }
 
 1;

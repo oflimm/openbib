@@ -58,11 +58,31 @@ use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
 
     my $config  = OpenBib::Config->instance;
 
@@ -115,29 +135,6 @@ sub handler {
                 foreach my $content (@{$result_ref->{E4200}}){
                     my $uri = URI->new( "http://de.wikipedia.org/wiki/$content" )->canonical;
                     $response->add($content,"Artikel in deutscher Wikipedia","$uri");
-                    $logger->debug("Added $content");
-                }
-
-                return $response;
-            }
-        },
-        'isbn2paperc' => {
-            'description' => 'Available Title in PaperC for a given ISBN',
-            'query_proc'  => sub {
-                my $identifier = shift;
-
-                my $logger = get_logger();
-
-                my $response = SeeAlso::Response->new($identifier);
-
-                my $enrichmnt = new OpenBib::Enrichment;
-
-                my $result_ref = $enrichmnt->get_additional_normdata({isbn => $identifier});
-
-                # PaperC
-                foreach my $content (@{$result_ref->{E4122}}){
-                    my $uri = URI->new( "$content" )->canonical;
-                    $response->add($content,"Title in PaperC","$uri");
                     $logger->debug("Added $content");
                 }
 

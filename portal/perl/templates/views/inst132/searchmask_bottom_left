@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: searchmask_bottom_left
+# Templatename: searchform_bottom_left
 #
 # Typ         : Subtemplate
 #
@@ -57,7 +57,7 @@ FOREACH category IN categories;
 END ;-%]
 </table>
 [%-   IF dbinfo.get('use_libinfo').${viewdbs.first} %]
-[<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% viewdbs.first %];stid=60">
+[<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/60?id=[% viewdbs.first %]">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]

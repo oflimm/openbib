@@ -1,0 +1,72 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_mail
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Merkliste mit einer Eingabemaske fuer die
+# E-Mail-Adresse, an die die Merkliste verschickt werden
+# soll
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "collection" %] 
+
+<div id="maincontent">
+
+      <ul class="tabbingmenu">
+	<li><a class="active" href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]?action=mail;type=[% type%]">[% msg.maketext("Titel/Merkliste via Mail verschicken") %]</a></li>
+      </ul>
+      
+      <div class="content">
+	
+<form method="post" action="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/mail" enctype="application/x-www-form-urlencoded">
+
+<input type="hidden" name="type"      value="[% type %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Ihre Eingabe") %]</th></tr>
+<tr><td class="boxed">
+<table>
+<tr><td class="category">[% msg.maketext("Ihre Mailadresse") %]</td><td><input type="text" name="email" value="[% loginname %]" size="30" maxlength="200" /></td></tr>
+<tr><td class="category">[% msg.maketext("Betreff") %]</td><td><input type="text" name="subject" value="" size="30" maxlength="200" /></td></tr>
+</table>
+<p />
+<input type="submit" name="mail" value="[% msg.maketext("Abschicken") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Felder leeren") %]" />
+</td></tr>
+</table>
+<p />
+
+[% IF singleidn %]
+<input type="hidden" name="singleidn" value="[% singleidn %]" />
+[% END %]
+[% IF database %]
+<input type="hidden" name="db" value="[% database %]" />
+[% END %]	
+
+</form>
+
+	  <p />
+[% IF type == 'HTML' %]
+[%   PROCESS common/subtemplate name="managecollection_tit_as_html_simple" %]
+[% ELSIF type == 'Text' %]
+[%   PROCESS common/subtemplate name="managecollection_tit_as_text" %]
+[% ELSIF type == 'BibTeX' %]
+[%   PROCESS common/subtemplate name="managecollection_tit_as_bibtex" %]
+[% ELSIF type == 'EndNote' %]
+[%   PROCESS common/subtemplate name="managecollection_tit_as_endnote" %]
+[% END %]
+
+      </div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

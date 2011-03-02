@@ -1,0 +1,92 @@
+  [%#-
+#######################################################################
+#
+# Templatename: info_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/[% stid %]?id=[% id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+<table cellpadding="10">
+
+<tr>
+
+<td style="vertical-align:top;padding:40px;"> <center> <img src="/images/openbib/views/kempis/startseitekempis.jpg"
+alt="Wallraf" /><br /><br /><i
+style="font-size:0.8em">Thomas von Kempen beim Kloster Agnetenberg
+(Gemälde eines unbekannten Künstlers von 1569)<br/></center>
+</td>
+
+<td valign="top" style="padding-top:25px;">
+
+<h1>Die Thomas a Kempis-Sammlung in der Universit&auml;ts-
+und Stadtbibliothek K&ouml;ln </h1>
+
+Den Grundstock zur Thomas a Kempis-Sammlung bildete die Sammlung des
+Freiherrn Ludwig von Büllingen (1771-1848), der seine Ausgaben der
+Imitatio Christi (412 Titel) samt der dazugehörenden Sekundärliteratur testamentarisch
+dem "Wallrafschen Museum" vermachte. 1848 nahm die Stadt Köln dieses 
+Vermächtnis an. Als Teil der ehemaligen Stadtbibliothek befindet sich
+die Sammlung heute in der USB Köln. Sie steht geschlossen unter der
+Signaturengruppe MKVI und wird weiterhin um Bestände zu Thomas a
+Kempis ergänzt.  <p>
+
+</p>
+
+<h1>Thomas Hemerken von Kempen </h1>
+
+<p>
+Thomas von Kempen (lat. Thomas a Kempis) lebte seit 1399 als
+Regularkanoniker auf dem Agnetenberg bei Zwolle. Er verfasste
+zahlreiche religiöse Schriften in lateinischer Sprache, darunter das
+weltberühmte Erbauungsbuch "De imitatione Christi", eines der am
+meisten verbreiteten Bücher des ausgehenden Mittelalters.
+[<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/21">Weitere Informationen</a>]
+</p>
+
+<p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
+Lesesaal.
+</p>
+
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]?&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

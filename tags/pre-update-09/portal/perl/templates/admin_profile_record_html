@@ -1,0 +1,59 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Profiles
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog-Profil bearbeiten' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="profiles" %] 
+
+<div class="content">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Katalog-Profil") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
+
+<tr><td><span style="color:blue">[% profile.profilename %]</span></td><td>[% profile.description %]</td>
+</td></tr>
+</table>
+</tr>
+</table>
+</form>
+<p />
+
+[% orgunits = config.get_orgunits(profile.profilename) %]
+[% IF orgunits.size > 0 %]
+
+<table width="100%">
+<tr><th>Bereits existierende Organisationseinheiten</th></tr>
+<tr><td class="boxedclear">
+<table>
+<tr><td><b>Name</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>Kataloge</b></td><td></td></tr>
+[% FOREACH thisorgunit IN orgunits %]
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('handler').admin_profile_loc.name %]/[% profile.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% thisorgunit.dbnames.join(',') %]</td></tr>
+[% END %]
+</table>
+</td></tr>
+</table>
+[% END %]
+
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

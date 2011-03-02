@@ -1,0 +1,50 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_start
+#
+# Typ         : Mastertemplate (1/3)
+#
+# Aufgabe:
+#
+# Ausgabe des Anfangs der initialen Trefferliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]?trefferliste=choice">[% msg.maketext("Trefferliste") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<p />
+<form method="get" action="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]">
+<input type="hidden" name="offset"     value="[% query.param('offset') %]" />
+<input type="hidden" name="num"   value="[% query.param('num') %]" />
+<input type="hidden" name="action"     value="showall" />
+
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+
+[% PROCESS common/subtemplate name="titlist_options" show_sortall=1 this_loc=config.get('virtualsearch_loc') %]
+
+</form>
+
+<p/>
+
+[% suggestion = sq.get_spelling_suggestion %]
+[% IF spelling_suggestion.resultlist && suggestion  %]
+[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;jn=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% END %]
+

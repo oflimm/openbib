@@ -1,0 +1,156 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_22
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div class="content">
+
+<p />
+
+<p />
+<h2>Ausf&uuml;hrliche Erl&auml;uterungen zur Datenerfassung
+und den Suchmöglichkeiten</h2>
+
+<table>
+
+</td>
+<td>
+
+<dl>
+
+<dt>1. Kurztitel der Inschrift</dt>
+
+<dd>
+Hier ist in der Regel die &Uuml;berschrift aus der Edition der
+IK-Reihe oder in den Epigraphica Anatolica &uuml;bernommen, so dass
+durch die Eingabe des dort angegebenen Titels in das Suchfeld das
+Vorhandensein eines Abklatsches in K&ouml;ln &uuml;berpr&uuml;ft
+werden kann.
+</dd>
+
+<dt>2. Ort der Inschrift</dt>
+
+<dd>
+Hier ist die Polis bzw. antike Ortschaft erfasst, in der die auf dem
+Abklatsch dokumentierte Inschrift urspr&uuml;nglich aufgestellt war,
+z.B. Ephesos, Knidos, Oinoanda. Zugang auch über  <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0200">Register</a>
+</dd>
+
+<dt>3. Kategorie</dt>
+
+<dd>
+Die Zuordnung zu den Inschriftengattungen ist m&ouml;glichst
+entsprechend den K&ouml;lner Editions-Reihen IK und EA
+&uuml;bernommen. Eine eventuelle Suche erfolgt am sichersten &uuml;ber
+das  <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0710">Register</a> </dd>
+
+<dt>4. Edition / SEG-Eintrag</dt>
+
+<dd>
+Die Edition der auf dem Abklatsch befindlichen Inschrift ist in der
+Regel nach der IK-Reihe oder den Epigraphica Anatolica vermerkt, nach
+den Mustern "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p.3-5, Nr. 496",
+"SGO 01/15/04". Außerdem ist in der Regel der letzte Eintrag im
+Supplementum Epigraphicum Graecum erfa&szlig;t, in welchem die auf dem
+Abklatsch befindliche Inschrift editiert ist, nach dem Muster "SEG
+39, 1989, Nr. 1132". Zur gezielten Suche ist entweder das <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0335">Register</a> zu
+verwenden oder der genaue Suchstring nach obigem Beispiel
+einzugeben. Das Feld erm&ouml;glicht au&erdem eine freie Suche.
+</dd>
+
+<dt>5. Inventarnummer</dt>
+
+<dd> Dieses Feld enth&auml;lt die interne Signatur des Abklatsches und ist
+deshalb zur externen Recherche mit Ausnahme der philosophischen
+Inschriften aus Oinoanda nicht geeignet. Die Abklatsche der
+Diogenes-Fragmente aus Oinoanda sind in der Weise inventarisiert, da&szlig;
+die Inventarnummer der YF-Nummer im Bereich 1000-1400 entspricht,
+z.B. YF 46 = Inventarnr. 1046. Spezielle Erweiterungen hinter der
+Inventarnummer haben besondere Bedeutung: "Dubl." hinter derselben
+Inventarnr. bedeutet, da&szlig; mehrere identische Abklatsche ein und
+desselben Steins vorliegen. "A/B/C..." hinter derselben
+Inventarnr. kennzeichnet verschiedene bzw. sich erg&auml;nzende Abklatsche
+ein und desselben Steins. "a/b/c..." hinter derselben
+Inventarnr. dient der Unterscheidung mehrerer verschiedener
+Inschriften, die sich auf ein und demselben Abklatsch befinden. "?" 
+hinter einer Inventarnr. markiert den Abklatsch als in der
+Erfassungsphase noch nicht identifiziert bzw. unpubliziert.
+</dd>
+
+<dt>6. Datierung der Inschrift</dt>
+
+<dd> Zur Orientierung und speziellen Suche ist das <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0425">Register</a>
+anzusteuern. Das Datierungsschema ist entsprechend den Vorgaben in den
+Editionen nicht einheitlich formalisiert; neben "Kaiserzeit" existiert
+z.B. auch "2. Jh. n., 2. H&auml;lfte". &Uuml;ber die "Freie Suche"  k&ouml;nnen
+z.B. mit den Suchstring "2. Jh. v." alle Datens&auml;tze, die diese
+Grobdatierung enthalten, aufgefunden werden.
+</dd>
+
+<dt>7. Aufbewahrungsort der Inschrift</dt>
+
+<dd> Hier ist, soweit aus den Angaben der Edition ersichtlich, der zur
+Zeit der Publikation aktuelle Aufbewahrungsort der Inschrift, die der
+Abklatsch dokumentiert, vermerkt. Das Feld ist nicht in die "Freie
+Suche" integriert und ausschlie&szlig;lich &uuml;ber das <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0410">Register</a> suchbar
+</dd>
+
+<dt>8. Angaben auf dem Abklatsch (nicht &ouml;ffentlich)</dt>
+
+<dd>
+In diesem Feld sind alle Angaben aufgenommen, die auf den
+Abklatschen selbst vermerkt wurden. Diese sind uneinheitlich und
+disparat, so dass eine Ver&ouml;ffentlichung nicht sinnvoll ist. In vielen
+F&auml;llen sind allerdings den Vermerken wichtige Informationen zu
+entnehmen, wie z.B. Datum der Anfertigung des Abklatsches und damit
+Erhaltungszustand der jeweiligen Inschrift zum Zeitpunkt der
+Dokumentation, Aufbewahrungsort und Inventarnummer der dokumentierten
+Inschrift, u.&auml;.  Solche Informationen k&ouml;nnen im Bedarfsfall
+individuell erfragt werden.  </dd>
+
+
+<dt>9. Charakteristika und Besonderheiten der Machart bzw. Schrift
+(nicht &ouml;ffentlich)</dt>
+
+<dd>
+Dieses Feld dient der internen Nutzung der Datenbank zur Erfassung und
+Auffindung technisch signifikanter Inschriften für die epigraphische Lehre.
+</dd>
+
+
+
+</dl>
+
+</td>
+</tr>
+</table>
+
+
+</center>
+<p />
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

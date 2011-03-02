@@ -1,0 +1,15 @@
+<input type="hidden" name="num" value="50" />
+<input type="hidden" name="srt" value="author" />
+<input type="hidden" name="srto" value="up" />
+
+<table>
+<tr><td class="category">Suchprofil</td><td colspan="3"><select name="profil">
+[%- IF dbchoice.size > 0 -%]
+<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option><option value=""></option></td></tr>
+</table>

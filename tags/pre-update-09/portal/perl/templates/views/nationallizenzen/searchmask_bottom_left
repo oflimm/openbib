@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="newsflash" %]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Information") %]" />&nbsp;Finanziert von:</h3>
+<center><a href="http://www.dfg.de/" target="_blank" title="Finanziert von der DFG"><img src="/images/openbib/dfg.gif" border="0" /></a></center>
+

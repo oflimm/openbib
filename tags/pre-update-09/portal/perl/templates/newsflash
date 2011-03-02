@@ -1,0 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: newsflash
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe aktueller Meldungen und Hinweise
+#
+#######################################################################
+-%]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
+
+<ul>
+<li><b>30.10.2010</b>: Hintergrundinformationen zum Einsatz von OpenBib als K&ouml;lner Universit&auml;tsGesamtkatalog KUG wurden in einem eigenen Beitrag im "Handbuch Bibliothek 2.0" zusammengefasst und k&ouml;nnen mit weiteren Beitr&auml;gen zu aktuellen Entwicklungen im Themenbereich "Nutzerzentrierung in Bibliotheken" (Suchmaschinen, E-Learning, Games, ...) in diesem als Open Access ver&ouml;ffentlichten Buch kostenlos gelesen werden (<a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103.293" target="_blank">OpenBib-Beitrag</a> oder <a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103" target="_blank">gesamtes Buch</a> im PDF-Format). </li>
+<li><b>2.3.2010</b>: &Uuml;ber die Anzeige der Verf&uuml;gbarkeit im
+Online-Dienst PaperC k&ouml;nnen nun viele Lehrb&uuml;cher kostenlos
+aus dem Web-Browser heraus gelesen werden (weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2010/03/02/paperc-im-kug/"
+target="_blank">Blog-Artikel</a>).</li>
+</ul>

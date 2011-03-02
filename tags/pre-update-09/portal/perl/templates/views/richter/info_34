@@ -1,0 +1,111 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_34
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/30">Die B&uuml;cherlisten</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/31">Arbeitsablauf / Aktuelles</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/32">Publikationen</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/34">Internetquellen</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/33">Ansprechpartner</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<table width="100%">
+<tr><th>Elise und Helene Richter im Internet</th></tr>
+<tr><td class="boxed">
+<dl>
+
+<dt>Galerie der Frauen in der Romanistik. Ein Portal des Instituts
+f&uuml;r Romanische Philologie der Philipps-Universit&auml;t Marburg.
+Elise Richter: Leben und Schaffen, Bibliographie, Nachrufe,
+W&uuml;rdigungen und Festschriften, Dokumente, Erg&auml;nzungen,
+Lehrer und F&ouml;rderer</dt>
+
+<dd><a href="http://www.romanistinnen.de/frauen/richter.html" target="_blank">http://www.romanistinnen.de/frauen/richter.html</a></dd>
+
+<dt><i>Wo ist Elise Richter, wo ist ... ?</i>
+Elise Richter - Ein kleiner biografischer Essay zu Ehren einer gro&szlig;en Wissenschafterin</dt>
+<dd><a href="http://www.eliserichter.at/" target="_blank">http://www.eliserichter.at/</a></dd>
+
+<dt>Elise und Helene Richter - Weblog.  Elise und Helene Richter:
+Wissenschaftlerinnen, J&uuml;dinnen, Wienerinnen </dt>
+
+<dd><a href="http://richter.twoday.net/" target="_blank">http://richter.twoday.net/</a></dd>
+
+<dt>Ariadne: eine Serviceeinrichtung der &Ouml;sterreichischen
+Nationalbibliothek Elise Richter - Leben und Werdegang </dt>
+
+<dd><a href="http://www2.onb.ac.at/ariadne/vfb/bio_richterelise.htm"
+target="_blank">http://www2.onb.ac.at/ariadne/vfb/bio_richterelise.htm</a></dd>
+
+<dt>Ariadne: "Frauen-in-Bewegung-Projekt" - Elise Richter </dt>
+
+<dd><a href="http://www.fraueninbewegung.onb.ac.at/Pages/PersonDetail.aspx?p_iPersonenID=8675349"
+target="_blank">"http://www.fraueninbewegung.onb.ac.at/Pages/PersonDetail.aspx?p_iPersonenID=8675349</a></dd>
+
+<dt>Ariadne: "Frauen-in-Bewegung-Projekt" - Helene Richter </dt>
+
+<dd><a href="http://www.fraueninbewegung.onb.ac.at/Pages/PersonDetail.aspx?p_iPersonenID=8675350"
+target="_blank">"http://www.fraueninbewegung.onb.ac.at/Pages/PersonDetail.aspx?p_iPersonenID=8675350</a></dd>
+
+<dt>Wienbibliothek im Rathaus: Nachlass Elise und Helene Richter</dt>
+
+<dd><a
+href="http://www.wienbibliothek.at/bestaende-und-sammlungen/nachlassverzeichnisse/handschriftensammlung/"
+target="_blank">http://www.wienbibliothek.at/bestaende-und-sammlungen/nachlassverzeichnisse/handschriftensammlung/
+</a></dd>
+
+<dt>Universit&auml;t Wien - Internationaler Frauentag 2004 (4): Das
+Netzwerk der Richter-Schwestern </dt>
+
+<dd><a
+href="http://www.dieuniversitaet-online.at/dossiers/beitrag/news/internationaler-frauentag-2004-4-das-netzwerk-der-richter-schwestern/79.html#
+"
+target="_blank">http://www.dieuniversitaet-online.at/dossiers/beitrag/news/internationaler-frauentag-2004-4-das-netzwerk-der-richter-schwestern/79.html#
+</a></dd>
+
+<dt>D&Ouml;W- Dokumentationsarchiv des &ouml;sterreichischen
+Widerstandes. Namentliche Erfassung der &ouml;sterreichischen
+Holocaustopfer </dt>
+
+<dd><a href="http://www.doew.at/cgi-bin/shoah/shoah.pl "
+target="_blank">http://www.doew.at/cgi-bin/shoah/shoah.pl </a></dd>
+
+<dt>Yad Vashem. The Holocaust Martyrs' and Heroes' Remembrance
+Authority </dt>
+
+<dd><a href="http://names.yadvashem.org/"
+target="_blank">http://names.yadvashem.org/</a></dd>
+
+</dl>
+
+
+</td></tr>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

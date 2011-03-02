@@ -1,0 +1,53 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+  thisbk     = query.param("category");
+  bks        = config.load_bk;
+  thisbklist = statistics.get_result({id => view, type => 11, subkey => thisbk }); 
+%]
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/52?category=[% thisbk %]">[% thisbk %] / [% bks.${thisbk.chunk(2).first} %] / [% bks.${thisbk} %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+[%# USE dumper;dumper.dump(thisbklist)%]
+
+<table>
+[% FOREACH bkinfo IN thisbklist %]
+[%   thisdb    = bkinfo.key %]
+[%   thiscount = bkinfo.value %]
+<tr><td><a href="[% path_prefix %]/[% config.get('handler').browse_loc.name %]?database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;num=50">[% dbinfo.get('dbnames').${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Titel</td></tr>
+[% END %]
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,79 @@
+[% IF user.is_authenticated %]
+[% autocompletion_type = user.get_autocompletion %]
+[% livesearch = user.get_livesearch %]
+[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+[%   IF showfs %]
+  $("#autocomplete_fs").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+[%   END %]
+[%   IF showverf %]
+  $("#autocomplete_verf").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+[%   END %]
+[%   IF showswt %]
+  $("#autocomplete_swt").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+[%   END %]
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<script type="text/javascript">
+$(document).ready(function(){
+[%   IF showfs %]
+  $("#autocomplete_fs").autocomplete("[% path_prefix %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+[%   END %]
+[%   IF showverf %]
+  $("#autocomplete_verf").autocomplete("[% path_prefix %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]",
+                  type: "2" }});
+[%   END %]
+[%   IF showswt %]
+  $("#autocomplete_swt").autocomplete("[% path_prefix %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  type: "4" }});
+[%   END %]
+})
+</script>
+[%   END %]
+[% END %]
+
+<table>
+<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input id="autocomplete_fs" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+
+<tr><td class="category">[% msg.maketext("T0331-inst404abklatsch") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+
+<tr><td class="category">[% msg.maketext("T0200-inst404abklatsch") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+
+<tr><td class="category">[% msg.maketext("T0710-inst404abklatsch") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input id="autocomplete_swt" type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+
+<tr><td class="category">[% msg.maketext("T0335-inst404abklatsch") %] / SEG-Eintrag</td><td class="category"><select name="boolinhalt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="inhalt" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+
+<tr><td class="category">[% msg.maketext("Inventarnummer") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td style="text-align:right;"><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>

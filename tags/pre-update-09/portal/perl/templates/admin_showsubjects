@@ -1,0 +1,77 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showsubjects
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Views
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog-Profile anzeigen' %]
+
+  <body bgcolor="#FFFFFF">
+[% bks = config.load_bk; %]
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="subjects" %] 
+
+<div class="content">
+
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+<input type="hidden" name="do_editsubject" value="1" />
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neues Themengebiet anlegen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Themengebiet") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="subject" /></td><td><input type="text" name="description" size="20" />
+</td><td><div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[% IF subjects.size > 0 %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende Themengebiete") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">[% msg.maketext("Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte auf den Namen.") %]
+<p />
+
+<table>
+<tr><td><b>[% msg.maketext("Themengebiet") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Systematik-Gruppen") %]</b></td></tr>
+[% listrow = 'listrow1' %]
+[% FOREACH subject IN subjects %]
+
+<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?&do_editsubject=1&subjectid=[% subject.id %]&do_edit=1">[% subject.name %]</a></td><td>[% subject.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+
+[% END %]
+
+</table>
+
+[% END %]
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

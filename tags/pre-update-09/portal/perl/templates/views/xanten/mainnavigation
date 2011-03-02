@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+#######################################################################
+-%]
+<div id="mainnavigation">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr><td align="left">&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/recent">[% msg.maketext("Recherche") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></td><td height="25">&nbsp;</td><td align="right"><a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/help.html">[% msg.maketext("Hilfe") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').logout_loc.name %]?" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+[%- IF username -%]
+ [[% username %]]
+[%- END -%]
+</span></b></a>&nbsp;</td></tr>
+</table>
+</div>

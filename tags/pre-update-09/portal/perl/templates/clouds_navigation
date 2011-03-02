@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Navigations-Tabs fuer Uebersichtswolken
+#
+#######################################################################
+-%]
+<ul class="tabbingmenu">
+[% IF statistics.result_exists({ id => database, type => 9 })%]   <li><a [% IF active == 9 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/year/[% database %].html" title="[% msg.maketext("Jahre") %]">[% msg.maketext("Jahre") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 3 })%]   <li><a [% IF active == 14 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/subject/[% database %].html" title="[% msg.maketext("Schlagworte") %]">[% msg.maketext("Schlagworte") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 4 })%]   <li><a [% IF active == 16 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/classification/[% database %].html" title="[% msg.maketext("Systematiken/Notationen") %]">[% msg.maketext("Systematiken/Notationen") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 5 })%]   <li><a [% IF active == 17 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/corporatebody/[% database %].html" title="[% msg.maketext("K&ouml;rperschaften/Institutionen") %]">[% msg.maketext("K&ouml;rperschaften/Institutionen") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 6 })%]   <li><a [% IF active == 18 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/person/[% database %].html" title="[% msg.maketext("Personen") %]">[% msg.maketext("Personen") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 7 })%][% IF config.get('social_tagging') %]   <li><a [% IF active == 19 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/tag/[% database %].html" title="[% msg.maketext("Nutzer-Tags") %]">[% msg.maketext("Nutzer-Tags") %]</a></li>[% END %][% END %]
+[% IF statistics.result_exists({ id => database, type => 8 })%][% IF viewdbs.size == 1     %]   <li><a [% IF active == 40 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/40?db=[% database %]" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>[% END %][% END %]
+</ul>

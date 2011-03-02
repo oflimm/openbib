@@ -1,0 +1,64 @@
+[%#-
+#######################################################################
+#
+# Templatename: select_queries
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Auswahlliste vorhandener Suchanfragen
+#
+#######################################################################
+-%]
+[%# USE dumper;dumper.dump(searchquery)%]
+<select name="queryid">
+
+[% FOREACH query IN queries %]	  
+<option value="[% query.get_id %]">(
+[%- IF query.get_searchquery.freesearch.val -%]
+&nbsp;FS: [% query.get_searchquery.freesearch.val %] 
+[%- END -%]
+[%- IF query.get_searchquery.person.val -%]
+&nbsp;PER: [% query.get_searchquery.person.val %]
+[%- END -%]
+[%- IF query.get_searchquery.title.val -%]
+&nbsp;TIT: [% query.get_searchquery.title.val %]
+[%- END -%]
+[%- IF query.get_searchquery.subject.val -%]
+&nbsp;SWT: [% query.get_searchquery.subject.val %]
+[%- END -%]
+[%- IF query.get_searchquery.corporatebody.val -%]
+&nbsp;KOE: [% query.get_searchquery.corporatebody.val %]
+[%- END -%]
+[%- IF query.get_searchquery.classification.val -%]
+&nbsp;NOT: [% query.get_searchquery.classification.val %] 
+[%- END -%]
+[%- IF query.get_searchquery.mark.val -%]
+&nbsp;SIG: [% query.get_searchquery.mark.val %]
+[%- END -%]
+[%- IF query.get_searchquery.year.val -%]
+&nbsp;EJAHR: [% query.get_searchquery.year.val %]
+[%- END -%]
+[%- IF query.get_searchquery.isbn.val -%]
+&nbsp;ISBN: [% query.get_searchquery.isbn.val %]
+[%- END -%]
+[%- IF query.get_searchquery.issn.val -%]
+&nbsp;ISSN: [% query.get_searchquery.issn.val %]
+[%- END -%]
+[%- IF query.get_searchquery.content.val -%]
+&nbsp;CONT: [% query.get_searchquery.content.val %]
+[%- END -%]
+[%- IF query.get_searchquery.mediatype.val -%]
+&nbsp;MART: [% query.get_searchquery.mediatype.val %]
+[%- END -%]
+[%- IF query.get_searchquery.titlestring.val -%]
+&nbsp;KTIT: [% query.get_searchquery.titlestring.val %] 
+[%- END -%]
+[%- IF query.get_searchquery.source.val -%]
+&nbsp;SER: [% query.get_searchquery.source.val %] 
+[%- END -%]
+= [% msg.maketext("Treffer") %]: [% query.get_hits %])
+</option>
+[% END %]	    
+</select>

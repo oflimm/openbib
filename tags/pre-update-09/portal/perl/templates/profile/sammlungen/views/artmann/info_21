@@ -1,0 +1,213 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_21
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der weitergehenden Sammlungsinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div class="boxedclear">
+
+<table>
+<tr><td style="vertical-align: top;padding-top:10px;">
+
+<p>
+<img src="/images/openbib/views/artmann/Med-ana-schwoazzn-Dintn_152x152_ger.jpg" style="width:152px;height:150px;display:block;" class="img" alt="Med ana schwoazzn Dintn" />
+<!-- <a href="/images/openbib/views/artmann/Med-ana-schwoazzn-Dintn_304x300_ger.jpg"><img class="zoom" src="/misc_/zms/spacer.gif" title="Zoom (87KB)" alt="Zoom (87KB)" border="0" /></a> -->
+</p>
+<p>
+<img src="/images/openbib/views/artmann/yeti_150x154_ger.gif" style="width:150px;height:154px;display:block;" class="img" alt="Cover der Ausgabe Sherpa bensing grinsing" />
+<!-- <a href="/images/openbib/views/artmann/yeti_300x308_ger.gif" class="zoom"><img class="zoom" src="/misc_/zms/spacer.gif" title="Zoom (76KB)" alt="Zoom (76KB)" border="0" /></a> -->
+</p>
+<p>
+<img src="/images/openbib/views/artmann/Schluessel_150x250_ger.gif" style="width:150px;height:250px;display:block;" class="img" alt="Cover der Ausgabe Schlüssel des Heiligen Patrick" />
+<!-- <a href="/images/openbib/views/artmann/Schluessel_250x417_ger.gif" class="zoom"><img class="zoom" src="/misc_/zms/spacer.gif" title="Zoom (106KB)" alt="Zoom (106KB)" border="0" /></a> -->
+</p>
+<p>
+<img src="/images/openbib/views/artmann/Mid-an-rodn-Blei_150x150_ger.gif" style="width:150px;height:150px;display:block;" class="img" alt="" />
+<!-- <a href="/images/openbib/views/artmann/Mid-an-rodn-Blei_300x300_ger.gif" class="zoom"><img class="zoom" src="/misc_/zms/spacer.gif" title="Zoom (77KB)" alt="Zoom (77KB)" border="0" /></a> -->
+</p>
+<p>
+<img src="/images/openbib/views/artmann/Gesaenge-der-Haemmer_150x210_ger.gif" style="width:150px;height:217px;display:block;" class="img" alt="Cover der Ausgabe Die Gesaenge der Haemmer" />
+<!-- <a href="/images/openbib/views/artmann/Gesaenge-der-Haemmer_250x36_ger.gif" class="zoom"><img class="zoom" src="/misc_/zms/spacer.gif" title="Zoom (105KB)" alt="Zoom (105KB)" border="0" /></a> -->
+</p>
+<p>
+<img src="/images/openbib/views/artmann/ompuel_150x164_ger.gif" style="width:150px;height:165px;display:block;" class="img" alt="Cover der Ausgabe Ompül" />
+<!-- <a href="/images/openbib/views/artmann/ompuel_300x331_ger.gif" class="zoom"><img class="zoom" src="/misc_/zms/spacer.gif" title="Zoom (72KB)" alt="Zoom (72KB)" border="0" /></a> -->
+
+</td>
+<td style="vertical-align: top;padding-left:20px;">
+
+<h3>Buchausgaben und Drucke</h3>
+
+<div class="text">
+<p>
+
+Unter den Titeln befinden sich zahlreiche Erstausgaben. Genannt sei
+<strong>med ana schwoazzn dintn</strong> von 1958, die erste
+Buchausgabe Artmanns mit der er damals schlagartig als neuer
+Mundartdichter Furore machte.
+</p>
+
+<p>
+Die Sammlung dokumentiert das gesamte literarische Oeuvre Artmanns
+beginnend mit den ersten Veröffentlichungen in den sehr seltenen
+Literaturzeitschriften <strong>Alpha, Eröffnungen,
+Publikationen</strong> u.a. über die ersten Buchveröffentlichungen bis
+hin zu den Gesamtausgaben seiner Prosa, Theaterstücke und Lyrik und
+den posthum veröffentlichten Schriften, wie z.B. die Briefe an Herbert
+Wochinz.</p>
+
+</div>
+
+<div class="text">
+<p>
+Von besonderem Wert ist die große Anzahl künstlerisch gestalteter
+Werke, darunter Einblattdrucke, Künstlerbücher und illustrierte
+Werke. Stellvertretend für viele weitere Künstler, die mit Artmann
+zusammenwirkten oder seine Werke illustrierten, seien Markus Vallazza,
+Reinhard Kleist, Ernst Fuchs, Axel Hertenstein, Peter Malutzki,
+Christian Thanhäuser, Michael Gölling und Gudrun Hommers genannt.
+</p>
+
+<p>
+Unter den Künstlerbüchern befinden sich auch zwei Exemplare des von
+Uwe Bremer illustrierten Titels <strong>Gesaenge der Haemmer</strong>,
+von denen einer mit einem kunstvollen Handeinband aus Leder von Werner
+G. Kießig ausgestattet ist.
+</p>
+</div>
+
+<h3>Übersetzungen</h3>
+
+<p>
+
+Eine Überraschung bietet der fast vollständige Nachweis der
+Übersetzungen, die Artmann aus beinahe allen westeuropäischen Sprachen
+seine gesamte Schaffenszeit über parallel zu seinen literarischen
+Arbeiten vornahm. Artmann, der dabei kein literarisches Genre ausließ,
+verstand sich dabei nicht als Übersetzer sondern als Nachdichter. Mit
+der <strong>Schlüssel des heiligen Patrick</strong> erschien 1959 die
+erste Buchpublikation seiner Übersetzungen. Es handelt sich dabei um
+Übertragungen religiöser Dichtung der Kelten. Noch im Jahr 200
+übersetzte Artmann <strong>Goldonis Werke</strong> neu. Für die Zeit
+dazwischen dokumentiert die Sammlung Knupfer 45 Titel mit
+Übersetzungen von Lovecraft, der Schwestern Ashford, Harry Graham, Don
+Francisco de Quevedo y Villegas, Carl von Linné, Villon, Asterix ins
+Wienerische u.v.a. Ebenfalls enthalten sind die zahlreichen
+Übersetzungen europäischer Dramatiker, die Artmann ab 1971 für die
+Bühne von Herbert Wochinz vornahm.
+</p>
+
+<p>
+Ob Artmann tatsächlich der Übersetzer des in der Sammlung befindlichen
+<strong>Dracula</strong> von Bram Stoker ist, muss noch nachgewiesen
+werden.
+</p>
+
+<h3>Sammelbände und Zeitschriftenhefte</h3>
+
+<p>
+Diese Gruppe der Sammlung Knupfer enthält 54 Titel. In ihr sind sehr
+unterschiedliche Publikationsformen, die u.a. auch Texte von Artmann
+enthalten, zusammengefasst: Literaturzeitschriften, zahlreiche
+Anthologien, Merianhefte, Gemeinschaftsproduktionen mit der Rixdorfer
+Gruppe, Kinderbücher, Kataloge und Bildbände, Verlagsalmanache
+u.a.m. Hier sind auch die relevanten Publikationen von Autoren der
+Wiener Gruppe zu finden. Dazu kommen noch weitere Titel, die von
+Artmann herausgegeben wurden oder für die er Vor- oder Nachworte
+schrieb.
+</p>
+
+<h3>Tonträger</h3>
+
+<p>
+Ein weiterer Höhepunkt der Schenkung sind 8 Schallplatten und
+Kassetten auf denen Artmann selbst, Qualtinger, Wolfgang Bauer,
+Beikircher u.a. Texte Artmanns vortragen.
+</p>
+
+<h3>Sekundärliteratur</h3>
+
+<p>
+Abgerundet wird die Artmann-Sammlung Knupfer durch insgesamt 10 Titel
+der Sekundärliteratur mit u.a. allen Biographien und Bibliographien
+und einigen Varia.
+</p>
+
+<h3>Die Sammlung in der USB</h3>
+
+<p>
+Die Titel wurden geschlossen unter der Signatur KNUP aufgestellt. Sie
+sind vollständig in ihrer ursprünglichen Form mit den
+Originalumschlägen erhalten. Signaturen und Etiketten sind den Büchern
+beigelegt und nicht eingeklebt. Alle Titel wurden in der
+Hausbuchbinderei durchgesehen und ggf. repariert. Elf Bücher wurden
+von den Buchbindermeisterinnen, die bereits eine Anzahl bedeutender
+Preise gewonnen haben, und ihren Lehrlingen mit handwerklich gekonnten
+und künstlerisch interessanten Einbänden und Kassetten versehen.
+</p>
+
+<p>
+Die Einsichtnahme für Forschungszwecke erfolgt im <a
+href="http://www.ub.uni-koeln.de/e30/e303/e331/e2748/index_ger.html?preview=preview" target="_blank">Historischen
+Lesesaal</a>. Alle Titel sind im Gesamtbestand der USB K&ouml;ln und im <a href="http://okeanos-www.hbz-nrw.de/F" target="_blank">Verbundkatalog
+NRW</a> erfasst.
+</p>
+
+<p>
+
+Ein Sonderkatalog mit weitergehenden Titelbeschreibungen findet sich
+in dem anlässlich der Schenkung veröffentlichten <strong>Sammelband
+Sammeln und Lesen. Die Kölner H.C. Artmann-Sammlung
+Knupfer. Lektüren.</strong> Dieser Band enthält neben dem Katalog acht
+wissenschaftliche Beiträge von NachwuchswissenschaftlerInnen des
+Zentrums für Moderneforschung und zahlreiche Abbildungen.
+</p>
+
+<p>
+
+Die Schenkung ist ein großer Erfolg der Kölnischen
+Bibliotheksgesellschaft. Herr Knupfer hofft durch sein Beispiel andere
+Sammler zur Nachahmung anzuregen, damit weitere wertvolle
+Bücherschätze aus Privatsammlungen in der USB der Forschung zugänglich
+gemacht werden können.
+</p>
+
+<p>
+Die USB wird auch mit Unterstützung von Herrn Knupfer die
+Artmann-Sammlung weiter ausbauen und so in Zukunft möglichst alle
+relevanten Titel erwerben.
+</p>
+
+<ul>
+<li><a href="http://www.ub.uni-koeln.de/e30/e320/e4328/index_ger.html?preview=preview#e5343" target="_blank">Hier können Sie die Publikation <strong>Sammeln und Lesen</strong> bestellen.</a></li>
+<li><a href="http://www.ub.uni-koeln.de/e30/e303/e7307/e7308/e8127/index_ger.html?preview=preview" target="_blank">Hier gelangen Sie zum Katalog der Sammlung und den einzelnen Aufsätzen des Sammelbandes.</a></li>
+</ul>
+
+<h3>Ansprechpartnerin:</h3>
+<strong>Ute Wolter</strong>, Fachreferentin für Germanistik<br />
+
+Tel.: 0221 470-7015<br />
+<a href="http://www.ub.uni-koeln.de/e50/e2492/e2652/index_ger.html?preview=preview" target="_blank">E-Mail</a><br /></p>
+</td></tr>
+</table>
+
+</div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

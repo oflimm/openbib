@@ -1,0 +1,348 @@
+/*-------------------------------------------------*/
+/*--------------- T A B E L L E N -----------------*/
+/*-------------------------------------------------*/
+
+/*-------------------------------------------------*/
+/*-------------- Autorenstammdatei ----------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS person;
+create table person (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS person_ft;
+create table person_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS person_string;
+create table person_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT ,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content(10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+/*-------------------------------------------------*/
+/*------------Koerperschaftsstammdatei ------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS corporatebody;
+create table corporatebody (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS corporatebody_ft;
+create table corporatebody_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS corporatebody_string;
+create table corporatebody_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+/*-------------------------------------------------*/
+/*------------ Schlagwortstammdatei ---------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS subject;
+create table subject (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS subject_ft;
+create table subject_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS subject_string;
+create table subject_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+/*-------------------------------------------------*/
+/*-------------- Notationstammdatei ---------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS classification;
+create table classification (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS classification_ft;
+create table classification_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS classification_string;
+create table classification_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+
+/*-------------------------------------------------*/
+/*--------------- Titelstammdatei -----------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS title;
+create table title (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+
+drop table IF EXISTS title_ft;
+create table title_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+
+drop table IF EXISTS title_string;
+create table title_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+
+/*-------------------------------------------------*/
+/*-------------- Exemplarstammdatei ---------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS holding;
+create table holding (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+
+drop table IF EXISTS holding_ft;
+create table holding_ft (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+
+drop table IF EXISTS holding_string;
+create table holding_string (
+ id            VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+
+/*-------Genereller Connector ---------*/
+
+drop table IF EXISTS conn;
+create table conn (
+category   SMALLINT,
+sourceid   VARCHAR(255) NOT NULL,
+sourcetype TINYINT   NOT NULL,
+targetid   VARCHAR(255) NOT NULL,
+targettype TINYINT   NOT NULL,
+supplement TEXT,
+index      (targetid,sourcetype,targettype),
+index      (sourceid,sourcetype,targettype)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+
+drop table IF EXISTS title_listitem;
+create table title_listitem (
+id       VARCHAR(255) NOT NULL,
+listitem BLOB,
+PRIMARY KEY (id)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;
+
+drop table IF EXISTS popularity;
+create table popularity (
+id        VARCHAR(255) NOT NULL,
+idcount   INT,
+INDEX     (id)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+ENGINE=MyISAM
+PACK_KEYS=1;

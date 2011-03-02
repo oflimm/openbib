@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_info
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines kurzen Hilfetextes fuer die Formulierung von Anfragen
+#
+#######################################################################
+-%]
+<b>[% msg.maketext("Wenn Sie mehrere Suchworte in ein Feld eingetragen haben,</b><br />
+gilt automatisch die <b>UND-Verkn&uuml;pfung</b>: alle Begriffe
+kommen im Titel vor. W&uuml;nschen Sie eine
+<b>ODER-Verkn&uuml;pfung</b>, deaktivieren Sie die Suchoption
+<b>UND-Verkn&uuml;pfung innerhalb eines Suchfeldes</b>: der eine
+<b>oder</b> der andere Begriff ist enthalten.") %]
+<p />
+<b>[% msg.maketext("Soll ein Begriff beliebig enden,</b><br />
+schreiben Sie als <b>Trunkierungszeichen</b> ein *.") %]
+
+<p />
+<b>[% msg.maketext("Wenn Sie den Index aufrufen m&ouml;chten,</b> <br /> dann
+geben Sie in das Feld Person, K&ouml;rperschaft/Institution oder
+Schlagwort einen Begriff ein und klicken auf
+<b>Index</b>. Sie erhalten dann eine Liste der entsprechenden
+Normdaten aus der Datenbank, die mit dem von Ihnen eingegebenen
+Begriff beginnen.") %]
+
+<p />
+
+
+<b>[% msg.maketext("Besonderheit bei Feldern mit") %] <span class="warning">*</span>
+[% msg.maketext("(Notation, Signatur, Titel-String):") %]</b><br />
+[% msg.maketext("Hier gilt automatisch die <b>Phrasensuche</b>. Eine <b>logische</b>
+Kombination mehrerer Worte im Eingabefeld ist <b>nicht</b>
+m&ouml;glich. Sie k&ouml;nnen jedoch das Trunkierungszeichen am Ende
+Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*).") %]
+<p />
+<b>[% msg.maketext("Hinweise und Beispiele zu weiteren
+Suchm&ouml;glichkeiten erhalten Sie [_1]hier[_2]","<a href=\"${path_prefix}/${config.get('handler').info_loc.name}?#profisuche\">","</a>") %]
+</b>.
+<p />

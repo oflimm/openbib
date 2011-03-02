@@ -1,0 +1,135 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_remind
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller gemahnten Medien
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="userprefs_navigation" active="circulation" %]
+
+<div class="content">
+
+<p />
+
+<ul class="tabbingmenu">
+   <li><a                href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=showcirc;circaction=borrows">[% msg.maketext("Ausleihen") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=showcirc;circaction=reservations">[% msg.maketext("Vormerkungen") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=showcirc;circaction=orders">[% msg.maketext("Bestellungen") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=showcirc;circaction=reminders">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+
+[% IF reminders.size == 0 %]
+<b>[% msg.maketext("Es sind keine Gebühren angefallen.") %]</b>
+[% ELSE  %]
+
+[%- 
+mahnungen = [] ;
+gebuehren = [] ;
+
+FOREACH reminder = reminders ;
+  IF reminder.Leihfristende == '01.01.1753' ;
+    gebuehren.push(reminder);
+  ELSE ;
+    mahnungen.push(reminder);
+  END ;
+-%]
+
+[%- END -%]
+
+[% IF mahnungen.size != 0 %]
+<table width="100%">
+<tr><th>Überziehungen</th></tr>
+<tr><td class="boxedclear">
+
+<table cellpadding="5">
+<tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Ausleih-/Buchungsdatum") %]</b></td><td><b>[% msg.maketext("Leihfristende") %]</b></td><td><b>[% msg.maketext("Gebühr") %]</b></td></tr>
+[%- listrow = 'listrow1' -%]
+
+[%- FOREACH reminder = mahnungen -%]
+
+<tr class="[% listrow %]"
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%] 
+[%- ELSE -%]
+[%- listrow = 'listrow1' -%] 
+[%- END -%]
+><td><i>[% reminder.Verfasser %]</i><br />[% reminder.Titel %]
+
+[%- IF reminder.EJahr -%]
+, [% reminder.EJahr %]
+[%- END -%]
+
+</td><td>[% reminder.Mediennummer %]</td>
+<td>[% reminder.AusleihDatum %]</td>
+<td><span style="color:red">[% reminder.Leihfristende %]</span></td><td><span style="color:red">
+[%- IF reminder.MTyp != 99 -%]
+[%- reminder.Mahngebuehr -%] 
+[%- ELSE -%]
+[%- reminder.Saeumnisgebuehr -%] 
+[%- END -%]
+&nbsp;EUR</span></td></tr>
+[%- END -%]
+</table>
+</td></tr>
+</table>
+
+<p/ >
+[% END %]
+
+[% IF gebuehren.size != 0 %]
+<table width="100%">
+<tr><th>Gebühren</th></tr>
+<tr><td class="boxedclear">
+
+<table cellpadding="5">
+<tr><td><b>Beschreibung</b></td><td><b>Datum</b></td><td><b>[% msg.maketext("Gebühr") %]</b></td></tr>
+[%- listrow = 'listrow1' -%]
+
+[%- FOREACH reminder = gebuehren -%]
+
+<tr class="[% listrow %]"
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%] 
+[%- ELSE -%]
+[%- listrow = 'listrow1' -%] 
+[%- END -%]
+><td>[% reminder.Mediennummer %]</td>
+<td>[% reminder.AusleihDatum %]</td>
+<td><span style="color:red">
+[%- reminder.Saeumnisgebuehr -%] 
+&nbsp;EUR</span></td></tr>
+[%- END -%]
+
+</td></tr>
+</table>
+</td></tr>
+</table>
+[%- END -%]
+
+[%- END -%]
+</div>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

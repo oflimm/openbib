@@ -1,0 +1,127 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="catalogues" %] 
+
+<div class="content">
+
+<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+
+<input type="hidden" name="dbname"     value="[% databaseinfo.dbname %]" />
+<input type="hidden" name="do_editcat" value="1" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Katalog bearbeiten") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% databaseinfo.dbname %]</td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% databaseinfo.description %]" size="60" /></td></tr>
+<tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td><input type="text" name="shortdesc" value="[% databaseinfo.shortdesc %]" size="60" /></td></tr>
+<tr><td><b>[% msg.maketext("System") %]</b></td><td>
+<select name="system">
+[% FOREACH thissystem IN config.get('source_systems') %]
+<option value="[% thissystem %]" [% IF databaseinfo.system == thissystem %]selected[% END %]>[% thissystem %]</option>
+[% END %]
+</select>
+</td></tr>
+<tr><td><b>[% msg.maketext("Sigel") %]</b></td><td><input type="text" name="sigel" value="[% databaseinfo.sigel %]" size="3" /></td></tr>
+<tr><td><b>[% msg.maketext("URL") %]</b></td><td><input type="text" name="url" value="[% databaseinfo.url %]" size="60" /></td></tr>
+<tr><td><b>[% msg.maketext("Bibliotheksinformationen statt URL") %]</b></td><td>
+<select name="use_libinfo">
+<option value="1" [%- IF databaseinfo.use_libinfo == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+<option value="0" [%- IF databaseinfo.use_libinfo == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+</td></tr>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>
+<select name="active">
+<option value="1" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+<option value="0" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+</td></tr>
+</table>
+<p />
+
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Import-Einstellungen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Protokoll") %]</b></td><td>
+<select name="protocol">
+<option value="ftp" [% IF databaseinfo.protocol == 'ftp' %]selected[% END %]>[% msg.maketext("FTP") %]</option>
+<option value="http" [% IF databaseinfo.protocol == 'http' %]selected[% END %]>[% msg.maketext("HTTP") %]</option>
+<option value="lokal" [% IF databaseinfo.protocol == 'lokal' %]selected[% END %]>[% msg.maketext("Lokal") %]</option>
+</td></tr>
+<tr><td><b>[% msg.maketext("Entfernter Rechnername") %]</b></td><td><input type="text" size="20" name="host" value="[% databaseinfo.host %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entferntes Verzeichnis") %]</b></td><td><input type="text" size="20" name="remotepath" value="[% databaseinfo.remotepath %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entfernter Nutzername") %]</b></td><td><input type="text" size="20" name="remoteuser" value="[% databaseinfo.remoteuser %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entferntes Passwort") %]</b></td><td><input type="password" size="20" name="remotepasswd" value="[% databaseinfo.remotepassword %]" /></td></tr>
+<tr><td><b></b></td><td></td></tr>
+<tr><td><b>[% msg.maketext("Titel-Datei") %]</b></td><td><input type="text" size="20" name="titfilename" value="[% databaseinfo.titlefile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Personen-Datei") %]</b></td><td><input type="text" size="20" name="autfilename" value="[% databaseinfo.personfile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("K&ouml;rperschafts-Datei") %]</b></td><td><input type="text" size="20" name="korfilename" value="[% databaseinfo.corporatebodyfile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Schlagwort-Datei") %]</b></td><td><input type="text" size="20" name="swtfilename" value="[% databaseinfo.subjectfile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Notations-Datei") %]</b></td><td><input type="text" size="20" name="notfilename" value="[% databaseinfo.classificationfile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Exemplar-Datei") %]</b></td><td><input type="text" size="20" name="mexfilename" value="[% databaseinfo.holdingsfile %]" /></td></tr>
+    
+<tr><td><b>[% msg.maketext("Autokonvertierung (cron)") %]</b></td><td>
+<select name="autoconvert">
+<option value="0" [% IF databaseinfo.autoconvert == '0' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+<option value="1" [% IF databaseinfo.autoconvert == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+</select>
+</td></tr>
+</table>
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</b></td><td>
+<select name="circ">
+<option value="0" [% IF databaseinfo.circ == '0' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+<option value="1" [% IF databaseinfo.circ == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+</select>
+</td></tr>
+<tr><td><b>[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</b></td><td><input type="text" size="50" name="circdb" value="[% databaseinfo.circdb %]" /></td></tr>
+<tr><td><b>[% msg.maketext("OLWS Zugriffs-URL") %]</b></td><td><input type="text" size="50" name="circcheckurl" value="[% databaseinfo.circwsurl %]" /></td></tr>
+<tr><td><b>[% msg.maketext("WebOPAC-URL") %]</b></td><td><input type="text" size="50" name="circurl" value="[% databaseinfo.circurl %]" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+
+<p />
+<table width="100%">
+<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change"
+value="[% msg.maketext("Ändern") %]"></div></td><td>&nbsp;</td><td align="right"><div class="cssbutton glass kug"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]"></div></td></tr>
+</table>
+
+</form>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,142 @@
+[%#-
+#######################################################################
+#
+# Templatename: resultlists_choice
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe des Ergebnisses der letzten oder einer ausgewaehlten
+# zurueckliegenden Recherche sowie einer Auswahl-Uebersicht
+# aller bisheriger Recherchen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "resultlists" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('resultlists_loc') %]?view=[% view %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+
+[%# USE dumper;dumper.dump(queries); %]
+
+<table width="100%">
+<tr>
+[% IF queryid %]
+<th>[% msg.maketext("Ausgew&auml;hlte Recherche") %]</th>
+[% ELSE %]
+<th>[% msg.maketext("Aktuelle Recherche") %]</th>
+[% END %]
+</tr>
+
+<tr><td class="boxedclear">
+
+<table>
+
+<tr><td colspan="2">(
+[%- IF thisquery.get_searchquery.freesearch.val -%]
+&nbsp;Freie Suche: [% thisquery.get_searchquery.freesearch.val %] 
+[%- END -%]
+[%- IF thisquery.get_searchquery.person.val -%]
+&nbsp;Person: [% thisquery.get_searchquery.person.val %]
+[%- END -%]
+[%- IF thisquery.get_searchquery.title.val -%]
+&nbsp;Titel: [% thisquery.get_searchquery.title.val %]
+[%- END -%]
+[%- IF thisquery.get_searchquery.subject.val -%]
+&nbsp;Schlagwort: [% thisquery.get_searchquery.subject.val %]
+[%- END -%]
+[%- IF thisquery.get_searchquery.corporatebody.val -%]
+&nbsp;K&ouml;perschaft: [% thisquery.get_searchquery.corporatebody.val %]
+[%- END -%]
+[%- IF thisquery.get_searchquery.classification.val -%]
+&nbsp;Systematik: [% thisquery.get_searchquery.classification.val %] 
+[%- END -%]
+[%- IF thisquery.get_searchquery.mark.val -%]
+&nbsp;Signatur: [% thisquery.get_searchquery.mark.val %]
+[%- END -%]
+[%- IF thisquery.get_searchquery.year.val -%]
+&nbsp;Jahr: [% thisquery.get_searchquery.year.val %]
+[%- END -%]
+[%- IF thisquery.get_searchquery.isbn.val -%]
+&nbsp;ISBN: [% thisquery.get_searchquery.isbn.val %]
+[%- END -%]
+[%- IF thisquery.get_searchquery.issn.val -%]
+&nbsp;ISSN: [% thisquery.get_searchquery.issn.val %]
+[%- END -%]
+[%- IF thisquery.get_searchquery.mediatype.val -%]
+&nbsp;Medientyp: [% thisquery.get_searchquery.mediatype.val %]
+[%- END -%]
+[%- IF thisquery.get_searchquery.titlestring.val -%]
+&nbsp;Titelstring: [% thisquery.get_searchquery.titlestring.val %] 
+[%- END -%]
+)</td></tr>
+
+[% jn = 0 ;
+   FOREACH resultdb IN resultdbs ;
+      IF resultdb.trefferdb == 'combined' ;
+         jn = 1;
+      END ;
+   END ;
+%]
+[%- request_base    = "page=1;num=50;srt=author;srto=up;dd=1;" -%]
+
+<tr><td colspan="2"></td></tr>
+
+<tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
+<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) %];jn=1;[% thisquery.to_cgi_params({ exclude = ['profile','db']}) %];page=1"><b>kombinierte</b></a> / <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) %];jn=0;[% thisquery.to_cgi_params({ exclude = ['profile','db']}) %];page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% thisquery.get_hits %]</td></tr>
+      
+<tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
+[% listrow = 'listrow2' %]
+[% FOREACH result IN thisquery.get_results %]
+<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];[% thisquery.to_cgi_params({ exclude = ['profile','db']}) %];db=[% result.first %];page=1"><b>[% dbinfo.dbnames.${result.first}.full %]</b></a></td><td align="right">
+[% result.1 %]
+</td></tr>
+[%   IF listrow == 'listrow1' %]
+[%     listrow = 'listrow2' %]
+[%   ELSE %]
+[%     listrow = 'listrow1' %]
+[%   END %]
+[% END %]
+
+</table>
+
+</td></tr>
+
+</table>
+<p />
+
+[% IF queryids.size >= 0 %]
+<form method="get" action="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]">
+	  
+<p />
+<table width="100%"><tr>
+<th>Alle bisherigen Recherchen</th></tr>
+<tr><td class="boxedclear">
+
+<table>
+<tr><td>[% PROCESS common/subtemplate name="select_queries" %]</td><td><div class="cssbutton glass kug"><input type="submit" value="Auswahl" /></div></td></tr>
+</table>
+
+</td></tr>
+</table>
+</form>
+
+[% END %]
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

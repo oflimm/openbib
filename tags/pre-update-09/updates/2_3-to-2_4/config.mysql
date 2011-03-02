@@ -1,0 +1,21 @@
+alter table profiledbs add orgunitname varchar(20) not null after profilename;
+alter table dbinfo drop orgunit;
+
+alter table dbinfo add  protocol       VARCHAR(255) after active;
+alter table dbinfo add  host           VARCHAR(255) after protocol;
+alter table dbinfo add  remotepath     TEXT         after host;
+alter table dbinfo add  remoteuser     VARCHAR(255) after remotepath;
+alter table dbinfo add  remotepassword VARCHAR(255) after remoteuser;
+alter table dbinfo add  titlefile      VARCHAR(255) after remotepassword;
+alter table dbinfo add  personfile     VARCHAR(255) after titlefile;
+alter table dbinfo add  corporatebodyfile  VARCHAR(255) after personfile;
+alter table dbinfo add  subjectfile        VARCHAR(255) after corporatebodyfile;
+alter table dbinfo add  classificationfile VARCHAR(255) after subjectfile;
+alter table dbinfo add  holdingsfile       VARCHAR(255) after classificationfile;
+alter table dbinfo add  autoconvert  BOOL after holdingsfile;
+alter table dbinfo add  circ         BOOL after autoconvert;
+alter table dbinfo add  circurl      TEXT after circ;
+alter table dbinfo add  circwsurl    TEXT after circurl;
+alter table dbinfo add  circdb       TEXT after circwsurl;
+
+rename table dbinfo to databaseinfo;

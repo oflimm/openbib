@@ -1,0 +1,55 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_bibtex
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im BibTeX-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
+[% IF NOT data_only %]
+[% IF NOT hide_options %]
+<div class="boxedclear" style="float:right; width: 30%"><!-- Begin Reuse -->
+
+<b>[% msg.maketext("Behalten Sie diese Liste") %]:</b><p/>
+
+<table>
+<tr>
+<th><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
+<td><a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/save?format=[% format %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
+<td><a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/print?format=[% format %]" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+</tr>
+<tr>
+<th><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
+<td><a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/mail?format=[% format %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<th></th><td></td>
+</tr>
+</table>
+
+<p />
+
+<div class="headline">[% msg.maketext("Andere Formate") %]</div>
+
+<p>
+<a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=short"[%- IF format == 'short' -%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=full" [%- IF format == 'full' -%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a>
+</p>
+
+</div>
+[% END %]
+<div style="float:left; width: 65%;">
+<pre>
+[% END %]
+[%- FOREACH record IN recordlist.load_full_records.get_records -%]
+[% record.to_bibtex %]
+
+[% END -%]
+[% IF NOT data_only %]
+</pre>
+</div>
+[% END %]

@@ -1,0 +1,38 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_login
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Anmeldemaske fuer die Administration
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Authentifizierung' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %]
+
+<div id="maincontent">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Administrations-Login") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+[% msg.maketext("&Uuml;ber diese Authentifizierungsseite k&ouml;nnen Sie sich als Administrator anmelden.") %]
+</td></tr>
+</table>
+
+<p />
+<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_admin_https') %]https[%- ELSE -%]http[%- END -%]://[% IF config.distadmin %][% config.distadmin.master %][% ELSE %][% config.get('servername') %][% END %][% END %][% config.get('base_loc') %]/[% config.get('handler').admin_login_loc.name %]" enctype="application/x-www-form-urlencoded">
+<table>
+<tr><td align="right"><b>[% msg.maketext("Benutzername") %]:</b></td><td><input type="text" name="username" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="passwd" /></td></tr>
+<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td></tr>
+</table>
+</form>
+
+[% PROCESS common/subtemplate name="std_footer" %]

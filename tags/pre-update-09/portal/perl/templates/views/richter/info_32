@@ -1,0 +1,102 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_32
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/30">Die B&uuml;cherlisten</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/31">Arbeitsablauf / Aktuelles</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/32">Publikationen</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/34">Internetquellen</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/33">Ansprechpartner</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Publikationen</h1>
+
+<h2>2009</h2>
+<ul>
+<li>
+Christiane Hoffrath:<br />
+<b>B&uuml;cherspuren - Das Schicksal von Elise und Helene Richter und
+ihrer Bibliothek im "Dritten Reich"</b><br />
+K&ouml;ln, Weimar, Wien: B&ouml;hlau, 2009, ISBN 978-3-412-202-84-2
+</li>
+</ul>
+
+<h2>2008</h2>
+<ul>
+<li>
+Christiane Hoffrath:<br />
+<b>Die Welt von Gestern - Widmungsexemplare aus der Bibliothek von
+Elise und Helene Richter. Ein Beitrag der Provenienzforschung an der
+Universit&auml;ts- und Stadtbibliothek K&ouml;ln</b><br />
+In: Alker, Stefan (Hg.): Bibliotheken in der NS-Zeit -
+Provenienzforschung und Bibliotheksgeschichte, G&ouml;ttingen: V &amp;
+R unipress, 2008, S. 103-118
+</li>
+<li>
+Christiane Hoffrath:<br />
+<b>Die Bibliothek der Schwestern Elise und Helene
+Richter in der Universitäts- und Stadtbibliothek Köln</b><br />
+In: Dehnel, Regine (Hg.): NS-Raubgut in Bibliotheken - Suche. Ergebnisse. Perspektiven. Drittes Hannoversches Symposium. Frankfurt am Main: Klosterman, 2008, S. 127-138
+</li>
+</ul>
+
+<h2>2006</h2>
+<ul>
+<li>
+Christiane Hoffrath:<br />
+<b>NS-Provenienzforschung an der USB: Die Bibliothek von Elise und Helene
+Richter</b><br />
+In: K&ouml;lner Universit&auml;ts-Journal 1 (2006) S. 13-14
+</li>
+
+<li>
+Christiane Hoffrath:<br />
+<b>Die Bibliothek von Elise und Helene Richter in der
+Universit&auml;ts- und Stadtbibliothek K&ouml;ln</b><br />
+In: ProLibris 2 (2006) S. S. 70-73
+</li>
+
+<li>
+Christiane Hoffrath:<br />
+<b>Rezension von Regine Dehnel (Hrsg.) J&uuml;discher Buchbesitz als
+Raubgut: Zweites Hannoversches Symposium. Frankfurt am Main: Klostermann, 2006. ISBN:
+3-465-03448-1 (Zeitschrift f&uuml;r Bibliothekswesen und Bibliographie :
+Sonderhefte ; 88)</b><br />
+In: ProLibris 3 (2006) S. 137-138
+</li>
+
+<li>
+Oliver Flimm und Christiane Hoffrath:<br />
+<b>Der Weg des KUG zum umfassenden Recherche-Portal</b><br />
+In: Kooperative Informationsverarbeitung an der Universit&auml;t zu
+K&ouml;ln: Bericht f&uuml;r das Jahr 2005. K&ouml;ln: Zentrum f&uuml;r
+Angewandte Informatik der Universit&auml;t zu K&ouml;ln (ZAIK/RRZK) S. 135-141
+</li>
+</ul>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -109,7 +109,7 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_litlist_loc}.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -217,7 +217,7 @@ sub show_collection_by_subject_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/subject.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/subject.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -393,7 +393,7 @@ sub show_collection_by_single_user_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/user.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/user.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -754,7 +754,7 @@ sub show_record_negotiate {
             
             $session->set_returnurl($return_url);
             
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
             
             return Apache2::Const::OK;
         }
@@ -1026,7 +1026,7 @@ sub create_record {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -1352,7 +1352,7 @@ sub create_entry {
     
     $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb, comment => $comment});
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/edit";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1405,7 +1405,7 @@ sub update_entry {
 
     # Anpassen eines Kommentars
     
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/edit";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1463,7 +1463,7 @@ sub delete_entry {
     
     $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
     
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_litlist_loc}{name}/$litlistid/edit";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1485,7 +1485,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/litlist.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/litlist.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

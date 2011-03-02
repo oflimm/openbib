@@ -38,7 +38,7 @@
    searchterm    = item;
    searchprefix  = config.get('searchfield').personstring.prefix;
 
-   localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
+   localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>
@@ -88,7 +88,7 @@
    searchterm    = item;
    searchprefix  = config.get('searchfield').personstring.prefix;
 
-   localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
+   localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>

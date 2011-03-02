@@ -219,12 +219,12 @@ sub show {
             user      => $bibsonomy_user,
             key       => $bibsonomy_key,
         });        
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{userprefs_loc}?action=showfields");
     }
     elsif ($action eq "bibsonomy_sync_all") {
         $user->sync_all_to_bibsonomy;
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{userprefs_loc}?action=showfields");
     }
     elsif ($action eq "delaccount_ask") {
         # TT-Data erzeugen
@@ -268,7 +268,7 @@ sub show {
             password => $password1,
         });
     
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{userprefs_loc}?action=showfields");
     }
     elsif ($action eq "changemask") {
         if ($setmask eq "") {
@@ -279,7 +279,7 @@ sub show {
         $user->set_mask($setmask);
         $session->set_mask($setmask);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{userprefs_loc}?action=showfields");
     }
     elsif ($action eq "changespelling") {
         $user->set_spelling_suggestion({
@@ -287,7 +287,7 @@ sub show {
             resultlist         => $spelling_resultlist,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{userprefs_loc}?action=showfields");
     }
     elsif ($action eq "changelivesearch") {
         $user->set_livesearch({
@@ -297,12 +297,12 @@ sub show {
             exact     => $livesearch_exact,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{userprefs_loc}?action=showfields");
     }
     elsif ($action eq "changeautocompletion") {
         $user->set_autocompletion($setautocompletion);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userprefs_loc}{name}?action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{userprefs_loc}?action=showfields");
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);

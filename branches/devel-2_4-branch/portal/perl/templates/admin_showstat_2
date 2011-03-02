@@ -35,7 +35,7 @@
 [%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');- %]
 [%- i = ret.min -%]
 [%- WHILE i <= ret.max -%]
-<a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=2;year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showstat=1;stid=2;year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
 [%- i = i+1 -%]
 [%- END -%]
 </div>

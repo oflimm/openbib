@@ -487,7 +487,7 @@ sub show_record_form {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -608,7 +608,7 @@ sub show_record_negotiate {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -732,7 +732,7 @@ sub show_record_negotiatex {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -791,7 +791,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/review.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/review.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

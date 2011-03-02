@@ -74,7 +74,7 @@
 [%-    END -%]
   </div>
   <div class="listoptions">
-<form method="get" action="[% path_prefix %]/[% config.get('handler').tags_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('tags_loc') %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
 <input type="hidden" name="num"        value="[% IF num %][% num %][% ELSE %][% qopts.num %][% END %]" />
 

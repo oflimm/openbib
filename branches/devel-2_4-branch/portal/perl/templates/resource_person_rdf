@@ -8,7 +8,7 @@
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns:libris="http://libris.kb.se/vocabulary/experimental#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" >
-  <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').resource_person_loc.name %]/[% database %]/[% id %]">
+  <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('resource_person_loc') %]/[% database %]/[% id %]">
 [%#    <owl:sameAs rdf:resource="http://dbpedia.org/resource/xxx"/>
     <rdf:seeAlso rdf:resource="http://en.wikipedia.org/wiki/xxx"/>
     <dbpedia:birthYear>1234</dbpedia:birthYear> %]
@@ -21,11 +21,11 @@
 [% END %]
     <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
 [%#    <owl:sameAs rdf:resource="http://dbpedia.org/page/xxx"/> %]
-    <rdfs:isDefinedBy rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').resource_person_loc.name %]/[% database %]/[% id %].rdf"/>
+    <rdfs:isDefinedBy rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('resource_person_loc') %]/[% database %]/[% id %].rdf"/>
   </rdf:Description>
 [% FOREACH title_record IN title_records.to_ids %]
-  <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[% title_record.database %]/[% title_record.id %]">
-    <dc:creator rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').resource_person_loc.name %]/[% database %]/[% id %]"/>
+  <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('resource_title_loc') %]/[% title_record.database %]/[% title_record.id %]">
+    <dc:creator rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('resource_person_loc') %]/[% database %]/[% id %]"/>
   </rdf:Description>
 [% END %]
 </rdf:RDF>

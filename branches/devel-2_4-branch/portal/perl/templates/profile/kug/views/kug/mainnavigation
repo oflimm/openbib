@@ -26,21 +26,21 @@
 [%- username = user.get_username -%]
 <div id="mainnavigation">
 <div id="mainnavigation_left">
-<a [%- IF active_menu == "searchform" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/recent">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
+<a [%- IF active_menu == "searchform" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('resultlists_loc') %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('collection_loc') %].html">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
 </div>
 <div id="mainnavigation_right">
-[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]/databases.html">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
-<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').startopac_loc.name %].html">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
-<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').rssfeeds_loc.name %].html">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% path_prefix %]/[% config.get('admin_loc') %]/databases.html">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
+<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('startopac_loc') %].html">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
+<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('rssfeeds_loc') %].html">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
 [% IF config.get('login_active') == 1 %]
 [% IF username %]
-<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/preferences.html">[% msg.maketext("Mein KUG") %]</a>
+<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/preferences.html">[% msg.maketext("Mein KUG") %]</a>
 [% ELSE %]
-<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('handler').login_loc.name %].html">[% msg.maketext("Mein KUG") %]</a>
+<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('login_loc') %].html">[% msg.maketext("Mein KUG") %]</a>
 [%- END -%]
 &nbsp;::&nbsp;
 [% END %]
-<a [%- IF active_menu == "info" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/help.html">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "tutorial" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/tutorials.html">[% msg.maketext("Tutorien") %]</a>&nbsp;::&nbsp;<a href="[% path_prefix %]/[% config.get('handler').logout_loc.name %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+<a [%- IF active_menu == "info" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('info_loc') %]/help.html">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "tutorial" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('info_loc') %]/tutorials.html">[% msg.maketext("Tutorien") %]</a>&nbsp;::&nbsp;<a href="[% path_prefix %]/[% config.get('logout_loc') %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 [%- IF username -%]
  [[% username %]]
 [%- END -%]

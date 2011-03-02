@@ -26,7 +26,7 @@
 
 <div class="content">
 
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_view_loc.name %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_view_loc') %]">
 
 
 <table width="100%">
@@ -59,7 +59,7 @@
 
 [% FOREACH viewinfo IN views %]
 
-<tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% config.get('base_loc') %]/[% config.get('handler').admin_view_loc.name %]/[% viewinfo.viewname %]/rss/edit"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% config.get('base_loc') %]/[% config.get('handler').admin_view_loc.name %]/[% viewinfo.viewname %]/edit">[% viewinfo.description %]</a></td><td>[% viewinfo.profile %]</td><td>[% viewinfo.viewdb %]</td><td>[% viewinfo.active %]</td></tr>
+<tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% config.get('base_loc') %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/rss/edit"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% config.get('base_loc') %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/edit">[% viewinfo.description %]</a></td><td>[% viewinfo.profile %]</td><td>[% viewinfo.viewdb %]</td><td>[% viewinfo.active %]</td></tr>
 [% END %]
 
 </table>

@@ -23,7 +23,7 @@
 
 <div class="content">
 
-<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]">
 
 <input type="hidden" name="dbname"     value="[% databaseinfo.dbname %]" />
 <input type="hidden" name="do_editcat" value="1" />

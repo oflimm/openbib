@@ -56,7 +56,7 @@ FOREACH category IN categories;
 END ;-%]
 </table>
 [%-   IF dbinfo.get('use_libinfo').${viewdbs.first} %]
-[<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/60?id=[% viewdbs.first %]">
+[<a href="[% path_prefix %]/[% config.get('info_loc') %]/60?id=[% viewdbs.first %]">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -70,6 +70,6 @@ zugeh&ouml;rigen digitalisierten Karten-Katalogen:
 </p>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('handler').redirect_loc.name %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=423f" target="_blank">Historisches Seminar / Abteilung f&uuml;r iberische und lateinamerikanische Geschichte / Erwin-Walter-Palm-Bibliothek</a>. </li>
+<li><a href="[% path_prefix %]/[% config.get('redirect_loc') %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=423f" target="_blank">Historisches Seminar / Abteilung f&uuml;r iberische und lateinamerikanische Geschichte / Erwin-Walter-Palm-Bibliothek</a>. </li>
 </ul>
 

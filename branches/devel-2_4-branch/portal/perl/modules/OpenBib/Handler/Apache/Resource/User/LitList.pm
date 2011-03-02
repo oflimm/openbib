@@ -100,7 +100,7 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/litlist.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/litlist.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -177,7 +177,7 @@ sub show_collection {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -232,7 +232,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/litlist.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/litlist.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

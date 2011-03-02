@@ -25,7 +25,7 @@
 
 <h1>[% orgunitinfo.description %]</h1>
 
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_profile_loc') %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
 <input type="hidden" name="_method"    value="PUT" />
 
 <table width="100%">
@@ -75,7 +75,7 @@ selected="selected"
 
 </form>
 
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_profile_loc') %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="1" />
 

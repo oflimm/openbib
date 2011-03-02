@@ -26,14 +26,14 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag.html">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag/edit">[% msg.maketext("&Auml;ndern") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/tag.html">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/tag/edit">[% msg.maketext("&Auml;ndern") %]</a></li>
 </ul>
 
 <div class="content">
 <p/>
 <div class="listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag.html?format=cloud"[% IF format == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag.html?format=list"[% IF format == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/tag.html?format=cloud"[% IF format == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/tag.html?format=list"[% IF format == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 [%
    private_tags = user.get_private_tags({ loginname => loginname  });
@@ -67,7 +67,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/tag/[% itemid %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/tag/[% itemid %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%     END %]
 </ol>
 [%   ELSIF format == 'list' %]
@@ -79,7 +79,7 @@ verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('hand
    itemid    = thisitem.id;
    itemclass = css_classes.$classnr;
 %]
-<li><a href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/[% itemid %]">[% item %]</a> ([% itemcount %])</li>
+<li><a href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/[% itemid %]">[% item %]</a> ([% itemcount %])</li>
 [%     END %]
 </ul>
 [%   END %]

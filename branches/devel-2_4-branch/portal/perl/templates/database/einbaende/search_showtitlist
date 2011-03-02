@@ -38,7 +38,7 @@
   <div class="resultheader">
     <div class="catalogue">
 [%-   IF dbinfo.get('use_libinfo').${database} %]
-<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/60?id=[% database %]">
+<a href="[% path_prefix %]/[% config.get('info_loc') %]/60?id=[% database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -78,7 +78,7 @@
 [%-    END -%]
   </div>
   <div class="listoptions">
-<form method="get" action="[% path_prefix %]/[% config.get('handler').search_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
 <input type="hidden" name="num"        value="[% IF num %][% num %][% ELSE %][% qopts.num %][% END %]" />
 
@@ -104,20 +104,20 @@
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
-[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'P0101'}  -%]
-[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('search_loc')}?database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- FOREACH part IN item.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('search_loc')}?database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
 [%# Titel konstruieren %]
@@ -151,12 +151,12 @@
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-<span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('search_loc') %]?queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 [%- IF item.popularity -%]<br />(Popularit&auml;t: [% item.popularity %])[%- END -%]
       </div>
       <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
       <div class="titleactions">
-<a class="collection" class="collection" href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=einbaendesearchsingletit=[% record.id %];stid=1;olws=Viewer" title="[% msg.maketext("Einband-Abbildungen") %]" valign="top"><img style="vertical-align: bottom;" src="[% config.get('thumbnail_img') %]" alt="Einband-Abbildungen"/></a>
+<a class="collection" class="collection" href="[% path_prefix %]/[% config.get('managecollection_loc') %]?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?db=einbaendesearchsingletit=[% record.id %];stid=1;olws=Viewer" title="[% msg.maketext("Einband-Abbildungen") %]" valign="top"><img style="vertical-align: bottom;" src="[% config.get('thumbnail_img') %]" alt="Einband-Abbildungen"/></a>
       </div>
    </div>
 <!-- Ende einzelner Treffer -->

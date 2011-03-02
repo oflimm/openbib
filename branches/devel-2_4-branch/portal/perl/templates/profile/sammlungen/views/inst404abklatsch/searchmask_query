@@ -5,21 +5,21 @@
 <script type="text/javascript">
 $(document).ready(function(){
 [%   IF showfs %]
-  $("#autocomplete_fs").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#autocomplete_fs").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
 [%   END %]
 [%   IF showverf %]
-  $("#autocomplete_verf").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#autocomplete_verf").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
 [%   END %]
 [%   IF showswt %]
-  $("#autocomplete_swt").autocomplete("[% path_prefix %]/[% config.get('handler').connector_spellcheck_loc.name %]", {
+  $("#autocomplete_swt").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -31,14 +31,14 @@ $(document).ready(function(){
 <script type="text/javascript">
 $(document).ready(function(){
 [%   IF showfs %]
-  $("#autocomplete_fs").autocomplete("[% path_prefix %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+  $("#autocomplete_fs").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
 [%   END %]
 [%   IF showverf %]
-  $("#autocomplete_verf").autocomplete("[% path_prefix %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+  $("#autocomplete_verf").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -48,7 +48,7 @@ $(document).ready(function(){
                   type: "2" }});
 [%   END %]
 [%   IF showswt %]
-  $("#autocomplete_swt").autocomplete("[% path_prefix %]/[% config.get('handler').connector_livesearch_loc.name %]", {
+  $("#autocomplete_swt").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                

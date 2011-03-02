@@ -36,20 +36,20 @@
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.titnormset.${'P0100'}  -%]
-[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').browse_loc.name}?database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('browse_loc')}?database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.titnormset.${'P0101'}  -%]
-[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').browse_loc.name}?database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('browse_loc')}?database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.titnormset.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').browse_loc.name}?database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('browse_loc')}?database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- FOREACH part IN item.titnormset.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${path_prefix}/${config.get('handler').browse_loc.name}?database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('browse_loc')}?database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
 [%- END -%]
 [%- person = persons.join(' ; ') -%]
 
@@ -86,7 +86,7 @@
 
 <tr><td class="boxedclear">
 <p>
-<span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('handler').browse_loc.name %]?search=Mehrfachauswahl;srt=[% srt %];database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+<span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('browse_loc') %]?search=Mehrfachauswahl;srt=[% srt %];database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
 class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
 </p>
 
@@ -95,7 +95,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <p />[%    IF item.review %][% item.review %][% END %]
 
 <p>
-<a class="cssbutton glass kug" href="[% path_prefix %]/[% config.get('handler').resource_review_loc.name %]/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="cssbutton glass kug" href="[% path_prefix %]/[% config.get('handler').resource_review_loc.name %]/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
+<a class="cssbutton glass kug" href="[% path_prefix %]/[% config.get('resource_review_loc') %]/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="cssbutton glass kug" href="[% path_prefix %]/[% config.get('resource_review_loc') %]/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
 </p>
 </td></tr>
 <tr><td></td></tr>

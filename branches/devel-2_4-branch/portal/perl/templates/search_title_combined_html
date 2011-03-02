@@ -41,7 +41,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?page=[% page %];[% request_base %];searchprofile=1;queryid=[% queryid %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% request_base %];searchprofile=1;queryid=[% queryid %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]
@@ -69,7 +69,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?page=[% page %];[% request_base %]searchprofile=1;queryid=[% queryid %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% request_base %]searchprofile=1;queryid=[% queryid %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]

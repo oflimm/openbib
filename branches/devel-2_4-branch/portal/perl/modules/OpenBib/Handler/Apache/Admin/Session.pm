@@ -101,7 +101,7 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$config->{handler}{admin_session_loc}{name}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$config->{admin_session_loc}.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -421,7 +421,7 @@ sub create_record {
     $config->new_databaseinfo($thisdbinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_session_loc}{name}/$dbname/edit");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_session_loc}/$dbname/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -605,7 +605,7 @@ sub update_record {
             $self->delete_record;
 #             $logger->debug("Redirecting to delete location");
 #             $self->query->method('DELETE');    
-#             $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_session_loc}{name}/$dbname");
+#             $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_session_loc}/$dbname");
 #             $self->query->status(Apache2::Const::REDIRECT);
             return;
         }
@@ -671,7 +671,7 @@ sub update_record {
     $config->update_databaseinfo($thisdbinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_session_loc}{name}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_session_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -725,7 +725,7 @@ sub delete_record {
     $config->del_databaseinfo($dbname);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_session_loc}{name}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_session_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

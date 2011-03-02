@@ -26,12 +26,12 @@
 [%- username = user.get_username -%]
 <div id="mainnavigation">
 <div id="mainnavigation_left">
-<a [%- IF active_menu == "searchform" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/recent">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').resultlists_loc.name %]?action=choice">[% msg.maketext("Trefferliste") %]</a>
+<a [%- IF active_menu == "searchform" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('resultlists_loc') %]?action=choice">[% msg.maketext("Trefferliste") %]</a>
 </div>
 <div id="mainnavigation_right">
-[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?do_showcat=1">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
-<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/simple">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
-<a href="[% path_prefix %]/[% config.get('handler').leave_loc.name %]?" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showcat=1">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
+<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
+<a href="[% path_prefix %]/[% config.get('leave_loc') %]?" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 [%- IF username -%]
  [[% username %]]
 [%- END -%]

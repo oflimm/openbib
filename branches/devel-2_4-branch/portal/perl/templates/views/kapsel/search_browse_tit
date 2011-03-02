@@ -22,18 +22,18 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=kapselbrowsecat=T0700" title="Register">Register</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?db=kapselstid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('search_loc') %]?db=kapselbrowsecat=T0700" title="Register">Register</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('info_loc') %]?db=kapselstid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a[%- IF browsecat == 'T0710' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=kapselbrowsecat=T0710">Schlagwort</a></li>
-   <li><a[%- IF browsecat == 'T0700' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=kapselbrowsecat=T0700">Systematik</a></li>
-   <li><a[%- IF browsecat == 'T0101' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=kapselbrowsecat=T0101">Personen</a></li>
+   <li><a[%- IF browsecat == 'T0710' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=kapselbrowsecat=T0710">Schlagwort</a></li>
+   <li><a[%- IF browsecat == 'T0700' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=kapselbrowsecat=T0700">Systematik</a></li>
+   <li><a[%- IF browsecat == 'T0101' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=kapselbrowsecat=T0101">Personen</a></li>
 </ul>
 
 <div class="content">
@@ -44,7 +44,7 @@
 
 <table width="100%">
 [% FOREACH item IN browselist %]
-<tr><td><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=kapselsearchtitofcnt=[% item %];category=[% browsecat %]">[% item %]</a></td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=kapselsearchtitofcnt=[% item %];category=[% browsecat %]">[% item %]</a></td></tr>
 [% END %]
 </table>
 

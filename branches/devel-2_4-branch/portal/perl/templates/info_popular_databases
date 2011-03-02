@@ -26,17 +26,17 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/11?database=[% database %]" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]/11?database=[% database %]" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/11?database=[% database %]" title="Top 20">[% msg.maketext("Titel pro Katalog") %]</a></li>
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/12?database=[% database %]" title="Meistgenutzte Kataloge">[% msg.maketext("Meistgenutzte Kataloge") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('info_loc') %]/11?database=[% database %]" title="Top 20">[% msg.maketext("Titel pro Katalog") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]/12?database=[% database %]" title="Meistgenutzte Kataloge">[% msg.maketext("Meistgenutzte Kataloge") %]</a></li>
 </ul>
 
 <div class="content">

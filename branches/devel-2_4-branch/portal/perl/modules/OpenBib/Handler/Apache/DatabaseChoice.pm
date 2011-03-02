@@ -82,7 +82,7 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{databasechoice_loc}{name}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{databasechoice_loc}.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -275,7 +275,7 @@ sub update_collection {
     # Neue Datenbankauswahl ist voreingestellt
     $session->set_profile('dbauswahl');
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{searchform_loc}{name}.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{searchform_loc}.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

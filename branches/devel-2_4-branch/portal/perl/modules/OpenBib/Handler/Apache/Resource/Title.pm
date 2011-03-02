@@ -73,7 +73,7 @@ sub show_popular_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_title_loc}";
 
     if ($database){
         $new_location.="/$database";
@@ -219,7 +219,7 @@ sub show {
         $id = $titleid;
         my $negotiated_type_ref = $self->negotiate_type;
 
-        my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_title_loc}{name}/$database/$id.$negotiated_type_ref->{suffix}";
+        my $new_location = "$config->{base_loc}/$view/$config->{resource_title_loc}/$database/$id.$negotiated_type_ref->{suffix}";
 
         $self->query->method('GET');
         $self->query->content_type($negotiated_type_ref->{content_type});

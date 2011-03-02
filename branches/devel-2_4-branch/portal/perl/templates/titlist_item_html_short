@@ -37,7 +37,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -55,7 +55,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -69,7 +69,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -83,7 +83,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -139,12 +139,12 @@
     toc       = item.${'T4110'}.first.content ;
 
     IF ebook ;
-      ebook = "${path_prefix}/${config.get('handler').redirect_loc.name}/503/${ebook}" ;
+      ebook = "${path_prefix}/${config.get('redirect_loc')}/503/${ebook}" ;
       titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
     END ;
 
     IF toc ;
-      toc = "${path_prefix}/${config.get('handler').redirect_loc.name}/500/${toc}" ;
+      toc = "${path_prefix}/${config.get('redirect_loc')}/500/${toc}" ;
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
@@ -160,11 +160,11 @@
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.lt == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-         <span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>   
+         <span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('resource_title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>   
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-         <a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% record.database %]">
+         <a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% record.database %]">
 [%-   ELSE -%]
          <a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -175,12 +175,12 @@
       </div>
       <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
       <div class="titleactions">
-<a class="collection" href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]?_method=POST;db=[% item.database %];id=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
+<a class="collection" href="[% path_prefix %]/[% config.get('collection_loc') %]?_method=POST;db=[% item.database %];id=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
 [% IF user_owns_litlist %]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %]/item/[% item.database %]/[% item.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %]/item/[% item.database %]/[% item.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]
 [% IF parameter.private_tags %]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').resource_tag_loc.name %]/[% parameter.tag %]?titid=[% item.id %];titdb=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('resource_tag_loc') %]/[% parameter.tag %]?titid=[% item.id %];titdb=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]
       </div>
     </div>

@@ -23,7 +23,7 @@
 
 <div class="content">
 
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_view_loc.name %]/[% viewinfo.viewname %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]">
 <input type="hidden" name="_method"     value="PUT" />
 
 <table width="100%">

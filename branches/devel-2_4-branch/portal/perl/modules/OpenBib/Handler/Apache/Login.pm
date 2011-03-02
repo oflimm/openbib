@@ -124,7 +124,7 @@ sub show_form {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/[% user.ID %]/preference");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_user_loc}/[% user.ID %]/preference");
 
         return Apache2::Const::OK;
     }
@@ -203,7 +203,7 @@ sub authenticate {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/[% user.ID %]/preference");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_user_loc}/[% user.ID %]/preference");
 
         return Apache2::Const::OK;
     }
@@ -334,7 +334,7 @@ sub authenticate {
         $session->set_mask($masktype);
         
         $redirecturl
-            = "http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/preferences.html";
+            = "http://$config->{servername}$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/preferences.html";
         
     }
     
@@ -347,7 +347,7 @@ sub authenticate {
     
     # Fehlerbehandlung
     if ($loginfailed) {
-        $redirecturl="http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{login_loc}{name}/failure?code=$loginfailed";
+        $redirecturl="http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}/failure?code=$loginfailed";
     }
     
     $logger->debug("Redirecting to $redirecturl");
@@ -411,7 +411,7 @@ sub failure {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/[% user.ID %]/preference");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_user_loc}/[% user.ID %]/preference");
 
         return Apache2::Const::OK;
     }

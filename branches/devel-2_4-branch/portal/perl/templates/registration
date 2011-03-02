@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').registration_loc.name %].html">[% msg.maketext("Selbstregistrierung") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('registration_loc') %].html">[% msg.maketext("Selbstregistrierung") %]</a></li>
 </ul>
 
 <div class="content">
@@ -45,7 +45,7 @@ verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitt
 
 <p />
 
-<form method="post" action="[% path_prefix %]/[% config.get('handler').registration_loc.name %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% path_prefix %]/[% config.get('registration_loc') %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="action"    value="auth" />
 
 <table>

@@ -36,7 +36,7 @@
 <table>
 <tr><td>Anzahl der Titels&auml;tze (Alle/Zeitschriften-Serien/Artikel)</td><td><b>[%- titcount = config.get_number_of_titles -%][% titcount.all %] / [% titcount.serials %] / [% titcount.articles %]</b></td><td></td></tr>
 <tr><td>Anzahl der Kataloge (aktiv/gesamt)</td><td><b>[% config.get_number_of_dbs %] / [% config.get_number_of_all_dbs %]</b></td><td></td></tr>
-<tr><td>Anzahl der Spezialsichten (aktiv/gesamt)</td><td><b>[% config.get_number_of_views %] / [% config.get_number_of_all_views %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?do_showstat=1;stid=52">Grafik</a></td></tr>
+<tr><td>Anzahl der Spezialsichten (aktiv/gesamt)</td><td><b>[% config.get_number_of_views %] / [% config.get_number_of_all_views %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showstat=1;stid=52">Grafik</a></td></tr>
 <tr><td>Anzahl vergebener Tags / Titel / Nutzer</td><td><b>[% user.get_number_of_tags %] / [% user.get_number_of_tagged_titles %] / [% user.get_number_of_tagging_users %]</b></td><td></td></tr>
 <tr><td>Anzahl der Literaturlisten (&ouml;ffentlich/privat)</td><td>[% ret = user.get_number_of_litlists %]<b>[% ret.public %] / [% ret.private %]</b></td><td></td></tr>
 <tr><td>Anzahl der Nutzer</td><td><b>[% user.get_number_of_users %]</b></td><td></td></tr>

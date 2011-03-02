@@ -49,7 +49,7 @@ yesno = {
 <tr><th>[% msg.maketext("Neuen RSS-Feed einrichten") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_database_loc.name %]/[% dbname %]/rss/[% rssinfo.id %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_database_loc') %]/[% dbname %]/rss/[% rssinfo.id %]">
 <input type="hidden" name="_method"    value="PUT" />
 <input type="hidden" name="rss_type"   value="[% rssinfo.type %]" />
 <table>
@@ -78,7 +78,7 @@ yesno = {
 
 </form>
 
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_database_loc.name %]/[% dbname %]/rss/[% rssinfo.id %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_database_loc') %]/[% dbname %]/rss/[% rssinfo.id %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="1" />
 

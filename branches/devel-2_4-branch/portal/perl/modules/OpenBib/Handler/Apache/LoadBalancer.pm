@@ -110,7 +110,7 @@ sub show {
     }
 
     $self->header_type('redirect');
-    $self->header_props(-type => 'text/html', -url => "http://$bestserver$config->{base_loc}/$view/$config->{handler}{startopac_loc}{name}?$urlquery");
+    $self->header_props(-type => 'text/html', -url => "http://$bestserver$config->{base_loc}/$view/$config->{startopac_loc}?$urlquery");
 }
 
 1;

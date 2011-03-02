@@ -223,7 +223,7 @@ sub show {
                 }
             }
 
-            my $redirecturl   = "http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{managecollection_loc}{name}";
+            my $redirecturl   = "http://$config->{servername}$config->{base_loc}/$view/$config->{managecollection_loc}";
 
             if ($view ne "") {
                 $redirecturl.=";view=$view";
@@ -243,7 +243,7 @@ sub show {
                 }
             }
 
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{litlists_loc}{name}?action=manage&litlistid=$litlistid&do_showlitlist=1");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{litlists_loc}?action=manage&litlistid=$litlistid&do_showlitlist=1");
             return Apache2::Const::OK;
 
 	}
@@ -256,7 +256,7 @@ sub show {
 	  
             $user->add_litlist({ title =>$title, type => $littype});
 
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{managecollection_loc}{name}?action=show&type=HTML");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{managecollection_loc}?action=show&type=HTML");
             return Apache2::Const::OK;
 	}
         elsif ($do_addtags) {
@@ -291,7 +291,7 @@ sub show {
                 OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
             }
             
-            my $redirecturl   = "http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{managecollection_loc}{name}";
+            my $redirecturl   = "http://$config->{servername}$config->{base_loc}/$view/$config->{managecollection_loc}";
 
             if ($view ne "") {
                 $redirecturl.=";view=$view";

@@ -4,9 +4,9 @@
     xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 
-    <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% libinfo.database %]">
+    <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('resource_library_loc') %]/[% libinfo.database %]">
         <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
-        <rdfs:isDefinedBy rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% libinfo.database %]"/>
+        <rdfs:isDefinedBy rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('resource_library_loc') %]/[% libinfo.database %]"/>
 [% FOREACH item IN libinfo.${"I0010"} %]
         <foaf:name>[% item.content %]</foaf:name>
 [% END %]

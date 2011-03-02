@@ -138,7 +138,7 @@ sub update_account {
         }
     }
     
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{logout_loc}{name}";
+    my $new_location = "$config->{base_loc}/$view/$config->{logout_loc}";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

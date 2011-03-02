@@ -35,13 +35,13 @@
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% loginname %]</td>
 
 [% IF targettype == 'self' %]
-<td><form method="post" action="[% path_prefix %]/[% config.get('handler').userprefs_loc.name %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="action" value="delaccount_ask" /><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></div></form></td>
+<td><form method="post" action="[% path_prefix %]/[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="action" value="delaccount_ask" /><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></div></form></td>
 [% END %]
 
 </tr>
 
 [% IF targettype == 'self' %]
-<tr><form method="post" action="[% path_prefix %]/[% config.get('handler').userprefs_loc.name %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="action" value="changepw" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></div></td></form></tr>
+<tr><form method="post" action="[% path_prefix %]/[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="action" value="changepw" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></div></td></form></tr>
 [% END %]
 
 </table>
@@ -90,14 +90,14 @@
 <table>
 <tr><td><b>[% msg.maketext("Ausgeliehen") %]:</b></td><td align="left">&nbsp;
 [%- IF userinfo.avanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
+<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
 [%- ELSE -%]
 [%- userinfo.avanz -%]
 [%- END -%]
 </td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Vorgemerkt") %]:</b></td><td>
 
 [%- IF userinfo.vmanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
+<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
 [%- ELSE -%]
 [%- userinfo.vmanz -%]
 [%- END -%]
@@ -105,7 +105,7 @@
 </td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Offene Geb&uuml;hren") %]:</b></td><td><span class="warning">
 
 [% IF userinfo.maanz > 0 %]
-<a href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
+<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
 [% ELSE %]
 [% userinfo.maanz %]
 [% END %]
@@ -115,7 +115,7 @@
 
 <tr><td><b>[% msg.maketext("Bestellungen") %]:</b></td><td align="left">&nbsp;
 [%- IF userinfo.bsanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('handler').circulation_loc.name %]?action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
+<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
 [%- ELSE -%]
 [%- userinfo.bsanz -%]
 [%- END -%]
@@ -136,7 +136,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("BibSonomy") %]</td></tr>
 <tr><td class="options">
-<form method="post" action="[% path_prefix %]/[% config.get('handler').userprefs_loc.name %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% path_prefix %]/[% config.get('userprefs_loc') %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="action"    value="changebibsonomy" />
 
 [% bibsonomy = user.get_bibsonomy %]
@@ -150,7 +150,7 @@
 </form>
 [%- IF bibsonomy.sync == "on" -%]
 <p/>
-<a href="[% path_prefix %]/[% config.get('handler').userprefs_loc.name %]?action=bibsonomy_sync_all">[% msg.maketext("Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen") %]</a>
+<a href="[% path_prefix %]/[% config.get('userprefs_loc') %]?action=bibsonomy_sync_all">[% msg.maketext("Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen") %]</a>
 [%- END -%]
 </td></tr>
 </table>

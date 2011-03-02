@@ -27,8 +27,8 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('base_loc') %]/[% config.get('handler').admin_session_loc.name %]">Aktive Sessions (lokal)</a></li>
-   <li><a                href="[% config.get('base_loc') %]/[% config.get('handler').admin_session_loc.name %]/search/form">Explorer</a></li>
+   <li><a class="active" href="[% config.get('base_loc') %]/[% config.get('admin_session_loc') %]">Aktive Sessions (lokal)</a></li>
+   <li><a                href="[% config.get('base_loc') %]/[% config.get('admin_session_loc') %]/search/form">Explorer</a></li>
 </ul>
 
 <div class="content">
@@ -43,7 +43,7 @@
 
 [% FOREACH session IN sessions %]
 
-<tr><td><a href="[% config.get('base_loc') %]/[% config.get('handler').admin_session_loc.name %]/[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.username %]</td><td align="middle">[% session.numqueries %]</td></tr>
+<tr><td><a href="[% config.get('base_loc') %]/[% config.get('admin_session_loc') %]/[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.username %]</td><td align="middle">[% session.numqueries %]</td></tr>
 
 [% END %]
 

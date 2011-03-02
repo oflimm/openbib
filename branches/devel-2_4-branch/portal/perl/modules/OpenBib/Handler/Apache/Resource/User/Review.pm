@@ -89,7 +89,7 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/review.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/review.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -249,7 +249,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/review.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/review.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

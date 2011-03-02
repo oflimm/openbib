@@ -40,7 +40,7 @@
    searchterm    = item;
    searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-   localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
+   localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
@@ -92,7 +92,7 @@
    searchterm    = item;
    searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-   localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
+   localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>

@@ -89,7 +89,7 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/profile.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/profile.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -523,7 +523,7 @@ sub create_record {
         $user->add_profiledb($profileid,$database);
     }
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/profile/$profileid.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/profile/$profileid.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -709,14 +709,14 @@ sub show_collectionzzz {
             # ... und dann eintragen
             $user->add_profiledb($profileid,$database);
         }
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{databaseprofile_loc}{name}?do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
         $user->delete_dbprofile($profileid);
         $user->delete_profiledbs($profileid);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{databaseprofile_loc}{name}?do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {
@@ -849,14 +849,14 @@ sub show_collectionxxx {
             # ... und dann eintragen
             $user->add_profiledb($profileid,$database);
         }
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{databaseprofile_loc}{name}?do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
         $user->delete_dbprofile($profileid);
         $user->delete_profiledbs($profileid);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{databaseprofile_loc}{name}?do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {
@@ -876,7 +876,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_user_loc}{name}/$userid/profile.html";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/profile.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

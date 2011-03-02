@@ -104,152 +104,79 @@ lang:
 base_loc: /portal
 
 # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
-handler:
-  admin_loc:
-     name: admin
-  admin_database_loc:
-     name: admin/database
-  admin_view_loc:
-     name: admin/view
-  admin_library_loc:
-     name: admin/library
-  admin_profile_loc:
-     name: admin/profile
-  admin_session_loc:
-     name: admin/session
-  admin_user_loc:
-     name: admin/user
-  admin_statistics_loc:
-     name: admin/statistics
-  admin_subjects_loc:
-     name: admin/subjects
-  admin_status_loc:
-     name: admin/status
-  admin_server_loc:
-     name: admin/server
-  admin_subject_loc:
-     name: admin/subject
-  admin_login_loc:
-     name: admin/login
-  admin_logout_loc:
-     name: admin/logout
-  bibsonomy_loc:
-     name: bibsonomy
-  circulation_loc:
-     name: benutzerkonto
-  connector_availabilityimage_loc: 
-     name: connector/availabilityimage
-  connector_availability_loc:
-     name: connector/availability
-  connector_bibmanager_loc:
-     name: connector/literaturverwaltung
-  connector_digibib_loc:
-     name:  connector/digibib
-  connector_livesearch_loc:
-     name: connector/livesearch
-  connector_locationmark_loc:
-     name: connector/sykasignatur
-  connector_olws_loc:
-     name: connector/olws
-  # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
-  connector_permalink_loc:
-     name: connector/permalink
-  connector_rss_loc:
-     name: connector/rss
-  connector_seealso_loc:
-     name: connector/seealso
-  connector_similarpersons_loc:
-     name: connector/similarpersons
-  connector_similarsubjects_loc:
-     name: connector/similarsubjects
-  connector_spellcheck_loc:
-     name: connector/spellcheck
-  connector_ukonline_loc:
-     name: connector/uk-online
-  connector_unapi_loc:
-     name: connector/unapi
-  databasechoice_loc:
-     name: selectdatabase
-  databaseprofile_loc:
-     name:  dbprofile
-  dispatchquery_loc:
-     name: dispatchquery
-  externaljump_loc:
-     name: jumpto
-  ezb_loc:
-     name: ezb 
-  dbis_loc:
-     name: dbis
-  info_loc:
-     name: info
-  logout_loc:
-     name: logout
-  litlists_loc: 
-     name: litlists
-  loadbalancer_loc:
-     name: lastverteilung
-  login_loc:
-     name: login
-  mailcollection_loc:
-     name: mailcollection
-  mailpassword_loc:
-     name: mailpassword
-  collection_loc:
-     name: collection
-  redirect_loc:
-     name: redirect
-  resource_title_loc:
-     name: resource/title
-  resource_person_loc:
-     name: resource/person
-  resource_corporatebody_loc:
-     name: resource/corporatebody
-  resource_subject_loc:
-     name: resource/subject
-  resource_classification_loc:
-     name: resource/classification
-  resource_tag_loc:
-     name: resource/tag
-  resource_review_loc:
-     name: resource/review
-  resource_litlist_loc:
-     name: resource/litlist
-  resource_litlist_public_loc:
-     name: resource/litlist
-  resource_litlist_public_subject_loc:
-     name: resource/litlist/subject
-  resource_litlist_public_user_loc:
-     name: resource/litlist/user
-  resource_library_loc:
-     name: resource/library
-  resource_user_loc:
-     name: resource/user
-  resource_cloud_loc:
-     name: resource/cloud
-  resultlists_loc:
-     name: resultlists
-  rssfeeds_loc:
-     name: rssfeeds
-  browse_loc:
-     name:  browse
-  searchform_loc:
-     name: searchform
-  registration_loc:
-     name: registration
-  serverload_loc:
-     name:  getload
-  startopac_loc:
-     name: home
-  tags_loc:
-     name: tags
-  userprefs_loc:
-     name: userprefs
-  userreviews_loc:
-     name: review
-  index_loc:
-     name: index
-  search_loc:
-     name: search
+admin_loc: admin
+admin_database_loc: admin/database
+admin_view_loc: admin/view
+admin_library_loc: admin/library
+admin_profile_loc: admin/profile
+admin_session_loc: admin/session
+admin_user_loc: admin/user
+admin_statistics_loc: admin/statistics
+admin_subjects_loc: admin/subjects
+admin_status_loc: admin/status
+admin_server_loc: admin/server
+admin_subject_loc: admin/subject
+admin_login_loc: admin/login
+admin_logout_loc: admin/logout
+bibsonomy_loc: bibsonomy
+circulation_loc: benutzerkonto
+connector_availabilityimage_loc: connector/availabilityimage
+connector_availability_loc: connector/availability
+connector_bibmanager_loc: connector/literaturverwaltung
+connector_digibib_loc: connector/digibib
+connector_livesearch_loc: connector/livesearch
+connector_locationmark_loc: connector/sykasignatur
+connector_olws_loc: connector/olws
+# Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
+connector_permalink_loc: connector/permalink
+connector_rss_loc: connector/rss
+connector_seealso_loc: connector/seealso
+connector_similarpersons_loc: connector/similarpersons
+connector_similarsubjects_loc: connector/similarsubjects
+connector_spellcheck_loc: connector/spellcheck
+connector_ukonline_loc: connector/uk-online
+connector_unapi_loc: connector/unapi
+databasechoice_loc: selectdatabase
+databaseprofile_loc: dbprofile
+dispatchquery_loc: dispatchquery
+externaljump_loc: jumpto
+ezb_loc: ezb 
+dbis_loc: dbis
+info_loc: info
+logout_loc: logout
+litlists_loc:  litlists
+loadbalancer_loc: lastverteilung
+login_loc: login
+mailcollection_loc: mailcollection
+mailpassword_loc: mailpassword
+collection_loc: collection
+redirect_loc: redirect
+resource_title_loc: resource/title
+resource_person_loc: resource/person
+resource_corporatebody_loc: resource/corporatebody
+resource_subject_loc: resource/subject
+resource_classification_loc: resource/classification
+resource_tag_loc: resource/tag
+resource_review_loc: resource/review
+resource_litlist_loc: resource/litlist
+resource_litlist_public_loc: resource/litlist
+resource_litlist_public_subject_loc: resource/litlist/subject
+resource_litlist_public_user_loc: resource/litlist/user
+resource_library_loc: resource/library
+resource_user_loc: resource/user
+resource_cloud_loc: resource/cloud
+resultlists_loc: resultlists
+rssfeeds_loc: rssfeeds
+browse_loc: browse
+searchform_loc: searchform
+registration_loc: registration
+serverload_loc: getload
+startopac_loc: home
+tags_loc: tags
+userprefs_loc: userprefs
+userreviews_loc: review
+index_loc: index
+search_loc: search
 
 dispatch_rules:
 # Web-Administration

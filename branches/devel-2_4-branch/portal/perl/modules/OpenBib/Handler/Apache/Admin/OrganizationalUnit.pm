@@ -99,7 +99,7 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
     
-    my $new_location = "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$config->{admin_profile_loc}/$profilename/orgunit.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -381,7 +381,7 @@ sub create_record {
     }
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunit/edit");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_profile_loc}/$profilename/orgunit/$orgunit/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -572,7 +572,7 @@ sub update_record {
             $logger->debug("Redirecting to delete location");
             $self->delete_record;
 #             $self->query->method('DELETE');
-#             $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename/orgunit/$orgunitname");
+#             $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_profile_loc}/$profilename/orgunit/$orgunitname");
 #             $self->query->status(Apache2::Const::REDIRECT);
             return;
         }
@@ -591,7 +591,7 @@ sub update_record {
     });
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_profile_loc}/$profilename");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -658,7 +658,7 @@ sub delete_record {
     $config->del_orgunit($profilename,$orgunitname);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_profile_loc}{name}/$profilename");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_profile_loc}/$profilename");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

@@ -27,16 +27,16 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %].html" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('resource_cloud_loc') %].html" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a                href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %].html" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
-[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.get('litlists') %]   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/litlist.html" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
-   <li><a                href="[% path_prefix %]/[% config.get('handler').resource_cloud_loc.name %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('resource_cloud_loc') %].html" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.get('litlists') %]   <li><a class="active" href="[% path_prefix %]/[% config.get('resource_cloud_loc') %]/litlist.html" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
+   <li><a                href="[% path_prefix %]/[% config.get('resource_cloud_loc') %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 </ul>
 
 <div class="content">
@@ -69,7 +69,7 @@
    properties = thisitem.properties;
    itemclass  = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten die Literaturliste</span><a href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?&action=show;litlistid=[% id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
+<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten die Literaturliste</span><a href="[% path_prefix %]/[% config.get('litlists_loc') %]?&action=show;litlistid=[% id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
 die Literaturliste [% item %]">[% item %] ([% properties.itemcount %])</a></li>
 [% END %]
 </ol>

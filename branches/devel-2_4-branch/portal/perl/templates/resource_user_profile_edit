@@ -41,7 +41,7 @@ function update_fak(yourform, checked, fak) {
 
 <div class="content">
 
-<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/profile/[% profileid %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/profile/[% profileid %]" enctype="application/x-www-form-urlencoded">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Derzeit angezeigtes Profil") %]: <b>[% profilname %]</b></th></tr>
@@ -75,11 +75,11 @@ function update_fak(yourform, checked, fak) {
 [%- FOREACH db = catdb -%]
 [%- IF db.category == category.description -%]
 [%- IF db.column == 1 -%]
-<tr><td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+<tr><td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- END -%]
 [%- IF db.column > 1 && db.column < maxcolumn -%]
 [%- IF db.db -%]
-<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]
@@ -89,7 +89,7 @@ function update_fak(yourform, checked, fak) {
 [%- IF db.column != 1 -%]
 
 [%- IF db.db -%]
-<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]

@@ -57,7 +57,7 @@ FOREACH category IN categories;
 END ;-%]
 </table>
 [%-   IF dbinfo.get('use_libinfo').${viewdbs.first} %]
-[<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% viewdbs.first %]">
+[<a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% viewdbs.first %]">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]

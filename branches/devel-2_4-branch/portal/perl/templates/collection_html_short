@@ -40,13 +40,13 @@
 <table>
 <tr>
 <th><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/save?format=[% format %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('collection_loc') %]/save?format=[% format %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
 <th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/print?format=[% format %]" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('collection_loc') %]/print?format=[% format %]" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/mail?format=[% format %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('collection_loc') %]/mail?format=[% format %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
 <th></th><td></td>
 </tr>
 </table>
@@ -56,7 +56,7 @@
 <div class="headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
-<a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=short"[%- IF format == 'short' -%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=full" [%- IF format == 'full' -%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a>
+<a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=short"[%- IF format == 'short' -%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=full" [%- IF format == 'full' -%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a>
 </p>
 
 <div class="litlists"><!-- Begin Litlist -->
@@ -171,7 +171,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%-  searchterm    = part.content;
      searchprefix  = config.get('searchfield').personstring.prefix;
 
-     globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
 [%-  persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
@@ -180,7 +180,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%-  searchterm    = part.content;
      searchprefix  = config.get('searchfield').personstring.prefix;
 
-     globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
 [%-  persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
@@ -190,7 +190,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%-  searchterm    = part.content;
      searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-     globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
 [%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
 [%- END -%]
@@ -199,7 +199,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%-  searchterm    = part.content;
      searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-     globalurl = "${path_prefix}/${config.get('handler').search_loc.name}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 -%]
 [%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
 [%- END -%]
@@ -239,12 +239,12 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
     toc       = item.${'T4110'}.first.content ;
 
     IF ebook ;
-      ebook = "${path_prefix}/${config.get('handler').redirect_loc.name}/503/${ebook}" ;
+      ebook = "${path_prefix}/${config.get('redirect_loc')}/503/${ebook}" ;
       titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${"ebook_i18n"}</a>") ;
     END ;
 
     IF toc ;
-      toc = "${path_prefix}/${config.get('handler').redirect_loc.name}/500/${toc}" ;
+      toc = "${path_prefix}/${config.get('redirect_loc')}/500/${toc}" ;
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
@@ -262,10 +262,10 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-<span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('handler').resource_title_loc.name %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('resource_title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br />[% msg.maketext("aus:") %]&nbsp;<i>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-<a href="[% path_prefix %]/[% config.get('handler').resource_library_loc.name %]/[% record.database %]">
+<a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% record.database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -273,8 +273,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
       </div>
       <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
       <div class="titleactions">
-<a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
-&nbsp;<a href="[% path_prefix %]/[% config.get('handler').collection_loc.name %]/[% record.database %]/[% record.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
+&nbsp;<a href="[% path_prefix %]/[% config.get('collection_loc') %]/[% record.database %]/[% record.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
   </div>
     </div>
 <!-- Ende einzelner Treffer -->

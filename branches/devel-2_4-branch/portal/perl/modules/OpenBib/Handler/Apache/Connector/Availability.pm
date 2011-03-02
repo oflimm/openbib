@@ -109,7 +109,7 @@ sub show {
     }
     
     # Basisipfad entfernen
-    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{connector_availability_loc}{name};
+    my $basepath = $config->{base_loc}."/$view/".$config->{connector_availability_loc};
     $path=~s/$basepath//;
 
     $logger->debug("Path: $path without basepath $basepath");

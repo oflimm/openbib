@@ -90,7 +90,7 @@ sub show {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     # Basisipfad entfernen
-    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{connector_permalink_loc}{name};
+    my $basepath = $config->{base_loc}."/$view/".$config->{connector_permalink_loc};
     $path=~s/$basepath//;
 
     $logger->debug("Path: $path without basepath $basepath");

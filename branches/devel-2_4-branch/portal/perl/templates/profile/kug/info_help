@@ -24,7 +24,7 @@
 <div id="langchoice">
 [% IF config.get('lang').size > 1 %]
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('info_loc') %]?l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 [% END %]
 </div>
@@ -438,7 +438,7 @@ Kompletter Titel). F&uuml;r die Suche nach dem Titel 'Die
         absteigend), Anzeige pro Katalog oder
         katalog&uuml;bergreifend") %].</li>
 
-        <li>[% msg.maketext("Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: [_1]Mein KUG[_2]) für die 'Suche in einzelnen Katalogen' ausw&auml;hlen.","<a href=\"${path_prefix}/${config.get('handler').info_loc.name}?#perskug\">","</a>") %]</li>
+        <li>[% msg.maketext("Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: [_1]Mein KUG[_2]) für die 'Suche in einzelnen Katalogen' ausw&auml;hlen.","<a href=\"${path_prefix}/${config.get('info_loc')}?#perskug\">","</a>") %]</li>
 
         <li>[% msg.maketext("Die <b>Suchhistorie</b> listet Ihnen Ihre schon gestellten
         Suchanfragen auf mit der Angabe der Trefferzahl. So

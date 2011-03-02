@@ -87,7 +87,7 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_cloud_loc}{name}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_cloud_loc}.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -254,7 +254,7 @@ sub show_record_negotiate {
             $path.="/$database";
         }
         
-        my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_cloud_loc}{name}/$path.$negotiated_type_ref->{suffix}";
+        my $new_location = "$config->{base_loc}/$view/$config->{resource_cloud_loc}/$path.$negotiated_type_ref->{suffix}";
 
         $self->query->method('GET');
         $self->query->content_type($negotiated_type_ref->{content_type});

@@ -59,11 +59,11 @@
 <!-- Title begins here -->
 <div class="images"><!-- Begin Images -->
 <p>
-<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;isbn=[% isbn %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% isbn %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 <p>
 [%- IF bibkey -%]
-<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('handler').connector_availabilityimage_loc.name %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
 </div><!-- End Images -->
@@ -100,7 +100,7 @@
        itemid        = thisitem.id;
        itemclass     = css_classes.$classnr;
 
-       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('handler').tags_loc.name}?searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
+       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('tags_loc')}?searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
      END ;
      alltags_cloud = "${alltags_cloud}\n</ol>" ;
      cloud_item = {
@@ -137,11 +137,11 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${path_prefix}/${config.get('handler').virtualsearch_loc.name}?searchall=1;verf=%22${item.content}%22";
-         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?database=${record.database};searchsingleaut=${thisid}";
-         content   = "${rssfeed}<a href=\"${path_prefix}/${config.get('handler').redirect_loc.name}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         globalurl = "${path_prefix}/${config.get('virtualsearch_loc')}?searchall=1;verf=%22${item.content}%22";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?database=${record.database};searchsingleaut=${thisid}";
+         content   = "${rssfeed}<a href=\"${path_prefix}/${config.get('redirect_loc')}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -151,20 +151,20 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${path_prefix}/${config.get('handler').virtualsearch_loc.name}?searchall=1;kor=%22${item.content}%22";
-         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?database=${record.database};searchsinglekor=${thisid}";
+         globalurl = "${path_prefix}/${config.get('virtualsearch_loc')}?searchall=1;kor=%22${item.content}%22";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?database=${record.database};searchsinglekor=${thisid}";
          content   = "${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
     CASE "T0540";
-         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('handler').redirect_loc.name}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE "T0543";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('handler').redirect_loc.name}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
@@ -185,7 +185,7 @@ FOREACH category IN categories;
          IF thiscontent ;
             IF content.match('digitool.hbz-nrw.de') ;
                thiscontent = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
-               content     = "${path_prefix}/${config.get('handler').redirect_loc.name}/500/${content}" ;
+               content     = "${path_prefix}/${config.get('redirect_loc')}/500/${content}" ;
             END ;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
          ELSE ;
@@ -193,7 +193,7 @@ FOREACH category IN categories;
          END ;
 
     CASE "E4100";
-         localurl    = "${path_prefix}/${config.get('handler').search_loc.name}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -204,12 +204,12 @@ FOREACH category IN categories;
     CASE "E4110";
          thisindicator = item.indicator ;
          thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
-         content       = "${path_prefix}/${config.get('handler').redirect_loc.name}/500/${content}" ;
+         content       = "${path_prefix}/${config.get('redirect_loc')}/500/${content}" ;
          content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
 
     CASE "E4120";
          thiscontent   = "Greifen Sie hier online auf den Volltext zu";
-	 content       = "${path_prefix}/${config.get('handler').redirect_loc.name}/503/${content}" ;
+	 content       = "${path_prefix}/${config.get('redirect_loc')}/503/${content}" ;
 	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
@@ -222,10 +222,10 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${path_prefix}/${config.get('handler').virtualsearch_loc.name}?searchall=1;swt=%22${item.content}%22";
-         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?database=${record.database};searchsingleswt=${thisid}";
+         globalurl = "${path_prefix}/${config.get('virtualsearch_loc')}?searchall=1;swt=%22${item.content}%22";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?database=${record.database};searchsingleswt=${thisid}";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thisid} = 1;
 
@@ -237,9 +237,9 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('handler').connector_rss_loc.name}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         localurl  = "${path_prefix}/${config.get('handler').search_loc.name}?database=${record.database};searchsinglenot=${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?database=${record.database};searchsinglenot=${thisid}";
          content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T1600";
@@ -253,10 +253,10 @@ FOREACH category IN categories;
          content   = content ;
 
     CASE "T5001";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${path_prefix}/${config.get('search_loc')}?database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${path_prefix}/${config.get('handler').search_loc.name}?database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${path_prefix}/${config.get('search_loc')}?database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);
@@ -408,7 +408,7 @@ END;
 <p />
 
 [% IF NOT ownreviewid %]
-<form method="get" action="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('userreviews_loc') %]">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
@@ -466,12 +466,12 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 <dd class="review">[%    IF item.review %][% item.review %][% END %]
 [% IF item.id == ownreviewid %]
 <p />
-<a href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewid=[% item.id %];do_edit=1">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewid=[% item.id %];do_del=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+<a href="[% path_prefix %]/[% config.get('userreviews_loc') %]?reviewid=[% item.id %];do_edit=1">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% path_prefix %]/[% config.get('userreviews_loc') %]?reviewid=[% item.id %];do_del=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF loginname %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('userreviews_loc') %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('userreviews_loc') %]?titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]
@@ -494,7 +494,7 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${path_prefix}/${config.get('handler').search_loc.name}?database=${same_record.database};searchsingletit=${same_record.id}" %]
+[% same_url = "${path_prefix}/${config.get('search_loc')}?database=${same_record.database};searchsingletit=${same_record.id}" %]
 <li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
 [% END %]
 </ol>
@@ -510,7 +510,7 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <ol>
 [% FOREACH similar_record IN similar_records.get_records %]
 [% item = similar_record.get_brief_normdata %]
-[% similar_url = "${path_prefix}/${config.get('handler').search_loc.name}?database=${similar_record.database};searchsingletit=${similar_record.id}" %]
+[% similar_url = "${path_prefix}/${config.get('search_loc')}?database=${similar_record.database};searchsingletit=${similar_record.id}" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
@@ -569,21 +569,21 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <table>
 <tr>
 <th><img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
 <th><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
-<td><a class="collection" href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
+<td><a class="collection" href="[% path_prefix %]/[% config.get('managecollection_loc') %]?action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('managecollection_loc') %]?action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
 <th><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('managecollection_loc') %]?action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('handler').managecollection_loc.name %]?action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('managecollection_loc') %]?action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
 <th><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
-<td><a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('handler').connector_permalink_loc.name %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
+<td><a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('connector_permalink_loc') %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
 </table>
 <p />
@@ -591,7 +591,7 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <div class="headline"><span id="formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="formats_do"><!-- Begin formats do -->
 <p>
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?searchsingletit=[% record.id %];database=[% record.database %];format=full;queryid=[% queryid %]" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?searchsingletit=[% record.id %];database=[% record.database %];format=Text;queryid=[% queryid %]" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?searchsingletit=[% record.id %];database=[% record.database %];format=BibTeX;queryid=[% queryid %]" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?searchsingletit=[% record.id %];database=[% record.database %];format=EndNote;queryid=[% queryid %]" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?searchsingletit=[% record.id %];database=[% record.database %];format=full;queryid=[% queryid %]" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('search_loc') %]?searchsingletit=[% record.id %];database=[% record.database %];format=Text;queryid=[% queryid %]" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('search_loc') %]?searchsingletit=[% record.id %];database=[% record.database %];format=BibTeX;queryid=[% queryid %]" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('search_loc') %]?searchsingletit=[% record.id %];database=[% record.database %];format=EndNote;queryid=[% queryid %]" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 <p/>
@@ -601,7 +601,7 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <div class="litlists"><!-- Begin Litlist -->
 <div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
-<form method="get" action="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
 <input type="hidden" name="action"          value="manage" />
 <input type="hidden" name="titid"           value="[% record.id %]" />
 <input type="hidden" name="titdb"           value="[% record.database %]" />
@@ -643,7 +643,7 @@ href="[% path_prefix %]/[% config.get('handler').userreviews_loc.name %]?reviewi
 <tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
-<form method="get" action="[% path_prefix %]/[% config.get('handler').tags_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('tags_loc') %]">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
@@ -718,7 +718,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 [% ELSIF loginname && private_tags_of_tit.size > 0 %]
 <p />
-<form method="get" action="[% path_prefix %]/[% config.get('handler').tags_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('tags_loc') %]">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
@@ -814,7 +814,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${path_prefix}/${config.get('handler').virtualsearch_loc.name}?searchall=1;isbn=${isbnitem.content}" -%]
+[%-   globalurl = "${path_prefix}/${config.get('virtualsearch_loc')}?searchall=1;isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
 <tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
 [%-   END -%]
@@ -831,7 +831,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="headline">[% msg.maketext("Literaturlisten") %]</div>
 <ul style="list-style-type: square">
 [% FOREACH litlist IN litlists %]
-<li><a href="[% path_prefix %]/[% config.get('handler').litlists_loc.name %]?action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
+<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]?action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
 [% END %]
 </ul>
 </div>
@@ -847,7 +847,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [% IF loginname && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:
 [%- FOREACH tag IN private_tags_of_tit -%]
-<a href="[% path_prefix %]/[% config.get('handler').tags_loc.name %]?searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('tags_loc') %]?searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
 [%- END -%]
 [% END %]
 </div>
@@ -859,7 +859,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
 <div class="headline"><span id="bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('handler').bibsonomy_loc.name %]?bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span>
+<span id="bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span>
 </div>
 <p/>
 </div>
@@ -869,7 +869,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% path_prefix %]/[% config.get('handler').connector_similarpersons_loc.name %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% path_prefix %]/[% config.get('connector_similarpersons_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarpersons").html(txt); 
   });
@@ -879,7 +879,7 @@ $(document).ready(function(){
 <div class="similarpersons"><!-- Begin Verwandte Personen -->
 <div class="headline"><span id="similarpersons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarpersons_do"><!-- Begin similarpersons do -->
-<span id="similarpersons"><a href="[% path_prefix %]/[% config.get('handler').connector_similarpersons_loc.name %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarpersons"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -889,7 +889,7 @@ $(document).ready(function(){
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Themen
-  $.get("[% path_prefix %]/[% config.get('handler').connector_similarsubjects_loc.name %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+  $.get("[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
            $("#similarsubjects").html(txt); 
   });
@@ -898,7 +898,7 @@ $(document).ready(function(){
 <div class="similarsubjects"><!-- Begin Verwandte Themen -->
 <div class="headline"><span id="similarsubjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarsubjects_do"><!-- Begin similarsubjects do -->
-<span id="similarsubjects"><a href="[% path_prefix %]/[% config.get('handler').connector_similarsubjects_loc.name %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="similarsubjects"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %]?database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -909,7 +909,7 @@ $(document).ready(function(){
 <div class="headline"><span id="misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="misc_do"><!-- Begin misc do -->
 <ul style="list-style-type: square">
-<li><a href="[% path_prefix %]/[% config.get('handler').info_loc.name %]/10?database=[% record.database %]" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('info_loc') %]/10?database=[% record.database %]" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 </div>
 </div>
@@ -956,7 +956,7 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?queryid=[% queryid %];database=[% item.database
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?queryid=[% queryid %];database=[% item.database
 %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[%
 title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
 [% END %]

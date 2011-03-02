@@ -74,7 +74,7 @@ sub handler {
     my $path = $uri->path;
 
     # Basisipfad entfernen
-    my $basepath = $config->{base_loc}."/$view/".$config->{handler}{resource_loc}{name};
+    my $basepath = $config->{base_loc}."/$view/".$config->{resource_loc};
     $path=~s/$basepath//;
     
     $logger->debug("Path: $path without basepath $basepath");

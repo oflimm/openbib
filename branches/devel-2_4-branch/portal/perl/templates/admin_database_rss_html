@@ -56,7 +56,7 @@ END ;
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 [% IF available_types.size > 0 %]
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_database_loc.name %]/[% katalog.dbname %]/rss">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuen RSS-Feed einrichten") %]</th></tr>
@@ -113,7 +113,7 @@ END ;
 [% FOREACH feed IN katalog.rssfeeds %]
 <tr>
 <td>
-<a href="[% config.get('base_loc') %]/[% config.get('handler').admin_database_loc.name %]/[% katalog.dbname %]/rss/[% feed.id %]/edit">[% typedescription.${feed.type} %]</a>
+<a href="[% config.get('base_loc') %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss/[% feed.id %]/edit">[% typedescription.${feed.type} %]</a>
 </td>
 <!-- <td>[% feed.subtype %]</td>
 <td>[% feed.subtypedesc %]</td>

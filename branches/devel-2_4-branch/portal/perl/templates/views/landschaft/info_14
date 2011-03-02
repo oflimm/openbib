@@ -26,26 +26,26 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=landschaftbrowsecat=T0101" title="Register">Register</a></li>
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?db=landschaftstid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('search_loc') %]?db=landschaftbrowsecat=T0101" title="Register">Register</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]?db=landschaftstid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?db=landschaftstid=14" title="Wolken">Wolken</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]?db=landschaftstid=14" title="Wolken">Wolken</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?db=landschaftstid=14" title="K&uuml;nstler">K&uuml;nstler</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?db=landschaftstid=15" title="Topograph. Schlagwort">Topograph. Schlagwort</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?db=landschaftstid=17" title="2. Ikonograph. Schlagwort">2. Ikonograph. Schlagwort</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]?db=landschaftstid=14" title="K&uuml;nstler">K&uuml;nstler</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('info_loc') %]?db=landschaftstid=15" title="Topograph. Schlagwort">Topograph. Schlagwort</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('info_loc') %]?db=landschaftstid=17" title="2. Ikonograph. Schlagwort">2. Ikonograph. Schlagwort</a></li>
 </ul>
 
 <div class="content">
@@ -76,7 +76,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-vom K&uuml;nstler </span><a href="[% path_prefix %]/[% config.get('handler').virtualsearch_loc.name %]?verf=%22[% item.replace('"','') | uri %]%22;database=[% database %];searchprofile=1" class="tag">[% item %]</a></li>
+vom K&uuml;nstler </span><a href="[% path_prefix %]/[% config.get('virtualsearch_loc') %]?verf=%22[% item.replace('"','') | uri %]%22;database=[% database %];searchprofile=1" class="tag">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

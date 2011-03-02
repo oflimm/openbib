@@ -83,7 +83,7 @@ sub show {
         $id = $personid;
         my $negotiated_type_ref = $self->negotiate_type;
 
-        my $new_location = "$config->{base_loc}/$view/$config->{handler}{resource_person_loc}{name}/$database/$id.$negotiated_type_ref->{suffix}";
+        my $new_location = "$config->{base_loc}/$view/$config->{resource_person_loc}/$database/$id.$negotiated_type_ref->{suffix}";
 
         $self->query->method('GET');
         $self->query->content_type($negotiated_type_ref->{content_type});

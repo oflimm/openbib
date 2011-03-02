@@ -199,7 +199,7 @@ sub show {
             rating    => $rating,
         });
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{search_loc}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
 
@@ -244,7 +244,7 @@ sub show {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{search_loc}{name}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{search_loc}?database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
 
     }
@@ -261,7 +261,7 @@ sub show {
             loginname => $loginname,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{handler}{userreviews_loc}{name}?do_show=1");
+        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{userreviews_loc}?do_show=1");
         return Apache2::Const::OK;
 
     }

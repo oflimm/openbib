@@ -24,23 +24,23 @@
 # Aufruf der Frames mit den gewuenschten Inhalten
 
 IF NOT headerframeurl;
-headerframeurl = "${path_prefix}/${config.get('handler').headerframe_loc.name}?" ;
+headerframeurl = "${path_prefix}/${config.get('headerframe_loc')}?" ;
 END;
 
 IF NOT bodyframeurl;
-bodyframeurl   = "${path_prefix}/${config.get('handler').searchform_loc.name}?setmask=${setmask}" ;
+bodyframeurl   = "${path_prefix}/${config.get('searchform_loc')}?setmask=${setmask}" ;
 END;
 
 IF searchsingletit && database;
-    bodyframeurl = "${path_prefix}/${config.get('handler').search_loc.name}?search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit}";
+    bodyframeurl = "${path_prefix}/${config.get('search_loc')}?search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit}";
 END;
 
 IF fs;
-    bodyframeurl = "${path_prefix}/${config.get('handler').virtualsearch_loc.name}?fs=${fs};num=50;srt=author;srto=up;profil=;autoplus=0;st=3";
+    bodyframeurl = "${path_prefix}/${config.get('virtualsearch_loc')}?fs=${fs};num=50;srt=author;srto=up;profil=;autoplus=0;st=3";
 END;
 
 IF searchlitlist;
-    bodyframeurl = "${path_prefix}/${config.get('handler').litlists_loc.name}?action=show;litlistid=${searchlitlist}";
+    bodyframeurl = "${path_prefix}/${config.get('litlists_loc')}?action=show;litlistid=${searchlitlist}";
 END;
 
 IF config.get('drilldown') ;

@@ -29,15 +29,15 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %].html?l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %].html?l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
-<!-- <a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
-<a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<!-- <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
+<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
 </div>
 [% END %]
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %].html" title="[% msg.maketext("Literaturliste") %]"><span class="dbdescshort">[% msg.maketext("Literaturliste") %]</span></a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %].html" title="[% msg.maketext("Literaturliste") %]"><span class="dbdescshort">[% msg.maketext("Literaturliste") %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -101,9 +101,9 @@
 [%- IF format == 'short' -%]
   <div class="listoptions">
 <!-- Titlelist begins here -->
-<form method="get" action="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %]">
+<form method="get" action="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %]">
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('handler').resource_litlist_loc.name}/${litlist.properties.id}" no_jn=1 %]
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('resource_litlist_loc')}/${litlist.properties.id}" no_jn=1 %]
 
 </form>
   </div>
@@ -115,12 +115,12 @@
 <div class="headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
-<a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.id %].html?format=short" [%- IF format == 'short'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.id %].html?format=full" [%- IF format == 'full' -%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.id %].html?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.id %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.id %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.id %].html?format=short" [%- IF format == 'short'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.id %].html?format=full" [%- IF format == 'full' -%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.id %].html?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.id %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.id %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 
 [% IF user_owns_litlist %]
-<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_litlist_loc.name %]/[% litlist.properties.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %]">
 <input type="hidden" name="action"     value="manage" />
 
 [%# USE dumper;dumper.dump(litlist)%]

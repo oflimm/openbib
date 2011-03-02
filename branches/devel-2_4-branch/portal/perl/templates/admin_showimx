@@ -10,14 +10,14 @@
 
 <table width="100%">
 <tr>
-  <td align="left"><a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?&action=showviews">Views</a>&nbsp;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?&action=showsession">Sessions</a>&nbsp;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?&action=showimx"><b>Import</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
-align="right"><a href="[% path_prefix %]/[% config.get('handler').admin_loc.name %]?&action=logout"><b>Logout</b></a>&nbsp;</td>
+  <td align="left"><a href="[% path_prefix %]/[% config.get('admin_loc') %]?&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]?&action=showviews">Views</a>&nbsp;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]?&action=showsession">Sessions</a>&nbsp;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]?&action=showimx"><b>Import</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
+align="right"><a href="[% path_prefix %]/[% config.get('admin_loc') %]?&action=logout"><b>Logout</b></a>&nbsp;</td>
 </tr>
 </table>
 
 <hr />
 
-<form method="get" action="[% path_prefix %]/[% config.get('handler').admin_loc.name %]">
+<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]">
 <input type="hidden" name="action" value="imximport" />
 
 

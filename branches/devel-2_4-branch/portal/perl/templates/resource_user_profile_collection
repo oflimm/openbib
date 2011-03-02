@@ -37,7 +37,7 @@ function update_fak(yourform, checked, fak) {
 
 <div id="maincontent">
 
-<form method="post" action="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/profile" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/profile" enctype="application/x-www-form-urlencoded">
 
 
 [% PROCESS common/subtemplate name="userprefs_navigation" active="databaseprofile" %]
@@ -72,7 +72,7 @@ function update_fak(yourform, checked, fak) {
 [% listrow = 'listrow1' %]
 [%-   FOREACH userdbprofile IN userdbprofiles -%]
 <tr class="[% listrow %]">
-<td><a href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/profile/[% userdbprofile.profilid %]/edit">[% userdbprofile.profilename %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/profile/[% userdbprofile.profilid %]/edit">[% userdbprofile.profilename %]</a></td>
 <td>[% FOREACH db IN user.get_profiledbs_of_profileid(userdbprofile.profilid) %]
 [% dbinfo.dbnames.${db}.short %]<br/>
 [% IF listrow == 'listrow1' %]
@@ -82,7 +82,7 @@ function update_fak(yourform, checked, fak) {
 [% END %]
 [% END %]
 </td>
-<td><a href="[% path_prefix %]/[% config.get('handler').resource_user_loc.name %]/[% user.ID %]/profile/[% userdbprofile.profilid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td>
+<td><a href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/profile/[% userdbprofile.profilid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td>
 </tr>
 
 [%-   END -%]

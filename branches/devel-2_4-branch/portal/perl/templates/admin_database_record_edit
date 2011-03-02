@@ -23,7 +23,7 @@
 
 <div class="content">
 
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_database_loc.name %]/[% databaseinfo.dbname %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]">
 <input type="hidden" name="_method"    value="PUT" />
 
 <table width="100%">
@@ -116,7 +116,7 @@
 
 </form>
 
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_database_loc.name %]/[% databaseinfo.dbname %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="1" />
 

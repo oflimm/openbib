@@ -26,7 +26,7 @@
 
 <div class="content">
 
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]">
+<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_profile_loc') %]">
 
 
 <table width="100%">
@@ -57,7 +57,7 @@
 
 [% FOREACH profile IN profiles %]
 
-<tr><td>[% profile.profilename %]</td><td><a href="[% config.get('base_loc') %]/[% config.get('handler').admin_profile_loc.name %]/[% profile.profilename %]/edit">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
+<tr><td>[% profile.profilename %]</td><td><a href="[% config.get('base_loc') %]/[% config.get('admin_profile_loc') %]/[% profile.profilename %]/edit">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
 [% END %]
 
 </table>

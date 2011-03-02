@@ -100,7 +100,7 @@ sub show_collection_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$config->{admin_database_loc}/$dbname/rss.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -365,7 +365,7 @@ sub create_record {
     $config->new_databaseinfo_rss($dbname,$rsstype,$active);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -520,7 +520,7 @@ sub update_record {
             $self->delete_record;
 #            $logger->debug("Redirecting to delete location");
 #            $self->query->method('DELETE');    
-#            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss/$id");
+#            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname/rss/$id");
 #            $self->query->status(Apache2::Const::REDIRECT);
 #            return;
         }
@@ -534,7 +534,7 @@ sub update_record {
     $config->update_databaseinfo_rss($dbname,$rsstype,$active,$id);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -596,7 +596,7 @@ sub delete_record {
     $config->del_databaseinfo_rss($id);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{handler}{admin_database_loc}{name}/$dbname/rss");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

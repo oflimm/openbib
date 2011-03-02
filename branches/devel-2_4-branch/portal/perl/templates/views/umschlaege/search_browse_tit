@@ -29,20 +29,20 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0101" title="[% msg.maketext("Register") %]">[% msg.maketext("Register") %]</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('handler').info_loc.name %]?[% IF viewdbs.size == 1 %]db=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('search_loc') %]?db=umschlaegebrowsecat=T0101" title="[% msg.maketext("Register") %]">[% msg.maketext("Register") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('info_loc') %]?[% IF viewdbs.size == 1 %]db=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
 </ul>
 
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a[%- IF browsecat == 'T0710' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0710">[% msg.maketext("Am Umschlag Beteiligte") %]</a></li>
-   <li><a[%- IF browsecat == 'T0200' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0200">[% msg.maketext("Zusammenarbeit") %]</a></li>
-   <li><a[%- IF browsecat == 'T0100' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0100">[% msg.maketext("Autor") %]</a></li>
-   <li><a[%- IF browsecat == 'T0412' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0412">[% msg.maketext("T0412") %]</a></li>
-   <li><a[%- IF browsecat == 'T0425' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?db=umschlaegebrowsecat=T0425">[% msg.maketext("T0425") %]</a></li>
+   <li><a[%- IF browsecat == 'T0710' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=umschlaegebrowsecat=T0710">[% msg.maketext("Am Umschlag Beteiligte") %]</a></li>
+   <li><a[%- IF browsecat == 'T0200' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=umschlaegebrowsecat=T0200">[% msg.maketext("Zusammenarbeit") %]</a></li>
+   <li><a[%- IF browsecat == 'T0100' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=umschlaegebrowsecat=T0100">[% msg.maketext("Autor") %]</a></li>
+   <li><a[%- IF browsecat == 'T0412' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=umschlaegebrowsecat=T0412">[% msg.maketext("T0412") %]</a></li>
+   <li><a[%- IF browsecat == 'T0425' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=umschlaegebrowsecat=T0425">[% msg.maketext("T0425") %]</a></li>
 </ul>
 
 <div class="content">
@@ -70,10 +70,10 @@
 [%- IF browsecat == 'T0425' -%]
 [%- querycat = ";ejahr=${item};ejahrop=eq" -%]
 [%- END -%]
-<tr><td><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?searchtitofcnt=[% item.replace('&amp;','%26') %]db=umschlaege;category=[% browsecat %]">[% item %]</a></td>
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?searchtitofcnt=[% item.replace('&amp;','%26') %]db=umschlaege;category=[% browsecat %]">[% item %]</a></td>
 [% IF querycat%]
 <td align="right" style="font-weight:bold">&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('handler').searchform_loc.name %]?setmask=advanced[% querycat | replace('[(]
+href="[% path_prefix %]/[% config.get('searchform_loc') %]?setmask=advanced[% querycat | replace('[(]
 .*?[)]','') %]">[% msg.maketext("&Uuml;bernahme&nbsp;in&nbsp;Recherche") %]</a>&nbsp;&nbsp;&nbsp;</td>
 [%- END -%]
 </tr>

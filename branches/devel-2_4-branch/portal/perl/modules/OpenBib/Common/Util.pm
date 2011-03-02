@@ -679,7 +679,7 @@ sub get_loadbalanced_servername {
     # Fuer jeden Server, auf den verteilt werden soll, wird nun
     # per LWP der Load bestimmt.
     foreach my $targethost (@servertab) {
-        my $request  = new HTTP::Request GET => "http://$targethost$config->{base_loc}/$view/$config->{handler}{serverload_loc}{name}";
+        my $request  = new HTTP::Request GET => "http://$targethost$config->{base_loc}/$view/$config->{serverload_loc}";
         my $response = $ua->request($request);
 
         if ($response->is_success) {

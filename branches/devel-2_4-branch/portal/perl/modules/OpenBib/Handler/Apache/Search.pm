@@ -109,7 +109,7 @@ sub search_negotiate {
 
     my $args="?".$self->query->args();
     
-    my $new_location = "$config->{base_loc}/$view/$config->{handler}{search_loc}{name}.$negotiated_type_ref->{suffix}$args";
+    my $new_location = "$config->{base_loc}/$view/$config->{search_loc}.$negotiated_type_ref->{suffix}$args";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -264,16 +264,16 @@ sub search_databases {
 #         my $redirecturl = "";
 
 #         if ($indextype eq "aut"){
-#             $redirecturl = "$config->{base_loc}/$view/$config->{handler}{index_loc}{name}/person/$indexterm";
+#             $redirecturl = "$config->{base_loc}/$view/$config->{index_loc}/person/$indexterm";
 #         }
 #         if ($indextype eq "kor"){
-#             $redirecturl = "$config->{base_loc}/$view/$config->{handler}{index_loc}{name}/corporatebody/$indexterm";
+#             $redirecturl = "$config->{base_loc}/$view/$config->{index_loc}/corporatebody/$indexterm";
 #         }        
 #         if ($indextype eq "swt"){
-#             $redirecturl = "$config->{base_loc}/$view/$config->{handler}{index_loc}{name}/subject/$indexterm";
+#             $redirecturl = "$config->{base_loc}/$view/$config->{index_loc}/subject/$indexterm";
 #         }
 #         if ($indextype eq "notation"){
-#             $redirecturl = "$config->{base_loc}/$view/$config->{handler}{index_loc}{name}/classification/$indexterm";
+#             $redirecturl = "$config->{base_loc}/$view/$config->{index_loc}/classification/$indexterm";
 #         }
 
 #         $logger->debug("Redirecting to $redirecturl");
@@ -1298,7 +1298,7 @@ sub index_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$config->{handler}{index_loc}{name}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$config->{index_loc}.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -1721,7 +1721,7 @@ sub get_databases {
                 }
                 # Kein Profil
                 else {
-                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{base_loc}/$view/$config->{handler}{databasechoice_loc}{name}\" target=\"body\">","</a>"),$r,$msg);
+                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{base_loc}/$view/$config->{databasechoice_loc}\" target=\"body\">","</a>"),$r,$msg);
                     return Apache2::Const::OK;
                 }
                 

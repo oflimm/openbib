@@ -418,9 +418,15 @@ sub to_cgi_params {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $exclude_ref       = exists $arg_ref->{exclude}
-        ? $arg_ref->{exclude}        : {};
+    my $exclude_array_ref    = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}        : [];
 
+    my $exclude_ref = {};
+
+    foreach my $param (@{$exclude_array_ref}){
+        $exclude_ref->{$param} = 1;
+    }
+    
     my $config = OpenBib::Config->instance;
 
     my @cgiparams = ();

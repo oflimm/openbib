@@ -193,9 +193,15 @@ sub to_cgi_params {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $exclude_ref       = exists $arg_ref->{exclude}
-        ? $arg_ref->{exclude}        : {};
+    my $exclude_array_ref    = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}        : [];
 
+    my $exclude_ref = {};
+
+    foreach my $param (@{$exclude_array_ref}){
+        $exclude_ref->{$param} = 1;
+    }
+    
     my @cgiparams = ();
 
     foreach my $param (keys %{$self->{option}}){
@@ -217,7 +223,7 @@ OpenBib::QueryOptions - Apache-Singleton zur Behandlung von Recherche-Optionen
 =head1 DESCRIPTION
 
 Dieses Apache-Singleton Verwaltet die Recherche-Optionen wie num,
-offset, Sprache l, Profil profil, Automatische Und-Verknuepfung
+offset, Sprache l, Profil profile, Automatische Und-Verknuepfung
 autoplus, Such-Backend sb sowie den Trefferlistentyp listtype.
 
 =head1 SYNOPSIS

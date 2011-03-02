@@ -157,6 +157,7 @@ sub show_popular {
         representation=> $representation,
         database      => $database,
         profile       => $profile,
+        queryoptions  => $queryoptions,
         view          => $view,
         stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
@@ -192,8 +193,16 @@ sub show {
     my $database       = $self->param('database');
     my $titleid        = $self->param('titleid');
 
-    my $config  = OpenBib::Config->instance;
-    
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');    
+
     # Mit Suffix, dann keine Aushandlung des Typs
     
     my $representation = "";

@@ -1123,6 +1123,7 @@ sub print_to_handler {
         prevurl     => $prevurl,
         nexturl     => $nexturl,
         qopts       => $queryoptions->get_options,
+        queryoptions => $queryoptions,
         queryid     => $searchquery->get_id,
         sessionID   => $session->{ID},
         session     => $session,

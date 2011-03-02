@@ -339,6 +339,7 @@ sub print_to_handler {
         dbinfo      => $dbinfotable,
 
         qopts       => $queryoptions->get_options,
+        queryoptions => $queryoptions,
         sessionID   => $session->{ID},
         session     => $session,
         record      => $self,

@@ -26,7 +26,7 @@
 [% IF config.get('lang').size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %].html?[% searchquery.to_cgi_params %];[% queryoptions.to_cgi_params({ exclude = { l = 1 }}) %];l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('handler').search_loc.name %].html?[% searchquery.to_cgi_params %];[% queryoptions.to_cgi_params({ exclude = ['l']}) %];l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %].rdf?[% searchquery.to_cgi_params %];[% queryoptions.to_cgi_params %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
 <a href="[% path_prefix %]/[% config.get('handler').search_loc.name %].json?[% searchquery.to_cgi_params %];[% queryoptions.to_cgi_params %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>

@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%- request_base    = queryoptions.to_cgi_params({exclude = { profil = 1, page = 1, db = 1, jn = 1}}) -%]
+[%- request_base    = queryoptions.to_cgi_params({exclude = ['profil','page','db','jn']}) -%]
 [%- normset         = record.get_normdata -%]
 [%- mexnormset      = record.get_mexdata -%]
 [%- cirset          = record.get_circdata -%] 

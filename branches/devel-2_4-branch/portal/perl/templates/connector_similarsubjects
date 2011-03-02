@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
-[%- request_base    = queryoptions.to_cgi_params({exclude = { profil = 1, page = 1, db = 1, jn = 1}}) -%]
+[%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) -%]
 [%- IF format == 'ajax' -%]
 [%- IF similar_subjects.size > 1 %]
 <!-- Beginn Tag-Cloud -->

@@ -88,7 +88,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?page=1;[% queryoptions.to_cgi_params({exclude = { profil = 1, page = 1, db = 1 }}) %];fs=[% searchprefix %]:|[% item %]|;db=[% database %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('handler').search_loc.name %]?page=1;[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];fs=[% searchprefix %]:|[% item %]|;db=[% database %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

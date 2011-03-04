@@ -2444,7 +2444,7 @@ sub get_public_litlists {
 
     # Set defaults
     my $subjectid      = exists $arg_ref->{subjectid}
-        ? $arg_ref->{subjectid}           : undef;
+        ? $arg_ref->{subjectid}        : undef;
 
     # Log4perl logger erzeugen
   
@@ -2485,14 +2485,13 @@ sub get_public_litlists {
     }
 
     # Sortieren nach Titeln via Schwartz'ian Transform
-
+    
     my $sorted_litlists_ref = [];
-
+    
     @{$sorted_litlists_ref} = map { $_->[0] }
         sort { $a->[1] cmp $b->[1] }
             map { [$_, lc($_->{title})] }
                 @{$litlists_ref};
-    
     
     return $sorted_litlists_ref;
 }

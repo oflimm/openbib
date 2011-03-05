@@ -672,9 +672,25 @@ dispatch_rules:
      runmode: 'show'
   - # resource_tag_loc:
      module: 'OpenBib::Handler::Apache::Resource::Tag'
+     rule: '/portal/:view/resource/tag/recent.html[get]'
+     runmode: 'show_collection_recent_as_html'
+  - # resource_tag_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Tag'
+     rule: '/portal/:view/resource/tag/recent.json[get]'
+     runmode: 'show_collection_recent_as_json'
+  - # resource_tag_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Tag'
+     rule: '/portal/:view/resource/tag/recent.rdf[get]'
+     runmode: 'show_collection_recent_as_rdf'
+  - # resource_tag_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Tag'
+     rule: '/portal/:view/resource/tag/recent.include[get]'
+     runmode: 'show_collection_recent_as_include'
+  - # resource_tag_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Tag'
      rule: '/portal/:view/resource/tag/:tagid'
      runmode: 'show_record_negotiate'
-  - # resource_litlist_loc:
+  - # resource_tag_loc:
      module: 'OpenBib::Handler::Apache::Resource::Tag'
      rule: '/portal/:view/resource/tag[post]'
      runmode: 'create_record'
@@ -698,6 +714,26 @@ dispatch_rules:
      runmode: 'show_collection_negotiate'
   - # resource_litlist_loc: 
      module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/recent.html[get]'
+     runmode: 'show_collection_recent_as_html'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/recent.json[get]'
+     runmode: 'show_collection_recent_as_json'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/recent.rdf[get]'
+     runmode: 'show_collection_recent_as_rdf'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/recent.include[get]'
+     runmode: 'show_collection_recent_as_include'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/recent[get]'
+     runmode: 'show_collection_recent_negotiate'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
      rule: '/portal/:view/resource/litlist/subject.html[get]'
      runmode: 'show_collection_by_subject_as_html'
   - # resource_litlist_loc: 
@@ -712,6 +748,26 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Resource::LitList'
      rule: '/portal/:view/resource/litlist/subject[get]'
      runmode: 'show_collection_by_subject_negotiate'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/subject/:subjectid/recent.html[get]'
+     runmode: 'show_collection_by_single_subject_recent_as_html'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/subject/:subjectid/recent.json[get]'
+     runmode: 'show_collection_by_single_subject_recent_as_json'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/subject/:subjectid/recent.rdf[get]'
+     runmode: 'show_collection_by_single_subject_recent_as_rdf'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/subject/:subjectid/recent.include[get]'
+     runmode: 'show_collection_by_single_subject_recent_as_include'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/subject/:subjectid/recent[get]'
+     runmode: 'show_collection_by_single_subject_recent_negotiate'
   - # resource_litlist_loc: 
      module: 'OpenBib::Handler::Apache::Resource::LitList'
      rule: '/portal/:view/resource/litlist/subject/:subjectid[get]'
@@ -1378,12 +1434,14 @@ content_type_map:
  'application/rdf+xml': 'rdf'
  'text/rdf+n3': 'n3'
  'text/html': 'html'
+ 'text/html': 'include'
  'application/json': 'json'
 
 content_type_map_rev:
  'rdf': 'application/rdf+xml'
  'n3': 'text/rdf+n3'
  'html': 'text/html'
+ 'include': 'text/html'
  'json': 'application/json'
 
 # Suchprefixe in der Rercherche fuer die internen Felder person, title usw.
@@ -1786,8 +1844,10 @@ tt_info_feedback_tname: info_feedback
 tt_info_tutorials_tname: info_tutorials
 tt_leave_tname: leave
 tt_resource_litlist_collection_tname: resource_litlist_collection
+tt_resource_litlist_collection_recent_tname: resource_litlist_collection_recent
 tt_resource_litlist_collection_by_subject_tname: resource_litlist_collection_by_subject
 tt_resource_litlist_collection_by_single_subject_tname: resource_litlist_collection_by_single_subject
+tt_resource_litlist_collection_by_single_subject_recent_tname: resource_litlist_collection_by_single_subject_recent
 tt_resource_litlist_collection_by_user_tname: resource_litlist_collection_by_user
 tt_resource_litlist_collection_by_single_user_tname: resource_litlist_collection_by_single_user
 tt_loadbalancer_tname: loadbalancer

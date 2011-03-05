@@ -378,7 +378,7 @@ sub grundform {
     $content=~s/&amp;//g;
 
     # Ausfiltern von Supplements in []
-    $content=~s/\[.*?\]//g;
+    # $content=~s/\[.*?\]//g;
     
     # Fall: C++, C# und .Net
     $content=~s/(?<=(\w|\+))\+/plus/g;

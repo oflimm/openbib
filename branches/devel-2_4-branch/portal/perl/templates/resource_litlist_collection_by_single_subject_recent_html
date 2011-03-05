@@ -21,6 +21,17 @@
 
 <div id="maincontent">
 
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/subject/[% subjectid %]/recent.html?l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+<!-- <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/subject/[% subjectid %]/recent.rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
+<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/subject/[% subjectid %]/recent.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+</div>
+[% END %]
+
+
 <ul class="tabbingmenu">
    <li><a class="active" href="[% path_prefix %]/[% config.get('resource_litlists_public_loc') %]?&action=show_public_lists" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
 </ul>
@@ -28,27 +39,17 @@
 <div class="content">
 <p />
 
-[% IF subjectid %]<h2>[% FOREACH subject IN subjects %][% IF subject.id == subjectid %][% subject.name%][% END %][% END %]</h2>[% END %]
-<div class="listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp;<a href="[% path_prefix %]/[% config.get('resource_litlist_public_loc') %].html" [%- IF NOT showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>[% msg.maketext("Alle Listen") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('resource_litlist_public_subject_loc') %].html" [%- IF showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>[% msg.maketext("Themengebiete") %]</a>[%- IF NOT showsubjects.defined -%]&nbsp;&#124;&nbsp;<b>[% msg.maketext("Anzahl") %]</b>:&nbsp;[% public_litlists.size %][%- END -%]
-</div>
+<h1>Die zuletzt angelegten Literaturlisten</h1>
 
-[% IF showsubjects.defined %]
-<ul class="subjectlist">
-[%- FOREACH subject IN subjects -%]
-<li><a <a href="[% path_prefix %]/[% config.get('resource_litlist_public_subject_loc') %]/[% subject.id %].html">[% subject.name %]</a> ([% msg.maketext("[_1] Listen",subject.litlistcount.public) %])</li>
-[% END %]
-</ul>
-[% ELSE %]
+[% IF subjectid %]<h2>[% FOREACH subject IN subjects %][% IF subject.id == subjectid %][% subject.name%][% END %][% END %]</h2>[% END %]
+
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul class="subjectlist">
 [%- FOREACH thisitem IN public_litlists -%]
-<li><a <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% thisitem.id %].html">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="http://[% config.get('frontendservername') %][% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><b>[% thisitem.tstamp.split(' ').first %]</b>:&nbsp;<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% thisitem.id %].html">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% END %]
 </ul>
-[% END %]
-[% IF representation == 'html' %]
-<p />
+
 
 </div>
 

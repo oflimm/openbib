@@ -77,6 +77,7 @@ sub setup {
         'show_collection_recent_as_json'       => 'show_collection_recent_as_json',
         'show_collection_recent_as_rdf'        => 'show_collection_recent_as_rdf',
         'show_collection_recent_as_include'    => 'show_collection_recent_as_include',
+        'show_collection_recent_negotiate'     => 'show_collection_recent_negotiate',
         'show_collection_by_subject_negotiate' => 'show_collection_by_subject_negotiate',
         'show_collection_by_subject_as_html'   => 'show_collection_by_subject_as_html',
         'show_collection_by_subject_as_json'   => 'show_collection_by_subject_as_json',
@@ -87,6 +88,7 @@ sub setup {
         'show_collection_by_single_subject_recent_as_json' => 'show_collection_by_single_subject_recent_as_json',
         'show_collection_by_single_subject_recent_as_rdf' => 'show_collection_by_single_subject_resent_as_rdf',
         'show_collection_by_single_subject_recent_as_include' => 'show_collection_by_single_subject_recent_as_include',
+        'show_collection_by_single_subject_recent_negotiate' => 'show_collection_by_single_subject_recent_negotiate',
         'show_collection_by_single_subject_as_negotiate' => 'show_collection_by_single_subject_as_negotiate',
         'show_record_negotiate'                       => 'show_record_negotiate',
         'show_record_form'                            => 'show_record_form',
@@ -193,7 +195,12 @@ sub show_collection {
     my $ttdata={
         representation => $representation,
         content_type   => $content_type,
-        
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+
         view           => $view,
         stylesheet     => $stylesheet,
         sessionID      => $session->{ID},
@@ -210,6 +217,31 @@ sub show_collection {
     
     OpenBib::Common::Util::print_page($config->{tt_resource_litlist_collection_tname},$ttdata,$r);
     return Apache2::Const::OK;
+}
+
+sub show_collection_recent_negotiate {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+
+    my $config  = OpenBib::Config->instance;
+
+    my $negotiated_type_ref = $self->negotiate_type;
+
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/recent.$negotiated_type_ref->{suffix}";
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+    return;
 }
 
 sub show_collection_recent_as_html {
@@ -280,7 +312,7 @@ sub show_collection_recent {
 
     my $subjects_ref         = OpenBib::User->get_subjects;
 
-    my $public_litlists_ref  = $user->get_public_litlists({recent => $hitrange});
+    my $public_litlists_ref  = $user->get_recent_litlists({ count => $hitrange });
 
     my $content_type   = $config->{'content_type_map_rev'}{$representation};
 
@@ -288,6 +320,11 @@ sub show_collection_recent {
     my $ttdata={
         representation => $representation,
         content_type   => $content_type,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
         
         view           => $view,
         stylesheet     => $stylesheet,
@@ -394,6 +431,12 @@ sub show_collection_by_subject {
     my $ttdata={
         representation => $representation,
         content_type   => $content_type,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+
         showsubjects   => $showsubjects,
         view           => $view,
         stylesheet     => $stylesheet,
@@ -411,6 +454,32 @@ sub show_collection_by_subject {
     
     OpenBib::Common::Util::print_page($config->{tt_resource_litlist_collection_by_subject_tname},$ttdata,$r);
     return Apache2::Const::OK;
+}
+
+sub show_collection_by_single_subject_recent_negotiate {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+    my $subjectid      = $self->param('subjectid')      || '';
+
+    my $config  = OpenBib::Config->instance;
+
+    my $negotiated_type_ref = $self->negotiate_type;
+
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/subject/$subjectid/recent.$negotiated_type_ref->{suffix}";
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+    return;
 }
 
 sub show_collection_by_single_subject_recent_as_html {
@@ -488,6 +557,11 @@ sub show_collection_by_single_subject_recent {
     my $ttdata={
         representation => $representation,
         content_type   => $content_type,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
         
         view           => $view,
         stylesheet     => $stylesheet,
@@ -557,6 +631,11 @@ sub show_collection_by_single_subject_negotiate {
     my $ttdata={
         representation => $representation,
         content_type   => $content_type,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
         
         view           => $view,
         stylesheet     => $stylesheet,
@@ -738,6 +817,11 @@ sub show_collection_by_user {
         
         view           => $view,
         stylesheet     => $stylesheet,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
         
         subjects       => $subjects_ref,
         thissubjects   => $litlist_subjects_ref,
@@ -872,6 +956,11 @@ sub show_collection_by_single_user_negotiate {
         
         view           => $view,
         stylesheet     => $stylesheet,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
         
         subjects       => $subjects_ref,
         thissubjects   => $litlist_subjects_ref,
@@ -1467,7 +1556,12 @@ sub show_entry_negotiate {
         representation  => $representation,
         
         user_owns_litlist => $user_owns_litlist,
-        
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+
         view           => $view,
         stylesheet     => $stylesheet,
         

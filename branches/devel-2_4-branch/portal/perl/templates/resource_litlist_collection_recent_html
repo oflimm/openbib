@@ -32,14 +32,13 @@
 [% END %]
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('litlists_loc') %].html" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/recent.html" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <h1>Die zuletzt angelegten Literaturlisten</h1>
-[% USE date %]
 
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul class="subjectlist">

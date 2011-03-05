@@ -33,7 +33,7 @@
 
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('resource_litlists_public_loc') %]?&action=show_public_lists" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/subject/[% subjectid %]/recent.html" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Literaturlisten") %]</span></a></li>
 </ul>
 
 <div class="content">

@@ -438,6 +438,10 @@ sub to_cgi_params {
             push @cgiparams, "$searchparam=".$self->{_searchquery}->{$param}{val};
         }
     }
+
+    foreach my $filter (@{$self->{_filter}}){
+        push @cgiparams, "filter=$filter->{val}";
+    }
     
     return join(";",@cgiparams);
 }

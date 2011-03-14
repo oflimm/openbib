@@ -726,6 +726,10 @@ dispatch_rules:
      runmode: 'show_collection_recent_as_rdf'
   - # resource_litlist_loc: 
      module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/recent.rss[get]'
+     runmode: 'show_collection_recent_as_rss'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
      rule: '/portal/:view/resource/litlist/recent.include[get]'
      runmode: 'show_collection_recent_as_include'
   - # resource_litlist_loc: 
@@ -760,6 +764,10 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Resource::LitList'
      rule: '/portal/:view/resource/litlist/subject/:subjectid/recent.rdf[get]'
      runmode: 'show_collection_by_single_subject_recent_as_rdf'
+  - # resource_litlist_loc: 
+     module: 'OpenBib::Handler::Apache::Resource::LitList'
+     rule: '/portal/:view/resource/litlist/subject/:subjectid/recent.rss[get]'
+     runmode: 'show_collection_by_single_subject_recent_as_rss'
   - # resource_litlist_loc: 
      module: 'OpenBib::Handler::Apache::Resource::LitList'
      rule: '/portal/:view/resource/litlist/subject/:subjectid/recent.include[get]'
@@ -1128,6 +1136,10 @@ dispatch_rules:
      runmode: 'search_as_rdf'
   - # search_loc:
      module: 'OpenBib::Handler::Apache::Search'
+     rule: '/portal/:view/search.rss'
+     runmode: 'search_as_rss'
+  - # search_loc:
+     module: 'OpenBib::Handler::Apache::Search'
      rule: '/portal/:view/search'
      runmode: 'search_negotiate'
 
@@ -1432,6 +1444,7 @@ tt_include_path: /opt/openbib/templates
 
 content_type_map:
  'application/rdf+xml': 'rdf'
+ 'application/xml': 'rss'
  'text/rdf+n3': 'n3'
  'text/html': 'html'
  'text/html': 'include'
@@ -1439,6 +1452,7 @@ content_type_map:
 
 content_type_map_rev:
  'rdf': 'application/rdf+xml'
+ 'rss': 'application/xml'
  'n3': 'text/rdf+n3'
  'html': 'text/html'
  'include': 'text/html'

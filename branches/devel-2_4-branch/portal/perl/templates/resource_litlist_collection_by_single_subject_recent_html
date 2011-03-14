@@ -28,6 +28,7 @@
 [%   END %]
 <!-- <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/subject/[% subjectid %]/recent.rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
 <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/subject/[% subjectid %]/recent.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/subject/[% subjectid %]/recent.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
 </div>
 [% END %]
 

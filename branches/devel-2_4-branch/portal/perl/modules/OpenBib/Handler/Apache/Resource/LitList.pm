@@ -77,6 +77,7 @@ sub setup {
         'show_collection_recent_as_html'       => 'show_collection_recent_as_html',
         'show_collection_recent_as_json'       => 'show_collection_recent_as_json',
         'show_collection_recent_as_rdf'        => 'show_collection_recent_as_rdf',
+        'show_collection_recent_as_rss'        => 'show_collection_recent_as_rss',
         'show_collection_recent_as_include'    => 'show_collection_recent_as_include',
         'show_collection_recent_negotiate'     => 'show_collection_recent_negotiate',
         'show_collection_by_subject_negotiate' => 'show_collection_by_subject_negotiate',
@@ -84,10 +85,12 @@ sub setup {
         'show_collection_by_subject_as_json'   => 'show_collection_by_subject_as_json',
         'show_collection_by_subject_as_rdf'    => 'show_collection_by_subject_as_rdf',
         'show_collection_by_user_negotiate'    => 'show_collection_by_user_negotiate',
+        'show_collection_by_single_subject_negotiate' => 'show_collection_by_single_subject_negotiate',
         'show_collection_by_single_user_negotiate' => 'show_collection_by_single_user_negotiate',
         'show_collection_by_single_subject_recent_as_html' => 'show_collection_by_single_subject_recent_as_html',
         'show_collection_by_single_subject_recent_as_json' => 'show_collection_by_single_subject_recent_as_json',
-        'show_collection_by_single_subject_recent_as_rdf' => 'show_collection_by_single_subject_resent_as_rdf',
+        'show_collection_by_single_subject_recent_as_rdf' => 'show_collection_by_single_subject_recent_as_rdf',
+        'show_collection_by_single_subject_recent_as_rss' => 'show_collection_by_single_subject_recent_as_rss',
         'show_collection_by_single_subject_recent_as_include' => 'show_collection_by_single_subject_recent_as_include',
         'show_collection_by_single_subject_recent_negotiate' => 'show_collection_by_single_subject_recent_negotiate',
         'show_collection_by_single_subject_as_negotiate' => 'show_collection_by_single_subject_as_negotiate',
@@ -275,6 +278,16 @@ sub show_collection_recent_as_rdf {
     return;
 }
 
+sub show_collection_recent_as_rss {
+    my $self = shift;
+
+    $self->param('representation','rss');
+
+    $self->show_collection_recent;
+
+    return;
+}
+
 sub show_collection_recent_as_include {
     my $self = shift;
 
@@ -307,7 +320,7 @@ sub show_collection_recent {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
 
-    my $hitrange       = $query->param('num')    || 5;
+    my $hitrange       = $query->param('num')    || 50;
 
     # NO CGI Args
 
@@ -316,6 +329,10 @@ sub show_collection_recent {
     my $public_litlists_ref  = $user->get_recent_litlists({ count => $hitrange });
 
     my $content_type   = $config->{'content_type_map_rev'}{$representation};
+
+    my $rss;
+
+    $rss = new XML::RSS ( version => '1.0' ) if ($representation eq "rss");
 
     # TT-Data erzeugen
     my $ttdata={
@@ -326,7 +343,8 @@ sub show_collection_recent {
             my $ref = shift;
             return encode_json $ref;
         },
-        
+
+        rss            => $rss,
         view           => $view,
         stylesheet     => $stylesheet,
         sessionID      => $session->{ID},
@@ -555,7 +573,7 @@ sub show_collection_by_single_subject_recent {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
-    my $hitrange       = $query->param('num')    || 5;
+    my $hitrange       = $query->param('num')    || 50;
 
     # Mit Suffix, dann keine Aushandlung des Typs
 

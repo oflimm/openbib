@@ -82,6 +82,7 @@ sub setup {
         'search_as_html'   => 'search_as_html',
         'search_as_json'   => 'search_as_json',
         'search_as_rdf'    => 'search_as_rdf',
+        'search_as_rss'    => 'search_as_rss',
         'index_negotiate'  => 'index_negotiate',
         'index_as_html'    => 'index_as_html',
         'index_as_json'    => 'index_as_json',
@@ -191,7 +192,7 @@ sub search_databases {
     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
     my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
-    my $joindbs    = $query->param('jn') || $query->param('combinedbs')    || 0;
+    my $joindbs    = $query->param('jn') || $query->param('combinedbs')    || 1;
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 

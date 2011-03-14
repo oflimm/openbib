@@ -5,6 +5,8 @@
 [%- PROCESS common/subtemplate name="resource_litlist_collection_by_single_subject_recent_rdf" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="resource_litlist_collection_by_single_subject_recent_json" -%]
+[%- ELSIF representation == 'rss' -%]
+[%- PROCESS common/subtemplate name="resource_litlist_collection_by_single_subject_recent_rss" -%]
 [%- ELSIF representation == 'include' -%]
 [%- PROCESS common/subtemplate name="resource_litlist_collection_by_single_subject_recent_include" -%]
 [%- ELSE -%]

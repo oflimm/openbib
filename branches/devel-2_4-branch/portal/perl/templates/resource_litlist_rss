@@ -1,0 +1,9 @@
+[%-
+
+channel_link        = "${path_prefix}/${config.get('resource_litlist_loc')}/${litlist.id}.rss";
+channel_title       = "Literaturliste: ${litlist.properties.title}";
+channel_description = "RSS Feed der Literaturliste '${litlist.properties.title}' sortiert nach dem Datum der Übernahme in die Literaturliste";
+
+litlist.recordlist.sort({ type = 'tstamp', order = 'down'}).to_rss({ view => view, channel_title = channel_title, channel_link = channel_link, channel_description = channel_description });
+
+-%]

@@ -33,6 +33,7 @@
 [%   END %]
 <!-- <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
 <a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.properties.id %].rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
 </div>
 [% END %]
 

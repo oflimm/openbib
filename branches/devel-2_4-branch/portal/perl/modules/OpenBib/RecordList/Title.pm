@@ -41,6 +41,7 @@ use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 use Storable;
+use XML::RSS;
 use YAML ();
 
 use OpenBib::Config::CirculationInfoTable;
@@ -192,6 +193,78 @@ sub to_list {
     my ($self)=@_;
 
     return $self->{recordlist};
+}
+
+sub to_rss {
+    my ($self,$arg_ref) = @_;
+    
+    # Set defaults
+    my $channel_title     = exists $arg_ref->{channel_title}
+        ? $arg_ref->{channel_title}        : '';
+    my $view              = exists $arg_ref->{view}
+        ? $arg_ref->{view}                 : 'openbib';
+    my $channel_description       = exists $arg_ref->{channel_description}
+        ? $arg_ref->{channel_description}  : '';
+    my $channel_link              = exists $arg_ref->{channel_link}
+        ? $arg_ref->{channel_link}         : '';
+    my $channel_language          = exists $arg_ref->{channel_language}
+        ? $arg_ref->{channel_language}     : 'de';
+    my $msg               = exists $arg_ref->{msg}
+        ? $arg_ref->{msg}                  : '';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = OpenBib::Config->instance;
+
+    my $rss = new XML::RSS ( version => '1.0' );
+        
+    $rss->channel(
+        title         => $channel_title,
+        link          => $channel_link,
+        language      => $channel_language,
+        description   => $channel_description,
+    );
+
+        
+    foreach my $record ($self->get_records){
+        my $desc  = "";
+        my $title = $record->get_category({category => 'T0331', indicator => 1});
+        my $ast   = $record->get_category({category => 'T0310', indicator => 1});
+        
+        $title = $ast if ($ast);
+        
+        my $itemtemplatename = $config->{tt_connector_rss_item_tname};
+            my $itemtemplate = Template->new({
+                LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                    INCLUDE_PATH   => $config->{tt_include_path},
+                    ABSOLUTE       => 1,
+                }) ],
+                RECURSION      => 1,
+                OUTPUT         => \$desc,
+            });
+        
+        
+        # TT-Data erzeugen
+        my $ttdata={
+                record          => $record,
+                msg             => $msg,
+            };
+        
+        $itemtemplate->process($itemtemplatename, $ttdata) || do {
+            $logger->error($itemtemplate->error());
+        };
+        
+        $logger->debug("Adding $title / $desc") if (defined $title && defined $desc);
+        
+        $rss->add_item(
+            title       => $title,
+            link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{resource_title_loc}."/".$record->{database}."/".$record->{id}.".html",
+            description => $desc
+        );
+    }
+    
+    return $rss->as_string;
 }
 
 sub print_to_handler {

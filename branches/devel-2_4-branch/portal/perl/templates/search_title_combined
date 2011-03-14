@@ -20,6 +20,8 @@
 [%- PROCESS common/subtemplate name="search_title_combined_rdf" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="search_title_combined_json" -%]
+[%- ELSIF representation == 'rss' -%]
+[%- PROCESS common/subtemplate name="search_title_combined_rss" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

@@ -30,6 +30,7 @@
 [%   END %]
 <a href="[% path_prefix %]/[% config.get('search_loc') %].rdf?[% searchquery.to_cgi_params %];[% queryoptions.to_cgi_params %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
 <a href="[% path_prefix %]/[% config.get('search_loc') %].json?[% searchquery.to_cgi_params %];[% queryoptions.to_cgi_params %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('search_loc') %].rss?[% searchquery.to_cgi_params %];jn=1;srto=down;srt=year;[% queryoptions.to_cgi_params({ exclude = ['jn','page','srto','srt'] }) %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
 </div>
 [% END %]
 

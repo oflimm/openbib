@@ -45,6 +45,7 @@ use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
+use XML::RSS;
 
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
@@ -512,6 +513,16 @@ sub show_collection_by_single_subject_recent_as_rdf {
     return;
 }
 
+sub show_collection_by_single_subject_recent_as_rss {
+    my $self = shift;
+
+    $self->param('representation','rss');
+
+    $self->show_collection_by_single_subject_recent;
+
+    return;
+}
+
 sub show_collection_by_single_subject_recent_as_include {
     my $self = shift;
 
@@ -552,7 +563,11 @@ sub show_collection_by_single_subject_recent {
 
     my $subjects_ref         = OpenBib::User->get_subjects;
     my $public_litlists_ref  = $user->get_recent_litlists({ subjectid => $subjectid, count => $hitrange });
-    
+
+    my $rss;
+
+    $rss = new XML::RSS ( version => '1.0' ) if ($representation eq "rss");
+
     # TT-Data erzeugen
     my $ttdata={
         representation => $representation,
@@ -562,6 +577,8 @@ sub show_collection_by_single_subject_recent {
             my $ref = shift;
             return encode_json $ref;
         },
+
+        rss            => $rss,
         
         view           => $view,
         stylesheet     => $stylesheet,
@@ -1069,7 +1086,7 @@ sub show_record_negotiate {
     my $content_type   = "";
 
     my $thisid = "";
-    if ($litlistid=~/^(.+?)(\.html|\.json|\.rdf)$/){
+    if ($litlistid=~/^(.+?)(\.html|\.json|\.rdf|\.rss)$/){
         $thisid           = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $config->{'content_type_map_rev'}{$representation};

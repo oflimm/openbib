@@ -72,4 +72,7 @@
 [%- IF gt -%]
 ([% gt %])<br />
 [%- END -%]
+[%- IF record.tstamp -%]
+Hinzugefügt: [% record.tstamp %]<br />
+[%- END -%]
 ]]>

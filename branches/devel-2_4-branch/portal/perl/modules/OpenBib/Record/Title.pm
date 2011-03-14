@@ -2020,4 +2020,16 @@ sub set_category {
     return $self;
 }
 
+sub have_brief_record {
+    my ($self) = @_;
+    
+    return (exists $self->{_brief_normset} && keys %{$self->{_brief_normset}})?1:0;
+}
+
+sub have_full_record {
+    my ($self) = @_;
+    
+    return (exists $self->{_normset})?1:0;
+}
+
 1;

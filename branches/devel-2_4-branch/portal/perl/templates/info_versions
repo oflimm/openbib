@@ -27,6 +27,158 @@
 
 <p />
 
+<h1 id="openbibv2.4">Neuerungen mit Version 2.4 (in Entwicklung)</h1>
+
+<h2>Generelle Umstrukturierung</h2>
+
+Die Architektur der gesamten OpenBib-Anwendung wurde grundlegend
+umstrukturiert und orientiert sich an
+
+<ul>
+
+<li>Grundprinzipien des Semantic Web (Resource-URI's als Identifikatoren, Content-Weichen,
+Trennung Identifikator-URI's und verschiedenen Daten-Repr&auml;sentationen wie HTML,JSON,RDF,RSS)</li>
+
+<li>REST-WebServices mit definierten "Cool URI's" und CRUD (Create,
+Read, Update, Delete) &uuml;ber Standard-HTTP Methoden (POST, GET,
+PUT, DELETE)
+
+</ul>
+
+<p> Damit wird erreicht, dass das gesamte Recherche-Portal selbst zu
+einem WebService wird und sich mit allen seinen Funktionen und
+Informationen in beliebige andere Dienste integrieren
+l&auml;sst. Zusätzlich besteht weiterhin der bereits etablierte
+Mechanismus, beliebige Informationen über <a
+href="http://wiki.openbib.org/index.php?title=Konnektoren"
+target="_blank">Konnektoren</a> mit definierten Standardschnittstellen
+(SeeAlso, etc.) bereitzustellen.  </p>
+
+<p> Das OpenBib-Portal ist somit gleichzeitig ein herkömmliches
+Recherche-Portal, das Endnutzer über Ihre Web-Browser nutzen, wie auch
+eine grundlegende Infrastruktur, die Programme und Web-Crawler als
+WebService ansprechen k&ouml;nnen. Folgende Repräsentationen von
+Information bietet das Portal an. Eine Erweiterung um zustätzliche
+Daten-Repräsentationen ist mit wenig Aufwand möglich.  </p>
+
+<dl>
+<dt>HTML</dt>
+<dd>Der Endnutzer, der im Portal recherchieren möchte, erhält eine
+bekannte Ausgabe im HTML-Format. Die entsprechenden URI's enden auf <em>.html</em>. <br/>[<a href="http://search.openbib.org/portal/openbib/resource/cloud/year/openbib.html">Beispiel: Wortwolke</a>]</dd>
+<dt>JSON</dt>
+<dd>Für eine bestmögliche Integration in externe Anwendungen werden
+standardmäßig alle verfügbaren Informationen im JSON-Format
+bereitgestellt. Damit lässt sich insbesondere auch jede Information
+direkt über AJAX (via JSON) integrieren. Die entsprechenden URI's enden auf <em>.json</em>. <br/>[<a href="http://search.openbib.org/portal/openbib/resource/litlist/2.json">Beispiel: Literaturliste</a>]</dd>
+<dt>RDF</dt>
+<dd>Als lingua franca des Sematic Web können die Informationen - wenn
+geeignete Ontologien zu ihrer Beschreibung existieren - im
+XML-RDF-Format bereitgestellt werden. Die entsprechenden URI's enden auf <em>.rdf</em> <br/>[<a href="http://search.openbib.org/portal/openbib/resource/title/openbib/532.rdf">Beispiel: Titel-Resource</a>]</dd>
+<dt>RSS</dt>
+<dd>Verschiedene Informationen lassen sich direkt als RSS-Feed
+abonnieren, wie z.B. die Literaturlisten zu einem Themengebiet. Die entsprechenden URI's enden auf <em>.rss</em> <br/>[<a href="http://search.openbib.org/portal/openbib/resource/litlist/subject/15/recent.include?num=5">Beispiel: Letzte 5 Literaturlisten in einem Themengebiet</a>]</dd>
+</dl>
+<dt>HTML Include</dt>
+<dd>Zur noch einfacheren Integration kann der effektive Nutzinhalt im
+HTML-Format ohne das ihn umgebende Layout abgerufen und in externe
+Webseiten oder -anwendungen eingebettet werden. Die entsprechenden URI's enden auf <em>.include</em> <br/>[<a href="http://search.openbib.org/portal/openbib/resource/litlist/subject/15/recent.include?num=5">Beispiel: Letzte 5 Literaturlisten in einem Themengebiet</a>]</dd>
+</dl>
+
+<p> Neben dem Aufruf des Indentifikations-URI und anschließender
+Weiterleitung über eine 303-Redirect-Weiche kann jede Repräsentation
+auch direkt über das Anhängen der jeweiligen Endung direkt aufgerufen
+werden. Die für einen URI verfügbaren Repräsentationen werden dabei in
+der HTML-Repräsentation als Links über Icons dargestellt.  </p>
+
+<p> Die Orientierung an grundlegenden Web-Mechanismen bringt auch
+weitere Vorteile:</p>
+
+
+
+<h2>Einheitliche Recherche über Suchmaschine</h2>
+
+Mit einer durchgängigen Verwendung der Xapian Suchmaschine - sowohl in
+der einfachen, wie auch nun in der erweiterten Suche - und der damit
+einhergehenden Entfernung der SQL-Recherche wird für den Nutzer der
+Recherche-Prozess vereinheitlicht.
+
+<h2>Zusammenfassung der Recherche-Indizes verschiedener Kataloge</h2>
+
+Die separaten Recherche-Indizes verschiedener Kataloge können bei
+einer Recherche zu einem virtuellen Gesamt-Index kombiniert
+werden. Damit erhält der Nutzer eine sortierte Trefferliste aller
+Titel aus allen Katalogen - und nicht wie bisher eine Trefferliste, in
+der die Treffer katalogweise nacheinander dargestellt werden. Für eine
+gezielte Katalogauswahl dient eine weitere Facette mit Katalognamen.
+
+<h2>Erweiterung der facettierten Suche</h2>
+
+Schränkt ein Nutzer seine ürsprüngliche
+Rechercheanfrage nacheinander über Facetten ein, so kann er jede
+dieser Filterungen getrennt voneinander wieder entfernen.
+
+<h2>Einschränkung auf Online-Medien</h2>
+
+Über einen vereinheitlichten Medientyp für Online-Medien wie ebooks
+usw. kann nun eine Recherche direkt auf diese einschränken.
+
+<h2>Verbesserte Absicherung der Selbst-Registrierung</h2>
+
+Bei der Selbst-Registrierung wird dem Nutzer an die von ihm
+eingegebene E-Mail-Adresse eine Mail mit einem Freischalt-URL
+geschickt. Erst wenn er diesen aufruft kann er sich erfolgreich am
+Portal anmelden. Damit wird nach der Verwendung von ReCAPTCHA gegen
+maschinellen Missbrauch nun auch ein individueller Missbrauch durch
+Entnutzer erschwert.
+
+<h2>Abstrahierung von Organisationseinheiten</h2>
+
+Bisher konnte für alle mit einer OpenBib-Installation verwalteten
+Recherche-Portale lediglich eine einzige Organisationsstruktur
+definiert und verwendet werden. Jetzt kann für jedes Portal-Profil ein
+eigener Satz von Organisationseinheiten definiert und Kataloge
+zugeordnet werden. Damit kann OpenBib nun noch besser als
+"Portal-Baukasten" fungieren.
+
+<h2>Interner Umbau</h2>
+
+
+<ul>
+
+<li>Modularisierung durch Umstellung auf das CGI::Application und das
+DBIx::Class Framework.</li>
+
+<li>Parametrisierung der Felder von Indexierung und Recherche in
+Xapian in portal.yml<li>
+
+<li>Erweiterung der Xapian-Recherche um Sortierung</li>
+
+<li>Auslagerung der Verarbeitung einzelner Resourcen
+    (Normdatenanzeigen) von Search nach Resource</li>
+
+<li>Verschmelzung von VirtualSearch mit Search</li>
+
+<li>Ueberarbeitung der URI-Struktur und CGI-Parameter in Richtung
+REST. Damit koennen insbesondere alle Seiten sofort gebookmarkt
+werden.</li>
+
+  <ul>
+
+   <li>Erweiterung der Zustandslosigkeit verschiedener Handler</li>
+
+   <li>Verwendung von Cookies fuer SessionID anstelle CGI-Parameter</li>
+
+   <li>Kein zentraler Einsprungpunkt mehr fuer Session-Handling
+   notwendig (frueher StartOpac)</li>
+
+   <li>Veroeffentlichung einer OpenBib-Serverfarm unter einer
+   offiziellen Adresse (mit Apache-Proxy-Modul/HA-Proxy und
+   REST-Syntax)</li>
+
+</ul>
+
+</ul>
+
 <h1 id="openbibv2.3">Neuerungen mit Version 2.3 (Ver&ouml;ffentlicht am 17.4.2009)</h1>
 
 <h2>&Uuml;berarbeitung von Nutzerf&uuml;hrung und Design</h2>

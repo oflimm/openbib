@@ -1,4 +1,5 @@
-[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%# USE dumper;dumper.dump(public_litlists)%]
 [%- IF representation == '' || representation == 'html' -%]
 [%- PROCESS common/subtemplate name="resource_litlist_collection_recent_html" -%]
 [%- ELSIF representation == 'rdf' -%]

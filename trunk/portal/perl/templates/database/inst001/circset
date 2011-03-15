@@ -74,7 +74,7 @@
      END ;
 
 -%]
-<tr align="center"><td><a href="http://www.ub.uni-koeln.de/" target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
+<tr align="center"><td><a href="http://www.ub.uni-koeln.de/" target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]<br/><a href="http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/ausleihzeitenhaupt/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a></td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[% mex.Status %]</strong></td>
 <td class="circurl">

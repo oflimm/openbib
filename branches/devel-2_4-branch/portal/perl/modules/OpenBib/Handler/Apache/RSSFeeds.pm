@@ -39,6 +39,7 @@ use Apache2::Reload;
 use Apache2::Request ();
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
@@ -167,6 +168,12 @@ sub show_collection {
         view        => $view,
         representation => $representation,
         content_type   => $content_type,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+
         rssfeedinfo => $rssfeedinfo_ref,
         stylesheet  => $stylesheet,
         sessionID   => $session->{ID},

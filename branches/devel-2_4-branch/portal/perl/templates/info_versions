@@ -76,7 +76,7 @@ geeignete Ontologien zu ihrer Beschreibung existieren - im
 XML-RDF-Format bereitgestellt werden. Die entsprechenden URI's enden auf <em>.rdf</em> <br/>[<a href="http://search.openbib.org/portal/openbib/resource/title/openbib/532.rdf">Beispiel: Titel-Resource</a>]</dd>
 <dt>RSS</dt>
 <dd>Verschiedene Informationen lassen sich direkt als RSS-Feed
-abonnieren, wie z.B. die Literaturlisten zu einem Themengebiet. Die entsprechenden URI's enden auf <em>.rss</em> <br/>[<a href="http://search.openbib.org/portal/openbib/resource/litlist/subject/15/recent.include?num=5">Beispiel: Letzte 5 Literaturlisten in einem Themengebiet</a>]</dd>
+abonnieren, wie z.B. die Literaturlisten zu einem Themengebiet. Die entsprechenden URI's enden auf <em>.rss</em> <br/>[<a href="http://search.openbib.org/portal/openbib/resource/litlist/subject/15/recent.rss">Beispiel: Literaturlisten in einem Themengebiet</a>]</dd>
 </dl>
 <dt>HTML Include</dt>
 <dd>Zur noch einfacheren Integration kann der effektive Nutzinhalt im

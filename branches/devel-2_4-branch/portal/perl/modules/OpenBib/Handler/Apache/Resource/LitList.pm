@@ -93,7 +93,6 @@ sub setup {
         'show_collection_by_single_subject_recent_as_rss' => 'show_collection_by_single_subject_recent_as_rss',
         'show_collection_by_single_subject_recent_as_include' => 'show_collection_by_single_subject_recent_as_include',
         'show_collection_by_single_subject_recent_negotiate' => 'show_collection_by_single_subject_recent_negotiate',
-        'show_collection_by_single_subject_as_negotiate' => 'show_collection_by_single_subject_as_negotiate',
         'show_record_negotiate'                       => 'show_record_negotiate',
         'show_record_form'                            => 'show_record_form',
         'create_record'                               => 'create_record',

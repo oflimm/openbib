@@ -11,8 +11,6 @@
 #
 #######################################################################
 -%]
-XXX
-[% USE dumper;dumper.dump(public_litlists) ;%]
 [%-
 
 subject_name = "";
@@ -26,14 +24,38 @@ channel_link        = "${path_prefix}/${config.get('resource_litlist_loc')}/subj
 channel_title       = "Literaturlisten zum Themengebiet '${subject_name}'";
 channel_description = "RSS Feed der Literaturliste '${litlist.properties.title}' zum Themenbereich ${subject_name} sortiert nach dem Anlegedatum der Literaturlisten";
 
-rss.channel( title = channel_title, link = channel_link);
+dummy = rss.channel( "title", channel_title, "link", channel_link, "description", channel_description );
 
 FOREACH thisitem IN public_litlists ;
 
-item_title = thisitem.tstamp.split(' ').first;
-item_link  = thisitem.tstamp.split(' ').first;
+item_title       = thisitem.title;
+item_link        = "http://${config.get('frontendservername')}${path_prefix}/${config.get('resource_litlist_loc')}/${thisitem.id}";
+item_tstamp      = thisitem.tstamp.split(' ').first;
 
-rss.add_item( title = item_title, link = item_link);
+subjects = [];
+FOREACH subject IN thisitem.subjects ;
+  subjects.push(subject.name);
+END;
+
+IF subjects.size > 0 ;
+  item_subjects = subjects.join(' ; ');
+ELSE ;
+  item_subjects = "Keine";
+END;
+
+IF thisitem.lecture ;
+  item_lecture = "<b>Offizielle Literaturliste des Instituts/Seminars</b><br/>";
+END;
+
+item_desc = "
+<![CDATA[
+${thisitem.itemcount} Titel enthalten<br/><br/>
+${item_lecture}
+Themengebiet(e): ${item_subjects}<br/>
+Zuletzt aktualisiert: ${item_tstamp}<br/>
+]]>";
+
+dummy = rss.add_item( "title", item_title, "link", item_link, "description", item_desc);
 
 END;
 -%]

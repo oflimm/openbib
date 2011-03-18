@@ -158,7 +158,7 @@ sub show_collection {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
-    my $profile = $config->get_viewinfo($view)->profilename;
+    my $profile       = $config->get_viewinfo->search({ viewname => $view })->single()->profilename;
 
     my $content_type  = $config->{'content_type_map_rev'}{$representation};
     

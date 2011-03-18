@@ -262,7 +262,7 @@ sub show_record_negotiate {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $viewinfo_obj  = $config->get_viewinfo($viewname);
+    my $viewinfo_obj  = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
     my $viewname    = $viewinfo_obj->viewname;
     my $description = $viewinfo_obj->description;
@@ -449,7 +449,7 @@ sub show_record_form {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $viewinfo_obj  = $config->get_viewinfo($viewname);
+    my $viewinfo_obj  = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
     my $viewname    = $viewinfo_obj->viewname;
     my $description = $viewinfo_obj->description;

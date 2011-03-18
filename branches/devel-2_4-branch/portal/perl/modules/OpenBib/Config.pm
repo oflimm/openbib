@@ -988,7 +988,7 @@ sub get_viewinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $viewinfo = $self->{schema}->resultset('ViewInfo')->search({ viewname => $viewname})->single();
+    my $viewinfo = $self->{schema}->resultset('ViewInfo'); #->search({ viewname => $viewname})->single();
 
     return $viewinfo;
 }
@@ -1178,7 +1178,7 @@ sub get_infomatrix_of_active_databases {
     my $lastcategory="";
     my $count=0;
 
-    my $profile = $self->get_viewinfo($view)->profilename;
+    my $profile = $self->get_viewinfo->search({ viewname => $view})->single()->profilename;
     
     $maxcolumn=(defined $maxcolumn)?$maxcolumn:$self->{databasechoice_maxcolumn};
     

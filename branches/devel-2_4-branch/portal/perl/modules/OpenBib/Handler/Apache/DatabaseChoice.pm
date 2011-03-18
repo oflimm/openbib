@@ -175,7 +175,7 @@ sub show_collection {
         return Apache2::Const::OK;
     }
 
-    my $profile = $config->get_viewinfo($view)->profilename;
+    my $profile = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
 
     my $idnresult="";
   
@@ -260,7 +260,7 @@ sub update_collection {
         return Apache2::Const::OK;
     }
 
-    my $profile = $config->get_viewinfo($view)->profilename;
+    my $profile = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
 
     my $idnresult="";
   

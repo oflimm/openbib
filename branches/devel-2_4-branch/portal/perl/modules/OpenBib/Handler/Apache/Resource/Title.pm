@@ -150,7 +150,7 @@ sub show_popular {
     my $utils       = new OpenBib::Template::Utilities;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
-    my $profile       = $config->get_viewinfo($view)->profilename;
+    my $profile       = $config->get_viewinfo->search({ viewname => $view })->single()->profilename;
     
     # TT-Data erzeugen
     my $ttdata={

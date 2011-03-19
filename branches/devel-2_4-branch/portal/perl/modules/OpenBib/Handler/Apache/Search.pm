@@ -632,36 +632,52 @@ sub search_databases {
             
             my $dbh;
             my $nav;
-            
-            foreach my $database (@databases) {
-                $logger->debug("Adding Xapian DB-Object for database $database");
+
+            my $profileindex_path = $config->{xapian_index_base_path}."/joined/$sysprofile/$profile";
+
+            if ($profile && -d $profileindex_path){
+                $logger->debug("Adding Xapian DB-Object for profile $profile in Systemprofile $sysprofile");
+
+                eval {
+                    $dbh = new Search::Xapian::Database ( $profileindex_path ) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+                };
                 
-                if (!defined $dbh){
-                    # Erstes Objekt erzeugen,
+                if ($@){
+                    $logger->error("Initializing with Profile: $profile - :".$@." not available");
+                }
+                
+            }
+            else {
+                foreach my $database (@databases) {
+                    $logger->debug("Adding Xapian DB-Object for database $database");
                     
-                    $logger->debug("Creating Xapian DB-Object for database $database");                
-                    
-                    eval {
-                        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-                    };
-                    
-                    if ($@){
-                        $logger->error("Initializing with Database: $database - :".$@." not available");
+                    if (!defined $dbh){
+                        # Erstes Objekt erzeugen,
+                        
+                        $logger->debug("Creating Xapian DB-Object for database $database");                
+                        
+                        eval {
+                            $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+                        };
+                        
+                        if ($@){
+                            $logger->error("Initializing with Database: $database - :".$@." not available");
+                        }
+                    }
+                    else {
+                        $logger->debug("Adding database $database");
+                        
+                        eval {
+                            $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
+                        };
+                        
+                        if ($@){
+                            $logger->error("Adding Database: $database - :".$@." not available");
+                        }                        
                     }
                 }
-                else {
-                    $logger->debug("Adding database $database");
-                    
-                    eval {
-                        $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
-                    };
-                    
-                    if ($@){
-                        $logger->error("Adding Database: $database - :".$@." not available");
-                    }                        
-                }
             }
-
+            
             #$dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/view_kug") || $logger->fatal("Couldn't open/create Xapian DB $!\n");
 
             # Recherche starten

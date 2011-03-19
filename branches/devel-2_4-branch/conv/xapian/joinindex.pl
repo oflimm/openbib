@@ -56,6 +56,39 @@ foreach my $item ($config->get_databaseinfo->search({ active => 1 })->all){
     $is_active{$dbname} = 1 if (-d "$xapian_path/$dbname");
 }
 
+# View
+foreach my $item_ref ($config->get_viewinfo->search({ joinindex => 1 })->all){
+    my $viewname = $item_ref->viewname;
+    
+    print "Processing View $viewname\n";
+    
+    my @databases = $config->get_viewdbs($viewname);
+    
+    my $destination_index = "$xapian_path/joined/view_$viewname";
+    
+    if (! -d $destination_index ){
+        system("mkdir -p $destination_index");
+    }
+    
+    if (! -d "$destination_index.tmp" ){
+        system("mkdir -p $destination_index.tmp");
+    }
+    
+    my @databaseindex = map { $_ = "$xapian_path/$_" } grep {$is_active{$_}} @databases;
+    
+    if (@databaseindex){
+        my $cmd = "/usr/bin/xapian-compact -m ".join(' ',@databaseindex)." $destination_index.tmp";
+        
+        print "$cmd\n";
+        
+        system ($cmd);
+        
+            system("rm $destination_index/* ; rmdir $destination_index ; mv $destination_index.tmp $destination_index");
+    }
+}
+
+exit;
+# Profile
 foreach my $profile_ref (@{$all_profiles_ref}){
     my $profilename = $profile_ref->{profilename};
 
@@ -99,38 +132,9 @@ foreach my $profile_ref (@{$all_profiles_ref}){
         }
     }
 
-    foreach my $item_ref ($config->get_viewinfo->search({ profilename => $profilename })->all){
-        my $viewname = $item_ref->{viewname};
-
-        print "Processing View $viewname\n";
-        
-        my @databases = $config->get_viewdbs($viewname);
-
-        my $destination_index = "$xapian_path/joined/view_$viewname";
-
-        if (! -d $destination_index ){
-            system("mkdir -p $destination_index");
-        }
-
-        if (! -d "$destination_index.tmp" ){
-            system("mkdir -p $destination_index.tmp");
-        }
-
-        my @databaseindex = map { $_ = "$xapian_path/$_" } grep {$is_active{$_}} @databases;
-
-        if (@databaseindex){
-            my $cmd = "/usr/bin/xapian-compact -m ".join(' ',@databaseindex)." $destination_index.tmp";
-            
-            print "$cmd\n";
-            
-            system ($cmd);
-        
-            system("rm $destination_index/* ; rmdir $destination_index ; mv $destination_index.tmp $destination_index");
-        }
-    }
 
     # Alle Kataloge im Profil
-    my $destination_index = "$xapian_path/joined/$profilename/complete";
+    my $destination_index = "$xapian_path/joined/$profilename/alldbs";
     
     if (! -d $destination_index ){
         system("mkdir -p $destination_index");

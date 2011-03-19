@@ -33,20 +33,32 @@ __PACKAGE__->add_columns(
   },
   "start_stid",
   {
-    data_type => "TEXT",
-    default_value => undef,
-    is_nullable => 1,
-    size => 65535,
+      data_type => "TEXT",
+      default_value => undef,
+      is_nullable => 1,
+      size => 65535,
   },
   "profilename",
   {
-    data_type => "VARCHAR",
-    default_value => undef,
-    is_nullable => 1,
-    size => 20,
+      data_type => "VARCHAR",
+      default_value => undef,
+      is_nullable => 1,
+      size => 20,
+  },
+  "joinindex",
+  {
+      data_type => "TINYINT",
+      default_value => undef,
+      is_nullable => 1,
+      size => 1
   },
   "active",
-  { data_type => "TINYINT", default_value => undef, is_nullable => 1, size => 1 },
+  {
+      data_type => "TINYINT",
+      default_value => undef,
+      is_nullable => 1,
+      size => 1
+  },
 );
 
 __PACKAGE__->set_primary_key("viewname");

@@ -19,3 +19,5 @@ alter table dbinfo add  circwsurl    TEXT after circurl;
 alter table dbinfo add  circdb       TEXT after circwsurl;
 
 rename table dbinfo to databaseinfo;
+
+alter table viewinfo add  joinindex       TINYINT after profilename;

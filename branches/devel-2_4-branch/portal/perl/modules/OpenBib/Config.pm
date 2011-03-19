@@ -1573,6 +1573,8 @@ sub update_view {
         ? $arg_ref->{start_stid}          : undef;
     my $profilename            = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}         : undef;
+    my $joinindex              = exists $arg_ref->{joinindex}
+        ? $arg_ref->{joinindex}            : undef;
     my $rssfeeds_ref           = exists $arg_ref->{rssfeeds}
         ? $arg_ref->{rssfeeds}            : undef;
 
@@ -1584,8 +1586,8 @@ sub update_view {
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
     
-    my $idnresult=$self->{dbh}->prepare("update viewinfo set description = ?, start_loc = ?, start_stid = ?, profilename = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$start_loc,$start_stid,$profilename,$active,$viewname) or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("update viewinfo set description = ?, start_loc = ?, start_stid = ?, profilename = ?, joinindex = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$start_loc,$start_stid,$profilename,$joinindex,$active,$viewname) or $logger->error($DBI::errstr);
     
     # Primary RSS-Feed fuer Autodiscovery eintragen
     if ($primrssfeed){
@@ -1634,6 +1636,8 @@ sub new_view {
         ? $arg_ref->{start_loc}           : undef;
     my $start_stid             = exists $arg_ref->{stid_loc}
         ? $arg_ref->{start_stid}           : undef;
+    my $joinindex              = exists $arg_ref->{joinindex}
+        ? $arg_ref->{joinindex}            : undef;
     my $active                 = exists $arg_ref->{active}
         ? $arg_ref->{active}              : undef;
 
@@ -1650,8 +1654,8 @@ sub new_view {
       return -1;
     }
     
-    $idnresult=$self->{dbh}->prepare("insert into viewinfo values (?,?,NULL,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname,$description,$start_loc,$start_stid,$profilename,$active) or $logger->error($DBI::errstr);
+    $idnresult=$self->{dbh}->prepare("insert into viewinfo values (?,?,NULL,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname,$description,$start_loc,$start_stid,$profilename,$joinindex,$active) or $logger->error($DBI::errstr);
     
     return 1;
 }

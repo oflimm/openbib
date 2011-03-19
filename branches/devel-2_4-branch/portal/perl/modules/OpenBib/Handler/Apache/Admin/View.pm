@@ -270,6 +270,7 @@ sub show_record_negotiate {
     my $start_loc   = $viewinfo_obj->start_loc;
     my $start_stid  = $viewinfo_obj->start_stid;
     my $profilename = $viewinfo_obj->profilename;
+    my $joinindex   = $viewinfo_obj->joinindex;
     my $active      = $viewinfo_obj->active;
              
     my @profiledbs       = $config->get_profiledbs($profilename);
@@ -283,6 +284,7 @@ sub show_record_negotiate {
     my $viewinfo={
         viewname     => $viewname,
         description  => $description,
+        joinindex    => $joinindex,
         active       => $active,
         start_loc    => $start_loc,
         start_stid   => $start_stid,
@@ -356,6 +358,7 @@ sub create_record {
     my $description     = decode_utf8($query->param('description'))     || '';
     my $viewname        = $query->param('viewname')                     || '';
     my $profilename     = $query->param('profilename')                  || '';
+    my $joinindex       = $query->param('joinindex')       || 0;
     my $active          = $query->param('active')          || 0;
     my $viewstart_loc   = $query->param('viewstart_loc')             || '';
     my $viewstart_stid  = $query->param('viewstart_stid')            || '';
@@ -385,6 +388,7 @@ sub create_record {
         viewname    => $viewname,
         description => $description,
         profilename => $profilename,
+        joinindex   => $joinindex,
         active      => $active,
         start_loc   => $viewstart_loc,
         start_stid  => $viewstart_stid,
@@ -457,6 +461,7 @@ sub show_record_form {
     my $start_loc   = $viewinfo_obj->start_loc;
     my $start_stid  = $viewinfo_obj->start_stid;
     my $profilename = $viewinfo_obj->profilename;
+    my $joinindex   = $viewinfo_obj->joinindex;
     my $active      = $viewinfo_obj->active;
              
     my @profiledbs       = $config->get_profiledbs($profilename);
@@ -471,6 +476,7 @@ sub show_record_form {
         viewname     => $viewname,
         description  => $description,
         active       => $active,
+        joinindex    => $joinindex,
         start_loc    => $start_loc,
         start_stid   => $start_stid,
         profilename  => $profilename,
@@ -595,6 +601,7 @@ sub update_record {
     # Ansonsten POST oder PUT => Aktualisieren
 
     my $description     = decode_utf8($query->param('description'))     || '';
+    my $joinindex       = $query->param('joinindex')       || 0;
     my $active          = $query->param('active')          || 0;
     my $primrssfeed     = $query->param('primrssfeed')     || '';
     my $viewstart_loc   = $query->param('viewstart_loc')             || '';
@@ -614,6 +621,7 @@ sub update_record {
     my $thisviewinfo_ref = {
         viewname    => $viewname,
         description => $description,
+        joinindex   => $joinindex,
         active      => $active,
         primrssfeed => $primrssfeed,
         start_loc   => $viewstart_loc,

@@ -20,6 +20,11 @@
        caturl   = mex.${"X4001"}.content ;
        verlauf  = mex.${"X1204"}.content ;
        signatur = mex.${"X0014"}.content ;
+       standort = utf2iso(mex.${"X0016"}.content) ;
+
+       IF standort ;
+          signatur = "${signatur} (${standort})";
+       END ;
 
        IF verlauf == '-' ;
           verlauf = '' ;

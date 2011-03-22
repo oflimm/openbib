@@ -22,6 +22,10 @@
        signatur = mex.${"X0014"}.content ;
        standort = utf2iso(mex.${"X0016"}.content) ;
 
+       IF standort == '-';
+          standort = '';
+       END ;
+
        IF standort ;
           signatur = "${signatur} (${standort})";
        END ;

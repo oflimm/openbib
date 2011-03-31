@@ -142,6 +142,10 @@ my $kordefs_ref = {
         newcat => '0001', # Ansetzung
         mult => 0,
     },
+    '801' => {
+        newcat => '0110', # Abkuerzung der Ansetzung
+        mult => 0,
+    },
     '810' => {            # 1. verweisungsform zum namen der koerperschaft
         newcat => '0102', # Verweisung
         mult => 1,
@@ -568,7 +572,7 @@ my $titdefs_ref = {
         newcat => '0004', # Uebergeordn. Satz
         mut    => 1,
     },
-    '026 ' => {            # ZDBID
+    '020a' => {            # ZDBID
         newcat => '0572', # ZDBID
         mult   => 1,
     },
@@ -801,8 +805,8 @@ if (-e "tmp.TIT"){
                 $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
             }
 
-            if ($category =~ /^026 $/){
-                $content=~s/^\D+//;
+            if ($category =~ /^020a$/ || $category =~ /^026 $/){
+                $content=~s/[^-0-9]//g;
             }
             
             if ($category =~ /^542a$/){

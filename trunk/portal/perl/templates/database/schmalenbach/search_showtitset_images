@@ -30,7 +30,14 @@
      cdm_imgurl = "http://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdm.records.first.collection}&CISOPTR=${cdm.records.first.pointer}&width=200";
    #  cdm_imgurl = "http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=${cdm.records.first.collection}&CISOPTR=${cdm.records.first.pointer}&DMSCALE=8";
 %]
-<a id="cover_full_urlXX" class="XXcloud-zoom" rel="zoomWidth:200, zoomHeight:200, position:'left'" href="[% config.get('redirect_loc') %]/[% sessionID %]/534/[% cdm_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]" title="Titel in ContentDM" /></a>
+<p>
+<a id="cover_full_urlXX" class="XXcloud-zoom" rel="zoomWidth:200, zoomHeight:200, position:'center'" href="[% config.get('redirect_loc') %]/[% sessionID %]/534/[% cdm_url %]" target="_blank"><center><img id="cover_full" src="[% cdm_imgurl %]" title="Titel in ContentDM" /></center></a>
+</p>
+
+<p>
+<a href="[% config.get('redirect_loc') %]/[% sessionID %]/560/http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fwww.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fschmalbach%26CISOPTR%3D[% cdm.records.first.pointer %]" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[Online lesen im DFG-Viewer]</center></a>
+</p>
+
 [% ELSE %]
 
 [%   IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]

@@ -4,6 +4,8 @@
 [%- PROCESS common/subtemplate name="resource_litlist_collection_by_single_subject_rdf" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="resource_litlist_collection_by_single_subject_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="resource_litlist_collection_by_single_subject_include" -%]
 [%- ELSIF representation == 'bibtex' -%]
 [%- PROCESS common/subtemplate name="resource_litlist_collection_by_single_subject_bibtex" -%]
 [%- ELSIF representation == 'refer' -%]

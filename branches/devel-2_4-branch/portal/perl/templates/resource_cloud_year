@@ -3,6 +3,8 @@
 [%- PROCESS common/subtemplate name="resource_cloud_year_html" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="resource_cloud_year_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="resource_cloud_year_include" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

@@ -239,7 +239,7 @@ sub show_record_negotiate {
     my $content_type   = "";
 
     my $tail_prefix    = "";
-    if ($tail=~/^(.+?)(\.html|\.json|\.rdf)$/){
+    if ($tail=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
         $tail_prefix   = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $config->{'content_type_map_rev'}{$representation};

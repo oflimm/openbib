@@ -3,6 +3,8 @@
 [%- PROCESS common/subtemplate name="resource_cloud_corporatebody_html" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="resource_cloud_corporatebody_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="resource_cloud_corporatebody_include" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

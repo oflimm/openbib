@@ -643,7 +643,7 @@ sub show_collection_by_single_subject_negotiate {
     my $content_type   = "";
 
     my $thisid = "";
-    if ($subjectid=~/^(.+?)(\.html|\.json|\.rdf)$/){
+    if ($subjectid=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
         $thisid           = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $config->{'content_type_map_rev'}{$representation};

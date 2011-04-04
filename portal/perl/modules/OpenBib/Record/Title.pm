@@ -1967,6 +1967,8 @@ sub enrich_cdm {
     my $enrich_data_ref = {};
     
     if ($content){
+        $content=~s/<!--.+?-->//g;
+        $logger->debug("CDM: Result for ID $id: ".$content);
         $enrich_data_ref = decode_json($content);
     }
 

@@ -2032,4 +2032,37 @@ sub have_full_record {
     return (exists $self->{_normset})?1:0;
 }
 
+sub enrich_cdm {
+    my ($self,$id,$url)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Wenn kein URI, dann Default-URI
+    $url = $config->{cdm_base}.$config->{cdm_path} unless ($url);
+
+    $url.=$id;
+    
+    my $ua = new LWP::UserAgent;
+    $ua->agent("OpenBib/1.0");
+    $ua->timeout(1);
+    my $request = new HTTP::Request('GET', $url);
+    my $response = $ua->request($request);
+
+    my $content = $response->content;
+
+    my $enrich_data_ref = {};
+    
+    if ($content){
+        $content=~s/<!--.+?-->//g;
+        $logger->debug("CDM: Result for ID $id: ".$content);
+        $enrich_data_ref = decode_json($content);
+    }
+
+    return $enrich_data_ref;
+    
+}
+
 1;

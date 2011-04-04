@@ -52,6 +52,7 @@ sub setup {
         'show_popular_as_html'   => 'show_popular_as_html',
         'show_popular_as_json'   => 'show_popular_as_json',
         'show_popular_as_rdf'    => 'show_popular_as_rdf',
+        'show_popular_as_include'=> 'show_popular_as_include',
     );
 
     # Use current path as template path,
@@ -115,6 +116,16 @@ sub show_popular_as_rdf {
     my $self = shift;
 
     $self->param('representation','rdf');
+
+    $self->show_popular;
+
+    return;
+}
+
+sub show_popular_as_include {
+    my $self = shift;
+
+    $self->param('representation','include');
 
     $self->show_popular;
 

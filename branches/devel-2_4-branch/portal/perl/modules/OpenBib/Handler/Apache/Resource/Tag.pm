@@ -72,6 +72,12 @@ sub setup {
         'show_collection_as_html'              => 'show_collection_as_html',
         'show_collection_as_json'              => 'show_collection_as_json',
         'show_collection_as_rdf'               => 'show_collection_as_rdf',
+        'show_collection_recent_as_html'       => 'show_collection_recent_as_html',
+        'show_collection_recent_as_json'       => 'show_collection_recent_as_json',
+        'show_collection_recent_as_rdf'        => 'show_collection_recent_as_rdf',
+        'show_collection_recent_as_rss'        => 'show_collection_recent_as_rss',
+        'show_collection_recent_as_include'    => 'show_collection_recent_as_include',
+        'show_collection_recent_negotiate'     => 'show_collection_recent_negotiate',
         'show_collection_form'                 => 'show_collection_form',
         'show_record_negotiate'                => 'show_record_negotiate',
         'create_record'                        => 'create_record',
@@ -824,6 +830,147 @@ sub update_record {
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub show_collection_recent_negotiate {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+
+    my $config  = OpenBib::Config->instance;
+
+    my $negotiated_type_ref = $self->negotiate_type;
+
+    my $new_location = "$config->{base_loc}/$view/$config->{resource_tag_loc}/recent.$negotiated_type_ref->{suffix}";
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+    return;
+}
+
+sub show_collection_recent_as_html {
+    my $self = shift;
+
+    $self->param('representation','html');
+
+    $self->show_collection_recent;
+
+    return;
+}
+
+sub show_collection_recent_as_json {
+    my $self = shift;
+
+    $self->param('representation','json');
+
+    $self->show_collection_recent;
+
+    return;
+}
+
+sub show_collection_recent_as_rdf {
+    my $self = shift;
+
+    $self->param('representation','rdf');
+
+    $self->show_collection_recent;
+
+    return;
+}
+
+sub show_collection_recent_as_rss {
+    my $self = shift;
+
+    $self->param('representation','rss');
+
+    $self->show_collection_recent;
+
+    return;
+}
+
+sub show_collection_recent_as_include {
+    my $self = shift;
+
+    $self->param('representation','include');
+
+    $self->show_collection_recent;
+
+    return;
+}
+
+# Alle oeffentlichen Literaturlisten
+sub show_collection_recent {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+    my $representation = $self->param('representation') || 'html';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+
+    my $hitrange       = $query->param('num')    || 50;
+
+    # NO CGI Args
+
+    my @viewdbs         = $config->get_viewdbs($view);
+
+    # Tag-Cloud ist View-abhaengig. Wenn View nur aus einer Datenbank besteht, dann werden alle Tags fuer Titel aus der Datenbank herausgegeben, sonst alle.
+    # ToDo: fuer alle Datenbanken eines Views, d.h. auch bei mehr als einer...
+    my $recent_tags_ref = ($#viewdbs == 0)?$user->get_recent_tags({ count => $hitrange, database => $viewdbs[0] }):$user->get_recent_tags({ count => $hitrange });
+
+    my $content_type    = $config->{'content_type_map_rev'}{$representation};
+
+    my $rss;
+
+    $rss = new XML::RSS ( version => '1.0' ) if ($representation eq "rss");
+
+    # TT-Data erzeugen
+    my $ttdata={
+        representation => $representation,
+        content_type   => $content_type,
+
+        to_json       => sub {
+            my $ref = shift;
+            return encode_json $ref;
+        },
+
+        rss            => $rss,
+        view           => $view,
+        stylesheet     => $stylesheet,
+        sessionID      => $session->{ID},
+        
+        user           => $user,
+        
+        recent_tags    => $recent_tags_ref,
+        
+        config         => $config,
+        user           => $user,
+        msg            => $msg,
+    };
+    
+    OpenBib::Common::Util::print_page($config->{tt_resource_tag_collection_recent_tname},$ttdata,$r);
+    return Apache2::Const::OK;
 }
 
 sub showyyy {

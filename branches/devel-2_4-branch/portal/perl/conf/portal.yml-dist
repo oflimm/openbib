@@ -617,7 +617,11 @@ dispatch_rules:
   - # resource_title_loc:
      module: 'OpenBib::Handler::Apache::Resource::Title'
      rule: '/portal/:view/resource/title/popular.rdf'
-     runmode: 'show_popular_as_json'
+     runmode: 'show_popular_as_rdf'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/popular.include'
+     runmode: 'show_popular_as_include'
   - # resource_title_loc:
      module: 'OpenBib::Handler::Apache::Resource::Title'
      rule: '/portal/:view/resource/title/popular'
@@ -634,6 +638,10 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Resource::Title'
      rule: '/portal/:view/resource/title/:database/popular.rdf'
      runmode: 'show_popular_as_rdf'
+  - # resource_title_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Title'
+     rule: '/portal/:view/resource/title/:database/popular.include'
+     runmode: 'show_popular_as_include'
   - # resource_title_loc:
      module: 'OpenBib::Handler::Apache::Resource::Title'
      rule: '/portal/:view/resource/title/:database/popular'
@@ -684,8 +692,16 @@ dispatch_rules:
      runmode: 'show_collection_recent_as_rdf'
   - # resource_tag_loc:
      module: 'OpenBib::Handler::Apache::Resource::Tag'
+     rule: '/portal/:view/resource/tag/recent.rss[get]'
+     runmode: 'show_collection_recent_as_rss'
+  - # resource_tag_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Tag'
      rule: '/portal/:view/resource/tag/recent.include[get]'
      runmode: 'show_collection_recent_as_include'
+  - # resource_tag_loc:
+     module: 'OpenBib::Handler::Apache::Resource::Tag'
+     rule: '/portal/:view/resource/tag/recent[get]'
+     runmode: 'show_collection_recent_negotiate'
   - # resource_tag_loc:
      module: 'OpenBib::Handler::Apache::Resource::Tag'
      rule: '/portal/:view/resource/tag/:tagid'
@@ -1889,6 +1905,7 @@ tt_resource_subject_tname: resource_subject
 tt_resource_classification_tname: resource_classification
 tt_resource_library_tname: resource_library
 tt_resource_tag_tname: resource_tag
+tt_resource_tag_collection_recent_tname: resource_tag_collection_recent
 tt_resource_litlist_tname: resource_litlist
 tt_resource_litlist_edit_tname: resource_litlist_edit
 tt_resource_user_litlist_collection_tname: resource_user_litlist_collection

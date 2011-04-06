@@ -11,8 +11,8 @@
 #
 #######################################################################
 -%]
-[%# Ausgabekategorien %]
-[% categories = [
+[%-# Ausgabekategorien -%]
+[%- categories = [
                 'T0100', # msg.maketext("T0100") Verfasser
                 'T0101', # msg.maketext("T0101") Person
                 'T0103', # msg.maketext("T0103") Gefeierte Person
@@ -118,4 +118,4 @@
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 ]
 
-%]
+-%]

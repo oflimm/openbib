@@ -32,26 +32,26 @@
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]" />
 [% END %]
 [% IF LinkedData == "title" %]
-<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('resource_title_loc') %]/[%- record.database -%]/[%- record.id -%].rdf"/>
-<link rel="alternate" type="application/json" title="JSON Representation" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('resource_title_loc') %]/[%- record.database -%]/[%- record.id -%].json"/>
+<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% config.get('frontendservername') %][% path_prefix %]/[% config.get('resource_title_loc') %]/[%- record.database -%]/[%- record.id -%].rdf"/>
+<link rel="alternate" type="application/json" title="JSON Representation" href="http://[% config.get('frontendservername') %][% path_prefix %]/[% config.get('resource_title_loc') %]/[%- record.database -%]/[%- record.id -%].json"/>
 [% END %]
 [% IF unapi && config.get('unAPI') %]
-    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('connector_unapi_loc') %]" />
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('frontendservername') %][% path_prefix %]/[% config.get('connector_unapi_loc') %]" />
 [% END %]
 
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://[% config.get('frontendservername') %][% "${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic.css" %]" media="all" />
   [%- CATCH -%]        
     [%- TRY -%]
       [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/openbib_generic.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/openbib_generic.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://[% config.get('frontendservername') %][% "${config.get('css_loc')}/profile/$sysprofile/openbib_generic.css" %]" media="all" />
     [%- CATCH -%]
       [%- TRY -%]
         [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/openbib_generic.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/openbib_generic.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://[% config.get('frontendservername') %][% "${config.get('css_loc')}/views/$view/openbib_generic.css" %]" media="all" />
       [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib_generic.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://[% config.get('frontendservername') %][% "${config.get('css_loc')}/openbib_generic.css" %]" media="all" />
       [%- END -%]
     [%- END -%]
   [%- END -%]
@@ -59,17 +59,17 @@
 
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/$stylesheet" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://[% config.get('frontendservername') %][% "${config.get('css_loc')}/profile/$sysprofile/views/$view/$stylesheet" %]" media="all" />
   [%- CATCH -%]
     [%- TRY -%]
       [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/$stylesheet" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://[% config.get('frontendservername') %][% "${config.get('css_loc')}/profile/$sysprofile/$stylesheet" %]" media="all" />
     [%- CATCH -%]
       [%- TRY -%]
         [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/$stylesheet" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://[% config.get('frontendservername') %][% "${config.get('css_loc')}/views/$view/$stylesheet" %]" media="all" />
       [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/$stylesheet" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://[% config.get('frontendservername') %][% "${config.get('css_loc')}/$stylesheet" %]" media="all" />
       [%- END -%]
     [%- END -%]
   [%- END -%]

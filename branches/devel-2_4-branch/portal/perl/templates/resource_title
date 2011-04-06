@@ -5,6 +5,8 @@
 [%- PROCESS common/subtemplate name="resource_title_rdf" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="resource_title_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="resource_title_include" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

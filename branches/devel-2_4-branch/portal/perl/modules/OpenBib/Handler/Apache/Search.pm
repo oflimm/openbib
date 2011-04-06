@@ -83,6 +83,7 @@ sub setup {
         'search_as_json'   => 'search_as_json',
         'search_as_rdf'    => 'search_as_rdf',
         'search_as_rss'    => 'search_as_rss',
+        'search_as_include'=> 'search_as_include',
         'index_negotiate'  => 'index_negotiate',
         'index_as_html'    => 'index_as_html',
         'index_as_json'    => 'index_as_json',
@@ -156,6 +157,16 @@ sub search_as_rss {
     my $self = shift;
 
     $self->param('representation','rss');
+
+    $self->search_databases;
+
+    return;
+}
+
+sub search_as_include {
+    my $self = shift;
+
+    $self->param('representation','include');
 
     $self->search_databases;
 

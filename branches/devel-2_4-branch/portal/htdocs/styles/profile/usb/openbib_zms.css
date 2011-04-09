@@ -1,0 +1,1396 @@
+/* Styles fuer das Bib-Portal */
+
+/* Test, noch nicht aktiv !
+.usb #schnellsuche_T_behaelter {
+	background-color:white;
+	border:1px inset white;
+	cursor:text;
+	margin-right:6px;
+	padding:0;
+	float: left;
+}
+
+.usb #schnellsuche_T_behaelter input {
+	background:transparent none repeat scroll 0 0;
+	border:0 none;
+}
+
+.usb #schnellsuche_reset {
+	position: relative;
+	top: 1px;
+	left: 1px;
+	visibility: hidden;
+}
+
+.usb .loeschenX {
+	background-color:#999999;
+	cursor:pointer;
+	height:1.3em;
+	width:1.3em;
+}
+
+.usb .loeschenX:hover {
+	background-color:#BB0000;
+}
+*/
+
+.usb #content {
+	/*margin-right: 210px;*/
+	margin-right: 21.5%;
+	width: auto;
+}
+
+.usb #content table {
+	width: 100%;
+}
+
+.usb #teaser_container_small {
+	/*width: 200px;*/
+	width: 19%;
+	margin-top: 0;
+	margin-right: 5px;
+}
+
+.usb div.homepage,
+.usb h1, 
+.usb h2,
+.usb form.label_l.input_l {
+	width: auto; /* wird zwingend vom IE6 benoetigt */
+}
+
+.usb div.suche h1 {
+	margin-right:0;
+}
+
+.usb p,
+.usb ol li,
+.usb ul li {
+	line-height: 1.2em;
+}
+
+.usb p.tipp {
+	float: left;
+	background: url('../img/dialog-information.png') no-repeat left top;
+	padding-left: 22px;
+	padding-right: 0.5em;
+}
+
+.usb p.clock {
+	float: left;
+	background: url('../img/clock.png') no-repeat left top;
+	padding-left: 22px;
+	padding-right: 0.5em;
+}
+
+.usb img {
+	border: 0;
+}
+
+.usb img.help {
+	float: left;
+	padding: 0 0.5em 0 0.2em;
+}
+
+.usb img.hint {
+	padding: 0 0.5em 0 0.2em;
+}
+
+.usb img.noaccess {
+	float: left;
+	border: 1px solid grey;
+}
+
+* html .usb img.noaccess { /* Star-HTML-Hack fuer IE bis Version 6 fuer die Plazierung der No-Access-Icons in der Datenbanksauswahl */
+	margin-top: 8px;
+}
+
+.usb .whitebox {
+        position: relative;
+        overflow: auto;
+        background: white;
+        border: 1px solid #41799E;
+        padding: 10px;
+	width: 50%;
+}
+
+/* Suchschlitz fuer einfache Suche */
+.usb div.homepage input#QUERY_alAL,
+.usb input#QUERY_alAL {
+	width: 25.5em;
+	height: 1.3em;
+	font-size: 1.2em;
+	padding: 0.2em 0 0.2em 0.1em;
+}
+
+* html input#QUERY_alAL { /* Star-HTML-Hack fuer IE bis Version 6: Suchschlitz nach links ruecken */
+	margin-left: -37px;
+}
+
+/* Submit-Buttons */
+.usb form.input_s input.submit,
+.usb form.input_l input.submit,
+.usb input.button,
+.usb button {
+	width: auto;
+	padding-top: 1px;
+	cursor: pointer;
+}
+
+/* Externe Links */
+.usb a[href^="http:"],
+.usb a[href^=" http:"], /* wg. Links mit Blank in DBIS-Einzeltrefferanzeige, z.B. "Analytical Abstracts" */
+.usb a[href^="https:"],
+.usb a[href^="ftp:"],
+.usb a.ext {
+	padding-left: 1.3em;
+	background: url('../img/extern.gif') no-repeat left center;
+}
+
+.usb a[href^="http://www.ub.uni-koeln.de"],
+.usb a[href^="https://www.ub.uni-koeln.de"],
+.usb a[href^="http://wwwtest.ub.uni-koeln.de"],
+.usb a[href^="http://www.uni-koeln.de"],
+.usb a[href^="http://kug.ub.uni-koeln.de"],
+.usb a[href^="http://www.addthis.com"],
+.usb a[href^="https://www.addthis.com"],
+.usb a[href^="http://www.nationallizenzen.de"] {
+	padding-left: 0;
+	background: none;
+}
+
+.usb a[href^="http://www.ub.uni-koeln.de/cgi-bin/redirect.pl"] {
+	padding-left: 1.3em;
+	background: url('../img/extern.gif') no-repeat left center;
+}
+
+.usb a.imagelink {
+	background: none;
+}
+
+/* Fehlermeldungen und Warnungen */
+
+.error { 
+	color: #cc0000; 
+	/* font-size: 1.3em; */
+	font-weight: bold; 
+}
+
+.warning { 
+	color: #cc0000; 
+	font-weight: bold;
+}
+
+.hint { 
+	color: #666666;
+}
+
+.dberror { 
+	color: #cc0000; 
+	font-size: 1.1em; 
+	font-weight: bold;
+}
+
+.teaser_dberror { 
+	color: #cc0000; 
+	font-size: 1em; 
+	font-weight: bold;
+}
+
+/* Kopf */
+
+#ips-functions {
+	position: absolute;
+	right: 10px;
+	top: 100px;
+	font-size: 1.3em;
+}
+
+#ips-functions a {
+	text-decoration: none;
+}
+
+#ips-functions a:visited {
+	color: #41799E;
+}
+
+#ips-functions a:hover,
+#ips-functions a:focus {
+	color: #FF020E;
+	text-decoration: underline;
+}
+
+#ips-functions .userid {
+	font-weight: bold;
+	color: grey;
+}
+
+#ips-functions .cartinfo {
+	color: grey;
+}
+
+#ips-functions .userimg {
+	vertical-align: bottom;
+	margin-bottom: 3px;
+	margin-right: 3px;
+}
+
+#small-header {
+	height: 3em;
+	background: white;
+	border-bottom: 1px solid #41799E;
+}
+
+/* Navigation und Link "Suchanfrage veraendern" */
+
+#nav_container ul li ul.search li.nav_highlight a {
+	font-weight: bold;
+}
+
+li.dbprofile, li.dbprofile a {
+	padding-left: 8px;
+}
+
+li.dbprofile-USB-Kataloge,
+.usb #nav_container ul li ul li.dbprofile-USB-Kataloge a {
+        background: url(/common/layout/navbullet_uni.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-KatalogeErw,
+.usb #nav_container ul li ul li.dbprofile-USB-KatalogeErw a {
+        background: url(/common/layout/navbullet_uni.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-WiSo,
+.usb #nav_container ul li ul li.dbprofile-USB-WiSo a {
+        background: url(/common/layout/navbullet_wiso.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-ExtWiSo,
+.usb #nav_container ul li ul li.dbprofile-USB-ExtWiSo a {
+        background: url(/common/layout/navbullet_wiso.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-Recht,
+.usb #nav_container ul li ul li.dbprofile-USB-Recht a {
+        background: url(/common/layout/navbullet_jura.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-ExtRecht,
+.usb #nav_container ul li ul li.dbprofile-USB-ExtRecht a {
+        background: url(/common/layout/navbullet_jura.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-Medizin,
+.usb #nav_container ul li ul li.dbprofile-USB-Medizin a {
+        background: url(/common/layout/navbullet_medizin.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-PhilIndex,
+.usb #nav_container ul li ul li.dbprofile-USB-PhilIndex a {
+        background: url(/common/layout/navbullet_phil.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-ExtPhilIndex,
+.usb #nav_container ul li ul li.dbprofile-USB-ExtPhilIndex a {
+        background: url(/common/layout/navbullet_phil.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-MathNat,
+.usb #nav_container ul li ul li.dbprofile-USB-MathNat a {
+        background: url(/common/layout/navbullet_mathnat.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-ExtMathNat,
+.usb #nav_container ul li ul li.dbprofile-USB-ExtMathNat a {
+        background: url(/common/layout/navbullet_mathnat.gif) center left no-repeat;
+}
+li.dbprofile-USB-Human,
+.usb #nav_container ul li ul li.dbprofile-USB-Human a {
+        background: url(/common/layout/navbullet_human.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-ExtHuman,
+.usb #nav_container ul li ul li.dbprofile-USB-ExtHuman a {
+        background: url(/common/layout/navbullet_human.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-Sonstiges,
+.usb #nav_container ul li ul li.dbprofile-USB-Sonstiges a {
+        background: url(/common/layout/navbullet_uni.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-ExtSonstiges, 
+.usb #nav_container ul li ul li.dbprofile-USB-ExtSonstiges a {
+        background: url(/common/layout/navbullet_uni.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-Benelux,
+.usb #nav_container ul li ul li.dbprofile-USB-Benelux a {
+        background: url(/common/layout/navbullet_uni.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-ExtBenelux,
+.usb #nav_container ul li ul li.dbprofile-USB-ExtBenelux a {
+        background: url(/common/layout/navbullet_uni.gif) center left no-repeat;
+}
+
+li.dbprofile-USB-Europa,
+.usb #nav_container ul li ul li.dbprofile-USB-Europa a {
+        background: url(/common/layout/navbullet_uni.gif) center left no-repeat;
+}
+
+/* Literaturrecherche: Suchmaske und Datenbankauswahl */
+
+.usb .dynamic .searchform-collapsed,
+.usb .dynamic .searchfields-collapsed,
+.usb .dynamic .dbgroup-collapsed {
+	display: none;
+}
+
+.usb .dynamic .switchsearchform {
+	cursor: pointer;
+}
+
+.usb .dynamic .switchsearchfields {
+	font-size: 1.1em;
+	font-weight: bold;
+	color: #6387a8;
+	margin: 0 0 0.3em 10.5em;
+	cursor: pointer;
+}
+
+.usb .dynamic .switchdbgroup {
+	padding-left: 22px;
+	background: url(/USB/img/folder.png) no-repeat 0px 1px;
+	cursor: pointer;
+}
+
+* html .usb .dynamic .switchdbgroup { /* Star-HTML-Hack fuer IE bis Version 6 fuer die Formatierung der Datenbankgruppen */
+	margin-top: 8px;
+}
+
+.usb .dbgroup {
+	line-height: 1em;
+}
+
+.usb .dbcheckbox, .usb form.input_l input[type=checkbox] {
+	/*font-size: 1.1em;*/
+	/*line-height: 1.1em;*/
+	width: auto;
+	/*height: auto;*/
+	/*border: 1px solid grey;*/
+	border: 0 none transparent;
+	margin: 0.1em 0 0 0;
+	padding: 0;
+	vertical-align: text-top; 
+	float: left;
+	cursor: pointer;
+}
+
+/* Formulare */
+
+.usb form {
+	width: auto;
+	/*min-width: 55em;*/
+}
+
+.usb fieldset h2 {
+	border: none;
+	margin-top: 0;
+}
+
+.usb .dynamic fieldset h2 {
+	padding-left: 20px;
+	background: url(/USB/img/plus.gif) no-repeat 0px 5px;
+	cursor: pointer;
+}
+
+.usb label {
+	font-size: 1.2em;
+	width: auto;
+	/*margin: 0.1em 0.1em 0.1em 0.3em;*/
+	margin: 0 0.1em 0.1em 0.3em;
+	text-align: left;
+	vertical-align: text-top; 
+	display: block;
+	float: left;
+}
+
+/* Loginformular */
+
+.usb form.login { 
+	width: auto; /* Hier keinen festen Wert eintragen, da Loginformular via Ajax in Detailanzeige eingeblendet wird */ 
+}
+
+.usb form.login label {
+	width: 9em;
+}
+
+.usb form.login input {
+	font-size: 1.2em;
+	width: 11em;
+	padding: 0.1em 0 0 0.1em;
+}
+
+.usb form.login select {
+	width: auto;
+}
+
+/* Formular zur Aenderung der Mailadresse */
+
+.usb form.setmail { 
+	width: 60em;
+}
+
+.usb form.setmail label {
+	width: 13em;
+}
+
+.usb form.setmail input {
+	font-size: 1.2em;
+	width: 22em;
+}
+
+/* Formular zur Aenderung des Passworts */
+
+.usb form.setpasswd { 
+	width: 60em;
+}
+
+.usb form.setpasswd label {
+	width: 13em;
+}
+
+.usb form.setpasswd input {
+	font-size: 1.2em;
+	width: 11em;
+}
+
+/* Formular zur Benutzerselbstaufnahme */
+
+.usb form.selfreg { 
+	width: 60em;
+}
+
+.usb form.selfreg label {
+	width: 12em;
+	padding-left: 1em;
+}
+
+.usb form.selfreg input[type=text],
+.usb form.selfreg input[type=password] {
+	font-size: 1.2em;
+	width: auto;
+}
+
+/* Suchformular */
+
+.usb .suche form {
+	margin: 0 0 0 38px;
+}
+
+.usb .suche form.label_l label, .usb .suche label.l { 
+	width: 9em;
+	/*padding: 0.1em 0 0 0;*/
+}
+
+.usb .suche form label.item { 
+	width: auto;
+}
+
+* html .usb .suche form label.item { /* Star-HTML-Hack fuer IE bis Version 6 fuer die Formatierung der Datenbankauswahl */
+	margin-top: 8px;
+}
+
+.usb .suche form input[type=text] {
+	height: 1.2em;
+	width: 28em;
+	padding: 0.1em 0 0 0.1em;
+	/*padding: 0.2em 0 0 0.1em;*/
+	font-size: 1.2em;
+}
+
+.usb .suche form select {
+	height: 1.6em;
+	padding: 0;
+	width: 12em;
+}
+
+.usb .suche fieldset {
+	background: none;
+	border: none;
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+
+.usb .suche legend {
+	background: none;
+	padding: 0;
+	color: #000000;
+}
+
+.usb .suche input.radiobutton {
+	width: 1em;
+	margin: 0;
+	float: none;
+	cursor: pointer;
+}
+
+.usb .suche a.radiotext {
+	font-size: 1.1em;
+	white-space: nowrap;
+	margin: 0em 1.4em 0em 0.2em;
+}
+
+.usb .suche .switch-link {
+	white-space: nowrap;
+	font-size: 1.1em;
+	text-decoration: none;
+	display: block;
+	float: left;
+	/*height: 1.3em;*/
+	/*margin-top: 0.5em;*/
+}
+
+.usb .suche .switch-link a:hover,
+.usb .suche .switch-link a:focus {
+	color: #FF020E;
+	text-decoration: underline;
+}
+
+.usb .subjects-column {
+	float: left;
+}
+
+.usb .suche h2 {
+	font-size: 1.3em;
+}
+
+/* Trefferliste */
+
+.usb h2.teaser { 
+	font-size: 1.2em;
+	margin-top: 1.25em;
+}
+
+.usb .teaserdblist h3 {
+	font-weight: bold;
+	font-size: 1.1em;
+	margin: 1.5em 0 0.5em 0;
+}
+
+.usb .teaserdblist ul {
+	list-style-type: disc;
+}
+
+.usb .teaserdblist li {
+	font-size: 1.1em;
+	line-height: 1em;
+	padding: 0em;
+}
+
+.usb em.hl {
+	font-weight: bold;
+	font-style: italic;
+}
+
+.usb h2.dberror {
+	text-decoration: line-through;
+}
+
+.usb .pagination {
+	text-align: right;
+}
+
+.usb .hit-details .mediatype img {
+	vertical-align: middle;
+}
+
+.usb #content ol.hitlist {
+	margin-left: 2.5em;
+}
+
+.usb .hitlist h3 {
+	font-size: 1.3em;
+}
+
+.usb .hitlist .title,
+.usb .hitlist .mediatype {
+	font-size: 1.2em;
+	margin-bottom: 0.2em;
+}
+
+.usb table.result-details ul li {
+	line-height: 1.3em;
+	margin-bottom: 0;
+}
+
+.usb form.sortform {
+	padding: 0;
+	margin: 0;
+	text-align: right;
+	float: right;
+}
+
+.usb form.sortform select {
+	font-size: 1.1em;
+	height: auto;
+	width: auto;
+	padding: 0;
+	margin-right: 0;
+	border: 1px solid #999;
+	cursor: pointer;
+}
+
+.usb form.sortform input.button {
+	font-size: 0.9em;
+	padding: 0;
+	float: none;
+}
+
+/* Trefferliste Discovery Search */
+
+.usb #teaser_container_small .clusterheader {
+	font-weight :bold;
+	font-size: 1.15em;
+	margin-top: 1em;
+}
+
+.usb #teaser_container_small ul.clusterlist {
+	list-style-type: none;
+	margin-left: 0;
+}
+
+.usb #teaser_container_small ul.clusterlist li {
+	font-size: 1.1em;
+	line-height: 1em;
+	padding: 0.2em;
+	margin: 0;
+}
+
+/* Tipps zur Suche */
+
+.usb .searchhints ul, .usb .searchhints li {
+	list-style-type: disc;
+	font-size: 1em;
+	line-height: 1.2em;
+	margin: 0.5em 0 0.5em 0;
+	padding: 0;
+}
+
+/* Detailanzeige */
+
+.usb .coverscan {
+	/*margin: 0 45px 10px 0;*/
+	margin: 20px 5px 10px 0;
+}
+
+.usb .googlebooks {
+	/*border: 1px solid #999;*/
+	/*margin: 0 45px 10px 0;*/
+	margin: 20px 5px 10px 0;
+}
+
+.usb .hitlist .hit {
+	position: relative;
+	overflow: auto;
+	background: #F0F4F8;
+	border: 1px dashed #888888;
+	padding: 10px;
+}
+
+.usb .hitlist .hit .permalinkbutton {
+	position: absolute;
+	top: 3px;
+	right: 45px;
+	cursor: pointer;
+	margin-left: 1em;
+}
+
+.usb .hitlist .hit .printbutton {
+	position: absolute;
+	top: 3px;
+	right: 25px;
+	cursor: pointer;
+	margin-left: 1em;
+}
+
+.usb .hitlist .hit .closebutton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	cursor: pointer;
+}
+
+.usb .hitlist .hit h4 {
+	margin-top: 0;
+}
+
+.usb .hitlist li {
+	font-size: 1em;
+	line-height: 1.1em;
+	margin: 0 0 0.3em 0;
+}
+
+.usb #content .result-details ul {
+	margin-left: 15px;
+}
+
+.usb #content .result-details input {
+        width: 1em;
+        margin: 0.3em;
+        float: none;
+        cursor: pointer;
+}
+
+.usb #content .result-details input.button {
+	font-size:1.2em;
+        width: auto;
+	height:1.87em;
+	padding: 0.2em;
+}
+
+.usb #content table.result-details,
+.usb #content table.result-details th,
+.usb #content table.result-details td {
+	background: none;
+	border: none;
+	font-size: 1.1em;
+	line-height: 1.1em;
+	vertical-align: text-top;
+	padding: 0 1em 0.3em 0;
+	width: auto;
+	color: #000000;
+}
+
+.usb #content .result-details-lo li,
+.usb #content .result-details-lo form {
+	font-size:1em;
+}
+
+.usb #content .result-details-lo input.button {
+	font-size:0.9em;
+        width: auto;
+	height:2.1em;
+	padding: 0.1em;
+	margin-left:0;
+}
+
+.usb #content table.result-copies,
+.usb #content table.result-copies th,
+.usb #content table.result-copies td {
+	margin: 0;
+}
+
+.usb #content table.issues th {
+	border: 1px solid #41799E;
+	background-color: #dbe4ed;
+	color: black;
+	font-size: 0.95em;
+	font-weight: bold;
+	text-align: left;
+	padding: 3px 7px 3px 7px;
+}
+
+.usb #content table.issues td {
+	border: 1px solid #41799E; 
+	background-color: white;
+	font-size: 0.95em;
+	vertical-align: top;
+	text-align: left;
+	padding: 3px 7px 3px 7px;
+}
+
+.usb #content th {
+	border: 1px solid #41799E;
+	background: #dbe4ed none repeat scroll 0 0;
+	color: black;
+	font-size: 1.2em;
+	font-weight: bold;
+	text-align: left;
+	padding: 2px 7px 2px 7px;
+}
+
+.usb #content td {
+	border: 1px solid #41799E; 
+	font-size: 1.2em;
+	vertical-align: top;
+	text-align: left;
+	padding: 2px 7px 2px 7px;
+}
+
+.usb .hitlist .hit form {
+	margin: 0;
+}
+
+.usb .loanfunction {
+	margin-bottom: 0.5em;
+}
+
+.usb form.label_no.input_s {
+        width: auto;
+}
+
+/* Mein Konto */
+
+.usb .accountlist li {
+	line-height: 1.2em;
+}
+
+.usb #content table.orders {
+	border-collapse: collapse;
+	border-spacing: 0;
+	/*empty-cells: hide;*/
+	margin-bottom: 1.5em;
+}
+
+.usb #content .orders td {
+	padding: 0.5em;
+	border-bottom-style: none;
+}
+
+.usb #content .orders tr.expanded td {
+	padding: 0;
+	border-style: none;
+}
+
+.usb #content .orders .history,
+.usb #content .orders .history td {
+	border: 0;
+	margin: 0 2em 0.5em 0;
+	font-size: 1.0em;
+}
+
+.usb .orders .hit {
+	position: relative;
+	border-top: 1px solid black;
+	padding: 0.2em 0.2em 0.2em 0.5em;
+}
+
+.usb .orders .hit .closebutton {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	cursor: pointer;
+}
+
+.usb .orders .hit h3 {
+	font-size: 1.2em;
+	margin-top: 0.3em;
+	margin-bottom: 0.2em;
+}
+
+/* Merkliste */
+
+.cart #teaser_container_small .cartfunction {
+	font-size: 1.15em;
+	margin-bottom: 1.5em;
+}
+
+.cart #teaser_container_small label {
+	font-size: 1em;
+}
+
+/* Info */
+
+.info {
+	background: #eaeff5;
+	padding: 1em;
+}
+
+.info #content {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+.info #content ul.dblist li {
+	font-size: 1.15em;
+	line-height: 1.2em;
+	list-style-type: disc;
+}
+
+/* Verfuegbarkeitsrecherche */
+
+.avail {
+	background: #eaeff5;
+}
+
+.avail #content {
+	margin-left: 3.5em;
+	padding: 2em 1em 1em 0em;
+}
+
+.avail h2 {
+	padding-top: 1em;
+}
+
+.avail ol.hitlist {
+	margin-left: 2.5em;
+}
+
+.avail div.homepage ul li {
+	list-style-type:square;
+}
+
+.avail fieldset#ill {
+	margin: 0;
+	background: none;
+	border: none;
+	padding: 0;
+}
+
+.avail input.radiobutton {
+	width: 1em;
+	margin: 0;
+	float: none;
+	cursor: pointer;
+}
+
+/* Bestellformular */
+
+.orderform {
+	background: #eaeff5;
+	padding: 1em;
+}
+
+.orderform #content {
+	margin-left: 3.5em;
+	margin-right: 5.5em;
+}
+
+.orderform h2 {
+	padding-top: 1em;
+}
+
+.usb form.orderform { 
+	width: auto;
+}
+
+.usb form.orderform label {
+	width: 12em;
+	padding-left: 1em;
+}
+
+.usb form.orderform input[type=text] {
+	font-size: 1.2em;
+	width: auto;
+}
+
+/* Fernleihe */
+
+.ill {
+	background: #eaeff5;
+	min-height: 500px;
+}
+
+.ill .small {
+	font-size: 0.95em;
+}
+
+.ill #content {
+	margin: 2em 5em 2em 3.5em;
+}
+
+.ill form p {
+	margin: 0 0 0 0.5em;
+	line-height: 1.2em;
+}
+
+.ill fieldset {
+	padding-top: 0.2em;
+	padding-bottom: 1em;
+}
+
+.ill label {
+	margin-left: 0;
+}
+
+.ill input.radiobutton {
+	width: 1em;
+	margin: 0 0.5em 0 0;
+	float: left;
+	cursor: pointer;
+}
+
+.ill select {
+	width: auto;
+	font-size: 1em;
+	margin: 0 0 0.5em 0;
+	float: none;
+	cursor: pointer;
+}
+
+.ill select, option {
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+}
+
+/* EZB */
+
+.ezb #content {
+        margin-right: 300px;
+	width: auto;
+}
+
+.ezb #teaser_container_small {
+	width: 275px;
+}
+
+.ezb #teaser_container_small fieldset {
+        width: 250px;
+}
+
+.ezb #teaser_container_small form.label_no.input_s {
+        width: 230px;
+}
+
+.ezb img.ezb-access-icon {
+	vertical-align: middle;
+	margin-right: 0.3em;
+	margin-bottom: 3px;
+}
+
+.ezb .link_ext_search {
+	text-align: right;
+	padding-top: 0.5em;
+}
+
+* html .ezb .link_ext_search { /* Star-HTML-Hack fuer IE bis Version 6 */
+	padding-left: 2em;
+}
+
+.ezb div form label.item {
+	width: 220px;
+	margin-top: 5px;
+	margin-bottom: 0.7em;
+	font-size: 1.1em;
+}
+
+* html .ezb div form label.item { /* Star-HTML-Hack fuer IE bis Version 6 */
+	width: auto;
+}
+
+.ezb form.ezb-search,
+.ezb form.ezb-search select,
+.ezb form.ezb-search input {
+	width: auto;
+	height: auto;
+	font-size: 1.1em;
+	padding: 0.2em;
+	margin-top: 0;
+}
+
+.ezb form.ezb-search input {
+	width: 24em;
+}
+
+.ezb form.ezb-search input.submit {
+	width: auto;
+}
+
+.ezb .hint li {
+	color: grey;
+	line-height: 1em;
+}
+
+.ezb dl.dblist {
+	margin:0 0 1.3em 0;
+}
+
+.ezb dl.dblist dt {
+	position: relative;
+	display: block;
+	float: left;
+	width: 45px;
+	line-height: 1.5em;
+}
+
+.ezb dl.dblist dt img {
+	vertical-align: text-bottom;
+}
+
+.ezb dl.dblist dd {
+	font-size: 1.2em;
+	line-height: 1.5em;
+	margin-left: 45px;
+}
+
+/* DBIS */
+
+.dbis #content {
+	margin-right: 300px;
+	width: auto;
+}
+
+.dbis #teaser_container_small {
+        width: 275px;
+
+}
+
+.dbis #teaser_container_small fieldset {
+	width: 250px;
+}
+
+.dbis #teaser_container_small form.label_no.input_s {
+	width: 230px;
+}
+
+.dbis b {
+	line-height: 1.1em;
+}
+
+.dbis p {
+	padding-bottom: 0.3em;
+}
+
+.dbis img.dbis-access-icon {
+	vertical-align: middle;
+	margin-right: 0.3em;
+	margin-bottom: 3px;
+}
+
+.dbis .link_ext_search {
+	text-align: right;
+	padding-top: 0.5em;
+}
+
+* html .dbis .link_ext_search { /* Star-HTML-Hack fuer IE bis Version 6 */
+	padding-left: 2em;
+}
+
+.dbis div form label.item {
+	width: 220px;
+	margin-top: 5px;
+	margin-bottom: 0.7em;
+	font-size: 1.1em;
+}
+
+* html .dbis div form label.item { /* Star-HTML-Hack fuer IE bis Version 6 */
+        width: auto;
+}
+
+.dbis form.dbis-search,
+.dbis form.dbis-search select,
+.dbis form.dbis-search input {
+	width: auto;
+	height: auto;
+	font-size: 1.1em;
+	padding: 0.2em;
+	margin-top: 0;
+}
+
+.dbis form.dbis-search input {
+	width: 24em;
+}
+
+.dbis form.dbis-search input.submit {
+	width: auto;
+}
+
+.dbis dl.dblist {
+	margin-left: 2em;
+}
+
+.dbis dl.dblist dt {
+	position: relative;
+	display: block;
+	float: left;
+	width: 45px;
+	line-height: 1.5em;
+}
+
+.dbis dl.dblist dt img {
+	vertical-align: text-bottom;
+}
+
+.dbis dl.dblist dd {
+	font-size: 1.2em;
+	line-height: 1.5em;
+	margin-left: 45px;
+}
+
+.dbis .dynamic .dbgroup-collapsed {
+        display: none;
+}
+
+.dbis .dynamic .noswitchdbgroup {
+	padding-left: 22px;
+        background: url(/USB/img/folder.png) no-repeat 0px 0px;
+}
+
+.dbis .dynamic .switchdbgroup {
+	padding-left: 22px;
+        background: url(/USB/img/folder.png) no-repeat 0px 0px;
+        cursor: pointer;
+}
+
+/*
+.dbis #content table.result-details td {
+	padding-bottom: 0.5em;
+}
+*/
+
+.dbis table.result-details ol li,
+.dbis table.result-details ul li,
+.dbis table.result-details ul li ul li {  /* geschachtelte Liste, z.B. wiso-net */
+	font-size: 1em;
+	line-height: 1.1em;
+	margin-bottom: 0;
+}
+
+/* Neuerwerbungslisten */
+
+.usb .feed-link {
+	background: url(/common/layout/feed-icon-14x14.png) center right no-repeat;
+	padding-right: 20px;
+	font-size: 1.2em;
+	text-align: right;
+	min-height: 20px;
+}
+
+* html .usb .feed-link {
+	height: 20px;
+}
+
+/* Addthis Button */
+
+.usb #AddThis {
+	background: none;
+	padding-left: 0;
+	text-align: left;
+	vertical-align: middle;
+}
+
+.usb input.atbtn { /* Hoehe der Buttons im E-Mail-Formular */
+	height: 1.9em;
+}
+
+.usb #at16p, #atie6ifh { /* Rahmen des E-Mail-Formulars */
+	padding: 0;
+}
+
+.usb #at16psf input { /* Suchschlitz "Mehr" */ 
+	height: 13px;
+	font-size: 11px;
+	padding-left: 5px;
+}
+
+/* AddThis Fancy Lightbox Menu */
+
+.addthis_toolbox .lightbox {
+    position: fixed;
+    top: 160px;
+    left: 440px;
+    width: 480px;
+    color: #555;
+}
+
+.addthis_toolbox .lightbox .lightbox_top {
+    background: url(/USB/img/addthis/toolbox_top.png) no-repeat 0 0;
+    height: 34px;
+    overflow: hidden;
+    position: relative;
+}
+.addthis_toolbox .lightbox .lightbox_top h4 {
+    display: inline;
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+}
+.addthis_toolbox .lightbox .lightbox_close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+}
+.addthis_toolbox .lightbox .lightbox_middle {
+    background: url(/USB/img/addthis/toolbox_middle.png) repeat-y;
+    overflow: hidden;
+}
+.addthis_toolbox .lightbox .lightbox_content {
+    padding: 10px 20px;
+}
+
+.addthis_toolbox .lightbox .lightbox_bottom {
+    background: url(/USB/img/addthis/toolbox_top.png) no-repeat 0 -34px;
+    height: 16px;
+    overflow: hidden;
+}
+
+.addthis_toolbox .lightbox_sharing
+{
+    margin-left: 10px;
+}
+
+.addthis_toolbox .lightbox .columns A 
+{
+    text-indent: 0 !important;
+    float: none !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 4px 0 4px 34px; /* important */
+    position: relative;
+    width: 76px !important;
+    display: block;
+    color: #41799e;
+}
+
+.addthis_toolbox .lightbox .columns A:hover
+{
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    /* background: #eaeff5; */
+    color: #ff020e;
+    text-decoration: none !important;
+
+}
+
+.addthis_toolbox .lightbox .columns SPAN
+{
+    /* padding: auto !important; */
+    /* margin: auto !important; */
+    position: absolute;
+    left: 14px;
+    top: 4px;
+    float: none !important;
+
+}
+
+.addthis_toolbox .lightbox .columns .column
+{
+    width: 107px;
+    float: left;
+    padding: 0;
+}
+
+.addthis_toolbox .lightbox .frame
+{
+    border: 2px solid #eee;
+    padding: 10px;
+    margin: 0 20px 0 0;
+    float: left;
+}
+
+.addthis_toolbox .lightbox .border
+{
+    border-top: 1px dashed #333;
+    margin: 0 10px;
+}
+
+.addthis_toolbox .lightbox A.sharelink:hover, 
+.addthis_toolbox .lightbox A.lightbox_close:hover,
+.addthis_toolbox .lightbox A.lightbox_close:focus,
+.addthis_toolbox .lightbox A.lightbox_close:active
+{
+    background-color: transparent;
+    text-decoration: underline;
+}
+

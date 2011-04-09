@@ -84,7 +84,11 @@ sub get_css_by_browsertype {
 
 
 sub print_warning {
-    my ($warning,$r,$msg)=@_;
+    my ($warning,$r,$msg,$representation,$content_type)=@_;
+
+    if (!$content_type){
+        $content_type = 'text/html';
+    }
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -139,6 +143,9 @@ sub print_warning {
   
     # TT-Data erzeugen
     my $ttdata={
+        representation => $representation,
+        content_type  => $content_type,
+        
         view       => $view,
         sysprofile => $sysprofile,
         stylesheet => $stylesheet,
@@ -151,7 +158,7 @@ sub print_warning {
     };
   
     # Dann Ausgabe des neuen Headers
-    $r->content_type("text/html");
+    $r->content_type($content_type);
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
@@ -162,8 +169,12 @@ sub print_warning {
 }
 
 sub print_info {
-    my ($info,$r,$msg)=@_;
+    my ($info,$r,$msg,$representation,$content_type)=@_;
 
+    if (!$content_type){
+        $content_type = 'text/html';
+    }
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -181,6 +192,8 @@ sub print_info {
 
     my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
 
+    $logger->debug("Representation: $representation - Content-Type: $content_type ");
+    
     # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
     # Einloggen/Mein KUG automatisch deaktiviert
     
@@ -214,6 +227,8 @@ sub print_info {
   
     # TT-Data erzeugen
     my $ttdata={
+        representation => $representation,
+        
         view       => $view,
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
@@ -225,7 +240,7 @@ sub print_info {
     };
   
     # Dann Ausgabe des neuen Headers
-    $r->content_type("text/html");
+    $r->content_type($content_type);
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
@@ -1351,7 +1366,7 @@ Apache-Handler $r
 Ausgabe des Warnhinweises $warning über den Apache-Handler $r unter
 Verwendung des Message-Katalogs $msg
 
-=item print_info($info,$r,$msg)
+=item print_info($info,$r,$msg,$representation,$content_type)
 
 Ausgabe des Informationstextes $info an den Apache-Handler $r unter
 Verwendung des Message-Katalogs $msg

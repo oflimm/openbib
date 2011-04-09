@@ -290,12 +290,16 @@ sub print_to_handler {
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}              : undef;
     my $template          = exists $arg_ref->{template}
-        ? $arg_ref->{template}          : 'tt_search_showtitlist_tname';
+        ? $arg_ref->{template}          : 'tt_search_tname';
     my $location          = exists $arg_ref->{location}
         ? $arg_ref->{location}          : 'search_loc';
     my $parameter         = exists $arg_ref->{parameter}
         ? $arg_ref->{parameter}         : {};
-    my $lang              = exists $arg_ref->{lang}
+    my $representation     = exists $arg_ref->{representation}
+        ? $arg_ref->{representation}     : undef;
+    my $content_type       = exists $arg_ref->{content_type}
+        ? $arg_ref->{content_type}       : 'text/html';
+    my $lang               = exists $arg_ref->{lang}
         ? $arg_ref->{lang}              : undef;
     my $msg                = exists $arg_ref->{msg}
         ? $arg_ref->{msg}                : undef;
@@ -314,12 +318,16 @@ sub print_to_handler {
 
     my $searchtitofcnt = decode_utf8($query->param('searchtitofcnt'))    || '';
 
+    $logger->debug("Representation: $representation - Content-Type: $content_type ");
+    
     if ($self->get_size() == 0) {
-        OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
+        OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg,$representation,$content_type);
     }
     elsif ($self->get_size() == 1) {
         my $record = $self->{recordlist}[0];
         $record->load_full_record->print_to_handler({
+            representation     => $representation,
+            content_type       => $content_type,
             apachereq          => $r,
             stylesheet         => $stylesheet,
             view               => $view,
@@ -413,6 +421,9 @@ sub print_to_handler {
         
         # TT-Data erzeugen
         my $ttdata={
+            representation => $representation,
+            content_type   => $content_type,
+            
             searchtitofcnt => $searchtitofcnt,
             lang           => $lang,
             view           => $view,

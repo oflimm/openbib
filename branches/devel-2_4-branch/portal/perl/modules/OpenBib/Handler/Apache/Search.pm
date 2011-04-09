@@ -231,6 +231,8 @@ sub search_databases {
     
     my $sb = $config->{local_search_backend};
 
+    my $content_type = $config->{content_type_map_rev}->{$representation};
+
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
 		type      => 20,
@@ -336,12 +338,12 @@ sub search_databases {
         $contentreq=~s/%//g;
 
         if (!$contentreq) {
-            OpenBib::Common::Util::print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"),$r,$msg,$representation,$content_type);
             return Apache2::Const::OK;
         }
 
         if ($#databases > 0 && length($contentreq) < 3) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."),$r,$msg,$representation,$content_type);
             return Apache2::Const::OK;
         }
 
@@ -453,7 +455,8 @@ sub search_databases {
         # TT-Data erzeugen
         my $ttdata={
             representation => $representation,
-
+            content_type   => $content_type,
+            
             to_json       => sub {
                 my $ref = shift;
                 return encode_json $ref;
@@ -500,21 +503,21 @@ sub search_databases {
     if ($searchquery->get_searchfield('ejahr')->{norm}) {
         my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg,$representation,$content_type);
             return Apache2::Const::OK;
         }
     }
 
     if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
         if ($searchquery->get_searchfield('ejahr')->{norm}) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg,$representation,$content_type);
             return Apache2::Const::OK;
         }
     }
 
 
     if (!$searchquery->have_searchterms) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
+        OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg,$representation,$content_type);
         return Apache2::Const::OK;
     }
 
@@ -548,8 +551,6 @@ sub search_databases {
         templatename => $starttemplatename,
     });
 
-    my $content_type = $config->{content_type_map_rev}->{$representation};
-
     $logger->debug("Content-Type $content_type");
     # Start der Ausgabe mit korrektem Header
     $r->content_type("$content_type");
@@ -570,7 +571,8 @@ sub search_databases {
     
     my $startttdata={
         representation => $representation,
-
+        content_type   => $content_type,
+        
         to_json       => sub {
             my $ref = shift;
             return encode_json $ref;
@@ -786,7 +788,8 @@ sub search_databases {
             # TT-Data erzeugen
             my $ttdata={
                 representation => $representation,
-
+                content_type   => $content_type,
+                
                 to_json       => sub {
                     my $ref = shift;
                     return encode_json $ref;
@@ -935,6 +938,7 @@ sub search_databases {
                     # TT-Data erzeugen
                     my $ttdata={
                         representation => $representation,
+                        content_type   => $content_type,
                         
                         to_json       => sub {
                             my $ref = shift;
@@ -1110,6 +1114,7 @@ sub search_databases {
                             # TT-Data erzeugen
                             my $ttdata={
                                 representation => $representation,
+                                content_type   => $content_type,
                                 
                                 to_json       => sub {
                                     my $ref = shift;
@@ -1369,6 +1374,17 @@ sub index_as_rdf {
 }
 
 
+sub index_as_include {
+    my $self = shift;
+
+    $self->param('representation','include');
+
+    $self->search_index;
+
+    return;
+}
+
+
 # Auf Grundlage der <form>-Struktur im Template searchform derzeit nicht verwendet
 sub search_index {
     my $self = shift;
@@ -1426,7 +1442,9 @@ sub search_index {
     my $sysprofile  = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
 
     @databases = $self->get_databases();
-    
+
+    my $content_type = $config->{content_type_map_rev}->{$representation};
+
     # BEGIN Index
     ####################################################################
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
@@ -1456,12 +1474,12 @@ sub search_index {
     $contentreq=~s/%//g;
     
     if (!$contentreq) {
-        OpenBib::Common::Util::print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"),$r,$msg);
+        OpenBib::Common::Util::print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"),$r,$msg,$representation,$content_type);
         return Apache2::Const::OK;
     }
     
     if ($#databases > 0 && length($contentreq) < 3) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."),$r,$msg);
+        OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."),$r,$msg,$representation,$content_type);
         return Apache2::Const::OK;
     }
     
@@ -1633,6 +1651,7 @@ sub get_databases {
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
+    my $representation = $self->param('representation');
 
     # CGI Args
     my @databases     = ($query->param('db'))?$query->param('db'):();
@@ -1652,7 +1671,9 @@ sub get_databases {
     my $sysprofile   = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
 
     my $orgunits_ref = $config->get_orgunits($sysprofile);
-    
+
+    my $content_type = $config->{content_type_map_rev}->{$representation};
+
     my $is_orgunit  = 0;
   ORGUNIT_SEARCH:
     foreach my $orgunit_ref (@{$orgunits_ref}){
@@ -1749,7 +1770,7 @@ sub get_databases {
                 }
                 # Kein Profil
                 else {
-                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{base_loc}/$view/$config->{databasechoice_loc}\" target=\"body\">","</a>"),$r,$msg);
+                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{base_loc}/$view/$config->{databasechoice_loc}\" target=\"body\">","</a>"),$r,$msg,$representation,$content_type);
                     return Apache2::Const::OK;
                 }
                 

@@ -11,6 +11,9 @@
 #
 #######################################################################
 -%]
+<h1>Die zuletzt angelegten Tags</h1>
+
+
 [%# USE dumper;dumper.dump(recent_tags)%]
 <ul class="subjectlist">
 [%- FOREACH thistag IN recent_tags -%]

@@ -13,6 +13,15 @@
 -%]
   <script type="text/javascript" src="http://www.ub.uni-koeln.de/js/googlebooks.js"></script>
 
+  <link rel="stylesheet" type="text/css" href="http://kug4.ub.uni-koeln.de/styles/openbib_zms.css" />
+
+<style>
+#searchresult {
+   width: 90%;
+   font-size:0.9em;
+}
+</style>
+
 <div class="hit">
 [%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) -%]
 [%- normset         = record.get_normdata -%]

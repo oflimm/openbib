@@ -152,6 +152,10 @@
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
+    IF itemcount ;
+      titleinfos.push("Nutzer: ${itemcount}") ;
+    END ;
+
     IF item.popularity ;
       titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
     END ;
@@ -171,7 +175,17 @@
 
       <div class="title" style="margin-top:-0.2em;">
            <span class="rlperson">[% person %]</span>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>
-           [%- IF titleinfo -%] <br/> [ [% titleinfo %] ][%- END -%]
+[% IF multiple_dbs == 1 %]
+         <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
+[%-   IF dbinfo.get('use_libinfo').${record.database} %]
+         <a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% record.database %]">
+[%-   ELSE -%]
+         <a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
+[% ELSE %]
+[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
+[% END %]
       </div>
       <div class="mediatype" style="margin-top:0.3em;">
       [% signatur %]

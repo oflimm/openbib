@@ -1103,7 +1103,7 @@ sub show_record_negotiate {
     my $content_type   = "";
 
     my $thisid = "";
-    if ($litlistid=~/^(.+?)(\.html|\.json|\.rdf|\.rss)$/){
+    if ($litlistid=~/^(.+?)(\.html|\.json|\.rdf|\.rss|\.include)$/){
         $thisid           = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $config->{'content_type_map_rev'}{$representation};

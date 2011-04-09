@@ -335,7 +335,7 @@ sub show_record_negotiate {
     my $content_type   = "";
 
     my $thisid = "";
-    if ($tagid=~/^(.+?)(\.html|\.json|\.rdf)$/){
+    if ($tagid=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
         $thisid           = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $config->{'content_type_map_rev'}{$representation};
@@ -370,10 +370,14 @@ sub show_record_negotiate {
         type      => 804,
         content   => $tag,
     });
-    
+
+    $logger->debug("Representation: $representation - Content-Type: $content_type ");
+
     $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
     
     $recordlist->print_to_handler({
+        representation   => $representation,
+        content_type     => $content_type,
         database         => $database,
         sortorder        => $sortorder,
         sorttype         => $sorttype,
@@ -386,7 +390,7 @@ sub show_record_negotiate {
         
         query            => $query,
         template         => 'tt_resource_tag_tname',
-        location         => 'resource_user_loc',
+        location         => 'resource_tag_loc',
         parameter        => {
             tag          => $tag,
         },

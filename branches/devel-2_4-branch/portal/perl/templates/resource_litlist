@@ -7,6 +7,8 @@
 [%- PROCESS common/subtemplate name="resource_litlist_json" -%]
 [%- ELSIF representation == 'rss' -%]
 [%- PROCESS common/subtemplate name="resource_litlist_rss" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="resource_litlist_include" -%]
 [%- ELSIF representation == 'bibtex' -%]
 [%- PROCESS common/subtemplate name="resource_litlist_bibtex" -%]
 [%- ELSIF representation == 'refer' -%]

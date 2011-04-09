@@ -155,6 +155,8 @@ sub set_from_apache_request {
 
     $self->{_searchquery} = {};
 
+    $logger->debug("Params: ".$r->args);
+    
     # Suchfelder einlesen
     foreach my $searchfield (keys %{$config->{searchfield}}){
         my $searchfieldprefix=$config->{searchfield}{$searchfield}{prefix};
@@ -242,7 +244,10 @@ sub set_from_apache_request {
         
     }
 
-    # Filter einlesen
+    # Filter einlesen (filter oder facet)
+    # Problem: Filter ist bei der Integration in bestimmte Systeme (z.B. CMS)
+    # bereits vorbelegt. Daher kann alternativ facet verwendet werden
+    
     foreach my $filter ($query->param('filter')) {
         if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
             my $facet = $1;
@@ -267,7 +272,57 @@ sub set_from_apache_request {
             };            
         }
     }
-    
+
+    foreach my $filter ($query->param('facet')) {
+        if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
+            my $facet = $1;
+            my $term = $2;
+
+            my $string = $term;
+            
+            $string = OpenBib::Common::Util::grundform({
+                content   => $string,
+                searchreq => 1,
+            });
+            
+            $string=~s/\W/_/g;
+            
+            $logger->debug("Facet: $facet Norm: $string Term: $term");
+            
+            push @{$self->{_filter}}, {
+                val    => $filter,
+                term   => $term,
+                norm   => $string,
+                facet  => $facet,
+            };            
+        }
+    }
+
+    foreach my $filter ($query->param('facet:list')) {
+        if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
+            my $facet = $1;
+            my $term = $2;
+
+            my $string = $term;
+            
+            $string = OpenBib::Common::Util::grundform({
+                content   => $string,
+                searchreq => 1,
+            });
+            
+            $string=~s/\W/_/g;
+            
+            $logger->debug("Facet: $facet Norm: $string Term: $term");
+            
+            push @{$self->{_filter}}, {
+                val    => $filter,
+                term   => $term,
+                norm   => $string,
+                facet  => $facet,
+            };            
+        }
+    }
+
     # Parameter einlesen
     $yearop    =                  decode_utf8($query->param('yearop'))       || $query->param('yearop') || 'eq';    
     $indexterm = $indextermnorm = decode_utf8($query->param('indexterm'))     || $query->param('indexterm')|| '';

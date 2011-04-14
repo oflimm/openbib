@@ -101,7 +101,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
 <h4>[% msg.maketext("Treffermenge eingrenzen") %]</h4>
 <table style="font-size:0.7em;" width="100%">
 
-[% request_base = "http://wwwtest.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/526/search/index_ger.html?num=${qopts.num};page=1";
+[% request_base = "${viewconfig.view.zms_search_url}?view=${view};num=${qopts.num};page=1";
    all_filters = [];
        FOREACH filter IN searchquery.get_filter ;
           all_filters.push("facet=${filter.val}");

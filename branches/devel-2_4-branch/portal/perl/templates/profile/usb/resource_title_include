@@ -12,16 +12,13 @@
 #######################################################################
 -%]
   <script type="text/javascript" src="http://www.ub.uni-koeln.de/js/googlebooks.js"></script>
-
   <link rel="stylesheet" type="text/css" href="http://kug4.ub.uni-koeln.de/styles/openbib_zms.css" />
-
-<style>
+  <style>
 #searchresult {
    width: 90%;
    font-size:0.9em;
 }
-</style>
-
+  </style>
 <div class="hit">
 [%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) -%]
 [%- normset         = record.get_normdata -%]
@@ -35,14 +32,9 @@
        isbn   = normset.${"T0553"}.first.content.replace('-','') ;
     END ;
 -%]
-
-<!--
 <div style="float:right;">
-
-       <div id="[% isbn %]" class="googlebooks"></div>
-        <script type="text/javascript">searchgbs('[% isbn %]', '');</script> 
-
-</div> --><!-- End Images -->
+[%- PROCESS common/subtemplate name="resource_title_html_images" -%]
+</div><!-- End Images -->
 
 <div class="result" style="width:500px;">
 [%- PROCESS common/subtemplate name="visible_categories_title" -%]
@@ -74,7 +66,7 @@
 <div>
 
 [% IF circset.size > 0 %]
-<h4 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h4>
+<h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
 
 <div id="circinfo"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circset" %]

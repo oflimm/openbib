@@ -15,7 +15,7 @@
 <table class="result-details" style="margin:-0.2em 3em 0.2em 0;padding-bottom:0;">
 <tr><th>id</th><td>[% record.id %]</td></tr>
 [%-
-request_base = "http://wwwtest.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/526/search/index_ger.html?num=10;page=1";
+request_base = "${viewconfig.$view.zms_search_url}?view=${view};num=10;page=1";
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
@@ -91,6 +91,9 @@ FOREACH category IN categories;
            FOREACH thisitem IN normset.${"T0663"} ;
              IF thisitem.indicator == thisindicator ;
                 thiscontent = thisitem.content ;
+                IF thiscontent == '	Bez.: 1; Interna: Digitalisierung; Info: kostenfrei' ;
+                    thiscontent = 'E-Book im Volltext';
+                END;
              END ;
            END ;
          ELSIF category == 'T2662' ;
@@ -104,8 +107,11 @@ FOREACH category IN categories;
             IF content.match('digitool.hbz-nrw.de') ;
                thiscontent = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
                content     = "${path_prefix}/${config.get('redirect_loc')}/500/${content}" ;
+               content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+            ELSIF thiscontent.match('Bez.: 1; Interna: Digitalisierung; Info: kostenfrei') ;
+               thiscontent = "E-Book im Volltext";
+               content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>&nbsp;<img src=\"http://kug4.ub.uni-koeln.de${config.get('dbis_green_img')}\" alt=\"green\"/>";
             END ;
-            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
          ELSE ;
             content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
          END ;
@@ -204,14 +210,14 @@ FOREACH category IN categories;
             searchterms.push("id:${superid.content}");
          END;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};dop=or;fs=${searchterms.join(' ')}";
+         localurl  = "${request_base}?view=${view};db=${database};dop=or;fs=${searchterms.join(' ')}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:${record.id}";
+         localurl  = "${request_base}?view=${view};db=${database};fs=${searchprefix}:${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;

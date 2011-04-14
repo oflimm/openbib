@@ -1,0 +1,56 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_manage_lists
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Neuanlegen und Ausgabe bestehender Literaturlisten
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+[% userrole = user.get_roles_of_user(litlist.properties.userid) %]
+[% multiple_dbs = 1 %]
+<script type="text/javascript" src="http://www.ub.uni-koeln.de/js/loadpage.js"></script>
+
+<link rel="stylesheet" type="text/css" href="http://kug4.ub.uni-koeln.de/styles/openbib_zms.css" />
+
+<style>
+#searchresult {
+   width: 90%;
+   font-size:0.9em;
+}
+</style>
+
+<p />
+
+[%# USE dumper; dumper.dump(litlist)%]
+[% IF litlist.recordlist.get_size > 0 %]
+[%-
+    start_range     = 1;
+    end_range       = litlist.get_size;
+-%]
+
+  <div class="resultheader">
+    <div class="catalogue">
+<h2>[% litlist.properties.title %] ([% litlist.recordlist.get_size %] [% msg.maketext("Titel") %])</h2>
+
+<!-- Titlelist begins here -->
+<div id="searchresult">
+
+<ol start="[% start_range %]" class="hitlist">
+[% PROCESS common/subtemplate name="resource_litlist_html_short" %] 
+</ol>
+
+</div>
+[% ELSE %]
+
+<h1>Diese Literaturliste enth&auml;lt keine Titel</h1>
+
+[% END %]

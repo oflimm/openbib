@@ -1,0 +1,198 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_item
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Einzelner Eintrag in einer Liste (Kurztitel)
+#
+#
+# Erhaelt neben Default-Objekten (config, session usw.)
+#
+# record
+# dbinfo 
+#
+#######################################################################
+-%]
+<!-- Anfang einzelner Treffer -->
+[%-
+     ebook_i18n      = msg.maketext("E-Book");
+     toc_i18n        = msg.maketext("Inhaltsverzeichnis");
+     popularity_i18n = msg.maketext("Popularität");
+
+     item = record.get_brief_normdata;
+
+     # Verfasser konstruieren
+     persons = [] ;
+
+     personslength = 0 ;
+     truncatepers  = 0 ;
+
+     FOREACH part IN item.${'P0100'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_pers') ;
+         searchterm    = part.content;
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "http://wwwtest.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/526/search/index_ger.html?num=10;page=1;fs=${searchprefix}:|${searchterm}|";
+
+#         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push("${part.content}");
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'P0101'}  ;
+       thiscontent = part.content;
+       IF part.supplement ;
+          thiscontent = "${thiscontent} ${part.supplement}" ;
+       END ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_pers') ;
+         searchterm    = part.content;
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+
+#         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push("${part.content}");
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'C0200'}  ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_pers') ;
+         searchterm    = part.content;
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+
+#         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push("${part.content}");
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'C0201'}  ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_pers') ;
+         searchterm    = part.content;
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+
+#         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push("${part.content}");
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     person = persons.join(' ; ') ;
+     IF truncatepers ;
+       person = "$person [...]" ;
+     END ;
+
+     # Titel konstruieren
+     title = item.${'T0331'}.first.content;
+     IF item.${'T0310'}.first.content;
+         title = item.${'T0310'}.first.content;
+     END;
+
+     # Einbeziehung der Zaehlfelder T5100
+     IF title && item.${'T5100'}.first.content;
+        order = item.${'T5100'}.first.content;
+        IF title == order;
+           title = "${order}.";
+        ELSE;
+           title = "${order}. ${title}";
+        END;
+     END;
+
+     # Auflage konstruieren
+     edition = item.${'T0403'}.first.content;
+
+     # Verlage konstruieren
+     publisher = item.${'T0412'}.first.content;
+
+     # Ejahr konstruieren
+     yearofpub = item.${'T0425'}.first.content;
+
+     # Signaturen konstruieren
+     signaturen = [];
+     FOREACH part IN item.${'X0014'};
+         signaturen.push("${part.content}");
+     END;
+     signatur = signaturen.sort.unique.join(' ; ');
+     isbn     = item.${"T0540"}.first.content.replace('-','');
+     dbdesc   = dbinfo.get('dbnames').${record.database}.full;
+     dburl    = dbinfo.get('urls').${record.database};
+
+
+    titleinfos = [] ;
+
+    # E-Book/Inhaltsverzeichnis vorhanden
+    ebook     = item.${'T4120'}.first.content ;
+    toc       = item.${'T4110'}.first.content ;
+
+    IF ebook ;
+      ebook = "${path_prefix}/${config.get('redirect_loc')}/503/${ebook}" ;
+      titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
+    END ;
+
+    IF toc ;
+      toc = "${path_prefix}/${config.get('redirect_loc')}/500/${toc}" ;
+      titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
+    END ;
+
+    IF itemcount ;
+      titleinfos.push("Nutzer: ${itemcount}") ;
+    END ;
+
+    IF item.popularity ;
+      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
+    END ;
+
+    titleinfo = titleinfos.join(" | ");
+-%]
+<li>
+   <div class="hit-details">
+        [%# USE dumper;dumper.dump(item) %]
+        <script type="text/javascript">
+            document.write('<h4><a href="javascript:ajaxpage(\'/portal/[% view %]/resource/title/[% record.database %]/[% record.id %].include\', \'DISPLAY_SEARCH_[% item.database%]_[% item.id %]\', \'Lade Detailanzeige\');">[% title %]<\/a><\/h4>');
+        </script>
+           <noscript>
+            <h4><a href="[% view_config.${view}.zms_title_url %]?view=[% view %];db=[% item.database %];id=[% item.id %]">[% title %]</a></h4>
+           </noscript>
+
+
+      <div class="title" style="margin-top:-0.2em;">
+           <span class="rlperson">[% person %]</span>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>
+[% IF multiple_dbs == 1 %]
+         <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
+[%-   IF dbinfo.get('use_libinfo').${record.database} %]
+         <a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% record.database %]">
+[%-   ELSE -%]
+         <a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
+[% ELSE %]
+[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
+[% END %]
+      </div>
+      <div class="mediatype" style="margin-top:0.3em;">
+      [% signatur %]
+      </div>
+
+      <div id="DISPLAY_SEARCH_[% item.database%]_[% item.id %]" style="margin-bottom:1.0em;"></div>
+
+   </div>
+</li>
+<!-- Ende einzelner Treffer -->

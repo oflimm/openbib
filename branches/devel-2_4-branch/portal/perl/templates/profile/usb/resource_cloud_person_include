@@ -1,0 +1,39 @@
+[%
+      funcargs = { id => database, type => 6 } ;
+      resultlist = statistics.get_result(funcargs);
+      request_base = "${view_config.$view.zms_search_url}?view=${view};num=10;page=1"; 
+
+%]
+
+[%- PROCESS common/subtemplate name="resource_cloud_css" -%] 
+
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.size > 5 -%]
+[%- searchprefix  = config.get('searchfield').personstring.prefix -%]
+
+<ol class="cloud">
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind 
+verkn&uuml;pft mit </span><a href="[% request_base %];fs=[% searchprefix %]:|[% item %]|" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe diese Kategorie anbieten.") %]
+[% END %]

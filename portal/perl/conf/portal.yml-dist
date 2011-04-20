@@ -124,6 +124,7 @@ connector_olws_loc: /portal/connector/olws
 connector_permalink_loc: /portal/connector/permalink
 connector_livesearch_loc: /portal/connector/livesearch
 connector_locationmark_loc: /portal/connector/sykasignatur
+connector_qrcode_loc: /portal/connector/qrcode
 connector_rss_loc: /portal/connector/rss
 connector_seealso_loc: /portal/connector/seealso
 connector_similarpersons_loc: /portal/connector/similarpersons
@@ -253,6 +254,7 @@ pdf_img: /images/openbib/pdf-document.png
 permalink_img: /images/openbib/3d-file-blue-permalink.png
 previous_img: /images/openbib/previous.png
 print_img: /images/openbib/3d-file-blue-printer.png
+qrcode_img: /images/openbib/qrsymb.png
 rssfeed_img: /images/openbib/rssfeed.png
 save_img: /images/openbib/3d-file-blue-disk35.png
 search_img: /images/openbib/search.png

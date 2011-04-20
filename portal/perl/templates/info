@@ -972,7 +972,8 @@ einsetzen, usw.") %]
      <tr><td align="center"><img src="[% config.get('info_img') %]" alt="Kontextsensitive Hilfe" /></td><td>[% msg.maketext("Kontextsensitive Hilfe") %]</td></tr>   
      <tr><td align="center"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></td><td>[% msg.maketext("Interaktives Tutorium") %]</td></tr>
      <tr><td align="center"><img src="[% config.get('wikipedia_img') %]" alt="Wikipedia" /></td><td>Wikipedia</td></tr>
-     <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>
+     <tr><td align="center"><img src="[% config.get('qrcode_img') %]" alt="QR-Code" /></td><td>QR-Code zum schnellen Merken mit Handy (z.B. mit i-nigma)</td></tr>
+    <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></a></td></tr>
   </table>
 
     <h1 id="verlinkung">14 [% msg.maketext("Verlinkung und Lastverteilung des KUG") %]</h1>

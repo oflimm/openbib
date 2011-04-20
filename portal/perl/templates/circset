@@ -22,10 +22,25 @@
 
 %]
 <p />
+
+
+<style>
+#preview{
+        margin-top: -200px;
+	position:absolute;
+	border:1px solid #ccc;
+	background: aliceblue;
+	padding:5px;
+	display:none;
+	color:#000;
+        text-align: center;
+	}
+</style>
+
 [%# USE dumper;dumper.dump(circset)%]
 [% IF Aquisition == 0 %]
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH mex IN circset %]
 <tr align="center"><td>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
@@ -33,7 +48,13 @@
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]
-<strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
+[%-
+  title    = normset.${"T0331"}.first.content ;
+  IF  normset.${"T0310"}.first.content ;
+     title = normset.${"T0310"}.first.content ;
+  END ;
+-%]
+<strong>[% mex.Bibliothek.full %]</strong></a></td><td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: [% mex.Bibliothek.short %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[% ELSIF
 mex.Status == 'entliehen' && mex.Rueckgabe != '31.12.9999' && mex.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% mex.Rueckgabe %][%- ELSE -%][% mex.Status %][%- END -%]</strong></td>

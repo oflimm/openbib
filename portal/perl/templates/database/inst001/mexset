@@ -1,6 +1,20 @@
 [% IF circset.size <= 0 %]
+
+<style>
+#preview{
+        margin-top: -200px;
+	position:absolute;
+	border:1px solid #ccc;
+	background: aliceblue;
+	padding:5px;
+	display:none;
+	color:#000;
+        text-align: center;
+	}
+</style>
+
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Bestand") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Bestand") %]</td></tr>
 
 [% listrow = 'listrow1' %]
 [% FOREACH mex IN mexnormset %]
@@ -12,7 +26,56 @@
 [% mex.${"X4000"}.content.full %]
 [%- END -%]
 </strong>
-</td><td>
+</td>
+<td>
+[%
+
+  title    = normset.${"T0331"}.first.content ;
+  IF  normset.${"T0310"}.first.content ;
+     title = normset.${"T0310"}.first.content ;
+  END ;
+
+  standort = mex.${"X0016"}.content;
+  
+  IF mex.${"X0014"}.content.match('^FHM ') ;
+    standort = "USB-Freihandmagazin (1. OG) (sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^EWA Z') ;
+    standort = "Zeitschriftenbestand der Humanwissenschaftlichen Abteilung, Gronewaldstr. 2. Erh&auml;ltlich &uuml;ber EWA-LS-Theke (sofort einsehbar)"; 
+  ELSIF mex.${"X0014"}.content.match('^USB-Zeitschr.-Stelle ') ;
+    standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen P-Nummer (z.B. P1234, sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^USB-Zeitschr.-Lesesaal ') ;
+    standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen Fachgruppe (sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^LS ') ;
+    standort = "USB-Lesesaal (1. OG, sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^KS V') ;
+    standort = "USB-Magazin (Ausleihe nur in den Lesesaal), Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+  ELSIF mex.${"X0014"}.content.match('^KS ') ;
+    standort = "USB-Katalogsaal (2. OG, sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^EDZ ') ;
+    standort = "USB-Lesesaal (1. OG): Europäisches Dokumentationszentrum (sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^EWA-LS-Theke ') ;
+    standort = "Humanwissenschaftliche Abteilung, Lesesaaltheke, Gronewaldstr. 2 (sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^EWA-LS ') ;
+    standort = "Humanwissenschaftliche Abteilung, Lesesaal, Gronewaldstr. 2 (sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^HP ') || mex.${"X0014"}.content.match('^HP-LS ') ;
+    standort = "Humanwissenschaftliche Abteilung, Lesesaal Heilpädagogik, Frangenheimstr. 4 (sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^FC ') ;
+    standort = "Fachbibliothek Chemie, Greinstr. 4 (sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^FBV ') ;
+    standort = "Fachbibliothek Versicherungswissenschaft, Kerpener Str. 30 (sofort einsehbar)";
+  ELSIF mex.${"X0014"}.content.match('^B ') ;
+    standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (ausleihbar nach Bestellung)";
+  ELSIF mex.${"X0014"}.content.match('^ZTG ') ;
+    standort = "Zeitungsbestand. USB-Magazin (ausleihbar nach Bestellung mit konventionellem Bestellschein der Auskunft o. Lesesaal-Theke im 1.OG)";
+  ELSIF mex.${"X0014"}.content.match('^P ') ;
+    standort = "Zeitschriftenlesesaal (1.OG) (sofort einsehbar)";
+  ELSIF NOT mex.${"X0014"}.content.match('^-') && mex.${"X0016"}.content.match('^-') ;
+    standort = "USB Magazin (ausleihbar nach Bestellung, siehe Bände)";
+  END;
+%]
+
+<a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: [% mex.${"X4000"}.content.short %] :: [% standort %] :: [% mex.${"X0014"}.content %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td>
 [% IF mex.${"X0014"}.content.match('^FHM ') %]USB-Freihandmagazin (1. OG) (<i>sofort einsehbar</i>)
 [% ELSIF mex.${"X0014"}.content.match('^EWA Z') %]Zeitschriftenbestand
 der Humanwissenschaftlichen Abteilung,

@@ -26,9 +26,22 @@
 %]
 <p />
 
+<style>
+#preview{
+        margin-top: -200px;
+	position:absolute;
+	border:1px solid #ccc;
+	background: aliceblue;
+	padding:5px;
+	display:none;
+	color:#000;
+        text-align: center;
+	}
+</style>
+
 [% IF Aquisition == 0 %]
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH mex IN circset %]
 [%-
      mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normset.id}";
@@ -55,6 +68,11 @@
            mex.Status = "<a href=\"http://www.ub.uni-koeln.de/edz/content/index_ger.html\" target=\"_blank\">EDZ</a> / einsehbar";
         END ;
 
+        IF mex.Signatur.match('^KS/V') ;
+           mex.Status = "bestellbar (Nutzung nur im Lesesaal)<br/>Bitte f&uuml;llen Sie einen konventionellen Leihschein aus (erh&auml;ltlich an der Auskunft und der Lesesaal-Theke im 1.OG)";
+           mex.Standort = "Hauptabteilung / Magazin";
+        END ; 
+
      ELSIF mex.Zweigstelle == 4 ;
 
         IF mex.Abteilungscode == 3 ;
@@ -67,8 +85,19 @@
            mex.Status = "EWA LS / Pr&auml;senzbestand";
         END ;
      END ;
+
 -%]
-<tr align="center"><td><strong>USB K&ouml;ln</strong></td><td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
+<tr align="center">
+<td><a href="http://www.ub.uni-koeln.de/" target="_blank"><strong>USB K&ouml;ln</strong></a></td>
+[%-
+  title    = normset.${"T0331"}.first.content ;
+  IF  normset.${"T0310"}.first.content ;
+     title = normset.${"T0310"}.first.content ;
+  END ;
+-%]
+<td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: USB Köln :: [% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]<br/><a href="http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/ausleihzeitenhaupt/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a></td>
+
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[% mex.Status %]</strong></td>
 <td class="circurl">

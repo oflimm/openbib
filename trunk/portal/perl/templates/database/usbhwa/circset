@@ -28,7 +28,7 @@
 
 <style>
 #preview{
-        margin-top: -200px;
+        margin-top: -400px;
 	position:absolute;
 	border:1px solid #ccc;
 	background: aliceblue;

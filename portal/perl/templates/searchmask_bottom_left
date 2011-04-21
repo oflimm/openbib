@@ -55,6 +55,7 @@ END;
 
 qrcode = qrcode_infos.join(' :: ');
 qrcode = qrcode.replace('<br />',', ');
+qrcode = qrcode.replace('<.+?>','');
 
 FOREACH category IN categories;
 

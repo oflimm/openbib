@@ -57,8 +57,33 @@
 
 [% PROCESS common/subtemplate name="visible_categories_libinfoset" %]
 
+<style>
+#preview{
+        margin-top: -200px;
+	position:absolute;
+	border:1px solid #ccc;
+	background: aliceblue;
+	padding:5px;
+	display:none;
+	color:#000;
+        text-align: center;
+	}
+</style>
+
 <table>
 [%-
+
+qrcode_infos = [];
+
+FOREACH category IN ["I0010","I0020","I0030","I0110"];
+      FOREACH item IN libinfo.$category;
+        content = item.content.replace('%22','"');
+        qrcode_infos.push(content);
+      END;
+END;
+
+qrcode = qrcode_infos.join(' :: ');
+qrcode = qrcode.replace('<br />',', ');
 
 FOREACH category IN categories;
 
@@ -85,6 +110,7 @@ FOREACH category IN categories;
 %]</td><td>[% content %]</td></tr>
 [%-   END ;
 END ;-%]
+<tr><td class="category">QR-Code</td><td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
 </table>
 </div>
 

@@ -70,7 +70,7 @@ sub handler {
 
     binmode STDOUT;
     my $code = GD::Barcode::QRcode->new($text,
-                                        {ECC => 'M', Version => 12, ModuleSize => 3}
+                                        {ECC => 'M', Version => 12, ModuleSize => 5}
 
                                     );
     $r->content_type("image/png");

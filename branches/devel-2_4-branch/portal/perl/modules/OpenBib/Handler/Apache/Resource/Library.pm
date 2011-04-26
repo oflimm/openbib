@@ -259,7 +259,7 @@ sub show_record_negotiate {
     
     my $libraryid             = "";
     
-    if ($id=~/^(.+?)(\.html|\.json|\.rdf)$/){
+    if ($id=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
         $libraryid        = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $config->{'content_type_map_rev'}{$representation};

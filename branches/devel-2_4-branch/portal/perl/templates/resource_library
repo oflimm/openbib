@@ -3,6 +3,8 @@
 [%- PROCESS common/subtemplate name="resource_library_html" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="resource_library_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="resource_library_include" -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- PROCESS common/subtemplate name="resource_library_rdf" -%]
 [%- ELSE -%]

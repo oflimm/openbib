@@ -13,7 +13,7 @@
 -%]
 [% IF circset.size <= 0 %]
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Inventarnummer") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Bestand") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Inventarnummer") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Bestand") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
 <tr align="center"><td><strong>
@@ -28,7 +28,17 @@
 [% mex.${"X4000"}.content.full %]
 [%- END -%]
 </strong>
-</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% IF mex.${"X1200"} %][% mex.${"X1200"}.content %] [% END %][% mex.${"X1204"}.content %][% IF mex.${"X1203"} %] ([% mex.${"X1203"}.content %])[% END %]</td></tr>
+</td>
+[%-
+
+  title    = normset.${"T0331"}.first.content ;
+  IF  normset.${"T0310"}.first.content ;
+     title = normset.${"T0310"}.first.content ;
+  END ;
+
+-%]
+<td><a class="qrcode" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: [% mex.${"X4000"}.content.short %] :: [% mex.${"X0016"}.content %] :: [% mex.${"X0014"}.content %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% IF mex.${"X1200"} %][% mex.${"X1200"}.content %] [% END %][% mex.${"X1204"}.content %][% IF mex.${"X1203"} %] ([% mex.${"X1203"}.content %])[% END %]</td></tr>
 [% END %]
 </table>
 [% END %]

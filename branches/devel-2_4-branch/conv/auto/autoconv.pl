@@ -133,8 +133,8 @@ my $atime = new Benchmark;
             $logger->info("### $database: Hole Exportdateien mit wget von $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/");
                         
             my $httpauthstring="";
-            if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepasswd} ne ""){
-                $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepasswd}";
+            if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepassword} ne ""){
+                $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepassword}";
             }
             
             system("cd $pooldir/$database ; rm meta.* ; rm unload.*");
@@ -145,6 +145,8 @@ my $atime = new Benchmark;
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{notfilename} > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{mexfilename} > /dev/null 2>&1 ");
 
+            system("ls -l $pooldir/$database/");
+            
             # Legacy unload.*
             system("mv $pooldir/$database/unload.TIT.gz  $pooldir/$database/meta.title.gz")          if ($dboptions_ref->{titfilename} eq "unload.TIT.gz");
             system("mv $pooldir/$database/unload.PER.gz  $pooldir/$database/meta.person.gz")         if ($dboptions_ref->{autfilename} eq "unload.PER.gz");

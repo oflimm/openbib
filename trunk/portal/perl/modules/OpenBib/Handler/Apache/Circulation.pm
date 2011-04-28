@@ -92,6 +92,8 @@ sub handler {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
+    my $representation= ($query->param('representation'))?$query->param('representation'):'html';
+
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
@@ -329,11 +331,23 @@ sub handler {
                 $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
             }
 
+            my $content_type = "text/html";
+
+            if ($representation eq "vcs"){
+                $content_type = "text/x-vcalendar";
+            }
+            elsif ($representation eq "ics"){
+                $content_type = "text/calendar";
+            }
+            
             # TT-Data erzeugen
             my $ttdata={
                 view       => $view,
                 stylesheet => $stylesheet,
-		  
+
+                content_type   => $content_type,
+                representation => $representation,
+                
                 sessionID  => $session->{ID},
                 loginname  => $loginname,
                 password   => $password,

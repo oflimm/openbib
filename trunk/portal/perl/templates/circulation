@@ -11,6 +11,21 @@
 #
 #######################################################################
 -%]
+[%- IF representation == "ics" -%]
+BEGIN:VCALENDAR
+VERSION:1.0
+[% FOREACH borrow = borrows ;
+      thisdate = borrow.RueckgabeDatum.split('\.').reverse.join('');
+-%]
+BEGIN:VEVENT
+SUMMARY:Leihfrist abgelaufen
+DESCRIPTION:[% borrow.Titel %][% IF borrow.Verfasser %] ([% borrow.Verfasser %])[% END %] - [% borrow.Signatur %]
+DTSTART:[% thisdate %]T000000Z
+DTEND:[% thisdate %]T235900Z
+END:VEVENT
+[% END -%]
+END:VCALENDAR
+[%- ELSE -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
@@ -42,6 +57,19 @@
 <b>[% msg.maketext("Sie haben keine Ausleihen getätigt.") %]</b>
 [% ELSE  %]
 
+<style>
+#preview{
+        margin-top: -400px;
+	position:absolute;
+	border:1px solid #ccc;
+	background: aliceblue;
+	padding:5px;
+	display:none;
+	color:#000;
+        text-align: center;
+	}
+</style>
+
 <p>
 <b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=renew_loans;validtarget=[% database %]" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
 </p>
@@ -70,9 +98,14 @@ class="[% listrow %]"
 </table>
 
 [% END %]
+<p/>
+[% borrow_url = "http://${config.get('servername')}${config.get('circulation_loc')}?sessionID=${sessionID};action=showcirc;circaction=borrows;representation=vcs" %]
+Ausgeliehene Medien im <a href="[% borrow_url %]">vCalendar-Format</a> zur &Uuml;bernahme in einen Kalender oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% borrow_url | uri %]" title="Ausleihen im vCalendar-Format via URL"><img src="[% config.get('qrcode_img') %]" /></a>
+<p/>
 </div>
 </div>
 
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]
+[%- END -%]

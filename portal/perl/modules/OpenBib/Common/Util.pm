@@ -262,6 +262,12 @@ sub print_page {
         $ttdata->{'view'} = $view;
     }
 
+    my $content_type = "text/html";
+
+    if ($ttdata->{'content_type'}){
+        $content_type = $ttdata->{'content_type'};
+    }
+
     my $sysprofile= $config->get_viewinfo($view)->{profilename};
     
     my $user      = OpenBib::User->instance({sessionID => $sessionID});
@@ -305,7 +311,7 @@ sub print_page {
     });
   
     # Dann Ausgabe des neuen Headers
-    $r->content_type("text/html");
+    $r->content_type($content_type);
   
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);

@@ -15,6 +15,13 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b>29.4.2011</b>: Für einen besseren Überblick der Leihfristenden
+können im Benutzerkonto nun die entliehenen Titel im iCalendar-Format
+abgespeichert und in das eigene Kalenderprogramm importiert
+werden. Zusätzlich können die Fristenden auch per QR-Code direkt in
+den Handy-Kalender übernommen werden (über eine Internetverbundung
+können zusätzliche Kosten anfallen). Weitergehende Informationen in diesem
+<a href="http://blog.openbib.org/2011/04/29/ausleihkonto-als-kalender-und-qr-code/" target="_blank">Blog-Artikel</a></li>
 <li><b>21.4.2011</b>: Zur schnellen Übernahme wesentlicher
 Informationen aus dem KUG mit dem Handy als "Merkzettel" - Signatur/Standort, um ein Buch im Regal zu
 finden oder Adresse/Öffnungszeiten einer Instituts-Bibliothek, um

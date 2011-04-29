@@ -361,7 +361,13 @@ sub handler {
 		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
 		    return $string;
                 },
-		  
+
+                grundform   => sub {
+                    my $string = shift;
+                    $string = OpenBib::Common::Util::grundform({ content => $string});
+                    return $string;
+                },
+                
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => $config,

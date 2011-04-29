@@ -13,15 +13,53 @@
 -%]
 [%- IF representation == "ics" -%]
 BEGIN:VCALENDAR
-VERSION:1.0
+VERSION:2.0
+PRODID:-//OpenBib.org//NONSGML Borrows Calendar//EN
+X-WR-CALNAME:Fällige Ausleihen
+X-WR-TIMEZONE:Europe/Berlin
 [% FOREACH borrow = borrows ;
-      thisdate = borrow.RueckgabeDatum.split('\.').reverse.join('');
+      returndate = borrow.RueckgabeDatum.split('\.').reverse.join('');
+      desc       = borrow.Titel;
+      IF borrow.Verfasser ;
+         desc       = "${desc} (${borrow.Verfasser})";
+      END ;
+      desc       = "${desc} - ${borrow.Signatur}";
+      desc       = desc.replace(',','\\,').replace(':','\\:');      
+      uid        = "${borrow.Katkey}${borrow.Signatur}";
 -%]
 BEGIN:VEVENT
+UID:[% uid | truncate(60) %]
 SUMMARY:Leihfrist abgelaufen
-DESCRIPTION:[% borrow.Titel %][% IF borrow.Verfasser %] ([% borrow.Verfasser %])[% END %] - [% borrow.Signatur %]
-DTSTART:[% thisdate %]T000000Z
-DTEND:[% thisdate %]T235900Z
+DESCRIPTION:[% desc |truncate(60) %]
+DTSTAMP:[% returndate %]T060000Z
+DTSTART:[% returndate %]T060000Z
+DTEND:[% returndate %]T200000Z
+END:VEVENT
+[% END -%]
+END:VCALENDAR
+[%- ELSIF representation == "vcs" -%]
+BEGIN:VCALENDAR
+VERSION:1.0
+PRODID:-//OpenBib.org//NONSGML Borrows Calendar//EN
+X-WR-CALNAME:Fällige Ausleihen
+X-WR-TIMEZONE:Europe/Berlin
+[% FOREACH borrow = borrows ;
+      returndate = borrow.RueckgabeDatum.split('\.').reverse.join('');
+      desc       = borrow.Titel;
+      IF borrow.Verfasser ;
+         desc       = "${desc} (${borrow.Verfasser})";
+      END ;
+      desc       = "${desc} - ${borrow.Signatur}";
+      desc       = desc.replace(',','\\,');
+      desc       = desc.replace(':','\\:');
+-%]
+BEGIN:VEVENT
+UID:[% borrow.Katkey %][% borrow.Signatur %]
+SUMMARY:Leihfrist abgelaufen
+DESCRIPTION:[% desc %]
+DTSTAMP:[% returndate %]T060000Z
+DTSTART:[% returndate %]T060000Z
+DTEND:[% returndate %]T200000Z
 END:VEVENT
 [% END -%]
 END:VCALENDAR
@@ -74,6 +112,7 @@ END:VCALENDAR
 <b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=renew_loans;validtarget=[% database %]" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
 </p>
 
+[%# USE dumper;dumper.dump(borrows)%]
 <table cellpadding="5">
 <tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Ausleihfrist") %]</b></td></tr>
 [%- listrow = 'listrow1' -%]
@@ -99,8 +138,8 @@ class="[% listrow %]"
 
 [% END %]
 <p/>
-[% borrow_url = "http://${config.get('servername')}${config.get('circulation_loc')}?sessionID=${sessionID};action=showcirc;circaction=borrows;representation=vcs" %]
-Ausgeliehene Medien im <a href="[% borrow_url %]">vCalendar-Format</a> zur &Uuml;bernahme in einen Kalender oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% borrow_url | uri %]" title="Ausleihen im vCalendar-Format via URL"><img src="[% config.get('qrcode_img') %]" /></a>
+[% borrow_url = "http://${config.get('servername')}${config.get('circulation_loc')}?sessionID=${sessionID};action=showcirc;circaction=borrows;representation=ics" %]
+Ausgeliehene Medien im <a href="[% borrow_url %]">iCalendar-Format</a> zur &Uuml;bernahme in einen Kalender oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% borrow_url | uri %]" title="Ausleihen im iCalendar-Format via URL"><img src="[% config.get('qrcode_img') %]" /></a>
 <p/>
 </div>
 </div>

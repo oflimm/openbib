@@ -55,7 +55,6 @@
   END ;
 -%]
 <td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: [% mex.Bibliothek.short %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
-<td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
 </tr>

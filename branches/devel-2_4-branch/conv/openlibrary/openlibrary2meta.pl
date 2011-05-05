@@ -6,7 +6,7 @@
 #
 #  Konverierung der OpenLibrary JSON-Feeds in das Meta-Format
 #
-#  Dieses File ist (C) 1999-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1999-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -31,8 +31,8 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-#use strict;
-#use warnings;
+use strict;
+use warnings;
 use utf8;
 
 use Encode 'decode';
@@ -48,18 +48,19 @@ use OpenBib::Conv::Common::Util;
 
 my $config = OpenBib::Config->instance;
 
-my ($inputfile_authors,$inputfile_titles);
+my ($inputfile_authors,$inputfile_titles,$inputfile_works);
 
 &GetOptions(
 	    "inputfile-authors=s"          => \$inputfile_authors,
             "inputfile-titles=s"           => \$inputfile_titles,
+            "inputfile-works=s"           => \$inputfile_works,
 	    );
 
-if (!$inputfile_authors && !$inputfile_titles){
+if (!$inputfile_authors && !$inputfile_titles && !$inputfile_works){
     print << "HELP";
 openlibrary2meta.pl - Aufrufsyntax
 
-    openlibrary2meta.pl --inputfile-authors=xxx --inputfile-titles=yyy
+    openlibrary2meta.pl --inputfile-authors=xxx --inputfile-titles=yyy --inputfile-works=zzz
 HELP
 exit;
 }
@@ -71,8 +72,9 @@ open (NOTATION,">:utf8","meta.classification");
 open (SWT,     ">:utf8","meta.subject");
 
 my %have_author = ();
+my %have_work   = ();
 
-print "### Processing Titles: 1st pass - getting authors\n";
+print "### Processing Titles: 1st pass - getting authors and works\n";
 open(OL,"<:utf8",$inputfile_titles);
 
 my $count = 1;
@@ -95,6 +97,15 @@ while (<OL>){
         $key =~s{/authors/}{};
         $have_author{$key}=1;
       }
+    }
+
+    # Werke abarbeiten Anfang
+    if (exists $recordset->{works}){
+        foreach my $works_ref (@{$recordset->{works}}){
+            my $key     = $works_ref->{key};
+            $key =~s{/works/}{};
+            $have_work{$key}=1;
+        }
     }
 
     if ($count % 10000 == 0){
@@ -151,6 +162,46 @@ while (<OL>){
 
 close(OL);
 
+print "#### Processing Works\n";
+
+open(OL,"<:utf8",$inputfile_works);
+
+$count = 1;
+
+my $work_subjects_ref = {};
+my $work_blacklist_ref = {};
+
+while (<OL>){
+    my $recordset=undef;
+    
+    eval {
+        $recordset = decode_json $_;
+    };
+    
+    my $key = $recordset->{key};
+    $key=~s{^/works/}{};
+
+    if ( $key && $have_work{$key} == 1){
+        if (exists $recordset->{subjects}){
+            push @{$work_subjects_ref->{$key}}, @{$recordset->{subjects}}
+        }
+
+        foreach my $subject (@{$recordset->{subjects}}){
+            if ($subject =~/Protected DAISY/i){
+                $work_blacklist_ref->{$key}=1;
+            }
+        }
+    }
+    
+    if ($count % 10000 == 0){
+        print "$count done\n";
+    }
+    
+    $count++;
+}
+
+close(OL);
+
 print "#### Processing Titles\n";
 open(OL,"<:utf8",$inputfile_titles);
 
@@ -167,13 +218,29 @@ while (<OL>){
     my $key = $recordset->{key} ;
     $key =~s{^/books/}{};
 
+    my @works = ();
+    my $is_blacklisted = 0;
+    if (exists $recordset->{works}){
+        foreach my $work_ref (@{$recordset->{works}}){
+            push @works, $work_ref->{key};
+            if ($work_blacklist_ref->{$work_ref->{key}}){
+                $is_blacklisted = 1;
+            }
+        }
+    }
+
 #    print YAML::Dump($recordset);
 
     # Einschraenkung auf Titelaufnahmen mit Digitalisaten
     if (!exists $recordset->{ocaid}){
         next;
     }
+
+    if ($is_blacklisted){
+        next;
+    }
     
+
     if (!$key){
         print STDERR  "Keine ID\n".YAML::Dump($recordset)."\n";
         next;
@@ -332,26 +399,58 @@ while (<OL>){
     }
     # Notationen abarbeiten Ende
 
-    # Schlagworte abarbeiten Anfang
-    if (exists $recordset->{subjects}){
+    # Schlagworte abarbeiten Anfang    
+    {
         my %processed = ();
-        foreach my $content (@{$recordset->{subjects}}){
-            if ($content && !$processed{$content}){
-                $content = konv($content);
-                # Punkt am Ende entfernen
-                $content=~s/\.\s*$//;
-                
-                my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
-                
-                if ($new){	  
-                    print SWT "0000:$subject_id\n";
-                    print SWT "0001:$content\n";
-                    print SWT "9999:\n";
+
+        # Schlagworte aus den Titeldaten
+        if (exists $recordset->{subjects}){
+            
+            foreach my $content (@{$recordset->{subjects}}){
+                if ($content && !$processed{$content}){
+                    $content = konv($content);
+                    # Punkt am Ende entfernen
+                    $content=~s/\.\s*$//;
+                    
+                    my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
+                    
+                    if ($new){	  
+                        print SWT "0000:$subject_id\n";
+                        print SWT "0001:$content\n";
+                        print SWT "9999:\n";
+                    }
+                    
+                    print TIT "0710:IDN: $subject_id\n";
                 }
-                
-                print TIT "0710:IDN: $subject_id\n";
             }
         }
+
+        # Schlagworte aus den Werk-Daten
+        foreach my $work (@works){
+            
+            foreach my $content (@{$work_subjects_ref->{$work}}){                
+                if ($content && !$processed{$content}){
+
+             #       $logger->info("Adding Work Subject $content for Work $work");
+                    
+                    $content = konv($content);
+                    # Punkt am Ende entfernen
+                    $content=~s/\.\s*$//;
+                    
+                    my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
+                    
+                    if ($new){	  
+                        print SWT "0000:$subject_id\n";
+                        print SWT "0001:$content\n";
+                        print SWT "9999:\n";
+                    }
+                    
+                    print TIT "0710:IDN: $subject_id\n";
+                }
+            }
+        }
+
+        
     }
     # Schlagworte abarbeiten Ende
     print TIT "9999:\n";

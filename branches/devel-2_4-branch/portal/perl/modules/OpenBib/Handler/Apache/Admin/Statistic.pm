@@ -72,7 +72,7 @@ sub setup {
         'show_overview_as_rdf'      => 'show_overview_as_rdf',
         'show_overview_as_json'     => 'show_overview_as_json',
         'show_overview_as_include'  => 'show_overview_as_include',
-        'show_statistics_negotiate' => 'show_statistics_negotiate',
+        'show_statistic_negotiate'  => 'show_statistic_negotiate',
     );
 
     # Use current path as template path,
@@ -87,12 +87,13 @@ sub show_overview_negotiate {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
 
     my $config  = OpenBib::Config->instance;
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$config->{admin_statistics_loc}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{admin_statistics_loc}.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -189,13 +190,16 @@ sub show_overview {
     
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
+        representation => $representation,
+        content_type   => $content_type,
         
-        session    => $session,
-        statistics => $statistics,
-        user       => $user,
-        config     => $config,
-        msg        => $msg,
+        view           => $view,
+        
+        session        => $session,
+        statistics     => $statistics,
+        user           => $user,
+        config         => $config,
+        msg            => $msg,
     };
     
     my $templatename = "tt_admin_statistic_tname";
@@ -204,7 +208,7 @@ sub show_overview {
 
 }
 
-sub show_statistics_negotiate {
+sub show_statistic_negotiate {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -214,6 +218,7 @@ sub show_statistics_negotiate {
 
     my $view           = $self->param('view')           || '';
     my $statisticid    = $self->param('statisticid')    || '';
+    my $statisticid2   = $self->param('statisticid2')   || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -248,14 +253,16 @@ sub show_statistics_negotiate {
     my $content_type   = "";
 
     my $statistic         = "";
-    if ($statisticid=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
+    my $id                = ($statisticid && $statisticid2)?$statisticid2:$statisticid;
+    
+    if ($id=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
         $statistic        = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $config->{'content_type_map_rev'}{$representation};
     }
     # Sonst Aushandlung
     else {
-        $statistic = $statisticid;
+        $statistic = $id;
         my $negotiated_type = $self->negotiate_type;
         $representation = $negotiated_type->{suffix};
         $content_type   = $negotiated_type->{content_type};
@@ -278,8 +285,16 @@ sub show_statistics_negotiate {
         config     => $config,
         msg        => $msg,
     };
+
     
-    my $templatename = ($statistic)?"tt_admin_statistic_".$statistic."_tname":"tt_admin_statistic_tname";
+    my $templatename = "tt_admin_statistic_tname";
+
+    if ($statisticid && $statisticid2 && $statistic){
+        $templatename = "tt_admin_statistic_".$statisticid."_".$statistic."_tname";
+    }
+    elsif ($statisticid && !$statisticid2 && $statistic){
+        $templatename = "tt_admin_statistic_".$statistic."_tname";
+    }
     
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 

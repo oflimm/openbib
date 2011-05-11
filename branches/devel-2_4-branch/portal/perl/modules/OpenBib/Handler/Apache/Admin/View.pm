@@ -94,12 +94,13 @@ sub show_collection_negotiate {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $view           = $self->param('view')                   || '';
 
     my $config  = OpenBib::Config->instance;
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$config->{admin_view_loc}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{admin_view_loc}.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -149,6 +150,7 @@ sub show_collection {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $representation = $self->param('representation') || '';
 
     my $config  = OpenBib::Config->instance;
@@ -187,6 +189,8 @@ sub show_collection {
             my $ref = shift;
             return encode_json $ref;
         },
+
+        view       => $view,
         
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
@@ -210,6 +214,7 @@ sub show_record_negotiate {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $id             = $self->param('viewid')             || '';
 
     my $config  = OpenBib::Config->instance;
@@ -299,6 +304,8 @@ sub show_record_negotiate {
     my $ttdata={
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
+
+        view       => $view,
         
         dbnames    => \@profiledbs,
         
@@ -323,6 +330,7 @@ sub create_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $representation = $self->param('representation') || '';
 
     my $config  = OpenBib::Config->instance;
@@ -400,7 +408,7 @@ sub create_record {
     }
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_view_loc}/$viewname/edit");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_view_loc}/$viewname/edit");
     $self->query->status(Apache2::Const::REDIRECT);
     
     return;
@@ -414,6 +422,7 @@ sub show_record_form {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $viewname       = $self->param('viewid')             || '';
 
     my $config  = OpenBib::Config->instance;
@@ -490,6 +499,8 @@ sub show_record_form {
     my $ttdata={
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
+
+        view       => $view,
         
         dbnames    => \@profiledbs,
         
@@ -516,6 +527,7 @@ sub update_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $viewname         = $self->param('viewid')             || '';
 
     my $config  = OpenBib::Config->instance;
@@ -576,6 +588,8 @@ sub update_record {
             my $ttdata={
                 stylesheet => $stylesheet,
                 viewinfo   => $viewinfo_ref,
+
+                view       => $view,
                 
                 config     => $config,
                 session    => $session,
@@ -636,7 +650,7 @@ sub update_record {
     $config->update_view($thisviewinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_view_loc}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_view_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -650,6 +664,7 @@ sub delete_record {
     
     my $r                = $self->param('r');
 
+    my $view             = $self->param('view')                   || '';
     my $viewname         = $self->param('viewid')             || '';
 
     my $config  = OpenBib::Config->instance;
@@ -690,7 +705,7 @@ sub delete_record {
     $config->del_view($viewname);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_view_loc}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_view_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

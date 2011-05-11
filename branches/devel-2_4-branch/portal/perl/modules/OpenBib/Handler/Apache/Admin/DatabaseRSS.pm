@@ -94,13 +94,14 @@ sub show_collection_negotiate {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')          || '';
 
     my $config  = OpenBib::Config->instance;
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$config->{admin_database_loc}/$dbname/rss.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{admin_database_loc}/$dbname/rss.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -149,6 +150,7 @@ sub show_collection {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')     || '';
 
     my $representation = $self->param('representation') || '';
@@ -203,6 +205,8 @@ sub show_collection {
             my $ref = shift;
             return encode_json $ref;
         },
+
+        view       => $view,
         
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
@@ -228,6 +232,7 @@ sub show_record_negotiate {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')     || '';
     my $id             = $self->param('rssid')          || '';
 
@@ -292,6 +297,8 @@ sub show_record_negotiate {
         content_type   => $content_type,
         
         stylesheet => $stylesheet,
+
+        view       => $view,
         
         rssinfo    => $rssinfo_ref,
         
@@ -311,6 +318,7 @@ sub create_record {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')          || '';
 
     my $representation = $self->param('representation') || '';
@@ -365,7 +373,7 @@ sub create_record {
     $config->new_databaseinfo_rss($dbname,$rsstype,$active);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname/rss");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -379,6 +387,7 @@ sub show_record_form {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')             || '';
     my $id             = $self->param('rssid')          || '';
 
@@ -427,6 +436,8 @@ sub show_record_form {
     
     my $ttdata={
         stylesheet   => $stylesheet,        
+
+        view       => $view,
         
         rssinfo    => $rssinfo_ref,
         dbname     => $dbname,
@@ -449,6 +460,7 @@ sub update_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')             || '';
     my $id             = $self->param('rssid')          || '';
 
@@ -502,6 +514,7 @@ sub update_record {
             my $rssinfo_ref = $config->get_rssfeed_by_id($id);
 
             my $ttdata={
+                view         => $view,
                 stylesheet   => $stylesheet,
                 rssinfo      => $rssinfo_ref,
                 dbname       => $dbname,
@@ -534,7 +547,7 @@ sub update_record {
     $config->update_databaseinfo_rss($dbname,$rsstype,$active,$id);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname/rss");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -548,6 +561,7 @@ sub delete_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')             || '';
     my $id             = $self->param('rssid')          || '';
 
@@ -596,7 +610,7 @@ sub delete_record {
     $config->del_databaseinfo_rss($id);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname/rss");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

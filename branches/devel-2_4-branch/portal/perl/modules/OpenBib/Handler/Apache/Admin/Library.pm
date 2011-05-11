@@ -92,13 +92,14 @@ sub show_record_negotiate {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')             || '';
 
     my $config  = OpenBib::Config->instance;
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$config->{admin_database_loc}/$dbname/library.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{admin_database_loc}/$dbname/library.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -147,6 +148,7 @@ sub show_record {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')             || '';
 
     my $representation = $self->param('representation') || '';
@@ -195,6 +197,8 @@ sub show_record {
             my $ref = shift;
             return encode_json $ref;
         },
+
+        view       => $view,
         
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
@@ -220,6 +224,7 @@ sub create_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $representation = $self->param('representation') || '';
 
     my $config  = OpenBib::Config->instance;
@@ -323,7 +328,7 @@ sub create_record {
     $config->new_databaseinfo($thisdbinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname/edit");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}/$dbname/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -337,6 +342,7 @@ sub show_record_form {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')             || '';
 
     my $config  = OpenBib::Config->instance;
@@ -387,7 +393,8 @@ sub show_record_form {
             my $ref = shift;
             return encode_json $ref;
         },
-        
+
+        view       => $view,
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
         dbname     => $dbname,
@@ -412,6 +419,7 @@ sub update_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')             || '';
 
     my $config  = OpenBib::Config->instance;
@@ -467,6 +475,7 @@ sub update_record {
                 stylesheet   => $stylesheet,
                 libinfo      => $libinfo_ref,
 
+                view       => $view,
                 dbname     => $dbname,
                 config     => $config,
                 session    => $session,
@@ -482,7 +491,7 @@ sub update_record {
         else {
             $logger->debug("Redirecting to delete location");
             $self->query->method('DELETE');    
-            $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname/library");
+            $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}/$dbname/library");
             $self->query->status(Apache2::Const::REDIRECT);
             return;
         }
@@ -555,7 +564,7 @@ sub update_record {
     $config->update_libinfo($dbname,$thislibinfo_ref);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -569,6 +578,7 @@ sub delete_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')             || '';
 
     my $config  = OpenBib::Config->instance;
@@ -609,7 +619,7 @@ sub delete_record {
     $config->del_libinfo($dbname);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

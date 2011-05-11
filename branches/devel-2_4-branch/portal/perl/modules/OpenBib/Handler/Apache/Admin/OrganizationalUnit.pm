@@ -93,13 +93,14 @@ sub show_collection_negotiate {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $view           = $self->param('view')                   || '';
     my $profilename    = $self->param('profileid')      || '';
 
     my $config  = OpenBib::Config->instance;
 
     my $negotiated_type_ref = $self->negotiate_type;
     
-    my $new_location = "$config->{base_loc}/$config->{admin_profile_loc}/$profilename/orgunit.$negotiated_type_ref->{suffix}";
+    my $new_location = "$config->{base_loc}/$view/$config->{admin_profile_loc}/$profilename/orgunit.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -149,6 +150,7 @@ sub show_collection {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $profilename    = $self->param('profileid')      || '';
     my $representation = $self->param('representation') || '';
 
@@ -196,6 +198,8 @@ sub show_collection {
             my $ref = shift;
             return encode_json $ref;
         },
+
+        view       => $view,
         
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
@@ -219,6 +223,7 @@ sub show_record_negotiate {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $profilename    = $self->param('profileid')      || '';    
     my $id             = $self->param('orgunitid')             || '';
 
@@ -257,7 +262,7 @@ sub show_record_negotiate {
     my $content_type   = "";
 
     my $orgunitname    = "";
-    if ($id=~/^(.+?)(\.html|\.json|\.rdf\+xml)$/){
+    if ($id=~/^(.+?)(\.html|\.json|\.rdf)$/){
         $orgunitname      = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type     = $config->{'content_type_map_rev'}{$representation};
@@ -291,7 +296,10 @@ sub show_record_negotiate {
     
     my $ttdata={
         representation => $representation,
+        content_type   => $content_type,
 
+        view           => $view,
+        
         to_json       => sub {
             my $ref = shift;
             return encode_json $ref;
@@ -321,6 +329,7 @@ sub create_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $profilename    = $self->param('profileid')      || '';
     my $representation = $self->param('representation') || '';
 
@@ -381,7 +390,7 @@ sub create_record {
     }
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_profile_loc}/$profilename/orgunit/$orgunit/edit");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_profile_loc}/$profilename/orgunit/$orgunit/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -395,6 +404,7 @@ sub show_record_form {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $profilename    = $self->param('profileid')      || '';
     my $orgunitname    = $self->param('orgunitid')             || '';
 
@@ -463,6 +473,8 @@ sub show_record_form {
     my $ttdata={
         stylesheet => $stylesheet,
         sessionID  => $session->{ID},
+
+        view       => $view,
         
         profileinfo    => $profileinfo_ref,
         
@@ -489,6 +501,7 @@ sub update_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')                   || '';
     my $profilename    = $self->param('profileid')      || '';
     my $orgunitname    = $self->param('orgunitid')      || '';
 
@@ -557,6 +570,8 @@ sub update_record {
                 stylesheet => $stylesheet,
                 orgunitinfo => $orgunitinfo_ref,
                 
+                view       => $view,
+                
                 config     => $config,
                 session    => $session,
                 user       => $user,
@@ -591,7 +606,7 @@ sub update_record {
     });
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_profile_loc}/$profilename");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_profile_loc}/$profilename");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -605,6 +620,7 @@ sub delete_record {
     
     my $r              = $self->param('r');
 
+    my $view           = $self->param('view')           || '';
     my $profilename    = $self->param('profileid')      || '';
     my $orgunitname    = $self->param('orgunitid')      || '';
 
@@ -658,7 +674,7 @@ sub delete_record {
     $config->del_orgunit($profilename,$orgunitname);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_profile_loc}/$profilename");
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_profile_loc}/$profilename");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

@@ -73,6 +73,9 @@ sub setup {
         'show_overview_as_json'     => 'show_overview_as_json',
         'show_overview_as_include'  => 'show_overview_as_include',
         'show_statistic_negotiate'  => 'show_statistic_negotiate',
+        'show_graph_as_html'        => 'show_graph_as_html',
+        'show_graph_as_include'     => 'show_graph_as_include',
+        'show_graph_negotiate'      => 'show_graph_negotiate',
     );
 
     # Use current path as template path,
@@ -208,6 +211,122 @@ sub show_overview {
 
 }
 
+sub show_graph_negotiate {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+    my $view           = $self->param('view')           || '';
+    my $statisticid    = $self->param('statisticid')    || '';
+    my $statisticid2   = $self->param('statisticid2')   || '';
+
+    my $config  = OpenBib::Config->instance;
+
+    my $negotiated_type_ref = $self->negotiate_type;
+
+    my $new_location = "$config->{base_loc}/$view/$config->{admin_statistics_loc}/$statisticid/$statisticid2/graph.$negotiated_type_ref->{suffix}";
+
+    $self->query->method('GET');
+    $self->query->content_type($negotiated_type_ref->{content_type});
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+
+    return;
+}
+
+sub show_graph_as_html {
+    my $self = shift;
+
+    $self->param('representation','html');
+
+    $self->show_graph;
+
+    return;
+}
+
+sub show_graph_as_include {
+    my $self = shift;
+
+    $self->param('representation','include');
+
+    $self->show_graph;
+
+    return;
+}
+
+sub show_graph {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view')           || '';
+    my $statisticid    = $self->param('statisticid')    || '';
+    my $statisticid2   = $self->param('statisticid2')   || '';
+
+    my $config  = OpenBib::Config->instance;
+    my $session = OpenBib::Session->instance({ apreq => $r });
+    my $query   = Apache2::Request->new($r);
+
+    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
+    my $adminuser   = $config->{adminuser};
+    my $adminpasswd = $config->{adminpasswd};
+
+    # Ist der Nutzer ein Admin?
+    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
+    
+    # Admin-SessionID ueberpruefen
+    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
+    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
+
+    if (!$adminsession) {
+        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
+        return Apache2::Const::OK;
+    }
+
+    my $year       = $query->param('year')       || '';
+
+    my $statistics = new OpenBib::Statistics();
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        view       => $view,
+        
+        year       => $year,
+        
+        session    => $session,
+        statistics => $statistics,
+        user       => $user,
+        config     => $config,
+        msg        => $msg,
+    };
+
+    
+    my $templatename = "tt_admin_statistic_";
+
+    if ($statisticid && $statisticid2){
+        $templatename = $templatename.$statisticid."_".$statisticid2."_graph";
+    }
+
+    $templatename.="_tname";
+    
+    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+}
+
 sub show_statistic_negotiate {
     my $self = shift;
 
@@ -219,6 +338,7 @@ sub show_statistic_negotiate {
     my $view           = $self->param('view')           || '';
     my $statisticid    = $self->param('statisticid')    || '';
     my $statisticid2   = $self->param('statisticid2')   || '';
+    my $graph          = $self->param('graph')          || '';
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });

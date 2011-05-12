@@ -30,7 +30,7 @@
 <table>
 <tr>
 <td>
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_profile_loc') %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="0" />
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ja") %]"></div>
@@ -38,7 +38,7 @@
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>
-<form method="get" action="[% config.get('base_loc') %]/[% config.get('admin_dprofile_loc') %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]/edit">
+<form method="get" action="[% path_prefix %]/[% config.get('admin_dprofile_loc') %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]/edit">
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Nein") %]"></div>
 </form>
 </td>

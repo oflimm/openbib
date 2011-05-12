@@ -30,7 +30,7 @@
 <table>
 <tr>
 <td>
-<form method="post" action="[% config.get('base_loc') %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="0" />
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ja") %]"></div>
@@ -38,7 +38,7 @@
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>
-<form method="get" action="[% config.get('base_loc') %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]/edit">
+<form method="get" action="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]/edit">
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Nein") %]"></div>
 </form>
 </td>

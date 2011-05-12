@@ -94,9 +94,9 @@
                     zms_search_url     = 'http://wwwtest.ub.uni-koeln.de/sammlungen/schmalenbach/search/index_ger.html',
                     zms_title_url      = 'http://wwwtest.ub.uni-koeln.de/sammlungen/schmalenbach/titel/index_ger.html',
                   },
-       "dante"  = {
-                    zms_search_url     = 'http://wwwtest.ub.uni-koeln.de/bibliotheken/service/ueber_uns/develop/dante/search/index_ger.html',
-                    zms_title_url      = 'http://wwwtest.ub.uni-koeln.de/bibliotheken/service/ueber_uns/develop/dante/titel/index_ger.html',
+       "dante" = {
+                    zms_search_url     = 'http://wwwtest.ub.uni-koeln.de/sammlungen/dante/search/index_ger.html',
+                    zms_title_url      = 'http://wwwtest.ub.uni-koeln.de/sammlungen/dante/titel/index_ger.html',
                   },
 
 

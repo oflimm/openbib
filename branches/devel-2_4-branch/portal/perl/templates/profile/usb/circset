@@ -28,7 +28,7 @@
 
 [% IF Aquisition == 0 %]
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH mex IN circset %]
 [%-
      mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normset.id}";
@@ -73,8 +73,15 @@
         END ;
      END ;
 
+  title    = normset.${"T0331"}.first.content ;
+  IF  normset.${"T0310"}.first.content ;
+     title = normset.${"T0310"}.first.content ;
+  END ;
+
 -%]
-<tr align="center"><td><a href="http://www.ub.uni-koeln.de/" target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
+<tr align="center"><td><a href="http://www.ub.uni-koeln.de/" target="_blank"><strong>USB K&ouml;ln</strong></a></td>
+<td><a class="preview qrcode" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: [% mex.Bibliothek.short %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[% mex.Status %]</strong></td>
 <td class="circurl">

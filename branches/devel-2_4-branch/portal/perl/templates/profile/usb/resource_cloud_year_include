@@ -42,7 +42,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% request_base %];[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];fs=[% searchprefix %]:|[% item %]|;db=[% database %]" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% request_base %];fs=[% searchprefix %]:|[% item %]|;db=[% database %]" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

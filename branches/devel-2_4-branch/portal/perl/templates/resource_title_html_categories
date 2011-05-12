@@ -46,10 +46,10 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('resource_person_loc')}/${record.database}/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('resource_person_loc')}/${record.database}/${thisid}";
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
-         content   = "${rssfeed}<a href=\"${resourceurl}\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${path_prefix}/${config.get('redirect_loc')}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}/?lang=${qopts.l}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "${rssfeed}<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${path_prefix}/${config.get('redirect_loc')}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}/?lang=${qopts.l}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;

@@ -166,12 +166,11 @@
    <div class="hit-details">
         [%# USE dumper;dumper.dump(item) %]
         <script type="text/javascript">
-            document.write('<h4><a href="javascript:ajaxpage(\'/portal/[% view %]/resource/title/[% record.database %]/[% record.id %].include\', \'DISPLAY_SEARCH_[% item.database%]_[% item.id %]\', \'Lade Detailanzeige\');">[% title %]<\/a><\/h4>');
+            document.write('<h4><a href="javascript:ajaxpage(\'/portal/[% view %]/resource/title/[% record.database %]/[% record.id %].include\', \'DISPLAY_SEARCH_[% item.database%]_[% item.id %]\', \'Lade Detailanzeige\');">[% title %]</a></h4>');
         </script>
            <noscript>
             <h4><a href="[% view_config.${view}.zms_title_url %]?view=[% view %];db=[% item.database %];id=[% item.id %]">[% title %]</a></h4>
            </noscript>
-
 
       <div class="title" style="margin-top:-0.2em;">
            <span class="rlperson">[% person %]</span>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>

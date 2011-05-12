@@ -73,7 +73,7 @@ sub show {
     my $content_type   = "";
     
     my $id             = "";
-    if ($personid=~/^(.+?)(\.html|\.json|\.rdf)$/){
+    if ($personid=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
         $id            = $1;
         ($representation) = $2 =~/^\.(.+?)$/;
         $content_type   = $self->param('config')->{'content_type_map_rev'}{$representation};

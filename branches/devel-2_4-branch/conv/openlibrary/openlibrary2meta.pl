@@ -38,6 +38,7 @@ use utf8;
 use Encode 'decode';
 use Getopt::Long;
 use DB_File;
+use Log::Log4perl qw(get_logger :levels);
 use MLDBM qw(DB_File Storable);
 use Storable ();
 use YAML::Syck;
@@ -48,12 +49,14 @@ use OpenBib::Conv::Common::Util;
 
 my $config = OpenBib::Config->instance;
 
-my ($inputfile_authors,$inputfile_titles,$inputfile_works);
+my ($inputfile_authors,$inputfile_titles,$inputfile_works,$logfile,$loglevel);
 
 &GetOptions(
-	    "inputfile-authors=s"          => \$inputfile_authors,
-            "inputfile-titles=s"           => \$inputfile_titles,
+	    "inputfile-authors=s"         => \$inputfile_authors,
+            "inputfile-titles=s"          => \$inputfile_titles,
             "inputfile-works=s"           => \$inputfile_works,
+            "logfile=s"                   => \$logfile,
+            "loglevel=s"                  => \$loglevel,
 	    );
 
 if (!$inputfile_authors && !$inputfile_titles && !$inputfile_works){
@@ -65,6 +68,26 @@ HELP
 exit;
 }
 
+$logfile=($logfile)?$logfile:"/var/log/openbib/ol2meta.log";
+$loglevel=($loglevel)?$loglevel:"INFO";
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
+
 open (TIT,     ">:utf8","meta.title");
 open (AUT,     ">:utf8","meta.person");
 open (KOR,     ">:utf8","meta.corporatebody");
@@ -74,15 +97,18 @@ open (SWT,     ">:utf8","meta.subject");
 my %have_author = ();
 my %have_work   = ();
 
-print "### Processing Titles: 1st pass - getting authors and works\n";
+$logger->info("### Processing Titles: 1st pass - getting authors and works");
 open(OL,"<:utf8",$inputfile_titles);
+open(OLOUT,">:utf8",$inputfile_titles.".filtered");
 
 my $count = 1;
 while (<OL>){
+    my ($ol_type,$ol_id,$ol_revision,$ol_date,$ol_data)=split("\t",$_);
+
     my $recordset=undef;    
     
     eval {
-        $recordset = decode_json $_;
+        $recordset = decode_json $ol_data;
     };
 
     # Einschraenkung auf Titelaufnahmen mit Digitalisaten
@@ -90,6 +116,8 @@ while (<OL>){
         next;
     }
 
+    print OLOUT;
+    
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){
       foreach my $author_ref (@{$recordset->{authors}}){
@@ -102,22 +130,24 @@ while (<OL>){
     # Werke abarbeiten Anfang
     if (exists $recordset->{works}){
         foreach my $works_ref (@{$recordset->{works}}){
-            my $key     = $works_ref->{key};
+            my $key     = $works_ref->{key};            
             $key =~s{/works/}{};
+
             $have_work{$key}=1;
         }
     }
 
     if ($count % 10000 == 0){
-        print "$count done\n";
+        $logger->info("$count done");
     }
 
     $count++;
 }
 
 close(OL);
+close(OLOUT);
 
-print "#### Processing Authors\n";
+$logger->info("#### Processing Authors");
 
 open(OL,"<:utf8",$inputfile_authors);
 
@@ -125,16 +155,18 @@ $count = 1;
 
 my %author = ();
 while (<OL>){
+    my ($ol_type,$ol_id,$ol_revision,$ol_date,$ol_data)=split("\t",$_);
+
     my $recordset=undef;
     
     eval {
-        $recordset = decode_json $_;
+        $recordset = decode_json $ol_data;
     };
     
     my $key = $recordset->{key};
     $key=~s{^/authors/}{};
 
-    if ( $key && $have_author{$key} == 1){
+    if ( $key && defined $have_author{$key} && $have_author{$key} == 1){
         my $name = $recordset->{name};
         $name = $recordset->{personal_name} if (!$name);
 
@@ -154,7 +186,7 @@ while (<OL>){
     }
 
     if ($count % 10000 == 0){
-        print "$count done\n";
+        $logger->info("$count done");
     }
     
     $count++;
@@ -162,7 +194,7 @@ while (<OL>){
 
 close(OL);
 
-print "#### Processing Works\n";
+$logger->info("#### Processing Works");
 
 open(OL,"<:utf8",$inputfile_works);
 
@@ -172,16 +204,17 @@ my $work_subjects_ref = {};
 my $work_blacklist_ref = {};
 
 while (<OL>){
+    my ($ol_type,$ol_id,$ol_revision,$ol_date,$ol_data)=split("\t",$_);
     my $recordset=undef;
     
     eval {
-        $recordset = decode_json $_;
+        $recordset = decode_json $ol_data;
     };
     
     my $key = $recordset->{key};
     $key=~s{^/works/}{};
 
-    if ( $key && $have_work{$key} == 1){
+    if ( $key && defined $have_work{$key} && $have_work{$key} == 1){
         if (exists $recordset->{subjects}){
             push @{$work_subjects_ref->{$key}}, @{$recordset->{subjects}}
         }
@@ -194,7 +227,7 @@ while (<OL>){
     }
     
     if ($count % 10000 == 0){
-        print "$count done\n";
+        $logger->info("$count done");
     }
     
     $count++;
@@ -202,52 +235,58 @@ while (<OL>){
 
 close(OL);
 
-print "#### Processing Titles\n";
-open(OL,"<:utf8",$inputfile_titles);
+$logger->info("#### Processing Titles");
+
+open(OL,"<:utf8",$inputfile_titles.".filtered");
 
 my $have_titid_ref = {};
 
 $count = 1;
 
 while (<OL>){
+    my ($ol_type,$ol_id,$ol_revision,$ol_date,$ol_data)=split("\t",$_);
+    
     my $recordset=undef;    
     eval {
-        $recordset = decode_json $_;
+        $recordset = decode_json $ol_data;
     };
 
     my $key = $recordset->{key} ;
     $key =~s{^/books/}{};
 
-    my @works = ();
-    my $is_blacklisted = 0;
-    if (exists $recordset->{works}){
-        foreach my $work_ref (@{$recordset->{works}}){
-            push @works, $work_ref->{key};
-            if ($work_blacklist_ref->{$work_ref->{key}}){
-                $is_blacklisted = 1;
-            }
-        }
-    }
-
-#    print YAML::Dump($recordset);
+    $logger->debug(YAML::Dump($recordset));
 
     # Einschraenkung auf Titelaufnahmen mit Digitalisaten
     if (!exists $recordset->{ocaid}){
         next;
     }
 
+    my @works = ();
+    my $is_blacklisted = 0;
+    if (exists $recordset->{works}){
+        foreach my $work_ref (@{$recordset->{works}}){
+            my $work = $work_ref->{key};
+            $work=~s{^/works/}{};
+            
+            push @works, $work;
+            if (defined $work_blacklist_ref->{$work} && $work_blacklist_ref->{$work} == 1){
+                $is_blacklisted = 1;
+            }
+        }
+    }
+
     if ($is_blacklisted){
+        $logger->debug("Blacklisted: Work ".join(';',@works)." of Title $key");
         next;
     }
     
-
     if (!$key){
-        print STDERR  "Keine ID\n".YAML::Dump($recordset)."\n";
+        $logger->error("Keine ID ".YAML::Dump($recordset));
         next;
     }
 
     if (!$key || $have_titid_ref->{$key}){
-        print STDERR  "Doppelte ID: ".$key."\n";
+        $logger->error("Doppelte ID: ".$key);
         next;
     }
 
@@ -341,6 +380,8 @@ while (<OL>){
         foreach my $content (@{$recordset->{contributions}}){
             
             if ($content && !$processed{$content}){
+                $processed{$content} = 1 ;
+
                 $content = konv($content);
                 my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                 
@@ -352,7 +393,6 @@ while (<OL>){
                 }
                 
                 print TIT "0101:IDN: $person_id\n";
-                $processed{$content} = 1 ;
             }
         }
     }
@@ -363,6 +403,8 @@ while (<OL>){
         my %processed = ();
         foreach my $content (@{$recordset->{dewey_decimal_class}}){
             if ($content && !$processed{$content}){
+                $processed{$content} = 1;
+
                 $content = konv($content);
                 my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
                 
@@ -374,7 +416,6 @@ while (<OL>){
                 }
                 
                 print TIT "0700:IDN: $classification_id\n";
-                $processed{$content} = 1;
             }
         }
     }
@@ -382,6 +423,8 @@ while (<OL>){
         my %processed = ();
         foreach my $content (@{$recordset->{lc_classifications}}){
             if ($content && !$processed{$content}){
+                $processed{$content} = 1;
+
                 $content = konv($content);
                 my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
                 
@@ -393,7 +436,6 @@ while (<OL>){
                 }
                 
                 print TIT "0700:IDN: $classification_id\n";
-                $processed{$content} = 1;
             }
         }
     }
@@ -408,6 +450,8 @@ while (<OL>){
             
             foreach my $content (@{$recordset->{subjects}}){
                 if ($content && !$processed{$content}){
+                    $processed{$content} = 1;
+
                     $content = konv($content);
                     # Punkt am Ende entfernen
                     $content=~s/\.\s*$//;
@@ -431,7 +475,9 @@ while (<OL>){
             foreach my $content (@{$work_subjects_ref->{$work}}){                
                 if ($content && !$processed{$content}){
 
-             #       $logger->info("Adding Work Subject $content for Work $work");
+                    $processed{$content} = 1;
+
+                    $logger->debug("Adding Work Subject $content for Work $work");
                     
                     $content = konv($content);
                     # Punkt am Ende entfernen
@@ -456,7 +502,7 @@ while (<OL>){
     print TIT "9999:\n";
     
     if ($count % 10000 == 0){
-        print "$count done\n";
+        $logger->info("$count done");
     }
 
     $count++;

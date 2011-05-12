@@ -1441,6 +1441,17 @@ a.ext {
   background: url('/images/openbib/extern.gif') no-repeat left center;
 }
 
+#preview {
+  position:absolute;
+  border:1px solid #ccc;
+  background: aliceblue;
+  padding:5px;
+  display:none;
+  color:#000;
+  text-align: center;
+}
+
+
 /***************************************/
 /* jquery.autocomplete                 */
 

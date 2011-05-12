@@ -1,45 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
 [%
       funcargs = { id => database, type => 6 } ;
       resultlist = statistics.get_result(funcargs);
 %]
-<style type="text/css">
-.cloud {
-  margin:0;
-  padding:0;
-}
-.cloud li {
-  margin:0;
-  padding:0;
-  display: inline;
-}
-.cloud span {
-  position: absolute;
-  left: -999px;
-  width: 990px;
-}
-.cloud .fast-nicht-genutzt {
-  font-size: 1,4em;
-}
-.cloud .nicht-sehr-genutzt {
-  font-size: 2.0em;
-}
-.cloud .etwas-genutzt {
-  font-size: 2.6em;
-}
-.cloud .genutzt {
-  font-size: 3em;
-}
-.cloud .sehr-viel-genutzt {
-  font-size: 3.8em;
-}
-.cloud .ultra-genutzt {
-  font-size: 4.4em;
-}
-.cloud .am-meisten-genutzt {
-  font-size: 4.8em;
-}
-</style>
-
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
 <!-- Beginn Tag-Cloud -->
 [%
    css_classes = [
@@ -52,8 +33,8 @@
         'am-meisten-genutzt',
    ];
 %]
-
 [%- IF resultlist.size > 5 -%]
+[%- searchprefix  = config.get('searchfield').personstring.prefix -%]
 
 <ol class="cloud">
 [%- FOREACH thisitem IN resultlist -%]
@@ -63,7 +44,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind 
-verkn&uuml;pft mit </span><a href="http://wwwtest.ub.uni-koeln.de/IPStest?SERVICE=TEMPLATE&SUBSERVICE=GOTO&DEST_SERVICE=METASEARCH&DEST_SUBSERVICE=INITSEARCH&DEST_VIEW=USB:KUGView&LOCATION=USB&DEST_COUNT=10&DEST_GWTIMEOUT=30&DEST_HIGHLIGHTING=on&DEST_HISTORY=SESSION&DEST_KUGView=[% database %]&DEST_SEARCHGROUP=SERVICEGROUP.USB:KUGViewKatalog&DEST_START=1&DEST_STREAMING=on&DEST_URLENCODING=TRUE&D_PARAM_QUERY_bzAU=[% item %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];fs=[% searchprefix %]:|[% item %]|;db=[% database %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

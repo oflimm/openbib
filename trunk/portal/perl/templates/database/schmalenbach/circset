@@ -48,7 +48,7 @@
 
      IF     mex.Zweigstelle == 0 ;
 
-        IF mex.Signatur.match('^2[4-9]A') || mex.Signatur.match('[3-9][0-9]A') ;
+        IF mex.Signatur.match('^2[5-9]A') || mex.Signatur.match('[3-9][0-9]A') ;
            IF mex.Status == "bestellbar" ;
               mex.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
            ELSIF mex.Status == "entliehen" ;
@@ -94,8 +94,9 @@
   IF  normset.${"T0310"}.first.content ;
      title = normset.${"T0310"}.first.content ;
   END ;
+
 -%]
-<td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: USB Köln :: [% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: USB Köln :: [% mex.Standort | uri %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
 <td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]<br/><a href="http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/ausleihzeitenhaupt/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a></td>
 
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>

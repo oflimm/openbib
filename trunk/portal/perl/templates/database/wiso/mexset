@@ -74,7 +74,7 @@
   END;
 %]
 
-<a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: [% mex.${"X4000"}.content.short %] :: [% standort %] :: [% mex.${"X0014"}.content %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: [% mex.${"X4000"}.content.short | uri %] :: [% standort | uri %] :: [% mex.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
 <td>
 [% IF mex.${"X0014"}.content.match('^FHM ') %]USB-Freihandmagazin (1. OG) (<i>sofort einsehbar</i>)
 [% ELSIF mex.${"X0014"}.content.match('^EWA Z') %]Zeitschriftenbestand

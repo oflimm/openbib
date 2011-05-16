@@ -121,6 +121,8 @@ $(document).ready(function(){
 
 [%
    sammlungen = [
+                 'Sammlung Edelmann',
+                 'Sammlung Löffler',
                  'Sammlung Mevissen',
                  'Sammlung Oidtman',
                  'Sammlung Wolff',

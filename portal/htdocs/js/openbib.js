@@ -14,8 +14,8 @@ this.imagePreview = function(){
 			 var c = (this.t != "") ? "<br/>" + this.t : "";
 			 $("body").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' />"+ c +"</p>"); 
 			 $("#preview")
-			   .css("top",(e.pageY - xOffset) + "px")
-			   .css("left",(e.pageX + yOffset) + "px")
+			   .css("top",(e.pageY - yOffset) + "px")
+			   .css("left",(e.pageX + xOffset) + "px")
 			   .fadeIn("fast");
 		       },
 		       function(){
@@ -29,6 +29,38 @@ this.imagePreview = function(){
 			   });
 };
 
+function openMsgWin(URL,name,width,height,scrollbars,otherbars) {
+  if( ! width  ) { width  = window.outerWidth  || document.documentElement.clientWidth  || screen.width  };
+  if( ! height ) { height = window.outerHeight || document.documentElement.clientHeight || screen.height };
+  width  = width*85/100;
+  height = height*75/100;
+  if( ! scrollbars ) { scrollbars = 'yes' };
+  if( ! otherbars  ) { otherbars  = 'yes' };
+  var Win = window.open(URL,name,"width="+width+",height="+height+",top=75,left=100,scrollbars="+scrollbars+",resizable=yes,menubar="+otherbars+",toolbar="+otherbars);
+  Win.focus();
+}
+
+function qrPreview () {
+  /* CONFIG: distance of the popup from the cursor */
+  var xOffset = 15;
+  var yOffset = -25;
+  /* END CONFIG */
+    
+  $("a.qr-preview").click(function(e) {
+    $("body").append("<p id=\"qr\"><strong>QR-Code</strong> &nbsp; [ <a class=\"ext\" href=\"http://qrcode.wilkohartz.de/\" onclick=\"openMsgWin('','QR-Code Informationen','','','yes','yes');return true;\" target=\"QR-Code Informationen\">Reader-Software</a> ]<img src=\"/images/openbib/close.png\" alt=\"Schließen\" title=\"Schließen\" class=\"closebutton\" /><br/ ><img src=\""+ this.href +"\" alt=\"QR-Code\" style=\"margin:5px 0 5px 0;\" /><br/>" + this.title + "</p>"); 
+    $("#qr")
+      .css("top",(e.pageY - yOffset) + "px")
+      .css("left",(e.pageX + xOffset) + "px")
+      .fadeIn("fast");
+    qrRemove();
+  });
+};
+
+function qrRemove () {
+  $(".closebutton").click(function(e) {
+    $("#qr").remove();
+  });
+};
 
 $(document).ready(function(){
 
@@ -38,7 +70,8 @@ var Bibkey    = $("meta[@name='Bibkey']").attr("content");
 var Tags      = $("meta[@name='Tags']").attr("content");
 
 imagePreview();
-
+qrPreview();
+ 
 // Focus auf erstes Eingabefeld
 //$(":input:visible:enabled:first").focus();
 $("input[@id='to_focus']").focus();

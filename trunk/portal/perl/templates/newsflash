@@ -15,6 +15,9 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b>17.5.2011</b>: Verbesserung bei der Nutzung von QR-Codes. Der QR-Code bleibt
+nun permanent sichtbar, wenn Sie auf das zugehörige Symbol klicken.
+</li>
 <li><b>29.4.2011</b>: Für einen besseren Überblick der Leihfristenden
 können im Benutzerkonto nun die entliehenen Titel im iCalendar-Format
 abgespeichert und in das eigene Kalenderprogramm importiert

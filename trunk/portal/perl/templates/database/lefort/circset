@@ -27,8 +27,8 @@
 <p />
 
 <style>
-#preview{
-        margin-top: -400px;
+#qr {
+        margin-top:-416px;
 	position:absolute;
 	border:1px solid #ccc;
 	background: aliceblue;
@@ -37,6 +37,13 @@
 	color:#000;
         text-align: center;
 	}
+
+#qr .closebutton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	cursor: pointer;
+}
 </style>
 
 [% IF Aquisition == 0 %]
@@ -96,7 +103,7 @@
   END ;
 
 -%]
-<td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: USB Köln :: [% mex.Standort | uri %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td><a class="qr-preview" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: USB Köln :: [% mex.Standort | uri %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
 <td>[% mex.Standort %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]<br/><a href="http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/ausleihzeitenhaupt/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a></td>
 
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>

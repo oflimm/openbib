@@ -1,8 +1,8 @@
 [% IF circset.size <= 0 %]
 
 <style>
-#preview{
-        margin-top: -400px;
+#qr {
+        margin-top:-416px;
 	position:absolute;
 	border:1px solid #ccc;
 	background: aliceblue;
@@ -11,6 +11,13 @@
 	color:#000;
         text-align: center;
 	}
+
+#qr .closebutton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	cursor: pointer;
+}
 </style>
 
 <table width="100%">
@@ -74,7 +81,7 @@
   END;
 %]
 
-<a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: [% mex.${"X4000"}.content.short | uri %] :: [% standort | uri %] :: [% mex.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<a class="qr-preview" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: [% mex.${"X4000"}.content.short | uri %] :: [% standort | uri %] :: [% mex.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
 <td>
 [% IF mex.${"X0014"}.content.match('^FHM ') %]USB-Freihandmagazin (1. OG) (<i>sofort einsehbar</i>)
 [% ELSIF mex.${"X0014"}.content.match('^EWA Z') %]Zeitschriftenbestand

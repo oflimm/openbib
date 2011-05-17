@@ -40,7 +40,7 @@
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]
 <strong>[% mex.Bibliothek.full %]</strong></a></td>
-<td><a class="preview qrcode" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: [% mex.Bibliothek.short %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td><a class="qrcode" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% mex.Bibliothek.short | uri %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') | uri %][% ELSE %][% mex.Standort | uri %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
 <td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[% ELSIF

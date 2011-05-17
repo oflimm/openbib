@@ -1,8 +1,8 @@
 [% IF circset.size <= 0 %]
 
 <style>
-#preview{
-        margin-top: -400px;
+#qr {
+        margin-top:-416px;
 	position:absolute;
 	border:1px solid #ccc;
 	background: aliceblue;
@@ -11,6 +11,13 @@
 	color:#000;
         text-align: center;
 	}
+
+#qr .closebutton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	cursor: pointer;
+}
 </style>
 
 <table width="100%">
@@ -38,7 +45,7 @@
   END ;
 
 -%]
-<td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: [% mex.${"X4000"}.content.short | uri %] :: [% mex.${"X0016"}.content | uri %] :: [% mex.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td><a class="qr-preview" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: [% mex.${"X4000"}.content.short | uri %] :: [% mex.${"X0016"}.content | uri %] :: [% mex.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
 <td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% IF mex.${"X1200"} %][% mex.${"X1200"}.content %] [% END %][% mex.${"X1204"}.content %][% IF mex.${"X1203"} %] ([% mex.${"X1203"}.content %])[% END %]</td></tr>
 [% END %]
 </table>

@@ -25,8 +25,8 @@
 
 
 <style>
-#preview{
-        margin-top: -400px;
+#qr {
+        margin-top:-416px;
 	position:absolute;
 	border:1px solid #ccc;
 	background: aliceblue;
@@ -35,6 +35,13 @@
 	color:#000;
         text-align: center;
 	}
+
+#qr .closebutton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	cursor: pointer;
+}
 </style>
 
 [%# USE dumper;dumper.dump(circset)%]
@@ -55,7 +62,8 @@
   END ;
 
 -%]
-<strong>[% mex.Bibliothek.full %]</strong></a></td><td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: [% mex.Bibliothek.short | uri %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') | uri %][% ELSE %][% mex.Standort | uri %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
+<strong>[% mex.Bibliothek.full %]</strong></a></td>
+<td><a class="qr-preview" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% title | uri | truncate(60) %] :: [% mex.Bibliothek.short | uri %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') | uri %][% ELSE %][% mex.Standort | uri %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[% ELSIF
 mex.Status == 'entliehen' && mex.Rueckgabe != '31.12.9999' && mex.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% mex.Rueckgabe %][%- ELSE -%][% mex.Status %][%- END -%]</strong></td>

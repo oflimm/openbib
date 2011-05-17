@@ -16,8 +16,8 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;[% msg.maketext("Steckbrief der Bibliothek") %]</h3>
 
 <style>
-#preview{
-        margin-top: -200px;
+#qr {
+        margin-top:-416px;
 	position:absolute;
 	border:1px solid #ccc;
 	background: aliceblue;
@@ -26,6 +26,13 @@
 	color:#000;
         text-align: center;
 	}
+
+#qr .closebutton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	cursor: pointer;
+}
 </style>
 
 [% FOREACH thisviewdb IN [ "inst420", "inst421" ] %]
@@ -50,7 +57,7 @@ qrcode_infos = [];
 FOREACH category IN ["I0010","I0020","I0030","I0110"];
       FOREACH item IN libinfo.$category;
         content = item.content.replace('%22','"');
-        qrcode_infos.push(content);
+        qrcode_infos.push(item.content);
       END;
 END;
 
@@ -82,7 +89,7 @@ FOREACH category IN categories;
 <tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-   END ;
 END ;-%]
-<tr><td class="category">QR-Code</td><td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
+<tr><td class="category">QR-Code</td><td><a class="qr-preview" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) | uri %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
 </table>
 [%-   IF dbinfo.get('use_libinfo').${thisviewdb} %]
 [<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% thisviewdb %];stid=60">

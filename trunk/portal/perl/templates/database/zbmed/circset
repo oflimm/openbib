@@ -13,8 +13,8 @@
 -%]
 
 <style>
-#preview{
-        margin-top: -400px;
+#qr {
+        margin-top:-416px;
 	position:absolute;
 	border:1px solid #ccc;
 	background: aliceblue;
@@ -23,6 +23,13 @@
 	color:#000;
         text-align: center;
 	}
+
+#qr .closebutton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	cursor: pointer;
+}
 </style>
 
 <table width="100%">
@@ -36,7 +43,7 @@
      title = normset.${"T0310"}.first.content ;
   END ;
 -%]
-<td><a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(30) %] :: [% mex.Bibliothek.short %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
+<td><a class="qr-preview" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% mex.Bibliothek.short | uri %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') | uri %][% ELSE %][% mex.Standort | uri %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td>[% mex.Standort %]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[% mex.Status %]</strong></td>

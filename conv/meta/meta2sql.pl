@@ -29,8 +29,8 @@
 
 use 5.008001;
 use utf8;
-#use strict;
-#use warnings;
+use strict;
+use warnings;
 
 use Business::ISBN;
 use DB_File;
@@ -53,11 +53,13 @@ use OpenBib::Record::Subject;
 use OpenBib::Record::Title;
 use OpenBib::Statistics;
 
-my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$addtags,$addlitlists,$incremental,$logfile);
 
 &GetOptions("reduce-mem"    => \$reducemem,
             "add-superpers" => \$addsuperpers,
             "add-mediatype" => \$addmediatype,
+            "add-tags"      => \$addtags,
+            "add-litlists"  => \$addlitlists,
             "incremental"   => \$incremental,
 	    "database=s"    => \$database,
             "logfile=s"     => \$logfile,
@@ -97,14 +99,23 @@ my %listitemdata_swt        = ();
 my %listitemdata_mex        = ();
 my %listitemdata_superid    = ();
 my %listitemdata_popularity = ();
+my %listitemdata_tags       = ();
+my %listitemdata_litlists   = ();
 my %normdata                = ();
 my %enrichmntdata           = ();
 
-# Verbindung zur SQL-Datenbank herstellen
+# Verbindung zur SQL-Datenbanken herstellen
 my $statisticsdbh
     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
     or $logger->error($DBI::errstr);
 
+# Verbindung zur SQL-Datenbank herstellen
+my $userdbh
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+    or $logger->error($DBI::errstr);
+
+
+# Popularitaet
 my $request=$statisticsdbh->prepare("select katkey, count(katkey) as kcount from relevance where origin=2 and dbname=? group by katkey");
 $request->execute($database);
 
@@ -117,6 +128,30 @@ while (my $res    = $request->fetchrow_hashref){
 }
 $request->finish();
 close(OUTPOP);
+
+# Tags
+$request=$userdbh->prepare("select t.tag, tt.titid, t.id from tags as t, tittag as tt where tt.titdb=? and tt.tagid=t.id and tt.type=1");
+$request->execute($database);
+
+while (my $res    = $request->fetchrow_hashref){
+    my $titid   = $res->{titid};
+    my $tag     = $res->{tag};
+    my $id      = $res->{id};
+    push @{$listitemdata_tags{$titid}}, { tag => $tag, id => $id };
+}
+$request->finish();
+
+# Titel von Literaturlisten
+$request=$userdbh->prepare("select l.title, i.titid, l.id from litlists as l, litlistitems as i where i.titdb=? and i.litlistid=l.id and l.type=1");
+$request->execute($database);
+
+while (my $res    = $request->fetchrow_hashref){
+    my $titid   = $res->{titid};
+    my $title   = $res->{title};
+    my $id      = $res->{id};
+    push @{$listitemdata_litlists{$titid}}, { title => $title, id => $id };
+}
+$request->finish();
 
 if ($reducemem){
     tie %listitemdata_aut,        'MLDBM', "./listitemdata_aut.db"
@@ -525,7 +560,19 @@ while (my $line=<IN>){
         if (exists $listitemdata_popularity{$id}){
             $listitem_ref->{popularity} = $listitemdata_popularity{$id};
         }
-        
+
+        if (exists $listitemdata_tags{$id}){
+            $listitem_ref->{tags} = $listitemdata_tags{$id};
+
+            $logger->info("Adding Tags to ID $id".YAML::Dump($listitem_ref->{tags}));
+        }
+
+        if (exists $listitemdata_litlists{$id}){
+            $listitem_ref->{litlists} = $listitemdata_litlists{$id};
+
+            $logger->info("Adding Listlists to ID $id ".YAML::Dump($listitem_ref->{litlists}));
+        }
+
         next CATLINE;
     }
     elsif ($line=~m/^9999:/){
@@ -548,8 +595,8 @@ while (my $line=<IN>){
             $logger->debug("Anreicherung in lokelen Daten");
 
             foreach my $category (keys %{$conv_config->{local_enrichmnt}}){
-                my $enrichmnt_data_ref = (exists $enrichmntdata{$normdata_ref->{isbn13}}{$category})?$enrichmntdata{$normdata_ref->{isbn13}}{$category}:
-                    ($enrichmntdata{$normdata_ref->{issn}}{$category})?$enrichmntdata{$normdata_ref->{issn}}{$category}:undef;
+                my $enrichmnt_data_ref = (exists $normdata_ref->{isbn13} && exists $enrichmntdata{$normdata_ref->{isbn13}}{$category})?$enrichmntdata{$normdata_ref->{isbn13}}{$category}:
+                    (exists $normdata_ref->{issn} && exists $enrichmntdata{$normdata_ref->{issn}}{$category})?$enrichmntdata{$normdata_ref->{issn}}{$category}:undef;
                 if ($enrichmnt_data_ref){
                     my $indicator = 1;
                     foreach my $content (@{$enrichmnt_data_ref}){
@@ -632,6 +679,10 @@ while (my $line=<IN>){
                 }
 
                 if (!$have_journal){
+                    if (! exists $normdata_ref->{mart} ){
+                        $normdata_ref->{mart} = [];
+                    }
+
                     push @{$normdata_ref->{mart}}, "Zeitschrift/Serie";
 
                     print OUT       "$id800$type_indicatorZeitschrift/Serie\n";
@@ -658,6 +709,9 @@ while (my $line=<IN>){
                 }
 
                 if (!$have_article){
+                    if (! exists $normdata_ref->{mart} ){
+                        $normdata_ref->{mart} = [];
+                    }
                     push @{$normdata_ref->{mart}}, "Aufsatz";
 
                     print OUT       "$id800$type_indicatorAufsatz\n";
@@ -756,7 +810,7 @@ while (my $line=<IN>){
         $logger->debug("Schlagworte");
         @temp=();
         foreach my $item (@swt){
-            push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}});
+            push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}}) if (exists $stammdateien_ref->{swt}{data}{$item});
         }
         push @temp, join(" ",@titswt);
         my $swt      = join(" ",@temp);
@@ -764,14 +818,31 @@ while (my $line=<IN>){
         $logger->debug("Notationen");
         @temp=();
         foreach my $item (@notation){
-            push @temp, join(" ",@{$stammdateien_ref->{notation}{data}{$item}});
+            push @temp, join(" ",@{$stammdateien_ref->{notation}{data}{$item}}) if (exists $stammdateien_ref->{notation}{data}{$item});
         }
         my $notation = join(" ",@temp);
 
         $logger->debug("Exemplare");
         @temp=();
-	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}{$id}});
+        
+	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}{$id}}) if (exists $stammdateien_ref->{mex}{data}{$id});
         my $mex = join(" ",@temp);
+
+        if ($addtags){
+            foreach my $tag_ref (@{$listitem_ref->{tags}}){
+                push @inhalt, OpenBib::Common::Util::grundform({
+                    content  => $tag_ref->{tag},
+                });
+            }
+        }       
+
+        if ($addlitlists){
+            foreach my $litlist_ref (@{$listitem_ref->{litlists}}){
+                push @inhalt, OpenBib::Common::Util::grundform({
+                    content  => $litlist_ref->{title},
+                });
+            }
+        }               
         
         my $hst       = join(" ",@hst);
         my $isbn      = join(" ",@isbn);
@@ -926,7 +997,7 @@ while (my $line=<IN>){
         ($category,$indicator,$content)=($1,$2,$3);
     }
     elsif ($line=~m/^(\d+):(.*?)$/){
-        ($category,$content)=($1,$2);
+        ($category,$indicator,$content)=($1,1,$2);
     }
 
     chomp($content);
@@ -1166,6 +1237,79 @@ while (my $line=<IN>){
                 $logger->error("PER ID $targetid doesn't exist in TIT ID $id");
             }
         }
+        elsif ($category=~m/^1800/){
+            if ($content=~m/^IDN: (\S+)/){
+                my $targetid   = $1;
+                my $targettype = 2; # AUT
+                my $sourceid   = $id;
+                my $sourcetype = 1; # TIT
+                my $supplement = "";
+                my $category   = "1800";
+                
+                # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
+                # dann aus DB holen
+                if ($incremental && !exists $listitemdata_aut{$targetid}){
+                    $listitemdata_aut{$targetid} = OpenBib::Record::Person
+                        ->new({id => $targetid, database => $database})
+                            ->load_name
+                                ->name_as_string;
+                }
+                
+                # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+                # auch wirklich existiert -> schlechte Katalogisate
+                if (exists $listitemdata_aut{$targetid}){
+                    push @verf, $targetid;
+                    
+                    my $content = $listitemdata_aut{$targetid};
+                    
+                    push @{$thisitem_ref->{"T".$category}}, {
+                        indicator => $indicator,
+                        content   => $content,
+                    };
+                    
+                    push @{$listitem_ref->{P1800}}, {
+                        id      => $targetid,
+                        type    => 'aut',
+                        content => $content,
+                    } if (exists $conv_config->{listitemcat}{'P1800'});
+                    
+                    push @{$normdata_ref->{verf}}, $content;
+                    
+                    push @autkor, $content;
+                    
+                    print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+                }
+                else {
+                    $logger->error("PER ID $targetid doesn't exist in TIT ID $id");
+                }
+            }
+            else {
+                push @{$thisitem_ref->{"T".$category}}, {
+                    indicator => $indicator,
+                    content   => $content,
+                };
+                
+                push @{$normdata_ref->{verf}}, $content;
+                
+                if (exists $conv_config->{search_verf     }{$category}){
+                    push @titverf, OpenBib::Common::Util::grundform({
+                        category => $category,
+                        content  => $content,
+                    });
+                }
+                
+                if ($category && $content){
+                    print OUT       "$id$category$indicator$content\n";
+                    
+                }
+                if ($category && $contentnorm){
+                    print OUTSTRING "$id$category$contentnorm\n";
+                }
+                if ($category && $contentnormft){
+                    print OUTFT     "$id$category$contentnormft\n";
+                }
+            }
+        }
         elsif ($category=~m/^0200/){
             my ($targetid) = $content=~m/^IDN: (\S+)/;
             my $targettype = 3; # KOR
@@ -1253,6 +1397,83 @@ while (my $line=<IN>){
             }
             else {
                 $logger->error("KOR ID $targetid doesn't exist in TIT ID $id");
+            }
+        }
+        elsif ($category=~m/^1802/){
+            if ($content=~m/^IDN: (\S+)/){
+                my $targetid  = $1;
+                my $targettype = 3; # KOR
+                my $sourceid   = $id;
+                my $sourcetype = 1; # TIT
+                my $supplement = "";
+                my $category   = "1802";
+                
+                # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
+                # dann aus DB holen
+                if ($incremental && !exists $listitemdata_kor{$targetid}){
+                    $listitemdata_kor{$targetid} = OpenBib::Record::CorporateBody
+                        ->new({id => $targetid, database => $database})
+                            ->load_name
+                                ->name_as_string;
+                }
+                
+                # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+                # auch wirklich existiert -> schlechte Katalogisate
+                if (exists $listitemdata_kor{$targetid}){
+                    push @kor, $targetid;
+                    
+                    # Ansetzungsform potentiell nicht in inkrementellen Daten dabei,
+                    # dann aus DB holen
+                    if ($incremental && !exists $listitemdata_kor{$targetid}){
+                        $listitemdata_kor{$targetid} = OpenBib::Record::CorporateBody
+                            ->new({id => $targetid, database => $database})
+                                ->load_name
+                                    ->name_as_string;
+                    }
+                    
+                    my $content = $listitemdata_kor{$targetid};
+                    
+                    push @{$listitem_ref->{C1802}}, {
+                        id         => $targetid,
+                        type       => 'kor',
+                        content    => $content,
+                    } if (exists $conv_config->{listitemcat}{'1802'});
+                    
+                    push @{$normdata_ref->{kor}}, $content;
+                    
+                    push @autkor, $content;
+                    
+                    print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+                }
+                else {
+                    $logger->error("KOR ID $targetid doesn't exist in TIT ID $id");
+                }
+            }
+            else {
+                push @{$thisitem_ref->{"T".$category}}, {
+                    indicator => $indicator,
+                    content   => $content,
+                };
+                
+                push @{$normdata_ref->{kor}}, $content;
+
+                if (exists $conv_config->{search_kor     }{$category}){
+                    push @titkor, OpenBib::Common::Util::grundform({
+                        category => $category,
+                        content  => $content,
+                    });
+                }
+
+                if ($category && $content){
+                    print OUT       "$id$category$indicator$content\n";
+                    
+                }
+                if ($category && $contentnorm){
+                    print OUTSTRING "$id$category$contentnorm\n";
+                }
+                if ($category && $contentnormft){
+                    print OUTFT     "$id$category$contentnormft\n";
+                }
             }
         }
         elsif ($category=~m/^0700/){

@@ -2044,6 +2044,8 @@ sub enrich_cdm {
     $url = $config->{cdm_base}.$config->{cdm_path} unless ($url);
 
     $url.=$id;
+
+    $logger->debug("CDM-URL: $url ");
     
     my $ua = new LWP::UserAgent;
     $ua->agent("OpenBib/1.0");

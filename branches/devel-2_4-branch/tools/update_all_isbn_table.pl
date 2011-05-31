@@ -6,7 +6,7 @@
 #  Aktualisierung der all_isbn-Tabelle, in der die ISBN's aller Kataloge
 #  nachgewiesen sind.
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -108,7 +108,7 @@ foreach my $database (@databases){
     my $enriched_id_ref = {};
 
     if ($incr){
-        my $insertdaterequest = $dbh->prepare("select count(*) as insertdatecount from tit where category=2");
+        my $insertdaterequest = $dbh->prepare("select count(*) as insertdatecount from title where category=2");
         $insertdaterequest->execute();
         
         my $insertdateresult=$insertdaterequest->fetchrow_hashref;
@@ -122,10 +122,10 @@ foreach my $database (@databases){
         next;
     }
 
-    my $sqlrequest = "select t1.id as id,t1.content as isbn,t2.content as thisdate from tit_string as t1 left join tit_string as t2 on t1.id=t2.id where t2.category = 2 and t1.category in (540,553)";
+    my $sqlrequest = "select t1.id as id,t1.content as isbn,t2.content as thisdate from title_string as t1 left join title_string as t2 on t1.id=t2.id where t2.category = 2 and t1.category in (540,553)";
 
     if (!$insertion_date_available){
-        $sqlrequest = "select id, content as isbn from tit where category in (540,553)";
+        $sqlrequest = "select id, content as isbn from title where category in (540,553)";
     }
 
     my @sqlargs    = ();
@@ -184,10 +184,10 @@ foreach my $database (@databases){
     
     $logger->info("Getting Bibkeys from database $database and adding to enrichmntdb");
 
-    $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category = 2 and t1.category=5050";
+    $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from title as t1 left join title as t2 on t1.id=t2.id where t2.category = 2 and t1.category=5050";
 
     if (!$insertion_date_available){
-        $sqlrequest = "select id, content as bibkey from tit where category=5050";
+        $sqlrequest = "select id, content as bibkey from title where category=5050";
     }
 
     $logger->debug("SQL-Request: $sqlrequest");
@@ -211,10 +211,10 @@ foreach my $database (@databases){
 
     $logger->info("Getting ISSNs from database $database and adding to enrichmntdb");
 
-    $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category = 2 and t1.category=543";
+    $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from title as t1 left join title as t2 on t1.id=t2.id where t2.category = 2 and t1.category=543";
 
     if (!$insertion_date_available){
-        $sqlrequest = "select id, content as issn from tit where category=543";
+        $sqlrequest = "select id, content as issn from title where category=543";
     }
 
     $logger->debug("SQL-Request: $sqlrequest");

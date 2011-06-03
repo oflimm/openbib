@@ -100,12 +100,16 @@ sub identify_by_mark {
     
     my $request=$self->{dbh}->prepare("select distinct conn.sourceid as titid from conn,holding where holding.category=14 and holding.content rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
-    $request->execute($mark) or $logger->error($DBI::errstr);;
+    my @marks = (scalar $mark)?($mark):@$mark;
 
-    while (my $result=$request->fetchrow_hashref()){
-        $self->{titleid}{$result->{'titid'}} = 1;
+    foreach my $thismark (@marks){
+        $request->execute($mark) or $logger->error($DBI::errstr);;
+        
+        while (my $result=$request->fetchrow_hashref()){
+            $self->{titleid}{$result->{'titid'}} = 1;
+        }
     }
-
+    
     my $count=0;
 
     foreach my $key (keys %{$self->{titleid}}){
@@ -141,8 +145,17 @@ sub get_title_hierarchy {
     $logger->info("### $self->{source} -> $self->{destination}: Bestimme uebergeordnete Titel");
 
     my %tmp_titleid_super = %{$self->{titleid}};
+
+    my $level = 0;
     
     while (keys %tmp_titleid_super){
+        $logger->info("### Ueberordnungen - neuer Durchlauf in Ebene $level");
+        
+        if ($level > 20){
+            print "### Ueberordnungen - Abbbruch ! Ebene $level erreicht\n";
+            last;
+        }    
+        
         my %found = ();
         
         foreach my $titidn (keys %tmp_titleid_super){
@@ -159,6 +172,10 @@ sub get_title_hierarchy {
             }            
         }        
         %tmp_titleid_super = %found;
+
+        $level++;
+        
+        $logger->debug("Verbliebene TitelID's: ".join(',',keys %tmp_titleid_super));
     } 
 
     return $self;

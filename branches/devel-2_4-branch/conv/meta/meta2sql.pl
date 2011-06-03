@@ -261,9 +261,11 @@ foreach my $type (keys %{$stammdateien_ref}){
       ($category,$indicator,$content)=($1,1,$2);
     }
 
-    chomp($content) if (defined $content);
+    next CATLINE unless (defined $content && defined $category);
 
-    next CATLINE if (defined $category && exists $stammdateien_ref->{$type}{blacklist_ref}->{$category});
+    chomp($content);
+
+    next CATLINE if (exists $stammdateien_ref->{$type}{blacklist_ref}->{$category});
 
     # Ansetzungsformen fuer Kurztitelliste merken
     if (defined $category && $category == 1){
@@ -363,6 +365,8 @@ while (my $line=<IN>){
         ($category,$indicator,$content)=($1,1,$2);
     }
 
+    next CATLINE unless (defined $content && defined $category);
+    
     chomp($content);
     
     # Signatur fuer Kurztitelliste merken
@@ -992,7 +996,9 @@ while (my $line=<IN>){
         ($category,$indicator,$content)=($1,1,$2);
     }
 
-    chomp($content) if (defined $content);
+    next CATLINE unless (defined $content && defined $category);
+    
+    chomp($content);
     
     if ($category && $content){
         

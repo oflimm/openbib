@@ -382,6 +382,13 @@ ENDE
     system("$config->{'base_dir'}/bin/updatetitcount.pl --database=$database");
 }
 
+# ISBNs etc. zentral merken
+
+{
+    $logger->info("### $database: Updating All-ISBN table");    
+    system("$config->{'base_dir'}/bin/update_all_isbn_table.pl --database=$database");
+}
+
 CLEANUP:
 
 $logger->info("### $database: Cleanup");

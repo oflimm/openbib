@@ -498,6 +498,11 @@ foreach my $rawrec (@mab2titdata){
             $content=~s/^ISBN //;
         }
 
+        if ($category =~ /^655$/){
+            $content=~s/.*//;
+        }
+
+        
         if ($category =~ /^9[01234][27]$/){
             $content=~s/^\s+?\|//;
             $content=~s/^\d*\s+\d{7}-\d\s+//;

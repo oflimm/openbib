@@ -470,11 +470,11 @@ my $titdefs_ref = {
 };
 
 
-open(PEROUT,'>:utf8','unload.PER');
-open(KOEOUT,'>:utf8','unload.KOE');
-open(SWDOUT,'>:utf8','unload.SWD');
-open(SYSOUT,'>:utf8','unload.SYS');
-open(TITOUT,'>:utf8','unload.TIT');
+open(PEROUT,'>:utf8','meta.person');
+open(KOEOUT,'>:utf8','meta.corporatebody');
+open(SWDOUT,'>:utf8','meta.subject');
+open(SYSOUT,'>:utf8','meta.classification');
+open(TITOUT,'>:utf8','meta.title');
 
 print "Bearbeite Titel\n";
 
@@ -514,6 +514,10 @@ foreach my $rawrec (@mab2titdata){
 
         if ($category =~ /^540$/){
             $content=~s/^ISBN //;
+        }
+
+        if ($category =~ /^655$/){
+            $content=~s/.*//;
         }
 
         if ($category =~ /^9[01234][27]$/){

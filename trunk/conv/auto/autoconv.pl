@@ -220,7 +220,7 @@ my $atime = new Benchmark;
         system("$config->{autoconv_dir}/filter/$database/alt_conv.pl $database");
     }
     else {
-        system("cd $rootdir/data/$database ; $meta2sqlexe -add-superpers -add-mediatype --database=$database");
+        system("cd $rootdir/data/$database ; $meta2sqlexe -add-superpers -add-mediatype --add-tags --add-litlists --database=$database");
     }
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_conv.pl"){

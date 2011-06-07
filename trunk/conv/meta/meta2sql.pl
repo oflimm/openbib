@@ -29,8 +29,8 @@
 
 use 5.008001;
 use utf8;
-use strict;
-use warnings;
+#use strict;
+#use warnings;
 
 use Business::ISBN;
 use DB_File;
@@ -260,8 +260,10 @@ foreach my $type (keys %{$stammdateien_ref}){
       ($category,$indicator,$content)=($1,$2,$3);
     }
     elsif ($line=~m/^(\d+):(.*?)$/){
-      ($category,$content)=($1,$2);
+      ($category,$indicator,$content)=($1,1,$2);
     }
+
+    next CATLINE unless (defined $content && defined $category);
 
     chomp($content);
     
@@ -362,8 +364,10 @@ while (my $line=<IN>){
         ($category,$indicator,$content)=($1,$2,$3);
     }
     elsif ($line=~m/^(\d+):(.*?)$/){
-        ($category,$content)=($1,$2);
+        ($category,$indicator,$content)=($1,1,$2);
     }
+
+    next CATLINE unless (defined $content && defined $category);
 
     chomp($content);
     
@@ -1000,6 +1004,8 @@ while (my $line=<IN>){
         ($category,$indicator,$content)=($1,1,$2);
     }
 
+    next CATLINE unless (defined $content && defined $category);
+    
     chomp($content);
     
     if ($category && $content){

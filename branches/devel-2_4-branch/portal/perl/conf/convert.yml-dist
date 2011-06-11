@@ -216,6 +216,20 @@ convtab:
           'subject': 1
           'freesearch': 1
     inverted_title:
+      'tag':
+        index:
+          'tag': 1
+          'tagstring': 1
+          'freesearch': 1
+        facet:
+          'tag': 1      
+      'litlist':
+        index:
+          'litlist': 1
+          'litliststring': 1
+          'freesearch': 1
+        facet:
+          'litlist': 1
       '0002':         # Aufnahmedatum
         string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
@@ -415,6 +429,9 @@ convtab:
         string: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
       '0100': 1
       '0101': 1
       '0102': 1
@@ -498,6 +515,9 @@ convtab:
 ##############################################################################
   alff:
     listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
       '0100': 1
       '0101': 1
       '0102': 1
@@ -515,6 +535,9 @@ convtab:
       '2662': 1
   ebooks:
     listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
       '0100': 1
       '0101': 1
       '0102': 1
@@ -695,6 +718,9 @@ convtab:
         source: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
       '0014': 1
       '0101': 1
       '0102': 1
@@ -717,6 +743,9 @@ convtab:
       '1203': 1
   lesesaal:
     listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
       '0100': 1
       '0101': 1
       '0102': 1

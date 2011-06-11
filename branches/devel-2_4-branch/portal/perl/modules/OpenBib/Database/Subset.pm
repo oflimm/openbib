@@ -131,9 +131,54 @@ sub identify_by_mark {
     while (my $result=$request->fetchrow_hashref()){
         $holdingid{$result->{'id'}}=1;
     }    
+        
+    return $self;
+}
+
+sub identify_by_category_content {
+    my $self    = shift;
+    my $arg_ref = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select distinct id from title where category = ? and content rlike ?") or $logger->error($DBI::errstr);
+
+    foreach my $criteria_ref (@$arg_ref){        
+        
+        $request->execute($criteria_ref->{category},$criteria_ref->{content}) or $logger->error($DBI::errstr);;
+        
+        while (my $result=$request->fetchrow_hashref()){
+            $self->{titleid}{$result->{'id'}} = 1;
+        }
+    }
     
+    my $count=0;
+
+    foreach my $key (keys %{$self->{titleid}}){
+        $count++;
+    }
+
+    $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
+
+    $self->get_title_hierarchy;
+
+    $self->get_title_normdata;
+
+    my %holdingid = ();
+
+    # Exemplardaten
+    $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=6") or $logger->error($DBI::errstr);
+
+    foreach my $id (keys %{$self->{titleid}}){
+        $request->execute($id);
     
-    
+        while (my $result=$request->fetchrow_hashref()){
+            $holdingid{$result->{'id'}}=1;
+        }    
+    }
+
+    return $self;
 }
 
 sub get_title_hierarchy {

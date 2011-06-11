@@ -49,6 +49,18 @@
 [%- END -%]
     </div>
   </div>
+  <div class="listoptions">
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+[%- FOREACH qparam IN query.param -%]
+[%-   IF qparam != 'srt' && qparam != 'srto' %]
+<input type="hidden" name="[% qparam %]" value="[% query.param(qparam) %]" />
+[%-   END -%]
+[%- END -%]
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') no_jn=1 %]
+</form>
+</div>
 [% IF drilldown %]
   <div class="resultdrilldown">
 [% PROCESS common/subtemplate name="drilldown_categorized" %]

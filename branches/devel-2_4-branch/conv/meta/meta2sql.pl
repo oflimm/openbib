@@ -54,13 +54,11 @@ use OpenBib::Record::Subject;
 use OpenBib::Record::Title;
 use OpenBib::Statistics;
 
-my ($database,$reducemem,$addsuperpers,$addmediatype,$addtags,$addlitlists,$incremental,$logfile,$loglevel,$count);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile,$loglevel,$count);
 
 &GetOptions("reduce-mem"    => \$reducemem,
             "add-superpers" => \$addsuperpers,
             "add-mediatype" => \$addmediatype,
-            "add-tags"      => \$addtags,
-            "add-litlists"  => \$addlitlists,
             "incremental"   => \$incremental,
 	    "database=s"    => \$database,
             "logfile=s"     => \$logfile,
@@ -559,19 +557,60 @@ while (my $line=<IN>){
         $listitem_ref->{database} = $database;
 
         if (exists $listitemdata_popularity{$id}){
-            $listitem_ref->{popularity} = $listitemdata_popularity{$id};
+            if (exists $conv_config->{'listitemcat'}{popularity}){
+                $listitem_ref->{popularity} = $listitemdata_popularity{$id};
+            }
+
+            $normdata_ref->{popularity} = $listitemdata_popularity{$id};
         }
 
         if (exists $listitemdata_tags{$id}){
-            $listitem_ref->{tags} = $listitemdata_tags{$id};
+            if (exists $conv_config->{'listitemcat'}{tags}){
+                $listitem_ref->{tag} = $listitemdata_tags{$id};
+            }
 
-            $logger->info("Adding Tags to ID $id".YAML::Dump($listitem_ref->{tags}));
+            foreach my $tag_ref (@{$listitemdata_tags{$id}}){
+
+                if (exists $stammdateien_ref->{title}{inverted_ref}{tag}->{index}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{tag}->{index}}){
+                        push @{$normdata_ref->{$searchfield}}, OpenBib::Common::Util::grundform({
+                            content  => $tag_ref->{tag},
+                        });
+                    }
+                }
+            
+                if (exists $stammdateien_ref->{title}{inverted_ref}{tag}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{tag}->{facet}}){
+                        push @{$normdata_ref->{"facet_$searchfield"}}, $tag_ref->{tag};
+                    }
+                }
+            }
+            
+            $logger->info("Adding Tags to ID $id");
         }
 
         if (exists $listitemdata_litlists{$id}){
-            $listitem_ref->{litlists} = $listitemdata_litlists{$id};
+            if (exists $conv_config->{'listitemcat'}{litlists}){
+                $listitem_ref->{litlist} = $listitemdata_litlists{$id};
+            }
 
-            $logger->info("Adding Listlists to ID $id ".YAML::Dump($listitem_ref->{litlists}));
+            foreach my $litlist_ref (@{$listitemdata_litlists{$id}}){
+                if (exists $stammdateien_ref->{title}{inverted_ref}{litlist}->{index}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{litlist}->{index}}){
+                        push @{$normdata_ref->{$searchfield}}, OpenBib::Common::Util::grundform({
+                            content  => $litlist_ref->{title},
+                        });
+                    }
+                }
+
+                if (exists $stammdateien_ref->{title}{inverted_ref}{litlist}->{facet}){
+                    foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{litlist}->{facet}}){
+                        push @{$normdata_ref->{"facet_$searchfield"}}, $litlist_ref->{title};
+                    }
+                }
+            }            
+
+            $logger->info("Adding Listlists to ID $id");
         }
 
         next CATLINE;
@@ -830,22 +869,6 @@ while (my $line=<IN>){
                 push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{holding}{data}{$id}{$searchfield}};
             }
         }
-
-        if ($addtags){
-            foreach my $tag_ref (@{$listitem_ref->{tags}}){
-                push @{$normdata_ref->{tag}}, OpenBib::Common::Util::grundform({
-                    content  => $tag_ref->{tag},
-                });
-            }
-        }       
-
-        if ($addlitlists){
-            foreach my $litlist_ref (@{$listitem_ref->{litlists}}){
-                push @{$normdata_ref->{litlist}}, OpenBib::Common::Util::grundform({
-                    content  => $litlist_ref->{title},
-                });
-            }
-        }               
 
         # Listitem zusammensetzen
 

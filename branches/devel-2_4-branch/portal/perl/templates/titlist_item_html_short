@@ -138,6 +138,15 @@
     ebook     = item.${'T4120'}.first.content ;
     toc       = item.${'T4110'}.first.content ;
 
+    IF item.tags ;
+      tags = [];
+      FOREACH tag IN item.tags ;
+         tag_url = "${path_prefix}/${config.get('search_loc')}.html?fs=${tag.tag}" ;
+         tags.push("<a href=\"${tag_url}\">${tag.tag}</a>");
+      END ;
+      titleinfos.push("Tags: ${tags.join(' ')}") ;
+    END ;
+
     IF ebook ;
       ebook = "${path_prefix}/${config.get('redirect_loc')}/503/${ebook}" ;
       titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;

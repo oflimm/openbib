@@ -16,14 +16,14 @@ __PACKAGE__->add_columns(
   {
     data_type => "SMALLINT",
     default_value => undef,
-    is_nullable => 1,
+    is_nullable => 0,
     size => 6,
   },
   "subtype",
   {
     data_type => "SMALLINT",
     default_value => undef,
-    is_nullable => 1,
+    is_nullable => 0,
     size => 6,
   },
   "subtypedesc",

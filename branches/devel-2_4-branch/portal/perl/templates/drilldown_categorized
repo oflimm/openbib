@@ -92,6 +92,30 @@ $("#dd_database_[% database %]_toggle").click(function(){
 });
 // Ende Togglen / Drilldown Katalog
 
+// Begin Togglen / Drilldown Tags
+// Bild setzen
+$("#dd_tag_[% database %]_toggle").html("<b>[<a href=\"#dd_tag_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_tag_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_tag_[% database %]_toggle").click(function(){
+ $("#dd_tag_[% database %]").toggle();
+ $("#dd_tag_[% database %]_toggle").html("");
+});
+// Ende Togglen / Drilldown Tag
+
+// Begin Togglen / Drilldown Literaturliste
+// Bild setzen
+$("#dd_litlist_[% database %]_toggle").html("<b>[<a href=\"#dd_litlist_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_litlist_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_litlist_[% database %]_toggle").click(function(){
+ $("#dd_litlist_[% database %]").toggle();
+ $("#dd_litlist_[% database %]_toggle").html("");
+});
+// Ende Togglen / Drilldown Literaturliste
+
 });
 
 </script>
@@ -135,6 +159,8 @@ $("#dd_database_[% database %]_toggle").click(function(){
           ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
           ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
           ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
+          ${config.get('searchfield').tagstring.prefix} = msg.maketext("Tag")
+          ${config.get('searchfield').litliststring.prefix} = msg.maketext("Literaturliste")
 };
 
 %]
@@ -319,6 +345,56 @@ $("#dd_database_[% database %]_toggle").click(function(){
 <a href="[% path_prefix %]/[% config.get('search_loc') %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.4.size > 5 %]
+</div>
+[% END %]
+</td></tr>
+</table>
+</td></tr>
+[%         END %]
+[%         IF config.get('drilldown_option').categorized_tag && category_map.9.size > 0 %]
+<tr><td valign="top">
+<table width="100%">
+<tr><th class="headline" id="dd_tag_[% database %]_anchor">nach Tag [%# msg.maketext("nach Tag") %]</th></tr>
+<tr><td>
+[%             FOREACH termitem IN category_map.9 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.9.size > 5 && loop.count == 5 %]
+<span id="dd_tag_[% database %]_toggle"></span>
+<div id="dd_tag_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').tagstring.prefix;
+-%]
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+[% IF category_map.9.size > 5 %]
+</div>
+[% END %]
+</td></tr>
+</table>
+</td></tr>
+[%         END %]
+[%         IF config.get('drilldown_option').categorized_litlist && category_map.10.size > 0 %]
+<tr><td valign="top">
+<table width="100%">
+<tr><th class="headline" id="dd_litlist_[% database %]_anchor">nach Literaturliste [%# msg.maketext("nach Tag") %]</th></tr>
+<tr><td>
+[%             FOREACH termitem IN category_map.10 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.10.size > 5 && loop.count == 5 %]
+<span id="dd_litlist_[% database %]_toggle"></span>
+<div id="dd_litlist_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').litliststring.prefix;
+-%]
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% request_base %]fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+[% IF category_map.10.size > 5 %]
 </div>
 [% END %]
 </td></tr>

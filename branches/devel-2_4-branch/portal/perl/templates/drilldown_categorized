@@ -354,7 +354,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%         IF config.get('drilldown_option').categorized_tag && category_map.9.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th class="headline" id="dd_tag_[% database %]_anchor">nach Tag [%# msg.maketext("nach Tag") %]</th></tr>
+<tr><th class="headline" id="dd_tag_[% database %]_anchor">[% msg.maketext("nach Tags") %]</th></tr>
 <tr><td>
 [%             FOREACH termitem IN category_map.9 ;
                   LAST IF loop.count > 25 ;
@@ -379,7 +379,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%         IF config.get('drilldown_option').categorized_litlist && category_map.10.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th class="headline" id="dd_litlist_[% database %]_anchor">nach Literaturliste [%# msg.maketext("nach Tag") %]</th></tr>
+<tr><th class="headline" id="dd_litlist_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</th></tr>
 <tr><td>
 [%             FOREACH termitem IN category_map.10 ;
                   LAST IF loop.count > 25 ;
@@ -486,16 +486,16 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <h2><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h2>
 
 <p>
-Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine
+[% msg.maketext("Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine
 sinnvolle Eingrenzung durch eine Rechercheverfeinerung nicht
-m&ouml;glich ist.
+m&ouml;glich ist.") %]
 </p>
 
 <p>
-Versuchen Sie daher Ihre Rechercheanfrage zu pr&auml;zisieren, indem
+[% msg.maketext("Versuchen Sie daher Ihre Rechercheanfrage zu pr&auml;zisieren, indem
 Sie diese auf sinntragende Worte reduzieren (z.B. der, die das
 weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)
-durch zus&auml;tzliche Worte weiter eingrenzen.
+durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 </p>
 
 </div>

@@ -19,6 +19,7 @@
    <li><a [%- IF active == "sessions"   -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_session_loc') %].html">[% msg.maketext("Sessions") %]</a></li>
    <li><a [%- IF active == "statistics" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_statistic_loc') %].html">[% msg.maketext("Statistik") %]</a></li>
    <li><a [%- IF active == "users"      -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_user_loc') %].html">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+   <li><a [%- IF active == "authentication" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_authentication_loc') %].html">[% msg.maketext("Anmeldung") %]</a></li>
    <li><a [%- IF active == "subjects"   -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_subjects_loc') %].html">[% msg.maketext("Themengebiete") %]</a></li>
    <li><a [%- IF active == "logout"     -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_logout_loc') %].html">[% msg.maketext("Logout") %]</a></li>
 </ul>

@@ -124,7 +124,7 @@ selected="selected"
 
 
 >[% singlefeed.dbname %] / [% singlefeed.type %] /
-[%singlefeed.subtype %]</option>
+[% singlefeed.subtype %]</option>
 
 [% END %]
 
@@ -134,11 +134,15 @@ selected="selected"
 
 <p />
 
-<table width="100%">
-<tr><td align="left"><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div></td><td>&nbsp;</td><td align="right"><div class="cssbutton glass kug"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]" /></div></td></tr>
-</table>
-</td></tr>
-</table>
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ändern") %]" /></div>
+
+</form>
+
+<form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]">
+<input type="hidden" name="_method"     value="DELETE" />
+<input type="hidden" name="confirm"     value="1" />
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Löschen") %]"></div></td></tr>
 
 </form>
 

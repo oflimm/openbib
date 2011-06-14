@@ -11,7 +11,6 @@
 #
 #######################################################################
 -%]
-[%- sysprofile = "kugng" -%]
 [% PROCESS common/subtemplate name="std_header" title='KUG Administration - Nutzerverwaltung anzeigen' %]
 
   <body>
@@ -25,9 +24,8 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a class="active" href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('admin_user_loc') %].html">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('admin_user_loc') %]/search/form">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
 </ul>
 
 <div class="content">
@@ -49,7 +47,7 @@
       <div class="thumbnail">
       </div> 
       <div class="brieftitle">
-<span class="rlperson">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% path_prefix %]/[% config.get('admin_loc') %]?userid=[% singleuser.id %];do_edituser=1;do_edit=1"><strong><span class="rltitle">[% singleuser.loginname %]</span></strong></a></span>    
+<span class="rlperson">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% singleuser.id %]/role/edit"><strong><span class="rltitle">[% singleuser.loginname %]</span></strong></a></span>    
       </div>
       <div class="titlemark"></div>
       <div class="titleactions">

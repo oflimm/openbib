@@ -1035,6 +1035,31 @@ sub authenticate_self_user {
     return (defined $userid)?$userid:-1;
 }
 
+sub authentication_exists {
+    my ($self,$targetid) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return 0 if (!defined $dbh);
+    
+    my $request=$dbh->prepare("select count(*) as rowcount from logintarget where targetid = ?") or $logger->error($DBI::errstr);
+    $request->execute($targetid) or $logger->error($DBI::errstr);
+    
+    my $result=$request->fetchrow_hashref();
+    my $rowcount = $result->{rowcount};
+    
+    return ($rowcount > 0)?1:0;
+}
+
 sub get_logintargets {
     my ($self) = @_;
 
@@ -3312,6 +3337,35 @@ sub update_logintarget {
 
     $logger->debug("Logintarget updated");
     
+    return;
+}
+
+sub update_userrole {
+    my ($self,$userinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    my $del_request    = $dbh->prepare("delete from userrole where userid=?") or $logger->error($DBI::errstr); # 
+    my $insert_request = $dbh->prepare("insert into userrole values (?,?)") or $logger->error($DBI::errstr); # 
+
+    $del_request->execute($userinfo_ref->{id});
+    
+    foreach my $roleid (@{$userinfo_ref->{roles}}){
+        $logger->debug("Adding Role $roleid to user $userinfo_ref->{id}");
+        $insert_request->execute($userinfo_ref->{id},$roleid);
+    }
+
+    $del_request->finish();
+    $insert_request->finish();
+
     return;
 }
 

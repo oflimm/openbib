@@ -2071,28 +2071,6 @@ sub new_logintarget {
     return;
 }
 
-sub update_user {
-    my ($self,$userinfo_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $del_request    = $self->{dbh}->prepare("delete from userrole where userid=?") or $logger->error($DBI::errstr); # 
-    my $insert_request = $self->{dbh}->prepare("insert into userrole values (?,?)") or $logger->error($DBI::errstr); # 
-
-    $del_request->execute($userinfo_ref->{id});
-    
-    foreach my $roleid (@{$userinfo_ref->{roles}}){
-        $logger->debug("Adding Role $roleid to user $userinfo_ref->{id}");
-        $insert_request->execute($userinfo_ref->{id},$roleid);
-    }
-
-    $del_request->finish();
-    $insert_request->finish();
-
-    return;
-}
-
 
 1;
 __END__

@@ -19,14 +19,8 @@
 
 <div id="maincontent">
 
-[% PROCESS common/subtemplate name="admin_navigation" active="users" %] 
-
-<div class="content">
-
 <ul class="tabbingmenu">
-   <li><a                href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a class="active" href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
-   <li><a                href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% userinfo.id %]/edit">[% msg.maketext("Rolle bearbeiten") %]</a></li>
 </ul>
 
 <div class="content">
@@ -66,10 +60,8 @@
 </td></tr>
 </table>
 
-<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]">
-
-<input type="hidden" name="userid"     value="[% userinfo.id %]" />
-<input type="hidden" name="do_edituser" value="1" />
+<form method="post" action="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% userinfo.id %]/role">
+<input type="hidden" name="_method"    value="PUT" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Rolle zuordnen") %]</th><td></tr>
@@ -84,7 +76,7 @@
 
 </select>
 </td></tr>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Los") %]"></div></td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]"></div></td></tr>
 </table>
 </td></tr>
 </table>

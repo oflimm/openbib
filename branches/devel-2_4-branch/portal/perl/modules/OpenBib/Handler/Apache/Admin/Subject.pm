@@ -223,12 +223,6 @@ sub show_record_form {
     # Ist der Nutzer ein Admin?
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    if (!$config->subject_exists($subjectid)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Themengebiet unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-
     # Admin-SessionID ueberpruefen
     # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
     my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
@@ -310,7 +304,7 @@ sub create_record {
         return Apache2::Const::OK;
     }
     
-    my $ret = $config->new_subject({
+    my $ret = $user->new_subject({
         name        => $subject,
         description => $description,
     });
@@ -356,12 +350,6 @@ sub update_record {
     
     # Ist der Nutzer ein Admin?
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    if (!$config->subject_exists($subjectid)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Themengebiet unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
 
     # Admin-SessionID ueberpruefen
     # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
@@ -422,7 +410,7 @@ sub update_record {
     my $type            = $query->param('type')            || '';
 
 
-    $config->update_subject({
+    $user->update_subject({
         name                 => $subject,
         description          => $description,
         id                   => $subjectid,
@@ -466,12 +454,6 @@ sub delete_record {
     # Ist der Nutzer ein Admin?
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    if (!$user->subject_exists($subjectid)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Themengebiet unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-
     # Admin-SessionID ueberpruefen
     # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
     my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
@@ -483,7 +465,7 @@ sub delete_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    $config->del_subject({ id => $subjectid });
+    $user->del_subject({ id => $subjectid });
 
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_subject_loc}");

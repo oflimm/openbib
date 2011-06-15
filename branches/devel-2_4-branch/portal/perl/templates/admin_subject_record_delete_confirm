@@ -1,0 +1,52 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="subject" %] 
+
+<div class="content">
+
+<table width="100%">
+<tr><th>Sind sie sicher?</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table>
+<tr>
+<td>
+<form method="post" action="[% path_prefix %]/[% config.get('admin_subject_loc') %]/[% subjectid %]">
+<input type="hidden" name="_method"     value="DELETE" />
+<input type="hidden" name="confirm"     value="0" />
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ja") %]"></div>
+</form>
+</td>
+<td>&nbsp;&nbsp;</td>
+<td>
+<form method="get" action="[% path_prefix %]/[% config.get('admin_subject_loc') %]/[% subjectid %]/edit">
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Nein") %]"></div>
+</form>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -225,12 +225,6 @@ sub show_record_form {
     # Ist der Nutzer ein Admin?
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    if (!$user->authentication_exists($authenticationid)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-
     # Admin-SessionID ueberpruefen
     # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
     my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
@@ -335,10 +329,12 @@ sub create_record {
     }
     
     $config->new_logintarget($thislogintarget_ref);
-    
-    $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{admin_loc}?do_showlogintarget=1");
-    return Apache2::Const::OK;
-    
+
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_authentication_loc}");
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 sub update_record {
@@ -370,12 +366,6 @@ sub update_record {
     # Ist der Nutzer ein Admin?
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    if (!$user->authentication_exists($authenticationid)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert keine Authentifizierungsziel unter dieser ID"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-
     # Admin-SessionID ueberpruefen
     # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
     my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
@@ -386,12 +376,6 @@ sub update_record {
     }
 
     $logger->debug("Server: ".$r->get_server_name);
-
-    if (!$user->authentication_exists($authenticationid)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Authentifizierungssystem unter dieser ID"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
 
     # Variables
 
@@ -493,12 +477,6 @@ sub delete_record {
     
     # Ist der Nutzer ein Admin?
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    if (!$user->authentication_exists($authenticationid)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
 
     # Admin-SessionID ueberpruefen
     # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle

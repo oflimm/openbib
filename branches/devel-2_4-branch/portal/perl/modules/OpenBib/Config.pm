@@ -21,7 +21,7 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 package OpenBib::Config;
 
@@ -43,6 +43,9 @@ use YAML::Syck;
 
 use OpenBib::Database::DBI;
 use OpenBib::Database::Config;
+#use OpenBib::EZB;
+#use OpenBib::DBIS;
+#use OpenBib::Enrichment;
 
 sub new {
     my $class = shift;
@@ -1574,7 +1577,9 @@ sub update_view {
     my $profilename            = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}         : undef;
     my $joinindex              = exists $arg_ref->{joinindex}
-        ? $arg_ref->{joinindex}            : undef;
+        ? $arg_ref->{joinindex}           : undef;
+    my $stripuri               = exists $arg_ref->{stripuri}
+        ? $arg_ref->{stripuri}            : undef;
     my $rssfeeds_ref           = exists $arg_ref->{rssfeeds}
         ? $arg_ref->{rssfeeds}            : undef;
 
@@ -1586,8 +1591,8 @@ sub update_view {
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
     
-    my $idnresult=$self->{dbh}->prepare("update viewinfo set description = ?, start_loc = ?, start_stid = ?, profilename = ?, joinindex = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$start_loc,$start_stid,$profilename,$joinindex,$active,$viewname) or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("update viewinfo set description = ?, start_loc = ?, start_stid = ?, profilename = ?, joinindex = ?, stripuri = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$start_loc,$start_stid,$profilename,$joinindex,$stripuri,$active,$viewname) or $logger->error($DBI::errstr);
     
     # Primary RSS-Feed fuer Autodiscovery eintragen
     if ($primrssfeed){
@@ -1622,6 +1627,26 @@ sub update_view {
     return;
 }
 
+sub strip_view_from_uri {
+    my ($self,$viewname) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
+    
+    my $request=$self->{dbh}->prepare("select stripuri from viewinfo where viewname=?") or $logger->error($DBI::errstr);
+    $request->execute($viewname) or $logger->error($DBI::errstr);
+
+    my $result = $request->fetchrow_hashref;
+    
+    my $stripuri = ($result->{stripuri} == 1)?1:0;
+    
+    $request->finish();
+
+    return $stripuri;
+}
+
 sub new_view {
     my ($self,$arg_ref) = @_;
 
@@ -1635,9 +1660,11 @@ sub new_view {
     my $start_loc              = exists $arg_ref->{start_loc}
         ? $arg_ref->{start_loc}           : undef;
     my $start_stid             = exists $arg_ref->{stid_loc}
-        ? $arg_ref->{start_stid}           : undef;
+        ? $arg_ref->{start_stid}          : undef;
+    my $stripuri               = exists $arg_ref->{stripuri}
+        ? $arg_ref->{stripuri}            : undef;
     my $joinindex              = exists $arg_ref->{joinindex}
-        ? $arg_ref->{joinindex}            : undef;
+        ? $arg_ref->{joinindex}           : undef;
     my $active                 = exists $arg_ref->{active}
         ? $arg_ref->{active}              : undef;
 
@@ -1654,8 +1681,8 @@ sub new_view {
       return -1;
     }
     
-    $idnresult=$self->{dbh}->prepare("insert into viewinfo values (?,?,NULL,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname,$description,$start_loc,$start_stid,$profilename,$joinindex,$active) or $logger->error($DBI::errstr);
+    $idnresult=$self->{dbh}->prepare("insert into viewinfo values (?,?,NULL,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname,$description,$start_loc,$start_stid,$profilename,$stripuri,$joinindex,$active) or $logger->error($DBI::errstr);
     
     return 1;
 }
@@ -1861,88 +1888,6 @@ sub new_orgunit {
     return 1;
 }
 
-sub del_subject {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $id                       = exists $arg_ref->{id}
-        ? $arg_ref->{id}                  : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $request=$self->{dbh}->prepare("delete from subjects where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($id) or $logger->error($DBI::errstr);
-    $request->finish();
-
-    return;
-}
-
-sub update_subject {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $name                     = exists $arg_ref->{name}
-        ? $arg_ref->{name}                : undef;
-    my $description              = exists $arg_ref->{description}
-        ? $arg_ref->{description}         : undef;
-    my $id                       = exists $arg_ref->{id}
-        ? $arg_ref->{id}                  : undef;
-    my $classifications_ref      = exists $arg_ref->{classifications}
-        ? $arg_ref->{classifications}     : [];
-    my $type                      = exists $arg_ref->{type}
-        ? $arg_ref->{type}                : 'BK';
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
-    
-    my $request=$self->{dbh}->prepare("update subjects set name = ?, description = ? where id = ?") or $logger->error($DBI::errstr);
-    $request->execute(encode_utf8($name),encode_utf8($description),$id) or $logger->error($DBI::errstr);
-    $request->finish();
-
-    if (@{$classifications_ref}){       
-        $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
-
-        OpenBib::User->set_classifications_of_subject({
-            subjectid       => $id,
-            classifications => $classifications_ref,
-            type            => $type,
-        });
-    }
-
-    return;
-}
-
-sub new_subject {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $name                   = exists $arg_ref->{name}
-        ? $arg_ref->{name}                : undef;
-    my $description            = exists $arg_ref->{description}
-        ? $arg_ref->{description}         : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from subjects where name = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($name) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-    
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
-    
-    $idnresult=$self->{dbh}->prepare("insert into subjects (name,description) values (?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute(encode_utf8($name),encode_utf8($description)) or $logger->error($DBI::errstr);
-    
-    return 1;
-}
-
 sub del_server {
     my ($self,$arg_ref) = @_;
 
@@ -2010,7 +1955,7 @@ sub new_server {
     }
     
     $idnresult=$self->{dbh}->prepare("insert into loadbalancertargets (id,host,active) values (NULL,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute(encode_utf8($host),encode_utf8($active)) or $logger->error($DBI::errstr);
+    $idnresult->execute($host,$active) or $logger->error($DBI::errstr);
     
     return 1;
 }

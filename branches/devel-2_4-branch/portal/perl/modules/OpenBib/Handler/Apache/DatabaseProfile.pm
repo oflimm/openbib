@@ -191,14 +191,14 @@ sub show {
             # ... und dann eintragen
             $user->add_profiledb($profilid,$database);
         }
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
         $user->delete_dbprofile($profilid);
         $user->delete_profiledbs($profilid);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {

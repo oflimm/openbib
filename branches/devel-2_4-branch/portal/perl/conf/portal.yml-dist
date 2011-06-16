@@ -105,6 +105,7 @@ base_loc: /portal
 
 # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 admin_loc: admin
+admin_authentication_loc: admin/authentication
 admin_database_loc: admin/database
 admin_view_loc: admin/view
 admin_library_loc: admin/library
@@ -447,7 +448,7 @@ dispatch_rules:
      runmode: 'show_search_form'
   - # admin_session_loc: Search results
      module: 'OpenBib::Handler::Apache::Admin::Session'
-     rule: '/portal/:view/admin/session/search'
+     rule: '/portal/:view/admin/session/search[post]'
      runmode: 'show_search_result'
   - # admin_session_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin::Session'
@@ -546,8 +547,76 @@ dispatch_rules:
 
   - # admin_user_loc:
      module: 'OpenBib::Handler::Apache::Admin::User'
-     rule: '/portal/:view/admin/user/:stid/:rm/:representation?'
-     runmode: 'show'
+     rule: '/portal/:view/admin/user.html'
+     runmode: 'show_collection_as_html'
+  - # admin_user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::User'
+     rule: '/portal/:view/admin/user.json'
+     runmode: 'show_collection_as_json'
+  - # admin_user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::User'
+     rule: '/portal/:view/admin/user.rdf'
+     runmode: 'show_collection_as_rdf'
+  - # admin_user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::User'
+     rule: '/portal/:view/admin/user'
+     runmode: 'show_collection_negotiate'
+  - # admin_user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::User'
+     rule: '/portal/:view/admin/user/search/form[get]'
+     runmode: 'show_search_form'
+  - # admin_user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::User'
+     rule: '/portal/:view/admin/user/search.html'
+     runmode: 'show_search_as_html'
+  - # admin_user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::User'
+     rule: '/portal/:view/admin/user/search.json'
+     runmode: 'show_search_as_json'
+  - # admin_user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::User'
+     rule: '/portal/:view/admin/user/search.rdf'
+     runmode: 'show_search_as_rdf'
+
+  - # admin_authentication_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication.html[get]'
+     runmode: 'show_collection_as_html'
+  - # admin_authentication_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication.json[get]'
+     runmode: 'show_collection_as_json'
+  - # admin_authentication_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication.rdf[get]'
+     runmode: 'show_collection_as_rdf'
+  - # admin_authentication_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication[get]'
+     runmode: 'show_collection_negotiate'
+  - # admin_authentication_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication/:authenticationid/edit[get]'
+     runmode: 'show_record_form'
+  - # admin_authentication_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication[post]'
+     runmode: 'create_record'
+  - # admin_authentication_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication/:authenticationid[post]'
+     runmode: 'update_record'
+  - # admin_authentication_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication/:authenticationid[put]'
+     runmode: 'update_record'
+  - # admin_authentication_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication/:authenticationid[delete]'
+     runmode: 'delete_record'
+
+
+
   - # admin_orgunit_loc:
      module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnit'
      rule: '/portal/:view/admin/orgunit/:stid/:rm/:representation?'
@@ -1166,6 +1235,20 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Resource::User::Preferences'
      rule: '/portal/:view/resource/user/:userid/preferences/autocompletion[put]'
      runmode: 'update_autocompletion'
+
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Role'
+     rule: '/portal/:view/resource/user/:userid/role/edit'
+     runmode: 'show_record_form'
+
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Role'
+     rule: '/portal/:view/resource/user/:userid/role[put]'
+     runmode: 'update_record'
+  - # resource_user_loc:
+     module: 'OpenBib::Handler::Apache::Resource::User::Role'
+     rule: '/portal/:view/resource/user/:userid/role[post]'
+     runmode: 'update_record'
 
   - # resource_user_loc:
      module: 'OpenBib::Handler::Apache::Resource::User::Collection'
@@ -1815,6 +1898,11 @@ tt_admin_loggedin_tname: admin_loggedin
 tt_admin_login_tname: admin_login
 tt_admin_logout_tname: admin_logout
 tt_admin_searchuser_tname: admin_searchuser
+
+tt_admin_authentication_tname: admin_authentication
+tt_admin_authentication_record_edit_tname: admin_authentication_record_edit
+tt_admin_authentication_record_delete_confirm_tname: admin_authentication_record_delete_confirm
+
 tt_admin_database_tname: admin_database
 tt_admin_database_record_tname: admin_database_record
 tt_admin_database_record_edit_tname: admin_database_record_edit
@@ -1859,6 +1947,11 @@ tt_admin_statistic_access_query_graph_tname: admin_statistic_access_query_graph
 tt_admin_showoperations_tname: admin_showoperations
 tt_admin_showlogintarget_tname: admin_showlogintarget
 tt_admin_showsessions_1_tname: admin_showsessions_1
+
+tt_admin_user_tname: admin_user
+tt_admin_user_search_tname: admin_user_search
+tt_admin_user_search_form_tname: admin_user_search_form
+
 
 tt_admin_showstat_1_tname: admin_showstat_1
 tt_admin_showstat_2_tname: admin_showstat_2
@@ -1991,6 +2084,7 @@ tt_resource_tag_collection_recent_tname: resource_tag_collection_recent
 tt_resource_litlist_tname: resource_litlist
 tt_resource_litlist_edit_tname: resource_litlist_edit
 tt_resource_user_litlist_collection_tname: resource_user_litlist_collection
+tt_resource_user_role_edit_tname: resource_user_role_edit
 tt_resource_user_preferences_tname: resource_user_preferences
 tt_resource_user_delete_confirm_tname: resource_user_delete_confirm
 tt_resource_user_review_collection_tname: resource_user_review_collection

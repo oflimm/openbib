@@ -78,16 +78,15 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'search_negotiate' => 'search_negotiate',
-        'search_as_html'   => 'search_as_html',
-        'search_as_json'   => 'search_as_json',
-        'search_as_rdf'    => 'search_as_rdf',
-        'search_as_rss'    => 'search_as_rss',
-        'search_as_include'=> 'search_as_include',
-        'index_negotiate'  => 'index_negotiate',
-        'index_as_html'    => 'index_as_html',
-        'index_as_json'    => 'index_as_json',
-        'index_as_rdf'     => 'index_as_rdf',
+        'negotiate_url'    => 'negotiate_url',
+        'show_search_as_html'   => 'show_search_as_html',
+        'show_search_as_json'   => 'show_search_as_json',
+        'show_search_as_rdf'    => 'show_search_as_rdf',
+        'show_search_as_rss'    => 'show_search_as_rss',
+        'show_search_as_include'=> 'show_search_as_include',
+        'show_index_as_html'    => 'show_index_as_html',
+        'show_index_as_json'    => 'show_index_as_json',
+        'show_index_as_rdf'     => 'show_index_as_rdf',
         
     );
 
@@ -96,84 +95,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub search_negotiate {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-
-    my $config  = OpenBib::Config->instance;
-
-    my $negotiated_type_ref = $self->negotiate_type;
-
-    my $args="?".$self->query->args();
-    
-    my $new_location = "$config->{base_loc}/$view/$config->{search_loc}.$negotiated_type_ref->{suffix}$args";
-
-    $self->query->method('GET');
-    $self->query->content_type($negotiated_type_ref->{content_type});
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-    return;
-}
-
-sub search_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->search_databases;
-
-    return;
-}
-
-sub search_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->search_databases;
-
-    return;
-}
-
-sub search_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->search_databases;
-
-    return;
-}
-
-sub search_as_rss {
-    my $self = shift;
-
-    $self->param('representation','rss');
-
-    $self->search_databases;
-
-    return;
-}
-
-sub search_as_include {
-    my $self = shift;
-
-    $self->param('representation','include');
-
-    $self->search_databases;
-
-    return;
-}
-
-sub search_databases {
+sub show_search {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -278,16 +200,16 @@ sub search_databases {
 #         my $redirecturl = "";
 
 #         if ($indextype eq "aut"){
-#             $redirecturl = "$config->{base_loc}/$view/$config->{index_loc}/person/$indexterm";
+#             $redirecturl = "$self->param('path_prefix')/$config->{index_loc}/person/$indexterm";
 #         }
 #         if ($indextype eq "kor"){
-#             $redirecturl = "$config->{base_loc}/$view/$config->{index_loc}/corporatebody/$indexterm";
+#             $redirecturl = "$self->param('path_prefix')/$config->{index_loc}/corporatebody/$indexterm";
 #         }        
 #         if ($indextype eq "swt"){
-#             $redirecturl = "$config->{base_loc}/$view/$config->{index_loc}/subject/$indexterm";
+#             $redirecturl = "$self->param('path_prefix')/$config->{index_loc}/subject/$indexterm";
 #         }
 #         if ($indextype eq "notation"){
-#             $redirecturl = "$config->{base_loc}/$view/$config->{index_loc}/classification/$indexterm";
+#             $redirecturl = "$self->param('path_prefix')/$config->{index_loc}/classification/$indexterm";
 #         }
 
 #         $logger->debug("Redirecting to $redirecturl");
@@ -420,7 +342,7 @@ sub search_databases {
             $databasestring.=";database=$database";
         }
         
-        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profile=$profile;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
+        my $baseurl="http://$r->get_server_name$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profile=$profile;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
 
         my @nav=();
 
@@ -1319,74 +1241,8 @@ sub search_databases {
     return Apache2::Const::OK;
 }
 
-sub index_negotiate {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-
-    my $config  = OpenBib::Config->instance;
-
-    my $negotiated_type_ref = $self->negotiate_type;
-
-    my $new_location = "$config->{base_loc}/$config->{index_loc}.$negotiated_type_ref->{suffix}";
-
-    $self->query->method('GET');
-    $self->query->content_type($negotiated_type_ref->{content_type});
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-    return;
-}
-
-sub index_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->index_index;
-
-    return;
-}
-
-sub index_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->search_index;
-
-    return;
-}
-
-sub index_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->search_index;
-
-    return;
-}
-
-
-sub index_as_include {
-    my $self = shift;
-
-    $self->param('representation','include');
-
-    $self->search_index;
-
-    return;
-}
-
-
 # Auf Grundlage der <form>-Struktur im Template searchform derzeit nicht verwendet
-sub search_index {
+sub show_index {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -1556,7 +1412,7 @@ sub search_index {
         $databasestring.=";database=$database";
     }
     
-    my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profile=$profile;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
+    my $baseurl="http://$r->get_server_name$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profile=$profile;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
     
     my @nav=();
     
@@ -1770,7 +1626,7 @@ sub get_databases {
                 }
                 # Kein Profil
                 else {
-                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{base_loc}/$view/$config->{databasechoice_loc}\" target=\"body\">","</a>"),$r,$msg,$representation,$content_type);
+                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$self->param('path_prefix')/$config->{databasechoice_loc}\" target=\"body\">","</a>"),$r,$msg,$representation,$content_type);
                     return Apache2::Const::OK;
                 }
                 

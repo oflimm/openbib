@@ -436,7 +436,7 @@ sub show_private_lists {
 
 #         $session->set_returnurl($return_url);
 
-#         $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+#         $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}?do_login=1");
 
 #         return Apache2::Const::OK;
 #     }
@@ -460,10 +460,10 @@ sub show_private_lists {
 #             # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
 #             # der soeben erzeugten Literaturliste hinzugefuegt.
 #             if ($titid && $titdb && $litlistid){
-#                 $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_litlists_loc}/$litlistid/?action=manage&do_addentry=1&titid=$titid&titdb=$titdb");
+#                 $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{resource_litlists_loc}/$litlistid/?action=manage&do_addentry=1&titid=$titid&titdb=$titdb");
 #             }
             
-#             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_litlists_loc}/private/");
+#             $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{resource_litlists_loc}/private/");
 #             return Apache2::Const::OK;
             
 # 	}        
@@ -471,7 +471,7 @@ sub show_private_lists {
             
 #             $user->del_litlist({ litlistid => $litlistid});
             
-#             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{litlists_loc}/private/");
+#             $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{litlists_loc}/private/");
 #             return Apache2::Const::OK;
             
 # 	}
@@ -494,7 +494,7 @@ sub show_private_lists {
 #                 $user->change_litlist({ title => $title, type => $type, lecture => $lecture, litlistid => $litlistid, subjectids => \@subjectids });
 #             }
             
-#             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_litlist_loc}/private/");
+#             $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{resource_litlist_loc}/private/");
 #             return Apache2::Const::OK;
             
 # 	}
@@ -545,7 +545,7 @@ sub show_private_lists {
                     
 #                     $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
                     
-#                     $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_litlist_loc}/$litlistid/?action=manage&do_showlitlist=1");
+#                     $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{resource_litlist_loc}/$litlistid/?action=manage&do_showlitlist=1");
 #                     return Apache2::Const::OK;
                     
 #                 }
@@ -559,7 +559,7 @@ sub show_private_lists {
                     
 #                     $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
                     
-#                     $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_litlist_loc}/$litlistid/");
+#                     $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{resource_litlist_loc}/$litlistid/");
 #                     return Apache2::Const::OK;
                     
 #                 }

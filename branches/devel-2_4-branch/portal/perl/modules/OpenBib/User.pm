@@ -73,7 +73,10 @@ sub new {
         $self->{ID} = $id ;
         $logger->debug("Got UserID $id - NO session assiziated");
     }
-    
+
+    $self->connectDB();
+    $self->connectMemcached();
+
     return $self;
 }
 
@@ -105,6 +108,9 @@ sub _new_instance {
          $self->{ID} = $id ;
          $logger->debug("Got UserID $id - NO session assiziated");
     }
+
+    $self->connectDB();
+    $self->connectMemcached();
 
     return $self;
 }
@@ -4421,6 +4427,154 @@ sub is_admin {
     $request->finish();
 
     return ($rows > 0)?1:0;
+
+    return;
+}
+
+sub del_subject {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("delete from subjects where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($id) or $logger->error($DBI::errstr);
+    $request->finish();
+
+    return;
+}
+
+sub update_subject {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $name                     = exists $arg_ref->{name}
+        ? $arg_ref->{name}                : undef;
+    my $description              = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $classifications_ref      = exists $arg_ref->{classifications}
+        ? $arg_ref->{classifications}     : [];
+    my $type                      = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : 'BK';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
+    
+    my $request=$self->{dbh}->prepare("update subjects set name = ?, description = ? where id = ?") or $logger->error($DBI::errstr);
+    $request->execute(encode_utf8($name),encode_utf8($description),$id) or $logger->error($DBI::errstr);
+    $request->finish();
+
+    if (@{$classifications_ref}){       
+        $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
+
+        OpenBib::User->set_classifications_of_subject({
+            subjectid       => $id,
+            classifications => $classifications_ref,
+            type            => $type,
+        });
+    }
+
+    return;
+}
+
+sub new_subject {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $name                   = exists $arg_ref->{name}
+        ? $arg_ref->{name}                : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from subjects where name = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($name) or $logger->error($DBI::errstr);
+    my $res=$idnresult->fetchrow_hashref;
+    my $rows=$res->{rowcount};
+    
+    if ($rows > 0) {
+      $idnresult->finish();
+      return -1;
+    }
+    
+    $idnresult=$self->{dbh}->prepare("insert into subjects (name,description) values (?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute(encode_utf8($name),encode_utf8($description)) or $logger->error($DBI::errstr);
+    
+    return 1;
+}
+
+sub subject_exists {
+    my ($self,$name) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from subjects where name = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($name) or $logger->error($DBI::errstr);
+    my $res=$idnresult->fetchrow_hashref;
+    my $rows=$res->{rowcount};
+    
+    return ($rows > 0)?1:0;
+}
+
+sub connectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    eval {
+        # Verbindung zur SQL-Datenbank herstellen
+        $self->{dbh}
+            = OpenBib::Database::DBI->connect("DBI:$config->{userdbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error_die($DBI::errstr);
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect to database $config->{userdbname}");
+    }
+    
+    $self->{dbh}->{RaiseError} = 1;
+
+    eval {        
+#        $self->{schema} = OpenBib::Database::Config->connect("DBI:$config->{userdbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd}) or $logger->error_die($DBI::errstr)
+        $self->{schema} = OpenBib::Database::Config->connect("DBI:$config->{userdbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd},{'mysql_enable_utf8'    => 0,}) or $logger->error_die($DBI::errstr);
+
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect to database $config->{userdbname}");
+    }
+
+    return;
+}
+
+sub connectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zu Memchached herstellen
+    $self->{memc} = new Cache::Memcached($config->{memcached});
+
+    if (!$self->{memc}->set('isalive',1)){
+        $logger->fatal("Unable to connect to memcached");
+    }
 
     return;
 }

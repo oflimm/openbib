@@ -66,7 +66,6 @@ sub setup {
     $self->run_modes(
         'show_collection_by_isbn_negotiate'    => 'show_collection_by_isbn_negotiate',
         'show_record_negotiate'                => 'show_record_negotiate',
-        'show_record_negotiate'                => 'show_record_negotiate',
         'show_record_form'                     => 'show_record_form',
         'create_record'                        => 'create_record',
         'update_record'                        => 'update_record',
@@ -487,7 +486,7 @@ sub show_record_form {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -608,7 +607,7 @@ sub show_record_negotiate {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -732,7 +731,7 @@ sub show_record_negotiatex {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -791,7 +790,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/review.html";
+    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$userid/review.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

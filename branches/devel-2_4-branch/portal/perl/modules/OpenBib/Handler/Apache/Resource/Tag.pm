@@ -68,7 +68,6 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show_collection_negotiate'            => 'show_collection_negotiate',
         'show_collection_as_html'              => 'show_collection_as_html',
         'show_collection_as_json'              => 'show_collection_as_json',
         'show_collection_as_rdf'               => 'show_collection_as_rdf',
@@ -77,7 +76,6 @@ sub setup {
         'show_collection_recent_as_rdf'        => 'show_collection_recent_as_rdf',
         'show_collection_recent_as_rss'        => 'show_collection_recent_as_rss',
         'show_collection_recent_as_include'    => 'show_collection_recent_as_include',
-        'show_collection_recent_negotiate'     => 'show_collection_recent_negotiate',
         'show_collection_form'                 => 'show_collection_form',
         'show_record_negotiate'                => 'show_record_negotiate',
         'create_record'                        => 'create_record',
@@ -88,61 +86,6 @@ sub setup {
     # Use current path as template path,
     # i.e. the template is in the same directory as this script
 #    $self->tmpl_path('./');
-}
-
-sub show_collection_negotiate {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')             || '';
-
-    my $config  = OpenBib::Config->instance;
-
-    my $negotiated_type_ref = $self->negotiate_type;
-
-    my $new_location = "$config->{base_loc}/$view/$config->{resource_tag_loc}.$negotiated_type_ref->{suffix}";
-
-    $self->query->method('GET');
-    $self->query->content_type($negotiated_type_ref->{content_type});
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-    return;
-}
-
-sub show_collection_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->show_collection;
-
-    return;
-}
-
-sub show_collection_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->show_collection;
-
-    return;
-}
-
-sub show_collection_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->show_collection;
-
-    return;
 }
 
 sub show_collection {
@@ -225,7 +168,7 @@ sub show_collection {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -481,7 +424,7 @@ sub show_collection_form {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -587,7 +530,7 @@ sub create_record {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
 
         return Apache2::Const::OK;
     }
@@ -604,7 +547,7 @@ sub create_record {
         type      => $type,
     });
 
-    my $new_location = "$config->{base_loc}/$view/$config->{resource_title_loc}/$titdb/$titid?queryid=$queryid;no_log=1";
+    my $new_location = "$self->param('path_prefix')/$config->{resource_title_loc}/$titdb/$titid?queryid=$queryid;no_log=1";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -694,7 +637,7 @@ sub delete_record {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
 
         return Apache2::Const::OK;
     }
@@ -711,11 +654,11 @@ sub delete_record {
         loginname => $loginname,
     });
 
-    my $new_location = "$config->{servername}$config->{base_loc}/$view/$config->{resource_title_loc}/$titdb/$titid.html?queryid=$queryid;no_log=1";
+    my $new_location = "$r->get_server_name$self->param('path_prefix')/$config->{resource_title_loc}/$titdb/$titid.html?queryid=$queryid;no_log=1";
     
     if ($tags =~/^\w+$/){
         my $tagid = $user->get_id_of_tag({tag => $tags});
-        $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$user->{ID}/tag/$tagid.html";
+        $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$user->{ID}/tag/$tagid.html";
     }
     
     $self->query->method('GET');
@@ -806,7 +749,7 @@ sub update_record {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
 
         return Apache2::Const::OK;
     }
@@ -826,87 +769,12 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
-    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$user->{ID}/tag.html";
+    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$user->{ID}/tag.html";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
     $self->query->headers_out->add(Location => $new_location);
     $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
-}
-
-sub show_collection_recent_negotiate {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-
-    my $config  = OpenBib::Config->instance;
-
-    my $negotiated_type_ref = $self->negotiate_type;
-
-    my $new_location = "$config->{base_loc}/$view/$config->{resource_tag_loc}/recent.$negotiated_type_ref->{suffix}";
-
-    $self->query->method('GET');
-    $self->query->content_type($negotiated_type_ref->{content_type});
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-    return;
-}
-
-sub show_collection_recent_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->show_collection_recent;
-
-    return;
-}
-
-sub show_collection_recent_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->show_collection_recent;
-
-    return;
-}
-
-sub show_collection_recent_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->show_collection_recent;
-
-    return;
-}
-
-sub show_collection_recent_as_rss {
-    my $self = shift;
-
-    $self->param('representation','rss');
-
-    $self->show_collection_recent;
-
-    return;
-}
-
-sub show_collection_recent_as_include {
-    my $self = shift;
-
-    $self->param('representation','include');
-
-    $self->show_collection_recent;
 
     return;
 }
@@ -1057,7 +925,7 @@ sub showyyy {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -1076,7 +944,7 @@ sub showyyy {
             type      => $type,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
@@ -1092,10 +960,10 @@ sub showyyy {
 
         if ($tags =~/^\w+$/){
             my $tagid = $user->get_id_of_tag({tag => $tags});
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
+            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         }
         return Apache2::Const::OK;
 
@@ -1115,7 +983,7 @@ sub showyyy {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{tags_loc}?show_usertags=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{tags_loc}?show_usertags=1");
         return Apache2::Const::OK;
 
     }
@@ -1311,7 +1179,7 @@ sub showzzz {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -1330,7 +1198,7 @@ sub showzzz {
             type      => $type,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
@@ -1346,10 +1214,10 @@ sub showzzz {
 
         if ($tags =~/^\w+$/){
             my $tagid = $user->get_id_of_tag({tag => $tags});
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
+            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         }
         return Apache2::Const::OK;
 
@@ -1369,7 +1237,7 @@ sub showzzz {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{tags_loc}?show_usertags=1");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{tags_loc}?show_usertags=1");
         return Apache2::Const::OK;
 
     }
@@ -1496,7 +1364,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/tag.html";
+    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$userid/tag.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

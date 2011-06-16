@@ -394,7 +394,7 @@ CLEANUP:
 $logger->info("### $database: Cleanup");
 
 system("$mysqladminexe drop   $databasetmp");
-system("rm $rootdir/data/$database/*") unless ($database eq "openbib");
+system("rm $rootdir/data/$database/*") unless ($database eq "inst006");
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

@@ -124,9 +124,11 @@ sub show_form {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_user_loc}/[% user.ID %]/preference");
-
-        return Apache2::Const::OK;
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->status(Apache2::Const::REDIRECT);
+        
+        return;
     }
 
     my $logintargets_ref = $user->get_logintargets();
@@ -203,9 +205,11 @@ sub authenticate {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->status(Apache2::Const::REDIRECT);
 
-        return Apache2::Const::OK;
+        return;
     }
 
     my $loginfailed=0;
@@ -334,7 +338,7 @@ sub authenticate {
         $session->set_mask($masktype);
         
         $redirecturl
-            = "http://$config->{servername}$config->{base_loc}/$view/$config->{resource_user_loc}/$userid/preferences.html";
+            = "http://$r->get_server_name$self->param('path_prefix')/$config->{resource_user_loc}/$userid/preferences.html";
         
     }
     
@@ -347,7 +351,7 @@ sub authenticate {
     
     # Fehlerbehandlung
     if ($loginfailed) {
-        $redirecturl="http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}/failure?code=$loginfailed";
+        $redirecturl="http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}/failure?code=$loginfailed";
     }
     
     $logger->debug("Redirecting to $redirecturl");
@@ -411,9 +415,11 @@ sub failure {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->status(Apache2::Const::REDIRECT);
 
-        return Apache2::Const::OK;
+        return;
     }
 
     if    ($code eq "1") {

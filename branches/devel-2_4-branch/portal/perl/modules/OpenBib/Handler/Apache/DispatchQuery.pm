@@ -102,15 +102,15 @@ sub show {
     }
 
     if    ($do_newquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{searchform_loc}?queryid=$queryid");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{searchform_loc}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_resultlist) {
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{resultlists_loc}?action=choice&queryid=$queryid");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{resultlists_loc}?action=choice&queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_externalquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{externaljump_loc}?queryid=$queryid");
+        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{externaljump_loc}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     else {

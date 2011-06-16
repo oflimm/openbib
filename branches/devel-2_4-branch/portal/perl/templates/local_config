@@ -93,6 +93,10 @@
 
        };
 
-  path_prefix = "${config.get('base_loc')}/${view}";
+  path_prefix = "${config.get('base_loc')}";
+
+  IF NOT config.strip_view_from_uri(view) ;
+    path_prefix = "${path_prefix}/${view}";
+  END ;
 
 -%]

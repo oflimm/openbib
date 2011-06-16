@@ -126,7 +126,7 @@ sub show {
         msg        => $msg,
     };
   
-    OpenBib::Common::Util::print_page($config->{tt_leave_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_logout_tname},$ttdata,$r);
   
     return Apache2::Const::OK;
 }

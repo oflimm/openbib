@@ -125,16 +125,17 @@ sub show {
     }
 
     $logger->debug("StartOpac-sID: $session->{ID}");
+    $logger->debug("Path-Prefix: ".$self->param('path_prefix'));
 
     # Standard-URL
-    my $redirecturl = "$config->{base_loc}/$view/$config->{searchform_loc}/$setmask";
+    my $redirecturl = $self->param('path_prefix')."/$config->{searchform_loc}/$setmask";
 
     my $viewstartpage_ref = $config->get_startpage_of_view($view);
 
     $logger->debug(YAML::Dump($viewstartpage_ref));
     
     if ($viewstartpage_ref->{start_loc}){
-        $redirecturl = "$config->{base_loc}/$view/$config->{$viewstartpage_ref->{start_loc}}";
+        $redirecturl = $self->param('path_prefix')."/$config->{$viewstartpage_ref->{start_loc}}";
 
         if ($viewstartpage_ref->{start_stid}){
             $redirecturl.="/$viewstartpage_ref->{start_stid}";
@@ -142,31 +143,31 @@ sub show {
     }
     
     if ($searchsingletit && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_title_loc}/$database/$searchsingletit.html";
+        $redirecturl = $self->param('path_prefix')."/$config->{resource_title_loc}/$database/$searchsingletit.html";
     }
     
     if ($searchsingleaut && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_person_loc}/$database/$searchsingleaut.html";
+        $redirecturl = $self->param('path_prefix')."/$config->{resource_person_loc}/$database/$searchsingleaut.html";
     }
 
     if ($searchsinglekor && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_corporatebody_loc}/$database/$searchsinglekor.html";
+        $redirecturl = $self->param('path_prefix')."/$config->{resource_corporatebody_loc}/$database/$searchsinglekor.html";
     }
 
     if ($searchsingleswt && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_subject_loc}/$database/$searchsingleswt.html";
+        $redirecturl = $self->param('path_prefix')."/$config->{resource_subject_loc}/$database/$searchsingleswt.html";
     }
 
     if ($searchsinglenot && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_classification_loc}/$database/$searchsinglenot.html";
+        $redirecturl = $self->param('path_prefix')."/$config->{resource_classification_loc}/$database/$searchsinglenot.html";
     }
     
     if ($fs){
-        $redirecturl = "$config->{base_loc}/$view/$config->{search_loc}?fs=".uri_escape($fs).";num=50;srt=author;srto=up;profil=;st=3";
+        $redirecturl = $self->param('path_prefix')."/$config->{search_loc}?fs=".uri_escape($fs).";num=50;srt=author;srto=up;profil=;st=3";
     }
 
     if ($searchlitlist){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/$searchlitlist.html";
+        $redirecturl = $self->param('path_prefix')."/$config->{resource_litlist_loc}/$searchlitlist.html";
     }
 
     $logger->info("Redirecting to $redirecturl");

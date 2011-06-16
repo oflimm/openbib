@@ -67,11 +67,11 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show_overview_negotiate'   => 'show_overview_negotiate',
-        'show_overview_as_html'     => 'show_overview_as_html',
-        'show_overview_as_rdf'      => 'show_overview_as_rdf',
-        'show_overview_as_json'     => 'show_overview_as_json',
-        'show_overview_as_include'  => 'show_overview_as_include',
+        'negotiate_url'               => 'negotiate_url',
+        'show_collection_as_html'     => 'show_collection_as_html',
+        'show_collection_as_rdf'      => 'show_collection_as_rdf',
+        'show_collection_as_json'     => 'show_collection_as_json',
+        'show_collection_as_include'  => 'show_collection_as_include',
         'show_statistic_negotiate'  => 'show_statistic_negotiate',
         'show_graph_as_html'        => 'show_graph_as_html',
         'show_graph_as_include'     => 'show_graph_as_include',
@@ -83,73 +83,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show_overview_negotiate {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-
-    my $config  = OpenBib::Config->instance;
-
-    my $negotiated_type_ref = $self->negotiate_type;
-
-    my $new_location = "$config->{base_loc}/$view/$config->{admin_statistics_loc}.$negotiated_type_ref->{suffix}";
-
-    $self->query->method('GET');
-    $self->query->content_type($negotiated_type_ref->{content_type});
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-    return;
-}
-
-sub show_overview_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->show_overview;
-
-    return;
-}
-
-sub show_overview_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->show_overview;
-
-    return;
-}
-
-
-sub show_overview_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->show_overview;
-
-    return;
-}
-
-sub show_overview_as_include {
-    my $self = shift;
-
-    $self->param('representation','include');
-
-    $self->show_overview;
-
-    return;
-}
-
-sub show_overview {
+sub show_collection {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -226,7 +160,7 @@ sub show_graph_negotiate {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$config->{base_loc}/$view/$config->{admin_statistics_loc}/$statisticid/$statisticid2/graph.$negotiated_type_ref->{suffix}";
+    my $new_location = "$self->param('path_prefix')/$config->{admin_statistics_loc}/$statisticid/$statisticid2/graph.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});

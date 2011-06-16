@@ -516,10 +516,7 @@ $(document).ready(function(){
 <div id="login"><!-- Begin login-->
 <img style="vertical-align:bottom" src="/images/openbib/persons.png" alt="[% msg.maketext("Einloggen") %]"/>&nbsp;&nbsp;[% msg.maketext("<b>Einloggen</b> f&uuml;r Tagging,
 Literaturlisten usw.<p/>") %]
-<form method="post" action="[% IF config.get('use_https') %]https://[% config.get('servername') %][%- END -%][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
-<input type="hidden" name="do_auth"   value="1" />
-
-
+<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][%- END -%][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
 
 <p />
 [% logintargets = user.get_logintargets %]

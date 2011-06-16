@@ -70,7 +70,7 @@ sub setup {
 
     $self->start_mode('show_collection');
     $self->run_modes(
-        'show_collection_negotiate' => 'show_collection_negotiate',
+        'negotiate_url'             => 'negotiate_url',
         'show_collection_as_html'   => 'show_collection_as_html',
         'show_collection_as_json'   => 'show_collection_as_json',
         'show_collection_as_rdf'    => 'show_collection_as_rdf',
@@ -79,67 +79,12 @@ sub setup {
         'show_record_negotiate'     => 'show_record_negotiate',
         'show_record_form'          => 'show_record_form',
         'update_record'             => 'update_record',
-        'delete_record'             => 'delete_record',        
+        'delete_record'             => 'delete_record',
     );
 
     # Use current path as template path,
     # i.e. the template is in the same directory as this script
 #    $self->tmpl_path('./');
-}
-
-sub show_collection_negotiate {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-
-    my $config  = OpenBib::Config->instance;
-
-    my $negotiated_type_ref = $self->negotiate_type;
-
-    my $new_location = "$config->{base_loc}/$view/$config->{admin_database_loc}.$negotiated_type_ref->{suffix}";
-
-    $self->query->method('GET');
-    $self->query->content_type($negotiated_type_ref->{content_type});
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-    return;
-}
-
-sub show_collection_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->show_collection;
-
-    return;
-}
-
-sub show_collection_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->show_collection;
-
-    return;
-}
-
-sub show_collection_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->show_collection;
-
-    return;
 }
 
 sub show_collection {
@@ -408,7 +353,7 @@ sub create_record {
     $config->new_databaseinfo($thisdbinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}/$dbname/edit");
+    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_database_loc}/$dbname/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -626,7 +571,7 @@ sub update_record {
     $config->update_databaseinfo($thisdbinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}");
+    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_database_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -681,7 +626,7 @@ sub delete_record {
     $config->del_databaseinfo($dbname);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$config->{base_loc}/$view/$config->{admin_database_loc}");
+    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_database_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

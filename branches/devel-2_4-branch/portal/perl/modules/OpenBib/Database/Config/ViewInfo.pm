@@ -45,6 +45,13 @@ __PACKAGE__->add_columns(
       is_nullable => 1,
       size => 20,
   },
+  "stripuri",
+  {
+      data_type => "TINYINT",
+      default_value => undef,
+      is_nullable => 1,
+      size => 1
+  },
   "joinindex",
   {
       data_type => "TINYINT",

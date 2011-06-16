@@ -30,10 +30,16 @@
 <tr><th>[% msg.maketext("View bearbeiten") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><b>[% msg.maketext("Eigener Index") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><b>[% msg.maketext("URI ohne View") %]</b></td><td><b>[% msg.maketext("Eigener Index") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
 
 <tr><td><span style="color:blue">[% viewinfo.viewname %]</span></td><td><input type="text" name="description" value="[% viewinfo.description %]" size="40" /></td>
 <td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview %]<option value="[% profile.profilename %]" [% IF viewinfo.profilename == profile.profilename %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td>
+<td>
+<select name="stripuri">
+<option value="1" [% IF viewinfo.stripuri == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="0" [% IF viewinfo.stripuri != '1' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+</select>
+</td>
 <td>
 <select name="joinindex">
 <option value="1" [% IF viewinfo.joinindex == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
@@ -142,7 +148,7 @@ selected="selected"
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="1" />
 
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Löschen") %]"></div></td></tr>
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Löschen") %]"></div>
 
 </form>
 

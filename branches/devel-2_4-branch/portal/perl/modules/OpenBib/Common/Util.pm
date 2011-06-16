@@ -266,6 +266,8 @@ sub print_page {
     
     my $session   = OpenBib::Session->instance({ apreq => $r });
 
+    my $servername = $r->get_server_name;
+    
     my $view;
     if ($ttdata->{'view'}){
         $view = $ttdata->{'view'};
@@ -303,6 +305,7 @@ sub print_page {
     }
 
     # TT-Data anreichern
+    $ttdata->{'servername'} = $servername;
     $ttdata->{'loginname'}  = $loginname;
     $ttdata->{'sysprofile'} = $sysprofile;
 

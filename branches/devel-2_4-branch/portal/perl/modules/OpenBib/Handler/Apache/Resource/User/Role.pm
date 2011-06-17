@@ -152,6 +152,7 @@ sub update_record {
     my $view           = $self->param('view')                   || '';
     my $userid         = $self->param('userid')                 || '';
     my $representation = $self->param('representation')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -192,7 +193,7 @@ sub update_record {
     $user->update_userrole($thisuserinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_user_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_user_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 }
     

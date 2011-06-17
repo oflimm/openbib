@@ -75,6 +75,7 @@ sub show {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -191,14 +192,14 @@ sub show {
             # ... und dann eintragen
             $user->add_profiledb($profilid,$database);
         }
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
         $user->delete_dbprofile($profilid);
         $user->delete_profiledbs($profilid);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {

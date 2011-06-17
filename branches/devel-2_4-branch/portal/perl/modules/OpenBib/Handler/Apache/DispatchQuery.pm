@@ -75,6 +75,7 @@ sub show {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -102,15 +103,15 @@ sub show {
     }
 
     if    ($do_newquery) {
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{searchform_loc}?queryid=$queryid");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{searchform_loc}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_resultlist) {
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{resultlists_loc}?action=choice&queryid=$queryid");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{resultlists_loc}?action=choice&queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_externalquery) {
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{externaljump_loc}?queryid=$queryid");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{externaljump_loc}?queryid=$queryid");
         return Apache2::Const::OK;
     }
     else {

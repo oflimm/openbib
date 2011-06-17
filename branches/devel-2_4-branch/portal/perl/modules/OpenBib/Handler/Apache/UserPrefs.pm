@@ -77,6 +77,7 @@ sub show {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -219,12 +220,12 @@ sub show {
             user      => $bibsonomy_user,
             key       => $bibsonomy_key,
         });        
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{userprefs_loc}?action=showfields");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{userprefs_loc}?action=showfields");
     }
     elsif ($action eq "bibsonomy_sync_all") {
         $user->sync_all_to_bibsonomy;
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{userprefs_loc}?action=showfields");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{userprefs_loc}?action=showfields");
     }
     elsif ($action eq "delaccount_ask") {
         # TT-Data erzeugen

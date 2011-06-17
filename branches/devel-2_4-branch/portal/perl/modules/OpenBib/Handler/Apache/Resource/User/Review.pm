@@ -190,10 +190,11 @@ sub return_baseurl {
     
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$userid/review.html";
+    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/review.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

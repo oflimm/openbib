@@ -96,6 +96,7 @@ sub show_collection_negotiatexxx {
     
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $query          = $self->query();
     my $method         = $query->param('_method')     || '';
@@ -112,7 +113,7 @@ sub show_collection_negotiatexxx {
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$self->param('path_prefix')/$config->{managecollection_loc}.$negotiated_type_ref->{suffix}";
+    my $new_location = "$path_prefix/$config->{managecollection_loc}.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -164,6 +165,7 @@ sub show_collection {
 
     my $view           = $self->param('view')           || '';
     my $representation = $self->param('representation') || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -284,7 +286,7 @@ sub show_collection {
             }
         }
         
-        my $redirecturl   = "http://$r->get_server_name$self->param('path_prefix')/$config->{managecollection_loc}";
+        my $redirecturl   = "http://$r->get_server_name$path_prefix/$config->{managecollection_loc}";
         
         if ($view ne "") {
             $redirecturl.=";view=$view";
@@ -304,7 +306,7 @@ sub show_collection {
             }
         }
         
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{litlists_loc}?action=manage&litlistid=$litlistid&do_showlitlist=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{litlists_loc}?action=manage&litlistid=$litlistid&do_showlitlist=1");
         return Apache2::Const::OK;
         
     }
@@ -317,7 +319,7 @@ sub show_collection {
         
         $user->add_litlist({ title =>$title, type => $littype});
         
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{managecollection_loc}?action=show&type=HTML");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{managecollection_loc}?action=show&type=HTML");
         return Apache2::Const::OK;
     }
     elsif ($do_addtags) {
@@ -352,7 +354,7 @@ sub show_collection {
             OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
         }
         
-        my $redirecturl   = "http://$r->get_server_name$self->param('path_prefix')/$config->{managecollection_loc}";
+        my $redirecturl   = "http://$r->get_server_name$path_prefix/$config->{managecollection_loc}";
         
         if ($view ne "") {
             $redirecturl.=";view=$view";
@@ -1432,7 +1434,7 @@ sub showzzz {
                 }
             }
 
-            my $redirecturl   = "http://$r->get_server_name$self->param('path_prefix')/$config->{managecollection_loc}";
+            my $redirecturl   = "http://$r->get_server_name$path_prefix/$config->{managecollection_loc}";
 
             if ($view ne "") {
                 $redirecturl.=";view=$view";
@@ -1452,7 +1454,7 @@ sub showzzz {
                 }
             }
 
-            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{litlists_loc}?action=manage&litlistid=$litlistid&do_showlitlist=1");
+            $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{litlists_loc}?action=manage&litlistid=$litlistid&do_showlitlist=1");
             return Apache2::Const::OK;
 
 	}
@@ -1465,7 +1467,7 @@ sub showzzz {
 	  
             $user->add_litlist({ title =>$title, type => $littype});
 
-            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{managecollection_loc}?action=show&type=HTML");
+            $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{managecollection_loc}?action=show&type=HTML");
             return Apache2::Const::OK;
 	}
         elsif ($do_addtags) {
@@ -1500,7 +1502,7 @@ sub showzzz {
                 OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
             }
             
-            my $redirecturl   = "http://$r->get_server_name$self->param('path_prefix')/$config->{managecollection_loc}";
+            my $redirecturl   = "http://$r->get_server_name$path_prefix/$config->{managecollection_loc}";
 
             if ($view ne "") {
                 $redirecturl.=";view=$view";
@@ -1665,10 +1667,11 @@ sub return_baseurl {
     
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$self->param('path_prefix')/$config->{collection_loc}.html";
+    my $new_location = "$path_prefix/$config->{collection_loc}.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1686,10 +1689,11 @@ sub return_loginurl {
     
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$self->param('path_prefix')/$config->{login_loc}.html";
+    my $new_location = "$path_prefix/$config->{login_loc}.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

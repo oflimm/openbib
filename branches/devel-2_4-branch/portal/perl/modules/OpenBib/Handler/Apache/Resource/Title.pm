@@ -131,6 +131,7 @@ sub show {
     my $view           = $self->param('view');
     my $database       = $self->param('database');
     my $titleid        = $self->param('titleid');
+    my $path_prefix    = $self->param('path_prefix');
 
     # Shared Args
     my $query          = $self->query();
@@ -158,7 +159,7 @@ sub show {
         $id = $titleid;
         my $negotiated_type_ref = $self->negotiate_type;
 
-        my $new_location = "$self->param('path_prefix')/$config->{resource_title_loc}/$database/$id.$negotiated_type_ref->{suffix}";
+        my $new_location = "$path_prefix/$config->{resource_title_loc}/$database/$id.$negotiated_type_ref->{suffix}";
 
         $self->query->method('GET');
         $self->query->content_type($negotiated_type_ref->{content_type});

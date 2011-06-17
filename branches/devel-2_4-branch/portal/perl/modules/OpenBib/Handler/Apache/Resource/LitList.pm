@@ -567,12 +567,13 @@ sub show_collection_by_single_user_negotiate {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
 
     my $negotiated_type_ref = $self->negotiate_type;
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_litlist_loc}/user.$negotiated_type_ref->{suffix}";
+    my $new_location = "$path_prefix/$config->{resource_litlist_loc}/user.$negotiated_type_ref->{suffix}";
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});
@@ -902,6 +903,7 @@ sub show_record_negotiate {
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $litlistid      = $self->param('litlistid')      || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     # Shared Args
     my $query          = $self->query();
@@ -943,7 +945,7 @@ sub show_record_negotiate {
             
             $session->set_returnurl($return_url);
             
-            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
+            $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}");
             
             return Apache2::Const::OK;
         }
@@ -1198,6 +1200,7 @@ sub create_record {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
     # CGI Args
     my $titid          = $query->param('titid')       || '';
@@ -1215,7 +1218,7 @@ sub create_record {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -1513,6 +1516,7 @@ sub create_entry {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
     # CGI Args
     my $titid          = $query->param('titid')       || '';
@@ -1546,7 +1550,7 @@ sub create_entry {
     
     $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb, comment => $comment});
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_litlist_loc}/$litlistid/edit";
+    my $new_location = "$path_prefix/$config->{resource_litlist_loc}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1577,6 +1581,7 @@ sub update_entry {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
     my $titid           = $query->param('titid')       || '';
@@ -1599,7 +1604,7 @@ sub update_entry {
 
     # Anpassen eines Kommentars
     
-    my $new_location = "$self->param('path_prefix')/$config->{resource_litlist_loc}/$litlistid/edit";
+    my $new_location = "$path_prefix/$config->{resource_litlist_loc}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1633,6 +1638,7 @@ sub delete_entry {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     if (!$titid || !$titdb || !$litlistid) {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."),$r,$msg);
@@ -1657,7 +1663,7 @@ sub delete_entry {
     
     $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
     
-    my $new_location = "$self->param('path_prefix')/$config->{resource_litlist_loc}/$litlistid/edit";
+    my $new_location = "$path_prefix/$config->{resource_litlist_loc}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1676,10 +1682,11 @@ sub return_baseurl {
     
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$userid/litlist.html";
+    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/litlist.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

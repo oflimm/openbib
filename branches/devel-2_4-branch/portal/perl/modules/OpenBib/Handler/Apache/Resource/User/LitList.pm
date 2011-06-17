@@ -108,6 +108,7 @@ sub show_collection {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
     # NO CGI Args
 
@@ -121,7 +122,7 @@ sub show_collection {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -173,10 +174,11 @@ sub return_baseurl {
     
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$userid/litlist.html";
+    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/litlist.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

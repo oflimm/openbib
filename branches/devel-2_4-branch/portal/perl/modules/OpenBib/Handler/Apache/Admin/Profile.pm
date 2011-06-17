@@ -259,6 +259,7 @@ sub create_record {
     
     my $r              = $self->param('r');
     my $view           = $self->param('view')                   || '';
+    my $path_prefix    = $self->param('path_prefix');
 
 
     my $config  = OpenBib::Config->instance;
@@ -311,7 +312,7 @@ sub create_record {
     }
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_profile_loc}/$profilename/edit");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -414,6 +415,7 @@ sub update_record {
 
     my $view           = $self->param('view')                   || '';
     my $profilename    = $self->param('profileid')             || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -496,7 +498,7 @@ sub update_record {
     });
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_profile_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -512,6 +514,7 @@ sub delete_record {
 
     my $view           = $self->param('view')                   || '';
     my $profilename    = $self->param('profileid')             || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -551,7 +554,7 @@ sub delete_record {
     $config->del_profile($profilename);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_profile_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

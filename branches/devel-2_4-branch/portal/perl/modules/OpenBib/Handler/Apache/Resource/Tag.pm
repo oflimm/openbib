@@ -97,6 +97,7 @@ sub show_collection {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
     
     my $config = OpenBib::Config->instance;
     
@@ -168,7 +169,7 @@ sub show_collection {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -353,6 +354,7 @@ sub show_collection_form {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -424,7 +426,7 @@ sub show_collection_form {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -459,6 +461,7 @@ sub create_record {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -530,7 +533,7 @@ sub create_record {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}");
 
         return Apache2::Const::OK;
     }
@@ -547,7 +550,7 @@ sub create_record {
         type      => $type,
     });
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_title_loc}/$titdb/$titid?queryid=$queryid;no_log=1";
+    my $new_location = "$path_prefix/$config->{resource_title_loc}/$titdb/$titid?queryid=$queryid;no_log=1";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -566,6 +569,7 @@ sub delete_record {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -637,7 +641,7 @@ sub delete_record {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}");
 
         return Apache2::Const::OK;
     }
@@ -654,11 +658,11 @@ sub delete_record {
         loginname => $loginname,
     });
 
-    my $new_location = "$r->get_server_name$self->param('path_prefix')/$config->{resource_title_loc}/$titdb/$titid.html?queryid=$queryid;no_log=1";
+    my $new_location = "$r->get_server_name$path_prefix/$config->{resource_title_loc}/$titdb/$titid.html?queryid=$queryid;no_log=1";
     
     if ($tags =~/^\w+$/){
         my $tagid = $user->get_id_of_tag({tag => $tags});
-        $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$user->{ID}/tag/$tagid.html";
+        $new_location = "$path_prefix/$config->{resource_user_loc}/$user->{ID}/tag/$tagid.html";
     }
     
     $self->query->method('GET');
@@ -678,6 +682,7 @@ sub update_record {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -749,7 +754,7 @@ sub update_record {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}");
 
         return Apache2::Const::OK;
     }
@@ -769,7 +774,7 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$user->{ID}/tag.html";
+    my $new_location = "$path_prefix/$config->{resource_user_loc}/$user->{ID}/tag.html";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -854,6 +859,7 @@ sub showyyy {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -925,7 +931,7 @@ sub showyyy {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -944,7 +950,7 @@ sub showyyy {
             type      => $type,
         });
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
@@ -960,10 +966,10 @@ sub showyyy {
 
         if ($tags =~/^\w+$/){
             my $tagid = $user->get_id_of_tag({tag => $tags});
-            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
+            $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+            $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         }
         return Apache2::Const::OK;
 
@@ -983,7 +989,7 @@ sub showyyy {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{tags_loc}?show_usertags=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{tags_loc}?show_usertags=1");
         return Apache2::Const::OK;
 
     }
@@ -1108,6 +1114,7 @@ sub showzzz {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -1179,7 +1186,7 @@ sub showzzz {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}?do_login=1");
 
         return Apache2::Const::OK;
     }
@@ -1198,7 +1205,7 @@ sub showzzz {
             type      => $type,
         });
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
@@ -1214,10 +1221,10 @@ sub showzzz {
 
         if ($tags =~/^\w+$/){
             my $tagid = $user->get_id_of_tag({tag => $tags});
-            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
+            $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+            $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         }
         return Apache2::Const::OK;
 
@@ -1237,7 +1244,7 @@ sub showzzz {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{tags_loc}?show_usertags=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{tags_loc}?show_usertags=1");
         return Apache2::Const::OK;
 
     }
@@ -1361,10 +1368,11 @@ sub return_baseurl {
     
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$userid/tag.html";
+    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/tag.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

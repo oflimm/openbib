@@ -210,6 +210,7 @@ sub create_record {
 
     my $view           = $self->param('view')                   || '';
     my $representation = $self->param('representation') || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -276,7 +277,7 @@ sub create_record {
     $config->new_logintarget($thislogintarget_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_authentication_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -292,6 +293,7 @@ sub update_record {
 
     my $view             = $self->param('view')                   || '';
     my $authenticationid = $self->param('authenticationid')       || '';
+    my $path_prefix      = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -385,7 +387,7 @@ sub update_record {
     $config->update_logintarget($thislogintarget_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_authentication_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -401,6 +403,7 @@ sub delete_record {
 
     my $view             = $self->param('view')                   || '';
     my $authenticationid = $self->param('authenticationid')             || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -434,7 +437,7 @@ sub delete_record {
     $config->del_logintarget($authenticationid);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_authentication_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

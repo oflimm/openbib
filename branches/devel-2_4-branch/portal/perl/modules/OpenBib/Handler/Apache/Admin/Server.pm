@@ -209,6 +209,7 @@ sub create_record {
 
     my $view           = $self->param('view')                   || '';
     my $representation = $self->param('representation') || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -257,7 +258,7 @@ sub create_record {
     });
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_server_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -272,7 +273,8 @@ sub update_record {
     my $r                = $self->param('r');
 
     my $view             = $self->param('view')                   || '';
-    my $serverid        = $self->param('serverid')       || '';
+    my $serverid         = $self->param('serverid')       || '';
+    my $path_prefix      = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -350,7 +352,7 @@ sub update_record {
     });
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_server_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -364,8 +366,9 @@ sub delete_record {
     
     my $r                = $self->param('r');
 
-    my $view             = $self->param('view')                   || '';
-    my $serverid        = $self->param('serverid')             || '';
+    my $view           = $self->param('view')                 || '';
+    my $serverid       = $self->param('serverid')             || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance({ apreq => $r });
@@ -399,7 +402,7 @@ sub delete_record {
     $config->del_server({id => $serverid});
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_server_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

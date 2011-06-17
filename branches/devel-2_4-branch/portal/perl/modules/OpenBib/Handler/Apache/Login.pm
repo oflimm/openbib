@@ -82,6 +82,7 @@ sub show_form {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -125,7 +126,7 @@ sub show_form {
     if ($user->{ID} && !$validtarget){
 
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{resource_user_loc}/[% user.ID %]/preference");
         $self->query->status(Apache2::Const::REDIRECT);
         
         return;
@@ -163,6 +164,7 @@ sub authenticate {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -206,7 +208,7 @@ sub authenticate {
     if ($user->{ID} && !$validtarget){
 
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{resource_user_loc}/[% user.ID %]/preference");
         $self->query->status(Apache2::Const::REDIRECT);
 
         return;
@@ -338,7 +340,7 @@ sub authenticate {
         $session->set_mask($masktype);
         
         $redirecturl
-            = "http://$r->get_server_name$self->param('path_prefix')/$config->{resource_user_loc}/$userid/preferences.html";
+            = "http://$r->get_server_name$path_prefix/$config->{resource_user_loc}/$userid/preferences.html";
         
     }
     
@@ -351,7 +353,7 @@ sub authenticate {
     
     # Fehlerbehandlung
     if ($loginfailed) {
-        $redirecturl="http://$r->get_server_name$self->param('path_prefix')/$config->{login_loc}/failure?code=$loginfailed";
+        $redirecturl="http://$r->get_server_name$path_prefix/$config->{login_loc}/failure?code=$loginfailed";
     }
     
     $logger->debug("Redirecting to $redirecturl");
@@ -373,6 +375,7 @@ sub failure {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -416,7 +419,7 @@ sub failure {
     if ($user->{ID} && !$validtarget){
 
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{resource_user_loc}/[% user.ID %]/preference");
         $self->query->status(Apache2::Const::REDIRECT);
 
         return;

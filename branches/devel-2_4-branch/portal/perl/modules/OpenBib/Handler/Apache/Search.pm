@@ -1508,6 +1508,7 @@ sub get_databases {
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $representation = $self->param('representation');
+    my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
     my @databases     = ($query->param('db'))?$query->param('db'):();
@@ -1626,7 +1627,7 @@ sub get_databases {
                 }
                 # Kein Profil
                 else {
-                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$self->param('path_prefix')/$config->{databasechoice_loc}\" target=\"body\">","</a>"),$r,$msg,$representation,$content_type);
+                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$path_prefix/$config->{databasechoice_loc}\" target=\"body\">","</a>"),$r,$msg,$representation,$content_type);
                     return Apache2::Const::OK;
                 }
                 

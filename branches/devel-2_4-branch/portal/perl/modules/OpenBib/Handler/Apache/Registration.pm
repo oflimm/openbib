@@ -231,6 +231,7 @@ sub mail_confirmation {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -281,12 +282,12 @@ sub mail_confirmation {
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($loginname)){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$r->get_server_name$self->param('path_prefix')/$config->{selfreg_loc}?action=show\">","</a>"),$r,$msg);
+        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"),$r,$msg);
         return Apache2::Const::OK;
     }
     
     if ($user->user_exists($loginname)) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$r->get_server_name$self->param('path_prefix')/$config->{selfreg_loc}?action=show\">","</a>"),$r,$msg);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"),$r,$msg);
         return Apache2::Const::OK;
     }
     
@@ -299,7 +300,7 @@ sub mail_confirmation {
         );
         
         unless ( $recaptcha_result->{is_valid} ) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"http://$r->get_server_name$self->param('path_prefix')/$config->{selfreg_loc}?action=show\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"),$r,$msg);
             return Apache2::Const::OK;
         }
     }

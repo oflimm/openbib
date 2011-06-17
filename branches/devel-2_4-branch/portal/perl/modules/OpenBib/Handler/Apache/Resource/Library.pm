@@ -182,6 +182,7 @@ sub show_record_negotiate {
 
     my $view           = $self->param('view')           || '';
     my $id             = $self->param('libraryid')      || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
@@ -214,7 +215,7 @@ sub show_record_negotiate {
         $libraryid = $id;
         my $negotiated_type_ref = $self->negotiate_type;
 
-        my $new_location = "$self->param('path_prefix')/$config->{resource_library_loc}/$libraryid.$negotiated_type_ref->{suffix}";
+        my $new_location = "$path_prefix/$config->{resource_library_loc}/$libraryid.$negotiated_type_ref->{suffix}";
 
         $self->query->method('GET');
         $self->query->content_type($negotiated_type_ref->{content_type});

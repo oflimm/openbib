@@ -75,7 +75,6 @@ sub setup {
         'show_statistic_negotiate'  => 'show_statistic_negotiate',
         'show_graph_as_html'        => 'show_graph_as_html',
         'show_graph_as_include'     => 'show_graph_as_include',
-        'show_graph_negotiate'      => 'show_graph_negotiate',
     );
 
     # Use current path as template path,
@@ -143,33 +142,6 @@ sub show_collection {
     
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 
-}
-
-sub show_graph_negotiate {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $statisticid    = $self->param('statisticid')    || '';
-    my $statisticid2   = $self->param('statisticid2')   || '';
-
-    my $config  = OpenBib::Config->instance;
-
-    my $negotiated_type_ref = $self->negotiate_type;
-
-    my $new_location = "$self->param('path_prefix')/$config->{admin_statistics_loc}/$statisticid/$statisticid2/graph.$negotiated_type_ref->{suffix}";
-
-    $self->query->method('GET');
-    $self->query->content_type($negotiated_type_ref->{content_type});
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-    return;
 }
 
 sub show_graph_as_html {

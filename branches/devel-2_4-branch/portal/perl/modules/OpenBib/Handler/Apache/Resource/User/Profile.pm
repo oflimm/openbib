@@ -401,6 +401,7 @@ sub create_record {
 
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -467,7 +468,7 @@ sub create_record {
         $user->add_profiledb($profileid,$database);
     }
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$userid/profile/$profileid.html";
+    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/profile/$profileid.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -537,6 +538,7 @@ sub show_collectionzzz {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -653,14 +655,14 @@ sub show_collectionzzz {
             # ... und dann eintragen
             $user->add_profiledb($profileid,$database);
         }
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
         $user->delete_dbprofile($profileid);
         $user->delete_profiledbs($profileid);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {
@@ -678,6 +680,7 @@ sub show_collectionxxx {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
     
@@ -793,14 +796,14 @@ sub show_collectionxxx {
             # ... und dann eintragen
             $user->add_profiledb($profileid,$database);
         }
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
         $user->delete_dbprofile($profileid);
         $user->delete_profiledbs($profileid);
 
-        $r->internal_redirect("http://$r->get_server_name$self->param('path_prefix')/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {
@@ -817,10 +820,11 @@ sub return_baseurl {
     
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$self->param('path_prefix')/$config->{resource_user_loc}/$userid/profile.html";
+    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/profile.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

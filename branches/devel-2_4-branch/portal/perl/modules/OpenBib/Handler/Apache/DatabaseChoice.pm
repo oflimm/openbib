@@ -163,6 +163,7 @@ sub update_collection {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view')           || '';
+    my $path_prefix    = $self->param('path_prefix');
 
     my $config  = OpenBib::Config->instance;
     
@@ -220,7 +221,7 @@ sub update_collection {
     # Neue Datenbankauswahl ist voreingestellt
     $session->set_profile('dbauswahl');
 
-    my $new_location = "$self->param('path_prefix')/$config->{searchform_loc}.html";
+    my $new_location = "$path_prefix/$config->{searchform_loc}.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

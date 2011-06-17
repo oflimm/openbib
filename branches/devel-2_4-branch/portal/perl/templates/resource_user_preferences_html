@@ -21,7 +21,7 @@
 
 <div id="maincontent">
 
-[% PROCESS common/subtemplate name="userprefs_navigation" active="userprefs" %] 
+[% PROCESS common/subtemplate name="resource_user_navigation" active="userprefs" %] 
 
 <div class="content">
 

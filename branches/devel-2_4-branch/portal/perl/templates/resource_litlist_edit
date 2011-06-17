@@ -26,7 +26,7 @@
 
 <div id="maincontent">
 
-[% PROCESS common/subtemplate name="userprefs_navigation" active="litlists" %]
+[% PROCESS common/subtemplate name="resource_user_navigation" active="litlists" %]
 
 <div class="content">
 

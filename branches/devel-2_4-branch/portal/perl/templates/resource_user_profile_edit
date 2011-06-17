@@ -37,7 +37,7 @@ function update_fak(yourform, checked, fak) {
 
 <div id="maincontent">
 
-[% PROCESS common/subtemplate name="userprefs_navigation" active="databaseprofile" %]
+[% PROCESS common/subtemplate name="resource_user_navigation" active="databaseprofile" %]
 
 <div class="content">
 

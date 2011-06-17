@@ -21,7 +21,7 @@
 
 <div id="maincontent">
 
-[% PROCESS common/subtemplate name="userprefs_navigation" active="tags" %]
+[% PROCESS common/subtemplate name="resource_user_navigation" active="tags" %]
 
 <div class="content">
 

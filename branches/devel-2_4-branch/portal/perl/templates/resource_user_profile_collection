@@ -40,7 +40,7 @@ function update_fak(yourform, checked, fak) {
 <form method="post" action="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/profile" enctype="application/x-www-form-urlencoded">
 
 
-[% PROCESS common/subtemplate name="userprefs_navigation" active="databaseprofile" %]
+[% PROCESS common/subtemplate name="resource_user_navigation" active="databaseprofile" %]
 
 <div class="content">
 

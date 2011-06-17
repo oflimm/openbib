@@ -21,13 +21,13 @@
 
 <div id="maincontent">
 
-[% PROCESS common/subtemplate name="userprefs_navigation" active="tags" %]
+[% PROCESS common/subtemplate name="resource_user_navigation" active="tags" %]
 
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% path_prefix %]/[% config.get('tags_loc') %]?show_usertags=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
-   <li><a class="active" href="[% path_prefix %]/[% config.get('tags_loc') %]?edit_usertags=1">[% msg.maketext("&Auml;ndern") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/tag.html">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/tag/edit">[% msg.maketext("&Auml;ndern") %]</a></li>
 </ul>
 
 <div class="content">

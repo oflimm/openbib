@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::DatabaseProfile
 #
-#  Dieses File ist (C) 2005-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -192,14 +192,14 @@ sub show {
             # ... und dann eintragen
             $user->add_profiledb($profilid,$database);
         }
-        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
         $user->delete_dbprofile($profilid);
         $user->delete_profiledbs($profilid);
 
-        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{databaseprofile_loc}?do_showprofile=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {

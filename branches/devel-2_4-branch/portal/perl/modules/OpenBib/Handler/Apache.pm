@@ -95,7 +95,7 @@ sub cgiapp_init() {       # overrides
    #   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
 }
 
-sub negotiate_contenttype {
+sub negotiate_type {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -158,7 +158,7 @@ sub negotiate_url {
 
     $args = "?$args" if ($args);
     
-    my $negotiated_type_ref = $self->negotiate_contenttype;
+    my $negotiated_type_ref = $self->negotiate_type;
 
     $self->query->method('GET');
     $self->query->content_type($negotiated_type_ref->{content_type});

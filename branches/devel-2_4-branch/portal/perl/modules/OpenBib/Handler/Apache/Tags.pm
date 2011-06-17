@@ -156,7 +156,7 @@ sub show {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
 
         return Apache2::Const::OK;
     }
@@ -175,7 +175,7 @@ sub show {
             type      => $type,
         });
 
-        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;fs=id:$titid;no_log=1");
         return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
@@ -191,10 +191,10 @@ sub show {
 
         if ($tags =~/^\w+$/){
             my $tagid = $user->get_id_of_tag({tag => $tags});
-            $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;fs=id:$titid;no_log=1");
         }
         return Apache2::Const::OK;
 
@@ -214,7 +214,7 @@ sub show {
             return Apache2::Const::OK;
         }
         
-        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{tags_loc}?show_usertags=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{tags_loc}?show_usertags=1");
         return Apache2::Const::OK;
 
     }

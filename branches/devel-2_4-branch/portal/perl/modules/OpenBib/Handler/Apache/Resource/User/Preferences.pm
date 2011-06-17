@@ -121,7 +121,7 @@ sub show_collection {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -231,7 +231,7 @@ sub update_searchfields {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }
@@ -306,7 +306,7 @@ sub update_bibsonomy {
         
         $session->set_returnurl($return_url);
         
-        $r->internal_redirect("http://$r->get_server_name$path_prefix/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
         
         return Apache2::Const::OK;
     }

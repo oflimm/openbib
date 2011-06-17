@@ -128,14 +128,14 @@ sub show {
     $logger->debug("Path-Prefix: ".$path_prefix);
 
     # Standard-URL
-    my $redirecturl = "$path_prefix/$config->{searchform_loc}/$setmask";
+    my $redirecturl = "$config->{base_loc}/$view/$config->{searchform_loc}/$setmask";
 
     my $viewstartpage_ref = $config->get_startpage_of_view($view);
 
     $logger->debug(YAML::Dump($viewstartpage_ref));
     
     if ($viewstartpage_ref->{start_loc}){
-        $redirecturl = "$path_prefix/$config->{$viewstartpage_ref->{start_loc}}";
+        $redirecturl = "$config->{base_loc}/$view/$config->{$viewstartpage_ref->{start_loc}}";
 
         if ($viewstartpage_ref->{start_stid}){
             $redirecturl.="/$viewstartpage_ref->{start_stid}";
@@ -143,31 +143,31 @@ sub show {
     }
     
     if ($searchsingletit && $database ){
-        $redirecturl = "$path_prefix/$config->{resource_title_loc}/$database/$searchsingletit.html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{resource_title_loc}/$database/$searchsingletit.html";
     }
     
     if ($searchsingleaut && $database ){
-        $redirecturl = "$path_prefix/$config->{resource_person_loc}/$database/$searchsingleaut.html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{resource_person_loc}/$database/$searchsingleaut.html";
     }
 
     if ($searchsinglekor && $database ){
-        $redirecturl = "$path_prefix/$config->{resource_corporatebody_loc}/$database/$searchsinglekor.html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{resource_corporatebody_loc}/$database/$searchsinglekor.html";
     }
 
     if ($searchsingleswt && $database ){
-        $redirecturl = "$path_prefix/$config->{resource_subject_loc}/$database/$searchsingleswt.html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{resource_subject_loc}/$database/$searchsingleswt.html";
     }
 
     if ($searchsinglenot && $database ){
-        $redirecturl = "$path_prefix/$config->{resource_classification_loc}/$database/$searchsinglenot.html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{resource_classification_loc}/$database/$searchsinglenot.html";
     }
     
     if ($fs){
-        $redirecturl = "$path_prefix/$config->{search_loc}?fs=".uri_escape($fs).";num=50;srt=author;srto=up;profil=;st=3";
+        $redirecturl = "$config->{base_loc}/$view/$config->{search_loc}?fs=".uri_escape($fs).";num=50;srt=author;srto=up;profil=;st=3";
     }
 
     if ($searchlitlist){
-        $redirecturl = "$path_prefix/$config->{resource_litlist_loc}/$searchlitlist.html";
+        $redirecturl = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/$searchlitlist.html";
     }
 
     $logger->info("Redirecting to $redirecturl");

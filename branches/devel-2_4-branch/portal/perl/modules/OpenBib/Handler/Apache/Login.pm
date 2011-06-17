@@ -340,7 +340,7 @@ sub authenticate {
         $session->set_mask($masktype);
         
         $redirecturl
-            = "http://$r->get_server_name$path_prefix/$config->{resource_user_loc}/$userid/preferences.html";
+            = "$path_prefix/$config->{resource_user_loc}/$userid/preferences.html";
         
     }
     
@@ -353,7 +353,7 @@ sub authenticate {
     
     # Fehlerbehandlung
     if ($loginfailed) {
-        $redirecturl="http://$r->get_server_name$path_prefix/$config->{login_loc}/failure?code=$loginfailed";
+        $redirecturl="$path_prefix/$config->{login_loc}/failure?code=$loginfailed";
     }
     
     $logger->debug("Redirecting to $redirecturl");

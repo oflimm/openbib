@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Circulation
 #
-#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -126,7 +126,7 @@ sub show {
         $session->set_returnurl($return_url);
 
         if ($validtarget){
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
         }
         else {
             $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1");

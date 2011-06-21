@@ -1,0 +1,133 @@
+\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\usepackage{german}
+\usepackage{typearea}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[utf8x]{inputenc}
+
+% Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
+\usepackage{picins}
+
+% Header anpassbar
+\usepackage{fancyhdr}
+
+% Headings umdefinieren
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyhead[LE]{\nouppercase{\leftmark}}
+\fancyfoot[RO, LE]{\thepage}
+
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+\addtolength{\headwidth}{1cm}
+
+\parindent0.0mm
+\parskip0.3cm    
+\typearea{13}
+
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{-1}
+
+\begin{document}
+
+\frontmatter
+\begin{titlepage}
+
+\begin{center}
+
+\vspace{2cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Werkverzeichnis der Sammlung Pr"ussen}
+
+  \vspace{0.5cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont in der USB K"oln}
+
+\vspace{0.5cm}
+
+\includegraphics[width=12cm]{/usr/share/images/openbib/blaues-siegel-uni-koeln.jpg}
+
+  \vspace{1cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Stand: \today}
+
+\end{center}
+
+[%- IF beschreibung.length > 70 -%]
+\vspace{2mm}
+[%- ELSE -%]
+\vspace{1cm}
+[%- END -%]
+
+\rule[-.1in]{16cm}{0.1mm}\\[2mm]
+\begin{tabular}{lc}
+\raisebox{-0.6cm}{\includegraphics[width=3.2cm]{/usr/share/images/openbib/usblogo.jpg}} &
+\raisebox{-0.1cm}{\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont
+Abteilung Universit"atsGesamtKatalog / USB K"oln}}\\
+\end{tabular}
+
+\rule[1cm]{16cm}{0.1mm}
+
+\end{titlepage}
+
+
+
+
+%\thispagestyle{empty}
+
+%\begin{verbatim}
+
+
+%Copyright (c) 2005 Oliver Flimm <flimm@openbib.org>
+
+%Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
+%und/oder zu veraendern unter den Bedingungen der GNU Free
+%Documentation License, Version 1.1 oder einer spaeteren, von der Free 
+%Software Foundation veroeffentlichten Version; mit den
+%Unveraenderlichen Abschnitten DEREN TITEL AUFGEZAEHLT sind, mit den 
+%Vorderseitentexten die AUFGEZAEHLT sind, und mit den Rueckseitentexten
+%die AUFGEZAEHLT sind. Eine Kopie dieser Lizenz ist in dem Abschnitt 
+%enthalten, der mit "GNU Free Documentation License"
+%\end{verbatim}
+
+\mainmatter
+
+\tableofcontents
+
+\chapter{Buchillustrationen [% buchillustrationen_year_min %] - [% buchillustrationen_year_max %]}
+
+[% FOREACH year IN buchillustrationen_available_years %]
+[% anzahl = buchillustrationen_recordlist.${year}.size %]
+\section{Das Jahr [% year %] - [% anzahl %] Illustration[% IF anzahl > 1 %]en[% END %]}
+
+[%    FOREACH record IN buchillustrationen_recordlist.${year} %]
+[%       thistitset = record.get_normdata %]
+[%       thismexset = record.get_mexdata %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Presseillustrationen [% presseillustrationen_year_min %] - [% presseillustrationen_year_max %]}
+
+[% FOREACH year IN presseillustrationen_available_years %]
+[% anzahl = buchillustrationen_recordlist.${year}.size %]
+\section{Das Jahr [% year %] - [% anzahl %] Illustration[% IF anzahl > 1 %]en[% END %]}
+
+[%    FOREACH record IN presseillustrationen_recordlist.${year} %]
+[%       thistitset = record.get_normdata %]
+[%       thismexset = record.get_mexdata %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel %]
+
+[%    END %]
+
+[% END %]
+
+\end{document}
+

@@ -1,0 +1,56 @@
+\subsection{[% filterchars(thistitset.${"T0331"}.first.content) %]}
+
+\begin{frameenv}
+
+\begin{tabular}{lp{10cm}}
+[% FOREACH item IN thistitset.${"T0100"} %]
+  [% IF item.content != 'Prüssen, Eduard' %]
+  Verfasser & [% filterchars(item.content) %]\\
+  [% END %]
+[% END %]
+[% FOREACH item IN thistitset.${"T0101"} %]
+  Person & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0200"} %]
+  Urheber & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0201"} %]
+  K"orperschaft & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0310"} %]
+  AST & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0335"} %]
+   Zusatz zum HST & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0370"} %]
+   WST & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0412"} %]
+   Verlag     & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0410"} %]
+   Verlagsort & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0425"} %]
+   Erscheinungsjahr & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0543"} %]
+   ISSN & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0531"} %]
+   Fr"uher u.d.T. & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0532"} %]
+   Teilw. u.d.T. & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0533"} %]
+   Sp"ater u.d.T. & [% filterchars(item.content) %]\\
+[% END %]
+[% IF thismexset %]
+   Signatur & [% filterchars(thismexset.first.${"X0014"}.content) %]\\
+[% END %]
+\end{tabular}
+
+\end{frameenv}
+

@@ -57,8 +57,7 @@
 <p />
 
 <table>
-<tr><td>Besondere Start-Location</td><td><input type="text" name="viewstart_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
-<tr><td>Besondere Start-SubTemplateId</td><td><input type="text" name="viewstart_stid" value="[% viewinfo.start_stid %]" size="40" /></td></tr>
+<tr><td>Andere Start-Seite</td><td><input type="text" name="viewstart_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
 </table>
 
 <p />

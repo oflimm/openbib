@@ -4408,6 +4408,11 @@ sub is_admin {
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
+
+    # Statischer Admin-User aus portal.yml
+    return 1 if ($self->{ID} eq $config->{adminuser});
+
+    # Sonst: Normale Nutzer mit der der Admin-Role
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -4417,7 +4422,7 @@ sub is_admin {
     return undef if (!defined $dbh);
 
     # Update des Autovervollstaendigung-Typs
-    my $request=$dbh->prepare("select count(ur.userid) as rowcount from userrole as ur ,role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select count(ur.userid) as rowcount from userrole as ur, role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid") or $logger->error($DBI::errstr);
     $request->execute($self->{ID}) or $logger->error($DBI::errstr);
     
     my $result=$request->fetchrow_hashref;
@@ -4427,8 +4432,6 @@ sub is_admin {
     $request->finish();
 
     return ($rows > 0)?1:0;
-
-    return;
 }
 
 sub del_subject {

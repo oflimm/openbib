@@ -239,20 +239,15 @@ sub get_startpage_of_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select start_loc,start_stid from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select start_loc from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
     $request->execute($viewname) or $logger->error($DBI::errstr);
     my $res            = $request->fetchrow_hashref;
     my $start_loc      = decode_utf8($res->{start_loc}) if (defined($res->{'start_loc'}));
-    my $start_stid     = decode_utf8($res->{start_stid}) if (defined($res->{'start_stid'}));
     $request->finish();
 
     $logger->debug("Got Startpage $start_loc") if (defined $start_loc);
-    $logger->debug("Got StartStid $start_stid") if (defined $start_stid);
     
-    return {
-        start_loc  => $start_loc,
-        start_stid => $start_stid,
-    };
+    return $start_loc;
 }
 
 sub db_exists {

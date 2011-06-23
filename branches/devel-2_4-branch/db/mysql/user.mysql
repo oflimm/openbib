@@ -327,3 +327,11 @@ PACK_KEYS=1;
 
 /* Standard ist Selbstregistrierung */
 insert into logintarget values(1,NULL,NULL,NULL,NULL,'Registrierte E-Mail Adresse','self');
+
+/* Standard sind Rollen Admin und Bibliothekar */
+insert into role values (1,'admin');
+insert into role values (2,'librarian');
+
+/* Standard ist Admin-User mit ID 1 und Passwort 'StrengGeheim' */
+insert into user (userid,loginname,pin) values (1,'admin','StrengGeheim');
+insert into userrole values (1,1);

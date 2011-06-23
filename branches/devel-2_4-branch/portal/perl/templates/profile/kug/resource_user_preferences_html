@@ -34,7 +34,7 @@
 <table>
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% loginname %]</td>
 
-[% IF targettype == 'self' %]
+[% IF targettype == 'self' && loginname != 'admin' %]
 <td><form method="post" action="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="confirm" value="1" /><input type="hidden" name="method" value="_DELETE" /><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></div></form></td>
 [% END %]
 

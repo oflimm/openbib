@@ -70,15 +70,20 @@ sub show {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     $logger->debug("Deleting Cookie with SessionID $session->{ID}");
     
@@ -89,21 +94,6 @@ sub show {
                                   );
     
     $r->err_headers_out->set('Set-Cookie', $cookie);
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     if ($user->{ID}) {
         # Authentifiziert-Status der Session loeschen
@@ -119,14 +109,9 @@ sub show {
   
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        config     => $config,
-        user       => $user,
-        msg        => $msg,
     };
   
-    OpenBib::Common::Util::print_page($config->{tt_logout_tname},$ttdata,$r);
+    $self->print_page($config->{tt_logout_tname},$ttdata);
   
     return Apache2::Const::OK;
 }

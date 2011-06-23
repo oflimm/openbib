@@ -81,22 +81,21 @@ sub show_collection {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || '';
     
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
+    my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
     # CGI Args
-
     my $format         = $query->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
@@ -105,39 +104,21 @@ sub show_collection {
 
     my $profile       = $config->get_viewinfo->search({ viewname => $view })->single()->profilename;
 
-    my $content_type  = $config->{'content_type_map_rev'}{$representation};
-    
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
     # TT-Data erzeugen
     my $ttdata={
-        representation=> $representation,
-        content_type  => $content_type,
         format        => $format,
         profile       => $profile,
         queryoptions  => $queryoptions,
         query         => $query,
-        view          => $view,
-        stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
-        sessionID     => $session->{ID},
-	session       => $session,
-        useragent     => $useragent,
-        config        => $config,
         dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
-        user          => $user,
-        msg           => $msg,
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
     };
 
-    my $templatename = "tt_resource_cloud_collection_tname";
-
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    $self->print_page($config->{tt_resource_cloud_collection_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

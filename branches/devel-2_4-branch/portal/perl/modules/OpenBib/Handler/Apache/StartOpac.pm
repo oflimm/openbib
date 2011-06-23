@@ -75,101 +75,43 @@ sub show {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
+
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');    
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;    
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    
-    my $query   = Apache2::Request->new($r);
-
-    my $fs   = $query->param('fs')      || '';
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $database        = ($query->param('db'))?$query->param('db'):'';
-    my $singleidn       = $query->param('singleidn') || '';
-    my $action          = $query->param('action') || '';
-    my $setmask         = $query->param('setmask') || '';
-    my $searchsingletit = $query->param('searchsingletit') || '';
-    my $searchsingleaut = $query->param('searchsingleaut') || '';
-    my $searchsinglekor = $query->param('searchsinglekor') || '';
-    my $searchsingleswt = $query->param('searchsingleswt') || '';
-    my $searchsinglenot = $query->param('searchsinglenot') || '';
-    my $searchlitlist   = $query->param('searchlitlist')   || '';
+    # CGI Args
   
-    if ($setmask) {
-        $session->set_mask($setmask);
-    }
     # Standard ist 'einfache Suche'
-    else {
-        $session->set_mask('simple');
-        $setmask="simple";
-    }
-  
-    # Wenn effektiv kein valider View uebergeben wurde, dann wird
-    # ein 'leerer' View mit der Session assoziiert.
-
-    my $start_loc  = "";
-    my $start_stid = "";
+    my $setmask="simple";
     
-    if ($view eq "") {
-        $session->set_view($view);
-    }
-
+    $session->set_mask($setmask);
+  
     $logger->debug("StartOpac-sID: $session->{ID}");
     $logger->debug("Path-Prefix: ".$path_prefix);
 
     # Standard-URL
-    my $redirecturl = "$config->{base_loc}/$view/$config->{searchform_loc}/$setmask";
+    my $redirecturl = "$config->{base_loc}/$view/$config->{searchform_loc}/$setmask.html";
 
-    my $viewstartpage_ref = $config->get_startpage_of_view($view);
+    my $viewstartpage = $config->get_startpage_of_view($view);
 
-    $logger->debug(YAML::Dump($viewstartpage_ref));
+    $logger->debug("Alternative Interne Startseite: $viewstartpage");
     
-    if ($viewstartpage_ref->{start_loc}){
-        $redirecturl = "$config->{base_loc}/$view/$config->{$viewstartpage_ref->{start_loc}}";
-
-        if ($viewstartpage_ref->{start_stid}){
-            $redirecturl.="/$viewstartpage_ref->{start_stid}";
-        }
+    if ($viewstartpage){
+        $redirecturl = $viewstartpage;
     }
     
-    if ($searchsingletit && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_title_loc}/$database/$searchsingletit.html";
-    }
-    
-    if ($searchsingleaut && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_person_loc}/$database/$searchsingleaut.html";
-    }
-
-    if ($searchsinglekor && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_corporatebody_loc}/$database/$searchsinglekor.html";
-    }
-
-    if ($searchsingleswt && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_subject_loc}/$database/$searchsingleswt.html";
-    }
-
-    if ($searchsinglenot && $database ){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_classification_loc}/$database/$searchsinglenot.html";
-    }
-    
-    if ($fs){
-        $redirecturl = "$config->{base_loc}/$view/$config->{search_loc}?fs=".uri_escape($fs).";num=50;srt=author;srto=up;profil=;st=3";
-    }
-
-    if ($searchlitlist){
-        $redirecturl = "$config->{base_loc}/$view/$config->{resource_litlist_loc}/$searchlitlist.html";
-    }
-
     $logger->info("Redirecting to $redirecturl");
     
     $r->internal_redirect($redirecturl);

@@ -74,68 +74,50 @@ sub show {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $code      = ($query->param('code'))?$query->param('code'):'1';
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
     if ($action eq "show") {
 
         # TT-Data erzeugen
 
         my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-
-
-            sessionID  => $session->{ID},
             loginname  => $loginname,
-
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
         };
 
-        OpenBib::Common::Util::print_page($config->{tt_mailpassword_tname},$ttdata,$r);
+        $self->print_page($config->{tt_mailpassword_tname},$ttdata);
     }
     elsif ($action eq "sendpw") {
         my $loginfailed=0;
     
         if ($loginname eq "") {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"),$r,$msg);
+            $self->print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"));
             return Apache2::Const::OK;
         }
 
         my ($dummy,$password)=$user->get_credentials({userid => $user->get_userid_for_username($loginname)});
     
         if (!$password) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Passwort für die Kennung $loginname"),$r,$msg);
+            $self->print_warning($msg->maketext("Es existiert kein Passwort für die Kennung [_1]",$loginname));
             return Apache2::Const::OK;
         }
 
@@ -171,7 +153,7 @@ sub show {
         my $mailmsg = MIME::Lite->new(
             From            => $config->{contact_email},
             To              => $loginname,
-            Subject         => $msg->maketext("Ihr vergessenes KUG-Passwort"),
+            Subject         => $msg->maketext("Ihr vergessenes Passwort"),
             Type            => 'multipart/mixed'
         );
 
@@ -188,15 +170,9 @@ sub show {
     
 
         my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
         };
 
-        OpenBib::Common::Util::print_page($config->{tt_mailpassword_success_tname},$ttdata,$r);
+        $self->print_page($config->{tt_mailpassword_success_tname},$ttdata);
     }
 
     return Apache2::Const::OK;

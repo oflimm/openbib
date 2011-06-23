@@ -84,24 +84,22 @@ sub show {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-  
+    # CGI Args
     #####################################################################
     ## Hitrange: Anzahl gleichzeitig ausgegebener Treffer (Blaettern)
     ##          >0  - gibt die maximale Zahl an
@@ -174,12 +172,6 @@ sub show {
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
@@ -231,27 +223,20 @@ sub show {
 
                 # TT-Data erzeugen
                 my $ttdata={
-                    view        => $view,
-                    stylesheet  => $stylesheet,
                     database    => $database,
                     poolname    => $poolname,
                     qopts       => $queryoptions->get_options,
-                    sessionID   => $session->{ID},
                     result      => $soapresult,
 
                     collection    => $collection,
                     browsecontent => $browsecontent,
                     browsecat     => $browsecat,
-
-                    config      => $config,
-                    user        => $user,
-                    msg         => $msg,
                 };
 
                 $stid=~s/[^0-9]//g;
                 my $templatename = ($stid)?"tt_browse_olws_".$stid."_tname":"tt_browse_olws_tname";
 
-                OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+                $self->print_page($config->{$templatename},$ttdata);
                 return Apache2::Const::OK;
             }
             
@@ -647,20 +632,13 @@ sub show {
         
         # TT-Data erzeugen
         my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
             database   => $database,
             browsecat  => $browsecat,
             qopts      => $queryoptions->get_options,
-            sessionID  => $session->{ID},
             browselist => $browselist_ref,
             hits       => $hits,
-            
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config->{"tt_browse_".$type."_tname"},$ttdata,$r);
+        $self->print_page($config->{"tt_browse_".$type."_tname"},$ttdata);
         return Apache2::Const::OK;
     }
 

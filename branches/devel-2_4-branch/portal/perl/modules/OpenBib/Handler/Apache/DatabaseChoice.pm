@@ -57,10 +57,7 @@ sub setup {
 
     $self->start_mode('negotiate_url');
     $self->run_modes(
-        'negotiate_url'                        => 'negotiate_url',
-        'show_collection_as_html'              => 'show_collection_as_html',
-        'show_collection_as_json'              => 'show_collection_as_json',
-        'show_collection_as_rdf'               => 'show_collection_as_rdf',
+        'show_collection'                      => 'show_collection',
         'update_collection'                    => 'update_collection',
     );
 
@@ -75,22 +72,22 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
 
-    my $config  = OpenBib::Config->instance;
-    
-    my $query   = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    # CGI-Uebergabe
-
+    # CGI Args
     my @databases = ($query->param('db'))?$query->param('db'):();
     my $singleidn = $query->param('singleidn') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
@@ -108,17 +105,6 @@ sub show_collection {
     my $maxcolumn = $query->param('maxcolumn') || $config->{databasechoice_maxcolumn};
   
     my %checkeddb;
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     my $profile = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
 
@@ -138,19 +124,13 @@ sub show_collection {
     my $colspan=$maxcolumn*3;
     
     my $ttdata={
-        view       => $view,
         profile    => $profile,
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
         maxcolumn  => $maxcolumn,
         colspan    => $colspan,
         catdb      => \@catdb,
-        config     => $config,
-        user       => $user,
-        msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_databasechoice_tname},$ttdata,$r);
+    $self->print_page($config->{tt_databasechoice_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -160,23 +140,22 @@ sub update_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    
-    my $query   = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    # CGI-Uebergabe
-
+    # CGI Args
     my @databases = ($query->param('db'))?$query->param('db'):();
     my $singleidn = $query->param('singleidn') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
@@ -195,17 +174,6 @@ sub update_collection {
   
     my %checkeddb;
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
     my $profile = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
 
     my $idnresult="";
@@ -221,7 +189,7 @@ sub update_collection {
     # Neue Datenbankauswahl ist voreingestellt
     $session->set_profile('dbauswahl');
 
-    my $new_location = "$path_prefix/$config->{searchform_loc}.html";
+    my $new_location = "$path_prefix/$config->{searchform_loc}/recent.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

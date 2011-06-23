@@ -79,25 +79,29 @@ sub show {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $type           = $self->param('type')           || 'simple';
+    my $type           = $self->strip_suffix($self->param('type'));
 
-    my $session = OpenBib::Session->instance({ apreq => $r });    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $config      = OpenBib::Config->instance;
+    # CGI Args
+    my @databases  = ($query->param('db'))?$query->param('db'):();
+    my $queryid     = $query->param('queryid') || '';
+
+    
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    my $query  = Apache2::Request->new($r);
-
     my $statistics  = new OpenBib::Statistics();
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    my $useragent = $r->subprocess_env('HTTP_USER_AGENT');
-  
-    my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
 
     if ($type eq "recent"){
         $type = $session->get_mask();
@@ -108,23 +112,8 @@ sub show {
 
     $logger->debug("Got Type: $type");
     
-    my @databases  = ($query->param('db'))?$query->param('db'):();
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
     my $fieldchoice_ref = $config->{default_fieldchoice};
   
-    my $userprofiles  = "";
-
     my $spelling_suggestion_ref = {
         as_you_type => 0,
         resultlist  => 0,
@@ -154,23 +143,9 @@ sub show {
                 name      => $profile_ref->{profilename},
                 databases => \@profiledbs,
             };
-
-            my $profselected="";
-            if ($prevprofile eq "user$profile_ref->{profilid}") {
-                $profselected="selected=\"selected\"";
-            }
-
-            $userprofiles.="<option value=\"user$profile_ref->{profilid}\" $profselected>- $profile_ref->{profilename}</option>";
         }
+    }    
 
-        if ($userprofiles){
-            $userprofiles="<option value=\"\">Gespeicherte Katalogprofile:</option><option value=\"\">&nbsp;</option>".$userprofiles."<option value=\"\">&nbsp;</option>";
-        }
-    
-    }
-
-    my $queryid     = $query->param('queryid') || '';
-    
     my $searchquery = OpenBib::SearchQuery->instance;
 
     if ($queryid) {
@@ -181,15 +156,6 @@ sub show {
     }
     
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
-
-    # Wenn Datenbanken uebergeben wurden, dann werden diese eingetragen
-    if ($#databases >= 0) {
-        $session->clear_dbchoice();
-
-        foreach my $thisdb (@databases) {
-            $session->set_dbchoice($thisdb);
-        }
-    }
 
     # Erzeugung der database-Input Tags fuer die suche
     my $dbinputtags = "";
@@ -217,10 +183,7 @@ sub show {
     
     # TT-Data erzeugen
     my $ttdata={
-        view          => $view,
-        stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
-        sessionID     => $session->{ID},
         alldbs        => $alldbs,
         alldbcount    => $alldbcount,
         userprofile   => $userprofile_ref,
@@ -235,30 +198,19 @@ sub show {
         searchquery   => $searchquery->get_searchquery,
         qopts         => $queryoptions->get_options,
 
-        iso2utf      => sub {
-            my $string=shift;
-            $string=Encode::encode("iso-8859-1",$string);
-            return $string;
-        },
-
         anzahl        => $anzahl,
         queries       => \@queries,
-        useragent     => $useragent,
 
         catdb         => \@catdb,
         maxcolumn     => $maxcolumn,
         colspan       => $colspan,
         
         statistics    => $statistics,
-        config        => $config,
-        session       => $session,
-        user          => $user,
-        msg           => $msg,
     };
 
-    my $templatename = ($type)?"tt_searchform_".$type."_tname":"tt_searchfrom_tname";
+    my $templatename = ($type)?"tt_searchform_".$type."_tname":"tt_searchform_tname";
     
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
 }

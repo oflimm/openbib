@@ -70,13 +70,10 @@ sub setup {
 
     $self->start_mode('show_collection');
     $self->run_modes(
-        'negotiate_url'             => 'negotiate_url',
-        'show_collection_as_html'   => 'show_collection_as_html',
-        'show_collection_as_json'   => 'show_collection_as_json',
-        'show_collection_as_rdf'    => 'show_collection_as_rdf',
+        'show_collection'           => 'show_collection',
         'show_collection_form'      => 'show_collection_form',
         'create_record'             => 'create_record',
-        'show_record_negotiate'     => 'show_record_negotiate',
+        'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'update_record'             => 'update_record',
         'delete_record'             => 'delete_record',
@@ -93,43 +90,28 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $dbname         = $self->param('databaseid')     || '';
 
-    my $representation = $self->param('representation') || '';
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
 
-    $logger->debug("Server: ".$r->get_server_name."Representation: $representation");
-
     if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
@@ -143,116 +125,56 @@ sub show_collection {
     
     
     my $ttdata={
-        representation => $representation,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        view       => $view,
-        
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-        
         katalog    => $katalog,
-        
-        config     => $config,
-        session    => $session,
-        user       => $user,
-        msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_database_rss_tname},$ttdata,$r);
+    $self->print_page($config->{tt_admin_database_rss_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
 
-sub show_record_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $dbname         = $self->param('databaseid');
+    my $rssid          = $self->strip_suffix($self->param('rssid'));
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')                   || '';
-    my $dbname         = $self->param('databaseid')     || '';
-    my $id             = $self->param('rssid')          || '';
-
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
 
     $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
 
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $representation = "";
-    my $content_type   = "";
-
-    my $rssid          = "";
-    if ($id=~/^(.+?)(\.html|\.json|\.rdf\+xml)$/){
-        $rssid            = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $rssid = $id;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
-    }
-    
     my $rssinfo_ref = $config->get_rssfeeds_of_db_by_type($dbname)->{$rssid};
     
     my $ttdata={
-        representation => $representation,
-        content_type   => $content_type,
-        
-        stylesheet => $stylesheet,
-
-        view       => $view,
-        
         rssinfo    => $rssinfo_ref,
-        
-        config     => $config,
-        session    => $session,
-        user       => $user,
-        msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_database_rss_record_tname},$ttdata,$r);
+    $self->print_page($config->{tt_admin_database_rss_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -261,57 +183,39 @@ sub create_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
+    # Dispatched Args
     my $view           = $self->param('view')                   || '';
     my $dbname         = $self->param('databaseid')          || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $representation = $self->param('representation') || '';
-
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    $logger->debug("Server: ".$r->get_server_name);
-
-    # Variables
+    # CGI Args
     my $rsstype         = $query->param('rss_type')        || '';
     my $active          = $query->param('active')          || 0;
 
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
+    
+    $logger->debug("Server: ".$r->get_server_name);
+
     if ($rsstype eq "") {
-        
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen RSS-Typ eingeben."),$r,$msg);
-        
+        $self->print_warning($msg->maketext("Sie müssen einen RSS-Typ eingeben."));
         return Apache2::Const::OK;
     }
     
     if (!$config->db_exists($dbname)) {
-        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
-        
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
@@ -331,68 +235,43 @@ sub show_record_form {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $dbname         = $self->param('databaseid');
+    my $rssid          = $self->strip_suffix($self->param('rssid'));
 
-    my $view           = $self->param('view')                   || '';
-    my $dbname         = $self->param('databaseid')             || '';
-    my $id             = $self->param('rssid')          || '';
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-            
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
 
     $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
 
-    my $rssinfo_ref = $config->get_rssfeed_by_id($id);
+    my $rssinfo_ref = $config->get_rssfeed_by_id($rssid);
     
     my $ttdata={
-        stylesheet   => $stylesheet,        
-
-        view       => $view,
-        
         rssinfo    => $rssinfo_ref,
         dbname     => $dbname,
-        config     => $config,
-        session    => $session,
-        user       => $user,
-        msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_database_rss_record_edit_tname},$ttdata,$r);
+    $self->print_page($config->{tt_admin_database_rss_record_edit_tname},$ttdata);
         
     return Apache2::Const::OK;
 }
@@ -405,73 +284,57 @@ sub update_record {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')                   || '';
-    my $dbname         = $self->param('databaseid')             || '';
-    my $id             = $self->param('rssid')          || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $dbname         = $self->param('databaseid');
+    my $rssid          = $self->param('rssid');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
+    # CGI Args
+    my $method          = decode_utf8($query->param('_method')) || '';
+    my $confirm         = $query->param('confirm') || 0;
+    my $rsstype         = $query->param('rss_type')        || '';
+    my $active          = $query->param('active')          || 0;
 
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
 
     $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
 
-    # Variables
-
     # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
     # zu verwenden
-    
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
 
     if ($method eq "DELETE"){
         $logger->debug("About to delete $dbname");
         
         if ($confirm){
-            my $rssinfo_ref = $config->get_rssfeed_by_id($id);
+            my $rssinfo_ref = $config->get_rssfeed_by_id($rssid);
 
             my $ttdata={
-                view         => $view,
-                stylesheet   => $stylesheet,
                 rssinfo      => $rssinfo_ref,
                 dbname       => $dbname,
-                config     => $config,
-                session    => $session,
-                user       => $user,
-                msg        => $msg,
             };
 
             $logger->debug("Asking for confirmation");
-            OpenBib::Common::Util::print_page($config->{tt_admin_database_rss_record_delete_confirm_tname},$ttdata,$r);
+            $self->print_page($config->{tt_admin_database_rss_record_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }
@@ -482,10 +345,6 @@ sub update_record {
     }
 
     # Ansonsten POST oder PUT => Aktualisieren
-    my $rsstype         = $query->param('rss_type')        || '';
-    my $active          = $query->param('active')          || 0;
-
-
     $config->update_databaseinfo_rss($dbname,$rsstype,$active,$id);
     
     $self->query->method('GET');
@@ -503,54 +362,36 @@ sub delete_record {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')                   || '';
-    my $dbname         = $self->param('databaseid')             || '';
-    my $id             = $self->param('rssid')          || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $dbname         = $self->param('databaseid');
+    my $rssid          = $self->param('rssid');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-            
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
 
     $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
 
-    
-    $config->del_databaseinfo_rss($id);
+    $config->del_databaseinfo_rss($rssid);
 
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");

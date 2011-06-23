@@ -72,35 +72,28 @@ sub show {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });     
-
+    # CGI Args
     my $queryid   = $query->param('queryid') || '';
 
     # Main-Actions
     my $do_newquery      = $query->param('do_newquery')      || '';
     my $do_resultlist    = $query->param('do_resultlist')    || '';
     my $do_externalquery = $query->param('do_externalquery') || '';
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
 
     if    ($do_newquery) {
         $r->internal_redirect("$config->{base_loc}/$view/$config->{searchform_loc}?queryid=$queryid");
@@ -115,7 +108,7 @@ sub show {
         return Apache2::Const::OK;
     }
     else {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Aktion"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Aktion"));
         return Apache2::Const::OK;
     }
   

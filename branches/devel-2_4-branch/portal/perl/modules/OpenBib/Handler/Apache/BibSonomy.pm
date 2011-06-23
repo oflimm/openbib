@@ -80,32 +80,18 @@ sub lookup {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-    
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
-    
-    my $config         = OpenBib::Config->instance;
-    
-    my $query  = $self->query();
-    
-    my $session = OpenBib::Session->instance({ apreq => $r });    
 
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
 
-    # QUERY-Args
+    # CGI Args
     my $tags   = $query->param('tags');
     my $bibkey = $query->param('bibkey');
     my $format = $query->param('format');
-    my $stid   = $query->param('stid');
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
     my @local_tags=split('\s+', $tags);
     
     if (defined $bibkey || @local_tags){
@@ -117,21 +103,10 @@ sub lookup {
         # TT-Data erzeugen
         my $ttdata={
             tags          => \@tags,
-            view          => $view,
             format        => $format,
-            stylesheet    => $stylesheet,
-            sessionID     => $session->{ID},
-            session       => $session,
-            useragent     => $useragent,
-            config        => $config,
-            msg           => $msg,
         };
         
-        $stid=~s/[^0-9]//g;
-        
-        my $templatename = ($stid)?"tt_bibsonomy_showtags_".$stid."_tname":"tt_bibsonomy_showtags_tname";
-        
-        OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+        $self->print_page($config->{tt_bibsonomy_showtags_tname},$ttdata);
         
         return Apache2::Const::OK;
     }
@@ -145,35 +120,21 @@ sub items_by_tag {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
     
-    my $config      = OpenBib::Config->instance;
-    
-    my $query  = $self->query();
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    # QUERY-Args
+    # CGI Args
     my $tag    = $query->param('tag');
     my $type   = $query->param('type') || 'publication';
     my $format = $query->param('format');
-    my $stid   = $query->param('stid');
     my $start  = $query->param('start');
     my $end    = $query->param('end');
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
     if ($tag){
         my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ tag => encode_utf8($tag) ,start => $start, end => $end , type => $type});
@@ -220,20 +181,9 @@ sub items_by_tag {
             type          => $type,
             format        => $format,
             dbinfo        => $dbinfotable,
-            view          => $view,
-            stylesheet    => $stylesheet,
-            sessionID     => $session->{ID},
-            session       => $session,
-            useragent     => $useragent,
-            config        => $config,
-            msg           => $msg,
         };
         
-        $stid=~s/[^0-9]//g;
-        
-        my $templatename = ($stid)?"tt_bibsonomy_showtitlist_".$stid."_tname":"tt_bibsonomy_showtitlist_tname";
-        
-        OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+        $self->print_page($config->{tt_bibsonomy_showtitlist_tname},$ttdata);
         
         return Apache2::Const::OK;
     }
@@ -247,35 +197,22 @@ sub items_by_user {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-    
+    # Dispatches Args
     my $view           = $self->param('view')           || '';
 
-    my $config      = OpenBib::Config->instance;
-    
-    my $query  = $self->query();
-    
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
-    
-    # QUERY-Args
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+        
+    # CGI Args
     my $bsuser = $query->param('user');
     my $type   = $query->param('type') || 'publication';
     my $format = $query->param('format');
-    my $stid   = $query->param('stid');
     my $tag    = $query->param('tag');
     my $start  = $query->param('start');
     my $end    = $query->param('end');
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
     if ($bsuser){
         my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ user => $bsuser ,start => $start, end => $end , type => $type});
@@ -321,20 +258,9 @@ sub items_by_user {
             format        => $format,
             type          => $type,
             dbinfo        => $dbinfotable,
-            view          => $view,
-            stylesheet    => $stylesheet,
-            sessionID     => $session->{ID},
-            session       => $session,
-            useragent     => $useragent,
-            config        => $config,
-            msg           => $msg,
         };
         
-        $stid=~s/[^0-9]//g;
-        
-        my $templatename = ($stid)?"tt_bibsonomy_showtitlist_".$stid."_tname":"tt_bibsonomy_showtitlist_tname";
-        
-        OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+        $self->print_page($config->{tt_bibsonomy_showtitlist_tname},$ttdata);
         
         return Apache2::Const::OK;
     }
@@ -346,35 +272,24 @@ sub add_item {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-    
+    # Dispatches Args
     my $view           = $self->param('view')           || '';
 
-    my $config      = OpenBib::Config->instance;
-    
-    my $query  = $self->query();
-    
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
-    
-    # QUERY-Args
+    # CGI Args
     my $id         = $query->param('id');
     my $database   = $query->param('db');
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
     if ($id && $database){
         my $title = uri_escape(OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex);
         
-        my $bibsonomy_uri = "$config->{base_loc}/$view/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=selection=$title";
+        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=selection=$title";
         
         $logger->debug($bibsonomy_uri);
         

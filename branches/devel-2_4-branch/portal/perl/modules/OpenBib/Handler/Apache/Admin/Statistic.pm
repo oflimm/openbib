@@ -67,14 +67,9 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'negotiate_url'               => 'negotiate_url',
-        'show_collection_as_html'     => 'show_collection_as_html',
-        'show_collection_as_rdf'      => 'show_collection_as_rdf',
-        'show_collection_as_json'     => 'show_collection_as_json',
-        'show_collection_as_include'  => 'show_collection_as_include',
-        'show_statistic_negotiate'  => 'show_statistic_negotiate',
-        'show_graph_as_html'        => 'show_graph_as_html',
-        'show_graph_as_include'     => 'show_graph_as_include',
+        'show_collection'           => 'show_collection',
+        'show_statistic'            => 'show_statistic',
+        'show_graph'                => 'show_graph',
     );
 
     # Use current path as template path,
@@ -87,81 +82,37 @@ sub show_collection {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || '';
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
-
-    my $content_type   = $config->{'content_type_map_rev'}{$representation};
 
     my $statistics = new OpenBib::Statistics();
     
     # TT-Data erzeugen
     my $ttdata={
-        representation => $representation,
-        content_type   => $content_type,
-        
-        view           => $view,
-        
-        session        => $session,
         statistics     => $statistics,
-        user           => $user,
-        config         => $config,
-        msg            => $msg,
     };
     
     my $templatename = "tt_admin_statistic_tname";
     
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    $self->print_page($config->{$templatename},$ttdata);
 
-}
-
-sub show_graph_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->show_graph;
-
-    return;
-}
-
-sub show_graph_as_include {
-    my $self = shift;
-
-    $self->param('representation','include');
-
-    $self->show_graph;
-
-    return;
 }
 
 sub show_graph {
@@ -169,58 +120,39 @@ sub show_graph {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $statisticid    = $self->param('statisticid')    || '';
     my $statisticid2   = $self->param('statisticid2')   || '';
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
+    # CGI Args
     my $year       = $query->param('year')       || '';
+    
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
 
     my $statistics = new OpenBib::Statistics();
     
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        
         year       => $year,
-        
-        session    => $session,
         statistics => $statistics,
-        user       => $user,
-        config     => $config,
-        msg        => $msg,
     };
 
-    
     my $templatename = "tt_admin_statistic_";
 
     if ($statisticid && $statisticid2){
@@ -229,87 +161,50 @@ sub show_graph {
 
     $templatename.="_tname";
     
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    $self->print_page($config->{$templatename},$ttdata);
 
 }
 
-sub show_statistic_negotiate {
+sub show_statistic {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $statisticid    = $self->param('statisticid')    || '';
     my $statisticid2   = $self->param('statisticid2')   || '';
     my $graph          = $self->param('graph')          || '';
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $representation = "";
-    my $content_type   = "";
-
-    my $statistic         = "";
-    my $id                = ($statisticid && $statisticid2)?$statisticid2:$statisticid;
-    
-    if ($id=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
-        $statistic        = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $statistic = $id;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
-    }
-
-    # Variables
+    # CGI Args
     my $year       = $query->param('year')       || '';
 
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
+
+    my $id        = ($statisticid && $statisticid2)?$statisticid2:$statisticid;
+    my $statistic = $self->strip_suffix($id);
+    
     my $statistics = new OpenBib::Statistics();
     
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        
         year       => $year,
-        
-        session    => $session,
         statistics => $statistics,
-        user       => $user,
-        config     => $config,
-        msg        => $msg,
     };
 
     
@@ -322,7 +217,7 @@ sub show_statistic_negotiate {
         $templatename = "tt_admin_statistic_".$statistic."_tname";
     }
     
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    $self->print_page($config->{$templatename},$ttdata);
 
 }
 

@@ -71,38 +71,31 @@ sub show {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
-
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';    
     my $type           = $self->param('type');
     my $url            = $self->param('dispatch_url_remainder');
-    
-    my $config = OpenBib::Config->instance;
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $uri   = $r->parsed_uri;
-    my $path  = $uri->path;
     my $query = $uri->query;
-
-    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if ($query){
         $url = $url."?".$query;
     }
 
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    
     $logger->debug("SessionID: $session->{ID} - Type: $type - URL: $url");
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        return Apache2::Const::OK;
-    }
 
     my $valid_redirection_type_ref = {
         500 => 1, # TOC / hbz-Server
@@ -136,14 +129,11 @@ sub show {
             content   => $url,
         });
 
-#        $self->header_type('redirect');
-#        $self->header_props(-url => $url);
-
         $self->query->headers_out->add(Location => $url);
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
-        OpenBib::Common::Util::print_warning("Typ $type nicht definiert",$r,$msg);
+        $self->print_warning($msg->maketext("Typ [_1] ist nicht definiert",$type));
         $logger->error("Typ $type nicht definiert");
         return Apache2::Const::OK;
     }

@@ -76,18 +76,10 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('show_search');
     $self->run_modes(
-        'negotiate_url'    => 'negotiate_url',
-        'show_search_as_html'   => 'show_search_as_html',
-        'show_search_as_json'   => 'show_search_as_json',
-        'show_search_as_rdf'    => 'show_search_as_rdf',
-        'show_search_as_rss'    => 'show_search_as_rss',
-        'show_search_as_include'=> 'show_search_as_include',
-        'show_index_as_html'    => 'show_index_as_html',
-        'show_index_as_json'    => 'show_index_as_json',
-        'show_index_as_rdf'     => 'show_index_as_rdf',
-        
+        'show_search'   => 'show_search',
+        'show_index'    => 'show_index',
     );
 
     # Use current path as template path,
@@ -102,12 +94,11 @@ sub show_search {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || '';
 
     # Shared Args
     my $query          = $self->query();
+    my $r              = $self->param('r');
     my $config         = $self->param('config');    
     my $session        = $self->param('session');
     my $user           = $self->param('user');
@@ -115,6 +106,7 @@ sub show_search {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
+    my $representation = $self->param('representation') || '';
     
     # CGI Args
     my $serien        = decode_utf8($query->param('serien'))        || 0;
@@ -342,7 +334,7 @@ sub show_search {
             $databasestring.=";database=$database";
         }
         
-        my $baseurl="http://$r->get_server_name$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profile=$profile;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
+        my $baseurl="$path_prefix/$config->{search_loc}?$urlpart;profile=$profile;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
 
         my @nav=();
 
@@ -376,18 +368,6 @@ sub show_search {
         
         # TT-Data erzeugen
         my $ttdata={
-            representation => $representation,
-            content_type   => $content_type,
-            
-            to_json       => sub {
-                my $ref = shift;
-                return encode_json $ref;
-            },
-
-            view       => $view,
-            stylesheet => $stylesheet,		
-            sessionID  => $session->{ID},
-
             qopts        => $queryoptions->get_options,
             queryoptions => $queryoptions,
             
@@ -401,9 +381,6 @@ sub show_search {
             baseurl    => $baseurl,
             profile    => $profile,
             sysprofile => $sysprofile,
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
 
             decode_utf8    => sub {
                 my $string=shift;
@@ -411,7 +388,7 @@ sub show_search {
             },
         };
 
-        OpenBib::Common::Util::print_page($template,$ttdata,$r);
+        $self->print_page($template,$ttdata,$r);
 
         return Apache2::Const::OK;
     }
@@ -425,21 +402,21 @@ sub show_search {
     if ($searchquery->get_searchfield('ejahr')->{norm}) {
         my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg,$representation,$content_type);
+            $self->print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."));
             return Apache2::Const::OK;
         }
     }
 
     if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
         if ($searchquery->get_searchfield('ejahr')->{norm}) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg,$representation,$content_type);
+            $self->print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."));
             return Apache2::Const::OK;
         }
     }
 
 
     if (!$searchquery->have_searchterms) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg,$representation,$content_type);
+        $self->print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."));
         return Apache2::Const::OK;
     }
 
@@ -1249,18 +1226,18 @@ sub show_index {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || '';
 
     # Shared Args
     my $query          = $self->query();
+    my $r              = $self->param('r');
     my $config         = $self->param('config');    
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
+    my $representation = $self->param('representation') || '';
 
     # CGI Args
     my @databases     = ($query->param('db'))?$query->param('db'):();
@@ -1330,12 +1307,12 @@ sub show_index {
     $contentreq=~s/%//g;
     
     if (!$contentreq) {
-        OpenBib::Common::Util::print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"),$r,$msg,$representation,$content_type);
+        $self->print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"));
         return Apache2::Const::OK;
     }
     
     if ($#databases > 0 && length($contentreq) < 3) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."),$r,$msg,$representation,$content_type);
+        $self->print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."));
         return Apache2::Const::OK;
     }
     
@@ -1627,7 +1604,7 @@ sub get_databases {
                 }
                 # Kein Profil
                 else {
-                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$path_prefix/$config->{databasechoice_loc}\" target=\"body\">","</a>"),$r,$msg,$representation,$content_type);
+                    $self->print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$path_prefix/$config->{databasechoice_loc}\" target=\"body\">","</a>"));
                     return Apache2::Const::OK;
                 }
                 

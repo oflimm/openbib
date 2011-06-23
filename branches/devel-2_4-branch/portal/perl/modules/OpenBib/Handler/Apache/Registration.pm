@@ -79,22 +79,22 @@ sub show {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
 
-    my $config = OpenBib::Config->instance;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $recaptcha = Captcha::reCAPTCHA->new;
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $action              = ($query->param('action'))?$query->param('action'):'none';
     my $targetid            = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $loginname           = ($query->param('loginname'))?$query->param('loginname'):'';
@@ -103,7 +103,8 @@ sub show {
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
     my $recaptcha_response  = $query->param('recaptcha_response_field');
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
+    
+    my $recaptcha = Captcha::reCAPTCHA->new;
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
@@ -111,29 +112,13 @@ sub show {
         $r->connection->remote_ip($1);
     }
 
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-        
         recaptcha  => $recaptcha,
         
         lang       => $queryoptions->get_option('l'),
-        config     => $config,
-        user       => $user,
-        msg        => $msg,
     };
-    OpenBib::Common::Util::print_page($config->{tt_registration_tname},$ttdata,$r);
+    $self->print_page($config->{tt_registration_tname},$ttdata);
  
     return Apache2::Const::OK;
 }
@@ -144,38 +129,29 @@ sub register {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $registrationid = $self->param('registrationid') || '';
 
-    my $config = OpenBib::Config->instance;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $recaptcha = Captcha::reCAPTCHA->new;
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $r->connection->remote_ip($1);
-    }
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
     }
 
     # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
@@ -206,18 +182,10 @@ sub register {
     
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-
         username   => $loginname,
-	      
-        config     => $config,
-        user       => $user,
-        msg        => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config->{tt_registration_success_tname},$ttdata,$r);
+    $self->print_page($config->{tt_registration_success_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -228,23 +196,22 @@ sub mail_confirmation {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $recaptcha = Captcha::reCAPTCHA->new;
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $action              = ($query->param('action'))?$query->param('action'):'none';
     my $targetid            = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $loginname           = ($query->param('loginname'))?$query->param('loginname'):'';
@@ -252,8 +219,8 @@ sub mail_confirmation {
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
     my $recaptcha_response  = $query->param('recaptcha_response_field');
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
+    
+    my $recaptcha = Captcha::reCAPTCHA->new;
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
@@ -261,33 +228,24 @@ sub mail_confirmation {
         $r->connection->remote_ip($1);
     }
 
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
     if ($loginname eq "" || $password1 eq "" || $password2 eq "") {
-        OpenBib::Common::Util::print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),$r,$msg);
+        $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"));
         return Apache2::Const::OK;
     }
 
     if ($password1 ne $password2) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),$r,$msg);
+        $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."));
         return Apache2::Const::OK;
     }
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($loginname)){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"),$r,$msg);
+        $self->print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
         return Apache2::Const::OK;
     }
     
     if ($user->user_exists($loginname)) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"),$r,$msg);
+        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
         return Apache2::Const::OK;
     }
     
@@ -300,7 +258,7 @@ sub mail_confirmation {
         );
         
         unless ( $recaptcha_result->{is_valid} ) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"),$r,$msg);
+            $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
             return Apache2::Const::OK;
         }
     }
@@ -365,18 +323,10 @@ sub mail_confirmation {
     
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-
         loginname      => $loginname,
-	      
-        config     => $config,
-        user       => $user,
-        msg        => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config->{tt_registration_confirmation_tname},$ttdata,$r);
+    $self->print_page($config->{tt_registration_confirmation_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

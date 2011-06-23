@@ -74,9 +74,7 @@ sub setup {
 
         'show_collection_count'                => 'show_collection_count',
         'negotiate_url'                        => 'negotiate_url',
-        'show_collection_as_html'              => 'show_collection_as_html',
-        'show_collection_as_json'              => 'show_collection_as_json',
-        'show_collection_as_rdf'               => 'show_collection_as_rdf',
+        'show_collection'                      => 'show_collection',
         'show_record_negotiate'                        => 'show_record_negotiate',
         'create_record'                                => 'create_record',
         'update_record'                                => 'update_record',
@@ -94,11 +92,22 @@ sub show_collection_negotiatexxx {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
+    # Dispatches Args
     my $view           = $self->param('view')           || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $query          = $self->query();
+    # CGI Args
     my $method         = $query->param('_method')     || '';
 
     # Shortcuts via Method
@@ -161,22 +170,23 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
+    my $method                  = $query->param('_method')     || '';
     my $database                = $query->param('db')                || '';
     my $singleidn               = $query->param('singleidn')               || '';
     my $litlistid               = $query->param('litlistid')               || '';
@@ -192,24 +202,20 @@ sub show_collection {
     my $tags                    = $query->param('tags')                    || '';
     my $tags_type               = $query->param('tags_type')               || 1;
     my $littype                 = $query->param('littype')                 || 1;
-
     my $format                  = $query->param('format')                  || 'short';
-    
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
+
+    # Shortcuts via Method
+
+    # Todo
+    if ($method eq "POST"){
+        $self->create_record;
+        return;
+    }
+
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    if (!$session->is_valid()) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
     if (! $user->is_authenticated && $do_addlitlist) {
@@ -312,7 +318,7 @@ sub show_collection {
     }
     elsif ($do_addlitlist) {
         if (!$title) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+            $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
 	    
             return Apache2::Const::OK;
         }
@@ -324,7 +330,7 @@ sub show_collection {
     }
     elsif ($do_addtags) {
         if (!$tags) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."),$r,$msg);
+            $self->print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."));
             return Apache2::Const::OK;
         }
         
@@ -346,12 +352,12 @@ sub show_collection {
                 }
             }
             else {
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."),$r,$msg);
+                $self->print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."));
                 return Apache2::Const::OK;
             }
         }
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
+            $self->print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."));
         }
         
         my $redirecturl   = "$config->{base_loc}/$view/$config->{managecollection_loc}";
@@ -377,17 +383,10 @@ sub show_collection {
         
         # TT-Data erzeugen
         my $ttdata={
-            view           => $view,
-            stylesheet     => $stylesheet,
-            sessionID      => $session->{ID},
             qopts          => $queryoptions->get_options,
-            
-            config         => $config,
-            user           => $user,
-            msg            => $msg,
         };
         
-        OpenBib::Common::Util::print_page($config->{tt_collection_empty_tname},$ttdata,$r);
+        $self->print_page($config->{tt_collection_empty_tname},$ttdata);
         return Apache2::Const::OK;
     }
 
@@ -395,25 +394,14 @@ sub show_collection {
 
     # TT-Data erzeugen
     my $ttdata={
-        representation    => $representation,
-        content_type      => $content_type,
-        
-        view              => $view,
-        stylesheet        => $stylesheet,
-        sessionID         => $session->{ID},
         qopts             => $queryoptions->get_options,
         format            => $format,
 
         recordlist        => $recordlist,
         dbinfo            => $dbinfotable,
-        
-        user              => $user,
-        config            => $config,
-        user              => $user,
-        msg               => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_collection_tname},$ttdata,$r);
+    $self->print_page($config->{tt_collection_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -423,21 +411,22 @@ sub show_collection_count {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || '';
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $database                = $query->param('db')                || '';
     my $singleidn               = $query->param('singleidn')               || '';
     my $litlistid               = $query->param('litlistid')               || '';
@@ -456,21 +445,10 @@ sub show_collection_count {
 
     my $format                  = $query->param('format')                  || 'short';
     
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    if (!$session->is_valid()) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     $logger->info("SessionID: $session->{ID}");
     
@@ -498,7 +476,7 @@ sub show_collection_count {
     return Apache2::Const::OK;
 }
 
-sub show_record_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -506,9 +484,9 @@ sub show_record_negotiate {
 
     # Dispatched Args
     my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')       || '';
-    my $id             = $self->param('id')             || '';
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $id             = $self->strip_suffix($self->param('id'));
 
     # Shared Args
     my $query          = $self->query();
@@ -530,45 +508,15 @@ sub show_record_negotiate {
         return;
     }
 
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $representation = "";
-    my $content_type   = "";
-
-    my $thisid = "";
-    if ($id=~/^(.+?)(\.html|\.json|\.rdf)$/){
-        $thisid           = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $thisid = $id;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
-    }
-
-    $id = $thisid;
-
     # TT-Data erzeugen
     my $ttdata={
-        representation  => $representation,
-        
-        view           => $view,
-        stylesheet     => $stylesheet,
-        
         query          => $query,
         qopts          => $queryoptions->get_options,
         
         dbinfo         => $dbinfotable,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_collection_record_tname},$ttdata,$r);
+    $self->print_page($config->{tt_collection_record_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -579,20 +527,22 @@ sub create_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $database                = $query->param('db')                || '';
     my $id                      = $query->param('id')                || '';
     my $litlistid               = $query->param('litlistid')               || '';
@@ -609,24 +559,15 @@ sub create_record {
     my $tags_type               = $query->param('tags_type')               || 1;
     my $littype                 = $query->param('littype')                 || 1;
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     $logger->debug("Trying to create record $database - $id");
-    if (!$session->is_valid()) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
+    
     if (! $user->is_authenticated && $do_addlitlist) {
         # Aufruf-URL
         my $return_url = $r->parsed_uri->unparse;
@@ -699,7 +640,7 @@ sub create_record {
     }
     elsif ($do_addlitlist) {
         if (!$title) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+            $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
 	    
             return Apache2::Const::OK;
         }
@@ -712,7 +653,7 @@ sub create_record {
     }
     elsif ($do_addtags) {
         if (!$tags) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."),$r,$msg);
+            $self->print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."));
             return Apache2::Const::OK;
         }
         
@@ -734,12 +675,12 @@ sub create_record {
                 }
             }
             else {
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."),$r,$msg);
+                $self->print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."));
                 return Apache2::Const::OK;
             }
         }
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
+            $self->print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein OpenBib."));
         }
 
         $self->return_baseurl;
@@ -778,57 +719,27 @@ sub delete_record {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')       || '';
-    my $id             = $self->param('id')             || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $id             = $self->strip_suffix($self->param('id'));
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    if (!$session->is_valid()) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $representation = "";
-    my $content_type   = "";
-
-    my $thisid = "";
-    if ($id=~/^(.+?)(\.html|\.json|\.rdf)$/){
-        $thisid           = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $thisid = $id;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
-    }
-
-    $id = $thisid;
 
     $logger->info("Trying to delete $database - $id in SessionID: $session->{ID}");
 
@@ -858,46 +769,38 @@ sub print_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
+    # Dispatches Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $id             = $self->strip_suffix($self->param('id'));
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')           || '';
-    my $id             = $self->param('id')           || '';
-
-    my $config = OpenBib::Config->instance;
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $format                  = $query->param('format')                || '';
-    
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    if (!$session->is_valid()) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
     $logger->info("SessionID: $session->{ID}");
 
     my $loginname=$user->get_username();
     
     my $recordlist = new OpenBib::RecordList::Title();
-    
+
+    # Obsolet?
     if ($id && $database) {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
     }
@@ -914,9 +817,6 @@ sub print_collection {
     
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,		
-        sessionID  => $session->{ID},
         qopts      => $queryoptions->get_options,		
         format     => $format,
 
@@ -925,12 +825,9 @@ sub print_collection {
         database   => $database,
         recordlist => $recordlist,
         dbinfo     => $dbinfotable,
-        
-        config     => $config,
-        msg        => $msg,
     };
         
-    OpenBib::Common::Util::print_page($config->{tt_collection_print_tname},$ttdata,$r);
+    $self->print_page($config->{tt_collection_print_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -940,39 +837,30 @@ sub save_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
+    # Dispatched_args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $id             = $self->strip_suffix($self->param('id'));
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')           || '';
-    my $id             = $self->param('id')           || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $format                  = $query->param('format')                || '';
-    
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    if (!$session->is_valid()) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     $logger->info("SessionID: $session->{ID}");
 
@@ -996,27 +884,21 @@ sub save_collection {
     
     # TT-Data erzeugen
     my $ttdata={
-        view        => $view,
-        stylesheet  => $stylesheet,
-        sessionID   => $session->{ID},
         qopts       => $queryoptions->get_options,		
         format      => $format,
         recordlist  => $recordlist,
         dbinfo      => $dbinfotable,
-        
-        config     => $config,
-        msg        => $msg,
     };
     
     if ($format eq "short" || $format eq "full") {
-        $r->content_type('text/html');
+        $self->param('content_type','text/html');
         $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
-        OpenBib::Common::Util::print_page($config->{tt_collection_save_html_tname},$ttdata,$r);
+        $self->print_page($config->{tt_collection_save_html_tname},$ttdata);
     }
     else {
-        $r->content_type('text/plain');
+        $self->param('content_type','text/plain');
         $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
-        OpenBib::Common::Util::print_page($config->{tt_collection_save_plain_tname},$ttdata,$r);
+        $self->print_page($config->{tt_collection_save_plain_tname},$ttdata);
     }
     return Apache2::Const::OK;
 }
@@ -1029,37 +911,30 @@ sub mail_collection {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')           || '';
-    my $id             = $self->param('id')           || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $id             = $self->strip_suffix($self->param('id'));
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $format                  = $query->param('format')                || '';
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    if (!$session->is_valid()) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     $logger->info("SessionID: $session->{ID}");
 
@@ -1083,9 +958,6 @@ sub mail_collection {
     
     # TT-Data erzeugen
     my $ttdata={
-        view        => $view,
-        stylesheet  => $stylesheet,
-        sessionID   => $session->{ID},
         qopts       => $queryoptions->get_options,				
         format      => $format,
 
@@ -1094,12 +966,9 @@ sub mail_collection {
         database    => $database,
         recordlist  => $recordlist,
         dbinfo      => $dbinfotable,
-        
-        config      => $config,
-        msg         => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_collection_mail_tname},$ttdata,$r);
+    $self->print_page($config->{tt_collection_mail_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -1108,38 +977,29 @@ sub mail_collection_send {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
 
-    my $config = OpenBib::Config->instance;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $email     = ($query->param('email'))?$query->param('email'):'';
     my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';
     my $id        = $query->param('id');
     my $mail      = $query->param('mail');
     my $database  = $query->param('db');
     my $format    = $query->param('format')||'full';
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist

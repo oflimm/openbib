@@ -75,34 +75,20 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || 'html';
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    my $content_type   = $config->{'content_type_map_rev'}{$representation};
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        return Apache2::Const::OK;
-    }
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $rssfeedinfo_ref = $config->get_rssfeedinfo({
         view => $view
@@ -110,25 +96,10 @@ sub show_collection {
 
     # TT-Data erzeugen
     my $ttdata={
-        view        => $view,
-        representation => $representation,
-        content_type   => $content_type,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
         rssfeedinfo => $rssfeedinfo_ref,
-        stylesheet  => $stylesheet,
-        sessionID   => $session->{ID},
-        config      => $config,
-        session     => $session,
-        user        => $user,
-        msg         => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config->{tt_rssfeeds_tname},$ttdata,$r);
+    $self->print_page($config->{tt_rssfeeds_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

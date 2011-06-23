@@ -80,22 +80,22 @@ sub show {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    # CGI-Input auslesen
-  
+    # CGI Args  
     my $sorttype     = ($query->param('srt'))?$query->param('srt'):"author";
     my $sortall      = ($query->param('sortall'))?$query->param('sortall'):'0';
     my $sortorder    = ($query->param('srto'))?$query->param('srto'):'up';
@@ -106,19 +106,6 @@ sub show {
     ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
 
     my $database     = $query->param('db')     || '';
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
@@ -135,10 +122,6 @@ sub show {
 
         # TT-Data erzeugen
         my $ttdata={
-            view           => $view,
-            stylesheet     => $stylesheet,
-            sessionID      => $session->{ID},
-
             loginname      => $loginname,
             password       => $password,
             
@@ -151,12 +134,9 @@ sub show {
             queryid        => $queryid,
             offset         => $offset,
             hitrange       => $hitrange,
-            config         => $config,
-            user           => $user,
-            msg            => $msg,
         };
         
-        OpenBib::Common::Util::print_page($config->{tt_resultlists_empty_tname},$ttdata,$r);
+        $self->print_page($config->{tt_resultlists_empty_tname},$ttdata);
 
         return Apache2::Const::OK;
     }
@@ -188,11 +168,6 @@ sub show {
     
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-        
-        
         thisquery  => $thisquery_ref,
         queryid    => $queryid,
 
@@ -203,11 +178,8 @@ sub show {
         hitcount   => $hitcount,
         resultdbs  => $resultdbs_ref,
         queries    => \@queries,
-        config     => $config,
-        user       => $user,
-        msg        => $msg,
     };
-    OpenBib::Common::Util::print_page($config->{tt_resultlists_choice_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resultlists_choice_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

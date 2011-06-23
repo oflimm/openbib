@@ -79,20 +79,22 @@ sub show {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
 
-    my $config = OpenBib::Config->instance;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
     
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $action     = ($query->param('action'    ))?$query->param('action'):'none';
     my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
     my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
@@ -103,17 +105,6 @@ sub show {
     my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
 
     my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
 
@@ -129,14 +120,14 @@ sub show {
             $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
         }
         else {
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
         }
         return Apache2::Const::OK;
     }
     # wenn der Benutzer bereits fuer ein anderes Target authentifiziert ist
     else {
         if ($validtarget && $validtarget ne $sessionlogintarget){
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
             return Apache2::Const::OK;
         }
         
@@ -177,10 +168,6 @@ sub show {
             # TT-Data erzeugen
       
             my $ttdata={
-                view         => $view,
-                stylesheet   => $stylesheet,
-		  
-                sessionID    => $session->{ID},
                 loginname    => $loginname,
                 password     => $password,
 		  
@@ -188,20 +175,11 @@ sub show {
 
                 database     => $database,
                     
-                utf2iso      => sub {
-		    my $string=shift;
-		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-		    return $string;
-                },
-		  
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
-                config       => $config,
-                user         => $user,
-                msg          => $msg,
             };
       
-            OpenBib::Common::Util::print_page($config->{tt_circulation_reserv_tname},$ttdata,$r);
+            $self->print_page($config->{tt_circulation_reserv_tname},$ttdata);
 
         }
         elsif ($circaction eq "reminders") {
@@ -232,29 +210,16 @@ sub show {
             # TT-Data erzeugen
       
             my $ttdata={
-                view       => $view,
-                stylesheet => $stylesheet,
-		  
-                sessionID  => $session->{ID},
                 loginname  => $loginname,
                 password   => $password,
 		  
                 reminders  => $circexlist,
 		  
-                utf2iso    => sub {
-		    my $string=shift;
-		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-		    return $string;
-                },
-		  
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
-                config     => $config,
-                user       => $user,
-                msg        => $msg,
             };
       
-            OpenBib::Common::Util::print_page($config->{tt_circulation_remind_tname},$ttdata,$r);
+            $self->print_page($config->{tt_circulation_remind_tname},$ttdata);
         }
         elsif ($circaction eq "orders") {
             my $circexlist=undef;
@@ -283,29 +248,16 @@ sub show {
       
             # TT-Data erzeugen
             my $ttdata={
-                view       => $view,
-                stylesheet => $stylesheet,
-		  
-                sessionID  => $session->{ID},
                 loginname  => $loginname,
                 password   => $password,
 		  
                 orders     => $circexlist,
 		  
-                utf2iso    => sub {
-		    my $string=shift;
-		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-		    return $string;
-                },
-		  
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
-                config     => $config,
-                user       => $user,
-                msg        => $msg,
             };
       
-            OpenBib::Common::Util::print_page($config->{tt_circulation_orders_tname},$ttdata,$r);
+            $self->print_page($config->{tt_circulation_orders_tname},$ttdata);
         }
         else {
             my $circexlist=undef;
@@ -334,10 +286,6 @@ sub show {
 
             # TT-Data erzeugen
             my $ttdata={
-                view       => $view,
-                stylesheet => $stylesheet,
-		  
-                sessionID  => $session->{ID},
                 loginname  => $loginname,
                 password   => $password,
 		  
@@ -345,20 +293,11 @@ sub show {
 
                 database   => $database,
 
-                utf2iso    => sub {
-		    my $string=shift;
-		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-		    return $string;
-                },
-		  
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
-                config     => $config,
-                user       => $user,
-                msg        => $msg,
             };
       
-            OpenBib::Common::Util::print_page($config->{tt_circulation_tname},$ttdata,$r);
+            $self->print_page($config->{tt_circulation_tname},$ttdata);
         }
 
 
@@ -409,19 +348,10 @@ sub show {
         
         # TT-Data erzeugen
         my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            
-            sessionID  => $session->{ID},
-            
             result     => $circexlist,
-            
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
         };
         
-        OpenBib::Common::Util::print_page($config->{tt_circulation_make_reserv_tname},$ttdata,$r);
+        $self->print_page($config->{tt_circulation_make_reserv_tname},$ttdata);
     }
     elsif ($action eq "cancel_reservation"){
 
@@ -466,7 +396,7 @@ sub show {
             $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
         }
 
-        $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{circulation_loc}?action=showcirc;circaction=reservations");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{circulation_loc}?action=showcirc;circaction=reservations");
 
         return Apache2::Const::OK;
     }
@@ -480,7 +410,7 @@ sub show {
             
             $session->set_returnurl($return_url);
             
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
             
             return Apache2::Const::OK;
         }
@@ -516,19 +446,10 @@ sub show {
 
         # TT-Data erzeugen
         my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            
-            sessionID  => $session->{ID},
-            
             result     => $circexlist,
-            
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
         };
         
-        OpenBib::Common::Util::print_page($config->{tt_circulation_make_order_tname},$ttdata,$r);
+        $self->print_page($config->{tt_circulation_make_order_tname},$ttdata);
     }
     elsif ($action eq "renew_loans"){
 
@@ -540,7 +461,7 @@ sub show {
             
             $session->set_returnurl($return_url);
             
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
             
             return Apache2::Const::OK;
         }
@@ -571,22 +492,13 @@ sub show {
         
         # TT-Data erzeugen
         my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            
-            sessionID  => $session->{ID},
-            
             result     => $circexlist,
-            
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
         };
         
-        OpenBib::Common::Util::print_page($config->{tt_circulation_renew_loans_tname},$ttdata,$r);
+        $self->print_page($config->{tt_circulation_renew_loans_tname},$ttdata);
     }
     else {
-        OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
+        $self->print_warning($msg->maketext("Unerlaubte Aktion"));
     }
     return Apache2::Const::OK;
 }

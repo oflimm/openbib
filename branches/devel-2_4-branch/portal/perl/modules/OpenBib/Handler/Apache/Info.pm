@@ -77,12 +77,12 @@ sub show_negotiate {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $stid           = $self->param('stid')           || '';
+    my $view           = $self->param('view');
+    my $stid           = $self->strip_suffix($self->param('stid'))           || '';
     
     # Shared Args
     my $query          = $self->query();
+    my $r              = $self->param('r');
     my $config         = $self->param('config');    
     my $session        = $self->param('session');
     my $user           = $self->param('user');
@@ -92,63 +92,27 @@ sub show_negotiate {
     my $useragent      = $self->param('useragent');    
     
     # CGI Args
-
     my $format         = $query->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
-
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $representation = "";
-    my $content_type   = "";
-
-    my $thisstid         = "";
-    if ($stid=~/^(.+?)(\.html|\.json|\.rdf)$/){
-        $thisstid         = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $thisstid = $stid;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
-    }
-
-    $stid = $thisstid;
-
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
     
     # TT-Data erzeugen
     my $ttdata={
-        representation=> $representation,
         format        => $format,
         stid          => $stid,
-        view          => $view,
-        stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
-        sessionID     => $session->{ID},
-	session       => $session,
-        useragent     => $useragent,
-        config        => $config,
         dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
-        user          => $user,
-        msg           => $msg,
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
     };
 
     my $templatename = ($stid && $stid ne "default")?"tt_info_".$stid."_tname":"tt_info_tname";
 
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
 }

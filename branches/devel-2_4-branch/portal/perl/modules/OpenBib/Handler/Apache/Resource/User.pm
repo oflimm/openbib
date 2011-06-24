@@ -74,43 +74,33 @@ sub update_account {
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
+    # CGI Args
+    my $method          = $query->param('_method') || '';
+    my $confirm         = $query->param('confirm') || 0;
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
     # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
     # zu verwenden
-    
-    my $method          = $query->param('_method') || '';
-    my $confirm         = $query->param('confirm') || 0;
 
     if ($method eq "DELETE"){
         $logger->debug("About to delete Userid $userid");
@@ -118,18 +108,11 @@ sub update_account {
         if ($confirm){
             
             my $ttdata={
-                stylesheet   => $stylesheet,
-
                 userid     => $userid,
-                view       => $view,
-                config     => $config,
-                session    => $session,
-                user       => $user,
-                msg        => $msg,
             };
 
             $logger->debug("Asking for confirmation");
-            OpenBib::Common::Util::print_page($config->{tt_resource_user_delete_confirm_tname},$ttdata,$r);
+            $self->print_page($config->{tt_resource_user_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }
@@ -138,7 +121,7 @@ sub update_account {
         }
     }
     
-    my $new_location = "$config->{base_loc}/$view/$config->{logout_loc}";
+    my $new_location = "$path_prefix/$view/$config->{logout_loc}";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -153,36 +136,16 @@ sub delete_account {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
+    # Shared Args
+    my $user           = $self->param('user');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
     $user->wipe_account();

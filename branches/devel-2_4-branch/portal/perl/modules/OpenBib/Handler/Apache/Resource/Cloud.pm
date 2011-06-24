@@ -123,7 +123,7 @@ sub show_collection {
     return Apache2::Const::OK;
 }
 
-sub show_record_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -131,10 +131,9 @@ sub show_record_negotiate {
 
     # Dispatched Args
     my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')       || '';
-    my $stid           = $self->param('stid')           || '';
-    my $path_prefix    = $self->param('path_prefix');
+    my $view           = $self->param('view');
+    my $cloudid        = $self->param('cloudid');
+    my $database       = $self->param('database');
     
     # Shared Args
     my $query          = $self->query();
@@ -145,93 +144,39 @@ sub show_record_negotiate {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');    
+    my $path_prefix    = $self->param('path_prefix');
     
     # CGI Args
-
     my $format         = $query->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
-
-        # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $tail=$stid;
     if ($database){
-        $tail=$database
-    }
-    
-    my $representation = "";
-    my $content_type   = "";
-
-    my $tail_prefix    = "";
-    if ($tail=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
-        $tail_prefix   = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $tail_prefix = $tail;
-        my $negotiated_type_ref = $self->negotiate_type;
-
-        my $path = $stid;
-        if ($database){
-            $path.="/$database";
-        }
-        
-        my $new_location = "$path_prefix/$config->{resource_cloud_loc}/$path.$negotiated_type_ref->{suffix}";
-
-        $self->query->method('GET');
-        $self->query->content_type($negotiated_type_ref->{content_type});
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
-        
-        $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-        return;
-
-    }
-
-    if ($database){
-        $database = $tail_prefix;
+        $database=$self->strip_suffix($database);
     }
     else {
-        $stid = $tail_prefix;
+        $cloudid=$self->strip_suffix($cloudid);
     }
     
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
     # TT-Data erzeugen
     my $ttdata={
-        representation=> $representation,
         format        => $format,
-        stid          => $stid,
+        stid          => $cloudid,
         database      => $database,
         query         => $query,
-        queryoptions  => $queryoptions,
-        view          => $view,
-        stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
-        sessionID     => $session->{ID},
-	session       => $session,
-        useragent     => $useragent,
-        config        => $config,
         dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
-        user          => $user,
-        msg           => $msg,
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
     };
 
-    my $templatename = "tt_resource_cloud_".$stid."_tname";
+    my $templatename = "tt_resource_cloud_".$cloudid."_tname";
 
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
 }

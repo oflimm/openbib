@@ -143,6 +143,7 @@ sub create_record {
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args

@@ -122,6 +122,7 @@ sub show_record_negotiate {
 
     # Shared Args
     my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -166,6 +167,7 @@ sub create_record {
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
@@ -210,6 +212,7 @@ sub show_record_form {
 
     # Shared Args
     my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -257,6 +260,7 @@ sub update_record {
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
@@ -323,6 +327,7 @@ sub delete_record {
 
     # Shared Args
     my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->is_authenticated('admin')){

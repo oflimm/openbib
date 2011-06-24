@@ -363,7 +363,7 @@ sub get_viewname {
   
     # Entweder wurde ein 'echter' View gefunden oder es wird
     # kein spezieller View verwendet (view='')
-    my $self->{view} = decode_utf8($result->{'viewname'}) || '';
+    $self->{view} = decode_utf8($result->{'viewname'}) || '';
 
     $idnresult->finish();
 

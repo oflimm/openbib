@@ -61,10 +61,7 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'negotiate_url'                        => 'negotiate_url',
-        'show_collection_as_html'              => 'show_collection_as_html',
-        'show_collection_as_json'              => 'show_collection_as_json',
-        'show_collection_as_rdf'               => 'show_collection_as_rdf',
+        'show_collection'                      => 'show_collection',
         'update_searchfields'                  => 'update_searchfields',
         'update_searchform'                    => 'update_searchform',
         'update_bibsonomy'                     => 'update_bibsonomy',
@@ -85,61 +82,34 @@ sub show_collection {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
+    # Dispatched Ards
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    if (! $user->{ID}){
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-        
-        # Return-URL in der Session abspeichern
-        
-        $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
-        
-        return Apache2::Const::OK;
-    }
-
-    unless($user->{ID} eq $userid){
-        $logger->debug("Path-UserID: $userid - Authenticated-UserID: $user->{ID}");
-
-        OpenBib::Common::Util::print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}",$r,$msg);
-        return Apache2::Const::OK;
-    }
-    
     my $fieldchoice_ref         = $user->get_fieldchoice();
     my $userinfo_ref            = $user->get_info();
     my $spelling_suggestion_ref = $user->get_spelling_suggestion();
     my $livesearch_ref          = $user->get_livesearch();
     
-    my $loginname           = $userinfo_ref->{'loginname'};
-    my $password            = $userinfo_ref->{'password'};
+    my $loginname               = $userinfo_ref->{'loginname'};
+    my $password                = $userinfo_ref->{'password'};
     
     # Wenn wir eine gueltige Mailadresse als Loginnamen haben,
     # dann liegt Selbstregistrierung vor und das Passwort kann
@@ -150,28 +120,18 @@ sub show_collection {
     
     # TT-Data erzeugen
     my $ttdata={
-        qopts            => $queryoptions->get_options,
-        view             => $view,
-        stylesheet       => $stylesheet,
-
-        user             => $user,
-        
-        loginname        => $loginname,
-        password         => $password,
-        email_valid      => $email_valid,
-        targettype       => $targettype,
-        fieldchoice      => $fieldchoice_ref,
+        qopts               => $queryoptions->get_options,
+        loginname           => $loginname,
+        password            => $password,
+        email_valid         => $email_valid,
+        targettype          => $targettype,
+        fieldchoice         => $fieldchoice_ref,
         spelling_suggestion => $spelling_suggestion_ref,
-        livesearch       => $livesearch_ref,
-        
-        userinfo         => $userinfo_ref,
-        
-        config           => $config,
-        user             => $user,
-        msg              => $msg,
+        livesearch          => $livesearch_ref,
+        userinfo            => $userinfo_ref,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_preferences_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_user_preferences_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -182,21 +142,24 @@ sub update_searchfields {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
+    # CGI Args
     my $showfs        = ($query->param('showfs'))?$query->param('showfs'):'0';
     my $showhst       = ($query->param('showhst'))?$query->param('showhst'):'0';
     my $showhststring = ($query->param('showhststring'))?$query->param('showhststring'):'0';
@@ -212,35 +175,10 @@ sub update_searchfields {
     my $showmart      = ($query->param('showmart'))?$query->param('showmart'):'0';
     my $showejahr     = ($query->param('showejahr'))?$query->param('showejahr'):'0';
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    if (! $user->{ID}){
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-        
-        # Return-URL in der Session abspeichern
-        
-        $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
-        
-        return Apache2::Const::OK;
-    }
-
-    unless($user->{ID} eq $userid){
-        OpenBib::Common::Util::print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}",$r,$msg);
-        return Apache2::Const::OK;
-    }
-  
     $user->set_fieldchoice({
         fs        => $showfs,
         hst       => $showhst,
@@ -268,52 +206,30 @@ sub update_bibsonomy {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
+    # CGI Args
     my $bibsonomy_sync = ($query->param('bibsonomy_sync'))?$query->param('bibsonomy_sync'):'off';
     my $bibsonomy_user = ($query->param('bibsonomy_user'))?$query->param('bibsonomy_user'):0;
     my $bibsonomy_key  = ($query->param('bibsonomy_key'))?$query->param('bibsonomy_key'):0;
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    if (! $user->{ID}){
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-        
-        # Return-URL in der Session abspeichern
-        
-        $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
-        
-        return Apache2::Const::OK;
-    }
-
-    unless($user->{ID} eq $userid){
-        OpenBib::Common::Util::print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}",$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
     $user->set_bibsonomy({
@@ -332,36 +248,27 @@ sub update_bibsonomy_sync {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-    
     $user->sync_all_to_bibsonomy;
 
     $self->return_baseurl;
@@ -374,43 +281,35 @@ sub update_searchform {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
+    # CGI Args
     my $setmask       = ($query->param('setmask'))?$query->param('setmask'):'';
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-  
     if ($setmask eq "") {
-        OpenBib::Common::Util::print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"),$r,$msg);
+        $self->print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"));
         return Apache2::Const::OK;
     }
-    
+
     $user->set_mask($setmask);
     $session->set_mask($setmask);
 
@@ -424,46 +323,36 @@ sub update_password {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
+    # CGI Args
     my $password1     = ($query->param('password1'))?$query->param('password1'):'';
     my $password2     = ($query->param('password2'))?$query->param('password2'):'';
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-    
     if ($password1 eq "" || $password1 ne $password2) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"),$r,$msg);
+        $self->print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"));
         return Apache2::Const::OK;
     }
-    
+
     $user->set_credentials({
         password => $password1,
     });
@@ -478,39 +367,31 @@ sub update_spelling {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
+    # CGI Args
     my $spelling_as_you_type   = ($query->param('spelling_as_you_type'))?$query->param('spelling_as_you_type'):'0';
     my $spelling_resultlist    = ($query->param('spelling_resultlist'))?$query->param('spelling_resultlist'):'0';
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-  
     $user->set_spelling_suggestion({
         as_you_type        => $spelling_as_you_type,
         resultlist         => $spelling_resultlist,
@@ -526,41 +407,33 @@ sub update_livesearch {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
+    # CGI Args
     my $livesearch_fs   = ($query->param('livesearch_fs'))?$query->param('livesearch_fs'):'0';
     my $livesearch_verf = ($query->param('livesearch_verf'))?$query->param('livesearch_verf'):'0';
     my $livesearch_swt  = ($query->param('livesearch_swt'))?$query->param('livesearch_swt'):'0';
     my $livesearch_exact= ($query->param('livesearch_exact'))?$query->param('livesearch_exact'):'0';
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-  
     $user->set_livesearch({
         fs        => $livesearch_fs,
         verf      => $livesearch_verf,
@@ -578,38 +451,30 @@ sub update_autocompletion {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
+    # CGI Args
     my $setautocompletion = ($query->param('setautocompletion'))?$query->param('setautocompletion'):'livesearch';
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-  
     $user->set_autocompletion($setautocompletion);
 
     $self->return_baseurl;
@@ -622,12 +487,14 @@ sub return_baseurl {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
-    my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
+    # Shared Args
+    my $config         = $self->param('config');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/preferences.html";
 

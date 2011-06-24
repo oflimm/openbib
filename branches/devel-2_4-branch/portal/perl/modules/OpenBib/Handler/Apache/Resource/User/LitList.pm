@@ -67,18 +67,11 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('show_collection');
     $self->run_modes(
-        'negotiate_url'                        => 'negotiate_url',
-        'show_collection_as_html'              => 'show_collection_as_html',
-        'show_collection_as_json'              => 'show_collection_as_json',
-        'show_collection_as_rdf'               => 'show_collection_as_rdf',
-        'show_collection_by_subject_negotiate' => 'show_collection_by_subject_negotiate',
-        'show_collection_by_subject_as_html'   => 'show_collection_by_subject_as_html',
-        'show_collection_by_subject_as_json'   => 'show_collection_by_subject_as_json',
-        'show_collection_by_subject_as_rdf'    => 'show_collection_by_subject_as_rdf',
-        'show_record_by_subject_negotiate'     => 'show_record_by_subject_negotiate',
-        
+        'show_collection'                      => 'show_collection',
+#        'show_collection_by_subject'           => 'show_collection_by_subject',
+#        'show_record_by_subject'               => 'show_record_by_subject',
     );
 
     # Use current path as template path,
@@ -94,75 +87,39 @@ sub show_collection {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-    my $representation = $self->param('representation') || 'html';
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-    
-    # NO CGI Args
 
-    $logger->debug("SessionID: ".$session->{ID}." / UserID: ".$user->{ID}." / userid in URI: $userid");
-
-    if (! $user->{ID}){
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-        
-        # Return-URL in der Session abspeichern
-        
-        $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
-        
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    unless($user->{ID} eq $userid){
-        OpenBib::Common::Util::print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}",$r,$msg);
-        return Apache2::Const::OK;
-    }
-    
     my $subjects_ref = OpenBib::User->get_subjects;
-
     my $userrole_ref = $user->get_roles_of_user($user->{ID});
-    
-    my $litlists   = $user->get_litlists();
-    my $targettype = $user->get_targettype_of_session($session->{ID});
+    my $litlists     = $user->get_litlists();
+    my $targettype   = $user->get_targettype_of_session($session->{ID});
     
     # TT-Data erzeugen
     my $ttdata={
-        representation  => $representation,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-        
-        view       => $view,
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-        
         subjects   => $subjects_ref,
         litlists   => $litlists,
         qopts      => $queryoptions->get_options,
-        user       => $user,
         targettype => $targettype,
-        config     => $config,
-        user       => $user,
-        msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_litlist_collection_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_user_litlist_collection_tname},$ttdata);
     return Apache2::Const::OK;
 }
 

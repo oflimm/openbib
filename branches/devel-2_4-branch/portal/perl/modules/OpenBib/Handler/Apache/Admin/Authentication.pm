@@ -100,8 +100,6 @@ sub show_collection {
         return;
     }
 
-    $logger->debug("Server: ".$r->get_server_name."Representation: $representation");
-
     # TT-Data erzeugen
     my $ttdata={
     };
@@ -114,8 +112,6 @@ sub show_record_form {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
     # Dispatched Args
     my $view             = $self->param('view')                   || '';
@@ -156,7 +152,6 @@ sub create_record {
 
     # Dispatched Args
     my $view           = $self->param('view')                   || '';
-    my $representation = $self->param('representation') || '';
 
     # Shared Args
     my $query          = $self->query();

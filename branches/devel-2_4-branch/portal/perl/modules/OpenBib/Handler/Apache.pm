@@ -42,6 +42,7 @@ use APR::URI ();
 use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use Template;
+use XML::RSS;
 use YAML ();
 
 use OpenBib::Config;
@@ -554,106 +555,26 @@ sub is_authenticated {
         return 1;
     }
     else {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
+        $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
         return 0;
     }
 }
 
 sub print_warning {
     my $self = shift;
-    my $warning= shift;
+    my $warning = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Dispatched Args
-    my $view           = $self->param('view')           || '';
-    
     # Shared Args
-    my $r              = $self->param('r');
     my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $servername     = $self->param('servername');
-    my $path_prefix    = $self->param('path_prefix');
-    my $representation = $self->param('representation');
-    my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
 
-    my $ttdata         = {};
-    
-    # View- und Datenbank-spezifisches Templating
-    my $database  = $ttdata->{'database'};
-    my $sessionID = $session->{ID};
-    
-    my $sysprofile= $config->get_viewinfo->search({ viewname => $view })->single()->profilename;
-
-    # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
-    # Einloggen/Mein KUG automatisch deaktiviert
-    
-    if (!$user->userdb_accessible()){
-        $config->{login_active} = 0;
-    }
-
-    my $loginname="";
-
-    # Wenn wir authentifiziert sind, dann
-    if ($user->{ID}) {
-        $loginname=$user->get_username();
-    }
-
-    # TT-Data anreichern
-    $ttdata->{'view'}           = $view;
-    $ttdata->{'sessionID'}      = $sessionID;
-    $ttdata->{'representation'} = $representation;
-    $ttdata->{'content_type'}   = $content_type;
-    $ttdata->{'session'}        = $session;
-    $ttdata->{'config'}         = $config;
-    $ttdata->{'user'}           = $user;
-    $ttdata->{'msg'}            = $msg;
-    $ttdata->{'stylesheet'}     = $stylesheet;
-    $ttdata->{'servername'}     = $servername;
-    $ttdata->{'loginname'}      = $loginname;
-    $ttdata->{'sysprofile'}     = $sysprofile;
-    $ttdata->{'to_json'}        = sub {
-        my $ref = shift;
-        return encode_json $ref;
+    my $ttdata = {
+        err_msg => $warning,
     };
 
-    $ttdata->{'errmsg'} = $warning;
-    
-    my $templatename = $config->{tt_error_tname};
-    
-    $logger->debug("Using base Template $templatename");
-    
-    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => '',
-        view         => $view,
-        profile      => $sysprofile,
-        templatename => $templatename,
-    });
-
-    $logger->debug("Using database/view specific Template $templatename");
-  
-    my $template = Template->new({ 
-        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config->{tt_include_path},
-	    ABSOLUTE       => 1,
-        }) ],
-         OUTPUT         => $r,    # Output geht direkt an Apache Request
-         RECURSION      => 1,
-    });
-  
-    # Dann Ausgabe des neuen Headers
-    $r->content_type($content_type);
-  
-    $template->process($templatename, $ttdata) || do {
-        $r->log_reason($template->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
-    };
+    $self->print_page($config->{tt_error_tname},$ttdata);
   
     return;
 }
@@ -661,101 +582,21 @@ sub print_warning {
 sub print_info {
     my $self = shift;
     my $info = shift;
-    
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Dispatched Args
-    my $view           = $self->param('view')           || '';
-    
     # Shared Args
-    my $r              = $self->param('r');
     my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $servername     = $self->param('servername');
-    my $path_prefix    = $self->param('path_prefix');
-    my $representation = $self->param('representation');
-    my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
 
-    my $ttdata         = {};
-    
-    # View- und Datenbank-spezifisches Templating
-    my $database  = $ttdata->{'database'};
-    my $sessionID = $session->{ID};
-    
-    my $sysprofile= $config->get_viewinfo->search({ viewname => $view })->single()->profilename;
-
-    # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
-    # Einloggen/Mein KUG automatisch deaktiviert
-    
-    if (!$user->userdb_accessible()){
-        $config->{login_active} = 0;
-    }
-
-    my $loginname="";
-
-    # Wenn wir authentifiziert sind, dann
-    if ($user->{ID}) {
-        $loginname=$user->get_username();
-    }
-
-    # TT-Data anreichern
-    $ttdata->{'view'}           = $view;
-    $ttdata->{'sessionID'}      = $sessionID;
-    $ttdata->{'representation'} = $representation;
-    $ttdata->{'content_type'}   = $content_type;
-    $ttdata->{'session'}        = $session;
-    $ttdata->{'config'}         = $config;
-    $ttdata->{'user'}           = $user;
-    $ttdata->{'msg'}            = $msg;
-    $ttdata->{'stylesheet'}     = $stylesheet;
-    $ttdata->{'servername'}     = $servername;
-    $ttdata->{'loginname'}      = $loginname;
-    $ttdata->{'sysprofile'}     = $sysprofile;
-    $ttdata->{'to_json'}        = sub {
-        my $ref = shift;
-        return encode_json $ref;
+    my $ttdata = {
+        info_msg => $info,
     };
 
-    $ttdata->{'errmsg'} = $info;
-
-    my $templatename = $config->{tt_info_message_tname};
-    
-    $logger->debug("Using base Template $templatename");
-    
-    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => '',
-        view         => $view,
-        profile      => $sysprofile,
-        templatename => $templatename,
-    });
-
-    $logger->debug("Using database/view specific Template $templatename");
-  
-    my $template = Template->new({ 
-        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config->{tt_include_path},
-	    ABSOLUTE       => 1,
-        }) ],
-         OUTPUT         => $r,    # Output geht direkt an Apache Request
-         RECURSION      => 1,
-    });
-  
-    # Dann Ausgabe des neuen Headers
-    $r->content_type($content_type);
-  
-    $template->process($templatename, $ttdata) || do {
-        $r->log_reason($template->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
-    };
+    $self->print_page($config->{tt_info_message_tname},$ttdata);
   
     return;
-}   
+}
 
 sub print_page {
     my $self = shift;
@@ -799,6 +640,11 @@ sub print_page {
     # Wenn wir authentifiziert sind, dann
     if ($user->{ID}) {
         $loginname=$user->get_username();
+    }
+
+    if ($self->param('representation') eq "rss"){
+        my $rss = new XML::RSS ( version => '1.0' ) ;
+        $ttdata->{'rss'}           = $rss;
     }
 
     # TT-Data anreichern

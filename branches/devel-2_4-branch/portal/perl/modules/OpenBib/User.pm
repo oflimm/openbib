@@ -4530,6 +4530,68 @@ sub subject_exists {
     return ($rows > 0)?1:0;
 }
 
+sub search {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $roleid                 = exists $arg_ref->{roleid}
+        ? $arg_ref->{roleid}              : undef;
+    my $username               = exists $arg_ref->{username}
+        ? $arg_ref->{username}            : undef;
+    my $surname                = exists $arg_ref->{surname}
+        ? $arg_ref->{surname}             : undef;
+    my $commonname             = exists $arg_ref->{commonname}
+        ? $arg_ref->{commonname}          : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $userlist_ref = [];
+    
+    my $sql_stmt = "select userid from user where ";
+    my @sql_where = ();
+    my @sql_args = ();
+    
+    if ($roleid) {
+        $sql_stmt = "select userid from userrole where roleid=?";
+        push @sql_args, $roleid;
+    }
+    else {
+        if ($username) {
+            push @sql_where,"loginname = ?";
+            push @sql_args, $username;
+        }
+        
+        if ($commonname) {
+            push @sql_where, "nachname = ?";
+            push @sql_args, $commonname;
+        }
+        
+        if ($surname) {
+            push @sql_where, "vorname = ?";
+            push @sql_args, $surname;
+        }
+        
+        $sql_stmt.=join(" and ",@sql_where);
+    }
+    
+    
+    $logger->debug($sql_stmt);
+    
+    my $request = $self->{dbh}->prepare($sql_stmt);
+    $request->execute(@sql_args);
+    
+    $logger->debug("Looking up user $username/$surname/$commonname");
+    
+    while (my $result=$request->fetchrow_hashref){
+        $logger->debug("Found ID $result->{userid}");
+        my $single_user = new OpenBib::User({ID => $result->{userid}});
+        push @$userlist_ref, $single_user->get_info;
+    }
+
+    return $userlist_ref;
+}
+
 sub connectDB {
     my $self = shift;
 

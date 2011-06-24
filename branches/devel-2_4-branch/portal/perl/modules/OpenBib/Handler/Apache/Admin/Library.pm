@@ -90,8 +90,6 @@ sub show_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
     # Dispatched Args
     my $view           = $self->param('view');
@@ -113,11 +111,8 @@ sub show_record {
         return;
     }
 
-    $logger->debug("Server: ".$r->get_server_name."Representation: $representation");
-
-    if (!$config->db_exists($dbname)) {        
+    if (!$config->db_exists($dbname)) {
         $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
         return Apache2::Const::OK;
     }
     
@@ -184,8 +179,6 @@ sub create_record {
     if (!$self->is_authenticated('admin')){
         return;
     }
-
-    $logger->debug("Server: ".$r->get_server_name);
 
     my $thisdbinfo_ref = {
         description        => $description,
@@ -263,11 +256,8 @@ sub show_record_form {
         return;
     }
 
-    $logger->debug("Server: ".$r->get_server_name);
-
-    if (!$config->db_exists($dbname)) {        
+    if (!$config->db_exists($dbname)) {
         $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
         return Apache2::Const::OK;
     }
 
@@ -341,11 +331,8 @@ sub update_record {
         return;
     }
 
-    $logger->debug("Server: ".$r->get_server_name);
-
-    if (!$config->db_exists($dbname)) {        
+    if (!$config->db_exists($dbname)) {
         $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
         return Apache2::Const::OK;
     }
 
@@ -447,11 +434,8 @@ sub delete_record {
         return;
     }
 
-    $logger->debug("Server: ".$r->get_server_name);
-
-    if (!$config->db_exists($dbname)) {        
+    if (!$config->db_exists($dbname)) {
         $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
         return Apache2::Const::OK;
     }
     

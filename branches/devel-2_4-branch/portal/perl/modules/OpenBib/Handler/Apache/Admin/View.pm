@@ -70,16 +70,13 @@ sub setup {
 
     $self->start_mode('show_collection');
     $self->run_modes(
-        'negotiate_url'             => 'negotiate_url',
-        'show_collection_as_html'   => 'show_collection_as_html',
-        'show_collection_as_json'   => 'show_collection_as_json',
-        'show_collection_as_rdf'    => 'show_collection_as_rdf',
+        'show_collection'           => 'show_collection',
         'show_collection_form'      => 'show_collection_form',
         'create_record'             => 'create_record',
-        'show_record_negotiate'     => 'show_record_negotiate',
+        'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'update_record'             => 'update_record',
-        'delete_record'             => 'delete_record',        
+        'delete_record'             => 'delete_record',
     );
 
     # Use current path as template path,
@@ -92,129 +89,49 @@ sub show_collection {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')                   || '';
-    my $representation = $self->param('representation') || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
+    # Shared Args
+    my $config         = $self->param('config');
 
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
-
-    $logger->debug("Server: ".$r->get_server_name."Representation: $representation");
 
     my $viewinfo_ref = $config->get_viewinfo_overview();
     
     my $ttdata={
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        view       => $view,
-        
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
         views      => $viewinfo_ref,
-        config     => $config,
-        session    => $session,
-        user       => $user,
-        msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_view_tname},$ttdata,$r);
+    $self->print_page($config->{tt_admin_view_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
 
-sub show_record_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')                   || '';
-    my $id             = $self->param('viewid')             || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $viewname       = $self->strip_suffix($self->param('viewid'));
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
+    # Shared Args
+    my $config         = $self->param('config');
 
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    $logger->debug("Server: ".$r->get_server_name);
-
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $representation = "";
-    my $content_type   = "";
-
-    my $viewname         = "";
-    if ($id=~/^(.+?)(\.html|\.json|\.rdf\+xml)$/){
-        $viewname           = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $viewname = $id;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
+    if (!$self->is_authenticated('admin')){
+        return;
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $viewinfo_obj  = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
-    my $viewname    = $viewinfo_obj->viewname;
     my $description = $viewinfo_obj->description;
     my $primrssfeed = $viewinfo_obj->rssfeed;
     my $start_loc   = $viewinfo_obj->start_loc;
@@ -225,18 +142,15 @@ sub show_record_negotiate {
     my $active      = $viewinfo_obj->active;
              
     my @profiledbs       = $config->get_profiledbs($profilename);
-    
     my @viewdbs          = $config->get_viewdbs($viewname);
-    
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
-    
-    my $viewrssfeed_ref=$config->get_rssfeeds_of_view($viewname);
+    my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
 
     my $viewinfo={
         viewname     => $viewname,
         description  => $description,
         stripuri     => $stripuri,
-        joinindex    => $joinindex,       
+        joinindex    => $joinindex,
         active       => $active,
         start_loc    => $start_loc,
         start_stid   => $start_stid,
@@ -249,24 +163,12 @@ sub show_record_negotiate {
 
     
     my $ttdata={
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-
-        view       => $view,
-        
         dbnames    => \@profiledbs,
-        
         viewinfo   => $viewinfo,
-        
         dbinfo     => $dbinfotable,
-        
-        config     => $config,
-        session    => $session,
-        user       => $user,
-        msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_view_record_tname},$ttdata,$r);
+    $self->print_page($config->{tt_admin_view_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -274,43 +176,17 @@ sub create_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')                   || '';
-    my $representation = $self->param('representation') || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    $logger->debug("Server: ".$r->get_server_name);
-
-    # Variables
+    # CGI Args
     my $description     = decode_utf8($query->param('description'))     || '';
     my $viewname        = $query->param('viewname')                     || '';
     my $profilename     = $query->param('profilename')                  || '';
@@ -320,24 +196,24 @@ sub create_record {
     my $viewstart_loc   = $query->param('viewstart_loc')             || '';
     my $viewstart_stid  = $query->param('viewstart_stid')            || '';
 
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
+
     if ($viewname eq "" || $description eq "" || $profilename eq "") {
-        
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-Profil eingeben."),$r,$msg);
-        
+        $self->print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-Profil eingeben."));
         return Apache2::Const::OK;
     }
 
     # Profile muss vorhanden sein.
     if (!$config->profile_exists($profilename)) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"),$r,$msg);
-
+        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
     # View darf noch nicht existieren
-    if ($config->view_exists($viewname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
-        
+    if ($config->view_exists($viewname)) {
+        $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
         return Apache2::Const::OK;
     }
     
@@ -353,7 +229,7 @@ sub create_record {
     });
     
     if ($ret == -1){
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
@@ -369,52 +245,22 @@ sub show_record_form {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')                   || '';
-    my $viewname       = $self->param('viewid')             || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $viewname       = $self->param('viewid');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
+    # Shared Args
+    my $config         = $self->param('config');
 
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$config->view_exists($viewname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
-            
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    $logger->debug("Server: ".$r->get_server_name);
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $viewinfo_obj  = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
-    my $viewname    = $viewinfo_obj->viewname;
     my $description = $viewinfo_obj->description;
     my $primrssfeed = $viewinfo_obj->rssfeed;
     my $start_loc   = $viewinfo_obj->start_loc;
@@ -425,11 +271,8 @@ sub show_record_form {
     my $active      = $viewinfo_obj->active;
              
     my @profiledbs       = $config->get_profiledbs($profilename);
-    
     my @viewdbs          = $config->get_viewdbs($viewname);
-    
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
-    
     my $viewrssfeed_ref=$config->get_rssfeeds_of_view($viewname);
 
     my $viewinfo={
@@ -449,24 +292,12 @@ sub show_record_form {
 
     
     my $ttdata={
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-
-        view       => $view,
-        
         dbnames    => \@profiledbs,
-        
         viewinfo   => $viewinfo,
-        
         dbinfo     => $dbinfotable,
-        
-        config     => $config,
-        session    => $session,
-        user       => $user,
-        msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_view_record_edit_tname},$ttdata,$r);
+    $self->print_page($config->{tt_admin_view_record_edit_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -476,60 +307,41 @@ sub update_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $view           = $self->param('view');
+    my $viewname       = $self->param('viewid');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $method          = decode_utf8($query->param('_method')) || '';
+    my $confirm         = $query->param('confirm') || 0;
+    my $description     = decode_utf8($query->param('description'))     || '';
+    my $joinindex       = $query->param('joinindex')       || 0;
+    my $stripuri        = $query->param('stripuri')        || 0;
+    my $active          = $query->param('active')          || 0;
+    my $primrssfeed     = $query->param('primrssfeed')     || '';
+    my $viewstart_loc   = $query->param('viewstart_loc')             || '';
+    my $viewstart_stid  = $query->param('viewstart_stid')            || '';
+    my $profilename     = $query->param('profilename')     || '';
+    my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
+    my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
     
-    my $r              = $self->param('r');
-
-    my $view           = $self->param('view')                   || '';
-    my $viewname       = $self->param('viewid')             || '';
-
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$config->view_exists($viewname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
-    }
-            
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
 
-    $logger->debug("Server: ".$r->get_server_name);
-
-    if (!$config->view_exists($viewname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
-        
+    if (!$config->view_exists($viewname)) {
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         return Apache2::Const::OK;
     }
-
-    # Variables
 
     # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
     # zu verwenden
-    
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
 
     if ($method eq "DELETE"){
         $logger->debug("About to delete $viewname");
@@ -538,19 +350,11 @@ sub update_record {
             my $viewinfo_ref = $config->get_viewinfo->search({ viewname => $viewname})->single;
             
             my $ttdata={
-                stylesheet => $stylesheet,
                 viewinfo   => $viewinfo_ref,
-
-                view       => $view,
-                
-                config     => $config,
-                session    => $session,
-                user       => $user,
-                msg        => $msg,
             };
 
             $logger->debug("Asking for confirmation");
-            OpenBib::Common::Util::print_page($config->{tt_admin_view_record_delete_confirm_tname},$ttdata,$r);
+            $self->print_page($config->{tt_admin_view_record_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }
@@ -563,22 +367,9 @@ sub update_record {
 
     # Ansonsten POST oder PUT => Aktualisieren
 
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $joinindex       = $query->param('joinindex')       || 0;
-    my $stripuri        = $query->param('stripuri')        || 0;
-    my $active          = $query->param('active')          || 0;
-    my $primrssfeed     = $query->param('primrssfeed')     || '';
-    my $viewstart_loc   = $query->param('viewstart_loc')             || '';
-    my $viewstart_stid  = $query->param('viewstart_stid')            || '';
-    my $profilename     = $query->param('profilename')     || '';
-    my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
-    my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
-
-
     # Profile muss vorhanden sein.
     if (!$config->profile_exists($profilename)) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"),$r,$msg);
-
+        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
@@ -594,14 +385,14 @@ sub update_record {
         profilename => $profilename,
         viewdb      => \@viewdb,
         rssfeeds    => \@rssfeeds,
-    };        
+    };
 
     $logger->debug("Info: ".YAML::Dump($thisviewinfo_ref));
     
     $config->update_view($thisviewinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$self->param('path_prefix')/$config->{admin_view_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -612,50 +403,21 @@ sub delete_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r                = $self->param('r');
 
-    my $view           = $self->param('view')                   || '';
-    my $viewname       = $self->param('viewid')             || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $viewname       = $self->param('viewid');
+
+    # Shared Args
+    my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$config->view_exists($viewname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
-        
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
-            
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    $logger->debug("Server: ".$r->get_server_name);
 
     $config->del_view($viewname);
-    
+
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}");
     $self->query->status(Apache2::Const::REDIRECT);

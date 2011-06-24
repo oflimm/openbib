@@ -69,11 +69,8 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'negotiate_url'                        => 'negotiate_url',
-        'show_collection_as_html'              => 'show_collection_as_html',
-        'show_collection_as_json'              => 'show_collection_as_json',
-        'show_collection_as_rdf'               => 'show_collection_as_rdf',
-        'show_record_negotiate'                => 'show_record_negotiate',
+        'show_collection'                      => 'show_collection',
+        'show_record'                          => 'show_record',
         'show_record_form'                     => 'show_record_form',
         'create_record'                        => 'create_record',
         'update_record'                        => 'update_record',
@@ -91,154 +88,60 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Entered show_collection");
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-
-    my $offset         = $query->param('offset')      || 0;
-    my $hitrange       = $query->param('hitrange')    || 50;
-    my $queryid        = $query->param('queryid')     || '';
-    my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
-    my $reviewid       = $query->param('reviewid')    || '';
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
-    my $titisbn        = $query->param('titisbn')     || '';
-    my $title          = decode_utf8($query->param('title'))    || '';
-    my $review         = decode_utf8($query->param('review'))   || '';
-    my $nickname       = decode_utf8($query->param('nickname')) || '';
-    my $rating         = $query->param('rating')      || 0;
-
-    my $do_show        = $query->param('do_show')     || '';
-    my $do_add         = $query->param('do_add')      || '';
-    my $do_change      = $query->param('do_change')   || '';
-    my $do_edit        = $query->param('do_edit')     || '';
-    my $do_del         = $query->param('do_del')      || '';
-    my $do_vote        = $query->param('do_vote')      || '';
-    
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        return Apache2::Const::OK;
-    }
-    
     my $librarylist_ref = $config->get_libraries();
     
     # TT-Data erzeugen
     my $ttdata={
-        view             => $view,
-        stylesheet       => $stylesheet,
         queryoptions_ref => $queryoptions->get_options,
-        sessionID        => $session->{ID},
         dbinfo           => $dbinfotable,
         libraries        => $librarylist_ref,
-        
-        config           => $config,
-        msg              => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_library_collection_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_library_collection_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
 
-sub show_record_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $id             = $self->param('libraryid')      || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $libraryid      = $self->strip_suffix($self->param('libraryid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
-
-    my $query       = Apache2::Request->new($r);
-
-    my $session     = OpenBib::Session->instance({ apreq => $r });
-
-    my $user        = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $useragent   = $r->subprocess_env('HTTP_USER_AGENT');
-  
-    my $stylesheet  = OpenBib::Common::Util::get_css_by_browsertype($r);
-    
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    # Mit Suffix, dann keine Aushandlung des Typs
-    
-    my $representation = "";
-    my $content_type   = "";
-    
-    my $libraryid             = "";
-    
-    if ($id=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
-        $libraryid        = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $libraryid = $id;
-        my $negotiated_type_ref = $self->negotiate_type;
-
-        my $new_location = "$path_prefix/$config->{resource_library_loc}/$libraryid.$negotiated_type_ref->{suffix}";
-
-        $self->query->method('GET');
-        $self->query->content_type($negotiated_type_ref->{content_type});
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
-        
-        $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-        return;
-    }
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    $logger->debug("Type: library - Key: $libraryid - Representation: $representation");
 
     if ( $libraryid ){ # Valide Informationen etc.
         $logger->debug("Key: $libraryid");
@@ -246,29 +149,17 @@ sub show_record_negotiate {
         my $libinfo_ref = $config->get_libinfo($libraryid);
 
         my $ttdata = {
-            view          => $view,
-            representation => $representation,
-            content_type   => $content_type,
-            
-            to_json       => sub {
-                my $ref = shift;
-                return encode_json $ref;
-            },
-            
             libinfo        => $libinfo_ref,
-            
-            config         => $config,
             dbinfo         => $dbinfotable,
-            
-            user           => $user,
-            msg            => $msg,
-
         };
 
-        
-        OpenBib::Common::Util::print_page($config->{tt_resource_library_tname},$ttdata,$r);
+        $self->print_page($config->{tt_resource_library_tname},$ttdata);
 
     }
+    else {
+        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit einer Id spezifiziert."));
+    }
+
 
     return Apache2::Const::OK;
 }

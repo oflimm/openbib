@@ -18,7 +18,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Fehlerbeschreibung") %]</th></tr>
 <tr><td class="boxedclear">
-[% errmsg %]
+[% err_msg %]
 </td></tr>
 </table>
 

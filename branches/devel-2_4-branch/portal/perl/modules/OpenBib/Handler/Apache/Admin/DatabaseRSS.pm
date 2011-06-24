@@ -91,18 +91,18 @@ sub show_collection {
     my $logger = get_logger();
     
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
-    my $dbname         = $self->param('databaseid')     || '';
+    my $view           = $self->param('view');
+    my $dbname         = $self->param('databaseid');
 
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
@@ -110,9 +110,8 @@ sub show_collection {
         return;
     }
 
-    if (!$config->db_exists($dbname)) {        
+    if (!$config->db_exists($dbname)) {
         $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
         return Apache2::Const::OK;
     }
 
@@ -122,7 +121,6 @@ sub show_collection {
         dbname      => $dbname,
         rssfeeds    => $rssfeed_ref,
     };
-    
     
     my $ttdata={
         katalog    => $katalog,
@@ -184,8 +182,8 @@ sub create_record {
     my $logger = get_logger();
     
     # Dispatched Args
-    my $view           = $self->param('view')                   || '';
-    my $dbname         = $self->param('databaseid')          || '';
+    my $view           = $self->param('view');
+    my $dbname         = $self->param('databaseid');
 
     # Shared Args
     my $query          = $self->query();
@@ -233,8 +231,7 @@ sub show_record_form {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
+
     # Dispatched Args
     my $view           = $self->param('view');
     my $dbname         = $self->param('databaseid');
@@ -281,8 +278,6 @@ sub update_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
     # Dispatched Args
     my $view           = $self->param('view');
@@ -345,7 +340,7 @@ sub update_record {
     }
 
     # Ansonsten POST oder PUT => Aktualisieren
-    $config->update_databaseinfo_rss($dbname,$rsstype,$active,$id);
+    $config->update_databaseinfo_rss($dbname,$rsstype,$active,$rssid);
     
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");
@@ -359,8 +354,6 @@ sub delete_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
     # Dispatched Args
     my $view           = $self->param('view');

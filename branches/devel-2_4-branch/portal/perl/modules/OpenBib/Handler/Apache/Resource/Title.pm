@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Resource::Title.pm
 #
-#  Copyright 2009-2010 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -45,14 +45,10 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('show_record');
     $self->run_modes(
-        'show' => 'show',
-        'negotiate_url'          => 'negotiate_url',
-        'show_popular_as_html'   => 'show_popular_as_html',
-        'show_popular_as_json'   => 'show_popular_as_json',
-        'show_popular_as_rdf'    => 'show_popular_as_rdf',
-        'show_popular_as_include'=> 'show_popular_as_include',
+        'show_record'            => 'show_record',
+        'show_popular'           => 'show_popular',
     );
 
     # Use current path as template path,
@@ -67,23 +63,20 @@ sub show_popular {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')       || '';
-    my $representation = $self->param('representation') || 'html';
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
     
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');    
+    my $useragent      = $self->param('useragent');
     
-    # CGI Args
-
     my $statistics  = new OpenBib::Statistics();
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
@@ -93,97 +86,201 @@ sub show_popular {
     
     # TT-Data erzeugen
     my $ttdata={
-        representation=> $representation,
         database      => $database,
         profile       => $profile,
-        queryoptions  => $queryoptions,
-        view          => $view,
-        stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
-        sessionID     => $session->{ID},
-	session       => $session,
-        useragent     => $useragent,
-        config        => $config,
         dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
-        user          => $user,
-        msg           => $msg,
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
     };
 
     my $templatename = "tt_resource_title_popular".(($database)?'_by_database':'')."_tname";
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
 }
 
-sub show {
+sub show_record {
     my $self = shift;
-    my $r    = $self->param('r');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
-    my $path_prefix    = $self->param('path_prefix');
+    my $titleid        = $self->strip_suffix($self->param('titleid'));
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');    
+    my $useragent      = $self->param('useragent');
 
-    # Mit Suffix, dann keine Aushandlung des Typs
-    
-    my $representation = "";
-    my $content_type   = "";
-    
-    my $id             = "";
-    if ($titleid=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
-        $id            = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $self->param('config')->{'content_type_map_rev'}{$representation};
+    # CGI Args
+    my $stid          = $query->param('stid')              || '';
+    my $callback      = $query->param('callback')  || '';
+    my $lang          = $query->param('lang') || $queryoptions->get_option('l') || 'de';
+    my $queryid       = $query->param('queryid')   || '';
+    my $format        = $query->param('format')    || 'full';
+    my $no_log        = $query->param('no_log')    || '';
+
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $searchquery   = OpenBib::SearchQuery->instance;
+    my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
+
+    if ($database && $titleid ){ # Valide Informationen etc.
+        $logger->debug("ID: $titleid - DB: $database");
+        
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid})->load_full_record;
+
+        my $poolname=$dbinfotable->{dbnames}{$database};
+
+        if ($queryid){
+            $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+        }
+
+        my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
+            session    => $session,
+            database   => $database,
+            titidn     => $titleid,
+            view       => $view,
+        });
+
+        # Literaturlisten finden
+
+        my $litlists_ref = $user->get_litlists_of_tit({titid => $titleid, titdb => $database});
+
+        # Anreicherung mit OLWS-Daten
+        if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){
+            if (exists $circinfotable->{$database} && exists $circinfotable->{$database}{circcheckurl}){
+                $logger->debug("Endpoint: ".$circinfotable->{$database}{circcheckurl});
+                my $soapresult;
+                eval {
+                    my $soap = SOAP::Lite
+                        -> uri("urn:/Viewer")
+                            -> proxy($circinfotable->{$database}{circcheckurl});
+                
+                    my $result = $soap->get_item_info(
+                        SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                            SOAP::Data->name(collection => $circinfotable->{$database}{circdb})->type('string'),
+                            SOAP::Data->name(item       => $titleid)->type('string'))));
+                    
+                    unless ($result->fault) {
+                        $soapresult=$result->result;
+                    }
+                    else {
+                        $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                    }
+                };
+                
+                if ($@){
+                    $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+                }
+                
+                $record->{olws}=$soapresult;
+            }
+        }
+
+        # TT-Data erzeugen
+        my $ttdata={
+            database    => $database, # Zwingend wegen common/subtemplate
+            dbinfo      => $dbinfotable,
+            poolname    => $poolname,
+            prevurl     => $prevurl,
+            nexturl     => $nexturl,
+            qopts       => $queryoptions->get_options,
+            queryid     => $searchquery->get_id,
+            record      => $record,
+            titidn      => $titleid,
+
+            format      => $format,
+        
+            # Wegen Template-Kompatabilitaet:
+            normset     => $record->get_normset,
+            mexnormset  => $record->get_mexset,
+            circset     => $record->get_circset,
+            
+            searchquery => $searchquery,
+            activefeed  => $config->get_activefeeds_of_db($self->{database}),
+            
+            logintargetdb => $logintargetdb,
+            
+            litlists          => $litlists_ref,
+            highlightquery    => \&highlightquery,
+            
+            config      => $config,
+            user        => $user,
+            msg         => $msg,
+        };
+
+        $stid=~s/[^0-9]//g;
+        my $templatename = ($stid)?"tt_resource_title_".$stid."_tname":"tt_resource_title_tname";
+        
+        $self->print_page($config->{$templatename},$ttdata);
+
+        # Log Event
+
+        my $isbn;
+        
+        if (exists $record->get_normset->{T0540}[0]{content}){
+            $isbn = $record->get_normset->{T0540}[0]{content};
+            $isbn =~s/ //g;
+            $isbn =~s/-//g;
+            $isbn =~s/X/x/g;
+        }
+        
+        if (!$no_log){
+            $session->log_event({
+                type      => 10,
+                content   => {
+                    id       => $titleid,
+                    database => $database,
+                    isbn     => $isbn,
+                },
+                serialize => 1,
+            });
+        }
     }
-    # Sonst Aushandlung
     else {
-        $id = $titleid;
-        my $negotiated_type_ref = $self->negotiate_type;
-
-        my $new_location = "$path_prefix/$config->{resource_title_loc}/$database/$id.$negotiated_type_ref->{suffix}";
-
-        $self->query->method('GET');
-        $self->query->content_type($negotiated_type_ref->{content_type});
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
-        
-        $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-        return;
-    }
-    
-    if ($database && $id ){ # Valide Informationen etc.
-        $logger->debug("Key: $id - DB: $database - ID: $id");
-        
-        OpenBib::Record::Title->new({database => $database, id => $id})
-              ->load_full_record->print_to_handler({
-                  apachereq          => $r,
-                  representation     => $representation,
-                  content_type       => $content_type,
-                  view               => $view,
-              });
+        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
     return Apache2::Const::OK;
+}
+
+sub highlightquery {
+    my ($searchquery,$content) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Highlight Query
+
+    my $term_ref = $searchquery->get_searchterms();
+
+    return $content if (scalar(@$term_ref) <= 0);
+
+    $logger->debug("Terms: ".YAML::Dump($term_ref));
+
+    my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
+
+    return $content if (!$terms);
+    
+    $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
+    $logger->debug("Content vor: ".$content);
+    
+    $content=~s/\b($terms)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
+
+    $logger->debug("Content nach: ".$content);
+
+    return $content;
 }
 
 1;

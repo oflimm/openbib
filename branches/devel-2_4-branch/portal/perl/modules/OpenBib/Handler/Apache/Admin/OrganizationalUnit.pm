@@ -130,8 +130,6 @@ sub show_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
     # Dispatched Args
     my $view           = $self->param('view');
@@ -242,8 +240,6 @@ sub show_record_form {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
     # Dispatched Args
     my $view           = $self->param('view');
@@ -396,11 +392,6 @@ sub delete_record {
     my $view           = $self->param('view')           || '';
     my $profilename    = $self->param('profileid')      || '';
     my $orgunitname    = $self->param('orgunitid')      || '';
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $profilename    = $self->param('profileid');
-    my $orgunitname    = $self->param('orgunitid');
 
     # Shared Args
     my $query          = $self->query();

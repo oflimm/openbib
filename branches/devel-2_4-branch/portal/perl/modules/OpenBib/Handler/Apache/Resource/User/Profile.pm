@@ -57,14 +57,11 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('show_collection');
     $self->run_modes(
-        'negotiate_url'                 => 'negotiate_url',
-        'show_collection_as_html'       => 'show_collection_as_html',
-        'show_collection_as_json'       => 'show_collection_as_json',
-        'show_collection_as_rdf'        => 'show_collection_as_rdf',
+        'show_collection'               => 'show_collection',
         'show_record_form'              => 'show_record_form',
-        'show_record_negotiate'         => 'show_record_negotiate',
+        'show_record'                   => 'show_record',
         'create_record'                 => 'create_record',
         'update_record'                 => 'update_record',
         'delete_record'                 => 'delete_record',
@@ -80,44 +77,28 @@ sub show_collection {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatches Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')           || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query=Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });        
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-    
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
+    if (!$self->is_authenticated('user',$userid)){
+        return;
+    }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    #####################################################################   
-    # Anzeigen der Profilmanagement-Seite
-    #####################################################################   
 
     my @userdbprofiles = $user->get_all_profiles;
     my $targettype     = $user->get_targettype_of_session($session->{ID});
@@ -131,66 +112,46 @@ sub show_collection {
     my $colspan=$maxcolumn*3;
     
     my $ttdata={
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $session->{ID},
         targettype     => $targettype,
         userdbprofiles => \@userdbprofiles,
         maxcolumn      => $maxcolumn,
         colspan        => $colspan,
         catdb          => \@catdb,
         dbinfo         => $dbinfotable,
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_profile_collection_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_user_profile_collection_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
-sub show_record_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+    my $profileid      = $self->strip_suffix($self->param('profileid'));
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-    my $profileid      = $self->param('profileid')      || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query=Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });        
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
     my $method         = $query->param('_method')     || '';
 
-    my $checkeddb_ref;
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
     if ($method eq "DELETE"){
@@ -208,7 +169,9 @@ sub show_record_negotiate {
     
     # Zuerst Profil-Description zur ID holen
     $profilname = $user->get_profilename_of_profileid($profileid);
-    
+
+    my $checkeddb_ref = {};
+
     foreach my $dbname ($user->get_profiledbs_of_profileid($profileid)){
         $checkeddb_ref->{$dbname}=1;
     }
@@ -222,20 +185,14 @@ sub show_record_negotiate {
     my $colspan=$maxcolumn*3;
     
     my $ttdata={
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $session->{ID},
         targettype     => $targettype,
         profilname     => $profilname,
         maxcolumn      => $maxcolumn,
         colspan        => $colspan,
         catdb          => \@catdb,
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_profile_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_user_profile_tname},$ttdata,$r);
     return Apache2::Const::OK;
 }
 
@@ -244,52 +201,32 @@ sub show_record_form {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+    my $profileid      = $self->strip_suffix($self->param('profileid'));
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-    my $profileid      = $self->param('profileid')      || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query=Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });        
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    my $checkeddb_ref;
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
 
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    my $idnresult="";
-
-    #####################################################################   
-    # Anzeigen der Profilmanagement-Seite
-    #####################################################################   
-
-    my $profilname="";
-    
     # Zuerst Profil-Description zur ID holen
-    $profilname = $user->get_profilename_of_profileid($profileid);
+    my $profilname = $user->get_profilename_of_profileid($profileid);
+
+    my $checkeddb_ref = {};
     
     foreach my $dbname ($user->get_profiledbs_of_profileid($profileid)){
         $checkeddb_ref->{$dbname}=1;
@@ -304,21 +241,15 @@ sub show_record_form {
     my $colspan=$maxcolumn*3;
     
     my $ttdata={
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $session->{ID},
         targettype     => $targettype,
         profilname     => $profilname,
         profileid      => $profileid,
         maxcolumn      => $maxcolumn,
         colspan        => $colspan,
         catdb          => \@catdb,
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_profile_edit_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_user_profile_edit_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -327,52 +258,35 @@ sub update_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+    my $profileid      = $self->strip_suffix($self->param('profileid'));
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-    my $profileid      = $self->param('profileid')      || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query=Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });        
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    # CGI-Uebergabe
+    # CGI Args
     my @databases  = ($query->param('db'))?$query->param('db'):();
 
-    my $checkeddb_ref;
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
-
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    my $idnresult="";
-
 
     # Wenn keine Profileid (=kein Profil diesen Namens)
     # existiert, dann Fehlermeldung
     unless ($profileid) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Profil mit der ID $profileid"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert kein Profil mit der ID $profileid"));
         return;
     }
     
@@ -396,49 +310,30 @@ sub create_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query=Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });        
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    # CGI-Uebergabe
-    my @databases  = ($query->param('db'))?$query->param('db'):();
-
-    # Main-Actions
+    # CGI Args
+    my @databases   = ($query->param('db'))?$query->param('db'):();
     my $profilename = $query->param('profilename') || '';
- 
-    my $checkeddb_ref;
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
-
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    my $idnresult="";
 
     # Wurde ueberhaupt ein Profilname eingegeben?
     if (!$profilename) {
@@ -451,7 +346,7 @@ sub create_record {
     # Wenn Profileid bereits
     # existiert, dann Fehlermeldung.
     if ($profileid) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Profil unter diesem Namen!"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert bereits ein Profil unter diesem Namen!"));
         return;
     }
     else {
@@ -485,41 +380,27 @@ sub delete_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+    my $profileid      = $self->strip_suffix($self->param('profileid'));
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-    my $profileid      = $self->param('profileid')      || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query=Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });        
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
     }
-
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    my $idnresult="";
 
     $user->delete_dbprofile($profileid);
     $user->delete_profiledbs($profileid);
@@ -527,289 +408,6 @@ sub delete_record {
     $self->return_baseurl;
 
     return;
-}
-    
-sub show_collectionzzz {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
-    my $path_prefix    = $self->param('path_prefix');
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query=Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });        
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    # CGI-Uebergabe
-    my @databases  = ($query->param('db'))?$query->param('db'):();
-
-    # Main-Actions
-    my $do_showprofile = $query->param('do_showprofile') || '';
-    my $do_saveprofile = $query->param('do_saveprofile') || '';
-    my $do_delprofile  = $query->param('do_delprofile' ) || '';
-
-    my $newprofile = $query->param('newprofile') || '';
-    my $profileid   = $query->param('profileid')   || '';
-
-    my $checkeddb_ref;
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    my $idnresult="";
-
-    #####################################################################   
-    # Anzeigen der Profilmanagement-Seite
-    #####################################################################   
-
-    if ($do_showprofile) {
-        my $profilname="";
-    
-        if ($profileid) {
-            # Zuerst Profil-Description zur ID holen
-            $profilname = $user->get_profilename_of_profileid($profileid);
-
-            foreach my $dbname ($user->get_profiledbs_of_profileid($profileid)){
-                $checkeddb_ref->{$dbname}=1;
-            }
-        }
-    
-        my @userdbprofiles = $user->get_all_profiles;
-        my $targettype     = $user->get_targettype_of_session($session->{ID});
-
-        my $maxcolumn      = $config->{databasechoice_maxcolumn};
-        my @catdb          = $config->get_infomatrix_of_active_databases({view => $view, checkeddb_ref => $checkeddb_ref});
-
-        # TT-Data erzeugen
-        my $colspan=$maxcolumn*3;
-    
-        my $ttdata={
-            view           => $view,
-            stylesheet     => $stylesheet,
-            sessionID      => $session->{ID},
-            targettype     => $targettype,
-            profilname     => $profilname,
-            userdbprofiles => \@userdbprofiles,
-            maxcolumn      => $maxcolumn,
-            colspan        => $colspan,
-            catdb          => \@catdb,
-            config         => $config,
-            user           => $user,
-            msg            => $msg,
-        };
-    
-        OpenBib::Common::Util::print_page($config->{tt_databaseprofile_tname},$ttdata,$r);
-        return Apache2::Const::OK;
-    }
-
-    #####################################################################   
-    # Abspeichern eines Profils
-    #####################################################################   
-
-    elsif ($do_saveprofile) {
-    
-        # Wurde ueberhaupt ein Profilname eingegeben?
-        if (!$newprofile) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keinen Profilnamen eingegeben!"),$r,$msg);
-            return Apache2::Const::OK;
-        }
-
-        my $profileid = $user->dbprofile_exists($newprofile);
-
-        # Wenn noch keine Profileid (=kein Profil diesen Namens)
-        # existiert, dann wird eins erzeugt.
-        unless ($profileid) {
-            $profileid = $user->new_dbprofile($newprofile);
-        }
-    
-        # Jetzt habe ich eine profileid und kann Eintragen
-        # Auswahl wird immer durch aktuelle ueberschrieben.
-        # Daher erst potentiell loeschen
-        $user->delete_profiledbs($profileid);
-    
-        foreach my $database (@databases) {
-            # ... und dann eintragen
-            $user->add_profiledb($profileid,$database);
-        }
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
-    }
-    # Loeschen eines Profils
-    elsif ($do_delprofile) {
-        $user->delete_dbprofile($profileid);
-        $user->delete_profiledbs($profileid);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
-    }
-    # ... andere Aktionen sind nicht erlaubt
-    else {
-        OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
-    }
-    return Apache2::Const::OK;
-}
-
-sub show_collectionxxx {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
-    my $path_prefix    = $self->param('path_prefix');
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query=Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });        
-
-    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    # CGI-Uebergabe
-    my @databases  = ($query->param('db'))?$query->param('db'):();
-
-    # Main-Actions
-    my $do_showprofile = $query->param('do_showprofile') || '';
-    my $do_saveprofile = $query->param('do_saveprofile') || '';
-    my $do_delprofile  = $query->param('do_delprofile' ) || '';
-
-    my $newprofile = $query->param('newprofile') || '';
-    my $profileid   = $query->param('profileid')   || '';
-
-    my $checkeddb_ref;
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    unless($user->{ID}){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    my $idnresult="";
-
-    #####################################################################   
-    # Anzeigen der Profilmanagement-Seite
-    #####################################################################   
-
-    if ($do_showprofile) {
-        my $profilname="";
-    
-        if ($profileid) {
-            # Zuerst Profil-Description zur ID holen
-            $profilname = $user->get_profilename_of_profileid($profileid);
-
-            foreach my $dbname ($user->get_profiledbs_of_profileid($profileid)){
-                $checkeddb_ref->{$dbname}=1;
-            }
-        }
-    
-        my @userdbprofiles = $user->get_all_profiles;
-        my $targettype     = $user->get_targettype_of_session($session->{ID});
-
-        my $maxcolumn      = $config->{databasechoice_maxcolumn};
-        my @catdb          = $config->get_infomatrix_of_active_databases({view => $view, checkeddb_ref => $checkeddb_ref});
-
-        # TT-Data erzeugen
-        my $colspan=$maxcolumn*3;
-    
-        my $ttdata={
-            view           => $view,
-            stylesheet     => $stylesheet,
-            sessionID      => $session->{ID},
-            targettype     => $targettype,
-            profilname     => $profilname,
-            userdbprofiles => \@userdbprofiles,
-            maxcolumn      => $maxcolumn,
-            colspan        => $colspan,
-            catdb          => \@catdb,
-            config         => $config,
-            user           => $user,
-            msg            => $msg,
-        };
-    
-        OpenBib::Common::Util::print_page($config->{tt_databaseprofile_tname},$ttdata,$r);
-        return Apache2::Const::OK;
-    }
-
-    #####################################################################   
-    # Abspeichern eines Profils
-    #####################################################################   
-
-    elsif ($do_saveprofile) {
-    
-        # Wurde ueberhaupt ein Profilname eingegeben?
-        if (!$newprofile) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keinen Profilnamen eingegeben!"),$r,$msg);
-            return Apache2::Const::OK;
-        }
-
-        my $profileid = $user->dbprofile_exists($newprofile);
-
-        # Wenn noch keine Profileid (=kein Profil diesen Namens)
-        # existiert, dann wird eins erzeugt.
-        unless ($profileid) {
-            $profileid = $user->new_dbprofile($newprofile);
-        }
-    
-        # Jetzt habe ich eine profileid und kann Eintragen
-        # Auswahl wird immer durch aktuelle ueberschrieben.
-        # Daher erst potentiell loeschen
-        $user->delete_profiledbs($profileid);
-    
-        foreach my $database (@databases) {
-            # ... und dann eintragen
-            $user->add_profiledb($profileid,$database);
-        }
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
-    }
-    # Loeschen eines Profils
-    elsif ($do_delprofile) {
-        $user->delete_dbprofile($profileid);
-        $user->delete_profiledbs($profileid);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{databaseprofile_loc}?do_showprofile=1");
-    }
-    # ... andere Aktionen sind nicht erlaubt
-    else {
-        OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
-    }
-    return Apache2::Const::OK;
 }
 
 sub return_baseurl {

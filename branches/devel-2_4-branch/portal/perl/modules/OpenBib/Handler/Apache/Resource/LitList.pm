@@ -70,37 +70,22 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'negotiate_url'                        => 'negotiate_url',
-        'show_collection_as_html'              => 'show_collection_as_html',
-        'show_collection_as_json'              => 'show_collection_as_json',
-        'show_collection_as_rdf'               => 'show_collection_as_rdf',
-        'show_collection_recent_as_html'       => 'show_collection_recent_as_html',
-        'show_collection_recent_as_json'       => 'show_collection_recent_as_json',
-        'show_collection_recent_as_rdf'        => 'show_collection_recent_as_rdf',
-        'show_collection_recent_as_rss'        => 'show_collection_recent_as_rss',
-        'show_collection_recent_as_include'    => 'show_collection_recent_as_include',
-        'show_collection_recent_negotiate'     => 'show_collection_recent_negotiate',
-        'show_collection_by_subject_as_html'   => 'show_collection_by_subject_as_html',
-        'show_collection_by_subject_as_json'   => 'show_collection_by_subject_as_json',
-        'show_collection_by_subject_as_rdf'    => 'show_collection_by_subject_as_rdf',
-        'show_collection_by_user_negotiate'    => 'show_collection_by_user_negotiate',
-        'show_collection_by_single_subject_negotiate' => 'show_collection_by_single_subject_negotiate',
-        'show_collection_by_single_user_negotiate' => 'show_collection_by_single_user_negotiate',
-        'show_collection_by_single_subject_recent_as_html' => 'show_collection_by_single_subject_recent_as_html',
-        'show_collection_by_single_subject_recent_as_json' => 'show_collection_by_single_subject_recent_as_json',
-        'show_collection_by_single_subject_recent_as_rdf' => 'show_collection_by_single_subject_recent_as_rdf',
-        'show_collection_by_single_subject_recent_as_rss' => 'show_collection_by_single_subject_recent_as_rss',
-        'show_collection_by_single_subject_recent_as_include' => 'show_collection_by_single_subject_recent_as_include',
-        'show_collection_by_single_subject_recent_negotiate' => 'show_collection_by_single_subject_recent_negotiate',
-        'show_record_negotiate'                       => 'show_record_negotiate',
-        'show_record_form'                            => 'show_record_form',
-        'create_record'                               => 'create_record',
-        'update_record'                               => 'update_record',
-        'delete_record'                               => 'delete_record',
-        'show_entry_negotiate'                        => 'show_entry_negotiate',
-        'create_entry'                                => 'create_entry',
-        'update_entry'                                => 'update_entry',
-        'delete_entry'                                => 'delete_entry',
+        'show_collection'                          => 'show_collection',
+        'show_collection_recent'                   => 'show_collection_recent',
+        'show_collection_by_subject'               => 'show_collection_by_subject',
+        'show_collection_by_user'                  => 'show_collection_by_user',
+        'show_collection_by_single_subject'        => 'show_collection_by_single_subject',
+        'show_collection_by_single_user'           => 'show_collection_by_single_user',
+        'show_collection_by_single_subject_recent' => 'show_collection_by_single_subject_recent',
+        'show_record_negotiate'                    => 'show_record_negotiate',
+        'show_record_form'                         => 'show_record_form',
+        'create_record'                            => 'create_record',
+        'update_record'                            => 'update_record',
+        'delete_record'                            => 'delete_record',
+        'show_entry'                               => 'show_entry',
+        'create_entry'                             => 'create_entry',
+        'update_entry'                             => 'update_entry',
+        'delete_entry'                             => 'delete_entry',
     );
 
     # Use current path as template path,
@@ -116,104 +101,30 @@ sub show_collection {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || 'html';
+    my $view           = $self->param('view');
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     
-    # NO CGI Args
-
     my $subjects_ref         = OpenBib::User->get_subjects;
-
     my $public_litlists_ref  = $user->get_public_litlists();
-
-    my $content_type   = $config->{'content_type_map_rev'}{$representation};
 
     # TT-Data erzeugen
     my $ttdata={
-        representation => $representation,
-        content_type   => $content_type,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $session->{ID},
-        
         subjects       => $subjects_ref,
-        user           => $user,
-        
         public_litlists=> $public_litlists_ref,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_collection_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_litlist_collection_tname},$ttdata);
     return Apache2::Const::OK;
-}
-
-sub show_collection_recent_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->show_collection_recent;
-
-    return;
-}
-
-sub show_collection_recent_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->show_collection_recent;
-
-    return;
-}
-
-sub show_collection_recent_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->show_collection_recent;
-
-    return;
-}
-
-sub show_collection_recent_as_rss {
-    my $self = shift;
-
-    $self->param('representation','rss');
-
-    $self->show_collection_recent;
-
-    return;
-}
-
-sub show_collection_recent_as_include {
-    my $self = shift;
-
-    $self->param('representation','include');
-
-    $self->show_collection_recent;
-
-    return;
 }
 
 # Alle oeffentlichen Literaturlisten
@@ -224,91 +135,33 @@ sub show_collection_recent {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || 'html';
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
+    # CGI Args
     my $hitrange       = $query->param('num')    || 50;
 
-    # NO CGI Args
-
     my $subjects_ref         = OpenBib::User->get_subjects;
-
     my $public_litlists_ref  = $user->get_recent_litlists({ count => $hitrange });
-
-    my $content_type   = $config->{'content_type_map_rev'}{$representation};
-
-    my $rss;
-
-    $rss = new XML::RSS ( version => '1.0' ) if ($representation eq "rss");
 
     # TT-Data erzeugen
     my $ttdata={
-        representation => $representation,
-        content_type   => $content_type,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        rss            => $rss,
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $session->{ID},
-        
         subjects       => $subjects_ref,
-        user           => $user,
-        
         public_litlists=> $public_litlists_ref,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_collection_recent_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_litlist_collection_recent_tname},$ttdata);
     return Apache2::Const::OK;
-}
-
-sub show_collection_by_subject_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->show_collection_by_subject;
-
-    return;
-}
-
-sub show_collection_by_subject_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->show_collection_by_subject;
-
-    return;
-}
-
-sub show_collection_by_subject_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->show_collection_by_subject;
-
-    return;
 }
 
 sub show_collection_by_subject {
@@ -318,104 +171,31 @@ sub show_collection_by_subject {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || 'html';
-    my $representation = $self->param('representation');
+    my $view           = $self->param('view');
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
-    
-    my $showsubjects = 1;
 
     my $subjects_ref         = OpenBib::User->get_subjects;
     my $public_litlists_ref  = $user->get_public_litlists();
 
-    my $content_type   = $config->{'content_type_map_rev'}{$representation};
-    
     # TT-Data erzeugen
     my $ttdata={
-        representation => $representation,
-        content_type   => $content_type,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        showsubjects   => $showsubjects,
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $session->{ID},
-        
+        showsubjects   => 1,
         subjects       => $subjects_ref,
-        user           => $user,
-        
         public_litlists=> $public_litlists_ref,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_collection_by_subject_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_litlist_collection_by_subject_tname},$ttdata);
     return Apache2::Const::OK;
-}
-
-sub show_collection_by_single_subject_recent_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->show_collection_by_single_subject_recent;
-
-    return;
-}
-
-sub show_collection_by_single_subject_recent_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->show_collection_by_single_subject_recent;
-
-    return;
-}
-
-sub show_collection_by_single_subject_recent_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->show_collection_by_single_subject_recent;
-
-    return;
-}
-
-sub show_collection_by_single_subject_recent_as_rss {
-    my $self = shift;
-
-    $self->param('representation','rss');
-
-    $self->show_collection_by_single_subject_recent;
-
-    return;
-}
-
-sub show_collection_by_single_subject_recent_as_include {
-    my $self = shift;
-
-    $self->param('representation','include');
-
-    $self->show_collection_by_single_subject_recent;
-
-    return;
 }
 
 sub show_collection_by_single_subject_recent {
@@ -425,13 +205,12 @@ sub show_collection_by_single_subject_recent {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $subjectid      = $self->param('subjectid')      || '';
-    my $representation = $self->param('representation') || '';
+    my $view           = $self->param('view');
+    my $subjectid      = $self->param('subjectid');
 
     # Shared Args
     my $query          = $self->query();
+    my $r              = $self->param('r');
     my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
@@ -440,201 +219,78 @@ sub show_collection_by_single_subject_recent {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
+    # CGI Args
     my $hitrange       = $query->param('num')    || 50;
-
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $content_type   = $config->{'content_type_map_rev'}{$representation};
 
     my $subjects_ref         = OpenBib::User->get_subjects;
     my $public_litlists_ref  = $user->get_recent_litlists({ subjectid => $subjectid, count => $hitrange });
 
-    my $rss;
-
-    $rss = new XML::RSS ( version => '1.0' ) if ($representation eq "rss");
-
     # TT-Data erzeugen
     my $ttdata={
-        representation => $representation,
-        content_type   => $content_type,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        rss            => $rss,
-        
-        view           => $view,
-        stylesheet     => $stylesheet,
-        
         subjects       => $subjects_ref,
         subjectid      => $subjectid,
-        user           => $user,
-        
         public_litlists=> $public_litlists_ref,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_collection_by_single_subject_recent_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_litlist_collection_by_single_subject_recent_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
-sub show_collection_by_single_subject_negotiate {
+sub show_collection_by_single_subject {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $subjectid      = $self->param('subjectid')      || '';
+    my $view           = $self->param('view');
+    my $subjectid      = $self->strip_suffix($self->param('subjectid'));
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
-
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $representation = "";
-    my $content_type   = "";
-
-    my $thisid = "";
-    if ($subjectid=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
-        $thisid           = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $thisid = $subjectid;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
-    }
-
-    $subjectid = $thisid;
-    
     my $subjects_ref         = OpenBib::User->get_subjects;
     my $public_litlists_ref  = $user->get_public_litlists({ subjectid => $subjectid });
-    
+
     # TT-Data erzeugen
     my $ttdata={
-        representation => $representation,
-        content_type   => $content_type,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-        
-        view           => $view,
-        stylesheet     => $stylesheet,
-        
         subjects       => $subjects_ref,
         subjectid      => $subjectid,
-        user           => $user,
-        
         public_litlists=> $public_litlists_ref,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_collection_by_single_subject_tname},$ttdata,$r);
+    $self->print_page($config->{tt_resource_litlist_collection_by_single_subject_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
-##### TODO !!!!! 
-sub show_collection_by_single_user_negotiate {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-    my $path_prefix    = $self->param('path_prefix');
-
-    my $config  = OpenBib::Config->instance;
-
-    my $negotiated_type_ref = $self->negotiate_type;
-
-    my $new_location = "$path_prefix/$config->{resource_litlist_loc}/user.$negotiated_type_ref->{suffix}";
-
-    $self->query->method('GET');
-    $self->query->content_type($negotiated_type_ref->{content_type});
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
-
-    return;
-}
-
-sub show_collection_by_user_as_html {
-    my $self = shift;
-
-    $self->param('representation','html');
-
-    $self->show_collection_by_user;
-
-    return;
-}
-
-sub show_collection_by_user_as_json {
-    my $self = shift;
-
-    $self->param('representation','json');
-
-    $self->show_collection_by_user;
-
-    return;
-}
-
-sub show_collection_by_user_as_rdf {
-    my $self = shift;
-
-    $self->param('representation','rdf');
-
-    $self->show_collection_by_user;
-
-    return;
-}
-
-sub show_collection_by_user {
+sub show_collection_by_single_userxxx {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->param('litlistid')      || '';
-    my $userid         = $self->param('userid')         || '';
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+    my $litlistid         = $self->strip_suffix($self->param('litlistid'));
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     
     # CGI Args
@@ -754,26 +410,26 @@ sub show_collection_by_user {
     return Apache2::Const::OK;
 }
 
-sub show_collection_by_single_user_negotiate {
+sub show_collection_by_single_user {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->param('litlistid')      || '';
-    my $userid         = $self->param('userid')         || '';
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+    my $litlistid         = $self->strip_suffix($self->param('litlistid'));
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     
     # CGI Args
@@ -796,6 +452,7 @@ sub show_collection_by_single_user_negotiate {
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
     my $subjectid      = $query->param('subjectid')   || undef;
 
+    
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
     my $subjects_ref   = OpenBib::User->get_subjects;
     

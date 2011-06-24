@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2007-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -1018,170 +1018,6 @@ sub set_brief_normdata_from_storable {
     return $self;
 }
 
-sub print_to_handler {
-    my ($self,$arg_ref)=@_;
-
-    my $r                  = exists $arg_ref->{apachereq}
-        ? $arg_ref->{apachereq}          : undef;
-    my $representation     = exists $arg_ref->{representation}
-        ? $arg_ref->{representation}     : undef;
-    my $content_type       = exists $arg_ref->{content_type}
-        ? $arg_ref->{content_type}       : 'text/html';
-    my $view               = exists $arg_ref->{view}
-        ? $arg_ref->{view}               : undef;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config        = OpenBib::Config->instance;
-    my $session       = OpenBib::Session->instance({ apreq => $r });
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $user          = OpenBib::User->instance({sessionID => $session->{ID}});
-    my $searchquery   = OpenBib::SearchQuery->instance;
-    my $query         = Apache2::Request->new($r);
-
-    my $queryoptions  = OpenBib::QueryOptions->instance($query);
-    
-    my $stid          = $query->param('stid')              || '';
-    my $callback      = $query->param('callback')  || '';
-    my $lang          = $query->param('lang') || $queryoptions->get_option('l') || 'de';
-
-    my $queryid    = $query->param('queryid')   || '';
-    my $format     = $query->param('format')    || 'full';
-    my $no_log     = $query->param('no_log')    || '';
-    
-    my $loginname     = $user->get_username();
-    my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-    
-    my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-        session    => $session,
-        database   => $self->{database},
-        titidn     => $self->{id},
-        view       => $view,
-    });
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $poolname=$dbinfotable->{dbnames}{$self->{database}};
-
-    if ($queryid){
-        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
-    }
-
-    # Literaturlisten finden
-
-    my $litlists_ref = $user->get_litlists_of_tit({titid => $self->{id}, titdb => $self->{database}});
-
-    # Anreicherung mit OLWS-Daten
-    if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){
-        if (exists $circinfotable->{$self->{database}} && exists $circinfotable->{$self->{database}}{circcheckurl}){
-            $logger->debug("Endpoint: ".$circinfotable->{$self->{database}}{circcheckurl});
-            my $soapresult;
-            eval {
-                my $soap = SOAP::Lite
-                    -> uri("urn:/Viewer")
-                        -> proxy($circinfotable->{$self->{database}}{circcheckurl});
-                
-                my $result = $soap->get_item_info(
-                    SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                        SOAP::Data->name(collection => $circinfotable->{$self->{database}}{circdb})->type('string'),
-                        SOAP::Data->name(item       => $self->{id})->type('string'))));
-                
-                unless ($result->fault) {
-                    $soapresult=$result->result;
-                }
-                else {
-                    $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-                }
-            };
-            
-            if ($@){
-                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-            }
-            
-            $self->{olws}=$soapresult;
-        }
-    }
-
-    # Dann Ausgabe des neuen Headers
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        content_type   => $content_type,
-        representation => $representation,
-
-        view        => $view,
-        stylesheet  => $stylesheet,
-        database    => $self->{database}, # Zwingend wegen common/subtemplate
-        dbinfo      => $dbinfotable,
-        poolname    => $poolname,
-        prevurl     => $prevurl,
-        nexturl     => $nexturl,
-        qopts       => $queryoptions->get_options,
-        queryoptions => $queryoptions,
-        queryid     => $searchquery->get_id,
-        sessionID   => $session->{ID},
-        session     => $session,
-        record      => $self,
-        titidn      => $self->{id},
-
-        format      => $format,
-        
-        # Wegen Template-Kompatabilitaet:
-        normset     => $self->{_normset},
-        mexnormset  => $self->{_mexset},
-        circset     => $self->{_circset},
-
-        searchquery => $searchquery,
-        activefeed  => $config->get_activefeeds_of_db($self->{database}),
-
-        loginname     => $loginname,
-        logintargetdb => $logintargetdb,
-
-        litlists          => $litlists_ref,
-        highlightquery    => \&highlightquery,
-
-        config      => $config,
-        user        => $user,
-        msg         => $msg,
-    };
-
-    $stid=~s/[^0-9]//g;
-    my $templatename = ($stid)?"tt_resource_title_".$stid."_tname":"tt_resource_title_tname";
-    
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-
-    # Log Event
-
-    my $isbn;
-
-    if (exists $self->{normset}->{T0540}[0]{content}){
-        $isbn = $self->{normset}->{T0540}[0]{content};
-        $isbn =~s/ //g;
-        $isbn =~s/-//g;
-        $isbn =~s/X/x/g;
-    }
-
-    if (!$no_log){
-        $session->log_event({
-            type      => 10,
-            content   => {
-                id       => $self->{id},
-                database => $self->{database},
-                isbn     => $isbn,
-            },
-            serialize => 1,
-        });
-    }
-    
-    return;
-}
-
 sub _get_mex_set_by_idn {
     my ($self,$arg_ref) = @_;
 
@@ -1285,34 +1121,6 @@ sub _get_mex_set_by_idn {
     $logger->debug(YAML::Dump($normset_ref));
     
     return $normset_ref;
-}
-
-sub highlightquery {
-    my ($searchquery,$content) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    # Highlight Query
-
-    my $term_ref = $searchquery->get_searchterms();
-
-    return $content if (scalar(@$term_ref) <= 0);
-
-    $logger->debug("Terms: ".YAML::Dump($term_ref));
-
-    my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
-
-    return $content if (!$terms);
-    
-    $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
-    $logger->debug("Content vor: ".$content);
-    
-    $content=~s/\b($terms)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
-
-    $logger->debug("Content nach: ".$content);
-
-    return $content;
 }
 
 sub to_bibkey {

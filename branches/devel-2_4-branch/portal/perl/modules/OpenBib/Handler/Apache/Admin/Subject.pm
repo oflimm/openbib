@@ -86,19 +86,10 @@ sub show_collection {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')                   || '';
+    my $view           = $self->param('view');
 
     # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
     my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -122,21 +113,16 @@ sub show_record_form {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view             = $self->param('view')                   || '';
-    my $subjectid        = $self->param('subjectid')              || '';
+    my $view             = $self->param('view');
+    my $subjectid        = $self->param('subjectid');
 
     # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
     my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
+
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
+
     my $subject_ref = OpenBib::User->get_subject({ id => $subjectid});
     
     my $ttdata={
@@ -153,50 +139,27 @@ sub create_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')                   || '';
-    my $representation = $self->param('representation') || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
+    # CGI Args
+    my $description     = decode_utf8($query->param('description'))     || '';
+    my $subject         = $query->param('subject')                      || '';
 
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
 
-    $logger->debug("Server: ".$r->get_server_name);
-
-    # Variables
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $subject         = $query->param('subject')         || '';
-
     if ($subject eq "") {
-        
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."),$r,$msg);
-        
+        $self->print_warning($msg->maketext("Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."));
         return Apache2::Const::OK;
     }
     
@@ -206,7 +169,7 @@ sub create_record {
     });
     
     if ($ret == -1){
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Themengebiet unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert bereits ein Themengebiet unter diesem Namen"));
         return Apache2::Const::OK;
     }
     
@@ -223,68 +186,42 @@ sub update_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r                = $self->param('r');
 
-    my $view           = $self->param('view')            || '';
-    my $subjectid      = $self->param('subjectid')       || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $subjectid      = $self->param('subjectid');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-            
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
+    # CGI Args
+    my $method          = decode_utf8($query->param('_method')) || '';
+    my $confirm         = $query->param('confirm') || 0;
+    my $subject         = decode_utf8($query->param('subject'))         || '';
+    my $description     = decode_utf8($query->param('description'))     || '';
+    my @classifications = ($query->param('classifications'))?$query->param('classifications'):();
+    my $type            = $query->param('type')            || '';
     
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
-
-    $logger->debug("Server: ".$r->get_server_name);
-
-    # Variables
 
     # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
     # zu verwenden
-    
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
 
     if ($method eq "DELETE"){
         $logger->debug("About to delete $subjectid");
         
         if ($confirm){
             my $ttdata={
-                stylesheet => $stylesheet,
                 subjectid  => $subjectid,
-                
-                view       => $view,
-                
-                config     => $config,
-                session    => $session,
-                user       => $user,
-                msg        => $msg,
             };
 
             $logger->debug("Asking for confirmation");
-            OpenBib::Common::Util::print_page($config->{tt_admin_subject_record_delete_confirm_tname},$ttdata,$r);
+            $self->print_page($config->{tt_admin_subject_record_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }
@@ -296,13 +233,6 @@ sub update_record {
     }
 
     # Ansonsten POST oder PUT => Aktualisieren
-
-    # Variables
-    my $subject         = decode_utf8($query->param('subject'))         || '';
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my @classifications = ($query->param('classifications'))?$query->param('classifications'):();
-    my $type            = $query->param('type')            || '';
-
 
     $user->update_subject({
         name                 => $subject,
@@ -324,41 +254,19 @@ sub delete_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r                = $self->param('r');
 
-    my $view           = $self->param('view')                   || '';
-    my $subjectid      = $self->param('subjectid')             || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $subjectid      = $self->param('subjectid');
+
+    # Shared Args
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-            
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
-
-    $logger->debug("Server: ".$r->get_server_name);
 
     $user->del_subject({ id => $subjectid });
 

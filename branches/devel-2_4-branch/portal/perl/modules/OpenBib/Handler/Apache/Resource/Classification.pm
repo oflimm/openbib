@@ -44,9 +44,9 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('show_record');
     $self->run_modes(
-        'show' => 'show',
+        'show_record' => 'show_record',
     );
 
     # Use current path as template path,
@@ -54,58 +54,77 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show {
+sub show_record {
     my $self = shift;
-    my $r    = $self->param('r');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Dispatched Args
     my $view             = $self->param('view');
     my $database         = $self->param('database');
-    my $classificationid = $self->param('classificationid');
-    my $path_prefix      = $self->param('path_prefix');
+    my $classificationid = $self->strip_suffix($self->param('classificationid'));
 
-    my $config  = OpenBib::Config->instance;
-    
-    # Mit Suffix, dann keine Aushandlung des Typs
-    
-    my $representation = "";
-    my $content_type   = "";
-    
-    my $id             = "";
-    if ($classificationid=~/^(.+?)(\.html|\.json|\.rdf)$/){
-        $id            = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $self->param('config')->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $id = $classificationid;
-        my $negotiated_type_ref = $self->negotiate_type;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-        my $new_location = "$path_prefix/$config->{resource_corporatebody_loc}/$database/$id.$negotiated_type_ref->{suffix}";
+    # CGI Args
+    my $stid          = $query->param('stid')     || '';
+    my $callback      = $query->param('callback') || '';
+    my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
+    my $format        = $query->param('format')   || 'full';
+    my $no_log         = $query->param('no_log')  || '';
 
-        $self->query->method('GET');
-        $self->query->content_type($negotiated_type_ref->{content_type});
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $searchquery   = OpenBib::SearchQuery->instance;
+
+    if ($database && $classificationid ){ # Valide Informationen etc.
+        $logger->debug("ID: $classificationid - DB: $database");
         
-        $logger->debug("Default Information Resource Type: $negotiated_type_ref->{content_type} - URI: $new_location");
+        my $record = OpenBib::Record::Classification->new({database => $database, id => $classificationid})->load_full_record;
+        
+        my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
-        return;
+        # TT-Data erzeugen
+        my $ttdata={
+            database      => $database, # Zwingend wegen common/subtemplate
+            dbinfo        => $dbinfotable,
+            qopts         => $queryoptions->get_options,
+            record        => $record,
+            id            => $classificationid,
+            format        => $format,
+            searchquery   => $searchquery,
+            activefeed    => $config->get_activefeeds_of_db($database),
+            logintargetdb => $logintargetdb,
+        };
+
+        $self->print_page('tt_resource_classification_tname',$ttdata);
+
+        # Log Event
+        
+        if (!$no_log){
+            $session->log_event({
+                type      => 13,
+                content   => {
+                    id       => $classificationid,
+                    database => $database,
+                },
+                serialize => 1,
+            });
+        }
     }
-    
-    if ($database && $id ){ # Valide Informationen etc.
-        $logger->debug("Key: $id - DB: $database - ID: $id");
-
-        OpenBib::Record::Classification->new({database => $database, id => $id})
-              ->load_full_record->print_to_handler({
-                  apachereq          => $r,
-                  representation     => $representation,
-                  content_type       => $content_type,
-                  view               => $view,
-              });
+    else {
+        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
     return Apache2::Const::OK;

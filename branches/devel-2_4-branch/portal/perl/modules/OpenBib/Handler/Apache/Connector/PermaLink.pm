@@ -71,23 +71,25 @@ sub show {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
-
-    my $config  = OpenBib::Config->instance;
-
-    my $session = OpenBib::Session->instance;
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $lang           = $self->param('lang');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $uri  = $r->parsed_uri;
     my $path = $uri->path;
-
-    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     # Basisipfad entfernen
     my $basepath = $config->{base_loc}."/$view/".$config->{connector_permalink_loc};

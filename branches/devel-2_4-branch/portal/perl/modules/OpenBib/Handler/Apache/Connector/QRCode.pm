@@ -77,15 +77,14 @@ sub show {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
+    # Dispatched Args
+    my $view           = $self->param('view');
 
-    my $config  = OpenBib::Config->instance;
+    # Shared Args
+    my $query          = $self->query();
 
-    my $query  = Apache2::Request->new($r);
-
+    # CGI Args
     my $text       = $query->param('text')      || '';
 
     binmode STDOUT;
@@ -95,7 +94,7 @@ sub show {
                                     );
     $r->content_type("image/png");
     $r->print($code->plot->png);
-                                  
+
     return Apache2::Const::OK;
 }
 

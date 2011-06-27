@@ -6,7 +6,7 @@
 #
 #  Herausgabe von Titellisten anhand einer Grundsignatur
 #
-#  Dieses File ist (C) 2000-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2000-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -78,43 +78,31 @@ sub show {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $lang           = $self->param('lang');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-    
-#     my $status=$query->parse;
-    
-#     if ($status){
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session = OpenBib::Session->instance;
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle('de') || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    # CGI-Input auslesen
-    
-    #####################################################################
-    #
-    # Eingabeparamter
-    #
-
+    # CGI Args
     my $base       = $query->param('base')       || undef;
     my $location   = decode_utf8($query->param('location'))   || undef;
     my $range_start= $query->param('start')      || undef;
     my $range_end  = $query->param('end')        || undef;
     my $title      = decode_utf8($query->param('title'))      || '';
-
     my $offset     = $query->param('offset')     || 1;
     my $hitrange   = $query->param('hitrange')   || 50;;
-
     my $database   = $query->param('database')   || '';
 
     return Apache2::Const::OK unless (defined $base);

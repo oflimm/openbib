@@ -79,43 +79,35 @@ sub show {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $serviceid      = $self->strip_suffix($self->param('serviceid'));
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-
-    my $config  = OpenBib::Config->instance;
-
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
-
-    my $query  = Apache2::Request->new($r);
-
+    # CGI Args
     my $id         = $query->param('id')        || '';
     my $format     = $query->param('format')    || '';
     my $callback   = $query->param('callback')  || '';
     my $lang       = $query->param('lang')      || 'de';
 
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    # Basisipfad entfernen
-    my $basepath = $config->{connector_seealso_loc};
-    $path=~s/$basepath//;
-
-    # Service-Parameter aus URI bestimmen
-    my $service;
-    if ($path=~m/^\/(.+)/){
-        $service=$1;
-    }
-
     my $identifier =  new SeeAlso::Identifier($id);
 
-    my @description = ( "ShortName" => "MySimpleServer" );
+    my @description = ( "ShortName" => "OpenBib SeeAlso Service" );
     my $server = new SeeAlso::Server( description => \@description );
 
-    $logger->debug("SeeAlso: Service - $service Identifier $id - Format $format");
+    $logger->debug("SeeAlso: Serviceid - $serviceid Identifier $id - Format $format");
     
     my $services_ref = {
         'isbn2wikipedia' => {
@@ -235,10 +227,10 @@ sub show {
 
     };
 
-    my $current_service_ref = (exists $services_ref->{$service})?$services_ref->{$service}:"";
+    my $current_service_ref = (exists $services_ref->{$serviceid})?$services_ref->{$serviceid}:"";
 
     if ($current_service_ref){
-        $logger->debug("Using service $service");
+        $logger->debug("Using service $serviceid");
         my $source = SeeAlso::Source->new($current_service_ref->{query_proc},
         ( "ShortName" => $current_service_ref->{description} )
     );

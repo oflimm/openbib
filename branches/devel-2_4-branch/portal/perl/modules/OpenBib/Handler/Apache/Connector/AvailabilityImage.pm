@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::AvailabilityImage
 #
-#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -79,17 +79,25 @@ sub setup {
 
 sub process_gbs {
     my $self = shift;
-    my $r    = $self->param('r');
-
-    my $id             = $self->param('id') || return Apache2::Const::OK;
-    my $representation = $self->param('representation');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config    = OpenBib::Config->instance;
-
-    my $useragent = $r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $id             = $self->strip_suffix($self->param('id'));
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
@@ -100,9 +108,9 @@ sub process_gbs {
 
     $logger->debug("ISBN von ID $id: ".YAML::Dump($isbn));
 
-    my $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
+    my $redirect_url = "/images/openbib/no_img.png";
     
-    if ($isbn->{isbn13}){        
+    if ($isbn->{isbn13}){
         my $ua       = LWP::UserAgent->new();
         $ua->agent($useragent);
         $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
@@ -134,19 +142,19 @@ sub process_gbs {
             
             if ($type eq "noview"){
                 $logger->debug("GBS: noview");
-                $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
+                $redirect_url = "/images/openbib/no_img.png";
             }
             elsif ($type eq "partial"){
                 $logger->debug("GBS: partial");
-                $redirect_url = "http://$config->{servername}/images/openbib/gbs-partial.png";
+                $redirect_url = "/images/openbib/gbs-partial.png";
             }
             elsif ($type eq "full"){
                 $logger->debug("GBS: full");
-                $redirect_url = "http://$config->{servername}/images/openbib/gbs-full.png";
+                $redirect_url = "/images/openbib/gbs-full.png";
             }
             else {
                 $logger->debug("GBS: other");
-                $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
+                $redirect_url = "/images/openbib/no_img.png";
             }
         }
     }
@@ -162,24 +170,32 @@ sub process_gbs {
 
 sub process_bibsonomy {
     my $self = shift;
-    my $r    = $self->param('r');
-
-    my $id             = $self->param('id') || return Apache2::Const::OK;
-    my $representation = $self->param('representation');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $id             = $self->strip_suffix($self->param('id'));
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
-    my $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
+    my $redirect_url = "/images/openbib/no_img.png";
     
     my $ua       = LWP::UserAgent->new();
     $ua->agent($useragent);
@@ -200,32 +216,37 @@ sub process_bibsonomy {
         
         my $content = $response->content();
         if ($content=~/rdf:Description/){
-            $redirect_url = "http://$config->{servername}/images/openbib/bibsonomy_available.png";
+            $redirect_url = "/images/openbib/bibsonomy_available.png";
         }
     }
-
-#    $self->header_type('redirect');
-#    $self->header_props(-url => $redirect_url);
 
     $self->query->headers_out->add(Location => $redirect_url);
     $self->query->status(Apache2::Const::REDIRECT);
 
-    return '';
+    return;
 }
 
 sub process_ebooks {
     my $self = shift;
-    my $r    = $self->param('r');
-
-    my $id             = $self->param('id') || return Apache2::Const::OK;
-    my $representation = $self->param('representation');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $id             = $self->strip_suffix($self->param('id'));
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
@@ -234,7 +255,7 @@ sub process_ebooks {
 
     my $isbn = $self->id2isbnX($id);
 
-    my $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
+    my $redirect_url = "/images/openbib/no_img.png";
     
     if ($isbn->{isbn13}){
         # Verbindung zur SQL-Datenbank herstellen
@@ -249,13 +270,9 @@ sub process_ebooks {
         
         if ($result->{ebcount} > 0){
             $logger->info("ISBN $isbn->{isbn13} found for USB Ebooks");
-            $redirect_url = "http://$config->{servername}/images/openbib/usb_ebook.png";
+            $redirect_url = "/images/openbib/usb_ebook.png";
         }
-        
     }
-
-#    $self->header_type('redirect');
-#    $self->header_props(-url => $redirect_url);
 
     $self->query->headers_out->add(Location => $redirect_url);
     $self->query->status(Apache2::Const::REDIRECT);
@@ -265,17 +282,25 @@ sub process_ebooks {
 
 sub process_ol {
     my $self = shift;
-    my $r    = $self->param('r');
-
-    my $id             = $self->param('id') || return Apache2::Const::OK;
-    my $representation = $self->param('representation');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $id             = $self->strip_suffix($self->param('id'));
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
@@ -284,7 +309,7 @@ sub process_ol {
 
     my $isbn = $self->id2isbnX($id);
 
-    my $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
+    my $redirect_url = "/images/openbib/no_img.png";
     
     my $ua       = LWP::UserAgent->new();
     $ua->agent($useragent);
@@ -335,15 +360,10 @@ sub process_ol {
             eval {
                 $ol_result = decode_json($json_result);
             };
-            
             $logger->debug("OL OBJ Data".YAML::Dump($ol_result));
         }
-        
-        $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
+        $redirect_url = "/images/openbib/no_img.png";
     }
-
-#    $self->header_type('redirect');
-#    $self->header_props(-url => $redirect_url);
 
     $self->query->headers_out->add(Location => $redirect_url);
     $self->query->status(Apache2::Const::REDIRECT);
@@ -353,17 +373,25 @@ sub process_ol {
 
 sub process_unifloh {
     my $self = shift;
-    my $r    = $self->param('r');
-
-    my $id             = $self->param('id') || return Apache2::Const::OK;
-    my $representation = $self->param('representation');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $id             = $self->strip_suffix($self->param('id'));
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
@@ -372,7 +400,7 @@ sub process_unifloh {
 
     my $isbn = $self->id2isbnX($id);
 
-    my $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
+    my $redirect_url = "/images/openbib/no_img.png";
     
     if ($isbn->{isbn13}){
         my $ua       = LWP::UserAgent->new();
@@ -401,9 +429,6 @@ sub process_unifloh {
         }
     }
 
-#    $self->header_type('redirect');
-#    $self->header_props(-url => $redirect_url);
-
     $self->query->headers_out->add(Location => $redirect_url);
     $self->query->status(Apache2::Const::REDIRECT);
 
@@ -412,25 +437,33 @@ sub process_unifloh {
 
 sub process_wikipedia {
     my $self = shift;
-    my $r    = $self->param('r');
-
-    my $id             = $self->param('id') || return Apache2::Const::OK;
-    my $representation = $self->param('representation');
-    my $lang           = $self->param('lang') || 'de';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $id             = $self->strip_suffix($self->param('id'));
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang') || 'de';
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
-
-    my $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
+    
+    my $redirect_url = "/images/openbib/no_img.png";
     
     my $ua       = LWP::UserAgent->new();
     $ua->agent($useragent);
@@ -453,12 +486,9 @@ sub process_wikipedia {
         my $content_ref = decode_json($content);
         
         if (!$content_ref->{query}{pages}{-1}){
-            $redirect_url = "http://$config->{servername}$config->{wikipedia_img}";
+            $redirect_url = "$config->{wikipedia_img}";
         }
     }
-
-#    $self->header_type('redirect');
-#    $self->header_props(-type => 'image/png', -url => $redirect_url);
 
     $self->query->headers_out->add(Location => $redirect_url);
     $self->query->status(Apache2::Const::REDIRECT);
@@ -468,17 +498,25 @@ sub process_wikipedia {
 
 sub process_paperc {
     my $self = shift;
-    my $r    = $self->param('r');
-
-    my $id             = $self->param('id') || return Apache2::Const::OK;
-    my $representation = $self->param('representation');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $id             = $self->strip_suffix($self->param('id'));
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
@@ -517,9 +555,6 @@ sub process_paperc {
         }
     }
 
-#    $self->header_type('redirect');
-#    $self->header_props(-url => $redirect_url);
- 
     $self->query->headers_out->add(Location => $redirect_url);
     $self->query->status(Apache2::Const::REDIRECT);
    

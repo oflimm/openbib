@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::DigiBib.pm
 #
-#  Dieses File ist (C) 2003-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -76,29 +76,23 @@ sub show {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $view           = $self->param('view')           || '';
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-    
-#     my $status=$query->parse;
-    
-#     if ($status){
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session = OpenBib::Session->instance;
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle('de') || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    # CGI-Input auslesen
-    
+    # CGI Args
     #####################################################################
     #
     # Eingabeparamter
@@ -133,7 +127,6 @@ sub show {
     # idn = Titelidn
     # database = Datenbank
     # tosearch = Langanzeige
-
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     my $hitrange   = 20;
     my $idn        = $query->param('idn')        || '';
@@ -149,7 +142,6 @@ sub show {
     my $up         = $query->param('up')         || '0';
     my $down       = $query->param('down')       || '0';
 
-    
     # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
 
     # Wenn 'erste Trefferliste' oder Langtitelanzeige
@@ -678,28 +670,7 @@ sub show {
 
                 $has_sb=1;
             }
-        }            
-
-        # Ausgabe des letzten HTML-Bereichs
-        my $templatename=$config->{tt_connector_digibib_showtitset_tname};
-
-        $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-            database     => $database, # Template ist datenbankabhaengig!
-            view         => $view,
-            profile      => $sysprofile,
-            templatename => $templatename,
-        });
-
-        my $template = Template->new({
-            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config->{tt_include_path},
-                ABSOLUTE       => 1,
-            }) ],
-            #        INCLUDE_PATH   => $config->{tt_include_path},
-            #        ABSOLUTE       => 1,
-            RECURSION      => 1,
-            OUTPUT         => $r,
-        });
+        }
         
         # TT-Data erzeugen
         my $ttdata={
@@ -708,23 +679,11 @@ sub show {
             sbrecord     => $sbrecord,
             dbinfo       => $dbinfotable,
             database     => $database,
-
-            utf2iso      => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                return $string;
-            },
-
             sysprofile   => $sysprofile,
-            view         => $view,
-            config       => $config,
         };
-        
-        $template->process($templatename, $ttdata) || do {
-            $r->log_error($template->error(), $r->filename);
-            return Apache2::Const::SERVER_ERROR;
-        };
-  } 
+
+        $self->print_page($config->{tt_connector_digibib_title_record_tname},$ttdata);
+  }
 
   return Apache2::Const::OK;
 }

@@ -68,24 +68,28 @@ sub setup {
 
 sub show {
     my $self = shift;
-    my $r    = $self->param('r');
-
-    my $unapiid        = $self->query->param('id')     || '';
-    my $format         = $self->query->param('format') || '';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
+    # CGI Args
+    my $unapiid        = $query->param('id')     || '';
+    my $format         = $query->param('format') || '';
 
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
     if ($format){
-
+        
         unless (exists $config->{unAPI_formats}->{$format}){
             return Apache2::Const::HTTP_NOT_ACCEPTABLE;
         }

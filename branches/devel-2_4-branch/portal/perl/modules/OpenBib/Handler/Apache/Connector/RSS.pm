@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::RSS.pm
 #
-#  Dieses File ist (C) 2006-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -84,31 +84,30 @@ sub show {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
+    # Shared Args
+    my $view           = $self->param('view');
     my $type           = $self->param('type')           || '';
     my $subtype        = $self->param('subtype')        || '-1';
-
     my ($database)     = $self->param('dispatch_url_remainder') =~/^(.+?)\.rdf/;
-    
-    my $config = OpenBib::Config->instance;
-    
-    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
 
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $lang           = $self->param('lang');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    #####################################################################
-    # Verbindung zur SQL-Datenbank herstellen
 
-    my $session     = OpenBib::Session->instance({apreq => $r});
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     # Check
-
     if (! exists $config->{rss_types}{$type} || ! exists $dbinfotable->{dbnames}{$database}{full}){
         OpenBib::Common::Util::print_warning("RSS-Feed ungueltig",$r);
     }

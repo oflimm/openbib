@@ -122,11 +122,12 @@ sub cgiapp_init() {       # overrides
        
        return;
    }
+
+   my $lang = $queryoptions->get_option('l') || 'de';
    
    # Message Katalog laden
    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
 
    $self->param('config',$config);
    $self->param('session',$session);
@@ -140,7 +141,8 @@ sub cgiapp_init() {       # overrides
    $self->param('id',$id);
    $self->param('representation',$representation);
    $self->param('content_type',$content_type);
-
+   $self->param('lang',$lang);
+   
    $logger->debug("Setting: id = $id , representation = $representation , content_type = $content_type , path_prefix = $path_prefix");
    $logger->debug("Exit cgiapp_init");
    #   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header

@@ -74,6 +74,8 @@ sub new {
     $self->{servername} = $config->{servername};
     $self->{view}       = $view;
 
+    $logger->debug("Entering Session->new");
+    
     # Setzen der Defaults
     if ($r){
         my $cookiejar = Apache2::Cookie::Jar->new($r);
@@ -146,6 +148,8 @@ sub _new_instance {
     
     # Setzen der Defaults
 
+    $logger->debug("Entering Session->instance");
+    
     if ($r){
         my $cookiejar = Apache2::Cookie::Jar->new($r);
         $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;

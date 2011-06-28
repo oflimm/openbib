@@ -77,7 +77,7 @@ sub setup {
         'show_collection_by_single_subject'        => 'show_collection_by_single_subject',
         'show_collection_by_single_user'           => 'show_collection_by_single_user',
         'show_collection_by_single_subject_recent' => 'show_collection_by_single_subject_recent',
-        'show_record_negotiate'                    => 'show_record_negotiate',
+        'show_record'                              => 'show_record',
         'show_record_form'                         => 'show_record_form',
         'create_record'                            => 'create_record',
         'update_record'                            => 'update_record',
@@ -550,7 +550,7 @@ sub show_collection_by_single_user {
     return Apache2::Const::OK;
 }
 
-sub show_record_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen

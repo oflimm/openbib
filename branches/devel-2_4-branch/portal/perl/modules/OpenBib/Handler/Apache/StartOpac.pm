@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::StartOpac
 #
-#  Dieses File ist (C) 2001-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -82,13 +82,13 @@ sub show {
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');    
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
@@ -102,7 +102,7 @@ sub show {
     $logger->debug("Path-Prefix: ".$path_prefix);
 
     # Standard-URL
-    my $redirecturl = "$config->{base_loc}/$view/$config->{searchform_loc}/$setmask.html";
+    my $redirecturl = "$config->{base_loc}/$view/$config->{searchform_loc}/$setmask.html?l=".$self->param('lang');
 
     my $viewstartpage = $config->get_startpage_of_view($view);
 

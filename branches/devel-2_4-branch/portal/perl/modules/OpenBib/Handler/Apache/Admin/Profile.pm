@@ -67,7 +67,7 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('negotiate_url');
+    $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'           => 'show_collection',
         'show_collection_form'      => 'show_collection_form',

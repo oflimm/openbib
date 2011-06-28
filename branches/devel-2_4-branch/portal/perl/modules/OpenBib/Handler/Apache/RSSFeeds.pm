@@ -56,12 +56,9 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('show_collection');
     $self->run_modes(
-        'show_collection_as_html'       => 'show_collection_as_html',
-        'show_collection_as_json'       => 'show_collection_as_json',
-        'show_collection_as_rdf'        => 'show_collection_as_rdf',
-        'negotiate_url'                 => 'negotiate_url',
+        'show_collection'               => 'show_collection',
     );
 
     # Use current path as template path,

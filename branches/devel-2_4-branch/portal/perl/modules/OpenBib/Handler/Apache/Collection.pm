@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Collection
 #
-#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -65,15 +65,13 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show_collection_negotiate');
+    $self->start_mode('show_collection');
     $self->run_modes(
         'save_collection'                      => 'save_collection',
         'mail_collection'                      => 'mail_collection',
         'mail_collection_send'                 => 'mail_collection_send',
         'print_collection'                     => 'print_collection',
-
         'show_collection_count'                => 'show_collection_count',
-        'negotiate_url'                        => 'negotiate_url',
         'show_collection'                      => 'show_collection',
         'show_record'                          => 'show_record',
         'create_record'                        => 'create_record',

@@ -45,6 +45,7 @@ function update_fak(yourform, checked, fak) {
 
 <form method="post" action="[% path_prefix %]/[% config.get('databasechoice_loc') %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="num" value="-1" />
+<input type="hidden" name="l" value="[% lang %]" />
 
 
 

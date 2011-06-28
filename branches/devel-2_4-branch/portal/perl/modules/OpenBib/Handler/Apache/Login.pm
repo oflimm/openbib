@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Login
 #
-#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -80,17 +80,18 @@ sub show_form {
     my $logger = get_logger();
     
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
 
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
@@ -115,7 +116,7 @@ sub show_form {
     if ($user->{ID} && !$validtarget){
 
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{resource_user_loc}/[% user.ID %]/preference.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
         
         return;

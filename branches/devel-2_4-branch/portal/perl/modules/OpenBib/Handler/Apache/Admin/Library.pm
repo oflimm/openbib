@@ -68,12 +68,9 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show_record_negotiate');
+    $self->start_mode('show_record');
     $self->run_modes(
-        'negotiate_url'             => 'negotiate_url',
-        'show_record_as_html'       => 'show_record_as_html',
-        'show_record_as_json'       => 'show_record_as_json',
-        'show_record_as_rdf'        => 'show_record_as_rdf',
+        'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',

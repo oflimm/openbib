@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::DatabaseChoice
 #
-#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -55,7 +55,7 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('negotiate_url');
+    $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'                      => 'show_collection',
         'update_collection'                    => 'update_collection',
@@ -141,17 +141,18 @@ sub update_collection {
     my $logger = get_logger();
     
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
 
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang            = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
@@ -189,7 +190,7 @@ sub update_collection {
     # Neue Datenbankauswahl ist voreingestellt
     $session->set_profile('dbauswahl');
 
-    my $new_location = "$path_prefix/$config->{searchform_loc}/recent.html";
+    my $new_location = "$path_prefix/$config->{searchform_loc}/recent.html?l=$lang";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

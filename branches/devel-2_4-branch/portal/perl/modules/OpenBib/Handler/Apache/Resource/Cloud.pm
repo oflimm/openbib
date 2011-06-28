@@ -60,13 +60,10 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show_negotiate');
+    $self->start_mode('show_collection');
     $self->run_modes(
-        'negotiate_url'                        => 'negotiate_url',
-        'show_collection_as_html'              => 'show_collection_as_html',
-        'show_collection_as_json'              => 'show_collection_as_json',
-        'show_collection_as_rdf'               => 'show_collection_as_rdf',
-        'show_record_negotiate'                => 'show_record_negotiate',
+        'show_collection'                      => 'show_collection',
+        'show_record'                          => 'show_record',
     );
 
     # Use current path as template path,
@@ -137,13 +134,13 @@ sub show_record {
     
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');    
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
     
     # CGI Args

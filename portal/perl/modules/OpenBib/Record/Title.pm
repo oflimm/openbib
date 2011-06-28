@@ -241,12 +241,18 @@ sub load_full_record {
             $atime=new Benchmark;
         }
 
-        my $titcount = $self->get_number_of_titles({ type => 'sub' });
+        my @sub = $self->get_connected_titles({ type => 'sub' });
 
-        if ($titcount > 0){
+        if (@sub){
             push @{$normset_ref->{T5001}}, {
-                content => $titcount,
+                content => scalar(@sub),
             };
+            
+            foreach my $id (@sub){
+                push @{$normset_ref->{T5003}}, {
+                    content => $id,
+                };
+            }
         }
         
         if ($config->{benchmark}) {
@@ -260,12 +266,18 @@ sub load_full_record {
             $atime=new Benchmark;
         }
 
-        $titcount = $self->get_number_of_titles({ type => 'super' });
+        my @super = $self->get_connected_titles({ type => 'super' });
 
-        if ($titcount > 0){
+        if (@super){
             push @{$normset_ref->{T5002}}, {
-                content => $titcount,
+                content => scalar(@super),
             };
+
+            foreach my $id (@super){
+                push @{$normset_ref->{T5004}}, {
+                    content => $id,
+                };
+            }
         }
         
         if ($config->{benchmark}) {
@@ -1922,6 +1934,63 @@ sub get_number_of_titles {
     my $res=$request->fetchrow_hashref;
     
     return $res->{conncount},
+}
+
+sub get_connected_titles {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+
+    my $type              = exists $arg_ref->{type}
+        ? $arg_ref->{type}              : 'sub'; # sub oder super
+
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    my ($atime,$btime,$timeall);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $local_dbh = 0;
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
+    }
+    
+    my $sqlrequest;
+
+    # Ausgabe der Anzahl verk"upfter Titel
+
+    if ($type eq "sub"){
+        $sqlrequest="select distinct targetid as titleid from conn where sourceid=? and sourcetype=1 and targettype=1";
+    }
+    elsif ($type eq "super"){
+        $sqlrequest="select distinct sourceid as titleid from conn where targetid=? and sourcetype=1 and targettype=1";
+    }
+    else {
+        return undef;
+    }
+
+    my @titles = ();
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    $request->execute($id);
+    while (my $result=$request->fetchrow_hashref){
+        push @titles, $result->{titleid};
+    }
+    
+    return @titles;
 }
 
 sub record_exists {

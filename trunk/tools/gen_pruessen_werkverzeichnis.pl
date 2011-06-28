@@ -171,6 +171,8 @@ foreach my $titidn (keys %buchillustrationen_titidns){
 
     my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
 
+    next if ($normset->{T5001}[0]{content});
+    
 #    print STDERR "Jahr: $year\n";
 #    print STDERR YAML::Dump($record),"\n";
     
@@ -208,6 +210,8 @@ foreach my $titidn (keys %presseillustrationen_titidns){
 
     my $normset = $record->get_normdata;
 
+    next if ($normset->{T5001}[0]{content});
+    
     my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
     
     if ($year > $presseillustrationen_year_max){
@@ -275,6 +279,13 @@ my $ttdata = {
     presseillustrationen_year_max => $presseillustrationen_year_max,
     presseillustrationen_year_min => $presseillustrationen_year_min,
 
+    new_record                    => sub {
+        my $database = shift;
+        my $id = shift;
+
+        return OpenBib::Record::Title->new({database => $database, id => $id});
+    },
+    
     filterchars  => \&filterchars,
 };
 

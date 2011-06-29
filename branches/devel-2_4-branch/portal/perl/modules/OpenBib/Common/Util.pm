@@ -1222,23 +1222,23 @@ sub dispatch_to_content_type {
     my $accept       = $r->headers_in->{Accept} || '';
     my @accept_types = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
         
-    my $information_resource_found = 0;
-    foreach my $information_resource_type (keys %{$content_type_map_ref}){            
-        if (any { $_ eq $information_resource_type } @accept_types) {
-            $r->content_type($information_resource_type);
-            my $new_location = $uri."/".$content_type_map_ref->{$information_resource_type};
+    my $information_found = 0;
+    foreach my $information_type (keys %{$content_type_map_ref}){            
+        if (any { $_ eq $information_type } @accept_types) {
+            $r->content_type($information_type);
+            my $new_location = $uri."/".$content_type_map_ref->{$information_type};
             $logger->debug("Redirecting to $new_location");
             $r->headers_out->add("Location" => $new_location);
-            $information_resource_found = 1;
-            $logger->debug("Information Resource Type: $information_resource_type");
+            $information_found = 1;
+            $logger->debug("Information Resource Type: $information_type");
         }                                                
     }
     
-    if (!$information_resource_found){
-        my $information_resource_type="text/html";
-        $r->content_type($information_resource_type);
+    if (!$information_found){
+        my $information_type="text/html";
+        $r->content_type($information_type);
         $r->headers_out->add("Location" => "$uri/html");
-        $logger->debug("Information Resource Type: $information_resource_type");
+        $logger->debug("Information Resource Type: $information_type");
     }
     
     $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accept_types));

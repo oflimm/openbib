@@ -116,7 +116,7 @@ sub show_form {
     if ($user->{ID} && !$validtarget){
 
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{resource_user_loc}/[% user.ID %]/preference.html?l=$lang");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{user_loc}/[% user.ID %]/preference.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
         
         return;
@@ -181,7 +181,7 @@ sub authenticate {
     if ($user->{ID} && !$validtarget){
 
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{user_loc}/[% user.ID %]/preference");
         $self->query->status(Apache2::Const::REDIRECT);
 
         return;
@@ -313,7 +313,7 @@ sub authenticate {
         $session->set_mask($masktype);
         
         $redirecturl
-            = "$path_prefix/$config->{resource_user_loc}/$userid/preferences.html";
+            = "$path_prefix/$config->{user_loc}/$userid/preferences.html";
         
     }
     
@@ -381,7 +381,7 @@ sub failure {
     if ($user->{ID} && !$validtarget){
 
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{resource_user_loc}/[% user.ID %]/preference");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{user_loc}/[% user.ID %]/preference");
         $self->query->status(Apache2::Const::REDIRECT);
 
         return;

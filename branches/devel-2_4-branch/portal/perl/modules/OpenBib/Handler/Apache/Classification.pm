@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::CorporateBody.pm
+#  OpenBib::Handler::Apache::Resource::Classification.pm
 #
 #  Copyright 2009-2010 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::CorporateBody;
+package OpenBib::Handler::Apache::Resource::Classification;
 
 use strict;
 use warnings;
@@ -36,7 +36,7 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Classification;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -61,9 +61,9 @@ sub show_record {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view            = $self->param('view');
-    my $database        = $self->param('database');
-    my $corporatebodyid = $self->strip_suffix($self->param('corporatebodyid'));
+    my $view             = $self->param('view');
+    my $database         = $self->param('database');
+    my $classificationid = $self->strip_suffix($self->param('classificationid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -88,10 +88,10 @@ sub show_record {
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $searchquery   = OpenBib::SearchQuery->instance;
 
-    if ($database && $corporatebodyid ){ # Valide Informationen etc.
-        $logger->debug("ID: $corporatebodyid - DB: $database");
+    if ($database && $classificationid ){ # Valide Informationen etc.
+        $logger->debug("ID: $classificationid - DB: $database");
         
-        my $record = OpenBib::Record::CorporateBody->new({database => $database, id => $corporatebodyid})->load_full_record;
+        my $record = OpenBib::Record::Classification->new({database => $database, id => $classificationid})->load_full_record;
         
         my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
@@ -101,22 +101,22 @@ sub show_record {
             dbinfo        => $dbinfotable,
             qopts         => $queryoptions->get_options,
             record        => $record,
-            id            => $corporatebodyid,
+            id            => $classificationid,
             format        => $format,
             searchquery   => $searchquery,
             activefeed    => $config->get_activefeeds_of_db($database),
             logintargetdb => $logintargetdb,
         };
 
-        $self->print_page('tt_resource_corporatebody_tname',$ttdata);
+        $self->print_page('tt_classification_tname',$ttdata);
 
         # Log Event
         
         if (!$no_log){
             $session->log_event({
-                type      => 12,
+                type      => 13,
                 content   => {
-                    id       => $corporatebodyid,
+                    id       => $classificationid,
                     database => $database,
                 },
                 serialize => 1,

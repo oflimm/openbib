@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Library.pm
+#  OpenBib::Handler::Apache::Resource::User::LitList.pm
 #
 #  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Library;
+package OpenBib::Handler::Apache::Resource::User::LitList;
 
 use strict;
 use warnings;
@@ -67,14 +67,11 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'                      => 'show_collection',
-        'show_record'                          => 'show_record',
-        'show_record_form'                     => 'show_record_form',
-        'create_record'                        => 'create_record',
-        'update_record'                        => 'update_record',
-        'delete_record'                        => 'delete_record',
+#        'show_collection_by_subject'           => 'show_collection_by_subject',
+#        'show_record_by_subject'               => 'show_record_by_subject',
     );
 
     # Use current path as template path,
@@ -82,6 +79,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
+# Alle oeffentlichen Literaturlisten
 sub show_collection {
     my $self = shift;
 
@@ -90,6 +88,7 @@ sub show_collection {
 
     # Dispatched Args
     my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
 
     # Shared Args
     my $query          = $self->query();
@@ -103,65 +102,47 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    if (!$self->is_authenticated('user',$userid)){
+        return;
+    }
 
-    my $librarylist_ref = $config->get_libraries();
+    my $subjects_ref = OpenBib::User->get_subjects;
+    my $userrole_ref = $user->get_roles_of_user($user->{ID});
+    my $litlists     = $user->get_litlists();
+    my $targettype   = $user->get_targettype_of_session($session->{ID});
     
     # TT-Data erzeugen
     my $ttdata={
-        queryoptions_ref => $queryoptions->get_options,
-        dbinfo           => $dbinfotable,
-        libraries        => $librarylist_ref,
+        subjects   => $subjects_ref,
+        litlists   => $litlists,
+        qopts      => $queryoptions->get_options,
+        targettype => $targettype,
     };
     
-    $self->print_page($config->{tt_resource_library_collection_tname},$ttdata);
-    
+    $self->print_page($config->{tt_user_litlist_collection_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
-sub show_record {
+sub return_baseurl {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $libraryid      = $self->strip_suffix($self->param('libraryid'));
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
+    
+    my $view           = $self->param('view')           || '';
+    my $userid         = $self->param('userid')         || '';
     my $path_prefix    = $self->param('path_prefix');
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $config = OpenBib::Config->instance;
 
-    if ( $libraryid ){ # Valide Informationen etc.
-        $logger->debug("Key: $libraryid");
+    my $new_location = "$path_prefix/$config->{user_loc}/$userid/litlist.html";
 
-        my $libinfo_ref = $config->get_libinfo($libraryid);
+    $self->query->method('GET');
+    $self->query->content_type('text/html');
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
 
-        my $ttdata = {
-            libinfo        => $libinfo_ref,
-            dbinfo         => $dbinfotable,
-        };
-
-        $self->print_page($config->{tt_resource_library_tname},$ttdata);
-
-    }
-    else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit einer Id spezifiziert."));
-    }
-
-
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

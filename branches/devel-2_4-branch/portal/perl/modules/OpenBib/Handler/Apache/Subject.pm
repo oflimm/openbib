@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Classification.pm
+#  OpenBib::Handler::Apache::Resource::Subject.pm
 #
 #  Copyright 2009-2010 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Classification;
+package OpenBib::Handler::Apache::Resource::Subject;
 
 use strict;
 use warnings;
@@ -36,7 +36,7 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::Record::Classification;
+use OpenBib::Record::Subject;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -61,9 +61,9 @@ sub show_record {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view             = $self->param('view');
-    my $database         = $self->param('database');
-    my $classificationid = $self->strip_suffix($self->param('classificationid'));
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $subjectid      = $self->strip_suffix($self->param('subjectid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -82,16 +82,16 @@ sub show_record {
     my $callback      = $query->param('callback') || '';
     my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
     my $format        = $query->param('format')   || 'full';
-    my $no_log         = $query->param('no_log')  || '';
+    my $no_log        = $query->param('no_log')   || '';
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $searchquery   = OpenBib::SearchQuery->instance;
 
-    if ($database && $classificationid ){ # Valide Informationen etc.
-        $logger->debug("ID: $classificationid - DB: $database");
+    if ($database && $subjectid ){ # Valide Informationen etc.
+        $logger->debug("ID: $subjectid - DB: $database");
         
-        my $record = OpenBib::Record::Classification->new({database => $database, id => $classificationid})->load_full_record;
+        my $record = OpenBib::Record::Subject->new({database => $database, id => $subjectid})->load_full_record;
         
         my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
@@ -101,22 +101,22 @@ sub show_record {
             dbinfo        => $dbinfotable,
             qopts         => $queryoptions->get_options,
             record        => $record,
-            id            => $classificationid,
+            id            => $subjectid,
             format        => $format,
             searchquery   => $searchquery,
             activefeed    => $config->get_activefeeds_of_db($database),
             logintargetdb => $logintargetdb,
         };
 
-        $self->print_page('tt_resource_classification_tname',$ttdata);
+        $self->print_page('tt_subject_tname',$ttdata);
 
         # Log Event
         
         if (!$no_log){
             $session->log_event({
-                type      => 13,
+                type      => 14,
                 content   => {
-                    id       => $classificationid,
+                    id       => $subjectid,
                     database => $database,
                 },
                 serialize => 1,

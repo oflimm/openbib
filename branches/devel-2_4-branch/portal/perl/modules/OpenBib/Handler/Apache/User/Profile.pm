@@ -120,7 +120,7 @@ sub show_collection {
         dbinfo         => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_resource_user_profile_collection_tname},$ttdata);
+    $self->print_page($config->{tt_user_profile_collection_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -192,7 +192,7 @@ sub show_record {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_resource_user_profile_tname},$ttdata,$r);
+    $self->print_page($config->{tt_user_profile_tname},$ttdata,$r);
     return Apache2::Const::OK;
 }
 
@@ -249,7 +249,7 @@ sub show_record_form {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_resource_user_profile_edit_tname},$ttdata);
+    $self->print_page($config->{tt_user_profile_edit_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -363,7 +363,7 @@ sub create_record {
         $user->add_profiledb($profileid,$database);
     }
 
-    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/profile/$profileid.html";
+    my $new_location = "$path_prefix/$config->{user_loc}/$userid/profile/$profileid.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -422,7 +422,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/profile.html";
+    my $new_location = "$path_prefix/$config->{user_loc}/$userid/profile.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

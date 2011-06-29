@@ -130,7 +130,7 @@ sub show_collection {
         msg               => $msg,
     };
     
-    $self->print_page($config->{tt_resource_user_collection_tname},$ttdata,$r);
+    $self->print_page($config->{tt_user_collection_tname},$ttdata,$r);
         return Apache2::Const::OK;
     }
     # Abspeichern der Merkliste

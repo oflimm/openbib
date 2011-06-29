@@ -553,7 +553,7 @@ sub create_record {
         }
 
         $self->return_baseurl;
-#        $r->internal_redirect("$config->{base_loc}/$config->{resource_user_loc}/$user->{ID}/$litlistid.html");
+#        $r->internal_redirect("$config->{base_loc}/$config->{user_loc}/$user->{ID}/$litlistid.html");
 #        return Apache2::Const::OK;
         return
     }

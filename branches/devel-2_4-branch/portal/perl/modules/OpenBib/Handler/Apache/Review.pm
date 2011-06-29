@@ -180,7 +180,7 @@ sub show_collection_by_isbn_negotiate {
         msg              => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_review_collection_by_isbn_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_review_collection_by_isbn_tname},$ttdata,$r);
     
     return Apache2::Const::OK;
 }
@@ -526,7 +526,7 @@ sub show_record_form {
         msg              => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_review_edit_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_review_edit_tname},$ttdata,$r);
     
     return Apache2::Const::OK;
 }
@@ -651,7 +651,7 @@ sub show_record_negotiate {
         msg              => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_review_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_review_tname},$ttdata,$r);
     
     return Apache2::Const::OK;
 }
@@ -776,7 +776,7 @@ sub show_record_negotiatex {
         msg              => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_review_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_review_tname},$ttdata,$r);
     
     return Apache2::Const::OK;
 }
@@ -794,7 +794,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/review.html";
+    my $new_location = "$path_prefix/$config->{user_loc}/$userid/review.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

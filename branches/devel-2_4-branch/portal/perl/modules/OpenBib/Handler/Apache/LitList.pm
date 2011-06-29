@@ -123,7 +123,7 @@ sub show_collection {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_resource_litlist_collection_tname},$ttdata);
+    $self->print_page($config->{tt_litlist_collection_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -160,7 +160,7 @@ sub show_collection_recent {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_resource_litlist_collection_recent_tname},$ttdata);
+    $self->print_page($config->{tt_litlist_collection_recent_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -194,7 +194,7 @@ sub show_collection_by_subject {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_resource_litlist_collection_by_subject_tname},$ttdata);
+    $self->print_page($config->{tt_litlist_collection_by_subject_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -232,7 +232,7 @@ sub show_collection_by_single_subject_recent {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_resource_litlist_collection_by_single_subject_recent_tname},$ttdata);
+    $self->print_page($config->{tt_litlist_collection_by_single_subject_recent_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -267,7 +267,7 @@ sub show_collection_by_single_subject {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_resource_litlist_collection_by_single_subject_tname},$ttdata);
+    $self->print_page($config->{tt_litlist_collection_by_single_subject_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -405,7 +405,7 @@ sub show_collection_by_single_userxxx {
         msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_litlist_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -545,7 +545,7 @@ sub show_collection_by_single_user {
         msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_litlist_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -697,7 +697,7 @@ sub show_record {
         msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_litlist_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -833,7 +833,7 @@ sub show_record_form {
         msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_edit_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_litlist_edit_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -1147,7 +1147,7 @@ sub show_entry_negotiate {
         msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_litlist_item_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_litlist_item_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -1207,7 +1207,7 @@ sub create_entry {
     
     $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb, comment => $comment});
 
-    my $new_location = "$path_prefix/$config->{resource_litlist_loc}/$litlistid/edit";
+    my $new_location = "$path_prefix/$config->{litlist_loc}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1261,7 +1261,7 @@ sub update_entry {
 
     # Anpassen eines Kommentars
     
-    my $new_location = "$path_prefix/$config->{resource_litlist_loc}/$litlistid/edit";
+    my $new_location = "$path_prefix/$config->{litlist_loc}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1320,7 +1320,7 @@ sub delete_entry {
     
     $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
     
-    my $new_location = "$path_prefix/$config->{resource_litlist_loc}/$litlistid/edit";
+    my $new_location = "$path_prefix/$config->{litlist_loc}/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1343,7 +1343,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/litlist.html";
+    my $new_location = "$path_prefix/$config->{user_loc}/$userid/litlist.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

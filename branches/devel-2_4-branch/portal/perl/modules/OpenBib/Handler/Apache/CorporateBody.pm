@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Person.pm
+#  OpenBib::Handler::Apache::Resource::CorporateBody.pm
 #
-#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Person;
+package OpenBib::Handler::Apache::Resource::CorporateBody;
 
 use strict;
 use warnings;
@@ -36,7 +36,7 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -54,17 +54,16 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show {
+sub show_record {
     my $self = shift;
-    my $r    = $self->param('r');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view');
-    my $database       = $self->param('database');
-    my $personid       = $self->strip_suffix($self->param('personid'));
+    my $view            = $self->param('view');
+    my $database        = $self->param('database');
+    my $corporatebodyid = $self->strip_suffix($self->param('corporatebodyid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -89,10 +88,10 @@ sub show {
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $searchquery   = OpenBib::SearchQuery->instance;
 
-    if ($database && $personid ){ # Valide Informationen etc.
-        $logger->debug("ID: $personid - DB: $database");
+    if ($database && $corporatebodyid ){ # Valide Informationen etc.
+        $logger->debug("ID: $corporatebodyid - DB: $database");
         
-        my $record = OpenBib::Record::Person->new({database => $database, id => $personid})->load_full_record;
+        my $record = OpenBib::Record::CorporateBody->new({database => $database, id => $corporatebodyid})->load_full_record;
         
         my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
@@ -102,22 +101,22 @@ sub show {
             dbinfo        => $dbinfotable,
             qopts         => $queryoptions->get_options,
             record        => $record,
-            id            => $personid,
+            id            => $corporatebodyid,
             format        => $format,
             searchquery   => $searchquery,
             activefeed    => $config->get_activefeeds_of_db($database),
             logintargetdb => $logintargetdb,
         };
 
-        $self->print_page('tt_resource_person_tname',$ttdata);
+        $self->print_page('tt_corporatebody_tname',$ttdata);
 
         # Log Event
         
         if (!$no_log){
             $session->log_event({
-                type      => 11,
+                type      => 12,
                 content   => {
-                    id       => $personid,
+                    id       => $corporatebodyid,
                     database => $database,
                 },
                 serialize => 1,

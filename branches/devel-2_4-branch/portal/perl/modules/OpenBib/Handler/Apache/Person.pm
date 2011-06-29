@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Subject.pm
+#  OpenBib::Handler::Apache::Resource::Person.pm
 #
-#  Copyright 2009-2010 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Subject;
+package OpenBib::Handler::Apache::Resource::Person;
 
 use strict;
 use warnings;
@@ -36,7 +36,7 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::Record::Subject;
+use OpenBib::Record::Person;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -54,8 +54,9 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show_record {
+sub show {
     my $self = shift;
+    my $r    = $self->param('r');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -63,7 +64,7 @@ sub show_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $subjectid      = $self->strip_suffix($self->param('subjectid'));
+    my $personid       = $self->strip_suffix($self->param('personid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -82,16 +83,16 @@ sub show_record {
     my $callback      = $query->param('callback') || '';
     my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
     my $format        = $query->param('format')   || 'full';
-    my $no_log        = $query->param('no_log')   || '';
+    my $no_log         = $query->param('no_log')  || '';
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $searchquery   = OpenBib::SearchQuery->instance;
 
-    if ($database && $subjectid ){ # Valide Informationen etc.
-        $logger->debug("ID: $subjectid - DB: $database");
+    if ($database && $personid ){ # Valide Informationen etc.
+        $logger->debug("ID: $personid - DB: $database");
         
-        my $record = OpenBib::Record::Subject->new({database => $database, id => $subjectid})->load_full_record;
+        my $record = OpenBib::Record::Person->new({database => $database, id => $personid})->load_full_record;
         
         my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
@@ -101,22 +102,22 @@ sub show_record {
             dbinfo        => $dbinfotable,
             qopts         => $queryoptions->get_options,
             record        => $record,
-            id            => $subjectid,
+            id            => $personid,
             format        => $format,
             searchquery   => $searchquery,
             activefeed    => $config->get_activefeeds_of_db($database),
             logintargetdb => $logintargetdb,
         };
 
-        $self->print_page('tt_resource_subject_tname',$ttdata);
+        $self->print_page('tt_person_tname',$ttdata);
 
         # Log Event
         
         if (!$no_log){
             $session->log_event({
-                type      => 14,
+                type      => 11,
                 content   => {
-                    id       => $subjectid,
+                    id       => $personid,
                     database => $database,
                 },
                 serialize => 1,

@@ -119,7 +119,7 @@ sub show_collection {
         loginname  => $loginname,
     };
 
-    $self->print_page($config->{tt_resource_user_tag_collection_tname},$ttdata,$r);
+    $self->print_page($config->{tt_user_tag_collection_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -203,8 +203,8 @@ sub show_record {
         offset           => $offset,
         hitrange         => $hitrange,
         query            => $query,
-        template         => 'tt_resource_user_tag_tname',
-        location         => 'resource_user_loc',
+        template         => 'tt_user_tag_tname',
+        location         => 'user_loc',
         parameter        => {
             loginname    => $loginname,
             tag          => $tag,
@@ -252,7 +252,7 @@ sub show_collection_form {
         targettype => $targettype,
     };
     
-    $self->print_page($config->{tt_resource_user_tag_edit_tname},$ttdata);
+    $self->print_page($config->{tt_user_tag_edit_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -1032,7 +1032,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/tag.html";
+    my $new_location = "$path_prefix/$config->{user_loc}/$userid/tag.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

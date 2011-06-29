@@ -192,7 +192,7 @@ sub show_collection {
         user       => $user,
         msg        => $msg,
     };
-    OpenBib::Common::Util::print_page($config->{tt_resource_tag_collection_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_tag_collection_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -333,8 +333,8 @@ sub show_record_negotiate {
         hitrange         => $hitrange,
         
         query            => $query,
-        template         => 'tt_resource_tag_tname',
-        location         => 'resource_tag_loc',
+        template         => 'tt_tag_tname',
+        location         => 'tag_loc',
         parameter        => {
             tag          => $tag,
         },
@@ -448,7 +448,7 @@ sub show_collection_form {
         user       => $user,
         msg        => $msg,
     };
-    OpenBib::Common::Util::print_page($config->{tt_resource_user_tag_edit_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_user_tag_edit_tname},$ttdata,$r);
     return Apache2::Const::OK;
 }
 
@@ -550,7 +550,7 @@ sub create_record {
         type      => $type,
     });
 
-    my $new_location = "$path_prefix/$config->{resource_title_loc}/$titdb/$titid?queryid=$queryid;no_log=1";
+    my $new_location = "$path_prefix/$config->{title_loc}/$titdb/$titid?queryid=$queryid;no_log=1";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -658,11 +658,11 @@ sub delete_record {
         loginname => $loginname,
     });
 
-    my $new_location = "$r->get_server_name$path_prefix/$config->{resource_title_loc}/$titdb/$titid.html?queryid=$queryid;no_log=1";
+    my $new_location = "$r->get_server_name$path_prefix/$config->{title_loc}/$titdb/$titid.html?queryid=$queryid;no_log=1";
     
     if ($tags =~/^\w+$/){
         my $tagid = $user->get_id_of_tag({tag => $tags});
-        $new_location = "$path_prefix/$config->{resource_user_loc}/$user->{ID}/tag/$tagid.html";
+        $new_location = "$path_prefix/$config->{user_loc}/$user->{ID}/tag/$tagid.html";
     }
     
     $self->query->method('GET');
@@ -774,7 +774,7 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
-    my $new_location = "$path_prefix/$config->{resource_user_loc}/$user->{ID}/tag.html";
+    my $new_location = "$path_prefix/$config->{user_loc}/$user->{ID}/tag.html";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -846,7 +846,7 @@ sub show_collection_recent {
         msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_resource_tag_collection_recent_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_tag_collection_recent_tname},$ttdata,$r);
     return Apache2::Const::OK;
 }
 
@@ -1372,7 +1372,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/tag.html";
+    my $new_location = "$path_prefix/$config->{user_loc}/$userid/tag.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::User::Role
+#  OpenBib::Handler::Apache::Resource::Cloud
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,40 +27,32 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::User::Role;
+package OpenBib::Handler::Apache::Resource::Cloud;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
+use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
-use Apache2::SubRequest ();
-use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
-use Digest::MD5;
-use Encode qw/decode_utf8 encode_utf8/;
+use Encode 'decode_utf8';
 use JSON::XS;
-use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
-use POSIX;
 use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
-use OpenBib::Database::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
-
-use CGI::Application::Plugin::Redirect;
+use OpenBib::Template::Utilities;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -70,8 +62,8 @@ sub setup {
 
     $self->start_mode('show_collection');
     $self->run_modes(
-        'show_record_form'          => 'show_record_form',
-        'update_record'             => 'update_record',
+        'show_collection'                      => 'show_collection',
+        'show_record'                          => 'show_record',
     );
 
     # Use current path as template path,
@@ -79,82 +71,111 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show_record_form {
+sub show_collection {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')                   || '';
-    my $userid         = $self->param('userid')                 || '';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-
-    if (!$self->is_authenticated('admin')){
-        return;
-    }
-
-    my $userinfo = new OpenBib::User({ID => $userid })->get_info;
-        
-    my $ttdata={
-        userinfo   => $userinfo,
-    };
+    my $view           = $self->param('view')           || '';
     
-    $self->print_page($config->{tt_resource_user_role_edit_tname},$ttdata);
-
-}
-
-
-sub update_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
-    my $config         = $self->param('config');
+    my $config         = $self->param('config');    
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
+    my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
+    
     # CGI Args
-    my @roles           = ($query->param('roles'))?$query->param('roles'):();
+    my $format         = $query->param('format')         || '';
+    
+    my $statistics  = new OpenBib::Statistics();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $utils       = new OpenBib::Template::Utilities;
 
-    if (!$self->is_authenticated('admin')){
-        return;
-    }
+    my $profile       = $config->get_viewinfo->search({ viewname => $view })->single()->profilename;
 
-    my $thisuserinfo_ref = {
-        id    => $userid,
-        roles => \@roles,
+    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
+
+    # TT-Data erzeugen
+    my $ttdata={
+        format        => $format,
+        profile       => $profile,
+        queryoptions  => $queryoptions,
+        query         => $query,
+        viewdesc      => $viewdesc,
+        dbinfo        => $dbinfotable,
+        statistics    => $statistics,
+        utils         => $utils,
     };
 
-    $user->update_userrole($thisuserinfo_ref);
+    $self->print_page($config->{tt_cloud_collection_tname},$ttdata);
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_user_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    return Apache2::Const::OK;
 }
+
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $r              = $self->param('r');
+    my $view           = $self->param('view');
+    my $cloudid        = $self->param('cloudid');
+    my $database       = $self->param('database');
     
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    # CGI Args
+    my $format         = $query->param('format')         || '';
+    
+    my $statistics  = new OpenBib::Statistics();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $utils       = new OpenBib::Template::Utilities;
+
+    if ($database){
+        $database=$self->strip_suffix($database);
+    }
+    else {
+        $cloudid=$self->strip_suffix($cloudid);
+    }
+    
+    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
+
+    # TT-Data erzeugen
+    my $ttdata={
+        format        => $format,
+        stid          => $cloudid,
+        database      => $database,
+        query         => $query,
+        viewdesc      => $viewdesc,
+        dbinfo        => $dbinfotable,
+        statistics    => $statistics,
+        utils         => $utils,
+    };
+
+    my $templatename = "tt_cloud_".$cloudid."_tname";
+
+    $self->print_page($config->{$templatename},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
 1;

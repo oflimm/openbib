@@ -131,7 +131,7 @@ sub show_collection {
         userinfo            => $userinfo_ref,
     };
     
-    $self->print_page($config->{tt_resource_user_preferences_tname},$ttdata);
+    $self->print_page($config->{tt_user_preferences_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -496,7 +496,7 @@ sub return_baseurl {
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $new_location = "$path_prefix/$config->{resource_user_loc}/$userid/preferences.html";
+    my $new_location = "$path_prefix/$config->{user_loc}/$userid/preferences.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

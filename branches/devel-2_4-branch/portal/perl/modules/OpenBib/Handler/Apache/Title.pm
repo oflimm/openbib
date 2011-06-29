@@ -94,7 +94,7 @@ sub show_popular {
         utils         => $utils,
     };
 
-    my $templatename = "tt_resource_title_popular".(($database)?'_by_database':'')."_tname";
+    my $templatename = "tt_title_popular".(($database)?'_by_database':'')."_tname";
     $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
@@ -221,7 +221,7 @@ sub show_record {
         };
 
         $stid=~s/[^0-9]//g;
-        my $templatename = ($stid)?"tt_resource_title_".$stid."_tname":"tt_resource_title_tname";
+        my $templatename = ($stid)?"tt_title_".$stid."_tname":"tt_title_tname";
         
         $self->print_page($config->{$templatename},$ttdata);
 

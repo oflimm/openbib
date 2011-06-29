@@ -1,8 +1,8 @@
-####################################################################
+#####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::User
+#  OpenBib::Handler::Apache::Resource::Library.pm
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::User;
+package OpenBib::Handler::Apache::Resource::Library;
 
 use strict;
 use warnings;
@@ -36,19 +36,28 @@ use utf8;
 
 use Apache2::Const -compile => qw(:common :http);
 use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
+use Apache2::Request;
+use Benchmark ':hireswallclock';
+use Encode qw(decode_utf8);
 use DBI;
-use Email::Valid;
-use Encode 'decode_utf8';
+use JSON::XS;
+use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
 
+use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
+use OpenBib::Record::Title;
+use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Subject;
+use OpenBib::Record::Classification;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -60,8 +69,12 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'update_account'       => 'update_account',
-        'delete_account'       => 'delete_account',
+        'show_collection'                      => 'show_collection',
+        'show_record'                          => 'show_record',
+        'show_record_form'                     => 'show_record_form',
+        'create_record'                        => 'create_record',
+        'update_record'                        => 'update_record',
+        'delete_record'                        => 'delete_record',
     );
 
     # Use current path as template path,
@@ -69,15 +82,14 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub update_account {
+sub show_collection {
     my $self = shift;
-    
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $userid         = $self->strip_suffix($self->param('userid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -91,47 +103,23 @@ sub update_account {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = $query->param('_method') || '';
-    my $confirm         = $query->param('confirm') || 0;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    if (!$self->is_authenticated('user',$userid)){
-        return;
-    }
-
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete Userid $userid");
-        
-        if ($confirm){
-            
-            my $ttdata={
-                userid     => $userid,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_resource_user_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
-        }
-        else {
-            $user->wipe_account();
-        }
-    }
+    my $librarylist_ref = $config->get_libraries();
     
-    my $new_location = "$path_prefix/$view/$config->{logout_loc}";
-
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
+    # TT-Data erzeugen
+    my $ttdata={
+        queryoptions_ref => $queryoptions->get_options,
+        dbinfo           => $dbinfotable,
+        libraries        => $librarylist_ref,
+    };
+    
+    $self->print_page($config->{tt_library_collection_tname},$ttdata);
+    
+    return Apache2::Const::OK;
 }
 
-sub delete_account {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -139,44 +127,41 @@ sub delete_account {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $userid         = $self->strip_suffix($self->param('userid'));
+    my $libraryid      = $self->strip_suffix($self->param('libraryid'));
 
     # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
     my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('user',$userid)){
-        return;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+
+    if ( $libraryid ){ # Valide Informationen etc.
+        $logger->debug("Key: $libraryid");
+
+        my $libinfo_ref = $config->get_libinfo($libraryid);
+
+        my $ttdata = {
+            libinfo        => $libinfo_ref,
+            dbinfo         => $dbinfotable,
+        };
+
+        $self->print_page($config->{tt_library_tname},$ttdata);
+
+    }
+    else {
+        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit einer Id spezifiziert."));
     }
 
-    $user->wipe_account();
 
-    return;
+    return Apache2::Const::OK;
 }
 
 1;
-__END__
-
-=head1 NAME
-
-OpenBib::UserPrefs - Verwaltung von Benutzer-Profil-Einstellungen
-
-=head1 DESCRIPTION
-
-Das mod_perl-Modul OpenBib::UserPrefs stellt dem Benutzer des 
-Suchportals Einstellmoeglichkeiten seines persoenlichen Profils
-zur Verfuegung.
-
-=head2 Loeschung seiner Kennung
-
-Loeschung seiner Kennung, so es sich um eine Kennung handelt, die 
-im Rahmen der Selbstregistrierung angelegt wurde. Sollte der
-Benutzer sich mit einer Kennung aus einer Sisis-Datenbank 
-authentifiziert haben, so wird ihm die Loeschmoeglichkeit nicht 
-angeboten
- 
-
-=head1 AUTHOR
-
- Oliver Flimm <flimm@openbib.org>
-
-=cut

@@ -259,7 +259,7 @@ sub to_rss {
         
         $rss->add_item(
             title       => $title,
-            link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{resource_title_loc}."/".$record->{database}."/".$record->{id}.".html",
+            link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{title_loc}."/".$record->{database}."/".$record->{id}.".html",
             description => $desc
         );
     }

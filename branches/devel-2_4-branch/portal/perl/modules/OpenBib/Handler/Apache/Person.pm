@@ -54,7 +54,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show {
+sub show_record {
     my $self = shift;
     my $r    = $self->param('r');
 
@@ -109,7 +109,7 @@ sub show {
             logintargetdb => $logintargetdb,
         };
 
-        $self->print_page('tt_person_tname',$ttdata);
+        $self->print_page($config->{'tt_person_tname'},$ttdata);
 
         # Log Event
         

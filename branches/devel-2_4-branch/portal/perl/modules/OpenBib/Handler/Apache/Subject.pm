@@ -108,7 +108,7 @@ sub show_record {
             logintargetdb => $logintargetdb,
         };
 
-        $self->print_page('tt_subject_tname',$ttdata);
+        $self->print_page($config->{'tt_subject_tname'},$ttdata);
 
         # Log Event
         

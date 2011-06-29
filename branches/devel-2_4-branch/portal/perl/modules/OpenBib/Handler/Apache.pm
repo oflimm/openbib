@@ -223,6 +223,7 @@ sub cgiapp_init() {
 
    # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
    if ($self->query->param('l')){
+       $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$self->query->param('l'));
        $self->param('lang',$self->query->param('l'));
    }
 #    elsif ($r->method eq "GET"){
@@ -284,11 +285,11 @@ sub negotiate_content {
     $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
     $logger->debug("Accept-Language: $lang - Languages: ".YAML::Dump(\@accepted_languages));
     
-    foreach my $information_resource_type (keys %{$config->{content_type_map}}){
-        if (any { $_ eq $information_resource_type } @accepted_types) {
-            $logger->debug("Negotiated Type: $information_resource_type - Suffix: ".$config->{content_type_map}->{$information_resource_type});
-            $self->param('content_type',$information_resource_type);
-            $self->param('represenatione',$config->{content_type_map}->{$information_resource_type});
+    foreach my $information_type (keys %{$config->{content_type_map}}){
+        if (any { $_ eq $information_type } @accepted_types) {
+            $logger->debug("Negotiated Type: $information_type - Suffix: ".$config->{content_type_map}->{$information_type});
+            $self->param('content_type',$information_type);
+            $self->param('represenatione',$config->{content_type_map}->{$information_type});
             last;
         }
     }
@@ -333,11 +334,11 @@ sub negotiate_type {
 
     $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
     
-    foreach my $information_resource_type (keys %{$config->{content_type_map}}){
-        if (any { $_ eq $information_resource_type } @accepted_types) {
-            $logger->debug("Negotiated Type: $information_resource_type - Suffix: ".$config->{content_type_map}->{$information_resource_type});
-            $self->param('content_type',$information_resource_type);
-            $self->param('represenatione',$config->{content_type_map}->{$information_resource_type});
+    foreach my $information_type (keys %{$config->{content_type_map}}){
+        if (any { $_ eq $information_type } @accepted_types) {
+            $logger->debug("Negotiated Type: $information_type - Suffix: ".$config->{content_type_map}->{$information_type});
+            $self->param('content_type',$information_type);
+            $self->param('represenatione',$config->{content_type_map}->{$information_type});
             last;
         }
     }

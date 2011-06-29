@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Cloud
+#  OpenBib::Handler::Apache::Cloud
 #
 #  Dieses File ist (C) 2006-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Cloud;
+package OpenBib::Handler::Apache::Cloud;
 
 use strict;
 use warnings;

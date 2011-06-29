@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Classification.pm
+#  OpenBib::Handler::Apache::Classification.pm
 #
-#  Copyright 2009-2010 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Classification;
+package OpenBib::Handler::Apache::Classification;
 
 use strict;
 use warnings;

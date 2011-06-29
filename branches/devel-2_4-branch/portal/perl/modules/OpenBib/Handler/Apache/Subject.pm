@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Subject.pm
+#  OpenBib::Handler::Apache::Subject.pm
 #
-#  Copyright 2009-2010 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Subject;
+package OpenBib::Handler::Apache::Subject;
 
 use strict;
 use warnings;

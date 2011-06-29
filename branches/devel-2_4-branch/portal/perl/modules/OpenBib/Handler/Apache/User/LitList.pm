@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::User::LitList.pm
+#  OpenBib::Handler::Apache::User::LitList.pm
 #
 #  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::User::LitList;
+package OpenBib::Handler::Apache::User::LitList;
 
 use strict;
 use warnings;

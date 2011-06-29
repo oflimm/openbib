@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Tag.pm
+#  OpenBib::Handler::Apache::Tag.pm
 #
 #  Copyright 2007-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Tag;
+package OpenBib::Handler::Apache::Tag;
 
 use strict;
 use warnings;

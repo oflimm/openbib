@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Library.pm
+#  OpenBib::Handler::Apache::Library.pm
 #
 #  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Library;
+package OpenBib::Handler::Apache::Library;
 
 use strict;
 use warnings;

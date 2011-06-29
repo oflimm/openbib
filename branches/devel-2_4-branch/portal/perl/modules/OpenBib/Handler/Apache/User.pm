@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::User
+#  OpenBib::Handler::Apache::User
 #
 #  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::User;
+package OpenBib::Handler::Apache::User;
 
 use strict;
 use warnings;

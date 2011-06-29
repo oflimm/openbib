@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Resource::Title.pm
+#  OpenBib::Handler::Apache::Title.pm
 #
 #  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Resource::Title;
+package OpenBib::Handler::Apache::Title;
 
 use strict;
 use warnings;

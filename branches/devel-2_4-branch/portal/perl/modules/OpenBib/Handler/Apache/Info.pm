@@ -60,9 +60,9 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show_negotiate');
+    $self->start_mode('show_record');
     $self->run_modes(
-        'show_negotiate'       => 'show_negotiate',
+        'show_record'       => 'show_record',
     );
 
     # Use current path as template path,
@@ -70,7 +70,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen

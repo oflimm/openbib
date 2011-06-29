@@ -38,7 +38,7 @@
   <div class="resultheader">
     <div class="catalogue">
 [%-   IF dbinfo.get('use_libinfo').${database} %]
-<a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% database %]">
+<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]

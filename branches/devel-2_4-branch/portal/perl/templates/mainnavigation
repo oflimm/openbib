@@ -34,7 +34,7 @@
 <a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('rssfeeds_loc') %].html?l=[% lang %]">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
 [% IF config.get('login_active') == 1 %]
 [% IF username %]
-<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('resource_user_loc') %]/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Mein OpenBib") %]</a>
+<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Mein OpenBib") %]</a>
 [% ELSE %]
 <a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Mein OpenBib") %]</a>
 [%- END -%]

@@ -1,0 +1,96 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_manage_lists
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Neuanlegen und Ausgabe bestehender Literaturlisten
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="user_navigation" active="litlists" %] 
+
+<div class="content">
+
+<p />
+
+<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neue Literaturliste anlegen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="title" size="50" /></td><td><select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td><td><div class="cssbutton glass kug"><input type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+<tr><td colspan="3"></td></tr>
+
+<tr><td colspan="3">Ordnen Sie Ihre Literaturliste thematisch ein</td></tr>
+<tr><td colspan="3">
+<select name="subjectids" multiple="multiple" size="5">
+
+[% FOREACH subject IN subjects %]
+<option value="[% subject.id %]">[% subject.name %][% IF subject.description%] ([% subject.description %])[% END %]</option>
+
+[% END %]
+
+
+</select>
+</td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[%# USE dumper ; dumper.dump(litlists) %]
+[% IF litlists.size > 0 %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende Literaturlisten") %]</th></tr>
+<tr><td class="boxedclear">
+<table>
+<tr><td class="headline"><b>[% msg.maketext("Titel der Literaturliste") %]</b></td><td class="headline"><b>[% msg.maketext("Titelzahl") %]</b></td><td class="headline"><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td class="headline"><b>[% msg.maketext("Themengebiete") %]</b></td><td class="headline"><b>[% msg.maketext("Angelegt") %]</b></td><td></td></tr>
+[% listrow = 'listrow1' %]
+[% FOREACH litlist IN litlists %]
+<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]/edit"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
+[% msg.maketext("&ouml;ffentlich") %]
+[% ELSE %] 
+[% msg.maketext("privat") %]
+[% END %]
+</td><td>[%- FOREACH subject IN litlist.subjects -%][% subject.name %]<br/>[%- END -%]</td><td>[% litlist.tstamp %]</td><td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td></tr>
+
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+
+[% END %]
+
+</table>
+
+[% END %]
+
+</td></tr>
+</table>
+
+</div>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

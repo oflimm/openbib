@@ -13,10 +13,10 @@
 -%]
 <h3><img style="vertical-align:bottom" src="[% config.get('search_img') %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[%- IF viewdbs.size == 1 -%][% msg.maketext("In den Institutsbestand eintauchen") %][%- ELSE -%][% msg.maketext("In den Gesamtbestand eintauchen") %][%- END -%]</h3>
 
-<a style="font-size: 1.5em;" href="[% path_prefix %]/[% config.get('resource_cloud_loc') %].html[%- IF viewdbs.size == 1 -%]year/[% viewdbs.first %].html[% END %]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
-<a style="font-size: 1.3em;" href="[% path_prefix %]/[% config.get('resource_litlist_loc') %][% IF view_config.${view}.subjectid %]/subject/[% view_config.${view}.subjectid %].html[% ELSE %].html[%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
-<a style="font-size: 1.1em;" href="[% path_prefix %]/[% config.get('resource_cloud_loc') %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
-<a                           href="[% path_prefix %]/[% config.get('resource_title_loc') %][%- IF viewdbs.size == 1 -%]/[% viewdbs.first %][%- END -%]/popular.html" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
+<a style="font-size: 1.5em;" href="[% path_prefix %]/[% config.get('cloud_loc') %].html[%- IF viewdbs.size == 1 -%]year/[% viewdbs.first %].html[% END %]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
+<a style="font-size: 1.3em;" href="[% path_prefix %]/[% config.get('litlist_loc') %][% IF view_config.${view}.subjectid %]/subject/[% view_config.${view}.subjectid %].html[% ELSE %].html[%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
+<a style="font-size: 1.1em;" href="[% path_prefix %]/[% config.get('cloud_loc') %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
+<a                           href="[% path_prefix %]/[% config.get('title_loc') %][%- IF viewdbs.size == 1 -%]/[% viewdbs.first %][%- END -%]/popular.html" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
 <a style="font-size: 1.2em;" href="[% path_prefix %]/[% config.get('info_loc') %]/other_portals.html" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
 
 <h3><img style="vertical-align:bottom" src="[% config.get('university_img') %]" alt="Universit&auml;t" />&nbsp;Weitere Dienste an der Universit&auml;t</h3>

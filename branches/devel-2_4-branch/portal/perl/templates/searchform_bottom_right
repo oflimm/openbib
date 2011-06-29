@@ -25,11 +25,11 @@
 [% IF lastlitlists.size > 0 %]
 <ul class="recent_litlists">
 [%   FOREACH litlist IN lastlitlists %]
-<li><a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %]/[% litlist.id%].html">[% litlist.title %]</a> ([% litlist.itemcount %])[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id%].html">[% litlist.title %]</a> ([% litlist.itemcount %])[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [%   END %]
 </ul>
 <p>
-[<a href="[% path_prefix %]/[% config.get('resource_litlist_loc') %][%- IF view_config.${view}.subjectid %]/subject/[% view_config.${view}.subjectid %][% ELSE %]/recent.html?num=50[% END %]">[% msg.maketext("Mehr") %]</a>]
+[<a href="[% path_prefix %]/[% config.get('litlist_loc') %][%- IF view_config.${view}.subjectid %]/subject/[% view_config.${view}.subjectid %][% ELSE %]/recent.html?num=50[% END %]">[% msg.maketext("Mehr") %]</a>]
 </p>
 [% ELSE %]
 Es wurden diesem Katalog noch keine Literaturlisten 
@@ -49,7 +49,7 @@ thematisch zugeordnet.
 [% IF lasttags.size > 0 %]
 <ul class="recent_tags">
 [%   FOREACH thistag IN lasttags %]
-<li><a href="[% path_prefix %]/[% config.get('resource_tag_loc') %]/[% thistag.id %].html">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
+<li><a href="[% path_prefix %]/[% config.get('tag_loc') %]/[% thistag.id %].html">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
 [%   END %]
 </ul>
 [% ELSE %]

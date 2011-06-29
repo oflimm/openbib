@@ -1,0 +1,170 @@
+[%#-
+#######################################################################
+#
+# Templatename: title_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+  <script type="text/javascript" src="http://www.ub.uni-koeln.de/js/googlebooks.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://kug4.ub.uni-koeln.de/styles/openbib_zms.css" />
+  <style>
+#searchresult {
+   width: 90%;
+   font-size:0.9em;
+}
+  </style>
+<div class="hit">
+[%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) -%]
+[%- normset         = record.get_normdata -%]
+[%- mexnormset      = record.get_mexdata -%]
+[%- cirset          = record.get_circdata -%] 
+[%- same_records    = record.get_same_records -%]
+[%- similar_records = record.get_similar_records -%]
+[%- bibkey = record.to_bibkey -%]
+[%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
+[%- IF NOT isbn ;
+       isbn   = normset.${"T0553"}.first.content.replace('-','') ;
+    END ;
+-%]
+<div style="float:right;">
+[%- PROCESS common/subtemplate name="title_html_images" -%]
+</div><!-- End Images -->
+
+<div class="result" style="width:500px;">
+[%- PROCESS common/subtemplate name="visible_categories_title" -%]
+[%- PROCESS common/subtemplate name="title_html_categories" -%]
+[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+<p class="wikipediamashup">
+<img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
+[%-   IF normset.${"E4200"} %]
+[%-    FOREACH item IN normset.${"E4200"}-%]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/522/http://de.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+[%-    END -%]
+[%-   END %]
+[%-   IF normset.${"E4201"} %]
+[%-     FOREACH item IN normset.${"E4201"}-%]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/522/http://en.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normset.${"E4202"} %]
+[%-     FOREACH item IN normset.${"E4202"}-%]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/522/http://fr.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END -%]
+</p>
+[% END %]
+
+</div>
+
+
+<div>
+
+[% IF circset.size > 0 %]
+<h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
+
+<div id="circinfo"><!-- Begin Circulation -->
+[% PROCESS common/subtemplate name="circset" %]
+</div><!-- End Circulation -->
+[% ELSE %]
+[%   IF mexnormset.size > 0 %]
+<h2 class="nojs_show">[% msg.maketext("Bestand") %]</h2>
+
+<div id="mexinfo"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="mexset" %]
+</div><!-- End Bestand -->
+[%   END %]
+[% END %]
+
+[% IF tictocs_feed %]
+<script type="text/javascript">
+$(document).ready(function(){
+// Begin Verwandte Personen
+  $.get("[% path_prefix %]/[% config.get('info_loc') %]/62?id=[% normset.${"E4115"}.first.content %];format=ajax",
+         function (txt){
+           $("#tictocs").html(txt); 
+  });
+});
+</script>
+
+<h4 class="nojs_show">[% msg.maketext("Letzte Artikel") %]</h4>
+
+<div id="tictocs"><!-- Begin TicTocs -->
+[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/62?id=${tictocs_feed}\">","</a>") %]
+</div><!-- End TicTocs -->
+[% END %]
+
+[% IF same_records.get_size > 0 %]
+<h2 class="nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
+
+<div id="same_records"><!-- Begin: Same records -->
+[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden") %]:
+<p />
+
+<ol>
+[% FOREACH same_record IN same_records.get_records %]
+<li>
+   <div class="hit-details">
+        <script type="text/javascript">
+            document.write('<h4><a href="javascript:ajaxpage(\'/portal/inst526/resource/title/[% same_record.database %]/[% same_record.id %].include\', \'DISPLAY_SEARCH_[% same_record.database %]_[% same_record.id %]\', \'Lade Detailanzeige\');">[% dbinfo.get('dbnames').${same_record.database}.short %]<\/a><\/h4>');
+        </script>
+        <noscript>
+            <h4><a href="http://wwwtest.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/526/titel/index_ger.html?db=[% same_record.database %];id=[% same_record.id %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></h4>
+        </noscript>
+
+        <div id="DISPLAY_SEARCH_[% same_record.database %]_[% same_record.id %]" style="margin-bottom:1.0em;"></div>
+   </div>
+</li>
+[% END %]
+</ol>
+</div><!-- End: Same Records -->
+[% END %]
+
+[% IF similar_records.get_size > 0 %]
+<h4 class="nojs_show">[% msg.maketext("Andere Ausgaben") %]</h4>
+
+<div id="similar_records"><!-- Begin: Similar records -->
+[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen") %]:
+<p />
+<ol>
+[% FOREACH similar_record IN similar_records.get_records %]
+[% item = similar_record.get_brief_normdata %]
+[% similar_url = "${path_prefix}/${config.get('loc')}/title/${similar_record.database}/${similar_record.id}.html" %]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Edition konstruieren %]
+[%- edition   = item.${'T0403'}.first.content -%]
+<li><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfo.get('dbnames').${similar_record.database}.short %]</li>
+[% END %]
+</ol>
+</div><!-- End: Similar Records -->
+[% END %]
+
+</div><!-- End: Additional Title Info -->
+</div>
+<!-- Title ends here -->
+
+<script>
+   function addFullCover(resultbooks) {
+     for (i in resultbooks) {
+       var thisbook = resultbooks[i];
+       if (thisbook.thumbnail_url != undefined){         
+          document.getElementById('cover_full').src      = thisbook.thumbnail_url.replace("zoom=5","zoom=1");
+          document.getElementById('cover_full').title    = "Cover von Google Books";
+          document.getElementById('cover_full_url').href = thisbook.preview_url;
+       }
+     }
+   }
+</script>
+
+<script src="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN:[% isbn %]&callback=addFullCover"></script>

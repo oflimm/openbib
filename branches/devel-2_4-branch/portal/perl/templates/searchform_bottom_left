@@ -70,7 +70,7 @@ END ;-%]
 <tr><td class="category">QR-Code</td><td><a class="qrcode" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
 </table>
 [%-   IF dbinfo.get('use_libinfo').${viewdbs.first} %]
-[<a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% viewdbs.first %]">
+[<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% viewdbs.first %]">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]

@@ -1,0 +1,201 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+      funcargs = { id => view, type => 8 } ;
+      resultlist = statistics.get_result(funcargs);
+
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('cloud_loc') %].html" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
+   <li><a                href="[% path_prefix %]/[% config.get('cloud_loc') %].html" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.get('litlists') %]   <li><a [% IF active == 41 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('cloud_loc') %]/litlist.html" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
+   <li><a class="active" href="[% path_prefix %]/[% config.get('cloud_loc') %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+
+<table width="100%">
+<tr><th>Allgemeine Wolke der von Nutzern verwendeten Suchbegriffe</th></tr>
+<tr><td class="boxedclear">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.all.size > 5 -%]
+<ol class="cloud">
+[%- FOREACH thisitem IN resultlist.all -%]
+[% item      = thisitem.item;
+   id        = thisitem.id;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten  
+den Suchbegriff </span><a href="#" title="[% itemcount %] Nutzer verwendeten  
+den Suchbegriff [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+Leider k&ouml;nnen wir Ihnen keine Wolke der von
+Nutzern verwendeten Suchbegriffe anbieten.
+[% END %]
+</td></tr>
+</table>
+<p />
+
+<table width="100%">
+<tr><th>Wolke der von Nutzern verwendeten Suchbegriffe in der Kategorie <emph>Freie Suche</emph></th></tr>
+<tr><td class="boxedclear">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.fs.size > 5 -%]
+<ol class="cloud">
+[%- FOREACH thisitem IN resultlist.fs -%]
+[% item      = thisitem.item;
+   id        = thisitem.id;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten  
+den Suchbegriff </span><a href="#" title="[% itemcount %] Nutzer verwendeten  
+den Suchbegriff [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+Leider k&ouml;nnen wir Ihnen keine Wolke der von
+Nutzern verwendeten Suchbegriffe anbieten.
+[% END %]
+</td></tr>
+</table>
+<p />
+
+<table width="100%">
+<tr><th>Wolke der von Nutzern verwendeten Suchbegriffe in der Kategorie <emph>Titel</emph></th></tr>
+<tr><td class="boxedclear">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.hst.size > 5 -%]
+<ol class="cloud">
+[%- FOREACH thisitem IN resultlist.hst -%]
+[% item      = thisitem.item;
+   id        = thisitem.id;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten  
+den Suchbegriff </span><a href="#" title="[% itemcount %] Nutzer verwendeten  
+den Suchbegriff [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+Leider k&ouml;nnen wir Ihnen keine Wolke der von
+Nutzern verwendeten Suchbegriffe anbieten.
+[% END %]
+</td></tr>
+</table>
+<p />
+
+<table width="100%">
+<tr><th>Wolke der von Nutzern verwendeten Suchbegriffe in der Kategorie <emph>Schlagworte</emph></th></tr>
+<tr><td class="boxedclear">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.swt.size > 5 -%]
+<ol class="cloud">
+[%- FOREACH thisitem IN resultlist.swt -%]
+[% item      = thisitem.item;
+   id        = thisitem.id;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten  
+den Suchbegriff </span><a href="#" title="[% itemcount %] Nutzer verwendeten  
+den Suchbegriff [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+Leider k&ouml;nnen wir Ihnen keine Wolke der von
+Nutzern verwendeten Suchbegriffe anbieten.
+[% END %]
+</td></tr>
+</table>
+<p />
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -35,7 +35,7 @@
 -%]
 <tr align="center"><td>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-<a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% record.database %]">
+<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% record.database %]">
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]

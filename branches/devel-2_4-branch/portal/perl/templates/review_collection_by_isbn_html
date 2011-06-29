@@ -1,0 +1,116 @@
+[%#-
+#######################################################################
+#
+# Templatename: userreviews_show
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Rezensionen eines Benutzers fuer diesen in Mein KUG
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="user_navigation" active="userreviews" %] 
+
+<div class="content">
+
+<p />
+
+[%- IF reviews.size > 0 -%]
+<!-- Begin Reviews -->
+
+<table>
+[%- FOREACH item IN reviews -%]
+
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.titnormset.${'P0100'}  -%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('browse_loc')}?database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.titnormset.${'P0101'}  -%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('browse_loc')}?database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.titnormset.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('browse_loc')}?database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.titnormset.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('browse_loc')}?database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+
+[%# Titel konstruieren %]
+[%- title = item.titnormset.${'T0331'}.first.content -%]
+[%- IF item.titnormset.${'T0310'}.first.content -%]
+[%- title = item.titnormset.${'T0310'}.first.content -%]
+[%- END -%]
+
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.titnormset.${'T5100'}.first.content -%]
+[%-    order = item.titnormset.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+
+[%# Verlage konstruieren %]
+[%- publisher = item.titnormset.${'T0412'}.first.content -%]
+
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.titnormset.${'T0425'}.first.content -%]
+
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.titnormset.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- dbdesc   = dbinfo.get('dbnames').${item.titnormset.database}.full -%]
+[%- dburl    = dbinfo.get('urls').${item.titnormset.database} -%]
+
+<tr><td class="boxedclear">
+<p>
+<span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('browse_loc') %]?search=Mehrfachauswahl;srt=[% srt %];database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
+</p>
+
+<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Anonym[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
+
+<p />[%    IF item.review %][% item.review %][% END %]
+
+<p>
+<a class="cssbutton glass kug" href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="cssbutton glass kug" href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
+</p>
+</td></tr>
+<tr><td></td></tr>
+[%  END %]
+</table>
+<!-- End Reviews -->
+
+[% ELSE %]
+Bisher haben Sie noch keine Rezensionen geschrieben oder Bewertungen vergeben.
+[% END %]
+
+<p />
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

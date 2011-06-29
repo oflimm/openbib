@@ -32,7 +32,7 @@
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]" />
 [% END %]
 [% IF LinkedData == "title" %]
-<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('resource_title_loc') %]/[%- record.database -%]/[%- record.id -%].rdf"/>
+<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('title_loc') %]/[%- record.database -%]/[%- record.id -%].rdf"/>
 [% END %]
 [% IF unapi && config.get('unAPI') %]
     <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('connector_unapi_loc') %]" />

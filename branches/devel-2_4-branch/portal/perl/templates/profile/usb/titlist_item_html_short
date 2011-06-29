@@ -177,7 +177,7 @@
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-         <a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% record.database %]">
+         <a href="[% path_prefix %]/[% config.get('library_loc') %]/[% record.database %]">
 [%-   ELSE -%]
          <a href="[% dburl %]" target="_blank">
 [%-   END -%]

@@ -262,10 +262,10 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
-<span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('resource_title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br />[% msg.maketext("aus:") %]&nbsp;<i>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-<a href="[% path_prefix %]/[% config.get('resource_library_loc') %]/[% record.database %]">
+<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% record.database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]

@@ -97,11 +97,11 @@ sub get_result_navigation {
         my @next=(exists $after[0])?$after[0]:();
         
         if (@last) {
-            $lasttiturl="$config->{base_loc}/$view/$config->{resource_title_loc}/$last[0]->{database}/$last[0]->{id}/";
+            $lasttiturl="$config->{base_loc}/$view/$config->{title_loc}/$last[0]->{database}/$last[0]->{id}/";
         }
         
         if (@next) {
-            $nexttiturl="$config->{base_loc}/$view/$config->{resource_title_loc}/$next[0]->{database}/$next[0]->{id}/";
+            $nexttiturl="$config->{base_loc}/$view/$config->{title_loc}/$next[0]->{database}/$next[0]->{id}/";
         }
     }
     

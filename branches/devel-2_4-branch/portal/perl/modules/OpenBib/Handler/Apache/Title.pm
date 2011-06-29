@@ -118,6 +118,7 @@ sub show_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang            = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
@@ -125,7 +126,6 @@ sub show_record {
     # CGI Args
     my $stid          = $query->param('stid')              || '';
     my $callback      = $query->param('callback')  || '';
-    my $lang          = $query->param('lang') || $queryoptions->get_option('l') || 'de';
     my $queryid       = $query->param('queryid')   || '';
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
@@ -201,12 +201,7 @@ sub show_record {
             titidn      => $titleid,
 
             format      => $format,
-        
-            # Wegen Template-Kompatabilitaet:
-            normset     => $record->get_normset,
-            mexnormset  => $record->get_mexset,
-            circset     => $record->get_circset,
-            
+
             searchquery => $searchquery,
             activefeed  => $config->get_activefeeds_of_db($self->{database}),
             
@@ -214,10 +209,6 @@ sub show_record {
             
             litlists          => $litlists_ref,
             highlightquery    => \&highlightquery,
-            
-            config      => $config,
-            user        => $user,
-            msg         => $msg,
         };
 
         $stid=~s/[^0-9]//g;
@@ -229,8 +220,8 @@ sub show_record {
 
         my $isbn;
         
-        if (exists $record->get_normset->{T0540}[0]{content}){
-            $isbn = $record->get_normset->{T0540}[0]{content};
+        if (exists $record->get_normdata->{T0540}[0]{content}){
+            $isbn = $record->get_normdata->{T0540}[0]{content};
             $isbn =~s/ //g;
             $isbn =~s/-//g;
             $isbn =~s/X/x/g;

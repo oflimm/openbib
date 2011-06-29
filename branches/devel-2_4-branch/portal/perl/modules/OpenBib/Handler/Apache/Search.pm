@@ -94,19 +94,20 @@ sub show_search {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
 
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
-    my $representation = $self->param('representation') || '';
+    my $representation = $self->param('representation');
+    my $path_prefix    = $self->param('path_prefix');
     
     # CGI Args
     my $serien        = decode_utf8($query->param('serien'))        || 0;

@@ -371,41 +371,21 @@ sub show_collection_by_single_userxxx {
     
     # TT-Data erzeugen
     my $ttdata={
-        representation  => $representation,
-        
         user_owns_litlist => $user_owns_litlist,
-        
-        view           => $view,
-        stylesheet     => $stylesheet,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-        
         subjects       => $subjects_ref,
         thissubjects   => $litlist_subjects_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
-        user           => $user,
-        
         userrole       => $userrole_ref,
-        
         format         => $format,
-        show           => $show,
-        
+        show           => $show,        
         litlist        => $singlelitlist,
-        other_litlists => $other_litlists_of_user,
-        
+        other_litlists => $other_litlists_of_user,        
         dbinfo         => $dbinfotable,
         targettype     => $targettype,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_litlist_tname},$ttdata,$r);
+    $self->print_page($config->{tt_litlist_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -511,41 +491,21 @@ sub show_collection_by_single_user {
     
     # TT-Data erzeugen
     my $ttdata={
-        representation  => $representation,
-        
         user_owns_litlist => $user_owns_litlist,
-        
-        view           => $view,
-        stylesheet     => $stylesheet,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-        
         subjects       => $subjects_ref,
         thissubjects   => $litlist_subjects_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
-        user           => $user,
-        
         userrole       => $userrole_ref,
-        
         format         => $format,
         show           => $show,
-        
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
-        
         dbinfo         => $dbinfotable,
         targettype     => $targettype,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_litlist_tname},$ttdata,$r);
+    $self->print_page($config->{tt_litlist_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -664,40 +624,20 @@ sub show_record {
     
     # TT-Data erzeugen
     my $ttdata={
-        representation  => $representation,
-        
         user_owns_litlist => $user_owns_litlist,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        view           => $view,
-        stylesheet     => $stylesheet,
-        
         subjects       => $subjects_ref,
         thissubjects   => $litlist_subjects_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
-        user           => $user,
-        
         userrole       => $userrole_ref,
-        
         format         => $format,
-        
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
-        
         dbinfo         => $dbinfotable,
         targettype     => $targettype,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_litlist_tname},$ttdata,$r);
+    $self->print_page($config->{tt_litlist_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -800,40 +740,20 @@ sub show_record_form {
     
     # TT-Data erzeugen
     my $ttdata={
-        representation  => $representation,
-        
         user_owns_litlist => $user_owns_litlist,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        view           => $view,
-        stylesheet     => $stylesheet,
-        
         subjects       => $subjects_ref,
         thissubjects   => $litlist_subjects_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
-        user           => $user,
-        
         userrole       => $userrole_ref,
-        
         format         => $format,
-        
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
-        
         dbinfo         => $dbinfotable,
         targettype     => $targettype,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_litlist_edit_tname},$ttdata,$r);
+    $self->print_page($config->{tt_litlist_edit_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -1116,38 +1036,19 @@ sub show_entry_negotiate {
     
     # TT-Data erzeugen
     my $ttdata={
-        representation  => $representation,
-        
         user_owns_litlist => $user_owns_litlist,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        view           => $view,
-        stylesheet     => $stylesheet,
-        
         subjects       => $subjects_ref,
         thissubjects   => $litlist_subjects_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
-        user           => $user,
-        
         userrole       => $userrole_ref,
-        
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
-        
         dbinfo         => $dbinfotable,
         targettype     => $targettype,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_litlist_item_tname},$ttdata,$r);
+    $self->($config->{tt_litlist_item_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

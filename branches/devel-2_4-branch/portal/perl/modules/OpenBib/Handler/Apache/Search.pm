@@ -103,6 +103,7 @@ sub show_search {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
@@ -369,6 +370,7 @@ sub show_search {
         
         # TT-Data erzeugen
         my $ttdata={
+            lang               => $lang,
             qopts        => $queryoptions->get_options,
             queryoptions => $queryoptions,
             
@@ -470,6 +472,7 @@ sub show_search {
     # TT-Data erzeugen
     
     my $startttdata={
+        lang               => $lang,
         representation => $representation,
         content_type   => $content_type,
         
@@ -687,6 +690,8 @@ sub show_search {
             
             # TT-Data erzeugen
             my $ttdata={
+                cgiapp             => $self,
+                lang               => $lang,
                 representation => $representation,
                 content_type   => $content_type,
                 
@@ -837,6 +842,7 @@ sub show_search {
                     
                     # TT-Data erzeugen
                     my $ttdata={
+                        lang               => $lang,
                         representation => $representation,
                         content_type   => $content_type,
                         
@@ -1013,6 +1019,7 @@ sub show_search {
                         
                             # TT-Data erzeugen
                             my $ttdata={
+                                lang               => $lang,
                                 representation => $representation,
                                 content_type   => $content_type,
                                 
@@ -1128,6 +1135,7 @@ sub show_search {
     
     # TT-Data erzeugen
     my $endttdata={
+        lang               => $lang,
         representation => $representation,
 
         to_json       => sub {
@@ -1236,6 +1244,7 @@ sub show_index {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
     my $representation = $self->param('representation') || '';
@@ -1424,6 +1433,7 @@ sub show_index {
     
     # TT-Data erzeugen
     my $ttdata={
+        lang               => $lang,
         representation => $representation,
         
         to_json       => sub {
@@ -1726,6 +1736,54 @@ sub gen_cloud_absolute {
     $logger->debug("Time: ".$resulttime);
 
     return $sortedtermcloud_ref;
+}
+
+sub xxxget_modified_querystring {
+    my ($self,$arg_ref)=@_;
+    
+    # Set defaults
+    my $exclude_array_ref    = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}        : [];
+    
+    my $change_ref           = exists $arg_ref->{change}
+        ? $arg_ref->{change}         : {};
+
+    my $query          = $self->query();
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Modify Querystring");
+    
+    my $exclude_ref = {};
+    
+    foreach my $param (@{$exclude_array_ref}){
+        $exclude_ref->{$param} = 1;
+    }
+    
+    my @cgiparams = ();
+    
+    foreach my $param (keys %{$query->param}){
+        $logger->debug("Processing $param");
+        if (exists $arg_ref->{change}{$param}){
+            push @cgiparams, "$param=".$arg_ref->{change}->{$param};
+        }
+        elsif (! exists $exclude_ref->{$param}){
+            my @values = $query->param($param);
+            if (@values){
+                foreach my $value (@values){
+                    push @cgiparams, "$param=$value";
+                }
+            }
+            else {
+                push @cgiparams, "$param=".$query->param($param);
+            }
+        }
+    }
+    
+    return join(";",@cgiparams) if (@cgiparams);
+
+    return 'blabla';
 }
 
 1;

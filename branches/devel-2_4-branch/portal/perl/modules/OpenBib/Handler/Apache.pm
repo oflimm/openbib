@@ -528,6 +528,7 @@ sub print_page {
     $ttdata->{'servername'}     = $servername;
     $ttdata->{'loginname'}      = $loginname;
     $ttdata->{'sysprofile'}     = $sysprofile;
+    $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'to_json'}        = sub {
         my $ref = shift;
         return encode_json $ref;
@@ -538,6 +539,7 @@ sub print_page {
         return $string;
     };
 
+   
     $logger->debug("Using base Template $templatename");
 
     $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
@@ -578,6 +580,52 @@ sub strip_suffix {
     }
     
     return $element;
+}
+
+sub modify_querystring {
+    my ($self,$arg_ref)=@_;
+    
+    # Set defaults
+    my $exclude_array_ref    = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}        : [];
+    
+    my $change_ref           = exists $arg_ref->{change}
+        ? $arg_ref->{change}         : {};
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Modify Querystring");
+    
+    my $exclude_ref = {};
+    
+    foreach my $param (@{$exclude_array_ref}){
+        $exclude_ref->{$param} = 1;
+    }
+
+    $logger->debug("Args".YAML::Dump($arg_ref));
+
+    my @cgiparams = ();
+    
+    foreach my $param (keys %{$self->query->param}){
+        $logger->debug("Processing $param");
+        if (exists $arg_ref->{change}->{$param}){
+            push @cgiparams, "$param=".$arg_ref->{change}->{$param};
+        }
+        elsif (! exists $exclude_ref->{$param}){
+            my @values = $self->query->param($param);
+            if (@values){
+                foreach my $value (@values){
+                    push @cgiparams, "$param=$value";
+                }
+            }
+            else {
+                push @cgiparams, "$param=".$self->query->param($param);
+            }
+        }
+    }
+    
+    return join(';',@cgiparams);
 }
 
 1;

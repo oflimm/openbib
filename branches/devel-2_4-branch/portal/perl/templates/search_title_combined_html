@@ -21,6 +21,8 @@
     IF end_range >= fullresultcount ;
        end_range       = fullresultcount;
     END;
+
+    query_args_base = cgiapp.modify_querystring({ exclude = ['page']}) ;
 -%]
 
 <div class="resultlist">
@@ -41,7 +43,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% request_base %];searchprofile=1;queryid=[% queryid %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% query_args_base %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]
@@ -52,8 +54,9 @@
   <div class="listoptions">
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="page" value="1" />
 [%- FOREACH qparam IN query.param -%]
-[%-   IF qparam != 'srt' && qparam != 'srto' %]
+[%-   IF qparam != 'srt' && qparam != 'srto' && qparam != 'page' %]
 <input type="hidden" name="[% qparam %]" value="[% query.param(qparam) %]" />
 [%-   END -%]
 [%- END -%]
@@ -81,7 +84,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% request_base %]searchprofile=1;queryid=[% queryid %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% query_args_base %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]

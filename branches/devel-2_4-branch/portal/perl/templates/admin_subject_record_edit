@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_editsubject
+# Templatename: admin_subject_record_edit
 #
 # Typ         : Mastertemplate       
 #
@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Themengebiet bearbeiten' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Themengebiet bearbeiten' %]
 
   <body>
 [%

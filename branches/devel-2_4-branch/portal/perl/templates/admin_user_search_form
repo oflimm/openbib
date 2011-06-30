@@ -1,17 +1,17 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showuser
+# Templatename: admin_user_search_form
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Ausgabe einer Uebersichtsseite zur Nutzerverwaltung
+# Ausgabe eines Rechercheformulars zur Nutzersuche
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Nutzerverwaltung anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Nutzerverwaltung anzeigen' %]
 
   <body>
 

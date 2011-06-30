@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showstat
+# Templatename: admin_statistic_access_html
 #
 # Typ         : Mastertemplate       
 #
@@ -13,7 +13,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Grundlegende Statistikinformationen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Grundlegende Statistikinformationen' %]
 
   <body>
 
@@ -47,7 +47,7 @@
 </p>
 
 <table width="100%">
-<tr><th>Zugriffe auf den KUG</th></tr>
+<tr><th>Zugriffe auf OpenBib</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>

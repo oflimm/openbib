@@ -26,8 +26,10 @@
     <meta name="Bibkey"              content="[% record.to_bibkey %]" />
     <meta name="Tags"                content="[% record.to_tags %]" />
 [% END %]
+[% IF NOT config.strip_view_from_uri(view) %]
     <meta name="View"                content="[% view %]" />
-  <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
+[% END %]
+<link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 [% IF view && primrssfeed %]
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]" />
 [% END %]
@@ -108,6 +110,6 @@
 <![endif]-->
 
 
-    <title>OpenBib - Demo-Portal</title>
+    <title>[% IF title %][% title %][% ELSE %][% msg.maketext("OpenBib - Demo-Portal") %][% END %]</title>
 
    </head>

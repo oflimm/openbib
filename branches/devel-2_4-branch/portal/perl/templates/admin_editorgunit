@@ -11,7 +11,7 @@
 #b
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog-Profil bearbeiten' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Katalog-Profil bearbeiten' %]
 
   <body>
 

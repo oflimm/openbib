@@ -83,6 +83,10 @@
 [%- IF thisquery.get_searchquery.titlestring.val -%]
 &nbsp;Titelstring: [% thisquery.get_searchquery.titlestring.val %] 
 [%- END -%]
+[%- thisfilter = thisquery.get_filter -%]
+[%- FOREACH filter IN thisfilter  -%]
+&nbsp;Filter: [% filter.val %] 
+[%- END -%]
 )</td></tr>
 
 [% jn = 0 ;

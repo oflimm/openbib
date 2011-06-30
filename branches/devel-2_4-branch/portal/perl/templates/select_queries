@@ -58,6 +58,10 @@
 [%- IF query.get_searchquery.source.val -%]
 &nbsp;SER: [% query.get_searchquery.source.val %] 
 [%- END -%]
+[%- thisfilter = thisquery.get_filter -%]
+[%- FOREACH filter IN thisfilter  -%]
+&nbsp;Filter: [% filter.val %] 
+[%- END -%]
 = [% msg.maketext("Treffer") %]: [% query.get_hits %])
 </option>
 [% END %]	    

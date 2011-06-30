@@ -1,4 +1,4 @@
-[% SET title='KUG Administration - Import' %]
+[% SET title='OpenBib Administration - Import' %]
 [% SET show_foot_banner = 1 %]
 [% PROCESS common/subtemplate name="std_header" %]
 

@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showuser
+# Templatename: admin_authentication
 #
 # Typ         : Mastertemplate       
 #
@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Anmeldeziele anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Anmeldeziele anzeigen' %]
 
   <body>
 

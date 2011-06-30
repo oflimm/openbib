@@ -11,21 +11,23 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title = "KUG Recherche" %]
-
-<body>
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
-
 [%-
 
 dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata;   
 request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
 
+recordname = normset.${'N0001'}.first.content;
+title      = msg.maketext("Systematik-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+
 -%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 
 <div id="maincontent">
 

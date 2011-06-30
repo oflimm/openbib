@@ -35,14 +35,14 @@
 <table width="100%">
 <tr><th><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge ausdehnen.") %]
+[% msg.maketext("An dieser Stelle k&ouml;nnen Sie Ihre (eventuell erfolglose) Suchanfrage auf weitere externe Kataloge ausdehnen.") %]
 </td></tr>
 </table>
 
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Ihre Suchanfrage im KUG Recherche-Portal") %]</th></tr>
+<tr><th>[% msg.maketext("Ihre Suchanfrage") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td>
@@ -86,7 +86,7 @@
 [%- IF thisquery.get_hits -%]
  = [% thisquery.hits %] Treffer
 [%- END -%]
-</td><td>=&gt;</td><td><a href="[% path_prefix %]/[% config.get('resultlists_loc') %]?&action=choice&queryid=[% thisquery.get_id %]">[% msg.maketext("Sprung zur Trefferliste im KUG") %]</a></td></tr>
+</td><td>=&gt;</td><td><a href="[% path_prefix %]/[% config.get('resultlists_loc') %]?&action=choice&queryid=[% thisquery.get_id %]">[% msg.maketext("Sprung zur Trefferliste") %]</a></td></tr>
 </table>
 </td></tr>
 </table>

@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showcat
+# Templatename: admin_database_html
 #
 # Typ         : Mastertemplate       
 #
@@ -14,7 +14,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Kataloge anzeigen' disable_cache_control=1 %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Kataloge anzeigen' disable_cache_control=1 %]
 
   <body>
 

@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: userprefs_navigation
+# Templatename: user_navigation
 #
 # Typ         : Subtemplate
 #
 # Aufgabe:
 #
-# Navigations-Menu fuer Mein KUG
+# Navigations-Menu fuer Mein OpenBib
 #
 #######################################################################
 -%]

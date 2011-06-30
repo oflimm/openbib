@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: userprefs_ask_delete
+# Templatename: user_delete_confirm
 #
 # Typ         : Mastertemplate
 #
@@ -40,7 +40,7 @@
 <tr><td class="boxedclear">
 <p />
 
-Wenn Sie wirklich Ihre KUG-Kennung l&ouml;schen wollen, so klicken Sie auf die untenstehende Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten gel&ouml;scht.
+Wenn Sie wirklich Ihre Kennung l&ouml;schen wollen, so klicken Sie auf die untenstehende Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten gel&ouml;scht.
 
 <p />
 </td></tr>

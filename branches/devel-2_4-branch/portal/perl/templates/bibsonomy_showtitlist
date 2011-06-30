@@ -89,11 +89,11 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="rltitle">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span>
-<br/>[% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar") %]</span>[% ELSE %]<span
-style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!") %]</span>[% END %]
+<br/>[% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Dieser Titel ist in den Katalogen des Portals verf&uuml;gbar") %]</span>[% ELSE %]<span
+style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen des Portals gefunden werden. Er kann dennoch in anderer Schreibweise existieren!") %]</span>[% END %]
       </div>
       <div class="titlemark">
-[% IF thistitle.local_availability %]<span style="color:green">KUG-Titel: &nbsp;&nbsp;[% FOREACH dbname IN
+[% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Titel im Portal:") %]&nbsp;&nbsp;[% FOREACH dbname IN
 thistitle.local_dbs %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% dbname %];fs=bkey:|[% thistitle.bibkey %]|" title="[% dbinfo.get('dbnames').${dbname}.short %]">[% loop.count %]</a>&nbsp;&nbsp;[% END %][% END %]
       </div>
       <div class="titleactions">

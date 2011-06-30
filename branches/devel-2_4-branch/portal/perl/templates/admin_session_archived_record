@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showsessions
+# Templatename: admin_session_archived_record
 #
 # Typ         : Mastertemplate       
 #
@@ -12,7 +12,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Bestehende Sessions anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Bestehende Sessions anzeigen' %]
 
   <body>
 

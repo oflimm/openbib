@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: userreviews_show
+# Templatename: user_review_collection_html
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe der Rezensionen eines Benutzers fuer diesen in Mein KUG
+# Ausgabe der Rezensionen eines Benutzers
 #
 #######################################################################
 -%]

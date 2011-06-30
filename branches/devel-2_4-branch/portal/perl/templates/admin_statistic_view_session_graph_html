@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showstat
+# Templatename: admin_statistic_view_session_graph_html
 #
 # Typ         : Mastertemplate       
 #
@@ -13,7 +13,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Grundlegende Statistikinformationen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Grundlegende Statistikinformationen' %]
 
   <body>
 

@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Kataloge anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Kataloge anzeigen' %]
 
   <body>
 

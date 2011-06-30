@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showstat
+# Templatename: admin_statistic_request_html
 #
 # Typ         : Mastertemplate       
 #
@@ -13,7 +13,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Grundlegende Statistikinformationen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Grundlegende Statistikinformationen' %]
 
   <body>
 
@@ -49,7 +49,7 @@
 <p/>
 
 <table width="100%">
-<tr><th>Aufrufe im KUG</th></tr>
+<tr><th>Aufrufe in OpenBib</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
@@ -65,7 +65,7 @@
 <p/>
 
 <table width="100%">
-<tr><th>Aufrufe externer Seiten &uuml;ber Weiterleitungen aus dem KUG</th></tr>
+<tr><th>Aufrufe externer Seiten &uuml;ber Weiterleitungen aus OpenBib</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>

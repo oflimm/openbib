@@ -12,7 +12,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Views anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Views anzeigen' %]
 
   <body bgcolor="#FFFFFF">
 

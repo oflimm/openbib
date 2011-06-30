@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showsubjects
+# Templatename: admin_subject
 #
 # Typ         : Mastertemplate       
 #
@@ -12,7 +12,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog-Profile anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Katalog-Profile anzeigen' %]
 
   <body bgcolor="#FFFFFF">
 [% bks = config.load_bk; %]

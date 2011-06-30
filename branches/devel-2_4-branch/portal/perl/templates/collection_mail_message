@@ -1,7 +1,7 @@
 [% msg.maketext("Sehr geehrte Damen und Herren,
 
-anbei Ihre Merkliste aus dem KUG.
+anbei Ihre Merkliste aus dem OpenBib Recherche-Portal.
 
 Mit freundlichen Grüßen
 
-Ihr KUG Team") %]
+Ihr Portal Team") %]

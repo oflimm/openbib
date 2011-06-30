@@ -11,21 +11,22 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title = "KUG Recherche" %]
+[%-
+dbdesc   = dbinfo.get('dbnames').${database}.short ;
+normset  = record.to_rawdata ;   
+request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
+
+recordname = normset.${'C0001'}.first.content;
+title      = msg.maketext("Körperschafts-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
 
 <body>
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
-
-[%-
-
-dbdesc   = dbinfo.get('dbnames').${database}.short ;
-normset  = record.to_rawdata ;   
-request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
-
--%]
 
 <div id="maincontent">
 

@@ -62,10 +62,10 @@
 <table id="Suchhinweise" width="100%">
 <tr><th>[% msg.maketext("Weitergehende Suchhinweise") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschriftenartikel nicht im KUG finden?") %]<br /><br />
+[% msg.maketext("Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschriftenartikel nicht finden?") %]<br /><br />
 <b><span style="font-size:1.2em">[% msg.maketext("B&uuml;cher") %]</span></b>
 <ul>
-<li>[% msg.maketext("Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber den KUG recherchierbar.") %]</li>
+<li>[% msg.maketext("Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber dieses Portal recherchierbar.") %]</li>
 <li>[% msg.maketext("F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem [_1]Online-Kartenkatalog[_2]","<a href=\"${path_prefix}/${config.get('redirect_loc')}/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %].</li>
 [% IF mono_querystring %]<li>[% msg.maketext("Bestellen Sie das Buch per [_1]Fernleihe[_2] (Buchbestellungen) in der Digitalen Bibliothek.","<a href=\"${path_prefix}/${config.get('redirect_loc')}/540/${hbzmonofernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>[% END %]
 </ul>

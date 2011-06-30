@@ -1,17 +1,17 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showuser
+# Templatename: user_role_edit
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Ausgabe einer Uebersichtsseite zur Nutzerverwaltung
+# Zuordnung einer Rolle zu einem Nutzer durch den Administrator
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Nutzerverwaltung anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Nutzerverwaltung anzeigen' %]
 
   <body>
 

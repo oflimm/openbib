@@ -11,19 +11,29 @@
 #
 #######################################################################
 -%]
-[%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) -%]
-[%- normset         = record.get_normdata -%]
-[%- mexnormset      = record.get_mexdata -%]
-[%- cirset          = record.get_circdata -%] 
-[%- same_records    = record.get_same_records -%]
-[%- similar_records = record.get_similar_records -%]
-[%- bibkey = record.to_bibkey -%]
-[%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
-[%- IF NOT isbn ;
-       isbn   = normset.${"T0553"}.first.content.replace('-','') ;
-    END ;
+[%-
+
+  request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) ;
+  normset         = record.get_normdata ;
+  mexnormset      = record.get_mexdata ;
+  cirset          = record.get_circdata ; 
+  same_records    = record.get_same_records ;
+  similar_records = record.get_similar_records ;
+  bibkey = record.to_bibkey ;
+  isbn   = normset.${"T0540"}.first.content.replace('-','') ;
+  IF NOT isbn ;
+      isbn   = normset.${"T0553"}.first.content.replace('-','') ;
+  END ;
+
+  recordname = normset.${'T0331'}.first.content;
+  IF normset.${'PC0001'}.first.content ;
+     pc = normset.${'PC0001'}.first.content ;
+     recordname = "${pc} - ${recordname}";
+  END ;
+  title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+
 -%]
-[% PROCESS common/subtemplate name="std_header" title = "Einzeltrefferanzeige" unapi=1 LinkedData="title" %]
+[% PROCESS common/subtemplate name="std_header" unapi=1 LinkedData="title" %]
 
 <body>
 
@@ -293,7 +303,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 <h2 class="nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
 
 <div id="same_records"><!-- Begin: Same records -->
-[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden") %]:
+[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]:
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
@@ -308,7 +318,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 <h2 class="nojs_show">[% msg.maketext("Andere Ausgaben") %]</h2>
 
 <div id="similar_records"><!-- Begin: Similar records -->
-[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen") %]:
+[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen") %]:
 <p />
 <ol>
 [% FOREACH similar_record IN similar_records.get_records %]
@@ -675,10 +685,10 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [% END %]
 <!-- Ende Verschlagwortung in anderen Katalogen -->
 
-<!-- Anfang KUG-Tags -->
+<!-- Anfang Tags -->
 [% IF all_tags.size > 0 %]
-<div class="available_tags"><!-- Begin Vorhandene KUG tags -->
-<div class="headline">[% msg.maketext("KUG Tags") %]</div>
+<div class="available_tags"><!-- Begin Vorhandene tags -->
+<div class="headline">[% msg.maketext("Tags") %]</div>
 <p/>
 [% alltags_cloud %]
 [% IF loginname && private_tags_of_tit.size > 0 %]
@@ -690,7 +700,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 </div>
 <p />
 [% END %]
-<!-- Ende KUG-Tags -->
+<!-- Ende Tags -->
 
 <!-- Anfang BibSonomy-Tags -->
 <div class="bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->

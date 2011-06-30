@@ -99,11 +99,21 @@ $('.nojs_show').css('display','none');
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
 // fest eingetragen und muss gegebenenfalls angepasst werden
  if (sessionID){
+   if (View){
 $.get("/portal/"+View+"/collection/count",
 function (txt){
  $("#collectioncount").html("["+txt+"]"); 
 }
 );
+   }
+   else {
+     $.get("/portal/collection/count",
+function (txt){
+ $("#collectioncount").html("["+txt+"]"); 
+}
+);
+
+   }
  }
  
 $(".rlcollect a").click(function(){
@@ -111,10 +121,16 @@ $(".rlcollect a").click(function(){
    // Insert-Funktion aufrufen
    $.get(this.href);
 
+   if (View){
    // Merklistenfuellstand aktualisieren
    $.get("/portal/"+View+"/collection/count",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
-
+   }
+   else {
+   // Merklistenfuellstand aktualisieren
+   $.get("/portal/collection/count",
+function (txt){ $("#collectioncount").html("["+txt+"]"); });
+   }
    return false;
  });
 
@@ -123,10 +139,16 @@ $("a.collection").click(function(){
    // Insert-Funktion aufrufen
    $.get(this.href);
 
+   if (View){
    // Merklistenfuellstand aktualisieren
    $.get("/portal/"+View+"/collection/count",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
-
+   }
+   else {
+   // Merklistenfuellstand aktualisieren
+   $.get("/portal/collection/count",
+function (txt){ $("#collectioncount").html("["+txt+"]"); });
+   }
    return false;
  });
 
@@ -135,11 +157,20 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
 // Begin BibSonomy Tags
  if (Bibkey || Tags){
+   if (View){
    $.get("/portal/"+View+"/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
          function (txt){
            $("#bibsonomy_tags").html(txt); 
          }
          );
+   }
+   else {
+   $.get("/portal/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
+         function (txt){
+           $("#bibsonomy_tags").html(txt); 
+         }
+         );
+   }
  }
 
 //$("#bibsonomy_tags a").click(function(){

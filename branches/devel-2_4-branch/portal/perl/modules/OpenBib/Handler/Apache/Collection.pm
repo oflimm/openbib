@@ -309,8 +309,6 @@ sub show_collection {
         return Apache2::Const::OK;
     }
 
-    my $content_type   = $config->{'content_type_map_rev'}{$representation};
-
     # TT-Data erzeugen
     my $ttdata={
         qopts             => $queryoptions->get_options,
@@ -635,8 +633,6 @@ sub delete_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
     # Dispatched Args
     my $view           = $self->param('view');
@@ -827,8 +823,6 @@ sub mail_collection {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
     # Dispatched Args
     my $view           = $self->param('view');

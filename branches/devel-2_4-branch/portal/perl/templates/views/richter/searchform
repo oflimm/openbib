@@ -81,13 +81,17 @@ $(document).ready(function(){
 [% END %]
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="num"        value="50" />
+<input type="hidden" name="page"       value="1" />
 
-
-
+<input type="hidden" name="srt"        value="author" />
+<input type="hidden" name="srto"       value="up" />
 <input type="hidden" name="jn" value="1" />
-<input type="hidden" name="lt"         value="[% qopts.lt %]" />
 <input type="hidden" name="st"         value="2" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"         value="1" />
+[% END %]
 
 [% PROCESS common/subtemplate name="searchform_query" %]
 

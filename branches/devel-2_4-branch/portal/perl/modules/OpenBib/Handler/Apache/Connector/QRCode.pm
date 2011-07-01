@@ -83,6 +83,7 @@ sub show {
 
     # Shared Args
     my $query          = $self->query();
+    my $r              = $self->param('r');
 
     # CGI Args
     my $text       = $query->param('text')      || '';

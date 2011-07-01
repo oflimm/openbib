@@ -120,7 +120,7 @@ sub cgiapp_prerun {
 #        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
 #        $self->query->status(Apache2::Const::REDIRECT);
 #        return;
-       return $self->redirect($path.".".$self->param('representation').$args);
+       return $self->redirect($path.".".$self->param('representation').$args,'303 See Other');
    }
 
    if ($r->method eq "GET" && !$self->query->param('l')){
@@ -142,7 +142,7 @@ sub cgiapp_prerun {
 #        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
 #        $self->query->status(Apache2::Const::REDIRECT);
 #        return;
-       return $self->redirect($path.$args);
+       return $self->redirect($path.$args,'303 See Other');
    }
 
     return;

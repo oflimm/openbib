@@ -66,85 +66,80 @@ sub cgiapp_prerun {
     $logger->debug("Entering cgiapp_prerun");
    
     my $r            = $self->param('r');
-    
-    my $config       = OpenBib::Config->instance;
-    my $view         = $self->param('view') || $config->get('defaultview');
-    my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    my $useragent    = $r->headers_in->{'User-Agent'} || '';
+    if (!$self->param('disable_content_negotiation')){
 
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-    my $queryoptions = OpenBib::QueryOptions->instance($self->query());
-    
-    my $servername   = $r->get_server_name;
-    
-    my $path_prefix          = $config->get('base_loc');
-    my $complete_path_prefix = "$path_prefix/$view";
-    
-    if (! $config->strip_view_from_uri($view)){
-        $path_prefix = $complete_path_prefix;
+        my $config       = OpenBib::Config->instance;
+        my $view         = $self->param('view') || $config->get('defaultview');
+        my $servername   = $r->get_server_name;
+        
+        my $path_prefix          = $config->get('base_loc');
+        my $complete_path_prefix = "$path_prefix/$view";
+        
+        if (! $config->strip_view_from_uri($view)){
+            $path_prefix = $complete_path_prefix;
+        }
+        
+        # Letztes Pfad-Element bestimmen
+        my $uri  = $r->parsed_uri;
+        my $path = $uri->path;
+        
+        my ($last_uri_element) = $path =~m/([^\/]+)$/;
+        
+        $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element ");
+        
+        if ($r->method eq "GET" && $last_uri_element !~/(\.html|\.json|\.rdf|\.rss|\.include)$/){
+            $self->negotiate_type;
+            
+            # Pfade sind immer mit base_loc und view
+            my $baseloc    = $config->get('base_loc');
+            $path =~s{^$baseloc/[^/]+}{$path_prefix};
+            
+            $logger->debug("Corrected External Path: $path");
+            
+            my $args="";
+            if (!$self->query->param('l')){
+                $self->negotiate_language;
+                $args="?l=".$self->param('lang');
+                if ($self->query->args()){
+                    $args="$args;".$self->query->args();
+                }
+            }
+            else {
+                $args="?".$self->query->args();
+            }
+            
+            #        $self->query->method('GET');
+            #        $self->query->content_type($self->param('content_type'));
+            #        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
+            #        $self->query->status(Apache2::Const::REDIRECT);
+            #        return;
+            return $self->redirect($path.".".$self->param('representation').$args,'303 See Other');
+        }
+        
+        if ($r->method eq "GET" && !$self->query->param('l')){
+            
+            $self->negotiate_language;
+            
+            # Pfade sind immer mit base_loc und view
+            my $baseloc    = $config->get('base_loc');
+            $path =~s{^$baseloc/[^/]+}{$path_prefix};
+            
+            $logger->debug("Corrected External Path: $path");
+            
+            my $args = "?l=".$self->param('lang');
+            
+            $args=$args.";".$self->query->args() if ($self->query->args());
+            
+            #        $self->query->method('GET');
+            #        $self->query->content_type($self->param('content_type'));
+            #        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
+            #        $self->query->status(Apache2::Const::REDIRECT);
+            #        return;
+            return $self->redirect($path.$args,'303 See Other');
+        }
     }
     
-    # Letztes Pfad-Element bestimmen
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
-    
-    my ($last_uri_element) = $path =~m/([^\/]+)$/;
-    
-    $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element ");
-    
-    if ($r->method eq "GET" && $last_uri_element !~/(\.html|\.json|\.rdf|\.rss|\.include)$/){
-       $self->negotiate_type;
-       
-       # Pfade sind immer mit base_loc und view
-       my $baseloc    = $config->get('base_loc');
-       $path =~s{^$baseloc/[^/]+}{$path_prefix};
-
-       $logger->debug("Corrected External Path: $path");
-
-       my $args="";
-       if (!$self->query->param('l')){
-           $self->negotiate_language;
-           $args="?l=".$self->param('lang');
-           if ($self->query->args()){
-               $args="$args;".$self->query->args();
-           }
-       }
-       else {
-           $args="?".$self->query->args();
-       }
-
-#        $self->query->method('GET');
-#        $self->query->content_type($self->param('content_type'));
-#        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
-#        $self->query->status(Apache2::Const::REDIRECT);
-#        return;
-       return $self->redirect($path.".".$self->param('representation').$args,'303 See Other');
-   }
-
-   if ($r->method eq "GET" && !$self->query->param('l')){
-
-       $self->negotiate_language;
-       
-       # Pfade sind immer mit base_loc und view
-       my $baseloc    = $config->get('base_loc');
-       $path =~s{^$baseloc/[^/]+}{$path_prefix};
-       
-       $logger->debug("Corrected External Path: $path");
-       
-       my $args = "?l=".$self->param('lang');
-
-       $args=$args.";".$self->query->args() if ($self->query->args());
-
-#        $self->query->method('GET');
-#        $self->query->content_type($self->param('content_type'));
-#        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
-#        $self->query->status(Apache2::Const::REDIRECT);
-#        return;
-       return $self->redirect($path.$args,'303 See Other');
-   }
-
     return;
 }
 
@@ -163,7 +158,8 @@ sub cgiapp_init() {
    my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
-   my $useragent    = $r->subprocess_env('HTTP_USER_AGENT');
+   my $useragent    = $r->headers_in->{'User-Agent'} || "OpenBib Search Portal: http://search.openbib.org/";
+   
    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
    my $queryoptions = OpenBib::QueryOptions->instance($self->query());
 
@@ -194,59 +190,12 @@ sub cgiapp_init() {
        $self->param('content_type',$content_type);
        $self->param('representation',$representation);
    }
-#    # Sonst Aushandlung und Redirect
-#    elsif ($r->method eq "GET"){
-
-#        $self->negotiate_type;
-       
-#        # Pfade sind immer mit base_loc und view
-#        my $baseloc    = $config->get('base_loc');
-#        $path =~s{^$baseloc/[^/]+}{$path_prefix};
-
-#        $logger->debug("Corrected External Path: $path");
-
-#        my $args=$self->query->args();
-       
-#        $args = "?$args" if ($args);
-       
-#        if (!$self->query->param('l')){
-#            $args="$args;l=".$self->param('lang');
-#        }
-       
-#        $self->query->method('GET');
-#        $self->query->content_type($self->param('content_type'));
-#        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
-#        $self->query->status(Apache2::Const::REDIRECT);
-       
-#        return;
-#    }
 
    # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
    if ($self->query->param('l')){
        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$self->query->param('l'));
        $self->param('lang',$self->query->param('l'));
    }
-#    elsif ($r->method eq "GET"){
-
-#        $self->negotiate_language;
-       
-#        # Pfade sind immer mit base_loc und view
-#        my $baseloc    = $config->get('base_loc');
-#        $path =~s{^$baseloc/[^/]+}{$path_prefix};
-       
-#        $logger->debug("Corrected External Path: $path");
-       
-#        my $args = "?l=".$self->param('lang');
-
-#        $args=$args.";".$self->query->args() if ($self->query->args());
-       
-#        $self->query->method('GET');
-#        $self->query->content_type($self->param('content_type'));
-#        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
-#        $self->query->status(Apache2::Const::REDIRECT);
-       
-#        return;
-#    }
    
    # Message Katalog laden
    my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");

@@ -180,12 +180,10 @@ search_loc: search
 dispatch_rules:
   - # serverload_loc:
      module: 'OpenBib::Handler::Apache::ServerLoad'
-     rule: '/portal/:view/getload.html'
-     runmode: 'show'
-  - # serverload_loc:
-     module: 'OpenBib::Handler::Apache::ServerLoad'
      rule: '/portal/:view/getload'
      runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # startopac_loc:
      module: 'OpenBib::Handler::Apache::StartOpac'
      rule: '/portal/:view/home.html'
@@ -231,40 +229,40 @@ dispatch_rules:
 ##### Konnektoren #######################################################
   - # connector_availabilityimage_loc: 
      module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
-     rule: '/portal/:view/connector/availabilityimage/:rm/:id'
+     rule: '/portal/:view/connector/availabilityimage/:rm/:key'
      runmode: 'gbs'
+     args:
+        disable_content_negotiation: 1
   - # connector_availability_loc:
      module: 'OpenBib::Handler::Apache::Connector::Availability'
-     rule: '/portal/:view/connector/availability/:id'
+     rule: '/portal/:view/connector/availability/:key'
      runmode: 'show_collection'
+     args:
+        disable_content_negotiation: 1
   - # connector_availability_loc:
      module: 'OpenBib::Handler::Apache::Connector::Availability'
-     rule: '/portal/:view/connector/availability/:rm/:id'
+     rule: '/portal/:view/connector/availability/:rm/:key'
      runmode: 'isbn'
+     args:
+        disable_content_negotiation: 1
   - # connector_bibmanager_loc:
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
      rule: '/portal/:view/connector/literaturverwaltung'
      runmode: 'show'
-  - # connector_bibmanager_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/literaturverwaltung.html'
-     runmode: 'show'
+     args:
+        disable_disable_content_negotiation: 1
   - # connector_digibib_loc:
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
      rule: '/portal/:view/connector/digibib'
      runmode: 'show'
-  - # connector_digibib_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/digibib.html'
-     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # connector_livesearch_loc:
      module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
      rule: '/portal/:view/connector/livesearch'
      runmode: 'show'
-  - # connector_livesearch_loc:
-     module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
-     rule: '/portal/:view/connector/livesearch.html'
-     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # connector_locationmark_loc:
      module: 'OpenBib::Handler::Apache::Connector:LocationMark'
      rule: '/portal/:view/connector/locationmark'
@@ -277,10 +275,8 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Connector::OLWS'
      rule: '/portal/:view/connector/olws'
      runmode: 'show'
-  - # connector_olws_loc:
-     module: 'OpenBib::Handler::Apache::Connector::OLWS'
-     rule: '/portal/:view/connector/olws.html'
-     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
   - # connector_permalink_loc:
      module: 'OpenBib::Handler::Apache::Connector::PermaLink'
@@ -290,18 +286,20 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Connector::QRCode'
      rule: '/portal/:view/connector/qrcode'
      runmode: 'show'
-  - # connector_qrcode_loc:
-     module: 'OpenBib::Handler::Apache::Connector::QRCode'
-     rule: '/portal/:view/connector/qrcode.html'
-     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # connector_rss_loc:
      module: 'OpenBib::Handler::Apache::Connector::RSS'
      rule: '/portal/:view/connector/rss/:type/:subtype?/*'
      runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # connector_seealso_loc:
      module: 'OpenBib::Handler::Apache::Connector::SeeAlso'
      rule: '/portal/:view/connector/seealso/:serviceid'
      runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # connector_similarpersons_loc:
      module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
      rule: '/portal/:view/connector/similarpersons'
@@ -322,26 +320,20 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
      rule: '/portal/:view/connector/spellcheck'
      runmode: 'show'
-  - # connector_spellcheck_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
-     rule: '/portal/:view/connector/spellcheck.html'
-     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # connector_ukonline_loc:
      module: 'OpenBib::Handler::Apache::Connector::DigiBib'
      rule: '/portal/:view/connector/uk-online'
      runmode: 'show'
-  - # connector_ukonline_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/uk-online.html'
-     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # connector_unapi_loc:
      module: 'OpenBib::Handler::Apache::Connector::UnAPI'
      rule: '/portal/:view/connector/unapi'
      runmode: 'show'
-  - # connector_unapi_loc:
-     module: 'OpenBib::Handler::Apache::Connector::UnAPI'
-     rule: '/portal/:view/connector/unapi.html'
-     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
 
   - # title_loc:
      module: 'OpenBib::Handler::Apache::Title'
@@ -1143,6 +1135,8 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Redirect'
      rule: '/portal/:view/redirect/:type/*'
      runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # resultlists_loc:
      module: 'OpenBib::Handler::Apache::ResultLists'
      rule: '/portal/:view/resultlists'

@@ -85,7 +85,7 @@ sub process_gbs {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->param('id');
     
     # Shared Args
     my $query          = $self->query();
@@ -176,7 +176,7 @@ sub process_bibsonomy {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->param('id');
 
     # Shared Args
     my $query          = $self->query();
@@ -234,7 +234,7 @@ sub process_ebooks {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->param('id');
 
     # Shared Args
     my $query          = $self->query();
@@ -288,7 +288,7 @@ sub process_ol {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->param('id');
 
     # Shared Args
     my $query          = $self->query();
@@ -379,7 +379,7 @@ sub process_unifloh {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->param('id');
 
     # Shared Args
     my $query          = $self->query();
@@ -443,7 +443,7 @@ sub process_wikipedia {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->param('key');
 
     # Shared Args
     my $query          = $self->query();
@@ -452,11 +452,13 @@ sub process_wikipedia {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
-    my $lang           = $self->param('lang') || 'de';
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $lang           = $query->param('lang') || 'de';
 
     my $client_ip="";
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
@@ -485,7 +487,7 @@ sub process_wikipedia {
         
         my $content_ref = decode_json($content);
         
-        if (!$content_ref->{query}{pages}{-1}){
+        if (! exists $content_ref->{query}{pages}{-1}){
             $redirect_url = "$config->{wikipedia_img}";
         }
     }
@@ -504,7 +506,7 @@ sub process_paperc {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->param('id');
 
     # Shared Args
     my $query          = $self->query();

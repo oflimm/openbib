@@ -25,12 +25,12 @@
 [% END %]
 [%- IF isbn -%]
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/525/http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.get('base_loc') %]/common/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]/" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/525/http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 [%- END -%]
 <p>
 [%- IF bibkey -%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.get('base_loc') %]/common/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]/" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
 [% IF normset.${"E4122"} %]

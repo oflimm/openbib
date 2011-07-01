@@ -1,0 +1,5 @@
+<!-- Begin Template: corporate_banner -->
+	<div id="header">
+		<div id="header_logo_image"><a href="/portal/[% view %]/[% config.get('startopac_loc') %]" title="Startseite der Richter-Bibliothek" id="header_logo_image"></a></div>
+       </div>
+<!-- End Template: corporate_banner -->

@@ -1,0 +1,139 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_advance
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Erweiterten Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+[% IF user.is_authenticated %]
+[% autocompletion_type = user.get_autocompletion %]
+[% livesearch          = user.get_livesearch %]
+[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+})
+</script>
+[%   END %]
+[% END %]
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+
+
+
+<input type="hidden" name="jn" value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+<input type="hidden" name="st"         value="2" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
+[% PROCESS common/subtemplate name="searchform_query" %]
+
+<p />
+
+<table width="100%">
+<tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
+<tr><td class="boxedclear" id="searchoptions">
+[% PROCESS common/subtemplate name="searchform_options" %]
+</td></tr>
+</table>
+
+<center>
+<span class="bigtext">oder:</span>
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
+<tr><td class="boxedclear">
+<table>
+<tr><td style="text-align:center;"><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="searchindex" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</td></tr>
+</table>
+
+</center>
+
+</form>
+
+[% IF queries.size > 0 %]
+<p />
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
+<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
+
+
+<table>
+<tr>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
+</tr>
+</table>
+
+</form>
+[% END %]
+
+<p />
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

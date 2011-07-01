@@ -90,10 +90,11 @@ sub handler : method {
 
 
 sub dispatch_args {
-
-    my $config  = OpenBib::Config->instance;
+    my ($self, $args) = @_;
 
     my $logger=get_logger();
+    
+    my $config  = OpenBib::Config->instance;
 
     my $table_ref = [];
 
@@ -106,10 +107,19 @@ sub dispatch_args {
 
         push @{$table_ref}, $rule;
 
-        push @{$table_ref}, {
+        my $rule_specs = {
             'app' => "$module",
             'rm'  => "$runmode",
         };
+        
+        if ($item->{args}){
+            # Request-Object dazu, da sonst ueberschrieben
+            $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
+            $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
+        }
+                       
+        
+        push @{$table_ref}, $rule_specs;
     }
     
     return {

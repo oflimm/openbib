@@ -681,37 +681,226 @@ convtab:
       '0590':       # Serie/Band
   richter:
     inverted_title:
+      'tag':
+        index:
+          'tag': 1
+          'tagstring': 1
+          'freesearch': 1
+        facet:
+          'tag': 1      
+      'litlist':
+        index:
+          'litlist': 1
+          'litliststring': 1
+          'freesearch': 1
+        facet:
+          'litlist': 1
       '0002':         # Aufnahmedatum
         string: 1
+      '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+        index:
+          'subid': 1
+      '0089':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0015':
+        index:
+          'language': 1
+          'languagestring': 1
+          'freesearch': 1
+        facet:
+          'language': 1
+      '0100':
+        facet:
+          'person': 1
+      '0101':
+        facet:
+          'person': 1
+      '0102':
+        facet:
+          'person': 1
+      '0103':
+        facet:
+          'person': 1
+      '0200':
+        facet:
+          'corporatebody': 1
+      '0201':
+        facet:
+          'corporatebody': 1
+      '0103':
+        facet:
+          'person': 1
       '0304':         # EST
         ft: 1
         string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0310':         # AST
         ft: 1
         string: 1
+        index:
+          'title': 1
+          'freesearch': 1
+          'titlestring': 1
       '0331':         # HST
         ft: 1
         string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0335':         # Zusatz zum HST
         ft: 1
         string: 0
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0341':         # PSTVorlage
         ft: 1
         string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0361':       # Vorlage beigefuegtes Werk
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0370':         # WST
         ft: 1
         string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0413':         # Drucker
+        string: 1
+      '0424':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+      '0425':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+        facet:
+          'year': 1
+      '0451':
+        index:
+          'source': 1
+          'freesearch': 1
       '0540':         # ISBN
         string: 1
-      '0720':         # Provenienz-Register
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0543':         # ISSN
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0553':         # ISBN
         string: 1
-    search:
-      '0501':       # Richterindiz
-        content: 1
-      '0720':       # Provenienz
-        content: 1
-      '0750':       # Abstract
-        content: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0590':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0700':
+        facet:
+          'classification': 1
+      '0710':
+        facet:
+          'subject': 1
+      '0750':         # Abstract
+        index:
+          'content': 1
+          'freesearch': 1
+      '0800':         # Medienart
+        string: 1
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
+          'freesearch': 1
+        facet:
+          'mediatype': 1
+      '0902':
+        facet:
+          'subject': 1
+      '0907':
+        facet:
+          'subject': 1
+      '0912':
+        facet:
+          'subject': 1
+      '0917':
+        facet:
+          'subject': 1
+      '0922':
+        facet:
+          'subject': 1
+      '0927':
+        facet:
+          'subject': 1
+      '0932':
+        facet:
+          'subject': 1
+      '0937':
+        facet:
+          'subject': 1
+      '0942':
+        facet:
+          'subject': 1
+      '0947':
+        facet:
+          'subject': 1
+      '4100':         # BK
+        index:
+          't4100': 1
+        string: 1
+      '4201':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4201':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4203':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4300':         # Fremde Schlagworte
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+          't4300': 1
+      '5050':         # Bibkey
+        index:
+          'bkey': 1
+          'freesearch': 1
+        string: 1
+      '5051':         # Bibkey Base
+        string: 1
+      '0720':         # Provenienz-Register
+        index:
+           'freesearch': 1
+      '0501':         # Richterindiz
+        index:
+           'freesearch': 1
+      '0750':         # Abstract
+        index:
+           'freesearch': 1
   einbaende:
     search:
       '0304':       # Werkzeug

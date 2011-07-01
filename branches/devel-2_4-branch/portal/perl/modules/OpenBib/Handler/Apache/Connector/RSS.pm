@@ -194,7 +194,7 @@ sub show {
         
         $rss->channel(
             title         => "$dbdesc: ".$rssfeedinfo_ref->{$type}{channel_title},
-            link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{loadbalancer_loc},            
+            link        => "http://".$self->param('servername').$self->param('path_prefix')."/".$config->{loadbalancer_loc},            
             language      => "de",
             description   => $rssfeedinfo_ref->{$type}{channel_desc},
         );
@@ -282,7 +282,7 @@ sub show {
 
             $rss->add_item(
                 title       => $title,
-                link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{title_loc}."/$database/".$record->{id}.".html",
+                link        => "http://".$self->param('servername').$self->param('path_prefix')."/".$config->{title_loc}."/$database/".$record->{id}.".html",
                 description => $desc
             );
         }

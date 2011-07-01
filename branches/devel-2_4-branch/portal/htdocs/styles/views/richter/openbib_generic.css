@@ -558,6 +558,7 @@ dt.review {
 }
 
 .listnavigation {
+  display: none;
   overflow: hidden;
   padding: 5px; 
 }

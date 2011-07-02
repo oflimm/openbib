@@ -116,8 +116,10 @@ CREATE TABLE viewinfo (
  description TEXT,
  rssfeed     BIGINT,
  start_loc   TEXT,
- start_stid  TEXT,
+ servername  TEXT,
  profilename VARCHAR(20),
+ stripuri    TINYINT(4),
+ joinindex   TINYINT(4),
  active      BOOL,
 
  INDEX (viewname)

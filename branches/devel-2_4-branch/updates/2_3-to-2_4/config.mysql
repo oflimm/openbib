@@ -22,3 +22,5 @@ rename table dbinfo to databaseinfo;
 
 alter table viewinfo add  joinindex       TINYINT after profilename;
 alter table viewinfo add  stripuri       TINYINT after profilename;
+alter table viewinfo change start_stid servername text;
+

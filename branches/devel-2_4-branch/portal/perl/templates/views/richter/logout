@@ -31,7 +31,7 @@
 
   <center>
     <p>
-      <a href="[% path_prefix %]/[% config.get('startopac_loc') %]">[% msg.maketext("Neue Sitzung beginnen?") %]</a>
+      <a style="font-size:2.5em" href="[% path_prefix %]/[% config.get('startopac_loc') %]">[% msg.maketext("Neue Sitzung beginnen?") %]</a>
     </p>
   </center>
 <br />

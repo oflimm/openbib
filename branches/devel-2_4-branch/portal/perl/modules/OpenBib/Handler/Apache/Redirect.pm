@@ -77,7 +77,6 @@ sub show {
     my $url            = $self->param('dispatch_url_remainder');
 
     # Shared Args
-    my $query          = $self->query();
     my $r              = $self->param('r');
     my $config         = $self->param('config');    
     my $session        = $self->param('session');

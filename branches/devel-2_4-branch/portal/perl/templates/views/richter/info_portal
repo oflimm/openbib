@@ -47,7 +47,7 @@ style="font-size:0.8em">Exlibris der Richter-Bibliothek<br/></center>
 
 
 <p> In diesem Portal können Sie in dem Bestand der ehemaligen
-"Richter-Bibliothek" von Elise und Helene Richter recherchieren. Die
+"Richter-Bibliothek" von <a href="[% path_prefix %]/[% config.get('info_loc') %]/elise_richter.html">Elise und Helene Richter</a> recherchieren. Die
 zugrundeliegenden Daten dazu stammen von der Universitäts- und
 Stadtbibliothek Köln, die sie als Open Bibliographic Data unter der
 CC0-Lizenz <a href="http://opendata.ub.uni-koeln.de/"
@@ -55,6 +55,10 @@ target="_blank">freigegeben</a> hat. Weitere Informationen zur
 Erfassung und dem Projekt Richter-Bibliothek der USB Köln finden Sie
 unter <a classe="ext" href="http://richterbibliothek.ub.uni-koeln.de/"
 target="_blank">http://richterbibliothek.ub.uni-koeln.de/</a>.</p>
+
+<p>
+1942 gelangte die Bibliothek der beiden Schwestern von etwa 3.000 Bänden unter dem politischem Druck der NS-Zeit an die Universität zu Köln. Nachdem dort der Schriftwechsel zur Bibliothek im Archiv gefunden wurde, wird seit 2005 im Rahmen der NS-Provenienzforschung die Bibliothek rekonstruiert, publiziert und – wenn möglich – an Erben restituiert. Zudem soll ein kleiner Platz zwischen USB und Philosophikum nach den Richterschwestern benannt werden. (Quelle: <a href="http://de.wikipedia.org/wiki/Elise_Richter" target="_blank">Wikipedia</a>)
+</p>
 
 <p>
 Die Motivation dieses Portals ist die Demonstration einer wesentlichen

@@ -941,8 +941,36 @@ dispatch_rules:
 
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/:rm'
+     rule: '/portal/:view/bibsonomy/lookup.html'
      runmode: 'lookup'
+  - # bibsonomy_loc:
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy/lookup'
+     runmode: 'lookup'
+  - # bibsonomy_loc:
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy/add_item.html'
+     runmode: 'add_item'
+  - # bibsonomy_loc:
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy/add_item'
+     runmode: 'add_item'
+  - # bibsonomy_loc:
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy/items_by_tag.html'
+     runmode: 'items_by_tag'
+  - # bibsonomy_loc:
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy/items_by_tag'
+     runmode: 'items_by_tag'
+  - # bibsonomy_loc:
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy/items_by_user.html'
+     runmode: 'items_by_user'
+  - # bibsonomy_loc:
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy/items_by_user'
+     runmode: 'items_by_user'
   - # circulation_loc:
      module: 'OpenBib::Handler::Apache::Circulation'
      rule: '/portal/:view/circulation'
@@ -2206,6 +2234,9 @@ tt_ezb_showjournalreadme_tname: ezb_showjournalreadme
 tt_info_11_tname: info_11
 tt_info_popular_databases_tname: info_popular_databases
 tt_info_13_tname: info_13
+tt_info_elise_richter_tname: info_elise_richter
+tt_info_helene_richter_tname: info_helene_richter
+tt_info_portal_tname: info_portal
 tt_info_other_portals_tname: info_other_portals
 tt_info_impressum_tname: info_impressum
 tt_info_20_tname: info_20

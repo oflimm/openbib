@@ -292,9 +292,14 @@ sub add_item {
         my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=selection=$title";
         
         $logger->debug($bibsonomy_uri);
+
+        $self->query->method('GET');
+        $self->query->content_type('text/html');
+        $self->query->headers_out->add(Location => $bibsonomy_uri);
+        $self->query->status(Apache2::Const::REDIRECT);
         
-        $self->header_type('redirect');
-        $self->header_props(-type => 'text/html', -url => $bibsonomy_uri);
+#        $self->header_type('redirect');
+#        $self->header_props(-type => 'text/html', -url => $bibsonomy_uri);
         
     }
 

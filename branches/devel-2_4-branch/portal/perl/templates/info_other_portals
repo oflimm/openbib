@@ -67,10 +67,11 @@ eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.") %]
 <p />
 <img style="vertical-align:bottom"
 src="[% config.get('follow_img') %]" alt="[% msg.maketext("Weiterleitungs-Icon") %]"
-/>&nbsp;<a
-href="http://search.openbib.org/portal/[% viewname %]/[% config.get('startopac_loc') %].html" target="_blank"><b>[% msg.maketext("Aufruf dieser Spezial-Sicht") %]</b></a>
+/>&nbsp;
+[% viewinfo = config.get_viewinfo(viewname).search({ viewname => viewname}) %]
+<a
+href="http://[% viewinfo.servername %]/portal[% IF NOT viewinfo.stripuri %]/[% viewname %][% END %]/[% config.get('startopac_loc') %].html" target="_blank"><b>[% msg.maketext("Aufruf dieser Spezial-Sicht") %]</b></a>
 <p />
-([% msg.maketext("Bitte bookmarken unter:") %]<b>http://search.openbib.org/portal/[% viewname %]/[% config.get('startopac_loc') %].html</b>)
 </td></tr>
 </table>
 <p />

@@ -250,6 +250,24 @@ sub get_startpage_of_view {
     return $start_loc;
 }
 
+sub get_servername_of_view {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select servername from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $request->execute($viewname) or $logger->error($DBI::errstr);
+    my $res            = $request->fetchrow_hashref;
+    my $servername     = (defined($res->{'servername'}))?decode_utf8($res->{servername}):$self->{servername}; 
+    $request->finish();
+
+    $logger->debug("Got Startpage $servername") if (defined $servername);
+    
+    return $servername;
+}
+
 sub db_exists {
     my $self   = shift;
     my $dbname = shift;

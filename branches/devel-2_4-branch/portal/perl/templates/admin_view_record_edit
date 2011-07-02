@@ -57,7 +57,8 @@
 <p />
 
 <table>
-<tr><td>Andere Start-Seite</td><td><input type="text" name="viewstart_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
+<tr><td>Anderer Servername in URI</td><td><input type="text" name="viewservername" value="[% viewinfo.servername %]" size="40" /></td></tr>
+<tr><td>Andere Start-URI-Pfad</td><td><input type="text" name="viewstart_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
 </table>
 
 <p />

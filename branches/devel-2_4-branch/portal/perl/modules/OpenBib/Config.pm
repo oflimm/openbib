@@ -1585,8 +1585,8 @@ sub update_view {
         ? $arg_ref->{viewdb}              : undef;
     my $start_loc              = exists $arg_ref->{start_loc}
         ? $arg_ref->{start_loc}           : undef;
-    my $start_stid             = exists $arg_ref->{start_stid}
-        ? $arg_ref->{start_stid}          : undef;
+    my $servername             = exists $arg_ref->{servername}
+        ? $arg_ref->{servername}          : undef;
     my $profilename            = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}         : undef;
     my $joinindex              = exists $arg_ref->{joinindex}
@@ -1604,8 +1604,8 @@ sub update_view {
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
     
-    my $idnresult=$self->{dbh}->prepare("update viewinfo set description = ?, start_loc = ?, start_stid = ?, profilename = ?, joinindex = ?, stripuri = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$start_loc,$start_stid,$profilename,$joinindex,$stripuri,$active,$viewname) or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("update viewinfo set description = ?, start_loc = ?, servername = ?, profilename = ?, joinindex = ?, stripuri = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$start_loc,$servername,$profilename,$joinindex,$stripuri,$active,$viewname) or $logger->error($DBI::errstr);
     
     # Primary RSS-Feed fuer Autodiscovery eintragen
     if ($primrssfeed){
@@ -1672,8 +1672,8 @@ sub new_view {
         ? $arg_ref->{profilename}         : undef;
     my $start_loc              = exists $arg_ref->{start_loc}
         ? $arg_ref->{start_loc}           : undef;
-    my $start_stid             = exists $arg_ref->{stid_loc}
-        ? $arg_ref->{start_stid}          : undef;
+    my $servername             = exists $arg_ref->{stid_loc}
+        ? $arg_ref->{servername}          : undef;
     my $stripuri               = exists $arg_ref->{stripuri}
         ? $arg_ref->{stripuri}            : undef;
     my $joinindex              = exists $arg_ref->{joinindex}
@@ -1695,7 +1695,7 @@ sub new_view {
     }
     
     $idnresult=$self->{dbh}->prepare("insert into viewinfo values (?,?,NULL,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname,$description,$start_loc,$start_stid,$profilename,$stripuri,$joinindex,$active) or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname,$description,$start_loc,$servername,$profilename,$stripuri,$joinindex,$active) or $logger->error($DBI::errstr);
     
     return 1;
 }
@@ -2233,7 +2233,7 @@ Liefert zu einem View $viewname eine Hashreferenz mit allen
 konfigurierten Informationen zu diesem View zurück. Es sind dies der
 Viewname viewname, seine Beschreibung description, der primäre
 RSS-Feed primrssfeed, etwaige alternative Startseiten
-start_loc/start_stid, den zugeordneten Profilnamen profilename sowie
+start_loc/servername, den zugeordneten Profilnamen profilename sowie
 der Aktivität active.
 
 =item get_viewdbs($viewname)

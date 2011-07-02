@@ -135,7 +135,7 @@ sub show_record {
     my $description = $viewinfo_obj->description;
     my $primrssfeed = $viewinfo_obj->rssfeed;
     my $start_loc   = $viewinfo_obj->start_loc;
-    my $start_stid  = $viewinfo_obj->start_stid;
+    my $servername  = $viewinfo_obj->servername;
     my $profilename = $viewinfo_obj->profilename;
     my $stripuri    = $viewinfo_obj->stripuri;
     my $joinindex   = $viewinfo_obj->joinindex;
@@ -153,7 +153,7 @@ sub show_record {
         joinindex    => $joinindex,
         active       => $active,
         start_loc    => $start_loc,
-        start_stid   => $start_stid,
+        servername   => $servername,
         profilename  => $profilename,
         viewdbs      => \@viewdbs,
         allrssfeeds  => $all_rssfeeds_ref,
@@ -194,7 +194,7 @@ sub create_record {
     my $joinindex       = $query->param('joinindex')       || 0;
     my $active          = $query->param('active')          || 0;
     my $viewstart_loc   = $query->param('viewstart_loc')             || '';
-    my $viewstart_stid  = $query->param('viewstart_stid')            || '';
+    my $viewservername  = $query->param('viewservername')            || '';
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -225,7 +225,7 @@ sub create_record {
         joinindex   => $joinindex,
         active      => $active,
         start_loc   => $viewstart_loc,
-        start_stid  => $viewstart_stid,
+        servername  => $viewservername,
     });
     
     if ($ret == -1){
@@ -264,7 +264,7 @@ sub show_record_form {
     my $description = $viewinfo_obj->description;
     my $primrssfeed = $viewinfo_obj->rssfeed;
     my $start_loc   = $viewinfo_obj->start_loc;
-    my $start_stid  = $viewinfo_obj->start_stid;
+    my $servername  = $viewinfo_obj->servername;
     my $profilename = $viewinfo_obj->profilename;
     my $stripuri    = $viewinfo_obj->stripuri;
     my $joinindex   = $viewinfo_obj->joinindex;
@@ -282,7 +282,7 @@ sub show_record_form {
         stripuri     => $stripuri,
         joinindex    => $joinindex,
         start_loc    => $start_loc,
-        start_stid   => $start_stid,
+        servername   => $servername,
         profilename  => $profilename,
         viewdbs      => \@viewdbs,
         allrssfeeds  => $all_rssfeeds_ref,
@@ -326,7 +326,7 @@ sub update_record {
     my $active          = $query->param('active')          || 0;
     my $primrssfeed     = $query->param('primrssfeed')     || '';
     my $viewstart_loc   = $query->param('viewstart_loc')             || '';
-    my $viewstart_stid  = $query->param('viewstart_stid')            || '';
+    my $viewservername  = $query->param('viewservername')            || '';
     my $profilename     = $query->param('profilename')     || '';
     my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
     my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
@@ -381,7 +381,7 @@ sub update_record {
         active      => $active,
         primrssfeed => $primrssfeed,
         start_loc   => $viewstart_loc,
-        start_stid  => $viewstart_stid,
+        servername  => $viewservername,
         profilename => $profilename,
         viewdb      => \@viewdb,
         rssfeeds    => \@rssfeeds,

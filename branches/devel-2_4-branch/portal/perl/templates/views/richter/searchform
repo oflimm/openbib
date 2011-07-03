@@ -21,7 +21,7 @@
 
 <div id="maincontent">
 
-[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+[% PROCESS common/subtemplate name="subnavigation" active_menu="searchmask" %]
 
 <div class="content"><!-- Begin Content -->
 

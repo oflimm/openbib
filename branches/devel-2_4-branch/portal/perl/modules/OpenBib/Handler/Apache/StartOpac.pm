@@ -104,12 +104,12 @@ sub show {
     # Standard-URL
     my $redirecturl = "$config->{base_loc}/$view/$config->{searchform_loc}/$setmask.html?l=".$self->param('lang');
 
-    my $viewstartpage = $config->get_startpage_of_view($view);
+    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
 
     $logger->debug("Alternative Interne Startseite: $viewstartpage");
     
     if ($viewstartpage){
-        $redirecturl = $viewstartpage;
+        $redirecturl = $viewstartpage.".".$self->param('representation')."?l=".$self->param('lang');
     }
     
     $logger->info("Redirecting to $redirecturl");

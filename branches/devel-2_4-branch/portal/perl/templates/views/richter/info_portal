@@ -69,9 +69,9 @@ gleichen OpenBib-Instanz realisiert wie http://search.openbib.org/.
 </p>
 
 <p>
-Ermöglicht wird dies einerseits durch verschiedenen
+Ermöglicht wird dies einerseits durch verschiedene
 Konfiguratonsmöglichkeiten innerhalb von OpenBib sowie einfachem
-URL-Rewriting für die jeweiligen URI-Hostnamen.
+URL-Rewriting für die jeweiligen Hostnamen.
 
 </td></tr>
 </table>

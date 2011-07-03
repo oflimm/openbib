@@ -110,6 +110,6 @@
 <![endif]-->
 
 
-    <title>[% IF title %][% title %][% ELSE %][% msg.maketext("OpenBib - Demo-Portal") %][% END %]</title>
+    <title>[% IF title %][% title %][% ELSE %]Die Bibliothek Elise und Helene Richter - ein OpenBib Demonstrations-Portal[% END %]</title>
 
    </head>

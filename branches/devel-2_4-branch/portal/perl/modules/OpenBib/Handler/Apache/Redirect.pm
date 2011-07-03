@@ -128,6 +128,8 @@ sub show {
             content   => $url,
         });
 
+        $self->query->method('GET');
+        $self->query->content_type('text/html');
         $self->query->headers_out->add(Location => $url);
         $self->query->status(Apache2::Const::REDIRECT);
     }

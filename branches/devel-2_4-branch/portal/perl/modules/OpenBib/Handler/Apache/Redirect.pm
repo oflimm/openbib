@@ -87,6 +87,9 @@ sub show {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+#    my $type           = $self->param('type');
+#    my $url            = $self->param('dispatch_url_remainder');
+
     my $uri   = $r->parsed_uri;
     my $query = $uri->query;
 

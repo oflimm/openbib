@@ -105,6 +105,7 @@ sub show_search {
     my $msg            = $self->param('msg');
     my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
+    my $servername     = $self->param('servername');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $representation = $self->param('representation');
@@ -370,6 +371,7 @@ sub show_search {
         
         # TT-Data erzeugen
         my $ttdata={
+            servername   => $servername,
             lang               => $lang,
             qopts        => $queryoptions->get_options,
             queryoptions => $queryoptions,
@@ -472,6 +474,7 @@ sub show_search {
     # TT-Data erzeugen
     
     my $startttdata={
+            servername   => $servername,
         lang               => $lang,
         representation => $representation,
         content_type   => $content_type,
@@ -690,6 +693,7 @@ sub show_search {
             
             # TT-Data erzeugen
             my $ttdata={
+            servername   => $servername,
                 cgiapp             => $self,
                 lang               => $lang,
                 representation => $representation,
@@ -842,6 +846,7 @@ sub show_search {
                     
                     # TT-Data erzeugen
                     my $ttdata={
+            servername   => $servername,
                         lang               => $lang,
                         representation => $representation,
                         content_type   => $content_type,
@@ -1019,6 +1024,7 @@ sub show_search {
                         
                             # TT-Data erzeugen
                             my $ttdata={
+            servername   => $servername,
                                 lang               => $lang,
                                 representation => $representation,
                                 content_type   => $content_type,
@@ -1135,6 +1141,7 @@ sub show_search {
     
     # TT-Data erzeugen
     my $endttdata={
+            servername   => $servername,
         lang               => $lang,
         representation => $representation,
 
@@ -1244,6 +1251,7 @@ sub show_index {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $servername     = $self->param('servername');
     my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
@@ -1433,6 +1441,7 @@ sub show_index {
     
     # TT-Data erzeugen
     my $ttdata={
+            servername   => $servername,
         lang               => $lang,
         representation => $representation,
         

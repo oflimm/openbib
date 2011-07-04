@@ -23,11 +23,11 @@
       normset         = record.get_brief_normdata;
 -%]
 
-  <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('title_loc') %]/[%- record.database -%]/[%- record.id -%]">
+  <rdf:Description rdf:about="http://[% servername %][% path_prefix %]/[% config.get('title_loc') %]/[%- record.database -%]/[%- record.id -%]">
 [%- FOREACH category IN [ "P0100" "P0101" "P0102" "P0103"] -%]
 [%-   FOREACH item IN normset.${category} %]
      <dc:creator>[% item.content%]</dc:creator>
-     <dc:creator rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('person_loc') %]/[% record.database %]/[% item.id %]"/>
+     <dc:creator rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('person_loc') %]/[% record.database %]/[% item.id %]"/>
 [%-   END -%]
 [%- END -%]
 [%- FOREACH item IN normset.${"T0331"} %]
@@ -53,15 +53,15 @@
 [%- FOREACH category IN [ "T0710" "T0902" "T0907" "T0912"] -%]
 [%-   FOREACH item IN normset.${category} %]
      <dc:subject>[% item.content%]</dc:subject>
-     <dc:subject rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('subject_loc') %]/[% record.database %]/[% item.id %]"/>
+     <dc:subject rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('subject_loc') %]/[% record.database %]/[% item.id %]"/>
 [%-   END -%]
 [%- END %]
      <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book"/>
      <dc:type>text</dc:type>
-     <libris:held_by rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('library_loc') %]/[% record.database %]"/>
-     <rdfs:isDefinedBy rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].rdf"/>
+     <libris:held_by rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('library_loc') %]/[% record.database %]"/>
+     <rdfs:isDefinedBy rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].rdf"/>
 [%- FOREACH similar_record IN similar_records.get_records %]
-     <libris:frbr_related rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('title_loc') %]/[%- similar_record.record.database -%]/[%- similar_record.id-%]"/>
+     <libris:frbr_related rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('title_loc') %]/[%- similar_record.record.database -%]/[%- similar_record.id-%]"/>
 [%- END %]
   </rdf:Description>
 [%- END %]

@@ -14,7 +14,7 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Views anzeigen' %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
 

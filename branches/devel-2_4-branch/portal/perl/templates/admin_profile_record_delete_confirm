@@ -17,6 +17,8 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
 <div id="maincontent">
 
 [% PROCESS common/subtemplate name="admin_navigation" active="profiles" %] 

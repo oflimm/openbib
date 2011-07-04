@@ -14,10 +14,12 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Katalog-Profile anzeigen' %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 [% bks = config.load_bk; %]
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 
 <div id="maincontent">
 

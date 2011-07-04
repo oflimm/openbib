@@ -12,11 +12,13 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - RSS-Feeds zur Datenbank konfigurieren' %]
 
   <body>
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 
 <div id="maincontent">
 

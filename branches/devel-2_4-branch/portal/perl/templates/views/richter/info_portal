@@ -37,41 +37,50 @@
 <tr>
 
 <td style="vertical-align:top;padding:40px;"> <center> <img src="/images/openbib/views/richter/Elise_Richter_Wiener_Bilder_1907_small.png"
-alt="Elise Richter in Wiener Bilder Nr. 38, 1907" /><br /><br /><i
-style="font-size:0.8em">Elise Richter in Wiener Bilder Nr. 38, 1907<br/></center>
+alt="[% msg.maketext("Elise Richter in Wiener Bilder Nr. 38, 1907") %]" /><br /><br /><i
+style="font-size:0.8em">[% msg.maketext("Elise Richter in Wiener Bilder Nr. 38, 1907") %]<br/></center>
 </td>
 
 <td valign="top" style="padding-top:25px;">
 
-<h1>Die Bibliothek von Elise und Helene Richter</h1>
+<h1>[% msg.maketext("Die Bibliothek von Elise und Helene Richter") %]</h1>
 
 
-<p> In diesem Portal können Sie in dem Bestand der ehemaligen
-"Richter-Bibliothek" von <a href="[% path_prefix %]/[% config.get('info_loc') %]/elise_richter.html">Elise und Helene Richter</a> recherchieren. Die
+<p> [% msg.maketext("In diesem Portal können Sie in dem Bestand der ehemaligen
+<emph>Richter-Bibliothek</emph> von [_1]Elise und Helene Richter[_2] recherchieren. Die
 zugrundeliegenden Daten dazu stammen von der Universitäts- und
 Stadtbibliothek Köln, die sie als Open Bibliographic Data unter der
-CC0-Lizenz <a href="http://opendata.ub.uni-koeln.de/"
-target="_blank">freigegeben</a> hat. Weitere Informationen zur
+CC0-Lizenz [_3]freigegeben[_4] hat. Weitere Informationen zur
 Erfassung und dem Projekt Richter-Bibliothek der USB Köln finden Sie
-unter <a classe="ext" href="http://richterbibliothek.ub.uni-koeln.de/"
-target="_blank">http://richterbibliothek.ub.uni-koeln.de/</a>.</p>
+unter [_5]http://richterbibliothek.ub.uni-koeln.de/[_6].","<a href=\"${path_prefix}/${config.get('info_loc')}/elise_richter.html\">","</a>","<a href=\"http://opendata.ub.uni-koeln.de/\"
+target=\"_blank\">","</a>","<a class=\"ext\" href=\"http://richterbibliothek.ub.uni-koeln.de/\"
+target=\"_blank\">","</a>") %]</p>
 
 <p>
-1942 gelangte die Bibliothek der beiden Schwestern von etwa 3.000 Bänden unter dem politischem Druck der NS-Zeit an die Universität zu Köln. Nachdem dort der Schriftwechsel zur Bibliothek im Archiv gefunden wurde, wird seit 2005 im Rahmen der NS-Provenienzforschung die Bibliothek rekonstruiert, publiziert und – wenn möglich – an Erben restituiert. Zudem soll ein kleiner Platz zwischen USB und Philosophikum nach den Richterschwestern benannt werden. (Quelle: <a href="http://de.wikipedia.org/wiki/Elise_Richter" target="_blank">Wikipedia</a>)
+
+[% msg.maketext("1942 gelangte die Bibliothek der beiden Schwestern von etwa 3.000
+Bänden unter dem politischem Druck der NS-Zeit an die Universität zu
+Köln. Nachdem dort der Schriftwechsel zur Bibliothek im Archiv
+gefunden wurde, wird seit 2005 im Rahmen der NS-Provenienzforschung
+die Bibliothek rekonstruiert, publiziert und - wenn möglich - an
+Erben restituiert. Zudem soll ein kleiner Platz zwischen USB und
+Philosophikum nach den Richterschwestern benannt werden.") %]
+([% msg.maketext("Quelle:") %] <a href="http://de.wikipedia.org/wiki/Elise_Richter" target="_blank">Wikipedia</a>)
+
 </p>
 
 <p>
-Die Motivation dieses Portals ist die Demonstration einer wesentlichen
+[% msg.maketext("Die Motivation dieses Portals ist die Demonstration einer wesentlichen
 Fähigkeit der OpenSource-Software OpenBib: Die Erstellung
 verschiedener Recherche-Portale mit verschiedenen Hostnamen mit nur
 einer OpenBib-Installation. So wird dieses Portal z.B. mit der
-gleichen OpenBib-Instanz realisiert wie http://search.openbib.org/.
+gleichen OpenBib-Instanz realisiert wie http://search.openbib.org/.") %]
 </p>
 
 <p>
-Ermöglicht wird dies einerseits durch verschiedene
+[% msg.maketext("Ermöglicht wird dies einerseits durch verschiedene
 Konfiguratonsmöglichkeiten innerhalb von OpenBib sowie einfachem
-URL-Rewriting für die jeweiligen Hostnamen.
+URL-Rewriting für die jeweiligen Hostnamen.") %]
 
 </td></tr>
 </table>

@@ -148,12 +148,12 @@
     END ;
 
     IF ebook ;
-      ebook = "${path_prefix}/${config.get('redirect_loc')}/503/${ebook}" ;
+      ebook = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(ebook)}" ;
       titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
     END ;
 
     IF toc ;
-      toc = "${path_prefix}/${config.get('redirect_loc')}/500/${toc}" ;
+      toc = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(toc)}" ;
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 

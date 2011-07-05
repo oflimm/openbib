@@ -43,6 +43,7 @@ use APR::URI ();
 
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
+use URI::Escape qw(uri_unescape);
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -72,30 +73,23 @@ sub show {
     my $logger = get_logger();
     
     # Dispatched Args
-    my $view           = $self->param('view')           || '';    
-    my $type           = $self->param('type');
-    my $url            = $self->param('dispatch_url_remainder');
+    my $view           = $self->param('view');
+
 
     # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-#    my $type           = $self->param('type');
-#    my $url            = $self->param('dispatch_url_remainder');
-
-    my $uri   = $r->parsed_uri;
-    my $query = $uri->query;
-
-    if ($query){
-        $url = $url."?".$query;
-    }
+    my $type           = $query->param('type');
+    my $url            = $query->param('url');
 
     $logger->debug("SessionID: $session->{ID} - Type: $type - URL: $url");
 

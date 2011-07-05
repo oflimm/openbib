@@ -277,8 +277,9 @@ sub add_item {
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');
 
     # CGI Args
     my $id         = $query->param('id');
@@ -287,9 +288,10 @@ sub add_item {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
     if ($id && $database){
-        my $title = uri_escape(OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex);
+        my $title = OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex;
+#        $title=~s/\n/ /g;
         
-        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=selection=$title";
+        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}?type=510;url=".uri_escape("http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape("http://$servername/")."&description=".uri_escape($config->get_viewdesc_from_viewname($view))."&encoding=ISO-8859-1&selection=".uri_escape($title));
         
         $logger->debug($bibsonomy_uri);
 

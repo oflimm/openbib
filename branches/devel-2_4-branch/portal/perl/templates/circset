@@ -48,7 +48,7 @@ mex.Status == 'entliehen' && mex.Rueckgabe != '31.12.9999' && mex.Rueckgabe != '
 <td class="circurl">
 [%
      IF mex.Ausleihurl %]
-   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% escape_uri(mex.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF mex.Statuscode != 0 ;
             IF mex.Gruppe.Name.match("Handapparat") %]

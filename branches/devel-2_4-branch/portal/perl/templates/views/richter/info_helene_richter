@@ -20,6 +20,14 @@
 
 <div id="maincontent">
 
+<div id="langchoice">
+[% IF config.get('lang').size > 1 %]
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% path_prefix %]/[% config.get('info_loc') %]/helene_richter.html?l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+[% END %]
+</div>
+
 [% PROCESS common/subtemplate name="subnavigation" active_menu="info" %] 
 
 <div class="content">

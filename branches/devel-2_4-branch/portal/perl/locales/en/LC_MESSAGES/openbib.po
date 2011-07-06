@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2011-07-04 14:21+0200\n"
+"PO-Revision-Date: 2011-07-06 13:08+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -30,7 +30,7 @@ msgstr "${category}"
 #: ../templates/bibfuehrer_tex:481 ../templates/bibfuehrer_tex:632
 #: ../templates/bibfuehrer_tex:633 ../templates/classification_html:71
 #: ../templates/collection_html_as_text:68
-#: ../templates/collection_html_full:250 ../templates/corporatebody_html:71
+#: ../templates/collection_html_full:253 ../templates/corporatebody_html:71
 #: ../templates/database/artmann/search_showtitset_categories:203
 #: ../templates/database/artmann/search_showtitset_categories:234
 #: ../templates/database/dante/search_showtitset_categories:203
@@ -77,8 +77,8 @@ msgstr "${category}"
 #: ../templates/profile/usb/library_include:62
 #: ../templates/profile/usb/title_html_categories:237
 #: ../templates/searchform_bottom_left:67 ../templates/subject_html:71
-#: ../templates/title_html_categories:233
-#: ../templates/title_html_categories:264
+#: ../templates/title_html_categories:236
+#: ../templates/title_html_categories:267
 #: ../templates/views/engportrom/searchmask_bottom_left:55
 #: ../templates/views/inst006/searchmask_bottom_left:55
 #: ../templates/views/inst132/searchmask_bottom_left:55
@@ -277,23 +277,23 @@ msgstr "Add this title to a new literature list:"
 msgid "&Uuml;bernahme&nbsp;in&nbsp;Recherche"
 msgstr "Use as search term"
 
-#: ../templates/externaljump:151
+#: ../templates/externaljump:160
 msgid "&Uuml;bernommene Felder: Keine"
 msgstr "Acquired categories: None"
 
-#: ../templates/externaljump:128 ../templates/externaljump:147
+#: ../templates/externaljump:137 ../templates/externaljump:156
 msgid "&Uuml;bernommene Felder: Titel"
 msgstr "Acquired categories: title"
 
-#: ../templates/externaljump:138
+#: ../templates/externaljump:147
 msgid "&Uuml;bernommene Felder: Titel, ISSN"
 msgstr "Acquired categories: title, ISSN"
 
-#: ../templates/externaljump:118
+#: ../templates/externaljump:127
 msgid "&Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN"
 msgstr "Acquired categories: title, coporate body, ISSN"
 
-#: ../templates/externaljump:109
+#: ../templates/externaljump:118
 msgid ""
 "&Uuml;bernommene Felder: Titel, Person, K&ouml;rperschaft, ISBN, "
 "Erscheinungsjahr"
@@ -376,7 +376,7 @@ msgstr ""
 "their legitimate heirs. In addition a small square near the USB shall be "
 "named after both sisters. "
 
-#: ../templates/views/richter/info_elise_richter:75
+#: ../templates/views/richter/info_elise_richter:83
 msgid ""
 "1943 wurde Richter ins Ghetto Theresienstadt deportiert. Wenige Monate\n"
 "nach der Deportation starb sie am 21. Juni 1943."
@@ -657,10 +657,6 @@ msgstr "Save new or already existing profile"
 #: ../templates/views/richter/searchform_query:119
 msgid "Abstrakt/Inhalt"
 msgstr "Abstract/Content"
-
-#: ../modules/OpenBib2/Handler/Apache/LoadBalancer.pm:107
-msgid "Achtung: Es sind *alle* Server ausgefallen"
-msgstr "Attention: All servers are down"
 
 #: ../templates/admin_database_html:37 ../templates/admin_database_html:58
 #: ../templates/admin_database_record_edit:52
@@ -1206,9 +1202,9 @@ msgstr "Save"
 msgid "Aufruf dieser Spezial-Sicht"
 msgstr "Use this view"
 
-#: ../templates/externaljump:106 ../templates/externaljump:115
-#: ../templates/externaljump:125 ../templates/externaljump:135
-#: ../templates/externaljump:145
+#: ../templates/externaljump:115 ../templates/externaljump:124
+#: ../templates/externaljump:134 ../templates/externaljump:144
+#: ../templates/externaljump:154
 msgid "Aufruf ohne &Uuml;bernahme von Suchbegriffen"
 msgstr "Use without aquisition of search terms"
 
@@ -1390,7 +1386,7 @@ msgstr "Automatic suggestions for your search query"
 msgid "Autor"
 msgstr "Author"
 
-#: ../templates/search_more_tips:66
+#: ../templates/search_more_tips:70
 msgid "B&uuml;cher"
 msgstr "Books"
 
@@ -1487,6 +1483,17 @@ msgstr ""
 msgid "Bei Unifloh vorhanden?"
 msgstr "Available in Unifloh?"
 
+#: ../templates/views/richter/browse_title_html:49
+msgid ""
+"Bei den Personennamen handelt es sich um Besitzeintr&auml;ge, die den\n"
+"Vorbesitzer der Richterschen B&uuml;cher ausweisen. Au&szlig;erdem\n"
+"werden Personen verzeichnet, die ihre B&uuml;cher mit einer\n"
+"entsprechenden Widmung an Elise Richter weitergeleitet haben."
+msgstr ""
+"Personal names identify the possession of the former owner. Furthermore "
+"persons are listed, whose books were passed on to Elise Richter with a "
+"corresponding dedication."
+
 #: ../templates/info_help:416 ../templates/profile/kug/info_help:423
 #: ../templates/profile/kug/views/kug/info.old:427
 msgid ""
@@ -1553,9 +1560,9 @@ msgid ""
 "Informationen und diese OpenSource Software für andere kostenfrei zur "
 "Verfügung zu stellen."
 msgstr ""
-"This is no commercal website. Its main purpose is to "
-"demonstrate the open-source discovery interface OpenBib and - in this way - "
-"to offer information and this open-source software free-of-charge."
+"This is no commercal website. Its main purpose is to demonstrate the open-"
+"source discovery interface OpenBib and - in this way - to offer information "
+"and this open-source software free-of-charge."
 
 #: ../templates/profile/openbib/info_20:53
 msgid ""
@@ -1781,7 +1788,7 @@ msgstr "Description"
 #: ../templates/profile/digicard/search_showtitset_categories:230
 #: ../templates/profile/sammlungen/views/inst404abklatsch/search_showtitset_categories:226
 #: ../templates/profile/usb/circset:106 ../templates/profile/usb/circset:31
-#: ../templates/profile/usb/mexset:19 ../templates/title_html_categories:269
+#: ../templates/profile/usb/mexset:19 ../templates/title_html_categories:272
 msgid "Besitzende Bibliothek"
 msgstr "Owning library"
 
@@ -1790,7 +1797,6 @@ msgid "Besonderheit bei Feldern mit"
 msgstr "Characteristics of fields with"
 
 #: ../modules/OpenBib/Handler/Apache/Registration.pm:276
-#: ../modules/OpenBib2/Handler/Apache/Registration.pm:317
 msgid "Bestaetigen Sie Ihre Registrierung"
 msgstr "Please confirm your registration"
 
@@ -1818,14 +1824,14 @@ msgid "Bestelldatum"
 msgstr "Date of order"
 
 #. ("<a href=\"${path_prefix}/${config.get('redirect_loc')
-#: ../templates/search_more_tips:70
+#: ../templates/search_more_tips:74
 msgid ""
 "Bestellen Sie das Buch per %1Fernleihe%2 (Buchbestellungen) in der Digitalen "
 "Bibliothek."
 msgstr "Order this book via %1inter library loan%2 (book orders)"
 
 #. ("<a href=\"${path_prefix}/${config.get('redirect_loc')
-#: ../templates/search_more_tips:78
+#: ../templates/search_more_tips:82
 msgid ""
 "Bestellen Sie den Artikel per %1Fernleihe%2 (Aufsatzbestellungen/ZDB) in der "
 "Digitalen Bibliothek."
@@ -1965,10 +1971,6 @@ msgstr "You didn't enter any tags."
 
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:1275
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:279
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1505
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:357
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:745
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Collection.pm:291
 msgid "Bitte authentifizieren Sie sich unter Mein KUG."
 msgstr "Please use My KUG to authenticate."
 
@@ -1982,18 +1984,8 @@ msgstr "Please bookmark as:"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:425
 #: ../modules/OpenBib/Handler/Apache/Search.pm:410
-#: ../modules/OpenBib2/Handler/Apache/Connector/DigiBib.pm:433
-#: ../modules/OpenBib2/Handler/Apache/Search.pm:491
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Please enter a four digit number as the year of publication."
-
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:1450
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:1450
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:1450
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:1450
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:1450
-msgid "Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"
-msgstr "Please enter start and end dates!"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Session.pm:242
 msgid ""
@@ -2002,11 +1994,6 @@ msgid ""
 msgstr "Please enter both start and end dates or  an IP adress!"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/User.pm:161
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:1699
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:1699
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:1699
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:1699
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:1699
 msgid "Bitte geben Sie einen Suchbegriff ein."
 msgstr "Please enter your search term"
 
@@ -2233,12 +2220,15 @@ msgstr ""
 "completely transparent. You can directly bookmark every URL in your web "
 "browser."
 
+#: ../templates/views/richter/browse_title_html:46
+msgid ""
+"Das Register der Provenienzen listet die Namen von Privatpersonen und "
+"Rezensionszeitschriften auf."
+msgstr "This register of provenances lists the names of persons and review journals."
+
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:432
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:441
 #: ../modules/OpenBib/Handler/Apache/Search.pm:417
-#: ../modules/OpenBib2/Handler/Apache/Connector/DigiBib.pm:440
-#: ../modules/OpenBib2/Handler/Apache/Connector/DigiBib.pm:449
-#: ../modules/OpenBib2/Handler/Apache/Search.pm:498
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -2274,7 +2264,7 @@ msgstr "DataBaseInformationSystem (DBIS)"
 msgid "Datenbanken"
 msgstr "Databases"
 
-#: ../templates/externaljump:120 ../templates/info_help:605
+#: ../templates/externaljump:129 ../templates/info_help:605
 #: ../templates/profile/kug/info_help:618
 #: ../templates/profile/kug/views/kug/info.old:622
 msgid "Datenbankinformationssystem (DBIS)"
@@ -2309,7 +2299,7 @@ msgid ""
 "vorhandenen Kataloge aus."
 msgstr "Search for <i>%1</i> with our %2G%3 lobal Search in all available catalogues."
 
-#: ../templates/search_more_tips:74
+#: ../templates/search_more_tips:78
 msgid ""
 "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem "
 "Katalog aufnehmen"
@@ -2319,8 +2309,6 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Search.pm:1333
 #: ../modules/OpenBib/Handler/Apache/Search.pm:263
-#: ../modules/OpenBib2/Handler/Apache/Search.pm:1436
-#: ../modules/OpenBib2/Handler/Apache/Search.pm:332
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
@@ -2365,9 +2353,6 @@ msgstr "Title can be picked up here"
 
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:1163
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:627
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1393
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:772
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Collection.pm:179
 msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 msgstr "The title has been added to your list of interest."
 
@@ -2398,7 +2383,7 @@ msgstr "The following external services  are currently being offered:"
 msgid "Deutsch"
 msgstr "German"
 
-#: ../templates/collection_html_full:270
+#: ../templates/collection_html_full:273
 #: ../templates/database/einbaende/search_showtitset:370
 #: ../templates/database/einbaende/search_showtitset_1:351
 #: ../templates/database/umschlaege/search_showtitset:340
@@ -2528,7 +2513,7 @@ msgstr ""
 "the heading <i>volumes/items</i> or 'number of collective titles' (by "
 "clicking the highlighted number of linked entries)."
 
-#: ../templates/views/richter/info_helene_richter:43
+#: ../templates/views/richter/info_helene_richter:51
 msgid ""
 "Die Tochter eines Arztes bildete sich als Autodidaktin und begann 1886\n"
 "mit Shelley-Studien. Sie widmete sich später umfangreichen\n"
@@ -2577,7 +2562,6 @@ msgid "Die Vormerkung wurde erfolgreich durchgef&uuml;hrt."
 msgstr "Your reservation was successful."
 
 #: ../modules/OpenBib/Handler/Apache/Registration.pm:237
-#: ../modules/OpenBib2/Handler/Apache/Registration.pm:278
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgstr "The two passwords you entered are different."
 
@@ -2667,23 +2651,15 @@ msgstr ""
 "This search form offers a variety of search fields and options. Like in the "
 "Simple Search, search engine technology is used here."
 
-#: ../modules/OpenBib2/Handler/Apache/Resource/User.pm:105
-#: ../modules/OpenBib2/Handler/Apache/Resource/User.pm:184
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:414
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:458
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:511
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:563
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:613
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:662
-#: ../modules/OpenBib2/Handler/Apache/UserPrefs.pm:139
-msgid "Diese Session ist nicht authentifiziert."
-msgstr "This session is not authenticated."
-
 #: ../templates/database/einbaende/search_showtitset:971
 #: ../templates/database/umschlaege/search_showtitset:941
 #: ../templates/title_html:787 ../templates/title_include:750
 msgid "Diese Titel interessierten Sie bereits:"
 msgstr "These titles were already interesting to you:"
+
+#: ../templates/std_footer:18
+msgid "Diese Website demonstriert ein Recherche-Portal"
+msgstr "This web site demonstrates a discovery interface"
 
 #: ../templates/info_help:761 ../templates/profile/kug/info_help:775
 #: ../templates/profile/kug/views/kug/info.old:779
@@ -2745,7 +2721,7 @@ msgstr ""
 "This title cannot be found in the catalogues of this portal. Nevertheless it "
 "might exist with another spelling!"
 
-#: ../templates/collection_html_full:267
+#: ../templates/collection_html_full:270
 #: ../templates/database/einbaende/search_showtitset:367
 #: ../templates/database/einbaende/search_showtitset_1:348
 #: ../templates/database/umschlaege/search_showtitset:337
@@ -2770,7 +2746,7 @@ msgstr "Digital library / Monographs (ILL)"
 msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
 msgstr "Digital Library/ Monographs (for Interlibrary loan of monographs)"
 
-#: ../templates/externaljump:110
+#: ../templates/externaljump:119
 msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
 msgstr "Digital library / Journals (Electronic journal delivery)"
 
@@ -2991,10 +2967,8 @@ msgstr "Own index"
 msgid "Ein Beispiel hierfür ist %1dieser Titel%2."
 msgstr "An example is %1this title%2."
 
-#. ("$loginname","<a href=\"http://$config->{servername}$config->{base_loc}/$view/$config->{selfreg_loc}?action=show\">","</a>")
 #. ("$loginname","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/Registration.pm:248
-#: ../modules/OpenBib2/Handler/Apache/Registration.pm:289
 msgid ""
 "Ein Benutzer mit dem Namen %1 existiert bereits. Haben Sie vielleicht Ihr "
 "Passwort vergessen? Dann gehen Sie bitte %2zurück%3 und lassen es sich "
@@ -3161,7 +3135,7 @@ msgstr "Elektronically available journals (EZB)"
 msgid "Elektronische Zeitschriftenbibliothek (EZB)"
 msgstr "Elektronic journal database (EZB)"
 
-#: ../templates/externaljump:130
+#: ../templates/externaljump:139
 msgid "Elektronische Zeitschriftendatenbank (EZB)"
 msgstr "Elektronic journal database (EZB)"
 
@@ -3172,7 +3146,7 @@ msgstr "Elektronic journal database (EZB)"
 msgid "Elektronische Zeitschriftendatenbank (EZB) %1"
 msgstr "Electronic Journal Database (EZB) %1"
 
-#: ../templates/views/richter/info_elise_richter:39
+#: ../templates/views/richter/info_elise_richter:47
 msgid ""
 "Elise Richter (* 2. März 1865 in Wien; † 21. Juni 1943 im Ghetto "
 "Theresienstadt) war eine österreichische Romanistin und "
@@ -3189,7 +3163,7 @@ msgstr ""
 msgid "Elise Richter in Wiener Bilder Nr. 38, 1907"
 msgstr "Elise Richter in Wiener Bilder issue 38, 1907"
 
-#: ../templates/views/richter/info_elise_richter:43
+#: ../templates/views/richter/info_elise_richter:51
 msgid ""
 "Elise Richter wurde als Tochter des Chefarzts der\n"
 "k.k. priv. Südbahngesellschaft Dr. Maximilian Richter (* 1824\n"
@@ -3257,7 +3231,7 @@ msgstr "End"
 msgid "Englisch"
 msgstr "English"
 
-#: ../templates/collection_html_full:275
+#: ../templates/collection_html_full:278
 #: ../templates/database/einbaende/search_showtitset:375
 #: ../templates/database/einbaende/search_showtitset_1:356
 #: ../templates/database/umschlaege/search_showtitset:345
@@ -3371,7 +3345,7 @@ msgstr "Year of publication"
 #: ../templates/old/litlists_tit_as_text.old:30
 #: ../templates/profile/digicard/search_showtitset_categories:234
 #: ../templates/profile/sammlungen/views/inst404abklatsch/search_showtitset_categories:230
-#: ../templates/title_html_categories:273
+#: ../templates/title_html_categories:276
 msgid "Erscheinungsverlauf  "
 msgstr "Flow of publication  "
 
@@ -3418,57 +3392,25 @@ msgid "Erwerbungsstatus"
 msgstr "Acquisition status"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Authentication.pm:202
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:1580
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:1580
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:1580
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:1580
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:1580
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "There already exists a authentication target with this name"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:191
 #: ../modules/OpenBib/Handler/Apache/Admin/Library.pm:216
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:393
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:318
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:636
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:416
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:636
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:636
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:636
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:636
 msgid "Es existiert bereits ein Katalog unter diesem Namen"
 msgstr "There already exists a catalogue with this name"
 
 #: ../modules/OpenBib/Handler/Apache/User/Profile.pm:349
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:509
 msgid "Es existiert bereits ein Profil unter diesem Namen!"
 msgstr "There already exists a profile with this name"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Subject.pm:172
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:994
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:994
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:994
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:994
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:994
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
 msgstr "There already exists a subject with this name"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:192
 #: ../modules/OpenBib/Handler/Apache/Admin/View.pm:216
 #: ../modules/OpenBib/Handler/Apache/Admin/View.pm:232
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:356
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:1156
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:817
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:1156
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:817
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:1156
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:817
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:1156
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:817
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:1156
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:817
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:379
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:394
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr "There already exists a view with this name"
 
@@ -3477,12 +3419,6 @@ msgid "Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View"
 msgstr "There already exists a primary RSS-feed for this view"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:227
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:379
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:900
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:900
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:900
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:900
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:900
 msgid "Es existiert bereits eine Organisationseinheit unter diesem Namen"
 msgstr "There already exists an organizational unit with this name"
 
@@ -3500,36 +3436,8 @@ msgstr "There already exists an organizational unit with this name"
 #: ../modules/OpenBib/Handler/Apache/Admin/Library.pm:332
 #: ../modules/OpenBib/Handler/Apache/Admin/Library.pm:435
 #: ../modules/OpenBib/Handler/Apache/Admin/View.pm:339
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:430
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:509
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:642
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:186
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:264
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:360
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:398
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:421
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:485
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:567
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:590
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:184
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:355
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:378
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:447
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:604
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:414
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:390
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:570
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:703
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:428
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:528
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:551
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:660
 msgid "Es existiert kein Katalog unter diesem Namen"
 msgstr "There does not exists a catalogue with this name"
-
-#: ../modules/OpenBib2/Handler/Apache/MailPassword.pm:138
-msgid "Es existiert kein Passwort für die Kennung $loginname"
-msgstr "For the login $loginname no password exists."
 
 #. ($loginname)
 #: ../modules/OpenBib/Handler/Apache/MailPassword.pm:120
@@ -3537,7 +3445,6 @@ msgid "Es existiert kein Passwort für die Kennung %1"
 msgstr "No password exists for the account %1."
 
 #: ../modules/OpenBib/Handler/Apache/User/Profile.pm:289
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:431
 msgid "Es existiert kein Profil mit der ID $profileid"
 msgstr "There does not exist a profile with this id"
 
@@ -3554,21 +3461,6 @@ msgstr "There does not exist a profile with this id"
 #: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:338
 #: ../modules/OpenBib/Handler/Apache/Admin/View.pm:210
 #: ../modules/OpenBib/Handler/Apache/Admin/View.pm:372
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:185
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:274
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:357
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:435
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:443
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:508
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:539
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:624
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:645
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:266
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:411
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:474
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:572
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:372
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:609
 msgid "Es existiert kein Profil unter diesem Namen"
 msgstr "There does not exist a profile with this name"
 
@@ -3576,10 +3468,6 @@ msgstr "There does not exist a profile with this name"
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:278
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:344
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:420
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:280
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:449
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:545
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:651
 msgid "Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"
 msgstr "There does not exist an organizational unit with this name"
 
@@ -3637,27 +3525,19 @@ msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "No sources available."
 
 #: ../modules/OpenBib/Handler/Apache/Registration.pm:232
-#: ../modules/OpenBib2/Handler/Apache/Registration.pm:273
 msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "You either didn't enter a username or less than two passwords "
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:448
 #: ../modules/OpenBib/Handler/Apache/Search.pm:424
-#: ../modules/OpenBib2/Handler/Apache/Connector/DigiBib.pm:456
-#: ../modules/OpenBib2/Handler/Apache/Search.pm:505
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "You didn't enter any search criteria."
 
-#: ../modules/OpenBib/Handler/Apache/Browse.pm:646
 #: ../modules/OpenBib/RecordList/Title.pm:324
-#: ../modules/OpenBib2/Handler/Apache/Browse.pm:668
-#: ../modules/OpenBib2/RecordList/Title.pm:245
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "No hits available in the catalogue for your search request"
 
 #: ../modules/OpenBib/Handler/Apache/User/Preferences.pm:309
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:463
-#: ../modules/OpenBib2/Handler/Apache/UserPrefs.pm:275
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr "No default search mask selected"
 
@@ -3738,8 +3618,6 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Search.pm:1328
 #: ../modules/OpenBib/Handler/Apache/Search.pm:258
-#: ../modules/OpenBib2/Handler/Apache/Search.pm:1431
-#: ../modules/OpenBib2/Handler/Apache/Search.pm:327
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -3763,7 +3641,7 @@ msgstr ""
 "the owning library."
 
 #. ("<a href=\"${path_prefix}/${config.get('redirect_loc')
-#: ../templates/search_more_tips:69
+#: ../templates/search_more_tips:73
 msgid ""
 "F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
 "t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
@@ -3828,7 +3706,6 @@ msgid "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
 msgstr "Please enter a new profile name if empty"
 
 #: ../modules/OpenBib/Handler/Apache/Login.pm:397
-#: ../modules/OpenBib2/Handler/Apache/Login.pm:426
 msgid "Falscher Fehler-Code"
 msgstr "Invalid error code"
 
@@ -3839,8 +3716,6 @@ msgstr "Error"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/SimilarPersons.pm:101
 #: ../modules/OpenBib/Handler/Apache/Connector/SimilarSubjects.pm:101
-#: ../modules/OpenBib2/Handler/Apache/Connector/SimilarPersons.pm:107
-#: ../modules/OpenBib2/Handler/Apache/Connector/SimilarSubjects.pm:107
 msgid "Fehler."
 msgstr "Error."
 
@@ -3883,7 +3758,7 @@ msgstr "Finnish"
 msgid "Fragen und Anmerkungen richten Sie bitte an:"
 msgstr "Please send questions and feedback to:"
 
-#: ../templates/collection_html_full:280
+#: ../templates/collection_html_full:283
 #: ../templates/database/einbaende/search_showtitset:380
 #: ../templates/database/einbaende/search_showtitset_1:361
 #: ../templates/database/umschlaege/search_showtitset:350
@@ -3952,7 +3827,7 @@ msgstr "Free search"
 #: ../templates/views/einbaende/searchmask_simple:178
 #: ../templates/views/einbaende/searchmask_simple:268
 #: ../templates/views/einbaende/searchmask_simple:359
-#: ../templates/views/richter/searchform:127
+#: ../templates/views/richter/searchform:128
 #: ../templates/views/richter/searchform_simple:182
 #: ../templates/views/richter/searchform_simple:274
 #: ../templates/views/richter/searchform_simple:367
@@ -4195,7 +4070,7 @@ msgstr ""
 "require a <i>feed reader</i>."
 
 #. ("<a href=\"${path_prefix}/${config.get('dbis_loc')
-#: ../templates/search_more_tips:76
+#: ../templates/search_more_tips:80
 msgid ""
 "Haben Sie sich &uuml;ber unser\n"
 "%1Datenbankangebot%2 informiert? Auch hier finden Sie Volltexte."
@@ -4234,7 +4109,7 @@ msgstr "Main title"
 msgid "Hauptseite"
 msgstr "Home"
 
-#: ../templates/views/richter/info_helene_richter:39
+#: ../templates/views/richter/info_helene_richter:47
 msgid ""
 "Helene Richter (* 4. August 1861 in Wien; † wahrscheinlich 8. November 1942 "
 "in Terezín) war eine österreichische Anglistin und Kritikerin."
@@ -4835,17 +4710,6 @@ msgstr "ISSN"
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:876
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:930
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:984
-#: ../modules/OpenBib2/Handler/Apache/LitLists.pm:627
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1107
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1161
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1215
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1340
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1395
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1452
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:509
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:643
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:763
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:926
 msgid "Ihnen geh&ouml;rt diese Literaturliste nicht."
 msgstr "You don't own this literature list."
 
@@ -4875,10 +4739,6 @@ msgstr ""
 "in the OpenBib-navigation bar. You will be directed to the login form and "
 "can decide which identity to log in under. You can select the University "
 "Library (USB) or institutes that conduct online reservations."
-
-#: ../modules/OpenBib2/Handler/Apache/MailPassword.pm:174
-msgid "Ihr vergessenes KUG-Passwort"
-msgstr "Your forgotten KUG password"
 
 #: ../modules/OpenBib/Handler/Apache/MailPassword.pm:156
 msgid "Ihr vergessenes Passwort"
@@ -5037,7 +4897,7 @@ msgstr ""
 "you have and haven't accessed, archive information, use data-mining with "
 "specialized search engine technology etc."
 
-#: ../templates/views/richter/info_elise_richter:79
+#: ../templates/views/richter/info_elise_richter:87
 msgid ""
 "Im Jahr 2008 wurde in Wien Floridsdorf (21. Bezirk) der Elise-Richter-Weg "
 "nach ihr benannt."
@@ -5085,6 +4945,12 @@ msgstr ""
 "it will be linked in the category TOC / Summary, TOC / PDF or URL(under the "
 "heading Digital Table of Contents (PDF/Digitool)). Currently it is not "
 "possible to search within tables of content in the KUG."
+
+#: ../templates/views/richter/browse_title_html:61
+msgid ""
+"Im Register werden sie unter dem Namen der Zeitschrift\n"
+"aufgef&uuml;hrt."
+msgstr "In the register they can be found by the name of the journal."
 
 #: ../templates/admin_database_record_edit:66
 #: ../templates/admin_database_record_html:49 ../templates/admin_editcat:68
@@ -5525,7 +5391,7 @@ msgstr "Index"
 #: ../templates/search_classification:47 ../templates/search_corporatebody:47
 #: ../templates/search_person:47 ../templates/search_subject:47
 #: ../templates/searchform:149 ../templates/views/einbaende/searchmask:146
-#: ../templates/views/richter/searchform:112
+#: ../templates/views/richter/searchform:113
 msgid "Index-Suche"
 msgstr "Index search"
 
@@ -5610,7 +5476,7 @@ msgstr "Initial search"
 #: ../templates/searchform:152 ../templates/searchform_query:84
 #: ../templates/views/einbaende/searchmask:149
 #: ../templates/views/inst501/searchmask_query:78
-#: ../templates/views/richter/searchform:115
+#: ../templates/views/richter/searchform:116
 #: ../templates/views/richter/searchform_query:84
 msgid "Institutionen"
 msgstr "Institutions"
@@ -5695,7 +5561,7 @@ msgstr "Inventory number"
 #: ../templates/old/litlists_tit_as_text.old:29
 #: ../templates/profile/digicard/search_showtitset_categories:233
 #: ../templates/profile/sammlungen/views/inst404abklatsch/search_showtitset_categories:229
-#: ../templates/title_html_categories:272
+#: ../templates/title_html_categories:275
 msgid "Inventarnummer       "
 msgstr "Inventory number     "
 
@@ -5844,7 +5710,7 @@ msgstr "KUG Tags"
 msgid "KUG-Versionen"
 msgstr "KUG versions"
 
-#: ../templates/externaljump:149
+#: ../templates/externaljump:158
 msgid "Kartenkatalog Philosoph. Fakultät"
 msgstr "Digital card catalogue (faculty of arts)"
 
@@ -5936,8 +5802,6 @@ msgstr "Category"
 
 #: ../modules/OpenBib/Handler/Apache/DBIS.pm:198
 #: ../modules/OpenBib/Handler/Apache/EZB.pm:197
-#: ../modules/OpenBib2/Handler/Apache/DBIS.pm:225
-#: ../modules/OpenBib2/Handler/Apache/EZB.pm:217
 msgid "Kein Suchbegriff vorhanden"
 msgstr "No search term entered"
 
@@ -5958,51 +5822,29 @@ msgstr "No action available"
 
 #: ../modules/OpenBib/Handler/Apache/DBIS.pm:255
 #: ../modules/OpenBib/Handler/Apache/DBIS.pm:289
-#: ../modules/OpenBib2/Handler/Apache/DBIS.pm:296
-#: ../modules/OpenBib2/Handler/Apache/DBIS.pm:337
 msgid "Keine Dbid vorhanden"
 msgstr "No Dbid available"
 
 #: ../modules/OpenBib/Handler/Apache/EZB.pm:257
 #: ../modules/OpenBib/Handler/Apache/EZB.pm:291
-#: ../modules/OpenBib2/Handler/Apache/EZB.pm:291
-#: ../modules/OpenBib2/Handler/Apache/EZB.pm:332
 msgid "Keine Journalid vorhanden"
 msgstr "No journalid available"
 
 #: ../modules/OpenBib/Handler/Apache/DBIS.pm:229
 #: ../modules/OpenBib/Handler/Apache/EZB.pm:230
-#: ../modules/OpenBib2/Handler/Apache/DBIS.pm:263
-#: ../modules/OpenBib2/Handler/Apache/EZB.pm:257
 msgid "Keine Notation vorhanden"
 msgstr "No classification available"
 
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:1202
-#: ../modules/OpenBib2/Handler/Apache/LitLists.pm:555
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1444
 msgid "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 msgstr "No title id, title database or literature list available."
 
 #: ../modules/OpenBib/Handler/Apache/DBIS.pm:294
 #: ../modules/OpenBib/Handler/Apache/EZB.pm:296
-#: ../modules/OpenBib2/Handler/Apache/DBIS.pm:342
-#: ../modules/OpenBib2/Handler/Apache/DatabaseProfile.pm:205
-#: ../modules/OpenBib2/Handler/Apache/EZB.pm:337
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:723
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:863
 msgid "Keine gültige Aktion"
 msgstr "Invalid action"
 
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:1762
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:1762
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:1762
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:1762
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:1762
-msgid "Keine gültige Aktion oder Session"
-msgstr "Invalid action or session"
-
 #: ../modules/OpenBib/Handler/Apache/ExternalJump.pm:142
-#: ../modules/OpenBib2/Handler/Apache/ExternalJump.pm:142
 msgid "Keine gültige Anfrage-ID"
 msgstr "Invalid request id"
 
@@ -6113,7 +5955,7 @@ msgstr ""
 "Search with the given ISBN. The user gets feedback on the availability of "
 "these informations with a corresponding picture."
 
-#: ../templates/search_more_tips:65
+#: ../templates/search_more_tips:69
 msgid ""
 "Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten "
 "Zeitschriftenartikel nicht finden?"
@@ -6180,7 +6022,8 @@ msgstr "Removal of selected profile"
 msgid "Latein"
 msgstr "Latin"
 
-#: ../templates/views/richter/info_helene_richter:36
+#: ../templates/views/richter/info_elise_richter:44
+#: ../templates/views/richter/info_helene_richter:44
 msgid "Lebenslauf"
 msgstr "Vita"
 
@@ -6363,7 +6206,7 @@ msgstr "Local"
 #: ../templates/old/litlists_tit_as_text.old:28
 #: ../templates/profile/digicard/search_showtitset_categories:232
 #: ../templates/profile/sammlungen/views/inst404abklatsch/search_showtitset_categories:228
-#: ../templates/title_html_categories:271
+#: ../templates/title_html_categories:274
 msgid "Lokale Signatur      "
 msgstr "Local location mark  "
 
@@ -6500,7 +6343,7 @@ msgstr "Would you like to refine your search request?"
 msgid "Maler / Zeichner"
 msgstr "Painter/Drawer"
 
-#: ../templates/collection_html_full:267
+#: ../templates/collection_html_full:270
 #: ../templates/database/einbaende/search_showtitset:367
 #: ../templates/database/einbaende/search_showtitset_1:348
 #: ../templates/database/umschlaege/search_showtitset:337
@@ -6533,7 +6376,7 @@ msgstr "Mash-Ups with Social Networking and External Services"
 msgid "Maximale Trefferzahl pro Katalog"
 msgstr "Maximum hits per catalogue"
 
-#: ../templates/externaljump:140 ../templates/info_help:607
+#: ../templates/externaljump:149 ../templates/info_help:607
 #: ../templates/profile/kug/info_help:620
 #: ../templates/profile/kug/views/kug/info.old:624
 msgid "MedPilot"
@@ -7168,7 +7011,7 @@ msgstr "Dutch"
 #: ../templates/searchform:152 ../templates/searchform_query:94
 #: ../templates/user_preferences_html:267
 #: ../templates/views/einbaende/searchmask:149
-#: ../templates/views/richter/searchform:115
+#: ../templates/views/richter/searchform:116
 #: ../templates/views/richter/searchform_query:94
 msgid "Notation"
 msgstr "Classification"
@@ -7465,7 +7308,7 @@ msgstr "Person/Corporate Body"
 #: ../templates/views/einbaende/searchmask:149
 #: ../templates/views/inst501/searchmask_query:74
 #: ../templates/views/kapsel/clouds_navigation:18
-#: ../templates/views/richter/searchform:115
+#: ../templates/views/richter/searchform:116
 #: ../templates/views/richter/searchform_query:79
 msgid "Personen"
 msgstr "Persons"
@@ -7601,6 +7444,7 @@ msgid "Protokoll"
 msgstr "Protocol"
 
 #: ../templates/views/portrait/clouds_navigation:17
+#: ../templates/views/richter/browse_title_html:39
 msgid "Provenienz"
 msgstr "Provenance"
 
@@ -7615,8 +7459,8 @@ msgstr "Pseudonym"
 msgid "Publikationen"
 msgstr "Publications"
 
-#: ../templates/views/richter/info_elise_richter:81
-#: ../templates/views/richter/info_helene_richter:58
+#: ../templates/views/richter/info_elise_richter:89
+#: ../templates/views/richter/info_helene_richter:66
 #: ../templates/views/richter/info_portal:68
 msgid "Quelle:"
 msgstr "Source:"
@@ -7870,7 +7714,7 @@ msgstr "Review"
 msgid "Rezensionen"
 msgstr "Reviews"
 
-#: ../templates/views/richter/info_elise_richter:68
+#: ../templates/views/richter/info_elise_richter:76
 msgid ""
 "Richter war auch politisch aktiv, gründete den 'Verband der\n"
 "Akademikerinnen' und rief 1927 zur Gründung einer Frauenpartei\n"
@@ -8001,7 +7845,7 @@ msgstr "Informatio about subject heading: %1 in catalogue %2"
 #: ../templates/views/inst501/searchmask_query:82
 #: ../templates/views/kapsel/clouds_navigation:15
 #: ../templates/views/portrait/virtualsearch_result_item:122
-#: ../templates/views/richter/searchform:115
+#: ../templates/views/richter/searchform:116
 #: ../templates/views/richter/searchform_query:89
 msgid "Schlagworte"
 msgstr "Subject headings"
@@ -8196,71 +8040,15 @@ msgid ""
 "ihren Inhalten wie geplant zu sehen."
 msgstr "You need a browser that supports frames."
 
-#: ../modules/OpenBib/Handler/Apache.pm:373
+#: ../modules/OpenBib/Handler/Apache.pm:374
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:271
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:331
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:491
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:177
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:241
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:323
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:446
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:502
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:658
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:179
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:257
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:341
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:414
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:478
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:583
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:177
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:248
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:371
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:440
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:597
-#: ../modules/OpenBib2/Handler/Apache/Admin/Logout.pm:111
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:178
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:248
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:350
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:430
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:524
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:640
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:176
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:239
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:334
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:406
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:490
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:588
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:241
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:599
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:179
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:246
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:346
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:463
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:563
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:719
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:767
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:241
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:599
-#: ../modules/OpenBib2/Handler/Apache/Admin/Status.pm:114
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:241
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:599
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:241
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:599
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:241
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:599
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:177
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:238
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:349
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:444
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:544
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:676
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "You are accessing an unauthorized session"
 
-#. ("<a href=\"$config->{base_loc}/$view/$config->{databasechoice_loc}\" target=\"body\">","</a>")
 #. ("<a href=\"$path_prefix/$config->{databasechoice_loc}\" target=\"body\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/Search.pm:1627
-#: ../modules/OpenBib2/Handler/Apache/Search.pm:1724
 msgid ""
 "Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie "
 "keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die "
@@ -8271,22 +8059,6 @@ msgstr ""
 "select any %1catalogues%2 or search profiles. Please select suitable "
 "catalogues/search profiles or click on <b>Search in all catalogues</b>."
 
-#: ../modules/OpenBib2/Handler/Apache/Admin/Login.pm:158
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:174
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:560
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:174
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:560
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:174
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:560
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:174
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:560
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:174
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:560
-msgid ""
-"Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer "
-"eingegeben"
-msgstr "You didn't enter any or not the correct admin username"
-
 #: ../templates/circulation_make_order:43
 msgid "Sie haben dieses Medium bereits bestellt"
 msgstr "This medium is already ordered by you"
@@ -8295,52 +8067,29 @@ msgstr "This medium is already ordered by you"
 msgid "Sie haben dieses Medium bereits vorgemerkt"
 msgstr "This medium is already reserved for you"
 
-#. ("<a href=\"http://$config->{servername}$config->{base_loc}/$view/$config->{selfreg_loc}?action=show\">","</a>")
 #. ("<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/Registration.pm:261
-#: ../modules/OpenBib2/Handler/Apache/Registration.pm:302
 msgid ""
 "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurück%2 und "
 "versuchen Sie es erneut."
 msgstr "You just entered a wrong captcha! Please %1return%2 and correct your input."
 
-#: ../modules/OpenBib2/Handler/Apache/Admin/Login.pm:163
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:179
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:565
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:179
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:565
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:179
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:565
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:179
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:565
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:179
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:565
-msgid "Sie haben ein falsches Passwort eingegeben"
-msgstr "You entered a wrong password"
-
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:925
 #: ../modules/OpenBib/Handler/Apache/MailCollection.pm:113
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1155
-#: ../modules/OpenBib2/Handler/Apache/MailCollection.pm:122
 msgid "Sie haben eine ungültige Mailadresse eingegeben."
 msgstr "You entered a wrong e-mail address."
 
 #: ../modules/OpenBib/Handler/Apache/User/Preferences.pm:352
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:516
-#: ../modules/OpenBib2/Handler/Apache/UserPrefs.pm:263
 msgid ""
 "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte "
 "stimmen nicht überein"
 msgstr "You either entered no password or the two passwords didn't match."
 
 #: ../modules/OpenBib/Handler/Apache/Login.pm:391
-#: ../modules/OpenBib2/Handler/Apache/Login.pm:420
 msgid "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 msgstr "You either entered no password or no login name"
 
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:1088
-#: ../modules/OpenBib2/Handler/Apache/LitLists.pm:541
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1332
 msgid ""
 "Sie haben entweder keine entsprechende Liste eingegeben oder Titel und "
 "Datenbank existieren nicht."
@@ -8357,24 +8106,17 @@ msgid "Sie haben keine Bestellungen get&auml;tigt."
 msgstr "You didn't order anything."
 
 #: ../modules/OpenBib/Handler/Apache/MailPassword.pm:113
-#: ../modules/OpenBib2/Handler/Apache/MailPassword.pm:131
 msgid "Sie haben keine E-Mail Adresse eingegeben"
 msgstr "You didn't enter an e-mail address"
 
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:920
 #: ../modules/OpenBib/Handler/Apache/MailCollection.pm:108
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1150
-#: ../modules/OpenBib2/Handler/Apache/MailCollection.pm:117
 msgid "Sie haben keine Mailadresse eingegeben."
 msgstr "You didn't enter an e-mail address."
 
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:1270
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:274
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:595
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1500
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:352
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:740
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Collection.pm:286
 msgid "Sie haben keine Titel ausgew&auml;hlt."
 msgstr "You didn't select a title."
 
@@ -8382,10 +8124,8 @@ msgstr "You didn't select a title."
 msgid "Sie haben keine Vormerkungen getätigt."
 msgstr "No reservations available."
 
-#. ("<a href=\"http://$config->{servername}$config->{base_loc}/$view/$config->{selfreg_loc}?action=show\">","</a>")
 #. ("<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/Registration.pm:243
-#: ../modules/OpenBib2/Handler/Apache/Registration.pm:284
 msgid ""
 "Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte %1zurück%2 "
 "und korrigieren Sie Ihre Eingabe"
@@ -8394,24 +8134,8 @@ msgstr ""
 "input."
 
 #: ../modules/OpenBib/Handler/Apache/User/Profile.pm:340
-#: ../modules/OpenBib2/Handler/Apache/DatabaseProfile.pm:173
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:500
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:691
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:831
 msgid "Sie haben keinen Profilnamen eingegeben!"
 msgstr "You didn't enter a profile name!"
-
-#: ../modules/OpenBib2/Handler/Apache/DatabaseProfile.pm:115
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:170
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:248
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:335
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:421
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:492
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:573
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:633
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:773
-msgid "Sie haben sich nicht authentifiziert."
-msgstr "You didn't login."
 
 #: ../templates/info_tutorials:40
 msgid "Sie haben wenig Zeit und suchen einen bestimmten Titel?!"
@@ -8429,7 +8153,6 @@ msgstr ""
 "it via e-mail."
 
 #: ../modules/OpenBib/Handler/Apache/Login.pm:394
-#: ../modules/OpenBib2/Handler/Apache/Login.pm:423
 msgid ""
 "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht "
 "erfolgreich authentifiziert werden"
@@ -8584,24 +8307,14 @@ msgstr ""
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:1248
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:252
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:573
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1478
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:330
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:718
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Collection.pm:264
 msgid "Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."
 msgstr "You have to enter one or more tags for your selected titles."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/DatabaseRSS.pm:211
-#: ../modules/OpenBib2/Handler/Apache/Admin/DatabaseRSS.pm:353
 msgid "Sie müssen einen RSS-Typ eingeben."
 msgstr "You have to enter a RSS type."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Server.pm:158
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:1063
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:1063
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:1063
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:1063
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:1063
 msgid "Sie müssen einen Servernamen eingeben."
 msgstr "You have to enter a server name"
 
@@ -8609,69 +8322,31 @@ msgstr "You have to enter a server name"
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:240
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:560
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:818
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1466
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:318
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:705
-#: ../modules/OpenBib2/Handler/Apache/LitLists.pm:453
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1049
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Collection.pm:252
 msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "You have to enter a title for your literature list."
 
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:868
-#: ../modules/OpenBib2/Handler/Apache/LitLists.pm:481
-#: ../modules/OpenBib2/Handler/Apache/Resource/LitList.pm:1099
 msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 msgstr "You have to enter a title or type for your literature list."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Authentication.pm:195
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:1573
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:1573
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:1573
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:1573
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:1573
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "You have to enter at least a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:186
 #: ../modules/OpenBib/Handler/Apache/Admin/Library.pm:209
-#: ../modules/OpenBib2/Handler/Apache/Admin/Database.pm:386
-#: ../modules/OpenBib2/Handler/Apache/Admin/Library.pm:311
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:629
-#: ../modules/OpenBib2/Handler/Apache/Admin/Session.pm:409
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:629
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:629
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:629
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:629
 msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a catalogue name and a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Subject.pm:162
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:983
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:983
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:983
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:983
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:983
 msgid "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 msgstr "You have to enter at least the name of your subject."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:182
-#: ../modules/OpenBib2/Handler/Apache/Admin/Profile.pm:345
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:806
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:806
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:806
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:806
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:806
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a profile name and a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:216
-#: ../modules/OpenBib2/Handler/Apache/Admin/OrganizationalUnit.pm:367
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:888
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:888
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:888
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:888
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:888
 msgid ""
 "Sie müssen mindestens einen Profilnamen, den Namen einer "
 "Organisationseinheit und deren Beschreibung eingeben."
@@ -8680,12 +8355,6 @@ msgstr ""
 "unit and its description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/View.pm:204
-#: ../modules/OpenBib2/Handler/Apache/Admin/Server.pm:1141
-#: ../modules/OpenBib2/Handler/Apache/Admin/Statistics.pm:1141
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subject.pm:1141
-#: ../modules/OpenBib2/Handler/Apache/Admin/Subjects.pm:1141
-#: ../modules/OpenBib2/Handler/Apache/Admin/User.pm:1141
-#: ../modules/OpenBib2/Handler/Apache/Admin/View.pm:365
 msgid ""
 "Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-"
 "Profil eingeben."
@@ -8696,10 +8365,6 @@ msgstr ""
 #: ../templates/registration_success:33
 msgid "Sie sind erfolgreich registriert"
 msgstr "Your registration was successful"
-
-#: ../modules/OpenBib2/Handler/Apache/LitLists.pm:271
-msgid "Sie sind nicht authentifiziert"
-msgstr "You are not authenticated."
 
 #: ../templates/info_tutorials:41
 msgid "Sie suchen Literatur zu einem bestimmten Thema?!"
@@ -8965,6 +8630,9 @@ msgstr "Specific KUG entry points, called <i>views</i>:"
 #: ../templates/views/kwinter/searchmask_simple:31
 #: ../templates/views/rheinlandbib/searchmask:31
 #: ../templates/views/rheinlandbib/searchmask_simple:31
+#: ../templates/views/richter/browse_title_html:28
+#: ../templates/views/richter/info_elise_richter:26
+#: ../templates/views/richter/info_helene_richter:26
 #: ../templates/views/richter/info_portal:26
 #: ../templates/views/richter/searchform_simple:511
 #: ../templates/views/richter/searchform_simple:54
@@ -8980,9 +8648,9 @@ msgstr "Language icon for %1"
 msgid "Sprache"
 msgstr "Language"
 
-#: ../templates/externaljump:104 ../templates/externaljump:113
-#: ../templates/externaljump:123 ../templates/externaljump:133
-#: ../templates/externaljump:143 ../templates/externaljump:150
+#: ../templates/externaljump:113 ../templates/externaljump:122
+#: ../templates/externaljump:132 ../templates/externaljump:142
+#: ../templates/externaljump:152 ../templates/externaljump:159
 msgid "Sprung in externe Recherche"
 msgstr "Jump to external search"
 
@@ -9044,7 +8712,7 @@ msgstr "Location"
 #: ../templates/old/litlists_tit_as_text.old:27
 #: ../templates/profile/digicard/search_showtitset_categories:231
 #: ../templates/profile/sammlungen/views/inst404abklatsch/search_showtitset_categories:227
-#: ../templates/title_html_categories:270
+#: ../templates/title_html_categories:273
 msgid "Standort             "
 msgstr "Location             "
 
@@ -9225,7 +8893,7 @@ msgstr "Search"
 #: ../templates/views/portrait/searchmask:72
 #: ../templates/views/portrait/searchmask_simple:69
 #: ../templates/views/richter/mainnavigation:29
-#: ../templates/views/richter/searchform:115
+#: ../templates/views/richter/searchform:116
 #: ../templates/views/richter/searchform_query:142
 #: ../templates/views/richter/searchform_simple:147
 #: ../templates/views/richter/searchform_simple:238
@@ -9236,7 +8904,7 @@ msgstr "Search"
 msgid "Suchen"
 msgstr "Search"
 
-#: ../templates/search_more_tips:68
+#: ../templates/search_more_tips:72
 msgid ""
 "Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. "
 "Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
@@ -9247,7 +8915,7 @@ msgstr ""
 "this portal."
 
 #. ("<a href=\"${path_prefix}/${config.get('redirect_loc')
-#: ../templates/search_more_tips:75
+#: ../templates/search_more_tips:79
 msgid ""
 "Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
 "Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
@@ -9396,7 +9064,7 @@ msgstr "Systematic browsing"
 #: ../templates/database/islandica/visible_categories_titset:84
 #: ../templates/database/lefort/visible_categories_titset:85
 #: ../templates/database/nationallizenzen/visible_categories_titset:84
-#: ../templates/database/richter/visible_categories_titset:84
+#: ../templates/database/richter/visible_categories_title:84
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:85
 #: ../templates/database/umschlaege/visible_categories_titset:85
 #: ../templates/database/wallraf/visible_categories_titset:85
@@ -9423,7 +9091,7 @@ msgstr "Language"
 #: ../templates/database/kapsel/visible_categories_titset:86
 #: ../templates/database/lefort/visible_categories_titset:89
 #: ../templates/database/nationallizenzen/visible_categories_titset:88
-#: ../templates/database/richter/visible_categories_titset:88
+#: ../templates/database/richter/visible_categories_title:88
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:89
 #: ../templates/database/umschlaege/visible_categories_titset:89
 #: ../templates/database/wallraf/visible_categories_titset:89
@@ -9450,7 +9118,7 @@ msgstr "Added entry"
 #: ../templates/database/kapsel/visible_categories_titset:46
 #: ../templates/database/lefort/visible_categories_titset:47
 #: ../templates/database/nationallizenzen/visible_categories_titset:46
-#: ../templates/database/richter/visible_categories_titset:46
+#: ../templates/database/richter/visible_categories_title:46
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:47
 #: ../templates/database/umschlaege/visible_categories_titset:47
 #: ../templates/database/wallraf/visible_categories_titset:47
@@ -9478,7 +9146,7 @@ msgstr "Country of publication"
 #: ../templates/database/kapsel/visible_categories_titset:21
 #: ../templates/database/lefort/visible_categories_titset:21
 #: ../templates/database/nationallizenzen/visible_categories_titset:21
-#: ../templates/database/richter/visible_categories_titset:21
+#: ../templates/database/richter/visible_categories_title:21
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:21
 #: ../templates/database/umschlaege/visible_categories_titset:22
 #: ../templates/database/wallraf/visible_categories_titset:21
@@ -9505,7 +9173,7 @@ msgstr "Volume"
 #: ../templates/database/kapsel/visible_categories_titset:16
 #: ../templates/database/lefort/visible_categories_titset:16
 #: ../templates/database/nationallizenzen/visible_categories_titset:16
-#: ../templates/database/richter/visible_categories_titset:16
+#: ../templates/database/richter/visible_categories_title:16
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:16
 #: ../templates/database/wallraf/visible_categories_titset:16
 #: ../templates/database/wickrath/visible_categories_titset:16
@@ -9552,7 +9220,7 @@ msgstr "Author"
 #: ../templates/database/landschaft/visible_categories_titset:18
 #: ../templates/database/lefort/visible_categories_titset:17
 #: ../templates/database/nationallizenzen/visible_categories_titset:17
-#: ../templates/database/richter/visible_categories_titset:17
+#: ../templates/database/richter/visible_categories_title:17
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:17
 #: ../templates/database/umschlaege/visible_categories_titset:19
 #: ../templates/database/wallraf/visible_categories_titset:17
@@ -9607,7 +9275,7 @@ msgstr "Displayed person"
 #: ../templates/database/landschaft/visible_categories_titset:19
 #: ../templates/database/lefort/visible_categories_titset:18
 #: ../templates/database/nationallizenzen/visible_categories_titset:18
-#: ../templates/database/richter/visible_categories_titset:18
+#: ../templates/database/richter/visible_categories_title:18
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:18
 #: ../templates/database/umschlaege/visible_categories_titset:20
 #: ../templates/database/wallraf/visible_categories_titset:18
@@ -9637,7 +9305,7 @@ msgstr "Other persons"
 #: ../templates/database/kapsel/visible_categories_titset:19
 #: ../templates/database/lefort/visible_categories_titset:19
 #: ../templates/database/nationallizenzen/visible_categories_titset:19
-#: ../templates/database/richter/visible_categories_titset:19
+#: ../templates/database/richter/visible_categories_title:19
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:19
 #: ../templates/database/wallraf/visible_categories_titset:19
 #: ../templates/database/wickrath/visible_categories_titset:19
@@ -9690,7 +9358,7 @@ msgstr "Cooperation"
 #: ../templates/database/kapsel/visible_categories_titset:20
 #: ../templates/database/lefort/visible_categories_titset:20
 #: ../templates/database/nationallizenzen/visible_categories_titset:20
-#: ../templates/database/richter/visible_categories_titset:20
+#: ../templates/database/richter/visible_categories_title:20
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:20
 #: ../templates/database/umschlaege/visible_categories_titset:21
 #: ../templates/database/wallraf/visible_categories_titset:20
@@ -9729,7 +9397,7 @@ msgstr "Corporate body"
 #: ../templates/database/kapsel/visible_categories_titset:25
 #: ../templates/database/lefort/visible_categories_titset:25
 #: ../templates/database/nationallizenzen/visible_categories_titset:25
-#: ../templates/database/richter/visible_categories_titset:25
+#: ../templates/database/richter/visible_categories_title:25
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:25
 #: ../templates/database/umschlaege/visible_categories_titset:26
 #: ../templates/database/wallraf/visible_categories_titset:25
@@ -9756,7 +9424,7 @@ msgstr "Statement of collective uniform title"
 #: ../templates/database/kapsel/visible_categories_titset:23
 #: ../templates/database/lefort/visible_categories_titset:23
 #: ../templates/database/nationallizenzen/visible_categories_titset:23
-#: ../templates/database/richter/visible_categories_titset:23
+#: ../templates/database/richter/visible_categories_title:23
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:23
 #: ../templates/database/umschlaege/visible_categories_titset:24
 #: ../templates/database/wallraf/visible_categories_titset:23
@@ -9787,7 +9455,7 @@ msgstr "Motif"
 #: ../templates/database/kapsel/visible_categories_titset:22
 #: ../templates/database/lefort/visible_categories_titset:22
 #: ../templates/database/nationallizenzen/visible_categories_titset:22
-#: ../templates/database/richter/visible_categories_titset:22
+#: ../templates/database/richter/visible_categories_title:22
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:22
 #: ../templates/database/umschlaege/visible_categories_titset:23
 #: ../templates/database/wallraf/visible_categories_titset:22
@@ -9817,7 +9485,7 @@ msgstr "Title"
 #: ../templates/database/islandica/visible_categories_titset:24
 #: ../templates/database/lefort/visible_categories_titset:24
 #: ../templates/database/nationallizenzen/visible_categories_titset:24
-#: ../templates/database/richter/visible_categories_titset:24
+#: ../templates/database/richter/visible_categories_title:24
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:24
 #: ../templates/database/umschlaege/visible_categories_titset:25
 #: ../templates/database/wallraf/visible_categories_titset:24
@@ -9865,7 +9533,7 @@ msgstr "Image title"
 #: ../templates/database/kapsel/visible_categories_titset:28
 #: ../templates/database/lefort/visible_categories_titset:29
 #: ../templates/database/nationallizenzen/visible_categories_titset:28
-#: ../templates/database/richter/visible_categories_titset:28
+#: ../templates/database/richter/visible_categories_title:28
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:29
 #: ../templates/database/umschlaege/visible_categories_titset:29
 #: ../templates/database/wallraf/visible_categories_titset:29
@@ -9892,7 +9560,7 @@ msgstr "Title"
 #: ../templates/database/kapsel/visible_categories_titset:50
 #: ../templates/database/lefort/visible_categories_titset:51
 #: ../templates/database/nationallizenzen/visible_categories_titset:50
-#: ../templates/database/richter/visible_categories_titset:50
+#: ../templates/database/richter/visible_categories_title:50
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:51
 #: ../templates/database/umschlaege/visible_categories_titset:51
 #: ../templates/database/wallraf/visible_categories_titset:51
@@ -9927,7 +9595,7 @@ msgstr "Material"
 #: ../templates/database/lefort/visible_categories_titset:30
 #: ../templates/database/nationallizenzen/visible_categories_titset:29
 #: ../templates/database/portrait/visible_categories_titset:21
-#: ../templates/database/richter/visible_categories_titset:29
+#: ../templates/database/richter/visible_categories_title:29
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:30
 #: ../templates/database/umschlaege/visible_categories_titset:30
 #: ../templates/database/wallraf/visible_categories_titset:30
@@ -9964,7 +9632,7 @@ msgstr "Edition"
 #: ../templates/database/kapsel/visible_categories_titset:27
 #: ../templates/database/lefort/visible_categories_titset:27
 #: ../templates/database/nationallizenzen/visible_categories_titset:27
-#: ../templates/database/richter/visible_categories_titset:27
+#: ../templates/database/richter/visible_categories_title:27
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:27
 #: ../templates/database/umschlaege/visible_categories_titset:28
 #: ../templates/database/wallraf/visible_categories_titset:27
@@ -9992,7 +9660,7 @@ msgstr "Parallel title"
 #: ../templates/database/landschaft/visible_categories_titset:30
 #: ../templates/database/lefort/visible_categories_titset:33
 #: ../templates/database/nationallizenzen/visible_categories_titset:32
-#: ../templates/database/richter/visible_categories_titset:32
+#: ../templates/database/richter/visible_categories_title:32
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:33
 #: ../templates/database/umschlaege/visible_categories_titset:33
 #: ../templates/database/wallraf/visible_categories_titset:33
@@ -10023,7 +9691,7 @@ msgstr "Descriptive form"
 #: ../templates/database/kapsel/visible_categories_titset:33
 #: ../templates/database/lefort/visible_categories_titset:34
 #: ../templates/database/nationallizenzen/visible_categories_titset:33
-#: ../templates/database/richter/visible_categories_titset:33
+#: ../templates/database/richter/visible_categories_title:33
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:34
 #: ../templates/database/umschlaege/visible_categories_titset:34
 #: ../templates/database/wallraf/visible_categories_titset:34
@@ -10055,7 +9723,7 @@ msgstr "Subseries"
 #: ../templates/database/lefort/visible_categories_titset:28
 #: ../templates/database/lefort/visible_categories_titset:31
 #: ../templates/database/nationallizenzen/visible_categories_titset:30
-#: ../templates/database/richter/visible_categories_titset:30
+#: ../templates/database/richter/visible_categories_title:30
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:28
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:31
 #: ../templates/database/umschlaege/visible_categories_titset:31
@@ -10088,7 +9756,7 @@ msgstr "Attached volumes"
 #: ../templates/database/kapsel/visible_categories_titset:31
 #: ../templates/database/lefort/visible_categories_titset:32
 #: ../templates/database/nationallizenzen/visible_categories_titset:31
-#: ../templates/database/richter/visible_categories_titset:31
+#: ../templates/database/richter/visible_categories_title:31
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:32
 #: ../templates/database/umschlaege/visible_categories_titset:32
 #: ../templates/database/wallraf/visible_categories_titset:32
@@ -10115,7 +9783,7 @@ msgstr "Remainder of title for whole item"
 #: ../templates/database/kapsel/visible_categories_titset:26
 #: ../templates/database/lefort/visible_categories_titset:26
 #: ../templates/database/nationallizenzen/visible_categories_titset:26
-#: ../templates/database/richter/visible_categories_titset:26
+#: ../templates/database/richter/visible_categories_title:26
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:26
 #: ../templates/database/umschlaege/visible_categories_titset:27
 #: ../templates/database/wallraf/visible_categories_titset:26
@@ -10146,7 +9814,7 @@ msgstr "Provenance"
 #: ../templates/database/lefort/visible_categories_titset:35
 #: ../templates/database/nationallizenzen/visible_categories_titset:34
 #: ../templates/database/portrait/visible_categories_titset:23
-#: ../templates/database/richter/visible_categories_titset:34
+#: ../templates/database/richter/visible_categories_title:34
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:35
 #: ../templates/database/umschlaege/visible_categories_titset:35
 #: ../templates/database/wallraf/visible_categories_titset:35
@@ -10173,7 +9841,7 @@ msgstr "Edition"
 #: ../templates/database/kapsel/visible_categories_titset:39
 #: ../templates/database/lefort/visible_categories_titset:40
 #: ../templates/database/nationallizenzen/visible_categories_titset:39
-#: ../templates/database/richter/visible_categories_titset:39
+#: ../templates/database/richter/visible_categories_title:39
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:40
 #: ../templates/database/umschlaege/visible_categories_titset:40
 #: ../templates/database/wallraf/visible_categories_titset:40
@@ -10200,7 +9868,7 @@ msgstr "Dates/periods of publication"
 #: ../templates/database/kapsel/visible_categories_titset:56
 #: ../templates/database/lefort/visible_categories_titset:57
 #: ../templates/database/nationallizenzen/visible_categories_titset:56
-#: ../templates/database/richter/visible_categories_titset:56
+#: ../templates/database/richter/visible_categories_title:56
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:57
 #: ../templates/database/umschlaege/visible_categories_titset:57
 #: ../templates/database/wallraf/visible_categories_titset:57
@@ -10233,7 +9901,7 @@ msgstr "Height x width"
 #: ../templates/database/lefort/visible_categories_titset:36
 #: ../templates/database/nationallizenzen/visible_categories_titset:35
 #: ../templates/database/portrait/visible_categories_titset:31
-#: ../templates/database/richter/visible_categories_titset:35
+#: ../templates/database/richter/visible_categories_title:35
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:36
 #: ../templates/database/umschlaege/visible_categories_titset:36
 #: ../templates/database/wallraf/visible_categories_titset:36
@@ -10272,7 +9940,7 @@ msgstr "Depository"
 #: ../templates/database/lefort/visible_categories_titset:37
 #: ../templates/database/nationallizenzen/visible_categories_titset:36
 #: ../templates/database/portrait/visible_categories_titset:32
-#: ../templates/database/richter/visible_categories_titset:36
+#: ../templates/database/richter/visible_categories_title:36
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:37
 #: ../templates/database/umschlaege/visible_categories_titset:37
 #: ../templates/database/wallraf/visible_categories_titset:37
@@ -10301,7 +9969,7 @@ msgstr "Publisher"
 #: ../templates/database/kapsel/visible_categories_titset:45
 #: ../templates/database/lefort/visible_categories_titset:46
 #: ../templates/database/nationallizenzen/visible_categories_titset:45
-#: ../templates/database/richter/visible_categories_titset:45
+#: ../templates/database/richter/visible_categories_title:45
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:46
 #: ../templates/database/umschlaege/visible_categories_titset:46
 #: ../templates/database/wallraf/visible_categories_titset:46
@@ -10333,7 +10001,7 @@ msgstr "Printer"
 #: ../templates/database/landschaft/visible_categories_titset:39
 #: ../templates/database/lefort/visible_categories_titset:39
 #: ../templates/database/nationallizenzen/visible_categories_titset:38
-#: ../templates/database/richter/visible_categories_titset:38
+#: ../templates/database/richter/visible_categories_title:38
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:39
 #: ../templates/database/umschlaege/visible_categories_titset:39
 #: ../templates/database/wallraf/visible_categories_titset:39
@@ -10368,7 +10036,7 @@ msgstr "Year"
 #: ../templates/database/kapsel/visible_categories_titset:37
 #: ../templates/database/lefort/visible_categories_titset:38
 #: ../templates/database/nationallizenzen/visible_categories_titset:37
-#: ../templates/database/richter/visible_categories_titset:37
+#: ../templates/database/richter/visible_categories_title:37
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:38
 #: ../templates/database/umschlaege/visible_categories_titset:38
 #: ../templates/database/wallraf/visible_categories_titset:38
@@ -10415,7 +10083,7 @@ msgstr "Year"
 #: ../templates/database/lefort/visible_categories_titset:50
 #: ../templates/database/nationallizenzen/visible_categories_titset:49
 #: ../templates/database/portrait/visible_categories_titset:35
-#: ../templates/database/richter/visible_categories_titset:49
+#: ../templates/database/richter/visible_categories_title:49
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:50
 #: ../templates/database/umschlaege/visible_categories_titset:50
 #: ../templates/database/wallraf/visible_categories_titset:50
@@ -10462,8 +10130,8 @@ msgstr "Size of letters"
 #: ../templates/database/nationallizenzen/visible_categories_titset:44
 #: ../templates/database/nationallizenzen/visible_categories_titset:57
 #: ../templates/database/portrait/visible_categories_titset:37
-#: ../templates/database/richter/visible_categories_titset:44
-#: ../templates/database/richter/visible_categories_titset:57
+#: ../templates/database/richter/visible_categories_title:44
+#: ../templates/database/richter/visible_categories_title:57
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:45
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:58
 #: ../templates/database/umschlaege/visible_categories_titset:45
@@ -10499,7 +10167,7 @@ msgstr "Illustration statement"
 #: ../templates/database/kapsel/visible_categories_titset:47
 #: ../templates/database/lefort/visible_categories_titset:48
 #: ../templates/database/nationallizenzen/visible_categories_titset:47
-#: ../templates/database/richter/visible_categories_titset:47
+#: ../templates/database/richter/visible_categories_title:47
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:48
 #: ../templates/database/umschlaege/visible_categories_titset:48
 #: ../templates/database/wallraf/visible_categories_titset:48
@@ -10531,7 +10199,7 @@ msgstr "Dimensions"
 #: ../templates/database/kapsel/visible_categories_titset:58
 #: ../templates/database/lefort/visible_categories_titset:59
 #: ../templates/database/nationallizenzen/visible_categories_titset:58
-#: ../templates/database/richter/visible_categories_titset:58
+#: ../templates/database/richter/visible_categories_title:58
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:59
 #: ../templates/database/umschlaege/visible_categories_titset:59
 #: ../templates/database/wallraf/visible_categories_titset:59
@@ -10559,7 +10227,7 @@ msgstr "Accompanying material"
 #: ../templates/database/kapsel/visible_categories_titset:53
 #: ../templates/database/lefort/visible_categories_titset:54
 #: ../templates/database/nationallizenzen/visible_categories_titset:53
-#: ../templates/database/richter/visible_categories_titset:53
+#: ../templates/database/richter/visible_categories_title:53
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:54
 #: ../templates/database/umschlaege/visible_categories_titset:54
 #: ../templates/database/wallraf/visible_categories_titset:54
@@ -10615,7 +10283,7 @@ msgstr "Works"
 msgid "T0501-portrait"
 msgstr "Biographical data"
 
-#: ../templates/database/richter/visible_categories_titset:59
+#: ../templates/database/richter/visible_categories_title:59
 msgid "T0501-richter"
 msgstr "Richter evidence"
 
@@ -10638,7 +10306,7 @@ msgstr "Uniform title note"
 #: ../templates/database/kapsel/visible_categories_titset:85
 #: ../templates/database/lefort/visible_categories_titset:88
 #: ../templates/database/nationallizenzen/visible_categories_titset:87
-#: ../templates/database/richter/visible_categories_titset:87
+#: ../templates/database/richter/visible_categories_title:87
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:88
 #: ../templates/database/umschlaege/visible_categories_titset:88
 #: ../templates/database/wallraf/visible_categories_titset:88
@@ -10667,7 +10335,7 @@ msgstr "Note on german translation"
 #: ../templates/database/lefort/visible_categories_titset:61
 #: ../templates/database/nationallizenzen/visible_categories_titset:60
 #: ../templates/database/portrait/visible_categories_titset:39
-#: ../templates/database/richter/visible_categories_titset:60
+#: ../templates/database/richter/visible_categories_title:60
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:61
 #: ../templates/database/umschlaege/visible_categories_titset:61
 #: ../templates/database/wallraf/visible_categories_titset:61
@@ -10696,7 +10364,7 @@ msgstr "Parallel titles note"
 #: ../templates/database/lefort/visible_categories_titset:62
 #: ../templates/database/nationallizenzen/visible_categories_titset:61
 #: ../templates/database/portrait/visible_categories_titset:40
-#: ../templates/database/richter/visible_categories_titset:61
+#: ../templates/database/richter/visible_categories_title:61
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:62
 #: ../templates/database/umschlaege/visible_categories_titset:62
 #: ../templates/database/wallraf/visible_categories_titset:62
@@ -10724,7 +10392,7 @@ msgstr "Variant titles note"
 #: ../templates/database/lefort/visible_categories_titset:63
 #: ../templates/database/nationallizenzen/visible_categories_titset:62
 #: ../templates/database/portrait/visible_categories_titset:86
-#: ../templates/database/richter/visible_categories_titset:62
+#: ../templates/database/richter/visible_categories_title:62
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:63
 #: ../templates/database/umschlaege/visible_categories_titset:63
 #: ../templates/database/wallraf/visible_categories_titset:63
@@ -10752,7 +10420,7 @@ msgstr "Other title information note"
 #: ../templates/database/landschaft/visible_categories_titset:84
 #: ../templates/database/lefort/visible_categories_titset:49
 #: ../templates/database/nationallizenzen/visible_categories_titset:48
-#: ../templates/database/richter/visible_categories_titset:48
+#: ../templates/database/richter/visible_categories_title:48
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:49
 #: ../templates/database/umschlaege/visible_categories_titset:49
 #: ../templates/database/wallraf/visible_categories_titset:49
@@ -10789,7 +10457,7 @@ msgstr "Source of entry note"
 #: ../templates/database/landschaft/visible_categories_titset:46
 #: ../templates/database/lefort/visible_categories_titset:64
 #: ../templates/database/nationallizenzen/visible_categories_titset:63
-#: ../templates/database/richter/visible_categories_titset:63
+#: ../templates/database/richter/visible_categories_title:63
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:64
 #: ../templates/database/umschlaege/visible_categories_titset:64
 #: ../templates/database/wallraf/visible_categories_titset:64
@@ -10826,7 +10494,7 @@ msgstr "Issuing body note"
 #: ../templates/database/lefort/visible_categories_titset:65
 #: ../templates/database/nationallizenzen/visible_categories_titset:64
 #: ../templates/database/portrait/visible_categories_titset:42
-#: ../templates/database/richter/visible_categories_titset:64
+#: ../templates/database/richter/visible_categories_title:64
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:65
 #: ../templates/database/umschlaege/visible_categories_titset:65
 #: ../templates/database/wallraf/visible_categories_titset:65
@@ -10855,7 +10523,7 @@ msgstr "Edition statement note"
 #: ../templates/database/lefort/visible_categories_titset:66
 #: ../templates/database/nationallizenzen/visible_categories_titset:65
 #: ../templates/database/portrait/visible_categories_titset:43
-#: ../templates/database/richter/visible_categories_titset:65
+#: ../templates/database/richter/visible_categories_title:65
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:66
 #: ../templates/database/umschlaege/visible_categories_titset:66
 #: ../templates/database/wallraf/visible_categories_titset:66
@@ -10884,7 +10552,7 @@ msgstr "Imprint note"
 #: ../templates/database/lefort/visible_categories_titset:67
 #: ../templates/database/nationallizenzen/visible_categories_titset:66
 #: ../templates/database/portrait/visible_categories_titset:44
-#: ../templates/database/richter/visible_categories_titset:66
+#: ../templates/database/richter/visible_categories_title:66
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:67
 #: ../templates/database/umschlaege/visible_categories_titset:67
 #: ../templates/database/wallraf/visible_categories_titset:67
@@ -10913,7 +10581,7 @@ msgstr "Physical description note"
 #: ../templates/database/lefort/visible_categories_titset:68
 #: ../templates/database/nationallizenzen/visible_categories_titset:67
 #: ../templates/database/portrait/visible_categories_titset:45
-#: ../templates/database/richter/visible_categories_titset:67
+#: ../templates/database/richter/visible_categories_title:67
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:68
 #: ../templates/database/umschlaege/visible_categories_titset:68
 #: ../templates/database/wallraf/visible_categories_titset:68
@@ -10942,7 +10610,7 @@ msgstr "Alterations on imprint note"
 #: ../templates/database/lefort/visible_categories_titset:69
 #: ../templates/database/nationallizenzen/visible_categories_titset:68
 #: ../templates/database/portrait/visible_categories_titset:46
-#: ../templates/database/richter/visible_categories_titset:68
+#: ../templates/database/richter/visible_categories_title:68
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:69
 #: ../templates/database/umschlaege/visible_categories_titset:69
 #: ../templates/database/wallraf/visible_categories_titset:69
@@ -10969,7 +10637,7 @@ msgstr "Series title note"
 #: ../templates/database/kapsel/visible_categories_titset:83
 #: ../templates/database/lefort/visible_categories_titset:86
 #: ../templates/database/nationallizenzen/visible_categories_titset:85
-#: ../templates/database/richter/visible_categories_titset:85
+#: ../templates/database/richter/visible_categories_title:85
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:86
 #: ../templates/database/umschlaege/visible_categories_titset:86
 #: ../templates/database/wallraf/visible_categories_titset:86
@@ -10990,7 +10658,7 @@ msgstr "Language"
 #: ../templates/database/inst422/visible_categories_titset:69
 #: ../templates/database/inst423/visible_categories_titset:69
 #: ../templates/database/nationallizenzen/visible_categories_titset:69
-#: ../templates/database/richter/visible_categories_titset:69
+#: ../templates/database/richter/visible_categories_title:69
 #: ../templates/database/umschlaege/visible_categories_titset:70
 #: ../templates/database/wickrath/visible_categories_titset:69
 #: ../templates/database/wikisource_de/visible_categories_titset:70
@@ -11015,7 +10683,7 @@ msgstr "Contents note"
 #: ../templates/database/kapsel/visible_categories_titset:80
 #: ../templates/database/lefort/visible_categories_titset:81
 #: ../templates/database/nationallizenzen/visible_categories_titset:81
-#: ../templates/database/richter/visible_categories_titset:81
+#: ../templates/database/richter/visible_categories_title:81
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:81
 #: ../templates/database/umschlaege/visible_categories_titset:82
 #: ../templates/database/wallraf/visible_categories_titset:81
@@ -11049,7 +10717,7 @@ msgstr "Contents note"
 #: ../templates/database/lefort/visible_categories_titset:70
 #: ../templates/database/nationallizenzen/visible_categories_titset:70
 #: ../templates/database/portrait/visible_categories_titset:48
-#: ../templates/database/richter/visible_categories_titset:70
+#: ../templates/database/richter/visible_categories_title:70
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:70
 #: ../templates/database/umschlaege/visible_categories_titset:71
 #: ../templates/database/wallraf/visible_categories_titset:70
@@ -11076,7 +10744,7 @@ msgstr "Split note for serials"
 #: ../templates/database/kapsel/visible_categories_titset:40
 #: ../templates/database/lefort/visible_categories_titset:41
 #: ../templates/database/nationallizenzen/visible_categories_titset:40
-#: ../templates/database/richter/visible_categories_titset:40
+#: ../templates/database/richter/visible_categories_title:40
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:41
 #: ../templates/database/umschlaege/visible_categories_titset:41
 #: ../templates/database/wallraf/visible_categories_titset:41
@@ -11105,7 +10773,7 @@ msgstr "Frequency of publication"
 #: ../templates/database/lefort/visible_categories_titset:71
 #: ../templates/database/nationallizenzen/visible_categories_titset:71
 #: ../templates/database/portrait/visible_categories_titset:49
-#: ../templates/database/richter/visible_categories_titset:71
+#: ../templates/database/richter/visible_categories_title:71
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:71
 #: ../templates/database/umschlaege/visible_categories_titset:72
 #: ../templates/database/wallraf/visible_categories_titset:71
@@ -11138,7 +10806,7 @@ msgstr "Places"
 #: ../templates/database/lefort/visible_categories_titset:75
 #: ../templates/database/nationallizenzen/visible_categories_titset:75
 #: ../templates/database/portrait/visible_categories_titset:50
-#: ../templates/database/richter/visible_categories_titset:75
+#: ../templates/database/richter/visible_categories_title:75
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:75
 #: ../templates/database/umschlaege/visible_categories_titset:76
 #: ../templates/database/wallraf/visible_categories_titset:75
@@ -11167,7 +10835,7 @@ msgstr "Issued with note"
 #: ../templates/database/lefort/visible_categories_titset:76
 #: ../templates/database/nationallizenzen/visible_categories_titset:76
 #: ../templates/database/portrait/visible_categories_titset:51
-#: ../templates/database/richter/visible_categories_titset:76
+#: ../templates/database/richter/visible_categories_title:76
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:76
 #: ../templates/database/umschlaege/visible_categories_titset:77
 #: ../templates/database/wallraf/visible_categories_titset:76
@@ -11196,7 +10864,7 @@ msgstr "Title of serially published supplementary items note"
 #: ../templates/database/lefort/visible_categories_titset:77
 #: ../templates/database/nationallizenzen/visible_categories_titset:77
 #: ../templates/database/portrait/visible_categories_titset:52
-#: ../templates/database/richter/visible_categories_titset:77
+#: ../templates/database/richter/visible_categories_title:77
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:77
 #: ../templates/database/umschlaege/visible_categories_titset:78
 #: ../templates/database/wallraf/visible_categories_titset:77
@@ -11225,7 +10893,7 @@ msgstr "Related files note"
 #: ../templates/database/lefort/visible_categories_titset:78
 #: ../templates/database/nationallizenzen/visible_categories_titset:78
 #: ../templates/database/portrait/visible_categories_titset:53
-#: ../templates/database/richter/visible_categories_titset:78
+#: ../templates/database/richter/visible_categories_title:78
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:78
 #: ../templates/database/umschlaege/visible_categories_titset:79
 #: ../templates/database/wallraf/visible_categories_titset:78
@@ -11254,7 +10922,7 @@ msgstr "Earlier edition"
 #: ../templates/database/lefort/visible_categories_titset:79
 #: ../templates/database/nationallizenzen/visible_categories_titset:79
 #: ../templates/database/portrait/visible_categories_titset:54
-#: ../templates/database/richter/visible_categories_titset:79
+#: ../templates/database/richter/visible_categories_title:79
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:79
 #: ../templates/database/umschlaege/visible_categories_titset:80
 #: ../templates/database/wallraf/visible_categories_titset:79
@@ -11283,7 +10951,7 @@ msgstr "Earlier title"
 #: ../templates/database/lefort/visible_categories_titset:80
 #: ../templates/database/nationallizenzen/visible_categories_titset:80
 #: ../templates/database/portrait/visible_categories_titset:55
-#: ../templates/database/richter/visible_categories_titset:80
+#: ../templates/database/richter/visible_categories_title:80
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:80
 #: ../templates/database/umschlaege/visible_categories_titset:81
 #: ../templates/database/wallraf/visible_categories_titset:80
@@ -11312,7 +10980,7 @@ msgstr "Later edition"
 #: ../templates/database/lefort/visible_categories_titset:72
 #: ../templates/database/nationallizenzen/visible_categories_titset:72
 #: ../templates/database/portrait/visible_categories_titset:56
-#: ../templates/database/richter/visible_categories_titset:72
+#: ../templates/database/richter/visible_categories_title:72
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:72
 #: ../templates/database/umschlaege/visible_categories_titset:73
 #: ../templates/database/wallraf/visible_categories_titset:72
@@ -11341,7 +11009,7 @@ msgstr "Concordance of titles"
 #: ../templates/database/lefort/visible_categories_titset:73
 #: ../templates/database/nationallizenzen/visible_categories_titset:73
 #: ../templates/database/portrait/visible_categories_titset:57
-#: ../templates/database/richter/visible_categories_titset:73
+#: ../templates/database/richter/visible_categories_title:73
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:73
 #: ../templates/database/umschlaege/visible_categories_titset:74
 #: ../templates/database/wallraf/visible_categories_titset:73
@@ -11370,7 +11038,7 @@ msgstr "Number of copies"
 #: ../templates/database/lefort/visible_categories_titset:74
 #: ../templates/database/nationallizenzen/visible_categories_titset:74
 #: ../templates/database/portrait/visible_categories_titset:58
-#: ../templates/database/richter/visible_categories_titset:74
+#: ../templates/database/richter/visible_categories_title:74
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:74
 #: ../templates/database/umschlaege/visible_categories_titset:75
 #: ../templates/database/wallraf/visible_categories_titset:74
@@ -11407,7 +11075,7 @@ msgstr "Reproduction"
 #: ../templates/database/kapsel/visible_categories_titset:100
 #: ../templates/database/lefort/visible_categories_titset:104
 #: ../templates/database/nationallizenzen/visible_categories_titset:103
-#: ../templates/database/richter/visible_categories_titset:102
+#: ../templates/database/richter/visible_categories_title:102
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:104
 #: ../templates/database/umschlaege/visible_categories_titset:103
 #: ../templates/database/wallraf/visible_categories_titset:104
@@ -11434,7 +11102,7 @@ msgstr "ISBN"
 #: ../templates/database/kapsel/visible_categories_titset:101
 #: ../templates/database/lefort/visible_categories_titset:105
 #: ../templates/database/nationallizenzen/visible_categories_titset:105
-#: ../templates/database/richter/visible_categories_titset:104
+#: ../templates/database/richter/visible_categories_title:104
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:105
 #: ../templates/database/umschlaege/visible_categories_titset:105
 #: ../templates/database/wallraf/visible_categories_titset:105
@@ -11455,7 +11123,7 @@ msgstr "ISSN"
 #: ../templates/database/inst422/visible_categories_titset:104
 #: ../templates/database/inst423/visible_categories_titset:104
 #: ../templates/database/nationallizenzen/visible_categories_titset:104
-#: ../templates/database/richter/visible_categories_titset:103
+#: ../templates/database/richter/visible_categories_title:103
 #: ../templates/database/umschlaege/visible_categories_titset:104
 #: ../templates/database/wickrath/visible_categories_titset:105
 #: ../templates/database/wikisource_de/visible_categories_titset:106
@@ -11506,7 +11174,7 @@ msgstr "Other standard numbers"
 #: ../templates/database/lefort/visible_categories_titset:55
 #: ../templates/database/nationallizenzen/visible_categories_titset:54
 #: ../templates/database/portrait/visible_categories_titset:63
-#: ../templates/database/richter/visible_categories_titset:54
+#: ../templates/database/richter/visible_categories_title:54
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:55
 #: ../templates/database/umschlaege/visible_categories_titset:55
 #: ../templates/database/wallraf/visible_categories_titset:55
@@ -11534,7 +11202,7 @@ msgstr "Title source"
 #: ../templates/database/lefort/visible_categories_titset:42
 #: ../templates/database/nationallizenzen/visible_categories_titset:41
 #: ../templates/database/portrait/visible_categories_titset:64
-#: ../templates/database/richter/visible_categories_titset:41
+#: ../templates/database/richter/visible_categories_title:41
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:42
 #: ../templates/database/umschlaege/visible_categories_titset:42
 #: ../templates/database/wallraf/visible_categories_titset:42
@@ -11576,7 +11244,7 @@ msgstr "Edition statement of source"
 #: ../templates/database/lefort/visible_categories_titset:43
 #: ../templates/database/nationallizenzen/visible_categories_titset:42
 #: ../templates/database/portrait/visible_categories_titset:67
-#: ../templates/database/richter/visible_categories_titset:42
+#: ../templates/database/richter/visible_categories_title:42
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:43
 #: ../templates/database/umschlaege/visible_categories_titset:43
 #: ../templates/database/wallraf/visible_categories_titset:43
@@ -11608,7 +11276,7 @@ msgstr "Territory"
 #: ../templates/database/lefort/visible_categories_titset:44
 #: ../templates/database/nationallizenzen/visible_categories_titset:43
 #: ../templates/database/portrait/visible_categories_titset:68
-#: ../templates/database/richter/visible_categories_titset:43
+#: ../templates/database/richter/visible_categories_title:43
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:44
 #: ../templates/database/umschlaege/visible_categories_titset:44
 #: ../templates/database/wallraf/visible_categories_titset:44
@@ -11658,7 +11326,7 @@ msgstr "Standard numbers of source"
 #: ../templates/database/kapsel/visible_categories_titset:55
 #: ../templates/database/lefort/visible_categories_titset:56
 #: ../templates/database/nationallizenzen/visible_categories_titset:55
-#: ../templates/database/richter/visible_categories_titset:55
+#: ../templates/database/richter/visible_categories_title:55
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:56
 #: ../templates/database/umschlaege/visible_categories_titset:56
 #: ../templates/database/wallraf/visible_categories_titset:56
@@ -11691,7 +11359,7 @@ msgstr "Drawer"
 #: ../templates/database/lefort/visible_categories_titset:82
 #: ../templates/database/nationallizenzen/visible_categories_titset:82
 #: ../templates/database/portrait/visible_categories_titset:73
-#: ../templates/database/richter/visible_categories_titset:82
+#: ../templates/database/richter/visible_categories_title:82
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:82
 #: ../templates/database/umschlaege/visible_categories_titset:83
 #: ../templates/database/wallraf/visible_categories_titset:82
@@ -11720,7 +11388,7 @@ msgstr "Year of publication"
 #: ../templates/database/lefort/visible_categories_titset:84
 #: ../templates/database/nationallizenzen/visible_categories_titset:83
 #: ../templates/database/portrait/visible_categories_titset:74
-#: ../templates/database/richter/visible_categories_titset:83
+#: ../templates/database/richter/visible_categories_title:83
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:84
 #: ../templates/database/umschlaege/visible_categories_titset:84
 #: ../templates/database/wallraf/visible_categories_titset:84
@@ -11747,7 +11415,7 @@ msgstr "Holding information of original of microfilming"
 #: ../templates/database/kapsel/visible_categories_titset:51
 #: ../templates/database/lefort/visible_categories_titset:52
 #: ../templates/database/nationallizenzen/visible_categories_titset:51
-#: ../templates/database/richter/visible_categories_titset:51
+#: ../templates/database/richter/visible_categories_title:51
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:52
 #: ../templates/database/umschlaege/visible_categories_titset:52
 #: ../templates/database/wallraf/visible_categories_titset:52
@@ -11776,7 +11444,7 @@ msgstr "Specific material designation / file type"
 #: ../templates/database/lefort/visible_categories_titset:53
 #: ../templates/database/nationallizenzen/visible_categories_titset:52
 #: ../templates/database/portrait/visible_categories_titset:75
-#: ../templates/database/richter/visible_categories_titset:52
+#: ../templates/database/richter/visible_categories_title:52
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:53
 #: ../templates/database/umschlaege/visible_categories_titset:53
 #: ../templates/database/wallraf/visible_categories_titset:53
@@ -11802,7 +11470,7 @@ msgstr "Electronic location / access"
 #: ../templates/database/kapsel/visible_categories_titset:102
 #: ../templates/database/landschaft/visible_categories_titset:85
 #: ../templates/database/lefort/visible_categories_titset:106
-#: ../templates/database/richter/visible_categories_titset:105
+#: ../templates/database/richter/visible_categories_title:105
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:106
 #: ../templates/database/umschlaege/visible_categories_titset:106
 #: ../templates/database/wallraf/visible_categories_titset:106
@@ -11881,7 +11549,7 @@ msgstr "Keywords in variant spelling"
 #: ../templates/database/kapsel/visible_categories_titset:99
 #: ../templates/database/lefort/visible_categories_titset:103
 #: ../templates/database/nationallizenzen/visible_categories_titset:101
-#: ../templates/database/richter/visible_categories_titset:101
+#: ../templates/database/richter/visible_categories_title:101
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:103
 #: ../templates/database/umschlaege/visible_categories_titset:101
 #: ../templates/database/wallraf/visible_categories_titset:103
@@ -11920,7 +11588,7 @@ msgstr "Profession/world-view"
 #: ../templates/database/kapsel/visible_categories_titset:88
 #: ../templates/database/lefort/visible_categories_titset:91
 #: ../templates/database/nationallizenzen/visible_categories_titset:90
-#: ../templates/database/richter/visible_categories_titset:90
+#: ../templates/database/richter/visible_categories_title:90
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:91
 #: ../templates/database/wallraf/visible_categories_titset:91
 #: ../templates/database/wickrath/visible_categories_titset:91
@@ -11968,7 +11636,7 @@ msgstr "Related to cover art"
 #: ../templates/database/kapsel/visible_categories_titset:84
 #: ../templates/database/lefort/visible_categories_titset:87
 #: ../templates/database/nationallizenzen/visible_categories_titset:86
-#: ../templates/database/richter/visible_categories_titset:86
+#: ../templates/database/richter/visible_categories_title:86
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:87
 #: ../templates/database/umschlaege/visible_categories_titset:87
 #: ../templates/database/wallraf/visible_categories_titset:87
@@ -12006,7 +11674,7 @@ msgstr "Transcription"
 #: ../templates/database/landschaft/visible_categories_titset:81
 #: ../templates/database/lefort/visible_categories_titset:90
 #: ../templates/database/nationallizenzen/visible_categories_titset:89
-#: ../templates/database/richter/visible_categories_titset:89
+#: ../templates/database/richter/visible_categories_title:89
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:90
 #: ../templates/database/umschlaege/visible_categories_titset:90
 #: ../templates/database/wallraf/visible_categories_titset:90
@@ -12046,7 +11714,7 @@ msgstr "Concordance"
 #: ../templates/database/kapsel/visible_categories_titset:89
 #: ../templates/database/lefort/visible_categories_titset:92
 #: ../templates/database/nationallizenzen/visible_categories_titset:91
-#: ../templates/database/richter/visible_categories_titset:91
+#: ../templates/database/richter/visible_categories_title:91
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:92
 #: ../templates/database/umschlaege/visible_categories_titset:91
 #: ../templates/database/wallraf/visible_categories_titset:92
@@ -12073,7 +11741,7 @@ msgstr "Subject headings"
 #: ../templates/database/kapsel/visible_categories_titset:90
 #: ../templates/database/lefort/visible_categories_titset:93
 #: ../templates/database/nationallizenzen/visible_categories_titset:92
-#: ../templates/database/richter/visible_categories_titset:92
+#: ../templates/database/richter/visible_categories_title:92
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:93
 #: ../templates/database/umschlaege/visible_categories_titset:92
 #: ../templates/database/wallraf/visible_categories_titset:93
@@ -12100,7 +11768,7 @@ msgstr "Subject headings"
 #: ../templates/database/kapsel/visible_categories_titset:91
 #: ../templates/database/lefort/visible_categories_titset:94
 #: ../templates/database/nationallizenzen/visible_categories_titset:93
-#: ../templates/database/richter/visible_categories_titset:93
+#: ../templates/database/richter/visible_categories_title:93
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:94
 #: ../templates/database/umschlaege/visible_categories_titset:93
 #: ../templates/database/wallraf/visible_categories_titset:94
@@ -12127,7 +11795,7 @@ msgstr "Subject headings"
 #: ../templates/database/kapsel/visible_categories_titset:92
 #: ../templates/database/lefort/visible_categories_titset:95
 #: ../templates/database/nationallizenzen/visible_categories_titset:94
-#: ../templates/database/richter/visible_categories_titset:94
+#: ../templates/database/richter/visible_categories_title:94
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:95
 #: ../templates/database/umschlaege/visible_categories_titset:94
 #: ../templates/database/wallraf/visible_categories_titset:95
@@ -12154,7 +11822,7 @@ msgstr "Subject headings"
 #: ../templates/database/kapsel/visible_categories_titset:93
 #: ../templates/database/lefort/visible_categories_titset:96
 #: ../templates/database/nationallizenzen/visible_categories_titset:95
-#: ../templates/database/richter/visible_categories_titset:95
+#: ../templates/database/richter/visible_categories_title:95
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:96
 #: ../templates/database/umschlaege/visible_categories_titset:95
 #: ../templates/database/wallraf/visible_categories_titset:96
@@ -12181,7 +11849,7 @@ msgstr "Subject headings"
 #: ../templates/database/kapsel/visible_categories_titset:94
 #: ../templates/database/lefort/visible_categories_titset:97
 #: ../templates/database/nationallizenzen/visible_categories_titset:96
-#: ../templates/database/richter/visible_categories_titset:96
+#: ../templates/database/richter/visible_categories_title:96
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:97
 #: ../templates/database/umschlaege/visible_categories_titset:96
 #: ../templates/database/wallraf/visible_categories_titset:97
@@ -12208,7 +11876,7 @@ msgstr "Subject headings"
 #: ../templates/database/kapsel/visible_categories_titset:95
 #: ../templates/database/lefort/visible_categories_titset:98
 #: ../templates/database/nationallizenzen/visible_categories_titset:97
-#: ../templates/database/richter/visible_categories_titset:97
+#: ../templates/database/richter/visible_categories_title:97
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:98
 #: ../templates/database/umschlaege/visible_categories_titset:97
 #: ../templates/database/wallraf/visible_categories_titset:98
@@ -12235,7 +11903,7 @@ msgstr "Subject headings"
 #: ../templates/database/kapsel/visible_categories_titset:96
 #: ../templates/database/lefort/visible_categories_titset:99
 #: ../templates/database/nationallizenzen/visible_categories_titset:98
-#: ../templates/database/richter/visible_categories_titset:98
+#: ../templates/database/richter/visible_categories_title:98
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:99
 #: ../templates/database/umschlaege/visible_categories_titset:98
 #: ../templates/database/wallraf/visible_categories_titset:99
@@ -12262,7 +11930,7 @@ msgstr "Subject headings"
 #: ../templates/database/kapsel/visible_categories_titset:97
 #: ../templates/database/lefort/visible_categories_titset:100
 #: ../templates/database/nationallizenzen/visible_categories_titset:99
-#: ../templates/database/richter/visible_categories_titset:99
+#: ../templates/database/richter/visible_categories_title:99
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:100
 #: ../templates/database/umschlaege/visible_categories_titset:99
 #: ../templates/database/wallraf/visible_categories_titset:100
@@ -12289,7 +11957,7 @@ msgstr "Subject headings"
 #: ../templates/database/kapsel/visible_categories_titset:98
 #: ../templates/database/lefort/visible_categories_titset:101
 #: ../templates/database/nationallizenzen/visible_categories_titset:100
-#: ../templates/database/richter/visible_categories_titset:100
+#: ../templates/database/richter/visible_categories_title:100
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:101
 #: ../templates/database/umschlaege/visible_categories_titset:100
 #: ../templates/database/wallraf/visible_categories_titset:101
@@ -12330,7 +11998,7 @@ msgstr "Remark"
 #: ../templates/database/kapsel/visible_categories_titset:103
 #: ../templates/database/lefort/visible_categories_titset:107
 #: ../templates/database/nationallizenzen/visible_categories_titset:108
-#: ../templates/database/richter/visible_categories_titset:106
+#: ../templates/database/richter/visible_categories_title:106
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:107
 #: ../templates/database/umschlaege/visible_categories_titset:107
 #: ../templates/database/wallraf/visible_categories_titset:107
@@ -12361,7 +12029,7 @@ msgstr "Place of inscription"
 #: ../templates/database/kapsel/visible_categories_titset:104
 #: ../templates/database/lefort/visible_categories_titset:108
 #: ../templates/database/nationallizenzen/visible_categories_titset:109
-#: ../templates/database/richter/visible_categories_titset:107
+#: ../templates/database/richter/visible_categories_title:107
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:108
 #: ../templates/database/umschlaege/visible_categories_titset:108
 #: ../templates/database/wallraf/visible_categories_titset:108
@@ -12388,7 +12056,7 @@ msgstr "USB URL"
 #: ../templates/database/kapsel/visible_categories_titset:105
 #: ../templates/database/lefort/visible_categories_titset:109
 #: ../templates/database/nationallizenzen/visible_categories_titset:110
-#: ../templates/database/richter/visible_categories_titset:108
+#: ../templates/database/richter/visible_categories_title:108
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:109
 #: ../templates/database/umschlaege/visible_categories_titset:109
 #: ../templates/database/wallraf/visible_categories_titset:109
@@ -12411,7 +12079,7 @@ msgstr "Owner"
 
 #: ../templates/database/kapsel/visible_categories_titset:106
 #: ../templates/database/landschaft/visible_categories_titset:35
-#: ../templates/database/richter/visible_categories_titset:109
+#: ../templates/database/richter/visible_categories_title:109
 msgid "T3001"
 msgstr "Table of contents (HTML)"
 
@@ -12420,12 +12088,12 @@ msgid "T3001-portrait"
 msgstr "Former shelf mark"
 
 #: ../templates/database/kapsel/visible_categories_titset:107
-#: ../templates/database/richter/visible_categories_titset:110
+#: ../templates/database/richter/visible_categories_title:110
 msgid "T3002"
 msgstr "Table of contents (tiff)"
 
 #: ../templates/database/kapsel/visible_categories_titset:108
-#: ../templates/database/richter/visible_categories_titset:111
+#: ../templates/database/richter/visible_categories_title:111
 msgid "T3003"
 msgstr "Table of contents (pdf)"
 
@@ -12441,7 +12109,7 @@ msgstr "Table of contents (pdf)"
 #: ../templates/database/islandica/visible_categories_titset:110
 #: ../templates/database/lefort/visible_categories_titset:112
 #: ../templates/database/nationallizenzen/visible_categories_titset:113
-#: ../templates/database/richter/visible_categories_titset:112
+#: ../templates/database/richter/visible_categories_title:112
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:112
 #: ../templates/database/umschlaege/visible_categories_titset:112
 #: ../templates/database/wallraf/visible_categories_titset:112
@@ -12469,7 +12137,7 @@ msgstr "Tags of users"
 #: ../templates/database/kapsel/visible_categories_titset:109
 #: ../templates/database/lefort/visible_categories_titset:113
 #: ../templates/database/nationallizenzen/visible_categories_titset:114
-#: ../templates/database/richter/visible_categories_titset:113
+#: ../templates/database/richter/visible_categories_title:113
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:113
 #: ../templates/database/umschlaege/visible_categories_titset:113
 #: ../templates/database/wallraf/visible_categories_titset:113
@@ -12497,7 +12165,7 @@ msgstr "# of superordinate titles"
 #: ../templates/database/kapsel/visible_categories_titset:110
 #: ../templates/database/lefort/visible_categories_titset:114
 #: ../templates/database/nationallizenzen/visible_categories_titset:115
-#: ../templates/database/richter/visible_categories_titset:114
+#: ../templates/database/richter/visible_categories_title:114
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:114
 #: ../templates/database/umschlaege/visible_categories_titset:114
 #: ../templates/database/wallraf/visible_categories_titset:114
@@ -12524,7 +12192,7 @@ msgstr "# of dependent titles"
 #: ../templates/database/kapsel/visible_categories_titset:111
 #: ../templates/database/lefort/visible_categories_titset:115
 #: ../templates/database/nationallizenzen/visible_categories_titset:116
-#: ../templates/database/richter/visible_categories_titset:115
+#: ../templates/database/richter/visible_categories_title:115
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:115
 #: ../templates/database/umschlaege/visible_categories_titset:115
 #: ../templates/database/wallraf/visible_categories_titset:115
@@ -12944,9 +12612,8 @@ msgid ""
 msgstr ""
 "Irrespective of careful inspection of this web sites content I am not liable "
 "for the contents of external links. These external websites are no offering "
-"of this site. I'm distancing myself explicitely "
-"from inappropriate contents of these externel web sites and in no way adopt "
-"them for this site."
+"of this site. I'm distancing myself explicitely from inappropriate contents "
+"of these externel web sites and in no way adopt them for this site."
 
 #: ../templates/profile/openbib/info_20:59
 msgid ""
@@ -12995,7 +12662,7 @@ msgid "Typ"
 msgstr "Type"
 
 #. ($type)
-#: ../modules/OpenBib/Handler/Apache/Redirect.pm:140
+#: ../modules/OpenBib/Handler/Apache/Redirect.pm:134
 msgid "Typ %1 ist nicht definiert"
 msgstr "Type %1 ist not defined"
 
@@ -13096,10 +12763,6 @@ msgstr "AND-relation in a search field"
 #: ../modules/OpenBib/Handler/Apache/Circulation.pm:501
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:1429
 #: ../modules/OpenBib/Handler/Apache/User/Collection.pm:230
-#: ../modules/OpenBib2/Handler/Apache/Circulation.pm:589
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1659
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Collection.pm:445
-#: ../modules/OpenBib2/Handler/Apache/UserPrefs.pm:308
 msgid "Unerlaubte Aktion"
 msgstr "Invalid action"
 
@@ -13111,11 +12774,9 @@ msgid "Ungarisch"
 msgstr "Hungarian"
 
 #: ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:111
-#: ../modules/OpenBib2/Handler/Apache/DispatchQuery.pm:117
 msgid "Ungültige Aktion"
 msgstr "Invalid action"
 
-#: ../modules/OpenBib/Handler/Apache/Browse.pm:179
 #: ../modules/OpenBib/Handler/Apache/Collection.pm:1109
 #: ../modules/OpenBib/Handler/Apache/ExternalJump.pm:130
 #: ../modules/OpenBib/Handler/Apache/Review.pm:144
@@ -13137,85 +12798,6 @@ msgstr "Invalid action"
 #: ../modules/OpenBib/Handler/Apache/User/Tag.pm:580
 #: ../modules/OpenBib/Handler/Apache/User/Tag.pm:834
 #: ../modules/OpenBib/L10N.pm:124
-#: ../modules/OpenBib2/Handler/Apache/Browse.pm:187
-#: ../modules/OpenBib2/Handler/Apache/Circulation.pm:114
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1063
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1143
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:1339
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:207
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:474
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:628
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:810
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:894
-#: ../modules/OpenBib2/Handler/Apache/Collection.pm:976
-#: ../modules/OpenBib2/Handler/Apache/DBIS.pm:131
-#: ../modules/OpenBib2/Handler/Apache/DatabaseChoice.pm:174
-#: ../modules/OpenBib2/Handler/Apache/DatabaseChoice.pm:259
-#: ../modules/OpenBib2/Handler/Apache/DatabaseProfile.pm:110
-#: ../modules/OpenBib2/Handler/Apache/DispatchQuery.pm:99
-#: ../modules/OpenBib2/Handler/Apache/EZB.pm:128
-#: ../modules/OpenBib2/Handler/Apache/ExternalJump.pm:130
-#: ../modules/OpenBib2/Handler/Apache/Login.pm:117
-#: ../modules/OpenBib2/Handler/Apache/Login.pm:196
-#: ../modules/OpenBib2/Handler/Apache/Login.pm:404
-#: ../modules/OpenBib2/Handler/Apache/Logout.pm:104
-#: ../modules/OpenBib2/Handler/Apache/MailCollection.pm:110
-#: ../modules/OpenBib2/Handler/Apache/MailPassword.pm:104
-#: ../modules/OpenBib2/Handler/Apache/RSSFeeds.pm:156
-#: ../modules/OpenBib2/Handler/Apache/Redirect.pm:102
-#: ../modules/OpenBib2/Handler/Apache/Registration.pm:119
-#: ../modules/OpenBib2/Handler/Apache/Registration.pm:177
-#: ../modules/OpenBib2/Handler/Apache/Registration.pm:268
-#: ../modules/OpenBib2/Handler/Apache/Resource/Library.pm:205
-#: ../modules/OpenBib2/Handler/Apache/Resource/Library.pm:291
-#: ../modules/OpenBib2/Handler/Apache/Resource/Review.pm:145
-#: ../modules/OpenBib2/Handler/Apache/Resource/Review.pm:221
-#: ../modules/OpenBib2/Handler/Apache/Resource/Review.pm:331
-#: ../modules/OpenBib2/Handler/Apache/Resource/Review.pm:388
-#: ../modules/OpenBib2/Handler/Apache/Resource/Review.pm:475
-#: ../modules/OpenBib2/Handler/Apache/Resource/Review.pm:596
-#: ../modules/OpenBib2/Handler/Apache/Resource/Review.pm:720
-#: ../modules/OpenBib2/Handler/Apache/Resource/Tag.pm:1148
-#: ../modules/OpenBib2/Handler/Apache/Resource/Tag.pm:207
-#: ../modules/OpenBib2/Handler/Apache/Resource/Tag.pm:316
-#: ../modules/OpenBib2/Handler/Apache/Resource/Tag.pm:459
-#: ../modules/OpenBib2/Handler/Apache/Resource/Tag.pm:565
-#: ../modules/OpenBib2/Handler/Apache/Resource/Tag.pm:672
-#: ../modules/OpenBib2/Handler/Apache/Resource/Tag.pm:784
-#: ../modules/OpenBib2/Handler/Apache/Resource/Tag.pm:894
-#: ../modules/OpenBib2/Handler/Apache/Resource/User.pm:100
-#: ../modules/OpenBib2/Handler/Apache/Resource/User.pm:179
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Collection.pm:125
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:167
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:276
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:350
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:409
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:453
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:506
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:558
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:608
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Preferences.pm:657
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:165
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:243
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:330
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:416
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:487
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:568
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:628
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Profile.pm:768
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Review.pm:197
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Tag.pm:1094
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Tag.pm:208
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Tag.pm:318
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Tag.pm:480
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Tag.pm:586
-#: ../modules/OpenBib2/Handler/Apache/Resource/User/Tag.pm:840
-#: ../modules/OpenBib2/Handler/Apache/ResultLists.pm:119
-#: ../modules/OpenBib2/Handler/Apache/SearchForm.pm:120
-#: ../modules/OpenBib2/Handler/Apache/Tags.pm:143
-#: ../modules/OpenBib2/Handler/Apache/UserPrefs.pm:134
-#: ../modules/OpenBib2/Handler/Apache/UserReviews.pm:136
-#: ../modules/OpenBib2/L10N.pm:124
 msgid "Ungültige Session"
 msgstr "Invalid session"
 
@@ -13236,6 +12818,17 @@ msgstr ""
 "person/institution, title, numbering, year, publisher, location mark and   "
 "popularity (in ascending or descending order), sorted by catalog or   "
 "globally."
+
+#: ../templates/views/richter/browse_title_html:55
+msgid ""
+"Unter den noch in der USB K&ouml;ln vorhandenen Richterb&uuml;chern\n"
+"befinden sich auch einige Rezensionsexemplare. Sie sind durch\n"
+"handschriftlichen Eintrag von Elise Richter selbst oder durch einen\n"
+"Stempel als solche gekennzeichnet."
+msgstr ""
+"Among the volumes available still in the USB K&ouml;ln, there are also "
+"reviewer's copies. They are marked by a handwritten note by Elise Richter "
+"herself or by a stamp."
 
 #: ../templates/info_help:508 ../templates/profile/kug/info_help:519
 #: ../templates/profile/kug/views/kug/info.old:523
@@ -13682,7 +13275,7 @@ msgstr "More General Information Regarding Searches"
 msgid "Weitere potentiell interessante Titel (Recommender-Funktion)"
 msgstr "Recommended Entries"
 
-#: ../templates/search_more_tips:63
+#: ../templates/search_more_tips:67
 msgid "Weitergehende Suchhinweise"
 msgstr "Further search hints"
 
@@ -14056,7 +13649,7 @@ msgstr "Please select a view:"
 msgid "Zeitschriften/Serien"
 msgstr "Journals/Series"
 
-#: ../templates/search_more_tips:72
+#: ../templates/search_more_tips:76
 msgid "Zeitschriftenartikel"
 msgstr "Article in journal"
 
@@ -14159,7 +13752,7 @@ msgstr "Most recent articles published in this journal"
 #: ../templates/views/portrait/searchmask_simple:85
 #: ../templates/views/rheinlandbib/searchmask:57
 #: ../templates/views/rheinlandbib/searchmask_simple:101
-#: ../templates/views/richter/searchform:133
+#: ../templates/views/richter/searchform:134
 #: ../templates/views/richter/searchform_simple:188
 #: ../templates/views/richter/searchform_simple:280
 #: ../templates/views/richter/searchform_simple:373
@@ -14337,10 +13930,6 @@ msgstr "order to supplier cancelled"
 #: ../templates/database/wiso/circset:107 ../templates/profile/usb/circset:114
 msgid "bestellt beim Lieferanten"
 msgstr "ordered from supplier"
-
-#: ../templates/std_footer:18
-msgid "demonstriert ein Recherche-Portal"
-msgstr "demonstrates a discovery interface"
 
 #: ../templates/dbis_searchdbs:61 ../templates/dbis_showdbs:65
 #: ../templates/dbis_showsubjects:84

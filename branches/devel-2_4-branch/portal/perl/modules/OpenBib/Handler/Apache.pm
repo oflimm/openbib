@@ -43,6 +43,7 @@ use APR::URI ();
 use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use Template;
+use URI::Escape;
 use XML::RSS;
 use YAML ();
 
@@ -482,6 +483,11 @@ sub print_page {
         my $ref = shift;
         return encode_json $ref;
     };
+    $ttdata->{'uri_escape'}     = sub {
+        my $string = shift;
+        return uri_escape($string);
+    };
+
     $ttdata->{'iso2utf'}        = sub {
         my $string=shift;
         $string=Encode::encode("iso-8859-1",$string);

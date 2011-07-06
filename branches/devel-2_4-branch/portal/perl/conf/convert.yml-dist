@@ -821,6 +821,11 @@ convtab:
       '0710':
         facet:
           'subject': 1
+      '0720':         # Provenienz (Richter-Bibliothek)
+        index:
+           'freesearch': 1
+           't0720': 1
+        string: 1
       '0750':         # Abstract
         index:
           'content': 1
@@ -892,9 +897,6 @@ convtab:
         string: 1
       '5051':         # Bibkey Base
         string: 1
-      '0720':         # Provenienz-Register
-        index:
-           'freesearch': 1
       '0501':         # Richterindiz
         index:
            'freesearch': 1

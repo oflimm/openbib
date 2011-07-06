@@ -1161,7 +1161,7 @@ dispatch_rules:
      runmode: 'delete_record'
   - # redirect_loc:
      module: 'OpenBib::Handler::Apache::Redirect'
-     rule: '/portal/:view/redirect/:type/*'
+     rule: '/portal/:view/redirect'
      runmode: 'show'
      args:
         disable_content_negotiation: 1
@@ -1191,11 +1191,7 @@ dispatch_rules:
      runmode: 'show_collection'
   - # browse_loc:
      module: 'OpenBib::Handler::Apache::Browse'
-     rule: '/portal/:view/browse'
-     runmode: 'show'
-  - # browse_loc:
-     module: 'OpenBib::Handler::Apache::Browse'
-     rule: '/portal/:view/browse.html'
+     rule: '/portal/:view/browse/:database/:category'
      runmode: 'show'
   - # searchform_loc:
      module: 'OpenBib::Handler::Apache::SearchForm'
@@ -1964,6 +1960,9 @@ searchfield:
   't0533':
      'prefix': 't0533'
      'type': 'string'
+  't0720':
+     'prefix': 't0720'
+     'type': 'string'
   't4100':
      'prefix': 't4100'
      'type': 'string'
@@ -2442,7 +2441,6 @@ representation:
 default_query_options:
   num: 50
   page: 1
-  l: 'de'
   srto: 'up'
   srt: 'author'
   profil: ''

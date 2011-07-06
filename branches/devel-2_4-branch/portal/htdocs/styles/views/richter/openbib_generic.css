@@ -755,8 +755,45 @@ dt.review {
   padding: 10px;
 }
 
+.resultitems .footer {
+  width: 100%;
+/*  float: left; */
+  position: relative;
+/*  margin-top: 5px;  */
+  border-style: solid;
+  border-color: #E1E1E1;
+  border-width: 1px;
+  -moz-border-radius-bottomright: 12px;
+  -moz-border-radius-bottomleft: 12px;
+  -webkit-border-radius-bottomright: 12px;
+  -webkit-border-radius-bottomleft: 12px;
+}
+
+.resultitems .footer .navigation {
+  float: left;
+  text-align: left;
+  width: 50%;
+  padding-top:  2px;
+  padding-left: 15px;
+}
+
+.resultitems .footer .resulttime {
+  float: right;
+  width: 20%;
+  padding: 5px;
+}
+
 .resultfooter {
-  font-size:0.8em;
+  float:left;
+  width: 99%;
+}
+
+.refine_query {
+  float: left;
+  width: auto;
+  margin-top:10px;
+  padding-bottom:20px;
+  
 }
 
 .drilldown {
@@ -1383,6 +1420,35 @@ a.ext {
   padding-left: 1.3em;
   background: url('/images/openbib/extern.gif') no-repeat left center;
 }
+
+#preview {
+  position:absolute;
+  border:1px solid #ccc;
+  background: aliceblue;
+  padding:5px;
+  display:none;
+  color:#000;
+  text-align: center;
+}
+
+#qr {
+  margin-top:-416px;
+  position:absolute;
+  border:1px solid #ccc;
+  background: aliceblue;
+  padding:5px;
+  display:none;
+  color:#000;
+  text-align: center;
+}
+
+#qr .closebutton {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  cursor: pointer;
+}
+
 
 /***************************************/
 /* jquery.autocomplete                 */

@@ -15,7 +15,7 @@
 
 [% IF NOT hide_foot_banner %]
 <div class="footer"><!-- Begin footer -->
-[% msg.maketext("Diese Website demonstriert ein Recherche-Portal") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>[% config.get('version')%] </tt>
+[% msg.maketext("Diese Website demonstriert ein Recherche-Portal") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>[% config.get('version')%] </tt>
 </div><!-- End footer -->
 [% END %]
 

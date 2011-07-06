@@ -128,17 +128,17 @@ END ;
 <img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
 [%-   IF normset.${"E4200"} %]
 [%-    FOREACH item IN normset.${"E4200"}-%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% escape_uri("http://de.wikipedia.org/wiki/${escape_uri(item.content)}") %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://de.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
 [%-   IF normset.${"E4201"} %]
 [%-     FOREACH item IN normset.${"E4201"}-%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% escape_uri("http://en.wikipedia.org/wiki/${escape_uri(item.content)}") %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://en.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normset.${"E4202"} %]
 [%-     FOREACH item IN normset.${"E4202"}-%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% escape_uri("http://fr.wikipedia.org/wiki/${escape_uri(item.content)}") %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://fr.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>

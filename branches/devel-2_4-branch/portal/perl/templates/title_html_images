@@ -14,27 +14,27 @@
 -%]
 [% IF normset.${"T6051"} %]
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/560/http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F[% config.get('servername') %]%2Fportal%2F[% view %]%2Fconnector%2Funapi%3Fid%3D[% record.database %]%3A[% record.id %]%26format%3Dmets" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[Online lesen im DFG-Viewer]</center></a>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=560;url=[% escape_uri("http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F${config.get('servername')}%2Fportal%2F${view}%2Fconnector%2Funapi%3Fid%3D${record.database}%3A${record.id}%26format%3Dmets") %]" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[Online lesen im DFG-Viewer]</center></a>
 </p>
 [% END %]
 
 [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
 <p>
-<a id="cover_full_url" href="[% path_prefix %]/[% config.get('redirect_loc') %]/526/[% config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn) %]" target="_blank"><img id="cover_full" src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>
+<a id="cover_full_url" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=526;url=[% escape_uri("${config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn)}") %]%]" target="_blank"><img id="cover_full" src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>
 </p>
 [% END %]
 [%- IF isbn -%]
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/525/http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=525;url=[% escape_uri("http://books.google.com/books?vid=ISBN${isbn}") %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 [%- END -%]
 <p>
 [%- IF bibkey -%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/511/http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=511;url=[% escape_uri("http://www.bibsonomy.org/bibtex/${bibkey}") %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
 [% IF normset.${"E4122"} %]
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/512/[% normset.${"E4122"}.first.content %]" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('paperc_img') %]" alt="Bei PaperC vorhanden" border="0" /></a><br/>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=512;url=[% escape_uri(normset.${"E4122"}.first.content) %]" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('paperc_img') %]" alt="Bei PaperC vorhanden" border="0" /></a><br/>
 </p>
 [% END %]

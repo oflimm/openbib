@@ -52,7 +52,7 @@ zugrundeliegenden Daten dazu stammen von der Universitäts- und
 Stadtbibliothek Köln, die sie als Open Bibliographic Data unter der
 CC0-Lizenz [_3]freigegeben[_4] hat. Weitere Informationen zur
 Erfassung und dem Projekt Richter-Bibliothek der USB Köln finden Sie
-unter [_5]http://richterbibliothek.ub.uni-koeln.de/[_6].","<a href=\"${path_prefix}/${config.get('info_loc')}/elise_richter.html\">","</a>","<a href=\"http://opendata.ub.uni-koeln.de/\"
+unter [_5]http://richterbibliothek.ub.uni-koeln.de/[_6].","<a href=\"${path_prefix}/${config.get('info_loc')}/elise_richter.html?l=${lang}\">","</a>","<a href=\"http://opendata.ub.uni-koeln.de/\"
 target=\"_blank\">","</a>","<a class=\"ext\" href=\"http://richterbibliothek.ub.uni-koeln.de/\"
 target=\"_blank\">","</a>") %]</p>
 

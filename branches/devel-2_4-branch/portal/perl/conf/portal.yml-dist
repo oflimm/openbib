@@ -448,6 +448,30 @@ dispatch_rules:
      runmode: 'show_collection_recent'
   - # tag_loc:
      module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/:database/recent.html[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/:database/recent.json[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/:database/recent.rdf[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/:database/recent.rss[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/:database/recent.include[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/:database/recent[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
      rule: '/portal/:view/tag/:tagid'
      runmode: 'show_record'
   - # tag_loc:
@@ -1769,7 +1793,7 @@ dispatch_rules:
      rule: '/portal/:view/admin/server/:serverid[delete]'
      runmode: 'delete_record'
 
-css_loc: /styles
+css_loc: /css
 
 # Programm zum Versenden von Mails
 mail_prog: /usr/bin/mailx
@@ -2023,6 +2047,7 @@ xapian_search_prefix:
   # Einzelne Kategorieinhalte
   't0531': 'T0531'
   't0533': 'T0533'
+  't0720': 'T0720'
   't4100': 'T4100'
   't4300': 'T4300'
 

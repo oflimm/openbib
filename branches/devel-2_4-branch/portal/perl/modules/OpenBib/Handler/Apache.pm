@@ -164,14 +164,10 @@ sub cgiapp_init() {
    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
    my $queryoptions = OpenBib::QueryOptions->instance($self->query());
 
-   my $servername = $r->get_server_name;
+   my $servername   = $r->get_server_name;
    
    my $path_prefix          = $config->get('base_loc');
    my $complete_path_prefix = "$path_prefix/$view";
-   
-   if (! $config->strip_view_from_uri($view)){
-       $path_prefix = $complete_path_prefix;
-   }
 
    # Letztes Pfad-Element bestimmen
    my $uri  = $r->parsed_uri;
@@ -180,7 +176,14 @@ sub cgiapp_init() {
    my ($last_uri_element) = $path =~m/([^\/]+)$/;
 
    $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element ");
-   
+
+   if (! $config->strip_view_from_uri($view)){
+       $path_prefix = $complete_path_prefix;
+   }
+   else {
+       $path =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
+   }
+
    my $id = "";
    if ($last_uri_element=~/^(.+?)(\.html|\.json|\.rdf|\.rss|\.include)$/){
        $id               = $1;
@@ -212,6 +215,7 @@ sub cgiapp_init() {
    $self->param('servername',$servername);
    $self->param('path_prefix',$path_prefix);
    $self->param('id',$id);
+   $self->param('path',$path);
    
    $logger->debug("Exit cgiapp_init");
    #   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
@@ -436,6 +440,7 @@ sub print_page {
     my $useragent      = $self->param('useragent');
     my $servername     = $self->param('servername');
     my $path_prefix    = $self->param('path_prefix');
+    my $path           = $self->param('path');
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     
@@ -478,6 +483,7 @@ sub print_page {
     $ttdata->{'servername'}     = $servername;
     $ttdata->{'loginname'}      = $loginname;
     $ttdata->{'sysprofile'}     = $sysprofile;
+    $ttdata->{'path'}           = $path;
     $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'to_json'}        = sub {
         my $ref = shift;

@@ -110,7 +110,7 @@ sub show_collection {
     return Apache2::Const::OK;
 }
 
-sub show_record_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen

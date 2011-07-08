@@ -68,16 +68,10 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show_collection_as_html'              => 'show_collection_as_html',
-        'show_collection_as_json'              => 'show_collection_as_json',
-        'show_collection_as_rdf'               => 'show_collection_as_rdf',
-        'show_collection_recent_as_html'       => 'show_collection_recent_as_html',
-        'show_collection_recent_as_json'       => 'show_collection_recent_as_json',
-        'show_collection_recent_as_rdf'        => 'show_collection_recent_as_rdf',
-        'show_collection_recent_as_rss'        => 'show_collection_recent_as_rss',
-        'show_collection_recent_as_include'    => 'show_collection_recent_as_include',
+        'show_collection'                      => 'show_collection',
+        'show_collection_recent'               => 'show_collection_recent',
         'show_collection_form'                 => 'show_collection_form',
-        'show_record_negotiate'                => 'show_record_negotiate',
+        'show_record'                          => 'show_record',
         'create_record'                        => 'create_record',
         'update_record'                        => 'update_record',
         'delete_record'                        => 'delete_record',
@@ -93,24 +87,23 @@ sub show_collection {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-    
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
 
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-
+    # CGI Args
     my $offset         = $query->param('offset')      || 0;
     my $hitrange       = $query->param('num')    || 50;
     my $database       = $query->param('db')    || '';
@@ -121,45 +114,19 @@ sub show_collection {
     my $titisbn        = $query->param('titisbn')     || '';
     my $tags           = decode_utf8($query->param('tags'))        || '';
     my $type           = $query->param('type')        || 1;
-
     my $oldtag         = $query->param('oldtag')      || '';
     my $newtag         = $query->param('newtag')      || '';
-    
     # Actions
     my $format         = $query->param('format')      || 'cloud';
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
     my $edit_usertags  = $query->param('edit_usertags')  || '';
     my $show_usertags  = $query->param('show_usertags')  || '';
-
     my $queryid        = $query->param('queryid')     || '';
-
     my $do_add         = $query->param('do_add')      || '';
     my $do_edit        = $query->param('do_edit')     || '';
     my $do_change      = $query->param('do_change')   || '';
     my $do_del         = $query->param('do_del')      || '';
-    
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        return Apache2::Const::OK;
-    }
-
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     unless($user->{ID}){
         # Aufruf-URL
@@ -192,12 +159,12 @@ sub show_collection {
         user       => $user,
         msg        => $msg,
     };
-    OpenBib::Common::Util::print_page($config->{tt_tag_collection_tname},$ttdata,$r);
+    $self->print_page($config->{tt_tag_collection_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
 
-sub show_record_negotiate {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -792,61 +759,37 @@ sub show_collection_recent {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $representation = $self->param('representation') || 'html';
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
-    my $config         = $self->param('config');    
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
+    my $representation = $self->param('representation');
 
+    # CGI Args
     my $hitrange       = $query->param('num')    || 50;
-
-    # NO CGI Args
 
     my @viewdbs         = $config->get_viewdbs($view);
 
     # Tag-Cloud ist View-abhaengig. Wenn View nur aus einer Datenbank besteht, dann werden alle Tags fuer Titel aus der Datenbank herausgegeben, sonst alle.
     # ToDo: fuer alle Datenbanken eines Views, d.h. auch bei mehr als einer...
-    my $recent_tags_ref = ($#viewdbs == 0)?$user->get_recent_tags({ count => $hitrange, database => $viewdbs[0] }):$user->get_recent_tags({ count => $hitrange });
-
-    my $content_type    = $config->{'content_type_map_rev'}{$representation};
-
-    my $rss;
-
-    $rss = new XML::RSS ( version => '1.0' ) if ($representation eq "rss");
+    my $recent_tags_ref = ($database)?$user->get_recent_tags({ count => $hitrange, database => $database }):
+        ($#viewdbs == 0)?$user->get_recent_tags({ count => $hitrange, database => $viewdbs[0] }): $user->get_recent_tags({ count => $hitrange });
 
     # TT-Data erzeugen
     my $ttdata={
-        representation => $representation,
-        content_type   => $content_type,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        rss            => $rss,
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $session->{ID},
-        
-        user           => $user,
-        
         recent_tags    => $recent_tags_ref,
-        
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_tag_collection_recent_tname},$ttdata,$r);
+    $self->print_page($config->{tt_tag_collection_recent_tname},$ttdata);
     return Apache2::Const::OK;
 }
 

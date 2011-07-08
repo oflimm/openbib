@@ -15,15 +15,31 @@
 
   <body>
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
 
-<div id="maincontent">
-
-[% PROCESS common/subtemplate name="subnavigation" active_menu="searchmask" %]
-
-<div class="content"><!-- Begin Content -->
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_menu='search_advanced' %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
 [% IF user.is_authenticated %]
 [% autocompletion_type = user.get_autocompletion %]
@@ -95,31 +111,6 @@ $(document).ready(function(){
 
 [% PROCESS common/subtemplate name="searchform_query" %]
 
-<p />
-
-<table width="100%">
-<tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
-<tr><td class="boxedclear" id="searchoptions">
-[% PROCESS common/subtemplate name="searchform_options" %]
-</td></tr>
-</table>
-
-<!--
-<center>
-<span class="bigtext">oder:</span>
-
-
-<table width="100%">
-<tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
-<tr><td class="boxedclear">
-<table>
-<tr><td style="text-align:center;"><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="searchindex" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
-</table>
-</td></tr>
-</table>
-
-</center>
--->
 </form>
 
 [% IF queries.size > 0 %]
@@ -138,7 +129,13 @@ $(document).ready(function(){
 </form>
 [% END %]
 
-<p />
 
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

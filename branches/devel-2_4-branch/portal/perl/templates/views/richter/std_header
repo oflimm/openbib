@@ -42,58 +42,21 @@
 [% END %]
 
   [%- TRY -%]
-    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic.css" %]" media="all" />
+    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/layout.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/layout.css" %]" media="all" />
   [%- CATCH -%]        
     [%- TRY -%]
-      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/openbib_generic.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/openbib_generic.css" %]" media="all" />
+      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/layout.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/layout.css" %]" media="all" />
     [%- CATCH -%]
       [%- TRY -%]
-        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/openbib_generic.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/openbib_generic.css" %]" media="all" />
+        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/layout.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/layout.css" %]" media="all" />
       [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib_generic.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/layout.css" %]" media="all" />
       [%- END -%]
     [%- END -%]
   [%- END -%]
-
-
-  [%- TRY -%]
-    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/$stylesheet" %]" media="all" />
-  [%- CATCH -%]
-    [%- TRY -%]
-      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/$stylesheet" %]" media="all" />
-    [%- CATCH -%]
-      [%- TRY -%]
-        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/$stylesheet" %]" media="all" />
-      [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/$stylesheet" %]" media="all" />
-      [%- END -%]
-    [%- END -%]
-  [%- END -%]
-
-<!--
-  [%- TRY -%]
-    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic_print.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/openbib_generic_print.css" %]" media="print" />
-  [%- CATCH -%]
-    [%- TRY -%]
-      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/openbib_generic_print.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/openbib_generic_print.css" %]" media="print" />
-    [%- CATCH -%]
-      [%- TRY -%]
-        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/openbib_generic_print.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/openbib_generic_print.css" %]" media="print" />
-      [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib_generic_print.css" %]" media="print" />
-      [%- END -%]
-    [%- END -%]
-  [%- END -%]
--->
 
     <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.pack.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
@@ -102,6 +65,9 @@
 
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
+<!--[if lte IE 7]>
+<link href="[% config.get('css_loc') %]/views/[% view %]/patches/patch_2col_right_31.css" rel="stylesheet" type="text/css" />
+<![endif]-->
 <!--[if lt IE 7.]>
 <style type="text/css" media="all"> 
    @import url("[% "${config.get('css_loc')}/cssbuttons/ieBrowserHacks.css" %]");

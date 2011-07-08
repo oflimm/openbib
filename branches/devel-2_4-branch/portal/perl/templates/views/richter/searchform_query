@@ -136,8 +136,6 @@ $(document).ready(function(){
 [% END %]
 
 <!-- <tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr> -->
-<tr><td></td><td></td><td></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td></tr>
 <tr><td colspan="3"></td><td><div class="cssbutton glass kug"><input
 type="hidden" name="db" value="richter"/><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 

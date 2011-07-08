@@ -24,26 +24,18 @@
 #######################################################################
 -%]
 [%- username = user.get_username -%]
-<div id="mainnavigation">
-<div id="mainnavigation_left">
-<a [%- IF active_menu == "searchform" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('resultlists_loc') %].html?l=[% lang %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
-</div>
-<div id="mainnavigation_right">
-[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('base_loc') %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
-<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=[% lang %]">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
-<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('connector_rss_loc') %]/neuzugang/richter.rdf?l=[% lang %]">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
-[% IF config.get('login_active') == 1 %]
-[% IF username %]
-<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Einstellungen") %]</a>
-[% ELSE %]
-<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Login") %]</a>
-[%- END -%]
-&nbsp;::&nbsp;
-[% END %]
-<a href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
-[%- IF username -%]
- [[% username %]]
-[%- END -%]
-</span></b></a>
-</div>
-</div>
+    <!-- begin: main navigation #nav -->
+    <div id="nav" role="navigation">
+      <div class="hlist">
+        <ul>
+          <li><a [% IF active_menu == "info" %]class="active" [% END %] href="[% path_prefix %]/[% config.get('info_loc') %]/portal.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
+          <li><a [%- IF active_menu == "searchform" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]">[% msg.maketext("Suchen") %]</a></li>
+          <li><a [% IF active_menu == "browse" %]class="active" [% END %] href="[% path_prefix %]/[% config.get('browse_loc') %]/richter/T0720.html?l=[% lang %]" title="Register">[% msg.maketext("Register") %]</a></li>
+          <li><a [% IF active_menu == "cloud" %]class="active" [% END %] href="[% path_prefix %]/[% config.get('cloud_loc') %]/year/richter.html?l=[% lang %]" title="&Uuml;bersichten">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+          <li><a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('resultlists_loc') %].html?l=[% lang %]">[% msg.maketext("Trefferliste") %]</a></li>
+          <li><a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></li>
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('base_loc') %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">[% msg.maketext("admin") %]</a></li>[%- END -%]
+       </ul>
+      </div>
+    </div>
+    <!-- end: main navigation -->

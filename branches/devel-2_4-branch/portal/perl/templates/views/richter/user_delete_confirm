@@ -1,19 +1,20 @@
 [%#-
 #######################################################################
 #
-# Templatename: search_browsetit
+# Templatename: user_delete_confirm
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe der Inhalte einer Titel-Kategorie
+# Ausgabe einer Sicherheitsnachfrage vor dem Loeschen einer Benutzer-
+# kennung
 #
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
-<body>
+  <body>
 
 <!-- skip link navigation -->
 <ul id="skiplinks">
@@ -33,7 +34,7 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_menu="register_${category}" %]
+[% PROCESS common/subtemplate name="user_navigation" active="userprefs" %] 
         </div>
       </div>
       <!-- end: #col1 -->
@@ -41,36 +42,25 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-[%- IF category == 'T0720' -%]
-<h2>Provenienzen</h2>
-<p>
-[% msg.maketext("Das Register der Provenienzen listet die Namen von Privatpersonen und Rezensionszeitschriften auf.") %]
-</p>
-<p>
-[% msg.maketext("Bei den Personennamen handelt es sich um Besitzeintr&auml;ge, die den
-Vorbesitzer der Richterschen B&uuml;cher ausweisen. Au&szlig;erdem
-werden Personen verzeichnet, die ihre B&uuml;cher mit einer
-entsprechenden Widmung an Elise Richter weitergeleitet haben.") %]
-</p>
-<p>
-[% msg.maketext("Unter den noch in der USB K&ouml;ln vorhandenen Richterb&uuml;chern
-befinden sich auch einige Rezensionsexemplare. Sie sind durch
-handschriftlichen Eintrag von Elise Richter selbst oder durch einen
-Stempel als solche gekennzeichnet.") %]
-</p>
-<p>
-[% msg.maketext("Im Register werden sie unter dem Namen der Zeitschrift
-aufgef&uuml;hrt.") %]
-</p>
-[%- END -%]
+<h1>[% msg.maketext("Kennung l&ouml;schen") %]</h1>
 
-<p />
+<form method="POST" action="[% path_prefix %]/[% config.get('user_loc') %]/[% userid %]" enctype="application/x-www-form-urlencoded" target="_parent">
+
+<input type="hidden" name="_method" value="DELETE" />
 
 <table width="100%">
-[% FOREACH item IN browselist %]
-<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=richter;fs=t0720:|[% item.replace('&amp;','%26').replace('/','').replace('\(','').replace('\)','') %]|">[% item %]</a></td></tr>
-[% END %]
+<tr><th>[% msg.maketext("Soll die Kennung wirklich gel&ouml;scht werden?") %]</th></tr>
+<tr><td class="boxedclear">
+<p />
+
+Wenn Sie wirklich Ihre Kennung l&ouml;schen wollen, so klicken Sie auf die untenstehende Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten gel&ouml;scht.
+
+<p />
+</td></tr>
 </table>
+<p />
+<input type="submit" value="[% msg.maketext("Kennung soll wirklich gel&ouml;scht werden") %]" />
+</form>
 
         </div>
         <div id="ie_clearing">&nbsp;</div>

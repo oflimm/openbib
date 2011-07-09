@@ -52,7 +52,7 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<h1>[% msg.maketext("K&ouml;rpeschaften") %]</h1>
+<h1>[% msg.maketext("K&ouml;rperschaften") %]</h1>
 
 <table width="100%">
 <tr><th>[% msg.maketext("Wolke der häufigsten Begriffe") %]</th></tr>

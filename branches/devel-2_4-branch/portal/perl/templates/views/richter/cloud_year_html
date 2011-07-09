@@ -37,7 +37,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='cloud' %] 
 
     <!-- begin: main content area #main -->
     <div id="main">

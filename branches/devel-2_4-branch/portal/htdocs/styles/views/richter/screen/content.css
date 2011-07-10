@@ -231,47 +231,7 @@
   }
   */
 
-.tabbingmenu {
-  color: #FFFDF3;
-  border-bottom: 1px solid #919191;
-  margin: 12px 0px 0px 0px;
-  padding: 0px;
-  z-index: 1;
-  padding-left: 10px 
-}
-
-.tabbingmenu li {
-  display: inline;
-  overflow: hidden;
-  list-style-type: none; 
-}
-
-.tabbingmenu a, a.active {
-  color: #000000;
-  background: #FFFDF3; /* Hintergrundfarbe Tab 'weiss'*/
-  font: bold 1em "Trebuchet MS", Arial, sans-serif;
-  border: 1px solid #919191;
-  padding: 2px 5px 0px 5px;
-  margin: 0px;
-  text-decoration: none; 
-  -moz-border-radius-topleft: 8px;
-  -moz-border-radius-topright: 8px;
-  -webkit-border-radius-topleft: 8px;
-  -webkit-border-radius-topright: 8px;
-}
-
-.tabbingmenu a.active {
-  background: #FFFDF3;
-  border-bottom: 3px solid #FFFDF3; 
-}
-
-.tabbingmenu a:visited {
-  color: #000000; 
-  background: #FFFDF3; 
-}
-  
-
-  .cloud {
+.cloud {
   margin:0;
   padding:0;
 }

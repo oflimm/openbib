@@ -44,7 +44,7 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_menu='cloud_person' %]
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='cloud_person' %]
         </div>
       </div>
       <!-- end: #col1 -->

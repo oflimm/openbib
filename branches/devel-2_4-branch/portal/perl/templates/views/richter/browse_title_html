@@ -33,7 +33,7 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_menu="register_${category}" %]
+[% PROCESS common/subtemplate name="subnavigation" active_submenu="register_${category}" %]
         </div>
       </div>
       <!-- end: #col1 -->

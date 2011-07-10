@@ -33,7 +33,7 @@
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
 
-[% PROCESS common/subtemplate name="subnavigation" active_menu='portal' %]
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='portal' %]
 
         </div>
       </div>

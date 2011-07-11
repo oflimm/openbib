@@ -88,9 +88,47 @@ sub show {
     # CGI Args
     my $text       = $query->param('text')      || '';
 
+    my $pixel      = 365; # maximale Pixelzahl pro Dimension
+    
+    my $lt         = length($text); # Binary corresp. http://www.denso-wave.com/qrcode/vertable1-e.html
+
+    my $version    = 22;
+    my $modulesize = int($pixel/(105+4)); # inklusive Rahmen von 4 Modules
+
+    if    ($lt <  26){
+        $version   = 2;
+        $modulesize = int($pixel/(25+4));
+    }
+    elsif ($lt <  42){
+        $version   = 3;
+        $modulesize = int($pixel/(29+4));
+    }
+    elsif ($lt <  62){
+        $version   = 4;
+        $modulesize = int($pixel/(33+4));
+    }
+    elsif ($lt <  106){
+        $version   = 6;
+        $modulesize = int($pixel/(41+4));
+    }
+    elsif ($lt <  152){
+        $version   = 8;
+        $modulesize = int($pixel/(49+4));
+    }
+    elsif ($lt <  213){
+        $version   = 10;
+        $modulesize = int($pixel/(57+4));
+    }
+    elsif ($lt <  287){
+        $version    = 12;
+        $modulesize = int($pixel/(65+4));
+    }
+
+    $logger->debug("Using Version $version with ModuleSize $modulesize for Text with length $lt");
+    
     binmode STDOUT;
     my $code = GD::Barcode::QRcode->new($text,
-                                        {ECC => 'M', Version => 12, ModuleSize => 5}
+                                        {ECC => 'M', Version => $version, ModuleSize => $modulesize}
 
                                     );
     $r->content_type("image/png");

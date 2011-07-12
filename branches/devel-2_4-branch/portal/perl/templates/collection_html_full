@@ -68,7 +68,7 @@
 [% database        = record.database %]
 [% normset         = record.get_normdata %]
 [% mexnormset      = record.get_mexdata %]
-[% circset         = record.get_circdata %] 
+[% circulation         = record.get_circdata %] 
 [%- bibkey = record.to_bibkey -%]
 [%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
 
@@ -286,18 +286,18 @@ END;
 </p>
 [% END %]
 
-[% IF circset.size > 0 || mexnormset.size > 0 %]
+[% IF circulation.size > 0 || mexnormset.size > 0 %]
 <p/>
 [% sysprofile %]
-[% IF circset.size > 0 %]
+[% IF circulation.size > 0 %]
 
 <div id="circinfo"><!-- Begin Circulation -->
-[% PROCESS common/subtemplate name="circset" %]
+[% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
 [%   IF mexnormset.size > 0 %]
 <div id="mexinfo"><!-- Begin Bestand -->
-[% PROCESS common/subtemplate name="mexset"%]
+[% PROCESS common/subtemplate name="holding"%]
 </div><!-- End Bestand -->
 [%   END %]
 [% END %]

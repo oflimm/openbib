@@ -1,4 +1,4 @@
-[% IF circset.size <= 0 %]
+[% IF circulation.size <= 0 %]
 <table width="100%">
 <tr align="center"><td class="headline">Institut</td><td class="headline">[% msg.maketext("Inventarnummer") %]</td></tr>
 

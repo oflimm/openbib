@@ -65,18 +65,18 @@
 
 <div>
 
-[% IF circset.size > 0 %]
+[% IF circulation.size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
 
 <div id="circinfo"><!-- Begin Circulation -->
-[% PROCESS common/subtemplate name="circset" %]
+[% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
 [%   IF mexnormset.size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Bestand") %]</h2>
 
 <div id="mexinfo"><!-- Begin Bestand -->
-[% PROCESS common/subtemplate name="mexset" %]
+[% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
 [%   END %]
 [% END %]

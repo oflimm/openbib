@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: circset
+# Templatename: circulation
 #
 # Typ         : Subtemplate       
 #
@@ -14,7 +14,7 @@
 [%
  Aquisition = 0;
 
- FOREACH mex IN circset ;
+ FOREACH mex IN circulation ;
     IF mex.AquisitionStatuscode >= 1 ;
        Aquisition = 1;
     END ;
@@ -29,7 +29,7 @@
 [% IF Aquisition == 0 %]
 <table width="100%">
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
-[% FOREACH mex IN circset %]
+[% FOREACH mex IN circulation %]
 [%-
      mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normset.id}";
 
@@ -105,7 +105,7 @@
 <table width="100%">
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Erwerbungsstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 
-[% FOREACH mex IN circset ;
+[% FOREACH mex IN circulation ;
      mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normset.id}";
 %]
 <tr align="center"><td><a href="http://www.ub.uni-koeln.de/"

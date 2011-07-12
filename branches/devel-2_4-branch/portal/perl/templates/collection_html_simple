@@ -21,7 +21,7 @@
 <tr><td>
 [% normset    = record.get_normdata %]
 [% mexnormset = record.get_mexdata  %]
-[% circset    = record.get_circdata %]
+[% circulation    = record.get_circdata %]
 
 <!-- Title begins here -->
 <table width="100%">
@@ -44,14 +44,14 @@ FOREACH category IN categories;
 </table>
 
 [%# USE dumper;dumper.dump(record) %]
-[% IF circset.size > 0 || mexnormset.size > 0 %]
+[% IF circulation.size > 0 || mexnormset.size > 0 %]
 
-[% IF circset.size > 0 %]
+[% IF circulation.size > 0 %]
 <p />
 <table width="100%">
 <tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
 <tr><td class="boxedclear">
-[% PROCESS common/subtemplate name="circset" %]
+[% PROCESS common/subtemplate name="circulation" %]
 </td></tr>
 </table>
 [% ELSIF mexnormset.size > 0 %]
@@ -59,7 +59,7 @@ FOREACH category IN categories;
 <table width="100%">
 <tr><th>[% msg.maketext("Bestand") %]</th></tr>
 <tr><td class="boxedclear">
-[% PROCESS common/subtemplate name="mexset" %]
+[% PROCESS common/subtemplate name="holding" %]
 </td></tr>
 </table>
 [% END %]

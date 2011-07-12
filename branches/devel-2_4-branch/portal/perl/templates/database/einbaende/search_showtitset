@@ -387,10 +387,10 @@ END;
 <div id="additional_title_info"><!-- Begin Additional Title Info -->
 [%   reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
 
-[% IF circset.size > 0 || mexnormset.size > 0 || same_records.get_size
+[% IF circulation.size > 0 || mexnormset.size > 0 || same_records.get_size
 > 0 || similar_records.get_size > 0 || config.get('reviews') %]
 <ul class="nojs_hidden">
-[% IF circset.size > 0 %]
+[% IF circulation.size > 0 %]
 <li><a href="#circinfo"><span>[% msg.maketext("Ausleihe/Exemplare") %]</span></a></li>
 [% ELSE %]
 [%   IF mexnormset.size > 0 %]
@@ -409,18 +409,18 @@ END;
 </ul>
 [% END %]
 
-[% IF circset.size > 0 %]
+[% IF circulation.size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
 
 <div id="circinfo"><!-- Begin Circulation -->
-[% PROCESS common/subtemplate name="circset" %]
+[% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
 [%   IF mexnormset.size > 0 %]
 <h2 class="nojs_show">Bestand</h2>
 
 <div id="mexinfo"><!-- Begin Bestand -->
-[% PROCESS common/subtemplate name="mexset" %]
+[% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
 [%   END %]
 [% END %]

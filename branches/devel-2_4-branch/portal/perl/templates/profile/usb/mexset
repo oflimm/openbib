@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: connector_digibib_mexset
+# Templatename: connector_digibib_holding
 #
 # Typ         : Subtemplate       
 #
@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% IF circset.size <= 0 %]
+[% IF circulation.size <= 0 %]
 
 <script language="JavaScript" type="text/javascript" src="http://kug.ub.uni-koeln.de/js/openbib.js"></script>
 

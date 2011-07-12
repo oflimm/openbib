@@ -1,5 +1,4 @@
 [% IF fullresultcount <= config.get('xapian_option').maxmatch %]
-[%# USE dumper;dumper.dump(category_map)%]
 <div id="teaser_container_small" name="Teaser" class="clearfix" style="vertical-align:top;font-size=0.7em;">
 <script type="text/javascript">
 $(document).ready(function(){
@@ -94,17 +93,43 @@ $("#dd_database_[% database %]_toggle").click(function(){
 });
 // Ende Togglen / Drilldown Katalog
 
+// Begin Togglen / Drilldown Tags
+// Bild setzen
+$("#dd_tag_[% database %]_toggle").html("<b>[<a href=\"#dd_tag_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_tag_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_tag_[% database %]_toggle").click(function(){
+ $("#dd_tag_[% database %]").toggle();
+ $("#dd_tag_[% database %]_toggle").html("");
+});
+// Ende Togglen / Drilldown Tag
+
+// Begin Togglen / Drilldown Literaturliste
+// Bild setzen
+$("#dd_litlist_[% database %]_toggle").html("<b>[<a href=\"#dd_litlist_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_litlist_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_litlist_[% database %]_toggle").click(function(){
+ $("#dd_litlist_[% database %]").toggle();
+ $("#dd_litlist_[% database %]_toggle").html("");
+});
+// Ende Togglen / Drilldown Literaturliste
+
 });
 
 </script>
-
+[%# USE dumper;dumper.dump(category_map)%]
 <h4>[% msg.maketext("Treffermenge eingrenzen") %]</h4>
 <table style="font-size:0.7em;" width="100%">
 
-[% request_base = "${viewconfig.view.zms_search_url}?view=${view};num=${qopts.num};page=1";
+[%
+   request_base = "${viewconfig.view.zms_search_url}?view=${view};num=${qopts.num};page=1";
+
    all_filters = [];
        FOREACH filter IN searchquery.get_filter ;
-          all_filters.push("facet=${filter.val}");
+          all_filters.push("filter=${filter.val}");
    END ;
    allfilterstring = ";${all_filters.join(';')}";
 %]
@@ -123,12 +148,14 @@ $("#dd_database_[% database %]_toggle").click(function(){
           ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
           ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
           ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
+          ${config.get('searchfield').tagstring.prefix} = msg.maketext("Tag")
+          ${config.get('searchfield').litliststring.prefix} = msg.maketext("Literaturliste")
 };
 
 %]
 [%             FOREACH filter IN searchquery.get_filter ;
                    this_filters = [];
-                   this_filterstring = "facet=${filter.val}";
+                   this_filterstring = "filter=${filter.val}";
                    FOREACH all_filter IN all_filters;
                        IF all_filter != this_filterstring ;
                            this_filters.push(all_filter);
@@ -138,6 +165,27 @@ $("#dd_database_[% database %]_toggle").click(function(){
 [%# USE dumper;dumper.dump(this_filters); dumper.dump(all_filters)%]
 <p><a href="[% request_base %];fs=[% lastquery %][% IF this_filters.size > 0 %];[% this_filters.join(';')%][% END %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.facet} %]: [% filter.term %]</p>
 [%             END %]
+</td></tr>
+</table>
+</td></tr>
+[%         END %]
+[%         IF jn == 1 && category_map.8.size > 0 %]
+<tr><td valign="top">
+<table width="100%">
+<tr><th class="headline" id="dd_database_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>
+<tr><td>
+[%             FOREACH termitem IN category_map.8 ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF category_map.8.size > 5 && loop.count == 5 %]
+<span id="dd_database_[% database %]_toggle"></span>
+<div id="dd_database_[% database %]">
+[% END %]
+<a href="[% request_base %][% IF termitem.0 != query.param('db') %];db=[% termitem.0 %][% END %];fs=[% lastquery %][% allfilterstring %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+[% IF category_map.8.size > 5 %]
+</div>
+[% END %]
 </td></tr>
 </table>
 </td></tr>
@@ -158,7 +206,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').personstring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.3.size > 5 %]
 </div>
@@ -183,7 +231,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.7.size > 5 %]
 </div>
@@ -208,7 +256,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').subjectstring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.1.size > 5 %]
 </div>
@@ -233,7 +281,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').classificationstring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.2.size > 5 %]
 </div>
@@ -258,7 +306,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').yearstring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
 [% IF category_map.5.size > 5 %]
 </div>
@@ -283,9 +331,59 @@ $("#dd_database_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').mediatypestring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.4.size > 5 %]
+</div>
+[% END %]
+</td></tr>
+</table>
+</td></tr>
+[%         END %]
+[%         IF config.get('drilldown_option').categorized_tag && category_map.9.size > 0 %]
+<tr><td valign="top">
+<table width="100%">
+<tr><th class="headline" id="dd_tag_[% database %]_anchor">[% msg.maketext("nach Tags") %]</th></tr>
+<tr><td>
+[%             FOREACH termitem IN category_map.9 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.9.size > 5 && loop.count == 5 %]
+<span id="dd_tag_[% database %]_toggle"></span>
+<div id="dd_tag_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').tagstring.prefix;
+-%]
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+[% IF category_map.9.size > 5 %]
+</div>
+[% END %]
+</td></tr>
+</table>
+</td></tr>
+[%         END %]
+[%         IF config.get('drilldown_option').categorized_litlist && category_map.10.size > 0 %]
+<tr><td valign="top">
+<table width="100%">
+<tr><th class="headline" id="dd_litlist_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</th></tr>
+<tr><td>
+[%             FOREACH termitem IN category_map.10 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.10.size > 5 && loop.count == 5 %]
+<span id="dd_litlist_[% database %]_toggle"></span>
+<div id="dd_litlist_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').litliststring.prefix;
+-%]
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+[% IF category_map.10.size > 5 %]
 </div>
 [% END %]
 </td></tr>
@@ -359,7 +457,7 @@ $("#dd_database_[% database %]_toggle").click(function(){
     sprstring = spr.join(';');
 
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.6.size > 5 %]
 </div>
@@ -377,16 +475,16 @@ $("#dd_database_[% database %]_toggle").click(function(){
 <h2><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h2>
 
 <p>
-Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine
+[% msg.maketext("Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine
 sinnvolle Eingrenzung durch eine Rechercheverfeinerung nicht
-m&ouml;glich ist.
+m&ouml;glich ist.") %]
 </p>
 
 <p>
-Versuchen Sie daher Ihre Rechercheanfrage zu pr&auml;zisieren, indem
+[% msg.maketext("Versuchen Sie daher Ihre Rechercheanfrage zu pr&auml;zisieren, indem
 Sie diese auf sinntragende Worte reduzieren (z.B. der, die das
 weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)
-durch zus&auml;tzliche Worte weiter eingrenzen.
+durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 </p>
 
 </div>

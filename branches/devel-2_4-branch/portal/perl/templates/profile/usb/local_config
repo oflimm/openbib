@@ -53,6 +53,8 @@
                     subjectid          = 15,
                     defaultlogintarget = 4,
                     validlogintargets  = { "7" => 1, "4" => 1, }
+                    zms_search_url     = 'http://wwwtest.ub.uni-koeln.de/bibliotheken/526/search/index_ger.html',
+                    zms_title_url      = 'http://wwwtest.ub.uni-koeln.de/bibliotheken/526/titel/index_ger.html',
                   },
        "inst108" = {
                     subjectid          = 5,

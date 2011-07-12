@@ -37,7 +37,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "http://wwwtest.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/526/search/index_ger.html?num=10;page=1;fs=${searchprefix}:|${searchterm}|";
+         globalurl = "http://wwwtest.ub.uni-koeln.de/bibliotheken/526/search/index_ger.html?num=10;page=1;fs=${searchprefix}:|${searchterm}|";
 
 #         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          persons.push("${part.content}");
@@ -143,12 +143,12 @@
     toc       = item.${'T4110'}.first.content ;
 
     IF ebook ;
-      ebook = "${path_prefix}/${config.get('redirect_loc')}/503/${ebook}" ;
+      ebook = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(ebook)}" ;
       titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
     END ;
 
     IF toc ;
-      toc = "${path_prefix}/${config.get('redirect_loc')}/500/${toc}" ;
+      toc = "${path_prefix}/${config.get('redirect_loc')}?type=500;${uri_escape(toc)}" ;
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
@@ -166,7 +166,7 @@
    <div class="hit-details">
         [%# USE dumper;dumper.dump(item) %]
         <script type="text/javascript">
-            document.write('<h4><a href="javascript:ajaxpage(\'/portal/[% view %]/resource/title/[% record.database %]/[% record.id %].include\', \'DISPLAY_SEARCH_[% item.database%]_[% item.id %]\', \'Lade Detailanzeige\');">[% title %]</a></h4>');
+            document.write('<h4><a href="javascript:ajaxpage(\'/portal/[% view %]/title/[% record.database %]/[% record.id %].include\', \'DISPLAY_SEARCH_[% item.database%]_[% item.id %]\', \'Lade Detailanzeige\');">[% title %]</a></h4>');
         </script>
            <noscript>
             <h4><a href="[% view_config.${view}.zms_title_url %]?view=[% view %];db=[% item.database %];id=[% item.id %]">[% title %]</a></h4>

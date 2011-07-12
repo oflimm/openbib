@@ -1,0 +1,246 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_categories
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe von bibliographischen Daten fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+<table class="result-details" style="margin:-0.2em 3em 0.2em 0;padding-bottom:0;">
+<tr><th>id</th><td>[% record.id %]</td></tr>
+[%-
+request_base = "${viewconfig.$view.zms_search_url}?view=${view};num=10;page=1";
+
+globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+rswkswt_done      = {};
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE [ "T0100" "T0101" "T0103" ];
+         thisid     = item.id;
+
+         wikicontent = content.split(', ').reverse.join(' ');
+         wikicontent = wikicontent.replace('¬','');
+
+         rssfeed = "" ;
+         IF activefeed.2 ;
+             rssfeed = "<a href=\"http://wwwtest.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+
+         searchterm    = item.content;
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('person_loc')}/${record.database}/${thisid}.html";
+
+         wikipediaurl = "http://${lang}.wikipedia.org/wiki/index.php?search=${wikicontent}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${request_base};fs=${searchprefix}:|${searchterm}|";
+#         localurl  = "${request_base};fs=${searchterm}";
+         content   = "${rssfeed}<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE [ "T0200" "T0201" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         rssfeed = "" ;
+         IF activefeed.3 ;
+             rssfeed = "<a href=\"http://wwwtest.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+
+         searchterm    = item.content;
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('corporatebody_loc')}/${record.database}/${thisid}.html";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${request_base};db=${database};fs=${searchprefix}:|${searchterm}|";
+#         localurl  = "${request_base};fs=${searchterm}";
+         content   = "${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE "T0331";
+         content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+    CASE [ "T0531" "T0533" ];
+         IF content.match("---&gt;: ") ;
+            previssues = content.split("---&gt;: ");
+            globalurl  = "${path_prefix}/${config.get('search_loc')}?searchall=1;hststring=${previssues.1}";
+            localurl   = "${path_prefix}/${config.get('browse_loc')}?db=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
+            content    = "{previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
+         END ;
+          
+    CASE "T0540";
+         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+
+    CASE "T0543";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+
+    CASE [ "T0662" "T2662" ];
+         thisindicator = item.indicator ;
+         thiscontent   = '' ;
+         IF category == 'T0662' ;
+           FOREACH thisitem IN normset.${"T0663"} ;
+             IF thisitem.indicator == thisindicator ;
+                thiscontent = thisitem.content ;
+                IF thiscontent == '	Bez.: 1; Interna: Digitalisierung; Info: kostenfrei' ;
+                    thiscontent = 'E-Book im Volltext';
+                END;
+             END ;
+           END ;
+         ELSIF category == 'T2662' ;
+           FOREACH thisitem IN normset.${"T2663"} ;
+             IF thisitem.indicator == thisindicator ;
+                thiscontent = thisitem.content ;
+             END ;
+           END ;
+         END ;
+         IF thiscontent ;
+            IF content.match('digitool.hbz-nrw.de') ;
+               thiscontent = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
+               content     = "${path_prefix}/${config.get('redirect_loc')}/500/${content}" ;
+               content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+            ELSIF thiscontent.match('Bez.: 1; Interna: Digitalisierung; Info: kostenfrei') ;
+               thiscontent = "E-Book im Volltext";
+               content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>&nbsp;<img src=\"http://kug4.ub.uni-koeln.de${config.get('dbis_green_img')}\" alt=\"green\"/>";
+            END ;
+         ELSE ;
+            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
+         END ;
+
+    CASE [ "E4100" "T4100" ];
+         searchterm    = item.content.replace('&amp;','%26');
+         searchprefix  = config.get('searchfield').t4100.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
+         bklookup    = config.load_bk ;
+         bkdesc      = bklookup.${content};
+         content     = "<a href=\"${localurl}\">${content}</a>";
+         IF bkdesc ;
+            content   = "${content} (${bkdesc})" ;
+         END ;
+
+    CASE "E4110";
+         thisindicator = item.indicator ;
+         thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
+         content       = "${path_prefix}/${config.get('redirect_loc')}/500/${content}" ;
+         content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+
+    CASE "E4120";
+         thiscontent   = "Greifen Sie hier online auf den Volltext zu";
+	 content       = "${path_prefix}/${config.get('redirect_loc')}/503/${content}" ;
+	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
+
+    CASE "E4300";
+         thiscontent = item.content;
+
+         searchterm    = item.content.replace('&amp;','%26');
+         searchprefix  = config.get('searchfield').t4300.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
+
+         NEXT IF rswkswt_done.${thiscontent} == 1;
+	 content       = "<a href=\"${localurl}\">${content}</a>";
+         rswkswt_done.${thiscontent} = 1;
+
+    CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         thiscontent = item.content;
+
+         NEXT IF rswkswt_done.${thiscontent} == 1;
+
+         rssfeed = "" ;
+         IF activefeed.4 ;
+             rssfeed = "<a href=\"http://wwwtest.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+
+         searchterm    = item.content;
+         searchprefix  = config.get('searchfield').subjectstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('subject_loc')}/${record.database}/${thisid}.html";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         localurl  = "${request_base};db=${database};fs=${searchprefix}:|${searchterm}|";
+#         localurl  = "${request_base};fs=${searchterm}";
+         content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         rswkswt_done.${thiscontent} = 1;
+
+    CASE "T0700";
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         rssfeed = "" ;
+         IF activefeed.5 ;
+             rssfeed = "<a href=\"http://wwwtest.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+
+         searchterm    = item.content;
+         searchprefix  = config.get('searchfield').classificationstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('classification_loc')}/${record.database}/${thisid}.html";
+         localurl  = "${request_base};db=${database};fs=${searchprefix}:|${searchterm}|";
+         content   = "${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE "T1600";
+         IF content.match('Sie einen Bestellschein aus');
+             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" class=\"ext\" target=\"_blank\">Ortsleihe</a> schicken";
+         END;
+
+    CASE "T4500";
+         # Dummy-Eintrag, damit dieser Eintrag nicht vom higlightquery
+         # erwischt wird
+         content   = content ;
+
+    CASE "T5001";
+         searchterms = [];
+         FOREACH superid IN normset.${"T0004"};
+            searchterms.push("id:${superid.content}");
+         END;
+
+         localurl  = "${request_base}?view=${view};db=${database};dop=or;fs=${searchterms.join(' ')}";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
+
+    CASE "T5002";
+         searchterm    = item.content;
+         searchprefix  = config.get('searchfield').subid.prefix;
+
+         localurl  = "${request_base}?view=${view};db=${database};fs=${searchprefix}:${record.id}";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
+
+    CASE ;
+         content   = highlightquery(searchquery,item.content);
+   END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+<tr><th>[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+[%- IF bibkey -%]
+<tr><th>bibkey</th><td>[% bibkey %]</td></tr>
+[%- END -%]
+</table>

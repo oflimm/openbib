@@ -62,14 +62,13 @@
 </div>
 [% END %]
 
-<div id="searchform" [%- IF user.is_authenticated -%]style="width:99.5%"[%- END -%]><!-- Begin searchform -->
+<div id="searchform"><!-- Begin searchform -->
 
-<div id="searchform_types" ><!-- Begin searchform_types -->
+<div id="searchform_types" class="jquery_tabs"><!-- Begin searchform_types -->
 
-<div class="jquery_tabs">
-<h3>[% msg.maketext("Alles") %]</h3>
+<h4>[% msg.maketext("Alles") %]</h4>
 
-<div id="tab-content"><!-- Begin alle Typen -->
+<div class="tabbody"><!-- Begin alle Typen -->
 
 [% IF user.is_authenticated %]
 [% autocompletion_type = user.get_autocompletion %]
@@ -200,9 +199,9 @@ $(document).ready(function(){
 
 </div><!-- End alle Typen -->
 
-<h3>[% msg.maketext("Zeitschriften/Serien") %]</h3>
+<h4>[% msg.maketext("Zeitschriften/Serien") %]</h4>
 
-<div class="tab-content"><!-- Begin Serials-->
+<div class="tabbody"><!-- Begin Serials-->
 
 [% IF spelling_suggestion.as_you_type %]
 <script type="text/javascript">
@@ -293,9 +292,9 @@ $(document).ready(function(){
 
 </div><!-- End Serials -->
 
-<h3>[% msg.maketext("Aufs&auml;tze") %]</h3>
+<h4>[% msg.maketext("Aufs&auml;tze") %]</h4>
 
-<div class="tab-content"><!-- Begin nur Aufsaetze -->
+<div class="tabbody"><!-- Begin nur Aufsaetze -->
 
 [% IF spelling_suggestion.as_you_type %]
 <script type="text/javascript">
@@ -387,9 +386,9 @@ $(document).ready(function(){
 
 </div><!-- End nur Aufsaetze -->
 
-<h3>[% msg.maketext("Online") %]</h3>
+<h4>[% msg.maketext("Online") %]</h4>
 
-<div id="tab-content"><!-- Begin nur Online -->
+<div class="tabbody"><!-- Begin nur Online -->
 
 [% IF spelling_suggestion.as_you_type %]
 <script type="text/javascript">
@@ -481,9 +480,9 @@ $(document).ready(function(){
 
 </div><!-- End nur Online -->
 
-<h3>[% msg.maketext("Themengebiete") %]</h3>
+<h4>[% msg.maketext("Themengebiete") %]</h4>
 
-<div id="tab-content"><!-- Begin Themengebiete -->
+<div class="tabbody"><!-- Begin Themengebiete -->
 
 <p />
 <ul class="subjectlist">
@@ -498,9 +497,6 @@ $(document).ready(function(){
 [% END %]
 </ul>
 </div><!-- End Themengebiete -->
-
-<p />
-</div> <!-- End jquery_tabs -->
 
 </div><!-- End searchform_types -->
 

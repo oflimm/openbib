@@ -1,0 +1,105 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_database_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Kataloge anzeigen' disable_cache_control=1 %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="database" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuen Katalog anlegen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("System") %]</b></td><td><b>[% msg.maketext("Sigel") %]</b></td><td><b>[% msg.maketext("URL") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="dbname" size="8" /></td><td><input type="text" name="description" /></td><td><select name="system"><option value="Lars">Lars</option><option value="Allegro">Allegro</option><option value="Bis-lok">Bis-lok</option><option value="Sisis" selected="selected">Sisis</option><option value="OAI">OAI</option><option value="Aleph">Aleph</option><option value="Anderes">Anderes</option></select></td><td><input type="text"
+name="sigel" size="3" /></td><td><input type="text" name="url"
+size="20" /></td><td><select name="active"><option value="1">[%
+msg.maketext("Ja") %]</option><option value="0"
+selected>[% msg.maketext("Nein") %]</option></select></td><td><div class="cssbutton glass kug"><input
+type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[% IF kataloge.size > 0 %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende Kataloge") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Info") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Bibinfo statt URL / vorhanden") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
+[% FOREACH katalog IN kataloge.all %]
+<tr
+[% IF katalog.active == 1%]
+ bgcolor="aliceblue"
+[% END %]
+>
+<td>[% katalog.dbname %]</td>
+<td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/library/edit">Info</a></td>
+<td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td>
+<td><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/edit">[% katalog.description %]</a></td>
+<td align="center">[%- IF katalog.use_libinfo == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%] / [%- IF config.have_libinfo(katalog.dbname) -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
+<td align="center">[%- IF katalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
+<td align="right">[% katalog.count %]</td></tr>
+[% END %]
+
+</table>
+
+[% END %]
+
+</td></tr>
+</table>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

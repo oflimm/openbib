@@ -1,0 +1,78 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_rss_item
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Beschreibung eines RSS-Feed-Items
+#
+#######################################################################
+-%]
+<![CDATA[
+[%# Verfasser konstruieren %]
+[%- item = record.to_rawdata -%]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%- persons.push("${part.content}") -%]
+
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+
+[%# Ausgabe konstruieren %]
+[%- ausgabe   = item.${'T0403'}.first.content -%]
+
+[%# GT konstruieren %]
+[%- gt        = item.${'T0451'}.first.content -%]
+
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- IF person -%]
+[% person %]<br />
+[%- END -%]
+[%- IF title -%]
+<b>[% title %]</b><br />
+[%- END -%]
+[%- IF publisher -%]
+[% publisher %]<br />
+[%- END -%]
+[%- IF ausgabe -%]
+[% ausgabe %]<br />
+[%- END -%]
+[%- IF yearofpub -%]
+[% yearofpub %]<br />
+[%- END -%]
+[%- IF gt -%]
+([% gt %])<br />
+[%- END -%]
+[%- IF record.tstamp -%]
+Hinzugefügt: [% record.tstamp %]<br />
+[%- END -%]
+]]>

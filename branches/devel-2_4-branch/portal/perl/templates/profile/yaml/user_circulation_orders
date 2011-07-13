@@ -1,0 +1,79 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_orders
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller bestellten Medien
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="user_navigation" active="circulation" %]
+
+<div class="content">
+
+<p />
+
+<ul class="tabbingmenu">
+   <li><a                href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=borrows">[% msg.maketext("Ausleihen") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reservations">[% msg.maketext("Vormerkungen") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=orders">[% msg.maketext("Bestellungen") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reminders">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+
+[% IF orders.size == 0 %]
+<b>[% msg.maketext("Sie haben keine Bestellungen get&auml;tigt.") %]</b>
+[% ELSE  %]
+
+<table cellpadding="5">
+<tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Bestelldatum") %]</b></td><td><b>[% msg.maketext("Status") %]</b></td></tr>
+[%- listrow = 'listrow1' -%]
+
+[%- FOREACH order = orders -%]
+
+<tr
+class="[% listrow %]"
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%] 
+[%- ELSE -%]
+[%- listrow = 'listrow1' -%] 
+[%- END -%]
+><td><i>[% order.Verfasser %]</i><br />[% order.Titel %]
+
+[% IF order.EJahr %]
+, [% order.EJahr %]
+[% END %]
+
+</td><td>
+[% IF order.MTyp == 99 %]
+[% msg.maketext("Fernleihbestellung") %]<br />
+[% END %]
+
+[% order.Mediennummer %]</td><td>[% order.BestellDatum %]</td><td>[% order.Status %]</td></tr>
+[% END %]
+</table>
+
+[% END %]
+</div>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

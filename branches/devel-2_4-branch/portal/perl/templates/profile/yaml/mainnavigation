@@ -1,0 +1,66 @@
+[%#-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# databasechoice
+# searchform
+# resultlists
+# collection
+# startpage
+# rssfeeds
+# login
+# info
+# tutorial
+#
+#######################################################################
+-%]
+[%- username = user.get_username -%]
+    <!-- begin: main navigation #nav -->
+    <div id="nav" role="navigation">
+      <div class="hlist">
+        <ul>
+[% IF active_menu == "databasechoice" %]
+         <li class="active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
+[% ELSE %]
+          <li><a [%- IF active_menu == "databasechoice" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('databasechoice_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+[% END %]
+[%- IF active_menu == "searchform" -%]
+         <li class="active"><strong>[% msg.maketext("Suchen") %]</strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]">[% msg.maketext("Suchen") %]</a></li>
+[% END %]
+[% IF active_menu == "cloud" %]
+         <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/year/richter.html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+[% END %]
+[%- IF active_menu == "resultlists" -%]
+         <li class="active"><strong>[% msg.maketext("Trefferliste") %]</strong></li>
+[% ELSE %]
+         <li><a href="[% path_prefix %]/[% config.get('resultlists_loc') %].html?l=[% lang %]">[% msg.maketext("Trefferliste") %]</a></li>
+[% END %]
+[%- IF active_menu == "collection" -%]
+         <li class="active"><strong>[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></li>
+[% END %]
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]
+[%-   IF active_menu == "admin" -%]
+         <li class="active"><strong>[% msg.maketext("admin") %]</strong></li>
+[%    ELSE %]
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">[% msg.maketext("admin") %]</a></li>
+[%    END %]
+[%- END -%]
+        </ul>
+      </div>
+    </div>
+    <!-- end: main navigation -->

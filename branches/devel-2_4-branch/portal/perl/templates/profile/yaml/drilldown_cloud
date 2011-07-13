@@ -1,0 +1,32 @@
+[%     IF drilldown_cloud && cloud.size > config.get('drilldown_option').cloud_min && fullresultsize > qopts.num # Wenn mindest. cloud_min  Elemente verfuegbar, dann ausgeben %]
+<p />
+<table width="100%">
+<tr><th colspan="4">Begriffs-Wolke&nbsp;</th></tr>
+<tr><td colspan="4" class="boxedclear" style="font-size:0.8em;">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+<ol class="cloud">
+[%-         FOREACH item IN cloud -%]
+[% 
+   classnr   = item.class;
+   class     = css_classes.$classnr;
+%]
+<li class="[% class %]"><span>[% item.count %] Titel enthalten den Term </span><a href="[% path_prefix %]/[% config.get('search_loc') %]?dd=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=[% lastquery %] [% item.term %]" class="tag">[% item.term %]</a></li>
+[%         END %]
+</ol>
+
+</tr></tr>
+</table>
+<p />
+[%     END # Clouds %]

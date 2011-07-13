@@ -1,0 +1,110 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_navigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Navigations-Menu fuer die Webadministration
+#
+#######################################################################
+-%]
+<h6 class="vlist">Administration</h6>
+<ul class="vlist">
+[% IF active_submenu == "server" %]
+  <li class="active"><strong>[% msg.maketext("Server") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_server_loc') %].html?l=[% lang %]">[% msg.maketext("Server") %]</a></li>
+[% END %]
+[% IF active_submenu == "database" %]
+  <li class="active"><strong>[% msg.maketext("Kataloge") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
+[% END %]
+[% IF active_submenu == "profile" %]
+  <li class="active"><strong>[% msg.maketext("Katalog-Profile") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %].html?l=[% lang %]">[% msg.maketext("Katalog-Profile") %]</a></li>
+[% END %]
+[% IF active_submenu == "view" %]
+  <li class="active"><strong>[% msg.maketext("Views") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_view_loc') %].html?l=[% lang %]">[% msg.maketext("Views") %]</a></li>
+[% END %]
+[% IF active_submenu == "session" %]
+  <li class="active"><strong>[% msg.maketext("Sessions") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %].html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+[% END %]
+[% IF active_submenu == "statistic" %]
+<li><span>[% msg.maketext("Statistik") %]</span>
+    <ul>
+[% IF active_subsubmenu == "general" %]
+      <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %].html">[% msg.maketext("Allgemein") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "request" %]
+      <li class="active"><strong>[% msg.maketext("Interne/Externe Aufrufe") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/request.html">[% msg.maketext("Interne/Externe Aufrufe") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "view" %]
+      <li class="active"><strong>[% msg.maketext("Views") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/view.html">[% msg.maketext("Views") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "query" %]
+      <li class="active"><strong>[% msg.maketext("Recherche-Arten") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/query.html">[% msg.maketext("Recherche-Arten") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "client" %]
+      <li class="active"><strong>[% msg.maketext("Klienten") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/client.html">[% msg.maketext("Klienten") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "browser" %]
+      <li class="active"><strong>[% msg.maketext("Browser") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/browser.html">[% msg.maketext("Browser") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "access" %]
+      <li class="active"><strong>[% msg.maketext("Zahl Recherchen/Sessions") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/access.html">[% msg.maketext("Zahl Recherchen/Sessions") %]</a></li>
+[% END %]
+    </ul>
+</li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %].html?l=[% lang %]">[% msg.maketext("Statistik") %]</a></li>
+[% END %]
+[% IF active_submenu == "user" %]
+<li><span>[% msg.maketext("Nutzerverwaltung") %]</span>
+    <ul>
+[% IF active_subsubmenu == "general" %]
+      <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_user_loc') %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "search" %]
+      <li class="active"><strong>[% msg.maketext("Nutzer suchen/bearbeiten") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_user_loc') %]/search/form">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
+[% END %]
+    </ul>
+</li>
+[% END %]
+[% IF active_submenu == "authentication" %]
+  <li class="active"><strong>[% msg.maketext("Anmeldung") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_authentication_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
+[% END %]
+[% IF active_submenu == "subject" %]
+  <li class="active"><strong>[% msg.maketext("Themengebiete") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_subject_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+[% END %]
+</ul>

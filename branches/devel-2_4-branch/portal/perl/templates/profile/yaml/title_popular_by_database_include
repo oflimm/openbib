@@ -1,0 +1,129 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[%
+      funcargs = { id => database, type => 1 } ;
+      resultlist = statistics.get_result(funcargs);
+%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+<!-- Titlelist begins here -->
+<ol start="1" class="hitlist">
+[%- FOREACH thisitem IN resultlist -%]
+[% record    = thisitem.item;
+   itemcount = thisitem.count;
+   item      = record.get_brief_normdata; %]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%-  searchterm    = part.content;
+     searchprefix  = config.get('searchfield').personstring.prefix;
+
+     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+-%]
+[%-  persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%-  searchterm    = part.content;
+     searchprefix  = config.get('searchfield').personstring.prefix;
+
+     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+-%]
+[%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%-  searchterm    = part.content;
+     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+-%]
+[%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%-  searchterm    = part.content;
+     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+-%]
+[%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%-    order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') ;
+
+    titleinfos = [] ;
+
+    # E-Book/Inhaltsverzeichnis vorhanden
+    ebook     = item.${'T4120'}.first.content ;
+    toc       = item.${'T4110'}.first.content ;
+
+    IF ebook ;
+      ebook = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(ebook)}" ;
+      titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${"ebook_i18n"}</a>") ;
+    END ;
+
+    IF toc ;
+      toc = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(toc)}" ;
+      titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
+    END ;
+
+#    IF item.popularity ;
+#      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
+#    END ;
+
+    titleinfo = titleinfos.join(" | ");
+-%]
+<li>
+   <div class="hit-details">
+      <div class="title" style="margin-top:-0.2em;">
+           <span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>
+           <br />[ [% itemcount %] Nutzer [%- IF titleinfo -%] | [% titleinfo %] [%- END -%]]
+      </div>
+      <div class="mediatype" style="margin-top:0.3em;">
+      [% signatur %]
+      </div>
+   </div>
+</li>
+<!-- Ende einzelner Treffer -->
+[% END %]
+</ol>
+<!-- Titlelist ends here -->

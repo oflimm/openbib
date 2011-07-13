@@ -1,0 +1,112 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitlist
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Titel-Kurztrefferliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = 'Trefferliste' disable_cache_control=1 %]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Trefferliste") %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<!-- Titlelist begins here -->
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
+[%- dburl    = dbinfo.get('urls').${database} -%]
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[%-   IF dbinfo.get('use_libinfo').${database} %]
+<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% database %]">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
+    </div>
+    <div class="hits">
+[% recordlist.get_size %]  [% msg.maketext("Treffer") %]
+    </div>
+[% IF offset >= 0 && num > 0 %]
+    <div class="navigation">
+[%- FOREACH navitem IN nav ;
+      IF navitem.active ;
+        previouspage = lastpage;
+        nextpage = loop.next;
+      END ;
+      lastpage = navitem; 
+    END ;
+-%]
+[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
+[%- IF nav.first.active -%]<img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
+[%- FOREACH navitem IN nav -%]
+<a href="[% navitem.url %]">
+[%- IF navitem.active -%]
+<span class="paging_active">[% loop.count %]</span>
+[%- ELSE -%]
+[% loop.count %]
+[%- END -%]
+</a>&nbsp;&nbsp;
+[%- END -%]
+
+[% IF nav.last.active %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
+
+[%- IF hits <= 1000 -%]
+<a href="[% baseurl %];num=-1;offset=0">[ Alles ]</a>
+[%- END -%]
+    </div>
+[%-    END -%]
+  </div>
+  <div class="listoptions">
+<form method="get" action="[% path_prefix %]/[% config.get('browse_loc') %]">
+<input type="hidden" name="offset"          value="[% offset %]" />
+<input type="hidden" name="num"        value="[% IF num %][% num %][% ELSE %][% qopts.num %][% END %]" />
+
+[%- IF query.param('database')          -%]<input type="hidden" name="db"      value="[% query.param('database') %]" />[% END %]
+[%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
+[%- IF query.param('supertit')          -%]<input type="hidden" name="supertit"      value="[% query.param('supertit') %]" />[% END %]
+[%- IF query.param('generalsearch')     -%]<input type="hidden" name="generalsearch" value="[% query.param('generalsearch') %]" />[% END %]
+[%- IF query.param('searchtitofaut')    -%]<input type="hidden" name="searchtitofaut" value="[% query.param('searchtitofaut') %]" />[% END %]
+[%- IF query.param('searchtitofurhkor') -%]<input type="hidden" name="searchtitofurhkor" value="[% query.param('searchtitofurhkor') %]" />[% END %]
+[%- IF query.param('searchtitofnot')    -%]<input type="hidden" name="searchtitofnot" value="[% query.param('searchtitofnot') %]" />[% END %]
+[%- IF query.param('searchtitofswt')    -%]<input type="hidden" name="searchtitofswt" value="[% query.param('searchtitofswt') %]" />[% END %]
+[%- IF query.param('searchtitofcnt')    -%]<input type="hidden" name="searchtitofcnt" value="[% query.param('searchtitofcnt') %]" />[% END %]
+[%- IF query.param('category')          -%]<input type="hidden" name="category" value="[% query.param('category') %]" />[% END %]
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %] 
+
+</form>
+  </div>
+  <div class="resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
+[%- END -%]
+
+  </div>
+</div>
+<!-- Titlelist ends here -->
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

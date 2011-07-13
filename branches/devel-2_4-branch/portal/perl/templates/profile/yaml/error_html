@@ -1,0 +1,30 @@
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]/0" target="_blank">[% msg.maketext("Fehler") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Fehlerbeschreibung") %]</th></tr>
+<tr><td class="boxedclear">
+[% err_msg %]
+</td></tr>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]
+

@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_circulation
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Ausleih/Exemplar-Informationen (via OLWS)
+#
+#######################################################################
+-%]
+[%-
+    #USE dumper;dumper.dump(itemcirc);
+    location = {} ;
+
+    FOREACH circ IN itemcirc ;
+
+       catname  = utf2iso(circ.${"Bibliothek"}.short) ;
+       caturl   = circ.${"Bibinfourl"} ;
+       signatur = circ.${"Signatur"} ;
+       status   = circ.${"Status"} ;
+       
+       location.${catname}.${"url"}     = caturl ;
+
+       IF status == 'bestellbar' ;
+           status = 'ausleihbar' ;
+       ELSIF status == 'entliehen' && circ.Rueckgabe != '31.12.9999' && circ.Rueckgabe != '1.1.1753' ;
+           status =  "entliehen bis ${circ.Rueckgabe}" ;
+       END ;
+
+       IF circ.Statuscode != 0 ;
+            IF mex.Gruppe.Name.match("Handapparat") ;
+                status = "${status} in ${circ.Entleiher.Name}";
+            ELSIF circ.Vormerkbarkeit ;
+                stelle = circ.Vormerkungen;
+                status = "${status} / Vormerkungen: ${stelle}";
+            END ;
+       END ;
+
+       IF NOT location.${catname}.exists("signatur") ;
+          location.${catname}.${"signatur"} = "${signatur} (${status})" ;
+       ELSE ;
+          signaturstring = location.${catname}.${"signatur"} ;
+          signaturstring = "${signaturstring} ; ${signatur}" ;
+          location.${catname}.${"signatur"}= signaturstring  ; 
+       END ;
+    END ;
+
+    locations = [] ;
+
+    FOREACH catname IN location.keys ;
+       caturl         = location.${catname}.${"url"} ;
+       verlauf        = location.${catname}.${"verlauf"} ;
+       signaturstring = location.${catname}.${"signatur"} ;
+
+       locations.push("<a href=\"${caturl}\" target=\"_blank\">${catname}</a>: ${signaturstring} ${verlauf}");
+
+    END ;
+
+    dbdesc   = dbinfo.get('dbnames').${database}.short ;
+    dburl    = dbinfo.get('urls').${database} ;
+
+    IF locations.size == 0;
+       locationstring = "<a href=\"${dburl}\" target=\"_blank\">${dbdesc}</a>";
+    ELSE ;
+       locationstring = locations.join("<br />");
+    END ;
+%]
+<LI> LO=[% utf2iso(locationstring)             # Locations mit Signatur und Bestandsverlauf%]

@@ -17,17 +17,32 @@
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
   <body>
 
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
-
-<div id="maincontent">
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">[% IF tag %][% msg.maketext("Quellen zum Tag <i>[_1]</i> in BibSonomy",tag) %][% ELSIF bsuser %][% msg.maketext("Quellen des Nutzers <i>[_1]</i> in BibSonomy",bsuser) %][% END %]</span></a></li>
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="content">
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+   <h1>[% IF tag %][% msg.maketext("Quellen zum Tag <i>[_1]</i> in BibSonomy",tag) %][% ELSIF bsuser %][% msg.maketext("Quellen des Nutzers <i>[_1]</i> in BibSonomy",bsuser) %][% END %]</h1>
 
 [% alltags = [] %]
 [% FOREACH thistitle IN posts.recordlist %]
@@ -130,10 +145,13 @@ thistitle.local_dbs %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?
 <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %][% IF tag %]/items_by_tag?tag=[% tag %];[% ELSIF bsuser %]/items_by_user?user=[% bsuser %];[% END %]start=[% posts.next.start %];end=[% posts.next.end %];type=[% type %]">[% msg.maketext("Weiter") %]</a>
 [% END %]
 
-</div>
-</div>
-
-<p />
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]
 [%- END -%]

@@ -41,6 +41,11 @@
 [% IF active_menu == "cloud" %]
 <h6 class="vlist">[% msg.maketext("&Uuml;bersichten") %]</h6>
 <ul class="vlist">
+[% IF active_submenu == "cloud_choice" %]
+  <li class="active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]" title="Katalogauswahl">[% msg.maketext("Katalogauswahl") %]</a></li>
+[% END %]
 [% IF active_submenu == "cloud_year" %]
   <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
 [% ELSE %]

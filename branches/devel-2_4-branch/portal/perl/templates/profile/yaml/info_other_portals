@@ -18,19 +18,24 @@
       viewlist     = config.get_active_views();
 %]
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
 
-<div id="maincontent">
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]/other_portals.html" title="[% msg.maketext("Spezialisierte OpenBib-Portale") %]">[% msg.maketext("Spezialisierte OpenBib-Portale") %]</a></li>
-</ul>
-
-<div class="content">
-<p />
-
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
 <table width="100%">
 <tr><th><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
@@ -42,6 +47,14 @@ eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.") %]
 </td></tr>
 </table>
 <p />
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+   <h1>[% msg.maketext("Spezialisierte OpenBib-Portale") %]</h1>
 
 [% FOREACH viewname IN viewlist %]
 [% active_viewdbs = config.get_dbs_of_view(viewname) %]
@@ -79,6 +92,13 @@ href="http://[% hostpart %]/portal[% IF NOT viewinfo.stripuri %]/[% viewname %][
 <p />
 [%- END -%]
 [% END %]
-</div>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

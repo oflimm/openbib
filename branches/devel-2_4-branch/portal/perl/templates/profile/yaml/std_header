@@ -57,19 +57,23 @@
       [%- END -%]
     [%- END -%]
   [%- END -%]
+<!-- JavaScript Detection -->
+    <script type="text/javascript">document.documentElement.className += " js";</script>
 
+<!-- jQuery & Plugins -->
     <script language="JavaScript" type="text/javascript" src="/js/jquery-1.6.1.js"></script> 
 <!--    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.pack.js"></script> -->
-    <script language="JavaScript" type="text/javascript" src="/yaml/add-ons/accessible-tabs/jquery.tabs.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/yaml/add-ons/syncheight/jquery.syncheight.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/yaml/add-ons/accessible-tabs/jquery.tabs.js"></script>
+<!--    <script language="JavaScript" type="text/javascript" src="/yaml/add-ons/syncheight/jquery.syncheight.js"></script> -->
+<!--    <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>-->
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
 
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
 <!--[if lte IE 7]>
-<link href="[% config.get('css_loc') %]/views/[% view %]/patches/patch_2col_right_31.css" rel="stylesheet" type="text/css" />
+<link href="[% config.get('css_loc') %]/patches/patch_2col_right_31.css" rel="stylesheet" type="text/css" />
+<link href="[% config.get('css_loc') %]/patches/patch_accessible_tabs.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 <!--[if lt IE 7.]>
 <style type="text/css" media="all"> 

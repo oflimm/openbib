@@ -66,7 +66,7 @@
 
 <div id="searchform_types" class="jquery_tabs"><!-- Begin searchform_types -->
 
-<h4>[% msg.maketext("Alles") %]</h4>
+<h3>[% msg.maketext("Alles") %]</h3>
 
 <div class="tabbody"><!-- Begin alle Typen -->
 
@@ -199,7 +199,7 @@ $(document).ready(function(){
 
 </div><!-- End alle Typen -->
 
-<h4>[% msg.maketext("Zeitschriften/Serien") %]</h4>
+<h3>[% msg.maketext("Zeitschriften/Serien") %]</h3>
 
 <div class="tabbody"><!-- Begin Serials-->
 
@@ -292,7 +292,7 @@ $(document).ready(function(){
 
 </div><!-- End Serials -->
 
-<h4>[% msg.maketext("Aufs&auml;tze") %]</h4>
+<h3>[% msg.maketext("Aufs&auml;tze") %]</h3>
 
 <div class="tabbody"><!-- Begin nur Aufsaetze -->
 
@@ -386,7 +386,7 @@ $(document).ready(function(){
 
 </div><!-- End nur Aufsaetze -->
 
-<h4>[% msg.maketext("Online") %]</h4>
+<h3>[% msg.maketext("Online") %]</h3>
 
 <div class="tabbody"><!-- Begin nur Online -->
 
@@ -480,7 +480,7 @@ $(document).ready(function(){
 
 </div><!-- End nur Online -->
 
-<h4>[% msg.maketext("Themengebiete") %]</h4>
+<h3>[% msg.maketext("Themengebiete") %]</h3>
 
 <div class="tabbody"><!-- Begin Themengebiete -->
 

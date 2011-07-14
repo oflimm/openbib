@@ -53,6 +53,11 @@
 [% ELSE %]
           <li><a href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></li>
 [% END %]
+[% IF active_menu == "info" %]
+         <li class="active"><strong>[% msg.maketext("Hilfe") %]</strong></li>
+[% ELSE %]
+          <li><a [%- IF active_menu == "info" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]">[% msg.maketext("Hilfe") %]</a></li>
+[% END %]
 [%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]
 [%-   IF active_menu == "admin" -%]
          <li class="active"><strong>[% msg.maketext("admin") %]</strong></li>

@@ -30,7 +30,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
     <!-- begin: main content area #main -->

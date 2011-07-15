@@ -41,7 +41,7 @@
 [% IF active_menu == "cloud" %]
          <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/year/richter.html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
 [% END %]
 [%- IF active_menu == "resultlists" -%]
          <li class="active"><strong>[% msg.maketext("Trefferliste") %]</strong></li>

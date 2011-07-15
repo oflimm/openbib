@@ -62,7 +62,7 @@
 </div>
 [% END %]
 
-<div id="searchform"><!-- Begin searchform -->
+<div id="searchform" [%- IF user.is_authenticated -%]style="width:99.5%"[%- END -%]><!-- Begin searchform -->
 
 <div id="searchform_types" class="jquery_tabs"><!-- Begin searchform_types -->
 
@@ -125,7 +125,7 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h4>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h4>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -215,7 +215,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h4>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h4>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -308,7 +308,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h4>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h4>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -402,7 +402,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.online.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h4>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.online.chunk(-3).join('.')}","${alldbs}") %]</h4>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 

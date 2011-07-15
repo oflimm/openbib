@@ -76,7 +76,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $subset = new OpenBib::Database::Subset("inst420master",$pool);
-$subset->identify_by_mark("^422 \\$.*");
+$subset->identify_by_mark("^422 *\\$.*");
 $subset->write_set;
 
 sub print_help {

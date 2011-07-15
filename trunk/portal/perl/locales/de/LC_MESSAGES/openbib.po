@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2010-07-28 09:32+0200\n"
+"PO-Revision-Date: 2011-07-15 12:01+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -52,14 +52,14 @@ msgstr "${category}"
 #: ../templates/database/poetica/search_showtitset_categories:234
 #: ../templates/database/syndikatsbibliothek/search_showtitset_categories:203
 #: ../templates/database/syndikatsbibliothek/search_showtitset_categories:234
-#: ../templates/database/totenzettel/search_showtitset_categories:203
-#: ../templates/database/totenzettel/search_showtitset_categories:251
-#: ../templates/database/umschlaege/search_showtitset:284
-#: ../templates/database/umschlaege/search_showtitset:315
+#: ../templates/database/totenzettel/search_showtitset_categories:183
+#: ../templates/database/totenzettel/search_showtitset_categories:231
+#: ../templates/database/umschlaege/search_showtitset:289
+#: ../templates/database/umschlaege/search_showtitset:320
 #: ../templates/database/wallraf/search_showtitset_categories:203
 #: ../templates/database/wallraf/search_showtitset_categories:234
 #: ../templates/database/wikisource_de/search_showautset:69
-#: ../templates/info_60:84 ../templates/litlists_tit_as_html_full:185
+#: ../templates/info_60:116 ../templates/litlists_tit_as_html_full:185
 #: ../templates/litlists_tit_as_text:21
 #: ../templates/managecollection_tit_as_html:449
 #: ../templates/managecollection_tit_as_text:68
@@ -100,17 +100,17 @@ msgstr "${category}"
 #: ../templates/search_showswtset:59
 #: ../templates/search_showtitset_categories:203
 #: ../templates/search_showtitset_categories:234
-#: ../templates/searchmask_bottom_left:55
+#: ../templates/searchmask_bottom_left:88
 #: ../templates/views/engportrom/searchmask_bottom_left:55
-#: ../templates/views/inst132/searchmask_bottom_left:55
-#: ../templates/views/inst420/searchmask_bottom_left:56
+#: ../templates/views/inst132/searchmask_bottom_left:88
+#: ../templates/views/inst420/searchmask_bottom_left:89
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
 #. (item.votes.positive,item.votes.all)
 #: ../templates/database/einbaende/search_showtitset:494
 #: ../templates/database/einbaende/search_showtitset_1:475
-#: ../templates/database/umschlaege/search_showtitset:473
+#: ../templates/database/umschlaege/search_showtitset:478
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:728
 #: ../templates/profile/kugng/database/inst001/search_showtitset:415
 #: ../templates/search_showtitset:255
@@ -168,10 +168,10 @@ msgstr "%1 Titel in %2 Gruppen, %3 Literaturlisten"
 #: ../templates/database/totenzettel/search_showtitset:287
 #: ../templates/database/totenzettel/search_showtitset:333
 #: ../templates/database/totenzettel/search_showtitset:361
-#: ../templates/database/umschlaege/search_showtitset:694
-#: ../templates/database/umschlaege/search_showtitset:722
-#: ../templates/database/umschlaege/search_showtitset:768
-#: ../templates/database/umschlaege/search_showtitset:796
+#: ../templates/database/umschlaege/search_showtitset:699
+#: ../templates/database/umschlaege/search_showtitset:727
+#: ../templates/database/umschlaege/search_showtitset:773
+#: ../templates/database/umschlaege/search_showtitset:801
 #: ../templates/managecollection_tit_as_html:135
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:500
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:528
@@ -208,8 +208,8 @@ msgstr ""
 #: ../templates/database/einbaende/search_showtitset:764
 #: ../templates/database/einbaende/search_showtitset_1:745
 #: ../templates/database/totenzettel/search_showtitset:308
-#: ../templates/database/umschlaege/search_showtitset:743
-#: ../templates/litlists_manage_singlelist:48
+#: ../templates/database/umschlaege/search_showtitset:748
+#: ../templates/litlists_manage_singlelist:47
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:564
 #: ../templates/profile/kuglight/litlists_manage_singlelist:41
 #: ../templates/profile/kugng/database/inst001/search_showtitset:656
@@ -260,7 +260,7 @@ msgstr "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 #: ../templates/database/einbaende/search_showtitset:650
 #: ../templates/database/einbaende/search_showtitset_1:631
 #: ../templates/database/totenzettel/search_showtitset:194
-#: ../templates/database/umschlaege/search_showtitset:629
+#: ../templates/database/umschlaege/search_showtitset:634
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:653
 #: ../templates/profile/kugng/database/inst001/search_showtitset:559
 #: ../templates/search_showtitset:412
@@ -270,7 +270,7 @@ msgstr "&Uuml;bernahme dieses Titels in die bestehende Literaturliste: "
 #: ../templates/database/einbaende/search_showtitset:658
 #: ../templates/database/einbaende/search_showtitset_1:639
 #: ../templates/database/totenzettel/search_showtitset:202
-#: ../templates/database/umschlaege/search_showtitset:637
+#: ../templates/database/umschlaege/search_showtitset:642
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:656
 #: ../templates/profile/kugng/database/inst001/search_showtitset:561
 #: ../templates/search_showtitset:420
@@ -394,11 +394,11 @@ msgstr "&ntilde; <i>suchen mit:</i> n"
 #: ../templates/database/totenzettel/search_showtitset:203
 #: ../templates/database/totenzettel/search_showtitset:233
 #: ../templates/database/totenzettel/search_showtitset:305
-#: ../templates/database/umschlaege/search_showtitset:638
-#: ../templates/database/umschlaege/search_showtitset:668
-#: ../templates/database/umschlaege/search_showtitset:740
+#: ../templates/database/umschlaege/search_showtitset:643
+#: ../templates/database/umschlaege/search_showtitset:673
+#: ../templates/database/umschlaege/search_showtitset:745
 #: ../templates/litlists_manage_lists:39 ../templates/litlists_manage_lists:75
-#: ../templates/litlists_manage_singlelist:48
+#: ../templates/litlists_manage_singlelist:47
 #: ../templates/managecollection_tit_as_html:113
 #: ../templates/managecollection_tit_as_html:90
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:471
@@ -707,8 +707,8 @@ msgstr "Abschicken"
 #: ../templates/database/einbaende/search_showtitset_1:595
 #: ../templates/database/totenzettel/search_showtitset:157
 #: ../templates/database/totenzettel/search_showtitset:158
-#: ../templates/database/umschlaege/search_showtitset:592
-#: ../templates/database/umschlaege/search_showtitset:593
+#: ../templates/database/umschlaege/search_showtitset:597
+#: ../templates/database/umschlaege/search_showtitset:598
 #: ../templates/managecollection_tit_as_bibtex:23
 #: ../templates/managecollection_tit_as_bibtex:24
 #: ../templates/managecollection_tit_as_endnote:23
@@ -999,8 +999,8 @@ msgstr ""
 #: ../templates/database/einbaende/search_showtitset_1:593
 #: ../templates/database/totenzettel/search_showtitset:155
 #: ../templates/database/totenzettel/search_showtitset:156
-#: ../templates/database/umschlaege/search_showtitset:590
-#: ../templates/database/umschlaege/search_showtitset:591
+#: ../templates/database/umschlaege/search_showtitset:595
+#: ../templates/database/umschlaege/search_showtitset:596
 #: ../templates/managecollection_tit_as_bibtex:29
 #: ../templates/managecollection_tit_as_bibtex:30
 #: ../templates/managecollection_tit_as_endnote:29
@@ -1026,9 +1026,9 @@ msgstr "Als Mail verschicken"
 #: ../templates/database/einbaende/search_showtitset:619
 #: ../templates/database/einbaende/search_showtitset_1:600
 #: ../templates/database/totenzettel/search_showtitset:163
-#: ../templates/database/umschlaege/search_showtitset:598
+#: ../templates/database/umschlaege/search_showtitset:603
 #: ../templates/litlists_manage_lists:79
-#: ../templates/litlists_manage_singlelist:146
+#: ../templates/litlists_manage_singlelist:145
 #: ../templates/litlists_show_singlelist:151
 #: ../templates/litlists_show_singlelist:178
 #: ../templates/litlists_show_singlelist:79
@@ -1138,8 +1138,8 @@ msgstr "An"
 #: ../templates/database/totenzettel/search_showtitset:150
 #: ../templates/database/umschlaege/search_showtitlist:157
 #: ../templates/database/umschlaege/search_showtitlist_of_cnt:157
-#: ../templates/database/umschlaege/search_showtitset:584
-#: ../templates/database/umschlaege/search_showtitset:585
+#: ../templates/database/umschlaege/search_showtitset:589
+#: ../templates/database/umschlaege/search_showtitset:590
 #: ../templates/database/umschlaege/virtualsearch_result_item:145
 #: ../templates/info:969 ../templates/managecollection_tit_as_html:257
 #: ../templates/profile/digicard/titlist_item_html_short:164
@@ -1183,8 +1183,8 @@ msgstr ""
 #: ../templates/database/einbaende/search_showtitset:539
 #: ../templates/database/einbaende/search_showtitset_1:385
 #: ../templates/database/einbaende/search_showtitset_1:520
-#: ../templates/database/umschlaege/search_showtitset:383
-#: ../templates/database/umschlaege/search_showtitset:518
+#: ../templates/database/umschlaege/search_showtitset:388
+#: ../templates/database/umschlaege/search_showtitset:523
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:421
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:773
 #: ../templates/profile/kugng/database/inst001/search_showtitset:329
@@ -1196,8 +1196,8 @@ msgstr "Andere Ausgaben"
 #: ../templates/database/einbaende/search_showtitset:625
 #: ../templates/database/einbaende/search_showtitset_1:606
 #: ../templates/database/totenzettel/search_showtitset:169
-#: ../templates/database/umschlaege/search_showtitset:604
-#: ../templates/litlists_manage_singlelist:153
+#: ../templates/database/umschlaege/search_showtitset:609
+#: ../templates/litlists_manage_singlelist:152
 #: ../templates/litlists_show_singlelist:86
 #: ../templates/managecollection_tit_as_bibtex:37
 #: ../templates/managecollection_tit_as_endnote:37
@@ -1230,8 +1230,7 @@ msgstr "Andere Titel"
 #: ../templates/database/portrait/search_showtitlist_of_cnt:59
 #: ../templates/database/umschlaege/search_showtitlist:59
 #: ../templates/database/umschlaege/search_showtitlist_of_cnt:59
-#: ../templates/ezb_showjournals:60
-#: ../templates/litlists_manage_singlelist:100
+#: ../templates/ezb_showjournals:60 ../templates/litlists_manage_singlelist:99
 #: ../templates/profile/sammlungen/search_showtitlist:61
 #: ../templates/profile/sammlungen/search_showtitlist_of_cnt:61
 #: ../templates/resultlists_showall:75
@@ -1428,7 +1427,7 @@ msgstr ""
 
 #: ../templates/database/einbaende/search_showtitset:472
 #: ../templates/database/einbaende/search_showtitset_1:453
-#: ../templates/database/umschlaege/search_showtitset:451
+#: ../templates/database/umschlaege/search_showtitset:456
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:708
 #: ../templates/profile/kugng/database/inst001/search_showtitset:395
 #: ../templates/search_showtitset:233
@@ -1486,8 +1485,8 @@ msgstr "Aus"
 #: ../templates/database/einbaende/search_showtitset_1:599
 #: ../templates/database/totenzettel/search_showtitset:161
 #: ../templates/database/totenzettel/search_showtitset:162
-#: ../templates/database/umschlaege/search_showtitset:596
-#: ../templates/database/umschlaege/search_showtitset:597
+#: ../templates/database/umschlaege/search_showtitset:601
+#: ../templates/database/umschlaege/search_showtitset:602
 #: ../templates/managecollection_tit_as_bibtex:25
 #: ../templates/managecollection_tit_as_bibtex:26
 #: ../templates/managecollection_tit_as_endnote:25
@@ -1531,8 +1530,8 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/einbaende/search_showtitset:413
 #: ../templates/database/einbaende/search_showtitset_1:375
 #: ../templates/database/einbaende/search_showtitset_1:394
-#: ../templates/database/umschlaege/search_showtitset:373
-#: ../templates/database/umschlaege/search_showtitset:392
+#: ../templates/database/umschlaege/search_showtitset:378
+#: ../templates/database/umschlaege/search_showtitset:397
 #: ../templates/managecollection_tit_as_html_simple:52
 #: ../templates/profile/kuglight/circset:16
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:130
@@ -1553,7 +1552,7 @@ msgstr "Ausleih-Einstellungen"
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
-#: ../templates/circulation:31 ../templates/circulation_orders:31
+#: ../templates/circulation:84 ../templates/circulation_orders:31
 #: ../templates/circulation_remind:31 ../templates/circulation_reserv:31
 #: ../templates/profile/kuglight/circulation:31
 #: ../templates/profile/kuglight/circulation_orders:31
@@ -1562,7 +1561,7 @@ msgstr "Ausleihe/Exemplare"
 msgid "Ausleihen"
 msgstr "Ausleihen"
 
-#: ../templates/circulation:50 ../templates/profile/kuglight/circulation:50
+#: ../templates/circulation:117 ../templates/profile/kuglight/circulation:50
 msgid "Ausleihfrist"
 msgstr "Ausleihfrist"
 
@@ -1571,25 +1570,25 @@ msgstr "Ausleihfrist"
 msgid "Ausleihinformationen"
 msgstr "Ausleihinformationen"
 
-#: ../templates/circset:28 ../templates/database/artmann/circset:31
-#: ../templates/database/dante/circset:31
-#: ../templates/database/dirksen/circset:31
-#: ../templates/database/edz/circset:31
-#: ../templates/database/inst001/circset:31
-#: ../templates/database/inst302/circset:28
-#: ../templates/database/islandica/circset:31
-#: ../templates/database/kempis/circset:31
-#: ../templates/database/lefort/circset:31
-#: ../templates/database/lehrbuchsmlg/circset:31
-#: ../templates/database/lesesaal/circset:31
+#: ../templates/circset:50 ../templates/database/artmann/circset:51
+#: ../templates/database/dante/circset:51
+#: ../templates/database/dirksen/circset:51
+#: ../templates/database/edz/circset:51
+#: ../templates/database/inst001/circset:51
+#: ../templates/database/inst302/circset:49
+#: ../templates/database/islandica/circset:51
+#: ../templates/database/kempis/circset:51
+#: ../templates/database/lefort/circset:51
+#: ../templates/database/lehrbuchsmlg/circset:51
+#: ../templates/database/lesesaal/circset:51
 #: ../templates/database/poetica/circset:31
-#: ../templates/database/rheinabt/circset:31
-#: ../templates/database/syndikatsbibliothek/circset:31
-#: ../templates/database/usbhwa/circset:31
-#: ../templates/database/usbsab/circset:31
-#: ../templates/database/wallraf/circset:31
-#: ../templates/database/wiso/circset:31
-#: ../templates/database/zbmed/circset:16
+#: ../templates/database/rheinabt/circset:51
+#: ../templates/database/syndikatsbibliothek/circset:51
+#: ../templates/database/usbhwa/circset:51
+#: ../templates/database/usbsab/circset:51
+#: ../templates/database/wallraf/circset:44
+#: ../templates/database/wiso/circset:51
+#: ../templates/database/zbmed/circset:36
 #: ../templates/profile/kuglight/circset:19
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:134
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:349
@@ -1610,39 +1609,40 @@ msgstr "Ausleihinformationen"
 msgid "Ausleihstatus"
 msgstr "Ausleihstatus"
 
-#: ../templates/circset:28 ../templates/database/artmann/circset:31
-#: ../templates/database/artmann/circset:99
-#: ../templates/database/dante/circset:31
-#: ../templates/database/dante/circset:99
-#: ../templates/database/dirksen/circset:31
-#: ../templates/database/dirksen/circset:93
-#: ../templates/database/edz/circset:31 ../templates/database/edz/circset:99
-#: ../templates/database/inst001/circset:31
-#: ../templates/database/inst001/circset:99
-#: ../templates/database/islandica/circset:31
-#: ../templates/database/islandica/circset:99
-#: ../templates/database/kempis/circset:31
-#: ../templates/database/kempis/circset:93
-#: ../templates/database/lefort/circset:31
-#: ../templates/database/lefort/circset:99
-#: ../templates/database/lehrbuchsmlg/circset:31
-#: ../templates/database/lehrbuchsmlg/circset:99
-#: ../templates/database/lesesaal/circset:31
-#: ../templates/database/lesesaal/circset:99
+#: ../templates/circset:50 ../templates/database/artmann/circset:130
+#: ../templates/database/artmann/circset:51
+#: ../templates/database/dante/circset:130
+#: ../templates/database/dante/circset:51
+#: ../templates/database/dirksen/circset:130
+#: ../templates/database/dirksen/circset:51
+#: ../templates/database/edz/circset:130 ../templates/database/edz/circset:51
+#: ../templates/database/inst001/circset:130
+#: ../templates/database/inst001/circset:51
+#: ../templates/database/islandica/circset:130
+#: ../templates/database/islandica/circset:51
+#: ../templates/database/kempis/circset:130
+#: ../templates/database/kempis/circset:51
+#: ../templates/database/lefort/circset:130
+#: ../templates/database/lefort/circset:51
+#: ../templates/database/lehrbuchsmlg/circset:130
+#: ../templates/database/lehrbuchsmlg/circset:51
+#: ../templates/database/lesesaal/circset:130
+#: ../templates/database/lesesaal/circset:51
 #: ../templates/database/poetica/circset:31
 #: ../templates/database/poetica/circset:93
-#: ../templates/database/rheinabt/circset:31
-#: ../templates/database/rheinabt/circset:99
-#: ../templates/database/syndikatsbibliothek/circset:31
-#: ../templates/database/syndikatsbibliothek/circset:99
-#: ../templates/database/usbhwa/circset:31
-#: ../templates/database/usbhwa/circset:99
-#: ../templates/database/usbsab/circset:31
-#: ../templates/database/usbsab/circset:99
-#: ../templates/database/wallraf/circset:31
-#: ../templates/database/wallraf/circset:99
-#: ../templates/database/wiso/circset:31 ../templates/database/wiso/circset:99
-#: ../templates/database/zbmed/circset:16
+#: ../templates/database/rheinabt/circset:130
+#: ../templates/database/rheinabt/circset:51
+#: ../templates/database/syndikatsbibliothek/circset:130
+#: ../templates/database/syndikatsbibliothek/circset:51
+#: ../templates/database/usbhwa/circset:130
+#: ../templates/database/usbhwa/circset:51
+#: ../templates/database/usbsab/circset:130
+#: ../templates/database/usbsab/circset:51
+#: ../templates/database/wallraf/circset:122
+#: ../templates/database/wallraf/circset:44
+#: ../templates/database/wiso/circset:130
+#: ../templates/database/wiso/circset:51
+#: ../templates/database/zbmed/circset:36
 #: ../templates/profile/kuglight/circset:19
 #: ../templates/profile/kuglight/database/inst001/circset:103
 #: ../templates/profile/kuglight/database/inst001/circset:34
@@ -1759,7 +1759,7 @@ msgstr "Beginnen Sie eine neue Recherche"
 #: ../templates/database/poetica/search_showtitset_categories:24
 #: ../templates/database/syndikatsbibliothek/search_showtitset_categories:24
 #: ../templates/database/totenzettel/search_showtitset_categories:21
-#: ../templates/database/umschlaege/search_showtitset:129
+#: ../templates/database/umschlaege/search_showtitset:134
 #: ../templates/database/wallraf/search_showtitset_categories:24
 #: ../templates/database/wikisource_de/search_showautset:78
 #: ../templates/litlists_tit_as_html_full:36
@@ -1787,7 +1787,7 @@ msgstr "Behalten Sie diese Liste"
 #: ../templates/database/einbaende/search_showtitset:602
 #: ../templates/database/einbaende/search_showtitset_1:583
 #: ../templates/database/totenzettel/search_showtitset:146
-#: ../templates/database/umschlaege/search_showtitset:581
+#: ../templates/database/umschlaege/search_showtitset:586
 #: ../templates/profile/kugng/database/inst001/search_showtitset:523
 #: ../templates/search_showtitset:364
 msgid "Behalten Sie diesen Titel"
@@ -2056,75 +2056,76 @@ msgstr "Beruf/Weltanschauung"
 msgid "Beschreibung"
 msgstr "Beschreibung"
 
-#: ../templates/circset:28 ../templates/circset:65
-#: ../templates/database/artmann/circset:31
-#: ../templates/database/artmann/circset:99
-#: ../templates/database/artmann/mexset:3
+#: ../templates/circset:50 ../templates/circset:95
+#: ../templates/database/artmann/circset:130
+#: ../templates/database/artmann/circset:51
+#: ../templates/database/artmann/mexset:24
 #: ../templates/database/artmann/search_showtitset_categories:239
-#: ../templates/database/dante/circset:31
-#: ../templates/database/dante/circset:99 ../templates/database/dante/mexset:3
+#: ../templates/database/dante/circset:130
+#: ../templates/database/dante/circset:51
+#: ../templates/database/dante/mexset:24
 #: ../templates/database/dante/search_showtitset_categories:239
-#: ../templates/database/dirksen/circset:31
-#: ../templates/database/dirksen/circset:93
-#: ../templates/database/dirksen/mexset:3
+#: ../templates/database/dirksen/circset:130
+#: ../templates/database/dirksen/circset:51
+#: ../templates/database/dirksen/mexset:24
 #: ../templates/database/dirksen/search_showtitset_categories:239
 #: ../templates/database/ebooks/search_showtitset_categories:225
-#: ../templates/database/edz/circset:31 ../templates/database/edz/circset:99
-#: ../templates/database/edz/mexset:3
+#: ../templates/database/edz/circset:130 ../templates/database/edz/circset:51
+#: ../templates/database/edz/mexset:24
 #: ../templates/database/einbaende/search_showtitset:341
 #: ../templates/database/einbaende/search_showtitset_1:322
 #: ../templates/database/gutenberg/search_showtitset_categories:209
-#: ../templates/database/inst001/circset:31
-#: ../templates/database/inst001/circset:99
-#: ../templates/database/inst001/mexset:3
+#: ../templates/database/inst001/circset:130
+#: ../templates/database/inst001/circset:51
+#: ../templates/database/inst001/mexset:24
 #: ../templates/database/inst001/search_showtitset_categories:248
-#: ../templates/database/inst302/circset:28
-#: ../templates/database/inst302/circset:47
+#: ../templates/database/inst302/circset:49
+#: ../templates/database/inst302/circset:79
 #: ../templates/database/inst450/mexset:3
-#: ../templates/database/islandica/circset:31
-#: ../templates/database/islandica/circset:99
+#: ../templates/database/islandica/circset:130
+#: ../templates/database/islandica/circset:51
 #: ../templates/database/islandica/search_showtitset_categories:248
-#: ../templates/database/kempis/circset:31
-#: ../templates/database/kempis/circset:93
-#: ../templates/database/kempis/mexset:3
+#: ../templates/database/kempis/circset:130
+#: ../templates/database/kempis/circset:51
+#: ../templates/database/kempis/mexset:24
 #: ../templates/database/kempis/search_showtitset_categories:239
-#: ../templates/database/lefort/circset:31
-#: ../templates/database/lefort/circset:99
-#: ../templates/database/lefort/mexset:3
+#: ../templates/database/lefort/circset:130
+#: ../templates/database/lefort/circset:51
+#: ../templates/database/lefort/mexset:24
 #: ../templates/database/lefort/search_showtitset_categories:239
-#: ../templates/database/lehrbuchsmlg/circset:31
-#: ../templates/database/lehrbuchsmlg/circset:99
-#: ../templates/database/lehrbuchsmlg/mexset:3
-#: ../templates/database/lesesaal/circset:31
-#: ../templates/database/lesesaal/circset:99
-#: ../templates/database/lesesaal/mexset:3
+#: ../templates/database/lehrbuchsmlg/circset:130
+#: ../templates/database/lehrbuchsmlg/circset:51
+#: ../templates/database/lehrbuchsmlg/mexset:24
+#: ../templates/database/lesesaal/circset:130
+#: ../templates/database/lesesaal/circset:51
+#: ../templates/database/lesesaal/mexset:24
 #: ../templates/database/openlibrary/search_showtitset_categories:214
 #: ../templates/database/poetica/circset:31
 #: ../templates/database/poetica/circset:93
 #: ../templates/database/poetica/mexset:3
 #: ../templates/database/poetica/search_showtitset_categories:239
-#: ../templates/database/rheinabt/circset:31
-#: ../templates/database/rheinabt/circset:99
-#: ../templates/database/rheinabt/mexset:3
+#: ../templates/database/rheinabt/circset:130
+#: ../templates/database/rheinabt/circset:51
+#: ../templates/database/rheinabt/mexset:24
 #: ../templates/database/richter/mexset:3
-#: ../templates/database/syndikatsbibliothek/circset:31
-#: ../templates/database/syndikatsbibliothek/circset:99
-#: ../templates/database/syndikatsbibliothek/mexset:3
+#: ../templates/database/syndikatsbibliothek/circset:130
+#: ../templates/database/syndikatsbibliothek/circset:51
+#: ../templates/database/syndikatsbibliothek/mexset:24
 #: ../templates/database/syndikatsbibliothek/search_showtitset_categories:239
-#: ../templates/database/totenzettel/search_showtitset_categories:256
-#: ../templates/database/umschlaege/search_showtitset:320
-#: ../templates/database/usbhwa/circset:31
-#: ../templates/database/usbhwa/circset:99
-#: ../templates/database/usbsab/circset:31
-#: ../templates/database/usbsab/circset:99
-#: ../templates/database/wallraf/circset:31
-#: ../templates/database/wallraf/circset:99
+#: ../templates/database/totenzettel/search_showtitset_categories:236
+#: ../templates/database/umschlaege/search_showtitset:325
+#: ../templates/database/usbhwa/circset:130
+#: ../templates/database/usbhwa/circset:51
+#: ../templates/database/usbsab/circset:130
+#: ../templates/database/usbsab/circset:51
+#: ../templates/database/wallraf/circset:122
+#: ../templates/database/wallraf/circset:44
 #: ../templates/database/wallraf/mexset:3
 #: ../templates/database/wallraf/search_showtitset_categories:239
-#: ../templates/database/wiso/circset:31 ../templates/database/wiso/circset:99
-#: ../templates/database/wiso/mexset:3 ../templates/database/zbmed/circset:16
-#: ../templates/litlists_tit_as_text:26
-#: ../templates/managecollection_tit_as_text:73 ../templates/mexset:3
+#: ../templates/database/wiso/circset:130
+#: ../templates/database/wiso/circset:51 ../templates/database/wiso/mexset:24
+#: ../templates/database/zbmed/circset:36 ../templates/litlists_tit_as_text:26
+#: ../templates/managecollection_tit_as_text:73 ../templates/mexset:24
 #: ../templates/profile/digicard/search_showtitset_categories:230
 #: ../templates/profile/kuglight/circset:19
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:134
@@ -2182,19 +2183,21 @@ msgstr "Besitzende Bibliothek"
 msgid "Besonderheit bei Feldern mit"
 msgstr "Besonderheit bei Feldern mit"
 
-#: ../templates/database/artmann/mexset:3 ../templates/database/dante/mexset:3
-#: ../templates/database/dirksen/mexset:3 ../templates/database/edz/mexset:3
-#: ../templates/database/inst001/mexset:3
+#: ../templates/database/artmann/mexset:24
+#: ../templates/database/dante/mexset:24
+#: ../templates/database/dirksen/mexset:24 ../templates/database/edz/mexset:24
+#: ../templates/database/inst001/mexset:24
 #: ../templates/database/inst450/mexset:3
-#: ../templates/database/kempis/mexset:3 ../templates/database/lefort/mexset:3
-#: ../templates/database/lehrbuchsmlg/mexset:3
-#: ../templates/database/lesesaal/mexset:3
+#: ../templates/database/kempis/mexset:24
+#: ../templates/database/lefort/mexset:24
+#: ../templates/database/lehrbuchsmlg/mexset:24
+#: ../templates/database/lesesaal/mexset:24
 #: ../templates/database/poetica/mexset:3
-#: ../templates/database/rheinabt/mexset:3
+#: ../templates/database/rheinabt/mexset:24
 #: ../templates/database/richter/mexset:3
-#: ../templates/database/syndikatsbibliothek/mexset:3
-#: ../templates/database/wallraf/mexset:3 ../templates/database/wiso/mexset:3
-#: ../templates/managecollection_tit_as_html_simple:60 ../templates/mexset:3
+#: ../templates/database/syndikatsbibliothek/mexset:24
+#: ../templates/database/wallraf/mexset:3 ../templates/database/wiso/mexset:24
+#: ../templates/managecollection_tit_as_html_simple:60 ../templates/mexset:24
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:70
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:145
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:240
@@ -2251,7 +2254,7 @@ msgstr "Bestellung erfolgreich durchgef&uuml;hrt"
 msgid "Bestellung nicht m&ouml;glich"
 msgstr "Bestellung nicht m&ouml;glich"
 
-#: ../templates/circulation:33 ../templates/circulation_orders:33
+#: ../templates/circulation:86 ../templates/circulation_orders:33
 #: ../templates/circulation_remind:33 ../templates/circulation_reserv:33
 #: ../templates/profile/kuglight/circulation:33
 #: ../templates/profile/kuglight/circulation_orders:33
@@ -2273,7 +2276,7 @@ msgstr "Betrieb"
 
 #: ../templates/database/einbaende/search_showtitset:452
 #: ../templates/database/einbaende/search_showtitset_1:433
-#: ../templates/database/umschlaege/search_showtitset:431
+#: ../templates/database/umschlaege/search_showtitset:436
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:690
 #: ../templates/profile/kugng/database/inst001/search_showtitset:377
 #: ../templates/search_showtitset:213
@@ -2284,8 +2287,8 @@ msgstr "Bewertung"
 #: ../templates/database/einbaende/search_showtitset:430
 #: ../templates/database/einbaende/search_showtitset_1:388
 #: ../templates/database/einbaende/search_showtitset_1:411
-#: ../templates/database/umschlaege/search_showtitset:386
-#: ../templates/database/umschlaege/search_showtitset:409
+#: ../templates/database/umschlaege/search_showtitset:391
+#: ../templates/database/umschlaege/search_showtitset:414
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:415
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:668
 #: ../templates/profile/kugng/database/inst001/search_showtitset:332
@@ -2296,7 +2299,7 @@ msgstr "Bewertungen/Rezensionen"
 
 #: ../templates/database/einbaende/search_showtitset:488
 #: ../templates/database/einbaende/search_showtitset_1:469
-#: ../templates/database/umschlaege/search_showtitset:467
+#: ../templates/database/umschlaege/search_showtitset:472
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:722
 #: ../templates/profile/kugng/database/inst001/search_showtitset:409
 #: ../templates/search_showtitset:249
@@ -2306,19 +2309,20 @@ msgstr "Bewertungen/Rezensionen von Nutzern"
 #: ../templates/database/alff/search_showtitset_images:25
 #: ../templates/database/nationallizenzen/search_showtitset_images:37
 #: ../templates/database/spoho/search_showtitset_images:34
+#: ../templates/database/umschlaege/search_showtitset:80
 #: ../templates/litlists_tit_as_html_full:24
 #: ../templates/managecollection_tit_as_html:288
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:95
 #: ../templates/profile/kugng/database/inst001/search_showtitset:55
 #: ../templates/profile/sammlungen/userprefs:137
-#: ../templates/search_showtitset_images:31 ../templates/userprefs:216
+#: ../templates/search_showtitset_images:33 ../templates/userprefs:216
 msgid "BibSonomy"
 msgstr "BibSonomy"
 
 #: ../templates/database/einbaende/search_showtitset:894
 #: ../templates/database/einbaende/search_showtitset_1:875
 #: ../templates/database/totenzettel/search_showtitset:469
-#: ../templates/database/umschlaege/search_showtitset:873
+#: ../templates/database/umschlaege/search_showtitset:878
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:374
 #: ../templates/profile/kugng/database/inst001/search_showtitset:786
 #: ../templates/search_showtitset:687
@@ -2352,7 +2356,7 @@ msgstr "Bibliotheksinformationen statt URL"
 msgid "Bibsonomy"
 msgstr "Bibsonomy"
 
-#: ../templates/database/umschlaege/search_showtitset:49
+#: ../templates/database/umschlaege/search_showtitset:48
 #: ../templates/profile/kuglight/database/umschlaege/managecollection_tit_as_html:30
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:74
 msgid "Bild des Umschlages"
@@ -2378,8 +2382,8 @@ msgstr "Bildtitelwort(e)"
 #: ../templates/database/einbaende/search_showtitset_1:775
 #: ../templates/database/totenzettel/search_showtitset:264
 #: ../templates/database/totenzettel/search_showtitset:338
-#: ../templates/database/umschlaege/search_showtitset:699
-#: ../templates/database/umschlaege/search_showtitset:773
+#: ../templates/database/umschlaege/search_showtitset:704
+#: ../templates/database/umschlaege/search_showtitset:778
 #: ../templates/managecollection_tit_as_html:140
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:505
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:598
@@ -2399,7 +2403,7 @@ msgid "Bitte bookmarken unter:"
 msgstr "Bitte bookmarken unter:"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:405
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:544
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:551
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 
@@ -2589,7 +2593,7 @@ msgstr ""
 "tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: %"
 "1Mein KUG%2) für die 'Suche in einzelnen Katalogen' ausw&auml;hlen."
 
-#: ../templates/info:981 ../templates/profile/kuglight/info:603
+#: ../templates/info:982 ../templates/profile/kuglight/info:603
 #: ../templates/profile/kugng/views/kugng/info:981
 #: ../templates/views/kug/info:981
 msgid ""
@@ -2615,8 +2619,8 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:412
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:421
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:551
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:560
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:558
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:567
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -2811,7 +2815,7 @@ msgstr "Derzeit werden folgende externe Recherchequellen angeboten:"
 
 #: ../templates/database/einbaende/search_showtitset:370
 #: ../templates/database/einbaende/search_showtitset_1:351
-#: ../templates/database/umschlaege/search_showtitset:349
+#: ../templates/database/umschlaege/search_showtitset:354
 #: ../templates/litlists_tit_as_html_full:205
 #: ../templates/managecollection_tit_as_html:469
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:313
@@ -3042,7 +3046,7 @@ msgstr "Diese Session ist nicht authentifiziert."
 
 #: ../templates/database/einbaende/search_showtitset:975
 #: ../templates/database/totenzettel/search_showtitset:549
-#: ../templates/database/umschlaege/search_showtitset:954
+#: ../templates/database/umschlaege/search_showtitset:959
 #: ../templates/search_showtitset:767
 msgid "Diese Titel interessierten Sie bereits:"
 msgstr "Diese Titel interessierten Sie bereits:"
@@ -3117,7 +3121,7 @@ msgstr ""
 
 #: ../templates/database/einbaende/search_showtitset:367
 #: ../templates/database/einbaende/search_showtitset_1:348
-#: ../templates/database/umschlaege/search_showtitset:346
+#: ../templates/database/umschlaege/search_showtitset:351
 #: ../templates/litlists_tit_as_html_full:202
 #: ../templates/managecollection_tit_as_html:466
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:310
@@ -3286,7 +3290,7 @@ msgstr "E-Mail-Adresse"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:102
 #: ../templates/profile/kuglight/visible_categories_titset:102
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:109
-#: ../templates/visible_categories_titset:105
+#: ../templates/visible_categories_titset:106
 msgid "E4100"
 msgstr "Basis-Klassifikation"
 
@@ -3308,7 +3312,7 @@ msgstr "Basis-Klassifikation"
 #: ../templates/profile/kuglight/database/wickrath/visible_categories_titset:112
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:110
 #: ../templates/profile/kuglight/visible_categories_titset:110
-#: ../templates/visible_categories_titset:113
+#: ../templates/visible_categories_titset:114
 msgid "E4110"
 msgstr "Inhaltsverzeichnis"
 
@@ -3330,7 +3334,7 @@ msgstr "Inhaltsverzeichnis"
 #: ../templates/profile/kuglight/database/wickrath/visible_categories_titset:113
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:111
 #: ../templates/profile/kuglight/visible_categories_titset:111
-#: ../templates/visible_categories_titset:114
+#: ../templates/visible_categories_titset:115
 msgid "E4120"
 msgstr "Volltext-URL"
 
@@ -3345,7 +3349,7 @@ msgstr "Volltext-URL"
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:102
 #: ../templates/database/wallraf/visible_categories_titset:102
 #: ../templates/profile/digicard/visible_categories_titset:103
-#: ../templates/visible_categories_titset:103
+#: ../templates/visible_categories_titset:104
 msgid "E4300"
 msgstr "Schlagwort (ext.)"
 
@@ -3356,7 +3360,7 @@ msgstr "Eigene Tags"
 
 #: ../templates/database/einbaende/search_showtitset:500
 #: ../templates/database/einbaende/search_showtitset_1:481
-#: ../templates/database/umschlaege/search_showtitset:479
+#: ../templates/database/umschlaege/search_showtitset:484
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:734
 #: ../templates/profile/kugng/database/inst001/search_showtitset:421
 #: ../templates/search_showtitset:261
@@ -3365,7 +3369,7 @@ msgstr "Eigenen Review bearbeiten"
 
 #: ../templates/database/einbaende/search_showtitset:502
 #: ../templates/database/einbaende/search_showtitset_1:483
-#: ../templates/database/umschlaege/search_showtitset:481
+#: ../templates/database/umschlaege/search_showtitset:486
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:736
 #: ../templates/profile/kugng/database/inst001/search_showtitset:423
 #: ../templates/search_showtitset:263
@@ -3572,7 +3576,7 @@ msgstr "Einfache Suche"
 #: ../templates/database/einbaende/search_showtitset:677
 #: ../templates/database/einbaende/search_showtitset_1:658
 #: ../templates/database/totenzettel/search_showtitset:221
-#: ../templates/database/umschlaege/search_showtitset:656
+#: ../templates/database/umschlaege/search_showtitset:661
 #: ../templates/managecollection_tit_as_html:108
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:462
 #: ../templates/profile/kugng/database/inst001/search_showtitset:576
@@ -3622,7 +3626,7 @@ msgstr "Einloggen"
 msgid "Einstellungen"
 msgstr "Einstellungen"
 
-#: ../templates/litlists_manage_singlelist:44
+#: ../templates/litlists_manage_singlelist:43
 #: ../templates/profile/kuglight/litlists_manage_singlelist:36
 msgid "Einstellungen &auml;ndern"
 msgstr "Einstellungen &auml;ndern"
@@ -3707,7 +3711,7 @@ msgstr "Elektronische Zeitschriftendatenbank (EZB) %1"
 #: ../templates/database/einbaende/search_showtitset:843
 #: ../templates/database/einbaende/search_showtitset_1:824
 #: ../templates/database/totenzettel/search_showtitset:387
-#: ../templates/database/umschlaege/search_showtitset:822
+#: ../templates/database/umschlaege/search_showtitset:827
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:408
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:426
 #: ../templates/profile/kugng/database/inst001/search_showtitset:730
@@ -3726,7 +3730,7 @@ msgstr "Empfehlungen"
 #: ../templates/database/umschlaege/search_showtitlist:70
 #: ../templates/database/umschlaege/search_showtitlist_of_cnt:70
 #: ../templates/ezb_showjournals:72
-#: ../templates/litlists_manage_singlelist:114
+#: ../templates/litlists_manage_singlelist:113
 #: ../templates/profile/sammlungen/search_showtitlist:72
 #: ../templates/profile/sammlungen/search_showtitlist_of_cnt:72
 #: ../templates/search_showtitlist:72
@@ -3736,7 +3740,7 @@ msgstr "Ende"
 
 #: ../templates/database/einbaende/search_showtitset:375
 #: ../templates/database/einbaende/search_showtitset_1:356
-#: ../templates/database/umschlaege/search_showtitset:354
+#: ../templates/database/umschlaege/search_showtitset:359
 #: ../templates/litlists_tit_as_html_full:210
 #: ../templates/managecollection_tit_as_html:474
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:318
@@ -3748,7 +3752,7 @@ msgstr "Englische Wikipedia"
 #: ../templates/database/einbaende/search_showtitset:837
 #: ../templates/database/einbaende/search_showtitset_1:818
 #: ../templates/database/totenzettel/search_showtitset:381
-#: ../templates/database/umschlaege/search_showtitset:816
+#: ../templates/database/umschlaege/search_showtitset:821
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:342
 #: ../templates/profile/kugng/database/inst001/search_showtitset:725
 #: ../templates/search_showtitset:599
@@ -3765,6 +3769,7 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/profile/sammlungen/views/landschaft/titlist_item_html_short:159
 #: ../templates/profile/sammlungen/views/portrait/titlist_item_html_short:159
 #: ../templates/titlist_item_html_short:159
+#: ../templates/titlist_item_html_short:162
 msgid "Entfernen"
 msgstr "Entfernen"
 
@@ -3853,8 +3858,8 @@ msgstr "Erscheinungsjahr"
 #: ../templates/database/openlibrary/search_showtitset_categories:218
 #: ../templates/database/poetica/search_showtitset_categories:243
 #: ../templates/database/syndikatsbibliothek/search_showtitset_categories:243
-#: ../templates/database/totenzettel/search_showtitset_categories:260
-#: ../templates/database/umschlaege/search_showtitset:324
+#: ../templates/database/totenzettel/search_showtitset_categories:240
+#: ../templates/database/umschlaege/search_showtitset:329
 #: ../templates/database/wallraf/search_showtitset_categories:243
 #: ../templates/litlists_tit_as_text:30
 #: ../templates/managecollection_tit_as_text:77
@@ -3888,24 +3893,24 @@ msgstr "Erweitere Recherchemaske"
 msgid "Erweiterte Suche"
 msgstr "Erweiterte Suche"
 
-#: ../templates/circset:65 ../templates/database/artmann/circset:99
-#: ../templates/database/dante/circset:99
-#: ../templates/database/dirksen/circset:93
-#: ../templates/database/edz/circset:99
-#: ../templates/database/inst001/circset:99
-#: ../templates/database/inst302/circset:47
-#: ../templates/database/islandica/circset:99
-#: ../templates/database/kempis/circset:93
-#: ../templates/database/lefort/circset:99
-#: ../templates/database/lehrbuchsmlg/circset:99
-#: ../templates/database/lesesaal/circset:99
+#: ../templates/circset:95 ../templates/database/artmann/circset:130
+#: ../templates/database/dante/circset:130
+#: ../templates/database/dirksen/circset:130
+#: ../templates/database/edz/circset:130
+#: ../templates/database/inst001/circset:130
+#: ../templates/database/inst302/circset:79
+#: ../templates/database/islandica/circset:130
+#: ../templates/database/kempis/circset:130
+#: ../templates/database/lefort/circset:130
+#: ../templates/database/lehrbuchsmlg/circset:130
+#: ../templates/database/lesesaal/circset:130
 #: ../templates/database/poetica/circset:93
-#: ../templates/database/rheinabt/circset:99
-#: ../templates/database/syndikatsbibliothek/circset:99
-#: ../templates/database/usbhwa/circset:99
-#: ../templates/database/usbsab/circset:99
-#: ../templates/database/wallraf/circset:99
-#: ../templates/database/wiso/circset:99
+#: ../templates/database/rheinabt/circset:130
+#: ../templates/database/syndikatsbibliothek/circset:130
+#: ../templates/database/usbhwa/circset:130
+#: ../templates/database/usbsab/circset:130
+#: ../templates/database/wallraf/circset:122
+#: ../templates/database/wiso/circset:130
 #: ../templates/profile/kuglight/database/inst001/circset:103
 #: ../templates/profile/kuglight/database/rheinabt/circset:103
 #: ../templates/profile/kugng/database/edz/circset:97
@@ -4016,11 +4021,11 @@ msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:428
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:571
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:578
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1267
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1270
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 
@@ -4269,7 +4274,7 @@ msgstr "Fernleihe"
 msgid "Film ohne Ton"
 msgstr "Film ohne Ton"
 
-#: ../templates/info:1033 ../templates/profile/kuglight/info:655
+#: ../templates/info:1034 ../templates/profile/kuglight/info:655
 #: ../templates/profile/kugng/views/kugng/info:1033
 #: ../templates/views/kug/info:1033
 msgid "Fragen und Anmerkungen richten Sie bitte an:"
@@ -4277,7 +4282,7 @@ msgstr "Fragen und Anmerkungen richten Sie bitte an:"
 
 #: ../templates/database/einbaende/search_showtitset:380
 #: ../templates/database/einbaende/search_showtitset_1:361
-#: ../templates/database/umschlaege/search_showtitset:359
+#: ../templates/database/umschlaege/search_showtitset:364
 #: ../templates/litlists_tit_as_html_full:215
 #: ../templates/managecollection_tit_as_html:479
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:323
@@ -4327,7 +4332,7 @@ msgstr "Freie Suche"
 #: ../templates/profile/sammlungen/views/inst404abklatsch/searchmask_simple:129
 #: ../templates/profile/sammlungen/views/landschaft/searchmask:131
 #: ../templates/profile/sammlungen/views/landschaft/searchmask_simple:131
-#: ../templates/profile/sammlungen/views/portrait/searchmask:155
+#: ../templates/profile/sammlungen/views/portrait/searchmask:157
 #: ../templates/profile/sammlungen/views/portrait/searchmask_simple:131
 #: ../templates/profile/sammlungen/views/richter/searchmask:131
 #: ../templates/profile/sammlungen/views/richter/searchmask_simple:131
@@ -4601,28 +4606,29 @@ msgstr "Gebühr"
 msgid "Gefundene Nutzer"
 msgstr "Gefundene Nutzer"
 
-#: ../templates/info:984 ../templates/profile/kuglight/info:606
+#: ../templates/info:985 ../templates/profile/kuglight/info:606
 #: ../templates/profile/kugng/views/kugng/info:984
 #: ../templates/views/kug/info:984
 msgid "Gesamt-KUG"
 msgstr "Gesamt-KUG"
 
-#: ../templates/circulation:46 ../templates/profile/kuglight/circulation:46
+#: ../templates/circulation:112 ../templates/profile/kuglight/circulation:46
 msgid "Gesamtkonto verl&auml;ngern"
 msgstr "Gesamtkonto verl&auml;ngern"
 
-#: ../templates/circulation:46 ../templates/profile/kuglight/circulation:46
+#: ../templates/circulation:112 ../templates/profile/kuglight/circulation:46
 msgid "Gesamtkonto-Verl&auml;ngerung"
 msgstr "Gesamtkonto-Verl&auml;ngerung"
 
 #: ../templates/database/alff/search_showtitset_images:21
 #: ../templates/database/nationallizenzen/search_showtitset_images:33
 #: ../templates/database/spoho/search_showtitset_images:30
+#: ../templates/database/umschlaege/search_showtitset:76
 #: ../templates/litlists_tit_as_html_full:20
 #: ../templates/managecollection_tit_as_html:284
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:91
 #: ../templates/profile/kugng/database/inst001/search_showtitset:51
-#: ../templates/search_showtitset_images:27
+#: ../templates/search_showtitset_images:28
 msgid "Google Book Search"
 msgstr "Google Book Search"
 
@@ -5569,6 +5575,7 @@ msgstr "Hier suchen Sie in allen Katalogen auf einmal"
 msgid "Hilfe"
 msgstr "Hilfe"
 
+#: ../templates/database/inst302/circset:71
 #: ../templates/database/wikisource_de/search_showautset:83
 #: ../templates/externaljump:36 ../templates/info_11:47
 #: ../templates/info_13:41 ../templates/info_15:35
@@ -5606,7 +5613,7 @@ msgstr ""
 #: ../templates/database/einbaende/search_showtitset:689
 #: ../templates/database/einbaende/search_showtitset_1:670
 #: ../templates/database/totenzettel/search_showtitset:233
-#: ../templates/database/umschlaege/search_showtitset:668
+#: ../templates/database/umschlaege/search_showtitset:673
 #: ../templates/managecollection_tit_as_html:113
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:471
 #: ../templates/profile/kugng/database/inst001/search_showtitset:585
@@ -5638,20 +5645,20 @@ msgstr "Hostname"
 #: ../templates/bibfuehrer_tex:285
 #: ../templates/profile/kuglight/visible_categories_libinfoset:17
 #: ../templates/profile/kugng/views/inst431/searchmask_bottom_left:22
-#: ../templates/searchmask_bottom_left:22
+#: ../templates/searchmask_bottom_left:42
 #: ../templates/views/engportrom/searchmask_bottom_left:22
-#: ../templates/views/inst132/searchmask_bottom_left:22
-#: ../templates/views/inst420/searchmask_bottom_left:24
+#: ../templates/views/inst132/searchmask_bottom_left:42
+#: ../templates/views/inst420/searchmask_bottom_left:44
 #: ../templates/visible_categories_libinfoset:17
 msgid "I0010"
 msgstr "Institutsname"
 
 #: ../templates/bibfuehrer_tex:286
 #: ../templates/profile/kuglight/visible_categories_libinfoset:18
-#: ../templates/searchmask_bottom_left:23
+#: ../templates/searchmask_bottom_left:43
 #: ../templates/views/engportrom/searchmask_bottom_left:23
-#: ../templates/views/inst132/searchmask_bottom_left:23
-#: ../templates/views/inst420/searchmask_bottom_left:25
+#: ../templates/views/inst132/searchmask_bottom_left:43
+#: ../templates/views/inst420/searchmask_bottom_left:45
 #: ../templates/visible_categories_libinfoset:18
 msgid "I0020"
 msgstr "Straße"
@@ -5659,10 +5666,10 @@ msgstr "Straße"
 #: ../templates/bibfuehrer_tex:287
 #: ../templates/profile/kuglight/visible_categories_libinfoset:19
 #: ../templates/profile/kugng/views/inst431/searchmask_bottom_left:23
-#: ../templates/searchmask_bottom_left:24
+#: ../templates/searchmask_bottom_left:44
 #: ../templates/views/engportrom/searchmask_bottom_left:24
-#: ../templates/views/inst132/searchmask_bottom_left:24
-#: ../templates/views/inst420/searchmask_bottom_left:26
+#: ../templates/views/inst132/searchmask_bottom_left:44
+#: ../templates/views/inst420/searchmask_bottom_left:46
 #: ../templates/visible_categories_libinfoset:19
 msgid "I0030"
 msgstr "Gebäude"
@@ -5712,10 +5719,10 @@ msgstr "Auskunft / Bibliothekar(in)"
 #: ../templates/bibfuehrer_tex:295
 #: ../templates/profile/kuglight/visible_categories_libinfoset:27
 #: ../templates/profile/kugng/views/inst431/searchmask_bottom_left:24
-#: ../templates/searchmask_bottom_left:25
+#: ../templates/searchmask_bottom_left:45
 #: ../templates/views/engportrom/searchmask_bottom_left:25
-#: ../templates/views/inst132/searchmask_bottom_left:25
-#: ../templates/views/inst420/searchmask_bottom_left:27
+#: ../templates/views/inst132/searchmask_bottom_left:45
+#: ../templates/views/inst420/searchmask_bottom_left:47
 #: ../templates/visible_categories_libinfoset:27
 msgid "I0110"
 msgstr "Öffnungszeiten"
@@ -5788,17 +5795,17 @@ msgstr "Art des Systems"
 
 #: ../templates/bibfuehrer_tex:308
 #: ../templates/profile/kuglight/visible_categories_libinfoset:40
-#: ../templates/searchmask_bottom_left:26
+#: ../templates/searchmask_bottom_left:46
 #: ../templates/views/engportrom/searchmask_bottom_left:26
-#: ../templates/views/inst132/searchmask_bottom_left:26
-#: ../templates/views/inst420/searchmask_bottom_left:28
+#: ../templates/views/inst132/searchmask_bottom_left:46
+#: ../templates/views/inst420/searchmask_bottom_left:48
 #: ../templates/visible_categories_libinfoset:40
 msgid "I0230"
 msgstr "Online-Katalogisierung"
 
-#: ../templates/bibfuehrer_tex:309 ../templates/searchmask_bottom_left:27
+#: ../templates/bibfuehrer_tex:309 ../templates/searchmask_bottom_left:47
 #: ../templates/views/engportrom/searchmask_bottom_left:27
-#: ../templates/views/inst132/searchmask_bottom_left:27
+#: ../templates/views/inst132/searchmask_bottom_left:47
 #: ../templates/visible_categories_libinfoset:41
 msgid "I0235"
 msgstr "Online-Katalogisierung seit Erwerbungsjahr"
@@ -5854,8 +5861,8 @@ msgstr "ISBN"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:308
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:389
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:314
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:406
 msgid "Ihnen geh&ouml;rt diese Literaturliste nicht."
 msgstr "Ihnen geh&ouml;rt diese Literaturliste nicht."
 
@@ -6106,26 +6113,28 @@ msgstr ""
 #: ../templates/database/alff/search_showtitset_images:25
 #: ../templates/database/nationallizenzen/search_showtitset_images:37
 #: ../templates/database/spoho/search_showtitset_images:34
+#: ../templates/database/umschlaege/search_showtitset:80
 #: ../templates/litlists_tit_as_html_full:24
 #: ../templates/managecollection_tit_as_html:288
 #: ../templates/profile/kuglight/database/umschlaege/managecollection_tit_as_html:48
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:95
 #: ../templates/profile/kuglight/managecollection_tit_as_html:40
 #: ../templates/profile/kugng/database/inst001/search_showtitset:55
-#: ../templates/search_showtitset_images:31
+#: ../templates/search_showtitset_images:33
 msgid "In BibSonomy vorhanden?"
 msgstr "In BibSonomy vorhanden?"
 
 #: ../templates/database/alff/search_showtitset_images:21
 #: ../templates/database/nationallizenzen/search_showtitset_images:33
 #: ../templates/database/spoho/search_showtitset_images:30
+#: ../templates/database/umschlaege/search_showtitset:76
 #: ../templates/litlists_tit_as_html_full:20
 #: ../templates/managecollection_tit_as_html:284
 #: ../templates/profile/kuglight/database/umschlaege/managecollection_tit_as_html:44
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:91
 #: ../templates/profile/kuglight/managecollection_tit_as_html:36
 #: ../templates/profile/kugng/database/inst001/search_showtitset:51
-#: ../templates/search_showtitset_images:27
+#: ../templates/search_showtitset_images:28
 msgid "In Google BookSearch vorhanden?"
 msgstr "In Google BookSearch vorhanden?"
 
@@ -6260,8 +6269,8 @@ msgstr "In allen Katalogen suchen"
 #: ../templates/database/einbaende/search_showtitset:524
 #: ../templates/database/einbaende/search_showtitset_1:382
 #: ../templates/database/einbaende/search_showtitset_1:505
-#: ../templates/database/umschlaege/search_showtitset:380
-#: ../templates/database/umschlaege/search_showtitset:503
+#: ../templates/database/umschlaege/search_showtitset:385
+#: ../templates/database/umschlaege/search_showtitset:508
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:418
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:758
 #: ../templates/profile/kugng/database/inst001/search_showtitset:326
@@ -6662,8 +6671,8 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/database/totenzettel/search_showtitset:152
 #: ../templates/database/umschlaege/search_showtitlist:157
 #: ../templates/database/umschlaege/search_showtitlist_of_cnt:157
-#: ../templates/database/umschlaege/search_showtitset:586
-#: ../templates/database/umschlaege/search_showtitset:587
+#: ../templates/database/umschlaege/search_showtitset:591
+#: ../templates/database/umschlaege/search_showtitset:592
 #: ../templates/database/umschlaege/virtualsearch_result_item:145
 #: ../templates/info_10:140
 #: ../templates/profile/digicard/titlist_item_html_short:164
@@ -6968,7 +6977,7 @@ msgid "Interaktives Tutorium"
 msgstr "Interaktives Tutorium"
 
 #: ../templates/database/inst404abklatsch/mexset:3
-#: ../templates/database/inst450/mexset:3 ../templates/mexset:3
+#: ../templates/database/inst450/mexset:3 ../templates/mexset:24
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:70
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:145
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:240
@@ -6997,8 +7006,8 @@ msgstr "Inventarnummer"
 #: ../templates/database/openlibrary/search_showtitset_categories:217
 #: ../templates/database/poetica/search_showtitset_categories:242
 #: ../templates/database/syndikatsbibliothek/search_showtitset_categories:242
-#: ../templates/database/totenzettel/search_showtitset_categories:259
-#: ../templates/database/umschlaege/search_showtitset:323
+#: ../templates/database/totenzettel/search_showtitset_categories:239
+#: ../templates/database/umschlaege/search_showtitset:328
 #: ../templates/database/wallraf/search_showtitset_categories:242
 #: ../templates/litlists_tit_as_text:29
 #: ../templates/managecollection_tit_as_text:76
@@ -7023,8 +7032,8 @@ msgstr "Inventarnummer       "
 #: ../templates/admin_showviews:39
 #: ../templates/database/einbaende/search_showtitset:506
 #: ../templates/database/einbaende/search_showtitset_1:487
-#: ../templates/database/umschlaege/search_showtitset:485
-#: ../templates/litlists_manage_singlelist:48
+#: ../templates/database/umschlaege/search_showtitset:490
+#: ../templates/litlists_manage_singlelist:47
 #: ../templates/profile/kuglight/admin_editcat:140
 #: ../templates/profile/kuglight/admin_editcat:163
 #: ../templates/profile/kuglight/admin_editcat:77
@@ -7133,7 +7142,7 @@ msgstr "K&ouml;rperschaften/Institutionen"
 msgid "KUG Benutzerinformationen"
 msgstr "KUG Benutzerinformationen"
 
-#: ../templates/info:91 ../templates/info:992
+#: ../templates/info:91 ../templates/info:993
 #: ../templates/profile/kuglight/info:614
 #: ../templates/profile/kuglight/info:70
 #: ../templates/profile/kugng/views/kugng/info:91
@@ -7145,7 +7154,7 @@ msgstr "KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser"
 #: ../templates/database/einbaende/search_showtitset:878
 #: ../templates/database/einbaende/search_showtitset_1:859
 #: ../templates/database/totenzettel/search_showtitset:453
-#: ../templates/database/umschlaege/search_showtitset:857
+#: ../templates/database/umschlaege/search_showtitset:862
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:363
 #: ../templates/profile/kugng/database/inst001/search_showtitset:770
 #: ../templates/search_showtitset:671
@@ -7304,7 +7313,7 @@ msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgid "Keine"
 msgstr "Keine"
 
-#: ../templates/circset:54
+#: ../templates/circset:84
 #: ../templates/profile/kugng/database/inst006/circset:50
 #: ../templates/profile/kugng/database/inst302/circset:50
 #: ../templates/profile/kugng/database/inst420/circset:50
@@ -7523,7 +7532,7 @@ msgstr ""
 "Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten "
 "Zeitschriftenartikel nicht im KUG finden?"
 
-#: ../templates/info:1031 ../templates/info:92
+#: ../templates/info:1032 ../templates/info:92
 #: ../templates/profile/kuglight/info:653
 #: ../templates/profile/kuglight/info:71
 #: ../templates/profile/kugng/views/kugng/info:1031
@@ -7553,7 +7562,7 @@ msgstr "Kosten"
 msgid "Kurzbeschreibung"
 msgstr "Kurzbeschreibung"
 
-#: ../templates/litlists_manage_singlelist:156
+#: ../templates/litlists_manage_singlelist:155
 #: ../templates/litlists_show_singlelist:89
 #: ../templates/managecollection_tit_as_bibtex:40
 #: ../templates/managecollection_tit_as_endnote:40
@@ -7579,7 +7588,7 @@ msgstr "Körperschaft/Institution"
 #: ../templates/database/einbaende/search_showtitset:764
 #: ../templates/database/einbaende/search_showtitset_1:745
 #: ../templates/database/totenzettel/search_showtitset:308
-#: ../templates/database/umschlaege/search_showtitset:743
+#: ../templates/database/umschlaege/search_showtitset:748
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:564
 #: ../templates/profile/kugng/database/inst001/search_showtitset:656
 #: ../templates/search_showtitset:526
@@ -7710,7 +7719,7 @@ msgstr "Listen-Ansicht"
 #: ../templates/database/einbaende/search_showtitset:636
 #: ../templates/database/einbaende/search_showtitset_1:617
 #: ../templates/database/totenzettel/search_showtitset:180
-#: ../templates/database/umschlaege/search_showtitset:615
+#: ../templates/database/umschlaege/search_showtitset:620
 #: ../templates/litlists_show_singlelist:26
 #: ../templates/managecollection_tit_as_html:64
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:412
@@ -7725,7 +7734,7 @@ msgstr "Literaturliste"
 #: ../templates/database/einbaende/search_showtitset:865
 #: ../templates/database/einbaende/search_showtitset_1:846
 #: ../templates/database/totenzettel/search_showtitset:409
-#: ../templates/database/umschlaege/search_showtitset:844
+#: ../templates/database/umschlaege/search_showtitset:849
 #: ../templates/info_13:33 ../templates/info_41:37 ../templates/info_54:111
 #: ../templates/litlists_show_publiclists:25
 #: ../templates/profile/kuglight/admin_databaseprofile:46
@@ -7829,8 +7838,8 @@ msgstr "Lokale Signatur"
 #: ../templates/database/openlibrary/search_showtitset_categories:216
 #: ../templates/database/poetica/search_showtitset_categories:241
 #: ../templates/database/syndikatsbibliothek/search_showtitset_categories:241
-#: ../templates/database/totenzettel/search_showtitset_categories:258
-#: ../templates/database/umschlaege/search_showtitset:322
+#: ../templates/database/totenzettel/search_showtitset_categories:238
+#: ../templates/database/umschlaege/search_showtitset:327
 #: ../templates/database/wallraf/search_showtitset_categories:241
 #: ../templates/litlists_tit_as_text:28
 #: ../templates/managecollection_tit_as_text:75
@@ -7853,8 +7862,8 @@ msgstr "Lokale Signatur      "
 #: ../templates/database/einbaende/titlist_options:38
 #: ../templates/database/totenzettel/search_showtitset:196
 #: ../templates/database/totenzettel/search_showtitset:204
-#: ../templates/database/umschlaege/search_showtitset:631
-#: ../templates/database/umschlaege/search_showtitset:639
+#: ../templates/database/umschlaege/search_showtitset:636
+#: ../templates/database/umschlaege/search_showtitset:644
 #: ../templates/managecollection_tit_as_html:154
 #: ../templates/managecollection_tit_as_html:82
 #: ../templates/managecollection_tit_as_html:91
@@ -8193,7 +8202,7 @@ msgstr "Lösche Eingabemaske"
 #: ../templates/admin_editview:138
 #: ../templates/database/einbaende/search_showtitset:472
 #: ../templates/database/einbaende/search_showtitset_1:453
-#: ../templates/database/umschlaege/search_showtitset:451
+#: ../templates/database/umschlaege/search_showtitset:456
 #: ../templates/profile/kuglight/admin_editcat:175
 #: ../templates/profile/kuglight/admin_editcat_rss:333
 #: ../templates/profile/kuglight/admin_editlibinfo:73
@@ -8222,7 +8231,7 @@ msgstr "Maler / Zeichner"
 
 #: ../templates/database/einbaende/search_showtitset:367
 #: ../templates/database/einbaende/search_showtitset_1:348
-#: ../templates/database/umschlaege/search_showtitset:346
+#: ../templates/database/umschlaege/search_showtitset:351
 #: ../templates/litlists_tit_as_html_full:202
 #: ../templates/managecollection_tit_as_html:466
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:310
@@ -8321,7 +8330,7 @@ msgstr "Medienart"
 #: ../templates/database/umschlaege/drilldown_categorized:7
 #: ../templates/database/umschlaege/drilldown_categorized:73
 #: ../templates/database/umschlaege/drilldown_categorized:85
-#: ../templates/database/umschlaege/search_showtitset:939
+#: ../templates/database/umschlaege/search_showtitset:944
 #: ../templates/drilldown_categorized:18 ../templates/drilldown_categorized:29
 #: ../templates/drilldown_categorized:40 ../templates/drilldown_categorized:51
 #: ../templates/drilldown_categorized:62 ../templates/drilldown_categorized:7
@@ -8335,10 +8344,10 @@ msgstr "Medienart"
 #: ../templates/profile/digicard/drilldown_categorized:73
 #: ../templates/profile/digicard/drilldown_categorized:85
 #: ../templates/profile/kugng/views/inst431/searchmask_bottom_left:65
-#: ../templates/search_showtitset:752 ../templates/searchmask_bottom_left:64
+#: ../templates/search_showtitset:752 ../templates/searchmask_bottom_left:98
 #: ../templates/views/engportrom/searchmask_bottom_left:64
-#: ../templates/views/inst132/searchmask_bottom_left:64
-#: ../templates/views/inst420/searchmask_bottom_left:65
+#: ../templates/views/inst132/searchmask_bottom_left:99
+#: ../templates/views/inst420/searchmask_bottom_left:99
 msgid "Mehr"
 msgstr "Mehr"
 
@@ -8499,7 +8508,7 @@ msgstr "Möchten Sie diesen ändern?"
 #: ../templates/database/umschlaege/search_showtitlist:70
 #: ../templates/database/umschlaege/search_showtitlist_of_cnt:70
 #: ../templates/ezb_showjournals:72
-#: ../templates/litlists_manage_singlelist:114
+#: ../templates/litlists_manage_singlelist:113
 #: ../templates/profile/sammlungen/search_showtitlist:72
 #: ../templates/profile/sammlungen/search_showtitlist_of_cnt:72
 #: ../templates/search_showtitlist:72
@@ -8513,8 +8522,8 @@ msgstr "N&auml;chste Seite"
 #: ../templates/database/einbaende/search_showtitset_1:562
 #: ../templates/database/totenzettel/search_showtitset:123
 #: ../templates/database/totenzettel/search_showtitset:125
-#: ../templates/database/umschlaege/search_showtitset:558
-#: ../templates/database/umschlaege/search_showtitset:560
+#: ../templates/database/umschlaege/search_showtitset:563
+#: ../templates/database/umschlaege/search_showtitset:565
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:49
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:51
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset_1:49
@@ -8647,8 +8656,8 @@ msgstr ""
 #: ../templates/admin_showviews:39
 #: ../templates/database/einbaende/search_showtitset:508
 #: ../templates/database/einbaende/search_showtitset_1:489
-#: ../templates/database/umschlaege/search_showtitset:487
-#: ../templates/litlists_manage_singlelist:48
+#: ../templates/database/umschlaege/search_showtitset:492
+#: ../templates/litlists_manage_singlelist:47
 #: ../templates/profile/kuglight/admin_editcat:134
 #: ../templates/profile/kuglight/admin_editcat:157
 #: ../templates/profile/kuglight/admin_editcat:78
@@ -8741,7 +8750,7 @@ msgstr "Neuaufnahmen nach Verfasser"
 
 #: ../templates/database/einbaende/search_showtitset:449
 #: ../templates/database/einbaende/search_showtitset_1:430
-#: ../templates/database/umschlaege/search_showtitset:428
+#: ../templates/database/umschlaege/search_showtitset:433
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:687
 #: ../templates/profile/kugng/database/inst001/search_showtitset:374
 #: ../templates/search_showtitset:210
@@ -8814,24 +8823,24 @@ msgstr "Neuen View anlegen"
 msgid "Neuer Tag-Name"
 msgstr "Neuer Tag-Name"
 
-#: ../templates/circset:62 ../templates/database/artmann/circset:96
-#: ../templates/database/dante/circset:96
-#: ../templates/database/dirksen/circset:90
-#: ../templates/database/edz/circset:96
-#: ../templates/database/inst001/circset:96
-#: ../templates/database/inst302/circset:44
-#: ../templates/database/islandica/circset:96
-#: ../templates/database/kempis/circset:90
-#: ../templates/database/lefort/circset:96
-#: ../templates/database/lehrbuchsmlg/circset:96
-#: ../templates/database/lesesaal/circset:96
+#: ../templates/circset:92 ../templates/database/artmann/circset:127
+#: ../templates/database/dante/circset:127
+#: ../templates/database/dirksen/circset:127
+#: ../templates/database/edz/circset:127
+#: ../templates/database/inst001/circset:127
+#: ../templates/database/inst302/circset:76
+#: ../templates/database/islandica/circset:127
+#: ../templates/database/kempis/circset:127
+#: ../templates/database/lefort/circset:127
+#: ../templates/database/lehrbuchsmlg/circset:127
+#: ../templates/database/lesesaal/circset:127
 #: ../templates/database/poetica/circset:90
-#: ../templates/database/rheinabt/circset:96
-#: ../templates/database/syndikatsbibliothek/circset:96
-#: ../templates/database/usbhwa/circset:96
-#: ../templates/database/usbsab/circset:96
-#: ../templates/database/wallraf/circset:96
-#: ../templates/database/wiso/circset:96
+#: ../templates/database/rheinabt/circset:127
+#: ../templates/database/syndikatsbibliothek/circset:127
+#: ../templates/database/usbhwa/circset:127
+#: ../templates/database/usbsab/circset:127
+#: ../templates/database/wallraf/circset:119
+#: ../templates/database/wiso/circset:127
 #: ../templates/profile/kuglight/database/inst001/circset:100
 #: ../templates/profile/kuglight/database/rheinabt/circset:100
 #: ../templates/profile/kugng/database/edz/circset:94
@@ -8984,7 +8993,7 @@ msgstr "OLWS Zugriffs-URL"
 msgid "Offene Geb&uuml;hren"
 msgstr "Offene Geb&uuml;hren"
 
-#: ../templates/litlists_manage_singlelist:47
+#: ../templates/litlists_manage_singlelist:46
 msgid "Offiziell"
 msgstr "Offiziell"
 
@@ -9176,8 +9185,8 @@ msgstr "PermaLink"
 #: ../templates/database/einbaende/search_showtitset:620
 #: ../templates/database/einbaende/search_showtitset_1:601
 #: ../templates/database/totenzettel/search_showtitset:164
-#: ../templates/database/umschlaege/search_showtitset:599
-#: ../templates/litlists_manage_singlelist:147
+#: ../templates/database/umschlaege/search_showtitset:604
+#: ../templates/litlists_manage_singlelist:146
 #: ../templates/litlists_show_singlelist:80
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:46
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:58
@@ -9390,7 +9399,7 @@ msgstr "Provenienz"
 
 #: ../templates/database/einbaende/search_showtitset:465
 #: ../templates/database/einbaende/search_showtitset_1:446
-#: ../templates/database/umschlaege/search_showtitset:444
+#: ../templates/database/umschlaege/search_showtitset:449
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:703
 #: ../templates/profile/kugng/database/inst001/search_showtitset:390
 #: ../templates/search_showtitset:226
@@ -9709,7 +9718,7 @@ msgstr "Registriertes Passwort vergessen?"
 
 #: ../templates/database/einbaende/search_showtitset:463
 #: ../templates/database/einbaende/search_showtitset_1:444
-#: ../templates/database/umschlaege/search_showtitset:442
+#: ../templates/database/umschlaege/search_showtitset:447
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:701
 #: ../templates/profile/kugng/database/inst001/search_showtitset:388
 #: ../templates/search_showtitset:224
@@ -9993,7 +10002,7 @@ msgstr "Seit"
 #: ../templates/database/umschlaege/search_showtitlist:58
 #: ../templates/database/umschlaege/search_showtitlist_of_cnt:58
 #: ../templates/database/umschlaege/virtualsearch_result_item:35
-#: ../templates/ezb_showjournals:59 ../templates/litlists_manage_singlelist:99
+#: ../templates/ezb_showjournals:59 ../templates/litlists_manage_singlelist:98
 #: ../templates/profile/sammlungen/search_showtitlist:60
 #: ../templates/profile/sammlungen/search_showtitlist_of_cnt:60
 #: ../templates/profile/sammlungen/views/landschaft/virtualsearch_result_item:35
@@ -10080,7 +10089,7 @@ msgid "Sessions"
 msgstr "Sessions"
 
 #: ../templates/litlists_manage_lists:38 ../templates/litlists_manage_lists:69
-#: ../templates/litlists_manage_singlelist:47
+#: ../templates/litlists_manage_singlelist:46
 #: ../templates/profile/kuglight/litlists_manage_lists:38
 #: ../templates/profile/kuglight/litlists_manage_lists:56
 #: ../templates/profile/kuglight/litlists_manage_singlelist:39
@@ -10219,7 +10228,7 @@ msgstr ""
 "Sie haben entweder keine entsprechende Liste oder Sie sind nicht "
 "authentifiziert."
 
-#: ../templates/circulation:42 ../templates/profile/kuglight/circulation:42
+#: ../templates/circulation:95 ../templates/profile/kuglight/circulation:42
 msgid "Sie haben keine Ausleihen getätigt."
 msgstr "Sie haben keine Ausleihen getätigt."
 
@@ -10606,39 +10615,41 @@ msgstr ""
 msgid "Sigel"
 msgstr "Sigel"
 
-#: ../templates/circset:28 ../templates/circulation:50
+#: ../templates/circset:50 ../templates/circulation:117
 #: ../templates/circulation_orders:46 ../templates/circulation_remind:65
-#: ../templates/circulation_reserv:46 ../templates/database/artmann/circset:31
-#: ../templates/database/artmann/mexset:3
-#: ../templates/database/dante/circset:31 ../templates/database/dante/mexset:3
-#: ../templates/database/dirksen/circset:31
-#: ../templates/database/dirksen/mexset:3 ../templates/database/edz/circset:31
-#: ../templates/database/edz/mexset:3 ../templates/database/inst001/circset:31
-#: ../templates/database/inst001/mexset:3
-#: ../templates/database/inst302/circset:28
+#: ../templates/circulation_reserv:46 ../templates/database/artmann/circset:51
+#: ../templates/database/artmann/mexset:24
+#: ../templates/database/dante/circset:51
+#: ../templates/database/dante/mexset:24
+#: ../templates/database/dirksen/circset:51
+#: ../templates/database/dirksen/mexset:24
+#: ../templates/database/edz/circset:51 ../templates/database/edz/mexset:24
+#: ../templates/database/inst001/circset:51
+#: ../templates/database/inst001/mexset:24
+#: ../templates/database/inst302/circset:49
 #: ../templates/database/inst450/mexset:3
-#: ../templates/database/islandica/circset:31
-#: ../templates/database/kempis/circset:31
-#: ../templates/database/kempis/mexset:3
-#: ../templates/database/lefort/circset:31
-#: ../templates/database/lefort/mexset:3
-#: ../templates/database/lehrbuchsmlg/circset:31
-#: ../templates/database/lehrbuchsmlg/mexset:3
-#: ../templates/database/lesesaal/circset:31
-#: ../templates/database/lesesaal/mexset:3
+#: ../templates/database/islandica/circset:51
+#: ../templates/database/kempis/circset:51
+#: ../templates/database/kempis/mexset:24
+#: ../templates/database/lefort/circset:51
+#: ../templates/database/lefort/mexset:24
+#: ../templates/database/lehrbuchsmlg/circset:51
+#: ../templates/database/lehrbuchsmlg/mexset:24
+#: ../templates/database/lesesaal/circset:51
+#: ../templates/database/lesesaal/mexset:24
 #: ../templates/database/poetica/circset:31
 #: ../templates/database/poetica/mexset:3
-#: ../templates/database/rheinabt/circset:31
-#: ../templates/database/rheinabt/mexset:3
+#: ../templates/database/rheinabt/circset:51
+#: ../templates/database/rheinabt/mexset:24
 #: ../templates/database/richter/mexset:3
-#: ../templates/database/syndikatsbibliothek/circset:31
-#: ../templates/database/syndikatsbibliothek/mexset:3
-#: ../templates/database/usbhwa/circset:31
-#: ../templates/database/usbsab/circset:31
-#: ../templates/database/wallraf/circset:31
+#: ../templates/database/syndikatsbibliothek/circset:51
+#: ../templates/database/syndikatsbibliothek/mexset:24
+#: ../templates/database/usbhwa/circset:51
+#: ../templates/database/usbsab/circset:51
+#: ../templates/database/wallraf/circset:44
 #: ../templates/database/wallraf/mexset:3
-#: ../templates/database/wiso/circset:31 ../templates/database/wiso/mexset:3
-#: ../templates/database/zbmed/circset:16 ../templates/mexset:3
+#: ../templates/database/wiso/circset:51 ../templates/database/wiso/mexset:24
+#: ../templates/database/zbmed/circset:36 ../templates/mexset:24
 #: ../templates/profile/kuglight/circset:19
 #: ../templates/profile/kuglight/circulation:50
 #: ../templates/profile/kuglight/circulation_orders:46
@@ -10847,7 +10858,7 @@ msgstr "Sperre"
 msgid "Spezialisierte KUG-Portale"
 msgstr "Spezialisierte KUG-Portale"
 
-#: ../templates/info:987 ../templates/profile/kuglight/info:609
+#: ../templates/info:988 ../templates/profile/kuglight/info:609
 #: ../templates/profile/kugng/views/kugng/info:987
 #: ../templates/views/kug/info:987
 msgid "Spezifische KUG-Sichten"
@@ -11025,37 +11036,39 @@ msgstr "Sprung in externe Recherchequellen"
 msgid "Sprung zur Trefferliste im KUG"
 msgstr "Sprung zur Trefferliste im KUG"
 
-#: ../templates/circset:28 ../templates/database/artmann/circset:31
-#: ../templates/database/artmann/mexset:3
-#: ../templates/database/dante/circset:31 ../templates/database/dante/mexset:3
-#: ../templates/database/dirksen/circset:31
-#: ../templates/database/dirksen/mexset:3 ../templates/database/edz/circset:31
-#: ../templates/database/edz/mexset:3 ../templates/database/inst001/circset:31
-#: ../templates/database/inst001/mexset:3
-#: ../templates/database/inst302/circset:28
+#: ../templates/circset:50 ../templates/database/artmann/circset:51
+#: ../templates/database/artmann/mexset:24
+#: ../templates/database/dante/circset:51
+#: ../templates/database/dante/mexset:24
+#: ../templates/database/dirksen/circset:51
+#: ../templates/database/dirksen/mexset:24
+#: ../templates/database/edz/circset:51 ../templates/database/edz/mexset:24
+#: ../templates/database/inst001/circset:51
+#: ../templates/database/inst001/mexset:24
+#: ../templates/database/inst302/circset:49
 #: ../templates/database/inst450/mexset:3
-#: ../templates/database/islandica/circset:31
-#: ../templates/database/kempis/circset:31
-#: ../templates/database/kempis/mexset:3
-#: ../templates/database/lefort/circset:31
-#: ../templates/database/lefort/mexset:3
-#: ../templates/database/lehrbuchsmlg/circset:31
-#: ../templates/database/lehrbuchsmlg/mexset:3
-#: ../templates/database/lesesaal/circset:31
-#: ../templates/database/lesesaal/mexset:3
+#: ../templates/database/islandica/circset:51
+#: ../templates/database/kempis/circset:51
+#: ../templates/database/kempis/mexset:24
+#: ../templates/database/lefort/circset:51
+#: ../templates/database/lefort/mexset:24
+#: ../templates/database/lehrbuchsmlg/circset:51
+#: ../templates/database/lehrbuchsmlg/mexset:24
+#: ../templates/database/lesesaal/circset:51
+#: ../templates/database/lesesaal/mexset:24
 #: ../templates/database/poetica/circset:31
 #: ../templates/database/poetica/mexset:3
-#: ../templates/database/rheinabt/circset:31
-#: ../templates/database/rheinabt/mexset:3
+#: ../templates/database/rheinabt/circset:51
+#: ../templates/database/rheinabt/mexset:24
 #: ../templates/database/richter/mexset:3
-#: ../templates/database/syndikatsbibliothek/circset:31
-#: ../templates/database/syndikatsbibliothek/mexset:3
-#: ../templates/database/usbhwa/circset:31
-#: ../templates/database/usbsab/circset:31
-#: ../templates/database/wallraf/circset:31
+#: ../templates/database/syndikatsbibliothek/circset:51
+#: ../templates/database/syndikatsbibliothek/mexset:24
+#: ../templates/database/usbhwa/circset:51
+#: ../templates/database/usbsab/circset:51
+#: ../templates/database/wallraf/circset:44
 #: ../templates/database/wallraf/mexset:3
-#: ../templates/database/wiso/circset:31 ../templates/database/wiso/mexset:3
-#: ../templates/database/zbmed/circset:16 ../templates/mexset:3
+#: ../templates/database/wiso/circset:51 ../templates/database/wiso/mexset:24
+#: ../templates/database/zbmed/circset:36 ../templates/mexset:24
 #: ../templates/profile/kuglight/circset:19
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:134
 #: ../templates/profile/kuglight/database/einbaende/managecollection_tit_as_html:70
@@ -11102,8 +11115,8 @@ msgstr "Standort"
 #: ../templates/database/openlibrary/search_showtitset_categories:215
 #: ../templates/database/poetica/search_showtitset_categories:240
 #: ../templates/database/syndikatsbibliothek/search_showtitset_categories:240
-#: ../templates/database/totenzettel/search_showtitset_categories:257
-#: ../templates/database/umschlaege/search_showtitset:321
+#: ../templates/database/totenzettel/search_showtitset_categories:237
+#: ../templates/database/umschlaege/search_showtitset:326
 #: ../templates/database/wallraf/search_showtitset_categories:240
 #: ../templates/litlists_tit_as_text:27
 #: ../templates/managecollection_tit_as_text:74
@@ -11282,7 +11295,7 @@ msgstr "Suchbegriffe"
 msgid "Suche"
 msgstr "Suchen"
 
-#: ../templates/info:975 ../templates/profile/kuglight/info:597
+#: ../templates/info:976 ../templates/profile/kuglight/info:597
 #: ../templates/profile/kugng/views/kugng/info:975
 #: ../templates/views/kug/info:975
 msgid "Suche &uuml;ber alle Kataloge"
@@ -11576,7 +11589,7 @@ msgstr "Suchlogik"
 #: ../templates/profile/sammlungen/views/artmann/searchmask_simple:121
 #: ../templates/profile/sammlungen/views/landschaft/searchmask:120
 #: ../templates/profile/sammlungen/views/landschaft/searchmask_simple:120
-#: ../templates/profile/sammlungen/views/portrait/searchmask:144
+#: ../templates/profile/sammlungen/views/portrait/searchmask:146
 #: ../templates/profile/sammlungen/views/portrait/searchmask_simple:120
 #: ../templates/profile/sammlungen/views/richter/searchmask:120
 #: ../templates/profile/sammlungen/views/richter/searchmask_simple:120
@@ -11667,7 +11680,7 @@ msgstr "Systematisches Bl&auml;ttern"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:85
 #: ../templates/profile/kuglight/visible_categories_titset:84
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:84
-#: ../templates/visible_categories_titset:86
+#: ../templates/visible_categories_titset:87
 msgid "T0015"
 msgstr "Sprache"
 
@@ -11704,7 +11717,7 @@ msgstr "Sprache"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:89
 #: ../templates/profile/kuglight/visible_categories_titset:88
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:88
-#: ../templates/visible_categories_titset:90
+#: ../templates/visible_categories_titset:91
 msgid "T0026"
 msgstr "Nebeneintr."
 
@@ -11741,7 +11754,7 @@ msgstr "Nebeneintr."
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:47
 #: ../templates/profile/kuglight/visible_categories_titset:46
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:47
-#: ../templates/visible_categories_titset:47
+#: ../templates/visible_categories_titset:48
 msgid "T0035"
 msgstr "Ersch.Land"
 
@@ -11896,7 +11909,7 @@ msgstr "Co-Autor"
 msgid "T0101-portrait"
 msgstr "Stecher, Lithograph"
 
-#: ../templates/database/totenzettel/visible_categories_titset:17
+#: ../templates/database/totenzettel/visible_categories_titset:25
 msgid "T0101-totenzettel"
 msgstr "Vater"
 
@@ -11918,7 +11931,7 @@ msgstr "Werkstatt"
 msgid "T0102-portrait"
 msgstr "Dargestellt Person"
 
-#: ../templates/database/totenzettel/visible_categories_titset:18
+#: ../templates/database/totenzettel/visible_categories_titset:26
 msgid "T0102-totenzettel"
 msgstr "Mutter"
 
@@ -12017,14 +12030,13 @@ msgstr "Behörden, Betriebe, Institutionen"
 msgid "T0200-landschaft"
 msgstr "Topogr. Schlagwort"
 
-#: ../templates/database/portrait/visible_categories_titset:27
-#: ../templates/database/portrait/visible_categories_titset:85
+#: ../templates/database/portrait/visible_categories_titset:84
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:27
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:85
 msgid "T0200-portrait"
 msgstr "Provenienz"
 
-#: ../templates/database/totenzettel/visible_categories_titset:19
+#: ../templates/database/totenzettel/visible_categories_titset:17
 msgid "T0200-totenzettel"
 msgstr "Vater"
 
@@ -12080,12 +12092,12 @@ msgstr "Region"
 msgid "T0201-inst450"
 msgstr "Herausgebende Institution"
 
-#: ../templates/database/portrait/visible_categories_titset:28
+#: ../templates/database/portrait/visible_categories_titset:27
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:28
 msgid "T0201-portrait"
 msgstr "Körperschaft"
 
-#: ../templates/database/totenzettel/visible_categories_titset:20
+#: ../templates/database/totenzettel/visible_categories_titset:18
 msgid "T0201-totenzettel"
 msgstr "Mutter"
 
@@ -12269,7 +12281,7 @@ msgstr "Objekt-Titel"
 msgid "T0331-portrait"
 msgstr "Bildtitel"
 
-#: ../templates/database/totenzettel/visible_categories_titset:21
+#: ../templates/database/totenzettel/visible_categories_titset:19
 msgid "T0331-totenzettel"
 msgstr "Name"
 
@@ -12343,7 +12355,7 @@ msgstr "Zu ergänzender Urheber"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:51
 #: ../templates/profile/kuglight/visible_categories_titset:50
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:51
-#: ../templates/visible_categories_titset:51
+#: ../templates/visible_categories_titset:52
 msgid "T0334"
 msgstr "Material"
 
@@ -12351,7 +12363,7 @@ msgstr "Material"
 msgid "T0334-landschaft"
 msgstr "Trägermaterial"
 
-#: ../templates/database/portrait/visible_categories_titset:81
+#: ../templates/database/portrait/visible_categories_titset:80
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:81
 msgid "T0334-portrait"
 msgstr "Material"
@@ -12477,7 +12489,7 @@ msgstr "Paralleltitel"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:33
 #: ../templates/profile/kuglight/visible_categories_titset:32
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:33
-#: ../templates/visible_categories_titset:33
+#: ../templates/visible_categories_titset:34
 msgid "T0359"
 msgstr "Vorlageform Verfasser"
 
@@ -12519,7 +12531,7 @@ msgstr "Vorlageform"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:34
 #: ../templates/profile/kuglight/visible_categories_titset:33
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:34
-#: ../templates/visible_categories_titset:34
+#: ../templates/visible_categories_titset:35
 msgid "T0360"
 msgstr "Vorlage Unterreihe"
 
@@ -12614,6 +12626,10 @@ msgstr "Beibände"
 msgid "T0365"
 msgstr "Gemeinsame Angaben"
 
+#: ../templates/visible_categories_titset:33
+msgid "T0369"
+msgstr "Gemeins. Verfasser"
+
 #: ../templates/database/alff/visible_categories_titset:28
 #: ../templates/database/artmann/visible_categories_titset:26
 #: ../templates/database/dante/visible_categories_titset:26
@@ -12656,7 +12672,7 @@ msgstr "Weiterer Titel"
 msgid "T0370-einbaende"
 msgstr "Provenienz"
 
-#: ../templates/database/totenzettel/visible_categories_titset:22
+#: ../templates/database/totenzettel/visible_categories_titset:20
 msgid "T0370-totenzettel"
 msgstr "Geburtsname"
 
@@ -12694,7 +12710,7 @@ msgstr "Geburtsname"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:35
 #: ../templates/profile/kuglight/visible_categories_titset:34
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:35
-#: ../templates/visible_categories_titset:35
+#: ../templates/visible_categories_titset:36
 msgid "T0403"
 msgstr "Ausgabe"
 
@@ -12731,7 +12747,7 @@ msgstr "Ausgabe"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:40
 #: ../templates/profile/kuglight/visible_categories_titset:39
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:40
-#: ../templates/visible_categories_titset:40
+#: ../templates/visible_categories_titset:41
 msgid "T0405"
 msgstr "Erscheinungsverlauf"
 
@@ -12768,7 +12784,7 @@ msgstr "Erscheinungsverlauf"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:57
 #: ../templates/profile/kuglight/visible_categories_titset:56
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:57
-#: ../templates/visible_categories_titset:57
+#: ../templates/visible_categories_titset:58
 msgid "T0407"
 msgstr "Maßstab"
 
@@ -12794,7 +12810,7 @@ msgstr "Höhe x Breite"
 #: ../templates/database/lefort/visible_categories_titset:36
 #: ../templates/database/nationallizenzen/visible_categories_titset:35
 #: ../templates/database/poetica/visible_categories_titset:36
-#: ../templates/database/portrait/visible_categories_titset:31
+#: ../templates/database/portrait/visible_categories_titset:30
 #: ../templates/database/richter/visible_categories_titset:35
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:36
 #: ../templates/database/umschlaege/visible_categories_titset:36
@@ -12812,7 +12828,7 @@ msgstr "Höhe x Breite"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:36
 #: ../templates/profile/kuglight/visible_categories_titset:35
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:36
-#: ../templates/visible_categories_titset:36
+#: ../templates/visible_categories_titset:37
 msgid "T0410"
 msgstr "Verlagsort"
 
@@ -12825,11 +12841,11 @@ msgstr "Erscheinungsort"
 msgid "T0410-inst404abklatsch"
 msgstr "Aufbewahrungsort"
 
-#: ../templates/database/totenzettel/visible_categories_titset:24
+#: ../templates/database/totenzettel/visible_categories_titset:22
 msgid "T0410-totenzettel"
 msgstr "Sterbeort"
 
-#: ../templates/database/totenzettel/visible_categories_titset:26
+#: ../templates/database/totenzettel/visible_categories_titset:24
 msgid "T0411-totenzettel"
 msgstr "Geburtsort"
 
@@ -12853,7 +12869,7 @@ msgstr "Geburtsort"
 #: ../templates/database/lefort/visible_categories_titset:37
 #: ../templates/database/nationallizenzen/visible_categories_titset:36
 #: ../templates/database/poetica/visible_categories_titset:37
-#: ../templates/database/portrait/visible_categories_titset:32
+#: ../templates/database/portrait/visible_categories_titset:31
 #: ../templates/database/richter/visible_categories_titset:36
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:37
 #: ../templates/database/umschlaege/visible_categories_titset:37
@@ -12876,7 +12892,7 @@ msgstr "Geburtsort"
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:37
 #: ../templates/profile/sammlungen/views/umschlaege/search_browse_tit:32
 #: ../templates/profile/sammlungen/views/umschlaege/searchmask_query:25
-#: ../templates/visible_categories_titset:37
+#: ../templates/visible_categories_titset:38
 msgid "T0412"
 msgstr "Verlag"
 
@@ -12913,7 +12929,7 @@ msgstr "Verlag"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:46
 #: ../templates/profile/kuglight/visible_categories_titset:45
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:46
-#: ../templates/visible_categories_titset:46
+#: ../templates/visible_categories_titset:47
 msgid "T0413"
 msgstr "Drucker"
 
@@ -12956,7 +12972,7 @@ msgstr "Drucker"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:39
 #: ../templates/profile/kuglight/visible_categories_titset:38
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:39
-#: ../templates/visible_categories_titset:39
+#: ../templates/visible_categories_titset:40
 msgid "T0424"
 msgstr "Ans. Ersch. Jahr"
 
@@ -12965,12 +12981,12 @@ msgstr "Ans. Ersch. Jahr"
 msgid "T0424-einbaende"
 msgstr "E-Jahr"
 
-#: ../templates/database/portrait/visible_categories_titset:34
+#: ../templates/database/portrait/visible_categories_titset:33
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:34
 msgid "T0424-portrait"
 msgstr "Jahr/Ansetzung"
 
-#: ../templates/database/totenzettel/visible_categories_titset:23
+#: ../templates/database/totenzettel/visible_categories_titset:21
 msgid "T0424-totenzettel"
 msgstr "Sterbedatum"
 
@@ -13010,7 +13026,7 @@ msgstr "Sterbedatum"
 #: ../templates/profile/kuglight/visible_categories_titset:37
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:38
 #: ../templates/profile/sammlungen/views/umschlaege/search_browse_tit:33
-#: ../templates/visible_categories_titset:38
+#: ../templates/visible_categories_titset:39
 msgid "T0425"
 msgstr "Ersch. Jahr"
 
@@ -13028,7 +13044,7 @@ msgstr "Datierung"
 msgid "T0425-landschaft"
 msgstr "Datierung"
 
-#: ../templates/database/portrait/visible_categories_titset:33
+#: ../templates/database/portrait/visible_categories_titset:32
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:33
 msgid "T0425-portrait"
 msgstr "Jahr"
@@ -13051,7 +13067,7 @@ msgstr "Jahr"
 #: ../templates/database/lefort/visible_categories_titset:50
 #: ../templates/database/nationallizenzen/visible_categories_titset:49
 #: ../templates/database/poetica/visible_categories_titset:50
-#: ../templates/database/portrait/visible_categories_titset:35
+#: ../templates/database/portrait/visible_categories_titset:34
 #: ../templates/database/richter/visible_categories_titset:49
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:50
 #: ../templates/database/umschlaege/visible_categories_titset:50
@@ -13069,7 +13085,7 @@ msgstr "Jahr"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:50
 #: ../templates/profile/kuglight/visible_categories_titset:49
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:50
-#: ../templates/visible_categories_titset:50
+#: ../templates/visible_categories_titset:51
 msgid "T0433"
 msgstr "Umfang"
 
@@ -13112,7 +13128,7 @@ msgstr "Buchstabengröße"
 #: ../templates/database/nationallizenzen/visible_categories_titset:57
 #: ../templates/database/poetica/visible_categories_titset:45
 #: ../templates/database/poetica/visible_categories_titset:58
-#: ../templates/database/portrait/visible_categories_titset:37
+#: ../templates/database/portrait/visible_categories_titset:36
 #: ../templates/database/richter/visible_categories_titset:44
 #: ../templates/database/richter/visible_categories_titset:57
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:45
@@ -13146,8 +13162,8 @@ msgstr "Buchstabengröße"
 #: ../templates/profile/kuglight/visible_categories_titset:57
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:45
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:58
-#: ../templates/visible_categories_titset:45
-#: ../templates/visible_categories_titset:58
+#: ../templates/visible_categories_titset:46
+#: ../templates/visible_categories_titset:59
 msgid "T0434"
 msgstr "Sonst.Angaben"
 
@@ -13184,7 +13200,7 @@ msgstr "Sonst.Angaben"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:48
 #: ../templates/profile/kuglight/visible_categories_titset:47
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:48
-#: ../templates/visible_categories_titset:48
+#: ../templates/visible_categories_titset:49
 msgid "T0435"
 msgstr "Format"
 
@@ -13228,7 +13244,7 @@ msgstr "Maße"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:59
 #: ../templates/profile/kuglight/visible_categories_titset:58
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:59
-#: ../templates/visible_categories_titset:59
+#: ../templates/visible_categories_titset:60
 msgid "T0437"
 msgstr "Begleitmaterial"
 
@@ -13266,7 +13282,7 @@ msgstr "Begleitmaterial"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:54
 #: ../templates/profile/kuglight/visible_categories_titset:53
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:54
-#: ../templates/visible_categories_titset:54
+#: ../templates/visible_categories_titset:55
 msgid "T0451"
 msgstr "Gesamttitel"
 
@@ -13301,7 +13317,7 @@ msgstr "Gesamttitel"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:60
 #: ../templates/profile/kuglight/visible_categories_titset:59
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:60
-#: ../templates/visible_categories_titset:60
+#: ../templates/visible_categories_titset:61
 msgid "T0501"
 msgstr "Fußnote"
 
@@ -13331,7 +13347,7 @@ msgid "T0501-richter"
 msgstr "Richterindiz"
 
 #: ../templates/database/landschaft/visible_categories_titset:43
-#: ../templates/database/portrait/visible_categories_titset:38
+#: ../templates/database/portrait/visible_categories_titset:37
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:38
 msgid "T0502"
 msgstr "Einheitstitel beigefügtes Werk"
@@ -13369,7 +13385,7 @@ msgstr "Einheitstitel beigefügtes Werk"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:88
 #: ../templates/profile/kuglight/visible_categories_titset:87
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:87
-#: ../templates/visible_categories_titset:89
+#: ../templates/visible_categories_titset:90
 msgid "T0503"
 msgstr "Übersetzter Titel"
 
@@ -13391,7 +13407,7 @@ msgstr "Übersetzter Titel"
 #: ../templates/database/lefort/visible_categories_titset:61
 #: ../templates/database/nationallizenzen/visible_categories_titset:60
 #: ../templates/database/poetica/visible_categories_titset:61
-#: ../templates/database/portrait/visible_categories_titset:39
+#: ../templates/database/portrait/visible_categories_titset:38
 #: ../templates/database/richter/visible_categories_titset:60
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:61
 #: ../templates/database/umschlaege/visible_categories_titset:61
@@ -13409,7 +13425,7 @@ msgstr "Übersetzter Titel"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:61
 #: ../templates/profile/kuglight/visible_categories_titset:60
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:61
-#: ../templates/visible_categories_titset:61
+#: ../templates/visible_categories_titset:62
 msgid "T0504"
 msgstr "Paralleltitel/Fußnote"
 
@@ -13431,7 +13447,7 @@ msgstr "Paralleltitel/Fußnote"
 #: ../templates/database/lefort/visible_categories_titset:62
 #: ../templates/database/nationallizenzen/visible_categories_titset:61
 #: ../templates/database/poetica/visible_categories_titset:62
-#: ../templates/database/portrait/visible_categories_titset:40
+#: ../templates/database/portrait/visible_categories_titset:39
 #: ../templates/database/richter/visible_categories_titset:61
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:62
 #: ../templates/database/umschlaege/visible_categories_titset:62
@@ -13449,7 +13465,7 @@ msgstr "Paralleltitel/Fußnote"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:62
 #: ../templates/profile/kuglight/visible_categories_titset:61
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:62
-#: ../templates/visible_categories_titset:62
+#: ../templates/visible_categories_titset:63
 msgid "T0505"
 msgstr "Weiterer Titel/Fußnote"
 
@@ -13470,7 +13486,7 @@ msgstr "Weiterer Titel/Fußnote"
 #: ../templates/database/lefort/visible_categories_titset:63
 #: ../templates/database/nationallizenzen/visible_categories_titset:62
 #: ../templates/database/poetica/visible_categories_titset:63
-#: ../templates/database/portrait/visible_categories_titset:86
+#: ../templates/database/portrait/visible_categories_titset:85
 #: ../templates/database/richter/visible_categories_titset:62
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:63
 #: ../templates/database/umschlaege/visible_categories_titset:63
@@ -13488,7 +13504,7 @@ msgstr "Weiterer Titel/Fußnote"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:63
 #: ../templates/profile/kuglight/visible_categories_titset:62
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:63
-#: ../templates/visible_categories_titset:63
+#: ../templates/visible_categories_titset:64
 msgid "T0507"
 msgstr "Titelangaben"
 
@@ -13526,7 +13542,7 @@ msgstr "Titelangaben"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:49
 #: ../templates/profile/kuglight/visible_categories_titset:48
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:49
-#: ../templates/visible_categories_titset:49
+#: ../templates/visible_categories_titset:50
 msgid "T0508"
 msgstr "Quelle"
 
@@ -13537,7 +13553,7 @@ msgstr "Quelle"
 msgid "T0508-einbaende"
 msgstr "Bibl. Nachweis"
 
-#: ../templates/database/portrait/visible_categories_titset:87
+#: ../templates/database/portrait/visible_categories_titset:86
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:87
 msgid "T0508-portrait"
 msgstr "Bibl. Nachweis"
@@ -13576,7 +13592,7 @@ msgstr "Bibl. Nachweis"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:64
 #: ../templates/profile/kuglight/visible_categories_titset:63
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:64
-#: ../templates/visible_categories_titset:64
+#: ../templates/visible_categories_titset:65
 msgid "T0509"
 msgstr "Verfasser Fußnote"
 
@@ -13584,7 +13600,7 @@ msgstr "Verfasser Fußnote"
 msgid "T0509-inst450"
 msgstr "Personennamen"
 
-#: ../templates/database/portrait/visible_categories_titset:41
+#: ../templates/database/portrait/visible_categories_titset:40
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:41
 msgid "T0509-portrait"
 msgstr "Lebensdaten"
@@ -13607,7 +13623,7 @@ msgstr "Lebensdaten"
 #: ../templates/database/lefort/visible_categories_titset:65
 #: ../templates/database/nationallizenzen/visible_categories_titset:64
 #: ../templates/database/poetica/visible_categories_titset:65
-#: ../templates/database/portrait/visible_categories_titset:42
+#: ../templates/database/portrait/visible_categories_titset:41
 #: ../templates/database/richter/visible_categories_titset:64
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:65
 #: ../templates/database/umschlaege/visible_categories_titset:65
@@ -13625,7 +13641,7 @@ msgstr "Lebensdaten"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:65
 #: ../templates/profile/kuglight/visible_categories_titset:64
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:65
-#: ../templates/visible_categories_titset:65
+#: ../templates/visible_categories_titset:66
 msgid "T0510"
 msgstr "Ausgabe Fußnote"
 
@@ -13647,7 +13663,7 @@ msgstr "Ausgabe Fußnote"
 #: ../templates/database/lefort/visible_categories_titset:66
 #: ../templates/database/nationallizenzen/visible_categories_titset:65
 #: ../templates/database/poetica/visible_categories_titset:66
-#: ../templates/database/portrait/visible_categories_titset:43
+#: ../templates/database/portrait/visible_categories_titset:42
 #: ../templates/database/richter/visible_categories_titset:65
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:66
 #: ../templates/database/umschlaege/visible_categories_titset:66
@@ -13665,7 +13681,7 @@ msgstr "Ausgabe Fußnote"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:66
 #: ../templates/profile/kuglight/visible_categories_titset:65
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:66
-#: ../templates/visible_categories_titset:66
+#: ../templates/visible_categories_titset:67
 msgid "T0511"
 msgstr "Erschverm. Fußnote"
 
@@ -13687,7 +13703,7 @@ msgstr "Erschverm. Fußnote"
 #: ../templates/database/lefort/visible_categories_titset:67
 #: ../templates/database/nationallizenzen/visible_categories_titset:66
 #: ../templates/database/poetica/visible_categories_titset:67
-#: ../templates/database/portrait/visible_categories_titset:44
+#: ../templates/database/portrait/visible_categories_titset:43
 #: ../templates/database/richter/visible_categories_titset:66
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:67
 #: ../templates/database/umschlaege/visible_categories_titset:67
@@ -13705,7 +13721,7 @@ msgstr "Erschverm. Fußnote"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:67
 #: ../templates/profile/kuglight/visible_categories_titset:66
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:67
-#: ../templates/visible_categories_titset:67
+#: ../templates/visible_categories_titset:68
 msgid "T0512"
 msgstr "Koll. Fußnote"
 
@@ -13727,7 +13743,7 @@ msgstr "Koll. Fußnote"
 #: ../templates/database/lefort/visible_categories_titset:68
 #: ../templates/database/nationallizenzen/visible_categories_titset:67
 #: ../templates/database/poetica/visible_categories_titset:68
-#: ../templates/database/portrait/visible_categories_titset:45
+#: ../templates/database/portrait/visible_categories_titset:44
 #: ../templates/database/richter/visible_categories_titset:67
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:68
 #: ../templates/database/umschlaege/visible_categories_titset:68
@@ -13745,7 +13761,7 @@ msgstr "Koll. Fußnote"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:68
 #: ../templates/profile/kuglight/visible_categories_titset:67
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:68
-#: ../templates/visible_categories_titset:68
+#: ../templates/visible_categories_titset:69
 msgid "T0513"
 msgstr "Impress. Änderung"
 
@@ -13767,7 +13783,7 @@ msgstr "Impress. Änderung"
 #: ../templates/database/lefort/visible_categories_titset:69
 #: ../templates/database/nationallizenzen/visible_categories_titset:68
 #: ../templates/database/poetica/visible_categories_titset:69
-#: ../templates/database/portrait/visible_categories_titset:46
+#: ../templates/database/portrait/visible_categories_titset:45
 #: ../templates/database/richter/visible_categories_titset:68
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:69
 #: ../templates/database/umschlaege/visible_categories_titset:69
@@ -13785,7 +13801,7 @@ msgstr "Impress. Änderung"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:69
 #: ../templates/profile/kuglight/visible_categories_titset:68
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:69
-#: ../templates/visible_categories_titset:69
+#: ../templates/visible_categories_titset:70
 msgid "T0515"
 msgstr "Ergänzt. GesamtTitel"
 
@@ -13822,7 +13838,7 @@ msgstr "Ergänzt. GesamtTitel"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:86
 #: ../templates/profile/kuglight/visible_categories_titset:85
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:85
-#: ../templates/visible_categories_titset:87
+#: ../templates/visible_categories_titset:88
 msgid "T0516"
 msgstr "Schrift"
 
@@ -13845,7 +13861,7 @@ msgstr "Schrift"
 #: ../templates/profile/kuglight/database/wickrath/visible_categories_titset:69
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:70
 #: ../templates/profile/kuglight/visible_categories_titset:69
-#: ../templates/visible_categories_titset:70
+#: ../templates/visible_categories_titset:71
 msgid "T0517"
 msgstr "Angaben zum Inhalt"
 
@@ -13882,12 +13898,12 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:82
 #: ../templates/profile/kuglight/visible_categories_titset:81
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:81
-#: ../templates/visible_categories_titset:82
+#: ../templates/visible_categories_titset:83
 msgid "T0519"
 msgstr "Hochschulschrift"
 
 #: ../templates/database/landschaft/visible_categories_titset:52
-#: ../templates/database/portrait/visible_categories_titset:47
+#: ../templates/database/portrait/visible_categories_titset:46
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:47
 msgid "T0521"
 msgstr "Angaben zum Inhalt"
@@ -13910,7 +13926,7 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/database/lefort/visible_categories_titset:70
 #: ../templates/database/nationallizenzen/visible_categories_titset:70
 #: ../templates/database/poetica/visible_categories_titset:70
-#: ../templates/database/portrait/visible_categories_titset:48
+#: ../templates/database/portrait/visible_categories_titset:47
 #: ../templates/database/richter/visible_categories_titset:70
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:70
 #: ../templates/database/umschlaege/visible_categories_titset:71
@@ -13928,7 +13944,7 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:71
 #: ../templates/profile/kuglight/visible_categories_titset:70
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:70
-#: ../templates/visible_categories_titset:71
+#: ../templates/visible_categories_titset:72
 msgid "T0522"
 msgstr "Teilungsvermerk"
 
@@ -13965,7 +13981,7 @@ msgstr "Teilungsvermerk"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:41
 #: ../templates/profile/kuglight/visible_categories_titset:40
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:41
-#: ../templates/visible_categories_titset:41
+#: ../templates/visible_categories_titset:42
 msgid "T0523"
 msgstr "Erscheinungsweise"
 
@@ -13987,7 +14003,7 @@ msgstr "Erscheinungsweise"
 #: ../templates/database/lefort/visible_categories_titset:71
 #: ../templates/database/nationallizenzen/visible_categories_titset:71
 #: ../templates/database/poetica/visible_categories_titset:71
-#: ../templates/database/portrait/visible_categories_titset:49
+#: ../templates/database/portrait/visible_categories_titset:48
 #: ../templates/database/richter/visible_categories_titset:71
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:71
 #: ../templates/database/umschlaege/visible_categories_titset:72
@@ -14005,7 +14021,7 @@ msgstr "Erscheinungsweise"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:72
 #: ../templates/profile/kuglight/visible_categories_titset:71
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:71
-#: ../templates/visible_categories_titset:72
+#: ../templates/visible_categories_titset:73
 msgid "T0525"
 msgstr "Herkunft Fußnote"
 
@@ -14031,7 +14047,7 @@ msgstr "Ortsnamen"
 #: ../templates/database/lefort/visible_categories_titset:75
 #: ../templates/database/nationallizenzen/visible_categories_titset:75
 #: ../templates/database/poetica/visible_categories_titset:75
-#: ../templates/database/portrait/visible_categories_titset:50
+#: ../templates/database/portrait/visible_categories_titset:49
 #: ../templates/database/richter/visible_categories_titset:75
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:75
 #: ../templates/database/umschlaege/visible_categories_titset:76
@@ -14049,7 +14065,7 @@ msgstr "Ortsnamen"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:76
 #: ../templates/profile/kuglight/visible_categories_titset:75
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:75
-#: ../templates/visible_categories_titset:76
+#: ../templates/visible_categories_titset:77
 msgid "T0527"
 msgstr "Parallele Ausg."
 
@@ -14071,7 +14087,7 @@ msgstr "Parallele Ausg."
 #: ../templates/database/lefort/visible_categories_titset:76
 #: ../templates/database/nationallizenzen/visible_categories_titset:76
 #: ../templates/database/poetica/visible_categories_titset:76
-#: ../templates/database/portrait/visible_categories_titset:51
+#: ../templates/database/portrait/visible_categories_titset:50
 #: ../templates/database/richter/visible_categories_titset:76
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:76
 #: ../templates/database/umschlaege/visible_categories_titset:77
@@ -14089,7 +14105,7 @@ msgstr "Parallele Ausg."
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:77
 #: ../templates/profile/kuglight/visible_categories_titset:76
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:76
-#: ../templates/visible_categories_titset:77
+#: ../templates/visible_categories_titset:78
 msgid "T0529"
 msgstr "Titel Beilage"
 
@@ -14111,7 +14127,7 @@ msgstr "Titel Beilage"
 #: ../templates/database/lefort/visible_categories_titset:77
 #: ../templates/database/nationallizenzen/visible_categories_titset:77
 #: ../templates/database/poetica/visible_categories_titset:77
-#: ../templates/database/portrait/visible_categories_titset:52
+#: ../templates/database/portrait/visible_categories_titset:51
 #: ../templates/database/richter/visible_categories_titset:77
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:77
 #: ../templates/database/umschlaege/visible_categories_titset:78
@@ -14129,7 +14145,7 @@ msgstr "Titel Beilage"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:78
 #: ../templates/profile/kuglight/visible_categories_titset:77
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:77
-#: ../templates/visible_categories_titset:78
+#: ../templates/visible_categories_titset:79
 msgid "T0530"
 msgstr "Bezugswerk"
 
@@ -14151,7 +14167,7 @@ msgstr "Bezugswerk"
 #: ../templates/database/lefort/visible_categories_titset:78
 #: ../templates/database/nationallizenzen/visible_categories_titset:78
 #: ../templates/database/poetica/visible_categories_titset:78
-#: ../templates/database/portrait/visible_categories_titset:53
+#: ../templates/database/portrait/visible_categories_titset:52
 #: ../templates/database/richter/visible_categories_titset:78
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:78
 #: ../templates/database/umschlaege/visible_categories_titset:79
@@ -14169,7 +14185,7 @@ msgstr "Bezugswerk"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:79
 #: ../templates/profile/kuglight/visible_categories_titset:78
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:78
-#: ../templates/visible_categories_titset:79
+#: ../templates/visible_categories_titset:80
 msgid "T0531"
 msgstr "Frühere Ausg."
 
@@ -14191,7 +14207,7 @@ msgstr "Frühere Ausg."
 #: ../templates/database/lefort/visible_categories_titset:79
 #: ../templates/database/nationallizenzen/visible_categories_titset:79
 #: ../templates/database/poetica/visible_categories_titset:79
-#: ../templates/database/portrait/visible_categories_titset:54
+#: ../templates/database/portrait/visible_categories_titset:53
 #: ../templates/database/richter/visible_categories_titset:79
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:79
 #: ../templates/database/umschlaege/visible_categories_titset:80
@@ -14209,7 +14225,7 @@ msgstr "Frühere Ausg."
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:80
 #: ../templates/profile/kuglight/visible_categories_titset:79
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:79
-#: ../templates/visible_categories_titset:80
+#: ../templates/visible_categories_titset:81
 msgid "T0532"
 msgstr "Früherer Titel"
 
@@ -14231,7 +14247,7 @@ msgstr "Früherer Titel"
 #: ../templates/database/lefort/visible_categories_titset:80
 #: ../templates/database/nationallizenzen/visible_categories_titset:80
 #: ../templates/database/poetica/visible_categories_titset:80
-#: ../templates/database/portrait/visible_categories_titset:55
+#: ../templates/database/portrait/visible_categories_titset:54
 #: ../templates/database/richter/visible_categories_titset:80
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:80
 #: ../templates/database/umschlaege/visible_categories_titset:81
@@ -14249,7 +14265,7 @@ msgstr "Früherer Titel"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:81
 #: ../templates/profile/kuglight/visible_categories_titset:80
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:80
-#: ../templates/visible_categories_titset:81
+#: ../templates/visible_categories_titset:82
 msgid "T0533"
 msgstr "Spätere Ausg."
 
@@ -14271,7 +14287,7 @@ msgstr "Spätere Ausg."
 #: ../templates/database/lefort/visible_categories_titset:72
 #: ../templates/database/nationallizenzen/visible_categories_titset:72
 #: ../templates/database/poetica/visible_categories_titset:72
-#: ../templates/database/portrait/visible_categories_titset:56
+#: ../templates/database/portrait/visible_categories_titset:55
 #: ../templates/database/richter/visible_categories_titset:72
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:72
 #: ../templates/database/umschlaege/visible_categories_titset:73
@@ -14289,7 +14305,7 @@ msgstr "Spätere Ausg."
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:73
 #: ../templates/profile/kuglight/visible_categories_titset:72
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:72
-#: ../templates/visible_categories_titset:73
+#: ../templates/visible_categories_titset:74
 msgid "T0534"
 msgstr "Titelkonk."
 
@@ -14311,7 +14327,7 @@ msgstr "Titelkonk."
 #: ../templates/database/lefort/visible_categories_titset:73
 #: ../templates/database/nationallizenzen/visible_categories_titset:73
 #: ../templates/database/poetica/visible_categories_titset:73
-#: ../templates/database/portrait/visible_categories_titset:57
+#: ../templates/database/portrait/visible_categories_titset:56
 #: ../templates/database/richter/visible_categories_titset:73
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:73
 #: ../templates/database/umschlaege/visible_categories_titset:74
@@ -14329,7 +14345,7 @@ msgstr "Titelkonk."
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:74
 #: ../templates/profile/kuglight/visible_categories_titset:73
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:73
-#: ../templates/visible_categories_titset:74
+#: ../templates/visible_categories_titset:75
 msgid "T0535"
 msgstr "Anz. Exemplare"
 
@@ -14351,7 +14367,7 @@ msgstr "Anz. Exemplare"
 #: ../templates/database/lefort/visible_categories_titset:74
 #: ../templates/database/nationallizenzen/visible_categories_titset:74
 #: ../templates/database/poetica/visible_categories_titset:74
-#: ../templates/database/portrait/visible_categories_titset:58
+#: ../templates/database/portrait/visible_categories_titset:57
 #: ../templates/database/richter/visible_categories_titset:74
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:74
 #: ../templates/database/umschlaege/visible_categories_titset:75
@@ -14369,18 +14385,18 @@ msgstr "Anz. Exemplare"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:75
 #: ../templates/profile/kuglight/visible_categories_titset:74
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:74
-#: ../templates/visible_categories_titset:75
+#: ../templates/visible_categories_titset:76
 msgid "T0536"
 msgstr "Vorr. Erschtermin"
 
 #: ../templates/database/landschaft/visible_categories_titset:64
-#: ../templates/database/portrait/visible_categories_titset:59
+#: ../templates/database/portrait/visible_categories_titset:58
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:59
 msgid "T0537"
 msgstr "Redaktionelle Bemerkungen"
 
 #: ../templates/database/landschaft/visible_categories_titset:65
-#: ../templates/database/portrait/visible_categories_titset:60
+#: ../templates/database/portrait/visible_categories_titset:59
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:60
 msgid "T0538"
 msgstr "Angabe Vervielfältigungsart"
@@ -14418,7 +14434,7 @@ msgstr "Angabe Vervielfältigungsart"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:103
 #: ../templates/profile/kuglight/visible_categories_titset:103
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:102
-#: ../templates/visible_categories_titset:106
+#: ../templates/visible_categories_titset:107
 msgid "T0540"
 msgstr "ISBN"
 
@@ -14455,7 +14471,7 @@ msgstr "ISBN"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:105
 #: ../templates/profile/kuglight/visible_categories_titset:105
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:103
-#: ../templates/visible_categories_titset:108
+#: ../templates/visible_categories_titset:109
 msgid "T0543"
 msgstr "ISSN"
 
@@ -14478,12 +14494,12 @@ msgstr "ISSN"
 #: ../templates/profile/kuglight/database/wickrath/visible_categories_titset:105
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:104
 #: ../templates/profile/kuglight/visible_categories_titset:104
-#: ../templates/visible_categories_titset:107
+#: ../templates/visible_categories_titset:108
 msgid "T0553"
 msgstr "ISBN"
 
 #: ../templates/database/landschaft/visible_categories_titset:66
-#: ../templates/database/portrait/visible_categories_titset:61
+#: ../templates/database/portrait/visible_categories_titset:60
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:61
 msgid "T0578"
 msgstr "Fingerprint"
@@ -14498,7 +14514,7 @@ msgstr "Fingerprint"
 #: ../templates/database/landschaft/visible_categories_titset:67
 #: ../templates/database/lefort/visible_categories_titset:83
 #: ../templates/database/poetica/visible_categories_titset:83
-#: ../templates/database/portrait/visible_categories_titset:62
+#: ../templates/database/portrait/visible_categories_titset:61
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:83
 #: ../templates/database/wallraf/visible_categories_titset:83
 #: ../templates/database/wickrath/visible_categories_titset:83
@@ -14507,7 +14523,7 @@ msgstr "Fingerprint"
 #: ../templates/profile/kuglight/database/franzmg/visible_categories_titset:83
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:62
 #: ../templates/profile/kuglight/database/wickrath/visible_categories_titset:83
-#: ../templates/visible_categories_titset:84
+#: ../templates/visible_categories_titset:85
 msgid "T0580"
 msgstr "Nachweise / Sonstige Nummern"
 
@@ -14530,7 +14546,7 @@ msgstr "Nachweise / Sonstige Nummern"
 #: ../templates/database/lefort/visible_categories_titset:55
 #: ../templates/database/nationallizenzen/visible_categories_titset:54
 #: ../templates/database/poetica/visible_categories_titset:55
-#: ../templates/database/portrait/visible_categories_titset:63
+#: ../templates/database/portrait/visible_categories_titset:62
 #: ../templates/database/richter/visible_categories_titset:54
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:55
 #: ../templates/database/umschlaege/visible_categories_titset:55
@@ -14548,7 +14564,7 @@ msgstr "Nachweise / Sonstige Nummern"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:55
 #: ../templates/profile/kuglight/visible_categories_titset:54
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:55
-#: ../templates/visible_categories_titset:55
+#: ../templates/visible_categories_titset:56
 msgid "T0590"
 msgstr "In:"
 
@@ -14569,7 +14585,7 @@ msgstr "In:"
 #: ../templates/database/lefort/visible_categories_titset:42
 #: ../templates/database/nationallizenzen/visible_categories_titset:41
 #: ../templates/database/poetica/visible_categories_titset:42
-#: ../templates/database/portrait/visible_categories_titset:64
+#: ../templates/database/portrait/visible_categories_titset:63
 #: ../templates/database/richter/visible_categories_titset:41
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:42
 #: ../templates/database/umschlaege/visible_categories_titset:42
@@ -14587,7 +14603,7 @@ msgstr "In:"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:42
 #: ../templates/profile/kuglight/visible_categories_titset:41
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:42
-#: ../templates/visible_categories_titset:42
+#: ../templates/visible_categories_titset:43
 msgid "T0591"
 msgstr "Verfasser Quelle"
 
@@ -14596,13 +14612,13 @@ msgid "T0591-landschaft"
 msgstr "Entstehungsort"
 
 #: ../templates/database/landschaft/visible_categories_titset:24
-#: ../templates/database/portrait/visible_categories_titset:65
+#: ../templates/database/portrait/visible_categories_titset:64
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:65
 msgid "T0592"
 msgstr "Abteilung Unterreiche der Quelle"
 
 #: ../templates/database/landschaft/visible_categories_titset:25
-#: ../templates/database/portrait/visible_categories_titset:66
+#: ../templates/database/portrait/visible_categories_titset:65
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:66
 msgid "T0593"
 msgstr "Ausgabebez. der Quelle"
@@ -14624,7 +14640,7 @@ msgstr "Ausgabebez. der Quelle"
 #: ../templates/database/lefort/visible_categories_titset:43
 #: ../templates/database/nationallizenzen/visible_categories_titset:42
 #: ../templates/database/poetica/visible_categories_titset:43
-#: ../templates/database/portrait/visible_categories_titset:67
+#: ../templates/database/portrait/visible_categories_titset:66
 #: ../templates/database/richter/visible_categories_titset:42
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:43
 #: ../templates/database/umschlaege/visible_categories_titset:43
@@ -14642,7 +14658,7 @@ msgstr "Ausgabebez. der Quelle"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:43
 #: ../templates/profile/kuglight/visible_categories_titset:42
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:43
-#: ../templates/visible_categories_titset:43
+#: ../templates/visible_categories_titset:44
 msgid "T0594"
 msgstr "Ersch.Ort Quelle"
 
@@ -14667,7 +14683,7 @@ msgstr "Entstehungslandschaft"
 #: ../templates/database/lefort/visible_categories_titset:44
 #: ../templates/database/nationallizenzen/visible_categories_titset:43
 #: ../templates/database/poetica/visible_categories_titset:44
-#: ../templates/database/portrait/visible_categories_titset:68
+#: ../templates/database/portrait/visible_categories_titset:67
 #: ../templates/database/richter/visible_categories_titset:43
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:44
 #: ../templates/database/umschlaege/visible_categories_titset:44
@@ -14685,7 +14701,7 @@ msgstr "Entstehungslandschaft"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:44
 #: ../templates/profile/kuglight/visible_categories_titset:43
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:44
-#: ../templates/visible_categories_titset:44
+#: ../templates/visible_categories_titset:45
 msgid "T0595"
 msgstr "Ersch.Jahr Quelle"
 
@@ -14693,30 +14709,30 @@ msgstr "Ersch.Jahr Quelle"
 msgid "T0595-landschaft"
 msgstr "Entstehungsland"
 
-#: ../templates/database/totenzettel/visible_categories_titset:25
+#: ../templates/database/totenzettel/visible_categories_titset:23
 msgid "T0595-totenzettel"
 msgstr "Geburtsdatum"
 
 #: ../templates/database/landschaft/visible_categories_titset:69
-#: ../templates/database/portrait/visible_categories_titset:69
+#: ../templates/database/portrait/visible_categories_titset:68
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:69
 msgid "T0596"
 msgstr "Weitere Angaben zur Quelle"
 
 #: ../templates/database/landschaft/visible_categories_titset:70
-#: ../templates/database/portrait/visible_categories_titset:70
+#: ../templates/database/portrait/visible_categories_titset:69
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:70
 msgid "T0597"
 msgstr "Gesamttitel der Quelle"
 
 #: ../templates/database/landschaft/visible_categories_titset:71
-#: ../templates/database/portrait/visible_categories_titset:71
+#: ../templates/database/portrait/visible_categories_titset:70
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:71
 msgid "T0598"
 msgstr "Fußnote der Quelle"
 
 #: ../templates/database/landschaft/visible_categories_titset:72
-#: ../templates/database/portrait/visible_categories_titset:72
+#: ../templates/database/portrait/visible_categories_titset:71
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:72
 msgid "T0599"
 msgstr "Standardnummer der Quelle"
@@ -14753,7 +14769,7 @@ msgstr "Standardnummer der Quelle"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:56
 #: ../templates/profile/kuglight/visible_categories_titset:55
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:56
-#: ../templates/visible_categories_titset:56
+#: ../templates/visible_categories_titset:57
 msgid "T0600"
 msgstr "Bemerkung"
 
@@ -14779,7 +14795,7 @@ msgstr "Schublade"
 #: ../templates/database/lefort/visible_categories_titset:82
 #: ../templates/database/nationallizenzen/visible_categories_titset:82
 #: ../templates/database/poetica/visible_categories_titset:82
-#: ../templates/database/portrait/visible_categories_titset:73
+#: ../templates/database/portrait/visible_categories_titset:72
 #: ../templates/database/richter/visible_categories_titset:82
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:82
 #: ../templates/database/umschlaege/visible_categories_titset:83
@@ -14797,7 +14813,7 @@ msgstr "Schublade"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:83
 #: ../templates/profile/kuglight/visible_categories_titset:82
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:82
-#: ../templates/visible_categories_titset:83
+#: ../templates/visible_categories_titset:84
 msgid "T0619"
 msgstr "Jahr Vorlage"
 
@@ -14819,7 +14835,7 @@ msgstr "Jahr Vorlage"
 #: ../templates/database/lefort/visible_categories_titset:84
 #: ../templates/database/nationallizenzen/visible_categories_titset:83
 #: ../templates/database/poetica/visible_categories_titset:84
-#: ../templates/database/portrait/visible_categories_titset:74
+#: ../templates/database/portrait/visible_categories_titset:73
 #: ../templates/database/richter/visible_categories_titset:83
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:84
 #: ../templates/database/umschlaege/visible_categories_titset:84
@@ -14837,7 +14853,7 @@ msgstr "Jahr Vorlage"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:84
 #: ../templates/profile/kuglight/visible_categories_titset:83
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:83
-#: ../templates/visible_categories_titset:85
+#: ../templates/visible_categories_titset:86
 msgid "T0646"
 msgstr "Filmbesitz"
 
@@ -14874,7 +14890,7 @@ msgstr "Filmbesitz"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:52
 #: ../templates/profile/kuglight/visible_categories_titset:51
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:52
-#: ../templates/visible_categories_titset:52
+#: ../templates/visible_categories_titset:53
 msgid "T0652"
 msgstr "EDV Material"
 
@@ -14896,7 +14912,7 @@ msgstr "EDV Material"
 #: ../templates/database/lefort/visible_categories_titset:53
 #: ../templates/database/nationallizenzen/visible_categories_titset:52
 #: ../templates/database/poetica/visible_categories_titset:53
-#: ../templates/database/portrait/visible_categories_titset:75
+#: ../templates/database/portrait/visible_categories_titset:74
 #: ../templates/database/richter/visible_categories_titset:52
 #: ../templates/database/syndikatsbibliothek/visible_categories_titset:53
 #: ../templates/database/umschlaege/visible_categories_titset:53
@@ -14914,7 +14930,7 @@ msgstr "EDV Material"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:53
 #: ../templates/profile/kuglight/visible_categories_titset:52
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:53
-#: ../templates/visible_categories_titset:53
+#: ../templates/visible_categories_titset:54
 msgid "T0655"
 msgstr "EDV Adress"
 
@@ -14951,7 +14967,7 @@ msgstr "EDV Adress"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:106
 #: ../templates/profile/kuglight/visible_categories_titset:106
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:104
-#: ../templates/visible_categories_titset:109
+#: ../templates/visible_categories_titset:110
 msgid "T0662"
 msgstr "Web-Link"
 
@@ -14963,7 +14979,7 @@ msgstr "Volltext-Link"
 msgid "T0662-nationallizenzen"
 msgstr "Volltext-Link"
 
-#: ../templates/database/portrait/visible_categories_titset:88
+#: ../templates/database/portrait/visible_categories_titset:87
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:88
 msgid "T0662-portrait"
 msgstr "Weitere Informationen"
@@ -14979,7 +14995,7 @@ msgstr "Volltext-Hinweis"
 #: ../templates/database/franzmg/visible_categories_titset:109
 #: ../templates/database/inst404abklatsch/visible_categories_titset:27
 #: ../templates/database/landschaft/visible_categories_titset:76
-#: ../templates/database/portrait/visible_categories_titset:76
+#: ../templates/database/portrait/visible_categories_titset:75
 #: ../templates/database/wickrath/visible_categories_titset:109
 #: ../templates/database/wikisource_de/visible_categories_titset:27
 #: ../templates/profile/digicard/visible_categories_titset:27
@@ -14991,25 +15007,25 @@ msgid "T0670"
 msgstr "Sachtitel in abweichender Orthographie"
 
 #: ../templates/database/landschaft/visible_categories_titset:77
-#: ../templates/database/portrait/visible_categories_titset:77
+#: ../templates/database/portrait/visible_categories_titset:76
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:77
 msgid "T0672"
 msgstr "Autorenname in normierter Form"
 
 #: ../templates/database/landschaft/visible_categories_titset:78
-#: ../templates/database/portrait/visible_categories_titset:78
+#: ../templates/database/portrait/visible_categories_titset:77
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:78
 msgid "T0673"
 msgstr "Ort in normierter Form"
 
 #: ../templates/database/landschaft/visible_categories_titset:79
-#: ../templates/database/portrait/visible_categories_titset:79
+#: ../templates/database/portrait/visible_categories_titset:78
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:79
 msgid "T0674"
 msgstr "Jahr des Orginals"
 
 #: ../templates/database/landschaft/visible_categories_titset:80
-#: ../templates/database/portrait/visible_categories_titset:80
+#: ../templates/database/portrait/visible_categories_titset:79
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:80
 msgid "T0675"
 msgstr "Abweichende Orthographie"
@@ -15047,7 +15063,7 @@ msgstr "Abweichende Orthographie"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:101
 #: ../templates/profile/kuglight/visible_categories_titset:101
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:101
-#: ../templates/visible_categories_titset:104
+#: ../templates/visible_categories_titset:105
 msgid "T0700"
 msgstr "Notation"
 
@@ -15099,7 +15115,7 @@ msgstr "Provenienz"
 #: ../templates/profile/kuglight/database/wickrath/visible_categories_titset:91
 #: ../templates/profile/kuglight/visible_categories_titset:90
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:90
-#: ../templates/visible_categories_titset:92
+#: ../templates/visible_categories_titset:93
 msgid "T0710"
 msgstr "Schlagwort"
 
@@ -15162,7 +15178,7 @@ msgstr "Am Umschlag Beteiligte"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:87
 #: ../templates/profile/kuglight/visible_categories_titset:86
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:86
-#: ../templates/visible_categories_titset:88
+#: ../templates/visible_categories_titset:89
 msgid "T0750"
 msgstr "Abstract"
 
@@ -15212,7 +15228,7 @@ msgstr "Transkription"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:90
 #: ../templates/profile/kuglight/visible_categories_titset:89
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:89
-#: ../templates/visible_categories_titset:91
+#: ../templates/visible_categories_titset:92
 msgid "T0800"
 msgstr "Medienart"
 
@@ -15221,13 +15237,13 @@ msgstr "Medienart"
 msgid "T0800-einbaende"
 msgstr "Art"
 
-#: ../templates/database/portrait/visible_categories_titset:82
+#: ../templates/database/portrait/visible_categories_titset:81
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:82
 msgid "T0800-portrait"
 msgstr "Medienart"
 
 #: ../templates/database/landschaft/visible_categories_titset:82
-#: ../templates/database/portrait/visible_categories_titset:83
+#: ../templates/database/portrait/visible_categories_titset:82
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:83
 msgid "T0840"
 msgstr "Konkordanz"
@@ -15265,7 +15281,7 @@ msgstr "Konkordanz"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:91
 #: ../templates/profile/kuglight/visible_categories_titset:91
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:91
-#: ../templates/visible_categories_titset:93
+#: ../templates/visible_categories_titset:94
 msgid "T0902"
 msgstr "Schlagwort"
 
@@ -15302,7 +15318,7 @@ msgstr "Schlagwort"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:92
 #: ../templates/profile/kuglight/visible_categories_titset:92
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:92
-#: ../templates/visible_categories_titset:94
+#: ../templates/visible_categories_titset:95
 msgid "T0907"
 msgstr "Schlagwort"
 
@@ -15339,7 +15355,7 @@ msgstr "Schlagwort"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:93
 #: ../templates/profile/kuglight/visible_categories_titset:93
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:93
-#: ../templates/visible_categories_titset:95
+#: ../templates/visible_categories_titset:96
 msgid "T0912"
 msgstr "Schlagwort"
 
@@ -15376,7 +15392,7 @@ msgstr "Schlagwort"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:94
 #: ../templates/profile/kuglight/visible_categories_titset:94
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:94
-#: ../templates/visible_categories_titset:96
+#: ../templates/visible_categories_titset:97
 msgid "T0917"
 msgstr "Schlagwort"
 
@@ -15413,7 +15429,7 @@ msgstr "Schlagwort"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:95
 #: ../templates/profile/kuglight/visible_categories_titset:95
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:95
-#: ../templates/visible_categories_titset:97
+#: ../templates/visible_categories_titset:98
 msgid "T0922"
 msgstr "Schlagwort"
 
@@ -15450,7 +15466,7 @@ msgstr "Schlagwort"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:96
 #: ../templates/profile/kuglight/visible_categories_titset:96
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:96
-#: ../templates/visible_categories_titset:98
+#: ../templates/visible_categories_titset:99
 msgid "T0927"
 msgstr "Schlagwort"
 
@@ -15487,7 +15503,7 @@ msgstr "Schlagwort"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:97
 #: ../templates/profile/kuglight/visible_categories_titset:97
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:97
-#: ../templates/visible_categories_titset:99
+#: ../templates/visible_categories_titset:100
 msgid "T0932"
 msgstr "Schlagwort"
 
@@ -15524,7 +15540,7 @@ msgstr "Schlagwort"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:98
 #: ../templates/profile/kuglight/visible_categories_titset:98
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:98
-#: ../templates/visible_categories_titset:100
+#: ../templates/visible_categories_titset:101
 msgid "T0937"
 msgstr "Schlagwort"
 
@@ -15561,7 +15577,7 @@ msgstr "Schlagwort"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:99
 #: ../templates/profile/kuglight/visible_categories_titset:99
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:99
-#: ../templates/visible_categories_titset:101
+#: ../templates/visible_categories_titset:102
 msgid "T0942"
 msgstr "Schlagwort"
 
@@ -15598,12 +15614,12 @@ msgstr "Schlagwort"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:100
 #: ../templates/profile/kuglight/visible_categories_titset:100
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:100
-#: ../templates/visible_categories_titset:102
+#: ../templates/visible_categories_titset:103
 msgid "T0947"
 msgstr "Schlagwort"
 
 #: ../templates/database/landschaft/visible_categories_titset:83
-#: ../templates/database/portrait/visible_categories_titset:84
+#: ../templates/database/portrait/visible_categories_titset:83
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:84
 msgid "T1202"
 msgstr "Bestand Bemerkung"
@@ -15656,7 +15672,7 @@ msgstr "Hinweis"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:107
 #: ../templates/profile/kuglight/visible_categories_titset:107
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:105
-#: ../templates/visible_categories_titset:110
+#: ../templates/visible_categories_titset:111
 msgid "T1664"
 msgstr "Provenienz"
 
@@ -15698,7 +15714,7 @@ msgstr ""
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:108
 #: ../templates/profile/kuglight/visible_categories_titset:108
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:106
-#: ../templates/visible_categories_titset:111
+#: ../templates/visible_categories_titset:112
 msgid "T2662"
 msgstr "USB URL"
 
@@ -15736,7 +15752,7 @@ msgstr "USB URL"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:109
 #: ../templates/profile/kuglight/visible_categories_titset:109
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:107
-#: ../templates/visible_categories_titset:112
+#: ../templates/visible_categories_titset:113
 msgid "T2663"
 msgstr "USB URL-Info"
 
@@ -15744,7 +15760,7 @@ msgstr "USB URL-Info"
 msgid "T3000"
 msgstr "Besitzer"
 
-#: ../templates/database/portrait/visible_categories_titset:30
+#: ../templates/database/portrait/visible_categories_titset:29
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:30
 msgid "T3000-portrait"
 msgstr "Besitzer"
@@ -15757,7 +15773,7 @@ msgstr "Besitzer"
 msgid "T3001"
 msgstr "TOC / HTML"
 
-#: ../templates/database/portrait/visible_categories_titset:29
+#: ../templates/database/portrait/visible_categories_titset:28
 #: ../templates/profile/kuglight/database/portrait/visible_categories_titset:29
 msgid "T3001-portrait"
 msgstr "Fr&uuml;here Signatur"
@@ -15807,7 +15823,7 @@ msgstr "TOC / PDF"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:112
 #: ../templates/profile/kuglight/visible_categories_titset:112
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:110
-#: ../templates/visible_categories_titset:115
+#: ../templates/visible_categories_titset:116
 msgid "T4500"
 msgstr "KUG Nutzer-Tags"
 
@@ -15847,7 +15863,7 @@ msgstr "KUG Nutzer-Tags"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:113
 #: ../templates/profile/kuglight/visible_categories_titset:113
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:111
-#: ../templates/visible_categories_titset:116
+#: ../templates/visible_categories_titset:117
 msgid "T5001"
 msgstr "Anzahl Gesamttitel"
 
@@ -15887,9 +15903,19 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:114
 #: ../templates/profile/kuglight/visible_categories_titset:114
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:112
-#: ../templates/visible_categories_titset:117
+#: ../templates/visible_categories_titset:118
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
+
+#: ../templates/visible_categories_titset:119
+#, fuzzy
+msgid "T5003"
+msgstr "Ersch.Land"
+
+#: ../templates/visible_categories_titset:120
+#, fuzzy
+msgid "T5004"
+msgstr "Einheitstitel"
 
 #: ../templates/database/alff/visible_categories_titset:117
 #: ../templates/database/artmann/visible_categories_titset:115
@@ -15925,7 +15951,7 @@ msgstr "Anzahl Bände/Stücke"
 #: ../templates/profile/kuglight/views/umschlaege/visible_categories_titset:115
 #: ../templates/profile/kuglight/visible_categories_titset:115
 #: ../templates/profile/kugng/database/inst001/visible_categories_titset:113
-#: ../templates/visible_categories_titset:118
+#: ../templates/visible_categories_titset:121
 msgid "T5100"
 msgstr "Zählung"
 
@@ -15940,7 +15966,7 @@ msgstr "Taggen im KUG"
 #: ../templates/database/einbaende/search_showtitset:671
 #: ../templates/database/einbaende/search_showtitset_1:652
 #: ../templates/database/totenzettel/search_showtitset:215
-#: ../templates/database/umschlaege/search_showtitset:650
+#: ../templates/database/umschlaege/search_showtitset:655
 #: ../templates/managecollection_tit_as_html:101
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:410
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:456
@@ -15977,7 +16003,7 @@ msgstr "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 
 #: ../templates/database/einbaende/search_showtitset:467
 #: ../templates/database/einbaende/search_showtitset_1:448
-#: ../templates/database/umschlaege/search_showtitset:446
+#: ../templates/database/umschlaege/search_showtitset:451
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:705
 #: ../templates/profile/kugng/database/inst001/search_showtitset:392
 #: ../templates/search_showtitset:228
@@ -16072,9 +16098,9 @@ msgstr "Tit-Datei"
 #: ../templates/circulation_make_order:65
 #: ../templates/database/einbaende/search_showtitset:466
 #: ../templates/database/einbaende/search_showtitset_1:447
-#: ../templates/database/umschlaege/search_showtitset:445
+#: ../templates/database/umschlaege/search_showtitset:450
 #: ../templates/dbis_showdbinfo:48 ../templates/ezb_showjournalinfo:45
-#: ../templates/litlists_manage_singlelist:87
+#: ../templates/litlists_manage_singlelist:86
 #: ../templates/litlists_show_singlelist:43
 #: ../templates/managecollection_tit_as_html:28
 #: ../templates/managecollection_tit_as_html_simple:20
@@ -16117,7 +16143,7 @@ msgid "Titel"
 msgstr "Titel"
 
 #: ../templates/litlists_manage_lists:38
-#: ../templates/litlists_manage_singlelist:47
+#: ../templates/litlists_manage_singlelist:46
 #: ../templates/profile/kuglight/litlists_manage_lists:38
 #: ../templates/profile/kuglight/litlists_manage_singlelist:39
 msgid "Titel der Liste"
@@ -16136,7 +16162,7 @@ msgstr "Titel in die Merkliste eintragen"
 
 #: ../templates/database/einbaende/search_showtitset:527
 #: ../templates/database/einbaende/search_showtitset_1:508
-#: ../templates/database/umschlaege/search_showtitset:506
+#: ../templates/database/umschlaege/search_showtitset:511
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:761
 #: ../templates/profile/kugng/database/inst001/search_showtitset:448
 #: ../templates/search_showtitset:289
@@ -16193,7 +16219,7 @@ msgstr "Titel/Provenienz"
 msgid "Titel/Schlagworte nicht in BibSonomy enthalten"
 msgstr "Titel/Schlagworte nicht in BibSonomy enthalten"
 
-#: ../templates/circulation:50 ../templates/circulation_orders:46
+#: ../templates/circulation:117 ../templates/circulation_orders:46
 #: ../templates/circulation_remind:65 ../templates/circulation_reserv:46
 #: ../templates/profile/kuglight/circulation:50
 #: ../templates/profile/kuglight/circulation_orders:46
@@ -16261,7 +16287,7 @@ msgstr "Titelzugriffe"
 #: ../templates/database/einbaende/search_showtitset:946
 #: ../templates/database/einbaende/search_showtitset_1:927
 #: ../templates/database/totenzettel/search_showtitset:521
-#: ../templates/database/umschlaege/search_showtitset:925
+#: ../templates/database/umschlaege/search_showtitset:930
 #: ../templates/info_10:158 ../templates/info_10:32 ../templates/info_11:34
 #: ../templates/info_12:31 ../templates/info_61:65
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:52
@@ -16515,8 +16541,8 @@ msgstr "Typ"
 #: ../templates/database/einbaende/search_showtitset_1:742
 #: ../templates/database/totenzettel/search_showtitset:233
 #: ../templates/database/totenzettel/search_showtitset:305
-#: ../templates/database/umschlaege/search_showtitset:668
-#: ../templates/database/umschlaege/search_showtitset:740
+#: ../templates/database/umschlaege/search_showtitset:673
+#: ../templates/database/umschlaege/search_showtitset:745
 #: ../templates/managecollection_tit_as_html:113
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:471
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:564
@@ -16677,7 +16703,7 @@ msgstr ""
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr "Und-Verknüpfung innerhalb eines Suchfeldes"
 
-#: ../modules/OpenBib/Handler/Apache/Circulation.pm:586
+#: ../modules/OpenBib/Handler/Apache/Circulation.pm:606
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:441
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:202
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:305
@@ -16689,7 +16715,7 @@ msgid "Ungültige Aktion"
 msgstr "Ungültige Aktion"
 
 #: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:122
-#: ../modules/OpenBib/Handler/Apache/Circulation.pm:102
+#: ../modules/OpenBib/Handler/Apache/Circulation.pm:104
 #: ../modules/OpenBib/Handler/Apache/DatabaseChoice.pm:103
 #: ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:98
 #: ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:88
@@ -16864,7 +16890,7 @@ msgstr "Verkn&uuml;pfungen mehrerer Suchfelder"
 msgid "Verknüpfung"
 msgstr "Verknüpfung"
 
-#: ../templates/info:90 ../templates/info:978
+#: ../templates/info:90 ../templates/info:979
 #: ../templates/profile/kuglight/info:600
 #: ../templates/profile/kuglight/info:69
 #: ../templates/profile/kugng/views/kugng/info:90
@@ -16876,7 +16902,7 @@ msgstr "Verlinkung und Lastverteilung des KUG"
 #: ../templates/database/einbaende/search_showtitset:943
 #: ../templates/database/einbaende/search_showtitset_1:924
 #: ../templates/database/totenzettel/search_showtitset:518
-#: ../templates/database/umschlaege/search_showtitset:922
+#: ../templates/database/umschlaege/search_showtitset:927
 #: ../templates/profile/kugng/database/inst001/search_showtitset:831
 #: ../templates/search_showtitset:736
 msgid "Verschiedenes"
@@ -16892,7 +16918,7 @@ msgstr "Verschlagwortung aus anderen Katalogen"
 #: ../templates/database/einbaende/search_showtitset:914
 #: ../templates/database/einbaende/search_showtitset_1:895
 #: ../templates/database/totenzettel/search_showtitset:489
-#: ../templates/database/umschlaege/search_showtitset:893
+#: ../templates/database/umschlaege/search_showtitset:898
 #: ../templates/profile/kuglight/connector_similarpersons:54
 #: ../templates/profile/kuglight/connector_similarsubjects:56
 #: ../templates/profile/kugng/database/inst001/search_showtitset:804
@@ -16903,13 +16929,13 @@ msgstr "Verwandte Personen"
 #: ../templates/database/einbaende/search_showtitset:933
 #: ../templates/database/einbaende/search_showtitset_1:914
 #: ../templates/database/totenzettel/search_showtitset:508
-#: ../templates/database/umschlaege/search_showtitset:912
+#: ../templates/database/umschlaege/search_showtitset:917
 #: ../templates/profile/kugng/database/inst001/search_showtitset:822
 #: ../templates/search_showtitset:726
 msgid "Verwandte Themen"
 msgstr "Verwandte Themen"
 
-#: ../templates/litlists_manage_singlelist:142
+#: ../templates/litlists_manage_singlelist:141
 msgid "Verweisen Sie auf diese Liste"
 msgstr "Verweisen Sie auf diese Liste"
 
@@ -16993,8 +17019,8 @@ msgstr "Virtueller Verfasserindex"
 #: ../templates/database/einbaende/search_showtitset:628
 #: ../templates/database/einbaende/search_showtitset_1:609
 #: ../templates/database/totenzettel/search_showtitset:172
-#: ../templates/database/umschlaege/search_showtitset:607
-#: ../templates/litlists_manage_singlelist:156
+#: ../templates/database/umschlaege/search_showtitset:612
+#: ../templates/litlists_manage_singlelist:155
 #: ../templates/litlists_show_singlelist:89
 #: ../templates/managecollection_tit_as_bibtex:40
 #: ../templates/managecollection_tit_as_endnote:40
@@ -17026,8 +17052,7 @@ msgstr "Vorgemerkt"
 #: ../templates/database/portrait/search_showtitlist_of_cnt:59
 #: ../templates/database/umschlaege/search_showtitlist:59
 #: ../templates/database/umschlaege/search_showtitlist_of_cnt:59
-#: ../templates/ezb_showjournals:60
-#: ../templates/litlists_manage_singlelist:100
+#: ../templates/ezb_showjournals:60 ../templates/litlists_manage_singlelist:99
 #: ../templates/profile/sammlungen/search_showtitlist:61
 #: ../templates/profile/sammlungen/search_showtitlist_of_cnt:61
 #: ../templates/resultlists_showall:75
@@ -17043,8 +17068,8 @@ msgstr "Vorherige Seite"
 #: ../templates/database/einbaende/search_showtitset_1:555
 #: ../templates/database/totenzettel/search_showtitset:116
 #: ../templates/database/totenzettel/search_showtitset:118
-#: ../templates/database/umschlaege/search_showtitset:551
-#: ../templates/database/umschlaege/search_showtitset:553
+#: ../templates/database/umschlaege/search_showtitset:556
+#: ../templates/database/umschlaege/search_showtitset:558
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:37
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset:39
 #: ../templates/profile/kuglight/database/einbaende/search_showtitset_1:37
@@ -17076,7 +17101,7 @@ msgstr "Vormerkung erfolgreich durchgef&uuml;hrt"
 msgid "Vormerkung nicht m&ouml;glich"
 msgstr "Vormerkung nicht m&ouml;glich"
 
-#: ../templates/circulation:32 ../templates/circulation_orders:32
+#: ../templates/circulation:85 ../templates/circulation_orders:32
 #: ../templates/circulation_remind:32 ../templates/circulation_reserv:32
 #: ../templates/profile/kuglight/circulation:32
 #: ../templates/profile/kuglight/circulation_orders:32
@@ -17135,7 +17160,7 @@ msgstr ""
 
 #: ../templates/database/einbaende/search_showtitset:505
 #: ../templates/database/einbaende/search_showtitset_1:486
-#: ../templates/database/umschlaege/search_showtitset:484
+#: ../templates/database/umschlaege/search_showtitset:489
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:739
 #: ../templates/profile/kugng/database/inst001/search_showtitset:426
 #: ../templates/search_showtitset:266
@@ -17164,41 +17189,41 @@ msgstr ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
 
-#: ../templates/bibsonomy_showtitlist:130 ../templates/circset:43
-#: ../templates/database/artmann/circset:119
-#: ../templates/database/artmann/circset:83
-#: ../templates/database/dante/circset:119
-#: ../templates/database/dante/circset:83
-#: ../templates/database/dirksen/circset:113
-#: ../templates/database/dirksen/circset:77
-#: ../templates/database/edz/circset:119 ../templates/database/edz/circset:83
-#: ../templates/database/inst001/circset:119
-#: ../templates/database/inst001/circset:83
-#: ../templates/database/islandica/circset:119
-#: ../templates/database/islandica/circset:83
-#: ../templates/database/kempis/circset:113
-#: ../templates/database/kempis/circset:77
-#: ../templates/database/lefort/circset:119
-#: ../templates/database/lefort/circset:83
-#: ../templates/database/lehrbuchsmlg/circset:119
-#: ../templates/database/lehrbuchsmlg/circset:83
-#: ../templates/database/lesesaal/circset:119
-#: ../templates/database/lesesaal/circset:83
+#: ../templates/bibsonomy_showtitlist:130 ../templates/circset:73
+#: ../templates/database/artmann/circset:114
+#: ../templates/database/artmann/circset:150
+#: ../templates/database/dante/circset:114
+#: ../templates/database/dante/circset:150
+#: ../templates/database/dirksen/circset:114
+#: ../templates/database/dirksen/circset:150
+#: ../templates/database/edz/circset:114 ../templates/database/edz/circset:150
+#: ../templates/database/inst001/circset:114
+#: ../templates/database/inst001/circset:150
+#: ../templates/database/islandica/circset:114
+#: ../templates/database/islandica/circset:150
+#: ../templates/database/kempis/circset:114
+#: ../templates/database/kempis/circset:150
+#: ../templates/database/lefort/circset:114
+#: ../templates/database/lefort/circset:150
+#: ../templates/database/lehrbuchsmlg/circset:114
+#: ../templates/database/lehrbuchsmlg/circset:150
+#: ../templates/database/lesesaal/circset:114
+#: ../templates/database/lesesaal/circset:150
 #: ../templates/database/poetica/circset:113
 #: ../templates/database/poetica/circset:77
-#: ../templates/database/rheinabt/circset:119
-#: ../templates/database/rheinabt/circset:83
-#: ../templates/database/syndikatsbibliothek/circset:119
-#: ../templates/database/syndikatsbibliothek/circset:83
-#: ../templates/database/usbhwa/circset:119
-#: ../templates/database/usbhwa/circset:83
-#: ../templates/database/usbsab/circset:119
-#: ../templates/database/usbsab/circset:83
-#: ../templates/database/wallraf/circset:119
-#: ../templates/database/wallraf/circset:83
-#: ../templates/database/wiso/circset:119
-#: ../templates/database/wiso/circset:83
-#: ../templates/database/zbmed/circset:25 ../templates/dbis_showdbinfo:39
+#: ../templates/database/rheinabt/circset:114
+#: ../templates/database/rheinabt/circset:150
+#: ../templates/database/syndikatsbibliothek/circset:114
+#: ../templates/database/syndikatsbibliothek/circset:150
+#: ../templates/database/usbhwa/circset:114
+#: ../templates/database/usbhwa/circset:150
+#: ../templates/database/usbsab/circset:114
+#: ../templates/database/usbsab/circset:150
+#: ../templates/database/wallraf/circset:106
+#: ../templates/database/wallraf/circset:142
+#: ../templates/database/wiso/circset:114
+#: ../templates/database/wiso/circset:150
+#: ../templates/database/zbmed/circset:53 ../templates/dbis_showdbinfo:39
 #: ../templates/ezb_showjournalinfo:37 ../templates/ezb_showjournalinfo:47
 #: ../templates/profile/kuglight/circset:27
 #: ../templates/profile/kuglight/database/inst001/circset:124
@@ -17413,7 +17438,7 @@ msgstr ""
 "Begriff beginnen."
 
 #. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('KUG','jpg','Academic')
-#: ../templates/info:1024 ../templates/profile/kuglight/info:646
+#: ../templates/info:1025 ../templates/profile/kuglight/info:646
 #: ../templates/profile/kugng/views/kugng/info:1024
 #: ../templates/views/kug/info:1024
 msgid ""
@@ -17797,7 +17822,7 @@ msgstr ""
 
 #: ../templates/database/einbaende/search_showtitset:542
 #: ../templates/database/einbaende/search_showtitset_1:523
-#: ../templates/database/umschlaege/search_showtitset:521
+#: ../templates/database/umschlaege/search_showtitset:526
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:776
 #: ../templates/profile/kugng/database/inst001/search_showtitset:463
 #: ../templates/search_showtitset:304
@@ -17920,7 +17945,7 @@ msgstr "Zuletzt in der Zeitschrift ver&ouml;ffentlichte Artikel"
 #: ../templates/profile/sammlungen/views/inst404abklatsch/searchmask_simple:135
 #: ../templates/profile/sammlungen/views/landschaft/searchmask:137
 #: ../templates/profile/sammlungen/views/landschaft/searchmask_simple:137
-#: ../templates/profile/sammlungen/views/portrait/searchmask:161
+#: ../templates/profile/sammlungen/views/portrait/searchmask:163
 #: ../templates/profile/sammlungen/views/portrait/searchmask_simple:137
 #: ../templates/profile/sammlungen/views/richter/searchmask:137
 #: ../templates/profile/sammlungen/views/richter/searchmask_simple:137
@@ -18162,24 +18187,24 @@ msgstr "aufsteigend"
 msgid "aus:"
 msgstr "aus:"
 
-#: ../templates/circset:77 ../templates/database/artmann/circset:115
-#: ../templates/database/dante/circset:115
-#: ../templates/database/dirksen/circset:109
-#: ../templates/database/edz/circset:115
-#: ../templates/database/inst001/circset:115
-#: ../templates/database/inst302/circset:59
-#: ../templates/database/islandica/circset:115
-#: ../templates/database/kempis/circset:109
-#: ../templates/database/lefort/circset:115
-#: ../templates/database/lehrbuchsmlg/circset:115
-#: ../templates/database/lesesaal/circset:115
+#: ../templates/circset:107 ../templates/database/artmann/circset:146
+#: ../templates/database/dante/circset:146
+#: ../templates/database/dirksen/circset:146
+#: ../templates/database/edz/circset:146
+#: ../templates/database/inst001/circset:146
+#: ../templates/database/inst302/circset:91
+#: ../templates/database/islandica/circset:146
+#: ../templates/database/kempis/circset:146
+#: ../templates/database/lefort/circset:146
+#: ../templates/database/lehrbuchsmlg/circset:146
+#: ../templates/database/lesesaal/circset:146
 #: ../templates/database/poetica/circset:109
-#: ../templates/database/rheinabt/circset:115
-#: ../templates/database/syndikatsbibliothek/circset:115
-#: ../templates/database/usbhwa/circset:115
-#: ../templates/database/usbsab/circset:115
-#: ../templates/database/wallraf/circset:115
-#: ../templates/database/wiso/circset:115
+#: ../templates/database/rheinabt/circset:146
+#: ../templates/database/syndikatsbibliothek/circset:146
+#: ../templates/database/usbhwa/circset:146
+#: ../templates/database/usbsab/circset:146
+#: ../templates/database/wallraf/circset:138
+#: ../templates/database/wiso/circset:146
 #: ../templates/profile/kuglight/database/inst001/circset:120
 #: ../templates/profile/kuglight/database/rheinabt/circset:120
 #: ../templates/profile/kugng/database/edz/circset:114
@@ -18196,24 +18221,24 @@ msgstr "aus:"
 msgid "ausgeschieden"
 msgstr "ausgeschieden"
 
-#: ../templates/circset:75 ../templates/database/artmann/circset:113
-#: ../templates/database/dante/circset:113
-#: ../templates/database/dirksen/circset:107
-#: ../templates/database/edz/circset:113
-#: ../templates/database/inst001/circset:113
-#: ../templates/database/inst302/circset:57
-#: ../templates/database/islandica/circset:113
-#: ../templates/database/kempis/circset:107
-#: ../templates/database/lefort/circset:113
-#: ../templates/database/lehrbuchsmlg/circset:113
-#: ../templates/database/lesesaal/circset:113
+#: ../templates/circset:105 ../templates/database/artmann/circset:144
+#: ../templates/database/dante/circset:144
+#: ../templates/database/dirksen/circset:144
+#: ../templates/database/edz/circset:144
+#: ../templates/database/inst001/circset:144
+#: ../templates/database/inst302/circset:89
+#: ../templates/database/islandica/circset:144
+#: ../templates/database/kempis/circset:144
+#: ../templates/database/lefort/circset:144
+#: ../templates/database/lehrbuchsmlg/circset:144
+#: ../templates/database/lesesaal/circset:144
 #: ../templates/database/poetica/circset:107
-#: ../templates/database/rheinabt/circset:113
-#: ../templates/database/syndikatsbibliothek/circset:113
-#: ../templates/database/usbhwa/circset:113
-#: ../templates/database/usbsab/circset:113
-#: ../templates/database/wallraf/circset:113
-#: ../templates/database/wiso/circset:113
+#: ../templates/database/rheinabt/circset:144
+#: ../templates/database/syndikatsbibliothek/circset:144
+#: ../templates/database/usbhwa/circset:144
+#: ../templates/database/usbsab/circset:144
+#: ../templates/database/wallraf/circset:136
+#: ../templates/database/wiso/circset:144
 #: ../templates/profile/kuglight/database/inst001/circset:118
 #: ../templates/profile/kuglight/database/rheinabt/circset:118
 #: ../templates/profile/kugng/database/edz/circset:112
@@ -18230,24 +18255,24 @@ msgstr "ausgeschieden"
 msgid "beim Lieferanten reklamiert"
 msgstr "beim Lieferanten reklamiert"
 
-#: ../templates/circset:73 ../templates/database/artmann/circset:111
-#: ../templates/database/dante/circset:111
-#: ../templates/database/dirksen/circset:105
-#: ../templates/database/edz/circset:111
-#: ../templates/database/inst001/circset:111
-#: ../templates/database/inst302/circset:55
-#: ../templates/database/islandica/circset:111
-#: ../templates/database/kempis/circset:105
-#: ../templates/database/lefort/circset:111
-#: ../templates/database/lehrbuchsmlg/circset:111
-#: ../templates/database/lesesaal/circset:111
+#: ../templates/circset:103 ../templates/database/artmann/circset:142
+#: ../templates/database/dante/circset:142
+#: ../templates/database/dirksen/circset:142
+#: ../templates/database/edz/circset:142
+#: ../templates/database/inst001/circset:142
+#: ../templates/database/inst302/circset:87
+#: ../templates/database/islandica/circset:142
+#: ../templates/database/kempis/circset:142
+#: ../templates/database/lefort/circset:142
+#: ../templates/database/lehrbuchsmlg/circset:142
+#: ../templates/database/lesesaal/circset:142
 #: ../templates/database/poetica/circset:105
-#: ../templates/database/rheinabt/circset:111
-#: ../templates/database/syndikatsbibliothek/circset:111
-#: ../templates/database/usbhwa/circset:111
-#: ../templates/database/usbsab/circset:111
-#: ../templates/database/wallraf/circset:111
-#: ../templates/database/wiso/circset:111
+#: ../templates/database/rheinabt/circset:142
+#: ../templates/database/syndikatsbibliothek/circset:142
+#: ../templates/database/usbhwa/circset:142
+#: ../templates/database/usbsab/circset:142
+#: ../templates/database/wallraf/circset:134
+#: ../templates/database/wiso/circset:142
 #: ../templates/profile/kuglight/database/inst001/circset:116
 #: ../templates/profile/kuglight/database/rheinabt/circset:116
 #: ../templates/profile/kugng/database/edz/circset:110
@@ -18264,24 +18289,24 @@ msgstr "beim Lieferanten reklamiert"
 msgid "beim Lieferanten storniert"
 msgstr "beim Lieferanten storniert"
 
-#: ../templates/circset:69 ../templates/database/artmann/circset:107
-#: ../templates/database/dante/circset:107
-#: ../templates/database/dirksen/circset:101
-#: ../templates/database/edz/circset:107
-#: ../templates/database/inst001/circset:107
-#: ../templates/database/inst302/circset:51
-#: ../templates/database/islandica/circset:107
-#: ../templates/database/kempis/circset:101
-#: ../templates/database/lefort/circset:107
-#: ../templates/database/lehrbuchsmlg/circset:107
-#: ../templates/database/lesesaal/circset:107
+#: ../templates/circset:99 ../templates/database/artmann/circset:138
+#: ../templates/database/dante/circset:138
+#: ../templates/database/dirksen/circset:138
+#: ../templates/database/edz/circset:138
+#: ../templates/database/inst001/circset:138
+#: ../templates/database/inst302/circset:83
+#: ../templates/database/islandica/circset:138
+#: ../templates/database/kempis/circset:138
+#: ../templates/database/lefort/circset:138
+#: ../templates/database/lehrbuchsmlg/circset:138
+#: ../templates/database/lesesaal/circset:138
 #: ../templates/database/poetica/circset:101
-#: ../templates/database/rheinabt/circset:107
-#: ../templates/database/syndikatsbibliothek/circset:107
-#: ../templates/database/usbhwa/circset:107
-#: ../templates/database/usbsab/circset:107
-#: ../templates/database/wallraf/circset:107
-#: ../templates/database/wiso/circset:107
+#: ../templates/database/rheinabt/circset:138
+#: ../templates/database/syndikatsbibliothek/circset:138
+#: ../templates/database/usbhwa/circset:138
+#: ../templates/database/usbsab/circset:138
+#: ../templates/database/wallraf/circset:130
+#: ../templates/database/wiso/circset:138
 #: ../templates/profile/kuglight/database/inst001/circset:112
 #: ../templates/profile/kuglight/database/rheinabt/circset:112
 #: ../templates/profile/kugng/database/edz/circset:106
@@ -18303,7 +18328,7 @@ msgstr "bestellt beim Lieferanten"
 msgid "deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)"
 msgstr "deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)"
 
-#: ../templates/circulation:46 ../templates/profile/kuglight/circulation:46
+#: ../templates/circulation:112 ../templates/profile/kuglight/circulation:46
 msgid "durchf&uuml;hren"
 msgstr "durchf&uuml;hren"
 
@@ -18329,24 +18354,24 @@ msgstr "gefunden werden."
 msgid "getrennte Kataloge"
 msgstr "getrennte Kataloge"
 
-#: ../templates/circset:71 ../templates/database/artmann/circset:109
-#: ../templates/database/dante/circset:109
-#: ../templates/database/dirksen/circset:103
-#: ../templates/database/edz/circset:109
-#: ../templates/database/inst001/circset:109
-#: ../templates/database/inst302/circset:53
-#: ../templates/database/islandica/circset:109
-#: ../templates/database/kempis/circset:103
-#: ../templates/database/lefort/circset:109
-#: ../templates/database/lehrbuchsmlg/circset:109
-#: ../templates/database/lesesaal/circset:109
+#: ../templates/circset:101 ../templates/database/artmann/circset:140
+#: ../templates/database/dante/circset:140
+#: ../templates/database/dirksen/circset:140
+#: ../templates/database/edz/circset:140
+#: ../templates/database/inst001/circset:140
+#: ../templates/database/inst302/circset:85
+#: ../templates/database/islandica/circset:140
+#: ../templates/database/kempis/circset:140
+#: ../templates/database/lefort/circset:140
+#: ../templates/database/lehrbuchsmlg/circset:140
+#: ../templates/database/lesesaal/circset:140
 #: ../templates/database/poetica/circset:103
-#: ../templates/database/rheinabt/circset:109
-#: ../templates/database/syndikatsbibliothek/circset:109
-#: ../templates/database/usbhwa/circset:109
-#: ../templates/database/usbsab/circset:109
-#: ../templates/database/wallraf/circset:109
-#: ../templates/database/wiso/circset:109
+#: ../templates/database/rheinabt/circset:140
+#: ../templates/database/syndikatsbibliothek/circset:140
+#: ../templates/database/usbhwa/circset:140
+#: ../templates/database/usbsab/circset:140
+#: ../templates/database/wallraf/circset:132
+#: ../templates/database/wiso/circset:140
 #: ../templates/profile/kuglight/database/inst001/circset:114
 #: ../templates/profile/kuglight/database/rheinabt/circset:114
 #: ../templates/profile/kugng/database/edz/circset:108
@@ -18997,11 +19022,11 @@ msgstr "online im Hochschulnetz"
 #: ../templates/database/totenzettel/search_showtitset:203
 #: ../templates/database/totenzettel/search_showtitset:233
 #: ../templates/database/totenzettel/search_showtitset:305
-#: ../templates/database/umschlaege/search_showtitset:638
-#: ../templates/database/umschlaege/search_showtitset:668
-#: ../templates/database/umschlaege/search_showtitset:740
+#: ../templates/database/umschlaege/search_showtitset:643
+#: ../templates/database/umschlaege/search_showtitset:673
+#: ../templates/database/umschlaege/search_showtitset:745
 #: ../templates/litlists_manage_lists:39 ../templates/litlists_manage_lists:77
-#: ../templates/litlists_manage_singlelist:48
+#: ../templates/litlists_manage_singlelist:47
 #: ../templates/managecollection_tit_as_html:113
 #: ../templates/managecollection_tit_as_html:90
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:471
@@ -19080,7 +19105,7 @@ msgstr "realisiert mit"
 
 #: ../templates/database/einbaende/search_showtitset:454
 #: ../templates/database/einbaende/search_showtitset_1:435
-#: ../templates/database/umschlaege/search_showtitset:433
+#: ../templates/database/umschlaege/search_showtitset:438
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:692
 #: ../templates/profile/kugng/database/inst001/search_showtitset:379
 #: ../templates/search_showtitset:215
@@ -19089,7 +19114,7 @@ msgstr "schlecht"
 
 #: ../templates/database/einbaende/search_showtitset:460
 #: ../templates/database/einbaende/search_showtitset_1:441
-#: ../templates/database/umschlaege/search_showtitset:439
+#: ../templates/database/umschlaege/search_showtitset:444
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:698
 #: ../templates/profile/kugng/database/inst001/search_showtitset:385
 #: ../templates/search_showtitset:221
@@ -19193,8 +19218,8 @@ msgstr "Ändern"
 #: ../templates/database/einbaende/search_showtitset_1:787
 #: ../templates/database/totenzettel/search_showtitset:276
 #: ../templates/database/totenzettel/search_showtitset:350
-#: ../templates/database/umschlaege/search_showtitset:711
-#: ../templates/database/umschlaege/search_showtitset:785
+#: ../templates/database/umschlaege/search_showtitset:716
+#: ../templates/database/umschlaege/search_showtitset:790
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:517
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:610
 #: ../templates/profile/kugng/database/inst001/search_showtitset:627
@@ -19209,8 +19234,8 @@ msgstr "Übernahme bereits von Nutzern vergebener Tags"
 #: ../templates/database/einbaende/search_showtitset_1:756
 #: ../templates/database/totenzettel/search_showtitset:245
 #: ../templates/database/totenzettel/search_showtitset:319
-#: ../templates/database/umschlaege/search_showtitset:680
-#: ../templates/database/umschlaege/search_showtitset:754
+#: ../templates/database/umschlaege/search_showtitset:685
+#: ../templates/database/umschlaege/search_showtitset:759
 #: ../templates/managecollection_tit_as_html:121
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:486
 #: ../templates/profile/kuglight/database/umschlaege/search_showtitset:579
@@ -19225,7 +19250,7 @@ msgstr "Übernahme eigener Tags"
 msgid "Übernehmen"
 msgstr "Übernehmen"
 
-#: ../templates/circulation:34 ../templates/circulation_orders:34
+#: ../templates/circulation:87 ../templates/circulation_orders:34
 #: ../templates/circulation_remind:34 ../templates/circulation_reserv:34
 #: ../templates/profile/kuglight/circulation:34
 #: ../templates/profile/kuglight/circulation_orders:34

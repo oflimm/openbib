@@ -36,7 +36,7 @@
 [%- IF active_menu == "searchform" -%]
          <li class="active"><strong>[% msg.maketext("Suchen") %]</strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]">[% msg.maketext("Suchen") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?l=[% lang %]">[% msg.maketext("Suchen") %]</a></li>
 [% END %]
 [% IF active_menu == "cloud" %]
          <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>

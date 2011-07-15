@@ -15,6 +15,15 @@
 
   <body>
 
+               <script type="text/javascript">
+                        $(function(){
+
+                                // Tabs
+                                $('#tabs_types').tabs();
+                                        
+                        });
+                </script>
+
 <!-- skip link navigation -->
 <ul id="skiplinks">
 	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
@@ -31,14 +40,14 @@
     <!-- begin: main content area #main -->
     <div id="main">
  <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary">
+      <div id="col1" role="complementary" style="display:none;">
         <div id="col1_content" class="clearfix">
 [% PROCESS common/subtemplate name="subnavigation" active_submenu="searchform_simple" %]
         </div>
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
+      <div id="col3" role="main" style="width:100%;">
         <div id="col3_content" class="clearfix">
 [%
   viewdbs = [];
@@ -62,14 +71,18 @@
 </div>
 [% END %]
 
-<div id="searchform" [%- IF user.is_authenticated -%]style="width:99.5%"[%- END -%]><!-- Begin searchform -->
+<div id="searchform"><!-- Begin searchform -->
 
-<div id="searchform_types" class="jquery_tabs"><!-- Begin searchform_types -->
-
-<h3>[% msg.maketext("Alles") %]</h3>
-
-<div class="tabbody"><!-- Begin alle Typen -->
-
+<div id="searchform_types" ><!-- Begin searchform_types -->
+<div id="tabs_types">
+  <ul>
+    <li><a href="#alltypes">[% msg.maketext("Alles") %]</a></li>
+    <li><a href="#only_serials">[% msg.maketext("Zeitschriften/Serien") %]</a></li>
+    <li><a href="#only_articles">[% msg.maketext("Aufs&auml;tze") %]</a></li>
+    <li><a href="#only_online">[% msg.maketext("Online") %]</a></li>
+    <li><a href="#subjects">[% msg.maketext("Themengebiete") %]</a></li>
+  </ul>
+<div id="alltypes"><!-- Begin alle Typen -->
 [% IF user.is_authenticated %]
 [% autocompletion_type = user.get_autocompletion %]
 [% livesearch          = user.get_livesearch %]
@@ -125,7 +138,7 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-<h4>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h4>
+<h1>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -199,9 +212,7 @@ $(document).ready(function(){
 
 </div><!-- End alle Typen -->
 
-<h3>[% msg.maketext("Zeitschriften/Serien") %]</h3>
-
-<div class="tabbody"><!-- Begin Serials-->
+<div id="only_serials"><!-- Begin Serials-->
 
 [% IF spelling_suggestion.as_you_type %]
 <script type="text/javascript">
@@ -215,7 +226,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h4>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h4>
+<h1>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -292,9 +303,7 @@ $(document).ready(function(){
 
 </div><!-- End Serials -->
 
-<h3>[% msg.maketext("Aufs&auml;tze") %]</h3>
-
-<div class="tabbody"><!-- Begin nur Aufsaetze -->
+<div id="only_articles"><!-- Begin nur Aufsaetze -->
 
 [% IF spelling_suggestion.as_you_type %]
 <script type="text/javascript">
@@ -308,7 +317,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h4>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h4>
+<h1>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -386,9 +395,7 @@ $(document).ready(function(){
 
 </div><!-- End nur Aufsaetze -->
 
-<h3>[% msg.maketext("Online") %]</h3>
-
-<div class="tabbody"><!-- Begin nur Online -->
+<div id="only_online"><!-- Begin nur Online -->
 
 [% IF spelling_suggestion.as_you_type %]
 <script type="text/javascript">
@@ -402,7 +409,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h4>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.online.chunk(-3).join('.')}","${alldbs}") %]</h4>
+<h1>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.online.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -480,9 +487,7 @@ $(document).ready(function(){
 
 </div><!-- End nur Online -->
 
-<h3>[% msg.maketext("Themengebiete") %]</h3>
-
-<div class="tabbody"><!-- Begin Themengebiete -->
+<div id="subjects"><!-- Begin Themengebiete -->
 
 <p />
 <ul class="subjectlist">
@@ -497,6 +502,8 @@ $(document).ready(function(){
 [% END %]
 </ul>
 </div><!-- End Themengebiete -->
+
+</div> <!-- End jquery_tabs -->
 
 </div><!-- End searchform_types -->
 

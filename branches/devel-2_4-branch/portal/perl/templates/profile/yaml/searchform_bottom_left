@@ -14,7 +14,7 @@
 [% PROCESS common/subtemplate name="newsflash" %]
 
 [% IF viewdbs.size == 1 && config.have_libinfo(viewdbs.first) %]
-<h3><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;[% msg.maketext("Steckbrief der Bibliothek") %]</h3>
+<h4><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;[% msg.maketext("Steckbrief der Bibliothek") %]</h4>
 
 [%- libinfo = config.get_libinfo(viewdbs.first); -%]
 

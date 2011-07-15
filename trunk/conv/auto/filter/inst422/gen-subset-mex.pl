@@ -64,7 +64,7 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$masterpool;host=$config->
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-my $signaturanfang = "^422 \\$.*";
+my $signaturanfang = "^422 *\\$.*";
 
 print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs $signaturanfang\n";
 

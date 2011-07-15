@@ -22,12 +22,12 @@
                 'T0310', # msg.maketext("T0310") AST  
                 'T0304', # msg.maketext("T0304") EST 
                 'T0331', # msg.maketext("T0331") HST
-                'T0300', # msg.maketext("T0300") Sammlungsvermerk
                 'T0370', # msg.maketext("T0370") WST
                 'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
                 'T0335', # msg.maketext("T0335") Zusatz zum HST
+                'T0300', # msg.maketext("T0300") Sammlungsvermerk
                 'T0361', # msg.maketext("T0361") Vorlage beigef. Werk
                 'T0365', # msg.maketext("T0365") Gemeins. Angaben
                 'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft

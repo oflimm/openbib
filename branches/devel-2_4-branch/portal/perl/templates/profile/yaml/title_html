@@ -37,6 +37,15 @@
 
 <body>
 
+               <script type="text/javascript">
+                        $(function(){
+
+                                // Tabs
+                                $('#additional_title_info').tabs();
+                                        
+                        });
+                </script>
+
 <!-- skip link navigation -->
 <ul id="skiplinks">
 	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
@@ -53,14 +62,16 @@
     <!-- begin: main content area #main -->
     <div id="main">
  <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary">
+      <div id="col1" role="complementary" style="width: 32%;">
         <div id="col1_content" class="clearfix">
+<div class="representation">
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+</div>
 
 <p />
 
-<div class="reuse_data"><!-- Begin Reuse -->
+<div class="reuse_data info"><!-- Begin Reuse -->
 [%
   private_tags_of_tit = [];
   IF loginname ;
@@ -74,7 +85,7 @@
     END;      
   END ;
 %]
-<b>[% msg.maketext("Behalten Sie diesen Titel") %]:</b><p/>
+<h4>[% msg.maketext("Behalten Sie diesen Titel") %]:</h4><p/>
 
 <img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/add_item.html?l=[% lang %]id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
 <img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="collection" href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %];_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
@@ -149,7 +160,7 @@
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
 <table>
-<tr><td colspan="2"><input type="text"   name="tags"       value="" size="40" maxlength="200" id="inputfield"/></td></tr>
+<tr><td colspan="2"><input type="text"   name="tags"       value="" size="30" maxlength="200" id="inputfield"/></td></tr>
 <tr align="center"><td>[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_add" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div></td></tr>
 </table>
 </form>
@@ -297,8 +308,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 <p />
 
-<div class="discover_sources"><!-- Begin Discover-Sources -->
-<b>[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</b><p/>
+<div class="discover_sources info"><!-- Begin Discover-Sources -->
+<h4>[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</h4><p/>
 
 
 <!-- Anfang Empfehlungen -->
@@ -501,20 +512,21 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
+      <div id="col3" role="main"  style="width: 65%;">
         <div id="col3_content" class="clearfix">
 
 <div class="fulltitle"><!-- Begin Fulltitle -->
-<div class="details"><!-- Begin Details -->
+<div class="details subcolumns"><!-- Begin Details -->
 <!-- Title begins here -->
-<div class="images"><!-- Begin Images -->
-
+<div class="images c20r"><!-- Begin Images -->
+  <div class="subcr">
 [% PROCESS common/subtemplate name="title_html_images" %]
-
+  </div>
 </div><!-- End Images -->
 
-<div class="categories"><!-- Begin Categories -->
+<div class="categories c80l"><!-- Begin Categories -->
 
+  <div class="subcl">
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
 [%
@@ -561,7 +573,7 @@ END ;
 [% IF config.get('unAPI') %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
 [% END %]
-
+  </div> <!-- End subcl -->
 </div><!-- End Categories -->
 </div><!-- End Details -->
 
@@ -595,38 +607,36 @@ END ;
 
 [% IF circulation.size > 0 || mexnormset.size > 0 || same_records.get_size
 > 0 || similar_records.get_size > 0 || config.get('reviews') || tictocs_feed %]
-<ul class="nojs_hidden">
+<ul>
 [% IF circulation.size > 0 %]
-<li><a href="#circinfo"><span>[% msg.maketext("Ausleihe/Exemplare") %]</span></a></li>
+<li><a href="#circinfo">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
 [% ELSE %]
 [%   IF mexnormset.size > 0 %]
-<li><a href="#mexinfo"><span>[% msg.maketext("Bestand") %]</span></a></li>
+<li><a href="#mexinfo">[% msg.maketext("Bestand") %]</a></li>
 [%   END %]
 [% END %]
 [% IF tictocs_feed %]
-<li><a href="#tictocs"><span>[% msg.maketext("Letzte Artikel") %]</span></a></li>
+<li><a href="#tictocs">[% msg.maketext("Letzte Artikel") %]</a></li>
 [% END %]
 [% IF same_records.get_size > 0 %]
-<li><a href="#same_records"><span>[% msg.maketext("In anderen Katalogen") %]</span></a></li>
+<li><a href="#same_records">[% msg.maketext("In anderen Katalogen") %]</a></li>
 [% END %]
 [% IF similar_records.get_size > 0 %]
-<li><a href="#similar_records"><span>[% msg.maketext("Andere Ausgaben") %]</span></a></li>
+<li><a href="#similar_records">[% msg.maketext("Andere Ausgaben") %]</a></li>
 [% END %]
 [% IF config.get('reviews') %]
-<li><a href="#reviews"><span>[% msg.maketext("Bewertungen/Rezensionen") %]</span></a></li>
+<li><a href="#reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
 [% END %]
 </ul>
 [% END %]
 
 [% IF circulation.size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
 
 <div id="circinfo"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
 [%   IF mexnormset.size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("Bestand") %]</h2>
 
 <div id="mexinfo"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
@@ -645,15 +655,12 @@ $(document).ready(function(){
 });
 </script>
 
-<h2 class="nojs_show">[% msg.maketext("Letzte Artikel") %]</h2>
-
 <div id="tictocs"><!-- Begin TicTocs -->
 [% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/62?id=${tictocs_feed}\">","</a>") %]
 </div><!-- End TicTocs -->
 [% END %]
 <!-- Begin: Reviews -->
 [% IF config.get('reviews') %]
-<h2 class="nojs_show">[% msg.maketext("Bewertungen/Rezensionen") %]</h2>
 
 <div id="reviews"><!-- Begin: Reviews -->
 
@@ -744,7 +751,6 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 <!-- End: Reviews -->
 
 [% IF same_records.get_size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
 
 <div id="same_records"><!-- Begin: Same records -->
 [% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]:
@@ -759,7 +765,6 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 [% END %]
 
 [% IF similar_records.get_size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("Andere Ausgaben") %]</h2>
 
 <div id="similar_records"><!-- Begin: Similar records -->
 [% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen") %]:

@@ -38,10 +38,11 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
+<div class="representation">
 <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
 <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
-
-[% PROCESS common/subtemplate name="subnavigation" active_menu='' %]
+</div>
+[% PROCESS common/subtemplate name="litlist_navigation" %] 
         </div>
       </div>
       <!-- end: #col1 -->

@@ -138,7 +138,7 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h3>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h3>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -226,7 +226,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h3>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -317,7 +317,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h3>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -409,7 +409,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.online.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.online.chunk(-3).join('.')}","${alldbs}") %]</h3>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 

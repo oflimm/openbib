@@ -100,7 +100,7 @@ sub show_collection {
     my $ttdata={
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_user_tname},$ttdata);
+    $self->print_page($config->{tt_admin_user_tname},$ttdata);
 
 }
 
@@ -125,7 +125,7 @@ sub show_search_form {
     my $ttdata={
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_user_search_form_tname},$ttdata,$r);
+    $self->print_page($config->{tt_admin_user_search_form_tname},$ttdata);
 
 }
 
@@ -145,6 +145,7 @@ sub show_search {
     my $query          = $self->query();
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
+    my $user           = $self->param('user');
 
     # CGI Args
     my $args_ref = {};

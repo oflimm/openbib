@@ -153,7 +153,7 @@ sub show {
         
         my $templatename = ($stid)?"tt_ezb_showsubjects_".$stid."_tname":"tt_ezb_showsubjects_tname";
         
-        $self->print_page($config->{$templatename});
+        $self->print_page($config->{$templatename},$ttdata);
             
         return Apache2::Const::OK;
     }
@@ -249,7 +249,7 @@ sub show {
             
             my $templatename = ($stid)?"tt_ezb_showjournalinfo_".$stid."_tname":"tt_ezb_showjournalinfo_tname";
             
-            $self->print_page($config->{$templatename},$ttdata,$r);
+            $self->print_page($config->{$templatename},$ttdata);
             
             return Apache2::Const::OK;
         }

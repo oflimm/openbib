@@ -50,7 +50,11 @@
 [% IF active_menu == "register" %]
 <h6 class="vlist">Register</h6>
 <ul class="vlist">
-  <li><a [% IF active_submenu == "register_T0720" %]class="active" [% END %] href="[% path_prefix %]/[% config.get('browse_loc') %]/richter/T0720.html?l=[% lang %]">Provenienzen</a></li>
+[% IF active_submenu == "register_T0720" %]
+  <li class="active"><strong>Provenienzen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('browse_loc') %]/richter/T0720.html?l=[% lang %]">Provenienzen</a></li>
+[% END %]
 </ul> 
 [% END %]
 [% IF active_menu == "cloud" %]

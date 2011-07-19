@@ -57,30 +57,11 @@
       [%- END -%]
     [%- END -%]
   [%- END -%]
-<!-- JavaScript Detection -->
-    <script type="text/javascript">document.documentElement.className += " js";</script>
-
-<!-- jQuery & Plugins -->
-<!--    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.4.2.js"></script> -->
-<!--    <script type="text/javascript" src="/js/jquery-ui/ui/jquery.ui.tabs.js"></script> -->
-
-    <link type="text/css" href="/css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />     
-    <script type="text/javascript" src="/js/jquery-1.5.1.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui-1.8.14.custom.min.js"></script>
-
-<!--    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.5.1.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/yaml/add-ons/accessible-tabs/jquery.tabs.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/yaml/add-ons/syncheight/jquery.syncheight.js"></script> -->
-<!--    <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>-->
-<!--    <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-1.8.14.custom.min.js"></script> -->
-        <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
-<!--    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script> -->
 
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
   <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
 <!--[if lte IE 7]>
-<link href="[% config.get('css_loc') %]/patches/patch_2col_right_31.css" rel="stylesheet" type="text/css" />
-<!-- <link href="[% config.get('css_loc') %]/patches/patch_accessible_tabs.css" rel="stylesheet" type="text/css" /> -->
+  <link href="[% config.get('css_loc') %]/patches/patch_2col_right_31.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 <!--[if lt IE 7.]>
 <style type="text/css" media="all"> 
@@ -88,6 +69,15 @@
 </style>
 <script defer type="text/javascript" src="/js/pngfix.js"></script>
 <![endif]-->
+
+<!-- jQuery & Plugins -->
+    <link type="text/css" href="/css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />     
+    <script type="text/javascript" src="/js/jquery-1.5.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.14.custom.min.js"></script>
+
+    <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
+
 
     <title>[% IF title %][% title %][% ELSE %][% msg.maketext("OpenBib - Demo-Portal") %][% END %]</title>
 

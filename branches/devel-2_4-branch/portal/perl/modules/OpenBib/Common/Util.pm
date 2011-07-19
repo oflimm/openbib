@@ -356,6 +356,11 @@ sub grundform {
     my $tagging   = exists $arg_ref->{tagging}
         ? $arg_ref->{tagging}             : undef;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("IN: $content");
+    
     # Normalisierung auf Kleinschreibung
     $content = lc($content);
     
@@ -409,6 +414,8 @@ sub grundform {
     $content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
     $content=~s/\.(net)/dot$1/ig;
+
+    $logger->debug("Checkpoint 1: $content");
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
@@ -442,6 +449,8 @@ sub grundform {
 	$content=~s/:/ /g;
     }
 
+    $logger->debug("Checkpoint 2: $content");
+    
     # Leerzeichen bei CJK einfuegen
 
     $content=~s/(\p{InKatakana}|\p{InHiragana}|\p{InCJKCompatibility}|\p{InCJKCompatibilityForms}|\p{InCJKCompatibilityIdeographs}|\p{InCJKCompatibilityIdeographsSupplement}|\p{InCJKRadicalsSupplement}|\p{InCJKStrokes}|\p{InCJKSymbolsAndPunctuation}|\p{InCJKUnifiedIdeographs}|\p{InCJKUnifiedIdeographsExtensionA}|\p{InCJKUnifiedIdeographsExtensionB}|\p{InEnclosedCJKLettersAndMonths})/$1 /g;
@@ -451,6 +460,8 @@ sub grundform {
     $content=~s/\// /g;
     #$content=~s/:/ /g;
     $content=~s/  / /g;
+
+    $logger->debug("Checkpoint 3: $content");
 
     # Buchstabenersetzungen
     $content=~s/ü/ue/g;

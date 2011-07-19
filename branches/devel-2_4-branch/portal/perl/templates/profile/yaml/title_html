@@ -475,9 +475,9 @@ $("#history_toggle").click(function(){
 
 [% recent_titles = session.get_recently_selected_titles.load_brief_records %]
 [% IF recent_titles.get_size > 0 %]
-<div class="session_history"><!-- Begin Historie -->
+<div class="session_history info"><!-- Begin Historie -->
 
-<b id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</b><p/>
+<h4 id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h4><p/>
 
 [% FOREACH record IN recent_titles.get_records %]
 [%- item = record.get_brief_normdata -%]
@@ -503,7 +503,7 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
 [% END %]
 
 <p/>
-</div><!-- End Historie -->
+</div><!-- End Session-Historie -->
 [% END %]
 
 </div><!-- End User-Specific -->

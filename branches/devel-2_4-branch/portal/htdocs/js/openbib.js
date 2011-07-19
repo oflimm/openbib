@@ -61,11 +61,9 @@ function qrcodeRemove () {
   });
 };
 
-$(document).ready(function(){
+//$(document).ready(function(){
+$(function(){
                     
-                    
-var sessionID = $("meta[@name='sessionID']").attr("content");
-
 var Bibkey    = $("meta[@name='Bibkey']").attr("content");
 var Tags      = $("meta[@name='Tags']").attr("content");
 var View      = $("meta[@name='View']").attr("content");
@@ -101,7 +99,7 @@ $('.nojs_show').css('display','none');
 // Merklistenfuellstand aktualisieren
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
 // fest eingetragen und muss gegebenenfalls angepasst werden
- if (sessionID){
+
    if (View){
 $.get("/portal/"+View+"/collection/count",
 function (txt){
@@ -117,7 +115,6 @@ function (txt){
 );
 
    }
- }
  
 $(".rlcollect a").click(function(){
 

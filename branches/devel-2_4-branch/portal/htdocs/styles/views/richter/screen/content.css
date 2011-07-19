@@ -203,14 +203,13 @@
   */
 
 #header_logo_image {
-  background: url(/images/openbib/openbib-logo_small.gif) center no-repeat;
-  width: 200px;
-  height: 58px;
-  position: absolute;
-  top: 10px;
-  left: 5px;
+background: url(/images/openbib/views/richter/logo.png) center no-repeat;
+ width: 400px;
+ height: 110px;
+ position: absolute;
+ top: 6px;
+ left: 7px;
 }
-
   
  /**
   * (en) Emphasizing external Hyperlinks via CSS

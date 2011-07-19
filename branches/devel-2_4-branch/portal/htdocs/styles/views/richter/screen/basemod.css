@@ -50,12 +50,12 @@
   .page_margins { min-width:740px; max-width:95em; background:#fff; } 
   .page { padding:10px; }
 
-  #header {
-    color:#000;
-    background:#fff repeat-x top left;
-    padding:70px 2em 1em 20px;
-    position:relative;
-  }
+#header {
+ color:#000;
+ background:#fff repeat-x top left;
+ padding:120px 2em 1em 20px;
+ position:relative;
+}
 
   /* (en) #topnav gets absolute positioning within #header */
   /* (de) #topnav wird innerhalb von #header absolut positioniert */

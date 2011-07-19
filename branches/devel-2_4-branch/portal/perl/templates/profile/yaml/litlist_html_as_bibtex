@@ -1,6 +1,0 @@
-<pre>
-[%- FOREACH record IN litlist.recordlist.load_full_records.get_records -%]
-[%    record.to_bibtex %]
-
-[% END %]
-</pre>

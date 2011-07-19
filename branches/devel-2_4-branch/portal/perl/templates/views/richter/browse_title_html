@@ -68,7 +68,7 @@ aufgef&uuml;hrt.") %]
 
 <table width="100%">
 [% FOREACH item IN browselist %]
-<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=richter;fs=t0720:|[% item.replace('&amp;','%26').replace('/','').replace('\(','').replace('\)','') %]|">[% item %]</a></td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=richter;fs=t0720:|[% item.replace('&amp;','%26') %]|">[% item %]</a></td></tr>
 [% END %]
 </table>
 

@@ -189,17 +189,18 @@ sub set_from_apache_request {
                     my $first = $1;
                     my $string = $2;
                     my $last = $3;
-
-                    $string = OpenBib::Common::Util::grundform({
+                    
+                    $logger->debug("Fullstring IN: $string");
+                    my $string_norm = OpenBib::Common::Util::grundform({
                         content   => $string,
-                        searchreq => 1,
                     });
 
-                    $string=~s/\W/_/g;
+                    $string_norm=~s/\W/_/g;
                     
-                    $logger->debug("1: $first String: $string 3: $last");
-                    
-                    $searchfield_norm_content=$first.$string.$last;
+                    $logger->debug("1: $first String: $string_norm 3: $last");
+
+                    $logger->debug("Fullstring OUT: $string_norm");
+                    $searchfield_norm_content=$first.$string_norm.$last;
                 }
             }
             

@@ -243,34 +243,22 @@ my $atime = new Benchmark;
                     foreach my $unique_term (@unique_terms){
                         next unless ($unique_term);
                         
-                        my $field = undef;
-                        
                         if (exists $config->{searchfield}{$searchfield}{option}{string_first_stopword}){
-                            $field = OpenBib::Common::Util::grundform({
-                                category  => '0331', # Stellvertretend fuer alle derartige Kategorien
-                                content   => $unique_term,
-                                searchreq => 1,
-                            });
+                            $unique_term = OpenBib::Common::Stopwords::strip_first_stopword($unique_term);
+                            $logger->debug("Stripped first stopword");
                             
                         }
-                        else {
-                            # Kategorie in Feld einfuegen            
-                            $field = OpenBib::Common::Util::grundform({
-                                content   => $unique_term,
-                                searchreq => 1,
-                            });
-                        }
                         
-                        $field=~s/\W/_/g;
+                        $unique_term=~s/\W/_/g;
                         
-                        $field=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$field;
+                        $unique_term=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$unique_term;
                         
                         # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
-                        my $field_octet = encode_utf8($field); 
-                        $field=(length($field_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($field_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$field;
+                        my $unique_term_octet = encode_utf8($unique_term); 
+                        $unique_term=(length($unique_term_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($unique_term_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$unique_term;
                         
-                        $logger->debug("Added Stringvalue $field");
-                        $doc->add_term($field);
+                        $logger->debug("Added Stringvalue $unique_term");
+                        $doc->add_term($unique_term);
                     }
                 }
             }

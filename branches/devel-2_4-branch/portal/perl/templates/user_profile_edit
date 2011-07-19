@@ -17,6 +17,15 @@
 
   <body>
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 <script language="JavaScript" type="text/javascript">
 <!--
 
@@ -35,11 +44,18 @@ function update_fak(yourform, checked, fak) {
 
 [% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
 
-<div id="maincontent">
-
-[% PROCESS common/subtemplate name="user_navigation" active="databaseprofile" %]
-
-<div class="content">
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="user_navigation" active_submenu="databaseprofile" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
 <form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile/[% profileid %]" enctype="application/x-www-form-urlencoded">
 
@@ -113,7 +129,13 @@ function update_fak(yourform, checked, fak) {
 
 </form>
 
-</div>
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]
 

@@ -2,19 +2,33 @@
 
   <body>
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
 
-<div id="maincontent">
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]/0" target="_blank">[% msg.maketext("Fehler") %]</a></li>
-</ul>
+   <h1>[% msg.maketext("Fehler") %]</h1>
 
-<div class="content">
-
-<p />
 <table width="100%">
 <tr><th>[% msg.maketext("Fehlerbeschreibung") %]</th></tr>
 <tr><td class="boxedclear">
@@ -22,9 +36,13 @@
 </td></tr>
 </table>
 
-</div>
-
-<p />
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]
 

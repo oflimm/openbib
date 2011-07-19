@@ -13,15 +13,25 @@
 #######################################################################
 -%]
 
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="collection_html_actions" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
 [% FOREACH record IN recordlist.get_records %]
 [%- database = record.database -%]
 [%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${record.database} -%]
-<tr class="titlerow"><td>[% msg.maketext("Titel") %] [% loop.count %] [% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></td></tr>
-<tr><td>
 [% normset    = record.get_normdata %]
 [% mexnormset = record.get_mexdata  %]
 [% circulation    = record.get_circdata %]
+
 
 <!-- Title begins here -->
 <table width="100%">
@@ -65,12 +75,15 @@ FOREACH category IN categories;
 [% END %]
 [% END %]
 
-</td></tr>
-</table>
-
 <p />
 <p />
 <!-- Title ends here -->
-</td></tr>
-<tr><td></td><td></td></tr>
+
 [% END %]
+
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->

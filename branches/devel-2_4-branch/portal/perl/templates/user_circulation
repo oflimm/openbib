@@ -1,78 +1,9 @@
-[%#-
-#######################################################################
-#
-# Templatename: circulation
-#
-# Typ         : Mastertemplate       
-#
-# Aufgabe:
-#
-# Ausgabe einer Uebersichtsliste aller ausgeliehenen Medien
-#
-#######################################################################
--%]
-[% PROCESS common/subtemplate name="std_header" %]
-
-  <body>
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
-
-<div id="maincontent">
-
-[% PROCESS common/subtemplate name="user_navigation" active="circulation" %] 
-
-<div class="content">
-
-<p />
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=borrows">[% msg.maketext("Ausleihen") %]</a></li>
-   <li><a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reservations">[% msg.maketext("Vormerkungen") %]</a></li>
-   <li><a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=orders">[% msg.maketext("Bestellungen") %]</a></li>
-   <li><a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reminders">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
-</ul>
-
-<div class="content">
-
-<p />
-
-[% IF borrows.size == 0 %]
-<b>[% msg.maketext("Sie haben keine Ausleihen getätigt.") %]</b>
-[% ELSE  %]
-
-<p>
-<b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=renew_loans;validtarget=[% database %]" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
-</p>
-
-<table cellpadding="5">
-<tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Ausleihfrist") %]</b></td></tr>
-[%- listrow = 'listrow1' -%]
-
-[%- FOREACH borrow = borrows -%]
-
-<tr
-class="[% listrow %]"
-[%- IF listrow == 'listrow1' -%]
-[%- listrow = 'listrow2' -%] 
+[%- IF representation == '' || representation == 'html' -%]
+[%- PROCESS common/subtemplate name="user_circulation_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="user_circulation_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="user_circulation_json" -%]
 [%- ELSE -%]
-[%- listrow = 'listrow1' -%] 
+This Resource-Type is not available in the representation [% representation %]
 [%- END -%]
-><td><i>[% borrow.Verfasser %]</i><br />[% borrow.Titel %]
-
-[% IF borrow.EJahr %]
-, [% borrow.EJahr %]
-[% END %]
-
-</td><td>[% borrow.Signatur %]</td><td>[% borrow.AusleihDatum %]-[% borrow.RueckgabeDatum %]</td></tr>
-[% END %]
-</table>
-
-[% END %]
-</div>
-</div>
-
-<p />
-
-[% PROCESS common/subtemplate name="std_footer" %]

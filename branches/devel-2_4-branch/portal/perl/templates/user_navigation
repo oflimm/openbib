@@ -11,13 +11,73 @@
 #
 #######################################################################
 -%]
-<ul class="tabbingmenu">
-   <li><a [%- IF active == "userprefs" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html">[% msg.maketext("Grundeinstellungen") %]</a></li>
-[% IF config.get('litlists') %]   <li><a [%- IF active == "litlists" -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/litlist.html">[% msg.maketext("Literaturlisten") %]</a></li>[% END %]
-   <li><a [%- IF active == "tags" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/tag.html?show_cloud=1">[% msg.maketext("Tags") %]</a></li>
-[% IF config.get('reviews') %]   <li><a [%- IF active == "userreviews" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review.html">[% msg.maketext("Rezensionen") %]</a></li>[% END %]
-[% IF targettype != 'self' %]
-   <li><a [%- IF active == "circulation" -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/circulation">[% msg.maketext("Benutzerkonto") %]</a></li>
+<h6 class="vlist">[% loginname %]</h6>
+
+<ul class="vlist">
+[% IF active_submenu == "userprefs" %]
+  <li class="active"><strong>[% msg.maketext("Grundeinstellungen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html"></a></li>
 [% END %]
-   <li><a [%- IF active == "databaseprofile" -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile.html">[% msg.maketext("Katalogprofile") %]</a></li>
+[% IF config.get('litlists') %]
+[%   IF active_submenu == "litlists" %]
+  <li class="active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>
+[%   ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/litlist.html">[% msg.maketext("Literaturlisten") %]</a></li>
+[%   END %]
+[% END %]
+[% IF active_submenu == "tags" %]
+<li><span>[% msg.maketext("Tags") %]</span>
+    <ul>
+[%    IF active_submenu == "tags" %]
+       <li class="active"><strong>[% msg.maketext("&Uuml;bersicht") %]</strong></li>
+[%    ELSE %]
+       <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/tag.html?show_cloud=1">[% msg.maketext("Tags") %]</a></li>
+[%    END %]
+[%    IF active_submenu == "tags_edit" %]
+       <li class="active"><strong>[% msg.maketext("&Auml;ndern") %]</strong></li>
+[%    ELSE %]
+       <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/tag/edit">[% msg.maketext("&Auml;ndern") %]</a></li>
+[%    END %]
+     </ul>
+</li>
+[% END %]
+[% IF config.get('reviews') %]
+[%   IF active_submenu == "userreviews" %]
+  <li class="active"><strong>[% msg.maketext("Rezensionen") %]</strong></li>
+[%   ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review.html">[% msg.maketext("Rezensionen") %]</a></li>
+[%   END %]
+[% END %]
+[% IF targettype != 'self' %]
+<li><span>[% msg.maketext("Benutzerkonto") %]</span>
+    <ul>
+[%   IF active_submenu == "borows" %]
+      <li class="active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
+[%   ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/circulation/borrows.html">[% msg.maketext("Ausleihen") %]</a></li>
+[%   END %]
+[%   IF active_submenu == "reservations" %]
+      <li class="active"><strong>[% msg.maketext("Vormerkungen") %]</strong></li>
+[%   ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/circulation/reservations.html">[% msg.maketext("Vormerkungen") %]</a></li>
+[%   END %]
+[%   IF active_submenu == "orders" %]
+      <li class="active"><strong>[% msg.maketext("Bestellungen") %]</strong></li>
+[%   ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/circulation/orders.html">[% msg.maketext("Bestellungen") %]</a></li>
+[%   END %]
+[%   IF active_submenu == "reminders" %]
+      <li class="active"><strong>[% msg.maketext("Überziehungen / Gebühren") %]</strong></li>
+[%   ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/circulation/reminders.html">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
+[%   END %]
+    </ul>
+</li>
+[% END %]
+[% IF active_submenu == "databaseprofile" %]
+  <li class="active"><strong>[% msg.maketext("Katalogprofile") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile.html">[% msg.maketext("Katalogprofile") %]</a></li>
+[% END %]
 </ul>

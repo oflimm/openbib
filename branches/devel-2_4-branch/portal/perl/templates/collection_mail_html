@@ -17,20 +17,42 @@
 
   <body>
 
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
 
-<div id="maincontent">
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_menu='helene' %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
 <h1>[% msg.maketext("Zugemailte Merkliste") %]</h1>
 <table>
 [% PROCESS common/subtemplate name="collection_html_simple" %]
 </table>
 
-</div>
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
-<p />
-</body>
-</html>
-
+[% PROCESS common/subtemplate name="std_footer" %]

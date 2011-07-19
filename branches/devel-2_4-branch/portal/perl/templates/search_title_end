@@ -26,8 +26,13 @@
 
 [% PROCESS common/subtemplate name="search_more_tips" %]
 
-
-</div>
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]
 [% END %]

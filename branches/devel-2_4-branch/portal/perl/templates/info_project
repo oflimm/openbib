@@ -14,16 +14,33 @@
 [% PROCESS common/subtemplate name="std_header" %]
   <body>
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" active_menu = "info" %] 
 
-<div id="maincontent">
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="info_navigation" active_submenu="project" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
-[% PROCESS common/subtemplate name="info_navigation" active="project" %] 
-    
-    <div class="content">
-      <div class="infotext">
+<div class="infotext">
 
       <p />
 
@@ -187,6 +204,13 @@ Software frei ist und für immer frei sein wird.  </p>
 <address>Oliver Flimm (11/02/22)</address>
 
     </div>
-  </div>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

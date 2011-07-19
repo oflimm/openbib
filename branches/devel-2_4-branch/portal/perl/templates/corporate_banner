@@ -1,61 +1,16 @@
-[% IF start %]
 <!-- Begin Template: corporate_banner -->
-	<div id="header">
-		<div id="header_logo"><a href="/portal/[% view %]/[% config.get('startopac_loc') %]" title="OpenBib Startseite" id="header_logo_image"></a></div>
-       </div>
-<!-- End Template: corporate_banner -->
+    <div id="header" role="banner">
+      <div id="topnav" role="contentinfo">
+        <span><a href="[% path_prefix %]/[% config.get('rssfeeds_loc') %].html?l=[% lang %]"><img style="vertical-align: bottom;" src="[% config.get('rssfeed_img') %]" alt="RSS-Feed"/></a> | [% IF config.get('lang').size > 1 %][% FOREACH l IN config.get('lang') %] <a href="[% path %]?[% cgiapp.modify_querystring(change = { l = l }) %]"><img style="vertical-align: bottom;" src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a> |[% END %][% END %] [% IF config.get('login_active') == 1 %]
+[% IF loginname %]
+          <a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Einstellungen") %]</a>
 [% ELSE %]
-<!-- Begin Template: corporate_banner -->
-[% IF user.is_authenticated %]
-[% autocompletion_type = user.get_autocompletion %]
-[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#input_box_all").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-})
-</script>
-[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#input_box_all").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-})
-</script>
-[%   END %]
+          <a href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Login") %]</a>
+[%- END -%]
 [% END %]
+ | <a href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]" target="_parent"><b>[% msg.maketext("Sitzung beenden") %][%- IF username -%] [[% username %]][%- END -%]</b></a></span>
+      </div>
+      <div id="logo"><a href="[% path_prefix %]/[% config.get('startopac_loc') %]" title="Startseite der Richter-Bibliothek" id="header_logo_image"></a></div>
 
-	<div id="header">
-<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
-
-<input type="hidden" name="num"  value="50" />
-
-<input type="hidden" name="srt"  value="author" />
-<input type="hidden" name="srto" value="up" />
-<input type="hidden" name="jn" value="1" />
-<input type="hidden" name="st"        value="1" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="dd"      value="1" />
-[% END %]
-
-
-
-<input type="hidden" name="profil"  value="alldbs" />
-
-		<div id="header_logo"><a href="[% config.get('startopac_loc') %]" title="OpenBib Startseite" id="header_logo_image"></a></div>
-                <div id="header_simplesearch">
-<table><tr><td><span class="bigtext">[% msg.maketext("Suche") %]</span>&nbsp;</td><td><input id="input_box_all" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></div>&nbsp;&nbsp;</td><td><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced">[% msg.maketext("Erweiterte Suche") %]</a>[% IF config.get('bix') %]<!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
-  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>[% END %]
-</td></tr></table>
-</div>
-</form>
-
-</div>
+    </div>
 <!-- End Template: corporate_banner -->
-[% END %]

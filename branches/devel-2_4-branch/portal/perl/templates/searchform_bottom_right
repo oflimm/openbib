@@ -11,9 +11,9 @@
 #
 #######################################################################
 -%]
-<h3><img style="vertical-align:bottom" src="[% config.get('note_img') %]" alt="Notieren"/>&nbsp;[% msg.maketext("Legen Sie Literaturlisten an und vergeben Sie Tags") %]</h3>
+<h4><img style="vertical-align:bottom" src="[% config.get('note_img') %]" alt="Notieren"/>&nbsp;[% msg.maketext("Legen Sie Literaturlisten an und vergeben Sie Tags") %]</h4>
 
-<h4>[% msg.maketext("Die 5 zuletzt angelegten Literaturlisten") %]</h4>
+<h5>[% msg.maketext("Die 5 zuletzt angelegten Literaturlisten") %]</h5>
 
 [%- IF view_config.${view}.subjectid ;
        lastlitlists = user.get_recent_litlists({count => 5, subjectid => view_config.${view}.subjectid }) ;
@@ -36,7 +36,7 @@ Es wurden diesem Katalog noch keine Literaturlisten
 thematisch zugeordnet.
 [% END %]
 
-<h4>[% msg.maketext("Die 5 zuletzt vergebenen Tags") %]</h4>
+<h5>[% msg.maketext("Die 5 zuletzt vergebenen Tags") %]</h5>
 
 [%-
    IF viewdbs.size == 1 ;

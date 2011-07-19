@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
-[% show_foot_banner = 1%]
+
 <body>
 [%
       funcargs = { id => database, type => 4 } ;
@@ -26,30 +26,33 @@
   END ;
 %]
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='cloud' %] 
 
-<div id="maincontent">
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="cloud_navigation" active_submenu='cloud_classification' %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]/14?database=[% database %]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
-</ul>
-
-<div class="content">
-<p />
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]/14?database=[% database %]" title="Katalogname"><span class="dbdescshort">[% dbinfo.get('dbnames').${database}.short %]</span></a></li>
-</ul>
-
-<div class="content">
-<p />
-
-[% PROCESS common/subtemplate name="clouds_navigation" active=16 %] 
-
-<div class="content">
-<p />
+<h1>Systematik</h1>
 
 <table width="100%">
 <tr><th>Wolke der h&auml;ufigsten Begriffe</th></tr>
@@ -85,10 +88,13 @@
 [% END %]
 </td></tr>
 </table>
-<p />
 
-</div>
-</div>
-</div>
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

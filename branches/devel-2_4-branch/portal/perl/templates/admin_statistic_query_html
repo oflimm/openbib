@@ -17,21 +17,32 @@
 
   <body>
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
 
-<div id="maincontent">
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="statistic" active_subsubmenu="query" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
-[% PROCESS common/subtemplate name="admin_navigation" active="statistics" %] 
-
-<div class="content">
-
-[% PROCESS common/subtemplate name="admin_statistic_navigation" active="stat_query" %] 
-
-<div class="content">
-
-<p>
 <div class="listoptions">
 <b>Jahr:</b>&nbsp;
 [%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');
@@ -49,14 +60,14 @@
 </p>
 
 <table width="100%">
-<tr><th>Verwendete Recherche-Art</th></tr>
+<tr><th>[% msg.maketext("Verwendete Recherche-Art") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
-<tr><td>Einfache Recherche</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 1, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Komplexe Recherche</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 2, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Externer Suchschlitz</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 3, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Externer Connector (DigiBib/uk-online/Citavi)</td><td><b>[% ret = statistics.get_number_of_event({ type => 22, content => 1, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Einfache Recherche") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 1, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Komplexe Recherche") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 2, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Externer Suchschlitz") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 3, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Externer Connector (DigiBib/uk-online/Citavi)") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 22, content => 1, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
 </table>
 </td></tr>
 </table>
@@ -64,26 +75,31 @@
 <p />
 
 <table width="100%">
-<tr><th>Verwendete Kategorien</th></tr>
+<tr><th>[% msg.maketext("Verwendete Kategorien") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td>Freie Suche</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'fs', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Titelworte</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'hst', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Personen</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'verf', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>K&ouml;rperschaften</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'kor', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Schlagworte</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'swt', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Notationen</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'notation', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>ISBN</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'isbn', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>ISSN</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'issn', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Signatur</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'sign', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Kompletter Titel</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'hststring', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Serie/Band/Quelle</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'gtquelle', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><td>Jahr</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'ejahr', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Freie Suche") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'fs', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Titelworte") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'hst', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Personen") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'verf', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("K&ouml;rperschaften") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'kor', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Schlagworte") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'swt', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Notationen") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'notation', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("ISBN") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'isbn', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("ISSN") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'issn', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Signatur") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'sign', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Kompletter Titel") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'hststring', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Serie/Band/Quelle") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'gtquelle', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><td>[% msg.maketext("Jahr") %]</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'ejahr', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
 </table>
 </td></td>
 </table>
 
-</div>
-</div>
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

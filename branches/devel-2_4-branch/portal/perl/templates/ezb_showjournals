@@ -14,20 +14,54 @@
 [% PROCESS common/subtemplate name="std_header" %]
   <body>
 
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
-
-<div id="maincontent">
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('ezb_loc') %]?action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</span></a></li>
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="content">
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "ezb" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+
+       <div class="headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
+<form method="get" action="[% path_prefix %]/[% config.get('ezb_loc') %]">
+
+
+<input type="hidden" name="lett"      value="[% journals.current_page.lett %]" />
+<input type="hidden" name="action"    value="search_journals" />
+
+<table>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
+<tr><td colspan="3"></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="notation">[% IF journals.subject.notation %]<option value="[% journals.subject.notation %]">[% journals.subject.desc %]</option>[%- END -%]<option value="">[% msg.maketext("Alle Fachgebiete") %]</option></select></td></tr>
+</table>
+<p/>
+<table>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="fs" value="" size="13" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</form>
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+     <h1>[% msg.maketext("Elektronisch verf&uuml;gbare Zeitschiften (EZB)") %]</h1>
 
 [%# USE dumper; dumper.dump(journals) %]
-
 
 <ul class="tabbingmenu">
 [% FOREACH navitem IN journals.other_pages %]
@@ -72,31 +106,6 @@
 [% IF sindex == maxstart %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% path_prefix %]/[% config.get('ezb_loc') %]?notation=[% journals.subject.notation %];sc=[% nextpage.sc %];lc=[% nextpage.lc %];sindex=[% nextpage.sindex %];action=show_journals"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
     </div>
   </div>
-  <div class="resultdrilldown">
-    <div class="drilldown">
-
-       <div class="headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
-<form method="get" action="[% path_prefix %]/[% config.get('ezb_loc') %]">
-
-
-<input type="hidden" name="lett"      value="[% journals.current_page.lett %]" />
-<input type="hidden" name="action"    value="search_journals" />
-
-<table>
-<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</td></tr>
-<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
-<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
-<tr><td colspan="3"></td></tr>
-<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="notation">[% IF journals.subject.notation %]<option value="[% journals.subject.notation %]">[% journals.subject.desc %]</option>[%- END -%]<option value="">[% msg.maketext("Alle Fachgebiete") %]</option></select></td></tr>
-</table>
-<p/>
-<table>
-<tr><td><input id="to_focus" class="fs_field" type="text" name="fs" value="" size="18" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
-</table>
-</form>
-
-    </div>
-  </div>
   <div class="resultitems">
 [%- FOREACH journal IN journals.journals -%]
     <div class="item">
@@ -120,6 +129,13 @@
 <!-- Titlelist ends here -->
 
 </div>
-</div>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

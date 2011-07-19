@@ -16,8 +16,6 @@
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
-<p />
-
 <!-- Titlelist begins here -->
 <div class="resultlist">
   <div class="resultheader">
@@ -30,38 +28,7 @@
     <div class="navigation">
     </div>
   </div>
-  <div class="rightoptions">
-[% IF NOT hide_options %]
-<div class="reuse_data"><!-- Begin Reuse -->
 
-<b>[% msg.maketext("Behalten Sie diese Liste") %]:</b><p/>
-
-<table>
-<tr>
-<th><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('collection_loc') %]/save?format=[% format %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
-<th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('collection_loc') %]/print?format=[% format %]" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
-</tr>
-<tr>
-<th><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('collection_loc') %]/mail?format=[% format %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
-<th></th><td></td>
-</tr>
-</table>
-
-<p />
-
-<div class="headline">[% msg.maketext("Andere Formate") %]</div>
-
-<p>
-<a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=short"[%- IF format == 'short' -%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=full" [%- IF format == 'full' -%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('collection_loc') %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a>
-</p>
-
-<p/>
-</div>
-[% END %]
-  </div>
   <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.load_full_records.get_records -%]
 [% activefeed = config.get_activefeeds_of_db(record.database) %]
@@ -311,4 +278,5 @@ END;
 </div>
 
 <!-- Titlelist ends here -->
+
 </form>

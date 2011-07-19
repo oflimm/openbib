@@ -17,18 +17,34 @@
 
   <body>
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
 
-<div id="maincontent">
-
-[% PROCESS common/subtemplate name="admin_navigation" active="statistics" %] 
-
-<div class="content">
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="statistic" active_subsubmenu="view" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
 <table width="100%">
-<tr><th>Entwicklung der Session-Zahl in den einzelnen Sichten nach Monaten eines Jahres</th></tr>
+<tr><th>[% msg.maketext("Entwicklung der Session-Zahl in den einzelnen Sichten nach Monaten eines Jahres") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
 [%   USE dir = Directory("${config.get('image_root_path')}/graph/monthly/views") %]
@@ -36,7 +52,7 @@
 <img src="/images/openbib/graph/monthly/views/[% file.name %]" />
 [%   END %]
 [% CATCH Directory %] 
-Es existieren keine entsprechenden Grafiken.
+[% msg.maketext("Es existieren keine entsprechenden Grafiken.") %]
 [% END %]
 </td></td>
 </table>
@@ -44,7 +60,7 @@ Es existieren keine entsprechenden Grafiken.
 <p />
 
 <table width="100%">
-<tr><th>Entwicklung der Session-Zahl in den einzelnen Sichten nach Tagen eines Monats</th></tr>
+<tr><th>[% msg.maketext("Entwicklung der Session-Zahl in den einzelnen Sichten nach Tagen eines Monats") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
 [%   USE dir = Directory("${config.get('image_root_path')}/graph/daily/views") %]
@@ -53,11 +69,17 @@ Es existieren keine entsprechenden Grafiken.
 <p />
 [%   END %]
 [% CATCH Directory %] 
-Es existieren keine entsprechenden Grafiken.
+[% msg.maketext("Es existieren keine entsprechenden Grafiken.") %]
 [% END %]
 </td></td>
 </table>
 
-</div>
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

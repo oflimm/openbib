@@ -37,334 +37,41 @@
 
 <body>
 
+               <script type="text/javascript">
+                        $(function(){
+
+                                // Tabs
+                                $('#additional_title_info').tabs();
+                                        
+                        });
+                </script>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" %]
 
-<div id="maincontent">
-
-[% IF config.get('lang').size > 1 %]
-<div id="langchoice">
-[%   FOREACH l IN config.get('lang') %]
-<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
-[%   END %]
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary" style="width: 32%;">
+        <div id="col1_content" class="clearfix">
+<div class="representation">
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
 </div>
-[% END %]
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">[% dbinfo.dbnames.${record.database}.short %]</span></a></li>
-</ul>
-
-<div class="content"><!-- Begin Content -->
-
-<!--<div class="record">--><!-- Begin Record -->
-<div class="fulltitle"><!-- Begin Fulltitle -->
-<div class="details"><!-- Begin Details -->
-<!-- Title begins here -->
-<div class="images"><!-- Begin Images -->
-
-[% PROCESS common/subtemplate name="title_html_images" %]
-
-</div><!-- End Images -->
-
-<div class="categories"><!-- Begin Categories -->
-
-[% PROCESS common/subtemplate name="visible_categories_title" %]
-
-[%
-  css_classes = [
-        'fast-nicht-genutzt',
-        'nicht-sehr-genutzt',
-        'etwas-genutzt',
-        'genutzt',
-        'sehr-viel-genutzt',
-        'ultra-genutzt',
-        'am-meisten-genutzt',
-  ];
-%]
-
-[%
-   all_tags = user.get_all_tags_of_tit({ titid => record.id, titdb => record.database });
-
-   IF config.get('social_tagging') ;
-
-     IF all_tags.size > 0 ;
-
-     alltags_cloud = "<ol class=\"cloud\">\n" ;
-
-     FOREACH thisitem IN all_tags ;
-       item          = thisitem.name;
-       itemcount     = thisitem.count;
-       classnr       = thisitem.class;
-       itemid        = thisitem.id;
-       itemclass     = css_classes.$classnr;
-
-       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('tag_loc')}/${itemid}.html\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
-     END ;
-     alltags_cloud = "${alltags_cloud}\n</ol>" ;
-     cloud_item = {
-                    content => alltags_cloud,
-                  } ;
-     normset.${"T4500"} = [ cloud_item ];
-   END ;
-END ;
-%]
-
-[% PROCESS common/subtemplate name="title_html_categories" %]
-
-[% IF config.get('unAPI') %]
-<abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
-[% END %]
-
-</div><!-- End Categories -->
-</div><!-- End Details -->
-
-<div class="bottominfo"><!-- Begin Bottominfo -->
-
-[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
-<p class="wikipediamashup">
-<img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
-[%-   IF normset.${"E4200"} %]
-[%-    FOREACH item IN normset.${"E4200"}-%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://de.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
-[%-    END -%]
-[%-   END %]
-[%-   IF normset.${"E4201"} %]
-[%-     FOREACH item IN normset.${"E4201"}-%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://en.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
-[%-     END -%]
-[%-   END %]
-[%-   IF normset.${"E4202"} %]
-[%-     FOREACH item IN normset.${"E4202"}-%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://fr.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
-[%-     END -%]
-[%-   END -%]
-</p>
-[% END %]
-
-
-<div id="additional_title_info"><!-- Begin Additional Title Info -->
-[%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
-[%- tictocs_feed = normset.${"E4115"}.first.content -%]
-
-[% IF circulation.size > 0 || mexnormset.size > 0 || same_records.get_size
-> 0 || similar_records.get_size > 0 || config.get('reviews') || tictocs_feed %]
-<ul class="nojs_hidden">
-[% IF circulation.size > 0 %]
-<li><a href="#circinfo"><span>[% msg.maketext("Ausleihe/Exemplare") %]</span></a></li>
-[% ELSE %]
-[%   IF mexnormset.size > 0 %]
-<li><a href="#mexinfo"><span>[% msg.maketext("Bestand") %]</span></a></li>
-[%   END %]
-[% END %]
-[% IF tictocs_feed %]
-<li><a href="#tictocs"><span>[% msg.maketext("Letzte Artikel") %]</span></a></li>
-[% END %]
-[% IF same_records.get_size > 0 %]
-<li><a href="#same_records"><span>[% msg.maketext("In anderen Katalogen") %]</span></a></li>
-[% END %]
-[% IF similar_records.get_size > 0 %]
-<li><a href="#similar_records"><span>[% msg.maketext("Andere Ausgaben") %]</span></a></li>
-[% END %]
-[% IF config.get('reviews') %]
-<li><a href="#reviews"><span>[% msg.maketext("Bewertungen/Rezensionen") %]</span></a></li>
-[% END %]
-</ul>
-[% END %]
-
-[% IF circulation.size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
-
-<div id="circinfo"><!-- Begin Circulation -->
-[% PROCESS common/subtemplate name="circulation" %]
-</div><!-- End Circulation -->
-[% ELSE %]
-[%   IF mexnormset.size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("Bestand") %]</h2>
-
-<div id="mexinfo"><!-- Begin Bestand -->
-[% PROCESS common/subtemplate name="holding" %]
-</div><!-- End Bestand -->
-[%   END %]
-[% END %]
-
-[% IF tictocs_feed %]
-<script type="text/javascript">
-$(document).ready(function(){
-// Begin Verwandte Personen
-  $.get("[% path_prefix %]/[% config.get('info_loc') %]/62?id=[% normset.${"E4115"}.first.content %];format=ajax",
-         function (txt){
-           $("#tictocs").html(txt); 
-  });
-});
-</script>
-
-<h2 class="nojs_show">[% msg.maketext("Letzte Artikel") %]</h2>
-
-<div id="tictocs"><!-- Begin TicTocs -->
-[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/62?id=${tictocs_feed}\">","</a>") %]
-</div><!-- End TicTocs -->
-[% END %]
-<!-- Begin: Reviews -->
-[% IF config.get('reviews') %]
-<h2 class="nojs_show">[% msg.maketext("Bewertungen/Rezensionen") %]</h2>
-
-<div id="reviews"><!-- Begin: Reviews -->
-
-[% IF   loginname %]
-
-[% ownreviewid = user.tit_reviewed_by_user({ titid => record.id, titdb => record.database, loginname => loginname }); %]
 
 <p />
 
-[% IF NOT ownreviewid %]
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review">
-
-<input type="hidden" name="titdb"      value="[% record.database %]" />
-<input type="hidden" name="titid"      value="[% record.id %]" />
-<input type="hidden" name="queryid"    value="[% queryid %]" />
-<input type="hidden" name="titisbn"    value="[% isbn %]" />
-
-<table width="100%">
-<tr><th>[% msg.maketext("Neue Bewertung/Rezension") %]<span id="newreview_toggle"></span></th></tr>
-<tr><td id="newreview" class="boxedclear">
-
-<h3>[% msg.maketext("Bewertung") %]</h3>
-<table>
-<tr><td>[% msg.maketext("schlecht") %]&nbsp;<input type="radio"
-name="rating" value="0"/>&nbsp;<input type="radio" name="rating"
-value="1"/>&nbsp;<input type="radio" name="rating"
-value="2"/>&nbsp;<input type="radio" name="rating"
-value="3" checked="checked"/>&nbsp;<input type="radio" name="rating"
-value="4"/>&nbsp;<input type="radio" name="rating"
-value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
-</table>
-
-<h3>[% msg.maketext("Rezension") %]</h3>
-<table>
-<tr><td><b>[% msg.maketext("Pseudonym") %]</b></td><td><input type="text" name="nickname" value="" size="30" maxlength="30" /></td></tr>
-<tr><td><b>[% msg.maketext("Titel") %]</b></td><td><input type="text" name="title" value="" size="30" maxlength="100" /></td></tr>
-<tr><td><b>[% msg.maketext("Text") %]</b></td><td><textarea cols="80" rows="10" name="review"></textarea></td></tr>
-</table>
-<p />
-<table>
-<tr>
-<td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Löschen") %]"/></div></td>
-</tr>
-</table>
-</td></tr>
-</table>
-
-</form>
-[% END %]
-
-[%   END %]
-
-[%   IF reviews.size > 0 %]
-
-<p />
-
-<table width="100%">
-<tr><th><span id="allreviews_toggle">[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]&nbsp;<img src="/images/openbib/toggle_plus.png" alt="Alle Bewertungen anzeigen"></span></th></tr>
-<tr><td id="allreviews" class="boxedclear">
-<!-- Beginn Reviews -->
-
-<dl class="reviews">
-[%- FOREACH item IN reviews -%]
-<dt class="review">[% IF item.votes.all > 0 %][% msg.maketext("[_1]
-von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,item.votes.all) %]<p />[% END %]<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
-<dd class="review">[%    IF item.review %][% item.review %][% END %]
-[% IF item.id == ownreviewid %]
-<p />
-<a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
-[% ELSIF loginname %]
-<p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?_method=PUT;titid=[% record.id %];titdb=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?titid=[% record.id %];titdb=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
-[% END %]
-</dd>
-[%  END %]
-</dl>
-
-</td></tr>
-</table>
-
-[%   END %]
-</div><!-- End: Reviews -->
-
-[% END %]
-
-<!-- End: Reviews -->
-
-[% IF same_records.get_size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
-
-<div id="same_records"><!-- Begin: Same records -->
-[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]:
-<p />
-<ol>
-[% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${path_prefix}/${config.get('loc')}/title/${same_record.database}/${same_record.id}.html" %]
-<li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
-[% END %]
-</ol>
-</div><!-- End: Same Records -->
-[% END %]
-
-[% IF similar_records.get_size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("Andere Ausgaben") %]</h2>
-
-<div id="similar_records"><!-- Begin: Similar records -->
-[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen") %]:
-<p />
-<ol>
-[% FOREACH similar_record IN similar_records.get_records %]
-[% item = similar_record.get_brief_normdata %]
-[% similar_url = "${path_prefix}/${config.get('loc')}/title/${similar_record.database}/${similar_record.id}.html" %]
-[%# Titel konstruieren %]
-[%- title = item.${'T0331'}.first.content -%]
-[%- IF item.${'T0310'}.first.content -%]
-[%- title = item.${'T0310'}.first.content -%]
-[%- END -%]
-[%# Ejahr konstruieren %]
-[%- yearofpub = item.${'T0425'}.first.content -%]
-[%# Edition konstruieren %]
-[%- edition   = item.${'T0403'}.first.content -%]
-<li><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfo.get('dbnames').${similar_record.database}.short %]</li>
-[% END %]
-</ol>
-</div><!-- End: Similar Records -->
-[% END %]
-
-</div><!-- End: Additional Title Info -->
-</div><!-- End: Bottom Info -->
-
-</div><!-- End Fulltitle -->
-
-<div class="userspecific"><!-- Begin Userspecific -->
-<div class="listnavigation"><!-- Begin Navigation -->
-<div class="previous_title">
-[%- IF prevurl -%]
-<a href="[% prevurl %]?queryid=[% queryid %]" ><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorheriger Titel") %]]"/></a>
-[%- ELSE -%]
-<img src="[% config.get('no_previous_img') %]" alt="[[% msg.maketext("Vorheriger Titel") %]]"/>
-[%- END -%]
-</div>
-<div class="next_title">
-[%- IF nexturl -%]
-<a href="[% nexturl %]?queryid=[% queryid %]" ><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chster Titel") %]]"/></a>
-[%- ELSE -%]
-<img src="[% config.get('no_next_img') %]" alt="[[% msg.maketext("N&auml;chster Titel") %]]"/>
-[%- END -%]
-</div>
-</div><!-- End Navigation -->
-
-<p />
-
-<div class="reuse_data"><!-- Begin Reuse -->
+<div class="reuse_data info"><!-- Begin Reuse -->
 [%
   private_tags_of_tit = [];
   IF loginname ;
@@ -378,28 +85,14 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
     END;      
   END ;
 %]
-<b>[% msg.maketext("Behalten Sie diesen Titel") %]:</b><p/>
-<table>
-<tr>
-<th><img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
-<td><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/add_item.html?l=[% lang %]id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
-<th><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
-<td><a class="collection" href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %];_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
-</tr>
-<tr>
-<th><img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/mail.html?l=[% lang %];format=full" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
-<th><img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/save.html?l=[% lang %];format=full" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
-</tr>
-<tr>
-<th><img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
-<td><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/print.html?l=[% lang %];format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
-<th></th>
-<td>
-</td>
-</tr>
-</table>
+<h4>[% msg.maketext("Behalten Sie diesen Titel") %]:</h4><p/>
+
+<img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/add_item.html?l=[% lang %]id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
+<img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="collection" href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %];_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
+<img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/mail.html?l=[% lang %];format=full" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
+<img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/save.html?l=[% lang %];format=full" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
+<img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/print.html?l=[% lang %];format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
+
 <p />
 <div class="formats"><!-- Begin Formats -->
 <div class="headline"><span id="formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
@@ -467,7 +160,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
 <table>
-<tr><td colspan="2"><input type="text"   name="tags"       value="" size="40" maxlength="200" id="inputfield"/></td></tr>
+<tr><td colspan="2"><input type="text"   name="tags"       value="" size="30" maxlength="200" id="inputfield"/></td></tr>
 <tr align="center"><td>[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_add" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div></td></tr>
 </table>
 </form>
@@ -615,8 +308,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 <p />
 
-<div class="discover_sources"><!-- Begin Discover-Sources -->
-<b>[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</b><p/>
+<div class="discover_sources info"><!-- Begin Discover-Sources -->
+<h4>[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</h4><p/>
 
 
 <!-- Anfang Empfehlungen -->
@@ -782,9 +475,9 @@ $("#history_toggle").click(function(){
 
 [% recent_titles = session.get_recently_selected_titles.load_brief_records %]
 [% IF recent_titles.get_size > 0 %]
-<div class="session_history"><!-- Begin Historie -->
+<div class="session_history info"><!-- Begin Historie -->
 
-<b id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</b><p/>
+<h4 id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h4><p/>
 
 [% FOREACH record IN recent_titles.get_records %]
 [%- item = record.get_brief_normdata -%]
@@ -810,10 +503,295 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
 [% END %]
 
 <p/>
-</div><!-- End Historie -->
+</div><!-- End Session-Historie -->
 [% END %]
 
 </div><!-- End User-Specific -->
+
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main"  style="width: 65%;">
+        <div id="col3_content" class="clearfix">
+
+<div class="fulltitle"><!-- Begin Fulltitle -->
+<div class="details subcolumns"><!-- Begin Details -->
+<!-- Title begins here -->
+<div class="images c20r"><!-- Begin Images -->
+  <div class="subcr">
+[% PROCESS common/subtemplate name="title_html_images" %]
+  </div>
+</div><!-- End Images -->
+
+<div class="categories c80l"><!-- Begin Categories -->
+
+  <div class="subcl">
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+[%
+  css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+  ];
+%]
+
+[%
+   all_tags = user.get_all_tags_of_tit({ titid => record.id, titdb => record.database });
+
+   IF config.get('social_tagging') ;
+
+     IF all_tags.size > 0 ;
+
+     alltags_cloud = "<ol class=\"cloud\">\n" ;
+
+     FOREACH thisitem IN all_tags ;
+       item          = thisitem.name;
+       itemcount     = thisitem.count;
+       classnr       = thisitem.class;
+       itemid        = thisitem.id;
+       itemclass     = css_classes.$classnr;
+
+       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('tag_loc')}/${itemid}.html\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
+     END ;
+     alltags_cloud = "${alltags_cloud}\n</ol>" ;
+     cloud_item = {
+                    content => alltags_cloud,
+                  } ;
+     normset.${"T4500"} = [ cloud_item ];
+   END ;
+END ;
+%]
+
+[% PROCESS common/subtemplate name="title_html_categories" %]
+
+[% IF config.get('unAPI') %]
+<abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
+[% END %]
+  </div> <!-- End subcl -->
+</div><!-- End Categories -->
+</div><!-- End Details -->
+
+<div class="bottominfo"><!-- Begin Bottominfo -->
+
+[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+<p class="wikipediamashup">
+<img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
+[%-   IF normset.${"E4200"} %]
+[%-    FOREACH item IN normset.${"E4200"}-%]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://de.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+[%-    END -%]
+[%-   END %]
+[%-   IF normset.${"E4201"} %]
+[%-     FOREACH item IN normset.${"E4201"}-%]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://en.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normset.${"E4202"} %]
+[%-     FOREACH item IN normset.${"E4202"}-%]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://fr.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END -%]
+</p>
+[% END %]
+
+
+<div id="additional_title_info"><!-- Begin Additional Title Info -->
+[%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
+[%- tictocs_feed = normset.${"E4115"}.first.content -%]
+
+[% IF circulation.size > 0 || mexnormset.size > 0 || same_records.get_size
+> 0 || similar_records.get_size > 0 || config.get('reviews') || tictocs_feed %]
+<ul>
+[% IF circulation.size > 0 %]
+<li><a href="#circinfo">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+[% ELSE %]
+[%   IF mexnormset.size > 0 %]
+<li><a href="#mexinfo">[% msg.maketext("Bestand") %]</a></li>
+[%   END %]
+[% END %]
+[% IF tictocs_feed %]
+<li><a href="#tictocs">[% msg.maketext("Letzte Artikel") %]</a></li>
+[% END %]
+[% IF same_records.get_size > 0 %]
+<li><a href="#same_records">[% msg.maketext("In anderen Katalogen") %]</a></li>
+[% END %]
+[% IF similar_records.get_size > 0 %]
+<li><a href="#similar_records">[% msg.maketext("Andere Ausgaben") %]</a></li>
+[% END %]
+[% IF config.get('reviews') %]
+<li><a href="#reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
+[% END %]
+</ul>
+[% END %]
+
+[% IF circulation.size > 0 %]
+
+<div id="circinfo"><!-- Begin Circulation -->
+[% PROCESS common/subtemplate name="circulation" %]
+</div><!-- End Circulation -->
+[% ELSE %]
+[%   IF mexnormset.size > 0 %]
+
+<div id="mexinfo"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="holding" %]
+</div><!-- End Bestand -->
+[%   END %]
+[% END %]
+
+[% IF tictocs_feed %]
+<script type="text/javascript">
+$(document).ready(function(){
+// Begin Verwandte Personen
+  $.get("[% path_prefix %]/[% config.get('info_loc') %]/62?id=[% normset.${"E4115"}.first.content %];format=ajax",
+         function (txt){
+           $("#tictocs").html(txt); 
+  });
+});
+</script>
+
+<div id="tictocs"><!-- Begin TicTocs -->
+[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/62?id=${tictocs_feed}\">","</a>") %]
+</div><!-- End TicTocs -->
+[% END %]
+<!-- Begin: Reviews -->
+[% IF config.get('reviews') %]
+
+<div id="reviews"><!-- Begin: Reviews -->
+
+[% IF   loginname %]
+
+[% ownreviewid = user.tit_reviewed_by_user({ titid => record.id, titdb => record.database, loginname => loginname }); %]
+
+<p />
+
+[% IF NOT ownreviewid %]
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review">
+
+<input type="hidden" name="titdb"      value="[% record.database %]" />
+<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+<input type="hidden" name="titisbn"    value="[% isbn %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neue Bewertung/Rezension") %]<span id="newreview_toggle"></span></th></tr>
+<tr><td id="newreview" class="boxedclear">
+
+<h3>[% msg.maketext("Bewertung") %]</h3>
+<table>
+<tr><td>[% msg.maketext("schlecht") %]&nbsp;<input type="radio"
+name="rating" value="0"/>&nbsp;<input type="radio" name="rating"
+value="1"/>&nbsp;<input type="radio" name="rating"
+value="2"/>&nbsp;<input type="radio" name="rating"
+value="3" checked="checked"/>&nbsp;<input type="radio" name="rating"
+value="4"/>&nbsp;<input type="radio" name="rating"
+value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
+</table>
+
+<h3>[% msg.maketext("Rezension") %]</h3>
+<table>
+<tr><td><b>[% msg.maketext("Pseudonym") %]</b></td><td><input type="text" name="nickname" value="" size="30" maxlength="30" /></td></tr>
+<tr><td><b>[% msg.maketext("Titel") %]</b></td><td><input type="text" name="title" value="" size="30" maxlength="100" /></td></tr>
+<tr><td><b>[% msg.maketext("Text") %]</b></td><td><textarea cols="80" rows="10" name="review"></textarea></td></tr>
+</table>
+<p />
+<table>
+<tr>
+<td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Löschen") %]"/></div></td>
+</tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+[% END %]
+
+[%   END %]
+
+[%   IF reviews.size > 0 %]
+
+<p />
+
+<table width="100%">
+<tr><th><span id="allreviews_toggle">[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]&nbsp;<img src="/images/openbib/toggle_plus.png" alt="Alle Bewertungen anzeigen"></span></th></tr>
+<tr><td id="allreviews" class="boxedclear">
+<!-- Beginn Reviews -->
+
+<dl class="reviews">
+[%- FOREACH item IN reviews -%]
+<dt class="review">[% IF item.votes.all > 0 %][% msg.maketext("[_1]
+von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,item.votes.all) %]<p />[% END %]<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
+<dd class="review">[%    IF item.review %][% item.review %][% END %]
+[% IF item.id == ownreviewid %]
+<p />
+<a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+[% ELSIF loginname %]
+<p />
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?_method=PUT;titid=[% record.id %];titdb=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?titid=[% record.id %];titdb=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
+[% END %]
+</dd>
+[%  END %]
+</dl>
+
+</td></tr>
+</table>
+
+[%   END %]
+</div><!-- End: Reviews -->
+
+[% END %]
+
+<!-- End: Reviews -->
+
+[% IF same_records.get_size > 0 %]
+
+<div id="same_records"><!-- Begin: Same records -->
+[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]:
+<p />
+<ol>
+[% FOREACH same_record IN same_records.get_records %]
+[% same_url = "${path_prefix}/${config.get('loc')}/title/${same_record.database}/${same_record.id}.html" %]
+<li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
+[% END %]
+</ol>
+</div><!-- End: Same Records -->
+[% END %]
+
+[% IF similar_records.get_size > 0 %]
+
+<div id="similar_records"><!-- Begin: Similar records -->
+[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen") %]:
+<p />
+<ol>
+[% FOREACH similar_record IN similar_records.get_records %]
+[% item = similar_record.get_brief_normdata %]
+[% similar_url = "${path_prefix}/${config.get('loc')}/title/${similar_record.database}/${similar_record.id}.html" %]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Edition konstruieren %]
+[%- edition   = item.${'T0403'}.first.content -%]
+<li><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfo.get('dbnames').${similar_record.database}.short %]</li>
+[% END %]
+</ol>
+</div><!-- End: Similar Records -->
+[% END %]
+
+</div><!-- End: Additional Title Info -->
+</div><!-- End: Bottom Info -->
+
+</div><!-- End Fulltitle -->
 
 <!--</div>--><!-- End record -->
 
@@ -834,6 +812,12 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
 
 <script src="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN:[% isbn %]&callback=addFullCover"></script>
 
-</div><!-- End: Content -->
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

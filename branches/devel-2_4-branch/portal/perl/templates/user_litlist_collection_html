@@ -15,24 +15,38 @@
 
   <body>
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
 
-<div id="maincontent">
-
-[% PROCESS common/subtemplate name="user_navigation" active="litlists" %] 
-
-<div class="content">
-
-<p />
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="user_navigation" active_submenu="litlists" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
 <form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neue Literaturliste anlegen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
-<table>
+<table width="100%">
 <tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td></td></tr>
 <tr><td><input type="text" name="title" size="50" /></td><td><select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td><td><div class="cssbutton glass kug"><input type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 <tr><td colspan="3"></td></tr>
@@ -63,7 +77,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Bereits existierende Literaturlisten") %]</th></tr>
 <tr><td class="boxedclear">
-<table>
+<table width="100%">
 <tr><td class="headline"><b>[% msg.maketext("Titel der Literaturliste") %]</b></td><td class="headline"><b>[% msg.maketext("Titelzahl") %]</b></td><td class="headline"><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td class="headline"><b>[% msg.maketext("Themengebiete") %]</b></td><td class="headline"><b>[% msg.maketext("Angelegt") %]</b></td><td></td></tr>
 [% listrow = 'listrow1' %]
 [% FOREACH litlist IN litlists %]
@@ -89,8 +103,12 @@
 </td></tr>
 </table>
 
-</div>
-
-</div>
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

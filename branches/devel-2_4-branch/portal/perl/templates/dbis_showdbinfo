@@ -14,32 +14,38 @@
 [% PROCESS common/subtemplate name="std_header" %]
   <body>
 
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
-
-<div id="maincontent">
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('dbis_loc') %]?action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Informationen zur Datenbank") %]</span></a></li>
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="content">
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "dbis" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
 <h1>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h1>
 
+<h2>[% msg.maketext("Informationen zur Datenbank") %]</h2>
+
+
+
 [%# USE dumper; dumper.dump(dbinfo) %]
-
-<div style="width:60%;">
-
-[% IF dbinfo.access.main %]
-<div class="right_side boxedclear" style="width:auto;">
-<span class="headline">[% msg.maketext("Recherche starten") %]</span>
-<p>
-<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="http://rzblx10.uni-regensburg.de/dbinfo/[% dbinfo.access.main %]" target="_blank" style="font-size:1.6em">[% msg.maketext("Weiter") %]</a>
-</p>
-</div>
-[% END %]
 
 <div class="categories"><!-- Begin Categories -->
 <table cellpadding="2">
@@ -85,7 +91,18 @@
 
 </table>
 
+[% IF dbinfo.access.main %]
+<span class="headline">[% msg.maketext("Recherche starten") %]</span>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="http://rzblx10.uni-regensburg.de/dbinfo/[% dbinfo.access.main %]" target="_blank" style="font-size:1.6em">[% msg.maketext("Weiter") %]</a>
+[% END %]
+
 </div>
-</div>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

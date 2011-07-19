@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+<table width="100%">
+[% FOREACH item IN browselist %]
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %];fs=[% category FILTER lower %]:|[% item.replace('&amp;','%26').replace('/','').replace('\(','').replace('\)','') %]|">[% item %]</a></td></tr>
+[% END %]
+</table>

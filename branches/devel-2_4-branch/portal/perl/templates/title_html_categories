@@ -13,8 +13,9 @@
 #######################################################################
 -%]
 [% IF format == "full" %]
+
 [%# USE dumper;dumper.dump(record) %]
-<table cellpadding="2">
+<table class="full">
 <tr><td class="category">id</td><td>[% record.id %]</td></tr>
 
 [%-

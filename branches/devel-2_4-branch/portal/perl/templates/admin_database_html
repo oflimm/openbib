@@ -18,15 +18,31 @@
 
   <body>
 
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
 
-<div id="maincontent">
-
-[% PROCESS common/subtemplate name="admin_navigation" active="catalogues" %] 
-
-<div class="content">
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="database" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
 <form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]">
 
@@ -55,7 +71,7 @@ type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 <tr><th>[% msg.maketext("Bereits existierende Kataloge") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Info") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("System") %]</b></td><td><b>[% msg.maketext("Sigel") %]</b></td><td><b>[% msg.maketext("URL") %]</b></td><td><b>[% msg.maketext("Bibinfo statt URL / vorhanden") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Info") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Bibinfo statt URL / vorhanden") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
 [% FOREACH katalog IN kataloge.all %]
 <tr
 [% IF katalog.active == 1%]
@@ -65,9 +81,8 @@ type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 <td>[% katalog.dbname %]</td>
 <td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/library/edit">Info</a></td>
 <td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td>
-<td><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/edit">[% katalog.description %]</a></td><td>[% katalog.system %]</td><td>[% katalog.sigel %]</td><td>[%katalog.url %]</td>
+<td><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/edit">[% katalog.description %]</a></td>
 <td align="center">[%- IF katalog.use_libinfo == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%] / [%- IF config.have_libinfo(katalog.dbname) -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
-<td align="center">[%- IF katalog.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
 <td align="center">[%- IF katalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
 <td align="right">[% katalog.count %]</td></tr>
 [% END %]
@@ -79,6 +94,12 @@ type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 </td></tr>
 </table>
 
-</div>
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

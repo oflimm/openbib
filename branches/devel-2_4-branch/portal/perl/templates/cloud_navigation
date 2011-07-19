@@ -1,0 +1,92 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+<h6 class="vlist">[% msg.maketext("&Uuml;bersichten") %]</h6>
+<ul class="vlist">
+[% IF active_submenu == "cloud_choice" %]
+  <li class="active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]" title="Katalogauswahl">[% msg.maketext("Katalogauswahl") %]</a></li>
+[% END %]
+[% IF database %]
+<li><span>[% dbinfo.get('dbnames').${database}.short %]</span>
+    <ul>
+[% IF statistics.result_exists({ id => database, type => 9 }) %]
+[%   IF active_submenu == "cloud_year" %]
+  <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+[%   ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/year/richter.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[%   END %]
+[% END %]
+[% IF statistics.result_exists({ id => database, type => 6 }) %]
+[%   IF active_submenu == "cloud_person" %]
+  <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[%   ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/person/richter.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[%   END %]
+[% END %]
+[% IF statistics.result_exists({ id => database, type => 5 }) %]
+[%   IF active_submenu == "cloud_corporatebody" %]
+  <li class="active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[%   ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/corporatebody/richter.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[%   END %]
+[% END %]
+[% IF statistics.result_exists({ id => database, type => 3 }) %]
+[%   IF active_submenu == "cloud_subject" %]
+  <li class="active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[%   ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/subject/richter.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[%   END %]
+[% END %]
+[% IF statistics.result_exists({ id => database, type => 4 }) %]
+[%   IF active_submenu == "cloud_classification" %]
+  <li class="active"><strong>[% msg.maketext("Systematik") %]</strong></li>
+[%   ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/classification/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[%   END %]
+[% END %]
+[% IF statistics.result_exists({ id => database, type => 7 })%]
+[%   IF config.get('social_tagging') %]   
+[%     IF active_submenu == "cloud_tag" %]
+  <li class="active"><strong>[% msg.maketext("Nutzer-Tags") %]</strong></li>
+[%     ELSE %]
+<li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/tag/[% database %].html" title="[% msg.maketext("Nutzer-Tags") %]">[% msg.maketext("Nutzer-Tags") %]</a></li>
+[%     END %]
+[%   END %]
+[% END %]
+</ul>
+</li>
+[% END %]
+[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%]
+[%   IF config.get('litlists') %]
+[%     IF active_submenu == "cloud_litlist" %]
+  <li class="active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>
+[%     ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/litlist.html" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>
+[%     END %]
+[%   END %]
+[% END %]
+[% IF active_submenu == "cloud_searchterm" %]
+  <li class="active"><strong>[% msg.maketext("Suchbegriffe") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
+[% END %]
+
+</ul>

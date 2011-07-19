@@ -15,12 +15,40 @@
 
   <body>
 
+               <script type="text/javascript">
+                        $(function(){
+
+                                // Tabs
+                                $('#tabs_types').tabs();
+                                        
+                        });
+                </script>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" active_submenu="simple" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
 
-<div id="maincontent">
-
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary" style="display:none;">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_submenu="searchform_simple" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" style="width:100%;">
+        <div id="col3_content" class="clearfix">
 [%
   viewdbs = [];
   IF view ;
@@ -43,31 +71,18 @@
 </div>
 [% END %]
 
-
-<div id="searchform" [%- IF user.is_authenticated -%]style="width:99.5%"[%- END -%]><!-- Begin searchform -->
+<div id="searchform"><!-- Begin searchform -->
 
 <div id="searchform_types" ><!-- Begin searchform_types -->
-
-[% IF user.is_authenticated && config.get('lang').size > 1 %]
-<div class="langchoice">
-[%   FOREACH l IN config.get('lang') %]
-<a href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple.html?l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
-[%   END %]
-</div>
-[% END %]
-
-<ul class="nojs_hidden">
-<li><a href="#alltypes"><span>[% msg.maketext("Alles") %]</span></a></li>
-<li><a href="#only_serials"><span>[% msg.maketext("Zeitschriften/Serien") %]</span></a></li>
-<li><a href="#only_articles"><span>[% msg.maketext("Aufs&auml;tze") %]</span></a></li>
-<li><a href="#only_online"><span>[% msg.maketext("Online") %]</span></a></li>
-<li><a href="#subjects"><span>[% msg.maketext("Themengebiete") %]</span></a></li>
-</ul>
-
-<h2 class="nojs_show">[% msg.maketext("Alle Formate") %]</h2>
-
+<div id="tabs_types">
+  <ul>
+    <li><a href="#alltypes">[% msg.maketext("Alles") %]</a></li>
+    <li><a href="#only_serials">[% msg.maketext("Zeitschriften/Serien") %]</a></li>
+    <li><a href="#only_articles">[% msg.maketext("Aufs&auml;tze") %]</a></li>
+    <li><a href="#only_online">[% msg.maketext("Online") %]</a></li>
+    <li><a href="#subjects">[% msg.maketext("Themengebiete") %]</a></li>
+  </ul>
 <div id="alltypes"><!-- Begin alle Typen -->
-
 [% IF user.is_authenticated %]
 [% autocompletion_type = user.get_autocompletion %]
 [% livesearch          = user.get_livesearch %]
@@ -123,7 +138,7 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h3>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h3>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -197,8 +212,6 @@ $(document).ready(function(){
 
 </div><!-- End alle Typen -->
 
-<h2 class="nojs_show">[% msg.maketext("Zeitschriften/Serien") %]</h2>
-
 <div id="only_serials"><!-- Begin Serials-->
 
 [% IF spelling_suggestion.as_you_type %]
@@ -213,7 +226,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h3>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -290,8 +303,6 @@ $(document).ready(function(){
 
 </div><!-- End Serials -->
 
-<h2 class="nojs_show">[% msg.maketext("Aufs&auml;tze") %]</h2>
-
 <div id="only_articles"><!-- Begin nur Aufsaetze -->
 
 [% IF spelling_suggestion.as_you_type %]
@@ -306,7 +317,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h3>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -384,8 +395,6 @@ $(document).ready(function(){
 
 </div><!-- End nur Aufsaetze -->
 
-<h2 class="nojs_show">[% msg.maketext("Online") %]</h2>
-
 <div id="only_online"><!-- Begin nur Online -->
 
 [% IF spelling_suggestion.as_you_type %]
@@ -400,7 +409,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.online.chunk(-3).join('.')}","${alldbs}") %]</h1>
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.online.chunk(-3).join('.')}","${alldbs}") %]</h3>
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
@@ -478,8 +487,6 @@ $(document).ready(function(){
 
 </div><!-- End nur Online -->
 
-<h2 class="nojs_show">[% msg.maketext("Themengebiete") %]</h2>
-
 <div id="subjects"><!-- Begin Themengebiete -->
 
 <p />
@@ -496,81 +503,20 @@ $(document).ready(function(){
 </ul>
 </div><!-- End Themengebiete -->
 
-<p />
+</div> <!-- End jquery_tabs -->
 
 </div><!-- End searchform_types -->
 
 </div><!-- End searchform -->
 
-[% IF NOT user.is_authenticated %]
-<div id="teaser"><!-- Begin teaser-->
-
-[% IF config.get('lang').size > 1 %]
-<div class="langchoice">
-[%   FOREACH l IN config.get('lang') %]
-<a href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple.html?l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
-[%   END %]
-</div>
-[% END %]
-
-<div id="login"><!-- Begin login-->
-<img style="vertical-align:bottom" src="/images/openbib/persons.png" alt="[% msg.maketext("Einloggen") %]"/>&nbsp;&nbsp;[% msg.maketext("<b>Einloggen</b> f&uuml;r Tagging,
-Literaturlisten usw.<p/>") %]
-<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][%- END -%][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
-
-<p />
-[% logintargets = user.get_logintargets %]
-<table>
-<tr><td align="right"><b>[% msg.maketext("mit")
-%]</b></td><td>
-[% IF view_config.${view}.validlogintargets && view_config.${view}.defaultlogintarget %]
-<select name="targetid">
-[%- FOREACH target IN logintargets -%]
-[%-   NEXT IF view_config.${view}.validlogintargets.${target.id} != 1 -%]
-[%-   IF target.id == view_config.${view}.defaultlogintarget -%]
-<option value="[% target.id %]">[% target.description %]</option>
-[%-   END -%]
-[%- END -%]
-[%- FOREACH target IN logintargets -%]
-[%-   NEXT IF view_config.${view}.validlogintargets.${target.id} != 1 -%]
-[%-   IF target.id != view_config.${view}.defaultlogintarget -%]
-<option value="[% target.id %]">[% target.description %]</option>
-[%-   END -%]
-[%- END -%]
-</select>
-[% ELSE %]
-<select name="targetid">
-[%- FOREACH target IN logintargets -%]
-[%-   IF target.id == 4 -%]
-<option value="[% target.id %]">[% target.description %]</option>
-[%-   END -%]
-[%- END -%]
-[%- FOREACH target IN logintargets -%]
-[%-   IF target.id != 4 -%]
-<option value="[% target.id %]">[% target.description %]</option>
-[%-   END -%]
-[%- END -%]
-</select>
-[% END %]
-</td></tr>
-<tr><td align="right"><b>[% msg.maketext("Kennung") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
-<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
-<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
-</table>
-<p />
-<a href="[% path_prefix %]/[% config.get('registration_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('mailpassword_loc') %]?action=show">[% msg.maketext("Registriertes Passwort vergessen?") %]</a>
-
-</form>
-
-<p />
-
-
-</div><!-- End login -->
-
-<p />
-</div><!-- End teaser -->
-[% END %]
-
 [% PROCESS common/subtemplate name="searchform_bottom" %]
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

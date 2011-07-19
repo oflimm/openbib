@@ -30,6 +30,7 @@
                 'T0300', # msg.maketext("T0300") Sammlungsvermerk
                 'T0361', # msg.maketext("T0361") Vorlage beigef. Werk
                 'T0365', # msg.maketext("T0365") Gemeins. Angaben
+                'T0369', # msg.maketext("T0369") Gemeins. Angaben Verfasser
                 'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
                 'T0360', # msg.maketext("T0360") Vorl. Unterreihe
                 'T0403', # msg.maketext("T0403") Auflage

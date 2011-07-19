@@ -1,81 +1,9 @@
-[%#-
-#######################################################################
-#
-# Templatename: circulation_reserv
-#
-# Typ         : Mastertemplate       
-#
-# Aufgabe:
-#
-# Ausgabe einer Uebersichtsliste aller vorgemerkten Medien
-#
-#######################################################################
--%]
-[% PROCESS common/subtemplate name="std_header" %]
-
-  <body>
-
-<!-- skip link navigation -->
-<ul id="skiplinks">
-	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="page_margins">
-  <div class="page">
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
- <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary">
-        <div id="col1_content" class="clearfix">
-[% PROCESS common/subtemplate name="user_navigation" active_submenu="reservations" %] 
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
-        <div id="col3_content" class="clearfix">
-
-[% IF reservations.size == 0 %]
-<b>[% msg.maketext("Sie haben keine Vormerkungen getätigt.") %]</b>
-[% ELSE  %]
-
-<table cellpadding="5">
-<tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Vormerkungsfrist") %]</b></td><td><b>[% msg.maketext("Stelle") %]</b></td></tr>
-[%- listrow = 'listrow1' -%]
-
-[%- FOREACH reservation = reservations -%]
-
-<tr
-class="[% listrow %]"
-[%- IF listrow == 'listrow1' -%]
-[%- listrow = 'listrow2' -%] 
+[%- IF representation == '' || representation == 'html' -%]
+[%- PROCESS common/subtemplate name="user_circulation_reserv_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="user_circulation_reserv_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="user_circulation_reserv_json" -%]
 [%- ELSE -%]
-[%- listrow = 'listrow1' -%] 
+This Resource-Type is not available in the representation [% representation %]
 [%- END -%]
-><td><i>[% reservation.Verfasser %]</i><br />[% reservation.Titel %]
-
-[% IF reservation.EJahr %]
-, [% reservation.EJahr %]
-[% END %]
-
-</td><td>[% reservation.Signatur %]</td><td>[% reservation.VormerkDatum %]-[% reservation.AufrechtDatum %]</td><td>[% reservation.Stelle %]. Stelle</td><td><a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=cancel_reservation;mnr=[% reservation.Mediennummer %];zst=[% reservation.Zweigstelle %];validtarget=[% database %]" title="Vormerkung l&ouml;lschen">Vormerkung l&ouml;schen</a></td></tr>
-[% END %]
-</table>
-
-[% END %]
-
-        </div>
-        <div id="ie_clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-      <!-- end: #col3 -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

@@ -254,7 +254,7 @@ sub set_from_apache_request {
             my $facet = $1;
             my $term = $2;
 
-            my $string = $term;
+            my $string = decode_utf8($term);
             
             $string = OpenBib::Common::Util::grundform({
                 content   => $string,

@@ -281,8 +281,8 @@ background: url(/images/openbib/views/richter/logo.png) center no-repeat;
 }
 .cloud span {
   position: absolute;
-  left: -999px;
-  width: 990px;
+  left: -1999px;
+  width: 1990px;
 }
 .cloud .fast-nicht-genutzt {
   font-size: 0.7em;
@@ -309,6 +309,10 @@ background: url(/images/openbib/views/richter/logo.png) center no-repeat;
 .resultlist {
   width: 100%;
   overflow: hidden; 
+}
+
+.representation {
+  text-align: right;
 }
 
 .resultheader {
@@ -537,4 +541,32 @@ background: url(/images/openbib/views/richter/logo.png) center no-repeat;
 
 .drilldown table {
   width: 100%;;
+}
+
+.reuse_data h4, .discover_sources h4 {
+    display: block;
+    margin: 10px 5px 5px 5px;
+    border-bottom: 1px #c88 solid;
+    font-style:normal;
+    font-variant:small-caps;
+  }
+
+  #qr {
+  margin-top:-416px;
+  position:absolute;
+  border:1px solid #ccc;
+  background: aliceblue;
+  padding:5px;
+  display:none;
+  color:#000;
+  text-align: center;
+}
+
+#qr .closebutton {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  cursor: pointer;
+}
+
 }

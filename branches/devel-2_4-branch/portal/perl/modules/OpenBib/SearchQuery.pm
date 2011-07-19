@@ -252,9 +252,9 @@ sub set_from_apache_request {
     foreach my $filter ($query->param('filter')) {
         if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
             my $facet = $1;
-            my $term = $2;
+            my $term = decode_utf8($2);
 
-            my $string = decode_utf8($term);
+            my $string = $term;
             
             $string = OpenBib::Common::Util::grundform({
                 content   => $string,

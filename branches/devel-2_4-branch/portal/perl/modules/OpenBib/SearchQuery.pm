@@ -258,7 +258,6 @@ sub set_from_apache_request {
             
             $string = OpenBib::Common::Util::grundform({
                 content   => $string,
-                searchreq => 1,
             });
             
             $string=~s/\W/_/g;
@@ -283,7 +282,6 @@ sub set_from_apache_request {
             
             $string = OpenBib::Common::Util::grundform({
                 content   => $string,
-                searchreq => 1,
             });
             
             $string=~s/\W/_/g;

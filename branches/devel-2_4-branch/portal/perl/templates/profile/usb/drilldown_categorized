@@ -129,7 +129,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 
    all_filters = [];
        FOREACH filter IN searchquery.get_filter ;
-          all_filters.push("filter=${filter.val}");
+          all_filters.push("facet=${filter.val}");
    END ;
    allfilterstring = ";${all_filters.join(';')}";
 %]
@@ -155,7 +155,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 %]
 [%             FOREACH filter IN searchquery.get_filter ;
                    this_filters = [];
-                   this_filterstring = "filter=${filter.val}";
+                   this_filterstring = "facet=${filter.val}";
                    FOREACH all_filter IN all_filters;
                        IF all_filter != this_filterstring ;
                            this_filters.push(all_filter);
@@ -206,7 +206,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').personstring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.3.size > 5 %]
 </div>
@@ -231,7 +231,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.7.size > 5 %]
 </div>
@@ -256,7 +256,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').subjectstring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.1.size > 5 %]
 </div>
@@ -281,7 +281,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').classificationstring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.2.size > 5 %]
 </div>
@@ -306,7 +306,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').yearstring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
 [% IF category_map.5.size > 5 %]
 </div>
@@ -331,7 +331,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').mediatypestring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.4.size > 5 %]
 </div>
@@ -356,7 +356,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').tagstring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.9.size > 5 %]
 </div>
@@ -381,7 +381,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').litliststring.prefix;
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.10.size > 5 %]
 </div>
@@ -457,7 +457,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     sprstring = spr.join(';');
 
 -%]
-<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% request_base %];fs=[% lastquery %][% IF NOT allfilterstring.match("${searchprefix}:\\|${searchterm}\\|",1) %];facet=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.6.size > 5 %]
 </div>

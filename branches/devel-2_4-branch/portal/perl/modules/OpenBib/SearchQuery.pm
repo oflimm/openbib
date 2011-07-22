@@ -44,6 +44,7 @@ use String::Tokenizer;
 use Text::Aspell;
 use Search::Xapian;
 use YAML;
+use URI::Escape;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -162,7 +163,7 @@ sub set_from_apache_request {
         my $searchfieldprefix=$config->{searchfield}{$searchfield}{prefix};
         my ($searchfield_content, $searchfield_norm_content,$searchfield_bool_op);
         $searchfield_content = $searchfield_norm_content = decode_utf8($query->param("$searchfieldprefix")) || $query->param("$searchfieldprefix")      || '';
-        $searchfield_bool_op = ($query->param("b$searchfieldprefix"))?$query->param("b$searchfieldprefix"):
+        $searchfield_bool_op = (defined $query && $query->param("b$searchfieldprefix"))?$query->param("b$searchfieldprefix"):
             ($query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}))?$query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}):"AND";
         
         # Inhalts-Check
@@ -250,6 +251,7 @@ sub set_from_apache_request {
     # bereits vorbelegt. Daher kann alternativ facet verwendet werden
     
     foreach my $filter ($query->param('filter')) {
+        #$filter = uri_unescape($filter);
         if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
             my $facet = $1;
             my $term = decode_utf8($2);
@@ -274,9 +276,10 @@ sub set_from_apache_request {
     }
 
     foreach my $filter ($query->param('facet')) {
+        #$filter = uri_unescape($filter);
         if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
             my $facet = $1;
-            my $term = $2;
+            my $term = decode_utf8($2);
 
             my $string = $term;
             

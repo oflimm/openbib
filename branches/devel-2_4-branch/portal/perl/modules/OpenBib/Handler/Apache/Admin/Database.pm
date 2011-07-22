@@ -98,7 +98,7 @@ sub show_collection {
 
     my $dbinfo_ref = $config->get_dbinfo_overview();
     
-    my $ttdata={
+    my $ttdata={                # 
         kataloge   => $dbinfo_ref,
     };
     
@@ -153,7 +153,7 @@ sub create_record {
 
     # CGI Args
     my $description     = decode_utf8($query->param('description'))     || '';
-    my $shortdesc       = $query->param('shortdesc')       || '';
+    my $shortdesc       = decode_utf8($query->param('shortdesc'))       || '';
     my $system          = $query->param('system')          || '';
     my $dbname          = $query->param('dbname')          || '';
     my $sigel           = $query->param('sigel')           || '';
@@ -384,7 +384,7 @@ sub update_record {
     # Ansonsten POST oder PUT => Aktualisieren
     
     my $description     = decode_utf8($query->param('description'))     || '';
-    my $shortdesc       = $query->param('shortdesc')       || '';
+    my $shortdesc       = decode_utf8($query->param('shortdesc'))       || '';
     my $system          = $query->param('system')          || '';
     my $sigel           = $query->param('sigel')           || '';
     my $url             = $query->param('url')             || '';

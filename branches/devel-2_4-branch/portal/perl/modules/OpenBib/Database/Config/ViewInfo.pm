@@ -75,10 +75,10 @@ __PACKAGE__->belongs_to(
     { 'foreign.profilename' => 'self.profilename' }
 );
 
-__PACKAGE__->has_many(
-    'profiledbs' => 'OpenBib::Database::Config::ProfileDB',
-    { 'foreign.profilename' => 'self.profilename' }
-);
+#__PACKAGE__->has_many(
+#    'profiledbs' => 'OpenBib::Database::Config::ProfileDB',
+#    { 'foreign.profilename' => 'self.profilename' }
+#);
 
 __PACKAGE__->has_many(
     'viewdbs' => 'OpenBib::Database::Config::ViewDB',

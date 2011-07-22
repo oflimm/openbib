@@ -30,7 +30,17 @@ __PACKAGE__->add_columns(
     size => 65535,
   },
   "nr",
-  { data_type => "INT", default_value => undef, is_nullable => 1, size => 11 },
+  {
+      data_type => "INT",
+      default_value => undef,
+      is_nullable => 1,
+      size => 11
+  },
+);
+
+__PACKAGE__->has_many(
+    'orgunitdbs' => 'OpenBib::Database::Config::OrgunitDB',
+    { 'foreign.orgunitname' => 'self.orgunitname' }
 );
 
 1;

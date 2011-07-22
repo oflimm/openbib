@@ -176,14 +176,38 @@ __PACKAGE__->add_columns(
     is_nullable => 1,
     size => 65535,
   },
+  "allcount",
+  {
+      data_type => "BIGINT",
+      default_value => 0,
+      is_nullable => 1,
+      size => 20
+  },
+  "journalcount",
+  {
+      data_type => "BIGINT",
+      default_value => 0,
+      is_nullable => 1,
+      size => 20
+  },
+  "articlecount",
+  {
+      data_type => "BIGINT",
+      default_value => 0,
+      is_nullable => 1,
+      size => 20
+  },
+  "digitalcount",
+  {
+      data_type => "BIGINT",
+      default_value => 0,
+      is_nullable => 1,
+      size => 20
+  },
+
   
 );
 __PACKAGE__->set_primary_key("dbname");
-
-__PACKAGE__->has_many(
-    'titcount' => 'OpenBib::Database::Config::Titcount',
-    { 'foreign.dbname' => 'self.dbname' }
-);
 
 __PACKAGE__->has_many(
     'libraryinfo' => 'OpenBib::Database::Config::LibraryInfo',

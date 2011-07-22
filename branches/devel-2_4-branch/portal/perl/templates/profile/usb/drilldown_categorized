@@ -125,7 +125,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <table style="font-size:0.7em;" width="100%">
 
 [%
-   request_base = "${viewconfig.view.zms_search_url}?view=${view};num=${qopts.num};page=1";
+   request_base = "${viewconfig.view.zms_search_url}?l=de;view=${view};num=${qopts.num};page=1";
 
    all_filters = [];
        FOREACH filter IN searchquery.get_filter ;

@@ -15,7 +15,7 @@
 <table class="result-details" style="margin:-0.2em 3em 0.2em 0;padding-bottom:0;">
 <tr><th>id</th><td>[% record.id %]</td></tr>
 [%-
-request_base = "${viewconfig.$view.zms_search_url}?view=${view};num=10;page=1";
+request_base = "${viewconfig.$view.zms_search_url}?l=de;view=${view};num=10;page=1";
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
@@ -211,14 +211,14 @@ FOREACH category IN categories;
             searchterms.push("id:${superid.content}");
          END;
 
-         localurl  = "${request_base}?view=${view};db=${database};dop=or;fs=${searchterms.join(' ')}";
+         localurl  = "${request_base}?l=de;view=${view};db=${database};dop=or;fs=${searchterms.join(' ')}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         localurl  = "${request_base}?view=${view};db=${database};fs=${searchprefix}:${record.id}";
+         localurl  = "${request_base}?l=de;view=${view};db=${database};fs=${searchprefix}:${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;

@@ -13,11 +13,11 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
-<link rel="stylesheet" type="text/css" href="http://kug4.ub.uni-koeln.de/styles/openbib_zms.css" />
+<link rel="stylesheet" type="text/css" href="http://kug4.ub.uni-koeln.de/css/openbib_zms.css" />
 
 <style>
 #searchresult {
-   width: 90%;
+   width: 80%;
    font-size:0.9em;
 }
 </style>
@@ -33,11 +33,47 @@
     IF end_range >= fullresultcount ;
        end_range       = fullresultcount;
     END;
+
+    query_args_base   = cgiapp.modify_querystring({ exclude = ['page']});
+    hidden_input_sort = cgiapp.modify_querystring_as_hidden_input({ exclude = ['page','srt','srto']});
+
 -%]
 
 [% PROCESS common/subtemplate name="drilldown_categorized" %]
 
-<div id="searchresult">
+<div id="resultlist">
+
+<h2 style="float:left;border:none;margin-top:0;margin-bottom:0.2em;">Recherche-Ergebnis</h2>
+<h2 style="text-align:right;margin-top:0;margin-bottom:0.2em;">
+<span style="font-size:0.8em;font-weight:normal;white-space:nowrap;">[% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% fullresultcount %]</span>
+</h2>
+<div style="height:1px;font-size:1px;"></div>
+
+<div style="float:right;text-align:right;margin-bottom:1em;margin-left:2em;">
+<span style="font-size:1.1em;line-height:1.5em;">Sortierung:</span>
+<form method="get" action="[% view_config.${view}.zms_search_url %]" class="sortform" >
+
+<input type="hidden" name="page" value="1" />
+
+[% hidden_input_sort %]
+
+<select name="srt">
+  <option value="relevance"[%- IF query.param('srt') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>
+  <option value="person"[%- IF query.param('srt') == 'person' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title"[%- IF query.param('srt') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('srt') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="year"[%- IF query.param('srt') == 'year' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
+  <option value="publisher"[%- IF query.param('srt') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
+  <option value="mark"[%- IF query.param('srt') == 'mark' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
+  <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+</select>&nbsp;
+<select name="srto">
+  <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+</select>
+<input class="button submit" type="submit" value=">>">
+</form>
+</div>
 
 <ol start="[% start_range %]" class="hitlist">
 [%- FOREACH record IN recordlist.get_records -%]
@@ -59,7 +95,7 @@
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% view_config.${view}.zms_search_url %]?view=[% view %];num=[% qopts.num %];page=[% page %];fs=[% searchquery.get_searchquery.freesearch.val %]">[% page %]</a>
+&nbsp;&nbsp;<a href="[% view_config.${view}.zms_search_url %]?page=[% page %];[% query_args_base %]">[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]

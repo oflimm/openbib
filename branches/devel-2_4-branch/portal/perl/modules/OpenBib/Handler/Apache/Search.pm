@@ -1524,7 +1524,7 @@ sub get_databases {
 
     my $sysprofile   = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
 
-    my $orgunits_ref = $config->get_orgunits($sysprofile);
+    my $orgunits_ref = $config->get_orgunitinfo_overview($sysprofile);
 
     my $content_type = $config->{content_type_map_rev}->{$representation};
 

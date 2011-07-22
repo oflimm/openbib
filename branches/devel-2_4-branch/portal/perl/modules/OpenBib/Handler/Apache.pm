@@ -569,6 +569,7 @@ sub modify_querystring {
     my @cgiparams = ();
     
     foreach my $param (keys %{$self->query->param}){
+        next unless ($self->query->param($param));
         $logger->debug("Processing $param");
         if (exists $arg_ref->{change}->{$param}){
             push @cgiparams, "$param=".$arg_ref->{change}->{$param};
@@ -587,6 +588,53 @@ sub modify_querystring {
     }
     
     return join(';',@cgiparams);
+}
+
+sub modify_querystring_as_hidden_input {
+    my ($self,$arg_ref)=@_;
+    
+    # Set defaults
+    my $exclude_array_ref    = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}        : [];
+    
+    my $change_ref           = exists $arg_ref->{change}
+        ? $arg_ref->{change}         : {};
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Modify Querystring as hidden input");
+    
+    my $exclude_ref = {};
+    
+    foreach my $param (@{$exclude_array_ref}){
+        $exclude_ref->{$param} = 1;
+    }
+
+    $logger->debug("Args".YAML::Dump($arg_ref));
+
+    my $hidden_input_string="";
+    
+    foreach my $param (keys %{$self->query->param}){
+        next unless ($self->query->param($param));
+        $logger->debug("Processing $param");
+        if (exists $arg_ref->{change}->{$param}){
+            $hidden_input_string=$hidden_input_string."<input type=\"hidden\" name=\"$param\" value=\"".$arg_ref->{change}->{$param}."\" />\n";
+        }
+        elsif (! exists $exclude_ref->{$param}){
+            my @values = $self->query->param($param);
+            if (@values){
+                foreach my $value (@values){
+                    $hidden_input_string=$hidden_input_string."<input type=\"hidden\" name=\"$param\" value=\"$value\" />";
+                }
+            }
+            else {
+                $hidden_input_string=$hidden_input_string."<input type=\"hidden\" name=\"$param\" value=\"".$self->query->param($param)."\" />";
+            }
+        }
+    }
+
+    return $hidden_input_string;
 }
 
 1;

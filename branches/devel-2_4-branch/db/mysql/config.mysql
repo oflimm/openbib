@@ -34,6 +34,13 @@ CREATE TABLE databaseinfo (
  circwsurl    TEXT,
  circdb       TEXT,
 
+/* Various Counters */
+
+ allcount      BIGINT DEFAULT 0,
+ journalcount  BIGINT DEFAULT 0,
+ articlecount  BIGINT DEFAULT 0,
+ digitalcount  BIGINT DEFAULT 0,
+
  INDEX (dbname),
  INDEX (active),
  INDEX (description(255))
@@ -62,11 +69,12 @@ PACK_KEYS=1;
 drop table IF EXISTS titcount;
 create table titcount (
  dbname VARCHAR(255),
- count  BIGINT,
- type   TINYINT,
+ complete BIGINT,
+ journal  BIGINT,
+ article  BIGINT,
+ online   BIGINT,
  
- INDEX (dbname),
- INDEX (type)
+ INDEX (dbname)
 );
 
 drop table IF EXISTS profileinfo;
@@ -80,10 +88,10 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
-drop table IF EXISTS profiledbs;
-CREATE TABLE profiledbs (
+drop table IF EXISTS orgunitdbs;
+CREATE TABLE orgunitdbs (
  profilename VARCHAR(20) NOT NULL,
- orgunitname VARCHAR(20),
+ orgunitname VARCHAR(20) NOT NULL,
  dbname      VARCHAR(255) NOT NULL,
 
  INDEX(profilename),

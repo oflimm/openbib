@@ -24,3 +24,11 @@ alter table viewinfo add  joinindex       TINYINT after profilename;
 alter table viewinfo add  stripuri       TINYINT after profilename;
 alter table viewinfo change start_stid servername text;
 
+alter table databaseinfo add  allcount     BIGINT DEFAULT 0 after circdb;
+alter table databaseinfo add  journalcount BIGINT DEFAULT 0 after allcount;
+alter table databaseinfo add  articlecount BIGINT DEFAULT 0 after journalcount;
+alter table databaseinfo add  digitalcount BIGINT DEFAULT 0 after articlecount;
+
+drop table titcount;
+
+rename table profiledbs orgunitdbs;

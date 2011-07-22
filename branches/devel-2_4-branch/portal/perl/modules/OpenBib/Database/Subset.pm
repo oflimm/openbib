@@ -91,6 +91,13 @@ sub set_destination {
     return $self;
 }
 
+sub set_title_filter {
+    my $self          = shift;
+    my $title_filter_ref = shift;
+
+    $self->{title_filter} = $title_filter_ref;
+}
+
 sub identify_by_mark {
     my $self = shift;
     my $mark = shift;
@@ -397,6 +404,9 @@ sub write_set {
             }
             
             if (defined $self->{titleid}{$id} && $self->{titleid}{$id} == 1){
+                if (exists $self->{title_filter}){
+                    &{$self->{title_filter}}($_,*TITLEOUT);
+                }
                 print TITLEOUT $_;
             }
         }

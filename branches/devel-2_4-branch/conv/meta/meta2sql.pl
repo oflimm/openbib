@@ -762,26 +762,26 @@ while (my $line=<IN>){
                 && exists $thisitem_ref->{'T0334'} && $thisitem_ref->{'T0334'}[0]{content} eq "Elektronische Ressource"
                     && exists $thisitem_ref->{'T0652'} && $thisitem_ref->{'T0652'}[0]{content} eq "Online-Ressource"){
                 # Steht Medientyp schon auf Online-Zugriff?
-                my $have_ebook=0;
+                my $have_digital=0;
                 my $type_indicator = 1;
                 foreach my $item (@{$thisitem_ref->{'T0800'}}){
-                    if ($item->{content} eq "E-Medium mit Online-Zugriff"){
-                        $have_ebook = 1 ;
+                    if ($item->{content} eq "Digital"){
+                        $have_digital = 1 ;
                     }
                     $type_indicator++;
                 }
 
-                if (!$have_ebook){
+                if (!$have_digital){
                     if (! exists $normdata_ref->{mart} ){
                         $normdata_ref->{mart} = [];
                     }
 
-                    push @{$normdata_ref->{mart}}, "E-Medium mit Online-Zugriff";
+                    push @{$normdata_ref->{mart}}, "Digital";
 
-                    print OUT       "$id800$type_indicatorE-Medium mit Online-Zugriff\n";
+                    print OUT       "$id800$type_indicatorDigital\n";
                     my $contentnormtmp = OpenBib::Common::Util::grundform({
                         category => '800',
-                        content  => 'E-Medium mit Online-Zugriff',
+                        content  => 'Digital',
                     });
                     print OUTSTRING "$id800$contentnormtmp\n";
                 }

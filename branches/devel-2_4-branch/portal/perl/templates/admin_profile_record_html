@@ -47,7 +47,7 @@
 <table>
 <tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
 
-<tr><td><span style="color:blue">[% profile.profilename %]</span></td><td>[% profile.description %]</td>
+<tr><td><span style="color:blue">[% profileinfo.profilename %]</span></td><td>[% profileinfo.description %]</td>
 </td></tr>
 </table>
 </tr>
@@ -55,8 +55,7 @@
 </form>
 <p />
 
-[% orgunits = config.get_orgunits(profile.profilename) %]
-[% IF orgunits.size > 0 %]
+[% IF orgunits.count > 0 %]
 
 <table width="100%">
 <tr><th>Bereits existierende Organisationseinheiten</th></tr>

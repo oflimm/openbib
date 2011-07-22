@@ -43,12 +43,12 @@
 
 [% IF orgunits.size > 0 %]
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Organisationseinheiten dieses Profils") %]</th></tr>
 <tr><td class="boxedclear">
-<table>
+<table class="full">
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Nr") %]</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
-[% FOREACH thisorgunit IN orgunits %]
+[% FOREACH thisorgunit IN orgunits.all %]
 <tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profile.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% thisorgunit.dbnames.join(',') %]</td></tr>
 [% END %]
 </table>

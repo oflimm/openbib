@@ -44,10 +44,10 @@
 <form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]">
 <input type="hidden" name="_method"    value="PUT" />
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Katalog bearbeiten") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
-<table>
+<table class="full">
 <tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% databaseinfo.dbname %]</td></tr>
 <tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% databaseinfo.description %]" size="60" /></td></tr>
 <tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td><input type="text" name="shortdesc" value="[% databaseinfo.shortdesc %]" size="60" /></td></tr>
@@ -78,10 +78,10 @@
 
 <p />
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Import-Einstellungen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
-<table>
+<table class="full">
 <tr><td><b>[% msg.maketext("Protokoll") %]</b></td><td>
 <select name="protocol">
 <option value="ftp" [% IF databaseinfo.protocol == 'ftp' %]selected[% END %]>[% msg.maketext("FTP") %]</option>
@@ -112,10 +112,10 @@
 
 <p />
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
-<table>
+<table class="full">
 <tr><td><b>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</b></td><td>
 <select name="circ">
 <option value="0" [% IF databaseinfo.circ == '0' %]selected[% END %]>[% msg.maketext("Nein") %]</option>

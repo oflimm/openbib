@@ -58,25 +58,15 @@
 <p />
 
 <p />
-<h2>Katalogauswahl der Organisationseinheit</h2>
+<h2>[% msg.maketext("Katalogauswahl der Organisationseinheit") %]</h2>
 
-[%# USE dumper;dumper.dump(orgunitinfo)%]
+[%# USE dumper;dumper.dump(orgunitdb_map)%]
 
-<select name="orgunitdb" multiple="multiple">
+<select name="orgunitdb" multiple="multiple" size="20">
 
-[% FOREACH singledb IN dbnames %]
+[% FOREACH singledb IN activedbs.all %]
 
-<option value="[% singledb.dbname %]"
-
-[% FOREACH checkeddb IN orgunitinfo.dbnames %]
-
-[% IF singledb.dbname == checkeddb %]
-selected="selected"
-[% END %]
-
-[% END %]
-
->[% singledb.dbname %]: [% singledb.description %]</option>
+<option value="[% singledb.dbname %]"[% IF orgunitdb_map.${singledb.dbname} %] selected="selected"[% END %]>[% singledb.dbname %]: [% singledb.description | truncate(100) %]</option>
 
 [% END %]
 

@@ -259,39 +259,24 @@ sub show_record_form {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $viewinfo_obj  = $config->get_viewinfo->search({ viewname => $viewname })->single();
+    my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
-    my $description = $viewinfo_obj->description;
-    my $primrssfeed = $viewinfo_obj->rssfeed;
-    my $start_loc   = $viewinfo_obj->start_loc;
-    my $servername  = $viewinfo_obj->servername;
-    my $profilename = $viewinfo_obj->profilename;
-    my $stripuri    = $viewinfo_obj->stripuri;
-    my $joinindex   = $viewinfo_obj->joinindex;
-    my $active      = $viewinfo_obj->active;
-             
-    my @profiledbs       = $config->get_profiledbs($profilename);
-    my @viewdbs          = $config->get_viewdbs($viewname);
+    my $viewdbs_ref      = {};
+    foreach my $dbname ($config->get_viewdbs($viewname)){
+        $viewdbs_ref->{$dbname} = 1;
+    }
+    
+    my @profiledbs       = $config->get_profiledbs($viewinfo->profilename);
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
-    my $viewrssfeed_ref=$config->get_rssfeeds_of_view($viewname);
+    my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
 
-    my $viewinfo={
-        viewname     => $viewname,
-        description  => $description,
-        active       => $active,
-        stripuri     => $stripuri,
-        joinindex    => $joinindex,
-        start_loc    => $start_loc,
-        servername   => $servername,
-        profilename  => $profilename,
-        viewdbs      => \@viewdbs,
+    my $ttdata={
+        viewinfo   => $viewinfo,
+        viewdbs    => $viewdbs_ref,
+
         allrssfeeds  => $all_rssfeeds_ref,
         viewrssfeed  => $viewrssfeed_ref,
-        primrssfeed  => $primrssfeed,
-    };
 
-    
-    my $ttdata={
         dbnames    => \@profiledbs,
         viewinfo   => $viewinfo,
         dbinfo     => $dbinfotable,
@@ -383,13 +368,11 @@ sub update_record {
         start_loc   => $viewstart_loc,
         servername  => $viewservername,
         profilename => $profilename,
-        viewdb      => \@viewdb,
-        rssfeeds    => \@rssfeeds,
     };
 
     $logger->debug("Info: ".YAML::Dump($thisviewinfo_ref));
     
-    $config->update_view($thisviewinfo_ref);
+    $config->update_view($thisviewinfo_ref,\@viewdb,\@rssfeeds);
 
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}");

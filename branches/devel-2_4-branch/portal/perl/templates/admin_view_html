@@ -45,7 +45,7 @@
 <form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]">
 
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Neuen View anlegen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
@@ -64,7 +64,7 @@
 
 [% IF views.size > 0 %]
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Bereits existierende Views") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% msg.maketext("Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen.") %]
@@ -73,9 +73,15 @@
 <table>
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Profil") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
 
-[% FOREACH viewinfo IN views %]
-
-<tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/rss/edit"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/edit">[% viewinfo.description %]</a></td><td>[% viewinfo.profile %]</td><td>[% viewinfo.viewdb %]</td><td>[% viewinfo.active %]</td></tr>
+[% FOREACH viewinfo IN views.all %]
+[%
+    viewdbs = [];
+    # _rs-Suffix fuer Variable viewdbs wegen TT
+    FOREACH item IN viewinfo.viewdbs_rs.all ;
+       viewdbs.push(item.dbname);
+    END;
+%]
+<tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/rss/edit"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/edit">[% viewinfo.description %]</a></td><td>[% viewinfo.profilename %]</td><td>[% viewdbs.join(' ; ') %]</td><td>[% IF viewinfo.active %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td></tr>
 [% END %]
 
 </table>

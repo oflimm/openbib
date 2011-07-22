@@ -44,20 +44,22 @@
 <form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]">
 <input type="hidden" name="_method"     value="PUT" />
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("View bearbeiten") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><b>[% msg.maketext("URI ohne View") %]</b></td><td><b>[% msg.maketext("Eigener Index") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
-
-<tr><td><span style="color:blue">[% viewinfo.viewname %]</span></td><td><input type="text" name="description" value="[% viewinfo.description %]" size="40" /></td>
-<td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview %]<option value="[% profile.profilename %]" [% IF viewinfo.profilename == profile.profilename %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><span style="color:blue">[% viewinfo.viewname %]</span></td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% viewinfo.description %]" size="40" /></td></tr>
+<tr><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview %]<option value="[% profile.profilename %]" [% IF viewinfo.profilename == profile.profilename %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td></tr>
+<tr><td><b>[% msg.maketext("URI ohne View") %]</b></td>
 <td>
 <select name="stripuri">
 <option value="1" [% IF viewinfo.stripuri == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="0" [% IF viewinfo.stripuri != '1' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
 </td>
+</tr>
+<tr><td><b>[% msg.maketext("Eigener Index") %]</b></td>
 <td>
 <select name="joinindex">
 <option value="1" [% IF viewinfo.joinindex == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
@@ -65,42 +67,29 @@
 </select>
 </td>
 <td>
+</tr>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td>
+<td>
 <select name="active">
 <option value="1" [% IF viewinfo.active == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="0" [% IF viewinfo.active != '1' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
 </td>
 </tr>
+<tr><td><b>Anderer Servername in URI</b></td><td><input type="text" name="viewservername" value="[% viewinfo.servername %]" size="40" /></td></tr>
+<tr><td><b>Andere Start-URI-Pfad</b></td><td><input type="text" name="viewstart_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
 </table>
-<p />
 
-<table>
-<tr><td>Anderer Servername in URI</td><td><input type="text" name="viewservername" value="[% viewinfo.servername %]" size="40" /></td></tr>
-<tr><td>Andere Start-URI-Pfad</td><td><input type="text" name="viewstart_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
+</td></tr>
 </table>
 
 <p />
 <b>[% msg.maketext("Katalogauswahl zu diesem View") %]</b><br /><br />
 
 <select name="viewdb" multiple="multiple">
-
 [% FOREACH singledb IN dbnames %]
-
-<option value="[% singledb %]"
-
-[% FOREACH checkeddb IN viewinfo.viewdbs %]
-
-[% IF singledb == checkeddb %]
-selected="selected"
+<option value="[% singledb %]" [% IF viewdbs.${singledb} %]selected="selected"[% END %]>[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</option>
 [% END %]
-
-[% END %]
-
->[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.short %][% END %]</option>
-
-[% END %]
-
-
 </select>
 
 
@@ -110,19 +99,9 @@ selected="selected"
 
 <select name="rssfeeds" multiple="multiple">
 
-[% FOREACH singlefeed IN viewinfo.allrssfeeds %]
+[% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
-
-<option value="[% feedid %]"
-
-[% IF viewinfo.viewrssfeed.${feedid} %]
-selected="selected"
-[% END %]
-
-
->[% singlefeed.dbname %] / [% singlefeed.type %] /
-[%singlefeed.subtype %]</option>
-
+<option value="[% feedid %]" [% IF viewrssfeed.${feedid} %]selected="selected"[% END %]>[% singlefeed.dbname %] / [% singlefeed.type %] / [%singlefeed.subtype %]</option>
 [% END %]
 
 
@@ -137,7 +116,7 @@ selected="selected"
 
 <select name="primrssfeed">
 
-[% FOREACH singlefeed IN viewinfo.allrssfeeds %]
+[% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
 
 <option value="[% feedid %]"

@@ -133,23 +133,18 @@ sub show_record {
         return Apache2::Const::OK;
     }
 
-    my $profileinfo_ref = $config->get_profileinfo({ profilename => $profilename })->single();
+    my $profileinfo_ref = $config->get_profileinfo->search({ profilename => $profilename })->single();
     
-    my $description = $profileinfo_ref->description;
+    my $activedbs_ref = $config->get_active_database_names();
 
-    my @dbnames     = $config->get_active_database_names();
-
-    my @profiledbs  = $config->get_profiledbs($profilename);
-    
-    my $profile = {
-        profilename  => $profilename,
-        description  => $description,
-        profiledbs   => \@profiledbs,
-    };
+    my @profiledbs    = $config->get_profiledbs($profilename);
+    my $orgunits_ref  = $config->get_orgunitinfo_overview($profilename);
     
     my $ttdata = {
-        profile    => $profile,
-        dbnames    => \@dbnames,
+        profileinfo => $profileinfo_ref,
+        profiledbs   => \@profiledbs,
+        orgunits    => $orgunits_ref,
+        activedbs   => $activedbs_ref,
     };
 
     $self->print_page($config->{tt_admin_profile_record_tname},$ttdata);
@@ -223,23 +218,15 @@ sub show_record_form {
         return Apache2::Const::OK;
     }
 
-    my $profileinfo_ref = $config->get_profileinfo({ profilename => $profilename })->single();
-    
-    my $description = $profileinfo_ref->description;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my @dbnames     = $config->get_active_database_names();
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
+    my $orgunits_ref    = $config->get_orgunitinfo_overview($profilename);
     
-    my @profiledbs  = $config->get_profiledbs($profilename);
-    
-    my $profile={
-        profilename  => $profilename,
-        description  => $description,
-        profiledbs   => \@profiledbs,
-    };
-    
-    my $ttdata={
-        profile    => $profile,
-        dbnames    => \@dbnames,
+    my $ttdata = {
+        profileinfo => $profileinfo_ref,
+        orgunits    => $orgunits_ref,
+        dbinfo      => $dbinfotable,
     };
     
     $self->print_page($config->{tt_admin_profile_record_edit_tname},$ttdata);
@@ -285,7 +272,7 @@ sub update_record {
         $logger->debug("About to delete $profilename");
         
         if ($confirm){
-            my $profileinfo_ref = $config->get_profileinfo({ profilename => $profilename })->single();
+            my $profileinfo_ref = $config->get_profileinfo_search_rs({ profilename => $profilename })->single();
 
             my $ttdata={
                 profileinfo => $profileinfo_ref,

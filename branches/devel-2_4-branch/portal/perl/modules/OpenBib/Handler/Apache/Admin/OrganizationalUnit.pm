@@ -114,7 +114,7 @@ sub show_collection {
         return Apache2::Const::OK;
     }
     
-    my $orgunits_ref = $config->get_orgunits($profilename);
+    my $orgunits_ref = $config->get_orgunitinfo_overview($profilename);
 
     my $ttdata={
         orgunits   => $orgunits_ref,
@@ -162,16 +162,17 @@ sub show_record {
         return Apache2::Const::OK;
     }
     
-    my $profileinfo_ref = $config->get_profileinfo({ profilename => $profilename })->single();
-    my $orgunitinfo_ref = $config->get_orgunitinfo($profilename,$orgunitname);
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
+    my $orgunitinfo_ref = $config->get_orgunitinfo->search_rs({ profilename => $profilename, orgunitname => $orgunitname})->single();
     
-    my @orgunitdbs   = $config->get_profiledbs($profilename,$orgunitname);
+    my @orgunitdbs   = $config->get_orgunitdbs($profilename,$orgunitname);
     
     $orgunitinfo_ref->{dbnames} = \@orgunitdbs;
     
     my $ttdata={
         profileinfo    => $profileinfo_ref,
         orgunitinfo    => $orgunitinfo_ref,
+        orgunitdbs     => \@orgunitdbs,
     };
 
     $self->print_page($config->{tt_admin_orgunit_record_tname},$ttdata);
@@ -200,7 +201,7 @@ sub create_record {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $orgunit         = $query->param('orgunit')                      || '';
+    my $orgunit         = decode_utf8($query->param('orgunit'))         || '';
     my $description     = decode_utf8($query->param('description'))     || '';
 
     if (!$self->is_authenticated('admin')){
@@ -278,19 +279,22 @@ sub show_record_form {
         $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
     }
 
-    my $profileinfo_ref = $config->get_profileinfo({ profilename => $profilename })->single();
-    my $orgunitinfo_ref = $config->get_orgunitinfo($profilename,$orgunitname);
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
+    my $orgunitinfo_ref = $config->get_orgunitinfo->search_rs({ profilename => $profilename, orgunitname => $orgunitname})->single();
+    my $activedbs_ref   = $config->get_databaseinfo->search_rs({'active' => 1},{ order_by => 'dbname'});
 
-    my @dbnames      = $config->get_active_database_names();
-
-    my @orgunitdbs   = $config->get_profiledbs($profilename,$orgunitname);
+    my $orgunitdb_map_ref = {};
     
-    $orgunitinfo_ref->{dbnames} = \@orgunitdbs;
+    foreach my $dbname ($config->get_orgunitdbs($profilename,$orgunitname)){
+        $logger->debug("Adding $dbname");
+        $orgunitdb_map_ref->{$dbname} = 1;
+    }
     
     my $ttdata={
         profileinfo    => $profileinfo_ref,
         orgunitinfo    => $orgunitinfo_ref,
-        dbnames    => \@dbnames,
+        orgunitdb_map  => $orgunitdb_map_ref,
+        activedbs      => $activedbs_ref,
     };
     
     $self->print_page($config->{tt_admin_orgunit_record_edit_tname},$ttdata);
@@ -349,7 +353,7 @@ sub update_record {
         $logger->debug("About to delete $orgunitname");
         
         if ($confirm){
-            my $orgunitinfo_ref = $config->get_orgunitinfo($profilename,$orgunitname);
+            my $orgunitinfo_ref = $config->get_orgunitinfo->search_rs({ profilename => $profilename, orgunitname => $orgunitname})->single();
 
             my $ttdata={
                 orgunitinfo => $orgunitinfo_ref,

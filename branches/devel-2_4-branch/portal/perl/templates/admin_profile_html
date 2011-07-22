@@ -44,10 +44,10 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]">
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Neues Katalog-Profil anlegen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
-<table>
+<table class="full">
 <tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
 <tr><td><input type="text" name="profilename" /></td><td><input type="text" name="description" size="20" />
 </td><td><div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
@@ -61,13 +61,13 @@
 
 [% IF profiles.size > 0 %]
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Bereits existierende Katalog-Profile") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [% msg.maketext("Um einen bereits existierendes Katalog-Profil zu bearbeiten klicken Sie bitte auf den Profil-Namen.") %]
 <p />
 
-<table>
+<table class="full">
 <tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td></tr>
 
 [% FOREACH profile IN profiles %]

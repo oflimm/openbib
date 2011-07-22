@@ -46,7 +46,7 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]">
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Neuen Katalog anlegen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
@@ -66,8 +66,8 @@ type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 <p />
 
 [% IF kataloge.size > 0 %]
-
-<table width="100%">
+[%# USE dumper;dumper.dump(kataloge) %]
+<table class="full">
 <tr><th>[% msg.maketext("Bereits existierende Kataloge") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
@@ -79,12 +79,12 @@ type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 [% END %]
 >
 <td>[% katalog.dbname %]</td>
-<td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/library/edit">Info</a></td>
-<td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td>
-<td><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/edit">[% katalog.description %]</a></td>
+<td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/library/edit.html?l=[% lang %]">Info</a></td>
+<td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss.html?l=[% lang %]"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td>
+<td><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/edit.html?l=[% lang %]">[% katalog.description %]</a></td>
 <td align="center">[%- IF katalog.use_libinfo == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%] / [%- IF config.have_libinfo(katalog.dbname) -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
 <td align="center">[%- IF katalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
-<td align="right">[% katalog.count %]</td></tr>
+<td align="right">[% katalog.allcount %]</td></tr>
 [% END %]
 
 </table>

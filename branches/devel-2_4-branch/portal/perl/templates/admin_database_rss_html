@@ -68,20 +68,16 @@ FOREACH feed IN katalog.rssfeeds ;
 END ;
 %]
 
-<table width="100%">
-<tr><th>[% msg.maketext("RSS-Einstellungen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-
 [% IF available_types.size > 0 %]
 <form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss">
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Neuen RSS-Feed einrichten") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
-<table>
+<table class="full">
 <tr>
-<th>Art des Feeds</th><!-- <th>Unter-Art</th><th>Beschreibung Unter-Art</th> --><th>Aktiv</th>
+<td><b>Art des Feeds</b></td><!-- <th>Unter-Art</th><th>Beschreibung Unter-Art</th> --><td><b>Aktiv</b></td><td></td>
 </tr>
 
 <tr>
@@ -110,21 +106,20 @@ END ;
 
 </table>
 
-
-</td>
-</tr>
+</td></tr>
 </table>
-</form>
 [% END %]
 
 [%# USE dumper;dumper.dump(katalog)%]
-<table width="100%">
+
+<table class="full">
 <tr><th>[% msg.maketext("Bereits existierende RSS-Feeds") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
-<table>
+[% IF katalog.rssfeeds.size > 0 %]
+<table class="full">
 <tr>
-<th>Art des Feeds</th><!-- <th>Unter-Art</th><th>Beschreibung Unter-Art</th> --><th>Aktiv</th>
+<td><b>Art des Feeds</b></td><!-- <td>Unter-Art</td><td>Beschreibung Unter-Art</td> --><td><b>Aktiv</b></td>
 </tr>
 
 [% FOREACH feed IN katalog.rssfeeds %]
@@ -139,9 +134,10 @@ END ;
 </tr>
 [% END %]
 </table>
-
-</td>
-</tr>
+[% ELSE %]
+[% msg.maketext("Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet.") %]
+[% END %]
+</td></tr>
 </table>
 
         </div>

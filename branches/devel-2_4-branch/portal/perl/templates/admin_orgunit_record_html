@@ -57,7 +57,7 @@
 <p />
 <h2>Kataloge der Organisationseinheit</h2>
 
-[% FOREACH singledb IN orgunitinfo.dbnames %]
+[% FOREACH singledb IN orgunitdbs %]
 [% singledb %]<br/>
 [% END %]
 

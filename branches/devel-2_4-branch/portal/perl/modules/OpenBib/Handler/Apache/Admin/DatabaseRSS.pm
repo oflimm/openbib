@@ -217,7 +217,13 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
-    $config->new_databaseinfo_rss($dbname,$rsstype,$active);
+    my $thisrssfeed_ref = {
+        dbname  => $dbname,
+        type    => $rsstype,
+        active  => $active,
+    };
+
+    $config->new_databaseinfo_rss($thisrssfeed_ref);
     
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");
@@ -339,8 +345,15 @@ sub update_record {
         }
     }
 
+    my $thisrssfeed_ref = {
+        dbname  => $dbname,
+        type    => $rsstype,
+        active  => $active,
+        id      => $rssid,
+    };
+        
     # Ansonsten POST oder PUT => Aktualisieren
-    $config->update_databaseinfo_rss($dbname,$rsstype,$active,$rssid);
+    $config->update_databaseinfo_rss($thisrssfeed_ref);
     
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");

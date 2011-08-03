@@ -1,11 +1,11 @@
 [%- FOREACH record IN litlist.recordlist.load_full_records.get_records -%]
 [% activefeed = config.get_activefeeds_of_db(record.database) %]
 [% database        = record.database %]
-[% normset         = record.get_normdata %]
-[% mexnormset      = record.get_mexdata %]
-[% circulation         = record.get_circdata %] 
+[% normdata         = record.get_normdata %]
+[% holding         = record.get_holding %]
+[% circulation     = record.get_circulation %] 
 [%- bibkey = record.to_bibkey -%]
-[%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
+[%- isbn   = normdata.${"T0540"}.first.content.replace('-','') -%]
 
 <div class="fulltitle boxedclear"><!-- Begin Fulltitle -->
 <div class="details"><!-- Begin Details -->
@@ -17,7 +17,7 @@
 </p>
 [% END %]
 <p>
-<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% normdata.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 <p>
 [%- IF bibkey -%]
@@ -27,7 +27,7 @@
 </div><!-- End Images -->
 
 <div class="categories"><!-- Begin Categories -->
-[%# USE dumper;dumper.dump(normset)%]
+[%# USE dumper;dumper.dump(normdata)%]
 <table cellpadding="2">
 <tr><td class="category">id</td><td>[% record.id %]</td></tr>
 
@@ -37,7 +37,7 @@ globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 
 FOREACH category IN categories;
-    FOREACH item IN normset.$category;
+    FOREACH item IN normdata.$category;
     content = item.content;
 
     SWITCH category;
@@ -96,13 +96,13 @@ FOREACH category IN categories;
          thisindicator = item.indicator ;
          thiscontent   = '' ;
          IF category == 'T0662' ;
-           FOREACH thisitem IN normset.${"T0663"} ;
+           FOREACH thisitem IN normdata.${"T0663"} ;
              IF thisitem.indicator == thisindicator ;
                 thiscontent = thisitem.content ;
              END ;
            END ;
          ELSIF category == 'T2662' ;
-           FOREACH thisitem IN normset.${"T2663"} ;
+           FOREACH thisitem IN normdata.${"T2663"} ;
              IF thisitem.indicator == thisindicator ;
                 thiscontent = thisitem.content ;
              END ;
@@ -192,7 +192,7 @@ FOREACH category IN categories;
 
     CASE "T5001";
          searchterms = [];
-         FOREACH superid IN normset.${"T0004"};
+         FOREACH superid IN normdata.${"T0004"};
             searchterms.push("id:${superid.content}");
          END;
 
@@ -233,28 +233,28 @@ END;
 
 <div class="bottominfo"><!-- Begin Bottominfo -->
 
-[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+[%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">
 <img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
-[%-   IF normset.${"E4200"} %]
-[%-    FOREACH item IN normset.${"E4200"}-%]
+[%-   IF normdata.${"E4200"} %]
+[%-    FOREACH item IN normdata.${"E4200"}-%]
 <a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
-[%-   IF normset.${"E4201"} %]
-[%-     FOREACH item IN normset.${"E4201"}-%]
+[%-   IF normdata.${"E4201"} %]
+[%-     FOREACH item IN normdata.${"E4201"}-%]
 <a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
-[%-   IF normset.${"E4202"} %]
-[%-     FOREACH item IN normset.${"E4202"}-%]
+[%-   IF normdata.${"E4202"} %]
+[%-     FOREACH item IN normdata.${"E4202"}-%]
 <a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>
 [% END %]
 
-[% IF circulation.size > 0 || mexnormset.size > 0 %]
+[% IF circulation.size > 0 || holding.size > 0 %]
 <p/>
 
 [% IF circulation.size > 0 %]
@@ -263,7 +263,7 @@ END;
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
-[%   IF mexnormset.size > 0 %]
+[%   IF holding.size > 0 %]
 <div id="mexinfo"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->

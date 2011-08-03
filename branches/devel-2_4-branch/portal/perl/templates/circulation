@@ -14,8 +14,8 @@
 [%
  Aquisition = 0;
 
- FOREACH mex IN circulation ;
-    IF mex.AquisitionStatuscode >= 1 ;
+ FOREACH thiscirculation IN circulation ;
+    IF thiscirculation.AquisitionStatuscode >= 1 ;
        Aquisition = 1;
     END ;
  END ;
@@ -26,35 +26,35 @@
 [% IF Aquisition == 0 %]
 <table width="100%">
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
-[% FOREACH mex IN circulation %]
+[% FOREACH thiscirculation IN circulation %]
 [%-
-  title    = normset.${"T0331"}.first.content ;
-  IF  normset.${"T0310"}.first.content ;
-     title = normset.${"T0310"}.first.content ;
+  title    = normdata.${"T0331"}.first.content ;
+  IF  normdata.${"T0310"}.first.content ;
+     title = normdata.${"T0310"}.first.content ;
   END ;
 -%]
 <tr align="center"><td>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
 <a href="[% path_prefix %]/[% config.get('library_loc') %]/[% record.database %]">
 [%-   ELSE -%]
-<a href="[% mex.Bibinfourl %]" target="_blank">
+<a href="[% thiscirculation.Bibinfourl %]" target="_blank">
 [%-   END -%]
-<strong>[% mex.Bibliothek.full %]</strong></a></td>
-<td><a class="qrcode" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% mex.Bibliothek.short | uri %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') | uri %][% ELSE %][% mex.Standort | uri %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
-<td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
-<td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
-<td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[% ELSIF
-mex.Status == 'entliehen' && mex.Rueckgabe != '31.12.9999' && mex.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% mex.Rueckgabe %][%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
+<strong>[% thiscirculation.Bibliothek.full %]</strong></a></td>
+<td><a class="qrcode" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thiscirculation.Bibliothek.short | uri %] :: [% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') | uri %][% ELSE %][% thiscirculation.Standort | uri %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote | uri %])[%- END -%] :: [% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur | uri %][% thiscirculation.Exemplar | uri %][% ELSE %][% thiscirculation.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td>[% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') %][% ELSE %][% thiscirculation.Standort %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote %])[%- END -%]</td>
+<td><strong>[% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur %][% thiscirculation.Exemplar %][% ELSE %][% thiscirculation.Signatur %][% END %]</strong></td>
+<td><strong>[%- IF thiscirculation.Status == 'bestellbar' -%]ausleihbar[% ELSIF
+thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.Status %][%- END -%]</strong></td>
 <td class="circurl">
 [%
-     IF mex.Ausleihurl %]
-   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(mex.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
+     IF thiscirculation.Ausleihurl %]
+   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
-[%      IF mex.Statuscode != 0 ;
-            IF mex.Gruppe.Name.match("Handapparat") %]
-                keine Vormerkung m&ouml;glich<br/>(in [% mex.Entleiher.Name %])
-[%          ELSIF mex.Vormerkbarkeit  %]
-     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% mex.Vormerkungen+1 %]. Stelle)
+[%      IF thiscirculation.Statuscode != 0 ;
+            IF thiscirculation.Gruppe.Name.match("Handapparat") %]
+                keine Vormerkung m&ouml;glich<br/>(in [% thiscirculation.Entleiher.Name %])
+[%          ELSIF thiscirculation.Vormerkbarkeit  %]
+     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% thiscirculation.Mediennr %];zst=[% thiscirculation.Zweigstelle %];aort=[% thiscirculation.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle)
 [%          ELSE %]            
                 keine Vormerkung m&ouml;glich
 [%          END %]
@@ -71,17 +71,17 @@ Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
 <tr><td class="boxedclear">
 <table width="100%">
 <tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td></tr>
-[% FOREACH mex IN circulation %]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>
-[%   IF mex.AquisitionStatuscode <= 2 %]
+[% FOREACH thiscirculation IN circulation %]
+<tr align="center"><td><a href="[% thiscirculation.Bibinfourl %]" target="_blank"><strong>[% thiscirculation.Bibliothek.full %]</strong></a></td><td>
+[%   IF thiscirculation.AquisitionStatuscode <= 2 %]
 [% msg.maketext("bestellt beim Lieferanten") %]
-[%   ELSIF mex.AquisitionStatuscode <= 4 %]
+[%   ELSIF thiscirculation.AquisitionStatuscode <= 4 %]
 [% msg.maketext("im Gesch&auml;ftsgang") %]
-[%   ELSIF mex.AquisitionStatuscode == 5 %]
+[%   ELSIF thiscirculation.AquisitionStatuscode == 5 %]
 [% msg.maketext("beim Lieferanten storniert") %]
-[%   ELSIF mex.AquisitionStatuscode <= 8 %]
+[%   ELSIF thiscirculation.AquisitionStatuscode <= 8 %]
 [% msg.maketext("beim Lieferanten reklamiert") %]
-[%   ELSIF mex.AquisitionStatuscode == 9 %]
+[%   ELSIF thiscirculation.AquisitionStatuscode == 9 %]
 [% msg.maketext("ausgeschieden") %]
 [%   END %]
 </td></tr>

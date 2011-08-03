@@ -11,9 +11,9 @@
 #
 #######################################################################
 -%]
-[%- normset         = record.get_normdata -%]
-[%- mexnormset      = record.get_mexdata -%]
-[%- cirset          = record.get_circdata -%] 
+[%- normdata        = record.get_normdata -%]
+[%- holding         = record.get_holding -%]
+[%- circulation     = record.get_circulation -%] 
 [%- same_records    = record.get_same_records -%]
 [%- similar_records = record.get_similar_records -%]
 <rdf:RDF
@@ -26,22 +26,22 @@
   <rdf:Description
 rdf:about="http://[% servername %][% path_prefix %]/[% config.get('title_loc') %]/[%- database -%]/[%- record.id -%]">
 [% FOREACH category IN [ "T0100" "T0101" "T0102" "T0103"] %]
-[%   FOREACH item IN normset.${category} %]
+[%   FOREACH item IN normdata.${category} %]
 <dc:creator>[% item.content%]</dc:creator>
 <dc:creator rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('person_loc') %]/[% database %]/[% item.id %]"/>
 [%   END %]
 [% END %]
-[% FOREACH item IN normset.${"T0331"} %]
+[% FOREACH item IN normdata.${"T0331"} %]
 <dc:title>[% item.content %]</dc:title>
 [% END %]
-[% FOREACH item IN normset.${"T0412"} %]
+[% FOREACH item IN normdata.${"T0412"} %]
 <dc:publisher>[% item.content %]</dc:publisher>
 [% END %]
-[% FOREACH item IN normset.${"T0425"} %]
+[% FOREACH item IN normdata.${"T0425"} %]
 <dc:date>[% item.content %]</dc:date>
 [% END %]
 [% FOREACH category IN [ "T0540" "T0553" ] %]
-[%   FOREACH item IN normset.${category} ;
+[%   FOREACH item IN normdata.${category} ;
         isbn = item.content.replace('-','') ; %]
 <dc:identifier rdf:resource="URN:ISBN:[% isbn %]"/>
 [%      IF isbn.length == 10 %]
@@ -52,7 +52,7 @@ rdf:about="http://[% servername %][% path_prefix %]/[% config.get('title_loc') %
 [%   END %]
 [% END %]
 [% FOREACH category IN [ "T0710" "T0902" "T0907" "T0912"] %]
-[%   FOREACH item IN normset.${category} %]
+[%   FOREACH item IN normdata.${category} %]
 <dc:subject>[% item.content%]</dc:subject>
 <dc:subject rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('subject_loc') %]/[% database %]/[% item.id %]"/>
 [%   END %]

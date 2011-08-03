@@ -14,20 +14,20 @@
 [%-
 
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) ;
-  normset         = record.get_normdata ;
-  mexnormset      = record.get_mexdata ;
-  cirset          = record.get_circdata ; 
+  normdata        = record.get_normdata ;
+  holding         = record.get_holding ;
+  circulation     = record.get_circulation ; 
   same_records    = record.get_same_records ;
   similar_records = record.get_similar_records ;
   bibkey = record.to_bibkey ;
-  isbn   = normset.${"T0540"}.first.content.replace('-','') ;
+  isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
   IF NOT isbn ;
-      isbn   = normset.${"T0553"}.first.content.replace('-','') ;
+      isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
   END ;
 
-  recordname = normset.${'T0331'}.first.content;
-  IF normset.${'PC0001'}.first.content ;
-     pc = normset.${'PC0001'}.first.content ;
+  recordname = normdata.${'T0331'}.first.content;
+  IF normdata.${'PC0001'}.first.content ;
+     pc = normdata.${'PC0001'}.first.content ;
      recordname = "${pc} - ${recordname}";
   END ;
   title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
@@ -313,13 +313,13 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 
 <!-- Anfang Empfehlungen -->
-[% IF normset.exists('E4000') %]
+[% IF normdata.exists('E4000') %]
 <div class="recommendation"><!-- Begin Empfehlungen -->
 <div class="headline">[% msg.maketext("Empfehlungen") %]</div>
 
 <table>
-[%-   isbnitems = normset.${"E4000"} -%]
-[%-   hstitems  = normset.${"E4001"} -%]
+[%-   isbnitems = normdata.${"E4000"} -%]
+[%-   hstitems  = normdata.${"E4001"} -%]
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
@@ -349,7 +349,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 <!-- Anfang Verschlagwortung in anderen Katalogen -->
 [% more_subjects = 0 ;
-   FOREACH item IN normset.${"E4300"};
+   FOREACH item IN normdata.${"E4300"};
       thiscontent = item.content;
 
       NEXT IF rswkswt_done.${thiscontent} == 1;
@@ -362,7 +362,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="headline">[% msg.maketext("Verschlagwortung anderer Kataloge") %]</div>
 <p/>
 <ul>
-[% FOREACH item IN normset.${"E4300"};
+[% FOREACH item IN normdata.${"E4300"};
       thiscontent = item.content;
 
       NEXT IF rswkswt_done.${thiscontent} == 1;
@@ -563,7 +563,7 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
      cloud_item = {
                     content => alltags_cloud,
                   } ;
-     normset.${"T4500"} = [ cloud_item ];
+     normdata.${"T4500"} = [ cloud_item ];
    END ;
 END ;
 %]
@@ -579,21 +579,21 @@ END ;
 
 <div class="bottominfo"><!-- Begin Bottominfo -->
 
-[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+[%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">
 <img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
-[%-   IF normset.${"E4200"} %]
-[%-    FOREACH item IN normset.${"E4200"}-%]
+[%-   IF normdata.${"E4200"} %]
+[%-    FOREACH item IN normdata.${"E4200"}-%]
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://de.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
-[%-   IF normset.${"E4201"} %]
-[%-     FOREACH item IN normset.${"E4201"}-%]
+[%-   IF normdata.${"E4201"} %]
+[%-     FOREACH item IN normdata.${"E4201"}-%]
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://en.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
-[%-   IF normset.${"E4202"} %]
-[%-     FOREACH item IN normset.${"E4202"}-%]
+[%-   IF normdata.${"E4202"} %]
+[%-     FOREACH item IN normdata.${"E4202"}-%]
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://fr.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
@@ -603,15 +603,15 @@ END ;
 
 <div id="additional_title_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
-[%- tictocs_feed = normset.${"E4115"}.first.content -%]
+[%- tictocs_feed = normdata.${"E4115"}.first.content -%]
 
-[% IF circulation.size > 0 || mexnormset.size > 0 || same_records.get_size
+[% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
 > 0 || similar_records.get_size > 0 || config.get('reviews') || tictocs_feed %]
 <ul>
 [% IF circulation.size > 0 %]
 <li><a href="#circinfo">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
 [% ELSE %]
-[%   IF mexnormset.size > 0 %]
+[%   IF holding.size > 0 %]
 <li><a href="#mexinfo">[% msg.maketext("Bestand") %]</a></li>
 [%   END %]
 [% END %]
@@ -636,7 +636,7 @@ END ;
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
-[%   IF mexnormset.size > 0 %]
+[%   IF holding.size > 0 %]
 
 <div id="mexinfo"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
@@ -648,7 +648,7 @@ END ;
 <script type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% path_prefix %]/[% config.get('info_loc') %]/62?id=[% normset.${"E4115"}.first.content %];format=ajax",
+  $.get("[% path_prefix %]/[% config.get('info_loc') %]/62?id=[% normdata.${"E4115"}.first.content %];format=ajax",
          function (txt){
            $("#tictocs").html(txt); 
   });

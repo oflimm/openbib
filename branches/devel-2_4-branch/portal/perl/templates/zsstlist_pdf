@@ -176,8 +176,8 @@ http://www.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/sigel/index_ger.html
 \section*{Aufstellung der Zeitschriften}
 
 [% FOREACH record IN recordlist %]
-[% thistitset = record.get_normdata %]
-[% thisholding = record.get_mexdata %]
+[% thistitset  = record.get_normdata %]
+[% thisholding = record.get_holding %]
 
 \begin{shadowenv}
 \begin{tabular}{lp{10cm}}

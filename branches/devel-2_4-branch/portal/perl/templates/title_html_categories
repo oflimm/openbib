@@ -25,7 +25,7 @@ globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 
 FOREACH category IN categories;
-    FOREACH item IN normset.$category;
+    FOREACH item IN normdata.$category;
     content = item.content;
 
     SWITCH category;
@@ -95,13 +95,13 @@ FOREACH category IN categories;
          thisindicator = item.indicator ;
          thiscontent   = '' ;
          IF category == 'T0662' ;
-           FOREACH thisitem IN normset.${"T0663"} ;
+           FOREACH thisitem IN normdata.${"T0663"} ;
              IF thisitem.indicator == thisindicator ;
                 thiscontent = thisitem.content ;
              END ;
            END ;
          ELSIF category == 'T2662' ;
-           FOREACH thisitem IN normset.${"T2663"} ;
+           FOREACH thisitem IN normdata.${"T2663"} ;
              IF thisitem.indicator == thisindicator ;
                 thiscontent = thisitem.content ;
              END ;
@@ -206,7 +206,7 @@ FOREACH category IN categories;
 
     CASE "T5001";
          searchterms = [];
-         FOREACH superid IN normset.${"T0004"};
+         FOREACH superid IN normdata.${"T0004"};
             searchterms.push("id:${superid.content}");
          END;
 
@@ -252,7 +252,7 @@ END;
 [% ELSIF format == "Text" %]
 <pre>
 [% FOREACH category IN categories;
-    FOREACH item IN normset.$category;
+    FOREACH item IN normdata.$category;
     content = item.content;
 
     # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
@@ -261,20 +261,20 @@ END;
     # kodiert.
     thiscategory = category ;
     IF config.get('categorymapping').$database.$category ;
-       thiscategory = "${category}-${normset.database}" ;
+       thiscategory = "${category}-${normdata.database}" ;
     END;
 
 -%]
 [% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
 [% END -%]
 [%- END -%]
-[%- IF mexnormset.size > 0 -%]
-[%- FOREACH mex IN mexnormset -%]
-[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% mex.${"X4000"}.content.full %]
-[% msg.maketext("Standort             ") %] [% loop.count %] : [% mex.${"X0016"}.content %]
-[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% mex.${"X0014"}.content %]
-[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% mex.${"X0005"}.content %]
-[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% mex.${"X1204"}.content %]
+[%- IF holding.size > 0 -%]
+[%- FOREACH thisholding IN holding -%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% thisholding.${"X4000"}.content.full %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% thisholding.${"X0016"}.content %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% thisholding.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% thisholding.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% thisholding.${"X1204"}.content %]
 [% END %]
 
 [% END %]

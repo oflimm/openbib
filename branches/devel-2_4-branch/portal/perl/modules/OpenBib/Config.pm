@@ -105,7 +105,7 @@ sub get_number_of_dbs {
 
     my $request;
     if ($profilename){
-        $request=$self->{dbh}->prepare("select count(profiledbs.dbname) as rowcount from profiledbs,databaseinfo where profilename = ? and databaseinfo.dbname=profiledbs.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select count(orgunitdbs.dbname) as rowcount from orgunitdbs,databaseinfo where profilename = ? and databaseinfo.dbname=orgunitdbs.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
         $request->execute($profilename) or $logger->error($DBI::errstr);
     }
     else {
@@ -192,7 +192,7 @@ sub get_number_of_titles {
 
     }
     elsif ($profile){
-        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,profiledbs where profiledbs.profilename = ? and profiledbs.dbname=databaseinfo.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunitdbs where orgunitdbs.profilename = ? and orgunitdbs.dbname=databaseinfo.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
         $request->execute($profile) or $logger->error($DBI::errstr);
     }
     else {
@@ -373,7 +373,7 @@ sub get_dbs_of_view {
     my $logger = get_logger();
 
     my @dblist=();
-    my $idnresult=$self->{dbh}->prepare("select viewdbs.dbname from viewdbs,databaseinfo,profiledbs where viewdbs.viewname = ? and viewdbs.dbname=databaseinfo.dbname and profiledbs.dbname=viewdbs.dbname and databaseinfo.active is true order by profiledbs.orgunitname ASC, databaseinfo.description ASC") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select viewdbs.dbname from viewdbs,databaseinfo,orgunitdbs where viewdbs.viewname = ? and viewdbs.dbname=databaseinfo.dbname and orgunitdbs.dbname=viewdbs.dbname and databaseinfo.active is true order by orgunitdbs.orgunitname ASC, databaseinfo.description ASC") or $logger->error($DBI::errstr);
     $idnresult->execute($view) or $logger->error($DBI::errstr);
 
     my @idnres;
@@ -597,9 +597,9 @@ sub get_rssfeedinfo  {
     
     my $sql_select="select databaseinfo.dbname,databaseinfo.description,orgunitinfo.description as orgunitdescription,rssfeeds.type";
 
-    my @sql_from  = ('databaseinfo','rssfeeds','profiledbs','orgunitinfo');
+    my @sql_from  = ('databaseinfo','rssfeeds','orgunitdbs','orgunitinfo');
 
-    my @sql_where = ('databaseinfo.active is true','rssfeeds.active is true','databaseinfo.dbname=rssfeeds.dbname','rssfeeds.type = 1','orgunitinfo.orgunitname=profiledbs.orgunitname','profiledbs.dbname=databaseinfo.dbname');
+    my @sql_where = ('databaseinfo.active is true','rssfeeds.active is true','databaseinfo.dbname=rssfeeds.dbname','rssfeeds.type = 1','orgunitinfo.orgunitname=orgunitdbs.orgunitname','orgunitdbs.dbname=databaseinfo.dbname');
 
     my @sql_args  = ();
 
@@ -846,18 +846,18 @@ sub get_profileinfo_overview {
           
         $description = (defined $description)?$description:'Keine Beschreibung';
         
-        my $idnresult2=$self->{dbh}->prepare("select * from profiledbs where profilename = ? order by dbname") or $logger->error($DBI::errstr);
+        my $idnresult2=$self->{dbh}->prepare("select * from orgunitdbs where profilename = ? order by dbname") or $logger->error($DBI::errstr);
         $idnresult2->execute($profilename);
         
-        my @profiledbs=();
+        my @orgunitdbs=();
         while (my $result2=$idnresult2->fetchrow_hashref()) {
             my $dbname = decode_utf8($result2->{'dbname'});
-            push @profiledbs, $dbname;
+            push @orgunitdbs, $dbname;
         }
         
         $idnresult2->finish();
         
-        my $profiledb=join " ; ", @profiledbs;
+        my $profiledb=join " ; ", @orgunitdbs;
         
         $profile={
             profilename => $profilename,
@@ -1059,7 +1059,7 @@ sub get_active_databases_of_systemprofile {
     my $logger = get_logger();
 
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select databaseinfo.dbname as dbname from databaseinfo,viewinfo,profiledbs where databaseinfo.active is true and databaseinfo.dbname=profiledbs.dbname and profiledbs.profilename=viewinfo.profilename and viewinfo.viewname = ? order by dbname ASC") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select databaseinfo.dbname as dbname from databaseinfo,viewinfo,orgunitdbs where databaseinfo.active is true and databaseinfo.dbname=orgunitdbs.dbname and orgunitdbs.profilename=viewinfo.profilename and viewinfo.viewname = ? order by dbname ASC") or $logger->error($DBI::errstr);
     $request->execute($view) or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};
@@ -1112,7 +1112,7 @@ sub get_active_databases_of_orgunit {
     my $logger = get_logger();
 
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select databaseinfo.dbname from databaseinfo,profiledbs where databaseinfo.active is true and databaseinfo.dbname=profiledbs.dbname and profiledbs.profilename = ? and profiledbs.orgunitname = ? order by databaseinfo.description ASC") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select databaseinfo.dbname from databaseinfo,orgunitdbs where databaseinfo.active is true and databaseinfo.dbname=orgunitdbs.dbname and orgunitdbs.profilename = ? and orgunitdbs.orgunitname = ? order by databaseinfo.description ASC") or $logger->error($DBI::errstr);
     $request->execute($systemprofile,$orgunit) or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};
@@ -1165,7 +1165,7 @@ sub get_infomatrix_of_active_databases {
     my @sqlargs = ();
 
     if ($view){
-        $sqlrequest = "select databaseinfo.*,orgunitinfo.description as orgunitdescription, orgunitinfo.orgunitname from databaseinfo,profiledbs,viewinfo,orgunitinfo where databaseinfo.active is true and databaseinfo.dbname=profiledbs.dbname and profiledbs.profilename=viewinfo.profilename and profiledbs.orgunitname=orgunitinfo.orgunitname and orgunitinfo.profilename=profiledbs.profilename and viewinfo.viewname = ? order by orgunitinfo.nr ASC, databaseinfo.description ASC";
+        $sqlrequest = "select databaseinfo.*,orgunitinfo.description as orgunitdescription, orgunitinfo.orgunitname from databaseinfo,orgunitdbs,viewinfo,orgunitinfo where databaseinfo.active is true and databaseinfo.dbname=orgunitdbs.dbname and orgunitdbs.profilename=viewinfo.profilename and orgunitdbs.orgunitname=orgunitinfo.orgunitname and orgunitinfo.profilename=orgunitdbs.profilename and viewinfo.viewname = ? order by orgunitinfo.nr ASC, databaseinfo.description ASC";
         push @sqlargs, $view;
     }
 
@@ -1732,7 +1732,7 @@ sub del_orgunit {
 
     my $idnresult=$self->{dbh}->prepare("delete from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    $idnresult=$self->{dbh}->prepare("delete from profiledbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult=$self->{dbh}->prepare("delete from orgunitdbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
     $idnresult->finish();
 
@@ -1766,13 +1766,13 @@ sub update_orgunit {
     
     # Datenbanken zunaechst loeschen
     
-    $idnresult=$self->{dbh}->prepare("delete from profiledbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult=$self->{dbh}->prepare("delete from orgunitdbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
     
     
     # Dann die zugehoerigen Datenbanken eintragen
     foreach my $singleorgunitdb (@orgunitdb) {
-        $idnresult=$self->{dbh}->prepare("insert into profiledbs values (?,?,?)") or $logger->error($DBI::errstr);
+        $idnresult=$self->{dbh}->prepare("insert into orgunitdbs values (?,?,?)") or $logger->error($DBI::errstr);
         $idnresult->execute($profilename,$orgunit,$singleorgunitdb) or $logger->error($DBI::errstr);
     }
     

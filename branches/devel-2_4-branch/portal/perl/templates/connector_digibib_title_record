@@ -12,8 +12,8 @@
 #######################################################################
 -%]
 [%- item         = record.get_normdata -%]
-[%- itemmex      = record.get_mexdata -%]
-[%- itemcirc     = record.get_circdata -%]
+[%- itemholding      = record.get_holding -%]
+[%- itemcirc     = record.get_circulation -%]
 [%# USE dumper;dumper.dump(item)%]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
@@ -118,7 +118,7 @@
 [% IF itemcirc.size > 0 %]
 [%    PROCESS common/subtemplate name="connector_digibib_circulation" %]
 [% ELSE %]
-[%    IF itemmex.size > 0 %]
+[%    IF itemholding.size > 0 %]
 [%       PROCESS common/subtemplate name="connector_digibib_holding" %]
 [%    END %]
 [% END %]
@@ -142,7 +142,7 @@
 <LI> LNKDB=http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html
 [% IF has_sb %]
 [%- sbitem         = sbrecord.get_normdata -%]
-[%- sbitemmex      = sbrecord.get_mexdata -%]
+[%- sbitemholding  = sbrecord.get_holding -%]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN sbitem.${'T0100'}  -%]

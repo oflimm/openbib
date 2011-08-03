@@ -28,9 +28,9 @@
 [%- database = record.database -%]
 [%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${record.database} -%]
-[% normset    = record.get_normdata %]
-[% mexnormset = record.get_mexdata  %]
-[% circulation    = record.get_circdata %]
+[% normdata      = record.get_normdata %]
+[% holding      = record.get_holding  %]
+[% circulation  = record.get_circulataion %]
 
 
 <!-- Title begins here -->
@@ -40,12 +40,12 @@
 
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
-<tr><td class="category">id</td><td>[% normset.id %]</td></tr>
+<tr><td class="category">id</td><td>[% normdata.id %]</td></tr>
 
 [%-
 
 FOREACH category IN categories;
-    FOREACH item IN normset.$category;
+    FOREACH item IN normdata.$category;
     content = item.content;
 -%]
 <tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
@@ -54,7 +54,7 @@ FOREACH category IN categories;
 </table>
 
 [%# USE dumper;dumper.dump(record) %]
-[% IF circulation.size > 0 || mexnormset.size > 0 %]
+[% IF circulation.size > 0 || holding.size > 0 %]
 
 [% IF circulation.size > 0 %]
 <p />
@@ -64,7 +64,7 @@ FOREACH category IN categories;
 [% PROCESS common/subtemplate name="circulation" %]
 </td></tr>
 </table>
-[% ELSIF mexnormset.size > 0 %]
+[% ELSIF holding.size > 0 %]
 <p />
 <table width="100%">
 <tr><th>[% msg.maketext("Bestand") %]</th></tr>

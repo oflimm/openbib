@@ -21,15 +21,15 @@
   </style>
 <div class="hit">
 [%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) -%]
-[%- normset         = record.get_normdata -%]
-[%- mexnormset      = record.get_mexdata -%]
-[%- cirset          = record.get_circdata -%] 
+[%- normdata        = record.get_normdata -%]
+[%- holding         = record.get_holding -%]
+[%- circulation     = record.get_circulation -%] 
 [%- same_records    = record.get_same_records -%]
 [%- similar_records = record.get_similar_records -%]
 [%- bibkey = record.to_bibkey -%]
-[%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
+[%- isbn   = normdata.${"T0540"}.first.content.replace('-','') -%]
 [%- IF NOT isbn ;
-       isbn   = normset.${"T0553"}.first.content.replace('-','') ;
+       isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
     END ;
 -%]
 <div style="float:right;">
@@ -39,21 +39,21 @@
 <div class="result" style="width:500px;">
 [%- PROCESS common/subtemplate name="visible_categories_title" -%]
 [%- PROCESS common/subtemplate name="title_html_categories" -%]
-[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+[%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">
 <img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
-[%-   IF normset.${"E4200"} %]
-[%-    FOREACH item IN normset.${"E4200"}-%]
+[%-   IF normdata.${"E4200"} %]
+[%-    FOREACH item IN normdata.${"E4200"}-%]
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]/522/http://de.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
-[%-   IF normset.${"E4201"} %]
-[%-     FOREACH item IN normset.${"E4201"}-%]
+[%-   IF normdata.${"E4201"} %]
+[%-     FOREACH item IN normdata.${"E4201"}-%]
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]/522/http://en.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
-[%-   IF normset.${"E4202"} %]
-[%-     FOREACH item IN normset.${"E4202"}-%]
+[%-   IF normdata.${"E4202"} %]
+[%-     FOREACH item IN normdata.${"E4202"}-%]
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]/522/http://fr.wikipedia.org/wiki/[% item.content | uri %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
@@ -72,7 +72,7 @@
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
-[%   IF mexnormset.size > 0 %]
+[%   IF holding.size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Bestand") %]</h2>
 
 <div id="mexinfo"><!-- Begin Bestand -->
@@ -85,7 +85,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% path_prefix %]/[% config.get('info_loc') %]/62?id=[% normset.${"E4115"}.first.content %];format=ajax",
+  $.get("[% path_prefix %]/[% config.get('info_loc') %]/62?id=[% normdata.${"E4115"}.first.content %];format=ajax",
          function (txt){
            $("#tictocs").html(txt); 
   });

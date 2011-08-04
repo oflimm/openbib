@@ -84,18 +84,20 @@
 [% IF active_submenu == "user" %]
 <li><span>[% msg.maketext("Nutzerverwaltung") %]</span>
     <ul>
-[% IF active_subsubmenu == "general" %]
+[%   IF active_subsubmenu == "general" %]
       <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
-[% ELSE %]
+[%   ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_user_loc') %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
-[% END %]
-[% IF active_subsubmenu == "search" %]
+[%   END %]
+[%   IF active_subsubmenu == "search" %]
       <li class="active"><strong>[% msg.maketext("Nutzer suchen/bearbeiten") %]</strong></li>
-[% ELSE %]
+[%   ELSE %]
       <li><a href="[% path_prefix %]/[% config.get('admin_user_loc') %]/search/form">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
-[% END %]
+[%   END %]
     </ul>
 </li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_user_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung") %]</a></li>
 [% END %]
 [% IF active_submenu == "authentication" %]
   <li class="active"><strong>[% msg.maketext("Anmeldung") %]</strong></li>

@@ -158,7 +158,7 @@ sub show_search {
         return;
     }
 
-    if (!$args_ref->{roleid} || !$args_ref->{username} || !$args_ref->{surname} || !$args_ref->{commonname}){
+    if (!$args_ref->{roleid} && !$args_ref->{username} && !$args_ref->{surname} && !$args_ref->{commonname}){
         $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
         return Apache2::Const::OK;
     }

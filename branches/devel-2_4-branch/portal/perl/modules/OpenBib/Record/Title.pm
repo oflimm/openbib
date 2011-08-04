@@ -387,7 +387,7 @@ sub load_full_record {
             }
         }
         else {
-            $circulation_ref={};
+            $circulation_ref=[];
         }
     }
 
@@ -620,10 +620,10 @@ sub load_brief_record {
     my $config = OpenBib::Config->instance;
 
     # (Re-)Initialisierung
-    delete $self->{_exists}        if (exists $self->{_exists});
+    delete $self->{_exists}         if (exists $self->{_exists});
     delete $self->{_normdata}       if (exists $self->{_normdata});
     delete $self->{_holding}        if (exists $self->{_holding});
-    delete $self->{_circulation}       if (exists $self->{_circulation});
+    delete $self->{_circulation}    if (exists $self->{_circulation});
     delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
 
     my $record_exists = 0;
@@ -969,13 +969,13 @@ sub get_normdata {
     return $self->{_normdata}
 }
 
-sub get_mexdata {
+sub get_holding {
     my ($self)=@_;
 
     return $self->{_holding}
 }
 
-sub get_circdata {
+sub get_circulation {
     my ($self)=@_;
 
     return $self->{_circulation}

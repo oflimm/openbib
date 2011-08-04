@@ -47,9 +47,13 @@
 <tr><th>[% msg.maketext("Neues Anmeldeziel anlegen") %]</th></tr>
 <tr><td class="boxedclear">
 <table>
-<tr><td><b>[% msg.maketext("Hostname") %]</b></td><td><b>[% msg.maketext("Port") %]</b></td><td><b>[% msg.maketext("Nutzername") %]</b></td><td><b>[% msg.maketext("DB-Name")
-%]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Typ") %]</b></td></tr>
-<tr><td><input type="text" name="hostname" /></td><td><input type="text" name="port" /></td><td><input type="text" name="username" /></td><td><input type="text" name="dbname" /></td><td><input type="text" name="description" /></td><td><input type="text" name="type" /></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+<!-- <tr><td><b>[% msg.maketext("Hostname") %]</b></td><td><input type="text" name="hostname" /></td></tr>
+<tr><td><b>[% msg.maketext("Port") %]</b></td><td><input type="text" name="port" /></td></tr>
+<tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td><input type="text" name="username" /></td></tr>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><input type="text" name="dbname" /></td></tr>
+-->
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Typ") %]</b></td></tr>
+<tr><td><input type="text" name="description" /></td><td><select name="type"><option value="self">[% msg.maketext("Selbstregistrierung") %]</option><option value="olws">OLWS</option></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 </table>
 </td></tr>
 </table>

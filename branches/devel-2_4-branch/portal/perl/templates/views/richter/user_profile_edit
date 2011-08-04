@@ -68,12 +68,12 @@ function update_fak(yourform, checked, fak) {
 </table>
 
 [%# USE dumper;dumper.dump(catdb)%]
-[%# USE dumper;dumper.dump(config.get_orgunits(profile)) %]
+[%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
 <p />
 <table>
 <tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
 
-[%- FOREACH category = config.get_orgunits(sysprofile) -%]
+[%- FOREACH category = config.get_orgunitinfo_overview(sysprofile).all -%]
 [%- is_empty = 1 ;
     FOREACH db = catdb ;
       IF db.category == category.description && db.db != '' ; 

@@ -1530,8 +1530,8 @@ sub get_databases {
 
     my $is_orgunit  = 0;
   ORGUNIT_SEARCH:
-    foreach my $orgunit_ref (@{$orgunits_ref}){
-        if ($orgunit_ref->{orgunitname} eq $profile){
+    foreach my $orgunit_ref ($orgunits_ref->all){
+        if ($orgunit_ref->orgunitname eq $profile){
             $is_orgunit=1;
             last ORGUNIT_SEARCH;
         }

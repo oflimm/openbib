@@ -1665,8 +1665,8 @@ sub del_profile {
 
     my $orgunits_ref=$self->get_orgunitinfo_overview($profilename);
 
-    foreach my $thisorgunit (@{$orgunits_ref}){
-        $self->del_orgunit($profilename,$thisorgunit->{orgunitname});
+    foreach my $thisorgunit ($orgunits_ref->all){
+        $self->del_orgunit($profilename,$thisorgunit->orgunitname);
     }
     
     $idnresult->finish();

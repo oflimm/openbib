@@ -69,7 +69,7 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
 %]
 
 <table>
-[%- FOREACH category = config.get_orgunits(profile) -%]
+[%- FOREACH category = config.get_orgunitinfo_overview(profile).all -%]
 [%- is_empty = 1 ;
     FOREACH db = catdb ;
       IF db.category == category.description && db.db != '' ; 

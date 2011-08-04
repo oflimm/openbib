@@ -58,7 +58,7 @@ dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm.") %]
 
 [%- IF view && view !='kug' -%]
 
-[%- FOREACH category = config.get_orgunits(sysprofile) -%]
+[%- FOREACH category = config.get_orgunitinfo_overview(sysprofile).all -%]
 [%# USE dumper;dumper.dump(category)%]
 [%# USE dumper;dumper.dump(rssfeedinfo)%]
 [% IF rssfeedinfo.${category.description} %]
@@ -81,7 +81,7 @@ href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('conn
 [%- END -%]
 
 [% ELSE %]
-[%- FOREACH category = config.get_orgunits(profile) -%]
+[%- FOREACH category = config.get_orgunitinfo_overview(profile).all -%]
 <table width="100%">
 <tr><th style="font-size:1.2em">RSS-Feeds: [% category.desc %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">

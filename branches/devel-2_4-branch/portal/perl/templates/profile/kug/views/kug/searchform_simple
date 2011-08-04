@@ -157,7 +157,7 @@ $(document).ready(function(){
 >[% msg.maketext("Alle Kataloge") %]</option><option value=""></option>
 <option value="">[% msg.maketext("Fakultäten") %]:</option><option value=""></option>
 
-[% FOREACH unit IN config.get_orgunits(sysprofile) %]
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all %]
 <option value="[% unit.orgunitname %]"
 [%- IF prevprofile == unit.orgunitname -%]
  selected="selected"

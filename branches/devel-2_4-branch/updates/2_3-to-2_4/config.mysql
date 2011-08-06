@@ -31,4 +31,4 @@ alter table databaseinfo add  digitalcount BIGINT DEFAULT 0 after articlecount;
 
 drop table titcount;
 
-rename table profiledbs orgunitdbs;
+rename table profiledbs to orgunitdbs;

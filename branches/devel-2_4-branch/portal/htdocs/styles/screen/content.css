@@ -556,7 +556,7 @@
     font-variant:small-caps;
   }
 
-  #qr {
+#qr {
   margin-top:-416px;
   position:absolute;
   border:1px solid #ccc;
@@ -574,5 +574,8 @@
   cursor: pointer;
 }
 
+#additional_title_info {
+  font-size: 0.9em;
+}
   
 }

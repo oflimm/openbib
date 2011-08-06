@@ -377,8 +377,32 @@ dispatch_rules:
      runmode: 'show_popular'
   - # title_loc:
      module: 'OpenBib::Handler::Apache::Title'
-     rule: '/portal/:view/title/:database/:titleid'
+     rule: '/portal/:view/title/:database/new.html[get]'
+     runmode: 'show_collection_form'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid[get]'
      runmode: 'show_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid/edit.html[get]'
+     runmode: 'show_record_form'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database[post]'
+     runmode: 'create_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid[delete]'
+     runmode: 'delete_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid[put]'
+     runmode: 'update_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid[post]'
+     runmode: 'update_record'
 
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
@@ -2325,6 +2349,8 @@ tt_collection_save_html_tname: collection_save_html
 tt_collection_save_plain_tname: collection_save_plain
 tt_collection_tname: collection
 tt_title_tname: title
+tt_title_collection_form_tname: title_collection_form
+tt_title_record_form_tname: title_record_form
 tt_title_popular_by_database_tname: title_popular_by_database
 tt_title_popular_tname: title_popular
 tt_person_tname: person

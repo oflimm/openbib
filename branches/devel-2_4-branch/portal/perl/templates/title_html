@@ -757,7 +757,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${path_prefix}/${config.get('loc')}/title/${same_record.database}/${same_record.id}.html" %]
+[% same_url = "${path_prefix}/${config.get('title_loc')}/${same_record.database}/${same_record.id}.html" %]
 <li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
 [% END %]
 </ol>

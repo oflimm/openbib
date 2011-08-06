@@ -47,6 +47,10 @@ sub setup {
 
     $self->start_mode('show_record');
     $self->run_modes(
+        'show_collection_form'   => 'show_collection_form',
+        'create_record'          => 'create_record',
+        'update_record'          => 'update_record',
+        'delete_record'          => 'delete_record',
         'show_record'            => 'show_record',
         'show_popular'           => 'show_popular',
     );
@@ -98,6 +102,65 @@ sub show_popular {
     $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
+}
+
+sub show_collection_form {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $database       = $self->param('database');
+
+    # Shared Args
+    my $config         = $self->param('config');
+
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
+
+    my $ttdata={                #
+        database => $database,
+    };
+    
+    $self->print_page($config->{tt_title_collection_form_tname},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
+sub create_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
+
+    my $record = new OpenBib::Record::Title;
+    $record->set_database($database);
+    $record->set_from_apache_request($r);
+    
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{title_loc}/$database/new.html");
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 sub show_record {

@@ -1897,7 +1897,83 @@ sub set_from_apache_request {
             }
         } 
     } 
-            
+
+    $logger->debug(YAML::Dump($self->{_normdata}));
+    return $self;
+}
+
+sub store {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $is_new = (exists $self->{id})?1:0;
+
+    my $local_dbh = 0;
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
+    }
+
+    if ($is_new){
+        my $request = $dbh->prepare("select max(id)+1 as nextid from title");
+        $request->execute();
+        my $result=$request->fetchrow_hashref;
+
+        $self->set_id($result->{nextid});
+    }
+    else {
+        $self->_delete_from_rdbms;
+        $self->_delete_from_searchengine;
+    }
+    
+    return $self;
+}
+
+sub _delete_from_rdbms {
+    my ($self,$arg_ref) = @_;
+    
+    # Set defaults
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $local_dbh = 0;
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
+    }
+
+    my $request = $dbh->prepare("delete from title where id=?");
+    $request->execute($self->get_id);
+    
+    $request = $dbh->prepare("delete from conn where sourcetype=1 and sourceid=?");
+    $request->execute($self->get_id);
+    $request = $dbh->prepare("delete from titlelistitem where id=?");
+    $request->execute($self->get_id);
+    
+    return $self;
+}
+
+sub _delete_from_searchengine {
+    my $self = shift;
+
+    
     return $self;
 }
 

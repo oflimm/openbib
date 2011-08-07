@@ -37,8 +37,10 @@ use DB_File;
 use DBI;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
+use YAML;
 
 use OpenBib::Config;
+use OpenBib::Search::Local::Xapian;
 
 my ($database,$help,$titid);
 
@@ -72,22 +74,16 @@ if (!$database || !$titid){
 
 $logger->info("### POOL $database");
 
-my %xapian_idmapping;
+my $terms_ref = OpenBib::Search::Local::Xapian->get_indexterms({ database => $database, id => $titid });
 
-# Die DB xapian_idmapping.db wird bei dem Neu-Aufbau eines Katalogs erzeugt
-# und liefert zu einem Katalogschluessel die entsprechende Xapian DocID
+$logger->info("### Termlist");
 
-tie %xapian_idmapping, 'DB_File', $config->{'autoconv_dir'}."/pools/$database/xapian_idmapping.db";
+$logger->info(join(' ',@$terms_ref));
 
-my $docid=$xapian_idmapping{$titid};
+my $values_ref = OpenBib::Search::Local::Xapian->get_values({ database => $database, id => $titid });
 
-unless ($docid){
-    $logger->error_die("Keine Doc-ID zu diesem Titel gefunden");
-}
-
-system("delve -r $docid ".$config->{xapian_index_base_path}."/$database");
-
-untie(%xapian_idmapping);
+$logger->info("### Values");
+$logger->info(YAML::Dump($values_ref));
 
 sub print_help {
     print << "ENDHELP";

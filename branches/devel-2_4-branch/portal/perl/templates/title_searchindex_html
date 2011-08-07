@@ -51,14 +51,16 @@
 
 <h1>Informationen im Suchindex</h1>
 
-<h2>Terme</h2>
+<h2>Terms</h2>
 
+<p>
 [% terms.join(' ') %]
+</p>
 
-<h2>Values </h2>
+<h2>Values</h2>
 
 
-<table>
+<table class="full">
 <tr><td>Typ</td><td>Slot</td><td>Kategorie</td><td>Inhalt</td></tr>
 [% facets    = config.get('xapian_drilldown_value');
    sorttypes = config.get('xapian_sorttype_value');

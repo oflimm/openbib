@@ -479,8 +479,8 @@ $("#history_toggle").click(function(){
 
 <h4 id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h4><p/>
 
-[% FOREACH record IN recent_titles.get_records %]
-[%- item = record.get_brief_normdata -%]
+[% FOREACH recent_record IN recent_titles.get_records %]
+[%- item = recent_record.get_brief_normdata -%]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]

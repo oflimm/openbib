@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -1495,21 +1495,24 @@ sub update_libinfo {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $del_request    = $self->{dbh}->prepare("delete from libraryinfo where dbname=? and category=?") or $logger->error($DBI::errstr); # 
-    my $insert_request = $self->{dbh}->prepare("insert into libraryinfo values (?,?,NULL,?)") or $logger->error($DBI::errstr); # 
 
+    $self->{schema}->resultset('LibraryInfo')->search({ dbname => $dbname })->single->delete;
+
+    my $category_contents_ref = [];
     foreach my $category (keys %$libinfo_ref){
         my ($category_num)=$category=~/^I(\d+)$/;
 
+        push @$category_contents_ref, {
+            dbname   => $dbname,
+            category => $category_num,
+            content  => $libinfo_ref->{$category},
+        };
+        
         $logger->debug("Changing Category $category_num to $libinfo_ref->{$category}");
-        $del_request->execute($dbname,$category_num);
-        $insert_request->execute($dbname,$category_num,$libinfo_ref->{$category});
     }
-
-    $del_request->finish();
-    $insert_request->finish();
-
+    
+    $self->{schema}->resultset('LibraryInfo')->populate($category_contents_ref);
+    
     return;
 }
 
@@ -1563,16 +1566,10 @@ sub strip_view_from_uri {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
-    
-    my $request=$self->{dbh}->prepare("select stripuri from viewinfo where viewname=?") or $logger->error($DBI::errstr);
-    $request->execute($viewname) or $logger->error($DBI::errstr);
+    # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
+    my $stripuri = $self->{schema}->resultset('ViewInfo')->search({ viewname => $viewname})->single->stripuri;
 
-    my $result = $request->fetchrow_hashref;
-    
-    my $stripuri = (defined $result->{stripuri} && $result->{stripuri} == 1)?1:0;
-    
-    $request->finish();
+    $stripuri = ($stripuri == 1)?1:0;
 
     return $stripuri;
 }

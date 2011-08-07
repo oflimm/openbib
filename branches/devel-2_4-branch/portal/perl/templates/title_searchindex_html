@@ -1,0 +1,82 @@
+[%#-
+#######################################################################
+#
+# Templatename: title_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+[%-
+  title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+-%]
+[% PROCESS common/subtemplate name="std_header" unapi=1 LinkedData="title" %]
+
+<body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary" style="width: 32%;">
+        <div id="col1_content" class="clearfix">
+
+<div class="representation">
+<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/searchindex.rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/searchindex.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+</div>
+
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main"  style="width: 65%;">
+        <div id="col3_content" class="clearfix">
+
+<h1>Informationen im Suchindex</h1>
+
+<h2>Terme</h2>
+
+[% terms.join(' ') %]
+
+<h2>Values </h2>
+
+
+<table>
+<tr><td>Typ</td><td>Slot</td><td>Kategorie</td><td>Inhalt</td></tr>
+[% facets    = config.get('xapian_drilldown_value');
+   sorttypes = config.get('xapian_sorttype_value');
+
+   FOREACH category IN facets.keys.sort %]
+<tr><td>Facette</td><td>[% facets.${category} %]</td><td>[% category %]</td><td>[% values.${facets.${category}} %]</td></tr>
+[% END %]
+
+[% FOREACH category IN sorttypes.keys.sort %]
+<tr><td>Sortierung</td><td>[% sorttypes.${category} %]</td><td>[% category %]</td><td>[% values.${sorttypes.${category}} %]</td></tr>
+[% END %]
+</table>
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

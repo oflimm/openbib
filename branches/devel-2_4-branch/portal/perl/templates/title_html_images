@@ -38,3 +38,6 @@
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=512;url=[% uri_escape(normset.${"E4122"}.first.content) %]" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('paperc_img') %]" alt="Bei PaperC vorhanden" border="0" /></a><br/>
 </p>
 [% END %]
+[% IF cgiapp.is_authenticated('admin') %]
+<a href="[% path_prefix %]/[% config.get('title_loc') %]/indexterms.html" >
+[% END %]

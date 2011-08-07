@@ -381,6 +381,22 @@ dispatch_rules:
      runmode: 'show_collection_form'
   - # title_loc:
      module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid/searchindex.html[get]'
+     runmode: 'show_record_searchindex'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid/searchindex.rdf[get]'
+     runmode: 'show_record_searchindex'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid/searchindex.json[get]'
+     runmode: 'show_record_searchindex'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid/searchindex[get]'
+     runmode: 'show_record_searchindex'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
      rule: '/portal/:view/title/:database/:titleid[get]'
      runmode: 'show_record'
   - # title_loc:
@@ -2349,6 +2365,7 @@ tt_collection_save_html_tname: collection_save_html
 tt_collection_save_plain_tname: collection_save_plain
 tt_collection_tname: collection
 tt_title_tname: title
+tt_title_searchindex_tname: title_searchindex
 tt_title_collection_form_tname: title_collection_form
 tt_title_record_form_tname: title_record_form
 tt_title_popular_by_database_tname: title_popular_by_database

@@ -36,6 +36,7 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
+use OpenBib::Search::Local::Xapian;
 use OpenBib::Record::Title;
 use OpenBib::Template::Utilities;
 
@@ -47,12 +48,13 @@ sub setup {
 
     $self->start_mode('show_record');
     $self->run_modes(
-        'show_collection_form'   => 'show_collection_form',
-        'create_record'          => 'create_record',
-        'update_record'          => 'update_record',
-        'delete_record'          => 'delete_record',
-        'show_record'            => 'show_record',
-        'show_popular'           => 'show_popular',
+        'show_collection_form'    => 'show_collection_form',
+        'create_record'           => 'create_record',
+        'update_record'           => 'update_record',
+        'delete_record'           => 'delete_record',
+        'show_record'             => 'show_record',
+        'show_record_searchindex' => 'show_record_searchindex',
+        'show_popular'            => 'show_popular',
     );
 
     # Use current path as template path,
@@ -305,6 +307,34 @@ sub show_record {
     else {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
+
+    return Apache2::Const::OK;
+}
+
+sub show_record_searchindex {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $titleid        = $self->strip_suffix($self->param('titleid'));
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+
+    my $terms_ref  = OpenBib::Search::Local::Xapian->get_indexterms({ database => $database, id => $titleid });
+    my $values_ref = OpenBib::Search::Local::Xapian->get_values({ database => $database, id => $titleid });
+
+    my $ttdata = {
+        terms  => $terms_ref,
+        values => $values_ref,
+    };
+    
+    $self->print_page($config->{'tt_title_searchindex_tname'},$ttdata);
 
     return Apache2::Const::OK;
 }

@@ -355,6 +355,111 @@ sub get_categorized_drilldown {
     return $category_map_ref;
 }
 
+sub get_indexterms {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database          = exists $arg_ref->{database}
+        ? $arg_ref->{database}      : undef;
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $dbh = undef;
+    
+    eval {
+        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+    };
+    
+    if ($@){
+        $logger->error("Initializing with Database: $database - :".$@." not available");
+        return [];
+    }
+
+    my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+
+    # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
+    $qp->set_database($dbh);    
+    $qp->add_prefix('id', 'Q');
+    $qp->set_default_op(Search::Xapian::OP_AND);
+
+    my $enq  = $dbh->enquire($qp->parse_query("id:$id"));
+
+    my @matches = $enq->matches(0,10);
+
+    my $indexterms_ref = [];
+    
+    if (scalar(@matches) == 1){
+        my $docid         = $matches[0]->get_docid;;
+        my $termlist_iter = $dbh->termlist_begin($docid);
+
+        while ($termlist_iter != $dbh->termlist_end($docid)) {
+            push @$indexterms_ref, $termlist_iter->get_termname;
+            $termlist_iter++;
+        }
+    }
+    
+    return $indexterms_ref;
+}
+
+sub get_values {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database          = exists $arg_ref->{database}
+        ? $arg_ref->{database}      : undef;
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $dbh = undef;
+    
+    eval {
+        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+    };
+    
+    if ($@){
+        $logger->error("Initializing with Database: $database - :".$@." not available");
+        return [];
+    }
+
+    my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+
+    # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
+    $qp->set_database($dbh);    
+    $qp->add_prefix('id', 'Q');
+    $qp->set_default_op(Search::Xapian::OP_AND);
+
+    my $enq  = $dbh->enquire($qp->parse_query("id:$id"));
+
+    my @matches = $enq->matches(0,10);
+
+    my $values_ref = {};
+    
+    if (scalar(@matches) == 1){
+        my $docid         = $matches[0]->get_docid;;
+        my $document      = $matches[0]->get_document;;
+#        my $values_iter = $dbh->values_begin($docid);
+        my $values_iter = $document->values_begin();
+
+#        while ($values_iter != $dbh->values_end($docid)) {
+        while ($values_iter ne $document->values_end()) {
+            $values_ref->{$values_iter->get_valueno} = $values_iter->get_value;
+            $values_iter++;
+        }
+    }
+    
+    return $values_ref;
+}
+
 sub DESTROY {
     my $self=shift;
 

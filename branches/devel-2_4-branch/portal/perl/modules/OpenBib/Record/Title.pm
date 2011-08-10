@@ -1873,6 +1873,18 @@ sub set_database {
     return $self;
 }
 
+sub get_id {
+    my ($self) = @_;
+
+    return $self->{id};
+}
+
+sub get_database {
+    my ($self) = @_;
+
+    return $self->{database};
+}
+
 sub set_from_apache_request {
     my ($self,$r) = @_;
 
@@ -1925,11 +1937,102 @@ sub store {
     }
 
     if ($is_new){
+
+    # Titelkategorien
+    {
+        # Neue ID bestimmen
         my $request = $dbh->prepare("select max(id)+1 as nextid from title");
         $request->execute();
         my $result=$request->fetchrow_hashref;
 
         $self->set_id($result->{nextid});
+
+        # Kategorien eintragen
+        my ($atime,$btime,$timeall)=(0,0,0);
+        
+        if ($config->{benchmark}) {
+            $atime=new Benchmark;
+        }
+        
+        my $reqstring="insert into title (id,category,indicator,content) values(?,?,?,?)";
+        $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+
+        foreach my $category (keys %{$self->{_normdata}}){
+            $category=~s/^T//;
+
+            # Hierarchieverknuepfung
+            if ($category eq "0004"){
+                my $reqstring2 = "insert into conn (category,sourceid,sourcetype,targetid,targettype) values ('0004',?,1,?,1);where targetid=? and sourcetype=1 and targettype=1";
+                my $request2 = $dbh->prepare($reqstring2);
+                foreach my $item (@{$self->{_normdata}->{$category}}){
+                    $request2->execute($item->{content},$self->{id});
+                }
+                $request2->finish;
+            }
+            # oder 'normale' Kategorie
+            else {
+                foreach my $item (@{$self->{_normdata}->{$category}}){
+                    $request->execute($self->{id},$category,$item->{indicator},$item->{content});
+                }
+            }
+        }
+        
+        $request->finish();
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
+        }
+    }
+    
+#     # Verknuepfte Normdaten
+#     {
+#         my ($atime,$btime,$timeall)=(0,0,0);
+        
+#         if ($config->{benchmark}) {
+#             $atime=new Benchmark;
+#         }
+        
+#         my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
+#         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+#         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+        
+#         while (my $res=$request->fetchrow_hashref) {
+#             my $category   = "T".sprintf "%04d",$res->{category };
+#             my $targetid   =        decode_utf8($res->{targetid  });
+#             my $targettype =                    $res->{targettype};
+#             my $supplement =        decode_utf8($res->{supplement});
+            
+# 	    # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
+# 	    # vorgenommen
+            
+#             my $recordclass    =
+#                 ($targettype == 2 )?"OpenBib::Record::Person":
+#                     ($targettype == 3 )?"OpenBib::Record::CorporateBody":
+#                         ($targettype == 4 )?"OpenBib::Record::Subject":
+#                             ($targettype == 5 )?"OpenBib::Record::Classification":undef;
+            
+#             my $content = "";
+#             if (defined $recordclass){
+#                 my $record=$recordclass->new({database=>$self->{database}});
+#                 $record->load_name({dbh => $dbh, id=>$targetid});
+#                 $content=$record->name_as_string;
+#             }
+            
+#             push @{$normset_ref->{$category}}, {
+#                 id         => $targetid,
+#                 content    => $content,
+#                 supplement => $supplement,
+#             };
+#         }
+#         $request->finish();
+        
+#         if ($config->{benchmark}) {
+#             $btime=new Benchmark;
+#             $timeall=timediff($btime,$atime);
+#             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
+#         }
     }
     else {
         $self->_delete_from_rdbms;
@@ -1940,6 +2043,37 @@ sub store {
 }
 
 sub _delete_from_rdbms {
+    my ($self,$arg_ref) = @_;
+    
+    # Set defaults
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $local_dbh = 0;
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
+    }
+
+    my $request = $dbh->prepare("delete from title where id=?");
+    $request->execute($self->get_id);
+    
+    $request = $dbh->prepare("delete from conn where sourcetype=1 and sourceid=?");
+    $request->execute($self->get_id);
+    $request = $dbh->prepare("delete from titlelistitem where id=?");
+    $request->execute($self->get_id);
+    
+    return $self;
+}
+
+sub _store_into_rdbms {
     my ($self,$arg_ref) = @_;
     
     # Set defaults

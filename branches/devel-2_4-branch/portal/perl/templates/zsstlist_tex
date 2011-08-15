@@ -230,13 +230,13 @@ Sigel & Signatur & Standort & Bestand \\
 [%   FOREACH item IN thisholding %]
 [%     IF showall %]
 [%       IF item.${"X3330"}.content == sigel %]
-\textbf{[% filterchars(item.${"X3330"}.content) %]} & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% filterchars(item.${"X1204"}.content) %]\\
+\textbf{[% filterchars(item.${"X3330"}.content) %]} & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
 [%       ELSE %]
-[% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% filterchars(item.${"X1204"}.content) %]\\
+[% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
 [%       END %]
 [%     ELSE %]
 [%       IF item.${"X3330"}.content == sigel %]
-[% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% filterchars(item.${"X1204"}.content) %]\\
+[% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
 [%       END %]
 [%     END %]
 [%   END %]

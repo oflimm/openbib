@@ -6,7 +6,7 @@
 #
 #  Konvertierung von Aleph MAB2-Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -874,6 +874,7 @@ my $mexdefs_ref = {
          # Bestandsverlauf
         mult => 0,
         subfields => {
+            '1200' => [ 'a' ],
             '1204' => [ 'b', 'c'],
             '0014' => [ 'f' ],
         }

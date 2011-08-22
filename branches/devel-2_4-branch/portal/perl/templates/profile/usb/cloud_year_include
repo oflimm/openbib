@@ -14,7 +14,7 @@
 [%
       funcargs = { id => database, type => 9 } ;
       resultlist = statistics.get_result(funcargs);
-      request_base = "${view_config.$view.zms_search_url}?view=${view};num=10;page=1"; 
+      request_base = "${view_config.$view.zms_search_url}?l=de;view=${view};num=10;page=1"; 
 
 %]
 

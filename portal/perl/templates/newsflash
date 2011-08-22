@@ -12,23 +12,13 @@
 #######################################################################
 -%]
 
-<h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
+<h4><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h4>
 
 <ul>
-<li><b>17.5.2011</b>: Verbesserung bei der Nutzung von QR-Codes. Der QR-Code bleibt
-nun permanent sichtbar, wenn Sie auf das zugehörige Symbol klicken.
-</li>
-<li><b>29.4.2011</b>: Für einen besseren Überblick der Leihfristenden
-können im Benutzerkonto nun die entliehenen Titel im iCalendar-Format
-abgespeichert und in das eigene Kalenderprogramm importiert
-werden. Zusätzlich können die Fristenden auch per QR-Code direkt in
-den Handy-Kalender übernommen werden (über eine Internetverbundung
-können zusätzliche Kosten anfallen). Weitergehende Informationen in diesem
-<a href="http://blog.openbib.org/2011/04/29/ausleihkonto-als-kalender-und-qr-code/" target="_blank">Blog-Artikel</a></li>
 <li><b>21.4.2011</b>: Zur schnellen Übernahme wesentlicher
-Informationen aus dem KUG mit dem Handy als "Merkzettel" - Signatur/Standort, um ein Buch im Regal zu
-finden oder Adresse/Öffnungszeiten einer Instituts-Bibliothek, um
-diese zu finden - setzt der KUG nun <a
+Informationen aus OpenBib mit dem Handy als "Merkzettel" - Signatur/Standort, um ein Buch im Regal zu
+finden oder Adresse/Öffnungszeiten einer Bibliothek, um
+diese zu finden - setzt OpenBib nun <a
 href="http://de.wikipedia.org/wiki/QR-Code"
 target="_blank">QR-Codes</a> <img style="vertical-align:bottom;"
 src="[% config.get('qrcode_img') %]" alt="QR-Code Icon" />
@@ -36,14 +26,5 @@ ein. Geeignete Programme, wie z.B. <a class="ext" href="http://www.i-nigma.com/D
 target="_blank">i-nigma Reader</a> oder <a class="ext" href="http://reader.kaywa.com/" target="_blank">Kaywa Reader</a>, sind für
 viele Handys verfügbar. (weitergehende Informationen in diesem
 <a href="http://blog.openbib.org/2011/04/21/qr-codes-im-kug/" target="_blank">Blog-Artikel</a>)</li>
-<li><b>30.10.2010</b>: Hintergrundinformationen zum KUG wurden in einem eigenen Beitrag im "Handbuch Bibliothek 2.0" zusammengefasst und k&ouml;nnen mit weiteren Beitr&auml;gen zu aktuellen Entwicklungen im Themenbereich "Nutzerzentrierung in Bibliotheken" (Suchmaschinen, E-Learning, Games, ...) in diesem als Open Access ver&ouml;ffentlichten Buch kostenlos gelesen werden (<a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103.293" target="_blank">KUG-Beitrag</a> oder <a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103" target="_blank">gesamtes Buch</a> im PDF-Format). </li>
-<li><b>12.3.2010</b>: Die USB Köln gibt den Gesamtbestand ihrer
-Katalogdaten unter CC0 zum Download via <a
-href="http://opendata.ub.uni-koeln.de/"
-target="_blank">opendata.ub.uni-koeln.de</a> frei (weitergehende Informationen in diesem
-<a
-href="http://blog.openbib.org/2010/03/12/offene-bibliographische-daten-es-ist-soweit/"
-target="_blank">Blog-Artikel</a> und <a
-href="http://blog.openbib.org/2010/03/18/offene-katalogdaten-reaktionen/"
-target="_blank">Reaktionen</a>).</li>
+<li><b>30.10.2010</b>: Hintergrundinformationen zum Einsatz von OpenBib als K&ouml;lner Universit&auml;tsGesamtkatalog KUG wurden in einem eigenen Beitrag im "Handbuch Bibliothek 2.0" zusammengefasst und k&ouml;nnen mit weiteren Beitr&auml;gen zu aktuellen Entwicklungen im Themenbereich "Nutzerzentrierung in Bibliotheken" (Suchmaschinen, E-Learning, Games, ...) in diesem als Open Access ver&ouml;ffentlichten Buch kostenlos gelesen werden (<a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103.293" target="_blank">OpenBib-Beitrag</a> oder <a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103" target="_blank">gesamtes Buch</a> im PDF-Format). </li>
 </ul>

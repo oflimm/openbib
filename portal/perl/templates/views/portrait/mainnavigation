@@ -1,0 +1,19 @@
+[%#-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+#######################################################################
+-%]
+<div id="mainnavigation">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr><td align="left">&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent">[% msg.maketext("Recherche") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('resultlists_loc') %]?action=choice">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('managecollection_loc') %]?action=show">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></td><td height="25">&nbsp;</td><td align="right">
+<a href="[% path_prefix %]/[% config.get('info_loc') %]/20">[% msg.maketext("Hauptseite") %]</a>&nbsp;&nbsp;<a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('connector_rss_loc') %]/neuzugang/portrait.rdf" target="_blank">[% msg.maketext("RSS") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/30">[% msg.maketext("Projekt") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/0">[% msg.maketext("Hilfe") %]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('leave_loc') %]?" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]</span></b></a>&nbsp;</td></tr>
+</table>
+</div>

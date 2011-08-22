@@ -58,55 +58,41 @@ sub _new_instance {
     # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
     # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
 
-    my $dbinforesult=$dbh->prepare("select dbname,sigel,url,description,shortdesc,use_libinfo from dbinfo") or $logger->error($DBI::errstr);
-    $dbinforesult->execute() or $logger->error($DBI::errstr);;
-  
-    while (my $result=$dbinforesult->fetchrow_hashref()) {
-        my $dbname      = decode_utf8($result->{'dbname'});
-        my $sigel       = decode_utf8($result->{'sigel'});
-        my $url         = decode_utf8($result->{'url'});
-        my $description = decode_utf8($result->{'description'});
-        my $shortdesc   = decode_utf8($result->{'shortdesc'});
-        my $use_libinfo = decode_utf8($result->{'use_libinfo'});
+    foreach my $dbinfo ($config->get_dbinfo_overview->all){
     
         ##################################################################### 
         ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
     
-        $self->{sigel}->{"$sigel"} = {
-            full   => $description,
-            short  => $shortdesc,
-            dbname => $dbname,
+        $self->{sigel}->{$dbinfo->sigel} = {
+            full   => $dbinfo->description,
+            short  => $dbinfo->shortdesc,
+            dbname => $dbinfo->dbname,
         };
     
         #####################################################################
         ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
     
-        $self->{bibinfo}->{"$sigel"} = "$url";
+        $self->{bibinfo}->{$dbinfo->sigel} = $dbinfo->url;
         
         #####################################################################
         ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
         
-        $self->{dbases}->{"$dbname"}       = "$sigel";
+        $self->{dbases}->{$dbinfo->dbname}       = $dbinfo->sigel;
 
         #####################################################################
         ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
 
-        $self->{dbnames}->{"$dbname"}      = {
-            full  => $description,
-            short => $shortdesc,
+        $self->{dbnames}->{$dbinfo->dbname}      = {
+            full  => $dbinfo->description,
+            short => $dbinfo->shortdesc,
         };
 
-        $self->{urls}->{"$dbname"}        = $url;
-        $self->{use_libinfo}->{"$dbname"} = $use_libinfo;
+        $self->{urls}->{$dbinfo->dbname}        = $dbinfo->url;
+        $self->{use_libinfo}->{$dbinfo->dbname} = $dbinfo->use_libinfo;
 
     }
   
-    $dbinforesult->finish;
-
     return $self;
 }
 

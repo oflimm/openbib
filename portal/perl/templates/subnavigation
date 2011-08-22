@@ -1,0 +1,75 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+[% IF active_menu == "searchform" %]
+<h6 class="vlist">Recherche</h6>
+<ul class="vlist">
+[% IF active_submenu == "searchform_simple" %]
+  <li class="active"><strong>Einfache Recherche</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple.html?l=[% lang %]">Einfache Recherche</a></li>
+[% END %]
+[% IF active_submenu == "searchform_advanced" %]
+  <li class="active"><strong>Erweiterte Recherche</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]">Erweiterte Recherche</a></li>
+[% END %]
+</ul>
+[% END %]
+[% IF active_menu == "register" %]
+<h6 class="vlist">Register</h6>
+<ul class="vlist">
+  <li><a [% IF active_submenu == "register_T0720" %]class="active" [% END %] href="[% path_prefix %]/[% config.get('browse_loc') %]/richter/T0720.html?l=[% lang %]">Provenienzen</a></li>
+</ul> 
+[% END %]
+[% IF active_menu == "cloud" %]
+<h6 class="vlist">[% msg.maketext("&Uuml;bersichten") %]</h6>
+<ul class="vlist">
+[% IF active_submenu == "cloud_choice" %]
+  <li class="active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]" title="Katalogauswahl">[% msg.maketext("Katalogauswahl") %]</a></li>
+[% END %]
+[% IF active_submenu == "cloud_year" %]
+  <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/year/richter.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[% END %]
+[% IF active_submenu == "cloud_person" %]
+  <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/person/richter.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[% END %]
+[% IF active_submenu == "cloud_corporatebody" %]
+  <li class="active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/corporatebody/richter.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[% END %]
+[% IF active_submenu == "cloud_subject" %]
+  <li class="active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/subject/richter.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[% END %]
+[% IF active_submenu == "cloud_classification" %]
+  <li class="active"><strong>[% msg.maketext("Systematik") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/classification/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[% END %]
+</ul> 
+[% END %]

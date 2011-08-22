@@ -827,6 +827,9 @@ sub get_sequencestat_of_event {
     my $content      = exists $arg_ref->{content}
         ? $arg_ref->{content}            : undef;
 
+    my $contentop    = exists $arg_ref->{content_op}
+        ? $arg_ref->{content_op}         : '=';
+    
     my $year         = exists $arg_ref->{year}
         ? $arg_ref->{year}               : undef;
 
@@ -860,7 +863,7 @@ sub get_sequencestat_of_event {
     } 
 
     if ($content){
-        push @sqlwhere, " content = ?";
+        push @sqlwhere, " content $contentop ?";
 	push @sqlargs,  $content;
     } 
     

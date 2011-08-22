@@ -1,0 +1,90 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_60
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+
+[% PROCESS common/subtemplate name="visible_categories_library" %]
+
+[%
+   adresse = [];
+
+   IF libinfo.${"I0020"}.first.content ;
+      adresse.push(libinfo.${"I0020"}.first.content);
+   END ;
+
+   IF libinfo.${"I0030"}.first.content ;
+      adresse.push(libinfo.${"I0030"}.first.content);
+   END ;
+
+   
+%]
+<h3>[% adresse.join(', ').replace('<br />',', ') %]</h3>
+<div style="padding-bottom:20pt"></div>
+
+<table class="ZMSTable">
+<caption align="left"></caption>
+<colgroup><col width="33%" /><col width="66%"/></colgroup><tbody>
+<tr class="even"><th colspan="2">Informationen zum Institut:</th></tr>
+[%-
+
+row = 'odd' ;
+
+FOREACH category IN categories;
+
+      FOREACH item IN libinfo.$category;
+        content = item.content.replace('%22','"');
+
+        SWITCH category;
+
+          CASE [ "I0010" "I0230" "I0235" ];
+            content   = "<b>${content}</b>";
+
+        END;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr class="[% row %]"><td>[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%-   END ;
+
+  IF row == 'odd' ;
+    row = 'even';
+  ELSE ;
+    row = 'odd';
+  END ;
+END ;-%]
+</table>
+
+[%- IF libinfo.${"I0280"}.first.content -%]
+
+[%-
+     geo  = libinfo.${"I0280"}.first.content;
+     lat  = geo.split(',').first
+     lon  = geo.split(',').1
+-%]
+
+<table class="ZMSTable" >
+<caption align="left"></caption>
+<colgroup><col width="100%" /></colgroup>
+<tbody>
+<tr class="even">
+<th ><p>Lageplan der Institutsbibliothek:<br/></p></th></tr></tbody></table>
+
+<img src="http://ojw.dev.openstreetmap.org/StaticMap/?lat=[% lat %]&lon=[% lon %]&z=15&w=600&h=600&mlat0=50.916884&mlon0=6.941401&fmt=png&show=1" title="Karte von OpenStreetMap"/><!-- (+) bodyContent_PagePost -->
+
+[%- END -%]

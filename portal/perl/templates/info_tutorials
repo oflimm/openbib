@@ -1,0 +1,84 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_60
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "info" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[%# PROCESS common/subtemplate name="info_navigation" active_submenu="tutorial" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+   <h1>[% msg.maketext("Tutorien") %]</h1>
+
+<h1>[% msg.maketext("Wir bieten verschiedene Besichtigungstouren an:") %]</h1>
+
+<ul class="subjectlist">
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/standortsuche.html">[% msg.maketext("Sie haben wenig Zeit und suchen einen bestimmten Titel?!") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/standortsuche.html" target="_blank"><img src="[% config.get('tutorial_with_audio_img') %]" title="[% msg.maketext("Multimedia") %]" alt="[% msg.maketext("Multimedia") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/sachlichesuche.html">[% msg.maketext("Sie suchen Literatur zu einem bestimmten Thema?!") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/sachlichesuche.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+</ul>
+
+<h1>[% msg.maketext("Tutorien zu einzelnen Themen:") %]</h1>
+
+<ul class="subjectlist">
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html">[% msg.maketext("Bibsonomy") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="Film ohne Ton" alt="Film ohne Ton" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/ebooks.html">[% msg.maketext("eBooks") %] (Audio-Version)</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/ebooks.html" target="_blank"><img src="[% config.get('tutorial_with_audio_img') %]" title="[% msg.maketext("Multimedia") %]" alt="[% msg.maketext("Multimedia") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/e-journal.html">[% msg.maketext("eJournal der Uni Köln") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/e-journal.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/fernleihe.html">[% msg.maketext("Fernleihe") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/fernleihe.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/googlebooksearchbibsonomy.html">[% msg.maketext("Google-Book-Search") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/googlebooksearchbibsonomy.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/g.html">[% msg.maketext("Das große G") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/w.html">[% msg.maketext("Das große W") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/w_cs.html">[% msg.maketext("Das große W") %] (Audio-Version)</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/w_cs.html" target="_blank"><img src="[% config.get('tutorial_with_audio_img') %]" title="[% msg.maketext("Multimedia") %]" alt="[% msg.maketext("Multimedia") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/drilldowns.html">[% msg.maketext("Treffermengen eingrenzen") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/drilldowns.html" target="_blank"><img src="[% config.get('tutorial_with_audio_img') %]" title="[% msg.maketext("Multimedia") %]" alt="[% msg.maketext("Multimedia") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/indexsuche.html">[% msg.maketext("Index-Suche") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/indexsuche.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/kartenkat.html">[% msg.maketext("Kartenkataloge der Philosophischen Fakultät") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/kartenkat.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/literaturlisten.html">[% msg.maketext("Literaturlisten") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/literaturlisten.html" target="_blank"><img src="[% config.get('tutorial_with_audio_img') %]" title="[% msg.maketext("Multimedia") %]" alt="[% msg.maketext("Multimedia") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/meinkuganmelden.html">[% msg.maketext("Mein KUG") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/meinkuganmelden.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html">[% msg.maketext("Merkliste") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/rss.html">[% msg.maketext("RSS") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/standortsuche.html">[% msg.maketext("Standort des Buches") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/standortsuche.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/meinkugtaggen.html">[% msg.maketext("Taggen") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/meinkugtaggen.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/kugbibsonomyabgleich.html">[% msg.maketext("Tags nach BibSonomy hochladen") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/kugbibsonomyabgleich.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+  <li><a href="http://kug.ub.uni-koeln.de/tutorials/top20.html">[% msg.maketext("Top 20") %]</a>&nbsp;<a href="http://kug.ub.uni-koeln.de/tutorials/top20.html" target="_blank"><img src="[% config.get('tutorial_img') %]" title="[% msg.maketext("Film ohne Ton") %]" alt="[% msg.maketext("Film ohne Ton") %]" style="vertical-align:bottom;" /></a></li>
+</ul>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

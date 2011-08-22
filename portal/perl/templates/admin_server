@@ -1,0 +1,97 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_server
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der aktuellen Einstellungen des Betriebs
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Kataloge anzeigen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="server" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuen Rechner zur Lastverteilung hinzuf&uuml;gen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Rechnername") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="host" /></td><td><select name="active"><option value="1">[%
+msg.maketext("Ja") %]</option><option value="0"
+selected>[% msg.maketext("Nein") %]</option></select></td><td><div class="cssbutton glass kug"><input
+type="submit" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[%# USE dumper;dumper.dump(loadbalancertargets)%]
+[% IF loadbalancertargets.size > 0 %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende Rechner zur Lastverteilung") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
+[% FOREACH loadbalancertarget IN loadbalancertargets %]
+<tr
+[% IF loadbalancertarget.active == 1%]
+ bgcolor="aliceblue"
+[% END %]
+>
+<td>[% loadbalancertarget.host %]</td>
+<td align="center">[%- IF loadbalancertarget.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% loadbalancertarget.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF loadbalancertarget.active == 0 %]1[% ELSE %]0[% END %]"/><div class="cssbutton glass kug"><input type="submit" value="[% IF loadbalancertarget.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></div></form></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% loadbalancertarget.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></div></form></td></tr>
+[% END %]
+
+</table>
+
+[% END %]
+
+</td></tr>
+</table>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

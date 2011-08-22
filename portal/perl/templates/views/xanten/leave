@@ -32,7 +32,7 @@
 
   <center>
     <p>
-      <a href="http://[% config.get('loadbalancerservername') %][% config.get('loadbalancer_loc') %]?view=[% view %]" target="_parent"><span style="font-size:2.5em;font-weight:bold">Neue Sitzung starten</span></a>
+      <a href="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('loadbalancer_loc') %]?" target="_parent"><span style="font-size:2.5em;font-weight:bold">Neue Sitzung starten</span></a>
     </p>
   </center>
 <br />

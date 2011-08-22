@@ -99,23 +99,12 @@ open (MEX,     ">:encoding($outputencoding)","unload.MEX");
 my $titid = 1;
 my $have_titid_ref = {};
 while (my $result=$request->fetchrow_hashref){
-    print YAML::Dump($result);
     if ($convconfig->{uniqueidfield}){
-        my $id = $result->{$convconfig->{uniqueidfield}};
-        if ($convconfig->{uniqueidmatch}){
-            my $uniquematchregexp = $convconfig->{uniqueidmatch};
-            ($id)=$id=~m/$uniquematchregexp/;
-        }
-        unless ($id){
-            print STDERR  "KEINE ID\n";
-            next;
-        }
-        
-        if ($have_titid_ref->{$id}){
-            print STDERR  "Doppelte ID: $id\n";
+        if ($have_titid_ref->{$result->{$convconfig->{uniqueidfield}}}){
+            print STDERR  "Doppelte ID: ".$result->{$convconfig->{uniqueidfield}}."\n";
 	    next;
         }
-        printf TIT "0000:$id\n";
+        printf TIT "0000:%d\n", $result->{$convconfig->{uniqueidfield}};
         $have_titid_ref->{$result->{$convconfig->{uniqueidfield}}} = 1;
     }
     else {
@@ -124,14 +113,6 @@ while (my $result=$request->fetchrow_hashref){
 
     foreach my $kateg (keys %{$convconfig->{title}}){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
-
-        if ($convconfig->{filter}{$kateg}{filter_junk}){
-            $content = filter_junk($content);
-        }
-
-        if ($convconfig->{filter}{$kateg}{filter_newline2br}){
-            $content = filter_newline2br($content);
-        }
 
         if ($content){
             my $multiple = 0;
@@ -368,32 +349,3 @@ close(KOR);
 close(NOTATION);
 close(SWT);
 close(MEX);
-
-# Filter
-
-sub filter_junk {
-    my ($content) = @_;
-
-    $content=~s/\W/ /g;
-    $content=~s/\s+/ /g;
-    $content=~s/\s\D\s/ /g;
-
-    
-    return $content;
-}
-
-sub filter_newline2br {
-    my ($content) = @_;
-
-    $content=~s/\n/<br\/>/g;
-    
-    return $content;
-}
-
-sub filter_match {
-    my ($content,$regexp) = @_;
-
-    my ($match)=$content=~m/($regexp)/g;
-    
-    return $match;
-}

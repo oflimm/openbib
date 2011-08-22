@@ -58,44 +58,56 @@ use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $serviceid      = $self->strip_suffix($self->param('serviceid'));
 
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $query  = Apache2::Request->new($r);
-
+    # CGI Args
     my $id         = $query->param('id')        || '';
     my $format     = $query->param('format')    || '';
     my $callback   = $query->param('callback')  || '';
     my $lang       = $query->param('lang')      || 'de';
 
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    # Basisipfad entfernen
-    my $basepath = $config->{connector_seealso_loc};
-    $path=~s/$basepath//;
-
-    # Service-Parameter aus URI bestimmen
-    my $service;
-    if ($path=~m/^\/(.+)/){
-        $service=$1;
-    }
-
     my $identifier =  new SeeAlso::Identifier($id);
 
-    my @description = ( "ShortName" => "MySimpleServer" );
+    my @description = ( "ShortName" => "OpenBib SeeAlso Service" );
     my $server = new SeeAlso::Server( description => \@description );
 
-    $logger->debug("SeeAlso: Service - $service Identifier $id - Format $format");
+    $logger->debug("SeeAlso: Serviceid - $serviceid Identifier $id - Format $format");
     
     my $services_ref = {
         'isbn2wikipedia' => {
@@ -115,29 +127,6 @@ sub handler {
                 foreach my $content (@{$result_ref->{E4200}}){
                     my $uri = URI->new( "http://de.wikipedia.org/wiki/$content" )->canonical;
                     $response->add($content,"Artikel in deutscher Wikipedia","$uri");
-                    $logger->debug("Added $content");
-                }
-
-                return $response;
-            }
-        },
-        'isbn2paperc' => {
-            'description' => 'Available Title in PaperC for a given ISBN',
-            'query_proc'  => sub {
-                my $identifier = shift;
-
-                my $logger = get_logger();
-
-                my $response = SeeAlso::Response->new($identifier);
-
-                my $enrichmnt = new OpenBib::Enrichment;
-
-                my $result_ref = $enrichmnt->get_additional_normdata({isbn => $identifier});
-
-                # PaperC
-                foreach my $content (@{$result_ref->{E4122}}){
-                    my $uri = URI->new( "$content" )->canonical;
-                    $response->add($content,"Title in PaperC","$uri");
                     $logger->debug("Added $content");
                 }
 
@@ -238,10 +227,10 @@ sub handler {
 
     };
 
-    my $current_service_ref = (exists $services_ref->{$service})?$services_ref->{$service}:"";
+    my $current_service_ref = (exists $services_ref->{$serviceid})?$services_ref->{$serviceid}:"";
 
     if ($current_service_ref){
-        $logger->debug("Using service $service");
+        $logger->debug("Using service $serviceid");
         my $source = SeeAlso::Source->new($current_service_ref->{query_proc},
         ( "ShortName" => $current_service_ref->{description} )
     );

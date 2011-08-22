@@ -41,6 +41,7 @@ use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 use Storable;
+use XML::RSS;
 use YAML ();
 
 use OpenBib::Config::CirculationInfoTable;
@@ -194,6 +195,78 @@ sub to_list {
     return $self->{recordlist};
 }
 
+sub to_rss {
+    my ($self,$arg_ref) = @_;
+    
+    # Set defaults
+    my $channel_title     = exists $arg_ref->{channel_title}
+        ? $arg_ref->{channel_title}        : '';
+    my $view              = exists $arg_ref->{view}
+        ? $arg_ref->{view}                 : 'openbib';
+    my $channel_description       = exists $arg_ref->{channel_description}
+        ? $arg_ref->{channel_description}  : '';
+    my $channel_link              = exists $arg_ref->{channel_link}
+        ? $arg_ref->{channel_link}         : '';
+    my $channel_language          = exists $arg_ref->{channel_language}
+        ? $arg_ref->{channel_language}     : 'de';
+    my $msg               = exists $arg_ref->{msg}
+        ? $arg_ref->{msg}                  : '';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = OpenBib::Config->instance;
+
+    my $rss = new XML::RSS ( version => '1.0' );
+        
+    $rss->channel(
+        title         => $channel_title,
+        link          => $channel_link,
+        language      => $channel_language,
+        description   => $channel_description,
+    );
+
+        
+    foreach my $record ($self->get_records){
+        my $desc  = "";
+        my $title = $record->get_category({category => 'T0331', indicator => 1});
+        my $ast   = $record->get_category({category => 'T0310', indicator => 1});
+        
+        $title = $ast if ($ast);
+        
+        my $itemtemplatename = $config->{tt_connector_rss_item_tname};
+            my $itemtemplate = Template->new({
+                LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                    INCLUDE_PATH   => $config->{tt_include_path},
+                    ABSOLUTE       => 1,
+                }) ],
+                RECURSION      => 1,
+                OUTPUT         => \$desc,
+            });
+        
+        
+        # TT-Data erzeugen
+        my $ttdata={
+                record          => $record,
+                msg             => $msg,
+            };
+        
+        $itemtemplate->process($itemtemplatename, $ttdata) || do {
+            $logger->error($itemtemplate->error());
+        };
+        
+        $logger->debug("Adding $title / $desc") if (defined $title && defined $desc);
+        
+        $rss->add_item(
+            title       => $title,
+            link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{title_loc}."/".$record->{database}."/".$record->{id}.".html",
+            description => $desc
+        );
+    }
+    
+    return $rss->as_string;
+}
+
 sub print_to_handler {
     my ($self,$arg_ref)=@_;
 
@@ -217,12 +290,16 @@ sub print_to_handler {
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}              : undef;
     my $template          = exists $arg_ref->{template}
-        ? $arg_ref->{template}          : 'tt_search_showtitlist_tname';
+        ? $arg_ref->{template}          : 'tt_search_tname';
     my $location          = exists $arg_ref->{location}
         ? $arg_ref->{location}          : 'search_loc';
     my $parameter         = exists $arg_ref->{parameter}
         ? $arg_ref->{parameter}         : {};
-    my $lang              = exists $arg_ref->{lang}
+    my $representation     = exists $arg_ref->{representation}
+        ? $arg_ref->{representation}     : undef;
+    my $content_type       = exists $arg_ref->{content_type}
+        ? $arg_ref->{content_type}       : 'text/html';
+    my $lang               = exists $arg_ref->{lang}
         ? $arg_ref->{lang}              : undef;
     my $msg                = exists $arg_ref->{msg}
         ? $arg_ref->{msg}                : undef;
@@ -241,12 +318,16 @@ sub print_to_handler {
 
     my $searchtitofcnt = decode_utf8($query->param('searchtitofcnt'))    || '';
 
+    $logger->debug("Representation: $representation - Content-Type: $content_type ");
+    
     if ($self->get_size() == 0) {
-        OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
+        OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg,$representation,$content_type);
     }
     elsif ($self->get_size() == 1) {
         my $record = $self->{recordlist}[0];
         $record->load_full_record->print_to_handler({
+            representation     => $representation,
+            content_type       => $content_type,
             apachereq          => $r,
             stylesheet         => $stylesheet,
             view               => $view,
@@ -340,6 +421,9 @@ sub print_to_handler {
         
         # TT-Data erzeugen
         my $ttdata={
+            representation => $representation,
+            content_type   => $content_type,
+            
             searchtitofcnt => $searchtitofcnt,
             lang           => $lang,
             view           => $view,
@@ -371,7 +455,6 @@ sub print_to_handler {
                 my $string=shift;
                 return decode_utf8($string);
             },
-            
         };
         
         OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);

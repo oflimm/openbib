@@ -2,7 +2,7 @@
 #
 #  OpenBib::SearchQuery
 #
-#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -31,17 +31,20 @@ no warnings 'redefine';
 use utf8;
 
 use base qw(Apache::Singleton);
+#use base qw(Class::Singleton);
 
 use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS qw(encode_json decode_json);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use String::Tokenizer;
 use Text::Aspell;
 use Search::Xapian;
 use YAML;
+use URI::Escape;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -54,81 +57,50 @@ sub _new_instance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+
     my $self = {
-        _databases => [],
-        _searchquery => {
-            fs   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            verf   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            hst   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            hststring  => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            gtquelle   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            swt   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            kor   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            sign   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            inhalt   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            isbn   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            issn   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            mart   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            notation   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-            ejahr   => {
-                norm => '',
-                val  => '',
-                bool => '',
-            },
-        },
+        _databases             => [],
+        _filter                => [],
+        _results               => {},
+        _have_searchterms      => 0,
     };
+
+    foreach my $searchfield (keys %{$config->{searchfield}}){
+        $self->{_searchquery}{$searchfield} = {
+            norm => '',
+            val  => '',
+            bool => '',
+        };
+    }
+
+    bless ($self, $class);
+
+    return $self;
+}
+
+sub new {
+    my ($class) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $self = {
+        _databases             => [],
+        _filter                => [],
+        _results               => {},
+        _have_searchterms      => 0,
+    };
+
+    foreach my $searchfield (keys %{$config->{searchfield}}){
+        $self->{_searchquery}{$searchfield} = {
+            norm => '',
+            val  => '',
+            bool => '',
+        };
+    }
 
     bless ($self, $class);
 
@@ -141,233 +113,41 @@ sub set_from_apache_request {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
     my $query = Apache2::Request->new($r);
 
+    my ($yearop,$indexterm,$indextermnorm);
+
     # Wandlungstabelle Erscheinungsjahroperator
-    my $ejahrop_ref={
+    my $yearop_ref={
         'eq' => '=',
         'gt' => '>',
         'lt' => '<',
     };
 
-    my ($fs, $verf, $hst, $hststring, $gtquelle, $swt, $kor, $sign, $inhalt, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
-
-    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $inhaltnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm,$indexterm,$indextermnorm);
-    
-    $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || $query->param('fs')      || '';
-    $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || $query->param('verf')    || '';
-    $hst       = $hstnorm       = decode_utf8($query->param('hst'))           || $query->param('hst')     || '';
-    $hststring = $hststringnorm = decode_utf8($query->param('hststring'))     || $query->param('hststrin')|| '';
-    $gtquelle  = $gtquellenorm  = decode_utf8($query->param('gtquelle'))      || $query->param('qtquelle')|| '';
-    $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || $query->param('swt')     || '';
-    $kor       = $kornorm       = decode_utf8($query->param('kor'))           || $query->param('kor')     || '';
-    $sign      = $signnorm      = decode_utf8($query->param('sign'))          || $query->param('sign')    || '';
-    $inhalt    = $inhaltnorm    = decode_utf8($query->param('inhalt'))        || $query->param('inhalt')  || '';
-    $isbn      = $isbnnorm      = decode_utf8($query->param('isbn'))          || $query->param('isbn')    || '';
-    $issn      = $issnnorm      = decode_utf8($query->param('issn'))          || $query->param('issn')    || '';
-    $mart      = $martnorm      = decode_utf8($query->param('mart'))          || $query->param('mart')    || '';
-    $notation  = $notationnorm  = decode_utf8($query->param('notation'))      || $query->param('notation')|| '';
-    $ejahr     = $ejahrnorm     = decode_utf8($query->param('ejahr'))         || $query->param('ejahr')   || '';
-    $ejahrop   =                  decode_utf8($query->param('ejahrop'))       || $query->param('ejahrop') || 'eq';
-
-    $indexterm = $indextermnorm = decode_utf8($query->param('indexterm'))     || $query->param('indexterm')|| '';
-
-    my $autoplus      = $query->param('autoplus')      || '';
-    my $verfindex     = $query->param('verfindex')     || '';
-    my $korindex      = $query->param('korindex')      || '';
-    my $swtindex      = $query->param('swtindex')      || '';
-    my $notindex      = $query->param('notindex')      || '';
-
-    #####################################################################
-    ## boolX: Verknuepfung der Eingabefelder (leere Felder werden ignoriert)
-    ##        AND  - Und-Verknuepfung
-    ##        OR   - Oder-Verknuepfung
-    ##        NOT  - Und Nicht-Verknuepfung
-    my $boolverf      = ($query->param('boolverf'))     ?$query->param('boolverf')
-        :($query->param('bool9'))?$query->param('bool9'):"AND";
-    my $boolhst       = ($query->param('boolhst'))      ?$query->param('boolhst')
-        :($query->param('bool1'))?$query->param('bool1'):"AND";
-    my $boolswt       = ($query->param('boolswt'))      ?$query->param('boolswt')
-        :($query->param('bool2'))?$query->param('bool2'):"AND";
-    my $boolkor       = ($query->param('boolkor'))      ?$query->param('boolkor')
-        :($query->param('bool3'))?$query->param('bool3'):"AND";
-    my $boolnotation  = ($query->param('boolnotation')) ?$query->param('boolnotation')
-        :($query->param('bool4'))?$query->param('bool4'):"AND";
-    my $boolisbn      = ($query->param('boolisbn'))     ?$query->param('boolisbn')
-        :($query->param('bool5'))?$query->param('bool5'):"AND";
-    my $boolissn      = ($query->param('boolissn'))     ?$query->param('boolissn')
-        :($query->param('bool8'))?$query->param('bool8'):"AND";
-    my $boolsign      = ($query->param('boolsign'))     ?$query->param('boolsign')
-        :($query->param('bool6'))?$query->param('bool6'):"AND";
-    my $boolinhalt    = ($query->param('boolinhalt'))   ?$query->param('boolinhalt')
-        :"AND";
-    my $boolejahr     = ($query->param('boolejahr'))    ?$query->param('boolejahr')
-        :($query->param('bool7'))?$query->param('bool7'):"AND";
-    my $boolfs        = ($query->param('boolfs'))       ?$query->param('boolfs')
-        :($query->param('bool10'))?$query->param('bool10'):"AND";
-    my $boolmart      = ($query->param('boolmart'))     ?$query->param('boolmart')
-        :($query->param('bool11'))?$query->param('bool11'):"AND";
-    my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring')
-        :($query->param('bool12'))?$query->param('bool12'):"AND";
-    my $boolgtquelle  = ($query->param('boolgtquelle')) ?$query->param('boolgtquelle')
-        :"AND";
+    my $legacy_bool_op_ref = {
+        'btit'          => 'bool1',
+        'bsubj'         => 'bool2',
+        'bcorp'         => 'bool3',
+        'bcln'          => 'bool4',
+        'bisbn'         => 'bool5',
+        'bmark'         => 'bool6',
+        'byear'         => 'bool7',
+        'bissn'         => 'bool8',
+        'bpers'         => 'bool9',
+        'bfs'           => 'bool10',
+        'btyp'          => 'bool11',
+        'btitstring'    => 'bool12',
+    };
 
     # Sicherheits-Checks
 
     my $valid_bools_ref = {
-        'AND' => 1,
-        'OR'  => 1,
-        'NOT' => 1,
+        'AND' => 'AND',
+        'OR'  => 'OR',
+        'NOT' => 'AND NOT',
     };
-
-    $boolverf      = (exists $valid_bools_ref->{$boolverf     })?$boolverf     :"AND";
-    $boolhst       = (exists $valid_bools_ref->{$boolhst      })?$boolhst      :"AND";
-    $boolswt       = (exists $valid_bools_ref->{$boolswt      })?$boolswt      :"AND";
-    $boolkor       = (exists $valid_bools_ref->{$boolkor      })?$boolkor      :"AND";
-    $boolnotation  = (exists $valid_bools_ref->{$boolnotation })?$boolnotation :"AND";
-    $boolisbn      = (exists $valid_bools_ref->{$boolisbn     })?$boolisbn     :"AND";
-    $boolissn      = (exists $valid_bools_ref->{$boolissn     })?$boolissn     :"AND";
-    $boolsign      = (exists $valid_bools_ref->{$boolsign     })?$boolsign     :"AND";
-    $boolinhalt    = (exists $valid_bools_ref->{$boolinhalt   })?$boolinhalt   :"AND";
-    $boolfs        = (exists $valid_bools_ref->{$boolfs       })?$boolfs       :"AND";
-    $boolmart      = (exists $valid_bools_ref->{$boolmart     })?$boolmart     :"AND";
-    $boolhststring = (exists $valid_bools_ref->{$boolhststring})?$boolhststring:"AND";
-    $boolgtquelle  = (exists $valid_bools_ref->{$boolgtquelle })?$boolgtquelle :"AND";
-
-    $boolejahr    = "AND";
-
-    $boolverf      = "AND NOT" if ($boolverf      eq "NOT");
-    $boolhst       = "AND NOT" if ($boolhst       eq "NOT");
-    $boolswt       = "AND NOT" if ($boolswt       eq "NOT");
-    $boolkor       = "AND NOT" if ($boolkor       eq "NOT");
-    $boolnotation  = "AND NOT" if ($boolnotation  eq "NOT");
-    $boolisbn      = "AND NOT" if ($boolisbn      eq "NOT");
-    $boolissn      = "AND NOT" if ($boolissn      eq "NOT");
-    $boolsign      = "AND NOT" if ($boolsign      eq "NOT");
-    $boolinhalt    = "AND NOT" if ($boolinhalt    eq "NOT");
-    $boolfs        = "AND NOT" if ($boolfs        eq "NOT");
-    $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
-    $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
-    $boolgtquelle  = "AND NOT" if ($boolgtquelle  eq "NOT");
-
-    # Setzen der arithmetischen Ejahrop-Operatoren
-    if (exists $ejahrop_ref->{$ejahrop}){
-        $ejahrop=$ejahrop_ref->{$ejahrop};
-    }
-    else {
-        $ejahrop="=";
-    }
-    
-    # Filter: ISBN und ISSN
-
-    # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
-    $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
-    $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
-    $isbnnorm =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
-    $isbnnorm =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
-
-    # Entfernung der Minus-Zeichen bei der ISSN
-    $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8/g;
-    $issnnorm =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8/g;
-
-    my $ejtest;
-  
-    ($ejtest)=$ejahrnorm=~/.*(\d\d\d\d).*/;
-    if (!$ejtest) {
-        $ejahrnorm="";              # Nur korrekte Jahresangaben werden verarbeitet
-    }                           # alles andere wird ignoriert...
-    
-    # Filter Rest
-    $fsnorm        = OpenBib::Common::Util::grundform({
-        content   => $fsnorm,
-        searchreq => 1,
-    });
-
-    $verfnorm      = OpenBib::Common::Util::grundform({
-        content   => $verfnorm,
-        searchreq => 1,
-    });
-
-    $hstnorm       = OpenBib::Common::Util::grundform({
-        content   => $hstnorm,
-        searchreq => 1,
-    });
-
-    $hststringnorm = OpenBib::Common::Util::grundform({
-        category  => "0331", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
-        content   => $hststringnorm,
-        searchreq => 1,
-    });
-
-    $gtquellenorm  = OpenBib::Common::Util::grundform({
-        content   => $gtquellenorm,
-        searchreq => 1,
-    });
-
-    $swtnorm       = OpenBib::Common::Util::grundform({
-        content   => $swtnorm,
-        searchreq => 1,
-    });
-
-    $kornorm       = OpenBib::Common::Util::grundform({
-        content   => $kornorm,
-        searchreq => 1,
-    });
-
-    $signnorm      = OpenBib::Common::Util::grundform({
-        content   => $signnorm,
-        searchreq => 1,
-    });
-
-    $inhaltnorm    = OpenBib::Common::Util::grundform({
-        content   => $inhaltnorm,
-        searchreq => 1,
-    });
-    
-    $isbnnorm      = OpenBib::Common::Util::grundform({
-        category  => '0540',
-        content   => $isbnnorm,
-        searchreq => 1,
-    });
-
-    $issnnorm      = OpenBib::Common::Util::grundform({
-        category  => '0543',
-        content   => $issnnorm,
-        searchreq => 1,
-    });
-    
-    $martnorm      = OpenBib::Common::Util::grundform({
-        content   => $martnorm,
-        searchreq => 1,
-    });
-
-    $notationnorm  = OpenBib::Common::Util::grundform({
-        content   => $notationnorm,
-        searchreq => 1,
-    });
-
-    $ejahrnorm      = OpenBib::Common::Util::grundform({
-        content   => $ejahrnorm,
-        searchreq => 1,
-    });
-
-    $indextermnorm  = OpenBib::Common::Util::grundform({
-        content   => $indextermnorm,
-        searchreq => 1,
-    });
-
-    # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
-    if ($autoplus eq "1" && !$verfindex && !$korindex && !$swtindex) {
-        $fsnorm       = OpenBib::VirtualSearch::Util::conv2autoplus($fsnorm)   if ($fs);
-        $verfnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($verfnorm) if ($verf);
-        $hstnorm      = OpenBib::VirtualSearch::Util::conv2autoplus($hstnorm)  if ($hst);
-        $kornorm      = OpenBib::VirtualSearch::Util::conv2autoplus($kornorm)  if ($kor);
-        $swtnorm      = OpenBib::VirtualSearch::Util::conv2autoplus($swtnorm)  if ($swt);
-        $isbnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($isbnnorm) if ($isbn);
-        $issnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($issnnorm) if ($issn);
-        $inhaltnorm   = OpenBib::VirtualSearch::Util::conv2autoplus($inhaltnorm) if ($inhalt);
-        $gtquellenorm = OpenBib::VirtualSearch::Util::conv2autoplus($gtquellenorm) if ($gtquelle);
-    }
 
     # (Re-)Initialisierung
     delete $self->{_hits}          if (exists $self->{_hits});
@@ -375,132 +155,217 @@ sub set_from_apache_request {
     delete $self->{_id}            if (exists $self->{_id});
 
     $self->{_searchquery} = {};
+
+    $logger->debug("Params: ".$r->args);
+    
+    # Suchfelder einlesen
+    foreach my $searchfield (keys %{$config->{searchfield}}){
+        my $searchfieldprefix=$config->{searchfield}{$searchfield}{prefix};
+        my ($searchfield_content, $searchfield_norm_content,$searchfield_bool_op);
+        $searchfield_content = $searchfield_norm_content = decode_utf8($query->param("$searchfieldprefix")) || $query->param("$searchfieldprefix")      || '';
+        $searchfield_bool_op = (defined $query && $query->param("b$searchfieldprefix"))?$query->param("b$searchfieldprefix"):
+            ($query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}))?$query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}):"AND";
         
-    if ($fs){
-      $self->{_searchquery}->{fs}={
-			      val   => $fs,
-			      norm  => $fsnorm,
-			      bool  => '',
-			     };
+        # Inhalts-Check
+        $searchfield_bool_op = (exists $valid_bools_ref->{$searchfield_bool_op})?$valid_bools_ref->{$searchfield_bool_op}:"AND";
+        
+        #####################################################################
+        ## searchfield_content: Inhalt der Suchfelder des Nutzers
+
+        $self->{_searchquery}->{$searchfield}->{val}  = $searchfield_content;
+
+        #####################################################################
+        ## searchfield_bool_op: Verknuepfung der Eingabefelder (leere Felder werden ignoriert)
+        ##        AND  - Und-Verknuepfung
+        ##        OR   - Oder-Verknuepfung
+        ##        NOT  - Und Nicht-Verknuepfung
+
+        $self->{_searchquery}->{$searchfield}->{bool} = $searchfield_bool_op;
+
+        if ($searchfield_norm_content){
+            # Zuerst Stringsuchen in der Freie Suche
+
+            if ($searchfield eq "freesearch" || $searchfield_norm_content=~/:|.+?|/){
+                while ($searchfield_norm_content=~m/^([^\|]+)\|([^\|]+)\|(.*)$/){
+                    my $first = $1;
+                    my $string = $2;
+                    my $last = $3;
+                    
+                    $logger->debug("Fullstring IN: $string");
+                    my $string_norm = OpenBib::Common::Util::grundform({
+                        content   => $string,
+                    });
+
+                    $string_norm=~s/\W/_/g;
+                    
+                    $logger->debug("1: $first String: $string_norm 3: $last");
+
+                    $logger->debug("Fullstring OUT: $string_norm");
+                    $searchfield_norm_content=$first.$string_norm.$last;
+                }
+            }
+            
+            if ($config->{'searchfield'}{$searchfield}{option} eq "filter_isbn"){
+                $searchfield_norm_content = lc($searchfield_norm_content);
+                # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
+                $searchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+                $searchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
+            }
+
+            # Entfernung der Minus-Zeichen bei der ISSN
+            if ($config->{'searchfield'}{$searchfield}{option} eq "filter_issn"){
+                $searchfield_norm_content = lc($searchfield_norm_content);
+                $searchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8/g;
+            }
+
+            if ($config->{'searchfield'}{$searchfield}{option} eq "strip_first_stopword"){
+                 $searchfield_norm_content = OpenBib::Common::Util::grundform({
+                     category  => "0331", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
+                     content   => $searchfield_norm_content,
+                     searchreq => 1,
+                 });
+            }
+            else {
+                 $searchfield_norm_content = OpenBib::Common::Util::grundform({
+                     content   => $searchfield_norm_content,
+                     searchreq => 1,
+                 });
+            }
+
+            if ($config->{'searchfield'}{$searchfield}{type} eq "string"){
+                $searchfield_norm_content =~s/\W/_/g;
+            }
+            
+            if ($searchfield_norm_content){
+                $self->{_have_searchterms} = 1;
+                $self->{_searchquery}{$searchfield}{norm} = $searchfield_norm_content;
+            }
+
+            $logger->debug("Added searchterm $searchfield_bool_op - $searchfield_content - $searchfield_norm_content");
+        }
+        
     }
 
-    if ($hst){
-      $self->{_searchquery}->{hst}={
-			       val   => $hst,
-			       norm  => $hstnorm,
-			       bool  => $boolhst,
-			      };
+    # Filter einlesen (filter oder facet)
+    # Problem: Filter ist bei der Integration in bestimmte Systeme (z.B. CMS)
+    # bereits vorbelegt. Daher kann alternativ facet verwendet werden
+    
+    foreach my $filter ($query->param('filter')) {
+        #$filter = uri_unescape($filter);
+        if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
+            my $facet = $1;
+            my $term = decode_utf8($2);
+
+            my $string = $term;
+            
+            $string = OpenBib::Common::Util::grundform({
+                content   => $string,
+            });
+            
+            $string=~s/\W/_/g;
+            
+            $logger->debug("Facet: $facet Norm: $string Term: $term");
+            
+            push @{$self->{_filter}}, {
+                val    => $filter,
+                term   => $term,
+                norm   => $string,
+                facet  => $facet,
+            };            
+        }
     }
 
-    if ($hststring){
-      $self->{_searchquery}->{hststring}={
-				     val   => $hststring,
-				     norm  => $hststringnorm,
-				     bool  => $boolhststring,
-				    };
+    foreach my $filter ($query->param('facet')) {
+        #$filter = uri_unescape($filter);
+        if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
+            my $facet = $1;
+            my $term = decode_utf8($2);
+
+            my $string = $term;
+            
+            $string = OpenBib::Common::Util::grundform({
+                content   => $string,
+            });
+            
+            $string=~s/\W/_/g;
+            
+            $logger->debug("Facet: $facet Norm: $string Term: $term");
+            
+            push @{$self->{_filter}}, {
+                val    => $filter,
+                term   => $term,
+                norm   => $string,
+                facet  => $facet,
+            };            
+        }
     }
 
-    if ($gtquelle){
-      $self->{_searchquery}->{gtquelle}={
-			    val   => $gtquelle,
-			    norm  => $gtquellenorm,
-			    bool  => $boolgtquelle,
-			   };
+    foreach my $filter ($query->param('facet:list')) {
+        if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
+            my $facet = $1;
+            my $term = $2;
+
+            my $string = $term;
+            
+            $string = OpenBib::Common::Util::grundform({
+                content   => $string,
+                searchreq => 1,
+            });
+            
+            $string=~s/\W/_/g;
+            
+            $logger->debug("Facet: $facet Norm: $string Term: $term");
+            
+            push @{$self->{_filter}}, {
+                val    => $filter,
+                term   => $term,
+                norm   => $string,
+                facet  => $facet,
+            };            
+        }
     }
 
-    if ($inhalt){
-      $self->{_searchquery}->{inhalt}={
-			    val   => $inhalt,
-			    norm  => $inhaltnorm,
-			    bool  => $boolinhalt,
-			   };
+    # Parameter einlesen
+    $yearop    =                  decode_utf8($query->param('yearop'))       || $query->param('yearop') || 'eq';    
+    $indexterm = $indextermnorm = decode_utf8($query->param('indexterm'))     || $query->param('indexterm')|| '';
+
+    my $autoplus      = $query->param('autoplus')      || '';
+    my $persindex     = $query->param('persindex')     || '';
+    my $corpindex     = $query->param('corpindex')      || '';
+    my $subjindex     = $query->param('subjindex')      || '';
+    my $clnindex      = $query->param('clnindex')      || '';
+
+    # Setzen der arithmetischen yearop-Operatoren
+    if (exists $yearop_ref->{$yearop}){
+        $yearop=$yearop_ref->{$yearop};
+    }
+    else {
+        $yearop="=";
     }
 
-    if ($verf){
-      $self->{_searchquery}->{verf}={
-			    val   => $verf,
-			    norm  => $verfnorm,
-			    bool  => $boolverf,
-			   };
-    }
-
-    if ($swt){
-      $self->{_searchquery}->{swt}={
-			       val   => $swt,
-			       norm  => $swtnorm,
-			       bool  => $boolswt,
-			      };
-    }
-
-    if ($kor){
-      $self->{_searchquery}->{kor}={
-			       val   => $kor,
-			       norm  => $kornorm,
-			       bool  => $boolkor,
-			      };
-    }
-
-    if ($sign){
-      $self->{_searchquery}->{sign}={
-				val   => $sign,
-				norm  => $signnorm,
-				bool  => $boolsign,
-			       };
-    }
-
-    if ($isbn){
-      $self->{_searchquery}->{isbn}={
-				val   => $isbn,
-				norm  => $isbnnorm,
-				bool  => $boolisbn,
-			     };
-    }
-
-    if ($issn){
-      $self->{_searchquery}->{issn}={
-				val   => $issn,
-				norm  => $issnnorm,
-				bool  => $boolissn,
-			     };
-    }
-
-    if ($mart){
-      $self->{_searchquery}->{mart}={
-				val   => $mart,
-				norm  => $martnorm,
-				bool  => $boolmart,
-			       };
-    }
-
-    if ($notation){
-      $self->{_searchquery}->{notation}={
-				    val   => $notation,
-				    norm  => $notationnorm,
-				    bool  => $boolnotation,
-				   };
-    }
-
-    if ($ejahr){
-      $self->{_searchquery}->{ejahr}={
-			    val   => $ejahr,
-			    norm  => $ejahrnorm,
-			    bool  => $boolejahr,
-			    arg   => $ejahrop,
-			   };
+    if (exists $self->{_searchquery}->{year}){
+       $self->{_searchquery}->{year}->{arg}= $yearop;
     }
 
     if ($indexterm){
-      $self->{_searchquery}->{indexterm}={
-			    val   => $indexterm,
-			    norm  => $indextermnorm,
-			   };
+        $indextermnorm  = OpenBib::Common::Util::grundform({
+           content   => $indextermnorm,
+           searchreq => 1,
+        });
+
+        $self->{_searchquery}->{indexterm}={
+	    val   => $indexterm,
+	    norm  => $indextermnorm,
+        };
     }
+
+    my %seen_dbases = ();
 
     if (defined $dbases_ref){
-        $self->{_databases}=$dbases_ref;
+        @{$self->{_databases}} = grep { ! $seen_dbases{$_} ++ } @{$dbases_ref};
     }
 
-    $logger->debug(YAML::Dump($self));
+    $logger->debug("SearchQuery from Apache-Request ".YAML::Dump($self));
     
     return $self;
 }
@@ -524,22 +389,71 @@ sub load  {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult=$dbh->prepare("select query,hits,dbases from queries where sessionID = ? and queryid = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select queryid,query from queries where sessionID = ? and queryid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
     my $res = $idnresult->fetchrow_hashref();
 
-    $self->{_id}          = $queryid;
-    $self->{_searchquery} = Storable::thaw(pack "H*", decode_utf8($res->{query}));
-    $self->{_hits}        = decode_utf8($res->{'hits'});
-
-    $logger->debug("Stored Databases as string: ".$res->{dbases});
-    
-    my @databases         = split('\|\|',$res->{dbases});
-
-    $logger->debug("Stored Databases: ".join(',',@databases));
-    $self->{_databases}   = \@databases;
+    $self->from_json($res->{query});
+    $self->set_id($res->{queryid});
     
     $idnresult->finish();
+
+    return $self;
+}
+
+sub save  {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $sessionID              = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}           : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    unless ($sessionID){
+        return $self;
+    }
+    
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $query_obj_string = "";
+    
+    if ($config->{internal_serialize_type} eq "packed_storable"){
+        $query_obj_string = unpack "H*", Storable::freeze($self);
+    }
+    elsif ($config->{internal_serialize_type} eq "json"){
+        $query_obj_string = $self->to_json;
+    }
+    else {
+        $query_obj_string = unpack "H*", Storable::freeze($self);
+    }
+
+    $logger->debug("Query Object: ".$query_obj_string);
+
+    my $request=$dbh->prepare("select queryid from queries where query = ? and sessionid = ?") or $logger->error($DBI::errstr);
+    $request->execute($query_obj_string,$sessionID) or $logger->error($DBI::errstr);
+    my $result  = $request->fetchrow_hashref;
+    my $queryid = $result->{queryid};
+        
+
+    # Wenn noch nicht vorhanden, dann eintragen
+    if (!$queryid){
+        $request=$dbh->prepare("insert into queries (queryid,sessionid,query) values (NULL,?,?)") or $logger->error($DBI::errstr);
+        $request->execute($sessionID,$query_obj_string) or $logger->error($DBI::errstr);
+
+        $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string");
+    }
+    else {
+        $logger->debug("Query already exists with ID $queryid: $query_obj_string");
+    }
+    
+    $request->finish();
 
     return $self;
 }
@@ -551,17 +465,54 @@ sub get_searchquery {
     return $self->{_searchquery};
 }
 
-sub to_cgi_params {
+sub get_filter {
     my ($self)=@_;
+
+    return $self->{_filter};
+}
+
+sub to_cgi_params {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $exclude_array_ref    = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}        : [];
+
+    my $exclude_ref = {};
+
+    foreach my $param (@{$exclude_array_ref}){
+        $exclude_ref->{$param} = 1;
+    }
+    
+    my $config = OpenBib::Config->instance;
 
     my @cgiparams = ();
 
     foreach my $param (keys %{$self->{_searchquery}}){
-        push @cgiparams, "bool$param=".$self->{_searchquery}->{$param}{bool};
-        push @cgiparams, "$param=".$self->{_searchquery}->{$param}{val};
+        if ($self->{_searchquery}->{$param}{val} && !exists $exclude_ref->{$param}){
+            my $searchparam = $config->{searchfield}{$param}{prefix};
+            push @cgiparams, "b$searchparam=".$self->{_searchquery}->{$param}{bool};
+            push @cgiparams, "$searchparam=".$self->{_searchquery}->{$param}{val};
+        }
+    }
+
+    foreach my $filter (@{$self->{_filter}}){
+        push @cgiparams, "filter=$filter->{val}";
     }
     
     return join(";",@cgiparams);
+}
+
+sub get_results {
+    my ($self)=@_;
+
+    return $self->{_results};
+}
+
+sub set_results {
+    my ($self,$result_ref)=@_;
+
+    $self->{_results} = $result_ref;
 }
 
 sub get_hits {
@@ -570,10 +521,22 @@ sub get_hits {
     return $self->{_hits};
 }
 
+sub set_hits {
+    my ($self,$hits)=@_;
+
+    $self->{_hits} = $hits;
+}
+
 sub get_id {
     my ($self)=@_;
 
     return $self->{_id};
+}
+
+sub set_id {
+    my ($self,$id)=@_;
+
+    $self->{_id}=$id;
 }
 
 sub get_databases {
@@ -624,284 +587,91 @@ sub get_searchterms {
     return $term_ref;
 }
 
-sub to_sql_querystring {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $serien                 = exists $arg_ref->{serien}
-        ? $arg_ref->{serien}              : 0;
-    my $offset                 = exists $arg_ref->{offset}
-        ? $arg_ref->{offset}              : 0;
-    my $hitrange               = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}            : 50;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Aufbau des sqlquerystrings
-    my $sqlselect = "";
-    my $sqlfrom   = "";
-    my $sqlwhere  = "";
-
-    my @sqlwhere = ();
-    my @sqlfrom  = ('search');
-    my @sqlargs  = ();
-
-    my $notfirstsql=0;
-    
-    if ($self->{_searchquery}->{fs}->{norm}) {	
-        push @sqlwhere, $self->{_searchquery}->{fs}->{bool}." match (verf,hst,kor,swt,notation,sign,inhalt,isbn,issn,ejahrft) against (? IN BOOLEAN MODE)";
-        push @sqlargs, $self->{_searchquery}->{fs}->{norm};
-    }
-   
-    if ($self->{_searchquery}->{hst}->{norm}) {
-        push @sqlwhere, $self->{_searchquery}->{hst}->{bool}." match (hst) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{hst}->{norm};
-    }
-
-    if ($self->{_searchquery}->{verf}->{norm}) {	
-        push @sqlwhere, $self->{_searchquery}->{verf}->{bool}." match (verf) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{verf}->{norm};
-    }
-      
-    if ($self->{_searchquery}->{swt}->{norm}) {
-        push @sqlwhere, $self->{_searchquery}->{swt}->{bool}." match (swt) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{swt}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{kor}->{norm}) {
-        push @sqlwhere, $self->{_searchquery}->{kor}->{bool}." match (kor) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{kor}->{norm};
-    }
-  
-    my $notfrom="";
-  
-    if ($self->{_searchquery}->{notation}->{norm}) {
-        # Spezielle Trunkierung
-        $self->{_searchquery}->{notation}->{norm} =~ s/\*$/%/;
-
-        push @sqlfrom,  "notation_string";
-        push @sqlfrom,  "conn";
-        push @sqlwhere, $self->{_searchquery}->{notation}->{bool}." (notation_string.content like ? and conn.sourcetype=1 and conn.targettype=5 and conn.targetid=notation_string.id and search.verwidn=conn.sourceid)";
-        push @sqlargs,  $self->{_searchquery}->{notation}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{sign}->{norm}) {
-        # Spezielle Trunkierung
-        $self->{_searchquery}->{sign}->{norm} =~ s/\*$/%/;
-
-        push @sqlfrom,  "mex_string";
-        push @sqlfrom,  "conn";
-        push @sqlwhere, $self->{_searchquery}->{sign}->{bool}." (mex_string.content like ? and mex_string.category=0014 and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex_string.id and search.verwidn=conn.sourceid)";
-        push @sqlargs,  $self->{_searchquery}->{sign}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{isbn}->{norm}) {
-        push @sqlwhere, $self->{_searchquery}->{isbn}->{bool}." match (isbn) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{isbn}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{issn}->{norm}) {
-        push @sqlwhere, $self->{_searchquery}->{issn}->{bool}." match (issn) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{issn}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{mart}->{norm}) {
-        push @sqlwhere, $self->{_searchquery}->{mart}->{bool}."  match (artinh) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{mart}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{hststring}->{norm}) {
-        # Spezielle Trunkierung
-        $self->{_searchquery}->{hststring}->{norm} =~ s/\*$/%/;
-
-        push @sqlfrom,  "tit_string";
-        push @sqlwhere, $self->{_searchquery}->{hststring}->{bool}." (tit_string.content like ? and tit_string.category in (0331,0310,0304,0370,0341) and search.verwidn=tit_string.id)";
-        push @sqlargs,  $self->{_searchquery}->{hststring}->{norm};
-    }
-
-    if ($self->{_searchquery}->{inhalt}->{norm}) {
-        push @sqlwhere, $self->{_searchquery}->{inhalt}->{bool}."  match (inhalt) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{inhalt}->{norm};
-    }
-    
-    if ($self->{_searchquery}->{gtquelle}->{norm}) {
-        push @sqlwhere, $self->{_searchquery}->{gtquelle}->{bool}."  match (gtquelle) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $self->{_searchquery}->{gtquelle}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{ejahr}->{norm}) {
-        push @sqlwhere, $self->{_searchquery}->{ejahr}->{bool}." ejahr ".$self->{_searchquery}->{ejahr}->{arg}." ?";
-        push @sqlargs,  $self->{_searchquery}->{ejahr}->{norm};
-    }
-
-    if ($serien){
-        push @sqlfrom,  "conn";
-        push @sqlwhere, "and (conn.targetid=search.verwidn and conn.targettype=1 and conn.sourcetype=1)";
-    }
-
-    my $sqlwherestring  = join(" ",@sqlwhere);
-    $sqlwherestring     =~s/^(?:AND|OR|NOT) //;
-    my $sqlfromstring   = join(", ",@sqlfrom);
-
-    if ($offset >= 0){
-        $offset=$offset.",";
-    }
-    
-    my $sqlquerystring  = "select distinct verwidn from $sqlfromstring where $sqlwherestring limit $offset$hitrange";
-
-    $logger->debug("Querystring: $sqlquerystring");
-    
-    return $sqlquerystring;
-}
-
-sub to_sql_queryargs {
-    my ($self) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my @sqlargs  = ();
-
-    if ($self->{_searchquery}->{fs}->{norm}) {	
-        push @sqlargs, $self->{_searchquery}->{fs}->{norm};
-    }
-
-    if ($self->{_searchquery}->{hst}->{norm}) {
-        push @sqlargs,  $self->{_searchquery}->{hst}->{norm};
-    }
-      
-    if ($self->{_searchquery}->{verf}->{norm}) {	
-        push @sqlargs,  $self->{_searchquery}->{verf}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{swt}->{norm}) {
-        push @sqlargs,  $self->{_searchquery}->{swt}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{kor}->{norm}) {
-        push @sqlargs,  $self->{_searchquery}->{kor}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{notation}->{norm}) {
-        # Spezielle Trunkierung
-        $self->{_searchquery}->{notation}->{norm} =~ s/\*$/%/;
-        push @sqlargs,  $self->{_searchquery}->{notation}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{sign}->{norm}) {
-        # Spezielle Trunkierung
-        $self->{_searchquery}->{sign}->{norm} =~ s/\*$/%/;
-        push @sqlargs,  $self->{_searchquery}->{sign}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{isbn}->{norm}) {
-        push @sqlargs,  $self->{_searchquery}->{isbn}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{issn}->{norm}) {
-        push @sqlargs,  $self->{_searchquery}->{issn}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{mart}->{norm}) {
-        push @sqlargs,  $self->{_searchquery}->{mart}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{hststring}->{norm}) {
-        # Spezielle Trunkierung
-        $self->{_searchquery}->{hststring}->{norm} =~ s/\*$/%/;
-        push @sqlargs,  $self->{_searchquery}->{hststring}->{norm};
-    }
-
-    if ($self->{_searchquery}->{inhalt}->{norm}) {
-        push @sqlargs,  $self->{_searchquery}->{inhalt}->{norm};
-    }
-    
-    if ($self->{_searchquery}->{gtquelle}->{norm}) {
-        push @sqlargs,  $self->{_searchquery}->{gtquelle}->{norm};
-    }
-  
-    if ($self->{_searchquery}->{ejahr}->{norm}) {
-        push @sqlargs,  $self->{_searchquery}->{ejahr}->{norm};
-    }
-
-    $logger->debug("Queryargs: ".join(';',@sqlargs));
-    
-    return @sqlargs;
-}
-
 sub to_xapian_querystring {
     my ($self) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+
     # Aufbau des xapianquerystrings
     my @xapianquerystrings = ();
     my $xapianquerystring  = "";
 
+    # Aufbau des xapianfilterstrings
+    my @xapianfilterstrings = ();
+    my $xapianfilterstring  = "";
+
     my $ops_ref = {
-        'AND'     => '+',
-        'AND NOT' => '-',
-        'OR'      => '',
+        'AND'     => 'AND ',
+        'AND NOT' => 'NOT ',
+        'OR'      => 'OR ',
     };
 
-    my $fields_ref = [
-        'fs',
-        'verf',
-        'hst',
-        'swt',
-        'kor',
-        'notation',
-        'sign',
-        'isbn',
-        'issn',
-        'mart',
-        'hststring',
-        'inhalt',
-        'gtquelle',
-        'ejahr',
-    ];
-
-    my $prefix_ref = {
-        'verf'     => 'inauth:',
-        'hst'      => 'intitle:',
-        'kor'      => 'incorp:',
-        'swt'      => 'insubj:',
-        'notation' => 'insys:',
-        'isbn'     => 'inisbn:',
-        'issn'     => 'inissn:',
-        'mart'     => 'ddtyp:',
-    };
-    
-    foreach my $field (@{$fields_ref}){
+    foreach my $field (keys %{$config->{searchfield}}){
         my $searchtermstring = (defined $self->{_searchquery}->{$field}->{norm})?$self->{_searchquery}->{$field}->{norm}:'';
         my $searchtermop     = (defined $self->{_searchquery}->{$field}->{bool} && defined $ops_ref->{$self->{_searchquery}->{$field}->{bool}})?$ops_ref->{$self->{_searchquery}->{$field}->{bool}}:'';
         if ($searchtermstring) {
-            my @searchterms = split('\s+',$searchtermstring);
+            # Freie Suche einfach uebernehmen
+            if ($field eq "freesearch" && $searchtermstring) {
+#                 my @searchterms = split('\s+',$searchtermstring);
+                
+#                 # Inhalte von @searchterms mit Suchprefix bestuecken
+#                 foreach my $searchterm (@searchterms){                    
+#                     $searchterm="+".$searchtermstring if ($searchtermstring=~/^\w/);
+#                 }
+#                 $searchtermstring = "(".join(' ',@searchterms).")";
 
-            # Inhalte von @searchterms mit Suchprefix bestuecken
-            foreach my $searchterm (@searchterms){
-                if (exists $prefix_ref->{$field}){
-                    $searchterm=$prefix_ref->{$field}.$searchterm;
-                }
-                # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
-                # Nochmal explizites Setzen von +, weil sonst Wildcards innerhalb mehrerer
-                # Suchterme ignoriert werden.
-                elsif ($field eq "fs") {
-                    $searchterm="+".$searchterm if ($searchterm=~/^\w/);
-                }
+                push @xapianquerystrings, $searchtermstring;
             }
-            $searchtermstring = join(' ',@searchterms);
-            $xapianquerystring = "$searchtermop($searchtermstring)";
-            push @xapianquerystrings, $xapianquerystring;
+            # Titelstring mit _ ersetzten
+            elsif (($field eq "titlestring" || $field eq "mark") && $searchtermstring) {
+                my @chars = split("",$searchtermstring);
+                my $newsearchtermstring = "";
+                foreach my $char (@chars){
+                    if ($char ne "*"){
+                        $char=~s/\W/_/g;
+                    }
+                    $newsearchtermstring.=$char;
+                }
+                    
+                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":$newsearchtermstring";
+                push @xapianquerystrings, $searchtermstring;                
+            }
+            # Sonst Operator und Prefix hinzufuegen
+            elsif ($searchtermstring) {
+                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":($searchtermstring)";
+                push @xapianquerystrings, $searchtermstring;                
+            }
+
+            # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
+            # Nochmal explizites Setzen von +, weil sonst Wildcards innerhalb mehrerer
+            # Suchterme ignoriert werden.
+
         }
     }
 
-    $xapianquerystring = join(" ",@xapianquerystrings);
+    # Filter
+    foreach my $filter_ref (@{$self->get_filter}){
+        push @xapianfilterstrings, "$filter_ref->{facet}:$filter_ref->{norm}";
+    }
+    
+    $xapianquerystring  = join(" ",@xapianquerystrings);
+    $xapianfilterstring = join(" ",@xapianfilterstrings);
 
-    $logger->debug("Xapian-Querystring: $xapianquerystring");
-    return $xapianquerystring;
+    $xapianquerystring=~s/^AND //;
+    $xapianquerystring=~s/^OR //;
+    $xapianquerystring=~s/^NOT //;
+
+#    $xapianquerystring=~s/^OR /FALSE OR /;
+#    $xapianquerystring=~s/^NOT /TRUE NOT /;
+    
+    $logger->debug("Xapian-Querystring: $xapianquerystring - Xapian-Filterstring: $xapianfilterstring");
+    return {
+        query  => $xapianquerystring,
+        filter => $xapianfilterstring
+    };
 }
 
 sub get_spelling_suggestion {
@@ -1036,6 +806,36 @@ sub get_spelling_suggestion {
     return $suggestion_string;
 }
 
+sub have_searchterms {
+    my ($self) = @_;
+
+    return $self->{_have_searchterms};
+}
+
+sub to_json {
+    my ($self) = @_;
+
+    my $tmp_ref = {};
+    foreach my $property (sort keys %{$self}){
+        $tmp_ref->{$property} = $self->{$property};
+    }
+    
+    return JSON::XS->new->utf8->canonical->encode($tmp_ref);
+}
+
+sub from_json {
+    my ($self,$json) = @_;
+
+    return unless ($json);
+    
+    my $tmp_ref = decode_json $json;
+    foreach my $property (keys %{$tmp_ref}){
+        $self->{$property} = $tmp_ref->{$property};
+    }
+
+    return $self;
+}
+    
 1;
 __END__
 
@@ -1119,6 +919,18 @@ Liefert den Xapian-Anfragestring zur Suchanfrage zurück
 Liefert entsprechend der Suchbegriffe, des Aspell-Wörterbuchs der
 Sprache de_DE sowie des Vorkommens im Xapian-Index den relevantesten
 Rechschreibvorschlag zurück.
+
+=item from_json($json_string)
+
+Speichert die im JSON-Format übergebenen Attribute  im Objekt ab.
+
+=item to_json
+
+Liefert die im Objekt gespeicherten Attribute im JSON-Format zurück.
+
+=item have_searchterms
+
+Liefert einen nicht Null-Wert zurück, wenn mindestens ein Suchfeld der Anfrage einen Suchterm enthält.
 
 =back
 

@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: searchmask_bottom_left
+# Templatename: searchform_bottom_left
 #
 # Typ         : Subtemplate
 #
@@ -15,26 +15,6 @@
 
 [% IF config.have_libinfo('inst132') %]
 <h3><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;[% msg.maketext("Steckbrief der Bibliothek") %]</h3>
-
-<style>
-#qr {
-        margin-top:-416px;
-	position:absolute;
-	border:1px solid #ccc;
-	background: aliceblue;
-	padding:5px;
-	display:none;
-	color:#000;
-        text-align: center;
-	}
-
-#qr .closebutton {
-	position: absolute;
-	top: 3px;
-	right: 3px;
-	cursor: pointer;
-}
-</style>
 
 [%- libinfo = config.get_libinfo('inst132'); -%]
 
@@ -50,19 +30,6 @@
 
 <table>
 [%-
-
-qrcode_infos = [];
-
-FOREACH category IN ["I0010","I0020","I0030","I0110"];
-      FOREACH item IN libinfo.$category;
-        content = item.content.replace('%22','"');
-        qrcode_infos.push(content);
-      END;
-END;
-
-qrcode = qrcode_infos.join(' :: ');
-qrcode = qrcode.replace('<br />',', ');
-qrcode = qrcode.replace('<.+?>','');
 
 FOREACH category IN categories;
 
@@ -88,11 +55,9 @@ FOREACH category IN categories;
 <tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-   END ;
 END ;-%]
-<tr><td class="category">QR-Code</td>
-<td><a class="qr-preview" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) | uri %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
 </table>
 [%-   IF dbinfo.get('use_libinfo').${viewdbs.first} %]
-[<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% viewdbs.first %];stid=60">
+[<a href="[% path_prefix %]/[% config.get('info_loc') %]/60?id=[% viewdbs.first %]">
 [%-   ELSE -%]
 [<a href="[% dburl %]" target="_blank">
 [%-   END -%]

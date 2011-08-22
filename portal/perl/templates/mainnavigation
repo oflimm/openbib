@@ -12,7 +12,7 @@
 # Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
 #
 # databasechoice
-# searchmask
+# searchform
 # resultlists
 # collection
 # startpage
@@ -24,26 +24,48 @@
 #######################################################################
 -%]
 [%- username = user.get_username -%]
-<div id="mainnavigation">
-<div id="mainnavigation_left">
-<a [%- IF active_menu == "databasechoice" -%]class="active_menu" [%- END -%]href="[% config.get('databasechoice_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "searchmask" -%]class="active_menu" [%- END -%]href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Suchen") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "resultlists" -%]class="active_menu" [%- END -%]href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "collection" -%]class="active_menu" [%- END -%]href="[% config.get('managecollection_loc') %]?sessionID=[% sessionID %];action=show;view=[% view %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>
-</div>
-<div id="mainnavigation_right">
-[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("admin") %]</a>&nbsp;::&nbsp;[%- END -%]
-<a [%- IF active_menu == "startpage" -%]class="active_menu" [%- END -%]href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Startseite") %]</a>&nbsp;::&nbsp;
-<a [%- IF active_menu == "rssfeeds" -%]class="active_menu" [%- END -%]href="[% config.get('rssfeeds_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
-[% IF config.get('login_active') == 1 %]
-[% IF username %]
-<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% config.get('userprefs_loc') %]?sessionID=[% sessionID %];view=[% view %];action=showfields">[% msg.maketext("Mein KUG") %]</a>
+    <!-- begin: main navigation #nav -->
+    <div id="nav" role="navigation">
+      <div class="hlist">
+        <ul>
+[% IF active_menu == "databasechoice" %]
+         <li class="active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
 [% ELSE %]
-<a [%- IF active_menu == "login" -%]class="active_menu"[%- END -%]href="[% config.get('login_loc') %]?sessionID=[% sessionID %];view=[% view %];do_login=1">[% msg.maketext("Mein KUG") %]</a>
-[%- END -%]
-&nbsp;::&nbsp;
+          <li><a [%- IF active_menu == "databasechoice" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('databasechoice_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogauswahl") %]</a></li>
 [% END %]
-<a [%- IF active_menu == "info" -%]class="active_menu"[%- END -%]href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a [%- IF active_menu == "tutorial" -%]class="active_menu"[%- END -%]href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=61">[% msg.maketext("Tutorien") %]</a>&nbsp;::&nbsp;<a href="[% config.get('leave_loc') %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
-[%- IF username -%]
- [[% username %]]
+[%- IF active_menu == "searchform" -%]
+         <li class="active"><strong>[% msg.maketext("Suchen") %]</strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?l=[% lang %]">[% msg.maketext("Suchen") %]</a></li>
+[% END %]
+[% IF active_menu == "cloud" %]
+         <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+[% END %]
+[%- IF active_menu == "resultlists" -%]
+         <li class="active"><strong>[% msg.maketext("Trefferliste") %]</strong></li>
+[% ELSE %]
+         <li><a href="[% path_prefix %]/[% config.get('resultlists_loc') %].html?l=[% lang %]">[% msg.maketext("Trefferliste") %]</a></li>
+[% END %]
+[%- IF active_menu == "collection" -%]
+         <li class="active"><strong>[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></li>
+[% END %]
+[% IF active_menu == "info" %]
+         <li class="active"><strong>[% msg.maketext("Hilfe") %]</strong></li>
+[% ELSE %]
+          <li><a [%- IF active_menu == "info" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]">[% msg.maketext("Hilfe") %]</a></li>
+[% END %]
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]
+[%-   IF active_menu == "admin" -%]
+         <li class="active"><strong>[% msg.maketext("admin") %]</strong></li>
+[%    ELSE %]
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">[% msg.maketext("admin") %]</a></li>
+[%    END %]
 [%- END -%]
-</span></b></a>
-</div>
-</div>
+        </ul>
+      </div>
+    </div>
+    <!-- end: main navigation -->

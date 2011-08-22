@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::DigiBib.pm
 #
-#  Dieses File ist (C) 2003-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -55,32 +55,44 @@ use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::VirtualSearch::Util;
 
-sub handler {
-    
-    my $r=shift;
-    
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
+
     # Log4perl logger erzeugen
-    
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-    
-#     my $status=$query->parse;
-    
-#     if ($status){
-#         $logger->error("Cannot parse Arguments");
-#     }
+    # Dispatched Args
+    my $view           = $self->param('view');
 
-    my $session = OpenBib::Session->instance;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle('de') || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    # CGI-Input auslesen
-    
+    # CGI Args
     #####################################################################
     #
     # Eingabeparamter
@@ -115,7 +127,6 @@ sub handler {
     # idn = Titelidn
     # database = Datenbank
     # tosearch = Langanzeige
-
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     my $hitrange   = 20;
     my $idn        = $query->param('idn')        || '';
@@ -126,12 +137,11 @@ sub handler {
     my $sorttype   = $query->param('sorttype')   || 'author';
     my $sortorder  = $query->param('sortorder')  || '';;
     my $tosearch   = $query->param('tosearch')   || '';
-    my $view       = $query->param('view')       || 'institute';
     my $serien     = $query->param('serien')     || 0;
     my $sb         = $query->param('sb')         || 'xapian';
     my $up         = $query->param('up')         || '0';
     my $down       = $query->param('down')       || '0';
-    
+
     # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
 
     # Wenn 'erste Trefferliste' oder Langtitelanzeige
@@ -176,7 +186,7 @@ sub handler {
         });
     }
 
-    my $sysprofile   = $config->get_viewinfo($view)->{profilename};
+    my $sysprofile   = $config->get_viewinfo->search({ viewname => $view })->single()->profilename;
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
@@ -323,9 +333,19 @@ sub handler {
                     foreach my $match (@matches) {
                         last if ($i > $maxhits);
                         my $document        = $match->get_document();
-                        my $titlistitem_raw = pack "H*", $document->get_data();
-                        my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+
+                        my $titlistitem_ref;
                         
+                        if ($config->{internal_serialize_type} eq "packed_storable"){
+                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                        }
+                        elsif ($config->{internal_serialize_type} eq "json"){
+                            $titlistitem_ref = decode_json $document->get_data();
+                        }
+                        else {
+                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
+                        }
+
                         $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
                         $i++;
                     }
@@ -530,9 +550,7 @@ sub handler {
         
         my $liststart = ($offset<= $treffercount)?$offset:0;
         my $listend   = ($offset+$listlength <= $treffercount)?$offset+$listlength-1:$treffercount-1;
-
-        @ergebnisse = @ergebnisse[$liststart..$listend];
-
+        
         my $itemtemplatename=$config->{tt_connector_digibib_result_item_tname};
 
         $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
@@ -553,10 +571,11 @@ sub handler {
             OUTPUT         => $r,
         });
         
+        
         # TT-Data erzeugen
         my $ttdata={
             dbinfo          => $dbinfotable,
-            resultlist      => \@ergebnisse,
+            resultlist      => \@ergebnisse,#[$liststart..$listend],
 
             utf2iso      => sub {
                 my $string=shift;
@@ -651,28 +670,7 @@ sub handler {
 
                 $has_sb=1;
             }
-        }            
-
-        # Ausgabe des letzten HTML-Bereichs
-        my $templatename=$config->{tt_connector_digibib_showtitset_tname};
-
-        $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-            database     => $database, # Template ist datenbankabhaengig !
-            view         => $view,
-            profile      => $sysprofile,
-            templatename => $templatename,
-        });
-
-        my $template = Template->new({
-            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config->{tt_include_path},
-                ABSOLUTE       => 1,
-            }) ],
-            #        INCLUDE_PATH   => $config->{tt_include_path},
-            #        ABSOLUTE       => 1,
-            RECURSION      => 1,
-            OUTPUT         => $r,
-        });
+        }
         
         # TT-Data erzeugen
         my $ttdata={
@@ -681,23 +679,11 @@ sub handler {
             sbrecord     => $sbrecord,
             dbinfo       => $dbinfotable,
             database     => $database,
-
-            utf2iso      => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                return $string;
-            },
-
             sysprofile   => $sysprofile,
-            view         => $view,
-            config       => $config,
         };
-        
-        $template->process($templatename, $ttdata) || do {
-            $r->log_error($template->error(), $r->filename);
-            return Apache2::Const::SERVER_ERROR;
-        };
-  } 
+
+        $self->print_page($config->{tt_connector_digibib_title_record_tname},$ttdata);
+  }
 
   return Apache2::Const::OK;
 }

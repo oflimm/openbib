@@ -55,24 +55,20 @@ sub _new_instance {
     #####################################################################
     ## Ausleihkonfiguration fuer den Katalog einlesen
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
+    my $object = $config->get_databaseinfo->search(
+        {
+            circ => 1,
+        },
+    );
 
-    my $dbinforesult=$dbh->prepare("select dbname,circ,circurl,circcheckurl,circdb from dboptions where circ = 1") or $logger->error($DBI::errstr);
-    $dbinforesult->execute() or $logger->error($DBI::errstr);;
+    foreach my $result ($object->all){
+        my $dbname                     = decode_utf8($result->dbname);
 
-    while (my $result=$dbinforesult->fetchrow_hashref()) {
-        my $dbname                             = decode_utf8($result->{'dbname'});
-
-        $self->{$dbname}{circ}         = decode_utf8($result->{'circ'});
-        $self->{$dbname}{circurl}      = decode_utf8($result->{'circurl'});
-        $self->{$dbname}{circcheckurl} = decode_utf8($result->{'circcheckurl'});
-        $self->{$dbname}{circdb}       = decode_utf8($result->{'circdb'});
+        $self->{$dbname}{circ}         = decode_utf8($result->circ);
+        $self->{$dbname}{circurl}      = decode_utf8($result->circurl);
+        $self->{$dbname}{circcheckurl} = decode_utf8($result->circwsurl);
+        $self->{$dbname}{circdb}       = decode_utf8($result->circdb);
     }
-
-    $dbinforesult->finish();
 
     return $self;
 }

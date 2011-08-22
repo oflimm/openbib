@@ -66,7 +66,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=sql;profil=dbauswahl;ejahr=[% item %];ejahrop=eq" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% path_prefix %]/[% config.get('virtualsearch_loc') %]?profil=dbauswahl;ejahr=[% item %];ejahrop=eq" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

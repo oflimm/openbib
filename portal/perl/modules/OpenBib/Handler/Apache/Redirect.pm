@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Redirect
 #
-#  Dieses File ist (C) 2007-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -43,60 +43,55 @@ use APR::URI ();
 
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
+use URI::Escape qw(uri_unescape);
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    my $uri   = $r->parsed_uri;
-    my $path  = $uri->path;
-    my $query = $uri->query;
-
-    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
-    # Basisipfad entfernen
-    my $basepath = $config->{redirect_loc};
-    $path=~s/$basepath//;
+    # Dispatched Args
+    my $view           = $self->param('view');
 
-    $logger->debug("Path: $path URI: $uri");
 
-    # Parameter aus URI bestimmen
-    #
-    # 
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my ($sessionID,$type,$url);
-    if ($path=~m/^\/(\w+?)\/(\w+?)\/(.+?)$/){
-        ($sessionID,$type,$url)=($1,$2,$3);
-    }
+    my $type           = $query->param('type');
+    my $url            = $query->param('url');
 
-    if ($query){
-        $url = $url."?".$query;
-    }
-    
-    $logger->debug("SessionID: $sessionID - Type: $type - URL: $url");
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $sessionID,
-    });
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        return Apache2::Const::OK;
-    }
+    $logger->debug("SessionID: $session->{ID} - Type: $type - URL: $url");
 
     my $valid_redirection_type_ref = {
         500 => 1, # TOC / hbz-Server
@@ -117,7 +112,7 @@ sub handler {
         531 => 1, # DBIS
         532 => 1, # Kartenkatalog Philfak
         533 => 1, # MedPilot
-        534 => 1, # ContentDM
+        534 => 1, # Digitaler Kartenkatalog der Philfak
         540 => 1, # HBZ-Monofernleihe
         541 => 1, # HBZ-Dokumentenlieferung
         550 => 1, # WebOPAC
@@ -130,13 +125,13 @@ sub handler {
             content   => $url,
         });
 
-        $r->content_type('text/html');
-        $r->headers_out->add("Location" => $url);
-
-        return Apache2::Const::REDIRECT;
+        $self->query->method('GET');
+        $self->query->content_type('text/html');
+        $self->query->headers_out->add(Location => $url);
+        $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
-        OpenBib::Common::Util::print_warning("Typ $type nicht definiert",$r,$msg);
+        $self->print_warning($msg->maketext("Typ [_1] ist nicht definiert",$type));
         $logger->error("Typ $type nicht definiert");
         return Apache2::Const::OK;
     }

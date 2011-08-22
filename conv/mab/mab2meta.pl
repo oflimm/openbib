@@ -40,8 +40,6 @@ use Tie::MAB2::Recno;
 use Data::Dumper;
 use YAML;
 
-use OpenBib::Conv::Common::Util;
-
 &GetOptions(
 	    "filename=s"       => \$filename,
 	    );
@@ -54,6 +52,26 @@ mab2meta.pl - Aufrufsyntax
 HELP
 exit;
 }
+
+$autidn=1;
+$autidx=0;
+
+$swtidn=1;
+$swtidx=0;
+
+$mexidn=1;
+$mexidx=0;
+
+$koridn=1;
+$koridx=0;
+
+$notidn=1;
+$notidx=0;
+
+$autdublastidx=1;
+$kordublastidx=1;
+$notdublastidx=1;
+$swtdublastidx=1;
 
 ######################################################################
 # Titel-Daten
@@ -452,11 +470,11 @@ my $titdefs_ref = {
 };
 
 
-open(PEROUT,'>:utf8','unload.PER');
-open(KOEOUT,'>:utf8','unload.KOE');
-open(SWDOUT,'>:utf8','unload.SWD');
-open(SYSOUT,'>:utf8','unload.SYS');
-open(TITOUT,'>:utf8','unload.TIT');
+open(PEROUT,'>:utf8','meta.person');
+open(KOEOUT,'>:utf8','meta.corporatebody');
+open(SWDOUT,'>:utf8','meta.subject');
+open(SYSOUT,'>:utf8','meta.classification');
+open(TITOUT,'>:utf8','meta.title');
 
 print "Bearbeite Titel\n";
 
@@ -485,9 +503,9 @@ foreach my $rawrec (@mab2titdata){
         # Vorabfilterung
 
         # Titel-ID sowie Ueberordnungs-ID
-#        if ($category =~ /^001$/ || $category =~ /^010$/){
-#            $content=~s/\D//g;
-#        }
+        if ($category =~ /^001$/ || $category =~ /^010$/){
+            $content=~s/\D//g;
+        }
         
         
         if ($category =~ /^002$/){
@@ -502,7 +520,6 @@ foreach my $rawrec (@mab2titdata){
             $content=~s/.*//;
         }
 
-        
         if ($category =~ /^9[01234][27]$/){
             $content=~s/^\s+?\|//;
             $content=~s/^\d*\s+\d{7}-\d\s+//;
@@ -528,7 +545,7 @@ foreach my $rawrec (@mab2titdata){
                     $supplement = $2;
                 }
 
-                $autidn=OpenBib::Conv::Common::Util::get_autidn($content);
+                $autidn=get_autidn($content);
                 
                 if ($autidn > 0){
                     print PEROUT "0000:$autidn\n";
@@ -545,7 +562,7 @@ foreach my $rawrec (@mab2titdata){
                     }
             }
             elsif ($titdefs_ref->{$category}{ref} eq 'kor'){
-                $koridn=OpenBib::Conv::Common::Util::get_koridn($content);
+                $koridn=get_koridn($content);
                 
                 if ($koridn > 0){
                     print KOEOUT "0000:$koridn\n";
@@ -562,7 +579,7 @@ foreach my $rawrec (@mab2titdata){
                 $content=~s{^‡[a-z]}{}; # Anfang weg
                 $content=~s{‡[a-z]}{ / }g;
 
-                $swtidn=OpenBib::Conv::Common::Util::get_swtidn($content);
+                $swtidn=get_swtidn($content);
                 
                 if ($swtidn > 0){
                     print SWDOUT "0000:$swtidn\n";
@@ -576,7 +593,7 @@ foreach my $rawrec (@mab2titdata){
                 $content="IDN: $swtidn";
             }
             elsif ($titdefs_ref->{$category}{ref} eq 'not'){
-                $notidn=OpenBib::Conv::Common::Util::get_notidn($content);
+                $notidn=get_notidn($content);
                 
                 if ($notidn > 0){
                     print SYSOUT "0000:$notidn\n";
@@ -625,3 +642,104 @@ sub konv {
   $line=~s/a//;
   return $line;
 }
+
+sub get_autidn {
+  ($autans)=@_;
+  
+  $autdubidx=$startautidn;
+  $autdubidn=0;
+  #  print "Autans: $autans\n";
+  
+  while ($autdubidx < $autdublastidx){
+    if ($autans eq $autdubbuf[$autdubidx]){
+      $autdubidn=(-1)*$autdubidx;      
+      
+      #      print "AutIDN schon vorhanden: $autdubidn\n";
+    }
+    $autdubidx++;
+  }
+  if (!$autdubidn){
+    $autdubbuf[$autdublastidx]=$autans;
+    $autdubidn=$autdublastidx;
+    #    print "AutIDN noch nicht vorhanden: $autdubidn\n";
+    $autdublastidx++;
+    
+  }
+  return $autdubidn;
+}
+
+sub get_swtidn {
+  ($swtans)=@_;
+  
+  $swtdubidx=$startswtidn;
+  $swtdubidn=0;
+  #  print "Swtans: $swtans\n";
+  
+  while ($swtdubidx < $swtdublastidx){
+    if ($swtans eq $swtdubbuf[$swtdubidx]){
+      $swtdubidn=(-1)*$swtdubidx;      
+      
+#            print "SwtIDN schon vorhanden: $swtdubidn, $swtdublastidx\n";
+    }
+    $swtdubidx++;
+  }
+  if (!$swtdubidn){
+    $swtdubbuf[$swtdublastidx]=$swtans;
+    $swtdubidn=$swtdublastidx;
+#        print "SwtIDN noch nicht vorhanden: $swtdubidn, $swtdubidx, $swtdublastidx\n";
+    $swtdublastidx++;
+    
+  }
+  return $swtdubidn;
+}
+
+sub get_koridn {
+  ($korans)=@_;
+  
+  $kordubidx=$startkoridn;
+  $kordubidn=0;
+  #  print "Korans: $korans\n";
+  
+  while ($kordubidx < $kordublastidx){
+    if ($korans eq $kordubbuf[$kordubidx]){
+      $kordubidn=(-1)*$kordubidx;      
+      
+      #      print "KorIDN schon vorhanden: $kordubidn\n";
+    }
+    $kordubidx++;
+  }
+  if (!$kordubidn){
+    $kordubbuf[$kordublastidx]=$korans;
+    $kordubidn=$kordublastidx;
+    #    print "KorIDN noch nicht vorhanden: $kordubidn\n";
+    $kordublastidx++;
+    
+  }
+  return $kordubidn;
+}
+
+sub get_notidn {
+  ($notans)=@_;
+  
+  $notdubidx=$startnotidn;
+  $notdubidn=0;
+  #  print "Notans: $notans\n";
+  
+  while ($notdubidx < $notdublastidx){
+    if ($notans eq $notdubbuf[$notdubidx]){
+      $notdubidn=(-1)*$notdubidx;      
+      
+      #      print "NotIDN schon vorhanden: $notdubidn\n";
+    }
+    $notdubidx++;
+  }
+  if (!$notdubidn){
+    $notdubbuf[$notdublastidx]=$notans;
+    $notdubidn=$notdublastidx;
+    #    print "NotIDN noch nicht vorhanden: $notdubidn\n";
+    $notdublastidx++;
+    
+  }
+  return $notdubidn;
+}
+

@@ -4,7 +4,7 @@
 #
 #  Person
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -36,6 +36,7 @@ use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 use Storable;
@@ -115,7 +116,7 @@ sub load_full_record {
     
     my $sqlrequest;
 
-    $sqlrequest="select category,content,indicator from aut where id = ?";
+    $sqlrequest="select category,content,indicator from person where id = ?";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
 
@@ -201,7 +202,7 @@ sub load_name {
     
     my $sqlrequest;
 
-    $sqlrequest="select content from aut where id = ? and category=0001";
+    $sqlrequest="select content from person where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     
@@ -276,10 +277,44 @@ sub to_rawdata {
     return $self->{_normset};
 }
 
+sub to_json {
+    my ($self)=@_;
+
+    my $title_ref = {
+        'metadata'    => $self->{_normset},
+    };
+
+    return encode_json $title_ref;
+}
+
 sub name_as_string {
     my $self=shift;
     
     return $self->{name};
+}
+
+sub set_category {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $category          = exists $arg_ref->{category}
+        ? $arg_ref->{category}          : undef;
+
+    my $indicator         = exists $arg_ref->{indicator}
+        ? $arg_ref->{indicator}         : undef;
+
+    my $content            = exists $arg_ref->{content}
+        ? $arg_ref->{content}           : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    push @{$self->{_normset}{$category}}, {
+        indicator => $indicator,
+        content   => $content,
+    };
+
+    return $self;
 }
 
 1;

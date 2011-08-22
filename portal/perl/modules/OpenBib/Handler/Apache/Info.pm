@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Info
 #
-#  Dieses File ist (C) 2006-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,6 +40,7 @@ use Apache2::RequestRec ();
 use Apache2::Request ();
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Template;
 
@@ -53,89 +54,65 @@ use OpenBib::Statistics;
 use OpenBib::User;
 use OpenBib::Template::Utilities;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show_record');
+    $self->run_modes(
+        'show_record'       => 'show_record',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show_record {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config      = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $stid           = $self->strip_suffix($self->param('stid'))           || '';
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');    
+    
+    # CGI Args
+    my $format         = $query->param('format')         || '';
+    
     my $statistics  = new OpenBib::Statistics();
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
-    my $query       = Apache2::Request->new($r);
-
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
-  
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    # Sub-Template ID
-    my $stid     = $query->param('stid')     || '';
-    my $database = $query->param('database') || '';
-    my $id       = $query->param('id')       || '';
-    my $format   = $query->param('format')   || '';
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        return Apache2::Const::OK;
-    }
-
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
-  
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
-
+    
     # TT-Data erzeugen
     my $ttdata={
         format        => $format,
         stid          => $stid,
-        database      => $database,
-        query         => $query,
-        id            => $id,
-        view          => $view,
-        stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
-        sessionID     => $session->{ID},
-	session       => $session,
-        useragent     => $useragent,
-        config        => $config,
         dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
-        user          => $user,
-        msg           => $msg,
     };
 
-    $stid=~s/[^0-9]//g;
+    my $templatename = ($stid && $stid ne "default")?"tt_info_".$stid."_tname":"tt_info_tname";
 
-    my $templatename = ($stid)?"tt_info_".$stid."_tname":"tt_info_tname";
-
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+    $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
 }

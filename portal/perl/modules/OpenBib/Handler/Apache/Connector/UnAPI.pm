@@ -50,33 +50,46 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    my $query  = Apache2::Request->new($r);
-    
-#     my $status=$query->parse;
-    
-#     if ($status){
-#         $logger->error("Cannot parse Arguments");
-#     }
+    # CGI Args
+    my $unapiid        = $query->param('id')     || '';
+    my $format         = $query->param('format') || '';
 
-    my $unapiid        = $query->param('id')              || '';
-    my $format         = $query->param('format')          || '';
-
-    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
     if ($format){
-
+        
         unless (exists $config->{unAPI_formats}->{$format}){
             return Apache2::Const::HTTP_NOT_ACCEPTABLE;
         }
@@ -169,9 +182,7 @@ sub handler {
 
     }
 
-    return Apache2::Const::OK;
-    
-
+    return Apache2::Const::OK;    
 }
 
 1;

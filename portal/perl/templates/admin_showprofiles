@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showviews
+# Templatename: admin_showprofiles
 #
 # Typ         : Mastertemplate       
 #
@@ -12,11 +12,13 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog-Profile anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Katalog-Profile anzeigen' %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 
 <div id="maincontent">
 
@@ -24,9 +26,9 @@
 
 <div class="content">
 
-<form method="get" action="[%config.get('admin_loc') %]">
+<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]">
 <input type="hidden" name="do_editprofile" value="1" />
-<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neues Katalog-Profil anlegen") %]</th></tr>
@@ -56,7 +58,7 @@
 
 [% FOREACH profile IN profiles %]
 
-<tr><td>[% profile.profilename %]</td><td><a href="[% config.get('admin_loc') %]?sessionID=[% sessionID %]&do_editprofile=1&profilename=[% profile.profilename %]&do_edit=1">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
+<tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]?&do_editprofile=1&profilename=[% profile.profilename %]&do_edit=1">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
 [% END %]
 
 </table>

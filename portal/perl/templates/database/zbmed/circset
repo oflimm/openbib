@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: circset
+# Templatename: circulation
 #
 # Typ         : Subtemplate       
 #
@@ -12,50 +12,22 @@
 #######################################################################
 -%]
 
-<style>
-#qr {
-        margin-top:-416px;
-	position:absolute;
-	border:1px solid #ccc;
-	background: aliceblue;
-	padding:5px;
-	display:none;
-	color:#000;
-        text-align: center;
-	}
-
-#qr .closebutton {
-	position: absolute;
-	top: 3px;
-	right: 3px;
-	cursor: pointer;
-}
-</style>
-
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
-[% FOREACH mex IN circset %]
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
+[% FOREACH mex IN circulation %]
 [%- mex.Ausleihurl = "${mex.Ausleihurl}?Query=0000=%22${normset.id}%22" -%]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td>
-[%-
-  title    = normset.${"T0331"}.first.content ;
-  IF  normset.${"T0310"}.first.content ;
-     title = normset.${"T0310"}.first.content ;
-  END ;
--%]
-<td><a class="qr-preview" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% mex.Bibliothek.short | uri %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') | uri %][% ELSE %][% mex.Standort | uri %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
-<td>[% mex.Standort %]</td>
+<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[% mex.Status %]</strong></td>
 <td class="circurl">
 [%
      IF mex.Ausleihurl %]
-   <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.get('redirect_loc') %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF mex.Statuscode != 0 %]
-     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>
+     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>
 [%      ELSE %]
-     <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=make_order;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel bestellen">Bestellen</a>
+     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_order;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel bestellen">Bestellen</a>
 [%      END %]
 [%   END %]
 </td></tr>

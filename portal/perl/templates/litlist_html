@@ -1,0 +1,162 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_manage_lists
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Neuanlegen und Ausgabe bestehender Literaturlisten
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+<div class="representation">
+<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+</div>
+[% PROCESS common/subtemplate name="litlist_navigation" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+<p />
+
+[% userrole = user.get_roles_of_user(litlist.properties.userid) %]
+
+
+<p />
+
+[%# USE dumper; dumper.dump(litlist)%]
+[% IF litlist.recordlist.get_size > 0 %]
+[%-
+    start_range     = 1;
+    end_range       = litlist.get_size;
+-%]
+
+<!-- Titlelist begins here -->
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[% litlist.properties.title %]
+    </div>
+    <div class="hits">
+[% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
+    </div>
+[% IF offset >= 0 && num > 0 %]
+    <div class="navigation">
+[%- FOREACH navitem IN nav ;
+      IF navitem.active ;
+        previouspage = lastpage;
+        nextpage = loop.next;
+      END ;
+      lastpage = navitem; 
+    END ;
+-%]
+[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
+[%- IF nav.first.active -%]<img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
+[%- FOREACH navitem IN nav -%]
+<a href="[% navitem.url %]">
+[%- IF navitem.active ;
+    previouspage = nav.prev;
+    nexpage      = nav.next;
+-%]
+<span class="paging_active">[% loop.count %]</span>
+[%- ELSE -%]
+[% loop.count %]
+[%- END -%]
+</a>&nbsp;&nbsp;
+[%- END -%]
+
+[% IF nav.last.active %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
+
+[%- IF hits <= 1000 -%]
+<a href="[% baseurl %];num=-1;offset=0">[ Alles ]</a>
+[%- END -%]
+    </div>
+[%-    END -%]
+  </div>
+[%- IF format == 'short' -%]
+  <div class="listoptions">
+<!-- Titlelist begins here -->
+<form method="get" action="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %]">
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlist_loc')}/${litlist.properties.id}" no_jn=1 %]
+
+</form>
+  </div>
+[% END %]
+
+  <div class="resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+
+[% IF format == 'Text' %]
+
+[% PROCESS common/subtemplate name="litlist_html_as_text" %]
+
+[% ELSIF format == 'BibTeX' %]
+
+[% PROCESS common/subtemplate name="litlist_html_as_bibtex" %]
+
+[% ELSIF format == 'EndNote' %]
+
+[% PROCESS common/subtemplate name="litlist_html_as_endnote" %]
+
+[% ELSIF format == 'short' %]
+
+[% PROCESS common/subtemplate name="litlist_html_short" %] 
+
+[% ELSIF format == 'full' %]
+
+[% PROCESS common/subtemplate name="litlist_html_full" %]
+
+[%- END # Ende Alles -%]
+
+</div>
+</div>
+<!-- Titlelist ends here -->
+
+[% ELSE %]
+
+<h1>Diese Literaturliste enth&auml;lt keine Titel</h1>
+
+[% END %]
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

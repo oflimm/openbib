@@ -1,0 +1,72 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+      funcargs = { id => 'all', type => 2 } ;
+      resultlist = statistics.get_result(funcargs);
+%]
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "usage" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="usage_navigation" active_submenu = "databases" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+[%# USE dumper;dumper.dump(dbinfo)%]
+<table width="100%">
+<tr><th>[% msg.maketext("Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe") %]</th></tr>
+<tr><td class="boxedclear">
+<table>
+<!-- Beginn Result Item -->
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+%]
+<tr><td><b>[% loop.count %]</b></td><td><strong>[% dbinfo.dbnames.${item}.short %]</td><td><b>[% itemcount %]&nbsp;[% msg.maketext("Titelzugriffe") %]</b></td></tr>
+[% END %]
+</table>
+</td></tr>
+</table>
+<p />
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

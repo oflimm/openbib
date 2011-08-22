@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: circset
+# Templatename: circulation
 #
 # Typ         : Subtemplate       
 #
@@ -14,7 +14,7 @@
 [%
  Aquisition = 0;
 
- FOREACH mex IN circset ;
+ FOREACH mex IN circulation ;
     IF mex.AquisitionStatuscode >= 1 ;
        Aquisition = 1;
     END ;
@@ -24,44 +24,16 @@
 <p />
 
 [% IF Aquisition == 0 %]
-
-<style>
-#qr {
-        margin-top:-416px;
-	position:absolute;
-	border:1px solid #ccc;
-	background: aliceblue;
-	padding:5px;
-	display:none;
-	color:#000;
-        text-align: center;
-	}
-
-#qr .closebutton {
-	position: absolute;
-	top: 3px;
-	right: 3px;
-	cursor: pointer;
-}
-</style>
-
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td></tr>
-[% FOREACH mex IN circset %]
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td></tr>
+[% FOREACH mex IN circulation %]
 <tr align="center"><td>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">
+<a href="[% path_prefix %]/[% config.get('info_loc') %]/60?id=[% record.database %]">
 [%-   ELSE -%]
 <a href="[% mex.Bibinfourl %]" target="_blank">
 [%-   END -%]
-<strong>[% mex.Bibliothek.full %]</strong></a></td>
-[%-
-  title    = normset.${"T0331"}.first.content ;
-  IF  normset.${"T0310"}.first.content ;
-     title = normset.${"T0310"}.first.content ;
-  END ;
--%]
-<td><a class="qr-preview" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% mex.Bibliothek.short | uri %] :: [% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') | uri %][% ELSE %][% mex.Standort | uri %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote | uri %])[%- END -%] :: [% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur | uri %][% mex.Exemplar | uri %][% ELSE %][% mex.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
+<strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
 <td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
 </tr>
@@ -77,7 +49,7 @@ ist lediglich eine Tages- und Wochenendausleihe m&ouml;glich.
 <tr><td class="boxedclear">
 <table width="100%">
 <tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td></tr>
-[% FOREACH mex IN circset %]
+[% FOREACH mex IN circulation %]
 <tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>
 [%   IF mex.AquisitionStatuscode <= 2 %]
 [% msg.maketext("bestellt beim Lieferanten") %]

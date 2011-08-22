@@ -24,27 +24,27 @@
 # Aufruf der Frames mit den gewuenschten Inhalten
 
 IF NOT headerframeurl;
-headerframeurl = "${config.get('headerframe_loc')}?sessionID=${sessionID};view=${view}" ;
+headerframeurl = "${path_prefix}/${config.get('headerframe_loc')}?" ;
 END;
 
 IF NOT bodyframeurl;
-bodyframeurl   = "${config.get('searchmask_loc')}?sessionID=${sessionID};view=${view};setmask=${setmask}" ;
+bodyframeurl   = "${path_prefix}/${config.get('searchform_loc')}?setmask=${setmask}" ;
 END;
 
 IF searchsingletit && database;
-    bodyframeurl = "${config.get('search_loc')}?sessionID=${sessionID};search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit};view=${view}";
+    bodyframeurl = "${path_prefix}/${config.get('search_loc')}?search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit}";
 END;
 
 IF fs;
-    bodyframeurl = "${config.get('virtualsearch_loc')}?view=${view};sessionID=${sessionID};fs=${fs};hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
+    bodyframeurl = "${path_prefix}/${config.get('virtualsearch_loc')}?fs=${fs};num=50;srt=author;srto=up;profil=;autoplus=0;st=3";
 END;
 
 IF searchlitlist;
-    bodyframeurl = "${config.get('litlists_loc')}?view=${view};sessionID=${sessionID};action=show;litlistid=${searchlitlist}";
+    bodyframeurl = "${path_prefix}/${config.get('litlists_loc')}?action=show;litlistid=${searchlitlist}";
 END;
 
 IF config.get('drilldown') ;
-    bodyframeurl = "${bodyframeurl};drilldown=1";
+    bodyframeurl = "${bodyframeurl};dd=1";
 END ;
 IF config.get('drilldown_option').cloud ;
     bodyframeurl = "${bodyframeurl};dd_cloud=1";

@@ -50,41 +50,61 @@ use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view');
 
-    my $session = OpenBib::Session->instance;
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $lang           = $self->param('lang');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $uri  = $r->parsed_uri;
     my $path = $uri->path;
 
-    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
     # Basisipfad entfernen
-    my $basepath = $config->{connector_permalink_loc};
+    my $basepath = $config->{base_loc}."/$view/".$config->{connector_permalink_loc};
     $path=~s/$basepath//;
 
-    # Parameter aus URI bestimmen
+    $logger->debug("Path: $path without basepath $basepath");
 
-    my ($id1,$id2,$type,$view);
-    if ($path=~m/^\/(\w+?)\/([^\/]+?)\/(\d+?)\/index.html$/){
+    # RSS-Feedparameter aus URI bestimmen
+    #
+    # 
+
+    my ($id1,$id2,$type);
+    if ($path=~m/^\/([^\/]+?)\/([^\/]+?)\/(\d+?)\/index.html$/){
         ($id1,$id2,$type)=($1,$2,$3);
     }
-    elsif ($path=~m/^\/(\w+?)\/([^\/]+?)\/(\d+?)\/(\w+?)\/index.html$/){
-        ($id1,$id2,$type,$view)=($1,$2,$3,$4);
-    }
-
-    $logger->debug("Parsed Path: $path");
-    $logger->debug("ID1: $id1 ID2: $id2 Type: $type View: $view");
 
     # Zugriffe loggen
     if ($type == 1){

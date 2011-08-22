@@ -121,12 +121,12 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-open (TIT,     ">:utf8","unload.TIT");
-open (AUT,     ">:utf8","unload.PER");
-open (KOR,     ">:utf8","unload.KOE");
-open (NOTATION,">:utf8","unload.SYS");
-open (SWT,     ">:utf8","unload.SWD");
-open (MEX,     ">:utf8","unload.MEX");
+open (TIT,     ">:utf8","meta.title");
+open (AUT,     ">:utf8","meta.person");
+open (KOR,     ">:utf8","meta.corporatebody");
+open (NOTATION,">:utf8","meta.classification");
+open (SWT,     ">:utf8","meta.subject");
+open (MEX,     ">:utf8","meta.holding");
 
 my $twig1stpass= XML::Twig->new(
     TwigHandlers => {

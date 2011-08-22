@@ -45,4 +45,4 @@ system("cd $pooldir/$pool ; rm unload.* pool.dat");
 system("gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");
 system("cd $pooldir/$pool ; $konvdir/lidos32meta.pl --filename=$pooldir/$pool/pool.dat");
 system("rm $pooldir/$pool/pool.dat");
-system("cd $pooldir/$pool ; gzip unload.*");
+system("cd $pooldir/$pool ; gzip meta.*");

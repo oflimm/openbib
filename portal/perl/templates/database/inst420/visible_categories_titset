@@ -119,11 +119,11 @@
 
 [%# Circset muss von fremden Eintraegen befreit werden %]
 [%
-tmpcircset = [] ;
-FOREACH circ IN circset ;
-  IF circ.Signatur.match('^420') || circ.Signatur.match('^424') ;
-     tmpcircset.push(circ);
+tmpcirculation = [] ;
+FOREACH circ IN circulation ;
+  IF circ.Signatur.match('^420') || circ.Signatur.match('^424');
+     tmpcirculation.push(circ);
   END;
 END;
-circset = tmpcircset;
+circulation = tmpcirculation;
 %]

@@ -11,13 +11,14 @@
 #
 #######################################################################
 -%]
-</div><!-- End maincontent -->
 
 [% IF NOT hide_foot_banner %]
-<div class="footer"><!-- Begin footer -->
-<b>KUG</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>KUG v2.3</tt>
-</div><!-- End footer -->
+    <!-- begin: #footer -->
+    <div id="footer" role="contentinfo">[% msg.maketext("Diese Website demonstriert ein Recherche-Portal") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;Layout based on <a href="http://www.yaml.de/">YAML</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>[% config.get('version')%] </tt></div>
+    <!-- end: #footer -->
 [% END %]
 
+</div> <!-- page -->
+</div> <!-- page_margins -->
 </body>
 </html>

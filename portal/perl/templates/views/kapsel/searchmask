@@ -22,10 +22,10 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a class="active" href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a                href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=kapsel;browsecat=T0710" title="Register">Register</a></li>
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=kapsel;stid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('search_loc') %]?db=kapselbrowsecat=T0710" title="Register">Register</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('info_loc') %]?db=kapselstid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 
 
 </ul>
@@ -37,12 +37,12 @@
 
 [% IF queries.size > 0 %]
 
-<form method="get" id="queries" action="http://[% config.get('servername') %][% config.get('dispatchquery_loc') %]">
+<form method="get" id="queries" action="http://[% config.get('servername') %][% path_prefix %]/[% config.get('dispatchquery_loc') %]">
 <table width="100%">
 <tr><th>[% msg.maketext("Suchhistorie") %]</th></tr>
 <tr><td class="boxed">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="view"      value="[% view %]" />
+
+
 
 [% PROCESS common/subtemplate name="select_queries" %]
 
@@ -55,23 +55,23 @@
 <p />
 <p />
 
-<form method="get" id="openbib" action="http://[% config.get('servername') %][% config.get('virtualsearch_loc') %]">
-<input type="hidden" name="view"      value="[% view %]" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="sb"        value="sql" />
+<form method="get" id="openbib" action="http://[% config.get('servername') %][% path_prefix %]/[% config.get('virtualsearch_loc') %]">
+
+
+
 <input type="hidden" name="st"        value="2" />
 <input type="hidden" name="profil"    value="dbauswahl" />
 
 
 <table class="submitbuttons">
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></td><td><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></td><td><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
 </table>
 
 <p />
 <table width="100%">
 <tr><th>[% msg.maketext("Suchbegriffe") %]</th><td width="25">&nbsp;</td><th>[% msg.maketext("Suchhinweise") %]</th></tr>
 <tr><td class="boxed" valign="top">
-[% PROCESS common/subtemplate name="searchmask_query" %]
+[% PROCESS common/subtemplate name="searchform_query" %]
 </td>
 <td>
 <table>
@@ -86,18 +86,18 @@
 
 <p />
 
-<input type="hidden" name="hitrange"  value="50" />
-<input type="hidden" name="autoplus"  value="1" />
-<input type="hidden" name="sorttype"  value="author" />
-<input type="hidden" name="sortorder" value="up" />
+<input type="hidden" name="num"  value="50" />
+
+<input type="hidden" name="srt"  value="author" />
+<input type="hidden" name="srto" value="up" />
 
 [% IF view %]
 <table class="submitbuttons">
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></td><td><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></td><td><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
 </table>
 [% ELSE %]
 <table class="submitbuttons">
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></td><td><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></td><td><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
 </table>
 [% END %]
 

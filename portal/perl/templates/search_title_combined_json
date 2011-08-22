@@ -1,0 +1,49 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+
+[%
+
+   start_range     = nav.current_page*qopts.num-qopts.num + 1;
+   end_range       = nav.current_page*qopts.num;
+   IF end_range >= fullresultcount ;
+      end_range       = fullresultcount;
+   END;
+
+   records = [];
+
+   FOREACH record IN recordlist.get_records ;
+      records.push(record.get_brief_normdata);
+   END ;
+
+
+
+   search_result = {
+     meta = {
+              'start_range' = start_range
+              'end_range'   = end_range
+              'hits'        = fullresultcount
+     }
+
+     records = records
+
+     facets = {
+         databases = category_map.8
+         persons   = category_map.3
+     }     
+
+   };
+
+   to_json(search_result);
+
+%]

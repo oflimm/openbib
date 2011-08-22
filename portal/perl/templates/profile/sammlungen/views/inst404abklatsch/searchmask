@@ -17,7 +17,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchmask" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
 
 <div id="maincontent">
 
@@ -38,13 +38,13 @@
 <!--<div class="langchoice">
 [% IF config.get('lang').size > 1 %]
 [%   FOREACH l IN config.get('lang') %]
-<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
 -->
 
-[% PROCESS common/subtemplate name="subnavigation" active_menu="searchmask" %]
+[% PROCESS common/subtemplate name="subnavigation" active_menu="searchform" %]
 
 <div class="content">
 
@@ -57,17 +57,17 @@
 [% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#to_focus").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
-  $("#input_box_serials").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
-  $("#input_box_articles").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -77,7 +77,7 @@ $(document).ready(function(){
 [% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#to_focus").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -85,7 +85,7 @@ $(document).ready(function(){
                 extraParams: {
                   exact: "[% livesearch.exact %]"
                 }});
-  $("#input_box_serials").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -93,7 +93,7 @@ $(document).ready(function(){
                 extraParams: {
                   exact: "[% livesearch.exact %]"
                 }});
-  $("#input_box_articles").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -106,28 +106,28 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-<form method="get" action="[% config.get('virtualsearch_loc') %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="view"      value="[% view %]" />
-<input type="hidden" name="sb"        value="sql" />
+<form method="get" action="[% path_prefix %]/[% config.get('virtualsearch_loc') %]">
+
+
+
 <input type="hidden" name="st"        value="2" />
-<input type="hidden" name="hitrange"  value="100" />
-<input type="hidden" name="sorttype"  value="author" />
-<input type="hidden" name="autoplus"  value="1" />
+<input type="hidden" name="num"  value="100" />
+<input type="hidden" name="srt"  value="author" />
+
 <input type="hidden" name="profil"    value="dbauswahl" />
 
 <center>
 <table width="70%">
 <tr><td style="vertical-align:top;padding:20px;">
-[% PROCESS common/subtemplate name="searchmask_query" %]
+[% PROCESS common/subtemplate name="searchform_query" %]
 
 </form>
 
 [% IF queries.size > 0 %]
 <p />
-<form method="get" id="queries" action="[% config.get('dispatchquery_loc') %]">
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
 <b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
 
 <table>
 <tr>
@@ -161,17 +161,15 @@ in der Regel nach der Edition in der IK-Reihe oder in Epigraphica Anatolica
 <dt>2. Ort der Inschrift</dt>
 
 <dd>
-z.B. Ephesos, Knidos, Oinoanda; Zugang auch über  <a href="[%
-config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view
-%];database=inst404abklatsch;browsecat=T0200">Register</a>
+z.B. Ephesos, Knidos, Oinoanda; Zugang auch über  <a href="[% path_prefix %]/[% config.get('search_loc') %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0200">Register</a>
 </dd>
 
 <dt>3. Kategorie</dt>
 
 <dd>z.B. Ehrendekret, Grabinschrift; Zugang &uuml;ber Eingabemaske
-sowie <a href="[% config.get('search_loc') %]?sessionID=[% sessionID
-%];view=[% view
-%];database=inst404abklatsch;browsecat=T0710">Register</a> </dd>
+sowie <a href="[% path_prefix %]/[% config.get('search_loc') %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0710">Register</a> </dd>
 
 <dt>4. Edition / SEG-Eintrag</dt>
 
@@ -179,9 +177,8 @@ sowie <a href="[% config.get('search_loc') %]?sessionID=[% sessionID
 z.B. "IK 17.1 Ephesos Nr. 3244", "EA 13, 1989, p. 3-5, Nr. 496"-
 SEG-Eintrag nach M&ouml;glichkeit gem&auml;&szlig; letztem Eintrag im
 Supplementum Epigraphicum Graecum, "SEG 39, 1989, Nr. 1132" <br/>
-Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[%
-config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view
-%];database=inst404abklatsch;browsecat=T0335">Register</a> </dd>
+Zugang zu Edition und SEG-Eintrag &uuml;ber <a href="[% path_prefix %]/[% config.get('search_loc') %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0335">Register</a> </dd>
 
 <dt>5. Inventarnummer</dt>
 
@@ -192,23 +189,19 @@ Inventarnummer des Abklatsches
 <dt>6. Datierung der Inschrift</dt>
 
 <dd> z.B. "Kaiserzeit", "1. Jh. v., 2. Hälfte"; Zugang hierzu
-&uuml;ber <a href="[% config.get('search_loc') %]?sessionID=[%
-sessionID %];view=[% view
-%];database=inst404abklatsch;browsecat=T0425">Register</a> und "Freie Suche".
+&uuml;ber <a href="[% path_prefix %]/[% config.get('search_loc') %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0425">Register</a> und "Freie Suche".
 
 </dd>
 <dt>7. Aufbewahrungsort der Inschrift</dt>
 
-<dd> Zugang ausschlie&szlig;lich &uuml;ber <a href="[% config.get('search_loc')
-%]?sessionID=[% sessionID %];view=[% view
-%];database=inst404abklatsch;browsecat=T0410">Register</a>
+<dd> Zugang ausschlie&szlig;lich &uuml;ber <a href="[% path_prefix %]/[% config.get('search_loc') %]?view=[% view
+%]db=inst404abklatsch;browsecat=T0410">Register</a>
 </dd>
 
 <br />
 <dt>
-<a href="[%
-config.get('info_loc') %]?sessionID=[% sessionID
-%]&stid=22">Ausf&uuml;hrliche Erl&auml;uterungen zur Datenerfassung
+<a href="[% path_prefix %]/[% config.get('info_loc') %]?&stid=22">Ausf&uuml;hrliche Erl&auml;uterungen zur Datenerfassung
 und den Suchmöglichkeiten</a>
 </dt>
 </dl>

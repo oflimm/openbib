@@ -30,11 +30,6 @@
                   },
        "inst404" = {
                     subjectid          = 2,
-                    ezb_subjects       = ['E'],
-                    dbis_subjects      = ['13'],
-                  },
-       "inst405" = {
-                    subjectid          = 7,
                   },
        "inst420" = {
                     subjectid          = 2,
@@ -49,19 +44,10 @@
        "inst423" = {
                     subjectid          = 2,
                   },
-       "inst425" = {
-                    subjectid          = 2,
-                  },
-       "inst426" = {
-                    subjectid          = 2,
-                  },
        "inst431" = {
                     subjectid          = 20,
                     defaultlogintarget = 4,
-                    validlogintargets  = { "3" => 1, "4" => 1, },
-                    ezb_subjects       = ['LA-LC'],
-                    dbis_subjects      = ['29'],
-
+                    validlogintargets  = { "3" => 1, "4" => 1, }
                   },
        "inst526" = {
                     subjectid          = 15,
@@ -106,4 +92,11 @@
                   },
 
        };
+
+  path_prefix = "${config.get('base_loc')}";
+
+  IF NOT config.strip_view_from_uri(view) ;
+    path_prefix = "${path_prefix}/${view}";
+  END ;
+
 -%]

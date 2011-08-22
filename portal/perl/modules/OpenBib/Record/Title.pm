@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,9 +37,8 @@ use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBI;
 use Encode 'decode_utf8';
-use JSON::XS qw(encode_json decode_json);
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
 use SOAP::Lite;
 use Storable;
 use XML::LibXML;
@@ -51,6 +50,7 @@ use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Database::DBI;
+use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
@@ -60,6 +60,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::SearchQuery;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -116,11 +117,11 @@ sub load_full_record {
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     # (Re-)Initialisierung
-    delete $self->{_exists}        if (exists $self->{_exists});
-    delete $self->{_normset}       if (exists $self->{_normset});
-    delete $self->{_mexset}        if (exists $self->{_mexset});
-    delete $self->{_circset}       if (exists $self->{_circset});
-    delete $self->{_brief_normset} if (exists $self->{_brief_normset});
+    delete $self->{_exists}         if (exists $self->{_exists});
+    delete $self->{_normdata}       if (exists $self->{_normdata});
+    delete $self->{_holding}        if (exists $self->{_holding});
+    delete $self->{_circulation}    if (exists $self->{_circulation});
+    delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
 
     my $record_exists = 0;
 
@@ -131,7 +132,7 @@ sub load_full_record {
     $normset_ref->{database} = $self->{database};
 
     unless (defined $self->{id} && defined $self->{database}){
-        ($self->{_normset},$self->{_mexset},$self->{_circset},$self->{_exists})=({},(),[],$record_exists);
+        ($self->{_normdata},$self->{_holding},$self->{_circulation},$self->{_exists})=({},(),[],$record_exists);
 
         $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
         return $self;
@@ -154,7 +155,7 @@ sub load_full_record {
             $atime=new Benchmark;
         }
         
-        my $reqstring="select * from tit where id = ?";
+        my $reqstring="select * from title where id = ?";
         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
@@ -254,7 +255,7 @@ sub load_full_record {
                 };
             }
         }
-        
+
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
@@ -289,23 +290,23 @@ sub load_full_record {
     }
 
     # Exemplardaten
-    my $mexnormset_ref=[];
+    my $holding_ref=[];
     {
         
         my $reqstring="select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
-        my @verknmex=();
+        my @verknholding=();
         while (my $res=$request->fetchrow_hashref){
-            push @verknmex, decode_utf8($res->{targetid});
+            push @verknholding, decode_utf8($res->{targetid});
         }
         $request->finish();
         
-        if ($#verknmex >= 0) {
-            foreach my $mexid (@verknmex) {
-                push @$mexnormset_ref, $self->_get_mex_set_by_idn({
-                    id             => $mexid,
+        if ($#verknholding >= 0) {
+            foreach my $holdingid (@verknholding) {
+                push @$holding_ref, $self->_get_holding({
+                    id             => $holdingid,
                 });
             }
         }
@@ -313,7 +314,7 @@ sub load_full_record {
     }
 
     # Ausleihinformationen der Exemplare
-    my @circexemplarliste = ();
+    my $circulation_ref = [];
     {
         my $circexlist=undef;
 
@@ -351,12 +352,13 @@ sub load_full_record {
         # titelbasierten Exemplardaten
         
         if (defined($circexlist)) {
-            @circexemplarliste = @{$circexlist};
+            $circulation_ref = $circexlist;
         }
-        
+
+        # Anreichern mit Bibliotheksinformationen
         if (exists $circinfotable->{$self->{database}}{circ}
-                && $#circexemplarliste >= 0) {
-            for (my $i=0; $i <= $#circexemplarliste; $i++) {
+                && @{$circulation_ref}) {
+            for (my $i=0; $i < scalar(@{$circulation_ref}); $i++) {
                 
                 my $bibliothek="-";
                 my $sigel=$dbinfotable->{dbases}{$self->{database}};
@@ -379,13 +381,13 @@ sub load_full_record {
                 my $bibinfourl=$dbinfotable->{bibinfo}{
                     $dbinfotable->{dbases}{$self->{database}}};
                 
-                $circexemplarliste[$i]{'Bibliothek'} = $bibliothek;
-                $circexemplarliste[$i]{'Bibinfourl'} = $bibinfourl;
-                $circexemplarliste[$i]{'Ausleihurl'} = $circinfotable->{$self->{database}}{circurl};
+                $circulation_ref->[$i]{'Bibliothek'} = $bibliothek;
+                $circulation_ref->[$i]{'Bibinfourl'} = $bibinfourl;
+                $circulation_ref->[$i]{'Ausleihurl'} = $circinfotable->{$self->{database}}{circurl};
             }
         }
         else {
-            @circexemplarliste=();
+            $circulation_ref=[];
         }
     }
 
@@ -442,9 +444,9 @@ sub load_full_record {
 
             $logger->debug(YAML::Dump(\@isbn_refs));
 
-            my %seen_content = ();
+            my %seen_content = ();            
             foreach my $isbn (@isbn_refs){
-                my $reqstring="select distinct category, content from normdata where isbn=? order by category,indicator";
+                my $reqstring="select distinct category,content from normdata where isbn=? order by category,indicator";
                 my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                 $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
                 
@@ -458,7 +460,7 @@ sub load_full_record {
                     }
                     else {
                         $seen_content{$content} = 1;
-                    }
+                    }                    
                     
                     push @{$normset_ref->{$category}}, {
                         content    => $content,
@@ -596,7 +598,7 @@ sub load_full_record {
     $dbh->disconnect() if ($local_dbh);
     
     $logger->debug(YAML::Dump($normset_ref));
-    ($self->{_normset},$self->{_mexset},$self->{_circset},$self->{_exists})=($normset_ref,$mexnormset_ref,\@circexemplarliste,$record_exists);
+    ($self->{_normdata},$self->{_holding},$self->{_circulation},$self->{_exists})=($normset_ref,$holding_ref,$circulation_ref,$record_exists);
 
     return $self;
 }
@@ -618,11 +620,11 @@ sub load_brief_record {
     my $config = OpenBib::Config->instance;
 
     # (Re-)Initialisierung
-    delete $self->{_exists}        if (exists $self->{_exists});
-    delete $self->{_normset}       if (exists $self->{_normset});
-    delete $self->{_mexset}        if (exists $self->{_mexset});
-    delete $self->{_circset}       if (exists $self->{_circset});
-    delete $self->{_brief_normset} if (exists $self->{_brief_normset});
+    delete $self->{_exists}         if (exists $self->{_exists});
+    delete $self->{_normdata}       if (exists $self->{_normdata});
+    delete $self->{_holding}        if (exists $self->{_holding});
+    delete $self->{_circulation}    if (exists $self->{_circulation});
+    delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
 
     my $record_exists = 0;
     
@@ -652,27 +654,27 @@ sub load_brief_record {
         $logger->debug("Getting cached titlistitem");
         
         # Bestimmung des Satzes
-        my $request=$dbh->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select listitem from title_listitem where id = ?") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         if (my $res=$request->fetchrow_hashref){
-            my $titlistitem     = $res->{listitem};
+            my $titlistitem     = decode_utf8($res->{listitem});
             
-            $logger->debug("Storable::listitem: $titlistitem");
+            $logger->debug("Stored listitem: $titlistitem");
 
-            my $encoding_type="hex";
+            my $titlistitem_ref;
 
-            if    ($encoding_type eq "base64"){
-                $titlistitem = MIME::Base64::decode($titlistitem);
+            if ($config->{internal_serialize_type} eq "packed_storable"){
+                $titlistitem_ref = Storable::thaw(pack "H*", $titlistitem);
             }
-            elsif ($encoding_type eq "hex"){
-                $titlistitem = pack "H*",$titlistitem;
+            elsif ($config->{internal_serialize_type} eq "json"){
+                $titlistitem_ref = decode_json $titlistitem;
             }
-            elsif ($encoding_type eq "uu"){
-                $titlistitem = unpack "u",$titlistitem;
+            else {
+                $titlistitem_ref = Storable::thaw(pack "H*", $titlistitem);
             }
 
-            my %titlistitem = %{ Storable::thaw($titlistitem) };
+            my %titlistitem = %{ $titlistitem_ref };
             
             $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
             %$listitem_ref=(%$listitem_ref,%titlistitem);
@@ -688,8 +690,8 @@ sub load_brief_record {
         }
 
         # Bestimmung der Titelinformationen
-        my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
-        #    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select category,indicator,content from title where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
+        #    my $request=$dbh->prepare("select category,indicator,content from title where id = ? ") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -719,7 +721,7 @@ sub load_brief_record {
         }
         
         # Bestimmung der Exemplarinformationen
-        $request=$dbh->prepare("select mex.category,mex.indicator,mex.content from mex,conn where conn.sourceid = ? and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6 and mex.category=0014") or $logger->error($DBI::errstr);
+        $request=$dbh->prepare("select holding.category,holding.indicator,holding.content from holding,conn where conn.sourceid = ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6 and holding.category=0014") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -956,7 +958,7 @@ sub load_brief_record {
     
     $logger->debug(YAML::Dump($listitem_ref));
 
-    ($self->{_brief_normset},$self->{_exists})=($listitem_ref,$record_exists);
+    ($self->{_brief_normdata},$self->{_exists})=($listitem_ref,$record_exists);
 
     return $self;
 }
@@ -964,19 +966,19 @@ sub load_brief_record {
 sub get_normdata {
     my ($self)=@_;
 
-    return $self->{_normset}
+    return $self->{_normdata}
 }
 
-sub get_mexdata {
+sub get_holding {
     my ($self)=@_;
 
-    return $self->{_mexset}
+    return $self->{_holding}
 }
 
-sub get_circdata {
+sub get_circulation {
     my ($self)=@_;
 
-    return $self->{_circset}
+    return $self->{_circulation}
 }
 
 sub get_same_records {
@@ -994,19 +996,19 @@ sub get_similar_records {
 sub get_brief_normdata {
     my ($self)=@_;
 
-    return $self->{_brief_normset}
+    return $self->{_brief_normdata}
 }
 
 sub is_brief_normdata {
     my ($self)=@_;
 
-    return (exists $self->{_brief_normset})?1:0;
+    return (exists $self->{_brief_normdata})?1:0;
 }
 
 sub is_normdata {
     my ($self)=@_;
 
-    return (exists $self->{_normset})?1:0;
+    return (exists $self->{_normdata})?1:0;
 }
 
 sub set_brief_normdata_from_storable {
@@ -1017,166 +1019,19 @@ sub set_brief_normdata_from_storable {
 
     # (Re-)Initialisierung
     delete $self->{_exists}        if (exists $self->{_exists});
-    delete $self->{_normset}       if (exists $self->{_normset});
-    delete $self->{_mexset}        if (exists $self->{_mexset});
-    delete $self->{_circset}       if (exists $self->{_circset});
-    delete $self->{_brief_normset} if (exists $self->{_brief_normset});
+    delete $self->{_normdata}       if (exists $self->{_normdata});
+    delete $self->{_holding}        if (exists $self->{_holding});
+    delete $self->{_circulation}       if (exists $self->{_circulation});
+    delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
 
-    $self->{_brief_normset} = $storable_ref;
+    $self->{_brief_normdata} = $storable_ref;
 
     $logger->debug(YAML::Dump($self));    
 
     return $self;
 }
 
-sub print_to_handler {
-    my ($self,$arg_ref)=@_;
-
-    my $format             = exists $arg_ref->{format}
-        ? $arg_ref->{format}             : 'full';
-    my $queryid            = exists $arg_ref->{queryid}
-        ? $arg_ref->{queryid}            : undef;
-    my $r                  = exists $arg_ref->{apachereq}
-        ? $arg_ref->{apachereq}          : undef;
-    my $stylesheet         = exists $arg_ref->{stylesheet}
-        ? $arg_ref->{stylesheet}         : undef;
-    my $view               = exists $arg_ref->{view}
-        ? $arg_ref->{view}               : undef;
-    my $msg                = exists $arg_ref->{msg}
-        ? $arg_ref->{msg}                : undef;
-    my $no_log             = exists $arg_ref->{no_log}
-        ? $arg_ref->{no_log}             : 0;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config        = OpenBib::Config->instance;
-    my $session       = OpenBib::Session->instance;
-    my $queryoptions  = OpenBib::QueryOptions->instance;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $user          = OpenBib::User->instance;
-    my $searchquery   = OpenBib::SearchQuery->instance;
-    my $query         = Apache2::Request->new($r);
-
-    my $stid          = $query->param('stid')              || '';
-
-    my $loginname     = $user->get_username();
-    my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
-
-    my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-        session    => $session,
-        database   => $self->{database},
-        titidn     => $self->{id},
-    });
-
-    my $poolname=$dbinfotable->{dbnames}{$self->{database}};
-
-    # Literaturlisten finden
-
-    my $litlists_ref = $user->get_litlists_of_tit({titid => $self->{id}, titdb => $self->{database}});
-
-    # Anreicherung mit OLWS-Daten
-    if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){
-        if (exists $circinfotable->{$self->{database}} && exists $circinfotable->{$self->{database}}{circcheckurl}){
-            $logger->debug("Endpoint: ".$circinfotable->{$self->{database}}{circcheckurl});
-            my $soapresult;
-            eval {
-                my $soap = SOAP::Lite
-                    -> uri("urn:/Viewer")
-                        -> proxy($circinfotable->{$self->{database}}{circcheckurl});
-                
-                my $result = $soap->get_item_info(
-                    SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                        SOAP::Data->name(collection => $circinfotable->{$self->{database}}{circdb})->type('string'),
-                        SOAP::Data->name(item       => $self->{id})->type('string'))));
-                
-                unless ($result->fault) {
-                    $soapresult=$result->result;
-                }
-                else {
-                    $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-                }
-            };
-            
-            if ($@){
-                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-            }
-            
-            $self->{olws}=$soapresult;
-        }
-    }
-
-    # TT-Data erzeugen
-    my $ttdata={
-        view        => $view,
-        stylesheet  => $stylesheet,
-        database    => $self->{database}, # Zwingend wegen common/subtemplate
-        dbinfo      => $dbinfotable,
-        poolname    => $poolname,
-        prevurl     => $prevurl,
-        nexturl     => $nexturl,
-        qopts       => $queryoptions->get_options,
-        queryid     => $searchquery->get_id,
-        sessionID   => $session->{ID},
-        session     => $session,
-        record      => $self,
-        titidn      => $self->{id},
-
-        format      => $format,
-        
-        # Wegen Template-Kompatabilitaet:
-        normset     => $self->{_normset},
-        mexnormset  => $self->{_mexset},
-        circset     => $self->{_circset},
-
-        searchquery => $searchquery,
-        activefeed  => $config->get_activefeeds_of_db($self->{database}),
-
-        loginname     => $loginname,
-        logintargetdb => $logintargetdb,
-
-        litlists          => $litlists_ref,
-        highlightquery    => \&highlightquery,
-
-        record      => $self,
-        config      => $config,
-        user        => $user,
-        msg         => $msg,
-    };
-
-    $stid=~s/[^0-9]//g;
-    my $templatename = ($stid)?"tt_search_showtitset_".$stid."_tname":"tt_search_showtitset_tname";
-    
-    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-
-    # Log Event
-
-    my $isbn;
-
-    if (exists $self->{normset}->{T0540}[0]{content}){
-        $isbn = $self->{normset}->{T0540}[0]{content};
-        $isbn =~s/ //g;
-        $isbn =~s/-//g;
-        $isbn =~s/X/x/g;
-    }
-
-    if (!$no_log){
-        $session->log_event({
-            type      => 10,
-            content   => {
-                id       => $self->{id},
-                database => $self->{database},
-                isbn     => $isbn,
-            },
-            serialize => 1,
-        });
-    }
-    
-    return;
-}
-
-sub _get_mex_set_by_idn {
+sub _get_holding {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -1217,7 +1072,7 @@ sub _get_mex_set_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $sqlrequest="select category,content,indicator from mex where id = ?";
+    my $sqlrequest="select category,content,indicator from holding where id = ?";
     my $result=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $result->execute($id);
 
@@ -1281,41 +1136,13 @@ sub _get_mex_set_by_idn {
     return $normset_ref;
 }
 
-sub highlightquery {
-    my ($searchquery,$content) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    # Highlight Query
-
-    my $term_ref = $searchquery->get_searchterms();
-
-    return $content if (scalar(@$term_ref) <= 0);
-
-    $logger->debug("Terms: ".YAML::Dump($term_ref));
-
-    my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
-
-    return $content if (!$terms);
-    
-    $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
-    $logger->debug("Content vor: ".$content);
-    
-    $content=~s/\b($terms)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
-
-    $logger->debug("Content nach: ".$content);
-
-    return $content;
-}
-
 sub to_bibkey {
     my ($self) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return OpenBib::Common::Util::gen_bibkey({ normdata => $self->{_normset}});
+    return OpenBib::Common::Util::gen_bibkey({ normdata => $self->{_normdata}});
 }
 
 sub to_normalized_isbn13 {
@@ -1324,7 +1151,7 @@ sub to_normalized_isbn13 {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $thisisbn = $self->{_normset}{"T0540"}[0]{content};
+    my $thisisbn = $self->{_normdata}{"T0540"}[0]{content};
 
     $logger->debug("ISBN: $thisisbn");
 
@@ -1384,12 +1211,12 @@ sub to_endnote {
 
     # Titelkategorien
     foreach my $category (keys %{$endnote_category_map_ref}) {
-        if (exists $self->{_normset}{$category}) {
-            foreach my $content_ref (@{$self->{_normset}{$category}}){                
+        if (exists $self->{_normdata}{$category}) {
+            foreach my $content_ref (@{$self->{_normdata}{$category}}){                
                 my $content = $endnote_category_map_ref->{$category}." ".$content_ref->{content};
                 
-                if ($category eq "T0331" && exists $self->{_normset}{"T0335"}){
-                    $content.=" : ".$self->{_normset}{"T0335"}[0]{content};
+                if ($category eq "T0331" && exists $self->{_normdata}{"T0335"}){
+                    $content.=" : ".$self->{_normdata}{"T0335"}[0]{content};
                 }
                 
                 push @{$endnote_ref}, $content;
@@ -1398,11 +1225,11 @@ sub to_endnote {
     }
 
     # Exemplardaten
-    my @mexnormset = @{$self->{_mexset}};
+    my @holdingnormset = @{$self->{_holding}};
 
-    if ($#mexnormset > 0){
-        foreach my $mex_ref (@mexnormset){
-            push @{$endnote_ref}, '%W '.$mex_ref->{"X4000"}{content}{full}." / ".$mex_ref->{"X0016"}{content}." / ".$mex_ref->{"X0014"}{content};
+    if ($#holdingnormset > 0){
+        foreach my $holding_ref (@holdingnormset){
+            push @{$endnote_ref}, '%W '.$holding_ref->{"X4000"}{content}{full}." / ".$holding_ref->{"X0016"}{content}." / ".$holding_ref->{"X0014"}{content};
         }
     }
     
@@ -1428,8 +1255,8 @@ sub to_bibsonomy_post {
     my $authors_ref=[];
     my $editors_ref=[];
     foreach my $category (qw/T0100 T0101/){
-        next if (!exists $self->{_normset}->{$category});
-        foreach my $part_ref (@{$self->{_normset}->{$category}}){
+        next if (!exists $self->{_normdata}->{$category});
+        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
                 push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
@@ -1444,27 +1271,27 @@ sub to_bibsonomy_post {
     # Schlagworte
     my $keywords_ref=[];
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
-        next if (!exists $self->{_normset}->{$category});
-        foreach my $part_ref (@{$self->{_normset}->{$category}}){
+        next if (!exists $self->{_normdata}->{$category});
+        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
             push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
         }
     }
     my $keyword = join(' ; ',@$keywords_ref);
     
     # Auflage
-    my $edition   = (exists $self->{_normset}->{T0403})?utf2bibtex($self->{_normset}->{T0403}[0]{content},$utf8):'';
+    my $edition   = (exists $self->{_normdata}->{T0403})?utf2bibtex($self->{_normdata}->{T0403}[0]{content},$utf8):'';
 
     # Verleger
-    my $publisher = (exists $self->{_normset}->{T0412})?utf2bibtex($self->{_normset}->{T0412}[0]{content},$utf8):'';
+    my $publisher = (exists $self->{_normdata}->{T0412})?utf2bibtex($self->{_normdata}->{T0412}[0]{content},$utf8):'';
 
     # Verlagsort
-    my $address   = (exists $self->{_normset}->{T0410})?utf2bibtex($self->{_normset}->{T0410}[0]{content},$utf8):'';
+    my $address   = (exists $self->{_normdata}->{T0410})?utf2bibtex($self->{_normdata}->{T0410}[0]{content},$utf8):'';
 
     # Titel
-    my $title     = (exists $self->{_normset}->{T0331})?utf2bibtex($self->{_normset}->{T0331}[0]{content},$utf8):'';
+    my $title     = (exists $self->{_normdata}->{T0331})?utf2bibtex($self->{_normdata}->{T0331}[0]{content},$utf8):'';
 
     # Zusatz zum Titel
-    my $titlesup  = (exists $self->{_normset}->{T0335})?utf2bibtex($self->{_normset}->{T0335}[0]{content},$utf8):'';
+    my $titlesup  = (exists $self->{_normdata}->{T0335})?utf2bibtex($self->{_normdata}->{T0335}[0]{content},$utf8):'';
 
     #    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
     #    Bibkey-Bildung entgegen
@@ -1474,22 +1301,22 @@ sub to_bibsonomy_post {
 #    }
 
     # Jahr
-    my $year      = (exists $self->{_normset}->{T0425})?utf2bibtex($self->{_normset}->{T0425}[0]{content},$utf8):'';
+    my $year      = (exists $self->{_normdata}->{T0425})?utf2bibtex($self->{_normdata}->{T0425}[0]{content},$utf8):'';
 
     # ISBN
-    my $isbn      = (exists $self->{_normset}->{T0540})?utf2bibtex($self->{_normset}->{T0540}[0]{content},$utf8):'';
+    my $isbn      = (exists $self->{_normdata}->{T0540})?utf2bibtex($self->{_normdata}->{T0540}[0]{content},$utf8):'';
 
     # ISSN
-    my $issn      = (exists $self->{_normset}->{T0543})?utf2bibtex($self->{_normset}->{T0543}[0]{content},$utf8):'';
+    my $issn      = (exists $self->{_normdata}->{T0543})?utf2bibtex($self->{_normdata}->{T0543}[0]{content},$utf8):'';
 
     # Sprache
-    my $language  = (exists $self->{_normset}->{T0516})?utf2bibtex($self->{_normset}->{T0516}[0]{content},$utf8):'';
+    my $language  = (exists $self->{_normdata}->{T0516})?utf2bibtex($self->{_normdata}->{T0516}[0]{content},$utf8):'';
 
     # Abstract
-    my $abstract  = (exists $self->{_normset}->{T0750})?utf2bibtex($self->{_normset}->{T0750}[0]{content},$utf8):'';
+    my $abstract  = (exists $self->{_normdata}->{T0750})?utf2bibtex($self->{_normdata}->{T0750}[0]{content},$utf8):'';
 
     # Origin
-    my $origin    = (exists $self->{_normset}->{T0590})?utf2bibtex($self->{_normset}->{T0590}[0]{content},$utf8):'';
+    my $origin    = (exists $self->{_normdata}->{T0590})?utf2bibtex($self->{_normdata}->{T0590}[0]{content},$utf8):'';
 
     if ($author){
         $bibtex->setAttribute("author",$author);
@@ -1612,8 +1439,8 @@ sub to_bibtex {
     my $authors_ref=[];
     my $editors_ref=[];
     foreach my $category (qw/T0100 T0101/){
-        next if (!exists $self->{_normset}->{$category});
-        foreach my $part_ref (@{$self->{_normset}->{$category}}){
+        next if (!exists $self->{_normdata}->{$category});
+        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
                 push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
@@ -1628,27 +1455,27 @@ sub to_bibtex {
     # Schlagworte
     my $keywords_ref=[];
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
-        next if (!exists $self->{_normset}->{$category});
-        foreach my $part_ref (@{$self->{_normset}->{$category}}){
+        next if (!exists $self->{_normdata}->{$category});
+        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
             push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
         }
     }
     my $keyword = join(' ; ',@$keywords_ref);
     
     # Auflage
-    my $edition   = (exists $self->{_normset}->{T0403})?utf2bibtex($self->{_normset}->{T0403}[0]{content},$utf8):'';
+    my $edition   = (exists $self->{_normdata}->{T0403})?utf2bibtex($self->{_normdata}->{T0403}[0]{content},$utf8):'';
 
     # Verleger
-    my $publisher = (exists $self->{_normset}->{T0412})?utf2bibtex($self->{_normset}->{T0412}[0]{content},$utf8):'';
+    my $publisher = (exists $self->{_normdata}->{T0412})?utf2bibtex($self->{_normdata}->{T0412}[0]{content},$utf8):'';
 
     # Verlagsort
-    my $address   = (exists $self->{_normset}->{T0410})?utf2bibtex($self->{_normset}->{T0410}[0]{content},$utf8):'';
+    my $address   = (exists $self->{_normdata}->{T0410})?utf2bibtex($self->{_normdata}->{T0410}[0]{content},$utf8):'';
 
     # Titel
-    my $title     = (exists $self->{_normset}->{T0331})?utf2bibtex($self->{_normset}->{T0331}[0]{content},$utf8):'';
+    my $title     = (exists $self->{_normdata}->{T0331})?utf2bibtex($self->{_normdata}->{T0331}[0]{content},$utf8):'';
 
     # Zusatz zum Titel
-    my $titlesup  = (exists $self->{_normset}->{T0335})?utf2bibtex($self->{_normset}->{T0335}[0]{content},$utf8):'';
+    my $titlesup  = (exists $self->{_normdata}->{T0335})?utf2bibtex($self->{_normdata}->{T0335}[0]{content},$utf8):'';
 #    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
 #    Bibkey-Bildung entgegen
 #    if ($title && $titlesup){
@@ -1656,22 +1483,22 @@ sub to_bibtex {
 #    }
 
     # Jahr
-    my $year      = (exists $self->{_normset}->{T0425})?utf2bibtex($self->{_normset}->{T0425}[0]{content},$utf8):'';
+    my $year      = (exists $self->{_normdata}->{T0425})?utf2bibtex($self->{_normdata}->{T0425}[0]{content},$utf8):'';
 
     # ISBN
-    my $isbn      = (exists $self->{_normset}->{T0540})?utf2bibtex($self->{_normset}->{T0540}[0]{content},$utf8):'';
+    my $isbn      = (exists $self->{_normdata}->{T0540})?utf2bibtex($self->{_normdata}->{T0540}[0]{content},$utf8):'';
 
     # ISSN
-    my $issn      = (exists $self->{_normset}->{T0543})?utf2bibtex($self->{_normset}->{T0543}[0]{content},$utf8):'';
+    my $issn      = (exists $self->{_normdata}->{T0543})?utf2bibtex($self->{_normdata}->{T0543}[0]{content},$utf8):'';
 
     # Sprache
-    my $language  = (exists $self->{_normset}->{T0516})?utf2bibtex($self->{_normset}->{T0516}[0]{content},$utf8):'';
+    my $language  = (exists $self->{_normdata}->{T0516})?utf2bibtex($self->{_normdata}->{T0516}[0]{content},$utf8):'';
 
     # Abstract
-    my $abstract  = (exists $self->{_normset}->{T0750})?utf2bibtex($self->{_normset}->{T0750}[0]{content},$utf8):'';
+    my $abstract  = (exists $self->{_normdata}->{T0750})?utf2bibtex($self->{_normdata}->{T0750}[0]{content},$utf8):'';
 
     # Origin
-    my $origin    = (exists $self->{_normset}->{T0590})?utf2bibtex($self->{_normset}->{T0590}[0]{content},$utf8):'';
+    my $origin    = (exists $self->{_normdata}->{T0590})?utf2bibtex($self->{_normdata}->{T0590}[0]{content},$utf8):'';
 
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
@@ -1792,8 +1619,8 @@ sub to_tags {
     # Schlagworte
     my $keywords_ref=[];
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
-        next if (!exists $self->{_normset}->{$category});
-        foreach my $part_ref (@{$self->{_normset}->{$category}}){
+        next if (!exists $self->{_normdata}->{$category});
+        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
             foreach my $content_part (split('\s+',$part_ref->{content})){
                 push @$keywords_ref, OpenBib::Common::Util::grundform({
                     tagging => 1,
@@ -1855,11 +1682,11 @@ sub utf2bibtex {
 sub to_rawdata {
     my ($self) = @_;
 
-    if (exists $self->{_brief_normset}){
-        return $self->{_brief_normset};
+    if (exists $self->{_brief_normdata}){
+        return $self->{_brief_normdata};
     }
     else {
-        return ($self->{_normset},$self->{_mexset},$self->{_circset});
+        return ($self->{_normdata},$self->{_holding},$self->{_circulation});
     }
 }
 
@@ -1874,11 +1701,11 @@ sub get_category {
         ? $arg_ref->{indicator}              : undef;
 
 
-    if (exists $self->{_brief_normset}){
-        return $self->{_brief_normset}->{$category}->[$indicator-1]->{content};
+    if (exists $self->{_brief_normdata}){
+        return $self->{_brief_normdata}->{$category}->[$indicator-1]->{content};
     }
     else {
-        return $self->{_normset}->{$category}->[$indicator-1]->{content};
+        return $self->{_normdata}->{$category}->[$indicator-1]->{content};
     }
 }
 
@@ -2001,7 +1828,9 @@ sub record_exists {
 
 sub to_drilldown_term {
     my ($self,$term)=@_;
-    
+
+    my $config = OpenBib::Config->instance;
+
     $term = OpenBib::Common::Util::grundform({
         content   => $term,
         searchreq => 1,
@@ -2009,7 +1838,357 @@ sub to_drilldown_term {
 
     $term=~s/\W/_/g;
 
+    if (length($term) > $config->{xapian_option}{max_key_length}){
+        $term=substr($term,0,$config->{xapian_option}{max_key_length}-2); # 2 wegen Prefix
+    }
+
     return $term;
+}
+
+sub to_json {
+    my ($self)=@_;
+
+    my $title_ref = {
+        'metadata'    => $self->{_normdata},
+        'items'       => $self->{_holding},
+        'circulation' => $self->{_circulation},
+    };
+
+    return encode_json $title_ref;
+}
+
+sub set_id {
+    my ($self,$id) = @_;
+
+    $self->{id} = $id;
+
+    return $self;
+}
+
+sub set_database {
+    my ($self,$database) = @_;
+
+    $self->{database} = $database;
+
+    return $self;
+}
+
+sub get_id {
+    my ($self) = @_;
+
+    return $self->{id};
+}
+
+sub get_database {
+    my ($self) = @_;
+
+    return $self->{database};
+}
+
+sub set_from_apache_request {
+    my ($self,$r) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    my $query = Apache2::Request->new($r);
+
+    my $set_categories_ref = [];
+
+    foreach my $category_arg ($query->param){
+        next unless ($category_arg=~m/^[TX]\d\d\d\d/); 
+
+        if ($query->param($category_arg)){
+            if ($category_arg=~m/^T/){
+                $self->set_category({ category => $category_arg, content => $query->param($category_arg) });
+            }
+            elsif ($category_arg=~m/^X/){
+                $self->set_holding_category({ category => $category_arg, content => $query->param($category_arg) });
+            }
+        } 
+    } 
+
+    $logger->debug(YAML::Dump($self->{_normdata}));
+    return $self;
+}
+
+sub store {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $is_new = (exists $self->{id})?1:0;
+
+    my $local_dbh = 0;
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
+    }
+
+    if ($is_new){
+
+    # Titelkategorien
+    {
+        # Neue ID bestimmen
+        my $request = $dbh->prepare("select max(id)+1 as nextid from title");
+        $request->execute();
+        my $result=$request->fetchrow_hashref;
+
+        $self->set_id($result->{nextid});
+
+        # Kategorien eintragen
+        my ($atime,$btime,$timeall)=(0,0,0);
+        
+        if ($config->{benchmark}) {
+            $atime=new Benchmark;
+        }
+        
+        my $reqstring="insert into title (id,category,indicator,content) values(?,?,?,?)";
+        $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+
+        foreach my $category (keys %{$self->{_normdata}}){
+            $category=~s/^T//;
+
+            # Hierarchieverknuepfung
+            if ($category eq "0004"){
+                my $reqstring2 = "insert into conn (category,sourceid,sourcetype,targetid,targettype) values ('0004',?,1,?,1);where targetid=? and sourcetype=1 and targettype=1";
+                my $request2 = $dbh->prepare($reqstring2);
+                foreach my $item (@{$self->{_normdata}->{$category}}){
+                    $request2->execute($item->{content},$self->{id});
+                }
+                $request2->finish;
+            }
+            # oder 'normale' Kategorie
+            else {
+                foreach my $item (@{$self->{_normdata}->{$category}}){
+                    $request->execute($self->{id},$category,$item->{indicator},$item->{content});
+                }
+            }
+        }
+        
+        $request->finish();
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
+        }
+    }
+    
+#     # Verknuepfte Normdaten
+#     {
+#         my ($atime,$btime,$timeall)=(0,0,0);
+        
+#         if ($config->{benchmark}) {
+#             $atime=new Benchmark;
+#         }
+        
+#         my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
+#         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+#         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+        
+#         while (my $res=$request->fetchrow_hashref) {
+#             my $category   = "T".sprintf "%04d",$res->{category };
+#             my $targetid   =        decode_utf8($res->{targetid  });
+#             my $targettype =                    $res->{targettype};
+#             my $supplement =        decode_utf8($res->{supplement});
+            
+# 	    # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
+# 	    # vorgenommen
+            
+#             my $recordclass    =
+#                 ($targettype == 2 )?"OpenBib::Record::Person":
+#                     ($targettype == 3 )?"OpenBib::Record::CorporateBody":
+#                         ($targettype == 4 )?"OpenBib::Record::Subject":
+#                             ($targettype == 5 )?"OpenBib::Record::Classification":undef;
+            
+#             my $content = "";
+#             if (defined $recordclass){
+#                 my $record=$recordclass->new({database=>$self->{database}});
+#                 $record->load_name({dbh => $dbh, id=>$targetid});
+#                 $content=$record->name_as_string;
+#             }
+            
+#             push @{$normset_ref->{$category}}, {
+#                 id         => $targetid,
+#                 content    => $content,
+#                 supplement => $supplement,
+#             };
+#         }
+#         $request->finish();
+        
+#         if ($config->{benchmark}) {
+#             $btime=new Benchmark;
+#             $timeall=timediff($btime,$atime);
+#             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
+#         }
+    }
+    else {
+        $self->_delete_from_rdbms;
+        $self->_delete_from_searchengine;
+    }
+    
+    return $self;
+}
+
+sub _delete_from_rdbms {
+    my ($self,$arg_ref) = @_;
+    
+    # Set defaults
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $local_dbh = 0;
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
+    }
+
+    my $request = $dbh->prepare("delete from title where id=?");
+    $request->execute($self->get_id);
+    
+    $request = $dbh->prepare("delete from conn where sourcetype=1 and sourceid=?");
+    $request->execute($self->get_id);
+    $request = $dbh->prepare("delete from titlelistitem where id=?");
+    $request->execute($self->get_id);
+    
+    return $self;
+}
+
+sub _store_into_rdbms {
+    my ($self,$arg_ref) = @_;
+    
+    # Set defaults
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $local_dbh = 0;
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
+    }
+
+    my $request = $dbh->prepare("delete from title where id=?");
+    $request->execute($self->get_id);
+    
+    $request = $dbh->prepare("delete from conn where sourcetype=1 and sourceid=?");
+    $request->execute($self->get_id);
+    $request = $dbh->prepare("delete from titlelistitem where id=?");
+    $request->execute($self->get_id);
+    
+    return $self;
+}
+
+sub _delete_from_searchengine {
+    my $self = shift;
+
+    
+    return $self;
+}
+
+sub set_category {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $category          = exists $arg_ref->{category}
+        ? $arg_ref->{category}          : undef;
+
+    my $indicator         = exists $arg_ref->{indicator}
+        ? $arg_ref->{indicator}         : undef;
+
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                : undef;
+
+    my $content           = exists $arg_ref->{content}
+        ? $arg_ref->{content}           : undef;
+
+    my $supplement        = exists $arg_ref->{supplement}
+        ? $arg_ref->{supplement}        : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $category_content_ref = {};
+
+    $category_content_ref->{indicator}  = $indicator  if ($indicator);
+    $category_content_ref->{content}    = $content    if ($content);
+    $category_content_ref->{supplement} = $supplement if ($supplement);
+    $category_content_ref->{id}         = $id         if ($id);
+
+    push @{$self->{_normdata}{$category}}, $category_content_ref;
+
+    return $self;
+}
+
+sub set_holding_category {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $category          = exists $arg_ref->{category}
+        ? $arg_ref->{category}          : undef;
+
+    my $indicator         = exists $arg_ref->{indicator}
+        ? $arg_ref->{indicator}         : undef;
+
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                : undef;
+
+    my $content           = exists $arg_ref->{content}
+        ? $arg_ref->{content}           : undef;
+
+    my $supplement        = exists $arg_ref->{supplement}
+        ? $arg_ref->{supplement}        : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $category_content_ref = {};
+
+    $category_content_ref->{indicator}  = $indicator  if ($indicator);
+    $category_content_ref->{content}    = $content    if ($content);
+    $category_content_ref->{supplement} = $supplement if ($supplement);
+    $category_content_ref->{id}         = $id         if ($id);
+
+    push @{$self->{_holding}{$category}}, $category_content_ref;
+
+    return $self;
+}
+
+sub have_brief_record {
+    my ($self) = @_;
+    
+    return (exists $self->{_brief_normdata} && keys %{$self->{_brief_normdata}})?1:0;
+}
+
+sub have_full_record {
+    my ($self) = @_;
+    
+    return (exists $self->{_normdata})?1:0;
 }
 
 sub enrich_cdm {
@@ -2024,6 +2203,8 @@ sub enrich_cdm {
     $url = $config->{cdm_base}.$config->{cdm_path} unless ($url);
 
     $url.=$id;
+
+    $logger->debug("CDM-URL: $url ");
     
     my $ua = new LWP::UserAgent;
     $ua->agent("OpenBib/1.0");

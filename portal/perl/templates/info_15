@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: helpframe
+# Templatename: info_15
 #
 # Typ         : Mastertemplate
 #
@@ -25,7 +25,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Spezialisierte KUG-Portale") %]">[% msg.maketext("Spezialisierte KUG-Portale") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('info_loc') %]/15?database=[% database %]" title="[% msg.maketext("Spezialisierte Portale") %]">[% msg.maketext("Spezialisierte Portale") %]</a></li>
 </ul>
 
 <div class="content">
@@ -34,7 +34,7 @@
 <table width="100%">
 <tr><th><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an
+[% msg.maketext("Neben dem Standard-Portal mit allen Katalogen gibt es eine Vielzahl an
 Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgew&auml;hlt
 sind, die weitergehende Informationen anbieten oder ein
 eigenst&auml;ndiges Fach-Portal bilden. Auf dieser Seite finden Sie

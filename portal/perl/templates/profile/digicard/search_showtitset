@@ -12,8 +12,8 @@
 #######################################################################
 -%]
 [%- normset         = record.get_normdata -%]
-[%- mexnormset      = record.get_mexdata -%]
-[%- cirset          = record.get_circdata -%] 
+[%- mexnormset      = record.get_holding -%]
+[%- cirset          = record.get_circulation -%] 
 [%- same_records    = record.get_same_records -%]
 [%- similar_records = record.get_similar_records -%]
 [%- bibkey = record.to_bibkey -%]

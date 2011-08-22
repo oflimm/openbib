@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::BibSonomy.pm
 #
-#  Copyright 2008 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -55,194 +55,103 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
 
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('lookup');
+    $self->run_modes(
+        'lookup'            => 'lookup',
+        'items_by_tag'      => 'items_by_tag',
+        'items_by_user'     => 'items_by_user',
+        'add_item'          => 'add_item',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub lookup {
+    my $self = shift;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config      = OpenBib::Config->instance;
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
-    my $query  = Apache2::Request->new($r);
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
 
-#     my $status = $query->parse;
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
 
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
+    # CGI Args
+    my $tags   = $query->param('tags');
+    my $bibkey = $query->param('bibkey');
+    my $format = $query->param('format');
 
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-
-    my $offset         = $query->param('offset')           || 0;
-    my $hitrange       = $query->param('hitrange')         || 50;
-    my $sorttype       = $query->param('sorttype')         || "author";
-    my $sortorder      = $query->param('sortorder')        || "up";
-    my $titisbn        = $query->param('titisbn')          || '';
-    my $bibkey         = $query->param('bibkey')           || '';
-    my $isbn           = $query->param('isbn')             || '';
-    my $start          = $query->param('start')            || '';
-    my $end            = $query->param('end')              || '';
-    my $id             = $query->param('id')               || '';
-    my $database       = $query->param('database')         || '';
-    my $format         = decode_utf8($query->param('format')) || '';
-    my $tag            = decode_utf8($query->param('tag')) || '';
-    my $tags           = decode_utf8($query->param('tags')) || '';
-    my $type           = decode_utf8($query->param('type')) || 'bibtex';
-    my $bsuser         = decode_utf8($query->param('bsuser')) || '';
-    my $stid           = $query->param('stid')             || '';
-
-    my $action         = decode_utf8($query->param('action')) || '';
+    my @local_tags=split('\s+', $tags);
     
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
+    if (defined $bibkey || @local_tags){
+        my @tags = ();
+        @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey, tags => \@local_tags}) if ($bibkey=~/^1[0-9a-f]{32}$/);
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
+        $logger->debug(YAML::Dump(\@tags));
+            
+        # TT-Data erzeugen
+        my $ttdata={
+            tags          => \@tags,
+            format        => $format,
+        };
+        
+        $self->print_page($config->{tt_bibsonomy_showtags_tname},$ttdata);
+        
         return Apache2::Const::OK;
     }
+
+    return;
+}
+
+sub items_by_tag {
+    my $self = shift;
     
-    my $view="";
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
 
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+    
+    # CGI Args
+    my $tag    = $query->param('tag');
+    my $type   = $query->param('type') || 'publication';
+    my $format = $query->param('format');
+    my $start  = $query->param('start');
+    my $end    = $query->param('end');
 
-    if ($action eq "get_tags"){
-        my @local_tags=split('\s+',$tags);
-        if (defined $bibkey || @local_tags){
-            my @tags = ();
-            @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey, tags => \@local_tags}) if ($bibkey=~/^1[0-9a-f]{32}$/);
-
-            $logger->debug(YAML::Dump(\@tags));
-            
-            # TT-Data erzeugen
-            my $ttdata={
-                tags          => \@tags,
-                view          => $view,
-                format        => $format,
-                stylesheet    => $stylesheet,
-                sessionID     => $session->{ID},
-                session       => $session,
-                useragent     => $useragent,
-                config        => $config,
-                msg           => $msg,
-            };
-            
-            $stid=~s/[^0-9]//g;
-            
-            my $templatename = ($stid)?"tt_bibsonomy_showtags_".$stid."_tname":"tt_bibsonomy_showtags_tname";
-            
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-            
-            return Apache2::Const::OK;
-        }
-    }
-    elsif ($action eq "get_tit_of_tag"){
-        if ($tag){
-            my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ tag => encode_utf8($tag) ,start => $start, end => $end , type => $type});
-            
-            if ($type eq "bibtex"){
-                # Anreichern mit KUG-Verfuegbarkeit
-
-                # Verbindung zur SQL-Datenbank herstellen
-                my $enrichdbh
-                = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-                    or $logger->error_die($DBI::errstr);
-
-                my $request = $enrichdbh->prepare("select distinct dbname from all_isbn where isbn=?");
-
-                $logger->debug(YAML::Dump($posts_ref));
-                foreach my $post_ref (@{$posts_ref->{recordlist}}){
-                    my $bibkey = $post_ref->{bibkey};
-                    $request->execute($bibkey);
-                    $logger->debug("Single Post:".YAML::Dump($post_ref));
-                    $logger->debug("Single Post-Bibkey:$bibkey");
-                    my @local_dbs = ();
-                    while (my $result=$request->fetchrow_hashref){
-                        push @local_dbs,$result->{dbname};
-                    }
-                    if (@local_dbs){
-                        $post_ref->{local_availability} = 1;
-                        $post_ref->{local_dbs}          = \@local_dbs;
-                    
-                    }
-                    else {
-                        $post_ref->{local_availability} = 0;
-                    }       
-                }
-                $enrichdbh->disconnect;
-            }
-
-            $logger->debug(YAML::Dump($posts_ref));
-            
-            # TT-Data erzeugen
-            my $ttdata={
-                posts         => $posts_ref,
-                start         => $start,
-                tag           => $tag,
-                type          => $type,
-                format        => $format,
-                dbinfo        => $dbinfotable,
-                view          => $view,
-                stylesheet    => $stylesheet,
-                sessionID     => $session->{ID},
-                session       => $session,
-                useragent     => $useragent,
-                config        => $config,
-                msg           => $msg,
-            };
-            
-            $stid=~s/[^0-9]//g;
-            
-            my $templatename = ($stid)?"tt_bibsonomy_showtitlist_".$stid."_tname":"tt_bibsonomy_showtitlist_tname";
-            
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-            
-            return Apache2::Const::OK;
-        }
-    }
-    elsif ($action eq "get_tit_of_user"){
-        if ($bsuser){
-            my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ user => $bsuser ,start => $start, end => $end , type => $type});
-
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    
+    if ($tag){
+        my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ tag => encode_utf8($tag) ,start => $start, end => $end , type => $type});
+        
+        if ($type eq "publication"){
             # Anreichern mit KUG-Verfuegbarkeit
-
+            
             # Verbindung zur SQL-Datenbank herstellen
             my $enrichdbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-                or $logger->error_die($DBI::errstr);
-
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                    or $logger->error_die($DBI::errstr);
+            
             my $request = $enrichdbh->prepare("select distinct dbname from all_isbn where isbn=?");
-
+            
             $logger->debug(YAML::Dump($posts_ref));
             foreach my $post_ref (@{$posts_ref->{recordlist}}){
-                my $bibkey = $post_ref->{bibkey} || 'undefined';
+                my $bibkey = $post_ref->{bibkey};
                 $request->execute($bibkey);
                 $logger->debug("Single Post:".YAML::Dump($post_ref));
                 $logger->debug("Single Post-Bibkey:$bibkey");
@@ -259,55 +168,144 @@ sub handler {
                     $post_ref->{local_availability} = 0;
                 }       
             }
-
             $enrichdbh->disconnect;
-            
-            $logger->debug(YAML::Dump($posts_ref));
-            
-            # TT-Data erzeugen
-            my $ttdata={
-                posts         => $posts_ref,
-                tag           => $tag,
-                bsuser        => $bsuser,
-                format        => $format,
-                type          => $type,
-                dbinfo        => $dbinfotable,
-                view          => $view,
-                stylesheet    => $stylesheet,
-                sessionID     => $session->{ID},
-                session       => $session,
-                useragent     => $useragent,
-                config        => $config,
-                msg           => $msg,
-            };
-            
-            $stid=~s/[^0-9]//g;
-            
-            my $templatename = ($stid)?"tt_bibsonomy_showtitlist_".$stid."_tname":"tt_bibsonomy_showtitlist_tname";
-            
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-            
-            return Apache2::Const::OK;
         }
-    }
-    elsif ($action eq "add_title"){
-        if ($id && $database){
-            my $title = uri_escape(OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex);
-            
-            my $bibsonomy_uri = "$config->{redirect_loc}/$session->{ID}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=selection=$title";
-
-            $logger->debug($bibsonomy_uri);
-            
-            $r->content_type('text/html');
-            $r->headers_out->add("Location" => $bibsonomy_uri);
-            
-            return Apache2::Const::REDIRECT;
-        }
+        
+        $logger->debug(YAML::Dump($posts_ref));
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            posts         => $posts_ref,
+            start         => $start,
+            tag           => $tag,
+            type          => $type,
+            format        => $format,
+            dbinfo        => $dbinfotable,
+        };
+        
+        $self->print_page($config->{tt_bibsonomy_showtitlist_tname},$ttdata);
+        
+        return Apache2::Const::OK;
     }
     
-    OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
+    return;    
+}
 
-    return Apache2::Const::OK;
+sub items_by_user {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatches Args
+    my $view           = $self->param('view')           || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+        
+    # CGI Args
+    my $bsuser = $query->param('user');
+    my $type   = $query->param('type') || 'publication';
+    my $format = $query->param('format');
+    my $tag    = $query->param('tag');
+    my $start  = $query->param('start');
+    my $end    = $query->param('end');
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    
+    if ($bsuser){
+        my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ user => $bsuser ,start => $start, end => $end , type => $type});
+
+        # Anreichern mit KUG-Verfuegbarkeit
+        
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $request = $enrichdbh->prepare("select distinct dbname from all_isbn where isbn=?");
+        
+        $logger->debug(YAML::Dump($posts_ref));
+        foreach my $post_ref (@{$posts_ref->{recordlist}}){
+            my $bibkey = $post_ref->{bibkey} || 'undefined';
+            $request->execute($bibkey);
+            $logger->debug("Single Post:".YAML::Dump($post_ref));
+            $logger->debug("Single Post-Bibkey:$bibkey");
+            my @local_dbs = ();
+            while (my $result=$request->fetchrow_hashref){
+                push @local_dbs,$result->{dbname};
+            }
+            if (@local_dbs){
+                $post_ref->{local_availability} = 1;
+                $post_ref->{local_dbs}          = \@local_dbs;
+                
+            }
+            else {
+                $post_ref->{local_availability} = 0;
+            }       
+        }
+        
+        $enrichdbh->disconnect;
+        
+        $logger->debug(YAML::Dump($posts_ref));
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            posts         => $posts_ref,
+            tag           => $tag,
+            bsuser        => $bsuser,
+            format        => $format,
+            type          => $type,
+            dbinfo        => $dbinfotable,
+        };
+        
+        $self->print_page($config->{tt_bibsonomy_showtitlist_tname},$ttdata);
+        
+        return Apache2::Const::OK;
+    }
+}
+
+sub add_item {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatches Args
+    my $view           = $self->param('view')           || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');
+
+    # CGI Args
+    my $id         = $query->param('id');
+    my $database   = $query->param('db');
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    
+    if ($id && $database){
+        my $title = OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex;
+#        $title=~s/\n/ /g;
+        
+        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}?type=510;url=".uri_escape("http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape("http://$servername/")."&description=".uri_escape($config->get_viewdesc_from_viewname($view))."&encoding=ISO-8859-1&selection=".uri_escape($title));
+        
+        $logger->debug($bibsonomy_uri);
+
+        $self->query->method('GET');
+        $self->query->content_type('text/html');
+        $self->query->headers_out->add(Location => $bibsonomy_uri);
+        $self->query->status(Apache2::Const::REDIRECT);
+        
+#        $self->header_type('redirect');
+#        $self->header_props(-type => 'text/html', -url => $bibsonomy_uri);
+        
+    }
+
+    return;
 }
 
 1;

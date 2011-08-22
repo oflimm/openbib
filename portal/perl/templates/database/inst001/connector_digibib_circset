@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: connector_digibib_circset
+# Templatename: connector_digibib_circulation
 #
 # Typ         : Subtemplate       
 #
@@ -27,7 +27,7 @@
        END ;
 
        IF     circ.Zweigstelle == 0 ;
-          IF circ.Signatur.match('^2[4-9]A') || circ.Signatur.match('[3-9][0-9]A') ;
+          IF circ.Signatur.match('^2[3-9]A') || circ.Signatur.match('[3-9][0-9]A') ;
              IF status == "bestellbar" ;
                 status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
              ELSIF circ.Status == "entliehen" ;

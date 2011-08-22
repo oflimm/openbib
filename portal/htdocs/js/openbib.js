@@ -1,4 +1,4 @@
-this.imagePreview = function(){
+function imagePreview (){
   /* CONFIG */
   
   xOffset = 10;
@@ -9,9 +9,8 @@ this.imagePreview = function(){
   
   /* END CONFIG */
   $("a.preview").hover(function(e){
-			 this.t = this.title;
-			 this.title = "";
-			 var c = (this.t != "") ? "<br/>" + this.t : "";
+			 var t = this.title;
+			 var c = (t != "") ? "<br/>" + t : "";
 			 $("body").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' />"+ c +"</p>"); 
 			 $("#preview")
 			   .css("top",(e.pageY - yOffset) + "px")
@@ -24,8 +23,8 @@ this.imagePreview = function(){
 		       });
   $("a.preview").mousemove(function(e){
 			     $("#preview")
-			       .css("top",(e.pageY - xOffset) + "px")
-			       .css("left",(e.pageX + yOffset) + "px");
+			       .css("top",(e.pageY - yOffset) + "px")
+			       .css("left",(e.pageX + xOffset) + "px");
 			   });
 };
 
@@ -40,53 +39,56 @@ function openMsgWin(URL,name,width,height,scrollbars,otherbars) {
   Win.focus();
 }
 
-function qrPreview () {
+function qrcodeShow () {
   /* CONFIG: distance of the popup from the cursor */
   var xOffset = 15;
   var yOffset = -25;
   /* END CONFIG */
     
-  $("a.qr-preview").click(function(e) {
+  $("a.qrcode").click(function(e) {
     $("body").append("<p id=\"qr\"><strong>QR-Code</strong> &nbsp; [ <a class=\"ext\" href=\"http://qrcode.wilkohartz.de/\" onclick=\"openMsgWin('','QR-Code Informationen','','','yes','yes');return true;\" target=\"QR-Code Informationen\">Reader-Software</a> ]<img src=\"/images/openbib/close.png\" alt=\"Schließen\" title=\"Schließen\" class=\"closebutton\" /><br/ ><img src=\""+ this.href +"\" alt=\"QR-Code\" style=\"margin:5px 0 5px 0;\" /><br/>" + this.title + "</p>"); 
     $("#qr")
       .css("top",(e.pageY - yOffset) + "px")
       .css("left",(e.pageX + xOffset) + "px")
       .fadeIn("fast");
-    qrRemove();
+    qrcodeRemove();
   });
 };
 
-function qrRemove () {
+function qrcodeRemove () {
   $(".closebutton").click(function(e) {
     $("#qr").remove();
   });
 };
 
-$(document).ready(function(){
-
-var sessionID = $("meta[@name='sessionID']").attr("content");
-
+//$(document).ready(function(){
+$(function(){
+                    
 var Bibkey    = $("meta[@name='Bibkey']").attr("content");
 var Tags      = $("meta[@name='Tags']").attr("content");
+var View      = $("meta[@name='View']").attr("content");
 
-imagePreview();
-qrPreview();
+  // Activate accessible tabs
+// $("#searchform_types").accessibleTabs({ tabbody: '.tabbody', tabhead: 'h3', fxspeed: 'fast', syncheights: true });
+
+ imagePreview();
+ qrcodeShow();
  
-// Focus auf erstes Eingabefeld
-//$(":input:visible:enabled:first").focus();
+ // Focus auf erstes Eingabefeld
+ //$(":input:visible:enabled:first").focus();
 $("input[@id='to_focus']").focus();
 
 // Tabs fuer weitere Informationen
-$('#additional_title_info > ul').tabs();
+//$('#additional_title_info > ul').tabs();
 
 // Tabs fuer Suchmaske nach Formaten 
-$('#searchmask_types > ul').tabs();
+$('#searchform_types').tabs();
 
 // Accordion fuer Datenbankauswahl
-$('.ui-accordion').accordion({ 
-      autoHeight: false,
-      alwaysOpen: false, 
-});
+//$('.ui-accordion').accordion({ 
+//      autoHeight: false,
+//      alwaysOpen: false, 
+//});
 
 // nojs_* modifizieren fuer JavaScript-Version der Seite
 
@@ -97,23 +99,38 @@ $('.nojs_show').css('display','none');
 // Merklistenfuellstand aktualisieren
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
 // fest eingetragen und muss gegebenenfalls angepasst werden
- if (sessionID){
-$.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+
+   if (View){
+$.get("/portal/"+View+"/collection/count",
 function (txt){
  $("#collectioncount").html("["+txt+"]"); 
 }
 );
- }
+   }
+   else {
+     $.get("/portal/collection/count",
+function (txt){
+ $("#collectioncount").html("["+txt+"]"); 
+}
+);
+
+   }
  
 $(".rlcollect a").click(function(){
 
    // Insert-Funktion aufrufen
    $.get(this.href);
 
+   if (View){
    // Merklistenfuellstand aktualisieren
-   $.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+   $.get("/portal/"+View+"/collection/count",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
-
+   }
+   else {
+   // Merklistenfuellstand aktualisieren
+   $.get("/portal/collection/count",
+function (txt){ $("#collectioncount").html("["+txt+"]"); });
+   }
    return false;
  });
 
@@ -122,10 +139,16 @@ $("a.collection").click(function(){
    // Insert-Funktion aufrufen
    $.get(this.href);
 
+   if (View){
    // Merklistenfuellstand aktualisieren
-   $.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+   $.get("/portal/"+View+"/collection/count",
 function (txt){ $("#collectioncount").html("["+txt+"]"); });
-
+   }
+   else {
+   // Merklistenfuellstand aktualisieren
+   $.get("/portal/collection/count",
+function (txt){ $("#collectioncount").html("["+txt+"]"); });
+   }
    return false;
  });
 
@@ -134,11 +157,20 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
 // Begin BibSonomy Tags
  if (Bibkey || Tags){
-   $.get("/portal/bibsonomy?sessionID="+sessionID+";action=get_tags;format=ajax;bibkey="+Bibkey+";tags="+Tags,
+   if (View){
+   $.get("/portal/"+View+"/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
          function (txt){
            $("#bibsonomy_tags").html(txt); 
          }
          );
+   }
+   else {
+   $.get("/portal/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
+         function (txt){
+           $("#bibsonomy_tags").html(txt); 
+         }
+         );
+   }
  }
 
 //$("#bibsonomy_tags a").click(function(){
@@ -158,95 +190,95 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 // Ende  BibSonomy Tags
 // --------------------------------------------------------------------------
 
-// Begin Togglen / Suchhilfe
-// Zuerst verstecken
-$("#searchinfo").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#searchinfo_toggle").click(function(){
- $("#searchinfo").toggle();
-});
-// Ende Togglen / Suchhilfe
+// // Begin Togglen / Suchhilfe
+// // Zuerst verstecken
+// $("#searchinfo").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#searchinfo_toggle").click(function(){
+//  $("#searchinfo").toggle();
+// });
+// // Ende Togglen / Suchhilfe
 
-// --------------------------------------------------------------------------
+// // --------------------------------------------------------------------------
 
-// Begin Togglen / Suchoptionen
-// Zuerst verstecken
-$("#searchoptions").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#searchoptions_toggle").click(function(){
- $("#searchoptions").toggle();
-});
-// Ende Togglen / Suchoptionen
+// // Begin Togglen / Suchoptionen
+// // Zuerst verstecken
+// $("#searchoptions").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#searchoptions_toggle").click(function(){
+//  $("#searchoptions").toggle();
+// });
+// // Ende Togglen / Suchoptionen
 
-// --------------------------------------------------------------------------
+// // --------------------------------------------------------------------------
 
-// Begin Togglen / Eigene Tags
-// Bild setzen
-$("#newtags_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Tag-Eingabe anzeigen\">")
-// Zuerst verstecken
-$("#newtags").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#newtags_toggle").click(function(){
- $("#newtags").toggle();
-});
-// Ende Togglen / Eigene Tags
+// // Begin Togglen / Eigene Tags
+// // Bild setzen
+// $("#newtags_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Tag-Eingabe anzeigen\">")
+// // Zuerst verstecken
+// $("#newtags").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#newtags_toggle").click(function(){
+//  $("#newtags").toggle();
+// });
+// // Ende Togglen / Eigene Tags
 
-// --------------------------------------------------------------------------
+// // --------------------------------------------------------------------------
 
-// Begin Togglen / 'Gleiche Titel' (=gleiche ISBN) in anderen Katalogen
-// Bild setzen
-$("#samerecord_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Tag-Eingabe anzeigen\">")
-// Zuerst verstecken
-$("#samerecord").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#samerecord_toggle").click(function(){
- $("#samerecord").toggle();
-});
-// Ende Togglen / Eigene Tags
+// // Begin Togglen / 'Gleiche Titel' (=gleiche ISBN) in anderen Katalogen
+// // Bild setzen
+// $("#samerecord_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Tag-Eingabe anzeigen\">")
+// // Zuerst verstecken
+// $("#samerecord").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#samerecord_toggle").click(function(){
+//  $("#samerecord").toggle();
+// });
+// // Ende Togglen / Eigene Tags
 
-// --------------------------------------------------------------------------
-// Begin Togglen / 'Aehnliche Titel' (via LibraryThing) im KUG
-// Bild setzen
-$("#similarrecord_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Tag-Eingabe anzeigen\">")
-// Zuerst verstecken
-$("#similarrecord").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#similarrecord_toggle").click(function(){
- $("#similarrecord").toggle();
-});
-// Ende Togglen / Eigene Tags
+// // --------------------------------------------------------------------------
+// // Begin Togglen / 'Aehnliche Titel' (via LibraryThing) im KUG
+// // Bild setzen
+// $("#similarrecord_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Tag-Eingabe anzeigen\">")
+// // Zuerst verstecken
+// $("#similarrecord").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#similarrecord_toggle").click(function(){
+//  $("#similarrecord").toggle();
+// });
+// // Ende Togglen / Eigene Tags
 
-// --------------------------------------------------------------------------
-// Begin Togglen / Eigene Reviews
-// Bild setzen
-$("#newreview_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Bewertungs/Rezensions-Eingabe anzeigen\">")
-// Zuerst verstecken
-$("#newreview").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#newreview_toggle").click(function(){
- $("#newreview").toggle();
-});
-// Ende Togglen / Eigene Reviews
+// // --------------------------------------------------------------------------
+// // Begin Togglen / Eigene Reviews
+// // Bild setzen
+// $("#newreview_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Bewertungs/Rezensions-Eingabe anzeigen\">")
+// // Zuerst verstecken
+// $("#newreview").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#newreview_toggle").click(function(){
+//  $("#newreview").toggle();
+// });
+// // Ende Togglen / Eigene Reviews
 
-// --------------------------------------------------------------------------
+// // --------------------------------------------------------------------------
 
-// Begin Togglen / Alle Reviews
-// Zuerst verstecken
-$("#allreviews").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#allreviews_toggle").click(function(){
- $("#allreviews").toggle();
-});
-// Ende Togglen / alle Reviews
+// // Begin Togglen / Alle Reviews
+// // Zuerst verstecken
+// $("#allreviews").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#allreviews_toggle").click(function(){
+//  $("#allreviews").toggle();
+// });
+// // Ende Togglen / alle Reviews
 
-// Begin Togglen / Formate
-// Zuerst verstecken
-$("#formats_do").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#formats_toggle").click(function(){
- $("#formats_do").toggle();
-});
-// Ende Togglen / Formate
+// // Begin Togglen / Formate
+// // Zuerst verstecken
+// $("#formats_do").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#formats_toggle").click(function(){
+//  $("#formats_do").toggle();
+// });
+// // Ende Togglen / Formate
 
 // Begin Togglen / Verwandte Personen
 // Zuerst verstecken
@@ -266,43 +298,43 @@ $("#similarsubjects_toggle").click(function(){
 });
 // Ende Togglen / Verwandte Personen
 
-// Begin Togglen / BibSonomy Tags
-// Zuerst verstecken
-$("#bibsonomy_tags_do").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#bibsonomy_tags_toggle").click(function(){
- $("#bibsonomy_tags_do").toggle();
-});
-// Ende Togglen / BibSonomy_tags
+// // Begin Togglen / BibSonomy Tags
+// // Zuerst verstecken
+// $("#bibsonomy_tags_do").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#bibsonomy_tags_toggle").click(function(){
+//  $("#bibsonomy_tags_do").toggle();
+// });
+// // Ende Togglen / BibSonomy_tags
 
-// Begin Togglen / Verschiedenes
-// Zuerst verstecken
-$("#misc_do").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#misc_toggle").click(function(){
- $("#misc_do").toggle();
-});
-// Ende Togglen / Verschiedenes
+// // Begin Togglen / Verschiedenes
+// // Zuerst verstecken
+// $("#misc_do").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#misc_toggle").click(function(){
+//  $("#misc_do").toggle();
+// });
+// // Ende Togglen / Verschiedenes
 
-// Begin Togglen / Literaturlisten
-// Zuerst verstecken
-$("#litlists_do").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#litlists_toggle").click(function(){
- $("#litlists_do").toggle();
-});
-// Ende Togglen / Literaturlisten
+// // Begin Togglen / Literaturlisten
+// // Zuerst verstecken
+// $("#litlists_do").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#litlists_toggle").click(function(){
+//  $("#litlists_do").toggle();
+// });
+// // Ende Togglen / Literaturlisten
 
-// Begin Togglen / Tagging
-// Zuerst verstecken
-$("#tagging_do").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#tagging_toggle").click(function(){
- $("#tagging_do").toggle();
-});
-// Ende Togglen / Tagging
+// // Begin Togglen / Tagging
+// // Zuerst verstecken
+// $("#tagging_do").hide();
+// // und bei Klick Sichtbarkeit togglen
+// $("#tagging_toggle").click(function(){
+//  $("#tagging_do").toggle();
+// });
+// // Ende Togglen / Tagging
  
-});
+// });
 
 
 function insert_tag(event) {

@@ -1,0 +1,122 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% IF drilldown && fullresultcount > 0%]
+[% PROCESS common/subtemplate name="drilldown_categorized" %]
+[% END %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+[% IF spelling_suggestion.resultlist %]
+[%    suggestion = searchquery.get_spelling_suggestion %]
+[%     IF suggestion%]
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% search_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;jn=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[%     END %]
+[% END %]
+
+[% IF fullresultcount > 0 %]
+<!-- Beginn Result Item -->
+[%-
+    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};jn=${jn};dd=1;" ;
+    start_range     = nav.current_page*qopts.num-qopts.num + 1;
+    end_range       = nav.current_page*qopts.num;
+    IF end_range >= fullresultcount ;
+       end_range       = fullresultcount;
+    END;
+
+    query_args_base = cgiapp.modify_querystring({ exclude = ['page']}) ;
+-%]
+
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+        Trefferliste
+    </div>
+    <div class="hits">
+[% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% fullresultcount %]
+    </div>
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% query_args_base %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+    </div>
+  </div>
+  <div class="listoptions">
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="page" value="1" />
+[%- FOREACH qparam IN query.param -%]
+[%-   IF qparam != 'srt' && qparam != 'srto' && qparam != 'page' %]
+<input type="hidden" name="[% qparam %]" value="[% query.param(qparam) %]" />
+[%-   END -%]
+[%- END -%]
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') no_jn=1 %]
+</form>
+</div>
+  <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
+[%- END -%]
+  <div class="footer">
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% query_args_base %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+    </div>
+    <div class="resulttime">
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
+    </div>
+  </div>
+</div>
+<div class="resultfooter">
+   &nbsp;
+</div>
+<p/>
+[% END %]
+

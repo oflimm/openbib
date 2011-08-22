@@ -22,20 +22,20 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a                href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li
-   <li><a class="active" href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0101" title="Bl&auml;ttern">Bl&auml;ttern</a></li>
-   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];[% IF viewdbs.size == 1 %]database=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced">[% msg.maketext("Komplexe Recherche") %]</a></li
+   <li><a class="active" href="[% path_prefix %]/[% config.get('search_loc') %]?db=einbaendebrowsecat=T0101" title="Bl&auml;ttern">Bl&auml;ttern</a></li>
+   <li><a                href="[% path_prefix %]/[% config.get('info_loc') %]?[% IF viewdbs.size == 1 %]db=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a[%- IF browsecat == 'M0101' -%] class="active"[%- END -%] href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0101">Buchbinder/Werkstatt</a></li>
-   <li><a[%- IF browsecat == 'M0700' -%] class="active"[%- END -%] href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0700">Einband</a></li>
-   <li><a[%- IF browsecat == 'M0200' -%] class="active"[%- END -%] href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0200">Region</a></li>
-   <li><a[%- IF browsecat == 'M0710' -%] class="active"[%- END -%] href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0710">Jahrhundert</a></li>
-   <li><a[%- IF browsecat == 'M0413' -%] class="active"[%- END -%] href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0413">Drucker/Verleger/Verlag</a></li>
+   <li><a[%- IF browsecat == 'M0101' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=einbaendebrowsecat=T0101">Buchbinder/Werkstatt</a></li>
+   <li><a[%- IF browsecat == 'M0700' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=einbaendebrowsecat=T0700">Einband</a></li>
+   <li><a[%- IF browsecat == 'M0200' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=einbaendebrowsecat=T0200">Region</a></li>
+   <li><a[%- IF browsecat == 'M0710' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=einbaendebrowsecat=T0710">Jahrhundert</a></li>
+   <li><a[%- IF browsecat == 'M0413' -%] class="active"[%- END -%] href="[% path_prefix %]/[% config.get('search_loc') %]?db=einbaendebrowsecat=T0413">Drucker/Verleger/Verlag</a></li>
 </ul>
 
 <div class="content">
@@ -75,31 +75,31 @@
 
 [%- FOREACH cat IN thismeta -%]
 [%- IF cat.category == 'M0101' -%]
-<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.get('search_loc')%]?sessionID=[% sessionID %];view=[% view %];olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg | uri %];browsecat=M0101">[% cat.content | html %]</a></td></tr>
+<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('search_loc') %]?olws=1;olws_action=browsedb=einbaende;collection=einbaende;browsecontent=[% cat.webarg | uri %];browsecat=M0101">[% cat.content | html %]</a></td></tr>
 [%- END -%]
 [%- END -%]
 
 [%- FOREACH cat IN thismeta -%]
 [%- IF cat.category == 'M0700' -%]
-<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.get('search_loc')%]?sessionID=[% sessionID %];view=[% view %];olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0700">[% cat.content | html %]</a></td></tr>
+<tr><td><b>Einband</b></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('search_loc') %]?olws=1;olws_action=browsedb=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0700">[% cat.content | html %]</a></td></tr>
 [%- END -%]
 [%- END -%]
 
 [%- FOREACH cat IN thismeta -%]
 [%- IF cat.category == 'M0710' -%]
-<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.get('search_loc')%]?sessionID=[% sessionID %];view=[% view %];olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0710">[% cat.content | html %]</a></td></tr>
+<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('search_loc') %]?olws=1;olws_action=browsedb=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0710">[% cat.content | html %]</a></td></tr>
 [%- END -%]
 [%- END -%]
 
 [%- FOREACH cat IN thismeta -%]
 [%- IF cat.category == 'M0200' -%]
-<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.get('search_loc')%]?sessionID=[% sessionID %];view=[% view %];olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0200">[% cat.content | html %]</a></td></tr>
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('search_loc') %]?olws=1;olws_action=browsedb=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0200">[% cat.content | html %]</a></td></tr>
 [%- END -%]
 [%- END -%]
 
 [%- FOREACH cat IN thismeta -%]
 [%- IF cat.category == 'M0413' -%]
-<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.get('search_loc')%]?sessionID=[% sessionID %];view=[% view %];olws=1;olws_action=browse;database=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0413">[% cat.content | html %]</a></td></tr>
+<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('search_loc') %]?olws=1;olws_action=browsedb=einbaende;collection=einbaende;browsecontent=[% cat.webarg %];browsecat=M0413">[% cat.content | html %]</a></td></tr>
 [%- END -%]
 [%- END -%]
 
@@ -126,7 +126,7 @@
 
 
 
-<tr><td colspan="2"><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;searchsingletit=[% item %]">[ Beschreibung ]</a>&nbsp;&nbsp;<a href="[% config.get('search_loc') %]?collection=einbaende;item=[% item %];action=showsingleitem;view=kug;remotehost=[% remotehost %];sessionID=[% sessionID %]">[ Abbildung(en) ]</a></td></tr>
+<tr><td colspan="2"><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=einbaendesearchsingletit=[% item %]">[ Beschreibung ]</a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?collection=einbaende;item=[% item %];action=showsingleitem;view=kug;remotehost=[% remotehost %]">[ Abbildung(en) ]</a></td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 </table>
 

@@ -1,7 +1,7 @@
-<input type="hidden" name="hitrange" value="50" />
-<input type="hidden" name="sorttype" value="author" />
-<input type="hidden" name="sortorder" value="up" />
-<input type="hidden" name="autoplus" value="1" />
+<input type="hidden" name="num" value="50" />
+<input type="hidden" name="srt" value="author" />
+<input type="hidden" name="srto" value="up" />
+
 <table>
 <tr><td class="category">Suchprofil</td><td colspan="3"><select name="profil">
 [%- IF dbchoice.size > 0 -%]

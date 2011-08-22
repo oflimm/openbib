@@ -67,25 +67,7 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$sourcepool;host=$config->
 
 print "### $pool: Bestimme Titel-ID's anhand des Signaturanfaemge 1N17-43, 1P22-38, 1C2200-2499, 1C3150-3169, 1L1100-1148, 1M12-37\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and (mex.content rlike '^1N1[7-9]\$' or mex.content rlike '^1N[2-3][0-9]\$' or mex.content rlike '^1N4[0-3]\$' or mex.content rlike '^1P2[2-9]\$' or mex.content rlike '^1P3[0-8]\$' or mex.content rlike '^1C2[2-4][0-9][0-9]\$' or mex.content rlike '^1C31[5-6][0-9]\$' or mex.content rlike '^1L11[0-3][0-9]\$' or mex.content rlike '^1L114[0-8]\$' or mex.content rlike '^1M1[2-9]\$' or mex.content rlike '^1M2[0-9]\$' or mex.content rlike '^1M3[0-7]\$') and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
-
-$request->execute() or $logger->error($DBI::errstr);;
-
-while (my $result=$request->fetchrow_hashref()){
-  $titidns{$result->{'titid'}}=1;
-}
-
-my $count=0;
-
-foreach my $key (keys %titidns){
-    $count++;
-}
-
-print "### $pool: Gefundene Titel-ID's $count\n";
-
-print "### $pool: Bestimme Titel-ID's anhand der Notation 'Slg. Dante'\n";
-
-$request=$dbh->prepare("select distinct conn.sourceid as titid from conn,notation where notation.category=1 and notation.content = 'Slg. Dante' and conn.targetid=notation.id and conn.sourcetype=1 and conn.targettype=5") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and (mex.content rlike '1N1[7-9]' or mex.content rlike '1N[2-3][0-9]' or mex.content rlike '1N4[0-3]' or mex.content rlike '1P2[2-9]' or mex.content rlike '1P3[0-8]' or mex.content rlike '1C2[2-4][0-9][0-9]' or mex.content rlike '1C31[5-6][0-9]' or mex.content rlike '1L11[0-3][0-9]' or mex.content rlike '1L114[0-8]' or mex.content rlike '1M1[2-9]' or mex.content rlike '1M2[0-9]' or mex.content rlike '1M3[0-7]') and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

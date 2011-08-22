@@ -1,6 +1,6 @@
--------------------------------------------------
---------------- T A B E L L E N -----------------
--------------------------------------------------
+/*-------------------------------------------------*/
+/*--------------- T A B E L L E N -----------------*/
+/*-------------------------------------------------*/
 
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
@@ -59,6 +59,19 @@ CREATE TABLE userrole (
   roleid    BIGINT NOT NULL,
   INDEX (userid),
   INDEX (roleid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS userregistration;
+CREATE TABLE userregistration (
+  registrationid      VARCHAR(60) NOT NULL,
+  tstamp              TIMESTAMP,
+ 
+  loginname           TEXT,
+  password            TEXT,
+  INDEX (registrationid)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
@@ -164,7 +177,8 @@ DROP TABLE IF EXISTS treffer;
 CREATE TABLE treffer (
  userid    VARCHAR(255) NOT NULL,
  dbname    TEXT,
- singleidn VARCHAR(255)
+ singleidn VARCHAR(255),
+ titcache  BLOB
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
@@ -188,6 +202,7 @@ CREATE TABLE tittag (
  titid     VARCHAR(255) NOT NULL default '0',
  titisbn   CHAR(14)    NOT NULL default '',
  titdb     VARCHAR(25) NOT NULL default '',
+ titcache  BLOB,
  loginname TEXT,
  type      INT(3)      NOT NULL default '1',
  PRIMARY KEY  (ttid),
@@ -265,6 +280,7 @@ CREATE TABLE litlistitems (
  titid     VARCHAR(255) NOT NULL,
  titisbn   CHAR(14)    NOT NULL default '',
  titdb     VARCHAR(25) NOT NULL,
+ titcache  BLOB,
  INDEX (litlistid),
  INDEX (titid),
  INDEX (titisbn),
@@ -308,3 +324,14 @@ CREATE TABLE classification2subject (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
+
+/* Standard ist Selbstregistrierung */
+insert into logintarget values(1,NULL,NULL,NULL,NULL,'Registrierte E-Mail Adresse','self');
+
+/* Standard sind Rollen Admin und Bibliothekar */
+insert into role values (1,'admin');
+insert into role values (2,'librarian');
+
+/* Standard ist Admin-User mit ID 1 und Passwort 'StrengGeheim' */
+insert into user (userid,loginname,pin) values (1,'admin','StrengGeheim');
+insert into userrole values (1,1);

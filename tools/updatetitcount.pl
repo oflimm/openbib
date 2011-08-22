@@ -32,16 +32,41 @@
 # Einladen der benoetigten Perl-Module 
 #####################################################################
 
+use strict;
+use warnings;
+
 use DBI;
 use Getopt::Long;
+use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
 # Definition der Programm-Optionen
-my ($database);
+my ($database,$logfile);
 
-&GetOptions("database=s" => \$database
-	    );
+&GetOptions(
+    "database=s" => \$database,
+    "logfile=s"  => \$logfile,    
+);
+
+$logfile=($logfile)?$logfile:'/var/log/openbib/gen-subset.log';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
 
 my $config = OpenBib::Config->instance;
 
@@ -58,12 +83,7 @@ else {
     @databases = $config->get_active_databases();
 }
 
-my $maxidns=0;
-my $maxidns_journals=0;
-my $maxidns_articles=0;
-my $allidns=0;
-my $allidns_journals=0;
-my $allidns_articles=0;
+my ($allcount,$journalcount,$articlecount,$digitalcount)=(0,0,0,0);
 
 # Verbindung zur SQL-Datenbank herstellen
 my $configdbh
@@ -74,62 +94,58 @@ foreach $database (@databases){
   my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
 
   # Titel bestimmen;
-  $idnresult=$dbh->prepare("select count(*) as rowcount from search") or die "Error -- $DBI::errstr";
+  my $idnresult=$dbh->prepare("select count(*) as rowcount from title_listitem") or die "Error -- $DBI::errstr";
   $idnresult->execute();
 
   my $result=$idnresult->fetchrow_hashref;
   
-  $maxidns=$result->{rowcount};
+  $allcount=$result->{rowcount};
 
   # Serien/Zeitschriften bestimmen
-  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from tit where category=800 and content = 'Zeitschrift/Serie'") or die "Error -- $DBI::errstr";
+  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'") or die "Error -- $DBI::errstr";
   $idnresult->execute();
 
-  my $result=$idnresult->fetchrow_hashref;
+  $result=$idnresult->fetchrow_hashref;
   
-  $maxidns_journals=$result->{rowcount};
+  $journalcount=$result->{rowcount};
 
   # Aufsaetze bestimmen
-  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from tit where category=800 and content = 'Aufsatz'") or die "Error -- $DBI::errstr";
+  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'") or die "Error -- $DBI::errstr";
   $idnresult->execute();
 
-  my $result=$idnresult->fetchrow_hashref;
+  $result=$idnresult->fetchrow_hashref;
   
-  $maxidns_articles=$result->{rowcount};
+  $articlecount=$result->{rowcount};
 
+  # E-Median bestimmen
+  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from title where category=800 and content = 'Digital'") or die "Error -- $DBI::errstr";
+  $idnresult->execute();
+
+  $result=$idnresult->fetchrow_hashref;
+  
+  $digitalcount=$result->{rowcount};
   
   $idnresult->finish();
 
-  $allidns          = $allidns+$maxidns;
-  $allidns_journals = $allidns_journals+$maxidns_journals;
-  $allidns_articles = $allidns_articles+$maxidns_articles;
-
-  $idnresult=$configdbh->prepare("delete from titcount where dbname=?") or die "Error -- $DBI::errstr";
-
-  $idnresult->execute($database);
+  $idnresult=$configdbh->prepare("update databaseinfo set allcount = ?, journalcount = ?, articlecount = ?, digitalcount = ? where dbname=?") or die "Error -- $DBI::errstr";
+  $idnresult->execute($allcount,$journalcount,$articlecount,$digitalcount,$database);
   
-  $idnresult=$configdbh->prepare("insert into titcount values (?,?,?)") or die "Error -- $DBI::errstr";
-  $idnresult->execute($database,$maxidns,1);
-  $idnresult->execute($database,$maxidns_journals,2);
-  $idnresult->execute($database,$maxidns_articles,3);
-  
-  print "$database -> $maxidns / $maxidns_journals / $maxidns_articles\n";
+  print "$database -> $allcount / $journalcount / $articlecount / $digitalcount\n";
+
   $idnresult->finish();
   $dbh->disconnect();
   
 }
 
-if ($database eq ""){
-  my $notexist=0;
+# if ($database eq ""){
+#   my $notexist=0;
   
-  $idnresult=$configdbh->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
-  $idnresult->execute();
+#   $idnresult=$configdbh->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
+#   $idnresult->execute();
   
-  $idnresult=$configdbh->prepare("insert into titcount values ('alldbs',?,?)") or die "Error -- $DBI::errstr";
-  $idnresult->execute($allidns,1);
-  $idnresult->execute($allidns_journals,2);
-  $idnresult->execute($allidns_articles,3);
-}
+#   $idnresult=$configdbh->prepare("insert into titcount values ('alldbs',?,?,?,?)") or die "Error -- $DBI::errstr";
+#   $idnresult->execute($allidns,$allidns_journals,$allidns_articles,$allidns_online);
+# }
 
 $configdbh->disconnect();
 

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::LiveSearch.pm
 #
-#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -51,32 +51,49 @@ use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-    
-#     my $status=$query->parse;
-    
-#     if ($status){
-#         $logger->error("Cannot parse Arguments");
-#     }
+    # Dispatched Args
+    my $view           = $self->param('view');
 
-    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $lang           = $self->param('lang');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
+    # CGI Args
     my $word  = $query->param('q')     || '';
     my $type  = $query->param('type')  || '';
     my $exact = $query->param('exact') || '';
-
+    
     if (!$word || $word=~/\d/){
         return Apache2::Const::OK;
     }
@@ -84,22 +101,31 @@ sub handler {
     if (!$exact){
         $word = "$word*";
     }
-    
+
+    my $viewdb_lookup_ref = {};
+    foreach my $viewdb ($config->get_viewdbs($view)){
+        $viewdb_lookup_ref->{$viewdb}=1;
+    }
+
     my @livesearch_suggestions = ();
 
     # Verbindung zur SQL-Datenbank herstellen
     my $enrichdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
             or $logger->error_die($DBI::errstr);
+
+    my $in_select_string = join(',',map {'?'} keys %{$viewdb_lookup_ref});
     
-    my $sql_request = "select distinct content,type from all_normdata where match (fs) against (? in boolean mode)";
-    my @sql_args = ($word);
+    my $sql_request = "select distinct content,type from all_normdata where dbname in ($in_select_string) and match (fs) against (? in boolean mode)";
+    
+    my @sql_args = (keys %{$viewdb_lookup_ref},$word);
     
     if ($type){
         $sql_request.=" and type = ?";
         push @sql_args, $type;
     }
-    
+
+    $logger->debug("Request: $sql_request / Args: ".YAML::Dump(\@sql_args));
     my $request=$enrichdbh->prepare($sql_request);
 
     $request->execute(@sql_args);

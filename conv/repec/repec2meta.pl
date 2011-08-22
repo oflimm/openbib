@@ -64,8 +64,6 @@ HELP
 exit;
 }
 
-our $have_titid_ref = {};
-
 our $mediatype_ref = {
     'article'  => 'Aufsatz',
     'preprint' => 'Preprint',
@@ -124,13 +122,6 @@ sub process_file {
     # Collection
     foreach my $node ($root->findnodes('/amf/collection')) {
         my $id    = $node->getAttribute ('id');
-
-        if ($have_titid_ref->{$id}){
-            print STDERR  "Doppelte ID: $id\n";
-	    next;
-        }
-
-        $have_titid_ref->{$id} = 1;
         
         print TIT "0000:$id\n";
 
@@ -196,13 +187,6 @@ sub process_file {
     foreach my $node ($root->findnodes('/amf/text')) {
         my $id    = $node->getAttribute ('id');
 
-        if ($have_titid_ref->{$id}){
-            print STDERR  "Doppelte ID: $id\n";
-	    next;
-        }
-        
-        $have_titid_ref->{$id} = 1;
-
         print TIT "0000:$id\n";
 
         # Verfasser
@@ -247,12 +231,6 @@ sub process_file {
         foreach my $item ($node->findnodes ('abstract//text()')) {
             my $content = $item->textContent;
             print TIT "0750:$content\n";
-        }
-
-        # Fussnote
-        foreach my $item ($node->findnodes ('status//text()')) {
-            my $content = $item->textContent;
-            print TIT "0501:$content\n";
         }
 
         # Ueberordnung

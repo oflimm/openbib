@@ -66,7 +66,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben die Datierung</span><a href="[% config.get('search_loc')%]?sessionID=[% sessionID %];view=[% view %];searchtitofcnt=[% item.replace('&amp;','%26') %];database=inst404abklatsch;category=T0425" class="tag" title="[% itemcount %] Titel haben die Datierung [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben die Datierung</span><a href="[% path_prefix %]/[% config.get('search_loc') %]?searchtitofcnt=[% item.replace('&amp;','%26') %]db=inst404abklatsch;category=T0425" class="tag" title="[% itemcount %] Titel haben die Datierung [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

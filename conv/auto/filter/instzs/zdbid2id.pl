@@ -28,9 +28,6 @@ while (<>){
             $id2zdbid{$localid}=$id;
             
             $buffer[0]="0000:$id\n";
-
-            push @buffer,"0010:$localid\n";
-            
             print STDOUT join("",@buffer);
         }
         #else {

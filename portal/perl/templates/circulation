@@ -3,148 +3,92 @@
 #
 # Templatename: circulation
 #
-# Typ         : Mastertemplate       
+# Typ         : Subtemplate       
 #
 # Aufgabe:
 #
-# Ausgabe einer Uebersichtsliste aller ausgeliehenen Medien
+# Ausgabe der Ausleih/Explar-Informationen (via OLWS)
 #
 #######################################################################
 -%]
-[%- IF representation == "ics" -%]
-BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//OpenBib.org//NONSGML Borrows Calendar//EN
-X-WR-CALNAME:Fällige Ausleihen
-X-WR-TIMEZONE:Europe/Berlin
-[% FOREACH borrow = borrows ;
-      returndate = borrow.RueckgabeDatum.split('\.').reverse.join('');
-      desc       = borrow.Titel;
-      IF borrow.Verfasser ;
-         desc       = "${desc} (${borrow.Verfasser})";
-      END ;
-      desc       = "${desc} - ${borrow.Signatur}";
-      desc       = desc.replace(',','\\,').replace(':','\\:');      
-      uid        = "${borrow.Katkey}${borrow.Signatur}";
--%]
-BEGIN:VEVENT
-UID:[% uid | truncate(60) %]
-SUMMARY:Leihfrist abgelaufen
-DESCRIPTION:[% desc |truncate(60) %]
-DTSTAMP:[% returndate %]T060000Z
-DTSTART:[% returndate %]T060000Z
-DTEND:[% returndate %]T200000Z
-END:VEVENT
-[% END -%]
-END:VCALENDAR
-[%- ELSIF representation == "vcs" -%]
-BEGIN:VCALENDAR
-VERSION:1.0
-PRODID:-//OpenBib.org//NONSGML Borrows Calendar//EN
-X-WR-CALNAME:Fällige Ausleihen
-X-WR-TIMEZONE:Europe/Berlin
-[% FOREACH borrow = borrows ;
-      returndate = borrow.RueckgabeDatum.split('\.').reverse.join('');
-      desc       = borrow.Titel;
-      IF borrow.Verfasser ;
-         desc       = "${desc} (${borrow.Verfasser})";
-      END ;
-      desc       = "${desc} - ${borrow.Signatur}";
-      desc       = desc.replace(',','\\,');
-      desc       = desc.replace(':','\\:');
--%]
-BEGIN:VEVENT
-UID:[% borrow.Katkey %][% borrow.Signatur %]
-SUMMARY:Leihfrist abgelaufen
-DESCRIPTION:[% desc %]
-DTSTAMP:[% returndate %]T060000Z
-DTSTART:[% returndate %]T060000Z
-DTEND:[% returndate %]T200000Z
-END:VEVENT
-[% END -%]
-END:VCALENDAR
-[%- ELSE -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[%
+ Aquisition = 0;
 
-  <body>
+ FOREACH thiscirculation IN circulation ;
+    IF thiscirculation.AquisitionStatuscode >= 1 ;
+       Aquisition = 1;
+    END ;
+ END ;
 
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
-
-<div id="maincontent">
-
-[% PROCESS common/subtemplate name="userprefs_navigation" active="circulation" %] 
-
-<div class="content">
-
+%]
 <p />
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=borrows">[% msg.maketext("Ausleihen") %]</a></li>
-   <li><a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=reservations">[% msg.maketext("Vormerkungen") %]</a></li>
-   <li><a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=orders">[% msg.maketext("Bestellungen") %]</a></li>
-   <li><a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
-</ul>
-
-<div class="content">
-
-<p />
-
-[% IF borrows.size == 0 %]
-<b>[% msg.maketext("Sie haben keine Ausleihen getätigt.") %]</b>
-[% ELSE  %]
-
-<style>
-#preview{
-        margin-top: -400px;
-	position:absolute;
-	border:1px solid #ccc;
-	background: aliceblue;
-	padding:5px;
-	display:none;
-	color:#000;
-        text-align: center;
-	}
-</style>
-
-<p>
-<b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=renew_loans;validtarget=[% database %]" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
-</p>
-
-[%# USE dumper;dumper.dump(borrows)%]
-<table cellpadding="5">
-<tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Ausleihfrist") %]</b></td></tr>
-[%- listrow = 'listrow1' -%]
-
-[%- FOREACH borrow = borrows -%]
-
-<tr
-class="[% listrow %]"
-[%- IF listrow == 'listrow1' -%]
-[%- listrow = 'listrow2' -%] 
-[%- ELSE -%]
-[%- listrow = 'listrow1' -%] 
-[%- END -%]
-><td><i>[% borrow.Verfasser %]</i><br />[% borrow.Titel %]
-
-[% IF borrow.EJahr %]
-, [% borrow.EJahr %]
+[%# USE dumper;dumper.dump(circulation)%]
+[% IF Aquisition == 0 %]
+<table width="100%">
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
+[% FOREACH thiscirculation IN circulation %]
+[%-
+  title    = normdata.${"T0331"}.first.content ;
+  IF  normdata.${"T0310"}.first.content ;
+     title = normdata.${"T0310"}.first.content ;
+  END ;
+-%]
+<tr align="center"><td>
+[%-   IF dbinfo.get('use_libinfo').${record.database} %]
+<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% record.database %]">
+[%-   ELSE -%]
+<a href="[% thiscirculation.Bibinfourl %]" target="_blank">
+[%-   END -%]
+<strong>[% thiscirculation.Bibliothek.full %]</strong></a></td>
+<td><a class="qrcode" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thiscirculation.Bibliothek.short | uri %] :: [% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') | uri %][% ELSE %][% thiscirculation.Standort | uri %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote | uri %])[%- END -%] :: [% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur | uri %][% thiscirculation.Exemplar | uri %][% ELSE %][% thiscirculation.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td>[% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') %][% ELSE %][% thiscirculation.Standort %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote %])[%- END -%]</td>
+<td><strong>[% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur %][% thiscirculation.Exemplar %][% ELSE %][% thiscirculation.Signatur %][% END %]</strong></td>
+<td><strong>[%- IF thiscirculation.Status == 'bestellbar' -%]ausleihbar[% ELSIF
+thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.Status %][%- END -%]</strong></td>
+<td class="circurl">
+[%
+     IF thiscirculation.Ausleihurl %]
+   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
+[%   ELSE %]
+[%      IF thiscirculation.Statuscode != 0 ;
+            IF thiscirculation.Gruppe.Name.match("Handapparat") %]
+                keine Vormerkung m&ouml;glich<br/>(in [% thiscirculation.Entleiher.Name %])
+[%          ELSIF thiscirculation.Vormerkbarkeit  %]
+     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% thiscirculation.Mediennr %];zst=[% thiscirculation.Zweigstelle %];aort=[% thiscirculation.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle)
+[%          ELSE %]            
+                keine Vormerkung m&ouml;glich
+[%          END %]
+[%      ELSE %]
+Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
+[%      END %]
+[%   END %]
+</td></tr>
 [% END %]
-
-</td><td>[% borrow.Signatur %]</td><td>[% borrow.AusleihDatum %]-[% borrow.RueckgabeDatum %]</td></tr>
+</table>
+[% ELSIF Aquisition == 1 %]
+<table width="100%">
+<tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
+<tr><td class="boxedclear">
+<table width="100%">
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td></tr>
+[% FOREACH thiscirculation IN circulation %]
+<tr align="center"><td><a href="[% thiscirculation.Bibinfourl %]" target="_blank"><strong>[% thiscirculation.Bibliothek.full %]</strong></a></td><td>
+[%   IF thiscirculation.AquisitionStatuscode <= 2 %]
+[% msg.maketext("bestellt beim Lieferanten") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode <= 4 %]
+[% msg.maketext("im Gesch&auml;ftsgang") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode == 5 %]
+[% msg.maketext("beim Lieferanten storniert") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode <= 8 %]
+[% msg.maketext("beim Lieferanten reklamiert") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode == 9 %]
+[% msg.maketext("ausgeschieden") %]
+[%   END %]
+</td></tr>
 [% END %]
 </table>
 
+</td></tr>
+</table>
+
 [% END %]
-<p/>
-[% borrow_url = "http://${config.get('servername')}${config.get('circulation_loc')}?sessionID=${sessionID};action=showcirc;circaction=borrows;representation=ics" %]
-Ausgeliehene Medien im <a href="[% borrow_url %]">iCalendar-Format</a> zur &Uuml;bernahme in einen Kalender oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% borrow_url.replace(';','%3B') %]" title="Ausleihen im iCalendar-Format via URL"><img src="[% config.get('qrcode_img') %]" /></a>
-<p/>
-</div>
-</div>
-
-<p />
-
-[% PROCESS common/subtemplate name="std_footer" %]
-[%- END -%]

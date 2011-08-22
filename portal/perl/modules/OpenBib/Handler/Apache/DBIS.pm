@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::DBIS.pm
 #
-#  Copyright 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
@@ -55,33 +55,44 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config      = OpenBib::Config->instance;
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
-    my $query  = Apache2::Request->new($r);
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
 
-#     my $status = $query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    # CGI Args
     my $action         = decode_utf8($query->param('action'))   || '';
     my $show_cloud     = decode_utf8($query->param('show_cloud'));
     my $notation       = decode_utf8($query->param('notation')) || '';
@@ -107,28 +118,7 @@ sub handler {
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        return Apache2::Const::OK;
-    }
-    
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $colors  = $access_green + $access_yellow*44;
     my $ocolors = $access_red*8 + $access_de*32;
@@ -167,20 +157,13 @@ sub handler {
             access_de     => $access_de,
             show_cloud    => $show_cloud,
             subjects      => $subjects_ref,
-            view          => $view,
-            stylesheet    => $stylesheet,
-            sessionID     => $session->{ID},
-            session       => $session,
-            useragent     => $useragent,
-            config        => $config,
-            msg           => $msg,
         };
             
         $stid=~s/[^0-9]//g;
         
         my $templatename = ($stid)?"tt_dbis_showsubjects_".$stid."_tname":"tt_dbis_showsubjects_tname";
         
-        OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+        $self->print_page($config->{$templatename},$ttdata);
             
         return Apache2::Const::OK;
     }
@@ -201,25 +184,18 @@ sub handler {
                 access_red    => $access_red,
                 access_de     => $access_de,
                 dbs           => $dbs_ref,
-                view          => $view,
-                stylesheet    => $stylesheet,
-                sessionID     => $session->{ID},
-                session       => $session,
-                useragent     => $useragent,
-                config        => $config,
-                msg           => $msg,
             };
             
             $stid=~s/[^0-9]//g;
             
             my $templatename = ($stid)?"tt_dbis_searchdbs_".$stid."_tname":"tt_dbis_searchdbs_tname";
             
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            $self->print_page($config->{$templatename},$ttdata);
             
             return Apache2::Const::OK;
         }
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Kein Suchbegriff vorhanden"),$r,$msg);                
+            $self->print_warning($msg->maketext("Kein Suchbegriff vorhanden"));
             return Apache2::Const::OK;
         }       
     }
@@ -239,25 +215,18 @@ sub handler {
                 access_red    => $access_red,
                 access_de     => $access_de,
                 dbs           => $dbs_ref,
-                view          => $view,
-                stylesheet    => $stylesheet,
-                sessionID     => $session->{ID},
-                session       => $session,
-                useragent     => $useragent,
-                config        => $config,
-                msg           => $msg,
             };
             
             $stid=~s/[^0-9]//g;
             
             my $templatename = ($stid)?"tt_dbis_showdbs_".$stid."_tname":"tt_dbis_showdbs_tname";
             
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            $self->print_page($config->{$templatename},$ttdata);
             
             return Apache2::Const::OK;
         }
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Keine Notation vorhanden"),$r,$msg);                
+            $self->print_warning($msg->maketext("Keine Notation vorhanden"));
             return Apache2::Const::OK;
         }
     }
@@ -272,25 +241,18 @@ sub handler {
             # TT-Data erzeugen
             my $ttdata={
                 dbinfo   => $dbinfo_ref,
-                view          => $view,
-                stylesheet    => $stylesheet,
-                sessionID     => $session->{ID},
-                session       => $session,
-                useragent     => $useragent,
-                config        => $config,
-                msg           => $msg,
             };
             
             $stid=~s/[^0-9]//g;
             
             my $templatename = ($stid)?"tt_dbis_showdbinfo_".$stid."_tname":"tt_dbis_showdbinfo_tname";
             
-            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            $self->print_page($config->{$templatename},$ttdata);
             
             return Apache2::Const::OK;
         }
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Keine Dbid vorhanden"),$r,$msg);
+            $self->print_warning($msg->maketext("Keine Dbid vorhanden"));
             return Apache2::Const::OK;
         }
     }
@@ -303,41 +265,33 @@ sub handler {
             $logger->debug("ReadME-Daten: ".YAML::Dump($dbreadme_ref));
 
             if ($dbreadme_ref->{location}){
-                $r->content_type('text/html');
-                $r->headers_out->add("Location" => $dbreadme_ref->{location});
-                
-                return Apache2::Const::REDIRECT;
+
+                $self->header_type('redirect');
+                $self->header_props(-type => 'text/html', -url => $dbreadme_ref->{location});
             }
             else {
 
                 # TT-Data erzeugen
                 my $ttdata={
                     dbreadme => $dbreadme_ref,
-                    view          => $view,
-                    stylesheet    => $stylesheet,
-                    sessionID     => $session->{ID},
-                    session       => $session,
-                    useragent     => $useragent,
-                    config        => $config,
-                    msg           => $msg,
                 };
                 
                 $stid=~s/[^0-9]//g;
                 
                 my $templatename = ($stid)?"tt_dbis_showdbreadme_".$stid."_tname":"tt_dbis_showdbreadme_tname";
             
-                OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+                $self->print_page($config->{$templatename},$ttdata);
 
                 return Apache2::Const::OK;
             }
         }
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Keine Dbid vorhanden"),$r,$msg);
+            $self->print_warning($msg->maketext("Keine Dbid vorhanden"));
             return Apache2::Const::OK;
         }
     }
 
-    OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
+    $self->print_warning($msg->maketext("Keine gültige Aktion"));
 
     return Apache2::Const::OK;
 }

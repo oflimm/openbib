@@ -1,0 +1,75 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_impressum
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Impressum
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_menu='' %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+<table>
+<tr class="boxedclear">
+<th>[% msg.maketext("Impressum") %]</th>
+</tr>
+<tr><td>
+Oliver Flimm<br/>
+An der Waidmaar 49<br/>
+50226 Frechen<br/>
+email:	   flimm@openbib.de<br/>
+Telefon:	02234-4351540<br/>
+</td></tr>
+</table>
+
+<h2>[% msg.maketext("Nichtkommerzielle Natur dieser Webseite") %]</h2>
+
+<p>
+[% msg.maketext("Bei dieser Webseite handelt es sich um keine kommerzielle Webpräsenz. Ziel ist es, das OpenSource-Rechercheportal OpenBib zu demonstrieren und so Informationen und diese OpenSource Software für andere kostenfrei zur Verfügung zu stellen.") %]
+</p>
+
+<h2>[% msg.maketext("Haftungsausschluss") %]</h2>
+
+<p>
+[% msg.maketext("Trotz sorgfältiger inhaltlicher Kontrolle übernehme ich keine Haftung für die Inhalte externer Links. Sie stellen kein Angebot dieser Webseite dar. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich. Ich distanziere mich ausdrücklich von den Inhalten und mache mir diese in keinster Weise zu Eigen.") %]
+</p>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

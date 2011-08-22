@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::RSSFeeds
 #
-#  Dieses File ist (C) 2006-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2010 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -39,6 +39,7 @@ use Apache2::Reload;
 use Apache2::Request ();
 use DBI;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
@@ -49,50 +50,42 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show_collection');
+    $self->run_modes(
+        'show_collection'               => 'show_collection',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show_collection {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
 
-#     my $status=$query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $session   = OpenBib::Session->instance({
-        sessionID => $query->param('sessionID'),
-    });
-
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        return Apache2::Const::OK;
-    }
-
-    my $view="";
-
-    if ($query->param('view')) {
-        $view=$query->param('view');
-    }
-    else {
-        $view=$session->get_viewname();
-    }
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
     my $rssfeedinfo_ref = $config->get_rssfeedinfo({
         view => $view
@@ -100,17 +93,10 @@ sub handler {
 
     # TT-Data erzeugen
     my $ttdata={
-        view        => $view,
         rssfeedinfo => $rssfeedinfo_ref,
-        stylesheet  => $stylesheet,
-        sessionID   => $session->{ID},
-        config      => $config,
-        session     => $session,
-        user        => $user,
-        msg         => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config->{tt_rssfeeds_tname},$ttdata,$r);
+    $self->print_page($config->{tt_rssfeeds_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

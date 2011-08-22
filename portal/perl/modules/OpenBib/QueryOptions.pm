@@ -2,7 +2,7 @@
 #
 #  OpenBib::QueryOptions
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -90,7 +90,7 @@ sub _new_instance {
             # werden - speziell nicht bei einer anfaenglichen Suche
             # Dennoch darf - derzeit ausgehend von den Normdaten - alles
             # geholt werden
-            unless ($option eq "hitrange" && $query->param($option) eq "-1"){
+            unless ($option eq "num" && $query->param($option) eq "-1"){
                 $self->{option}->{$option}=$query->param($option);
                 $logger->debug("Option $option received via HTTP");
                 $altered=1;
@@ -189,6 +189,30 @@ sub get_default_options {
     return $config->{default_query_options};
 };
 
+sub to_cgi_params {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $exclude_array_ref    = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}        : [];
+
+    my $exclude_ref = {};
+
+    foreach my $param (@{$exclude_array_ref}){
+        $exclude_ref->{$param} = 1;
+    }
+    
+    my @cgiparams = ();
+
+    foreach my $param (keys %{$self->{option}}){
+        if ($self->{option}->{$param} && ! exists $exclude_ref->{$param}){
+            push @cgiparams, "$param=".$self->{option}->{$param};
+        }
+    }
+    
+    return join(";",@cgiparams);
+}
+
 1;
 __END__
 
@@ -198,8 +222,8 @@ OpenBib::QueryOptions - Apache-Singleton zur Behandlung von Recherche-Optionen
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton Verwaltet die Recherche-Optionen wie hitrange,
-offset, Sprache l, Profil profil, Automatische Und-Verknuepfung
+Dieses Apache-Singleton Verwaltet die Recherche-Optionen wie num,
+offset, Sprache l, Profil profile, Automatische Und-Verknuepfung
 autoplus, Such-Backend sb sowie den Trefferlistentyp listtype.
 
 =head1 SYNOPSIS

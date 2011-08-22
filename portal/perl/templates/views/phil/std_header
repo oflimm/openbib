@@ -20,13 +20,13 @@
     <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
 [% END %]
-    <meta name="sessionID"           content="[% sessionID %]" />
+    
   <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 [% IF view && primrssfeed %]
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]">
 [% END %]
 [% IF unapi && config.get('unAPI') %]
-    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% config.get('connector_unapi_loc') %]"/>
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.get('servername') %][% path_prefix %]/[% config.get('connector_unapi_loc') %]"/>
 [% END %]
 
   [%- TRY -%]

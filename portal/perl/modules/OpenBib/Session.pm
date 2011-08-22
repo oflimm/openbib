@@ -32,7 +32,10 @@ use utf8;
 
 use base qw(Apache::Singleton);
 
+use Apache2::Cookie;
+use Digest::MD5;
 use Encode 'decode_utf8';
+use JSON::XS qw(encode_json decode_json);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use YAML::Syck;
@@ -53,6 +56,12 @@ sub new {
     my $sessionID   = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
 
+    my $view        = exists $arg_ref->{view}
+        ? $arg_ref->{view}                  : undef;
+
+    my $r           = exists $arg_ref->{apreq}
+        ? $arg_ref->{apreq}                 : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -63,24 +72,51 @@ sub new {
     bless ($self, $class);
 
     $self->{servername} = $config->{servername};
+    $self->{view}       = $view;
 
+    $logger->debug("Entering Session->new");
+    
     # Setzen der Defaults
-
+    if ($r){
+        my $cookiejar = Apache2::Cookie::Jar->new($r);
+        $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
+        
+        $logger->debug("Got SessionID-Cookie: $sessionID");
+    }   
+    
     if (!defined $sessionID){
-        $self->{ID} = $self->_init_new_session();
+        $self->{ID} = $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
         $self->{ID}        = $sessionID;
         $logger->debug("Examining if SessionID $self->{ID} is valid");
         if (!$self->is_valid()){
-            $self->{ID} = undef;
             $logger->debug("SessionID is NOT valid");
+            
+            # Wenn uebergebene SessionID nicht ok, dann neue generieren
+            $self->{ID} = $self->_init_new_session($r);
+            $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
+
+    # Neuer Cookie?, dann senden
+    if ($sessionID ne $self->{ID}){
+        
+        $sessionID = $self->{ID};
+        
+        $logger->debug("Creating new Cookie with SessionID $self->{ID}");
+        
+        my $cookie = Apache2::Cookie->new($r,
+                                          -name    => "sessionID",
+                                          -value   => $self->{ID},
+                                          -expires => '+24h',
+                                          -path    => '/',
+                                      );
+        
+        $r->err_headers_out->set('Set-Cookie', $cookie);
+    }
     
-
-
     $logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
 }
@@ -92,40 +128,75 @@ sub _new_instance {
     my $sessionID   = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
 
+    my $view        = exists $arg_ref->{view}
+        ? $arg_ref->{view}                  : undef;
+
+    my $r           = exists $arg_ref->{apreq}
+        ? $arg_ref->{apreq}             : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
-    
+                                # 
     my $self = { };
 
     bless ($self, $class);
 
     $self->{servername} = $config->{servername};
-
+    $self->{view}       = $view;
+    
     # Setzen der Defaults
 
+    $logger->debug("Entering Session->instance");
+    
+    if ($r){
+        my $cookiejar = Apache2::Cookie::Jar->new($r);
+        $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
+        
+        $logger->debug("Got SessionID-Cookie: $sessionID");
+    }   
+    
     if (!defined $sessionID){
-        $self->{ID} = $self->_init_new_session();
+        $self->{ID} = $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
         $self->{ID}        = $sessionID;
+        
         $logger->debug("Examining if SessionID $self->{ID} is valid");
         if (!$self->is_valid()){
-            $self->{ID} = undef;
             $logger->debug("SessionID is NOT valid");
+            
+            # Wenn uebergebene SessionID nicht ok, dann neue generieren
+            $self->{ID} = $self->_init_new_session($r);
+            $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
+
+    # Neuer Cookie?, dann senden
+    if ($r && $sessionID ne $self->{ID}){
+        
+        $sessionID = $self->{ID};
+
+        $logger->debug("Creating new Cookie with SessionID $self->{ID}");
+        
+        my $cookie = Apache2::Cookie->new($r,
+                                          -name    => "sessionID",
+                                          -value   => $self->{ID},
+                                          -expires => '+24h',
+                                          -path    => '/',
+                                      );
+        
+        $r->err_headers_out->set('Set-Cookie', $cookie);
+    }
     
-
-
     $logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
 }
 
 sub _init_new_session {
-    my $self = shift;
+    my ($self,$r) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -134,8 +205,70 @@ sub _init_new_session {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
+
+    $logger->debug("Request Object: ".YAML::Dump($r));
+
+    my $useragent=$r->pnotes('useragent') || '';
+
+    # Loggen des Brower-Types
+    $self->log_event({
+        type      => 101,
+        content   => $useragent,
+    });
+
+    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+    # Client-IP setzen
+    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $r->connection->remote_ip($1);
+    }
+    
+    # Loggen der Client-IP
+    $self->log_event({
+        type      => 102,
+        content   => $r->connection->remote_ip,
+    });
+    
+    if ($self->{view}) {
+        # Loggen der View-Auswahl
+        $self->log_event({
+            type      => 100,
+            content   => $self->{view},
+        });
+    }
+
+    # BEGIN View (Institutssicht)
+    #
+    ####################################################################
+    # Wenn ein View aufgerufen wird, muss fuer die aktuelle Session
+    # die Datenbankauswahl vorausgewaehlt und das Profil geaendert werden.
+    ####################################################################
+  
+    if ($self->{view}) {
+        # 1. Gibt es diesen View?
+        if ($config->view_exists($self->{view})) {
+            # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
+            #    keine Auswahl getroffen hat
+      
+
+            # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
+            # Auswahl auf die zum View gehoerenden Datenbanken
+            if ($self->get_number_of_dbchoice == 0) {
+                my @viewdbs=$config->get_dbs_of_view($self->{view});
+
+                foreach my $dbname (@viewdbs){
+                    $self->set_dbchoice($dbname);
+                }
+            }
+            # 3. Assoziiere den View mit der Session (fuer Merkliste);
+            $self->set_view($self->{view});
+        }
+        # Wenn es den View nicht gibt, dann wird gestartet wie ohne view
+        else {
+            $self->{view}="";
+        }
+    }
 
     my $sessionID="";
 
@@ -188,7 +321,7 @@ sub is_valid {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     # Spezielle SessionID -1 ist erlaubt
@@ -221,7 +354,7 @@ sub get_viewname {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     $logger->debug("Self: ".YAML::Dump($self));
@@ -234,13 +367,13 @@ sub get_viewname {
   
     # Entweder wurde ein 'echter' View gefunden oder es wird
     # kein spezieller View verwendet (view='')
-    my $view = decode_utf8($result->{'viewname'}) || '';
+    $self->{view} = decode_utf8($result->{'viewname'}) || '';
 
     $idnresult->finish();
 
-    $logger->debug("Got view: $view");
+    $logger->debug("Got view: $self->{view}");
 
-    return $view;
+    return $self->{view};
 }
 
 sub get_profile {
@@ -253,7 +386,7 @@ sub get_profile {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select profile from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
@@ -281,7 +414,7 @@ sub set_profile {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("delete from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
@@ -314,7 +447,7 @@ sub get_resultlists_offsets {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select offset, hits from searchresults where sessionid = ? and queryid = ? and dbname = ? and hitrange = ? order by offset") or $logger->error($DBI::errstr);
@@ -361,7 +494,7 @@ sub get_mask {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select masktype from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
@@ -383,7 +516,7 @@ sub set_mask {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("update sessionmask set masktype = ? where sessionid = ?") or $logger->error($DBI::errstr);
@@ -405,7 +538,7 @@ sub set_view {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     $logger->debug("Setting view $view for session $self->{ID}");
@@ -428,7 +561,7 @@ sub set_dbchoice {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
@@ -448,7 +581,7 @@ sub get_dbchoice {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
@@ -475,7 +608,7 @@ sub clear_dbchoice {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
@@ -495,7 +628,7 @@ sub get_number_of_dbchoice {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select count(dbname) as rowcount from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
@@ -517,7 +650,7 @@ sub get_number_of_items_in_resultlist {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select count(sessionid) as rowcount from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
@@ -526,6 +659,30 @@ sub get_number_of_items_in_resultlist {
     my $numofitems = $res->{rowcount};
     $idnresult->finish();
 
+    return $numofitems;
+}
+
+sub get_number_of_queries {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("select count(queryid) as rowcount from queries where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofitems = $res->{rowcount};
+    $idnresult->finish();
+
+    $logger->debug("Found $numofitems queries in Session $self->{ID}");
+    
     return $numofitems;
 }
 
@@ -553,7 +710,7 @@ sub get_items_in_resultlist_per_db {
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $sqlrequest="select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?";
@@ -595,7 +752,7 @@ sub get_all_items_in_resultlist {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select searchresult,dbname from searchresults where sessionid = ? and queryid = ? and offset=0") or $logger->error($DBI::errstr);
@@ -643,7 +800,7 @@ sub get_max_queryid {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select max(queryid) as maxid from queries where sessionid = ?") or $logger->error($DBI::errstr);
@@ -659,8 +816,6 @@ sub get_all_searchqueries {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $offset    = exists $arg_ref->{offset}
-        ? $arg_ref->{offset}            : undef;
 
     my $sessionid = exists $arg_ref->{sessionid}
         ? $arg_ref->{sessionid}         : undef;
@@ -672,15 +827,11 @@ sub get_all_searchqueries {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     # Ausgabe der vorhandenen queries
-    my $sql_request="select * from queries where sessionid = ?";
-
-    if (defined $offset){
-        $sql_request="select distinct searchresults.queryid as queryid,queries.query as query,queries.hits as hits, queries.dbases as dbases from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid and searchresults.offset=$offset order by queryid desc";
-    }
+    my $sql_request="select queryid from queries where sessionid = ? order by queryid DESC ";
 
     my $thissessionid = (defined $sessionid)?$sessionid:$self->{ID};
     my $idnresult=$dbh->prepare($sql_request) or $logger->error($DBI::errstr);
@@ -690,15 +841,8 @@ sub get_all_searchqueries {
     my @queries=();
 
     while (my $result=$idnresult->fetchrow_hashref()) {
-        my $dbases = decode_utf8($result->{'dbases'});
-        $dbases=~s/\|\|/ ; /g;
-
-        push @queries, {
-            id          => decode_utf8($result->{queryid}),
-            searchquery => Storable::thaw(pack "H*",$result->{query}),
-            hits        => decode_utf8($result->{hits}),
-            dbases      => $dbases,            
-        };
+        my $searchquery = OpenBib::SearchQuery->new->load({sessionID => $self->{ID}, queryid => $result->{'queryid'}});
+        push @queries, $searchquery;
     }
 
     $idnresult->finish();
@@ -716,7 +860,7 @@ sub get_number_of_items_in_collection {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select count(*) as rowcount from treffer where sessionid = ?") or $logger->error($DBI::errstr);
@@ -738,7 +882,7 @@ sub get_items_in_collection {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select dbname,singleidn from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
@@ -777,7 +921,7 @@ sub set_item_in_collection {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     if (!$database || !$id){
@@ -791,8 +935,13 @@ sub set_item_in_collection {
     $idnresult->finish();
     
     if ($anzahl == 0) {
-        my $idnresult=$dbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($self->{ID},$database,$id) or $logger->error($DBI::errstr);
+        my $record        = new OpenBib::Record::Title({ database => $database , id => $id});
+        my $cached_title  = $record->load_full_record->to_json;
+
+        $logger->debug("Adding Title to Collection: $cached_title");
+                    
+        my $idnresult=$dbh->prepare("insert into treffer values (?,?,?,?)") or $logger->error($DBI::errstr);
+        $idnresult->execute($self->{ID},$database,$id,$cached_title) or $logger->error($DBI::errstr);
         $idnresult->finish();
     }
     
@@ -816,13 +965,15 @@ sub clear_item_in_collection {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     if (!$database || !$id){
         return;
     }
-    
+
+    $logger->debug("Deleting item $database - $id");
+
     my $idnresult=$dbh->prepare("delete from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID},$database,$id) or $logger->error($DBI::errstr);
     
@@ -839,7 +990,7 @@ sub updatelastresultset {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my @resultset=@$resultset_ref;
@@ -855,10 +1006,13 @@ sub updatelastresultset {
 
 	$logger->debug("Katkey: $katkey - Database: $resdatabase");
 
-        push @nresultset, "$resdatabase:$katkey";
+        push @nresultset, {
+            database => $resdatabase,
+            id       => $katkey,
+        };
     }
 
-    my $resultsetstring=join("|",@nresultset);
+    my $resultsetstring=encode_json(\@nresultset); #
 
     my $sessionresult=$dbh->prepare("update session set lastresultset = ? where sessionid = ?") or $logger->error($DBI::errstr);
     $sessionresult->execute($resultsetstring,$self->{ID}) or $logger->error($DBI::errstr);
@@ -877,7 +1031,7 @@ sub save_eventlog_to_statisticsdb {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $view = $self->get_viewname();
@@ -961,7 +1115,7 @@ sub clear_data {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult;
@@ -1021,7 +1175,7 @@ sub log_event {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $contentstring = $content;
@@ -1097,7 +1251,7 @@ sub set_returnurl {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("update session set returnurl=? where sessionid = ?") or $logger->error($DBI::errstr);
@@ -1126,7 +1280,7 @@ sub get_queryid {
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryid            = 0;
@@ -1137,10 +1291,11 @@ sub get_queryid {
     # diese Liste nicht mehr fuer wiederholte Anfrage (Listentyp) verwenden, da sich dann
     # durch die Sortierung die Reihenfolge geaendert hat. Daher wird hier nicht mehr sortiert
     my $dbasesstring=join("||",@{$databases_ref});
+
+    my $query_obj_string = $searchquery->to_json;
     
-    my $thisquerystring=unpack "H*", Storable::freeze($searchquery->get_searchquery);
     my $idnresult=$dbh->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($thisquerystring,$self->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
+    $idnresult->execute($query_obj_string,$self->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
     my $res  = $idnresult->fetchrow_hashref;
     my $rows = $res->{rowcount};
         
@@ -1148,7 +1303,7 @@ sub get_queryid {
     if ($rows <= 0) {
         # Abspeichern des Queries bis auf die Gesamttrefferzahl
         $idnresult=$dbh->prepare("insert into queries (queryid,sessionid,query,hitrange,dbases) values (NULL,?,?,?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($self->{ID},$thisquerystring,$hitrange,$dbasesstring) or $logger->error($DBI::errstr);
+        $idnresult->execute($self->{ID},$query_obj_string,$hitrange,$dbasesstring) or $logger->error($DBI::errstr);
     }
     # Query existiert schon
     else {
@@ -1156,7 +1311,7 @@ sub get_queryid {
     }
         
     $idnresult=$dbh->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($thisquerystring,$self->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
+    $idnresult->execute($query_obj_string,$self->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
     
     while (my @idnres=$idnresult->fetchrow) {
         $queryid = decode_utf8($idnres[0]);
@@ -1184,7 +1339,7 @@ sub set_hits_of_query {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("update queries set hits = ? where queryid = ?") or $logger->error($DBI::errstr);
@@ -1217,7 +1372,7 @@ sub set_all_searchresults {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("insert into searchresults values (?,?,0,?,?,?,?)") or $logger->error($DBI::errstr);
@@ -1225,11 +1380,10 @@ sub set_all_searchresults {
     foreach my $db (keys %{$results_ref}) {
         my $res=$results_ref->{$db};
         
-        my $storableres=unpack "H*",Storable::freeze($res);
+        my $storableres= ""; #unpack "H*",Storable::freeze($res);
         
         $logger->debug("YAML-Dumped: ".YAML::Dump($res));
-        my $num=$dbhits_ref->{$db};
-        $idnresult->execute($self->{ID},$db,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
+        $idnresult->execute($self->{ID},$db,$hitrange,$storableres,$dbhits_ref->{$db},$queryid) or $logger->error($DBI::errstr);
     }
     $idnresult->finish();
 
@@ -1262,7 +1416,7 @@ sub set_searchresult {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("delete from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?") or $logger->error($DBI::errstr);
@@ -1302,7 +1456,7 @@ sub get_searchresult {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $request=$dbh->prepare("select searchresult from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?") or $logger->error($DBI::errstr);
@@ -1332,7 +1486,7 @@ sub get_returnurl {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select returnurl from session where sessionid = ?") or $logger->error($DBI::errstr);
@@ -1355,7 +1509,7 @@ sub get_db_histogram_of_query {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select dbname,sum(hits) as hitcount from searchresults where sessionid = ? and queryid = ? group by dbname order by hitcount desc") or $logger->error($DBI::errstr);
@@ -1390,7 +1544,7 @@ sub get_lastresultset {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     # Bestimmen des vorigen und naechsten Treffer einer
@@ -1420,7 +1574,7 @@ sub set_user {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("update session set benutzernr = ? where sessionID = ?") or $logger->error($DBI::errstr);
@@ -1439,7 +1593,7 @@ sub logout_user {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("delete from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
@@ -1458,7 +1612,7 @@ sub is_authenticated_as {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select count(*) as rowcount from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
@@ -1482,7 +1636,7 @@ sub get_info_of_all_active_sessions {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select * from session order by createtime") or $logger->error($DBI::errstr);
@@ -1526,7 +1680,7 @@ sub get_info {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $singlesessionid=(defined $sessionid)?$sessionid:$self->{ID};
@@ -1556,7 +1710,7 @@ sub get_recently_selected_titles {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $idnresult=$dbh->prepare("select content from eventlog where sessionid=? and type=10 order by tstamp DESC limit $offset,$hitrange") or $logger->error($DBI::errstr);

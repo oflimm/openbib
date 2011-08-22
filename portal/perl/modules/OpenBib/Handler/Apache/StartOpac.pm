@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::StartOpac
 #
-#  Dieses File ist (C) 2001-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -54,166 +54,64 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 
-sub handler {
-    my $r=shift;
+use base 'OpenBib::Handler::Apache';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'show'       => 'show',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub show {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
 
-    my $session = OpenBib::Session->instance;
-    
-    my $query   = Apache2::Request->new($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-#     my $status = $query->parse;
-
-#     if ($status) {
-#         $logger->error("Cannot parse Arguments");
-#     }
-
-    my $fs   = $query->param('fs')      || '';
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $database        = ($query->param('database'))?$query->param('database'):'';
-    my $singleidn       = $query->param('singleidn') || '';
-    my $action          = $query->param('action') || '';
-    my $setmask         = $query->param('setmask') || '';
-    my $searchsingletit = $query->param('searchsingletit') || '';
-    my $searchlitlist   = $query->param('searchlitlist')   || '';
+    # CGI Args
   
-    my $view="";
-
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
-
-    # Loggen des Brower-Types
-    $session->log_event({
-        type      => 101,
-        content   => $useragent,
-    });
-
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $r->connection->remote_ip($1);
-    }
-    
-    # Loggen der Client-IP
-    $session->log_event({
-        type      => 102,
-        content   => $r->connection->remote_ip,
-    });
-    
-    if ($query->param('view')) {
-        $view=$query->param('view');
-
-        # Loggen der View-Auswahl
-        $session->log_event({
-            type      => 100,
-            content   => $view,
-        });
-
-    }
-    else {
-        $view=$session->get_viewname();
-    }
-
-    if ($setmask) {
-        $session->set_mask($setmask);
-    }
     # Standard ist 'einfache Suche'
-    else {
-        $session->set_mask('simple');
-    }
-  
-    # BEGIN View (Institutssicht)
-    #
-    ####################################################################
-    # Wenn ein View aufgerufen wird, muss fuer die aktuelle Session
-    # die Datenbankauswahl vorausgewaehlt und das Profil geaendert werden.
-    ####################################################################
-  
-    if ($view ne "") {
-        # 1. Gibt es diesen View?
-        if ($config->view_exists($view)) {
-            # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
-            #    keine Auswahl getroffen hat
-      
-
-            # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
-            # Auswahl auf die zum View gehoerenden Datenbanken
-            if ($session->get_number_of_dbchoice == 0) {
-                my @viewdbs=$config->get_dbs_of_view($view);
-
-                foreach my $dbname (@viewdbs){
-                    $session->set_dbchoice($dbname);
-                }
-            }
-            # 3. Assoziiere den View mit der Session (fuer Merkliste);
-            $session->set_view($view);
-        }
-        # Wenn es den View nicht gibt, dann wird gestartet wie ohne view
-        else {
-            $view="";
-        }
-    }
-
-    # Wenn effektiv kein valider View uebergeben wurde, dann wird
-    # ein 'leerer' View mit der Session assoziiert.
-
-    my $start_loc  = "";
-    my $start_stid = "";
+    my $setmask="simple";
     
-    if ($view eq "") {
-        $session->set_view($view);
-    }
-
+    $session->set_mask($setmask);
+  
     $logger->debug("StartOpac-sID: $session->{ID}");
+    $logger->debug("Path-Prefix: ".$path_prefix);
 
     # Standard-URL
-    my $redirecturl = "$config->{searchmask_loc}?sessionID=$session->{ID};view=$view;setmask=$setmask";
+    my $redirecturl = "$config->{base_loc}/$view/$config->{searchform_loc}/$setmask.html?l=".$self->param('lang');
 
-    my $viewstartpage_ref = $config->get_startpage_of_view($view);
+    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
 
-    $logger->debug(YAML::Dump($viewstartpage_ref));
+    $logger->debug("Alternative Interne Startseite: $viewstartpage");
     
-    if ($viewstartpage_ref->{start_loc}){
-        $redirecturl = "$config->{$viewstartpage_ref->{start_loc}}?sessionID=$session->{ID};view=$view";
-
-        if ($viewstartpage_ref->{start_stid}){
-            $redirecturl.=";stid=$viewstartpage_ref->{start_stid}";
-        }
+    if ($viewstartpage){
+        $redirecturl = $viewstartpage.".".$self->param('representation')."?l=".$self->param('lang');
     }
     
-    if ($searchsingletit && $database ){
-        $redirecturl = "$config->{search_loc}?sessionID=$session->{ID};search=Mehrfachauswahl;database=$database;searchsingletit=$searchsingletit;view=$view";
-    }
-
-    if ($fs){
-        $redirecturl = "$config->{virtualsearch_loc}?view=$view;sessionID=$session->{ID};fs=".uri_escape($fs).";hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
-    }
-
-    if ($searchlitlist){
-        $redirecturl = "$config->{litlists_loc}?view=$view;sessionID=$session->{ID};action=show;litlistid=$searchlitlist";
-    }
-
-    if ($config->{drilldown}){
-        $redirecturl .= ";drilldown=1";
-    }
-
-    if ($config->{drilldown_option}{cloud}){
-        $redirecturl .= ";dd_cloud=1";
-    }
-
-    if ($config->{drilldown_option}{categorized}){
-        $redirecturl .= ";dd_categorized=1";
-    }
-
     $logger->info("Redirecting to $redirecturl");
     
     $r->internal_redirect($redirecturl);

@@ -1,18 +1,16 @@
 <!-- Begin Template: corporate_banner -->
-    <table  border="0" cellspacing="0" cellpadding="0" width="100%">
-	<tr>
-	  <td align="left" width="5%">
-           <img src="/images/openbib/views/richter/richterexlibris_logo.jpg">
-          </td>
-	  <td align="left" width="65%">
-                      <img src="/images/openbib/views/richter/virtuelle.bibliothek.png">
-	  </td>
+    <div id="header" role="banner">
+      <div id="topnav" role="contentinfo">
+        <span><a href="[% path_prefix %]/[% config.get('connector_rss_loc') %]/neuzugang/richter.rdf?l=[% lang %]"><img style="vertical-align: bottom;" src="[% config.get('rssfeed_img') %]" alt="RSS-Feed"/></a> | [% IF config.get('lang').size > 1 %][% FOREACH l IN config.get('lang') %] <a href="[% path %]?[% cgiapp.modify_querystring(change = { l = l }) %]"><img style="vertical-align: bottom;" src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a> |[% END %][% END %] [% IF config.get('login_active') == 1 %]
+[% IF loginname %]
+          <a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Einstellungen") %]</a>
+[% ELSE %]
+          <a href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Login") %]</a>
+[%- END -%]
+[% END %]
+ | <a href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]" target="_parent"><b>[% msg.maketext("Sitzung beenden") %][%- IF username -%] [[% username %]][%- END -%]</b></a></span>
+      </div>
+      <div id="logo"><a href="[% path_prefix %]/[% config.get('startopac_loc') %]" title="Startseite der Richter-Bibliothek" id="header_logo_image"></a></div>
 
-	  <td width="10%"> &nbsp;&nbsp;</td>
-	  
-	  <td align="right" width="20%">
-	    <a target="_blank" href="http://www.uni-koeln.de/"><img src="/images/openbib/views/richter/siegel.gif" height="95" border="0" alt="Goldenes Universit&auml;tssigel" /></a>
-	  </td>
-	</tr>
-    </table>
+    </div>
 <!-- End Template: corporate_banner -->

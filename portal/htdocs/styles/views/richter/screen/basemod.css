@@ -1,0 +1,260 @@
+/**
+ * "Yet Another Multicolumn Layout" - (X)HTML/CSS Framework
+ *
+ * (en) Screen layout for YAML examples
+ * (de) Bildschirmlayout für YAML-Beispiele
+ *
+ * @copyright       Copyright 2005-2011, Dirk Jesse
+ * @license         CC-A 2.0 (http://creativecommons.org/licenses/by/2.0/),
+ *                  YAML-C (http://www.yaml.de/en/license/license-conditions.html)
+ * @link            http://www.yaml.de
+ * @package         yaml
+ * @version         3.3.1
+ * @revision        $Revision$
+ * @lastmodified    $Date$
+ */
+
+@media screen, projection
+{
+  /** 
+   * (en) Forcing vertical scrollbars in IE8, Firefox, Webkit & Opera 
+   * (de) Erzwingen vertikaler Scrollbalken in IE8, Firefox, Webkit & Opera 
+   *
+   * @workaround
+   * @affected IE8, FF, Webkit, Opera
+   * @css-for all
+   * @valid CSS3
+   */
+
+  body { overflow-y:scroll; }
+
+  /*------------------------------------------------------------------------------------------------------*/
+  
+  /**
+   * (en) Formatting YAML's  basic layout elements
+   * (de) Gestaltung des YAML Basis-Layouts
+   */
+
+  /* (en) Marginal areas & page background */
+  /* (de) Randbereiche & Seitenhintergrund */
+  body { background:#4d87c7 url("../../images/bg_blue.png") repeat-x top left fixed; padding:10px 0; }
+
+  /* (en) Centering layout in old IE-versions */
+  /* (de) Zentrierung des Layouts in alten IE-versionen */
+  body { text-align:center; }
+  .page_margins { text-align:left; margin:0 auto; } 
+
+  /* (en) Layout:width, background, borders */
+  /* (de) Layout:Breite, Hintergrund, Rahmen */
+/*  .page_margins {width:95%;min-width:740px;max-width:90em;text-align:left;position:relative;margin:auto} */
+  .page_margins { min-width:740px; max-width:95em; background:#fff; } 
+  .page { padding:10px; }
+
+#header {
+ color:#000;
+ background:#fff repeat-x top left;
+ padding:120px 2em 1em 20px;
+ position:relative;
+}
+
+  /* (en) #topnav gets absolute positioning within #header */
+  /* (de) #topnav wird innerhalb von #header absolut positioniert */
+  #topnav { 
+	background:transparent; 
+  	color:#aaa; 
+	
+    position:absolute;
+    top:10px;
+    right:10px; /* LTR */
+	text-align:right; /* LTR */
+  }
+
+  /* (en) adjustment of main navigation */
+  /* (de) Anpassung der Hauptnavigation */
+  #nav ul { margin-left:20px; magin-top: 140px; }
+
+  #main { background:#fff;padding:10px 0; }
+
+  #footer {
+    color:#666;
+    background:#f9f9f9;
+    padding:10px 20px;
+    border-top:5px #efefef solid;
+    line-height:1.5em;
+  }
+
+  /* (en) Backup for correct positioning */
+  /* (de) Absicherung korrekte Positionierung */
+  #header, #nav, #main, #footer { clear:both; }
+
+  /*------------------------------------------------------------------------------------------------------*/
+
+  /**
+   * (en) Formatting content container
+   * (de) Formatierung der Inhalts-Container
+   *
+   * |-------------------------------|
+   * | #header                       |
+   * |-------------------------------|
+   * | #col1   | #col3     | #col2   |
+   * | 25%     | flexible  | 25%     |
+   * |-------------------------------|
+   * | #footer                       |
+   * |-------------------------------|
+   */
+
+
+  #col1 { width:25%; }
+  #col1_content { padding:10px 10px 10px 20px; }
+
+  #col2 { width:25%; }
+  #col2_content { padding:10px 20px 10px 10px; }
+
+  #col3 { margin:0 25%; }
+  #col3_content { padding:10px; }
+
+ /**
+  * ------------------------------------------------------------------------------------------------- #
+  *
+  * (en) Styling of layout specific elements
+  * (de) Gestaltung layoutabhängiger Elemente
+  */
+
+  #header h1 {
+    font-weight:bold;
+    font-size:2.5em;
+    letter-spacing:-2px;
+    line-height:65%;
+    color:#000;
+  }
+
+  #header span { color:#999; }
+
+  #topnav a { color:#999; font-weight:normal; background:transparent; text-decoration:none; }
+  #topnav a:focus,
+  #topnav a:hover,
+  #topnav a:active { text-decoration:underline; background-color:transparent; }
+
+  #footer a { color:#999; background:transparent; font-weight:bold; }
+  #footer a:focus,
+  #footer a:hover,
+  #footer a:active {color:#4D87C7; background-color:transparent; text-decoration:underline; }
+
+ /**
+  * ------------------------------------------------------------------------------------------------- #
+  *
+  * Skiplinks 
+  *
+  * (en) Visual styling for skiplink navigation
+  * (de) Visuelle Gestaltung der Skiplink-Navigation
+  *
+  * @section content-skiplinks
+  */
+  
+  #skiplinks a.skip:focus,
+  #skiplinks a.skip:active { 
+	color:#fff; 
+	background:#333; 
+	border-bottom:1px #000 solid;
+	padding:10px 0;
+	text-decoration:none;
+  }
+
+  /**
+
+  * @section subtemplates
+
+  * @see     http://www.yaml.de/en/documentation/practice/subtemplates.html
+
+  */
+
+  .subcolumns { display:table; width:100%; table-layout:fixed; }
+
+  .subcolumns_oldgecko { width: 100%; float:left; }
+
+
+
+  .c20l, .c25l, .c33l, .c40l, .c38l, .c50l, .c60l, .c62l, .c66l, .c75l, .c80l { float:left; }
+
+  .c20r, .c25r, .c33r, .c40r, .c38r, .c50r, .c60r, .c66r, .c62r, .c75r, .c80r { float:right; margin-left:-5px; }
+
+
+
+  .c20l, .c20r { width:20%; }
+
+  .c40l, .c40r { width:40%; }
+
+  .c60l, .c60r { width:60%; }
+
+  .c80l, .c80r { width:80%; }
+
+  .c25l, .c25r { width:25%; }
+
+  .c33l, .c33r { width:33.333%; }
+
+  .c50l, .c50r { width:50%; }
+
+  .c66l, .c66r { width:66.666%; }
+
+  .c75l, .c75r { width:75%; }
+
+  .c38l, .c38r { width:38.2%; }
+
+  .c62l, .c62r { width:61.8%; }
+
+
+
+  .subc  { padding:0 0.5em; }
+
+  .subcl { padding:0 1em 0 0; }
+
+  .subcr { padding:0 0 0 1em; }
+
+
+  .equalize, .equalize .subcolumns { table-layout:fixed; }
+
+
+
+  .equalize > div {
+
+    display:table-cell;
+
+    float:none; 
+
+    margin:0; 
+
+    overflow:hidden;
+
+    vertical-align:top;
+
+  }
+
+  .box-top .c33l,
+  .box-top .c33r { background: url("images/lframe.png") top left no-repeat; }
+
+  .box-top .subcl,
+  .box-top .subcr,
+  .box-top .subc {
+    padding: 25px;
+    background: url("images/rframe.png") top right no-repeat;
+    padding-bottom: 100em;
+    margin-bottom: -100em;
+  }
+
+  .box-bottom { margin-bottom: 1em; text-align:right; }
+
+  .box-bottom .c33l,
+  .box-bottom .c33r { background: url("images/lframe.png") bottom left no-repeat; }
+
+  .box-bottom .subcl,
+  .box-bottom .subcr,
+  .box-bottom .subc {
+    padding: 0 20px 15px 20px;
+    background: url("images/rframe.png") bottom right no-repeat;
+  }
+
+  /* adjustment of conent elements within the boxes */
+  .box-top h4 { display: block; margin: 10px 5px 5px 5px; border-bottom: 1px #c88 solid; font-style:normal; font-variant:small-caps; }
+  .box-top p { padding: 5px; margin-bottom: 0;}
+
+}

@@ -1,0 +1,49 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchmask_bottom_center
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+<h3><img style="vertical-align:bottom" src="[% config.get('search_img') %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[%- IF viewdbs.size == 1 -%][% msg.maketext("In den Institutsbestand eintauchen") %][%- ELSE -%][% msg.maketext("In den Gesamtbestand eintauchen") %][%- END -%]</h3>
+
+<a style="font-size: 1.5em;" href="[% path_prefix %]/[% config.get('cloud_loc') %].html[%- IF viewdbs.size == 1 -%]year/[% viewdbs.first %].html[% END %]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
+<a style="font-size: 1.3em;" href="[% path_prefix %]/[% config.get('litlist_loc') %][% IF view_config.${view}.subjectid %]/subject/[% view_config.${view}.subjectid %].html[% ELSE %].html[%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
+<a style="font-size: 1.1em;" href="[% path_prefix %]/[% config.get('cloud_loc') %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
+<a                           href="[% path_prefix %]/[% config.get('title_loc') %][%- IF viewdbs.size == 1 -%]/[% viewdbs.first %][%- END -%]/popular.html" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
+<a style="font-size: 1.2em;" href="[% path_prefix %]/[% config.get('info_loc') %]/other_portals.html" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
+
+<h3><img style="vertical-align:bottom" src="[% config.get('university_img') %]" alt="Universit&auml;t" />&nbsp;Weitere Dienste an der Universit&auml;t</h3>
+
+<h4>Recherche im USB-Portal</h4>
+
+Zus&auml;tzlich zum KUG bietet die USB K&ouml;ln einen eigenen <a
+href="http://www.ub.uni-koeln.de/usbportal" target="_blank">Recherche-Einstieg</a> an. Dort k&ouml;nnen
+Sie in weiteren externen Informationsquellen (Datenbanken,
+Verbundkataloge) recherchieren.
+
+<h4>Digitalisierte Kartenkataloge</h4>
+
+Zahlreiche &auml;ltere Best&auml;nde verschiedener Institute sind hier
+nicht recherchierbar, werden jedoch durch digitalisierte
+Katalogkarten-Bilder erschlossen.
+
+<ul>
+<li><a href="[% path_prefix %]/[% config.get('info_loc') %]/cardcatalogues.html">Philosophische Fakult&auml;t</a></li>
+</ul>
+
+<h3><img style="vertical-align:bottom" src="[% config.get('global_img') %]" alt="[% msg.maketext("Externe Angebote") %]" />&nbsp;Allgemeine Informationsquellen</h3>
+
+<h4>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h4>
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('ezb_loc')}?action=show_subjects;show_cloud=1\">","</a>") %]
+
+<h4>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h4>
+[% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
+lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('dbis_loc')}?action=show_subjects;show_cloud=1\">","</a>") %]
+

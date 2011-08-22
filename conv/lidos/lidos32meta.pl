@@ -198,12 +198,12 @@ print "### Schritt 2: Umwandeln und ausgeben in das Meta-Format\n";
 my ($autidn,$koridn,$notidn,$swtidn,$mexidn)                     = (1,1,1,1);
 my ($autdublastidx,$kordublastidx,$notdublastidx,$swtdublastidx) = (1,1,1,1);
 
-open (TIT,">:utf8","unload.TIT");
-open (PER,">:utf8","unload.PER");
-open (KOR,">:utf8","unload.KOE");
-open (SYS,">:utf8","unload.SYS");
-open (SWD,">:utf8","unload.SWD");
-open (MEX,">:utf8","unload.MEX");
+open (TIT,">:utf8","meta.title");
+open (PER,">:utf8","meta.person");
+open (KOR,">:utf8","meta.corporatebody");
+open (SYS,">:utf8","meta.classification");
+open (SWD,">:utf8","meta.subject");
+open (MEX,">:utf8","meta.holding");
 
 foreach my $title_ref (@$titlelist_ref){
    print TIT "0000:".$title_ref->{'0000'}[0]."\n";

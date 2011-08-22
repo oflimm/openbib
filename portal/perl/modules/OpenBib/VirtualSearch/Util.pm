@@ -52,7 +52,7 @@ sub conv2autoplus {
         my $phrase=$1;
 
         # Merken
-        push @phrasenbuf, "+".$phrase;
+        push @phrasenbuf, $phrase;
 
         # Entfernen
         $eingabe=~s/$phrase//;

@@ -53,8 +53,8 @@
                     subjectid          = 15,
                     defaultlogintarget = 4,
                     validlogintargets  = { "7" => 1, "4" => 1, }
-                    zms_search_url     = 'http://wwwtest.ub.uni-koeln.de/bibliotheken/526/search/index_ger.html',
-                    zms_title_url      = 'http://wwwtest.ub.uni-koeln.de/bibliotheken/526/titel/index_ger.html',
+                    zms_search_url     = 'http://www.ub.uni-koeln.de/bibliotheken/526/search/index_ger.html',
+                    zms_title_url      = 'http://www.ub.uni-koeln.de/bibliotheken/526/titel/index_ger.html',
                   },
        "inst108" = {
                     subjectid          = 5,
@@ -93,12 +93,16 @@
                     subjectid          = 19,
                   },
        "schmalenbach" = {
-                    zms_search_url     = 'http://wwwtest.ub.uni-koeln.de/sammlungen/schmalenbach/search/index_ger.html',
-                    zms_title_url      = 'http://wwwtest.ub.uni-koeln.de/sammlungen/schmalenbach/titel/index_ger.html',
+                    zms_search_url     = 'http://www.ub.uni-koeln.de/sammlungen/schmalenbach/search/index_ger.html',
+                    zms_title_url      = 'http://www.ub.uni-koeln.de/sammlungen/schmalenbach/titel/index_ger.html',
+                  },
+       "totenzettel" = {
+                    zms_search_url     = 'http://www.ub.uni-koeln.de/sammlungen/totenzettel/search/index_ger.html',
+                    zms_title_url      = 'http://www.ub.uni-koeln.de/sammlungen/totenzettel/titel/index_ger.html',
                   },
        "dante" = {
-                    zms_search_url     = 'http://wwwtest.ub.uni-koeln.de/sammlungen/dante/search/index_ger.html',
-                    zms_title_url      = 'http://wwwtest.ub.uni-koeln.de/sammlungen/dante/titel/index_ger.html',
+                    zms_search_url     = 'http://www.ub.uni-koeln.de/sammlungen/dante/search/index_ger.html',
+                    zms_title_url      = 'http://www.ub.uni-koeln.de/sammlungen/dante/titel/index_ger.html',
                   },
 
 

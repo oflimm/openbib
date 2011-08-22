@@ -15,13 +15,13 @@
 <table class="result-details" style="margin:-0.2em 3em 0.2em 0;padding-bottom:0;">
 <tr><th>id</th><td>[% record.id %]</td></tr>
 [%-
-request_base = "${viewconfig.$view.zms_search_url}?l=de;view=${view};num=10;page=1";
+request_base = "${view_config.$view.zms_search_url}?l=de;view=${view};num=10;page=1";
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 
 FOREACH category IN categories;
-    FOREACH item IN normset.$category;
+    FOREACH item IN normdata.$category;
     content = item.content;
 
     SWITCH category;
@@ -80,16 +80,18 @@ FOREACH category IN categories;
          END ;
           
     CASE "T0540";
-         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+         wikisearchurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
+         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikisearchurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE "T0543";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         ezb_url = "${config.get('ezb_exturl')}&jq_term1=${content}";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530;url=${uri_escape(ezb_exturl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
          thiscontent   = '' ;
          IF category == 'T0662' ;
-           FOREACH thisitem IN normset.${"T0663"} ;
+           FOREACH thisitem IN normdata.${"T0663"} ;
              IF thisitem.indicator == thisindicator ;
                 thiscontent = thisitem.content ;
                 IF thiscontent == '	Bez.: 1; Interna: Digitalisierung; Info: kostenfrei' ;
@@ -98,7 +100,7 @@ FOREACH category IN categories;
              END ;
            END ;
          ELSIF category == 'T2662' ;
-           FOREACH thisitem IN normset.${"T2663"} ;
+           FOREACH thisitem IN normdata.${"T2663"} ;
              IF thisitem.indicator == thisindicator ;
                 thiscontent = thisitem.content ;
              END ;
@@ -107,7 +109,7 @@ FOREACH category IN categories;
          IF thiscontent ;
             IF content.match('digitool.hbz-nrw.de') ;
                thiscontent = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
-               content     = "${path_prefix}/${config.get('redirect_loc')}/500/${content}" ;
+               content     = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(content)}" ;
                content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
             ELSIF thiscontent.match('Bez.: 1; Interna: Digitalisierung; Info: kostenfrei') ;
                thiscontent = "E-Book im Volltext";
@@ -132,7 +134,7 @@ FOREACH category IN categories;
     CASE "E4110";
          thisindicator = item.indicator ;
          thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
-         content       = "${path_prefix}/${config.get('redirect_loc')}/500/${content}" ;
+         content       = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(content)}" ;
          content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
 
     CASE "E4120";
@@ -207,7 +209,7 @@ FOREACH category IN categories;
 
     CASE "T5001";
          searchterms = [];
-         FOREACH superid IN normset.${"T0004"};
+         FOREACH superid IN normdata.${"T0004"};
             searchterms.push("id:${superid.content}");
          END;
 

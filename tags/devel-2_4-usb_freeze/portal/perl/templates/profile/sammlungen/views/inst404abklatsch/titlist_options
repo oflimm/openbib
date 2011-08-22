@@ -1,0 +1,41 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_options
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Optionen einer Liste (Sortierung etc.)
+#
+#######################################################################
+-%]
+<table>
+<tr><td>
+<table>
+<tr><td><b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
+<select name="srt">
+[% IF query.param('sb') == 'xapian' %]  <option value="relevance"[%- IF query.param('srt') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
+  <option value="author"[%- IF query.param('srt') == 'author' -%] selected="selected"[%- END -%]>nach Ort der Inschrift</option>
+  <option value="title"[%- IF query.param('srt') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="signature"[%- IF query.param('srt') == 'signature' -%] selected="selected"[%- END -%]>nach Inventarnummer</option>
+  <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+</select>&nbsp;
+<select name="srto">
+  <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+</select>
+&nbsp;
+[% IF show_sortall == 1 %]
+<select name="sortall">
+  <option value="0"[%- IF query.param('sortall') == '0' -%] selected="selected"[%- END -%]>[% msg.maketext("pro Katalog") %]</option>
+  <option value="1"[%- IF query.param('sortall') == '1' -%] selected="selected"[%- END -%]>[% msg.maketext("katalogübergreifend") %]</option>
+</select>
+[% END %]
+</td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>

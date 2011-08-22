@@ -1,0 +1,142 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_21
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der weitergehenden Sammlungsinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div class="boxedclear">
+
+<table>
+<tr><td style="vertical-align: top;padding-top:10px;">
+
+<p> <img
+src="/images/openbib/views/dante/reiners200.jpg"
+class="img" alt="Wilhelm Reiners (1873-1943)" />
+<center>Wilhelm Reiners</center>
+</p>
+
+<p> <img src="/images/openbib/views/dante/fabrikreiners200.jpg"
+class="img" alt="Ansicht der Reiners'schen Maschinenfabrik (ca. 1930)" /> 
+<center>Ansicht der Maschinenfabrik  "W. Schlafhorst & Co." (ca. 1930)</center>
+</p>
+
+<p>
+<img
+src="/images/openbib/views/dante/dantesgoettlichekomoedie200.jpg"
+class="img" alt="Dantes Göttliche Komödie (1922)" />
+</p>
+<center>Dantes Göttliche Komödie (1922)</center>
+</p>
+
+<p>
+<img
+src="/images/openbib/views/dante/boccacciodante200.jpg"
+class="img" alt="Boccaccios Leben Dantes (1909)" />
+</p>
+<center>Boccaccios Leben Dantes (1909)</center>
+</p>
+
+</td>
+<td style="vertical-align: top;padding-left:20px;">
+<h2>Der Sammler Wilhelm Reiners (1873-1943)</h2>
+
+<p> Wilhelm Reiners, dem die Universitäts- und Stadtbibliothek eine
+umfangreiche Dante-Sammlung verdankt, wurde am 11. November 1873 in
+Aachen geboren. Nach dem Abschluss einer Schlosserlehre nahm er in
+Köln das Studium an der Königlich Preußschen Maschinenbauschule
+auf, wo er 1896 das Ingenieurexamen ablegte. Im selben Jahr trat der
+23-jährige seine erste Stellung bei einer von Wilhelm Schlafhorst
+gegründeten Maschinenbaufirma in Mönchengladbach an. 1901 entschloss
+sich Reiners zur Entwicklung von kompletten Vorbereitungsmaschinen
+für die mechanische Weberei. Bereits 1902 wurde Reiners vom
+Firmenchef zum Teilhaber des Unternehmens ernannt, das fortan als
+"W. Schlafhorst & Co." firmierte. Als sich der Firmengründer 1910
+ganz aus dem Geschäftsleben zurückzog, übernahm Reiners den Betrieb
+in Alleinregie. Auch die inzwischen ausgegliederte Öl- und Fettfabrik
+"Chemische Fabrik Rhenus Wilhelm Reiners" leitete er seitdem als
+alleiniger Inhaber.
+</p>
+
+<p>
+Als Alleininhaber beider Firmen war Reiners bemüht, die
+Produktionspalette seines Maschinenbauunternehmens um weitere
+Neukonstruktionen zu bereichern. Er spezialisierte sich auf die
+Herstellung von Webereivorbereitungsmaschinen und erlange in kurzer
+Zeit mit seinen Produkten internationales Renommee. Während der
+beiden Weltkriege musste das Unternehmen auf Rüstungsgüter
+umstellen. Ende August 1943 wurden die Fabriken der Firma Schlafhorst
+innerhalb weniger Stunden fast völlig zerstört. Am 16. Dezember 1943
+verstarb Reiners auf einer Geschäftsreise nach Den Haag. Die
+Firmenleitung ging auf seinen Sohn Walter über, der das Unternehmen
+als Alleininhaber weiteraufbaute und bis zu seinem Tod 1980 führte.
+Heute besteht die Firma als eine der führenden Maschinenbauunternehmen
+am Niederrhein.
+</p>
+
+
+
+<p> Neben seinem Interesse für Fotographie, beschäftigte sich
+Wilhelm Reiners auch mit der rheinischen Landesgeschichte und der
+Familienforschung. Seine besondere Passion gehörte aber Dante
+Alighieri. Das brachte ihn auch dazu, sich eine umfangreiche Sammlung
+von Dante-Drucken zuzulegen. In dieser Bücherkollektion fanden sich
+italienische Ausgaben der "Commedia" aus der Inkunabelzeit und dem
+frühen 16. Jahrhundert, Editionen des bekannten Venezianer Druckers
+Aldus Manutius und Erstausgaben deutscher Übersetzung aus dem 16. bis
+18. Jahrhundert sowie Übertragungen in andere europäische
+Sprachen. Sekundärliteratur und bibliographische Werke über Dante
+sind gleichfalls in seiner Kollektion vertreten. Insgesamt trug
+Reiners rund 1.200 Bände zusammen. Zwei Jahrzehnte nach dem Tod des
+Sammlers entschlossen sich die Erben Wilhelm Reiners', die
+Dante-Bände zu veräußern, und sie boten sie der USB Köln an. Im
+April 1964 wurde man sich handelseinig, und die Kollektion mit ihren
+rund 1.200 Bände kam an die Kölner Universität. Mit 910 Bänden
+übernahm die USB den größten Teil. Knapp 290 Titel erwiesen sich
+als Dubletten, die an das Petrarca-Institut der Kölner Universität
+sowie an die Bochumer Universitätsbibliothek gingen. Die USB hat alle
+Bände mit dem Exlibris des ehemaligen Besitzers versehen und im
+Magazin aufgestellt. </p>
+
+
+
+<p> Die für das Fach Romanistik zuständigen Fachreferenten haben
+sich seither bemüht, die Sammlung durch weitere Ankäufe zu
+komplettieren und fortzuführen. Die Zahl der Titel von und über
+Dante dürfte inzwischen die Schwelle von 1.500 Bänden überschritten
+haben.  </p>
+
+
+<p>Quelle: Gernot Gabel, Wilhem Reiners (1873 - 1943) in:
+<a href="http://www.ub.uni-koeln.de/bibliothek/pub/schriften/index_ger.html"
+target="_blank">Kölner Sammler und ihre Bücherkollektionen in der
+Universitäts- und Stadtbibliothek</a> </p>
+
+
+<h3>Ansprechpartnerin:</h3>
+<strong>Eva Faresin</strong>, Fachreferentin für Romanistik<br />
+
+Tel.: 0221 470-3310<br />
+<a href="http://www.ub.uni-koeln.de/e50/e2492/e3033/index_ger.html?preview=preview" target="_blank">E-Mail</a><br /></p>
+</td></tr>
+</table>
+
+</div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

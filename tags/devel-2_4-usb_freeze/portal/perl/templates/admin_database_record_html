@@ -1,0 +1,108 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Datenbank-Einstellungen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="database" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Katalog bearbeiten") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% databaseinfo.dbname %]</td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% databaseinfo.description %]</td></tr>
+<tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td>[% databaseinfo.shortdesc %]</td></tr>
+<tr><td><b>[% msg.maketext("System") %]</b></td><td>[% databaseinfo.system %]</td></tr>
+<tr><td><b>[% msg.maketext("Sigel") %]</b></td><td>[% databaseinfo.sigel %]</td></tr>
+<tr><td><b>[% msg.maketext("URL") %]</b></td><td>[% databaseinfo.url %]</td></tr>
+<tr><td><b>[% msg.maketext("Bibliotheksinformationen statt URL") %]</b></td><td>[%- IF databaseinfo.use_libinfo == 1 -%][% msg.maketext("Ja") %][% END %][%- IF databaseinfo.use_libinfo == 0 -%][% msg.maketext("Nein") %][% END %]</td></tr>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>[%- IF databaseinfo.active == 1 -%][% msg.maketext("Ja") %][% END %][%- IF databaseinfo.active == 0 -%][% msg.maketext("Nein") %][% END %]</td></tr>
+</table>
+<p />
+
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Import-Einstellungen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Protokoll") %]</b></td><td>[% databaseinfo.protocol %]</td></tr>
+<tr><td><b>[% msg.maketext("Entfernter Rechnername") %]</b></td><td>[% databaseinfo.host %]</td></tr>
+<tr><td><b>[% msg.maketext("Entferntes Verzeichnis") %]</b></td><td>[% databaseinfo.remotepath %]</td></tr>
+<tr><td><b>[% msg.maketext("Entfernter Nutzername") %]</b></td><td>[% databaseinfo.remoteuser %]</td></tr>
+<tr><td><b>[% msg.maketext("Entferntes Passwort") %]</b></td><td>[% databaseinfo.remotepassword %]</td></tr>
+<tr><td><b></b></td><td></td></tr>
+<tr><td><b>[% msg.maketext("Titel-Datei") %]</b></td><td>[% databaseinfo.titlefile %]</td></tr>
+<tr><td><b>[% msg.maketext("Personen-Datei") %]</b></td><td>[% databaseinfo.personfile %]</td></tr>
+<tr><td><b>[% msg.maketext("K&ouml;rperschafts-Datei") %]</b></td><td>[% databaseinfo.corporatebodyfile %]</td></tr>
+<tr><td><b>[% msg.maketext("Schlagwort-Datei") %]</b></td><td>[% databaseinfo.subjectfile %]"</td></tr>
+<tr><td><b>[% msg.maketext("Notations-Datei") %]</b></td><td>[% databaseinfo.classificationfile %]</td></tr>
+<tr><td><b>[% msg.maketext("Exemplar-Datei") %]</b></td><td>[% databaseinfo.holdingsfile %]</td></tr>
+    
+<tr><td><b>[% msg.maketext("Autokonvertierung (cron)") %]</b></td><td>[% IF databaseinfo.autoconvert == '0' %][% msg.maketext("Nein") %][% END %][% IF databaseinfo.autoconvert == '1' %][% msg.maketext("Ja") %][% END %]</td></tr>
+</table>
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</b></td><td>[% IF databaseinfo.circ == '0' %][% msg.maketext("Nein") %][% END %][% IF databaseinfo.circ == '1' %][% msg.maketext("Ja") %][% END %]</td></tr>
+<tr><td><b>[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</b></td><td>[% databaseinfo.circdb %]</td></tr>
+<tr><td><b>[% msg.maketext("OLWS Zugriffs-URL") %]</b></td><td>[% databaseinfo.circwsurl %]</td></tr>
+<tr><td><b>[% msg.maketext("WebOPAC-URL") %]</b></td><td>[% databaseinfo.circurl %]</td></tr>
+</table>
+</td></tr>
+</table>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

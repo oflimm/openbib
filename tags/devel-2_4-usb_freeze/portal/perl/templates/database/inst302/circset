@@ -1,0 +1,72 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Ausleih/Explar-Informationen (via OLWS)
+#
+#######################################################################
+-%]
+[%
+ Aquisition = 0;
+
+ FOREACH mex IN circulation ;
+    IF mex.AquisitionStatuscode >= 1 ;
+       Aquisition = 1;
+    END ;
+ END ;
+
+%]
+<p />
+
+[% IF Aquisition == 0 %]
+<table width="100%">
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td></tr>
+[% FOREACH mex IN circulation %]
+<tr align="center"><td>
+[%-   IF dbinfo.get('use_libinfo').${record.database} %]
+<a href="[% path_prefix %]/[% config.get('info_loc') %]/60?id=[% record.database %]">
+[%-   ELSE -%]
+<a href="[% mex.Bibinfourl %]" target="_blank">
+[%-   END -%]
+<strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% IF mex.Standort.match('/ $') %][% mex.Standort.replace('/ $','') %][% ELSE %][% mex.Standort %][% END %][%- IF mex.Fussnote -%] ([% mex.Fussnote %])[%- END -%]</td>
+<td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
+<td><strong>[%- IF mex.Status == 'bestellbar' -%]ausleihbar[%- ELSE -%][% mex.Status %][%- END -%]</strong></td>
+</tr>
+[% END %]
+</table>
+<p align="center"> <img style="vertical-align:bottom" src="[% config.get('hint_img')
+%]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;In dieser Bibliothek
+ist lediglich eine Tages- und Wochenendausleihe m&ouml;glich. 
+</p>
+[% ELSIF Aquisition == 1 %]
+<table width="100%">
+<tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
+<tr><td class="boxedclear">
+<table width="100%">
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td></tr>
+[% FOREACH mex IN circulation %]
+<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>
+[%   IF mex.AquisitionStatuscode <= 2 %]
+[% msg.maketext("bestellt beim Lieferanten") %]
+[%   ELSIF mex.AquisitionStatuscode <= 4 %]
+[% msg.maketext("im Gesch&auml;ftsgang") %]
+[%   ELSIF mex.AquisitionStatuscode == 5 %]
+[% msg.maketext("beim Lieferanten storniert") %]
+[%   ELSIF mex.AquisitionStatuscode <= 8 %]
+[% msg.maketext("beim Lieferanten reklamiert") %]
+[%   ELSIF mex.AquisitionStatuscode == 9 %]
+[% msg.maketext("ausgeschieden") %]
+[%   END %]
+</td></tr>
+[% END %]
+</table>
+
+</td></tr>
+</table>
+
+[% END %]

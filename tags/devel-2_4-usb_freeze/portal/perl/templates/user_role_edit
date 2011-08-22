@@ -1,0 +1,112 @@
+[%#-
+#######################################################################
+#
+# Templatename: user_role_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Zuordnung einer Rolle zu einem Nutzer durch den Administrator
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Nutzerverwaltung anzeigen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="user_navigation" active_submenu="borrows" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+   <h1>[% msg.maketext("Rolle bearbeiten") %]</h1>
+
+<table width="100%">
+<tr><th>[% msg.maketext("Personendaten") %]</th><td></tr>
+<tr><td class="boxedclear">
+<table>
+[% IF userinfo.nachname %]
+<tr><td><b>[% msg.maketext("Nachname") %]:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
+[% END %] 
+[% IF userinfo.vorname %]
+<tr><td><b>[% msg.maketext("Vorname") %]:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
+[% END %] 
+[% IF userinfo.gebdatum %]
+<tr><td><b>[% msg.maketext("Geburtsdatum") %]:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
+[% END %] 
+[% IF userinfo.strasse %]
+<tr><td><b>[% msg.maketext("Strasse") %]:</b></td><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
+[% END %] 
+<tr><td><b>[% msg.maketext("Ort") %]:</b></td><td align="left">
+[% IF userinfo.plz %]
+&nbsp;[% userinfo.plz %]
+[% END %] 
+&nbsp;[% userinfo.ort %]</td></tr>
+[% IF userinfo.email %]
+<tr><td><b>[% msg.maketext("E-Mail") %]:</b></td><td align="left">&nbsp;[% userinfo.email %]</td></tr>
+[% END %]
+<tr><td><b>[% msg.maketext("Sperre") %]:</b></td><td align="left">&nbsp;
+[%- IF userinfo.sperre -%]
+[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
+[%- ELSE -%]
+[% msg.maketext("nein") %]
+[%- END -%]
+</td></tr>
+</table>
+</td></tr>
+</table>
+
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% userinfo.id %]/role">
+<input type="hidden" name="_method"    value="PUT" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Rolle zuordnen") %]</th><td></tr>
+<tr><td class="boxedclear">
+<table>
+
+<tr><td><select name="roles" multiple="multiple" size="5">
+
+[% FOREACH role IN user.get_all_roles %]
+<option value="[% role.id %]"[% IF userinfo.role.${role.role} %] selected="selected"[% END %]>[% msg.maketext(role.role) %]</option>
+[% END %]
+
+</select>
+</td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]"></div></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

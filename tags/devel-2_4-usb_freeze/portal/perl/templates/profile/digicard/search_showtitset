@@ -1,0 +1,107 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+[%- normset         = record.get_normdata -%]
+[%- mexnormset      = record.get_holding -%]
+[%- cirset          = record.get_circulation -%] 
+[%- same_records    = record.get_same_records -%]
+[%- similar_records = record.get_similar_records -%]
+[%- bibkey = record.to_bibkey -%]
+[%- isbn   = normset.${"T0540"}.first.content.replace('-','') -%]
+[%- IF NOT isbn ;
+       isbn   = normset.${"T0553"}.first.content.replace('-','') ;
+    END ;
+-%]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: ${poolname.short}" unapi=1 LinkedData="title" %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
+</ul>
+
+<div class="content"><!-- Begin Content -->
+
+<p/>
+
+<!--<div class="record">--><!-- Begin Record -->
+<div class="fulltitle"><!-- Begin Fulltitle -->
+<div class="details"><!-- Begin Details -->
+<!-- Title begins here -->
+
+<div class="images"><!-- Begin Images -->
+[% imagename      = normset.${"T0655"}.first.content %]
+[% imagegifname   = imagename.replace('.tif','.gif') %]
+
+[% imagedir     = imagename.chunk(4).first %]
+[% imagesubdir  = imagename.chunk(7).first %]
+
+<a class="invisible" href="http://retro-philfak.ub.uni-koeln.de/katimages/[% imagedir %]/normal/[% imagesubdir %]/[% imagegifname %]">
+<img src="http://retro-philfak.ub.uni-koeln.de/katimages/[% imagedir %]/vorschau/[% imagesubdir %]/[% imagegifname %]" alt="Karten Thumbnail" />
+</a>
+
+<p/>
+
+<h2>Automatisch erkannte Zeichen der Katalogkarte</h2>
+
+<p style="text-width:100%;">
+[% ocr = normset.${"T0750"}.first.content;
+   ocr = highlightquery(searchquery,ocr);
+ %]
+[% ocr %]
+</p>
+
+</div><!-- End Images -->
+
+<div class="categories"><!-- Begin Categories -->
+
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
+[% PROCESS common/subtemplate name="search_showtitset_categories" %]
+
+</div><!-- End Categories -->
+</div><!-- End Details -->
+
+
+</div><!-- End Fulltitle -->
+
+<p />
+
+<!--</div>--><!-- End record -->
+
+<!-- Title ends here -->
+
+<script>
+   function addFullCover(resultbooks) {
+     for (i in resultbooks) {
+       var thisbook = resultbooks[i];
+       if (thisbook.thumbnail_url != undefined){         
+          document.getElementById('cover_full').src      = thisbook.thumbnail_url.replace("zoom=5","zoom=1");
+          document.getElementById('cover_full').title    = "Cover von Google Books";
+          document.getElementById('cover_full_url').href = thisbook.preview_url;
+       }
+     }
+   }
+</script>
+
+<script src="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN:[% isbn %]&callback=addFullCover"></script>
+
+</div><!-- End: Content -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,337 @@
+/*-------------------------------------------------*/
+/*--------------- T A B E L L E N -----------------*/
+/*-------------------------------------------------*/
+
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
+ userid     BIGINT AUTO_INCREMENT PRIMARY KEY,
+ lastlogin  DATETIME,
+
+ loginname  TEXT,
+ pin        TEXT,
+
+ nachname   TEXT,
+ vorname    TEXT,
+ strasse    TEXT,
+ ort        TEXT,
+ plz        INT,
+ soll       TEXT,
+ gut        TEXT,
+ avanz      TEXT,
+ branz      TEXT,
+ bsanz      TEXT,
+ vmanz      TEXT,
+ maanz      TEXT,
+ vlanz      TEXT,
+ sperre     TEXT,
+ sperrdatum TEXT,
+ gebdatum   TEXT,
+
+ email      TEXT,
+
+ masktype             TEXT,
+ autocompletiontype   TEXT,
+
+ bibsonomy_user TEXT,
+ bibsonomy_key  TEXT,
+ bibsonomy_sync TEXT,
+
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS role;
+CREATE TABLE role (
+  id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+  role      VARCHAR(255) NOT NULL,
+  INDEX (id),
+  INDEX (role)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS userrole;
+CREATE TABLE userrole (
+  userid    BIGINT NOT NULL,
+  roleid    BIGINT NOT NULL,
+  INDEX (userid),
+  INDEX (roleid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS userregistration;
+CREATE TABLE userregistration (
+  registrationid      VARCHAR(60) NOT NULL,
+  tstamp              TIMESTAMP,
+ 
+  loginname           TEXT,
+  password            TEXT,
+  INDEX (registrationid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS usersession;
+CREATE TABLE usersession (
+  sessionid VARCHAR(255) NOT NULL,
+  userid    BIGINT NOT NULL,
+  targetid  BIGINT NOT NULL,
+  INDEX (sessionid),
+  INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS userdbprofile;
+CREATE TABLE userdbprofile (
+ profilid    BIGINT AUTO_INCREMENT PRIMARY KEY,
+ profilename TEXT,
+ userid      BIGINT NOT NULL,
+ INDEX (profilid),
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS profildb;
+CREATE TABLE profildb (
+ profilid BIGINT NOT NULL,
+ dbname   TEXT,
+ INDEX (profilid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS fieldchoice;
+CREATE TABLE fieldchoice (
+ userid    BIGINT NOT NULL,
+ fs        BOOL,
+ hst       BOOL,
+ verf      BOOL,
+ kor       BOOL,
+ swt       BOOL,
+ notation  BOOL,
+ isbn      BOOL,
+ issn      BOOL,
+ sign      BOOL,
+ mart      BOOL,
+ hststring BOOL,
+ inhalt    BOOL,
+ gtquelle  BOOL,
+ ejahr     BOOL,
+ 
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS spelling;
+CREATE TABLE spelling (
+ userid      BIGINT NOT NULL,
+ as_you_type BOOL,
+ resultlist  BOOL,
+ 
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS livesearch;
+CREATE TABLE livesearch (
+ userid    BIGINT NOT NULL,
+ fs        BOOL,
+ verf      BOOL,
+ swt       BOOL,
+ exact     BOOL,
+
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS logintarget;
+CREATE TABLE logintarget (
+ targetid    BIGINT AUTO_INCREMENT PRIMARY KEY,
+ hostname    TEXT,
+ port        TEXT,
+ user        TEXT,
+ db          TEXT,
+ description TEXT,
+ type        TEXT,
+ INDEX (targetid)
+);
+
+DROP TABLE IF EXISTS treffer;
+CREATE TABLE treffer (
+ userid    VARCHAR(255) NOT NULL,
+ dbname    TEXT,
+ singleidn VARCHAR(255),
+ titcache  BLOB
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS tags;
+CREATE TABLE tags (
+ id     INT(11)      NOT NULL auto_increment,
+ tag    VARCHAR(255) NOT NULL default '',
+ INDEX (id),
+ INDEX (tag)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS tittag;
+CREATE TABLE tittag (
+ ttid      INT(11)     NOT NULL auto_increment,
+ tagid     INT(11)     NOT NULL default '0',
+ titid     VARCHAR(255) NOT NULL default '0',
+ titisbn   CHAR(14)    NOT NULL default '',
+ titdb     VARCHAR(25) NOT NULL default '',
+ titcache  BLOB,
+ loginname TEXT,
+ type      INT(3)      NOT NULL default '1',
+ PRIMARY KEY  (ttid),
+ INDEX (tagid),
+ INDEX (titid),
+ INDEX (titdb),
+ INDEX (type),
+ INDEX (loginname(30))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS reviews;
+CREATE TABLE reviews (
+ id        INT(11)     NOT NULL auto_increment,
+ tstamp    TIMESTAMP,
+ titid     VARCHAR(255) NOT NULL default '0',
+ titisbn   CHAR(14)    NOT NULL default '',
+ titdb     VARCHAR(25) NOT NULL default '',
+ loginname TEXT,
+ nickname  VARCHAR(30) NOT NULL default '',
+ title     VARCHAR(100)NOT NULL default '',
+ review    MEDIUMTEXT  NOT NULL default '',
+ rating    INT(3)      NOT NULL default '0',
+ PRIMARY KEY  (id),
+ INDEX (id),
+ INDEX (titid),
+ INDEX (titisbn),
+ INDEX (titdb),
+ INDEX (loginname(30))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS reviewratings;
+CREATE TABLE reviewratings (
+ id        INT(11)     NOT NULL auto_increment,
+ tstamp    TIMESTAMP,
+ reviewid  INT(11)     NOT NULL default '0',
+ loginname TEXT,
+ rating    INT(3)      NOT NULL default '0',
+ PRIMARY KEY  (id),
+ INDEX (id),
+ INDEX (reviewid),
+ INDEX (loginname(30))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS litlists;
+CREATE TABLE litlists (
+ id        INT(11)     NOT NULL auto_increment,
+ tstamp    TIMESTAMP,
+ userid    INT(11)     NOT NULL,
+ title     TEXT        NOT NULL,
+ type      INT(3)      NOT NULL default '1',
+ lecture   INT(3)      NOT NULL default '0',
+ PRIMARY KEY  (id),
+ INDEX (id),
+ INDEX (userid),
+ INDEX (title(30)),
+ INDEX (type)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS litlistitems;
+CREATE TABLE litlistitems (
+ litlistid INT(11)     NOT NULL,
+ tstamp    TIMESTAMP,
+ titid     VARCHAR(255) NOT NULL,
+ titisbn   CHAR(14)    NOT NULL default '',
+ titdb     VARCHAR(25) NOT NULL,
+ titcache  BLOB,
+ INDEX (litlistid),
+ INDEX (titid),
+ INDEX (titisbn),
+ INDEX (titdb)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS subjects;
+CREATE TABLE litlistsubjects (
+ id           INT(11)     NOT NULL auto_increment,
+ name         TEXT        NOT NULL default '',
+ description  TEXT        NOT NULL default '',
+ INDEX (id)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS litlist2subject;
+CREATE TABLE litlist2subject (
+ litlistid    INT(11)     NOT NULL,
+ subjectid    INT(11)     NOT NULL,
+ INDEX (litlistid),
+ INDEX (subjectid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS subject2classification;
+CREATE TABLE classification2subject (
+ classification VARCHAR(20) NOT NULL,
+ subjectid      INT(11)     NOT NULL,
+ type           VARCHAR(5)  NOT NULL,
+ INDEX (classification),
+ INDEX (type),
+ INDEX (subjectid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+/* Standard ist Selbstregistrierung */
+insert into logintarget values(1,NULL,NULL,NULL,NULL,'Registrierte E-Mail Adresse','self');
+
+/* Standard sind Rollen Admin und Bibliothekar */
+insert into role values (1,'admin');
+insert into role values (2,'librarian');
+
+/* Standard ist Admin-User mit ID 1 und Passwort 'StrengGeheim' */
+insert into user (userid,loginname,pin) values (1,'admin','StrengGeheim');
+insert into userrole values (1,1);

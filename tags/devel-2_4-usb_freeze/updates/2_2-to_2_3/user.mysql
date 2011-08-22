@@ -1,0 +1,54 @@
+DROP TABLE IF EXISTS spelling;
+CREATE TABLE spelling (
+ userid    BIGINT NOT NULL,
+ as_you_type BOOL,
+ resultlist  BOOL,
+ 
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS subjects;
+CREATE TABLE litlistsubjects (
+ id           INT(11)     NOT NULL auto_increment,
+ name         TEXT        NOT NULL default '',
+ description  TEXT        NOT NULL default '',
+ INDEX (id)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS litlist2subject;
+CREATE TABLE litlist2subject (
+ litlistid    INT(11)     NOT NULL,
+ subjectid    INT(11)     NOT NULL,
+ INDEX (litlistid),
+ INDEX (subjectid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS livesearch;
+CREATE TABLE livesearch (
+ userid    BIGINT NOT NULL,
+ fs        BOOL,
+ verf      BOOL,
+ swt       BOOL,
+ exact     BOOL,
+
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+update livesearch set exact = 1;
+
+alter table user add autocompletiontype text after masktype;
+update user set autocompletiontype = 'livesearch';
+
+alter table litlists add lecture int(3)  NOT NULL default '0' after type;

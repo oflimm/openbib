@@ -1,0 +1,107 @@
+[%#-
+#######################################################################
+#
+# Templatename: login
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Authentifizierung am Portal
+# entsprechend verschiedener Authentifizierungs-Ziele
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% path_prefix %]/[% config.get('login_loc') %]?do_login=1">Meine Sammlung</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+
+<div id="login_container">
+<div class="left_side">
+<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<input type="hidden" name="do_auth"   value="1" />
+
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Login mit einem Benutzerausweis") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+
+<p />
+
+<table>
+<tr><td align="right"><b>[% msg.maketext("mit")
+%]:</b></td><td>
+<select name="targetid">
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.id == 1 -%]
+<option value="[% target.id %]">[% target.description %]</option>
+[%-   END -%]
+[%- END -%]
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.id != 4 && target.id != 1 -%]
+<option value="[% target.id %]">[% target.description %]</option>
+[%-   END -%]
+[%- END -%]
+</select>
+</td></tr>
+<tr><td align="right"><b>[% msg.maketext("Benutzernummer") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
+<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
+</table>
+<p />
+[% msg.maketext("Haben Sie Ihr Passwort vergessen, dann finden Sie hier [_1]weitere Informationen[_2].","<a href=\"${path_prefix}/${config.get('info_loc')}?#passwortbenutzerausweis\">","</a>") %]
+</td></tr>
+</table>
+
+</form>
+</div><!-- End left_side -->
+
+<div class="right_side">
+<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% config.get('servername') %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<input type="hidden" name="do_auth"   value="1" />
+
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Login ohne Benutzerausweis") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+<p />
+<table>
+<tr><td align="right"><b>[% msg.maketext("mit")
+%]:</b></td><td>
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.id == 4 -%]
+<input type="hidden" name="targetid" value="[% target.id %]">
+[% target.description %]
+[%-   END -%]
+[%- END -%]
+</td></tr>
+<tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
+<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
+</table>
+<p/>
+<a href="[% path_prefix %]/[% config.get('selfreg_loc') %]?action=show">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('mailpassword_loc') %]?action=show">[% msg.maketext("Passwort vergessen?") %]</a>
+</td></tr>
+</table>
+</div><!-- End right_side -->
+</div><!-- End login_container -->
+</form>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,69 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showswtset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Schlagwort-Normdatensatzes
+#
+#######################################################################
+-%]
+[%- show_foot_banner = 1 -%]
+[%- title = "KUG Recherche" -%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+<table cellpadding="2">
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+
+[% PROCESS common/subtemplate name="visible_categories_swtset" %]
+
+[%- 
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE "S5000";
+         content   = "<a href=\"${path_prefix}/${config.get('search_loc')}?database=${normset.database};searchtitofswt=${normset.id};offset=0;num=${qopts.num}\">${content}</a>";
+    END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
+</table>
+
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

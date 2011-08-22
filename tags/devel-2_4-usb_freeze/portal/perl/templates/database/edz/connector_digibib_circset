@@ -1,0 +1,110 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_circulation
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Ausleih/Exemplar-Informationen (via OLWS)
+#
+#######################################################################
+-%]
+[%-
+    #USE dumper;dumper.dump(itemcirc);
+
+    location = {} ;
+
+    FOREACH circ IN itemcirc ;
+
+       catname  = utf2iso(circ.${"Bibliothek"}.short) ;
+       caturl   = circ.${"Bibinfourl"} ;
+       signatur = circ.${"Signatur"} ;
+       status   = circ.${"Status"} ;
+
+       entliehenbis = "";
+       IF status == 'entliehen' && circ.Rueckgabe != '31.12.9999' && circ.Rueckgabe != '1.1.1753' ;
+           entliehenbis =  " bis ${circ.Rueckgabe}" ;
+       END ;
+
+       opactext  = "";
+       IF circ.Fussnote ;
+         opactext  = " / ${circ.Fussnote}";
+       END ;
+
+       IF     circ.Zweigstelle == 0 ;
+          IF circ.Signatur.match('^2[3-9]A') || circ.Signatur.match('[3-9][0-9]A') ;
+             IF status == "bestellbar" ;
+                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar ${opactext}";
+             ELSIF circ.Status == "entliehen" ;
+                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / vormerkbar ${opactext}";
+             END ;
+          END ;      
+
+          IF circ.Abteilungscode == 3 ;
+             IF status == "bestellbar" ;
+                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / ausleihbar${opactext}";
+             ELSIF circ.Status == "entliehen" ;
+                status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / entliehen${entliehenbis}${opactext}";
+             END ;
+          ELSIF circ.Abteilungscode == 2 ; 
+             status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/ls/index_ger.html\" target=\"_blank\">LS</a> / Pr&auml;senzbestand${opactext}";
+          ELSIF circ.Abteilungscode == 98 ; 
+             status = "<a href=\"http://www.ub.uni-koeln.de/edz/content/index_ger.html\" target=\"_blank\">EDZ</a> / einsehbar${opactext}";
+          END ;
+
+       ELSIF circ.Zweigstelle == 4 ;
+
+          IF circ.Abteilungscode == 3 ;
+             IF status == "bestellbar" ;
+                status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1967\" target=\"_blank\">LBS EWA</a> / ausleihbar${opactext}";
+             ELSIF status == "entliehen" ;
+                status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/index_ger.html#e1967\" target=\"_blank\">LBS EWA</a> / entliehen${entliehenbis} ${opactext}";
+             END ;
+          ELSIF circ.Abteilungscode == 4 || circ.Abteilungscode == 7 ; 
+             status = "EWA LS / Pr&auml;senzbestand${opactext}";
+          END ;
+       END ;
+
+       IF status == 'entliehen' && entliehenbis ;
+          status = "entliehen ${entliehenbis}${opactext}";
+       END;
+
+       IF circ.Vormerkbarkeit && status == 'entliehen';
+            stelle = circ.Vormerkungen;
+            status = "${status} / Vormerkungen: ${stelle}";
+       END ;
+
+       location.${catname}.${"url"}     = caturl ;
+
+       IF NOT location.${catname}.exists("signatur") ;
+          location.${catname}.${"signatur"} = "${signatur} (${status})" ;
+       ELSE ;
+          signaturstring = location.${catname}.${"signatur"} ;
+          signaturstring = "${signaturstring} ; ${signatur} (${status})" ;
+          location.${catname}.${"signatur"}= signaturstring  ; 
+       END ;
+    END ;
+
+    locations = [] ;
+
+    FOREACH catname IN location.keys ;
+       caturl         = location.${catname}.${"url"} ;
+       verlauf        = location.${catname}.${"verlauf"} ;
+       signaturstring = location.${catname}.${"signatur"} ;
+
+       locations.push("<a href=\"${caturl}\" target=\"_blank\">${catname}</a>: ${signaturstring} ${verlauf}");
+
+    END ;
+
+    dbdesc   = dbinfo.get('dbnames').${database}.short ;
+    dburl    = dbinfo.get('urls').${database} ;
+
+    IF locations.size == 0;
+       locationstring = "<a href=\"${dburl}\" target=\"_blank\">${dbdesc}</a>";
+    ELSE ;
+       locationstring = locations.join("<br />");
+    END ;
+%]
+<LI> LO=[% utf2iso(locationstring)             # Locations mit Signatur und Bestandsverlauf%]

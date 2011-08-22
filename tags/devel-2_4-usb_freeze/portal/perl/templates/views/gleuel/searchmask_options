@@ -1,0 +1,6 @@
+<table>
+<tr><td class="category">[% msg.maketext("Maximale Trefferzahl pro Katalog") %]</td><td colspan="3"><select name="num"><option selected="selected">50</option><option>100</option><option>200</option></select></td></tr>
+<tr><td class="category">[% msg.maketext("Sortierung nach") %]</td><td
+colspan="2"><select name="srt"><option value="author" selected="selected">[% msg.maketext("Person/Körperschaft") %]</option><option value="title">[% msg.maketext("Titel") %]</option><option value="yearofpub">[% msg.maketext("Erscheinungsjahr") %]</option></select><select name="srto"><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select>&nbsp;[% msg.maketext("pro Katalog") %]</td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Und-Verknüpfung innerhalb eines Suchfeldes") %]</td><td colspan="3"><input type="radio" name="autoplus" value="1" checked="checked" />[% msg.maketext("Ja") %]&nbsp;<input type="radio" name="autoplus" value="0" />[% msg.maketext("Nein") %]</td></tr>
+</table>

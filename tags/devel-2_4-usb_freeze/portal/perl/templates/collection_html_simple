@@ -1,0 +1,89 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_html_simple
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im HTML-Format fuer Mail und Druck
+# *ohne* Funktionselemente
+#
+#######################################################################
+-%]
+
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="collection_html_actions" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+[% FOREACH record IN recordlist.get_records %]
+[%- database = record.database -%]
+[%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
+[%- dburl    = dbinfo.get('urls').${record.database} -%]
+[% normdata     = record.get_normdata %]
+[% holding     = record.get_holding  %]
+[% circulation = record.get_circulation %]
+
+
+<!-- Title begins here -->
+<table width="100%">
+<tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
+<tr><td class="boxedclear">
+
+<table cellpadding="2">
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+<tr><td class="category">id</td><td>[% normdata.id %]</td></tr>
+
+[%-
+
+FOREACH category IN categories;
+    FOREACH item IN normdata.$category;
+    content = item.content;
+-%]
+<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+[%- END -%]
+[%- END -%]
+</table>
+
+[%# USE dumper;dumper.dump(record) %]
+[% IF circulation.size > 0 || holding.size > 0 %]
+
+[% IF circulation.size > 0 %]
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
+<tr><td class="boxedclear">
+[% PROCESS common/subtemplate name="circulation" %]
+</td></tr>
+</table>
+[% ELSIF holding.size > 0 %]
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Bestand") %]</th></tr>
+<tr><td class="boxedclear">
+[% PROCESS common/subtemplate name="holding" %]
+</td></tr>
+</table>
+[% END %]
+[% END %]
+
+<p />
+<p />
+<!-- Title ends here -->
+
+[% END %]
+
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->

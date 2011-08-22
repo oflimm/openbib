@@ -1,0 +1,84 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_header
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Seiten-Headers
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+[% IF NOT disable_cache_control %]
+    <meta http-equiv="content-type"  content="text/html; charset=utf-8"/>
+    <meta http-equiv="Pragma"        content="no-cache" />
+    <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
+    <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
+[% END %]
+    
+[% IF record %]
+    <meta name="Bibkey"              content="[% record.to_bibkey %]" />
+    <meta name="Tags"                content="[% record.to_tags %]" />
+[% END %]
+[% IF NOT config.strip_view_from_uri(view) %]
+    <meta name="View"                content="[% view %]" />
+[% END %]
+<link href="/images/openbib/views/richter/favicon.ico" rel="shortcut icon" />
+[% IF view && primrssfeed %]
+<link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]" />
+[% END %]
+[% IF LinkedData == "title" %]
+<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% servername %][% path_prefix %]/[% config.get('title_loc') %]/[%- record.database -%]/[%- record.id -%].rdf"/>
+<link rel="alternate" type="application/json" title="JSON Representation" href="http://[% servername %][% path_prefix %]/[% config.get('title_loc') %]/[%- record.database -%]/[%- record.id -%].json"/>
+[% END %]
+[% IF unapi && config.get('unAPI') %]
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="[% path_prefix %]/[% config.get('connector_unapi_loc') %]" />
+[% END %]
+
+  [%- TRY -%]
+    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/views/$view/layout.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/views/$view/layout.css" %]" media="all" />
+  [%- CATCH -%]        
+    [%- TRY -%]
+      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/profile/$sysprofile/layout.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/profile/$sysprofile/layout.css" %]" media="all" />
+    [%- CATCH -%]
+      [%- TRY -%]
+        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/views/$view/layout.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/views/$view/layout.css" %]" media="all" />
+      [%- CATCH -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/layout.css" %]" media="all" />
+      [%- END -%]
+    [%- END -%]
+  [%- END -%]
+
+  <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
+  <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
+<!--[if lte IE 7]>
+  <link href="[% config.get('css_loc') %]/patches/patch_2col_right_31.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if lt IE 7.]>
+<style type="text/css" media="all"> 
+   @import url("[% "${config.get('css_loc')}/cssbuttons/ieBrowserHacks.css" %]");
+</style>
+<script defer type="text/javascript" src="/js/pngfix.js"></script>
+<![endif]-->
+
+<!-- jQuery & Plugins -->
+    <link type="text/css" href="/css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />     
+    <script type="text/javascript" src="/js/jquery-1.5.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.14.custom.min.js"></script>
+
+    <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
+
+
+    <title>[% IF title %][% title %][% ELSE %][% msg.maketext("Die Bibliothek Elise und Helene Richter - ein OpenBib Demonstrations-Portal") %][% END %]</title>
+
+   </head>

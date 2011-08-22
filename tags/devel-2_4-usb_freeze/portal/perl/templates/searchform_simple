@@ -1,0 +1,522 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_simple
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der einfachen Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+  <body>
+
+               <script type="text/javascript">
+                        $(function(){
+
+                                // Tabs
+                                $('#tabs_types').tabs();
+                                        
+                        });
+                </script>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary" style="display:none;">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_submenu="searchform_simple" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" style="width:100%;">
+        <div id="col3_content" class="clearfix">
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+[%
+  bks         = config.load_bk;
+  thisbklist  = statistics.get_result({id => view, type => 10}); 
+
+  num_of_sysprofiledbs = config.get_number_of_dbs(sysprofile);
+
+%]
+
+[% IF config.get('testsystem') %]
+<div id="testsystem">
+[% PROCESS common/subtemplate name="testsystem_info" %]
+<p />
+</div>
+[% END %]
+
+<div id="searchform"><!-- Begin searchform -->
+
+<div id="searchform_types" ><!-- Begin searchform_types -->
+<div id="tabs_types">
+  <ul>
+    <li><a href="#alltypes">[% msg.maketext("Alles") %]</a></li>
+    <li><a href="#only_serials">[% msg.maketext("Zeitschriften/Serien") %]</a></li>
+    <li><a href="#only_articles">[% msg.maketext("Aufs&auml;tze") %]</a></li>
+    <li><a href="#only_online">[% msg.maketext("Online") %]</a></li>
+    <li><a href="#subjects">[% msg.maketext("Themengebiete") %]</a></li>
+  </ul>
+<div id="alltypes"><!-- Begin alle Typen -->
+[% IF user.is_authenticated %]
+[% autocompletion_type = user.get_autocompletion %]
+[% livesearch          = user.get_livesearch %]
+[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+})
+</script>
+[%   END %]
+[% END %]
+
+<h3>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %]</h3>
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+
+<input type="hidden" name="num"        value="50" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="author" />
+<input type="hidden" name="srto"       value="up" />
+<input type="hidden" name="jn" value="1" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"         value="1" />
+[% END %]
+
+[%# sysprofile%]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
+
+<table>
+<tr><td colspan="2"><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profile">
+
+[%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
+<option value="dbchoice"[%- IF prevprofile == 'dbchoice' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
+[%  END %]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option><option value=""></option>
+<option value="">[% msg.maketext("Profile") %]:</option><option value=""></option>
+
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all %]
+<option value="[% unit.orgunitname %]"
+[%- IF prevprofile == unit.orgunitname -%]
+ selected="selected"
+[%- END -%]
+>- [% unit.description %]</option>
+[% END %]
+</select></td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+</table>
+
+</form>
+
+[% IF queries.size > 0 %]
+<p />
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
+<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
+
+
+<table>
+<tr>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
+</tr>
+</table>
+</form>
+[% END %]
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+</div><!-- End alle Typen -->
+
+<div id="only_serials"><!-- Begin Serials-->
+
+[% IF spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% END %]
+
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.journalcount.chunk(-3).join('.')}","${alldbs}") %]</h3>
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+
+<input type="hidden" name="num"  value="50" />
+<input type="hidden" name="page"      value="1" />
+
+<input type="hidden" name="srt"  value="author" />
+<input type="hidden" name="srto" value="up" />
+<input type="hidden" name="jn" value="1" />
+<input type="hidden" name="st"        value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"      value="1" />
+[% END %]
+
+
+
+<input type="hidden" name="ftyp"      value="Zeitschrift_Serie" />
+<input type="hidden" name="bftyp"     value="AND" />
+
+<table>
+<tr><td colspan="2"><input id="input_box_serials" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profile">
+
+[%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
+<option value="dbchoice"[%- IF prevprofile == 'dbchoice' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
+[%  END %]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option><option value=""></option>
+<option value="">[% msg.maketext("Fakultäten") %]:</option><option value=""></option>
+
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all %]
+<option value="[% unit.orgunitname %]"
+[%- IF prevprofile == unit.orgunitname -%]
+ selected="selected"
+[%- END -%]
+>- [% unit.description %]</option>
+[% END %]
+</select></td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+</table>
+
+</form>
+
+[% IF queries.size > 0 %]
+<p />
+
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
+<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
+
+
+<table>
+<tr>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
+</tr>
+</table>
+
+</form>
+[% END %]
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+</div><!-- End Serials -->
+
+<div id="only_articles"><!-- Begin nur Aufsaetze -->
+
+[% IF spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% END %]
+
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articlecount.chunk(-3).join('.')}","${alldbs}") %]</h3>
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+
+<input type="hidden" name="num"  value="50" />
+<input type="hidden" name="page"      value="1" />
+
+<input type="hidden" name="srt"  value="author" />
+<input type="hidden" name="srto" value="up" />
+<input type="hidden" name="jn" value="1" />
+<input type="hidden" name="st"        value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"      value="1" />
+[% END %]
+
+
+
+<input type="hidden" name="ftyp"      value="Aufsatz" />
+<input type="hidden" name="bftyp"     value="AND" />
+
+<table>
+<tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profile">
+
+[%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
+<option value="dbchoice"[%- IF prevprofile == 'dbchoice' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
+[%  END %]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option><option value=""></option>
+<option value="">[% msg.maketext("Fakultäten") %]:</option><option value=""></option>
+
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all %]
+<option value="[% unit.orgunitname %]"
+[%- IF prevprofile == unit.orgunitname -%]
+ selected="selected"
+[%- END -%]
+>- [% unit.description %]</option>
+[% END %]
+</select></td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+</table>
+
+</form>
+
+[% IF queries.size > 0 %]
+<p />
+
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
+<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
+
+
+<table>
+<tr>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
+</tr>
+</table>
+
+</form>
+[% END %]
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+
+</div><!-- End nur Aufsaetze -->
+
+<div id="only_online"><!-- Begin nur Online -->
+
+[% IF spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% END %]
+
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.digitalcount.chunk(-3).join('.')}","${alldbs}") %]</h3>
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+
+<input type="hidden" name="num"  value="50" />
+<input type="hidden" name="page"      value="1" />
+
+<input type="hidden" name="srt"  value="author" />
+<input type="hidden" name="srto" value="up" />
+<input type="hidden" name="jn" value="1" />
+<input type="hidden" name="st"        value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"      value="1" />
+[% END %]
+
+
+
+<input type="hidden" name="ftyp"      value="E-Medien mit Online-Zugriff" />
+<input type="hidden" name="bftyp"  value="AND" />
+
+<table>
+<tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;<select name="profile">
+
+[%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
+<option value="dbchoice"[%- IF prevprofile == 'dbchoice' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
+[%  END %]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option><option value=""></option>
+<option value="">[% msg.maketext("Fakultäten") %]:</option><option value=""></option>
+
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all %]
+<option value="[% unit.orgunitname %]"
+[%- IF prevprofile == unit.orgunitname -%]
+ selected="selected"
+[%- END -%]
+>- [% unit.description %]</option>
+[% END %]
+</select></td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+</table>
+
+</form>
+
+[% IF queries.size > 0 %]
+<p />
+
+<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
+<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
+
+
+<table>
+<tr>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
+</tr>
+</table>
+
+</form>
+[% END %]
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+
+</div><!-- End nur Online -->
+
+<div id="subjects"><!-- Begin Themengebiete -->
+
+<p />
+<ul class="subjectlist">
+[%- FOREACH subject IN user.get_subjects -%]
+[% titlecount = 0 ;
+   thisclassifications = user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id});
+   FOREACH classification IN thisclassifications;
+     titlecount = titlecount + thisbklist.${classification};
+  END ;
+%]
+<li><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('litlist_loc') %]/subject/[% subject.id %].html">[% subject.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,subject.litlistcount.public) %])</li>
+[% END %]
+</ul>
+</div><!-- End Themengebiete -->
+
+</div> <!-- End jquery_tabs -->
+
+</div><!-- End searchform_types -->
+
+</div><!-- End searchform -->
+
+[% PROCESS common/subtemplate name="searchform_bottom" %]
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

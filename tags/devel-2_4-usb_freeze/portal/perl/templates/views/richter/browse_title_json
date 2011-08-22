@@ -1,0 +1,14 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[% to_json(browselist) %]

@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_endnote
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im Endnote-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
+[% IF NOT data_only %]
+<div style="float:left; width: 65%;">
+<pre>
+[% END %]
+[%- FOREACH record IN recordlist.load_full_records.get_records -%]
+[% record.to_endnote %]
+
+[% END %]
+[% IF NOT data_only %]
+</pre>
+</div>
+[% END %]

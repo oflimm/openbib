@@ -1,0 +1,141 @@
+[%#-
+#######################################################################
+#
+# Templatename: databaseprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle und weiterer
+# Eingabeelemte fuer die Erstellung und Bearbeitung eigener
+# Katalogsuchprofile
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_fak(yourform, checked, fak) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(fak) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="user_navigation" active_submenu="databaseprofile" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile/[% profileid %]" enctype="application/x-www-form-urlencoded">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Derzeit angezeigtes Profil") %]: <b>[% profilname %]</b></th></tr>
+<tr><td class="boxedclear">
+
+<table>
+<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
+</table>
+
+[%# USE dumper;dumper.dump(catdb)%]
+[%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
+<p />
+<table>
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
+
+[%- FOREACH category = config.get_orgunitinfo_overview(sysprofile).all -%]
+[%- is_empty = 1 ;
+    FOREACH db = catdb ;
+      IF db.category == category.description && db.db != '' ; 
+        is_empty = 0 ;
+      END ;
+    END ;
+-%]
+[%- IF NOT is_empty -%]
+[%- IF category.nr >= 1 -%]
+<tr><td colspan="[% colspan %]">&nbsp;</td></tr>
+[%- END -%]
+
+<tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.description %]</b></td></tr>
+
+[%- FOREACH db = catdb -%]
+[%- IF db.category == category.description -%]
+[%- IF db.column == 1 -%]
+<tr><td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+[%- END -%]
+[%- IF db.column > 1 && db.column < maxcolumn -%]
+[%- IF db.db -%]
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+[%- IF db.column == maxcolumn -%]
+[%- IF db.column != 1 -%]
+
+[%- IF db.db -%]
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+</tr>
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+</table>
+<p />
+<table>
+<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
+</table>
+
+</td></tr>
+</table>
+<p />
+
+</form>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]
+

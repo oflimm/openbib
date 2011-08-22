@@ -1,0 +1,13 @@
+<h6 class="vlist">[% msg.maketext("Nutzung") %]</h6>
+<ul class="vlist">
+[% IF active_submenu == "titles" %]
+  <li class="active"><strong>[% msg.maketext("Titel pro Katalog") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('title_loc') %]/popular.html?l=[% lang %]">[% msg.maketext("Titel pro Katalog") %]</a></li>
+[% END %]
+[% IF active_submenu == "databases" %]
+  <li class="active"><strong>[% msg.maketext("Meistgenutzte Kataloge") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/popular_databases.html?l=[% lang %]">[% msg.maketext("Meistgenutzte Kataloge") %]</a></li>
+[% END %]
+</ul>

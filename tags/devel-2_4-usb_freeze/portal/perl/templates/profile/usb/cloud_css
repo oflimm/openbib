@@ -1,0 +1,37 @@
+<style type="text/css">
+.cloud {
+  margin:0;
+  padding:0;
+}
+.cloud li {
+  margin:0;
+  padding:0;
+  display: inline;
+}
+.cloud span {
+  position: absolute;
+  left: -999px;
+  width: 990px;
+}
+.cloud .fast-nicht-genutzt {
+  font-size: 1,4em;
+}
+.cloud .nicht-sehr-genutzt {
+  font-size: 2.0em;
+}
+.cloud .etwas-genutzt {
+  font-size: 2.6em;
+}
+.cloud .genutzt {
+  font-size: 3em;
+}
+.cloud .sehr-viel-genutzt {
+  font-size: 3.8em;
+}
+.cloud .ultra-genutzt {
+  font-size: 4.4em;
+}
+.cloud .am-meisten-genutzt {
+  font-size: 4.8em;
+}
+</style>

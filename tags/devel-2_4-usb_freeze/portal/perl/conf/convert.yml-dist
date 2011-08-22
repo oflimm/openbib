@@ -1,0 +1,995 @@
+convtab:
+##############################################################################
+# Standardwerte
+##############################################################################
+  default:
+    local_enrichmnt:
+      '4100': 1        # BK
+      '4110': 1        # TOC-URL
+      '4120': 1        # eBook-URL
+      '4201': 1        # Wikipedia
+      '4202': 1        # Wikipedia
+      '4203': 1        # Wikipedia
+      '4300': 1        # Fremde Schlagworte
+    blacklist_person:
+      '0100': 1        # Aufnahmedatum
+#      '0101': 1        # Aenderungsdatum
+    blacklist_corporatebody:
+      '0100': 1        # Aufnahmedatum
+#      '0101': 1        # Aenderungsdatum
+    blacklist_classification:
+      '0100': 1        # Aufnahmedatum
+#      '0101': 1        # Aenderungsdatum
+    blacklist_subject:
+      '0100': 1        # Aufnahmedatum
+#      '0101': 1        # Aenderungsdatum
+    blacklist_title:
+     #'0002': 1        # Aufnahmedatum
+     #'0003': 1        # Aenderungsdatum        
+      '0005': 1        # Inventarnummer (in holding vorhanden)
+      '0009': 1        # Herkunft
+     #'0010': 1        # Fremdnummer
+      '0011': 1        # Lokale ID
+      '0014': 1        # Signatur (in holding vorhanden)
+     #'0015': 1        # Sprache
+      '0016': 1        # Standort (in holding vorhanden)
+      '0027': 1        # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
+      '0028': 1        # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
+      '0036': 1        # Erscheinungsform
+      '0038': 1        # Veroeffentlichungsart
+      '0042': 1        # Publikationsstatus
+      '0150': 1        # HBZ Personen-ID
+      '0453': 1        # Id des GT
+      '0454': 1        # Ansetzungsform GT
+     #'0572': 1        # ZDB-ID
+      '0715': 1        # Unbekannt
+     #'0800': 1        # Medianart (TODO: spaeter pro Pool Listen konfigurierbar machen)
+      '0802': 1        # Medien-Zustand
+      '0905': 1        # RSWK-ID
+      '0910': 1        # RSWK-ID
+      '0915': 1        # RSWK-ID
+      '0920': 1        # RSWK-ID
+      '0925': 1        # RSWK-ID
+      '0930': 1        # RSWK-ID
+      '0935': 1        # RSWK-ID
+      '0940': 1        # RSWK-ID
+      '0955': 1        # RSWK-ID
+      '1000': 1        # Titel beginnend mit 1000
+      '1014': 1        # Unbekannt
+      '1025': 1        # Lokale ZDB-ID
+      '1026': 1        # ZDB Jason-ID
+      '1042': 1        # ZDB Prio
+      '1200': 1        # Bestandzusammenfassung (in holding verwenden wir 1204)
+      '1201': 1        # Bestandsluecken (in holding verwenden wir 1204)
+      '1202': 1        # Bemerkungen zum Bestand
+     #'1299': 1        # ZDB Mikro
+      '1527': 1        # ID der Parallelausgabe
+      '1529': 1        # Fortlaufende Beilage Titel?
+      '1530': 1        # ID des Bezugswerkes
+      '1531': 1        # ID der frueheren Ausgabe
+      '1532': 1        # ID fruehrer Hinweis
+      '1533': 1        # ID Titelkonkordanz
+     #'1534': 1        # ID spaeterer Hinweis ?
+     #'1600': 1        # Hinweis auf Pseudo-Orte (TODO: Zweigstellen, Lesesaaltheke etc.)
+      '1671': 1        # Verbreitungsort
+      '1672': 1        # Hochschulort (z.B. Paris)
+     #'1673': 1        # Veranstaltungsort (TODO)
+      '1674': 1        # Veranstaltungsjahr (TODO)
+      '1675': 1        # ID des Hochschulortes
+      '1676': 1        # ID des Veranstaltungsortes
+      '1677': 1        # ID des Erscheinungsortes
+      '1679': 1        # Jahr Orginal
+      '1710': 1        # MESH-Ketten
+      '1751': 1        # Nicht mehr existent
+      '1800': 1        # Nebeneintragung 1. Person
+      '1802': 1        # Nebeneintragung 2. Koerperschaft
+      '1804': 1        # Nebeneintragung 1. EST
+      '1805': 1        # Nebeneintragung 1. Titelansetzung
+      '1806': 1        # Nebeneintragung 1. Titel in Mischform
+      '1814': 1        # Nicht mehr existent
+      '1836': 1        # Nicht mehr existent
+      '1848': 1        # Nicht mehr existent
+      '1850': 1        # Nebeneintragung 1. Person ID
+      '1852': 1        # Nebeneintragung 1. Koerperschaft ID
+      '1978': 1        # Nicht mehr existent
+      '2000': 1        # Urheber HBZ
+      '2001': 1        # HBZ-ID der Sonstig beteiligten Koerperschaft
+      '2010': 1        # RSWK HBZ
+      '2011': 1        # RSWK HBZ
+      '2012': 1        # RSWK HBZ
+      '2013': 1        # RSWK HBZ
+      '2014': 1        # RSWK HBZ
+      '2015': 1        # RSWK HBZ
+      '2016': 1        # RSWK HBZ
+      '2017': 1        # RSWK HBZ
+      '2018': 1        # RSWK HBZ
+      '2019': 1        # RSWK HBZ
+      '2651': 1        # URL lokal
+      '2655': 1        # URL lokal
+      '3000': 1        # Erwerbung Intern
+      '3002': 1        # ZDB TitelID alt
+      '3003': 1        # ZDB lokaleID alt
+      '3004': 1        # Kommentar MAB2
+      '3005': 1        # IntNotEx
+      '3006': 1        # IntNotLok (z.B. retro)
+      '3007': 1        # Unbekannt (Standort?)
+      '3750': 1        # Nicht mehr existent
+      '4711': 1        # Unbekannt
+     #'4712': 1        # Markierung Econbiz (wi, so, wiso)
+     #'4715': 1        # Markierung EDZ
+     #'4717': 1        # Markierung Fachbibliothek Versicherungswissenschaft
+     #'4720': 1        # Testdaten Inhaltsverzeichnis-Scans
+     #'4725': 1        # Temporaeres Schlagwort
+# Kategorien, die in den einzelnen Normdaten indexiert werden
+    inverted_person:
+      '0001':         # Ansetzung
+        ft: 1
+        string: 1
+        index:
+          'person': 1
+          'personstring': 1
+          'freesearch': 1
+      '0102':         # Verweisform
+        ft: 1
+        string: 1
+        index:
+          'person': 1
+          'freesearch': 1
+    inverted_corporatebody:
+      '0001':         # Ansetzung
+        ft: 1
+        string: 1
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0102':         # Verweisform
+        ft: 1
+        string: 1
+        index:
+          'corporatebody': 1
+          'freesearch': 1
+      '0103':         # Abkuerzung der Verweisform
+        ft: 1
+        string: 1
+        index:
+          'corporatebody': 1
+          'freesearch': 1
+      '0110':         # Abkuerzung der Ansetzung
+        ft: 1
+        string: 1
+        index:
+          'corporatebody': 1
+          'freesearch': 1
+      '0111':         # Frueherer/Spaeterer Name
+        ft: 1
+        string: 1
+        index:
+          'corporatebody': 1
+          'freesearch': 1
+    inverted_holding:
+      '0014':         # Signatur
+        ft: 1
+        string: 1
+        index:
+          'mark': 1
+          'markstring': 1
+          'freesearch': 1
+    inverted_classification:
+      '0001':         # Ansetzung
+        ft: 1
+        string: 1
+        index:
+          'classification': 1
+          'classificationstring': 1
+          'freesearch': 1
+      '0002':         # Ansetzung
+        ft: 1
+        string: 1
+        index:
+          'classification': 1
+          'freesearch': 1
+      '0102':         # Stichwort
+        ft: 1
+        string: 1
+        index:
+          'classification': 1
+          'freesearch': 1
+      '0103':         # Verweisform
+        ft: 1
+        string: 1
+        index:
+          'classification': 1
+          'freesearch': 1
+    inverted_subject:
+      '0001':         # Ansetzung
+        ft: 1
+        string: 1
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+      '0102':         # Verweisform
+        ft: 1
+        string: 1
+        index:
+          'subject': 1
+          'freesearch': 1
+    inverted_title:
+      'tag':
+        index:
+          'tag': 1
+          'tagstring': 1
+          'freesearch': 1
+        facet:
+          'tag': 1      
+      'litlist':
+        index:
+          'litlist': 1
+          'litliststring': 1
+          'freesearch': 1
+        facet:
+          'litlist': 1
+      '0002':         # Aufnahmedatum
+        string: 1
+      '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+        index:
+          'subid': 1
+      '0089':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0015':
+        index:
+          'language': 1
+          'languagestring': 1
+          'freesearch': 1
+        facet:
+          'language': 1
+      '0100':
+        facet:
+          'person': 1
+      '0101':
+        facet:
+          'person': 1
+      '0102':
+        facet:
+          'person': 1
+      '0103':
+        facet:
+          'person': 1
+      '0200':
+        facet:
+          'corporatebody': 1
+      '0201':
+        facet:
+          'corporatebody': 1
+      '0103':
+        facet:
+          'person': 1
+      '0304':         # EST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0310':         # AST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'freesearch': 1
+          'titlestring': 1
+      '0331':         # HST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0335':         # Zusatz zum HST
+        ft: 1
+        string: 0
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0341':         # PSTVorlage
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0361':       # Vorlage beigefuegtes Werk
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0370':         # WST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0413':         # Drucker
+        string: 1
+      '0424':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+      '0425':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+        facet:
+          'year': 1
+      '0451':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0540':         # ISBN
+        string: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0543':         # ISSN
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0553':         # ISBN
+        string: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0590':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0700':
+        facet:
+          'classification': 1
+      '0710':
+        facet:
+          'subject': 1
+      '0750':         # Abstract
+        index:
+          'content': 1
+          'freesearch': 1
+      '0800':         # Medienart
+        string: 1
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
+          'freesearch': 1
+        facet:
+          'mediatype': 1
+      '0902':
+        facet:
+          'subject': 1
+      '0907':
+        facet:
+          'subject': 1
+      '0912':
+        facet:
+          'subject': 1
+      '0917':
+        facet:
+          'subject': 1
+      '0922':
+        facet:
+          'subject': 1
+      '0927':
+        facet:
+          'subject': 1
+      '0932':
+        facet:
+          'subject': 1
+      '0937':
+        facet:
+          'subject': 1
+      '0942':
+        facet:
+          'subject': 1
+      '0947':
+        facet:
+          'subject': 1
+      '4100':         # BK
+        index:
+          't4100': 1
+        string: 1
+      '4201':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4201':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4203':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4300':         # Fremde Schlagworte
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+          't4300': 1
+      '5050':         # Bibkey
+        index:
+          'bkey': 1
+          'freesearch': 1
+        string: 1
+      '5051':         # Bibkey Base
+        string: 1
+# Kategorien fuer die Anzeige in der Kurztitelanzeige
+    listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
+      '0100': 1
+      '0101': 1
+      '0102': 1
+      '0103': 1
+      '0200': 1
+      '0201': 1
+      '0310': 1
+      '0331': 1
+      '0403': 1
+      '0412': 1
+      '0424': 1
+      '0425': 1
+      '0540': 1
+      '1203': 1
+      '4110': 1
+      '4120': 1
+# In die initiale Volltextsuche werden neben den bereits definierten
+# Normdateikategorien inverted_*_ref folgende weitere Kategorien aus dem
+# Titelbereich einbezogen. So koennen z.B. bestimmte im Titelbereich
+# angesiedelte Kategorien in den anderen Normdaten-Klassen person, corporatebody oder
+# subject recherchierbar gemacht werden.
+    search:
+      '0004':
+        subid: 1    # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+      '0800':       # ArtInhalt
+        mediatype: 1
+      '0425':       # Erschjahr
+        year: 1
+        yearft: 1
+      '0089':       # Bandkennzeichen
+        source: 1
+      '0451':       # Quelle
+        source: 1
+      '0590':       # Serie/Band
+        source: 1
+      '0304':       # EST
+        title: 1
+        titlestring: 1
+      '0310':       # AST
+        title: 1
+        titlestring: 1
+      '0331':       # HST
+        title: 1
+        titlestring: 1
+      '0335':       # Zusatz zum HST
+        title: 1
+        titlestring: 1
+      '0341':       # PSTVorlage
+        title: 1
+        titlestring: 1
+      '0361':       # Vorlage beigefuegtes Werk
+        title: 1
+        titlestring: 1
+      '0370':       # WST
+        title: 1
+        titlestring: 1
+      '0750':       # Abstract
+        content: 1
+      '4201':       # Wikipedia
+        content: 1
+      '4202':       # Wikipedia
+        content: 1
+      '4203':       # Wikipedia
+        content: 1
+      '0540':       # ISBN
+        isbn: 1
+      '0553':       # ArtikelNr als 13-stellige ISBN
+        isbn: 1
+      '0543':       # ISSN
+        issn: 1
+      '0014':
+        mark: 1
+      '1203':
+        mark: 1
+      '4300':       # Fremde Schlagworte
+        subject: 1
+      '0413':       # Drucker
+        person: 1
+##############################################################################
+# Sonderanpassungen fuer einzelne Kataloge
+##############################################################################
+  alff:
+    listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
+      '0100': 1
+      '0101': 1
+      '0102': 1
+      '0103': 1
+      '0200': 1
+      '0201': 1
+      '0310': 1
+      '0331': 1
+      '0403': 1
+      '0412': 1
+      '0424': 1
+      '0425': 1
+      '0540': 1
+      '1203': 1
+      '2662': 1
+  ebooks:
+    listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
+      '0100': 1
+      '0101': 1
+      '0102': 1
+      '0103': 1
+      '0200': 1
+      '0201': 1
+      '0310': 1
+      '0331': 1
+      '0403': 1
+      '0412': 1
+      '0424': 1
+      '0425': 1
+      '0540': 1
+      '0662': 1
+      '1203': 1
+  inst001:
+    blacklist_title:
+     #'0002': 1        # Aufnahmedatum
+     #'0003': 1        # Aenderungsdatum        
+      '0005': 1        # Inventarnummer (in holding vorhanden)
+      '0009': 1        # Herkunft
+     #'0010': 1        # Fremdnummer
+      '0011': 1        # Lokale ID
+      '0014': 1        # Signatur (in holding vorhanden)
+     #'0015': 1        # Sprache
+      '0016': 1        # Standort (in holding vorhanden)
+      '0027': 1        # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
+      '0028': 1        # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
+      '0036': 1        # Erscheinungsform
+      '0038': 1        # Veroeffentlichungsart
+      '0042': 1        # Publikationsstatus
+      '0150': 1        # HBZ Personen-ID
+      '0453': 1        # Id des GT
+      '0454': 1        # Ansetzungsform GT
+     #'0572': 1        # ZDB-ID
+      '0715': 1        # Unbekannt
+      '0800': 1        # Medianart (TODO: spaeter pro Pool Listen konfigurierbar machen)
+      '0802': 1        # Medien-Zustand
+      '0905': 1        # RSWK-ID
+      '0910': 1        # RSWK-ID
+      '0915': 1        # RSWK-ID
+      '0920': 1        # RSWK-ID
+      '0925': 1        # RSWK-ID
+      '0930': 1        # RSWK-ID
+      '0935': 1        # RSWK-ID
+      '0940': 1        # RSWK-ID
+      '0955': 1        # RSWK-ID
+      '1000': 1        # Titel beginnend mit 1000
+      '1014': 1        # Unbekannt
+      '1025': 1        # Lokale ZDB-ID
+      '1026': 1        # ZDB Jason-ID
+      '1042': 1        # ZDB Prio
+      '1200': 1        # Bestandzusammenfassung (in holding verwenden wir 1204)
+      '1201': 1        # Bestandsluecken (in holding verwenden wir 1204)
+      '1202': 1        # Bemerkungen zum Bestand
+     #'1299': 1        # ZDB Mikro
+      '1527': 1        # ID der Parallelausgabe
+      '1529': 1        # Fortlaufende Beilage Titel?
+      '1530': 1        # ID des Bezugswerkes
+      '1531': 1        # ID der frueheren Ausgabe
+      '1532': 1        # ID fruehrer Hinweis
+      '1533': 1        # ID Titelkonkordanz
+     #'1534': 1        # ID spaeterer Hinweis ?
+     #'1600': 1        # Hinweis auf Pseudo-Orte (TODO: Zweigstellen, Lesesaaltheke etc.)
+      '1671': 1        # Verbreitungsort
+      '1672': 1        # Hochschulort (z.B. Paris)
+     #'1673': 1        # Veranstaltungsort (TODO)
+      '1674': 1        # Veranstaltungsjahr (TODO)
+      '1675': 1        # ID des Hochschulortes
+      '1676': 1        # ID des Veranstaltungsortes
+      '1677': 1        # ID des Erscheinungsortes
+      '1679': 1        # Jahr Orginal
+      '1710': 1        # MESH-Ketten
+      '1751': 1        # Nicht mehr existent
+      '1800': 1        # Nebeneintragung 1. Person
+      '1802': 1        # Nebeneintragung 2. Koerperschaft
+      '1804': 1        # Nebeneintragung 1. EST
+      '1805': 1        # Nebeneintragung 1. Titelansetzung
+      '1806': 1        # Nebeneintragung 1. Titel in Mischform
+      '1814': 1        # Nicht mehr existent
+      '1836': 1        # Nicht mehr existent
+      '1848': 1        # Nicht mehr existent
+      '1850': 1        # Nebeneintragung 1. Person ID
+      '1852': 1        # Nebeneintragung 1. Koerperschaft ID
+      '1978': 1        # Nicht mehr existent
+      '2000': 1        # Urheber HBZ
+      '2001': 1        # HBZ-ID der Sonstig beteiligten Koerperschaft
+      '2010': 1        # RSWK HBZ
+      '2011': 1        # RSWK HBZ
+      '2012': 1        # RSWK HBZ
+      '2013': 1        # RSWK HBZ
+      '2014': 1        # RSWK HBZ
+      '2015': 1        # RSWK HBZ
+      '2016': 1        # RSWK HBZ
+      '2017': 1        # RSWK HBZ
+      '2018': 1        # RSWK HBZ
+      '2019': 1        # RSWK HBZ
+      '2651': 1        # URL lokal
+      '2655': 1        # URL lokal
+      '3000': 1        # Erwerbung Intern
+      '3002': 1        # ZDB TitelID alt
+      '3003': 1        # ZDB lokaleID alt
+      '3004': 1        # Kommentar MAB2
+      '3005': 1        # IntNotEx
+      '3006': 1        # IntNotLok (z.B. retro)
+      '3007': 1        # Unbekannt (Standort?)
+      '3750': 1        # Nicht mehr existent
+      '4711': 1        # Unbekannt
+     #'4712': 1        # Markierung Econbiz (wi, so, wiso)
+     #'4715': 1        # Markierung EDZ
+     #'4717': 1        # Markierung Fachbibliothek Versicherungswissenschaft
+     #'4720': 1        # Testdaten Inhaltsverzeichnis-Scans
+     #'4725': 1        # Temporaeres Schlagwort
+  kapsel:
+    inverted_classification:
+      '0001':         # Ansetzung
+        ft: 1
+        index: 1
+        string: 1
+      '0102':         # Verweisform
+        ft: 1
+        index: 1
+        string: 1
+    inverted_subject:
+      '0001':         # Ansetzung
+        ft: 1
+        index: 1
+        string: 1
+      '0103':         # Verweisform
+        ft: 1
+        index: 1
+        string: 1
+  nationallizenzen:
+    search:
+      '0089':       # Bandkennzeichen
+        source: 1
+      '0451':       # Gesamttitel
+        source: 1
+      '0508':       # Sammlung
+        source: 1
+      '0590':       # Serie/Band
+  richter:
+    inverted_title:
+      'tag':
+        index:
+          'tag': 1
+          'tagstring': 1
+          'freesearch': 1
+        facet:
+          'tag': 1      
+      'litlist':
+        index:
+          'litlist': 1
+          'litliststring': 1
+          'freesearch': 1
+        facet:
+          'litlist': 1
+      '0002':         # Aufnahmedatum
+        string: 1
+      '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+        index:
+          'subid': 1
+      '0089':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0015':
+        index:
+          'language': 1
+          'languagestring': 1
+          'freesearch': 1
+        facet:
+          'language': 1
+      '0100':
+        facet:
+          'person': 1
+      '0101':
+        facet:
+          'person': 1
+      '0102':
+        facet:
+          'person': 1
+      '0103':
+        facet:
+          'person': 1
+      '0200':
+        facet:
+          'corporatebody': 1
+      '0201':
+        facet:
+          'corporatebody': 1
+      '0103':
+        facet:
+          'person': 1
+      '0304':         # EST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0310':         # AST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'freesearch': 1
+          'titlestring': 1
+      '0331':         # HST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0335':         # Zusatz zum HST
+        ft: 1
+        string: 0
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0341':         # PSTVorlage
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0361':       # Vorlage beigefuegtes Werk
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0370':         # WST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0413':         # Drucker
+        string: 1
+      '0424':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+      '0425':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+        facet:
+          'year': 1
+      '0451':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0540':         # ISBN
+        string: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0543':         # ISSN
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0553':         # ISBN
+        string: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0590':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0700':
+        facet:
+          'classification': 1
+      '0710':
+        facet:
+          'subject': 1
+      '0720':         # Provenienz (Richter-Bibliothek)
+        index:
+           'freesearch': 1
+           't0720': 1
+        string: 1
+      '0750':         # Abstract
+        index:
+          'content': 1
+          'freesearch': 1
+      '0800':         # Medienart
+        string: 1
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
+          'freesearch': 1
+        facet:
+          'mediatype': 1
+      '0902':
+        facet:
+          'subject': 1
+      '0907':
+        facet:
+          'subject': 1
+      '0912':
+        facet:
+          'subject': 1
+      '0917':
+        facet:
+          'subject': 1
+      '0922':
+        facet:
+          'subject': 1
+      '0927':
+        facet:
+          'subject': 1
+      '0932':
+        facet:
+          'subject': 1
+      '0937':
+        facet:
+          'subject': 1
+      '0942':
+        facet:
+          'subject': 1
+      '0947':
+        facet:
+          'subject': 1
+      '4100':         # BK
+        index:
+          't4100': 1
+        string: 1
+      '4201':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4201':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4203':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4300':         # Fremde Schlagworte
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+          't4300': 1
+      '5050':         # Bibkey
+        index:
+          'bkey': 1
+          'freesearch': 1
+        string: 1
+      '5051':         # Bibkey Base
+        string: 1
+      '0501':         # Richterindiz
+        index:
+           'freesearch': 1
+      '0750':         # Abstract
+        index:
+           'freesearch': 1
+  einbaende:
+    search:
+      '0304':       # Werkzeug
+        source: 1
+# Kategorien fuer die Anzeige in der Kurztitelanzeige
+    listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
+      '0014': 1
+      '0101': 1
+      '0102': 1
+      '0200': 1
+      '0201': 1
+      '0304': 1
+      '0310': 1
+      '0331': 1
+      '0403': 1
+      '0412': 1
+      '0413': 1
+      '0424': 1
+      '0425': 1
+      '0435': 1
+      '0501': 1
+      '0508': 1
+      '0700': 1
+      '0710': 1
+      '0800': 1
+      '1203': 1
+  lesesaal:
+    listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
+      '0100': 1
+      '0101': 1
+      '0102': 1
+      '0103': 1
+      '0200': 1
+      '0201': 1
+      '0310': 1
+      '0331': 1
+      '0403': 1
+      '0412': 1
+      '0424': 1
+      '0425': 1
+      '0451': 1
+      '0540': 1
+      '1203': 1
+  umschlaege:
+    search:
+      '0412':       # Verlag
+        source: 1
+    inverted_title:
+      '0002':         # Aufnahmedatum
+        string: 1
+      '0304':         # EST
+        ft: 1
+        string: 1
+      '0310':         # AST
+        ft: 1
+        string: 1
+      '0331':         # HST
+        ft: 1
+        string: 1
+      '0335':         # Zusatz zum HST
+        ft: 1
+        string: 0
+      '0341':         # PSTVorlage
+        ft: 1
+        string: 1
+      '0370':         # WST
+        ft: 1
+        string: 1
+      '0412':         # Verlag *
+        string: 1
+      '0413':         # Drucker
+        string: 1
+      '0425':         # Erscheinungsjahr *
+        string: 1
+      '0540':         # ISBN
+        string: 1
+      '0800':         # Medienart
+        string: 1
+      '4100':         # BK
+        string: 1
+      '5050':         # Bibkey
+        string: 1
+      '5051':         # Bibkey Base
+        string: 1

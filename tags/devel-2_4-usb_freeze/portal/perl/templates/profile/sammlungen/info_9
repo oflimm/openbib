@@ -1,0 +1,83 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+      funcargs = { id => database, type => 9 } ;
+      resultlist = statistics.get_result(funcargs);
+%]
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="cloud" %] 
+
+<div class="content">
+<p />
+
+[% PROCESS common/subtemplate name="clouds_navigation" active=9 %] 
+
+<div class="content">
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Wolke der h&auml;ufigsten Erscheinungsjahre") %]</th></tr>
+<tr><td class="boxedclear">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.size > 5 -%]
+<ol class="cloud">
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% path_prefix %]/[% config.get('virtualsearch_loc') %]?profil=dbauswahl;ejahr=[% item %];ejahrop=eq" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen für diesen Katalog keine
+Wolke der Erscheinungsjahre anbieten.") %]
+[% END %]
+</td></tr>
+</table>
+<p />
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

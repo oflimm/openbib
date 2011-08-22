@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Navigations-Tabs fuer Uebersichtswolken
+#
+#######################################################################
+-%]
+<ul class="tabbingmenu">
+[% IF statistics.result_exists({ id => database, type => 3 })%]   <li><a [% IF active == 14 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('info_loc') %]/14?database=[% database %]" title="[% msg.maketext("Region") %]">[% msg.maketext("Region") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 4 })%]   <li><a [% IF active == 16 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('info_loc') %]/16?database=[% database %]" title="[% msg.maketext("Beruf / Weltanschauung") %]">[% msg.maketext("Beruf / Weltanschauung") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 5 })%]   <li><a [% IF active == 17 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('info_loc') %]/17?database=[% database %]" title="[% msg.maketext("Provenienz") %]">[% msg.maketext("Provenienz") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 6 })%]   <li><a [% IF active == 18 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('info_loc') %]/18?database=[% database %]" title="[% msg.maketext("Maler / Zeichner") %]">[% msg.maketext("Maler / Zeichner") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 9 })%]   <li><a [% IF active == 9 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('info_loc') %]/9?database=[% database %]" title="[% msg.maketext("Jahre") %]">[% msg.maketext("Jahre") %]</a></li>[% END %]
+[% IF statistics.result_exists({ id => database, type => 7 })%][% IF config.get('social_tagging') %]   <li><a [% IF active == 19 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('info_loc') %]/19?database=[% database %]" title="[% msg.maketext("Nutzer-Tags") %]">[% msg.maketext("Nutzer-Tags") %]</a></li>[% END %][% END %]
+[% IF statistics.result_exists({ id => database, type => 8 })%][% IF viewdbs.size == 1     %]   <li><a [% IF active == 40 %]class="active"[% END %] href="[% path_prefix %]/[% config.get('info_loc') %]/40?database=[% database %]" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>[% END %][% END %]
+</ul>

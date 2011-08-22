@@ -32,6 +32,7 @@
        isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
     END ;
 -%]
+
 <div style="float:right;">
 [%- PROCESS common/subtemplate name="title_html_images" -%]
 </div><!-- End Images -->
@@ -99,7 +100,7 @@ $(document).ready(function(){
 </div><!-- End TicTocs -->
 [% END %]
 
-[% IF same_records.get_size > 0 %]
+[% IF same_records.get_size == -10 %]
 <h2 class="nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
 
 <div id="same_records"><!-- Begin: Same records -->
@@ -111,13 +112,13 @@ $(document).ready(function(){
 <li>
    <div class="hit-details">
         <script type="text/javascript">
-            document.write('<h4><a href="javascript:ajaxpage(\'/portal/inst526/resource/title/[% same_record.database %]/[% same_record.id %].include\', \'DISPLAY_SEARCH_[% same_record.database %]_[% same_record.id %]\', \'Lade Detailanzeige\');">[% dbinfo.get('dbnames').${same_record.database}.short %]<\/a><\/h4>');
+            document.write('<h4><a href="javascript:ajaxpage(\'/portal/[% view %]/title/[% same_record.database %]/[% same_record.id %].include?l=de\', \'DISPLAY_SEARCH_SAME_[% same_record.database %]_[% same_record.id %]\', \'Lade Detailanzeige\');">[% dbinfo.get('dbnames').${same_record.database}.short %]<\/a><\/h4>');
         </script>
         <noscript>
-            <h4><a href="http://wwwtest.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/526/titel/index_ger.html?db=[% same_record.database %];id=[% same_record.id %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></h4>
+            <h4><a href="[% view_config.${view}.zms_title_url %]?l=de;view=[% view %];db=[% same_record.database %];id=[% same_record.id %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></h4>
         </noscript>
 
-        <div id="DISPLAY_SEARCH_[% same_record.database %]_[% same_record.id %]" style="margin-bottom:1.0em;"></div>
+        <div id="DISPLAY_SEARCH_SAME_[% same_record.database %]_[% same_record.id %]" style="margin-bottom:1.0em;"></div>
    </div>
 </li>
 [% END %]
@@ -150,7 +151,6 @@ $(document).ready(function(){
 </div><!-- End: Similar Records -->
 [% END %]
 
-</div><!-- End: Additional Title Info -->
 </div>
 <!-- Title ends here -->
 

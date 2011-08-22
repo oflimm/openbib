@@ -20,7 +20,7 @@
     END ;
  END ;
 
- IF normset.${"T5002"}.first.content.defined ;
+ IF normdata.${"T5002"}.first.content.defined ;
     Aquisition = 2 ;
  END ;
 %]
@@ -31,7 +31,7 @@
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH mex IN circulation %]
 [%-
-     mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normset.id}";
+     mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normdata.id}";
 
      IF     mex.Zweigstelle == 0 ;
 
@@ -73,9 +73,9 @@
         END ;
      END ;
 
-  title    = normset.${"T0331"}.first.content ;
-  IF  normset.${"T0310"}.first.content ;
-     title = normset.${"T0310"}.first.content ;
+  title    = normdata.${"T0331"}.first.content ;
+  IF  normdata.${"T0310"}.first.content ;
+     title = normdata.${"T0310"}.first.content ;
   END ;
 
 -%]
@@ -87,7 +87,7 @@
 <td class="circurl">
 [%
      IF mex.Ausleihurl %]
-   <a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+   <a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(mex.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF mex.Statuscode != 0 %]
      <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>
@@ -106,7 +106,7 @@
 <tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Erwerbungsstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 
 [% FOREACH mex IN circulation ;
-     mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normset.id}";
+     mex.Ausleihurl = "${mex.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID%3D${normdata.id}";
 %]
 <tr align="center"><td><a href="http://www.ub.uni-koeln.de/"
 target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>
@@ -123,7 +123,7 @@ target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>
 [%   END %]
 </td><td class="circurl">
 [%  IF mex.Ausleihurl %]
-   <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(mex.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF mex.Statuscode != 0 %]
      <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>

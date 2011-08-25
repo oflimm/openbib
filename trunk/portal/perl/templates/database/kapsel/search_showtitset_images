@@ -51,7 +51,7 @@
 <p><a id="cover_full_url" href="[% config.get('redirect_loc') %]/[% sessionID %]/534/[% cdm_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]" title="Zum Digitalisat des Titels in ContentDM" /></a><br/>[% cdmrecord.title %]</p>
   [% END %]
 
-  <span style="font-face:bold;font-size:0.8em;">Klicken Sie auf das Vorschaubild. Orientieren Sie sich im linken Frame anhand der laufenden Nummer (Bestandteil der Signatur hinter dem Komma). Weitere Infos.</span>
+  <span style="font-face:bold;font-size:0.8em;">Klicken Sie auf das Vorschaubild. Orientieren Sie sich im linken Frame anhand der laufenden Nummer (Bestandteil der Signatur hinter dem Komma). <a href="http://www.ub.uni-koeln.de/suchen/spezialkat/zeitungsausschnitte/informationen/index_ger.html" target="_blank">Weitere Infos.</a></span>
 [% ELSE %]
 
 [%   IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]

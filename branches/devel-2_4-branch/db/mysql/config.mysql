@@ -4,12 +4,13 @@
 
 drop table IF EXISTS databaseinfo;
 CREATE TABLE databaseinfo (
+ id          BIGINT AUTO_INCREMENT PRIMARY KEY,
 
 /* Generel Information */
  description TEXT,
  shortdesc   TEXT,
  system      TEXT, 
- dbname      VARCHAR(25) PRIMARY KEY,
+ dbname      VARCHAR(25) UNIQUE,
  sigel       VARCHAR(20),
  url         TEXT,
  use_libinfo BOOL,
@@ -26,7 +27,7 @@ CREATE TABLE databaseinfo (
  corporatebodyfile  VARCHAR(255),
  subjectfile        VARCHAR(255),
  classificationfile VARCHAR(255),
- holdingsfile       VARCHAR(255),
+ holdingfile        VARCHAR(255),
 
  autoconvert  BOOL,
  circ         BOOL,
@@ -45,161 +46,171 @@ CREATE TABLE databaseinfo (
  INDEX (active),
  INDEX (description(255))
 )
+ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
 drop table IF EXISTS libraryinfo;
 create table libraryinfo (
- dbname        VARCHAR(255) NOT NULL,
+ dbid          BIGINT NOT NULL,
+
  category      SMALLINT  NOT NULL,
  indicator     SMALLINT,
  content       TEXT NOT NULL,
- INDEX         (dbname),
+
+ CONSTRAINT `fk_library_db` FOREIGN KEY (`dbid`) REFERENCES `databaseinfo` (`id`),
+
  INDEX         (category),
  INDEX         (indicator),
  INDEX         (content(10)),
- INDEX         (dbname,category)
+ INDEX         (dbid,category)
 )
+ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 ;
 
-drop table IF EXISTS titcount;
-create table titcount (
- dbname VARCHAR(255),
- complete BIGINT,
- journal  BIGINT,
- article  BIGINT,
- online   BIGINT,
- 
- INDEX (dbname)
-);
+drop table IF EXISTS rssinfo;
+create table rssinfo (
+ id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ dbid        BIGINT NOT NULL,
+ type        SMALLINT,
+ subtype     SMALLINT,
+ subtypedesc TEXT,
+ active      TINYINT,
+
+ CONSTRAINT `fk_rss_db` FOREIGN KEY (`dbid`) REFERENCES `databaseinfo` (`id`),
+ INDEX (type),
+ INDEX (subtype)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
 drop table IF EXISTS profileinfo;
 CREATE TABLE profileinfo (
- profilename VARCHAR(20),
+ id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+ profilename VARCHAR(20) NOT NULL UNIQUE,
  description TEXT,
 
  INDEX (profilename)
 )
+ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
-drop table IF EXISTS orgunitdbs;
-CREATE TABLE orgunitdbs (
- profilename VARCHAR(20) NOT NULL,
- orgunitname VARCHAR(20) NOT NULL,
- dbname      VARCHAR(255) NOT NULL,
-
- INDEX(profilename),
- INDEX(profilename,orgunitname),
- INDEX(dbname)
-)
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
-;
-
-drop table IF EXISTS orgunitinfo;
 drop table IF EXISTS orgunitinfo;
 CREATE TABLE orgunitinfo (
+ id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ profileid   BIGINT NOT NULL,
+
  orgunitname VARCHAR(20) NOT NULL,
- profilename VARCHAR(20) NOT NULL,
  description TEXT,
  nr          INT,
 
+ CONSTRAINT `fk_orgunit_profile` FOREIGN KEY (`profileid`) REFERENCES `profileinfo` (`id`),
  INDEX (orgunitname),
- INDEX (nr),
- INDEX (profilename)
+ INDEX (nr)
 )
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS orgunit_db;
+CREATE TABLE orgunit_db (
+ orgunitid   BIGINT NOT NULL,
+ dbid        BIGINT NOT NULL,
+
+ CONSTRAINT `fk_orgunit_db_orgunit` FOREIGN KEY (`orgunitid`) REFERENCES `orgunitinfo` (`id`),
+ CONSTRAINT `fk_orgunit_db_db` FOREIGN KEY (`dbid`) REFERENCES `databaseinfo` (`id`)
+)
+ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
 drop table IF EXISTS viewinfo;
 CREATE TABLE viewinfo (
- viewname    VARCHAR(20),
+ id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+ viewname    VARCHAR(20) UNIQUE,
  description TEXT,
- rssfeed     BIGINT,
+ rssid       BIGINT,
  start_loc   TEXT,
  servername  TEXT,
- profilename VARCHAR(20),
+ profileid   BIGINT NOT NULL,
  stripuri    TINYINT(4),
  joinindex   TINYINT(4),
  active      BOOL,
 
+ CONSTRAINT `fk_viewinfo_profile` FOREIGN KEY (`profileid`) REFERENCES `profileinfo` (`id`),
+ CONSTRAINT `fk_viewinfo_rssid` FOREIGN KEY (`rssid`) REFERENCES `rssinfo` (`id`),
+
  INDEX (viewname)
 )
+ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
-drop table IF EXISTS viewdbs;
-CREATE TABLE viewdbs (
- viewname VARCHAR(20),
- dbname   VARCHAR(255),
+drop table IF EXISTS view_db;
+CREATE TABLE view_db (
+ viewid   BIGINT NOT NULL,
+ dbid     BIGINT NOT NULL,
 
- INDEX(viewname),
- INDEX(dbname)
+ CONSTRAINT `fk_view_db_view` FOREIGN KEY (`viewid`) REFERENCES `viewinfo` (`id`),
+ CONSTRAINT `fk_view_db_db` FOREIGN KEY (`dbid`) REFERENCES `databaseinfo` (`id`)
 )
+ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
-drop table IF EXISTS viewrssfeeds;
-CREATE TABLE viewrssfeeds (
- viewname VARCHAR(20),
- rssfeed   BIGINT NOT NULL,
+drop table IF EXISTS view_rss;
+CREATE TABLE view_rss (
+ viewid    BIGINT NOT NULL,
+ rssid     BIGINT NOT NULL,
 
- INDEX(viewname),
- INDEX(rssfeed)
+ CONSTRAINT `fk_view_rss_view` FOREIGN KEY (`viewid`) REFERENCES `viewinfo` (`id`),
+ CONSTRAINT `fk_view_rss_rss` FOREIGN KEY (`rssid`) REFERENCES `rssinfo` (`id`)
 )
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
-;
-
-drop table IF EXISTS rssfeeds;
-create table rssfeeds (
- id          BIGINT AUTO_INCREMENT PRIMARY KEY,
- dbname      VARCHAR(255) NOT NULL,
- type        SMALLINT,
- subtype     SMALLINT,
- subtypedesc TEXT,
- active      TINYINT,
-
- INDEX (dbname),
- INDEX (type),
- INDEX (subtype)
-)
+ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
 drop table IF EXISTS rsscache;
 create table rsscache (
-dbname  VARCHAR(255) NOT NULL,
+rssid   BIGINT NOT NULL,
 tstamp  TIMESTAMP,
 type    TINYINT  NOT NULL,
 subtype SMALLINT,
 content TEXT,
-INDEX   (dbname),
+
+CONSTRAINT `fk_rsscache_rss` FOREIGN KEY (`rssid`) REFERENCES `rssinfo` (`id`),
 INDEX   (tstamp),
 INDEX   (type),
 INDEX   (subtype)
 )
+ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
-DROP TABLE IF EXISTS loadbalancertargets;
-CREATE TABLE loadbalancertargets (
+DROP TABLE IF EXISTS serverinfo;
+CREATE TABLE serverinfo (
  id         INT(11) AUTO_INCREMENT PRIMARY KEY,
  host       TEXT,
  active     INT(1),
  INDEX(id,active)
 )
+ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;

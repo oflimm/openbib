@@ -105,7 +105,7 @@ sub get_number_of_dbs {
 
     my $request;
     if ($profilename){
-        $request=$self->{dbh}->prepare("select count(orgunitdbs.dbname) as rowcount from orgunitdbs,databaseinfo where profilename = ? and databaseinfo.dbname=orgunitdbs.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select count(orgunit_db.dbname) as rowcount from orgunit_db,databaseinfo where profilename = ? and databaseinfo.dbname=orgunit_db.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
         $request->execute($profilename) or $logger->error($DBI::errstr);
     }
     else {
@@ -187,12 +187,12 @@ sub get_number_of_titles {
         $request->execute($database) or $logger->error($DBI::errstr);
     }
     elsif ($view){
-        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,viewdbs where viewdbs.viewname = ? and viewdbs.dbname=databaseinfo.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,view_db where view_db.viewname = ? and view_db.dbname=databaseinfo.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
         $request->execute($profile) or $logger->error($DBI::errstr);
 
     }
     elsif ($profile){
-        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunitdbs where orgunitdbs.profilename = ? and orgunitdbs.dbname=databaseinfo.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunit_db where orgunit_db.profilename = ? and orgunit_db.dbname=databaseinfo.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
         $request->execute($profile) or $logger->error($DBI::errstr);
     }
     else {
@@ -373,7 +373,7 @@ sub get_dbs_of_view {
     my $logger = get_logger();
 
     my @dblist=();
-    my $idnresult=$self->{dbh}->prepare("select viewdbs.dbname from viewdbs,databaseinfo,orgunitdbs where viewdbs.viewname = ? and viewdbs.dbname=databaseinfo.dbname and orgunitdbs.dbname=viewdbs.dbname and databaseinfo.active is true order by orgunitdbs.orgunitname ASC, databaseinfo.description ASC") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select databaseinfo.dbname from view_db,databaseinfo,orgunit_db,viewinfo,orgunitinfo where viewinfo.viewname = ? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and orgunit_db.dbid=view_db.dbid and databaseinfo.active is true order by orgunitinfo.orgunitname ASC, databaseinfo.description ASC") or $logger->error($DBI::errstr);
     $idnresult->execute($view) or $logger->error($DBI::errstr);
 
     my @idnres;
@@ -393,7 +393,7 @@ sub get_rssfeeds_of_view {
 
     my $viewrssfeed_ref  = {};
 
-    my $idnresult=$self->{dbh}->prepare("select rssfeed from viewrssfeeds where viewname=?") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select rssfeed from view_rss where viewname=?") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
 
     while (my $result=$idnresult->fetchrow_hashref()) {
@@ -412,7 +412,7 @@ sub get_rssfeed_overview {
 
     my $rssfeed_ref=[];
     
-    my $request=$self->{dbh}->prepare("select * from rssfeeds order by dbname,type,subtype") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select * from rssinfo order by dbname,type,subtype") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     while (my $result=$request->fetchrow_hashref()){
         my $id           = decode_utf8($result->{'id'});
@@ -443,7 +443,7 @@ sub get_rssfeed_by_id {
 
     my $rssfeed_ref = {};
     
-    my $request=$self->{dbh}->prepare("select * from rssfeeds where id = ? order by type,subtype") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select * from rssinfo where id = ? order by type,subtype") or $logger->error($DBI::errstr);
     $request->execute($id) or $logger->error($DBI::errstr);
     while (my $result=$request->fetchrow_hashref()){
         my $id           = decode_utf8($result->{'id'});
@@ -474,7 +474,7 @@ sub get_rssfeeds_of_db {
 
     my $rssfeed_ref=[];
     
-    my $request=$self->{dbh}->prepare("select * from rssfeeds where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select * from rssinfo where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
     $request->execute($dbname) or $logger->error($DBI::errstr);
     while (my $result=$request->fetchrow_hashref()){
         my $id           = decode_utf8($result->{'id'});
@@ -505,7 +505,7 @@ sub get_rssfeeds_of_db_by_type {
 
     my $rssfeed_ref  = {};
 
-    my $request=$self->{dbh}->prepare("select * from rssfeeds where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select * from rssinfo where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
     $request->execute($dbname) or $logger->error($DBI::errstr);
     while (my $result=$request->fetchrow_hashref()){
         my $type         = $result->{'type'};
@@ -531,7 +531,7 @@ sub get_primary_rssfeed_of_view  {
     my $logger = get_logger();
 
     # Assoziierten View zur Session aus Datenbank holen
-    my $idnresult=$self->{dbh}->prepare("select rssfeeds.dbname as dbname,rssfeeds.type as type, rssfeeds.subtype as subtype from rssfeeds,viewinfo where viewname = ? and rssfeeds.id = viewinfo.rssfeed and rssfeeds.active is true") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select rssinfo.dbname as dbname,rssinfo.type as type, rssinfo.subtype as subtype from rssinfo,viewinfo where viewname = ? and rssinfo.id = viewinfo.rssfeed and rssinfo.active is true") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
   
     my $result=$idnresult->fetchrow_hashref();
@@ -567,7 +567,7 @@ sub get_activefeeds_of_db  {
     
     my $activefeeds_ref = {};
     
-    my $request=$self->{dbh}->prepare("select type from rssfeeds where dbname \
+    my $request=$self->{dbh}->prepare("select type from rssinfo where dbname \
 = ? and active is true") or $logger->error($DBI::errstr);
     $request->execute($dbname) or $logger->error($DBI::errstr);
     
@@ -595,17 +595,17 @@ sub get_rssfeedinfo  {
     
     my $rssfeedinfo_ref = {};
     
-    my $sql_select="select databaseinfo.dbname,databaseinfo.description,orgunitinfo.description as orgunitdescription,rssfeeds.type";
+    my $sql_select="select databaseinfo.dbname,databaseinfo.description,orgunitinfo.description as orgunitdescription,rssinfo.type";
 
-    my @sql_from  = ('databaseinfo','rssfeeds','orgunitdbs','orgunitinfo');
+    my @sql_from  = ('databaseinfo','rssinfo','orgunit_db','orgunitinfo');
 
-    my @sql_where = ('databaseinfo.active is true','rssfeeds.active is true','databaseinfo.dbname=rssfeeds.dbname','rssfeeds.type = 1','orgunitinfo.orgunitname=orgunitdbs.orgunitname','orgunitdbs.dbname=databaseinfo.dbname');
+    my @sql_where = ('databaseinfo.active is true','rssinfo.active is true','databaseinfo.id=rssinfo.dbid','rssinfo.type = 1','orgunitinfo.id=orgunit_db.orgunitid','orgunit_db.dbid=databaseinfo.id');
 
     my @sql_args  = ();
 
     if ($view){
-        push @sql_from,  'viewrssfeeds';
-        push @sql_where, ('viewrssfeeds.viewname = ?','viewrssfeeds.rssfeed=rssfeeds.id');
+        push @sql_from,  'view_rss';
+        push @sql_where, ('view_rss.viewname = ?','view_rss.rssfeed=rssinfo.id');
         push @sql_args,  $view;
     }
     
@@ -666,7 +666,7 @@ sub get_dbinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbinfo = $self->{schema}->resultset('DatabaseInfo')->search(
+    my $dbinfo = $self->{schema}->resultset('Databaseinfo')->search(
         $args_ref
     );
     
@@ -679,7 +679,7 @@ sub get_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $object = $self->{schema}->resultset('DatabaseInfo');
+    my $object = $self->{schema}->resultset('Databaseinfo');
     
     return $object;
 }
@@ -800,7 +800,7 @@ sub get_viewinfo_overview {
 #         $active="Ja"   if ($active eq "1");
 #         $active="Nein" if ($active eq "0");
         
-#         my $idnresult2=$self->{dbh}->prepare("select * from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
+#         my $idnresult2=$self->{dbh}->prepare("select * from view_db where viewname = ? order by dbname") or $logger->error($DBI::errstr);
 #         $idnresult2->execute($viewname);
         
 #         my @viewdbs=();
@@ -837,39 +837,49 @@ sub get_profileinfo_overview {
     my $profileinfo_ref = [];
 
     my $profile="";
-    
-    my $idnresult=$self->{dbh}->prepare("select * from profileinfo order by profilename") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
-    while (my $result=$idnresult->fetchrow_hashref()) {
-        my $profilename = decode_utf8($result->{'profilename'});
-        my $description = decode_utf8($result->{'description'});
-          
-        $description = (defined $description)?$description:'Keine Beschreibung';
-        
-        my $idnresult2=$self->{dbh}->prepare("select * from orgunitdbs where profilename = ? order by dbname") or $logger->error($DBI::errstr);
-        $idnresult2->execute($profilename);
-        
-        my @orgunitdbs=();
-        while (my $result2=$idnresult2->fetchrow_hashref()) {
-            my $dbname = decode_utf8($result2->{'dbname'});
-            push @orgunitdbs, $dbname;
+
+    my $object = $self->get_profileinfo->search_rs(
+        {
+        },
+        {
+            order_by => 'profilename',
         }
-        
-        $idnresult2->finish();
-        
-        my $profiledb=join " ; ", @orgunitdbs;
-        
-        $profile={
-            profilename => $profilename,
-            description => $description,
-            profiledb   => $profiledb,
-        };
-        
-        push @{$profileinfo_ref}, $profile;
-        
-    }
+    );
     
-    return $profileinfo_ref;
+    return $object;
+
+#     my $idnresult=$self->{dbh}->prepare("select * from profileinfo order by profilename") or $logger->error($DBI::errstr);
+#     $idnresult->execute() or $logger->error($DBI::errstr);
+#     while (my $result=$idnresult->fetchrow_hashref()) {
+#         my $profilename = decode_utf8($result->{'profilename'});
+#         my $description = decode_utf8($result->{'description'});
+          
+#         $description = (defined $description)?$description:'Keine Beschreibung';
+        
+#         my $idnresult2=$self->{dbh}->prepare("select * from orgunit_db where profilename = ? order by dbname") or $logger->error($DBI::errstr);
+#         $idnresult2->execute($profilename);
+        
+#         my @orgunitdbs=();
+#         while (my $result2=$idnresult2->fetchrow_hashref()) {
+#             my $dbname = decode_utf8($result2->{'dbname'});
+#             push @orgunitdbs, $dbname;
+#         }
+        
+#         $idnresult2->finish();
+        
+#         my $profiledb=join " ; ", @orgunitdbs;
+        
+#         $profile={
+#             profilename => $profilename,
+#             description => $description,
+#             profiledb   => $profiledb,
+#         };
+        
+#         push @{$profileinfo_ref}, $profile;
+        
+#     }
+    
+#     return $profileinfo_ref;
 }
 
 sub get_profileinfo {
@@ -878,7 +888,7 @@ sub get_profileinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $profileinfo = $self->{schema}->resultset('ProfileInfo');
+    my $profileinfo = $self->{schema}->resultset('Profileinfo');
 
     return $profileinfo;
 }
@@ -928,7 +938,7 @@ sub get_orgunitinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $orgunitinfo = $self->{schema}->resultset('OrgunitInfo');
+    my $orgunitinfo = $self->{schema}->resultset('Orgunitinfo');
     
     return $orgunitinfo;
 }
@@ -942,7 +952,7 @@ sub get_profiledbs {
 
     my @profiledbs=();
 
-    foreach my $item ($self->{schema}->resultset('OrgunitDB')->search_rs({ profilename => $profilename },{ group_by => 'dbname', order_by => 'dbname' })->all){
+    foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs({ profilename => $profilename },{ group_by => 'dbname', order_by => 'dbname' })->all){
         push @profiledbs, $item->dbname;
     }
     return @profiledbs;
@@ -958,7 +968,7 @@ sub get_orgunitdbs {
 
     my @orgunitdbs=();
 
-    foreach my $item ($self->{schema}->resultset('OrgunitDB')->search_rs({ profilename => $profilename, orgunitname => $orgunitname },{ order_by => 'dbname' })->all){
+    foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs({ profilename => $profilename, orgunitname => $orgunitname },{ order_by => 'dbname' })->all){
         $logger->debug("Found");
         push @orgunitdbs, $item->dbname;
     }
@@ -972,7 +982,7 @@ sub get_viewinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $viewinfo = $self->{schema}->resultset('ViewInfo');
+    my $viewinfo = $self->{schema}->resultset('Viewinfo');
 
     return $viewinfo;
 }
@@ -984,7 +994,7 @@ sub get_viewdbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("select viewdbs.dbname from viewdbs,databaseinfo where viewdbs.viewname = ? and viewdbs.dbname = databaseinfo.dbname and databaseinfo.active is true order by dbname") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select view_db.dbname from view_db,databaseinfo where view_db.viewname = ? and view_db.dbname = databaseinfo.dbname and databaseinfo.active is true order by dbname") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
     
     my @viewdbs=();
@@ -1059,7 +1069,7 @@ sub get_active_databases_of_systemprofile {
     my $logger = get_logger();
 
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select databaseinfo.dbname as dbname from databaseinfo,viewinfo,orgunitdbs where databaseinfo.active is true and databaseinfo.dbname=orgunitdbs.dbname and orgunitdbs.profilename=viewinfo.profilename and viewinfo.viewname = ? order by dbname ASC") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select databaseinfo.dbname as dbname from databaseinfo,viewinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.profileid=viewinfo.profileid and viewinfo.viewname = ? order by dbname ASC") or $logger->error($DBI::errstr);
     $request->execute($view) or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};
@@ -1112,7 +1122,7 @@ sub get_active_databases_of_orgunit {
     my $logger = get_logger();
 
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select databaseinfo.dbname from databaseinfo,orgunitdbs where databaseinfo.active is true and databaseinfo.dbname=orgunitdbs.dbname and orgunitdbs.profilename = ? and orgunitdbs.orgunitname = ? order by databaseinfo.description ASC") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select databaseinfo.dbname from databaseinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.profilename = ? and orgunitinfo.orgunitname = ? order by databaseinfo.description ASC") or $logger->error($DBI::errstr);
     $request->execute($systemprofile,$orgunit) or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};
@@ -1165,7 +1175,7 @@ sub get_infomatrix_of_active_databases {
     my @sqlargs = ();
 
     if ($view){
-        $sqlrequest = "select databaseinfo.*,orgunitinfo.description as orgunitdescription, orgunitinfo.orgunitname from databaseinfo,orgunitdbs,viewinfo,orgunitinfo where databaseinfo.active is true and databaseinfo.dbname=orgunitdbs.dbname and orgunitdbs.profilename=viewinfo.profilename and orgunitdbs.orgunitname=orgunitinfo.orgunitname and orgunitinfo.profilename=orgunitdbs.profilename and viewinfo.viewname = ? order by orgunitinfo.nr ASC, databaseinfo.description ASC";
+        $sqlrequest = "select databaseinfo.*,orgunitinfo.description as orgunitdescription, orgunitinfo.orgunitname from databaseinfo,orgunit_db,viewinfo,orgunitinfo where databaseinfo.active is true and databaseinfo.dbname=orgunit_db.dbname and orgunit_db.profilename=viewinfo.profilename and orgunit_db.orgunitname=orgunitinfo.orgunitname and orgunitinfo.profilename=orgunit_db.profilename and viewinfo.viewname = ? order by orgunitinfo.nr ASC, databaseinfo.description ASC";
         push @sqlargs, $view;
     }
 
@@ -1364,7 +1374,7 @@ sub connectDB {
 
     eval {        
 #        $self->{schema} = OpenBib::Database::Config->connect("DBI:$self->{configdbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd}) or $logger->error_die($DBI::errstr)
-        $self->{schema} = OpenBib::Database::Config->connect("DBI:$self->{configdbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd},{'mysql_enable_utf8'    => 1,}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Database::Config->connect("DBI:$self->{configdbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 
     };
 
@@ -1400,7 +1410,7 @@ sub del_databaseinfo {
     my $logger = get_logger();
 
     eval {
-        $self->{schema}->resultset('DatabaseInfo')->search({ dbname => $dbname})->single->delete;
+        $self->{schema}->resultset('Databaseinfo')->search({ dbname => $dbname})->single->delete;
     };
     
     if ($@){
@@ -1423,7 +1433,7 @@ sub update_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('DatabaseInfo')->search({ dbname => $dbinfo_ref->{dbname}})->single->update($dbinfo_ref);
+    $self->{schema}->resultset('Databaseinfo')->search({ dbname => $dbinfo_ref->{dbname}})->single->update($dbinfo_ref);
     
     return;
 }
@@ -1434,7 +1444,7 @@ sub new_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('DatabaseInfo')->create($dbinfo_ref);
+    $self->{schema}->resultset('Databaseinfo')->create($dbinfo_ref);
     
     if ($self->get_system_of_db($dbinfo_ref->{dbname}) ne "Z39.50"){
         # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
@@ -1452,7 +1462,7 @@ sub update_databaseinfo_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('RSSFeeds')->search({ id => $rss_ref->{id}})->single->update($rss_ref);
+    $self->{schema}->resultset('Rssinfo')->search({ id => $rss_ref->{id}})->single->update($rss_ref);
 
     return;
 }
@@ -1463,7 +1473,7 @@ sub new_databaseinfo_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('RSSFeeds')->create($rss_ref);
+    $self->{schema}->resultset('Rssinfo')->create($rss_ref);
 
     return;
 }
@@ -1474,7 +1484,7 @@ sub del_databaseinfo_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('RSSFeeds')->search({ id => $id})->single->delete;
+    $self->{schema}->resultset('Rssinfo')->search({ id => $id})->single->delete;
 
     return;
 }
@@ -1485,7 +1495,7 @@ sub del_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('ViewInfo')->search({ viewname => $viewname})->single->delete;
+    $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname})->single->delete;
 
     return;
 }
@@ -1496,7 +1506,7 @@ sub update_libinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('LibraryInfo')->search({ dbname => $dbname })->single->delete;
+    $self->{schema}->resultset('Libraryinfo')->search({ dbname => $dbname })->single->delete;
 
     my $category_contents_ref = [];
     foreach my $category (keys %$libinfo_ref){
@@ -1511,7 +1521,7 @@ sub update_libinfo {
         $logger->debug("Changing Category $category_num to $libinfo_ref->{$category}");
     }
     
-    $self->{schema}->resultset('LibraryInfo')->populate($category_contents_ref);
+    $self->{schema}->resultset('Libraryinfo')->populate($category_contents_ref);
     
     return;
 }
@@ -1542,21 +1552,43 @@ sub update_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    $self->{schema}->resultset('ViewInfo')->search({ viewname => $view_ref->{viewname}})->single->update($view_ref);
-
+    $self->{schema}->resultset('Viewinfo')->search({ viewname => $view_ref->{viewname}})->single->update($view_ref);
+    
     # Datenbanken zunaechst loeschen
-    $self->{schema}->resultset('ViewDB')->search({ viewname => $view_ref->{viewname}})->all->delete;
+    $self->{schema}->resultset('ViewDb')->search({ viewname => $view_ref->{viewname}})->delete;
 
-    # Dann die zugehoerigen Datenbanken eintragen
-    $self->{schema}->resultset('ViewDB')->populate($db_ref);
+    if (@$db_ref){
+        my $this_db_ref = [];
+        foreach my $dbname (@$db_ref){
+            push @$this_db_ref, {
+                viewname => $viewname,
+                dbname   => $dbname,
+            };
+        }
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $self->{schema}->resultset('ViewDb')->populate($this_db_ref);
+    }
     
     # RSS-Feeds zunaechst loeschen
-    $self->{schema}->resultset('ViewRSSFeeds')->search({ viewname => $view_ref->{viewname}})->all->delete;
+    $self->{schema}->resultset('ViewRss')->search({ viewname => $view_ref->{viewname}})->delete;
 
-    # Dann die zugehoerigen Feeds eintragen
-    $self->{schema}->resultset('ViewRSSFeeds')->populate($rss_ref);
-
+    if (@$rss_ref){
+        my $this_rss_ref = [];
+        
+        foreach my $rssfeed (@$rss_ref){
+            push @$this_rss_ref, {
+                viewname => $viewname,
+                rssfeed  => $rssfeed,
+            };
+        }
+        
+        # Dann die zugehoerigen Feeds eintragen
+        $self->{schema}->resultset('ViewRss')->populate($this_rss_ref);
+    }
+    
     return;
 }
 
@@ -1567,7 +1599,7 @@ sub strip_view_from_uri {
     my $logger = get_logger();
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    my $stripuri = $self->{schema}->resultset('ViewInfo')->search({ viewname => $viewname})->single->stripuri;
+    my $stripuri = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname})->single->stripuri;
 
     $stripuri = ($stripuri == 1)?1:0;
 
@@ -1638,10 +1670,10 @@ sub update_view_rss {
       $request->finish();
     }
     elsif ($rsstype eq "all") {
-      my $request=$self->{dbh}->prepare("delete from viewrssfeeds where viewname = ?");
+      my $request=$self->{dbh}->prepare("delete from view_rss where viewname = ?");
       $request->execute($viewname);
       
-      $request=$self->{dbh}->prepare("insert into viewrssfeeds values (?,?)") or $logger->error($DBI::errstr);
+      $request=$self->{dbh}->prepare("insert into view_rss values (?,?)") or $logger->error($DBI::errstr);
       foreach my $rssid (@rssids){
 	$request->execute($viewname,$rssid) or $logger->error($DBI::errstr);
       }
@@ -1684,11 +1716,8 @@ sub update_profile {
     my $logger = get_logger();
 
     # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
-    
-    my $idnresult=$self->{dbh}->prepare("update profileinfo set description = ? where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$profilename) or $logger->error($DBI::errstr);
-    
-    $idnresult->finish();
+
+    $self->{schema}->resultset('Profileinfo')->search({ profilename => $profilename })->single->update($arg_ref);
 
     return;
 }
@@ -1729,7 +1758,7 @@ sub del_orgunit {
 
     my $idnresult=$self->{dbh}->prepare("delete from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    $idnresult=$self->{dbh}->prepare("delete from orgunitdbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    $idnresult=$self->{dbh}->prepare("delete from orgunit_db where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
     $idnresult->finish();
 
@@ -1742,8 +1771,8 @@ sub update_orgunit {
     # Set defaults
     my $profilename            = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}         : undef;
-    my $orgunit                = exists $arg_ref->{orgunit}
-        ? $arg_ref->{orgunit}             : undef;
+    my $orgunitname            = exists $arg_ref->{orgunitname}
+        ? $arg_ref->{orgunitname}         : undef;
     my $description            = exists $arg_ref->{description}
         ? $arg_ref->{description}         : undef;
     my $orgunitdb_ref          = exists $arg_ref->{orgunitdb}
@@ -1751,29 +1780,45 @@ sub update_orgunit {
     my $nr                     = exists $arg_ref->{nr}
         ? $arg_ref->{nr}                  : 0;
 
-    my @orgunitdb = (defined $orgunitdb_ref)?@$orgunitdb_ref:();
-
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Zuerst die Aenderungen in der Tabelle Orgunit vornehmen
-    
-    my $idnresult=$self->{dbh}->prepare("update orgunitinfo set description = ?, nr = ? where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$nr,$profilename,$orgunit) or $logger->error($DBI::errstr);
+
+    $self->{schema}->resultset('Orgunitinfo')->search_rs({ profilename => $profilename, orgunitname => $orgunitname })->single->update({ description => $description, nr => $nr });
+
+#     my $idnresult=$self->{dbh}->prepare("update orgunitinfo set description = ?, nr = ? where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+#     $idnresult->execute($description,$nr,$profilename,$orgunit) or $logger->error($DBI::errstr);
     
     # Datenbanken zunaechst loeschen
-    
-    $idnresult=$self->{dbh}->prepare("delete from orgunitdbs where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    
-    
-    # Dann die zugehoerigen Datenbanken eintragen
-    foreach my $singleorgunitdb (@orgunitdb) {
-        $idnresult=$self->{dbh}->prepare("insert into orgunitdbs values (?,?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($profilename,$orgunit,$singleorgunitdb) or $logger->error($DBI::errstr);
+    $self->{schema}->resultset('OrgunitDb')->search_rs({ profilename => $profilename, orgunitname => $orgunitname })->delete;
+
+    if (@$orgunitdb_ref){
+        my $this_db_ref = [];
+        foreach my $dbname (@$orgunitdb_ref){
+            push @$this_db_ref, {
+                profilename => $profilename,
+                orgunitname => $orgunitname,
+                dbname      => $dbname,
+            };
+        }
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $self->{schema}->resultset('OrgunitDb')->populate($this_db_ref);
     }
+
     
-    $idnresult->finish();
+#     $idnresult=$self->{dbh}->prepare("delete from orgunit_db where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+#     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
+    
+    
+#     # Dann die zugehoerigen Datenbanken eintragen
+#     foreach my $singleorgunitdb (@orgunitdb) {
+#         $idnresult=$self->{dbh}->prepare("insert into orgunit_db values (?,?,?)") or $logger->error($DBI::errstr);
+#         $idnresult->execute($profilename,$orgunit,$singleorgunitdb) or $logger->error($DBI::errstr);
+#     }
+    
+#     $idnresult->finish();
 
     return;
 }

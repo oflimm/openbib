@@ -4,7 +4,7 @@
 
 drop table IF EXISTS databaseinfo;
 CREATE TABLE databaseinfo (
- id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ id          BIGINT AUTO_INCREMENT,
 
 /* Generel Information */
  description TEXT,
@@ -42,6 +42,8 @@ CREATE TABLE databaseinfo (
  articlecount  BIGINT DEFAULT 0,
  digitalcount  BIGINT DEFAULT 0,
 
+ CONSTRAINT `pk_db` PRIMARY KEY (`id`),
+
  INDEX (dbname),
  INDEX (active),
  INDEX (description(255))
@@ -74,13 +76,14 @@ PACK_KEYS=1;
 
 drop table IF EXISTS rssinfo;
 create table rssinfo (
- id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ id          BIGINT AUTO_INCREMENT,
  dbid        BIGINT NOT NULL,
  type        SMALLINT,
  subtype     SMALLINT,
  subtypedesc TEXT,
  active      TINYINT,
 
+ CONSTRAINT `pk_rss` PRIMARY KEY (`id`),
  CONSTRAINT `fk_rss_db` FOREIGN KEY (`dbid`) REFERENCES `databaseinfo` (`id`),
  INDEX (type),
  INDEX (subtype)
@@ -92,10 +95,12 @@ COLLATE utf8_general_ci
 
 drop table IF EXISTS profileinfo;
 CREATE TABLE profileinfo (
- id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ id          BIGINT AUTO_INCREMENT,
 
  profilename VARCHAR(20) NOT NULL UNIQUE,
  description TEXT,
+
+ CONSTRAINT `pk_profile` PRIMARY KEY (`id`),
 
  INDEX (profilename)
 )
@@ -106,13 +111,14 @@ COLLATE utf8_general_ci
 
 drop table IF EXISTS orgunitinfo;
 CREATE TABLE orgunitinfo (
- id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ id          BIGINT AUTO_INCREMENT,
  profileid   BIGINT NOT NULL,
 
  orgunitname VARCHAR(20) NOT NULL,
  description TEXT,
  nr          INT,
 
+ CONSTRAINT `pk_orgunit` PRIMARY KEY (`id`),
  CONSTRAINT `fk_orgunit_profile` FOREIGN KEY (`profileid`) REFERENCES `profileinfo` (`id`),
  INDEX (orgunitname),
  INDEX (nr)
@@ -137,7 +143,7 @@ COLLATE utf8_general_ci
 
 drop table IF EXISTS viewinfo;
 CREATE TABLE viewinfo (
- id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ id          BIGINT AUTO_INCREMENT,
 
  viewname    VARCHAR(20) UNIQUE,
  description TEXT,
@@ -149,8 +155,9 @@ CREATE TABLE viewinfo (
  joinindex   TINYINT(4),
  active      BOOL,
 
- CONSTRAINT `fk_viewinfo_profile` FOREIGN KEY (`profileid`) REFERENCES `profileinfo` (`id`),
- CONSTRAINT `fk_viewinfo_rssid` FOREIGN KEY (`rssid`) REFERENCES `rssinfo` (`id`),
+ CONSTRAINT `pk_view` PRIMARY KEY (`id`),
+ CONSTRAINT `fk_view_profile` FOREIGN KEY (`profileid`) REFERENCES `profileinfo` (`id`),
+ CONSTRAINT `fk_view_rss` FOREIGN KEY (`rssid`) REFERENCES `rssinfo` (`id`),
 
  INDEX (viewname)
 )
@@ -205,9 +212,12 @@ PACK_KEYS=1;
 
 DROP TABLE IF EXISTS serverinfo;
 CREATE TABLE serverinfo (
- id         INT(11) AUTO_INCREMENT PRIMARY KEY,
+ id         INT(11) AUTO_INCREMENT,
  host       TEXT,
  active     INT(1),
+
+ CONSTRAINT `pk_server` PRIMARY KEY (`id`),
+
  INDEX(id,active)
 )
 ENGINE InnoDB

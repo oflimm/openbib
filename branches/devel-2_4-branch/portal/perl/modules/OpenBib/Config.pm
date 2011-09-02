@@ -105,11 +105,11 @@ sub get_number_of_dbs {
 
     my $request;
     if ($profilename){
-        $request=$self->{dbh}->prepare("select count(orgunit_db.dbname) as rowcount from orgunit_db,databaseinfo where profilename = ? and databaseinfo.dbname=orgunit_db.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select count(orgunit_db.dbid) as rowcount from orgunit_db,databaseinfo,profileinfo,orgunitinfo where profileinfo.profilename = ? and profileinfo.id=orgunitinfo.profileid and orgunitinfo.id=orgunit_db.orgunitid and databaseinfo.id=orgunit_db.dbid and databaseinfo.active is true") or $logger->error($DBI::errstr);
         $request->execute($profilename) or $logger->error($DBI::errstr);
     }
     else {
-        $request=$self->{dbh}->prepare("select count(dbname) as rowcount from databaseinfo where databaseinfo.active is true") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select count(dbid) as rowcount from databaseinfo where databaseinfo.active is true") or $logger->error($DBI::errstr);
         $request->execute() or $logger->error($DBI::errstr);
     }
     
@@ -126,7 +126,7 @@ sub get_number_of_all_dbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from databaseinfo") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select count(id) as rowcount from databaseinfo") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     my $res    = $request->fetchrow_hashref;
     my $alldbs = $res->{rowcount};
@@ -141,7 +141,7 @@ sub get_number_of_views {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo where active is true") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select count(viewid) as rowcount from viewinfo where active is true") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     my $res      = $request->fetchrow_hashref;
     my $allviews = $res->{rowcount};
@@ -156,7 +156,7 @@ sub get_number_of_all_views {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select count(viewid) as rowcount from viewinfo") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     my $res      = $request->fetchrow_hashref;
     my $allviews = $res->{rowcount};
@@ -187,12 +187,12 @@ sub get_number_of_titles {
         $request->execute($database) or $logger->error($DBI::errstr);
     }
     elsif ($view){
-        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,view_db where view_db.viewname = ? and view_db.dbname=databaseinfo.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,view_db,viewinfo where viewinfo.viewname=? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and databaseinfo.active is true") or $logger->error($DBI::errstr);
         $request->execute($profile) or $logger->error($DBI::errstr);
 
     }
     elsif ($profile){
-        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunit_db where orgunit_db.profilename = ? and orgunit_db.dbname=databaseinfo.dbname and databaseinfo.active is true") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunit_db,profileinfo,orgunitinfo where profileinfo.profilename = ? and orgunitinfo.profileid=profileinfo.id and orgunit_db.orgunitid=orgunitinfo.id and orgunit_db.dbid=databaseinfo.id and databaseinfo.active is true") or $logger->error($DBI::errstr);
         $request->execute($profile) or $logger->error($DBI::errstr);
     }
     else {
@@ -958,6 +958,22 @@ sub get_profiledbs {
     return @profiledbs;
 }
 
+sub get_profilename_of_view {
+    my $self        = shift;
+    my $viewname    = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $profilename = "";
+
+    eval {
+        $profilename = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname })->single->profileid->profilename;
+    };
+    
+    return $profilename;
+}
+
 sub get_orgunitdbs {
     my $self        = shift;
     my $profilename = shift;
@@ -1166,7 +1182,7 @@ sub get_infomatrix_of_active_databases {
     my $lastcategory="";
     my $count=0;
 
-    my $profile = $self->get_viewinfo->search({ viewname => $view})->single()->profilename;
+    my $profile = $self->get_profilename_of_view($view);
     
     $maxcolumn=(defined $maxcolumn)?$maxcolumn:$self->{databasechoice_maxcolumn};
     
@@ -1175,7 +1191,7 @@ sub get_infomatrix_of_active_databases {
     my @sqlargs = ();
 
     if ($view){
-        $sqlrequest = "select databaseinfo.*,orgunitinfo.description as orgunitdescription, orgunitinfo.orgunitname from databaseinfo,orgunit_db,viewinfo,orgunitinfo where databaseinfo.active is true and databaseinfo.dbname=orgunit_db.dbname and orgunit_db.profilename=viewinfo.profilename and orgunit_db.orgunitname=orgunitinfo.orgunitname and orgunitinfo.profilename=orgunit_db.profilename and viewinfo.viewname = ? order by orgunitinfo.nr ASC, databaseinfo.description ASC";
+        $sqlrequest = "select databaseinfo.*,orgunitinfo.description as orgunitdescription, orgunitinfo.orgunitname from databaseinfo,orgunit_db,viewinfo,orgunitinfo,profileinfo where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.id=viewinfo.profileid and viewinfo.viewname = ? order by orgunitinfo.nr ASC, databaseinfo.description ASC";
         push @sqlargs, $view;
     }
 

@@ -164,8 +164,8 @@ sub show {
         push @$dbchoice_ref, $dbname;
     }
 
-    my $alldbs     = $config->get_number_of_dbs($config->get_viewinfo->search({ viewname => $view })->single()->profilename);
-    my $alldbcount = $config->get_number_of_titles({ profile => $config->get_viewinfo->search({ viewname => $view })->single()->profilename});
+    my $alldbs     = $config->get_number_of_dbs($config->get_profilename_of_view($view));
+    my $alldbcount = $config->get_number_of_titles({ profile => $config->get_profilename_of_view($view)});
 
     my @queries    = $session->get_all_searchqueries();
 

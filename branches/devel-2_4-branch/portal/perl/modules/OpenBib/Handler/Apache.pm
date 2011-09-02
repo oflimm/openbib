@@ -448,7 +448,7 @@ sub print_page {
     my $database  = $ttdata->{'database'};
     my $sessionID = $session->{ID};
     
-    my $sysprofile= $config->get_viewinfo->search({ viewname => $view })->single()->profilename;
+    my $sysprofile= $config->get_profilename_of_view($view);
 
     # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
     # Einloggen/Mein KUG automatisch deaktiviert

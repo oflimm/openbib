@@ -116,8 +116,8 @@
                 #'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
-                'T5003', # msg.maketext("T5003") IDs uebergeordn. Werke
-                'T5004', # msg.maketext("T5004") IDs untergeordn. Werke
+                #'T5003', # msg.maketext("T5003") IDs uebergeordn. Werke
+                #'T5004', # msg.maketext("T5004") IDs untergeordn. Werke
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 ]
 

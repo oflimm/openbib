@@ -70,7 +70,7 @@
 <table class="full">
 <tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td></tr>
 
-[% FOREACH profile IN profiles %]
+[% FOREACH profile IN profiles.all %]
 
 <tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profile.profilename %]/edit">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
 [% END %]

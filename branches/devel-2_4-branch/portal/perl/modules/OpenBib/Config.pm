@@ -327,7 +327,7 @@ sub orgunit_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(orgunitname) as rowcount from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select count(orgunitname) as rowcount from orgunitinfo,profileinfo where profileinfo.profilename = ? and orgunitinfo.orgunitname = ? and orgunitinfo.profileid = profileinfo.id") or $logger->error($DBI::errstr);
     $request->execute($profilename,$orgunitname) or $logger->error($DBI::errstr);
     my $res       = $request->fetchrow_hashref;
     my $rowcount  = $res->{rowcount};
@@ -762,7 +762,7 @@ sub have_libinfo {
     
     $libinfo_ref->{database} = $dbname;
 
-    $sqlrequest="select count(dbname) as infocount from libraryinfo where dbname = ? and content != ''";
+    $sqlrequest="select count(dbid) as infocount from libraryinfo,databaseinfo where libraryinfo.dbid=databaseinfo.id and databaseinfo.dbname = ? and content != ''";
     my $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($dbname);
 
@@ -839,8 +839,7 @@ sub get_profileinfo_overview {
     my $profile="";
 
     my $object = $self->get_profileinfo->search_rs(
-        {
-        },
+        undef,
         {
             order_by => 'profilename',
         }
@@ -922,9 +921,10 @@ sub get_orgunitinfo_overview {
 
     my $object = $self->get_orgunitinfo->search_rs(
         {
-            profilename => $profilename,
+            'profileid.profilename' => $profilename,
         },
         {
+            join => 'profileid',
             order_by => 'nr',
         }
     );
@@ -952,8 +952,10 @@ sub get_profiledbs {
 
     my @profiledbs=();
 
-    foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs({ profilename => $profilename },{ group_by => 'dbname', order_by => 'dbname' })->all){
-        push @profiledbs, $item->dbname;
+    foreach my $orgunit ($self->get_orgunitinfo_overview($profilename)->all){
+        foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunit->id },{ join => 'dbid', group_by => 'dbid.dbname', order_by => 'dbid.dbname' })->all){
+            push @profiledbs, $item->dbid->dbname;
+        }
     }
     return @profiledbs;
 }
@@ -977,16 +979,18 @@ sub get_profilename_of_view {
 sub get_orgunitdbs {
     my $self        = shift;
     my $profilename = shift;
-    my $orgunitname = shift;
+    my $orgunitname = shift;    
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $orgunitid = $self->get_orgunitinfo->search_rs({ 'profileid.profilename' => $profilename, orgunitname => $orgunitname},{ join => 'profileid'})->single->id;
+    
     my @orgunitdbs=();
 
-    foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs({ profilename => $profilename, orgunitname => $orgunitname },{ order_by => 'dbname' })->all){
+    foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs({ 'orgunitid' => $orgunitid },{ join => 'dbid', order_by => 'dbid.dbname' })->all){
         $logger->debug("Found");
-        push @orgunitdbs, $item->dbname;
+        push @orgunitdbs, $item->dbid->dbname;
     }
 
     return @orgunitdbs;

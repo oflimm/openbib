@@ -279,8 +279,8 @@ sub show_record_form {
         $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
     }
 
-    my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
-    my $orgunitinfo_ref = $config->get_orgunitinfo->search_rs({ profilename => $profilename, orgunitname => $orgunitname})->single();
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
+    my $orgunitinfo_ref = $config->get_orgunitinfo->search_rs({ 'profileid.profilename' => $profilename, orgunitname => $orgunitname},{ join => 'profileid'})->single();
     my $activedbs_ref   = $config->get_databaseinfo->search_rs({'active' => 1},{ order_by => 'dbname'});
 
     my $orgunitdb_map_ref = {};

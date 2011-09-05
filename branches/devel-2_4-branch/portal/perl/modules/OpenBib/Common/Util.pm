@@ -285,7 +285,7 @@ sub print_page {
     my $sysprofile= '';
 
     if ($view){
-        $sysprofile= $config->get_viewinfo->search({ viewname => $view })->single()->profilename;
+        $sysprofile= $config->get_viewinfo->search({ viewname => $view })->single()->profileid->profilename;
     }
     
     my $user      = OpenBib::User->instance({sessionID => $sessionID});

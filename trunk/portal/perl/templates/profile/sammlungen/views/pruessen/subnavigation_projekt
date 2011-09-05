@@ -1,0 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# listen
+# ablauf
+# publikationen
+# quellen
+# kontakt
+#
+#######################################################################
+-%]
+<ul class="tabbingmenu">
+   <li><a [% IF active_menu == "ansprech" %]class="active" [% END %] href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=30">Ansprechpartner</a></li>
+  </ul>
+

@@ -1,0 +1,164 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_22
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=21">Prüssen-Informationen</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=pruessen;stid=22" title="Erschliessung">Erschließung</a></li>
+</ul>
+
+<div class="content">
+
+<table>
+<tr><td style="vertical-align: top;padding-top:10px;">
+
+
+<p> <img src="/images/openbib/views/portrait/wallraf.jpg"
+class="img" alt="Franz Ferdidant Wallraf" /> 
+<center>Eduard Prüssen</center>
+</p>
+
+<p> <img
+src="/images/openbib/views/pruessen/hausfreund200.png"
+class="img" alt="Umschlagillustration zum Buch  Hausfreund bei Calypso
+von Rudolf Hagelstange" />
+<center>Umschlagillustration zum Buch  Hausfreund bei Calypso
+von Rudolf Hagelstange</center>
+</p>
+
+
+<p>
+<img
+src="/images/openbib/views/portrait/erkes.jpg"
+class="img" alt="Heinrich Erkes" />
+</p>
+<center>Ausstellungskatalog</center>
+</p>
+
+</td>
+
+<td>
+<td style="vertical-align: top;padding-left:20px;">
+
+<h2>Die Erschließung der Sammlung Prüssen</h2>
+
+<p><b>Eine Sammlung für die Bibliothek - Katalogisierungserfordernisse</p></b>
+
+<p> Die Erschließung einer graphischen Sammlung stellt für eine
+Universitätsbibliothek eine besondere Herausforderung dar, denn das
+Werkzeug des Bibliothekars zur Erfassung von klassischem
+Bibliotheksgut, die Regeln für die alphabetsiche Katalogisierung in
+wissenschaftlichen Bibliotheken (RAK-WB) sowie die datentechnische
+Ausgabe im maschinellen Austauschformat für Bibliotheken (MAB)
+erfüllten unsere Ansprüche an die Darstellung der Sammlung zunächst
+nicht. Erst nachdem etliche Erfassungskategorien "umgewidmet" worden
+waren, konnten wir daran gehen, das besondere Material zu
+katalogisieren. Diese Anpassungen der üblichen
+Katalogisierungssoftware erforderte schließlich die Nutzung einer
+eigenen Datenbank. Folglich ist die Sammlung Prüssen in diesem
+separaten und vom Onlinekatalog der USB unabhängigen Katalog erfasst
+worden.
+<br />
+
+<p><b>Die Sammlung als Informationsraum - Rechercheoptionen</p></b>
+
+Bei unseren Überlegungen zur formalen Erfassung stand
+vor allem die Herausstellung des künstlerischen Werkes von Eduard
+Prüssen im Vordergrund. Das bedeutete, dass die Bücher und
+Zeitschriften in denen Eduard Prüssens Illustrationen veröffentlicht
+worden sind, den Skizzen, Entwürfen und fertigen Arbeiten nachgeordnet
+werden mussten. Sowohl die Bücher als auch die Illustrationen sind in
+diesem Katalog miteinander verknüpft worden und können unabhängig
+voneinander gesucht werden. Ein Beispiel: Bei der Recherche nach einem Buch, z.B. nach
+Rudolf Hagelstanges "Hausfreund bei Calypso" führt der Link "Illustrationen" in der
+Volltitelanzeige zu sämtlichen Arbeiten, die Eduard
+Prüssen für dieses Werk angefertigt hat. Die Titelaufnahme der Bücher, die Prüssen
+illustriert hat, sind in der Vollanzeige seiner Illustrationen über den
+Link "Entworfen für" verknüpft und aufrufbar.
+<br />
+Wichtig war uns, den Weg von der ersten Skizze über
+nachfolgende Arbeiten bis hin zur fertigen Graphik bzw. Graphiken
+(Einzelbilder) aufzuzeigen. Der interessierte Nutzer bekommt
+auf diese Weise die Information, welche Vorarbeiten (Entwürfe) neben
+der endgültigen Arbeit zu einem Thema zur Verfügung stehen. Die Anzahl
+und die Maße der einzelnen Arbeiten werden gleichfalls ausgegeben (Umfang). Sofern die
+Einzelbilder eigene Titel besitzen, werden diese angegeben. Alle Titel der
+Einzelbilder, z.B. die Illustration "Redensarten" aus dem Zyklus zu Bölls "Irischem
+Tagebuch" sind über die Recherche suchbar.
+<br />
+Um dem Nutzer den Einstieg in das Werk Eduard Prüssens überdies zu erleichtern,
+ist auf der Rechercheseite die Möglichkeit gegeben, gezielt nach
+einzelnen Publikationsformen wie Buchillustrationen,
+Presse-Illustrationen, Plakaten oder Handpressendrucken der
+Donkey-Press zu suchen. Das Anklicken der Begriffe löst
+eine Suchanfrage nach allen entsprechend verschlagworteten Bildern, Plakaten
+Drucken oder Büchern aus. 
+
+</p>
+
+
+<p><b>Prüssens Bibliothek - eine kleine Bibliothek in der Bibliothek</p></b>
+
+Zur Sammlung Prüssen gehören auch über 60 Bücher die von Eduard
+Prüssen illustriert worden sind und die er dankenswerter Weise dem
+Vorlass hinzugefügt hat. Diese "Prüssen-Bibliothek" wird gemeinsam mit
+den anderen Sammlungsexponaten aufgestellt. Alle Bücher, die unter dem
+Signaturanfang "PrüssenBib" erfasst worden sind, sind im Katalog
+recherchierbar und können zur Benutzung in den Lesesaal Historische
+Sammlungen bestellt werden. Befinden sich Titel aus der
+Prüssen-Bibliothek auch oder ausschließlich im Bestand der USB, wird
+die entsprechende Signatur angegeben.
+
+<p><b>Die Archivierung - Konservatorische Maßnahmen</p></b>
+
+Die Sammlung Prüssen beinhaltet von der kleinformatigen Skizze bis zum
+Plakat eine Vielfalt an Papierformaten und -formen. Das bedeutet dass,
+das verschiedene Kassetten und Mappen in unserer hauseigenen
+Buchbinderei angefertigt werden müssen, die diesen Formaten gerecht
+werden. Bei den Aufbewahrungsmaßnahmen der künstlerischen Arbeiten
+werden ausschließlich säurefreien Materialien verwendet.
+
+<br />
+
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

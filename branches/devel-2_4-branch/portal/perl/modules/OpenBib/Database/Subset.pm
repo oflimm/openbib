@@ -144,19 +144,32 @@ sub identify_by_mark {
 
 sub identify_by_category_content {
     my $self    = shift;
+    my $table   = shift;
     my $arg_ref = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select distinct id from title where category = ? and content rlike ?") or $logger->error($DBI::errstr);
+    my %table_type = (
+        'title'          => 1,
+        'person'         => 2,
+        'corporatebody'  => 3,
+        'subject'        => 4,
+        'classification' => 5,
+    );
+    
+    my $request=$self->{dbh}->prepare("select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
 
+    if ($table ne "title"){
+        $request = $self->{dbh}->prepare("select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
+    }
+    
     foreach my $criteria_ref (@$arg_ref){        
         
         $request->execute($criteria_ref->{category},$criteria_ref->{content}) or $logger->error($DBI::errstr);;
         
         while (my $result=$request->fetchrow_hashref()){
-            $self->{titleid}{$result->{'id'}} = 1;
+            $self->{titleid}{$result->{'titleid'}} = 1;
         }
     }
     
@@ -181,7 +194,7 @@ sub identify_by_category_content {
         $request->execute($id);
     
         while (my $result=$request->fetchrow_hashref()){
-            $holdingid{$result->{'id'}}=1;
+            $holdingid{$result->{'targetid'}}=1;
         }    
     }
 

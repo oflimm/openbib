@@ -56,7 +56,6 @@ class="img" alt="Konrad Adenauer" />
 <center>Kölner Köpfe: Konrad Adenauer</center>
 </p>
 
-
 <p>
 <img
 src="/images/openbib/views/pruessen/Domin200.png"
@@ -66,9 +65,17 @@ class="img" alt="Hilde Domin" />
 </p>
 
 <p> <img
-src="/images/openbib/views/pruessen/graphis200.png"
-class="img" alt="Heft der Zeitschrift Graphis" />
-<center>Graphis, New York</center>
+src="/images/openbib/views/pruessen/Umschlag_Koepfe_2.png"
+class="img" alt="Umschlag Kölner Köpfe" />
+<center>Kölner Köpfe</center>
+</p>
+
+<p>
+<img
+src="/images/openbib/views/pruessen/Boell200.png"
+class="img" alt="Heinrich Böll" />
+</p>
+<center>Kölner Köpfe: Heinrich Böll</center>
 </p>
 
 </td>
@@ -98,6 +105,7 @@ Bergisch Gladbachs geworden ist.
 Eduard Prüssem ist Mitglied im Bund Deutscher Buchkünstler.
 </p>
 
+<br />
 
 <h2>Prüssen-Bibliographie</h2>
 <ul>
@@ -234,6 +242,8 @@ Hauptband. Köln: Universitäts- und Stadtbibliothek, 2011.
 </li>
 </ul>
 
+<br />
+
 <h2>Prüssen-Ausstellungen</h2>
 
 <ul>
@@ -367,10 +377,11 @@ bezogen werden.  <a
 href="http://www.ub.uni-koeln.de/bibliothek/pub/sonstveroeff/index_ger.html"
 target="_blank"> Eduard Prüssen: Kölner Köpfe. Köln, 2010.</a> </p>
 
+<br />
 
-<h2>Weitere Fragen?</h2>
+<h2>Wenn Sie noch Fragen haben ...</h2>
 
-<p> Falls Sie noch Fragen zur Sammlung Prüssen haben, schreiben Sie
+<p> Falls Sie weitere Informationen zur Sammlung Prüssen haben, schreiben Sie
 uns bitte an diese E-Mail-Adresse:
 <a
 href="mailto:sammlungpruessen@ub.uni-koeln.de">sammlungpruessen@ub.uni-koeln.de</a>

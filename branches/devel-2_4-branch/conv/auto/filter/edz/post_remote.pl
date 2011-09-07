@@ -41,4 +41,4 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Extrahiere EDZ-Daten aus den USB-Daten\n";
 
-system("$rootdir/filter/$pool/gen-subset-mex-edz.pl");
+system("$rootdir/filter/$pool/gen-subset.pl $pool");

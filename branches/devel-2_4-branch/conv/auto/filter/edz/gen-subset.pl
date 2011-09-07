@@ -2,10 +2,10 @@
 
 #####################################################################
 #
-#  gen-subset.pl
+#  gen-subset-holding.pl
 #
 #  Extrahieren einer Titeluntermenge eines Katalogs anhand der
-#  Kategorieinhalte fuer die Erzeugung eines separaten neuen Katalogs
+#  OLWS fuer die Erzeugung eines separaten neuen Katalogs
 #
 #  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -36,6 +36,8 @@ use strict;
 use warnings;
 
 use Getopt::Long;
+use SOAP::Lite;
+
 use OpenBib::Database::Subset;
 
 use Log::Log4perl qw(get_logger :levels);
@@ -75,8 +77,17 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Database::Subset("inst137",$pool);
-$subset->identify_by_category_content('title',[ { category => '0662', content => '^http://www.digitalis.uni-koeln.de' } ]);
+my $soap_params = SOAP::Data->name('paramaters'  =>\SOAP::Data->value(
+    SOAP::Data->name('dept'     => "98")->type('string'),
+    SOAP::Data->name('password' => "")->type('string'),
+    SOAP::Data->name('database' => "sisis")->type('string')));
+
+my $subset = new OpenBib::Database::Subset("inst001",$pool);
+$subset->identify_by_olws_circulation({
+    'urn'         => "urn:/Circulation",
+    'proxy'       => "http://hardtberg.ub.uni-koeln.de:8888/olws",
+    'soap_params' => $soap_params,
+});
 $subset->write_set;
 
 sub print_help {

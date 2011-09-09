@@ -35,6 +35,7 @@ use utf8;
 
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
+use SOAP::Lite;
 
 use OpenBib::Config;
 
@@ -107,10 +108,12 @@ sub identify_by_mark {
     
     my $request=$self->{dbh}->prepare("select distinct conn.sourceid as titid from conn,holding where holding.category=14 and holding.content rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
-    my @marks = (scalar $mark)?($mark):@$mark;
+    my @marks = (ref $mark)?@$mark:($mark);
 
     foreach my $thismark (@marks){
-        $request->execute($mark) or $logger->error($DBI::errstr);;
+        $logger->debug("Searching for Mark $thismark");
+        
+        $request->execute($thismark) or $logger->error($DBI::errstr);;
         
         while (my $result=$request->fetchrow_hashref()){
             $self->{titleid}{$result->{'titid'}} = 1;
@@ -129,15 +132,18 @@ sub identify_by_mark {
 
     $self->get_title_normdata;
 
-    my %holdingid = ();
+    $self->{holdingid} = {};
 
     # Exemplardaten *nur* vom entsprechenden Institut!
     $request=$self->{dbh}->prepare("select distinct id from holding where category=14 and content rlike ?") or $logger->error($DBI::errstr);
-    $request->execute($mark);
+
+    foreach my $thismark (@marks){
+        $request->execute($thismark);
     
-    while (my $result=$request->fetchrow_hashref()){
-        $holdingid{$result->{'id'}}=1;
-    }    
+        while (my $result=$request->fetchrow_hashref()){
+            $self->{holdingid}{$result->{'id'}}=1;
+        }
+    }
         
     return $self;
 }
@@ -185,7 +191,7 @@ sub identify_by_category_content {
 
     $self->get_title_normdata;
 
-    my %holdingid = ();
+    $self->{holdingid} = {};
 
     # Exemplardaten
     $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=6") or $logger->error($DBI::errstr);
@@ -194,7 +200,66 @@ sub identify_by_category_content {
         $request->execute($id);
     
         while (my $result=$request->fetchrow_hashref()){
-            $holdingid{$result->{'targetid'}}=1;
+            $self->{holdingid}{$result->{'targetid'}}=1;
+        }    
+    }
+
+    return $self;
+}
+
+sub identify_by_olws_circulation {
+    my $self    = shift;
+    my $arg_ref = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $soap = SOAP::Lite
+        -> uri($arg_ref->{urn})
+            -> proxy($arg_ref->{proxy});
+    my $result = $soap->get_idn_of_borrows($arg_ref->{soap_params});
+    
+    my $circexlist=undef;
+
+    unless ($result->fault) {
+        $circexlist=$result->result;
+    }
+    else {
+        $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode,
+    $result->faultstring, $result->faultdetail);
+        return;
+    }
+
+    
+    my @circexemplarliste=@$circexlist;
+    
+    foreach my $singleex_ref (@circexemplarliste) {
+        $self->{titleid}{$singleex_ref->{'Katkey'}}=1;
+    }
+
+    
+    my $count=0;
+
+    foreach my $key (keys %{$self->{titleid}}){
+        $count++;
+    }
+
+    $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
+
+    $self->get_title_hierarchy;
+
+    $self->get_title_normdata;
+
+    $self->{holdingid} = {};
+
+    # Exemplardaten
+    my $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=6") or $logger->error($DBI::errstr);
+
+    foreach my $id (keys %{$self->{titleid}}){
+        $request->execute($id);
+    
+        while (my $result=$request->fetchrow_hashref()){
+            $self->{holdingid}{$result->{'targetid'}}=1;
         }    
     }
 
@@ -316,6 +381,11 @@ sub write_set {
         $logger->fatal("Ursprungs- und Zielkatalog muessen verschieden sein.");
         
         return $self;
+    }
+
+    if (! keys %{$self->{titleid}}){
+        $logger->info("### $self->{source} -> $self->{destination}: Keine Titel vorhanden - Abbruch!");
+        return;
     }
     
     $logger->info("### $self->{source} -> $self->{destination}: Schreibe Meta-Daten");

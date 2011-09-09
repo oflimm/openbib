@@ -2,10 +2,10 @@
 
 #####################################################################
 #
-#  gen-subset-holding.pl
+#  gen-subset.pl
 #
-#  Extrahieren einer Titeluntermenge eines Katalogs anhand der
-#  mex-Daten fuer die Erzeugung eines separaten neuen Katalogs
+#  Extrahieren einer Titeluntermenge eines Katalogs
+#  fuer die Erzeugung eines separaten neuen Katalogs
 #
 #  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -76,11 +76,11 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $subset = new OpenBib::Database::Subset("inst001",$pool);
-$subset->identify_by_mark("^HGSO");
+$subset->identify_by_category_content('classification',([ { category => '0001', content => '^Slg. Islandica' } ]));
 $subset->write_set;
 
 sub print_help {
-    print "gen-subset-mex.pl - Erzeugen von Kataloguntermengen\n\n";
+    print "gen-subset.pl - Erzeugen von Kataloguntermengen\n\n";
     print "Optionen: \n";
     print "  -help                   : Diese Informationsseite\n\n";
 

@@ -76,7 +76,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $subset = new OpenBib::Database::Subset("inst001",$pool);
-$subset->identify_by_mark("^HGSO");
+$subset->identify_by_mark(["^LS/A6524-","^HL/Dek414/2-","^16A5804-","^Fd6/7-"]);
 $subset->write_set;
 
 sub print_help {

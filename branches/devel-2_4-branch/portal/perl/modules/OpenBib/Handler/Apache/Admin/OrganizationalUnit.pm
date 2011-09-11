@@ -270,11 +270,6 @@ sub show_record_form {
         return Apache2::Const::OK;
     }
     
-    if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
-    }
-
     if (!$config->orgunit_exists($profilename,$orgunitname)) {
         $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
     }
@@ -373,7 +368,7 @@ sub update_record {
 
     $config->update_orgunit({
         profilename => $profilename,
-        orgunit     => $orgunitname,
+        orgunitname => $orgunitname,
         description => $description,
         orgunitdb   => \@orgunitdb,
         nr          => $nr,

@@ -43,7 +43,7 @@
 
 <h1>[% orgunitinfo.description %]</h1>
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
 <input type="hidden" name="_method"    value="PUT" />
 
 <table width="100%">
@@ -83,7 +83,7 @@
 
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% orgunitinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="1" />
 

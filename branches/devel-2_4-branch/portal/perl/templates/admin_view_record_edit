@@ -50,7 +50,7 @@
 <table>
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><span style="color:blue">[% viewinfo.viewname %]</span></td></tr>
 <tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% viewinfo.description %]" size="40" /></td></tr>
-<tr><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview %]<option value="[% profile.profilename %]" [% IF viewinfo.profilename == profile.profilename %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td></tr>
+<tr><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview.all %]<option value="[% profile.profilename %]" [% IF viewinfo.profileid == profile.id %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td></tr>
 <tr><td><b>[% msg.maketext("URI ohne View") %]</b></td>
 <td>
 <select name="stripuri">

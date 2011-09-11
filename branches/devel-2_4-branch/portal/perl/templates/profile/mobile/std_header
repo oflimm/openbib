@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_header
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Seiten-Headers
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+<html> 
+    <head> 
+        <meta charset="utf-8" /> 
+        <title>Intro to jQuery Mobile</title> 
+        <link rel="stylesheet" href="/css/query.mobile-1.0b3.min.css" /> 
+        <script src="/js/jquery-1.5.1.min.js"></script>
+        <script src="/js/query.mobile-1.0b3.min.js "></script> 
+    </head> 

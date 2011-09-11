@@ -393,12 +393,12 @@ sub get_rssfeeds_of_view {
 
     my $viewrssfeed_ref  = {};
 
-    my $idnresult=$self->{dbh}->prepare("select rssfeed from view_rss where viewname=?") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select view_rss.rssid from view_rss,viewinfo where view_rss.viewid = viewinfo.id and viewinfo.viewname=?") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
 
     while (my $result=$idnresult->fetchrow_hashref()) {
-        my $rssfeed = $result->{'rssfeed'};
-        $viewrssfeed_ref->{$rssfeed}=1;
+        my $rssid = $result->{'rssid'};
+        $viewrssfeed_ref->{$rssid}=1;
     }
 
     return $viewrssfeed_ref;
@@ -412,7 +412,7 @@ sub get_rssfeed_overview {
 
     my $rssfeed_ref=[];
     
-    my $request=$self->{dbh}->prepare("select * from rssinfo order by dbname,type,subtype") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select rssinfo.*,databaseinfo.dbname from rssinfo, databaseinfo where rssinfo.dbid=databaseinfo.id order by databaseinfo.dbname,rssinfo.type,rssinfo.subtype") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     while (my $result=$request->fetchrow_hashref()){
         my $id           = decode_utf8($result->{'id'});
@@ -420,7 +420,7 @@ sub get_rssfeed_overview {
         my $subtype      = decode_utf8($result->{'subtype'});
         my $subtypedesc  = decode_utf8($result->{'subtypedesc'});
         my $active       = decode_utf8($result->{'active'});
-        
+
         push @$rssfeed_ref, {
             feedid      => decode_utf8($result->{'id'}),
             dbname      => decode_utf8($result->{'dbname'}),
@@ -531,7 +531,7 @@ sub get_primary_rssfeed_of_view  {
     my $logger = get_logger();
 
     # Assoziierten View zur Session aus Datenbank holen
-    my $idnresult=$self->{dbh}->prepare("select rssinfo.dbname as dbname,rssinfo.type as type, rssinfo.subtype as subtype from rssinfo,viewinfo where viewname = ? and rssinfo.id = viewinfo.rssfeed and rssinfo.active is true") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select databaseinfo.dbname as dbname,rssinfo.type as type, rssinfo.subtype as subtype from rssinfo,databaseinfo,viewinfo where rssinfo.dbid=databaseinfo.id and viewinfo.viewname = ? and rssinfo.id = viewinfo.rssid and rssinfo.active is true") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
   
     my $result=$idnresult->fetchrow_hashref();
@@ -1014,7 +1014,7 @@ sub get_viewdbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("select view_db.dbname from view_db,databaseinfo where view_db.viewname = ? and view_db.dbname = databaseinfo.dbname and databaseinfo.active is true order by dbname") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select databaseinfo.dbname from view_db,databaseinfo,viewinfo where viewinfo.viewname = ? and viewinfo.id=view_db.viewid and view_db.dbid = databaseinfo.dbname and databaseinfo.active is true order by dbname") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
     
     my @viewdbs=();
@@ -1556,7 +1556,7 @@ sub update_view {
         ? $view_ref->{description}         : undef;
     my $active                 = exists $view_ref->{active}
         ? $view_ref->{active}              : undef;
-    my $primrssfeed            = exists $view_ref->{primrssfeed}
+    my $primrssfeed            = exists $view_ref->{rssid}
         ? $view_ref->{primrssfeed}         : undef;
     my $start_loc              = exists $view_ref->{start_loc}
         ? $view_ref->{start_loc}           : undef;
@@ -1572,19 +1572,24 @@ sub update_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    delete $view_ref->{viewname};
+    
+    my $viewid = $self->get_viewinfo->search_rs({ viewname => $viewname })->single()->id;
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    $self->{schema}->resultset('Viewinfo')->search({ viewname => $view_ref->{viewname}})->single->update($view_ref);
+    $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname})->single->update($view_ref);
     
     # Datenbanken zunaechst loeschen
-    $self->{schema}->resultset('ViewDb')->search({ viewname => $view_ref->{viewname}})->delete;
+    $self->{schema}->resultset('ViewDb')->search({ viewid => $viewid})->delete;
 
     if (@$db_ref){
         my $this_db_ref = [];
         foreach my $dbname (@$db_ref){
+            my $dbid = $self->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
+                
             push @$this_db_ref, {
-                viewname => $viewname,
-                dbname   => $dbname,
+                viewid => $viewid,
+                dbid   => $dbid,
             };
         }
         
@@ -1593,15 +1598,15 @@ sub update_view {
     }
     
     # RSS-Feeds zunaechst loeschen
-    $self->{schema}->resultset('ViewRss')->search({ viewname => $view_ref->{viewname}})->delete;
+    $self->{schema}->resultset('ViewRss')->search({ viewid => $viewid })->delete;
 
     if (@$rss_ref){
         my $this_rss_ref = [];
         
         foreach my $rssfeed (@$rss_ref){
             push @$this_rss_ref, {
-                viewname => $viewname,
-                rssfeed  => $rssfeed,
+                viewid => $viewid,
+                rssid  => $rssfeed,
             };
         }
         
@@ -1650,19 +1655,19 @@ sub new_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
+    my $profileinfo_ref = $self->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
     
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
-    
-    $idnresult=$self->{dbh}->prepare("insert into viewinfo values (?,?,NULL,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname,$description,$start_loc,$servername,$profilename,$stripuri,$joinindex,$active) or $logger->error($DBI::errstr);
-    
+    $self->{schema}->resultset('Viewinfo')->create({
+        profileid   => $profileinfo_ref->id,
+        viewname    => $viewname,
+        description => $description,
+        start_loc   => $start_loc,
+        servername  => $servername,
+        stripuri    => $stripuri,
+        joinindex   => $joinindex,
+        active      => $active
+    });
+
     return 1;
 }
 
@@ -1754,19 +1759,8 @@ sub new_profile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-    
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
-    
-    $idnresult=$self->{dbh}->prepare("insert into profileinfo values (?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$description) or $logger->error($DBI::errstr);
-    
+    $self->{schema}->resultset('Profileinfo')->create($arg_ref);
+
     return 1;
 }
 
@@ -1805,21 +1799,21 @@ sub update_orgunit {
 
     # Zuerst die Aenderungen in der Tabelle Orgunit vornehmen
 
-    $self->{schema}->resultset('Orgunitinfo')->search_rs({ profilename => $profilename, orgunitname => $orgunitname })->single->update({ description => $description, nr => $nr });
+    my $profileinfo_ref = $self->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
+    my $orgunitinfo_ref = $self->get_orgunitinfo->search_rs({ 'orgunitname' => $orgunitname, 'profileid' => $profileinfo_ref->id })->single();
 
-#     my $idnresult=$self->{dbh}->prepare("update orgunitinfo set description = ?, nr = ? where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-#     $idnresult->execute($description,$nr,$profilename,$orgunit) or $logger->error($DBI::errstr);
-    
+    $orgunitinfo_ref->update({ description => $description, nr => $nr });
+        
     # Datenbanken zunaechst loeschen
-    $self->{schema}->resultset('OrgunitDb')->search_rs({ profilename => $profilename, orgunitname => $orgunitname })->delete;
+    $self->{schema}->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitinfo_ref->id})->delete;
 
     if (@$orgunitdb_ref){
         my $this_db_ref = [];
         foreach my $dbname (@$orgunitdb_ref){
+            my $dbinfo_ref = $self->get_databaseinfo->search_rs({ 'dbname' => $dbname })->single();
             push @$this_db_ref, {
-                profilename => $profilename,
-                orgunitname => $orgunitname,
-                dbname      => $dbname,
+                orgunitid   => $orgunitinfo_ref->id,
+                dbid      => $dbinfo_ref->id,
             };
         }
         
@@ -1859,24 +1853,10 @@ sub new_orgunit {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-    
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
+    my $profileinfo_ref = $self->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
 
-    $idnresult=$self->{dbh}->prepare("select max(nr) as maxnr from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    $res=$idnresult->fetchrow_hashref;
-    my $nextnr=$res->{maxnr}+1;
+    $self->{schema}->resultset('Orgunitinfo')->create({ profileid => $profileinfo_ref->id, orgunitname => $orgunit, description => $description, nr => $nr});
 
-    $idnresult=$self->{dbh}->prepare("insert into orgunitinfo (profilename,orgunitname,description,nr) values (?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit,$description,$nextnr) or $logger->error($DBI::errstr);
-    
     return 1;
 }
 

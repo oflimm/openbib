@@ -136,7 +136,7 @@ sub show_record {
     my $primrssfeed = $viewinfo_obj->rssfeed;
     my $start_loc   = $viewinfo_obj->start_loc;
     my $servername  = $viewinfo_obj->servername;
-    my $profilename = $viewinfo_obj->profilename;
+    my $profilename = $config->get_profilename_of_view($viewname);
     my $stripuri    = $viewinfo_obj->stripuri;
     my $joinindex   = $viewinfo_obj->joinindex;
     my $active      = $viewinfo_obj->active;
@@ -266,7 +266,7 @@ sub show_record_form {
         $viewdbs_ref->{$dbname} = 1;
     }
     
-    my @profiledbs       = $config->get_profiledbs($viewinfo->profilename);
+    my @profiledbs       = $config->get_profiledbs($config->get_profilename_of_view($viewname));
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
     my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
 
@@ -358,16 +358,18 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
+
     my $thisviewinfo_ref = {
         viewname    => $viewname,
         description => $description,
         stripuri    => $stripuri,
         joinindex   => $joinindex,
         active      => $active,
-        primrssfeed => $primrssfeed,
+        rssid       => $primrssfeed,
         start_loc   => $viewstart_loc,
         servername  => $viewservername,
-        profilename => $profilename,
+        profileid   => $profileinfo_ref->id,
     };
 
     $logger->debug("Info: ".YAML::Dump($thisviewinfo_ref));

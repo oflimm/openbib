@@ -12,5 +12,11 @@
 #######################################################################
 -%]
 
+       	<div data-role="footer">
+		<h4>[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;Web-App based on <a href="http://jquerymobile.com/">jquery.mobile</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a></h4>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
 </body>
 </html>

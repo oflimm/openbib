@@ -1,0 +1,76 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_helene_richter
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<div data-role="page">
+
+       <div  data-role="header">
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+	   <h1>Portal der Richter-Bibliothek</h1> 
+       </div>
+
+    <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="num"        value="50" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="author" />
+<input type="hidden" name="srto"       value="up" />
+<input type="hidden" name="jn" value="1" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"         value="1" />
+[% END %]
+
+    <fieldset> 
+      <div data-role="fieldcontain">
+         <label for="search">Search Input:</label>
+         <input type="search" name="fs" id="search" value="" />
+      </div>
+    </fieldset> 
+    </form>
+
+       <div data-role="content">
+
+<h1>Helene Richter</h1>
+
+<h2>[% msg.maketext("Lebenslauf") %]</h2>
+
+<p>
+<b>[% msg.maketext("Helene Richter (* 4. August 1861 in Wien; † wahrscheinlich 8. November 1942 in Terezín) war eine österreichische Anglistin und Kritikerin.") %]</b>
+</p>
+
+<p>
+[% msg.maketext("Die Tochter eines Arztes bildete sich als Autodidaktin und begann 1886
+mit Shelley-Studien. Sie widmete sich später umfangreichen
+biographischen und literarisch-kritischen Werken über Shelley, 'Mary
+Wollstonecraft, die Verfechterin der Rechte der Frau', 'William Blake' und 'Lord Byron'. Sie schrieb auch ein dreibändiges Werk
+'Geschichte der englischen Romantik'. Mit Büchern wie 'Unser
+Burgtheater', 'Schauspielercharakteristiken', 'Josef Lewinsky, 50
+Jahre Wiener Kunst und Kultur' schrieb sie über das Wiener
+Burgtheater. Aufgrund ihrer Leistungen wurde sie 1931 Dr. h. c. der
+Universitäten Heidelberg und Erlangen. Helene Richter lebte mit ihrer
+Schwester, der Romanistin Elise Richter zusammen. Gemeinsam mit ihrer
+Schwester musste sie 1942 in ein jüdisches Altersheim ziehen und beide
+wurden von dort in das Ghetto Theresienstadt deportiert, wo sie
+wahrscheinlich am 8. November 1942 starb.") %]
+</p>
+
+([% msg.maketext("Quelle:") %] <a href="http://de.wikipedia.org/wiki/Helene_Richter" target="_blank">Wikipedia</a>)
+
+
+        </div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

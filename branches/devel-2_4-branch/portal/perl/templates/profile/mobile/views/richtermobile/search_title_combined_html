@@ -1,0 +1,46 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+
+<div data-role="page">
+
+       <div  data-role="header">
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+	   <h1>Suchergebnis</h1> 
+       </div> 
+
+       <div data-role="content">
+
+[% IF fullresultcount > 0 %]
+<!-- Beginn Result Item -->
+[%-
+    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};jn=${jn};dd=1;" ;
+    start_range     = nav.current_page*qopts.num-qopts.num + 1;
+    end_range       = nav.current_page*qopts.num;
+    IF end_range >= fullresultcount ;
+       end_range       = fullresultcount;
+    END;
+
+    query_args_base = cgiapp.modify_querystring({ exclude = ['page']}) ;
+-%]
+
+<ul data-role="listview">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
+[%- END -%]
+</ul>
+
+     </div>
+[% END %]
+

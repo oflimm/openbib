@@ -1,0 +1,84 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+<div data-role="page">
+
+       <div  data-role="header">
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+	   <h1>Mobil-Portal der Richter-Bibliothek</h1> 
+       </div>
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="register" %]
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="num"        value="50" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="author" />
+<input type="hidden" name="srto"       value="up" />
+<input type="hidden" name="jn" value="1" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"         value="1" />
+[% END %]
+
+    <fieldset> 
+      <div data-role="fieldcontain">
+         <label for="search">Search Input:</label>
+         <input type="search" name="fs" id="search" value="" />
+      </div>
+    </fieldset> 
+    </form>
+
+       <div data-role="content">
+
+[%- IF category == 'T0720' -%]
+<h2>Provenienzen</h2>
+<p>
+[% msg.maketext("Das Register der Provenienzen listet die Namen von Privatpersonen und Rezensionszeitschriften auf.") %]
+</p>
+<p>
+[% msg.maketext("Bei den Personennamen handelt es sich um Besitzeintr&auml;ge, die den
+Vorbesitzer der Richterschen B&uuml;cher ausweisen. Au&szlig;erdem
+werden Personen verzeichnet, die ihre B&uuml;cher mit einer
+entsprechenden Widmung an Elise Richter weitergeleitet haben.") %]
+</p>
+<p>
+[% msg.maketext("Unter den noch in der USB K&ouml;ln vorhandenen Richterb&uuml;chern
+befinden sich auch einige Rezensionsexemplare. Sie sind durch
+handschriftlichen Eintrag von Elise Richter selbst oder durch einen
+Stempel als solche gekennzeichnet.") %]
+</p>
+<p>
+[% msg.maketext("Im Register werden sie unter dem Namen der Zeitschrift
+aufgef&uuml;hrt.") %]
+</p>
+[%- END -%]
+
+<p />
+
+
+<ul data-role="listview">
+[% FOREACH item IN browselist %]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=richter;fs=t0720:|[% item.replace('&amp;','%26') %]|">[% item %]</a></li>
+[% END %]
+</ul>
+
+        </div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

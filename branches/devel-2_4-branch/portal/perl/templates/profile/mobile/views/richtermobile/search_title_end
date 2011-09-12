@@ -1,0 +1,14 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_end
+#
+# Typ         : Mastertemplate (3/3)
+#
+# Aufgabe:
+#
+# Ausgabe das unteren Teils der initialen Trefferliste
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 

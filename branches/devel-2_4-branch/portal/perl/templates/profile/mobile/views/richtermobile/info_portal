@@ -1,0 +1,96 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_portal
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<div data-role="page">
+
+       <div  data-role="header"> 
+	   <h1>Mobil-Portal der Richter-Bibliothek</h1> 
+       </div>
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="info" %]
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="num"        value="50" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="author" />
+<input type="hidden" name="srto"       value="up" />
+<input type="hidden" name="jn" value="1" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"         value="1" />
+[% END %]
+
+    <fieldset> 
+      <div data-role="fieldcontain">
+         <label for="search">Search Input:</label>
+         <input type="search" name="fs" id="search" value="" />
+      </div>
+    </fieldset> 
+    </form>
+
+       <div data-role="content">
+
+<h1>[% msg.maketext("Die Bibliothek von Elise und Helene Richter") %]</h1>
+
+
+<p> [% msg.maketext("In diesem Portal können Sie in dem Bestand der ehemaligen
+<emph>Richter-Bibliothek</emph> von [_1]Elise und Helene Richter[_2] recherchieren. Die
+zugrundeliegenden Daten dazu stammen von der Universitäts- und
+Stadtbibliothek Köln, die sie als Open Bibliographic Data unter der
+CC0-Lizenz [_3]freigegeben[_4] hat. Weitere Informationen zur
+Erfassung und dem Projekt Richter-Bibliothek der USB Köln finden Sie
+unter [_5]http://richterbibliothek.ub.uni-koeln.de/[_6].","<a href=\"${path_prefix}/${config.get('info_loc')}/elise_richter.html?l=${lang}\">","</a>","<a href=\"http://opendata.ub.uni-koeln.de/\"
+target=\"_blank\">","</a>","<a class=\"ext\" href=\"http://richterbibliothek.ub.uni-koeln.de/\"
+target=\"_blank\">","</a>") %]</p>
+
+<p>
+
+[% msg.maketext("1942 gelangte die Bibliothek der beiden Schwestern von etwa 3.000
+Bänden unter dem politischem Druck der NS-Zeit an die Universität zu
+Köln. Nachdem dort der Schriftwechsel zur Bibliothek im Archiv
+gefunden wurde, wird seit 2005 im Rahmen der NS-Provenienzforschung
+die Bibliothek rekonstruiert, publiziert und - wenn möglich - an
+Erben restituiert. Zudem soll ein kleiner Platz zwischen USB und
+Philosophikum nach den Richterschwestern benannt werden.") %]
+([% msg.maketext("Quelle:") %] <a href="http://de.wikipedia.org/wiki/Elise_Richter" target="_blank">Wikipedia</a>)
+
+</p>
+
+<p>
+[% msg.maketext("Die Motivation dieses Portals ist die Demonstration einer wesentlichen
+Fähigkeit der OpenSource-Software OpenBib: Die Erstellung
+verschiedener Recherche-Portale mit verschiedenen Hostnamen mit nur
+einer OpenBib-Installation. So wird dieses Portal z.B. mit der
+gleichen OpenBib-Instanz realisiert wie http://search.openbib.org/.") %]
+</p>
+
+<p>
+[% msg.maketext("Ermöglicht wird dies einerseits durch verschiedene
+Konfiguratonsmöglichkeiten innerhalb von OpenBib sowie einfachem
+URL-Rewriting für die jeweiligen Hostnamen.") %]
+
+         <ul data-role="listview" data-inset="true">
+           <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/elise_richter.html?l=[% lang %]">Elise Richter</a></li>
+           <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/helene_richter.html?l=[% lang %]">Helene Richter</a></li>
+         </ul>
+
+       </div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

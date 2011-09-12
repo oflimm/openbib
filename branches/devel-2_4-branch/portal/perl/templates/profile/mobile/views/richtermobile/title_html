@@ -1,0 +1,55 @@
+[%#-
+#######################################################################
+#
+# Templatename: title_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+[%-
+
+  request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) ;
+  normdata        = record.get_normdata ;
+  holding         = record.get_holding ;
+  circulation     = record.get_circulation ; 
+  same_records    = record.get_same_records ;
+  similar_records = record.get_similar_records ;
+  bibkey = record.to_bibkey ;
+  isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
+  IF NOT isbn ;
+      isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
+  END ;
+
+  recordname = normdata.${'T0331'}.first.content;
+  IF normdata.${'PC0001'}.first.content ;
+     pc = normdata.${'PC0001'}.first.content ;
+     recordname = "${pc} - ${recordname}";
+  END ;
+  title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+
+-%]
+[% PROCESS common/subtemplate name="std_header" unapi=1 LinkedData="title" %]
+
+<body>
+
+<div data-role="page">
+
+       <div  data-role="header">
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+	   <h1>Einzeltitel</h1> 
+       </div> 
+
+       <div data-role="content">
+
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+[% PROCESS common/subtemplate name="title_html_categories" %]
+
+       </div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

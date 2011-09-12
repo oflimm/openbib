@@ -15,8 +15,8 @@
 
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) ;
   normdata        = record.get_normdata ;
-  holding         = record.get_holding ;
-  circulation     = record.get_circulation ; 
+  holding         = record.get_mexdata ;
+  circulation     = record.get_circdata ; 
   same_records    = record.get_same_records ;
   similar_records = record.get_similar_records ;
   bibkey = record.to_bibkey ;
@@ -49,6 +49,16 @@
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
 [% PROCESS common/subtemplate name="title_html_categories" %]
+
+[% IF holding.size > 0 %]
+<p/>
+
+<div id="mexinfo"><!-- Begin Bestand -->
+[%# USE dumper;dumper.dump(holding)%]
+[% PROCESS common/subtemplate name="holding" %]
+</div><!-- End Bestand -->
+
+[% END %]
 
        </div>
 

@@ -12,18 +12,6 @@
 #######################################################################
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
-
-<div data-role="page">
-
-       <div  data-role="header">
-           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
-	   <h1>Suchergebnis</h1> 
-       </div> 
-
-       <div data-role="content">
-
-[% IF fullresultcount > 0 %]
-<!-- Beginn Result Item -->
 [%-
     request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};jn=${jn};dd=1;" ;
     start_range     = nav.current_page*qopts.num-qopts.num + 1;
@@ -35,12 +23,45 @@
     query_args_base = cgiapp.modify_querystring({ exclude = ['page']}) ;
 -%]
 
+<div data-role="page">
+
+       <div  data-role="header">
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+	   <h1>Suchergebnis:  
+           [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% fullresultcount %]</h1> 
+       </div> 
+
+       <div data-role="content">
+
+[% IF fullresultcount > 0 %]
+<!-- Beginn Result Item -->
+
 <ul data-role="listview">
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
 [%- END -%]
 </ul>
 
+
      </div>
+
+<div  data-role="footer">
+Seite: 
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% query_args_base %]" >[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+</div>
+
 [% END %]
 

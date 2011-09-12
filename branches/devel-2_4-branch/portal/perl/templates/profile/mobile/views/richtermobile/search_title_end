@@ -12,3 +12,6 @@
 #######################################################################
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
+
+</body>
+</html>

@@ -16,11 +16,6 @@
 
    hinweistext = "Zugriff nur im Hochschulnetz der Universität Köln bzw. für autorisierte Benutzer";
 
-   IF normset.${"T0508"}.first.content == "Sciencedirect" ;
-        hinweistext = "Zugriff nur im Hochschulnetz der Universität Köln bzw. für autorisierte Benutzer.<br/><b>Dieser Titel steht im Rahmen eines Testzugangs bis Ende 2010 zur
-Verfügung. Ein dauerhafter Zugriff ist z.Zt. noch nicht gesichert.</b>";
-   END;
-
    hinweisarray.push({ content => hinweistext }) ;
    normset.${"T0663"} = hinweisarray ;  %]
 

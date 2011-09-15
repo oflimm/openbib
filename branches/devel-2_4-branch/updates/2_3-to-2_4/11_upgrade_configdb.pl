@@ -10,11 +10,25 @@ my $passwd=$ARGV[0];
 my $olddbh = DBI->connect("DBI:mysql:dbname=config;host=localhost;port=3306", 'root', $passwd);
 my $newdbh = DBI->connect("DBI:mysql:dbname=openbib_config;host=localhost;port=3306", 'root', $passwd);
 
+$newdbh->do("truncate table serverinfo");
+$newdbh->do("truncate table rsscache");
+$newdbh->do("truncate table view_rss");
+$newdbh->do("truncate table view_db");
+$newdbh->do("truncate table viewinfo");
+$newdbh->do("truncate table orgunit_db");
+$newdbh->do("truncate table orgunitinfo");
+$newdbh->do("truncate table rssinfo");
+$newdbh->do("truncate table profileinfo");
+$newdbh->do("truncate table libraryinfo");
+$newdbh->do("truncate table databaseinfo");
+
+
 # databaseinfo
 
 my %dbid = ();
 
-$newdbh->do("truncate table databaseinfo");
+print STDERR "### databaseinfo\n";
+
 
 my $request = $olddbh->prepare("select * from databaseinfo");
 
@@ -27,18 +41,24 @@ while (my $result=$request->fetchrow_hashref){
     my $insertid   = $newdbh->{'mysql_insertid'};
 
     $dbid{$result->{dbname}}=$insertid;
+
+    print STDERR $result->{dbname},  " -> ID: ", $dbid{$result->{dbname}} ,"\n";
 }
 
 # libraryinfo
 
-$newdbh->do("truncate table libraryinfo");
+print STDERR "### libraryinfo\n";
 
 $request = $olddbh->prepare("select * from libraryinfo");
 
 $request->execute();
 
 while (my $result=$request->fetchrow_hashref){
-    next unless ($result->{dbname} && $dbid{$result->{dbname}});
+    if (!$result->{dbname} || ! $dbid{$result->{dbname}}){
+        print STDERR "Ziel $result->{dbname} existiert nicht in databaseinfo\n"; 
+        next;
+    }
+
     my $request2 = $newdbh->prepare("insert into libraryinfo (dbid,category,indicator,content) values (?,?,?,?)");
     $request2->execute($dbid{$result->{dbname}},$result->{category},$result->{indicator},$result->{content});
 }
@@ -47,50 +67,62 @@ while (my $result=$request->fetchrow_hashref){
 
 my %profileid = ();
 
-$newdbh->do("truncate table profileinfo");
+print STDERR "### profileinfo\n";
 
 $request = $olddbh->prepare("select * from profileinfo");
 
 $request->execute();
 
 while (my $result=$request->fetchrow_hashref){
-
+    print STDERR $result->{profilename},  "\n";
+    
     my $request2 = $newdbh->prepare("insert into profileinfo (profilename,description) values (?,?)");
     $request2->execute($result->{profilename},$result->{description});
     my $insertid   = $newdbh->{'mysql_insertid'};
 
     $profileid{$result->{profilename}}=$insertid;
 
+    print STDERR $result->{profilename},  " -> ID: ", $profileid{$result->{profilename}} ,"\n";
 }
 
 # rssinfo
 
-my %rssid        = ();
+print STDERR "### rssinfo\n";
 
-$newdbh->do("truncate table rssinfo");
+my %rssid        = ();
 
 $request = $olddbh->prepare("select * from rssfeeds");
 
 $request->execute();
 
 while (my $result=$request->fetchrow_hashref){
+    if (!$result->{dbname} || ! $dbid{$result->{dbname}}){
+        print STDERR "Ziel $result->{dbname} existiert nicht in databaseinfo\n"; 
+        next;
+    }
 
+    print STDERR $result->{dbname},  "\n";
+    
     my $request2 = $newdbh->prepare("insert into rssinfo (id,dbid,type,subtype,subtypedesc,active) values (?,?,?,?,?,?)");
     $request2->execute($result->{id},$dbid{$result->{dbname}},$result->{type},$result->{subtype},$result->{subtypedesc},$result->{active});
 }
 
 # orgunitinfo
 
+print STDERR "### orgunitinfo\n";
+
 my %orgunitid        = ();
 my %orgunitprofileid = ();
-
-$newdbh->do("truncate table orgunitinfo");
 
 $request = $olddbh->prepare("select * from orgunitinfo");
 
 $request->execute();
 
 while (my $result=$request->fetchrow_hashref){
+    if (!$result->{profilename} || ! $profileid{$result->{profilename}}){
+        print STDERR "Ziel $result->{profilename} existiert nicht in profileinfo\n"; 
+        next;
+    }
 
     my $request2 = $newdbh->prepare("insert into orgunitinfo (profileid,orgunitname,description,nr) values (?,?,?,?)");
     $request2->execute($profileid{$result->{profilename}},$result->{orgunitname},$result->{description},$result->{nr});
@@ -98,26 +130,37 @@ while (my $result=$request->fetchrow_hashref){
 
     $orgunitid{$result->{orgunitname}}=$insertid;
     $orgunitprofileid{$result->{profilename}}{$result->{orgunitname}}=$insertid;
+
+    print STDERR $result->{orgunitname},  " -> ID: ", $orgunitid{$result->{orgunitname}} ,"\n";
+
 }
 
 # orgunitdbs
 
-$newdbh->do("truncate table orgunit_db");
+print STDERR "### orgunit_db\n";
 
 $request = $olddbh->prepare("select * from orgunitdbs");
 
 $request->execute();
 
 while (my $result=$request->fetchrow_hashref){
+    if (!$result->{profilename} || !$result->{orgunitname}|| ! $orgunitprofileid{$result->{profilename}}{$result->{orgunitname}}){
+        print STDERR "Ziel $result->{profilename} existiert nicht in profileinfo\n"; 
+        next;
+    }
+
     my $request2 = $newdbh->prepare("insert into orgunit_db (orgunitid,dbid) values (?,?)");
     $request2->execute($orgunitprofileid{$result->{profilename}}{$result->{orgunitname}},$dbid{$result->{dbname}});
+
+    print STDERR $result->{orgunitname},  " -> ID: ", $orgunitid{$result->{orgunitname}} ,"\n";
+
 }
 
 # viewinfo
 
-my %viewid        = ();
+print STDERR "### viewinfo\n";
 
-$newdbh->do("truncate table viewinfo");
+my %viewid        = ();
 
 $request = $olddbh->prepare("select * from viewinfo");
 
@@ -130,11 +173,14 @@ while (my $result=$request->fetchrow_hashref){
     my $insertid   = $newdbh->{'mysql_insertid'};
 
     $viewid{$result->{viewname}}=$insertid;
+
+    print STDERR $result->{viewname},  " -> ID: ", $viewid{$result->{viewname}} ,"\n";
+
 }
 
 # viewdbs
 
-$newdbh->do("truncate table view_db");
+print STDERR "### viewdbs\n";
 
 $request = $olddbh->prepare("select * from viewdbs");
 
@@ -148,7 +194,7 @@ while (my $result=$request->fetchrow_hashref){
 
 # viewrssfeeds
 
-$newdbh->do("truncate table view_rss");
+print STDERR "### view_rss\n";
 
 $request = $olddbh->prepare("select * from viewrssfeeds");
 
@@ -162,11 +208,11 @@ while (my $result=$request->fetchrow_hashref){
 
 # rsscache wird nicht migriert
 
-$newdbh->do("truncate table rsscache");
+print STDERR "### rsscache\n";
 
 # serverinfo
 
-$newdbh->do("truncate table serverinfo");
+print STDERR "### serverinfo\n";
 
 $request = $olddbh->prepare("select * from loadbalancertargets");
 

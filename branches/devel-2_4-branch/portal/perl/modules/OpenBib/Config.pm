@@ -103,19 +103,36 @@ sub get_number_of_dbs {
     my $alldbs = $self->{memc}->get($memc_key);
     return $alldbs if ($alldbs);
 
-    my $request;
+    # $self->{schema}->storage->debug(1);
+
     if ($profilename){
-        $request=$self->{dbh}->prepare("select count(orgunit_db.dbid) as rowcount from orgunit_db,databaseinfo,profileinfo,orgunitinfo where profileinfo.profilename = ? and profileinfo.id=orgunitinfo.profileid and orgunitinfo.id=orgunit_db.orgunitid and databaseinfo.id=orgunit_db.dbid and databaseinfo.active is true") or $logger->error($DBI::errstr);
-        $request->execute($profilename) or $logger->error($DBI::errstr);
+        # DBI: "select count(orgunit_db.dbid) as rowcount from orgunit_db,databaseinfo,profileinfo,orgunitinfo where profileinfo.profilename = ? and profileinfo.id=orgunitinfo.profileid and orgunitinfo.id=orgunit_db.orgunitid and databaseinfo.id=orgunit_db.dbid and databaseinfo.active is true"
+        $alldbs = $self->{schema}->resultset('OrgunitDb')->search(
+            {
+                'dbid.active'           => 1,
+                'profileid.profilename' => $profilename,
+            }, 
+            {
+                join => [ 'orgunitid', 'dbid',  ],
+                prefetch => [ { 'orgunitid' => 'profileid' } ],
+                columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
+                group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
+            }
+        )->count;
+        
     }
     else {
-        $request=$self->{dbh}->prepare("select count(dbid) as rowcount from databaseinfo where databaseinfo.active is true") or $logger->error($DBI::errstr);
-        $request->execute() or $logger->error($DBI::errstr);
+        # DBI: "select count(distinct dbname) from databaseinfo where active=true"
+        $alldbs = $self->{schema}->resultset('Databaseinfo')->search(
+            {
+                'active' => 1
+            }, 
+            {
+                columns => [ qw/dbname/ ],
+                group_by => [ qw/dbname/ ],
+            }
+        )->count;
     }
-    
-    my $res    = $request->fetchrow_hashref;
-    $alldbs = $res->{rowcount};
-    $request->finish();
     
     return $alldbs;
 }
@@ -126,11 +143,14 @@ sub get_number_of_all_dbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(id) as rowcount from databaseinfo") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-    my $res    = $request->fetchrow_hashref;
-    my $alldbs = $res->{rowcount};
-    $request->finish();
+    # DBI: "select count(id) as rowcount from databaseinfo"
+    my $alldbs = $self->{schema}->resultset('Databaseinfo')->search(
+        undef,
+        {
+            columns => [ qw/dbname/ ],
+            group_by => [ qw/dbname/ ],
+
+        })->count;
     
     return $alldbs;
 }
@@ -141,11 +161,17 @@ sub get_number_of_views {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(viewid) as rowcount from viewinfo where active is true") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-    my $res      = $request->fetchrow_hashref;
-    my $allviews = $res->{rowcount};
-    $request->finish();
+    # DBI: "select count(viewid) as rowcount from viewinfo where active is true"
+    my $allviews = $self->{schema}->resultset('Viewinfo')->search(
+        {
+            'active' => 1,
+        },
+        {
+            columns => [ qw/viewname/ ],
+            group_by => [ qw/viewname/ ],
+
+        }
+    )->count;
     
     return $allviews;
 }
@@ -156,11 +182,15 @@ sub get_number_of_all_views {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(viewid) as rowcount from viewinfo") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-    my $res      = $request->fetchrow_hashref;
-    my $allviews = $res->{rowcount};
-    $request->finish();
+    # DBI: "select count(viewid) as rowcount from viewinfo"
+    my $allviews = $self->{schema}->resultset('Viewinfo')->search(
+        undef,
+        {
+            columns => [ qw/viewname/ ],
+            group_by => [ qw/viewname/ ],
+            
+        }
+    )->count;
     
     return $allviews;
 }
@@ -181,41 +211,89 @@ sub get_number_of_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $counts;
     my $request;
+
+     $self->{schema}->storage->debug(1);
+
     if ($database){
-        $request=$self->{dbh}->prepare("select allcount, journalcount, articlecount, digitalcount from databaseinfo where dbname = ? and databaseinfo.active is true") or $logger->error($DBI::errstr);
-        $request->execute($database) or $logger->error($DBI::errstr);
+        # DBI: "select allcount, journalcount, articlecount, digitalcount from databaseinfo where dbname = ? and databaseinfo.active is true"
+        $counts = $self->{schema}->resultset('Databaseinfo')->search(
+            {
+                'active' => 1,
+                'dbname' => $database,
+            },
+            {
+                columns => [qw/ allcount journalcount articlecount digitalcount /],
+            }
+        )->first;
+        
     }
     elsif ($view){
-        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,view_db,viewinfo where viewinfo.viewname=? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and databaseinfo.active is true") or $logger->error($DBI::errstr);
-        $request->execute($profile) or $logger->error($DBI::errstr);
+        # DBI: "select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,view_db,viewinfo where viewinfo.viewname=? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and databaseinfo.active is true"
+        $counts = $self->{schema}->resultset('ViewDb')->search_rs(
+            {
+                'dbid.active'     => 1,
+                'viewid.viewname' => $view,
+            },
+            {
+                join => ['dbid','viewid'],
 
+                'select' => [ {'sum' => 'dbid.allcount', -as => 'allcount' }, {'sum' => 'dbid.journalcount', -as => 'journalcount'}, {'sum' => 'dbid.articlecount', -as => 'articlecount'}, {'sum' => 'dbid.digitalcount', -as => 'digitalcount'}],
+#                '+as'     => [qw/ allcount journalcount articlecount digitalcount /],
+#                as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
+            }
+        )->first;
+#         $counts = $self->{schema}->resultset('ViewDb')->search(
+#             {
+#                 'dbid.active'     => 1,
+#                 'viewid.viewname' => $view,
+#             },
+#             {
+#                 join => ['dbid','viewid'],
+
+#                 +select => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
+#                 +as     => [qw/ allcount journalcount articlecount digitalcount /],
+# #                as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
+#             }
+#         )->first;
     }
     elsif ($profile){
-        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunit_db,profileinfo,orgunitinfo where profileinfo.profilename = ? and orgunitinfo.profileid=profileinfo.id and orgunit_db.orgunitid=orgunitinfo.id and orgunit_db.dbid=databaseinfo.id and databaseinfo.active is true") or $logger->error($DBI::errstr);
-        $request->execute($profile) or $logger->error($DBI::errstr);
+        # DBI: "select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunit_db,profileinfo,orgunitinfo where profileinfo.profilename = ? and orgunitinfo.profileid=profileinfo.id and orgunit_db.orgunitid=orgunitinfo.id and orgunit_db.dbid=databaseinfo.id and databaseinfo.active is true"
+        $counts = $self->{schema}->resultset('OrgunitDb')->search(
+            {
+                'dbid.active'           => 1,
+                'profileid.profilename' => $profile,
+            }, 
+            {
+                join => [ 'orgunitid', 'dbid',  ],
+                prefetch => [ { 'orgunitid' => 'profileid' } ],
+                columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
+                group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
+            }
+        )->first;
+
     }
     else {
-        $request=$self->{dbh}->prepare("select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo where databaseinfo.active is true") or $logger->error($DBI::errstr);
-        $request->execute() or $logger->error($DBI::errstr);
+        # DBI: "select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo where databaseinfo.active is true"
+        $counts = $self->{schema}->resultset('Databaseinfo')->search(
+            {
+                'active' => 1,
+            },
+            {
+                select => [ {'sum' => 'allcount'}, {'sum' => 'journalcount'}, {'sum' => 'articlecount'}, {'sum' => 'digitalcount'}],
+                as     => [qw/ allcount journalcount articlecount digitalcount /],
+            })->first;
+        
     }
 
-    my $alltitles_ref = {};
-    
-    while (my $result    = $request->fetchrow_hashref){
-        my $allcount     = $result->{allcount};
-        my $journalcount = $result->{journalcount};
-        my $articlecount = $result->{articlecount};
-        my $digitalcount = $result->{digitalcount};
-
-        $alltitles_ref->{allcount}     = $allcount;
-        $alltitles_ref->{journalcount} = $journalcount;
-        $alltitles_ref->{articlecount} = $articlecount;
-        $alltitles_ref->{digitalcount} = $digitalcount;
-    }
-    
-    $request->finish();
-    
+    my $alltitles_ref = {   
+        allcount     => $counts->allcount,
+        journalcount => $counts->journalcount,
+        articlecount => $counts->articlecount,
+        digitalcount => $counts->digitalcount,
+    };
+        
     return $alltitles_ref;
 }
 
@@ -1577,10 +1655,10 @@ sub update_view {
     my $viewid = $self->get_viewinfo->search_rs({ viewname => $viewname })->single()->id;
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname})->single->update($view_ref);
+    $self->{schema}->resultset('Viewinfo')->search_rs({ viewname => $viewname})->single->update($view_ref);
     
     # Datenbanken zunaechst loeschen
-    $self->{schema}->resultset('ViewDb')->search({ viewid => $viewid})->delete;
+    $self->{schema}->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
 
     if (@$db_ref){
         my $this_db_ref = [];

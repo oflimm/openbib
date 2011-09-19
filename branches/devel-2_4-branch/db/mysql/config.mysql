@@ -81,12 +81,16 @@ create table rssinfo (
  type        SMALLINT,
  subtype     SMALLINT,
  subtypedesc TEXT,
+ cache_tstamp  TIMESTAMP,
+ cache_content TEXT,
+
  active      TINYINT,
 
  CONSTRAINT `pk_rss` PRIMARY KEY (`id`),
  CONSTRAINT `fk_rss_db` FOREIGN KEY (`dbid`) REFERENCES `databaseinfo` (`id`),
  INDEX (type),
- INDEX (subtype)
+ INDEX (subtype),
+ INDEX (cache_tstamp)
 )
 ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
@@ -191,24 +195,6 @@ ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
-
-drop table IF EXISTS rsscache;
-create table rsscache (
-rssid   BIGINT NOT NULL,
-tstamp  TIMESTAMP,
-type    TINYINT  NOT NULL,
-subtype SMALLINT,
-content TEXT,
-
-CONSTRAINT `fk_rsscache_rss` FOREIGN KEY (`rssid`) REFERENCES `rssinfo` (`id`),
-INDEX   (tstamp),
-INDEX   (type),
-INDEX   (subtype)
-)
-ENGINE InnoDB
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
-PACK_KEYS=1;
 
 DROP TABLE IF EXISTS serverinfo;
 CREATE TABLE serverinfo (

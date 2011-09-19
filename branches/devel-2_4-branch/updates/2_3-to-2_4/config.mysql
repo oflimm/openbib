@@ -32,3 +32,8 @@ alter table databaseinfo add  digitalcount BIGINT DEFAULT 0 after articlecount;
 drop table titcount;
 
 rename table profiledbs to orgunitdbs;
+
+drop table rsscache;
+
+alter table rssinfo add cache_tstamp  TIMESTAMP after subtypedesc;
+alter table rssinfo add cache_content TEXT after cache_tstamp;

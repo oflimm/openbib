@@ -64,6 +64,15 @@ __PACKAGE__->add_columns(
   { data_type => "smallint", is_nullable => 1 },
   "subtypedesc",
   { data_type => "text", is_nullable => 1 },
+  "cache_tstamp",
+  {
+    data_type     => "timestamp",
+    default_value => \"current_timestamp",
+    is_nullable   => 0,
+  },
+  "cache_content",
+  { data_type => "text", is_nullable => 1 },
+
   "active",
   { data_type => "tinyint", is_nullable => 1 },
 );

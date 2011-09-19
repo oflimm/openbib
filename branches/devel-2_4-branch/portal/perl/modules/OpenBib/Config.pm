@@ -214,7 +214,7 @@ sub get_number_of_titles {
     my $counts;
     my $request;
 
-     $self->{schema}->storage->debug(1);
+#     $self->{schema}->storage->debug(1);
 
     if ($database){
         # DBI: "select allcount, journalcount, articlecount, digitalcount from databaseinfo where dbname = ? and databaseinfo.active is true"
@@ -239,24 +239,10 @@ sub get_number_of_titles {
             {
                 join => ['dbid','viewid'],
 
-                'select' => [ {'sum' => 'dbid.allcount', -as => 'allcount' }, {'sum' => 'dbid.journalcount', -as => 'journalcount'}, {'sum' => 'dbid.articlecount', -as => 'articlecount'}, {'sum' => 'dbid.digitalcount', -as => 'digitalcount'}],
-#                '+as'     => [qw/ allcount journalcount articlecount digitalcount /],
-#                as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
+                select => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
+                as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
             }
         )->first;
-#         $counts = $self->{schema}->resultset('ViewDb')->search(
-#             {
-#                 'dbid.active'     => 1,
-#                 'viewid.viewname' => $view,
-#             },
-#             {
-#                 join => ['dbid','viewid'],
-
-#                 +select => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
-#                 +as     => [qw/ allcount journalcount articlecount digitalcount /],
-# #                as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
-#             }
-#         )->first;
     }
     elsif ($profile){
         # DBI: "select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunit_db,profileinfo,orgunitinfo where profileinfo.profilename = ? and orgunitinfo.profileid=profileinfo.id and orgunit_db.orgunitid=orgunitinfo.id and orgunit_db.dbid=databaseinfo.id and databaseinfo.active is true"
@@ -268,8 +254,9 @@ sub get_number_of_titles {
             {
                 join => [ 'orgunitid', 'dbid',  ],
                 prefetch => [ { 'orgunitid' => 'profileid' } ],
-                columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
-                group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
+                select => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
+                as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
+
             }
         )->first;
 
@@ -282,16 +269,15 @@ sub get_number_of_titles {
             },
             {
                 select => [ {'sum' => 'allcount'}, {'sum' => 'journalcount'}, {'sum' => 'articlecount'}, {'sum' => 'digitalcount'}],
-                as     => [qw/ allcount journalcount articlecount digitalcount /],
+                as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
             })->first;
-        
     }
 
     my $alltitles_ref = {   
-        allcount     => $counts->allcount,
-        journalcount => $counts->journalcount,
-        articlecount => $counts->articlecount,
-        digitalcount => $counts->digitalcount,
+        allcount     => $counts->get_column('allcount'),
+        journalcount => $counts->get_column('journalcount'),
+        articlecount => $counts->get_column('articlecount'),
+        digitalcount => $counts->get_column('digitalcount'),
     };
         
     return $alltitles_ref;
@@ -304,11 +290,8 @@ sub get_viewdesc_from_viewname {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select description from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-    $request->execute($viewname) or $logger->error($DBI::errstr);
-    my $res       = $request->fetchrow_hashref;
-    my $desc      = decode_utf8($res->{description}) if (defined($res->{'description'}));
-    $request->finish();
+    # DBI: "select description from viewinfo where viewname = ?"
+    my $desc = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'description' })->first->description;
     
     return $desc;
 }
@@ -320,11 +303,8 @@ sub get_startpage_of_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select start_loc from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-    $request->execute($viewname) or $logger->error($DBI::errstr);
-    my $res            = $request->fetchrow_hashref;
-    my $start_loc      = decode_utf8($res->{start_loc}) if (defined($res->{'start_loc'}));
-    $request->finish();
+    # DBI: "select start_loc from viewinfo where viewname = ?"
+    my $start_loc = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'start_loc' })->first->start_loc;
 
     $logger->debug("Got Startpage $start_loc") if (defined $start_loc);
     
@@ -338,11 +318,8 @@ sub get_servername_of_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select servername from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-    $request->execute($viewname) or $logger->error($DBI::errstr);
-    my $res            = $request->fetchrow_hashref;
-    my $servername     = (defined($res->{'servername'}))?decode_utf8($res->{servername}):$self->{servername}; 
-    $request->finish();
+    # DBI: "select servername from viewinfo where viewname = ?"
+    my $servername = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'servername' })->first->servername;
 
     $logger->debug("Got Startpage $servername") if (defined $servername);
     
@@ -356,13 +333,10 @@ sub db_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from databaseinfo where dbname = ?") or $logger->error($DBI::errstr);
-    $request->execute($dbname) or $logger->error($DBI::errstr);
-    my $res       = $request->fetchrow_hashref;
-    my $rowcount  = $res->{rowcount};
-    $request->finish();
+    # DBI: "select count(dbname) as rowcount from databaseinfo where dbname = ?"
+    my $count = $self->{schema}->resultset('Databaseinfo')->search({ dbname => $dbname})->count;
     
-    return $rowcount;
+    return $count;
 }
 
 sub view_exists {
@@ -372,13 +346,10 @@ sub view_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-    $request->execute($viewname) or $logger->error($DBI::errstr);
-    my $res       = $request->fetchrow_hashref;
-    my $rowcount  = $res->{rowcount};
-    $request->finish();
+    # DBI: "select count(viewname) as rowcount from viewinfo where viewname = ?"
+    my $count = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname})->count;
     
-    return $rowcount;
+    return $count;
 }
 
 sub profile_exists {
@@ -388,13 +359,10 @@ sub profile_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(profilename) as rowcount from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
-    $request->execute($profilename) or $logger->error($DBI::errstr);
-    my $res       = $request->fetchrow_hashref;
-    my $rowcount  = $res->{rowcount};
-    $request->finish();
+    # DBI: "select count(profilename) as rowcount from profileinfo where profilename = ?"
+    my $count = $self->{schema}->resultset('Profileinfo')->search({ profilename => $profilename})->count;
     
-    return $rowcount;
+    return $count;
 }
 
 sub orgunit_exists {
@@ -405,13 +373,18 @@ sub orgunit_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(orgunitname) as rowcount from orgunitinfo,profileinfo where profileinfo.profilename = ? and orgunitinfo.orgunitname = ? and orgunitinfo.profileid = profileinfo.id") or $logger->error($DBI::errstr);
-    $request->execute($profilename,$orgunitname) or $logger->error($DBI::errstr);
-    my $res       = $request->fetchrow_hashref;
-    my $rowcount  = $res->{rowcount};
-    $request->finish();
+    # DBI: "select count(orgunitname) as rowcount from orgunitinfo,profileinfo where profileinfo.profilename = ? and orgunitinfo.orgunitname = ? and orgunitinfo.profileid = profileinfo.id"
+    my $count = $self->{schema}->resultset('Orgunitinfo')->search(
+        {
+            orgunitname             => $orgunitname,
+            'profileid.profilename' => $profilename
+        },
+        {
+            join => 'profileid',
+        }
+    )->count;
     
-    return $rowcount;
+    return $count;
 }
 
 
@@ -426,20 +399,29 @@ sub get_valid_rsscache_entry {
     my $subtype                = exists $arg_ref->{subtype}
         ? $arg_ref->{subtype}             : undef;
     my $expiretimedate         = exists $arg_ref->{expiretimedate}
-        ? $arg_ref->{expiretimedate}      : undef;
+        ? $arg_ref->{expiretimedate}      : 20110101;
 
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $self->{schema}->storage->debug(1);
+    
     # Bestimmung, ob ein valider Cacheeintrag existiert
-    my $request=$self->{dbh}->prepare("select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?");
-    $request->execute($database,$type,$subtype,$expiretimedate);
 
-    my $res=$request->fetchrow_arrayref;
-    my $rss_content=(exists $res->[0])?$res->[0]:undef;
-
-    $request->finish();
+    # DBI: "select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?"
+    my $rss_content = $self->{schema}->resultset('Rssinfo')->search(
+        {
+            'dbid.dbname' => $database,
+            'type' => $type,
+            'subtype' => $subtype,
+            'cache_tstamp' => { '>' => $expiretimedate },
+        },
+        {
+            select => 'cache_content',
+            join => 'dbid',
+        }
+    )->get_column('cache_content');
     
     return $rss_content;
 }
@@ -641,22 +623,24 @@ sub get_activefeeds_of_db  {
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # DBI: "select type from rssinfo where dbname = ? and active is true"
+    my $feeds = $self->{schema}->resultset('Rssinfo')->search(
+        {
+            'dbid.dbname' => $dbname,
+            'dbid.active' => 1,
+        },
+        {
+            select => 'type',
+            join => 'dbid',
+        }
+    );
     
     my $activefeeds_ref = {};
-    
-    my $request=$self->{dbh}->prepare("select type from rssinfo where dbname \
-= ? and active is true") or $logger->error($DBI::errstr);
-    $request->execute($dbname) or $logger->error($DBI::errstr);
-    
-    while (my $result=$request->fetchrow_hashref()){
-        my $type    = $result->{'type'}    || 0;
-        
-        $activefeeds_ref->{$type} = 1;
+
+    foreach my $item ($feeds->all){
+        $activefeeds_ref->{$item->get_column('type')} = 1;
     }
-    
-    
-    $request->finish();
     
     return $activefeeds_ref;
 }
@@ -726,12 +710,8 @@ sub update_rsscache {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Etwaig vorhandenen Eintrag loeschen
-    my $request=$self->{dbh}->prepare("delete from rsscache where dbname=? and type=? and subtype = ?");
-    $request->execute($database,$type,$subtype);
-    
-    $request=$self->{dbh}->prepare("insert into rsscache values (?,NULL,?,?,?)");
-    $request->execute($database,$type,$subtype,$rssfeed);
+    my $request=$self->{dbh}->prepare("update rssinfo,databaseinfo set rssinfo.cache_content = ? where databaseinfo.dbname = ? and rssinfo.type = ? and rssinfo.subtype = ? and databaseinfo.id=rssinfo.dbid");
+    $request->execute($rssfeed,$database,$type,$subtype);
     
     $request->finish();
 
@@ -1166,14 +1146,31 @@ sub get_active_databases_of_systemprofile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $profilename = $self->get_profilename_of_view($view);
+
+    # DBI: "select databaseinfo.dbname as dbname from databaseinfo,viewinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.profileid=viewinfo.profileid and viewinfo.viewname = ? order by dbname ASC"
+    my $dbnames = $self->{schema}->resultset('OrgunitDb')->search(
+        {
+            'dbid.active'           => 1,
+            'profileid.profilename' => $profilename,
+        }, 
+        {
+            select => 'dbid.dbname',
+            as     => 'thisdbname',
+            join => [ 'orgunitid', 'dbid',  ],
+            prefetch => [ { 'orgunitid' => 'profileid' } ],
+            order_by => 'dbid.dbname',
+#            columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
+#            group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
+        }
+    );
+
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select databaseinfo.dbname as dbname from databaseinfo,viewinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.profileid=viewinfo.profileid and viewinfo.viewname = ? order by dbname ASC") or $logger->error($DBI::errstr);
-    $request->execute($view) or $logger->error($DBI::errstr);
-    while (my $res    = $request->fetchrow_hashref){
-        push @dblist, $res->{dbname};
+
+    foreach my $item ($dbnames->all){
+        push @dblist, $item->get_column('thisdbname');
     }
-    $request->finish();
-    
+
     return @dblist;
 }
 

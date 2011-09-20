@@ -31,7 +31,7 @@
 [% END %]
 <link href="/images/openbib/views/richter/favicon.ico" rel="shortcut icon" />
 [% IF view && primrssfeed %]
-<link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]" />
+<link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% path_prefix %]/[% primrssfeed %]" />
 [% END %]
 [% IF LinkedData == "title" %]
 <link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% servername %][% path_prefix %]/[% config.get('title_loc') %]/[%- record.database -%]/[%- record.id -%].rdf"/>

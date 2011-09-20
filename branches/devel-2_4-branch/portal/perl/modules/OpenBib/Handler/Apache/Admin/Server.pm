@@ -95,10 +95,15 @@ sub show_collection {
         return;
     }
 
-    my $loadbalancertargets_ref = $config->get_loadbalancertargets;
+    my $serverinfos = $config->get_serverinfo->search(
+        undef,
+        {
+            order_by => 'host',
+        }
+    );
     
     my $ttdata = {
-        loadbalancertargets => $loadbalancertargets_ref,
+        serverinfos => $serverinfos,
     };
     
     $self->print_page($config->{tt_admin_server_tname},$ttdata);

@@ -60,23 +60,23 @@ type="submit" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 
 <p />
 
-[%# USE dumper;dumper.dump(loadbalancertargets)%]
-[% IF loadbalancertargets.size > 0 %]
+[%# USE dumper;dumper.dump(serverinfos)%]
+[% IF serverinfos.size > 0 %]
 
 <table width="100%">
 <tr><th>[% msg.maketext("Bereits existierende Rechner zur Lastverteilung") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
-[% FOREACH loadbalancertarget IN loadbalancertargets %]
+[% FOREACH serverinfo IN serverinfos.all %]
 <tr
-[% IF loadbalancertarget.active == 1%]
+[% IF serverinfo.active == 1%]
  bgcolor="aliceblue"
 [% END %]
 >
-<td>[% loadbalancertarget.host %]</td>
-<td align="center">[%- IF loadbalancertarget.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% loadbalancertarget.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF loadbalancertarget.active == 0 %]1[% ELSE %]0[% END %]"/><div class="cssbutton glass kug"><input type="submit" value="[% IF loadbalancertarget.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></div></form></td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% loadbalancertarget.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></div></form></td></tr>
+<td>[% serverinfo.host %]</td>
+<td align="center">[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF serverinfo.active == 0 %]1[% ELSE %]0[% END %]"/><div class="cssbutton glass kug"><input type="submit" value="[% IF serverinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></div></form></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></div></form></td></tr>
 [% END %]
 
 </table>

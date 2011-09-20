@@ -1271,21 +1271,36 @@ sub get_active_views {
     return @viewlist;
 }
 
-####################### TODO ###################### weg
 sub get_active_databases_of_orgunit {
-    my ($self,$systemprofile,$orgunit) = @_;
+    my ($self,$profile,$orgunit) = @_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # DBI: "select databaseinfo.dbname from databaseinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.profilename = ? and orgunitinfo.orgunitname = ? order by databaseinfo.description ASC"
+    my $dbnames = $self->{schema}->resultset('OrgunitDb')->search(
+        {
+            'dbid.active'           => 1,
+            'profileid.profilename' => $profile,
+            'orgunitid.orgunitname' => $orgunit,
+        }, 
+        {
+            select => 'dbid.dbname',
+            as     => 'thisdbname',
+            join => [ 'orgunitid', 'dbid',  ],
+            prefetch => [ { 'orgunitid' => 'profileid' } ],
+            order_by => 'dbid.description',
+#            columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
+#            group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
+        }
+    );
+
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select databaseinfo.dbname from databaseinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.profilename = ? and orgunitinfo.orgunitname = ? order by databaseinfo.description ASC") or $logger->error($DBI::errstr);
-    $request->execute($systemprofile,$orgunit) or $logger->error($DBI::errstr);
-    while (my $res    = $request->fetchrow_hashref){
-        push @dblist, $res->{dbname};
+
+    foreach my $item ($dbnames->all){
+        push @dblist, $item->get_column('thisdbname');
     }
-    $request->finish();
-    
+
     return @dblist;
 }
 
@@ -1295,15 +1310,17 @@ sub get_system_of_db {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select system from databaseinfo where dbname = ?") or $logger->error($DBI::errstr);
-    $request->execute($dbname) or $logger->error($DBI::errstr);
-    my $systemtype = "";
-    while (my $res    = $request->fetchrow_hashref){
-        $systemtype = $res->{system};
-    }
-    $request->finish();
-    
-    return $systemtype;
+    # DBI: "select system from databaseinfo where dbname = ?"
+    my $system = $self->{schema}->resultset('Databaseinfo')->search(
+        {
+           dbname => $dbname,
+        },
+        {
+            select => 'system',
+        }
+    )->first->system;
+
+    return $system;
 }
 
 sub get_infomatrix_of_active_databases {
@@ -1425,7 +1442,7 @@ sub load_bk {
     $YAML::Syck::ImplicitTyping  = 1;
     $YAML::Syck::ImplicitUnicode = 1;
 
-    return YAML::Syck::LoadFile("/opt/openbib/conf/bk.yml");    
+    return YAML::Syck::LoadFile("/opt/openbib/conf/bk.yml");
 }
 
 sub get_enrichmnt_object {
@@ -1457,21 +1474,41 @@ sub get_geoposition {
     return $response;
 }
 
-sub get_loadbalancertargets {
+sub get_serverinfo {
     my ($self) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    # DBI: "select * from loadbalancertargets order by host"
+    my $object = $self->{schema}->resultset('Serverinfo');
+
+    return $object;
+}
+
+sub get_active_loadbalancertargets {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select host from loadbalancertargets where active is true order by host"
+    my $serverinfos = $self->{schema}->resultset('Serverinfo')->search(
+        {
+            active => 1,
+        },
+        {
+            select => 'host',
+            order_by => 'host',
+        }
+    );
     
     my $loadbalancertargets_ref = [];
 
-    my $request=$self->{dbh}->prepare("select * from loadbalancertargets order by host") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-    
-    while (my $result=$request->fetchrow_hashref()){
-        my $id            = decode_utf8($result->{'id'});
-        my $host          = decode_utf8($result->{'host'});
-        my $active        = decode_utf8($result->{'active'});
+    foreach my $item ($serverinfos->all){
+        my $id            = $item->id;
+        my $host          = $item->host;
+        my $active        = $item->active;
         
         push @{$loadbalancertargets_ref}, {
             id     => $id,
@@ -1480,19 +1517,9 @@ sub get_loadbalancertargets {
         };
     }
 
-    
-    return $loadbalancertargets_ref;
-}
-
-sub get_active_loadbalancertargets {
-    my ($self) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
     my @activetargets = ();
 
-    my $request=$self->{dbh}->prepare("select host from loadbalancertargets where active is true order by host") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare() or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     
     while (my $result=$request->fetchrow_hashref()){

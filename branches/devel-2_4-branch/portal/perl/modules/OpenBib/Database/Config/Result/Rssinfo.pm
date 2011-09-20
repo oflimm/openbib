@@ -80,21 +80,6 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 rsscaches
-
-Type: has_many
-
-Related object: L<OpenBib::Database::Config::Result::Rsscache>
-
-=cut
-
-__PACKAGE__->has_many(
-  "rsscaches",
-  "OpenBib::Database::Config::Result::Rsscache",
-  { "foreign.rssid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 dbid
 
 Type: belongs_to

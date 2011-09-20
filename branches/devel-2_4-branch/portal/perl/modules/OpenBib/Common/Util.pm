@@ -431,7 +431,16 @@ sub get_loadbalanced_servername {
     # Aktuellen Load der Server holen zur dynamischen Lastverteilung au
     my @servertab=();
 
-    push @servertab, $config->get_active_loadbalancertargets;
+    foreach my $item ($config->get_serverinfo->search(
+        {
+            active => 1,
+        },
+        {
+            order_by => 'host'
+        }
+    )->all){
+        push @servertab, $item->host;
+    }
 
     $logger->debug("Got Servers ".YAML::Dump(\@servertab));
     

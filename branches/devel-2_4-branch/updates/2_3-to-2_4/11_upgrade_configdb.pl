@@ -206,10 +206,6 @@ while (my $result=$request->fetchrow_hashref){
     $request2->execute($viewid{$result->{viewname}},$result->{rssfeed});
 }
 
-# rsscache wird nicht migriert
-
-print STDERR "### rsscache\n";
-
 # serverinfo
 
 print STDERR "### serverinfo\n";

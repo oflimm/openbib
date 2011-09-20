@@ -162,7 +162,7 @@ sub show_search {
                 content   => 'xapian',
     });
 
-    my $sysprofile = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
+    my $sysprofile = $config->get_profilename_of_view($view);
 
     @databases       = $self->get_databases();
 
@@ -1290,7 +1290,7 @@ sub show_index {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $searchquery = OpenBib::SearchQuery->instance;
 
-    my $sysprofile  = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
+    my $sysprofile  = $config->get_profilename_of_view($view);
 
     @databases = $self->get_databases();
 
@@ -1522,7 +1522,7 @@ sub get_databases {
 
     my $searchquery  = OpenBib::SearchQuery->instance;
 
-    my $sysprofile   = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
+    my $sysprofile   = $config->get_profilename_of_view($view);
 
     my $orgunits_ref = $config->get_orgunitinfo_overview($sysprofile);
 

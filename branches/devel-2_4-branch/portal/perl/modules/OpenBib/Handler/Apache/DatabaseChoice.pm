@@ -106,7 +106,7 @@ sub show_collection {
   
     my %checkeddb;
 
-    my $profile = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
+    my $profile = $self->get_profilename_of_view($view);
 
     my $idnresult="";
   
@@ -175,7 +175,7 @@ sub update_collection {
   
     my %checkeddb;
 
-    my $profile = $config->get_viewinfo->search({ viewname => $view})->single()->profilename;
+    my $profile = $self->get_profilename_of_view($view);
 
     my $idnresult="";
   

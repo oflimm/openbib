@@ -670,7 +670,7 @@ sub get_activefeeds_of_db  {
         },
         {
             select => 'type',
-            join => 'dbid',
+            join   => 'dbid',
         }
     );
     
@@ -692,35 +692,57 @@ sub get_rssfeedinfo  {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    # DBI: "select databaseinfo.dbname,databaseinfo.description,orgunitinfo.description as orgunitdescription,rssinfo.type"
+    # DBI:  @sql_from  = ('databaseinfo','rssinfo','orgunit_db','orgunitinfo');
+    # DBI:  @sql_where = ('databaseinfo.active is true','rssinfo.active is true','databaseinfo.id=rssinfo.dbid','rssinfo.type = 1','orgunitinfo.id=orgunit_db.orgunitid','orgunit_db.dbid=databaseinfo.id');
+    # DBI:  order by description ASC'
+
+    my $feedinfos;
     
-    my $rssfeedinfo_ref = {};
-    
-    my $sql_select="select databaseinfo.dbname,databaseinfo.description,orgunitinfo.description as orgunitdescription,rssinfo.type";
-
-    my @sql_from  = ('databaseinfo','rssinfo','orgunit_db','orgunitinfo');
-
-    my @sql_where = ('databaseinfo.active is true','rssinfo.active is true','databaseinfo.id=rssinfo.dbid','rssinfo.type = 1','orgunitinfo.id=orgunit_db.orgunitid','orgunit_db.dbid=databaseinfo.id');
-
-    my @sql_args  = ();
-
     if ($view){
-        push @sql_from,  'view_rss';
-        push @sql_where, ('view_rss.viewname = ?','view_rss.rssfeed=rssinfo.id');
-        push @sql_args,  $view;
+        # DBI: push @sql_from,  'view_rss';
+        # DBI: push @sql_where, ('view_rss.viewname = ?','view_rss.rssfeed=rssinfo.id');
+        # DBI: push @sql_args,  $view;
+
+        $feedinfos = $self->{schema}->resultset('Rssinfo')->search(
+            {
+                'me.active'       => 1,
+                'me.type'         => 1,
+                'dbid.active'     => 1,
+                'viewid.viewname' => $view,
+            },
+            {
+                join   => [ 'dbid', { 'dbid' => { 'orgunit_dbs' => 'orgunitid' } }, 'view_rsses', { 'view_rsses' => 'viewid' } ],
+                select => [ 'dbid.dbname', 'dbid.description', 'orgunitid.description', 'me.type' ],
+                as     => [ 'thisdbname', 'thisdbdescription', 'thisorgunitdescription', 'thisrsstype' ],
+                order_by => [ 'dbid.description ASC' ],
+            }
+        );
+    }
+    else {
+        $feedinfos = $self->{schema}->resultset('Rssinfo')->search(
+            {
+                'me.active'   => 1,
+                'me.type'     => 1,
+                'dbid.active' => 1,
+            },
+            {
+                join   => [ 'dbid', { 'dbid' => { 'orgunit_dbs' => 'orgunitid' } } ],
+                select => [ 'dbid.dbname', 'dbid.description', 'orgunitid.description', 'me.type' ],
+                as     => [ 'thisdbname', 'thisdbdescription', 'thisorgunitdescription', 'thisrsstype' ],
+                order_by => [ 'dbid.description ASC' ],
+            }
+        );
     }
     
-    my $sqlrequest = $sql_select.' from '.join(',',@sql_from).' where '.join(' and ',@sql_where).' order by description ASC';
-    
-    $logger->debug("SQL-Request: $sqlrequest");
-    
-    my $request=$self->{dbh}->prepare($sqlrequest);
-    $request->execute(@sql_args);
-    
-    while (my $result=$request->fetchrow_hashref){
-        my $orgunit    = decode_utf8($result->{'orgunitdescription'});
-        my $name       = decode_utf8($result->{'description'});
-        my $pool       = decode_utf8($result->{'dbname'});
-        my $rsstype    = decode_utf8($result->{'type'});
+    my $rssfeedinfo_ref = {};
+
+    foreach my $item ($feedinfos->all){
+        my $orgunit    = decode_utf8($item->get_column('thisorgunitdescription'));
+        my $name       = decode_utf8($item->get_column('thisdbdescription'));
+        my $pool       = decode_utf8($item->get_column('thisdbname'));
+        my $rsstype    = decode_utf8($item->get_column('thisrsstype'));
         
         push @{$rssfeedinfo_ref->{$orgunit}},{
             pool     => $pool,
@@ -748,10 +770,17 @@ sub update_rsscache {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("update rssinfo,databaseinfo set rssinfo.cache_content = ? where databaseinfo.dbname = ? and rssinfo.type = ? and rssinfo.subtype = ? and databaseinfo.id=rssinfo.dbid");
-    $request->execute($rssfeed,$database,$type,$subtype);
-    
-    $request->finish();
+    # DBI: "update rssinfo,databaseinfo set rssinfo.cache_content = ? where databaseinfo.dbname = ? and rssinfo.type = ? and rssinfo.subtype = ? and databaseinfo.id=rssinfo.dbid"
+    $self->{schema}->resultset('Rssinfo')->search(
+        {
+            'dbid.dbname' => $database,
+            'me.type'     => $type,
+            'me.subtype'  => $subtype,
+        },
+        {
+            join => 'dbid',
+        }
+    )->single->update({ cache_content => $rssfeed, cache_tstamp => \'NOW()' });
 
     return $self;
 }
@@ -798,8 +827,7 @@ sub get_dbinfo_overview {
     my $logger = get_logger();
 
     my $object = $self->get_databaseinfo->search(
-        {
-        },
+        undef,
         {
             order_by => 'dbname',
         }
@@ -815,22 +843,28 @@ sub get_libinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sqlrequest;
-
-    my $libinfo_ref={};
-
     return {} if (!$dbname);
-    
+
+    # DBI: "select category,content,indicator from libraryinfo where dbname = ?"
+    my $libraryinfos = $self->{schema}->resultset('Libraryinfo')->search(
+        {
+            'dbid.dbname' => $dbname,
+        },
+        {
+            join => 'dbid',
+        }
+    );
+
+    my $libinfo_ref= {};
+
     $libinfo_ref->{database} = $dbname;
 
-    $sqlrequest="select category,content,indicator from libraryinfo where dbname = ?";
-    my $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($dbname);
-
-    while (my $res=$request->fetchrow_hashref) {
-        my $category  = "I".sprintf "%04d",$res->{category };
-        my $indicator =         decode_utf8($res->{indicator});
-        my $content   =         decode_utf8($res->{content  });
+    foreach my $item ($libraryinfos->all){
+        my $category  = "I".sprintf "%04d",$item->category;
+        my $indicator =         decode_utf8($item->indicator);
+        my $content   =         decode_utf8($item->content);
+#        my $indicator = $item->indicator;
+#        my $content   = $item->content;
 
         next if ($content=~/^\s*$/);
 #        $content =~s/"/%22/g;
@@ -850,21 +884,20 @@ sub have_libinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sqlrequest;
-
-    my $libinfo_ref={};
-
-    return {} if (!$dbname);
+    return 0 if (!$dbname);
     
-    $libinfo_ref->{database} = $dbname;
+    # DBI: "select count(dbid) as infocount from libraryinfo,databaseinfo where libraryinfo.dbid=databaseinfo.id and databaseinfo.dbname = ? and content != ''"
+    my $haveinfos = $self->{schema}->resultset('Libraryinfo')->search(
+        {
+            'dbid.dbname' => $dbname,
+            'me.content' => { '!=' => '' },
+        },
+        {
+            join => 'dbid',
+        }
+    )->count;
 
-    $sqlrequest="select count(dbid) as infocount from libraryinfo,databaseinfo where libraryinfo.dbid=databaseinfo.id and databaseinfo.dbname = ? and content != ''";
-    my $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($dbname);
-
-    my $res=$request->fetchrow_hashref;
-
-    return $res->{infocount};
+    return $haveinfos;
 }
 
 sub get_viewinfo_overview {
@@ -874,8 +907,7 @@ sub get_viewinfo_overview {
     my $logger = get_logger();
 
     my $object = $self->get_viewinfo->search_rs(
-        {
-        },
+        undef,
         {
             order_by => 'viewname',
         }
@@ -1020,7 +1052,7 @@ sub get_orgunitinfo_overview {
             'profileid.profilename' => $profilename,
         },
         {
-            join => 'profileid',
+            join     => 'profileid',
             order_by => 'nr',
         }
     );
@@ -1110,54 +1142,28 @@ sub get_viewdbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("select databaseinfo.dbname from view_db,databaseinfo,viewinfo where viewinfo.viewname = ? and viewinfo.id=view_db.viewid and view_db.dbid = databaseinfo.dbname and databaseinfo.active is true order by dbname") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-    
+    # DBI: "select databaseinfo.dbname from view_db,databaseinfo,viewinfo where viewinfo.viewname = ? and viewinfo.id=view_db.viewid and view_db.dbid = databaseinfo.dbname and databaseinfo.active is true order by dbname"
+    my $dbnames = $self->{schema}->resultset('Viewinfo')->search(
+        {
+            'me.viewname' => $viewname,
+            'dbid.active' => 1,
+        },
+        {
+            select   => 'dbid.dbname',
+            as       => 'thisdbname',
+            join     => [ 'view_dbs', { 'view_dbs' => 'dbid' } ],
+            order_by => 'dbid.dbname',
+            group_by => 'dbid.dbname',
+        }
+    );
+
     my @viewdbs=();
-    while (my $result=$idnresult->fetchrow_hashref()) {
-        my $dbname = decode_utf8($result->{'dbname'});
-        push @viewdbs, $dbname;
+
+    foreach my $item ($dbnames->all){
+        push @viewdbs, $item->get_column('thisdbname');
     }
-    
+
     return @viewdbs;
-}
-
-sub get_dboptions {
-    my $self   = shift;
-    my $dbname = shift;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $request=$self->{dbh}->prepare("select * from databaseinfo where dbname=?") or die "Error -- $DBI::errstr";
-    $request->execute($dbname);
-    my $result=$request->fetchrow_hashref();
-
-    my $dboptions_ref;
-
-    $dboptions_ref = {
-        host          => $result->{'host'},
-        protocol      => $result->{'protocol'},
-        remotepath    => $result->{'remotepath'},
-        remoteuser    => $result->{'remoteuser'},
-        remotepassword => $result->{'remotepassword'},
-        filename      => $result->{'filename'},
-        titfilename   => $result->{'titlefile'},
-        autfilename   => $result->{'personfile'},
-        korfilename   => $result->{'corporatebodyfile'},
-        swtfilename   => $result->{'subjectfile'},
-        notfilename   => $result->{'classificationfile'},
-        mexfilename   => $result->{'holdingsfile'},
-        autoconvert   => $result->{'autoconvert'},
-        circ          => $result->{'circ'},
-        circurl       => $result->{'circurl'},
-        circcheckurl  => $result->{'circwsurl'},
-        circdb        => $result->{'circdb'},
-    };
-    
-    $request->finish();
-    
-    return $dboptions_ref;
 }
 
 sub get_active_databases {
@@ -1166,13 +1172,22 @@ sub get_active_databases {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # DBI: "select dbname from databaseinfo where active is true order by dbname ASC"
+    my $dbnames = $self->{schema}->resultset('Databaseinfo')->search(
+        {
+            'active' => 1,
+        },
+        {
+            select   => 'dbname',
+            order_by => [ 'dbname ASC' ],
+        }
+    );
+    
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select dbname from databaseinfo where active is true order by dbname ASC") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-    while (my $res    = $request->fetchrow_hashref){
-        push @dblist, $res->{dbname};
+
+    foreach my $item ($dbnames->all){
+        push @dblist, $item->dbname;
     }
-    $request->finish();
     
     return @dblist;
 }
@@ -1236,14 +1251,23 @@ sub get_active_views {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my @viewlist=();
-    my $request=$self->{dbh}->prepare("select viewname from viewinfo where active is true order by description ASC") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-    while (my $res    = $request->fetchrow_hashref){
-        push @viewlist, $res->{viewname};
-    }
-    $request->finish();
+    # DBI: "select viewname from viewinfo where active is true order by description ASC"
+    my $views = $self->{schema}->resultset('Viewinfo')->search(
+        {
+            'active' => 1,
+        },
+        {
+            select   => 'viewname',
+            order_by => [ 'description ASC' ],
+        }
+    );
     
+    my @viewlist=();
+
+    foreach my $item ($views->all){
+        push @viewlist, $item->viewname;
+    }
+
     return @viewlist;
 }
 

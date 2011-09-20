@@ -409,17 +409,17 @@ sub get_valid_rsscache_entry {
     
     # Bestimmung, ob ein valider Cacheeintrag existiert
 
-    # DBI: "select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?"
+    # DBI ehemals: "select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?"
     my $rss_content = $self->{schema}->resultset('Rssinfo')->search(
         {
-            'dbid.dbname' => $database,
-            'type' => $type,
-            'subtype' => $subtype,
+            'dbid.dbname'  => $database,
+            'type'         => $type,
+            'subtype'      => $subtype,
             'cache_tstamp' => { '>' => $expiretimedate },
         },
         {
             select => 'cache_content',
-            join => 'dbid',
+            join   => 'dbid',
         }
     )->get_column('cache_content');
     
@@ -432,16 +432,28 @@ sub get_dbs_of_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my @dblist=();
-    my $idnresult=$self->{dbh}->prepare("select databaseinfo.dbname from view_db,databaseinfo,orgunit_db,viewinfo,orgunitinfo where viewinfo.viewname = ? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and orgunit_db.dbid=view_db.dbid and databaseinfo.active is true order by orgunitinfo.orgunitname ASC, databaseinfo.description ASC") or $logger->error($DBI::errstr);
-    $idnresult->execute($view) or $logger->error($DBI::errstr);
+    # DBI: "select databaseinfo.dbname from view_db,databaseinfo,orgunit_db,viewinfo,orgunitinfo where viewinfo.viewname = ? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and orgunit_db.dbid=view_db.dbid and databaseinfo.active is true order by orgunitinfo.orgunitname ASC, databaseinfo.description ASC"
+    my $dbnames = $self->{schema}->resultset('ViewDb')->search(
+        {
+            'dbid.active'           => 1,
+            'viewid.viewname'       => $view,
+        }, 
+        {
+            join => [ 'viewid', 'dbid',  ],
+            select => 'dbid.dbname',
+            as     => 'thisdbname',
+            order_by => 'dbid.dbname',
+        }
+    );
 
-    my @idnres;
-    while (@idnres=$idnresult->fetchrow) {
-        push @dblist, decode_utf8($idnres[0]);
+    my @dblist=();
+
+    foreach my $item ($dbnames->all){
+        push @dblist, $item->get_column('thisdbname');
     }
-    $idnresult->finish();
+
     $logger->debug("View-Databases:\n".YAML::Dump(\@dblist));
+
     return @dblist;
 }
 
@@ -451,14 +463,22 @@ sub get_rssfeeds_of_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # DBI: "select view_rss.rssid from view_rss,viewinfo where view_rss.viewid = viewinfo.id and viewinfo.viewname=?"
+    my $rssinfos = $self->{schema}->resultset('ViewRss')->search(
+        {
+            'viewid.viewname' => $viewname,
+        },
+        {
+            select => 'rssid.id',
+            as     => 'thisrssid',
+            join   => ['viewid','rssid'],
+        }
+    );
+    
     my $viewrssfeed_ref  = {};
 
-    my $idnresult=$self->{dbh}->prepare("select view_rss.rssid from view_rss,viewinfo where view_rss.viewid = viewinfo.id and viewinfo.viewname=?") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-
-    while (my $result=$idnresult->fetchrow_hashref()) {
-        my $rssid = $result->{'rssid'};
-        $viewrssfeed_ref->{$rssid}=1;
+    foreach my $item ($rssinfos->all){
+        $viewrssfeed_ref->{$item->get_column('thisrssid')}=1;
     }
 
     return $viewrssfeed_ref;
@@ -470,27 +490,28 @@ sub get_rssfeed_overview {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # DBI: "select rssinfo.*,databaseinfo.dbname from rssinfo, databaseinfo where rssinfo.dbid=databaseinfo.id order by databaseinfo.dbname,rssinfo.type,rssinfo.subtype"
+    my $rssinfos = $self->{schema}->resultset('Rssinfo')->search(
+        undef,
+        {
+            select => [ 'me.id', 'me.type', 'me.subtype', 'me.subtypedesc', 'dbid.dbname'],
+            as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'dbname'],
+            join   => 'dbid',
+            order_by => ['dbid.dbname','type','subtype'],
+        }
+    );
+    
     my $rssfeed_ref=[];
     
-    my $request=$self->{dbh}->prepare("select rssinfo.*,databaseinfo.dbname from rssinfo, databaseinfo where rssinfo.dbid=databaseinfo.id order by databaseinfo.dbname,rssinfo.type,rssinfo.subtype") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-    while (my $result=$request->fetchrow_hashref()){
-        my $id           = decode_utf8($result->{'id'});
-        my $type         = decode_utf8($result->{'type'});
-        my $subtype      = decode_utf8($result->{'subtype'});
-        my $subtypedesc  = decode_utf8($result->{'subtypedesc'});
-        my $active       = decode_utf8($result->{'active'});
-
+    foreach my $item ($rssinfos->all){
         push @$rssfeed_ref, {
-            feedid      => decode_utf8($result->{'id'}),
-            dbname      => decode_utf8($result->{'dbname'}),
-            type        => decode_utf8($result->{'type'}),
-            subtype     => decode_utf8($result->{'subtype'}),
-            subtypedesc => decode_utf8($result->{'subtypedesc'}),
+            feedid      => $item->get_column('id'),
+            dbname      => $item->get_column('dbname'),
+            type        => $item->get_column('type'),
+            subtype     => $item->get_column('subtype'),
+            subtypedesc => $item->get_column('subtypedesc'),
         };
     }
-    
-    $request->finish();
     
     return $rssfeed_ref;
 }
@@ -501,28 +522,28 @@ sub get_rssfeed_by_id {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $rssfeed_ref = {};
-    
-    my $request=$self->{dbh}->prepare("select * from rssinfo where id = ? order by type,subtype") or $logger->error($DBI::errstr);
-    $request->execute($id) or $logger->error($DBI::errstr);
-    while (my $result=$request->fetchrow_hashref()){
-        my $id           = decode_utf8($result->{'id'});
-        my $type         = decode_utf8($result->{'type'});
-        my $subtype      = decode_utf8($result->{'subtype'});
-        my $subtypedesc  = decode_utf8($result->{'subtypedesc'});
-        my $active       = decode_utf8($result->{'active'});
-        
-        $rssfeed_ref = {
-            id          => $id,
-            type        => $type,
-            subtype     => $subtype,
-            subtypedesc => $subtypedesc,
-            active      => $active
-        };
-    }
-    
-    $request->finish();
-    
+    # DBI: "select * from rssinfo where id = ? order by type,subtype"
+    my $rssinfo = $self->{schema}->resultset('Rssinfo')->search(
+        {
+            'me.id' => $id,
+        },
+        {
+            select => [ 'me.id', 'me.type', 'me.subtype', 'me.subtypedesc', 'me.active', 'dbid.dbname'],
+            as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'active', 'dbname'],
+            join   => 'dbid',
+            order_by => ['dbid.dbname','type','subtype'],
+        }
+    )->first;
+
+    my $rssfeed_ref = {
+        id          => $rssinfo->get_column('id'),
+        dbname      => $rssinfo->get_column('dbname'),
+        type        => $rssinfo->get_column('type'),
+        subtype     => $rssinfo->get_column('subtype'),
+        subtypedesc => $rssinfo->get_column('subtypedesc'),
+        active      => $rssinfo->get_column('active'),
+    };
+
     return $rssfeed_ref;
 }
 
@@ -532,28 +553,32 @@ sub get_rssfeeds_of_db {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # DBI: "select * from rssinfo where dbname = ? order by type,subtype"
+    my $rssinfos = $self->{schema}->resultset('Rssinfo')->search(
+        {
+            'dbid.dbname' => $dbname
+        },
+        {
+            select => [ 'me.id', 'me.type', 'me.subtype', 'me.subtypedesc', 'me.active', 'dbid.dbname'],
+            as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'active', 'dbname'],
+            join   => 'dbid',
+            order_by => ['dbid.dbname','type','subtype'],
+        }
+    );
+    
     my $rssfeed_ref=[];
     
-    my $request=$self->{dbh}->prepare("select * from rssinfo where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
-    $request->execute($dbname) or $logger->error($DBI::errstr);
-    while (my $result=$request->fetchrow_hashref()){
-        my $id           = decode_utf8($result->{'id'});
-        my $type         = decode_utf8($result->{'type'});
-        my $subtype      = decode_utf8($result->{'subtype'});
-        my $subtypedesc  = decode_utf8($result->{'subtypedesc'});
-        my $active       = decode_utf8($result->{'active'});
-        
+    foreach my $item ($rssinfos->all){
         push @$rssfeed_ref, {
-            id          => $id,
-            type        => $type,
-            subtype     => $subtype,
-            subtypedesc => $subtypedesc,
-            active      => $active
+            id          => $item->get_column('id'),
+            dbname      => $item->get_column('dbname'),
+            type        => $item->get_column('type'),
+            subtype     => $item->get_column('subtype'),
+            subtypedesc => $item->get_column('subtypedesc'),
+            active      => $item->get_column('active'),
         };
     }
-    
-    $request->finish();
-    
+
     return $rssfeed_ref;
 }
 
@@ -563,24 +588,31 @@ sub get_rssfeeds_of_db_by_type {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # DBI: "select * from rssinfo where dbname = ? order by type,subtype"
+    my $rssinfos = $self->{schema}->resultset('Rssinfo')->search(
+        {
+            'dbid.dbname' => $dbname
+        },
+        {
+            select => [ 'me.id', 'me.type', 'me.subtype', 'me.subtypedesc', 'me.active', 'dbid.dbname'],
+            as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'active', 'dbname'],
+            join   => 'dbid',
+            order_by => ['type','subtype'],
+        }
+    );
+
     my $rssfeed_ref  = {};
 
-    my $request=$self->{dbh}->prepare("select * from rssinfo where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
-    $request->execute($dbname) or $logger->error($DBI::errstr);
-    while (my $result=$request->fetchrow_hashref()){
-        my $type         = $result->{'type'};
-        my $subtype      = $result->{'subtype'};
-        my $subtypedesc  = $result->{'subtypedesc'};
-        my $active       = $result->{'active'};
-        
-        push @{$rssfeed_ref->{$type}}, {
-            subtype     => $subtype,
-            subtypedesc => $subtypedesc,
-            active      => $active
+    foreach my $item ($rssinfos->all){
+        push @{$rssfeed_ref->{$item->get_column('type')}}, {
+            id          => $item->get_column('id'),
+            subtype     => $item->get_column('subtype'),
+            subtypedesc => $item->get_column('subtypedesc'),
+            active      => $item->get_column('active'),
+            dbname      => $item->get_column('dbname'),
         };
     }
-    $request->finish();
-    
+
     return $rssfeed_ref;
 }
 
@@ -591,14 +623,22 @@ sub get_primary_rssfeed_of_view  {
     my $logger = get_logger();
 
     # Assoziierten View zur Session aus Datenbank holen
-    my $idnresult=$self->{dbh}->prepare("select databaseinfo.dbname as dbname,rssinfo.type as type, rssinfo.subtype as subtype from rssinfo,databaseinfo,viewinfo where rssinfo.dbid=databaseinfo.id and viewinfo.viewname = ? and rssinfo.id = viewinfo.rssid and rssinfo.active is true") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-  
-    my $result=$idnresult->fetchrow_hashref();
-  
-    my $dbname  = decode_utf8($result->{'dbname'}) || '';
-    my $type    = $result->{'type'}    || 0;
-    my $subtype = $result->{'subtype'} || 0;
+    # DBI: "select databaseinfo.dbname as dbname,rssinfo.type as type, rssinfo.subtype as subtype from rssinfo,databaseinfo,viewinfo where rssinfo.dbid=databaseinfo.id and viewinfo.viewname = ? and rssinfo.id = viewinfo.rssid and rssinfo.active is true"
+    my $rssinfos = $self->{schema}->resultset('Viewinfo')->search(
+        {
+            'me.viewname'  => $viewname,
+            'rssid.active' => 1,
+        },
+        {
+            select => [ 'rssid.type', 'rssid.subtype', 'dbid.dbname'],
+            as     => [ 'type', 'subtype', 'dbname'],
+            join   => [ 'rssid', { 'rssid' => 'dbid' } ],
+        }
+    )->first;
+    
+    my $dbname  = decode_utf8($rssinfos->get_column('dbname')) || '';
+    my $type    = $rssinfos->get_column('type')    || 0;
+    my $subtype = $rssinfos->get_column('subtype') || 0;
 
     foreach my $typename (keys %{$self->{rss_types}}){
         if ($self->{rss_types}{$typename} eq $type){
@@ -607,12 +647,10 @@ sub get_primary_rssfeed_of_view  {
         }
     }
     
-    $idnresult->finish();
-
     my $primrssfeedurl="";
 
     if ($dbname && $type){
-        $primrssfeedurl="http://".$self->{loadbalancerservername}.$self->{connector_rss_loc}."/$type/$dbname.rdf";
+        $primrssfeedurl=$self->{connector_rss_loc}."/$type/$dbname.rdf";
     }
     
     return $primrssfeedurl;

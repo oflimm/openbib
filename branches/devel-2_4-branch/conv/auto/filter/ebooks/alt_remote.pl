@@ -45,8 +45,9 @@ my $simplecsv2metaexe   = "$konvdir/simplecsv2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dboptions_ref = $config->get_dboptions($pool);
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-print "### $pool: Konvertierung von $dboptions_ref->{filename}\n";
+my $filename      = $dbinfo->titlefile;
+print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool ; rm unload.*");
-system("cd $pooldir/$pool; $simplecsv2metaexe --inputfile=$dboptions_ref->{filename} --configfile=$confdir/$pool.yml; gzip unload.*");
+system("cd $pooldir/$pool; $simplecsv2metaexe --inputfile=$filename --configfile=$confdir/$pool.yml; gzip unload.*");

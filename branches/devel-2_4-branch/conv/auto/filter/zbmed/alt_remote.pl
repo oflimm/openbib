@@ -6,7 +6,7 @@
 #
 #  Holen per wget und Konvertieren der zbmed-Daten
 #
-#  Dieses File ist (C) 2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -36,9 +36,10 @@ use OpenBib::Config;
 my $pool          = $ARGV[0];
 
 my $config        = new OpenBib::Config;
-my $dboptions_ref = $config->get_dboptions($pool);
 
-my $baseurl       = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}";
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+
+my $baseurl       = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath;
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";

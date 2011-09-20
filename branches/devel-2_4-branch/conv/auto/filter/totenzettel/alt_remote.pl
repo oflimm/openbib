@@ -45,15 +45,18 @@ my $cdm2metaexe   = "$konvdir/cdm2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dboptions_ref = $config->get_dboptions($pool);
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{titlefile}";
+my $titlefile     = $dbinfo->titlefile;
+
+my $url           = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+
 my $httpauthstring="";
-if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepassword} ne ""){
-    $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepassword}";
+if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
+    $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-password=".$dbinfo->remotepassword;
 }
 
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm *");
 system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; $cdm2metaexe --inputfile=$dboptions_ref->{titlefile} --configfile=$confdir/$pool.yml; gzip meta.*");
+system("cd $pooldir/$pool; $cdm2metaexe --inputfile=$titlefile --configfile=$confdir/$pool.yml; gzip meta.*");

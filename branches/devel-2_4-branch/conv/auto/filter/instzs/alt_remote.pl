@@ -45,15 +45,13 @@ my $alephmab2metaexe   = "$konvdir/alephmab2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dboptions_ref = $config->get_dboptions($pool);
+my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-print YAML::Dump($dboptions_ref);
+my $url    = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
-my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{filename}";
-#my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/";
 my $ftpauthstring="";
-if ($dboptions_ref->{protocol} eq "ftp" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepasswd} ne ""){
-    $ftpauthstring=" --ftp-user=$dboptions_ref->{remoteuser} --ftp-password=$dboptions_ref->{remotepasswd}";
+if ($dbinfo->protocol eq "ftp" && $dbinfo->remoteuser ne "" && $dbinfo->remotepasswd ne ""){
+    $ftpauthstring=" --ftp-user=".$dbinfo->remoteuser." --ftp-password=".$dbinfo->remotepassword;
 }
 
 print "### $pool: Datenabzug via http von $url\n";

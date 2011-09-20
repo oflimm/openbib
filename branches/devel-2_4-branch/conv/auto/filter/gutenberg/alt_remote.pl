@@ -45,15 +45,18 @@ my $gutenberg2metaexe   = "$konvdir/gutenberg2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dboptions_ref = $config->get_dboptions($pool);
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{filename}";
+my $titlefile     = $dbinfo->titlefile;
+
+my $url           = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+
 my $httpauthstring="";
-if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepasswd} ne ""){
-    $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepasswd}";
+if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
+    $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-password=".$dbinfo->remotepassword;
 }
 
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm *");
 system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; bzcat $dboptions_ref->{filename} > pool.dat ; $gutenberg2metaexe --inputfile=pool.dat; gzip unload.*");
+system("cd $pooldir/$pool; bzcat $titlefile > pool.dat ; $gutenberg2metaexe --inputfile=pool.dat; gzip unload.*");

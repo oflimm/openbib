@@ -104,7 +104,7 @@ if (!$config->db_exists($database)){
   exit;
 }
 
-my $dboptions_ref = $config->get_dboptions($database);
+my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
 
 my $dbh           = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
     or $logger->error_die($DBI::errstr);
@@ -130,30 +130,33 @@ my $atime = new Benchmark;
             system("$config->{autoconv_dir}/filter/$database/alt_remote.pl $database");
         }
         else {
-            $logger->info("### $database: Hole Exportdateien mit wget von $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/");
+            my $base_url =  $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/";
+
+            $logger->info("### $database: Hole Exportdateien mit wget von $base_url");
 
             my $httpauthstring="";
-            if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepassword} ne ""){
-                $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepassword}";
+            if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
+                $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-passwd=".$dbinfo->remotepassword;
             }
             
+            
             system("cd $pooldir/$database ; rm meta.* ; rm unload.*");
-            system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{titfilename} > /dev/null 2>&1 ");
-            system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{autfilename} > /dev/null 2>&1 ");
-            system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{korfilename} > /dev/null 2>&1 ");
-            system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{swtfilename} > /dev/null 2>&1 ");
-            system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{notfilename} > /dev/null 2>&1 ");
-            system("$wgetexe $httpauthstring -P $pooldir/$database/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{mexfilename} > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->titlefile." > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->personfile." > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->corporatebodyfile." > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->subjectfile." > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->classificationfile." > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->holdingfile." > /dev/null 2>&1 ");
 
             system("ls -l $pooldir/$database/");
             
             # Legacy unload.*
-            system("mv $pooldir/$database/unload.TIT.gz  $pooldir/$database/meta.title.gz")          if ($dboptions_ref->{titfilename} eq "unload.TIT.gz");
-            system("mv $pooldir/$database/unload.PER.gz  $pooldir/$database/meta.person.gz")         if ($dboptions_ref->{autfilename} eq "unload.PER.gz");
-            system("mv $pooldir/$database/unload.KOE.gz  $pooldir/$database/meta.corporatebody.gz")  if ($dboptions_ref->{korfilename} eq "unload.KOE.gz");
-            system("mv $pooldir/$database/unload.SWD.gz  $pooldir/$database/meta.subject.gz")        if ($dboptions_ref->{swtfilename} eq "unload.SWD.gz");
-            system("mv $pooldir/$database/unload.SYS.gz  $pooldir/$database/meta.classification.gz") if ($dboptions_ref->{notfilename} eq "unload.SYS.gz");
-            system("mv $pooldir/$database/unload.MEX.gz  $pooldir/$database/meta.holding.gz")        if ($dboptions_ref->{mexfilename} eq "unload.MEX.gz");
+            system("mv $pooldir/$database/unload.TIT.gz  $pooldir/$database/meta.title.gz")          if ($dbinfo->titlefile          eq "unload.TIT.gz");
+            system("mv $pooldir/$database/unload.PER.gz  $pooldir/$database/meta.person.gz")         if ($dbinfo->personfile         eq "unload.PER.gz");
+            system("mv $pooldir/$database/unload.KOE.gz  $pooldir/$database/meta.corporatebody.gz")  if ($dbinfo->corporatebodyfile  eq "unload.KOE.gz");
+            system("mv $pooldir/$database/unload.SWD.gz  $pooldir/$database/meta.subject.gz")        if ($dbinfo->subjectfile        eq "unload.SWD.gz");
+            system("mv $pooldir/$database/unload.SYS.gz  $pooldir/$database/meta.classification.gz") if ($dbinfo->classificationfile eq "unload.SYS.gz");
+            system("mv $pooldir/$database/unload.MEX.gz  $pooldir/$database/meta.holding.gz")        if ($dbinfo->holdingfile        eq "unload.MEX.gz");
         }
 
     

@@ -46,8 +46,6 @@ my $mab2metaexe   = "$konvdir/mab2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dboptions_ref = $config->get_dboptions($pool);
-
 print "### $pool: Konvertieren\n";
 system("cd $pooldir/$pool ; rm *.bdbrecno ; rm meta.*");
 system("cd $pooldir/$pool; $mab2metaexe --filename=pool.dat ; gzip meta.* ");

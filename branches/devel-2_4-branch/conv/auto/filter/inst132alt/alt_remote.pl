@@ -6,7 +6,7 @@
 #
 #  Beispielfilter
 #
-#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -43,11 +43,11 @@ my $simpleexe     = "$config->{'conv_dir'}/simple2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dboptions_ref = $config->get_dboptions($pool);
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
 print "### $pool: Alternative Umwandlung\n";
 
-system("zcat $rootdir/pools/$pool/$dboptions_ref->{filename} | $helperexe > $rootdir/pools/$pool/pool.tmp.dat");
+system("zcat $rootdir/pools/$pool/".$dbinfo->titlefilename." | $helperexe > $rootdir/pools/$pool/pool.tmp.dat");
 system("cd $rootdir/pools/$pool ; $simpleexe --inputfile=pool.tmp.dat --configfile=/opt/openbib/conf/inst132alt.yml");
 system("cd $rootdir/pools/$pool ; rm unload.*.gz ; gzip unload.*");
 

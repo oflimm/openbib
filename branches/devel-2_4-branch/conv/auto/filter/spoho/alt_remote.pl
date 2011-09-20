@@ -6,7 +6,7 @@
 #
 #  Holen via http und konvertieren in das Meta-Format
 #
-#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -45,15 +45,18 @@ my $aleph2metaexe = "$konvdir/aleph18seq2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dboptions_ref = $config->get_dboptions($pool);
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{filename}";
+my $titlefile     = $dbinfo->titlefile;
+
+my $url           = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+
 my $httpauthstring="";
-if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepasswd} ne ""){
-    $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepasswd}";
+if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
+    $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-password=".$dbinfo->remotepassword;
 }
 
 print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm unload* ; rm $dboptions_ref->{filename}");
+system("cd $pooldir/$pool ; rm unload* ; rm $titlefile");
 system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; zcat $dboptions_ref->{filename} > pool.dat ; $aleph2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/spoho.yml; gzip unload.*");
+system("cd $pooldir/$pool; zcat $titlefile > pool.dat ; $aleph2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/spoho.yml; gzip unload.*");

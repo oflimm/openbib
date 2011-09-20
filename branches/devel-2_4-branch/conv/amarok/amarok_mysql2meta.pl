@@ -6,7 +6,7 @@
 #
 #  Konverierung von Amarok-Daten aus dem MySQL-Backend in das Meta-Format
 #
-#  Dieses File ist (C) 2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -45,12 +45,12 @@ my $config = new OpenBib::Config;
 
 my $database=($ARGV[0])?$ARGV[0]:'audiosmlg';
 
-my $dboptions_ref = $config->get_dboptions($database);
+my $dbinfo     = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
 
-my $dbuser    = $dboptions_ref->{'remoteuser'};
-my $dbpasswd  = $dboptions_ref->{'remotepasswd'};
-my $dbhost    = $dboptions_ref->{'host'};
-my $dbname    = $dboptions_ref->{'remotepath'};
+my $dbuser    = $dbinfo->remoteuser;
+my $dbpasswd  = $dbinfo->remotepassword;
+my $dbhost    = $dbinfo->host;
+my $dbname    = $dbinfo->remotepath;
 
 my $dbh=DBI->connect("DBI:mysql:dbname=$dbname;host=$dbhost;port=$port", $dbuser, $dbpasswd) or die "could not connect";
 

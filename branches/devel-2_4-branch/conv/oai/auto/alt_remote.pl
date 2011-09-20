@@ -45,9 +45,16 @@ my $oai2metaexe   = "$config->{'conv_dir'}/oai2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dboptions_ref = $config->get_dboptions($pool);
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $oaiurl        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{filename}";
+my $titlefile     = $dbinfo->titlefile;
+
+my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+
+my $httpauthstring="";
+if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
+    $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-password=".$dbinfo->remotepassword;
+}
 
 print "### $pool: Datenabzug via OAI von $oaiurl\n";
 system("cd $pooldir/$pool ; rm *");

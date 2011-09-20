@@ -48,12 +48,12 @@ my $database=($ARGV[0])?$ARGV[0]:'econbiz';
 my $dbimodule = "Pg";    # Pg (PostgreSQL)
 my $port      = "5432";  # Pg:5432
 
-my $dboptions_ref = $config->get_dboptions($database);
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
 
-my $dbuser    = $dboptions_ref->{'remoteuser'};
-my $dbpasswd  = $dboptions_ref->{'remotepasswd'};
-my $dbhost    = $dboptions_ref->{'host'};
-my $dbname    = $dboptions_ref->{'remotepath'};
+my $dbuser    = $dbinfo->remoteuser;
+my $dbpasswd  = $dbinfo->remotepassword;
+my $dbhost    = $dbinfo->host;
+my $dbname    = $dbinfo->remotepath;
 
 
 my %formattab={

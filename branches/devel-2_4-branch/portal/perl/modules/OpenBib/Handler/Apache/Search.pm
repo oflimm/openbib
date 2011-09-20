@@ -255,12 +255,12 @@ sub show_search {
         $contentreq=~s/%//g;
 
         if (!$contentreq) {
-            OpenBib::Common::Util::print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"),$r,$msg,$representation,$content_type);
+            $self->print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"));
             return Apache2::Const::OK;
         }
 
         if ($#databases > 0 && length($contentreq) < 3) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."),$r,$msg,$representation,$content_type);
+            $self->print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."));
             return Apache2::Const::OK;
         }
 
@@ -1477,7 +1477,7 @@ sub show_index {
         },
     };
     
-    OpenBib::Common::Util::print_page($template,$ttdata,$r);
+    $self->print_page($template,$ttdata);
     
     return Apache2::Const::OK;
 

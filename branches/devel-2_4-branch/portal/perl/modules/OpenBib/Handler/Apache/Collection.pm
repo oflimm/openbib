@@ -624,7 +624,7 @@ sub create_record {
         });
     }
     
-    OpenBib::Common::Util::print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."),$r,$msg);
+    $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
     return Apache2::Const::OK;
 }
 
@@ -917,12 +917,12 @@ sub mail_collection_send {
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     if ($email eq "") {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."),$r,$msg);
+        $self->print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."));
         return Apache2::Const::OK;
     }
 
     unless (Email::Valid->address($email)) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."),$r,$msg);
+        $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
         return Apache2::Const::OK;
     }	
 
@@ -1050,7 +1050,7 @@ sub mail_collection_send {
   
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     
-    OpenBib::Common::Util::print_page($config->{tt_collection_mail_success_tname},$ttdata,$r);
+    $self->print_page($config->{tt_collection_mail_success_tname},$ttdata);
     
     unlink $anschfile;
     unlink $mailfile;
@@ -1106,7 +1106,7 @@ sub showzzz {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
         return Apache2::Const::OK;
     }
 
@@ -1160,7 +1160,7 @@ sub showzzz {
             });
         }
 
-        OpenBib::Common::Util::print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."),$r,$msg);
+        $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
         return Apache2::Const::OK;
     }
     # Anzeigen des Inhalts der Merkliste
@@ -1233,7 +1233,7 @@ sub showzzz {
 	}
         elsif ($do_addlitlist) {
             if (!$title) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+                $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
 	    
                 return Apache2::Const::OK;
             }
@@ -1245,7 +1245,7 @@ sub showzzz {
 	}
         elsif ($do_addtags) {
             if (!$tags) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."),$r,$msg);
+                $self->print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."));
                 return Apache2::Const::OK;
             }
 
@@ -1267,12 +1267,12 @@ sub showzzz {
                     }
                 }
                 else {
-                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."),$r,$msg);
+                    $self->print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."));
                     return Apache2::Const::OK;
                 }
             }
             else {
-                OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
+                $self->print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."));
             }
             
             my $redirecturl   = "$config->{base_loc}/$view/$config->{managecollection_loc}";
@@ -1308,7 +1308,7 @@ sub showzzz {
                 msg            => $msg,
             };
             
-            OpenBib::Common::Util::print_page($config->{tt_collection_empty_tname},$ttdata,$r);
+            $self->print_page($config->{tt_collection_empty_tname},$ttdata);
             return Apache2::Const::OK;
         }
 
@@ -1329,7 +1329,7 @@ sub showzzz {
             msg               => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config->{tt_collection_show_tname},$ttdata,$r);
+        $self->print_page($config->{tt_collection_show_tname},$ttdata);
         return Apache2::Const::OK;
     }
     # Abspeichern der Merkliste
@@ -1371,12 +1371,12 @@ sub showzzz {
             if ($type eq "HTML") {
                 $r->content_type('text/html');
                 $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
-                OpenBib::Common::Util::print_page($config->{tt_collection_save_html_tname},$ttdata,$r);
+                $self->print_page($config->{tt_collection_save_html_tname},$ttdata);
             }
             else {
                 $r->content_type('text/plain');
                 $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
-                OpenBib::Common::Util::print_page($config->{tt_collection_save_plain_tname},$ttdata,$r);
+                $self->print_page($config->{tt_collection_save_plain_tname},$ttdata);
             }
             return Apache2::Const::OK;
         }
@@ -1399,7 +1399,7 @@ sub showzzz {
                 msg        => $msg,
             };
             
-            OpenBib::Common::Util::print_page($config->{tt_collection_print_tname},$ttdata,$r);
+            $self->print_page($config->{tt_collection_print_tname},$ttdata);
             return Apache2::Const::OK;
         }
         elsif ($action eq "mail"){
@@ -1421,12 +1421,12 @@ sub showzzz {
                 msg         => $msg,
             };
             
-            OpenBib::Common::Util::print_page($config->{tt_collection_mail_tname},$ttdata,$r);
+            $self->print_page($config->{tt_collection_mail_tname},$ttdata);
             return Apache2::Const::OK;
         }
     }
     else {
-        OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
+        $self->print_warning($msg->maketext("Unerlaubte Aktion"));
         return Apache2::Const::OK;
     }
     return Apache2::Const::OK;

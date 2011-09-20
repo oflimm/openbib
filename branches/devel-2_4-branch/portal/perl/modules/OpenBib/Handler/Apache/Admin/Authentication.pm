@@ -50,7 +50,6 @@ use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
 
-use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Database::Config;
@@ -274,7 +273,7 @@ sub update_record {
             };
 
             $logger->debug("Asking for confirmation");
-            OpenBib::Common::Util::print_page($config->{tt_admin_authentication_record_delete_confirm_tname},$ttdata,$r);
+            $self->print_page($config->{tt_admin_authentication_record_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }

@@ -141,7 +141,7 @@ sub show_collection_by_isbn_negotiate {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -152,7 +152,7 @@ sub show_collection_by_isbn_negotiate {
     my $targettype = $user->get_targettype_of_session($session->{ID});
 
     if (!$user->{ID}){
-        OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+        $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
         return Apache2::Const::OK;
     }
     
@@ -180,7 +180,7 @@ sub show_collection_by_isbn_negotiate {
         msg              => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_review_collection_by_isbn_tname},$ttdata,$r);
+    $self->print_page($config->{tt_review_collection_by_isbn_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -217,7 +217,7 @@ sub update_vote {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -229,14 +229,14 @@ sub update_vote {
 
 
     if (!$user->{ID}){
-        OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+        $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
         return Apache2::Const::OK;
     }
     
     $logger->debug("Vote abgeben fuer Review");
 
     if (!$user->{ID}){
-        OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um diese Rezension zu beurteilen",$r,$msg);
+        $self->print_warning("Sie müssen sich authentifizieren, um diese Rezension zu beurteilen");
         return Apache2::Const::OK;
     }
     
@@ -247,7 +247,7 @@ sub update_vote {
     });
     
     if ($status == 1){
-        OpenBib::Common::Util::print_warning("Sie haben bereits diese Rezension beurteilt",$r,$msg);
+        $self->print_warning("Sie haben bereits diese Rezension beurteilt");
         return Apache2::Const::OK;
     }
     
@@ -327,7 +327,7 @@ sub update_record {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -339,7 +339,7 @@ sub update_record {
 
 
     if (!$user->{ID}){
-        OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+        $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
         return Apache2::Const::OK;
     }
     
@@ -384,7 +384,7 @@ sub delete_record {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -394,7 +394,7 @@ sub delete_record {
     my $loginname  = $user->get_username();
 
     if (!$user->{ID}){
-        OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+        $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
         return Apache2::Const::OK;
     }
     
@@ -472,7 +472,7 @@ sub show_record_form {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -495,7 +495,7 @@ sub show_record_form {
     my $user_owns_review = ($user->{ID} eq $user->get_review_owner({reviewid => $reviewid}))?1:0;
 
     unless($user_owns_review){
-        OpenBib::Common::Util::print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}",$r,$msg);
+        $self->print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}");
         return Apache2::Const::OK;
     }
 
@@ -526,7 +526,7 @@ sub show_record_form {
         msg              => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_review_edit_tname},$ttdata,$r);
+    $self->print_page($config->{tt_review_edit_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -594,7 +594,7 @@ sub show_record_negotiate {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -615,7 +615,7 @@ sub show_record_negotiate {
     }
     
     unless($user->{ID} eq $userid){
-        OpenBib::Common::Util::print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}",$r,$msg);
+        $self->print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}");
         return Apache2::Const::OK;
     }
 
@@ -651,7 +651,7 @@ sub show_record_negotiate {
         msg              => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_review_tname},$ttdata,$r);
+    $self->print_page($config->{tt_review_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -719,7 +719,7 @@ sub show_record_negotiatex {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -740,7 +740,7 @@ sub show_record_negotiatex {
     }
     
     unless($user->{ID} eq $userid){
-        OpenBib::Common::Util::print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}",$r,$msg);
+        $self->print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}");
         return Apache2::Const::OK;
     }
 
@@ -776,7 +776,7 @@ sub show_record_negotiatex {
         msg              => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_review_tname},$ttdata,$r);
+    $self->print_page($config->{tt_review_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

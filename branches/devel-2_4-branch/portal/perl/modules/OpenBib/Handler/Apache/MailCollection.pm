@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::MailCollection
 #
-#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -46,7 +46,6 @@ use MIME::Lite;
 use POSIX;
 use Template;
 
-use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
@@ -238,7 +237,7 @@ sub show {
   
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     
-    OpenBib::Common::Util::print_page($config->{tt_mailcollection_success_tname},$ttdata,$r);
+    $self->print_page($config->{tt_mailcollection_success_tname},$ttdata);
     
     unlink $anschfile;
     unlink $mailfile;

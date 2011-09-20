@@ -127,7 +127,7 @@ sub show {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
         return Apache2::Const::OK;
     }
 
@@ -139,7 +139,7 @@ sub show {
         $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
     }
     else {
-        OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Anfrage-ID"),$r,$msg);
+        $self->print_warning($msg->maketext("Keine gültige Anfrage-ID"));
         return Apache2::Const::OK;
     }
 
@@ -175,7 +175,7 @@ sub show {
         msg          => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config->{tt_externaljump_tname},$ttdata,$r);
+    $self->print_page($config->{tt_externaljump_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

@@ -252,7 +252,7 @@ sub show_record_form {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
@@ -268,7 +268,7 @@ sub show_record_form {
     my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
 
     if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
+        $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
         return Apache2::Const::OK;
     }
 
@@ -288,7 +288,7 @@ sub show_record_form {
         msg        => $msg,
     };
     
-    OpenBib::Common::Util::print_page($config->{tt_admin_database_record_edit_tname},$ttdata,$r);
+    $self->print_page($config->{tt_admin_database_record_edit_tname},$ttdata);
         
     return Apache2::Const::OK;
 }
@@ -328,14 +328,14 @@ sub update_record {
     my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
 
     if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
+        $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
         return Apache2::Const::OK;
     }
 
     $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
@@ -367,7 +367,7 @@ sub update_record {
             };
 
             $logger->debug("Asking for confirmation");
-            OpenBib::Common::Util::print_page($config->{tt_admin_database_record_delete_confirm_tname},$ttdata,$r);
+            $self->print_page($config->{tt_admin_database_record_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }
@@ -472,7 +472,7 @@ sub delete_record {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$config->db_exists($dbname)) {        
-        OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"),$r,$msg);
+        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
@@ -488,7 +488,7 @@ sub delete_record {
     my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
 
     if (!$adminsession) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
+        $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
         return Apache2::Const::OK;
     }
 

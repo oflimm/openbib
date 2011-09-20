@@ -230,7 +230,7 @@ sub show_record {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -378,7 +378,7 @@ sub show_collection_form {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -415,7 +415,7 @@ sub show_collection_form {
         user       => $user,
         msg        => $msg,
     };
-    OpenBib::Common::Util::print_page($config->{tt_user_tag_edit_tname},$ttdata,$r);
+    $self->print_page($config->{tt_user_tag_edit_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -485,7 +485,7 @@ sub create_record {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -593,7 +593,7 @@ sub delete_record {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -706,7 +706,7 @@ sub update_record {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -737,7 +737,7 @@ sub update_record {
     });
     
     if ($status){
-        OpenBib::Common::Util::print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.",$r,$msg);
+        $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
         return Apache2::Const::OK;
     }
 
@@ -859,7 +859,7 @@ sub showyyy {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -928,7 +928,7 @@ sub showyyy {
         });
 
         if ($status){
-            OpenBib::Common::Util::print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.",$r,$msg);
+            $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
             return Apache2::Const::OK;
         }
         
@@ -954,7 +954,7 @@ sub showyyy {
             user       => $user,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config->{tt_tags_editusertags_tname},$ttdata,$r);
+        $self->print_page($config->{tt_tags_editusertags_tname},$ttdata);
     }
 
     if ($show_usertags && $user->{ID}){
@@ -975,7 +975,7 @@ sub showyyy {
             user       => $user,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config->{tt_tags_showusertags_tname},$ttdata,$r);
+        $self->print_page($config->{tt_tags_showusertags_tname},$ttdata);
     }
     
     if ($searchtitoftag) {
@@ -989,7 +989,7 @@ sub showyyy {
             
             if ($private_tags){
                 if (!$user->{ID}){
-                    OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+                    $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
                     return Apache2::Const::OK;
                 }
 
@@ -1114,7 +1114,7 @@ sub showzzz {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $self->print_warning($msg->maketext("Ungültige Session"));
 
         return Apache2::Const::OK;
     }
@@ -1183,7 +1183,7 @@ sub showzzz {
         });
 
         if ($status){
-            OpenBib::Common::Util::print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.",$r,$msg);
+            $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
             return Apache2::Const::OK;
         }
         
@@ -1209,7 +1209,7 @@ sub showzzz {
             user       => $user,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config->{tt_tags_editusertags_tname},$ttdata,$r);
+        $self->print_page($config->{tt_tags_editusertags_tname},$ttdata);
     }
 
     if ($show_usertags && $user->{ID}){
@@ -1230,7 +1230,7 @@ sub showzzz {
             user       => $user,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config->{tt_tags_showusertags_tname},$ttdata,$r);
+        $self->print_page($config->{tt_tags_showusertags_tname},$ttdata);
     }
     
     if ($searchtitoftag) {
@@ -1244,7 +1244,7 @@ sub showzzz {
             
             if ($private_tags){
                 if (!$user->{ID}){
-                    OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+                    $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
                     return Apache2::Const::OK;
                 }
 

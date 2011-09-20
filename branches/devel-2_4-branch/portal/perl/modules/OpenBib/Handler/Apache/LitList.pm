@@ -48,7 +48,6 @@ use Template;
 use XML::RSS;
 
 use OpenBib::Search::Util;
-use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
@@ -342,7 +341,7 @@ sub show_collection_by_single_userxxx {
     $litlistid = $thisid;
 
     if (!$user_owns_litlist && !$litlist_is_public){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
 
         # Aufruf der privaten Literaturlisten durch "Andere" loggen
         $session->log_event({
@@ -462,7 +461,7 @@ sub show_collection_by_single_user {
     $litlistid = $thisid;
 
     if (!$user_owns_litlist && !$litlist_is_public){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
 
         # Aufruf der privaten Literaturlisten durch "Andere" loggen
         $session->log_event({
@@ -568,7 +567,7 @@ sub show_record {
         }
 
         if (!$user_owns_litlist){
-            OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+            $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
             
             # Aufruf der privaten Literaturlisten durch "Andere" loggen
             $session->log_event({
@@ -711,7 +710,7 @@ sub show_record_form {
     $litlistid = $thisid;
 
     if (!$user_owns_litlist){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
 
         # Aufruf der privaten Literaturlisten durch "Andere" loggen
         $session->log_event({
@@ -815,7 +814,7 @@ sub create_record {
     my $userrole_ref = $user->get_roles_of_user($user->{ID});
     
     if ($title eq ""){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+        $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
         
         return Apache2::Const::OK;
     }
@@ -865,7 +864,7 @@ sub update_record {
     my $lecture        = $query->param('lecture')     || 0;
 
     if (!$title || !$type || !$litlistid){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+        $self->print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."));
         
         return Apache2::Const::OK;
     }
@@ -873,7 +872,7 @@ sub update_record {
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
     
     if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
         
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
@@ -927,7 +926,7 @@ sub delete_record {
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
 
     if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
         
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
@@ -981,7 +980,7 @@ sub show_entry_negotiate {
     my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
 
     if (!$user_owns_litlist){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
         
         # Aufruf der privaten Literaturlisten durch "Andere" loggen
         $session->log_event({
@@ -1085,7 +1084,7 @@ sub create_entry {
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
     
     if (!$litlistid || !$titid || !$titdb ){
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben oder Titel und Datenbank existieren nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben oder Titel und Datenbank existieren nicht."));
         
         return Apache2::Const::OK;
     }
@@ -1093,7 +1092,7 @@ sub create_entry {
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
     
     if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
         
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
@@ -1149,7 +1148,7 @@ sub update_entry {
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
 
     if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
 
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
@@ -1199,7 +1198,7 @@ sub delete_entry {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$titid || !$titdb || !$litlistid) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."),$r,$msg);
+        $self->print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."));
         
         return Apache2::Const::OK;
     }
@@ -1207,7 +1206,7 @@ sub delete_entry {
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
 
     if (!$user_owns_litlist) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
 
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({

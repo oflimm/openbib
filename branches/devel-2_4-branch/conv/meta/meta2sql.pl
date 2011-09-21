@@ -505,13 +505,12 @@ my @inhalt                 = ();
 
 my $listitem_ref={};
 my $thisitem_ref={};
-
+my $searchfield_ref = {};
 my $normdata_ref={};
 $count=0;
 
 CATLINE:
 while (my $line=<IN>){
-    my $searchfield_ref = {};
     my ($category,$indicator,$content);
     my ($sign,$isbn,$issn,$artinh);
     
@@ -619,7 +618,7 @@ while (my $line=<IN>){
 
         # Personen der Ueberordnung anreichern (Schiller-Raeuber)
         if ($addsuperpers){
-            foreach my $superid (@{$searchfield_ref->{subid}}){
+            foreach my $superid (@{$searchfield_ref->{superid}}){
                 if (exists $listitemdata_superid{$superid}){
                     my @superpersids = split (":",$listitemdata_superid{$superid}); 
                     push @person, @superpersids;
@@ -1078,6 +1077,8 @@ while (my $line=<IN>){
                 }
             }
 
+            push @{$searchfield_ref->{superid}}, $targetid;
+            
             print OUT           "$id$category$indicator$content\n";
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }

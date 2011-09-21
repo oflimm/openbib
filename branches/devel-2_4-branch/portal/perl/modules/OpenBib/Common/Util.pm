@@ -431,7 +431,7 @@ sub get_loadbalanced_servername {
     # Aktuellen Load der Server holen zur dynamischen Lastverteilung au
     my @servertab=();
 
-    foreach my $item ($config->get_serverinfo->search(
+    foreach my $item ($config->get_serverinfo->search_rs(
         {
             active => 1,
         },

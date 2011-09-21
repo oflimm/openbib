@@ -217,8 +217,10 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
+    my $dbid = $config->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
+
     my $thisrssfeed_ref = {
-        dbname  => $dbname,
+        dbid    => $dbid,
         type    => $rsstype,
         active  => $active,
     };
@@ -345,8 +347,10 @@ sub update_record {
         }
     }
 
+    my $dbid = $config->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
+
     my $thisrssfeed_ref = {
-        dbname  => $dbname,
+        dbid    => $dbid,
         type    => $rsstype,
         active  => $active,
         id      => $rssid,

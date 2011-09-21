@@ -76,7 +76,7 @@
 <tr><td><b>[% msg.maketext("K&ouml;rperschafts-Datei") %]</b></td><td>[% databaseinfo.corporatebodyfile %]</td></tr>
 <tr><td><b>[% msg.maketext("Schlagwort-Datei") %]</b></td><td>[% databaseinfo.subjectfile %]"</td></tr>
 <tr><td><b>[% msg.maketext("Notations-Datei") %]</b></td><td>[% databaseinfo.classificationfile %]</td></tr>
-<tr><td><b>[% msg.maketext("Exemplar-Datei") %]</b></td><td>[% databaseinfo.holdingsfile %]</td></tr>
+<tr><td><b>[% msg.maketext("Exemplar-Datei") %]</b></td><td>[% databaseinfo.holdingfile %]</td></tr>
     
 <tr><td><b>[% msg.maketext("Autokonvertierung (cron)") %]</b></td><td>[% IF databaseinfo.autoconvert == '0' %][% msg.maketext("Nein") %][% END %][% IF databaseinfo.autoconvert == '1' %][% msg.maketext("Ja") %][% END %]</td></tr>
 </table>

@@ -91,14 +91,14 @@
 <tr><td><b>[% msg.maketext("Entfernter Rechnername") %]</b></td><td><input type="text" size="20" name="host" value="[% databaseinfo.host %]" /></td></tr>
 <tr><td><b>[% msg.maketext("Entferntes Verzeichnis") %]</b></td><td><input type="text" size="20" name="remotepath" value="[% databaseinfo.remotepath %]" /></td></tr>
 <tr><td><b>[% msg.maketext("Entfernter Nutzername") %]</b></td><td><input type="text" size="20" name="remoteuser" value="[% databaseinfo.remoteuser %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Entferntes Passwort") %]</b></td><td><input type="password" size="20" name="remotepasswd" value="[% databaseinfo.remotepassword %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entferntes Passwort") %]</b></td><td><input type="password" size="20" name="remotepassword" value="[% databaseinfo.remotepassword %]" /></td></tr>
 <tr><td><b></b></td><td></td></tr>
-<tr><td><b>[% msg.maketext("Titel-Datei") %]</b></td><td><input type="text" size="20" name="titfilename" value="[% databaseinfo.titlefile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Personen-Datei") %]</b></td><td><input type="text" size="20" name="autfilename" value="[% databaseinfo.personfile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("K&ouml;rperschafts-Datei") %]</b></td><td><input type="text" size="20" name="korfilename" value="[% databaseinfo.corporatebodyfile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Schlagwort-Datei") %]</b></td><td><input type="text" size="20" name="swtfilename" value="[% databaseinfo.subjectfile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Notations-Datei") %]</b></td><td><input type="text" size="20" name="notfilename" value="[% databaseinfo.classificationfile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Exemplar-Datei") %]</b></td><td><input type="text" size="20" name="mexfilename" value="[% databaseinfo.holdingsfile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Titel-Datei") %]</b></td><td><input type="text" size="20" name="titlefile" value="[% databaseinfo.titlefile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Personen-Datei") %]</b></td><td><input type="text" size="20" name="personfile" value="[% databaseinfo.personfile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("K&ouml;rperschafts-Datei") %]</b></td><td><input type="text" size="20" name="corporatebodyfile" value="[% databaseinfo.corporatebodyfile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Schlagwort-Datei") %]</b></td><td><input type="text" size="20" name="subjectfile" value="[% databaseinfo.subjectfile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Notations-Datei") %]</b></td><td><input type="text" size="20" name="classificationfile" value="[% databaseinfo.classificationfile %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Exemplar-Datei") %]</b></td><td><input type="text" size="20" name="holdingfile" value="[% databaseinfo.holdingfile %]" /></td></tr>
     
 <tr><td><b>[% msg.maketext("Autokonvertierung (cron)") %]</b></td><td>
 <select name="autoconvert">

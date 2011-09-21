@@ -1343,31 +1343,49 @@ sub get_infomatrix_of_active_databases {
     my $profile = $self->get_profilename_of_view($view);
     
     $maxcolumn=(defined $maxcolumn)?$maxcolumn:$self->{databasechoice_maxcolumn};
-    
-    my $sqlrequest = "select * from databaseinfo where active is true order by description ASC";
 
-    my @sqlargs = ();
+    my $dbinfos;
 
     if ($view){
-        $sqlrequest = "select databaseinfo.*,orgunitinfo.description as orgunitdescription, orgunitinfo.orgunitname from databaseinfo,orgunit_db,viewinfo,orgunitinfo,profileinfo where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.id=viewinfo.profileid and viewinfo.viewname = ? order by orgunitinfo.nr ASC, databaseinfo.description ASC";
-        push @sqlargs, $view;
+        # DBI: "select databaseinfo.*,orgunitinfo.description as orgunitdescription, orgunitinfo.orgunitname from databaseinfo,orgunit_db,viewinfo,orgunitinfo,profileinfo where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.id=viewinfo.profileid and viewinfo.viewname = ? order by orgunitinfo.nr ASC, databaseinfo.description ASC"
+        $dbinfos = $self->{schema}->resultset('Viewinfo')->search(
+            {
+                'me.viewname' => $view,
+                'dbid.active' => 1,
+            },
+            {
+                join   => [ 'profileid', { 'profileid' => { 'orgunitinfos' => { 'orgunit_dbs' => 'dbid' }}} ],
+                select => [ 'orgunitinfos.description', 'dbid.description', 'dbid.system', 'dbid.dbname', 'dbid.url', 'dbid.sigel', 'dbid.use_libinfo' ],
+                as     => [ 'thisorgunitdescription', 'thisdescription', 'thissystem', 'thisdbname', 'thisurl', 'thissigel', 'thisuse_libinfo' ],
+                order_by => [ 'orgunitid ASC', 'dbid.description ASC' ],
+            }
+        );
+    }
+    else {
+        # DBI: "select * from databaseinfo where active is true order by description ASC"
+        $dbinfos = $self->{schema}->resultset('Databaseinfo')->search(
+            {
+                active => 1,
+            },
+            {
+                select => [ 'description', 'system', 'dbname', 'url', 'sigel', 'use_libinfo' ],
+                as     => [ 'thisdescription', 'thissystem', 'thisdbname', 'thisurl', 'thissigel', 'thisuse_libinfo' ],
+                order_by => [ 'description ASC' ],
+            }
+        );
+
     }
 
-    $logger->debug("View: $view - Profile: $profile - SQL-Request: $sqlrequest");
-    
-    my $idnresult=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $idnresult->execute(@sqlargs) or $logger->error($DBI::errstr);
-
     my @catdb=();
-    
-    while (my $result=$idnresult->fetchrow_hashref) {
-        my $category   = decode_utf8($result->{'orgunitdescription'});
-        my $name       = decode_utf8($result->{'description'});
-        my $systemtype = decode_utf8($result->{'system'});
-        my $pool       = decode_utf8($result->{'dbname'});
-        my $url        = decode_utf8($result->{'url'});
-        my $sigel      = decode_utf8($result->{'sigel'});
-        my $use_libinfo= decode_utf8($result->{'use_libinfo'});
+
+    foreach my $item ($dbinfos->all){
+        my $category   = decode_utf8($item->get_column('thisorgunitdescription'));
+        my $name       = decode_utf8($item->get_column('thisdescription'));
+        my $systemtype = decode_utf8($item->get_column('thissystem'));
+        my $pool       = decode_utf8($item->get_column('thisdbname'));
+        my $url        = decode_utf8($item->get_column('thisurl'));
+        my $sigel      = decode_utf8($item->get_column('thissigel'));
+        my $use_libinfo= decode_utf8($item->get_column('thisuse_libinfo'));
 	
         my $rcolumn;
         
@@ -1484,51 +1502,6 @@ sub get_serverinfo {
     my $object = $self->{schema}->resultset('Serverinfo');
 
     return $object;
-}
-
-sub get_active_loadbalancertargets {
-    my ($self) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # DBI: "select host from loadbalancertargets where active is true order by host"
-    my $serverinfos = $self->{schema}->resultset('Serverinfo')->search(
-        {
-            active => 1,
-        },
-        {
-            select => 'host',
-            order_by => 'host',
-        }
-    );
-    
-    my $loadbalancertargets_ref = [];
-
-    foreach my $item ($serverinfos->all){
-        my $id            = $item->id;
-        my $host          = $item->host;
-        my $active        = $item->active;
-        
-        push @{$loadbalancertargets_ref}, {
-            id     => $id,
-            host   => $host,
-            active => $active,
-        };
-    }
-
-    my @activetargets = ();
-
-    my $request=$self->{dbh}->prepare() or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-    
-    while (my $result=$request->fetchrow_hashref()){
-        my $host          = decode_utf8($result->{'host'});
-        
-        push @activetargets, $host;
-    }
-    
-    return @activetargets;
 }
 
 sub get {
@@ -1690,14 +1663,18 @@ sub update_libinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Libraryinfo')->search({ dbname => $dbname })->single->delete;
+    my $dbid = $self->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
 
+    eval {
+        $self->{schema}->resultset('Libraryinfo')->search({ dbid => $dbid })->single->delete;
+    };
+   
     my $category_contents_ref = [];
     foreach my $category (keys %$libinfo_ref){
         my ($category_num)=$category=~/^I(\d+)$/;
 
         push @$category_contents_ref, {
-            dbname   => $dbname,
+            dbid     => $dbid,
             category => $category_num,
             content  => $libinfo_ref->{$category},
         };
@@ -1854,21 +1831,37 @@ sub update_view_rss {
     my $logger = get_logger();
 
     if ($rsstype eq "primary"){
-      my $request=$self->{dbh}->prepare("update viewinfo set rssfeed = ? where viewname = ?") or $logger->error($DBI::errstr);
-      $request->execute($rssid,$viewname) or $logger->error($DBI::errstr);
-      $request->finish();
+        # DBI: "update viewinfo set rssfeed = ? where viewname = ?"
+        # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
+        $self->{schema}->resultset('Viewinfo')->search_rs({ viewname => $viewname})->single->update({ rssid => $rssid });
     }
     elsif ($rsstype eq "all") {
-      my $request=$self->{dbh}->prepare("delete from view_rss where viewname = ?");
-      $request->execute($viewname);
-      
-      $request=$self->{dbh}->prepare("insert into view_rss values (?,?)") or $logger->error($DBI::errstr);
-      foreach my $rssid (@rssids){
-	$request->execute($viewname,$rssid) or $logger->error($DBI::errstr);
-      }
-      $request->finish();
+        
+        my $viewid = $self->get_viewinfo->search_rs({ viewname => $viewname })->single()->id;
+        
+        # DBI: "delete from view_rss where viewname = ?"
+        # Datenbanken zunaechst loeschen
+        $self->{schema}->resultset('ViewRss')->search_rs(
+            {
+                viewid => $viewid
+            }
+        )->delete;
+
+        # DBI: "insert into view_rss values (?,?)"
+        if (@rssids){
+            my $this_rss_ref = [];
+            foreach my $rssid (@rssids){
+                push @$this_rss_ref, {
+                    viewid => $viewid,
+                    rssid  => $rssid,
+                };
+            }
+
+            # Dann die zugehoerigen Datenbanken eintragen
+            $self->{schema}->resultset('ViewRss')->populate($this_rss_ref);
+        }
     }
-    
+
     return;
 }
 
@@ -1878,16 +1871,18 @@ sub del_profile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("delete from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
-
+    # DBI: "delete from profileinfo where profilename = ?"
+    $self->{schema}->resultset('Profileinfo')->search_rs(
+        {
+            profilename => $profilename,
+        }
+    )->single->delete;
+    
     my $orgunits_ref=$self->get_orgunitinfo_overview($profilename);
 
     foreach my $thisorgunit ($orgunits_ref->all){
         $self->del_orgunit($profilename,$thisorgunit->orgunitname);
     }
-    
-    $idnresult->finish();
 
     return;
 }
@@ -1929,16 +1924,32 @@ sub new_profile {
 }
 
 sub del_orgunit {
-    my ($self,$profilename,$orgunit)=@_;
+    my ($self,$profilename,$orgunitname)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("delete from orgunitinfo where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    $idnresult=$self->{dbh}->prepare("delete from orgunit_db where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    $idnresult->finish();
+    # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
+    $self->{schema}->resultset('OrgunitDb')->search_rs(
+        {
+            'orgunitid.orgunitname' => $orgunitname,
+            'profileid.profilename' => $profilename,
+        },
+        {
+            join => [ 'orgunitid', { 'orgunitid' => 'profileid' } ],
+        }
+    )->all->delete;
+
+    # DBI: "delete from orgunitinfo where profilename = ? and orgunitname = ?"
+    $self->{schema}->resultset('Orgunitinfo')->search_rs(
+        {
+            'me.orgunitname'        => $orgunitname,
+            'profileid.profilename' => $profilename,
+        },
+        {
+            join => 'profileid',
+        }
+    )->single->delete;
 
     return;
 }
@@ -1967,10 +1978,12 @@ sub update_orgunit {
     my $orgunitinfo_ref = $self->get_orgunitinfo->search_rs({ 'orgunitname' => $orgunitname, 'profileid' => $profileinfo_ref->id })->single();
 
     $orgunitinfo_ref->update({ description => $description, nr => $nr });
-        
+
+    # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
     # Datenbanken zunaechst loeschen
     $self->{schema}->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitinfo_ref->id})->delete;
 
+    # DBI: "insert into orgunit_db values (?,?,?)"
     if (@$orgunitdb_ref){
         my $this_db_ref = [];
         foreach my $dbname (@$orgunitdb_ref){
@@ -1984,19 +1997,6 @@ sub update_orgunit {
         # Dann die zugehoerigen Datenbanken eintragen
         $self->{schema}->resultset('OrgunitDb')->populate($this_db_ref);
     }
-
-    
-#     $idnresult=$self->{dbh}->prepare("delete from orgunit_db where profilename = ? and orgunitname = ?") or $logger->error($DBI::errstr);
-#     $idnresult->execute($profilename,$orgunit) or $logger->error($DBI::errstr);
-    
-    
-#     # Dann die zugehoerigen Datenbanken eintragen
-#     foreach my $singleorgunitdb (@orgunitdb) {
-#         $idnresult=$self->{dbh}->prepare("insert into orgunit_db values (?,?,?)") or $logger->error($DBI::errstr);
-#         $idnresult->execute($profilename,$orgunit,$singleorgunitdb) or $logger->error($DBI::errstr);
-#     }
-    
-#     $idnresult->finish();
 
     return;
 }
@@ -2035,10 +2035,9 @@ sub del_server {
     my $logger = get_logger();
 
     $logger->debug("About to delete id $id");
-    
-    my $request=$self->{dbh}->prepare("delete from loadbalancertargets where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($id) or $logger->error($DBI::errstr);
-    $request->finish();
+
+    # DBI: "delete from serverinfo where id = ?"
+    $self->{schema}->resultset('Serverinfo')->search_rs({ id => $id })->single->delete;
 
     return;
 }
@@ -2055,11 +2054,8 @@ sub update_server {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
-    
-    my $request=$self->{dbh}->prepare("update loadbalancertargets set active = ? where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($active,$id) or $logger->error($DBI::errstr);
-    $request->finish();
+    # DBI: "update serverinfo set active = ? where id = ?"
+    $self->{schema}->resultset('Serverinfo')->search_rs({ id => $id })->update({ active => $active });
 
     return;
 }
@@ -2079,20 +2075,10 @@ sub new_server {
     if (!$host){
         return -1;
     }
-    
-    my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from loadbalancertargets where host = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($host) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-    
-    if ($rows > 0) {
-      $idnresult->finish();
-      return -1;
-    }
-    
-    $idnresult=$self->{dbh}->prepare("insert into loadbalancertargets (id,host,active) values (NULL,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($host,$active) or $logger->error($DBI::errstr);
-    
+
+    # DBI: "insert into serverinfo (id,host,active) values (NULL,?,?)"
+    $self->{schema}->resultset('Serverinfo')->create({ host => $host, active => $active });
+
     return 1;
 }
 
@@ -2220,16 +2206,9 @@ aktiv oder nicht - zurück.
 Liefert einen Wert ungleich Null zurück, wenn die Datenbank $dbname
 existiert bzw. eingerichtet wurde - aktiv oder nicht.
 
-=item get_dbinfo($dbname)
+=item get_databaseinfo
 
-Liefert zu einer Datenbank $dbname eine Hashreferenz mit den
-zugehörigen konfigurierten Informationen zurück. Es sind dies die
-Organisationseinheit orgunit, die Beschreibung description, die
-Kurzbeschreibung shortdesc, des (Bibliotheks-)Systems system, des
-Datenbanknamens dbname, des Sigels sigel, des Weiterleitungs-URLs zu
-etwaigen Kataloginformationen sowie der Information zurück, ob die
-Datenbank aktiv ist (active) und anstelle von url lokale
-Bibliotheksinformationen angezeigt werden sollen (use_libinfo).
+Liefert ein Databaseinfo-Objekt (DBIx::Class) aus der Config-Datenbank.
 
 =item get_dbinfo_overview
 
@@ -2350,14 +2329,9 @@ zurück. Neben dem Namen $viewname, der Beschreibung description, des
 zugehörigen Profils profile sowie der Aktivität active gehört dazu
 auch eine Liste aller zugeordneten Datenbanken viewdb.
 
-=item get_viewinfo($viewname)
+=item get_viewinfo
 
-Liefert zu einem View $viewname eine Hashreferenz mit allen
-konfigurierten Informationen zu diesem View zurück. Es sind dies der
-Viewname viewname, seine Beschreibung description, der primäre
-RSS-Feed primrssfeed, etwaige alternative Startseiten
-start_loc/servername, den zugeordneten Profilnamen profilename sowie
-der Aktivität active.
+Liefert ein Viewinfo-Objekt (DBIx::Class) aus der Config-Datenbank.
 
 =item get_viewdbs($viewname)
 
@@ -2387,10 +2361,9 @@ Liefert eine Listenreferenz mit einer Übersicht aller systemweiten Katalogprofi
 zurück. Neben dem Namen profilename, der Beschreibung description gehört dazu
 auch eine Liste aller zugeordneten Datenbanken profiledb.
 
-=item get_profileinfo($profilename)
+=item get_profileinfo
 
-Liefert zu einem Profil $profilename eine Hashreferenz mit dem
-Profilnamen profilename sowie dessen Beschreibung description zurück.
+Liefert ein Profileinfo-Objekt (DBIx::Class) aus der Config-Datenbank.
 
 =item get_profiledbs($profilename)
 
@@ -2401,6 +2374,10 @@ Datenbanken sortiert nach den Datenbanknamen zurück.
 
 Liefert zu einem View $viewname eine Liste aller Datenbanken, die im
 zugehörigen systemseitigen Profil definiert sind.
+
+=item get_orgunitinfo
+
+Liefert ein Orgunitinfo-Objekt (DBIx::Class) aus der Config-Datenbank.
 
 =back
 
@@ -2471,17 +2448,9 @@ zugegriffen werden.
 
 =over 4
 
-=item get_loadbalancertargets
+=item get_serverinfo
 
-Liefert eine Listenreferenz mit Informationen zu allen konfigurierten
-Servern, die für eine Lastverteilung definiert wurden. Diese
-Informationen in einer Hashreferenz umfassen die interne ID id, den
-Servernamen host sowie ob dieser Server aktiv ist oder nicht (active).
-
-=item get_active_loadbalancertargets
-
-Liefert eine Liste der Namen aller aktivierten Server für eine
-Lastverteilung zurück.
+Liefert ein Serverinfo-Objekt (DBIx::Class) aus der Config-Datenbank.
 
 =back
 

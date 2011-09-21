@@ -161,22 +161,22 @@ sub create_record {
     my $use_libinfo     = $query->param('use_libinfo')     || 0;
     my $active          = $query->param('active')          || 0;
 
-    my $host            = $query->param('host')            || '';
-    my $protocol        = $query->param('protocol')        || '';
-    my $remotepath      = $query->param('remotepath')      || '';
-    my $remoteuser      = $query->param('remoteuser')      || '';
-    my $remotepasswd    = $query->param('remotepasswd')    || '';
-    my $titfilename     = $query->param('titfilename')     || '';
-    my $autfilename     = $query->param('autfilename')     || '';
-    my $korfilename     = $query->param('korfilename')     || '';
-    my $swtfilename     = $query->param('swtfilename')     || '';
-    my $notfilename     = $query->param('notfilename')     || '';
-    my $mexfilename     = $query->param('mexfilename')     || '';
-    my $autoconvert     = $query->param('autoconvert')     || '';
-    my $circ            = $query->param('circ')            || '';
-    my $circurl         = $query->param('circurl')         || '';
-    my $circcheckurl    = $query->param('circcheckurl')    || '';
-    my $circdb          = $query->param('circdb')          || '';
+    my $host               = $query->param('host')               || '';
+    my $protocol           = $query->param('protocol')           || '';
+    my $remotepath         = $query->param('remotepath')         || '';
+    my $remoteuser         = $query->param('remoteuser')         || '';
+    my $remotepasswd       = $query->param('remotepasswd')       || '';
+    my $titlefile          = $query->param('titlefile')          || '';
+    my $personfile         = $query->param('personfile')         || '';
+    my $corporatebodyfile  = $query->param('corporatebodyfile')  || '';
+    my $subjectfile        = $query->param('subjectfile')        || '';
+    my $classificationfile = $query->param('classificationfile') || '';
+    my $holdingfile        = $query->param('holdingfile')        || '';
+    my $autoconvert        = $query->param('autoconvert')        || '';
+    my $circ               = $query->param('circ')               || '';
+    my $circurl            = $query->param('circurl')            || '';
+    my $circcheckurl       = $query->param('circcheckurl')       || '';
+    my $circdb             = $query->param('circdb')             || '';
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -206,12 +206,12 @@ sub create_record {
         remotepath         => $remotepath,
         remoteuser         => $remoteuser,
         remotepassword     => $remotepasswd,
-        titlefile          => $titfilename,
-        personfile         => $autfilename,
-        corporatebodyfile  => $korfilename,
-        subjectfile        => $swtfilename,
-        classificationfile => $notfilename,
-        holdingsfile       => $mexfilename,
+        titlefile          => $titlefile,
+        personfile         => $personfile,
+        corporatebodyfile  => $corporatebodyfile,
+        subjectfile        => $subjectfile,
+        classificationfile => $classificationfile,
+        holdingfile        => $holdingfile,
         autoconvert        => $autoconvert,
         circ               => $circ,
         circurl            => $circurl,
@@ -391,22 +391,22 @@ sub update_record {
     my $use_libinfo     = $query->param('use_libinfo')     || 0;
     my $active          = $query->param('active')          || 0;
 
-    my $host            = $query->param('host')            || '';
-    my $protocol        = $query->param('protocol')        || '';
-    my $remotepath      = $query->param('remotepath')      || '';
-    my $remoteuser      = $query->param('remoteuser')      || '';
-    my $remotepasswd    = $query->param('remotepasswd')    || '';
-    my $titfilename     = $query->param('titfilename')     || '';
-    my $autfilename     = $query->param('autfilename')     || '';
-    my $korfilename     = $query->param('korfilename')     || '';
-    my $swtfilename     = $query->param('swtfilename')     || '';
-    my $notfilename     = $query->param('notfilename')     || '';
-    my $mexfilename     = $query->param('mexfilename')     || '';
-    my $autoconvert     = $query->param('autoconvert')     || '';
-    my $circ            = $query->param('circ')            || '';
-    my $circurl         = $query->param('circurl')         || '';
-    my $circcheckurl    = $query->param('circcheckurl')    || '';
-    my $circdb          = $query->param('circdb')          || '';
+    my $host               = $query->param('host')               || '';
+    my $protocol           = $query->param('protocol')           || '';
+    my $remotepath         = $query->param('remotepath')         || '';
+    my $remoteuser         = $query->param('remoteuser')         || '';
+    my $remotepasswd       = $query->param('remotepasswd')       || '';
+    my $titlefile          = $query->param('titlefile')          || '';
+    my $personfile         = $query->param('personfile')         || '';
+    my $corporatebodyfile  = $query->param('corporatebodyfile')  || '';
+    my $subjectfile        = $query->param('subjectfile')        || '';
+    my $classificationfile = $query->param('classificationfile') || '';
+    my $holdingfile        = $query->param('holdingfile')        || '';
+    my $autoconvert        = $query->param('autoconvert')        || '';
+    my $circ               = $query->param('circ')               || '';
+    my $circurl            = $query->param('circurl')            || '';
+    my $circcheckurl       = $query->param('circcheckurl')       || '';
+    my $circdb             = $query->param('circdb')             || '';
 
     
     my $thisdbinfo_ref = {
@@ -423,12 +423,12 @@ sub update_record {
         remotepath         => $remotepath,
         remoteuser         => $remoteuser,
         remotepassword     => $remotepasswd,
-        titlefile          => $titfilename,
-        personfile         => $autfilename,
-        corporatebodyfile  => $korfilename,
-        subjectfile        => $swtfilename,
-        classificationfile => $notfilename,
-        holdingsfile       => $mexfilename,
+        titlefile          => $titlefile,
+        personfile         => $personfile,
+        corporatebodyfile  => $corporatebodyfile,
+        subjectfile        => $subjectfile,
+        classificationfile => $classificationfile,
+        holdingfile        => $holdingfile,
         autoconvert        => $autoconvert,
         circ               => $circ,
         circurl            => $circurl,

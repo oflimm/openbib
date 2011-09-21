@@ -50,7 +50,7 @@
 <table>
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><span style="color:blue">[% viewinfo.viewname %]</span></td></tr>
 <tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% viewinfo.description %]" size="40" /></td></tr>
-<tr><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview.all %]<option value="[% profile.profilename %]" [% IF viewinfo.profileid == profile.id %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td></tr>
+<tr><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview.all %]<option value="[% profile.profilename %]" [% IF viewinfo.profileid.id == profile.id %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td></tr>
 <tr><td><b>[% msg.maketext("URI ohne View") %]</b></td>
 <td>
 <select name="stripuri">
@@ -101,7 +101,8 @@
 
 [% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
-<option value="[% feedid %]" [% IF viewrssfeed.${feedid} %]selected="selected"[% END %]>[% singlefeed.dbname %] / [% singlefeed.type %] / [%singlefeed.subtype %]</option>
+[% NEXT IF singlefeed.type != 1 %]
+<option value="[% feedid %]" [% IF viewrssfeed.${feedid} %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
 [% END %]
 
 
@@ -118,16 +119,9 @@
 
 [% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
+[% NEXT IF singlefeed.type != 1 %]
 
-<option value="[% feedid %]"
-
-[% IF viewinfo.primrssfeed.${feedid} %]
-selected="selected"
-[% END %]
-
-
->[% singlefeed.dbname %] / [% singlefeed.type %] /
-[% singlefeed.subtype %]</option>
+<option value="[% feedid %]" [% IF viewinfo.rssid.id == feedid %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
 
 [% END %]
 

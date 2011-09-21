@@ -82,7 +82,7 @@
 <table class="full">
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
 [% FOREACH thisorgunit IN orgunits.all %]
-<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% FOREACH item IN thisorgunit.orgunitdbs_rs.all %][% item.dbname %]: [% dbinfo.dbnames.${item.dbname}.short %]<br/>[% END %]</td></tr>
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% FOREACH item IN thisorgunit.orgunit_dbs_rs.all %][% item.dbid.dbname %]: [% dbinfo.dbnames.${item.dbid.dbname}.short %]<br/>[% END %]</td></tr>
 [% END %]
 </table>
 [% ELSE %]

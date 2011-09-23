@@ -1,4 +1,4 @@
-\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\documentclass[11pt, twoside, a4paper, BCOR11mm, DIV12, bibtotoc,idxtotoc]{scrbook}
 \usepackage{german}
 \usepackage{typearea}
 \usepackage{longtable}
@@ -22,11 +22,14 @@
 
 %\addtolength{\headwidth}{\marginparsep}
 %\addtolength{\headwidth}{\marginparwidth}
-\addtolength{\headwidth}{1cm}
+%\addtolength{\headwidth}{1.3cm}
+
+% Oberer Rand nach unten
+\voffset0.8cm
 
 \parindent0.0mm
 \parskip0.3cm    
-\typearea{12}
+%\typearea{13}
 
 \setcounter{tocdepth}{3}
 \setcounter{secnumdepth}{3}
@@ -37,32 +40,68 @@
 \begin{document}
 
 \frontmatter
+
 \begin{titlepage}
+\thispagestyle{empty}
+
+\vspace*{2cm}
+
+\begin{center}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Elektronische Schriftenreihe\\[0.5cm] der Universit"ats- und Stadtbibliothek K"oln, 4}
+
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{3cm}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{3cm}
+
+\begin{center}
+\includegraphics[width=12cm]{/usr/share/images/openbib/views/pruessen/Portrait_gross.jpg}
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{3cm}
+
+\newpage
+\thispagestyle{empty}
 
 \vspace{5cm}
 
 \begin{center}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Werkverzeichnis der Sammlung Pr"ussen}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Die Sammlung Eduard Pr"ussen in der\\Universit"ats- und Stadtbibliothek K"oln\\[1cm]Buch- und Presse-Illustrationen}
 
   \vspace{0.5cm}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont in der USB K"oln}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Werkverzeichnis\\\lbrack Hauptband\rbrack}
 
-\vspace{0.5cm}
+\vspace{1cm}
 
-\includegraphics[width=12cm]{/usr/share/images/openbib/blaues-siegel-uni-koeln.jpg}
+\includegraphics[width=12cm]{/usr/share/images/openbib/views/pruessen/pruessen-stempel.jpg}
 
-  \vspace{1cm}
+  \vspace*{3cm}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Stand: \today}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Universit"ats- und Stadtbibliothek K"oln}
 
 \end{center}
 
+\newpage
+\thispagestyle{empty}
+
+\vspace*{17cm}
+
+\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{10}{10pt}\selectfont Herausgeber: Der Direktor der Universit"ats- und Stadtbibliothek K"oln\\Prof. Dr. Wolfgang Schmitz\\Anschrift: Universit"atsstr. 33, 50931 K"oln\\Internet: http://www.ub.uni-koeln.de\\Redaktion \& Layout: Christiane Hoffrath, Oliver Flimm\\Druck: USB K"oln\\ \\\copyright 2010 USB K"oln}
+
 \end{titlepage}
-
-
-
 
 %\thispagestyle{empty}
 
@@ -150,66 +189,100 @@ takimata sanctus est Lorem ipsum dolor sit amet.
 
 \addchap{Einleitung}
 
-Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod
-tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim
-veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex
-ea commodi consequat. Quis aute iure reprehenderit in voluptate velit
-esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat
-cupiditat non proident, sunt in culpa qui officia deserunt mollit anim
-id est laborum.
+\minisec{Anlass zum Vorlass - ein Gl"ucksfall !}
 
-Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
-molestie consequat, vel illum dolore eu feugiat nulla facilisis at
-vero eros et accumsan et iusto odio dignissim qui blandit praesent
-luptatum zzril delenit augue duis dolore te feugait nulla
-facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-aliquam erat volutpat.
+Mit dieser Feststellung beginne ich den Einblick in meine Gedanken und
+"Uberlegungen zum Verbleib meiner illustrativen Arbeiten, die nunmehr
+als "`Sammlung Pr"ussen"' in die Obhut der K"olner Universit"ats- und
+Stadtbibliothek aufgenommen worden sind.
 
-Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem
-vel eum iriure dolor in hendrerit in vulputate velit esse molestie
-consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et
-accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
-delenit augue duis dolore te feugait nulla facilisi.
+Dieser erste Band des Werkverzeichnisses beinhaltet zun"achst die Buch-
+und Presseillustrationen.
 
-Nam liber tempor cum soluta nobis eleifend option congue nihil
-imperdiet doming id quod mazim placerat facer possim assum. Lorem
-ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
-nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+Des Weiteren folgen erg"anzend die Auflistungen der Angewandten
+Graphik, ExLibris, Werbe-Illustrationen, Plakate und Graphiken zur
+Eigenwerbung. Wesentlich: Zu fast allen Arbeiten sind die Vorentw"urfe
+und Skizzen sowie die Entw"urfe der endg"ultigen Fassung erhalten.
 
-Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
-molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+\minisec{Wie kommt es zu einem Vorlass?}
 
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
-kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo
-eirmod eos erat, et nonumy sed tempor et et invidunt justo labore Stet
-clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata
-ut vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor
-sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-invidunt ut labore et dolore magna aliquyam erat.
+Bei mir war es so, dass im so genannten reiferen Alter, so zwischen 70
+und 80, beim Betrachten der im Laufe einer rund f"unfzigj"ahrigen
+k"unstlerischen T"atigkeit entstandenen und nun in Schubladen
+"uberquellenden Graphiken sich unerbittlich die Frage stellte: Was wird
+einmal aus alledem, wo wird es im besten Falle bleiben?
 
-Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
-et accusam et justo duo dolores et ea rebum. Stet clita kasd
-gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-takimata sanctus est Lorem ipsum dolor sit amet.
+Diese meine Arbeit, zumeist Illustrationen in druckgraphischer Technik
+als Holz- und Linolschnitte oder Radierungen entstanden, ist und war
+immer bestimmender Teil meines Lebens. In dieser Arbeit und mit ihr
+gestaltete sich mein ganzes Dasein. So sei doch wahrlich
+nachzuvollziehen, dass die Gedanken um das "`Weiterleben"' dieser
+Lebensarbeit mit der Zeit in begr"undete Besorgnis "ubergingen.
+
+Die Wunschvorstellung, dass mit einer "Ubergabe, einer Schenkung, alles
+beisammen bleiben k"onne, die Skizzen und Vorarbeiten, die Entw"urfe,
+die endg"ultige zur Ver"offentlichung gedachte Arbeit sowie der Abdruck
+im Buch, in Zeitschrift oder Prospekt, war lange Zeit einer
+Verwirklichung fern und herbe Entt"auschungen, auch mit einem gro"sen
+deutschen Museum, mussten "uberstanden werden.
+
+Ein Vorlass wurde auch deshalb angestrebt, um das ganze Geschehen, die
+"Uberlassung eines so wesentlichen Teils meines Lebens, noch lebend und
+lebendig, also mit Elan, begleiten zu k"onnen. Das ist dann sozusagen
+ein Teil des eingangs erw"ahnten Gl"ucksfalls.
+
+Der andere Teil ist dann in diesem Fall die Universit"ats- und
+Stadtbibliothek in Person von Professor Dr. Wolfgang Schmitz, der mich
+mit meinem Anliegen mit offenen Armen aufnahm, aber auch seiner engen
+und engagierten Mitarbeiterin Frau Dipl.-Bibliothekarin Christiane
+Hoffrath, M.A. sowie dem so zuverl"assigen ehrenamtlichen
+Bibliotheksamtsrat i. R. Herrn Ernst Stinner zuzuschreiben. Sie k"onnen
+aber nun auch bei all der M"uhe mit Erfassung und Archivierung den
+Sch"opfer der "uberlassenen Bl"atter, B"ucher und Plakate um alle
+notwendigen Ausk"unfte bitten und dadurch exakt kennzeichnend und mit
+erg"anzenden Angaben ordnend das Leben der Sammlung festigen und
+weitgehend erhalten.
+
+In meinen ersten Gespr"achen mit Professor Schmitz habe ich als
+Bedingung, es war aber auch die einzige, die Erwartung ge"au"sert, dass
+die Sammlung "offentlich gemacht werde, also, dass sie Menschen
+nahegebracht und zur Verf"ugung gestellt werde. Das alles scheint mir
+nun mit der Einordnung meiner Sammlung in die Universit"ats- und
+Stadtbibliothek besonders gut gelungen zu sein. Hier ist es eben
+m"oglich, Interesse zu wecken und in Studien Zugang zu finden, mit der
+M"oglichkeit, auf ein k"unstlerisches Arbeitsleben zur"uckzugreifen,
+welches ausschlie"slich noch auf Papier entstanden ist und fern dem
+Computer reiche Ernte eingefahren hat.
+
+Fast alle Arbeiten waren an Termine gebunden. Die
+Presse-Illustrationen waren an Erscheinungsdaten der Zeitungen
+gekoppelt, dabei ging es um Tage oder Stunden, und auch f"ur die
+Buchillustrationen stand die Drucklegung fest. So manche Nacht war
+solcherma"sen der Entwurfsarbeit, einer Radierung oder einem
+Linolschnitt vorbehalten, um nach getaner Arbeit umso erl"oster in den
+fr"uhen Morgen hinein zu schlafen. Auch solche unter Zeitdruck
+entstandene Arbeiten waren erf"ullend und lebensbereichernd.
+
+Um abschlie"send noch bei dem erw"ahnten Gl"ucksfall zu bleiben: Ich
+freue mich, mein bisher entstandenes k"unstlerisches Lebenswerk gesamt
+in so sympathischer und sorgsamer Obhut zu wissen und hoffe, dass mir
+ein holdes Schicksal noch weitere Zeit bel"asst, immer wieder mit Rat
+und Ausk"unften mit allen Verantwortlichen in lebendigem Austausch zu
+bleiben. Auch denen, die m"oglicherweise im Rahmen ihres Studiums f"ur
+meine Arbeiten Neugier und Interesse zeigen, eine fruchtbare
+Vermittlung zu bieten und etwas von dem, was mir ein so reiches und
+gl"uckliches Leben beschert hat, weitergeben zu k"onnen.
+
+Ich will aber auch weiterhin t"atig sein - es dr"angt mich danach - und
+so erscheint in mir schon die Vision eines zweiten Vorlasses, bevor
+mein Verschwinden von der B"uhne meines sch"onen Lebens trauriger Anlass
+zum Nachlass werden k"onnte.
+
+Jedoch die Freude und Hoffnung auf ein weiteres Schaffen ist bislang
+ungetr"ubt und wird noch durch die Aufnahme meines Oeuvres von der
+Universit"ats- und Stadtbibliothek zus"atzlich erhellt.
+
+Eduard Pr"ussen										Juli 2011
 
 \chapter{Buchillustrationen [% buchillustrationen_year_min %] - [% buchillustrationen_year_max %]}
 

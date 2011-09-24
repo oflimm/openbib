@@ -3,84 +3,127 @@
 /*-------------------------------------------------*/
 
 drop table IF EXISTS session;
-CREATE TABLE session (
- sessionid     VARCHAR(255) NOT NULL PRIMARY KEY,
+CREATE TABLE sessioninfo (
+ id            BIGINT AUTO_INCREMENT,
+ sessionid     CHAR(33) NOT NULL,
  createtime    DATETIME,
  lastresultset BLOB,
- benutzernr    TEXT,
- benutzerpin   TEXT,
+ username      TEXT,
+ userpassword  TEXT,
+
  queryoptions  TEXT,
  returnurl     TEXT,
 
- searchmask     TEXT,
+ searchform     TEXT,
+ searchprofile  TEXT,
 
-bibsonomy_user TEXT,
+ bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
  bibsonomy_sync TEXT,
 
-INDEX (sessionid),
- INDEX (benutzernr(255))
-);
-
-drop table IF EXISTS treffer;
-CREATE TABLE treffer (
- sessionid VARCHAR(255) NOT NULL,
- dbname    TEXT,
- singleidn VARCHAR(255),
- titcache  BLOB,
+ CONSTRAINT `pk_session` PRIMARY KEY (`id`),
 
  INDEX (sessionid),
+ INDEX (username(255))
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+
+drop table IF EXISTS collection;
+CREATE TABLE collection (
+ sid        BIGINT NOT NULL,
+
+ dbname     TEXT,
+ titleid    VARCHAR(255),
+ titlecache BLOB,
+
+ CONSTRAINT `fk_collection_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
  INDEX (dbname(255)),
- INDEX (singleidn)
-);
+ INDEX (titleid)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
-drop table IF EXISTS lastresultlist;
-CREATE TABLE lastresultlist (
- sessionid VARCHAR(255) NOT NULL,
+
+drop table IF EXISTS recordhistory;
+CREATE TABLE recordhistory (
+ sid       BIGINT NOT NULL,
+
  dbname    TEXT,
- singleidn VARCHAR(255),
+ titleid   VARCHAR(255),
 
- INDEX (sessionid)
-);
+ CONSTRAINT `fk_recordhistory_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
 drop table IF EXISTS eventlog;
 CREATE TABLE eventlog (
- sessionid  VARCHAR(255) NOT NULL,
+ sid        BIGINT NOT NULL,
+
  tstamp     DATETIME,
  type       INT,
  content    MEDIUMBLOB,
- INDEX (sessionid),
+
+ CONSTRAINT `fk_lastrecord_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
  INDEX (tstamp),
  INDEX (type),
  INDEX (content(50))
-);
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
 
 drop table IF EXISTS queries;
 CREATE TABLE queries (
+ sid       BIGINT NOT NULL,
+
  queryid   BIGINT AUTO_INCREMENT PRIMARY KEY,
- sessionid VARCHAR(255) NOT NULL,
  query     TEXT,
  hitrange  INT,
  hits      INT,
  dbases    TEXT,
 
+ CONSTRAINT `fk_queries_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
  INDEX (queryid),
- INDEX (sessionid),
  INDEX (query(255)),
  INDEX (dbases(255))
-);
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
 drop table IF EXISTS dbchoice;
 CREATE TABLE dbchoice (
- sessionid VARCHAR(255) NOT NULL,
+ sid       BIGINT NOT NULL,
  dbname    TEXT,
 
- INDEX (sessionid)
-);
+ CONSTRAINT `fk_dbchoice_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
-drop table IF EXISTS searchresults;
-CREATE TABLE searchresults (
- sessionid    VARCHAR(255) NOT NULL,
+drop table IF EXISTS searchhistory;
+CREATE TABLE searchhistory (
+ sid          BIGINT NOT NULL,
+
+ tstamp       DATETIME,
+
  dbname       VARCHAR(255) NOT NULL,
  offset       INT,
  hitrange     INT,
@@ -88,33 +131,13 @@ CREATE TABLE searchresults (
  hits         INT,
  queryid      BIGINT,
 
- INDEX (sessionid),
+ CONSTRAINT `fk_searchresults_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
  INDEX (dbname),
  INDEX (queryid)
-);
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
-drop table IF EXISTS sessionview;
-CREATE TABLE sessionview (
- sessionid VARCHAR(255) NOT NULL,
- viewname  VARCHAR(20)  NOT NULL,
-
- INDEX (sessionid),
- INDEX (viewname)
-);
-
-drop table IF EXISTS sessionmask;
-CREATE TABLE sessionmask (
- sessionid VARCHAR(255) NOT NULL,
- masktype  VARCHAR(20)  NOT NULL,
-
- INDEX (sessionid),
- INDEX (masktype)
-);
-
-drop table IF EXISTS sessionprofile;
-create table sessionprofile (
- sessionid VARCHAR(255) NOT NULL,
- profile   TEXT         NOT NULL,
-
- INDEX (sessionid)
-);

@@ -61,6 +61,7 @@
 
 <p />
 
+[%# USE dumper;dumper.dump(thissession) %]
 <table width="100%">
 <tr><th>[% msg.maketext("Recherchen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">

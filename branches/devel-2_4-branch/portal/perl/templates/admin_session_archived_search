@@ -42,20 +42,7 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<ul class="tabbingmenu">
-   <li><a                href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showsessions=1">Aktive Sessions (lokal)</a></li>
-   <li><a class="active" href="[% path_prefix %]/[% config.get('admin_loc') %]?do_showsessions=1;stid=1">Explorer</a></li>
-</ul>
-
-<div class="content">
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('admin_loc') %]?do_exploresessions=1;clientip=[% clientip %];fromdate=[% fromdate %];todate=[% todate %]">Liste der Sessions</a></li>
-</ul>
-
-<div class="content">
-
-<table width="100%">
+<table class="full">
 <tr><th>Session-Explorer</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
@@ -64,16 +51,13 @@
 
 [% FOREACH singlesession IN sessions %]
 
-<tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]?do_exploresessions=1;do_show=1;singlesessionid=[% singlesession.sessionid %];clientip=[% clientip %];fromdate=[% fromdate %];todate=[% todate %]">[% singlesession.sessionid %]</a></td><td>[% singlesession.createtime %]</td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('session_loc') %]/archived/[% singlesession.sessionid %]">[% singlesession.sessionid %]</a></td><td>[% singlesession.createtime %]</td></tr>
 
 [% END %]
 
 </table>
 </td></tr>
 </table>
-
-</div>
-</div>
 
         </div>
         <div id="ie_clearing">&nbsp;</div>

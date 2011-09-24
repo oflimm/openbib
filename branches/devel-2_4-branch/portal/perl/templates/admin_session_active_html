@@ -59,7 +59,7 @@
 
 [% FOREACH session IN sessions %]
 
-<tr><td><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.username %]</td><td align="middle">[% session.numqueries %]</td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active/[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.username %]</td><td align="middle">[% session.numqueries %]</td></tr>
 
 [% END %]
 

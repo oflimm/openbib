@@ -113,7 +113,7 @@ sub show_active_collection {
         sessions   => \@sessions,
     };
     
-    $self->print_page($config->{tt_admin_session_tname},$ttdata);
+    $self->print_page($config->{tt_admin_session_active_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -166,7 +166,7 @@ sub show_active_record {
         queries    => \@queries,
     };
     
-    $self->print_page($config->{tt_admin_session_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_session_active_record_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -199,7 +199,7 @@ sub show_archived_search_form {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_session_search_form_tname},$ttdata);
+    $self->print_page($config->{tt_admin_session_archived_search_form_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -282,7 +282,7 @@ sub show_archived_search {
         todate     => $todate,
     };
     
-    $self->print_page($config->{tt_admin_session_archived_search},$ttdata);
+    $self->print_page($config->{tt_admin_session_archived_search_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -349,7 +349,7 @@ sub show_archived_record {
         events          => \@events,
     };
 
-    $self->print_page($config->{tt_admin_session_archived_record},$ttdata);
+    $self->print_page($config->{tt_admin_session_archived_record_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

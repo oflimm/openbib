@@ -34,9 +34,22 @@
   <li><a href="[% path_prefix %]/[% config.get('admin_view_loc') %].html?l=[% lang %]">[% msg.maketext("Views") %]</a></li>
 [% END %]
 [% IF active_submenu == "session" %]
-  <li class="active"><strong>[% msg.maketext("Sessions") %]</strong></li>
+<li><span>[% msg.maketext("Sessions") %]</span>
+    <ul>
+[% IF active_subsubmenu == "active" %]
+      <li class="active"><strong>[% msg.maketext("Aktiv") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %].html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Aktiv") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "archived" %]
+      <li class="active"><strong>[% msg.maketext("Explorer") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/archived/search/form.html?l=[% lang %]">[% msg.maketext("Explorer") %]</a></li>
+[% END %]
+    </ul>
+</li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
 [% END %]
 [% IF active_submenu == "statistic" %]
 <li><span>[% msg.maketext("Statistik") %]</span>

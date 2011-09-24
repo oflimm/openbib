@@ -22,6 +22,7 @@ __PACKAGE__->table("queries");
 =head2 sid
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 0
 
 =head2 queryid
@@ -54,7 +55,7 @@ __PACKAGE__->table("queries");
 
 __PACKAGE__->add_columns(
   "sid",
-  { data_type => "bigint", is_nullable => 0 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "queryid",
   { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
   "query",
@@ -68,9 +69,26 @@ __PACKAGE__->add_columns(
 );
 __PACKAGE__->set_primary_key("queryid");
 
+=head1 RELATIONS
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-23 11:05:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pINnoaD6rizpoKEQj4yyvg
+=head2 sid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Database::Session::Result::Sessioninfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "sid",
+  "OpenBib::Database::Session::Result::Sessioninfo",
+  { id => "sid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-23 11:36:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:F9uT3GL3+tkNHTjynMmpIQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

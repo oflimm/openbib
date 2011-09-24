@@ -22,6 +22,7 @@ __PACKAGE__->table("searchhistory");
 =head2 sid
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 0
 
 =head2 tstamp
@@ -64,7 +65,7 @@ __PACKAGE__->table("searchhistory");
 
 __PACKAGE__->add_columns(
   "sid",
-  { data_type => "bigint", is_nullable => 0 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "tstamp",
   { data_type => "datetime", is_nullable => 1 },
   "dbname",
@@ -81,9 +82,26 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_nullable => 1 },
 );
 
+=head1 RELATIONS
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-23 11:05:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u8cy7lcniipJlsQP49oMsQ
+=head2 sid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Database::Session::Result::Sessioninfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "sid",
+  "OpenBib::Database::Session::Result::Sessioninfo",
+  { id => "sid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-23 11:36:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rSBUxZnWpdkPnJINGPHt/w
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -1551,13 +1551,8 @@ sub get_databases {
         # Wenn Datenbanken explizit ueber das Suchformular uebergeben werden,
         # dann werden diese als neue Datenbankauswahl gesetzt
         
-        # Zuerst die bestehende Auswahl loeschen
-        $session->clear_dbchoice();
-        
         # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
-        foreach my $database (@databases) {
-            $session->set_dbchoice($database);
-        }
+        $session->set_dbchoice(\@databases);
         
         # Neue Datenbankauswahl ist voreingestellt
         $session->set_profile('dbchoice');

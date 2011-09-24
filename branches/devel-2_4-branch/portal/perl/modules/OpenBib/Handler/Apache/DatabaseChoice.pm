@@ -158,37 +158,12 @@ sub update_collection {
 
     # CGI Args
     my @databases = ($query->param('db'))?$query->param('db'):();
-    my $singleidn = $query->param('singleidn') || '';
-    my $action    = ($query->param('action'))?$query->param('action'):'';
-    my $do_choose = $query->param('do_choose') || '';
-    my $verf      = $query->param('verf')      || '';
-    my $hst       = $query->param('hst')       || '';
-    my $swt       = $query->param('swt')       || '';
-    my $kor       = $query->param('kor')       || '';
-    my $sign      = $query->param('sign')      || '';
-    my $isbn      = $query->param('isbn')      || '';
-    my $issn      = $query->param('issn')      || '';
-    my $notation  = $query->param('notation')  || '';
-    my $ejahr     = $query->param('ejahr')     || '';
-    my $queryid   = $query->param('queryid')   || '';
-    my $maxcolumn = $query->param('maxcolumn') || $config->{databasechoice_maxcolumn};
   
-    my %checkeddb;
-
-    my $profile = $self->get_profilename_of_view($view);
-
-    my $idnresult="";
-  
-    # Zuerst die bestehende Auswahl loeschen
-    $session->clear_dbchoice();
-    
     # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
-    foreach my $database (@databases) {
-        $session->set_dbchoice($database);
-    }
+    $session->set_dbchoice(\@databases);
     
     # Neue Datenbankauswahl ist voreingestellt
-    $session->set_profile('dbauswahl');
+    $session->set_profile('dbchoice');
 
     my $new_location = "$path_prefix/$config->{searchform_loc}/recent.html?l=$lang";
 

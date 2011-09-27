@@ -43,6 +43,7 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Database::DBI;
+use OpenBib::Database::Session;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
@@ -87,7 +88,7 @@ sub new {
         $logger->debug("Got SessionID-Cookie: $sessionID");
     }   
     
-    if (!defined $sessionID){
+    if (!defined $sessionID || !$sessionID){
         $self->{ID} = $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
@@ -824,35 +825,16 @@ sub clear_data {
     $self->save_eventlog_to_statisticsdb;
     
     # dann Sessiondaten loeschen
-    $idnresult=$dbh->prepare("delete from eventlog where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    eval {
+        $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
+        $self->{schema}->resultset('Collection')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
+        $self->{schema}->resultset('Dbchoice')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
+        $self->{schema}->resultset('Recordhistory')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
+        $self->{schema}->resultset('Searchhistory')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
+        $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->delete;
+    };
 
-    $idnresult=$dbh->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-  
-    $idnresult=$dbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-  
-    $idnresult=$dbh->prepare("delete from queries where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-  
-    $idnresult=$dbh->prepare("delete from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-  
-    $idnresult=$dbh->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-  
-    $idnresult=$dbh->prepare("delete from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-  
-    $idnresult=$dbh->prepare("delete from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-
-    $idnresult=$dbh->prepare("delete from session where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-
-    $idnresult->finish();
-
+    
     return;
 }
 
@@ -871,13 +853,6 @@ sub log_event {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
 
     my $contentstring = $content;
 
@@ -928,16 +903,19 @@ sub log_event {
     my $log_only_unique_ref = {
 			     10 => 1,
 			    };
-
-    my $request;
+    
     if (exists $log_only_unique_ref->{$type}){
-      $request=$dbh->prepare("delete from eventlog where sessionid=? and type=? and content=?") or $logger->error($DBI::errstr);
-      $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);
+        # DBI: "delete from eventlog where sessionid=? and type=? and content=?"
+        $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete;
     }
 
-    $request=$dbh->prepare("insert into eventlog values (?,NOW(),?,?)") or $logger->error($DBI::errstr);
-    $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);
-    $request->finish;
+    $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete_all;
+
+    $logger->debug("Getting sid for SessionID ".$self->{ID});
+    my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
+
+    # DBI: "insert into eventlog values (?,NOW(),?,?)"
+    $self->{schema}->resultset('Eventlog')->populate({ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring });
 
     return;
 }

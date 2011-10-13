@@ -38,7 +38,7 @@ FOREACH item IN thistitset.${"T0335"} ;
 END ;
 
 -%]
-Titel: \emph{[% filterchars(thistitset.${"T0331"}.first.content) %]}. [% IF thistitset.${"T0410"}.first.content %][% filterchars(thistitset.${"T0410"}.first.content) %][% END %][% IF thistitset.${"T0412"}.first.content %] :[% filterchars(thistitset.${"T0412"}.first.content) %][% END %][% IF thistitset.${"T0425"}.first.content %], [% filterchars(thistitset.${"T0425"}.first.content) %].[% ELSIF thistitset.${"T0424"}.first.content %], [% filterchars(thistitset.${"T0424"}.first.content) %].[% END %]\newline 
+Titel: \emph{[% filterchars(thistitset.${"T0331"}.first.content) %]}. [% IF thistitset.${"T0410"}.first.content %][% filterchars(thistitset.${"T0410"}.first.content) %][% END %][% IF thistitset.${"T0412"}.first.content %]: [% filterchars(thistitset.${"T0412"}.first.content) %][% END %][% IF thistitset.${"T0425"}.first.content %], [% filterchars(thistitset.${"T0425"}.first.content) %].[% ELSIF thistitset.${"T0424"}.first.content %], [% filterchars(thistitset.${"T0424"}.first.content) %].[% END %]\newline 
 [%- IF weitere_titel.size > 0 || parallele_ausgaben.size > 0 %][% IF weitere_titel.size > 0 %]Weitere Titel: [% weitere_titel.join(', ') %][% END %][% IF weitere_titel.size > 0 && parallele_ausgaben.size > 0%], [% END %][% IF parallele_ausgaben.size > 0 %]Parallele Ausgabe(n): [% parallele_ausgaben.join(', ') %][% END %]\newline [% END %]
 [%- IF umfang_originale.size > 0 %]Umfang: [% umfang_originale.join(', ') %]\newline [% END %]
 [%- IF entwuerfe.size > 0 %]Entw"urfe: [% entwuerfe.join(', ') %]\newline [% END %]

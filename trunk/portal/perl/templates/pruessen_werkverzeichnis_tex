@@ -230,8 +230,8 @@ Der Katalog bildet gleicherma"sen das Fundament f"ur diesen ersten
 Teilband eines klassischen Werkverzeichnisses. Der hiermit vorgelegte
 Hauptband "`Buch- und Presse-\-Illustra\-tionen"' beschreibt in
 chronologischer Reihenfolge diese beiden wichtigen S"aulen der
-Pr"ussenschen Produktion. Mindestens ein weiterer Teilband wird folgen,
-der Werbe-Illustrationen, Plakate, Exlibris und viele weitere
+Pr"us\-sen\-schen Produktion. Mindestens ein weiterer Teilband wird folgen,
+der Werbe-Illustra\-tionen, Plakate, Exlibris und viele weitere
 Publikationsformen des K"unstlers beinhaltet. Ein Abschluss dieser
 kleinen Reihe "`Werkverzeichnisse"' ist nicht abzusehen, da der K"unstler
 weiterhin aktiv ist und wir zugegebenerma"sen recht eigenn"utzig hoffen,
@@ -346,7 +346,7 @@ Jedoch die Freude und Hoffnung auf ein weiteres Schaffen ist bislang
 ungetr"ubt und wird noch durch die Aufnahme meines \OE{}uvres von der
 Universit"ats- und Stadtbibliothek zus"atzlich erhellt.
 
-Eduard Pr"ussen, Juli 2011										Juli 2011
+Eduard Pr"ussen, Juli 2011
 
 \chapter{Buchillustrationen [% buchillustrationen_year_min %] - [% buchillustrationen_year_max %]}
 
@@ -364,7 +364,7 @@ Eduard Pr"ussen, Juli 2011										Juli 2011
 
 [% END %]
 
-\chapter{Presseillustrationen [% presseillustrationen_year_min %] - [% presseillustrationen_year_max %]}
+\chapter{Presse-Illustrationen [% presseillustrationen_year_min %] - [% presseillustrationen_year_max %]}
 
 [% FOREACH year IN presseillustrationen_available_years %]
 [% anzahl = buchillustrationen_recordlist.${year}.size %]

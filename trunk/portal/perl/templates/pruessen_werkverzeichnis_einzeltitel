@@ -78,54 +78,35 @@ Signatur: \textbf{[% filterchars(thismexset.first.${"X0014"}.content) %]}
     END ;
 
 -%]
-  \item [% IF sub_personen.size > 0 %][% sub_personen.join(' , ') %]: [% END %][% filterchars(sub_normdata.${"T0331"}.first.content) %][% IF sub_normdata.${"T0335"}.first.content %]: [% filterchars(sub_normdata.${"T0335"}.first.content) %][% END %]. [% IF sub_normdata.${"T0410"}.first.content %][% filterchars(sub_normdata.${"T0410"}.first.content) %]: [% END %][% IF sub_normdata.${"T0412"}.first.content %][% filterchars(sub_normdata.${"T0412"}.first.content) %], [% END %][% IF sub_normdata.${"T0425"}.first.content %][% filterchars(sub_normdata.${"T0425"}.first.content) %].[% ELSIF sub_normdata.${"T0424"}.first.content %][% filterchars(sub_normdata.${"T0424"}.first.content) %].[% END %]\newline Signatur: [% filterchars(sub_record.get_mexdata.first.${"X0014"}.content) %]
+  \item [% IF sub_personen.size > 0 %][% sub_personen.join(', ') %]: [% END %][% filterchars(sub_normdata.${"T0331"}.first.content) %][% IF sub_normdata.${"T0335"}.first.content %]: [% filterchars(sub_normdata.${"T0335"}.first.content) %][% END %]. [% IF sub_normdata.${"T0410"}.first.content %][% filterchars(sub_normdata.${"T0410"}.first.content) %]: [% END %][% IF sub_normdata.${"T0412"}.first.content %][% filterchars(sub_normdata.${"T0412"}.first.content) %], [% END %][% IF sub_normdata.${"T0425"}.first.content %][% filterchars(sub_normdata.${"T0425"}.first.content) %].[% ELSIF sub_normdata.${"T0424"}.first.content %][% filterchars(sub_normdata.${"T0424"}.first.content) %].[% END %]\newline Signatur: [% filterchars(sub_record.get_mexdata.first.${"X0014"}.content) %]
 [%- END %]
 [%- ELSIF thistitset.${"T0590"}.first.content -%]
 [%    FOREACH item IN thistitset.${"T0590"} -%]
-  \item [% filterchars(thistitset.${"T0590"}.first.content) %]
+  \item [% filterchars(item.content) %][% IF NOT item.content.match('\.$') %].[% END %]
 [%-   END %]
 [%- END -%]
 [% FOREACH item IN thistitset.${"T0530"} -%]
-  \item [% filterchars(thistitset.${"T0530"}.first.content) %]
+  \item [% filterchars(item.content) %][% IF NOT item.content.match('\.$') %].[% END %]
 [%- END %]
 \end{itemize}
 [% END %]
 [% ELSIF illu == "presse" %]
-[%- IF thistitset.${"T5002"}.first.content || thistitset.${"T0530"}.first.content || thistitset.${"T0590"}.first.content %]
+[%-   IF thistitset.${"T5002"}.first.content || thistitset.${"T0530"}.first.content || thistitset.${"T0525"}.first.content || thistitset.${"T0590"}.first.content %]
 \minisec{Entworfen f"ur:}
 \begin{itemize}
-[%- IF thistitset.${"T0590"}.first.content -%]
-[%    FOREACH item IN thistitset.${"T0590"} -%]
-  \item [% filterchars(thistitset.${"T0590"}.first.content) %]
-[%-   END %]
-[%- ELSIF thistitset.${"T5002"}.first.content -%]
-[%- FOREACH item IN thistitset.${"T5004"} ;
-    sub_record = new_record('pruessen', item.content) ;
-    sub_record = sub_record.load_full_record ;
-
-    sub_normdata = sub_record.get_normdata ;
-
-    sub_personen = [];
-    FOREACH item IN sub_normdata.${"T0100"} ;
-      content = filterchars(item.content) ;
-      IF NOT item.content.match('Prüssen, Eduard') ;
-        sub_personen.push(content);
-      END ;
-    END ;
-    FOREACH item IN sub_normdata.${"T0101"} ;
-      content = filterchars(item.content) ;
-      IF NOT item.content.match('Prüssen, Eduard') ;
-        sub_personen.push(content);
-      END ;
-    END ;
-
--%]
-  \item [% IF sub_personen.size > 0 %][% sub_personen.join(' , ') %]: [% END %][% filterchars(sub_normdata.${"T0331"}.first.content) %][% IF sub_normdata.${"T0335"}.first.content %]: [% filterchars(sub_normdata.${"T0335"}.first.content) %][% END %]. [% IF sub_normdata.${"T0410"}.first.content %][% filterchars(sub_normdata.${"T0410"}.first.content) %]: [% END %][% IF sub_normdata.${"T0412"}.first.content %][% filterchars(sub_normdata.${"T0412"}.first.content) %], [% END %][% IF sub_normdata.${"T0425"}.first.content %][% filterchars(sub_normdata.${"T0425"}.first.content) %].[% ELSIF sub_normdata.${"T0424"}.first.content %][% filterchars(sub_normdata.${"T0424"}.first.content) %].[% END %]\newline Signatur: [% filterchars(sub_record.get_mexdata.first.${"X0014"}.content) %]
-[%- END %]
-[%- END %]
-[% FOREACH item IN thistitset.${"T0530"} -%]
-  \item [% filterchars(thistitset.${"T0530"}.first.content) %]
-[%- END %]
+[%-     IF thistitset.${"T0590"}.first.content -%]
+[%        FOREACH item IN thistitset.${"T0590"} -%]
+  \item [% filterchars(item.content) %][% IF NOT item.content.match('\.$') %].[% END %]
+[%-       END %]
+[%-     ELSIF thistitset.${"T0530"}.first.content %]
+[%        FOREACH item IN thistitset.${"T0530"} -%]
+  \item [% filterchars(item.content) %][% IF NOT item.content.match('\.$') %].[% END %]
+[%-       END %]
+[%-     ELSIF thistitset.${"T0525"}.first.content %]
+[%        FOREACH item IN thistitset.${"T0530"} -%]
+  \item [% filterchars(item.content) %][% IF NOT item.content.match('\.$') %].[% END %]
+[%-       END %]
+[%      END %]
 \end{itemize}
-[% END %]
+[%    END %]
 [% END %]

@@ -195,11 +195,16 @@ $(document).ready(function(){
 </form>
 [% END %]
 
-
-</td>
-
-</tr>
-</table>
+<br /><br /><br /><br /><br />
+<td /><td /><td/><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /><td
+/><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /><td />
+<td><a class="invisible cloud-zoom" rel="zoomWidth:150, zoomHeight:150, position:'right'" href="/images/openbib/views/pruessen/Plakat400.jpg"><img
+src="/images/openbib/views/pruessen/Plakat400.jpg"
+alt="Plakat aus dem Jahr 1981"></a>
+<br />
+<center><b>Plakat aus dem Jahr 1981</b></center>
+</td> </tr>
+</table> </center>
 <p />
 
 

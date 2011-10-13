@@ -43,9 +43,11 @@
 
 <table cellpadding="10">
 
-<tr>
-<td><br /><br /><br /><center> <img src="/images/openbib/views/pruessen/Boell200.png"
-alt="Eduard Prüssen Selbstporträt 2011" /><br /><br /><i
+<tr> <td><center> <a class="invisible cloud-zoom" rel="zoomWidth:400,
+zoomHeight:400, position:'right'"
+href="/images/openbib/views/pruessen/Portrait_gross.jpg"><img
+src="/images/openbib/views/pruessen/portraitschatten300.png"
+alt="Eduard Prüssen Selbstporträt 2011" /></a><br /><br /><i
 style="font-size:0.8em">Eduard Prüssen Selbstporträt 2011</i></center>
 </td>
 
@@ -53,16 +55,15 @@ style="font-size:0.8em">Eduard Prüssen Selbstporträt 2011</i></center>
 <h1>Die Sammlung Prüssen in der USB Köln</h1>
 
 
-<p> Der Graphiker, Illustrator und Pressendrucker Eduard Prüssen zählt
-zu den bedeutendsten Buchillustratoren in Deutschland. 
-Eduard Prüssen illustrierte Mehr als 80 Bücher der
-Weltliteratur wurden von ihm illustriert, darunter Werke von Heinrich
-Böll, Guy de Maupassant, Pearl S. Buck, Franz Kafka. Graphik und
+<p> Der Kölner Graphiker, Illustrator und Pressendrucker Eduard Prüssen zählt
+zu den bedeutendsten Buchillustratoren in Deutschland. Zahlreiche
+Bücher der Weltliteratur wurden von ihm illustriert, darunter Werke von Heinrich
+Böll, Guy de Maupassant, Pearl S. Buck, Franz Kafka und Theodor Fontane. Graphik und
 Buchkunst bestimmen das Hauptwerk des Künstlers, der überdies
-auch als Verleger mit der "Donkey-Press" Erfolge feiern konnte.
+auch als Verleger mit seinen "Donkey-Press" Handdrucken Erfolge feiern konnte.
 <br />
-2010 überließ er der Universitäts- und Stadtbibliothek einen Großteil seines
-künstlerisches Lebenswerkes als Vorlass.
+Im Jahr 2010 übergab Eduard Prüssen der Universitäts- und
+Stadtbibliothek Köln einen Großteil seines künstlerisches Lebenswerkes als Vorlass.
 </p>
 <p>
 Die Sammlung Prüssen besteht vorwiegend aus Illustrationen in druckgraphischer Technik als Holz-
@@ -73,24 +74,28 @@ Werbe-Illustrationen und Handpressendrucke. Mit der
 von Büchern zur Verfügung, die von ihm illustriert worden sind.
 Besonders wertvoll ist, dass die Sammlung Eduard Prüssens
 graphisches Werk von der ersten Skizze über die Entwürfe bis zum
-veröffentlichten Buch oder Plakat umfasst. Das erlaubt der USB Köln dem
+veröffentlichten Buch oder Plakat umfasst. Das erlaubt der USB Köln, dem
 interessierten Nutzer einen tiefen Einblick in die Entstehungsweise,
-in die Anwendung verschiedener Techniken und auf die zeitgenössische Graphik und Buchkunst zu
+die Anwendung verschiedener Techniken und auf die zeitgenössische Graphik und Buchkunst zu
 ermöglichen. 
 [<a href="[%
-config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere
-Informationen</a>]
+config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21"><b>Weitere
+Informationen</b></a>]
 </p>
 
 <p>
-Jede in der Datenbank Arbeit von Eduard Prüssen kann via Onlinebestellung
-in den Lesesaal Historische Sammlungen bestellt werden. Das
-Bestellformular ist der Vollanzeige eines Treffers beigefügt. Falls
-Sie noch keinen Bibliotheksausweis besitzen, kann die Bestellung auch
-per E-Mail an die u.g. Adresse geschickt werden. Bitte geben Sie
-in dem Fall unbedingt den Titel und die Signatur (Prüssen...) des Gewünschten an.
-<a href="http://www.ub.uni-koeln.de/bibliothek/kontakt/zeiten/"target="_blank">
-Öffnungszeiten</a> des Lesesaals Historische Sammlungen.
+Jede in diesem Sammlungsportal erfasste Arbeit von Eduard Prüssen
+kann via Onlinebestellung in den <a
+href="http://www.ub.uni-koeln.de/bibliothek//kontakt/zeiten/index_ger.html#e1968/index_ger.html/"target="_blank">
+Lesesaal Historische Sammlungen</a> bestellt werden. Die
+Bestellmöglichkeit ist der Vollanzeige eines Treffers beigefügt. Im
+Bestellformular ist die Angabe der Signatur (Prüssen...) 
+erforderlich. Für die Bestellung und Einsichtnahme benötigen Sie einen
+<a
+href="http://www.ub.uni-koeln.de/fragen/ausleihabc/anmeldung/index_ger.html"target="_blank">
+Bibliotheksausweis</a> der USB Köln.
+
+
 
 </p> </td></tr> </table> 
 

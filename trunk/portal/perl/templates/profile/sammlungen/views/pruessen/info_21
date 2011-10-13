@@ -23,6 +23,8 @@
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=pruessen;stid=21"title="Prüssen-Informationen">Prüssen-Informationen</a></li>
    <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=pruessen;stid=22" title="Erschliessung">Erschließung</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=pruessen;stid=23" title="Bibliographie">Bibliographie</a></li>
+   <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=pruessen;stid=24" title="Ausstellungen">Ausstellungen</a></li>
 </ul>
 
 <div class="content">
@@ -31,21 +33,15 @@
 <tr><td style="vertical-align: top;padding-top:10px;">
 
 <p> <img
-src="/images/openbib/views/pruessen/papaserben200.png"
+src="/images/openbib/views/pruessen/Pruessen_Portrait200.png"
 class="img" alt="Eduard Prüssen" />
-<center>Eduard Prüssen </center>
+<center>Eduard Prüssen, Foto: P. Mattes/Stadt Bergisch Gladbach</center>
 </p>
 
 <p> <img
-src="/images/openbib/views/pruessen/papaserben200.png"
-class="img" alt="Buchillustration zu Papas Erben von G. Chavallier" />
-<center>Umschlagillustration zum Roman Papas Erben von G. Chavallier </center>
-</p>
-
-<p> <img
-src="/images/openbib/views/pruessen/graphis200.png"
-class="img" alt="Heft der Zeitschrift Graphis" />
-<center>Graphis, New York</center>
+src="/images/openbib/views/pruessen/Esel.png"
+class="img" alt="Geflügelter Esel, Logo der Donkey-Press" />
+<center>Logo der Donkey-Press</center>
 </p>
 
 <p>
@@ -56,33 +52,11 @@ class="img" alt="Konrad Adenauer" />
 <center>Kölner Köpfe: Konrad Adenauer</center>
 </p>
 
-<p>
-<img
-src="/images/openbib/views/pruessen/Domin200.png"
-class="img" alt="Hilde Domin" />
-</p>
-<center>Kölner Köpfe: Hilde Domin</center>
-</p>
-
-<p> <img
-src="/images/openbib/views/pruessen/Umschlag_Koepfe_2.png"
-class="img" alt="Umschlag Kölner Köpfe" />
-<center>Kölner Köpfe</center>
-</p>
-
-<p>
-<img
-src="/images/openbib/views/pruessen/Boell200.png"
-class="img" alt="Heinrich Böll" />
-</p>
-<center>Kölner Köpfe: Heinrich Böll</center>
-</p>
-
 </td>
 <td style="vertical-align: top;padding-left:20px;">
 
-<h1>Biographische Notizen zu Eduard Prüssen</h1>
 
+<h1>Biographische Notizen zu Eduard Prüssen</h1>
 
 <p> Eduard Prüssen wurde 1930 in Köln geboren. Seine künstlerische
 Ausbildung erwarb er bei Anton Wolff und Profesor Heinrich Hußmann an
@@ -93,260 +67,62 @@ Von 1955 bis 1958 war er als Graphic Artist und Exhibition Specialist im Kölner
 Seit Ende der fünfziger Jahre arbeitet Eduard Prüssen als freier Graphiker und
 Illustrator in Köln.
 1962 etablierte er seine Handpresse "Donkey-Press".
-1966 wurde er mit der Bronzemedaille des Bayerischen Werbe-Fachverbandes für beispielshafte Anzeigengestaltung
-(illustrativ gestaltete Anzeigenserie).
+1966 wurde er mit der Bronzemedaille des Bayerischen Werbe-Fachverbandes für beispielhafte Anzeigengestaltung
+(illustrativ gestaltete Anzeigenserie) ausgezeichnet.
 Von 1971 bis 1996 war Eduard Prüssen als Stadtgraphiker in Bergisch Gladbach tätig. In
 dieser Zeit war er für das gesamte graphische Erscheinungsbild der
 Stadt verantwortlich. Neben vielen Plakaten, Drucksachen,
 Kalendern, Stadt- und Wanderplänen ist besonders der graphisch
 aufbereitete Namensschriftzug der Stadt bekannt, der zum offiziellen Markenzeichen
-Bergisch Gladbachs geworden ist.
-<br />
-Eduard Prüssem ist Mitglied im Bund Deutscher Buchkünstler.
+ <a
+href="http://www.bergischgladbach.de/"
+target="_blank"> Bergisch Gladbachs</a> geworden ist.
 </p>
 
 <br />
+<h2>Eduard Prüssen über seine Arbeit</h2>
 
-<h2>Prüssen-Bibliographie</h2>
-<ul>
-<li>
-<p>
-Eduard Prüssen: Donkey Post, in: Graphis, 116 (1964), S. 512-513.
-</li>
+<p>"<i>Der Graphik seit der Ausbildung verpflichtet und als Schüler von
+Professor Hußmann zur Buchkunst hingeführt, bin ich mit Entwicklung
+und Gestaltung der Schrift, dem Setzen und Drucken ebenso vertraut wie
+mit buchbinderischen Arbeiten. Ich hatte den Wunsch, in kleinen Werken
+Bild und Text zusammenzubringen, selbst zu gestalten, selbst zu
+drucken und zu binden. So begann die Arbeit in meiner Handpresse, der
+DONKEY-PRESS.
 </p>
-<p>
-<li>
- Eduard Prüssen. Die Buchillustration und Donkey-Press Drucke. Köln, 1970.
-</p>
-</li>
-<li>
-<p>
-Arthur Lamka: Zehn Jahre Donkey-Press, in: Der Bibliophile, Beilage
-zu: Das Antiquariat, 22 (1972), S. 197/29-198/30.
-</p>
-</li>
-<li>
-<p>
-Arthur Lamka: Eduard Prüssens Donkey-Press, in: Wandelhalle der
-Bücherfreunde, N.F. 14, H.1 (1972), S. 21-23.
-</p>
-</li>
-<p>
-<li>
- Eduard Prüssen. 10 Jahre Donkey-Press Eduard Prüssen Handdrucke. Katalog zur Studio-Ausstellung im Forum der Stadt Bergisch
-Gladbach, Bergisch Gladbach, 1972.
-</p>
-</li>
-</p>
-</li>
-<p>
-<li>
-Christoph Michaels:  Eduard Prüssen, Köln, in: Novum Gebrauchsgraphik,10 (1977), S. 50-56. 
-</p>
-</li>
-<li>
-<p>
-Eduard Prüssen: Werkkatalog der Druckgraphik 1960-1980. Eine
-Übersicht. Memmingen. Edition Curt Visel, 1981 (Künstlermomographien,
-Bd.2)
-</p>
-</li>
-<li>
-<p>
-Eduard Prüssen: Gedanken zu meiner Arbeit, in: Illustration 63 (1977)S. 100-103.
-</p>
-</li>
-<li>
-<p>
-Eduard Prüssen: Illustrator/Graphiker - Freiheit mit Fesseln? Zur
-Didaktik eines kreativen Berufes, in: Illustration 63 (1979) S. 79-81.
-</p>
-</li>
-<li>
-<p>
-Eduard Prüssen (Design): Das graphische Gesicht der Stadt Bergisch
-Gladbach. Bergisch Gladbach, 1983.
-</p>
-</li>
-<li>
-<p>
-Arthur Lamka: 25 Jahre Donkey-Press Eduard Prüssen, in:  Illustration 63 (1987) S. 104-106.
-</p>
-</li>
-<li>
-<p>
-Illustrating 3-D: skill is only part of it. Perceptiveness, humor and
-courage add an extra dimension to Eduard Prüssen's linocuts, in:
-U&lc: international journal of type and graphic design, 16/4 (1989),
-S. 20-23.
-</p>
-</li>
-<li>
-<p>
-G. Ulrich Grossmann: Eduard Prüssen und der 19. Druck der
-Donkey-Press, in:  Marginalien, 131 (1993) S. 73-80.
-</p>
-</li>
-<li>
-<p>
-Gunther Quarg, Wolfgang Schmitz: Deutsche Buchkunst im
-20. Jahrhundert. Köln: Universitäts- und Stadtbibliothek, 1995, S. 205-212.
-</p>
-</li>
-<li>
-<p>
-Eduard Prüssen: Vortrag auf Einladung des Leipziger
-Bibliophilen-Abends am 7.5.1996 im Haus des Buches in Leipzig. 19
-S. unveröff. Ms.
-</p>
-</li>
-<p>
-<li>
-Eduard Prüssen. 25 Jahre Stadtdesign. Ausstellung in der
-Kreissparkasse Köln, Geschäftsstelle Bergisch Gladbach vom 8. Mai bis 13. Juni 1999.
-</p>
-</li>
-<li>
-<p>
-Wolfgang Schmitz (Hg.): Eduard Prüssen Graphik und Buchkunst aus vier
-Jahrzehnten: Katalog zur Ausstellung in den Städtischen Galerie Villa
-Zanders Bergisch Gladbach 7. Mai bis 13. Juni. Bergisch Gladbach: ICS
-Communikations-Service, 1999.
-</p>
-</li>
-<li>
-<p>
-Vanessa Bialas: Die Donkey-Press Eduard Prüssen. Mainz:
-Johannes-Gutenberg-Universität / Institut für Buchwissenschaft, 2006.
-</p>
-</li>
-<li>
-<p>
-Werner Grebe: Eduard Prüssen:ein Leben für die Kunst, in: Marginalien,
-H. 194 (2009,2).
-</p>
-</li>
-<li>
-<p>
-Eduard Prüssen, Werner Schäfke (Text): Kölner Köpfe: Fünfzig
-Linolschnitte. Köln: Universitäts- und Stadtbibliothek,
-2010. (Schriften der Universitäts- und Stadtbibliothek Köln)
-</p>
-</li>
-<li>
-<p>
-Die Sammlung Eduard Prüssen in der Universitäts- und Stadtbibliothek
-Köln: Buch- und Presse-Illustrationen: Werkverzeichnis,
-Hauptband. Köln: Universitäts- und Stadtbibliothek, 2011.
-</p>
-</li>
-</ul>
 
+<p>
+Es ist fast ein Sich-gegen-dieZeit-stellen, nimmt man den Winkelhaken
+zur Hand und beginnt die Bleilettern zu formieren, wo
+computergesteuerte Setzmaschinen schon dem Waldarbeiter die
+Bildzeitung bescheren, reisst man sorgfältig einzeln die Büttenpapiere
+auf Formate, die eben nicht der Norm der Industrie entsprechen. Aber
+eben diese Mühen sind voll schöner Glücksgefühle, um die sich diese
+Arbeit lohnt.
+</p>
+<p>
+Es ist der Versuch, anstelle einer lebenslänglichen Hetze mit
+erhofftem Renten-Ende die täglichen Minuten mit Arbeit, die
+berauschenden Höhen wie auch deprimierende Tiefen zeigen kann,
+auszufüllen. Es ist der Versuch, die Zeit zwischen der Stunde Null und
+der verborgenen Zukunft, zwischen Wirtschaftskonjunktur und
+Jugendarbeitslosigkeit, zwischen Ölpest und Reaktorunfall so zu
+nützen, um beim Rückblick nicht nur vergangene Zeit feststellen zu
+müssen.</i>"
+E.P. (1979)
+</p>
 <br />
-
-<h2>Prüssen-Ausstellungen</h2>
-
-<ul>
-<li>
-<p>
-1966 : Eduard Prüssen in der Galerie Müller-Bensberg. Bensberg, 1966.
-</p>
-</li>
-<li>
-<p>
-1968 : Eduard Prüssen. Beteiligung an der Ausstellng der
-Heinrich-Zille-Stiftung "Kritische Graphik". Hannover und Berlin, 1968.
-</p>
-</li>
-<li>
-<p>
-1969 : Eduard Prüssen. Beteilung an der Ausstellung der "Illustration
-63" in der Galerie Boisserée. Köln, 1969.
-</p>
-</li>
-<li>
-<p>
-1970 : Eduard Prüssen. Die Buchillustration. Ausstellung im Forum der Stadt Bergisch
-Gladbach, November / Dezember 1970.
-</p>
-</li>
-<li>
-<p>
-1970 : Eduard Prüssen. Beteilung an der Ausstellung der "Illustration
-63" im Gutenberg-Museum. Mainz, 1970.
-</p>
-</li>
-<li>
-<p>
-1970 : Eduard Prüssen. Beteilung an der Ausstellung der "Illustration
-63" im Mittelrhein-Museum. Koblenz, 1970.
-</p>
-</li>
-<p>
-<li>
-1972 : Eduard Prüssen. 10 Jahre Donkey-Press Eduard Prüssen Handdrucke. Studio-Ausstellung Ausstellung im Forum der Stadt Bergisch
-Gladbach, 4. November - 3. Dezember 1972.
-</p>
-</li>
-<li>
-<p>
-1975 : Eduard Prüssen. Radierungen, Holz- und Linolschnitte,
-Handpressendrucke. Ausstellung im  Stadthaus Villa Zanders Bergisch
-Gladbach vom 7.- 21. September 1975.
-</p>
-</li>
-<li>
-<p>
-1979 : Eduard Prüssen. Original-Illustrationen zu Werken des Dichters
-Rudolf Hagelstange. Ausstellung im Forum (Stadtbücherei) der Stadt
-Bergisch Gladbach vom 21. September - 19. Oktober 1979.
-</p>
-</li>
-<li>
-<p>
-1999 : Eduard Prüssen. 25 Jahre Stadtdesign. Ausstellung in der
-Kreissparkasse Köln, Geschäftsstelle Bergisch Gladbach vom 8. Mai bis 13. Juni 1999.
-</p>
-</li>
-<li>
-<p>
-1999 : Graphik und Buchkunst aus vier Jahrzehnten. Ausstellung in den Städtischen Galerie Villa
-Zanders Bergisch Gladbach 7. Mai - 13. Juni 1999.
-</p>
-</li>
-<li>
-<p>
-2006 : Eduard Prüssen. Graphik und Plakate für die Stadt Bergisch
-Gladbach. 9. Werkstatt-Ausstellung, Werkstattgalerie Bensberg,
-25. August - 3. Oktober 2006 aus Anlass des 150-jährigen Stadtjubiläums.
-</p>
-</li>
-<li>
-<p>
-2010 : Eduard Prüssens Kölner Köpfe. Ausstellung in der Rotunde am
-Rudolphplatz der Sparkasse Köln vom
-3. - 26. November 2010.
-</p>
-</li>
-<li>
-<p>
-2011 : Eduard Prüssen über die Schulter geblickt: eine kleine
-Werkschau. Ausstellung in der  Universitäts- und Stadtbibliothek Köln
-vom 11. November -  31. Dezember 2011. 
-</p>
-</li>
-</ul>
-
-<br />
-
 <h2>Eduard Prüssens Kölner Köpfe</h2>
 
-<p> Im Auftrag der Kölner Bibliophilen-Gesellschaft hat Eduard Prüssen
-in den vergangenen Jahren 50 herausragende Persönlichkeiten der Stadt
-Köln porträtiert.  In einer verkleinerten Version hatte
+<p> Im Auftrag der
+<a
+href="http://www.koelnische-bibliotheksgesellschaft.de/buchkultur/index_ger.html"
+target="_blank">Kölner Bibliophilen-Gesellschaft</a>
+hat Eduard Prüssen in den vergangenen Jahren 50 herausragende Persönlichkeiten der Stadt
+Köln porträtiert. In einer verkleinerten Version hatte
 der Künstler die zweifarbigen Linolschnitte für die Titelbilder auf
 den Einladungen zur Teestunde der Gesellschaft geschaffen. Heute
-zählen diese bereits zu begehrten Sammlerstücken.
+gehören diese Einladungen bereits zu begehrten Sammlerstücken.
 <br />
 Zu den "Kölner Köpfen" zählen u.a. Konrad Adenauer, Heinrich Böll, Hilde
 Domin, Marcus DuMont, J. M. Farina, Kardinal Josef Frings, Irmgard
@@ -361,28 +137,28 @@ limitierter Auflage. Die bibliophile Gestaltung dieses Bandes sowie die
 handschriftliche Numerierung aller Exemplare wurde von Eduard Prüssen selbst
 vorgenommen. Die begleitenden Texte der dargestellten
 Persönlichkeiten, die jedem Porträt gegenüberstehen, verfasste
-Dr. Werner Schäfke, ehemaliger Direktor des Kölnsichen
+Dr. Werner Schäfke, ehemaliger Direktor des Kölnischen
 Stadtmuseums. Der qualitativ hochwertige Jubiläumsband wurde von der
-Universitäts- und Stadtbibliothek herausgegeben und erschien anläßlich
-des 80. Geburtstags von Eduard Prüssen am 31. Oktober 2010. Mit diesem
+Universitäts- und Stadtbibliothek herausgegeben und erschien zum
+80. Geburtstag von Eduard Prüssen am 31. Oktober 2010. Mit diesem
 besonderen Buch möchte die USB Herrn Prüssen auch ihren Dank  für die großzügige Überlassung
 seines künstlerischen Vorlasses aussprechen.
 </p>
 <p>
 Das in vorzüglicher drucktechnischer Gestaltung publizierte Buch <b>"Kölner Köpfe"</b> ist
 in der Reihe "Sonderveröffentlichungen der Universitäts- und
-Stadtbibliothek Köln" erschienen und kann wie alle Publikationen
-unseres Hauses über den Buchhandel oder direkt von der USB Köln
+Stadtbibliothek Köln" erschienen und kann, wie alle Publikationen
+unseres Hauses, über den Buchhandel oder direkt von der USB Köln
 bezogen werden.  <a
 href="http://www.ub.uni-koeln.de/bibliothek/pub/sonstveroeff/index_ger.html"
 target="_blank"> Eduard Prüssen: Kölner Köpfe. Köln, 2010.</a> </p>
 
 <br />
-
 <h2>Wenn Sie noch Fragen haben ...</h2>
 
-<p> Falls Sie weitere Informationen zur Sammlung Prüssen haben, schreiben Sie
-uns bitte an diese E-Mail-Adresse:
+<p> Falls Sie Fragen und / oder Anmerkungen zur Sammlung Prüssen in
+der Universitäts- und Stadtbibliothek Köln haben,
+freuen wir uns auf eine Nachricht an diese E-Mail-Adresse:
 <a
 href="mailto:sammlungpruessen@ub.uni-koeln.de">sammlungpruessen@ub.uni-koeln.de</a>
  </p>

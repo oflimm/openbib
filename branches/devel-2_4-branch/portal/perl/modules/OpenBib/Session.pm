@@ -89,7 +89,7 @@ sub new {
     }   
     
     if (!defined $sessionID || !$sessionID){
-        $self->{ID} = $self->_init_new_session($r);
+        $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
@@ -99,7 +99,7 @@ sub new {
             $logger->debug("SessionID is NOT valid");
             
             # Wenn uebergebene SessionID nicht ok, dann neue generieren
-            $self->{ID} = $self->_init_new_session($r);
+            $self->_init_new_session($r);
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
@@ -163,9 +163,9 @@ sub _new_instance {
         
         $logger->debug("Got SessionID-Cookie: $sessionID");
     }   
-    
-    if (!defined $sessionID){
-        $self->{ID} = $self->_init_new_session($r);
+
+    if (!defined $sessionID || !$sessionID){
+        $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
@@ -176,7 +176,7 @@ sub _new_instance {
             $logger->debug("SessionID is NOT valid");
             
             # Wenn uebergebene SessionID nicht ok, dann neue generieren
-            $self->{ID} = $self->_init_new_session($r);
+            $self->_init_new_session($r);
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
@@ -238,6 +238,8 @@ sub _init_new_session {
                 queryoptions => encode_json($queryoptions),
                 searchform   => 'simple',
             });
+
+            $self->{ID} = $sessionID;
         }
     }
 
@@ -320,7 +322,7 @@ sub is_valid {
         return 1;
     }
 
-    my $anzahl = $self->{schema}->resultset('SessionInfo')->search_rs({ sessionid => $self->{ID} })->count;
+    my $anzahl = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->count;
 
     if ($anzahl == 1) {
         return 1;
@@ -336,7 +338,7 @@ sub get_profile {
     my $logger = get_logger();
 
     # DBI: "select profile from sessionprofile where sessionid = ?"
-    my $prevprofile = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->searchprofile;
+    my $prevprofile = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->single->searchprofile;
 
     return $prevprofile;
 }
@@ -444,7 +446,7 @@ sub set_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sid =  $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->id;
+    my $sid =  $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->single->id;
 
     # Datenbanken zunaechst loeschen
     eval {
@@ -530,7 +532,7 @@ sub get_number_of_queries {
     my $logger = get_logger();
 
     # DBI: "select count(queryid) as rowcount from queries where sessionid = ?
-    my $numofqueries = $self->{schema}->resultset('Queries')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
+    my $numofqueries = $self->{schema}->resultset('Query')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
 
     $logger->debug("Found $numofqueries queries in Session $self->{ID}");
     
@@ -551,7 +553,7 @@ sub get_all_searchqueries {
     my $thissessionid = (defined $sessionid)?$sessionid:$self->{ID};
 
     # DBI: "select queryid from queries where sessionid = ? order by queryid DESC "
-    my $searchqueries = $self->{schema}->resultset('Queries')->search_rs(
+    my $searchqueries = $self->{schema}->resultset('Query')->search_rs(
         {
             'sid.sessionid' => $thissessionid,
         },
@@ -915,7 +917,7 @@ sub log_event {
     my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
 
     # DBI: "insert into eventlog values (?,NOW(),?,?)"
-    $self->{schema}->resultset('Eventlog')->populate({ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring });
+    $self->{schema}->resultset('Eventlog')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
 
     return;
 }
@@ -959,7 +961,7 @@ sub get_queryid {
     my $query_obj_string = $searchquery->to_json;
 
     # DBI: "select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?"
-    my $rows = $self->{schema}->resultset('Queries')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid' })->count;
+    my $rows = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid' })->count;
 
     my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
 
@@ -968,7 +970,7 @@ sub get_queryid {
         # Abspeichern des Queries bis auf die Gesamttrefferzahl
         # DBI: "insert into queries (queryid,sessionid,query,hitrange,dbases) values (NULL,?,?,?,?)"
         
-        $self->{schema}->resultset('Queries')->insert({ queryid => 'NULL', sid => $sid, query => $query_obj_string, hitrange => $hitrange, dbases => $dbasesstring });
+        $self->{schema}->resultset('Query')->insert({ queryid => 'NULL', sid => $sid, query => $query_obj_string, hitrange => $hitrange, dbases => $dbasesstring });
     }
     # Query existiert schon
     else {
@@ -976,7 +978,7 @@ sub get_queryid {
     }
 
     # DBI: "select queryid from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?"
-    $queryid = $self->{schema}->resultset('Queries')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid', select => 'me.queryid', as => 'thisqueryid' })->single->get_column('thisqueryid');
+    $queryid = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid', select => 'me.queryid', as => 'thisqueryid' })->single->get_column('thisqueryid');
 
     return ($queryalreadyexists,$queryid);
 }
@@ -995,7 +997,7 @@ sub set_hits_of_query {
     my $logger = get_logger();
 
     # DBI: "update queries set hits = ? where queryid = ?"
-    $self->{schema}->resultset('Queries')->search({ queryid => $queryid })->update({ hits => $hits });
+    $self->{schema}->resultset('Query')->search({ queryid => $queryid })->update({ hits => $hits });
 
     return;
 }
@@ -1280,7 +1282,7 @@ sub get_info_of_all_active_sessions {
         my $username        = decode_utf8($item->username);
 
         # DBI: "select count(*) as rowcount from queries where sessionid = ?"
-        my $numqueries = $self->{schema}->resultset('Queries')->search({ 'sid.sessionid' => $singlesessionid }, { join => 'sid' })->count;
+        my $numqueries = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $singlesessionid }, { join => 'sid' })->count;
 
         if (!$username) {
             $username="Anonym";

@@ -36,7 +36,8 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
-use YAML;
+use JSON::XS qw(encode_json decode_json);
+use YAML::Syck;
 
 use OpenBib::Config;
 use OpenBib::Database::DBI;
@@ -133,13 +134,13 @@ sub load {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $request=$dbh->prepare("select queryoptions from session where sessionid = ?") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select queryoptions from sessioninfo where sessionid = ?") or $logger->error($DBI::errstr);
 
     $request->execute($session->{ID}) or $logger->error($DBI::errstr);
   
     my $res=$request->fetchrow_hashref();
     $logger->debug($res->{queryoptions});
-    $self->{option} = YAML::Load($res->{queryoptions});
+    $self->{option} = decode_json($res->{queryoptions});
     $request->finish();
 
     return $self;
@@ -159,9 +160,9 @@ sub dump {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $request=$dbh->prepare("update session set queryoptions=? where sessionid = ?") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("update sessioninfo set queryoptions=? where sessionid = ?") or $logger->error($DBI::errstr);
 
-    $request->execute(YAML::Dump($self->{option}),$session->{ID}) or $logger->error($DBI::errstr);
+    $request->execute(encode_json($self->{option}),$session->{ID}) or $logger->error($DBI::errstr);
 
     $logger->debug("Dumped Options: ".YAML::Dump($self->{option})." for session $session->{ID}");
     $request->finish();

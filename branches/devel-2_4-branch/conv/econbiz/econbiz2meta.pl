@@ -486,8 +486,7 @@ sub stripjunk {
     $item=~s/ +$//;
     $item=~s/ *; .{5,11}$//;
     $item=~s/\n/<br>/g;
-    $item=~s/
-//g;
+    $item=~s/\r//g;
 #  $item=~s/\[/#093/g;
 #  $item=~s/\]/#094/g;
 #  $item=~s/�"/g;

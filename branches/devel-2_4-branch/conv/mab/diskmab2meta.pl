@@ -530,8 +530,7 @@ while(<MAB>){
 
         $ignore_line = 0;
     }
-    elsif (/^
-$/){
+    elsif (/^\r$/){
         if ($ignore_line){
             next;
         }
@@ -547,8 +546,7 @@ $/){
             next;
         }
         elsif ($is_tit){
-            my ($category,$indicator,$content)=$_=~/^(\d\d\d)(.)(.+?)
-*$/;
+            my ($category,$indicator,$content)=$_=~/^(\d\d\d)(.)(.+?)\r*$/;
             $content   = decode("cp850",$content);
             $content   = konv($content);
             

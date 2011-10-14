@@ -36,8 +36,7 @@ my @buffer        = ();
 my $lastcategory = "";
 
 while (my $line=<>){
-    $line=~s/
-$//;
+    $line=~s/\r$//;
     chop $line;
 
 #    $line=decode("cp1252",$line);

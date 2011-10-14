@@ -146,8 +146,7 @@ my $encoding = q{ #
 my ($title_ref,$titlelist_ref)=({},[]);
 
 while (<DAT>){
-  s/
-//;
+  s/\r//;
   if (/^\d+/){ # Neuer-Titel
     push @$titlelist_ref, $title_ref if (exists $title_ref->{'0000'});
     $title_ref = {};

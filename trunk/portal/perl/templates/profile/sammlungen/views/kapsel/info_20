@@ -1,0 +1,125 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<!--
+[% IF config.get('lang').size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="info" %]
+
+<div class="content"><!-- Begin Content -->
+
+<table cellpadding="10">
+
+<tr>
+
+<td style="vertical-align:center;padding:40px;"> <center> <img src="/images/openbib/views/kapsel/kapsel.jpg"
+alt="Kapselkataloge und zugehörige Bände der Zeitungsausschnitt-Sammlung" /><br /><br /><i
+style="font-size:0.8em">Kapselkataloge und zugehörige Bände der Zeitungsausschnitt-Sammlung</i></center>
+</td>
+
+<td valign="top" style="padding-top:25px;">
+
+<h1>Die Kölner Sammlung von Zeitungsausschnitten</h1>
+
+<p> Seit 1890 war die USB Köln bestrebt, die Berichterstattung der
+lokalen, regionalen und überregionalen Presse über interessante Themen
+und Personen mit Bezug zu Köln und dem Rheinland, aber auch zu
+angrenzenden Regionen wie Westfalen, dem Moselland, der Eifel, dem
+Hunsrück u.v.m. für ihre Benutzer dauerhaft zu erschließen. Emsige
+Bibliothekarinnen und Bibliothekare durchsuchten die Zeitungen ihrer
+Zeit, schnitten relevante Artikel aus und klebten sie in ca.260
+Sammelbände ein. <p/>
+
+<p> Die Zeitungsausschnittsammlung besteht aus vier Abteilungen: Den
+Grundstock bildet ein gutes Dutzend Sammelbände, die der Kölner
+Kunsthistoriker Johann Jakob Merlo über die Jahre 1840-1890 hinweg
+angelegt hatte (Merlosche Sammlung, Signaturgruppen Merlo1 bis
+Merlo14). Die 1.Abteilung (Signaturgruppen 1 bis 58) erschließt,
+teilweise um älteres Material erweitert, in systematischer Anlage den
+Zeitraum von ca.1880 bis ca.1892.  Von 1892 an wurden die Artikel in
+grob chronologischer Ordnung bis 1969 in zwei weiteren Abteilungen
+gesammelt (2.Abteilung, Signaturgruppen II.1 bis II.163, und
+3.Abteilung, Signaturgruppen III.1 bis III.12). Insgesamt dürften bis
+zu diesem Zeitpunkt ca. 50000 Artikel erfasst worden sein.  <p/>
+
+<p> Die Sammelbände wurden inzwischen verfilmt und
+digitalisiert. Eine Einsichtnahme in die Originale ist daher aus
+konservatorischen Gründen in der Regel nicht mehr möglich. Die Filme
+werden an der Lesesaalausgabe zur Einsichtnahme bereitgehalten.  <p/>
+
+<p> Erschlossen wird die Sammlung durch den sog. Kapselkatalog, einem
+handschriftlichen, 70 Bände umfassenden Verzeichnis, in dem die
+Artikel - nach Schlagworten geordnet und mit den entsprechenden Band-
+und Seitenangaben versehen - erfasst wurden. Seit 2006 wird dieser
+Kapselkatalog in eine Datenbank eingebracht, in der bislang (Stand
+9.2011) ca. 35000 Artikel mit den entsprechenden Digitalisaten
+Aufnahme fanden. Mittels verschiedener Suchkriterien (Stand 9.2011:
+12164 Schlagworte, davon 7872 Personennamen) kann man sich hier
+Artikel zu bestimmten Themen und Personen gezielt heraussuchen und
+ansehen.
+<p/>
+
+<p>Kurze Gebrauchsanleitung:<p/>
+
+<p> Bei einem Treffer in der Recherchedatenbank gelangen Sie mittels
+Klick von der Kurzanzeige zur sog. Vollanzeige. Notieren Sie sich die
+Signatur! Über das Vorschaubild gelangen Sie zum digitalisierten
+Artikel. Hierbei führt Sie die laufende Nummer (Bestandteil der
+Signatur nach dem Komma), die im linken Frame erscheint, zum
+gewünschten Beitrag. Ein Klick auf die entsprechende Signatur öffnet
+das Digitalisat. In der Schaltfläche unmittelbar oberhalb des
+Digitalisates haben Sie die Möglichkeit, verschiedene Ansichten
+auszuwählen. Mit dem Icon "Maximale Auflösung in neuem Fenster"
+(zweites von rechts) können Sie den Artikel abspeichern, ausdrucken,
+vergrößern, drehen usw.  <p/>
+
+
+Kontakt: Michael Osieka, <a href="mailto:osieka@ub.uni-koeln.de">E-Mail</a>
+
+
+
+<!-- [<a href="[%
+config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere
+Informationen</a>]</p> -->
+
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,165 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchframe_simple
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der einfachen Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchmask" %] 
+
+<div id="maincontent">
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+[% IF config.get('testsystem') %]
+<div id="testsystem">
+[%# PROCESS common/subtemplate name="testsystem_info" %]
+<p />
+</div>
+[% END %]
+
+<!--<div class="langchoice">
+[% IF config.get('lang').size > 1 %]
+[%   FOREACH l IN config.get('lang') %]
+<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+-->
+
+[% PROCESS common/subtemplate name="subnavigation" active_menu="searchmask" %]
+
+<div class="content">
+
+<br/>
+<br/>
+
+[% IF user.is_authenticated %]
+[% autocompletion_type = user.get_autocompletion %]
+[% livesearch          = user.get_livesearch %]
+[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_serials").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_articles").autocomplete("[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_serials").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_articles").autocomplete("[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+})
+</script>
+[%   END %]
+[% END %]
+
+<form method="get" action="[% config.get('virtualsearch_loc') %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="sb"        value="xapian" />
+<input type="hidden" name="st"        value="2" />
+<input type="hidden" name="autoplus"        value="0" />
+<input type="hidden" name="profil"        value="dbauswahl" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.get('drilldown_option').cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.get('drilldown_option').categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
+
+
+<table width="70%">
+<tr><td>
+[% PROCESS common/subtemplate name="searchmask_query" %]
+<table width="100%">
+<tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
+<tr><td class="boxedclear" id="searchoptions">
+[% PROCESS common/subtemplate name="searchmask_options" %]
+</td></tr>
+</table>
+
+</form>
+
+[% IF queries.size > 0 %]
+<p />
+<form method="get" id="queries" action="[% config.get('dispatchquery_loc') %]">
+<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<table>
+<tr>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
+</tr>
+</table>
+
+</form>
+[% END %]
+
+
+</td>
+
+</tr>
+</table>
+<p />
+
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

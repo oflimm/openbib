@@ -1,0 +1,5 @@
+<table>
+<tr><td class="category">[% msg.maketext("Maximale Trefferzahl pro Katalog") %]</td><td colspan="3"><select name="hitrange"><option selected="selected">50</option><option>100</option><option>200</option></select></td></tr>
+<tr><td class="category">[% msg.maketext("Sortierung nach") %]</td><td
+colspan="2"><select name="sorttype"><option value="author" selected="selected">[% msg.maketext("Person/Körperschaft") %]</option><option value="title">[% msg.maketext("Titel") %]</option><option value="yearofpub">[% msg.maketext("Erscheinungsjahr") %]</option></select><select name="sortorder"><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select>&nbsp;[% msg.maketext("pro Katalog") %]</td><td></td></tr>
+</table>

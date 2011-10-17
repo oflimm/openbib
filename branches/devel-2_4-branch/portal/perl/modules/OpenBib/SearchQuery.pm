@@ -49,6 +49,7 @@ use URI::Escape;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Database::DBI;
+use OpenBib::Database::Session;
 use OpenBib::VirtualSearch::Util;
 
 sub _new_instance {
@@ -75,6 +76,8 @@ sub _new_instance {
     }
 
     bless ($self, $class);
+
+    $self->connectDB();
 
     return $self;
 }
@@ -104,6 +107,8 @@ sub new {
 
     bless ($self, $class);
 
+    $self->connectDB();
+    
     return $self;
 }
 
@@ -382,22 +387,22 @@ sub load  {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
+    my $searchquery = $self->{schema}->resultset('Query')->search_rs(
+        {
+            'sid.sessionid' => $sessionID,
+            'me.queryid'    => $queryid,
+        },
+        {
+            select => 'me.query',
+            as     => 'thisquery',
+            join => 'sid'
+        }
+    )->single;
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("select queryid,query from queries where sessionID = ? and queryid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
-    my $res = $idnresult->fetchrow_hashref();
-
-    $self->from_json($res->{query});
-    $self->set_id($res->{queryid});
+    $self->from_json($searchquery->get_column('thisquery'));
+    $self->set_id($queryid);
     
-    $idnresult->finish();
-
     return $self;
 }
 
@@ -436,25 +441,32 @@ sub save  {
 
     $logger->debug("Query Object: ".$query_obj_string);
 
-    my $request=$dbh->prepare("select queryid from queries where query = ? and sessionid = ?") or $logger->error($DBI::errstr);
-    $request->execute($query_obj_string,$sessionID) or $logger->error($DBI::errstr);
-    my $result  = $request->fetchrow_hashref;
-    my $queryid = $result->{queryid};
-        
+    # DBI: "select queryid from queries where query = ? and sessionid = ?"
+    my $searchquery_exists = $self->{schema}->resultset('Query')->search_rs(
+        {
+            'sid.sessionid' => $sessionID,
+            'me.query'      => $query_obj_string,
+        },
+        {
+            select => 'me.queryid',
+            as     => 'thisqueryid',
+            join => 'sid'
+        }
+    )->count;
 
     # Wenn noch nicht vorhanden, dann eintragen
-    if (!$queryid){
-        $request=$dbh->prepare("insert into queries (queryid,sessionid,query) values (NULL,?,?)") or $logger->error($DBI::errstr);
-        $request->execute($sessionID,$query_obj_string) or $logger->error($DBI::errstr);
+    if (!$searchquery_exists){
+        my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $sessionID })->single->id;
+
+        # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
+        $self->{schema}->resultset('Query')->insert({ sid => $sid, query => $query_obj_string});
 
         $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string");
     }
     else {
-        $logger->debug("Query already exists with ID $queryid: $query_obj_string");
+        $logger->debug("Query already exists: $query_obj_string");
     }
     
-    $request->finish();
-
     return $self;
 }
 
@@ -835,7 +847,41 @@ sub from_json {
 
     return $self;
 }
+
+sub connectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
     
+    eval {
+        # Verbindung zur SQL-Datenbank herstellen
+        $self->{dbh}
+            = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect to database $config->{sessiondbname}");
+    }
+    
+    $self->{dbh}->{RaiseError} = 1;
+
+    eval {        
+#        $self->{schema} = OpenBib::Database::Session->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr)
+        $self->{schema} = OpenBib::Database::Session->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect to database $config->{sessiondbname}");
+    }
+
+    return;
+}
+
 1;
 __END__
 

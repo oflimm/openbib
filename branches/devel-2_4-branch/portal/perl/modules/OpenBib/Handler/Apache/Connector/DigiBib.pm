@@ -186,7 +186,7 @@ sub show {
         });
     }
 
-    my $sysprofile   = $self->get_profilename_of_view($view);
+    my $sysprofile  = $config->get_profilename_of_view($view);
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 

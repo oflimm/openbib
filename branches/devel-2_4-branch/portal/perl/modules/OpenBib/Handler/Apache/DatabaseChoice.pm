@@ -106,7 +106,7 @@ sub show_collection {
   
     my %checkeddb;
 
-    my $profile = $self->get_profilename_of_view($view);
+    my $profile = $config->get_profilename_of_view($view);
 
     my $idnresult="";
   

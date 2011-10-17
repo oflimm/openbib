@@ -99,7 +99,7 @@ sub show_collection {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
-    my $profile       = $self->get_profilename_of_view($view);
+    my $profile       = $config->get_profilename_of_view($view);
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 

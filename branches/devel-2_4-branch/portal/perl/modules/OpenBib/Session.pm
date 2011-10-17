@@ -911,8 +911,10 @@ sub log_event {
         $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete;
     }
 
-    $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete_all;
-
+    eval {
+        $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete_all;
+    };
+    
     $logger->debug("Getting sid for SessionID ".$self->{ID});
     my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
 
@@ -1156,7 +1158,7 @@ sub get_returnurl {
     my $logger = get_logger();
 
     # DBI: "select returnurl from session where sessionid = ?"
-    my $returnurl = $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->returnurl;
+    my $returnurl = $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->single->returnurl;
 
     return $returnurl;
 }
@@ -1211,7 +1213,7 @@ sub get_lastresultset {
     # vorausgegangenen Kurztitelliste
 
     # DBI: "select lastresultset from session where sessionid = ?"
-    my $lastresultset = $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->lastresultset;
+    my $lastresultset = $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->single->lastresultset;
 
     return $lastresultset;
 }

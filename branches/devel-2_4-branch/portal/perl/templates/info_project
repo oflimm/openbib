@@ -167,16 +167,23 @@ Entwicklung der Software bereitstehen, andererseits durch eine
 geeignete OpenSource-Lizenz aber auch die Rechte und Pflichten bei der
 Mitarbeit oder Nutzung definiert werden.  </p>
 
-<h2>Infrastruktur von BerliOS für OpenBib</h2>
+<h2>Infrastruktur von Google Code für OpenBib</h2>
 
-<p> Als Infrastruktur für das Projekt fungiert BerliOS, ein
-OpenSource-Center zur Unterstützung von OpenSource-Software und deren
-Entwicklern, Anwendern und externen Dienstleistern. BerliOS wurde von
-FOKUS, einem Institut der Fraunhofer Gesellschaft, initiiert und wird
-von ihm betrieben. Die von BerliOS bereitgestellte Infrastruktur für
-OpenBib umfasst alles, was für das Projekt benötigt wird. Dazu gehören
-neben einem CVS-Repository z.B. auch Mailinglisten, Diskussions-Foren
-und ein Fehlerverwaltungssystem.  </p>
+<p>Als Infrastruktur für das Projekt fungierte von 2004 bis September
+2011 BerliOS, ein OpenSource-Center zur Unterstützung von
+OpenSource-Software und deren Entwicklern, Anwendern und externen
+Dienstleistern. BerliOS wurde von FOKUS, einem Institut der Fraunhofer
+Gesellschaft, initiiert und wurde von ihm bis Ende 2011 betrieben. Mit
+der Einstellung des Betriebs von BerliOS wird OpenBib seit Oktober
+2011 bei Google Code gehostet. Die von Google Code bereitgestellte
+Infrastruktur für OpenBib umfasst alles, was für das Projekt benötigt
+wird. Dazu gehört insbesondere das zentrale Subversion-Repository, in
+dem alle Softwareänderungen nachgehalten werden und das öffentlich
+zugreifbar ist.</p>
+
+<p>
+<a class="ext" href="http://code.google.com/p/openbib/">Projektseite von OpenBib bei Google Code</a>
+</p>
 
 <h2>GPL als Lizenz der Wahl</h2>
 

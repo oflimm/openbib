@@ -388,7 +388,7 @@ sub load  {
     my $logger = get_logger();
 
     # DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
-    my $searchquery = $self->{schema}->resultset('Query')->search_rs(
+    my $thisquery = $self->{schema}->resultset('Query')->search_rs(
         {
             'sid.sessionid' => $sessionID,
             'me.queryid'    => $queryid,
@@ -398,9 +398,10 @@ sub load  {
             as     => 'thisquery',
             join => 'sid'
         }
-    )->single;
+    )->single->get_column('thisquery');
 
-    $self->from_json($searchquery->get_column('thisquery'));
+    $logger->debug($thisquery);
+    $self->from_json("$thisquery");
     $self->set_id($queryid);
     
     return $self;
@@ -459,7 +460,7 @@ sub save  {
         my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $sessionID })->single->id;
 
         # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
-        $self->{schema}->resultset('Query')->insert({ sid => $sid, query => $query_obj_string});
+        $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string});
 
         $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string");
     }
@@ -829,6 +830,7 @@ sub to_json {
 
     my $tmp_ref = {};
     foreach my $property (sort keys %{$self}){
+        next if ($property eq "schema"); # DBIx::Class wird nicht gewandelt
         $tmp_ref->{$property} = $self->{$property};
     }
     
@@ -856,21 +858,7 @@ sub connectDB {
 
     my $config = OpenBib::Config->instance;
     
-    eval {
-        # Verbindung zur SQL-Datenbank herstellen
-        $self->{dbh}
-            = OpenBib::Database::DBI->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-    };
-
-    if ($@){
-        $logger->fatal("Unable to connect to database $config->{sessiondbname}");
-    }
-    
-    $self->{dbh}->{RaiseError} = 1;
-
     eval {        
-#        $self->{schema} = OpenBib::Database::Session->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr)
         $self->{schema} = OpenBib::Database::Session->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 
     };

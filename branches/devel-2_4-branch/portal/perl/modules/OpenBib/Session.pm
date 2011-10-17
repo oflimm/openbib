@@ -423,7 +423,7 @@ sub get_mask {
     my $logger = get_logger();
 
     # DBI ehemals: "select masktype from sessionmask where sessionid = ?"
-    my $form = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->searchform;
+    my $form = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->first->searchform;
 
     return ($form)?$form:'simple';
 }

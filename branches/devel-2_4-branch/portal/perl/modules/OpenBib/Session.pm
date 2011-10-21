@@ -906,14 +906,13 @@ sub log_event {
 			     10 => 1,
 			    };
     
-    if (exists $log_only_unique_ref->{$type}){
+    if (exists $log_only_unique_ref->{$type}){        
         # DBI: "delete from eventlog where sessionid=? and type=? and content=?"
-        $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete;
+        eval {
+            $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete_all;
+        };
     }
 
-    eval {
-        $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete_all;
-    };
     
     $logger->debug("Getting sid for SessionID ".$self->{ID});
     my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;

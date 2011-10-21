@@ -362,10 +362,8 @@ sub is_authenticated {
         # Return-URL in der Session abspeichern
         
         $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("$path_prefix/$config->{login_loc}");
-        
-        return Apache2::Const::OK;
+
+        return $self->redirect("$path_prefix/$config->{login_loc}",'303 See Other');
     }
 
     if ($role eq "admin" && $user->is_admin){

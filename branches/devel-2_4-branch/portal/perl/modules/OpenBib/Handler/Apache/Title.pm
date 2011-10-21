@@ -118,6 +118,8 @@ sub show_collection_form {
     # Shared Args
     my $config         = $self->param('config');
 
+    $logger->debug("Showing For for Title Record");
+    
     if (!$self->is_authenticated('admin')){
         return;
     }
@@ -149,7 +151,9 @@ sub create_record {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    
+
+    $logger->debug("Creating Title Record");
+            
     if (!$self->is_authenticated('admin')){
         return;
     }
@@ -276,10 +280,7 @@ sub show_record {
             highlightquery    => \&highlightquery,
         };
 
-        $stid=~s/[^0-9]//g;
-        my $templatename = ($stid)?"tt_title_".$stid."_tname":"tt_title_tname";
-        
-        $self->print_page($config->{$templatename},$ttdata);
+        $self->print_page($config->{tt_title_tname},$ttdata);
 
         # Log Event
 
@@ -308,6 +309,7 @@ sub show_record {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
+    $logger->debug("Done showing record");
     return Apache2::Const::OK;
 }
 

@@ -39,6 +39,7 @@ use Storable;
 use JSON::XS qw(encode_json decode_json);
 use YAML::Syck;
 
+
 use OpenBib::Config;
 use OpenBib::Database::DBI;
 use OpenBib::Session;
@@ -164,7 +165,7 @@ sub dump {
 
     $request->execute(encode_json($self->{option}),$session->{ID}) or $logger->error($DBI::errstr);
 
-    $logger->debug("Dumped Options: ".YAML::Dump($self->{option})." for session $session->{ID}");
+    $logger->debug("Dumped Options: ".encode_json($self->{option})." for session $session->{ID}");
     $request->finish();
 
     return;

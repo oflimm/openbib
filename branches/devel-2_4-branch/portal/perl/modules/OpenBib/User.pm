@@ -4633,6 +4633,8 @@ sub connectMemcached {
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
+
+    return unless ($config->{memcached});
     
     # Verbindung zu Memchached herstellen
     $self->{memc} = new Cache::Memcached($config->{memcached});

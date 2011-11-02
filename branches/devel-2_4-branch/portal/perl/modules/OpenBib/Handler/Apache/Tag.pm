@@ -170,23 +170,21 @@ sub show_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r              = $self->param('r');
-
+    # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $tagid          = $self->param('tagid')           || '';
 
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $stylesheet     = $self->param('stylesheet');
+    my $queryoptions   = $self->param('qopts');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
   
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-
+    # CGI Args
     my $offset         = $query->param('offset')      || 0;
     my $hitrange       = $query->param('num')    || 50;
     my $database       = $query->param('db')    || '';
@@ -222,20 +220,6 @@ sub show_record {
     ###########                                               ###########
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
-    }
-
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     my $recordlist = new OpenBib::RecordList::Title;
     my $hits       = 0;

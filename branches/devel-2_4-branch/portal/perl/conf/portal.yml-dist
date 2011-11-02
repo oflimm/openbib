@@ -1225,7 +1225,7 @@ dispatch_rules:
      runmode: 'delete_record'
   - # redirect_loc:
      module: 'OpenBib::Handler::Apache::Redirect'
-     rule: '/portal/:view/redirect'
+     rule: '/portal/:view/redirect/:type/*'
      runmode: 'show'
      args:
         disable_content_negotiation: 1

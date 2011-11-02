@@ -74,7 +74,8 @@ sub show {
     
     # Dispatched Args
     my $view           = $self->param('view');
-
+    my $type           = $self->param('type');
+    my $url            = $self->param('dispatch_url_remainder');
 
     # Shared Args
     my $query          = $self->query();
@@ -87,9 +88,6 @@ sub show {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    my $type           = $query->param('type');
-    my $url            = $query->param('url');
 
     $logger->debug("SessionID: $session->{ID} - Type: $type - URL: $url");
 

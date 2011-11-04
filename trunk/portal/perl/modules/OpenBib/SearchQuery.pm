@@ -544,6 +544,18 @@ sub load  {
     return $self;
 }
 
+sub has_or_op {
+    my ($self)=@_;
+
+    my $has_or_op = 0;
+    foreach my $search_category (keys %{$self->{_searchquery}}){
+        if ($self->{_searchquery}->{$search_category}->{bool} eq "OR" && $self->{_searchquery}->{$search_category}->{val}){
+            $has_or_op = 1;
+        }
+    }
+
+    return $has_or_op;
+}
 
 sub get_searchquery {
     my ($self)=@_;

@@ -158,6 +158,8 @@ sub initial_search {
         close(SW);
     }
 
+    $logger->debug("Has OR Operator? ".$searchquery->has_or_op);
+    
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
     $qp->set_stopper($stopper);
     
@@ -168,7 +170,9 @@ sub initial_search {
 
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
     $qp->set_database($dbh);
-    $qp->set_default_op(Search::Xapian::OP_AND);
+
+    # Wenn keine Boolverknuepfung zwischen Recherchefeldern definiert ist, dann immer UND
+    $qp->set_default_op(Search::Xapian::OP_AND);#  unless ($searchquery->has_or_op); 
     $qp->add_prefix('id'       ,'Q');
 
     $qp->add_prefix('inauth'   ,'X1');

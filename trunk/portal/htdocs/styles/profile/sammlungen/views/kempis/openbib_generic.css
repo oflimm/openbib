@@ -634,7 +634,6 @@ dt.review {
 }
 
 .resultlist .resultdrilldown {
-  display: none;
   float: right;
   width: 23%;
   margin-top: 5px; 

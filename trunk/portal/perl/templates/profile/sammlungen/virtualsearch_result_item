@@ -15,7 +15,7 @@
 [%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
 [%- dburl    = dbinfo.get('urls').${database} -%]
 
-<div class="virtualsearch" class="resultlist">
+<div [% IF NOT drilldown || (drilldown && fullresultcount < 10) %]class="virtualsearch"[% END %] class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
 [%-   IF dbinfo.get('use_libinfo').${database} %]
@@ -37,7 +37,7 @@
 [%- END -%]
     </div>
   </div>
-[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.get('xapian_option').maxmatch %]
+[% IF drilldown && fullresultcount >= 10 %]
   <div class="resultdrilldown">
 [% PROCESS common/subtemplate name="drilldown_categorized" %][% PROCESS common/subtemplate name="drilldown_cloud" %]
   </div>

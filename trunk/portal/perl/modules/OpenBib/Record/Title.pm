@@ -345,7 +345,8 @@ sub load_full_record {
 	    }
 
         }
-        
+
+        $logger->debug("Circulation: ".YAML::Dump($circexlist));
         # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
         # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
         # titelbasierten Exemplardaten

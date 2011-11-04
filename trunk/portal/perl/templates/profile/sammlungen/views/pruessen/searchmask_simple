@@ -106,24 +106,75 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
+<table width="70%">
+<tr><td style="vertical-align:top">
+
 <form method="get" action="[% config.get('virtualsearch_loc') %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />
-<input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="sb"        value="xapian" />
 <input type="hidden" name="st"        value="2" />
+<input type="hidden" name="autoplus"        value="0" />
 <input type="hidden" name="profil"        value="dbauswahl" />
+<input type="hidden" name="hitrange"        value="50" />
+<input type="hidden" name="sortorder"        value="up" />
+<input type="hidden" name="sorttype"         value="title" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.get('drilldown_option').cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.get('drilldown_option').categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
 
-<table width="70%">
-<tr><td>
 [% PROCESS common/subtemplate name="searchmask_query" %]
-<table width="100%">
-<tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></th></tr>
-<tr><td class="boxedclear" id="searchoptions">
-[% PROCESS common/subtemplate name="searchmask_options" %]
-</td></tr>
-</table>
 
 </form>
+
+<p />
+
+[%
+   publikationsformen = [
+                 {
+                    desc => "Buchillustrationen",
+                    swt  => "Buchillustration",
+                 },
+                 {
+                    desc => "Presse-Illustrationen",
+                    swt  => "Presse-Illustration",
+                 },
+                 {
+                    desc => "Plakate",
+                    swt  => "Plakat",
+                 },
+                 {
+                    desc => "Exlibris",
+                    swt  => "Exlibris",
+                 },
+                 {
+                    desc => "Donkey-Press",
+                    swt  => "Donkey-Press",
+                 },
+                 {
+                    desc => "Neujahrsgrüße",
+                    swt  => "Neujahrsgrüße",
+                 },
+];
+%]
+
+<table width="100%">
+<tr><th>Publikationsformen</th></tr>
+<tr><td>
+<table>
+[% FOREACH form IN publikationsformen %]
+<tr><td><a style="font-weight:bold" href="[% config.get('virtualsearch_loc')%]?sessionID=[% sessionID %];view=[% view %];database=pruessen;sb=xapian;profil=dbauswahl:searchprofile=1;sortorder=up;sorttype=title;drilldown=1;dd_categorized=1;swt=[% form.swt %]">[% form.desc %]</a></td></tr>
+[% END %]
+</table>
+</td></tr>
+</table>
+<p />
 
 [% IF queries.size > 0 %]
 <p />
@@ -141,11 +192,16 @@ $(document).ready(function(){
 </form>
 [% END %]
 
-
-</td>
-
-</tr>
-</table>
+<br /><br /><br /><br /><br />
+<td /><td /><td/><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /><td
+/><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /><td />
+<td style="vertical-align:top"><img
+src="/images/openbib/views/pruessen/Plakat400.jpg"
+alt="Plakat aus dem Jahr 1981">
+<br />
+<center><b>Plakat aus dem Jahr 1981</b></center>
+</td> </tr>
+</table> </center>
 <p />
 
 

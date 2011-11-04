@@ -1,4 +1,4 @@
-[%     IF drilldown_categorized && fullresultcount >= 10 %]
+[% IF fullresultcount < config.get('xapian_option').maxmatch %]
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -284,6 +284,24 @@ $("#dd_db_[% database %]_toggle").click(function(){
 </td></tr>
 [%        END %]
 </table>
+
+</div>
+[% ELSE %]
+<div class="drilldown">
+<h2><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h2>
+
+<p>
+Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine
+Eingrenzung durch eine Rechercheverfeinerung nicht
+sinnvoll ist.
+</p>
+
+<p>
+Versuchen Sie daher Ihre Rechercheanfrage zu pr&auml;zisieren, indem
+Sie diese auf sinntragende Worte reduzieren (z.B. der, die das
+weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)
+durch zus&auml;tzliche Worte weiter eingrenzen.
+</p>
 
 </div>
 [%    END %]

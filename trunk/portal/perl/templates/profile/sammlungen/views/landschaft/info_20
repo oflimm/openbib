@@ -98,10 +98,10 @@ config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Information
 
 <!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
 
-[<p><a
+<p>[<a
 href="http://www.ub.uni-koeln.de/digital/digitsam/landschaft">Informationen
 zur Digitalisierung der Sammlung Europäische Stadte- und
-Landschaftsdarstellungen des 16. und 17. Jahrhunderts</a></p>]
+Landschaftsdarstellungen des 16. und 17. Jahrhunderts</a>]</p>
 
 
 </td></tr>

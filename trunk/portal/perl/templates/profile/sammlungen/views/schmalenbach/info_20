@@ -83,7 +83,7 @@ Printausgabe auch als elektronische Zeitschrift angeboten.
 config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 </p>
 
-<p><a href="http://www.ub.uni-koeln.de/digital/digitsam/schmalenbach_2">Informationen zur Digitalisierung der Sammlung Schmalenbach</a></p>
+<p><a href="http://www.ub.uni-koeln.de/digital/digitsam/schmalenbach">Informationen zur Digitalisierung der Sammlung Schmalenbach</a></p>
 
 <p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
 Lesesaal.

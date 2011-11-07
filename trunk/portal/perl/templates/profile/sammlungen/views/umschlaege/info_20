@@ -97,10 +97,10 @@ spezifische Angaben zu den Umschlagabbildungen.  </p>
 [<a href="[%
 config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 
-<p><a
+[<p><a
 href="http://www.ub.uni-koeln.de/digital/digitsam/umschlaege">Informationen
 zur Digitalisierung der Umschlagsammlung der Universitäts- und
-Stadtbibliothek Köln</a></p>
+Stadtbibliothek Köln</a></p>]
 
 
 </td></tr>

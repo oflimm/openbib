@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Classification2subject;
+package OpenBib::Database::System::Result::ClassificationSubject;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,11 +11,11 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Classification2subject
+OpenBib::Database::System::Result::ClassificationSubject
 
 =cut
 
-__PACKAGE__->table("classification2subject");
+__PACKAGE__->table("classification_subject");
 
 =head1 ACCESSORS
 
@@ -66,8 +66,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZRRhJ+4dbVA84g6M3A1qgg
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 11:23:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:akZYNp75+HAK6+wC4R44lA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

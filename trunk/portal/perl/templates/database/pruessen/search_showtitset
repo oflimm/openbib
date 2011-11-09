@@ -760,7 +760,7 @@ $(document).ready(function(){
 <form  method="get" action="http://kug.ub.uni-koeln.de/cgi-bin/pruessen_bestellung.pl">
 <input type="hidden" name="titel"    value="[% normset.${"T0331"}.first.content %]"/>
 <input type="hidden" name="signatur" value="[% signaturen.sort.unique.join(' ; ') %]"/>
-<input type="hidden" name="person"   value="[% normset.${"T0102"}.first.content %]"/>
+<input type="hidden" name="person"   value="[% normset.${"T0100"}.first.content %]"/>
 <table>
 <tr><td>Benutzernummer:</td><td><input type="text" name="bnr"/></td></tr>
 <tr><td>Opac-Pin:</td><td><input type="password" name="password"/></td></tr>

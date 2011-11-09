@@ -530,7 +530,7 @@ dt.review {
 
 #header #header_logo {
   float: left;
-  width: 120px;
+  width: 370px;
 }
 
 #header #header_right {
@@ -541,7 +541,7 @@ dt.review {
 
 #header_right_image {
   background: url(/images/openbib/usblogotrans190.png) center no-repeat;
-  width: 200px;
+  width: 300px;
   height: 80px;
   position: absolute;
   top: 25px;
@@ -550,7 +550,7 @@ dt.review {
 
 #header_logo_image {
   background: url(/images/openbib/views/landschaft/logo.png) center no-repeat;
-  width: 500px;
+  width: 450px;
   height: 110px;
   position: absolute;
   top: 6px;

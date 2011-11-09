@@ -158,7 +158,7 @@ sub initial_search {
         close(SW);
     }
 
-    $logger->debug("Has OR Operator? ".$searchquery->has_or_op);
+    # $logger->debug("Has OR Operator? ".$searchquery->has_or_op);
     
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
     $qp->set_stopper($stopper);

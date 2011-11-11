@@ -37,26 +37,26 @@ __PACKAGE__->table("litlistitem");
   default_value: current_timestamp
   is_nullable: 0
 
-=head2 titid
+=head2 dbname
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: 25
+
+=head2 titleid
 
   data_type: 'varchar'
   is_nullable: 0
   size: 255
 
-=head2 titisbn
+=head2 titleisbn
 
   data_type: 'char'
   default_value: (empty string)
   is_nullable: 0
   size: 14
 
-=head2 titdb
-
-  data_type: 'varchar'
-  is_nullable: 0
-  size: 25
-
-=head2 titcache
+=head2 titlecache
 
   data_type: 'blob'
   is_nullable: 1
@@ -74,13 +74,13 @@ __PACKAGE__->add_columns(
     default_value => \"current_timestamp",
     is_nullable   => 0,
   },
-  "titid",
-  { data_type => "varchar", is_nullable => 0, size => 255 },
-  "titisbn",
-  { data_type => "char", default_value => "", is_nullable => 0, size => 14 },
-  "titdb",
+  "dbname",
   { data_type => "varchar", is_nullable => 0, size => 25 },
-  "titcache",
+  "titleid",
+  { data_type => "varchar", is_nullable => 0, size => 255 },
+  "titleisbn",
+  { data_type => "char", default_value => "", is_nullable => 0, size => 14 },
+  "titlecache",
   { data_type => "blob", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
@@ -103,8 +103,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:E0XupP1VgY/+MEUrZhTXdA
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-11 11:51:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NxG7alvkMAq9PdW+uAn24w
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

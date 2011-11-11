@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Fieldchoice;
+package OpenBib::Database::System::Result::Searchfield;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,11 +11,11 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Fieldchoice
+OpenBib::Database::System::Result::Searchfield
 
 =cut
 
-__PACKAGE__->table("fieldchoice");
+__PACKAGE__->table("searchfield");
 
 =head1 ACCESSORS
 
@@ -65,8 +65,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0d2RS1bbNm+bib3gQLkjEw
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-11 11:51:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PeAhSFRauWjwVyP/Tpk5MA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::ClassificationSubject;
+package OpenBib::Database::System::Result::Subjectclassification;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,25 +11,25 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::ClassificationSubject
+OpenBib::Database::System::Result::Subjectclassification
 
 =cut
 
-__PACKAGE__->table("classification_subject");
+__PACKAGE__->table("subjectclassification");
 
 =head1 ACCESSORS
-
-=head2 classification
-
-  data_type: 'varchar'
-  is_nullable: 0
-  size: 20
 
 =head2 subjectid
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
+
+=head2 classification
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: 20
 
 =head2 type
 
@@ -40,10 +40,10 @@ __PACKAGE__->table("classification_subject");
 =cut
 
 __PACKAGE__->add_columns(
-  "classification",
-  { data_type => "varchar", is_nullable => 0, size => 20 },
   "subjectid",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "classification",
+  { data_type => "varchar", is_nullable => 0, size => 20 },
   "type",
   { data_type => "varchar", is_nullable => 0, size => 5 },
 );
@@ -66,8 +66,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 11:23:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:akZYNp75+HAK6+wC4R44lA
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-11 11:51:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8csHUCs6woFMQ4IX2RlDjw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

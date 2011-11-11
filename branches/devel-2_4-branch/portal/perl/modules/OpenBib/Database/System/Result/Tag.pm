@@ -25,7 +25,7 @@ __PACKAGE__->table("tag");
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 tag
+=head2 name
 
   data_type: 'varchar'
   default_value: (empty string)
@@ -37,7 +37,7 @@ __PACKAGE__->table("tag");
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "tag",
+  "name",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
 );
 __PACKAGE__->set_primary_key("id");
@@ -60,8 +60,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+W7ApgE5gMXXRHqY+e69Jw
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-11 11:51:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ULiTY0M2827yx0ug/krhWQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

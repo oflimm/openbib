@@ -32,8 +32,9 @@ __PACKAGE__->table("userinfo");
 
 =head2 loginname
 
-  data_type: 'text'
+  data_type: 'varchar'
   is_nullable: 1
+  size: 255
 
 =head2 pin
 
@@ -168,7 +169,7 @@ __PACKAGE__->add_columns(
   "lastlogin",
   { data_type => "datetime", is_nullable => 1 },
   "loginname",
-  { data_type => "text", is_nullable => 1 },
+  { data_type => "varchar", is_nullable => 1, size => 255 },
   "pin",
   { data_type => "text", is_nullable => 1 },
   "nachname",
@@ -221,6 +222,7 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
+__PACKAGE__->add_unique_constraint("loginname", ["loginname"]);
 
 =head1 RELATIONS
 
@@ -235,21 +237,6 @@ Related object: L<OpenBib::Database::System::Result::Collection>
 __PACKAGE__->has_many(
   "collections",
   "OpenBib::Database::System::Result::Collection",
-  { "foreign.userid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 fieldchoices
-
-Type: has_many
-
-Related object: L<OpenBib::Database::System::Result::Fieldchoice>
-
-=cut
-
-__PACKAGE__->has_many(
-  "fieldchoices",
-  "OpenBib::Database::System::Result::Fieldchoice",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -310,6 +297,21 @@ Related object: L<OpenBib::Database::System::Result::Reviewrating>
 __PACKAGE__->has_many(
   "reviewratings",
   "OpenBib::Database::System::Result::Reviewrating",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 searchfields
+
+Type: has_many
+
+Related object: L<OpenBib::Database::System::Result::Searchfield>
+
+=cut
+
+__PACKAGE__->has_many(
+  "searchfields",
+  "OpenBib::Database::System::Result::Searchfield",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -375,8 +377,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:RPR9ylwuy5KFDM62qJXY2Q
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-11 11:51:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5E1rjoKJi1qTr0PR4VEKRA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

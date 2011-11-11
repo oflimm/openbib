@@ -49,21 +49,6 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 classification_subjects
-
-Type: has_many
-
-Related object: L<OpenBib::Database::System::Result::ClassificationSubject>
-
-=cut
-
-__PACKAGE__->has_many(
-  "classification_subjects",
-  "OpenBib::Database::System::Result::ClassificationSubject",
-  { "foreign.subjectid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 litlist_subjects
 
 Type: has_many
@@ -79,9 +64,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 subjectclassifications
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 11:23:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pgPHNfJeUlWdbVlvhEt25w
+Type: has_many
+
+Related object: L<OpenBib::Database::System::Result::Subjectclassification>
+
+=cut
+
+__PACKAGE__->has_many(
+  "subjectclassifications",
+  "OpenBib::Database::System::Result::Subjectclassification",
+  { "foreign.subjectid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-11 11:51:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wBGU5f5XzTAbLKu/LRMPCw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

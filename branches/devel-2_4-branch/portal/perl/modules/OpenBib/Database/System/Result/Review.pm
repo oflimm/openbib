@@ -37,27 +37,6 @@ __PACKAGE__->table("review");
   default_value: current_timestamp
   is_nullable: 0
 
-=head2 titid
-
-  data_type: 'varchar'
-  default_value: 0
-  is_nullable: 0
-  size: 255
-
-=head2 titisbn
-
-  data_type: 'char'
-  default_value: (empty string)
-  is_nullable: 0
-  size: 14
-
-=head2 titdb
-
-  data_type: 'varchar'
-  default_value: (empty string)
-  is_nullable: 0
-  size: 25
-
 =head2 nickname
 
   data_type: 'varchar'
@@ -72,7 +51,7 @@ __PACKAGE__->table("review");
   is_nullable: 0
   size: 100
 
-=head2 review
+=head2 reviewtext
 
   data_type: 'mediumtext'
   is_nullable: 0
@@ -82,6 +61,27 @@ __PACKAGE__->table("review");
   data_type: 'integer'
   default_value: 0
   is_nullable: 0
+
+=head2 dbname
+
+  data_type: 'varchar'
+  default_value: (empty string)
+  is_nullable: 0
+  size: 25
+
+=head2 titleid
+
+  data_type: 'varchar'
+  default_value: 0
+  is_nullable: 0
+  size: 255
+
+=head2 titleisbn
+
+  data_type: 'char'
+  default_value: (empty string)
+  is_nullable: 0
+  size: 14
 
 =cut
 
@@ -96,20 +96,20 @@ __PACKAGE__->add_columns(
     default_value => \"current_timestamp",
     is_nullable   => 0,
   },
-  "titid",
-  { data_type => "varchar", default_value => 0, is_nullable => 0, size => 255 },
-  "titisbn",
-  { data_type => "char", default_value => "", is_nullable => 0, size => 14 },
-  "titdb",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 25 },
   "nickname",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
   "title",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 100 },
-  "review",
+  "reviewtext",
   { data_type => "mediumtext", is_nullable => 0 },
   "rating",
   { data_type => "integer", default_value => 0, is_nullable => 0 },
+  "dbname",
+  { data_type => "varchar", default_value => "", is_nullable => 0, size => 25 },
+  "titleid",
+  { data_type => "varchar", default_value => 0, is_nullable => 0, size => 255 },
+  "titleisbn",
+  { data_type => "char", default_value => "", is_nullable => 0, size => 14 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -146,8 +146,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:F914k9UfQ8AxlUJdjlANaA
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-11 11:51:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:aMuMOcFAgzfw1BRwSisLyg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

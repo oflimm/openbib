@@ -280,10 +280,6 @@ sub authenticate {
             $user->set_default_fieldchoice($userid);
         }
         
-        if (!$user->spelling_suggestion_exists($userid)) {
-            $user->set_default_spelling_suggestion($userid);
-        }
-        
         if (!$user->livesearch_exists($userid)) {
             $user->set_default_livesearch($userid);
         }

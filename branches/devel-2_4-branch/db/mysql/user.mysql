@@ -154,13 +154,13 @@ COLLATE utf8_general_ci
 PACK_KEYS=1;
 
 DROP TABLE IF EXISTS searchfield;
-CREATE TABLE fieldchoice (
+CREATE TABLE searchfield (
  userid      BIGINT NOT NULL,
 
  searchfield VARCHAR(255),
  active      BOOL,
 
- CONSTRAINT `fk_fieldchoice_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`),
+ CONSTRAINT `fk_searchfield_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`),
  INDEX(searchfield)
 )
 ENGINE InnoDB

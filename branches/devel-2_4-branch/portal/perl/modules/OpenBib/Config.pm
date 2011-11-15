@@ -42,7 +42,7 @@ use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
 use OpenBib::Database::DBI;
-use OpenBib::Database::Config;
+use OpenBib::Database::System;
 #use OpenBib::EZB;
 #use OpenBib::DBIS;
 #use OpenBib::Enrichment;
@@ -1519,24 +1519,24 @@ sub connectDB {
     eval {
         # Verbindung zur SQL-Datenbank herstellen
         $self->{dbh}
-            = OpenBib::Database::DBI->connect("DBI:$self->{configdbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
+            = OpenBib::Database::DBI->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd})
             or $logger->error_die($DBI::errstr);
     };
 
     if ($@){
-        $logger->fatal("Unable to connect to database $self->{configdbname}");
+        $logger->fatal("Unable to connect to database $self->{systemdbname}");
     }
     
     $self->{dbh}->{RaiseError} = 1;
 
     eval {        
-#        $self->{schema} = OpenBib::Database::Config->connect("DBI:$self->{configdbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd}) or $logger->error_die($DBI::errstr)
-        $self->{schema} = OpenBib::Database::Config->connect("DBI:$self->{configdbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+#        $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd}) or $logger->error_die($DBI::errstr)
+        $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 
     };
 
     if ($@){
-        $logger->fatal("Unable to connect to database $self->{configdbname}");
+        $logger->fatal("Unable to connect to database $self->{systemdbname}");
     }
 
     return;

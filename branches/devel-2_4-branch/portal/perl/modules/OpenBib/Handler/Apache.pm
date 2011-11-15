@@ -530,6 +530,209 @@ sub print_page {
     return;
 }
 
+sub print_recordlist {
+    my $self = shift;
+    my ($recordlist,$templatename,$ttdata)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $servername     = $self->param('servername');
+    my $path_prefix    = $self->param('path_prefix');
+    my $path           = $self->param('path');
+    my $representation = $self->param('representation');
+    my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+    
+#     # Set defaults
+#     my $database          = exists $arg_ref->{database}
+#         ? $arg_ref->{database}          : undef;
+#     my $hits              = exists $arg_ref->{hits}
+#         ? $arg_ref->{hits}              : -1;
+#     my $hitrange          = exists $arg_ref->{hitrange}
+#         ? $arg_ref->{hitrange}          : 50;
+#     my $sortorder         = exists $arg_ref->{sortorder}
+#         ? $arg_ref->{sortorder}         : 'up';
+#     my $sorttype          = exists $arg_ref->{sorttype}
+#         ? $arg_ref->{sorttype}          : 'author';
+#     my $offset            = exists $arg_ref->{offset}
+#         ? $arg_ref->{offset}            : undef;
+#     my $template          = exists $arg_ref->{template}
+#         ? $arg_ref->{template}          : 'tt_search_tname';
+#     my $location          = exists $arg_ref->{location}
+#         ? $arg_ref->{location}          : 'search_loc';
+#     my $parameter         = exists $arg_ref->{parameter}
+#         ? $arg_ref->{parameter}         : {};
+
+
+    my $query         = $self->query();
+
+    my $hitrange          = $query->param('hitrange') || 50;
+    my $sortorder         = $query->param('srto') || 'up';
+    my $sorttype          = $query->param('srt') || 'author';
+    my $offset            = $query->param('offset') || undef;
+    
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+
+    my $searchtitofcnt = decode_utf8($query->param('searchtitofcnt'))    || '';
+
+    $logger->debug("Representation: $representation - Content-Type: $content_type ");
+    
+    if ($recordlist->get_size() == 0) {
+        $self->print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"));
+    }
+    elsif ($recordlist->get_size() == 1) {
+        my $record = $recordlist->{recordlist}[0];
+
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{title_loc}/$record->{database}/$record->{id}.html");
+        $self->query->status(Apache2::Const::REDIRECT);
+        return;
+    }
+    elsif ($recordlist->get_size() > 1) {
+        my ($atime,$btime,$timeall);
+        
+        if ($config->{benchmark}) {
+            $atime=new Benchmark;
+        }
+
+        # Kurztitelinformationen fuer RecordList laden
+        $recordlist->load_brief_records;
+        
+        if ($config->{benchmark}) {
+            $btime   = new Benchmark;
+            $timeall = timediff($btime,$atime);
+            $logger->info("Zeit fuer : ".($recordlist->get_size)." Titel : ist ".timestr($timeall));
+            undef $atime;
+            undef $btime;
+            undef $timeall;
+        }
+
+        # Anreicherung mit OLWS-Daten
+        if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){            
+            foreach my $record ($recordlist->get_records()){
+                if (exists $circinfotable->{$record->{database}} && exists $circinfotable->{$record->{database}}{circcheckurl}){
+                    $logger->debug("Endpoint: ".$circinfotable->{$record->{database}}{circcheckurl});
+                    my $soapresult;
+                    eval {
+                        my $soap = SOAP::Lite
+                            -> uri("urn:/Viewer")
+                                -> proxy($circinfotable->{$record->{database}}{circcheckurl});
+                        
+                        my $result = $soap->get_item_info(
+                            SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                                SOAP::Data->name(collection => $circinfotable->{$record->{database}}{circdb})->type('string'),
+                                SOAP::Data->name(item       => $record->{id})->type('string'))));
+                        
+                        unless ($result->fault) {
+                            $soapresult=$result->result;
+                        }
+                        else {
+                            $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                        }
+                    };
+                    
+                    if ($@){
+                        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+                    }
+                    
+                    $record->{olws}=$soapresult;
+                }
+            }
+        }
+        
+        $logger->debug("Sorting $sorttype with order $sortorder");
+        
+        $recordlist->sort({order=>$sortorder,type=>$sorttype});
+        
+        # Navigationselemente erzeugen
+        my @args=();
+        foreach my $param ($query->param()) {
+            $logger->debug("Adding Param $param with value ".$query->param($param));
+            push @args, $param."=".$query->param($param) if ($param ne "offset" && $param ne "hitrange");
+        }
+        
+        my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);
+        
+        my @nav=();
+        
+        if ($hitrange > 0) {
+            for (my $i=0; $i <= $hits-1; $i+=$hitrange) {
+                my $active=0;
+                
+                if ($i == $offset) {
+                    $active=1;
+                }
+                
+                my $item={
+                    start  => $i+1,
+                    end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
+                    url    => $baseurl.";hitrange=$hitrange;offset=$i",
+                    active => $active,
+                };
+                push @nav,$item;
+            }
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            representation => $representation,
+            content_type   => $content_type,
+            
+            searchtitofcnt => $searchtitofcnt,
+            lang           => $lang,
+            view           => $view,
+            stylesheet     => $stylesheet,
+            sessionID      => $session->{ID},
+            
+            database       => $database,
+            
+            hits           => $hits,
+            
+            dbinfo         => $dbinfotable,
+
+            recordlist     => $recordlist,
+
+            parameter      => $parameter,
+
+            baseurl        => $baseurl,
+            
+            qopts          => $queryoptions->get_options,
+            query          => $query,
+            hitrange       => $hitrange,
+            offset         => $offset,
+            nav            => \@nav,
+            
+            config         => $config,
+            user           => $user,
+            msg            => $msg,
+            decode_utf8    => sub {
+                my $string=shift;
+                return decode_utf8($string);
+            },
+        };
+        
+        $self->print_page($config->{$template},$ttdata);
+        
+        $session->updatelastresultset($recordlist->to_ids);
+    }	
+    
+    return;
+}
+
 sub strip_suffix {
     my $self    = shift;
     my $element = shift;

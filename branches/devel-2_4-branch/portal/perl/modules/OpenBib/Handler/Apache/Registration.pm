@@ -40,8 +40,6 @@ use Apache2::Reload;
 use Apache2::Request();          # CGI-Handling (or require)
 use APR::Table;
 
-use Digest::MD5;
-use DBI;
 use Email::Valid;               # EMail-Adressen testen
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -263,12 +261,6 @@ sub mail_confirmation {
         }
     }
 
-    my $gmtime    = localtime(time);
-    my $md5digest = Digest::MD5->new();
-    
-    $md5digest->add($gmtime . rand('1024'). $$);
-    my $registrationid = $md5digest->hexdigest;
-
     # Bestaetigungsmail versenden
 
     my $afile = "an." . $$;
@@ -318,8 +310,7 @@ sub mail_confirmation {
   
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
 
-
-    $user->add_confirmation_request({registrationid => $registrationid, loginname => $loginname, password => $password1});
+    $user->add_confirmation_request({loginname => $loginname, password => $password1});
     
     # TT-Data erzeugen
     my $ttdata={

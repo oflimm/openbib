@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-<h6 class="vlist">[% loginname %]</h6>
+<h6 class="vlist">[% username %]</h6>
 
 <ul class="vlist">
 [% IF active_submenu == "userprefs" %]

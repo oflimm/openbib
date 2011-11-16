@@ -43,7 +43,13 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-   <h1>[% msg.maketext("Alle Titel zum Tag") %]&nbsp;'[% parameter.tag %]'</h1>
+[% IF recordlist.get_size == 0 %]
+
+   <h1>Bisher wurde der Tag '[% tag %]' f&uuml;r keinen Titel vergeben</h1>
+
+[% ELSE %]
+
+   <h1>[% msg.maketext("Alle Titel zum Tag") %]&nbsp;'[% tag %]'</h1>
 
 [%-
     start_range     = 1;
@@ -95,7 +101,7 @@
   <div class="listoptions">
 <form method="get" action="[% path_prefix %]/[% config.get('tags_loc') %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
-<input type="hidden" name="num"        value="[% IF num %][% num %][% ELSE %][% qopts.num %][% END %]" />
+<input type="hidden" name="num"             value="[% IF num %][% num %][% ELSE %][% qopts.num %][% END %]" />
 
 [%- IF query.param('searchtitoftag')    -%]<input type="hidden" name="searchtitoftag" value="[% query.param('searchtitoftag') %]" />[% END %]
 [%- IF query.param('private_tags')      -%]<input type="hidden" name="private_tags"   value="[% query.param('private_tags') %]" />[% END %]
@@ -121,6 +127,7 @@
 <!-- Titlelist ends here -->
 </form>
 
+[% END %]
         </div>
         <div id="ie_clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

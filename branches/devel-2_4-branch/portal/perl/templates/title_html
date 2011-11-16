@@ -74,9 +74,9 @@
 <div class="reuse_data info"><!-- Begin Reuse -->
 [%
   private_tags_of_tit = [];
-  IF loginname ;
-    private_tags        = user.get_private_tags({ loginname => loginname  });
-    private_tags_of_tit = user.get_private_tags_of_tit({ titid => record.id, titdb => record.database, loginname => loginname  });
+  IF username ;
+    private_tags        = user.get_private_tags({ username => username  });
+    private_tags_of_tit = user.get_private_tags_of_tit({ titid => record.id, titdb => record.database, username => username  });
     IF private_tags_of_tit.size > 0 ;
       my_tags = [] ;
       FOREACH tag IN private_tags_of_tit;
@@ -169,7 +169,7 @@
 </table>
 
 [%
-    IF loginname ;
+    IF username ;
 %]
 
 <table width="100%">
@@ -225,7 +225,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%  END %]
 <!-- Ende generelle Tag-Uebernahme -->
 
-[% ELSIF loginname && private_tags_of_tit.size > 0 %]
+[% ELSIF username && private_tags_of_tit.size > 0 %]
 <p />
 <form method="get" action="[% path_prefix %]/[% config.get('tag_loc') %]">
 
@@ -243,7 +243,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <p/>
 
 [%
-    IF loginname ;
+    IF username ;
 %]
 
 <table width="100%">
@@ -384,7 +384,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="headline">[% msg.maketext("Tags") %]</div>
 <p/>
 [% alltags_cloud %]
-[% IF loginname && private_tags_of_tit.size > 0 %]
+[% IF username && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:
 [%- FOREACH tag IN private_tags_of_tit -%]
 <a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/tag/[% tag.id %].html">[% tag.name %]</a>&nbsp;
@@ -664,9 +664,9 @@ $(document).ready(function(){
 
 <div id="reviews"><!-- Begin: Reviews -->
 
-[% IF   loginname %]
+[% IF   username %]
 
-[% ownreviewid = user.tit_reviewed_by_user({ titid => record.id, titdb => record.database, loginname => loginname }); %]
+[% ownreviewid = user.tit_reviewed_by_user({ titid => record.id, titdb => record.database, username => username }); %]
 
 <p />
 
@@ -731,7 +731,7 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 <p />
 <a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
 href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
-[% ELSIF loginname %]
+[% ELSIF username %]
 <p />
 [% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?_method=PUT;titid=[% record.id %];titdb=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
 <a href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?titid=[% record.id %];titdb=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>

@@ -172,46 +172,48 @@ sub show_record {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $tagid          = $self->param('tagid')           || '';
+    my $tagid          = $self->strip_suffix($self->param('tagid'));
 
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
     my $config         = $self->param('config');
     my $session        = $self->param('session');
-    my $stylesheet     = $self->param('stylesheet');
-    my $queryoptions   = $self->param('qopts');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
-  
-    # CGI Args
-    my $offset         = $query->param('offset')      || 0;
-    my $hitrange       = $query->param('num')    || 50;
-    my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
-    my $titisbn        = $query->param('titisbn')     || '';
-    my $tags           = decode_utf8($query->param('tags'))        || '';
-    my $type           = $query->param('type')        || 1;
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
 
-    my $oldtag         = $query->param('oldtag')      || '';
-    my $newtag         = $query->param('newtag')      || '';
+    # CGI Args
+    my $offset         = $query->param('offset')            || 0;
+    my $num            = $query->param('num')               || 50;
+    my $database       = $query->param('db')                || '';
+    my $sorttype       = $query->param('srt')               || "author";
+    my $sortorder      = $query->param('srto')              || "up";
+    my $titid          = $query->param('titid')             || '';
+    my $titdb          = $query->param('titdb')             || '';
+    my $titisbn        = $query->param('titisbn')           || '';
+    my $tags           = decode_utf8($query->param('tags')) || '';
+    my $type           = $query->param('type')              || 1;
+
+    my $oldtag         = $query->param('oldtag')            || '';
+    my $newtag         = $query->param('newtag')            || '';
     
     # Actions
-    my $format         = $query->param('format')      || 'cloud';
-    my $private_tags   = $query->param('private_tags')   || 0;
-    my $searchtitoftag = $query->param('searchtitoftag') || '';
-    my $edit_usertags  = $query->param('edit_usertags')  || '';
-    my $show_usertags  = $query->param('show_usertags')  || '';
+    my $format         = $query->param('format')            || 'cloud';
+    my $private_tags   = $query->param('private_tags')      || 0;
+    my $searchtitoftag = $query->param('searchtitoftag')    || '';
+    my $edit_usertags  = $query->param('edit_usertags')     || '';
+    my $show_usertags  = $query->param('show_usertags')     || '';
 
-    my $queryid        = $query->param('queryid')     || '';
+    my $queryid        = $query->param('queryid')           || '';
 
-    my $do_add         = $query->param('do_add')      || '';
-    my $do_edit        = $query->param('do_edit')     || '';
-    my $do_change      = $query->param('do_change')   || '';
-    my $do_del         = $query->param('do_del')      || '';
+    my $do_add         = $query->param('do_add')            || '';
+    my $do_edit        = $query->param('do_edit')           || '';
+    my $do_change      = $query->param('do_change')         || '';
+    my $do_del         = $query->param('do_del')            || '';
     
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -226,30 +228,18 @@ sub show_record {
 
     # Mit Suffix, dann keine Aushandlung des Typs
 
-    my $representation = "";
-    my $content_type   = "";
-
-    my $thisid = "";
-    if ($tagid=~/^(.+?)(\.html|\.json|\.rdf|\.include)$/){
-        $thisid           = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $thisid = $tagid;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
-    }
-
-    $tagid = $thisid;
-    
     my $tag        = undef;
-    
+
+    # Tags per id
     if ($tagid =~ /^\d+$/){
         # Zuerst Gesamtzahl bestimmen
         $tag = $user->get_name_of_tag({tagid => $tagid});
+    }
+    # Tags per name
+    else {
+        $tag = $tagid;
+
+        $tagid = $user->get_id_of_tag({tag => $tag});
     }
     
     my $titles_ref;
@@ -257,7 +247,7 @@ sub show_record {
     ($recordlist,$hits)= $user->get_titles_of_tag({
         tagid     => $tagid,
         offset    => $offset,
-        hitrange  => $hitrange,
+        hitrange  => $num,
     });
         
     # Zugriff loggen
@@ -266,33 +256,24 @@ sub show_record {
         content   => $tag,
     });
 
-    $logger->debug("Representation: $representation - Content-Type: $content_type ");
-
     $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+
+    $recordlist->load_brief_records;
     
-    $recordlist->print_to_handler({
-        representation   => $representation,
-        content_type     => $content_type,
-        database         => $database,
+    my $ttdata = {
         sortorder        => $sortorder,
         sorttype         => $sorttype,
-        apachereq        => $r,
-        stylesheet       => $stylesheet,
-        view             => $view,
         hits             => $hits,
         offset           => $offset,
-        hitrange         => $hitrange,
-        
-        query            => $query,
-        template         => 'tt_tag_tname',
-        location         => 'tag_loc',
-        parameter        => {
-            tag          => $tag,
-        },
-        
-        msg              => $msg,
-    });
+        num              => $num,
 
+        recordlist       => $recordlist,
+        query            => $query,
+        tag              => $tag,
+    };
+
+    $self->print_page($config->{'tt_tag_tname'},$ttdata);
+    
     return Apache2::Const::OK;
 }
 

@@ -52,7 +52,7 @@
 
 
 [%# IF user.ID %]
-[% loginname = user.get_username %]
+[% username = user.get_username %]
 <div class="tagging"><!-- Begin: Tagging -->
 <div class="headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
 <div id="tagging_do"><!-- Begin Tagging do -->
@@ -71,7 +71,7 @@ versehen: ") %]
 </td></tr>
 </table>
 
-[% private_tags = user.get_private_tags({ loginname => loginname  }) %]
+[% private_tags = user.get_private_tags({ username => username  }) %]
 
 <table width="100%">
 <tr><th>[% msg.maketext("Übernahme eigener Tags") %]</th></tr>

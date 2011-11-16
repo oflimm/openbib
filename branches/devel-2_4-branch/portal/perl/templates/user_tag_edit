@@ -41,7 +41,7 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 [%
-   private_tags = user.get_private_tags({ loginname => loginname  });
+   private_tags = user.get_private_tags({ username => username  });
 
 %]
 

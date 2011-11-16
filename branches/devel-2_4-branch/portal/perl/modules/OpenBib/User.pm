@@ -157,7 +157,7 @@ sub get_credentials {
 
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
-    # DBI: "select loginname,pin from user where userid = ?"
+    # DBI: "select username,pin from user where userid = ?"
     my $credentials = $self->{schema}->resultset('Userinfo')->search(
         {
             id => $thisuserid,
@@ -165,7 +165,7 @@ sub get_credentials {
     )->single;
 
     if ($credentials){
-        return ($credentials->loginname,$credentials->pin);
+        return ($credentials->username,$credentials->password);
     }
     else {
         return (undef,undef);
@@ -176,8 +176,8 @@ sub set_credentials {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $loginname   = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}             : undef;
+    my $username   = exists $arg_ref->{username}
+        ? $arg_ref->{username}             : undef;
 
     my $password    = exists $arg_ref->{password}
         ? $arg_ref->{password}              : undef;
@@ -185,13 +185,13 @@ sub set_credentials {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if ($loginname){
-        # DBI: "update userinfo set pin = ? where loginname = ?"
+    if ($username){
+        # DBI: "update userinfo set pin = ? where username = ?"
         my $userinfo = $self->{schema}->resultset('Userinfo')->search(
             {
-                loginname => $loginname,
+                username => $username,
             }
-        )->update({ pin => $password });
+        )->update({ password => $password });
     }
     elsif ($self->{ID}) {
         # DBI: "update userinfo set pin = ? where id = ?"
@@ -199,24 +199,24 @@ sub set_credentials {
             {
                 id => $self->{ID},
             }
-        )->update({ pin => $password });
+        )->update({ password => $password });
     }
     else {
-        $logger->error("Neither loginname nor userid given");
+        $logger->error("Neither username nor userid given");
     }
 
     return;
 }
 
 sub user_exists {
-    my ($self,$loginname)=@_;
+    my ($self,$username)=@_;
     
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # DBI: "select count(userid) as rowcount from user where loginname = ?"
-    my $count = $self->{schema}->resultset('Userinfo')->search({ loginname => $loginname})->count;
+    # DBI: "select count(userid) as rowcount from user where username = ?"
+    my $count = $self->{schema}->resultset('Userinfo')->search({ username => $username})->count;
     
     return $count;    
 }
@@ -225,8 +225,8 @@ sub add {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $loginname   = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}             : undef;
+    my $username   = exists $arg_ref->{username}
+        ? $arg_ref->{username}             : undef;
 
     my $password    = exists $arg_ref->{password}
         ? $arg_ref->{password}              : undef;
@@ -240,8 +240,8 @@ sub add {
 
     # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
     $self->{schema}->resultset('Userinfo')->create({
-        loginname => $loginname,
-        pin       => $password,
+        username  => $username,
+        password  => $password,
         email     => $email,
     });
     
@@ -252,8 +252,8 @@ sub add_confirmation_request {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $loginname   = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}             : undef;
+    my $username   = exists $arg_ref->{username}
+        ? $arg_ref->{username}             : undef;
 
     my $password    = exists $arg_ref->{password}
         ? $arg_ref->{password}              : undef;
@@ -271,8 +271,8 @@ sub add_confirmation_request {
     # DBI: "insert into userregistration values (?,NULL,?,?)"
     $self->{schema}->resultset('Registration')->create({
         id        => $registrationid,
-        loginname => $loginname,
-        pin       => $password,
+        username  => $username,
+        password  => $password,
     });
     
     return;
@@ -296,15 +296,15 @@ sub get_confirmation_request {
         }
     )->single;
 
-    my ($loginname,$password);
+    my ($username,$password);
     
     if ($confirmationinfo){
-        $loginname = $confirmationinfo->loginname;
+        $username = $confirmationinfo->username;
         $password  = $confirmationinfo->password;
     }
     
     my $confirmation_info_ref = {
-        loginname => $loginname,
+        username  => $username,
         password  => $password,
     };
     
@@ -337,7 +337,7 @@ sub get_username {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select loginname from user where userid = ?"
+    # DBI: "select username from user where userid = ?"
     my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
         {
             id => $self->{ID},
@@ -347,7 +347,7 @@ sub get_username {
     my $username;
     
     if ($userinfo){
-        $username=decode_utf8($userinfo->loginname);
+        $username=decode_utf8($userinfo->username);
     }
     
     return $username;
@@ -359,7 +359,7 @@ sub get_username_for_userid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select loginname from user where userid = ?"
+    # DBI: "select username from user where userid = ?"
     my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
         {
             id => $userid,
@@ -369,7 +369,7 @@ sub get_username_for_userid {
     my $username;
 
     if ($userinfo){
-        $username = decode_utf8($userinfo->loginname);
+        $username = decode_utf8($userinfo->username);
     }
     
     return $username;
@@ -381,10 +381,10 @@ sub get_userid_for_username {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select userid from user where loginname = ?"
+    # DBI: "select userid from user where username = ?"
     my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
         {
-            loginname => $username,
+            username => $username,
         }
     )->single;
 
@@ -620,7 +620,7 @@ sub get_number_of_tagging_users {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select count(distinct(loginname)) as rowcount from tittag"
+    # DBI: "select count(distinct(username)) as rowcount from tittag"
     my $numofusers = $self->{schema}->resultset('TitTag')->search(
         undef,
         {
@@ -658,6 +658,7 @@ sub get_name_of_tag {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Getting Name for Tagid $tagid");
     my $tag = $self->{schema}->resultset('Tag')->search_rs(
         {
             id => $tagid,
@@ -668,6 +669,7 @@ sub get_name_of_tag {
     
     if ($tag){
         $name = $tag->name;
+        $logger->debug("Found Tag $name");
     }
     
     return $name;
@@ -693,7 +695,7 @@ sub get_id_of_tag {
     return undef if (!defined $dbh);
     return undef if (!defined $tag);
     
-    my $request=$dbh->prepare("select id from tags where tag=?") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select id from tag where name=?") or $logger->error($DBI::errstr);
     $request->execute($tag) or $logger->error($DBI::errstr);
     my $result = $request->fetchrow_hashref();
     my $id     = $result->{id};
@@ -707,14 +709,14 @@ sub get_titles_of_tag {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $loginname   = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}             : undef;
+    my $username   = exists $arg_ref->{username}
+        ? $arg_ref->{username}             : undef;
 
     my $tagid       = exists $arg_ref->{tagid}
         ? $arg_ref->{tagid}                 : undef;
 
     my $database    = exists $arg_ref->{database}
-        ? $arg_ref->{loginname}             : undef;
+        ? $arg_ref->{database}             : undef;
 
     my $offset      = exists $arg_ref->{offset}
         ? $arg_ref->{offset}                : '';
@@ -734,8 +736,8 @@ sub get_titles_of_tag {
         group_by => ['me.titleid','me.dbname']
     };
     
-    if ($loginname) {
-        $where_ref->{'userid.loginname'} = $loginname;
+    if ($username) {
+        $where_ref->{'userid.username'}  = $username;
         $attribute_ref->{'join'}         = [ 'userid' ];
     }
 
@@ -764,8 +766,8 @@ sub get_titles_of_tag {
         group_by => ['me.titleid','me.dbname'],
     };
     
-    if ($loginname) {
-        $where_ref->{'userid.loginname'} = $loginname;
+    if ($username) {
+        $where_ref->{'userid.username'}  = $username;
         $attribute_ref->{'join'}         = [ 'userid' ];
     }
 
@@ -886,18 +888,18 @@ sub authenticate_self_user {
     # Set defaults
     my $username            = exists $arg_ref->{username}
         ? $arg_ref->{username}            : undef;
-    my $pin                 = exists $arg_ref->{pin}
-        ? $arg_ref->{pin}                 : undef;
+    my $password            = exists $arg_ref->{password}
+        ? $arg_ref->{password}            : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # DBI: "select userid from user where loginname = ? and pin = ?"
+    # DBI: "select userid from user where username = ? and password = ?"
     my $authentication = $self->{schema}->resultset('Userinfo')->search_rs(
         {
-            loginname => $username,
-            pin       => $pin,
+            username  => $username,
+            password  => $password,
         }
     )->single;
     
@@ -1020,8 +1022,8 @@ sub add_tags {
         ? $arg_ref->{titisbn}             : '';
     my $titdb               = exists $arg_ref->{titdb}
         ? $arg_ref->{titdb}               : undef;
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
     my $type                = exists $arg_ref->{type}
         ? $arg_ref->{type}                : undef;
 
@@ -1038,7 +1040,7 @@ sub add_tags {
 
     return if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
 
     # Splitten der Tags
@@ -1046,10 +1048,10 @@ sub add_tags {
 
     # Zuerst alle Verknuepfungen loeschen
 
-    # DBI: "delete from tittag where loginname = ? and titid=? and titdb=?"
+    # DBI: "delete from tittag where username = ? and titid=? and titdb=?"
     $self->{schema}->resultset('TitTag')->search_rs(
         {
-            'userid.loginname' => $loginname,
+            'userid.username' => $username,
             'me.titleid'       => $titid,
             'me.dbname'        => $titdb,
         },
@@ -1085,14 +1087,14 @@ sub add_tags {
             my $new_tag = $self->{schema}->resultset('Tag')->create({ name => encode_utf8($tag) });
 
             # DBI: "select id from tags where tag = ?"
-            #      "insert into tittag (tagid,titid,titisbn,titdb,loginname,type) values (?,?,?,?,?,?)"
+            #      "insert into tittag (tagid,titid,titisbn,titdb,username,type) values (?,?,?,?,?,?)"
             $new_tag->create_related(
                 'tit_tags',
                 {
                     titleid   => $titid,
                     titleisbn => $titisbn,
                     dbname    => $titdb,
-                    userid    => $self->get_userid_for_username($loginname),
+                    userid    => $self->get_userid_for_username($username),
                     type      => $type,
                     
                 }
@@ -1106,14 +1108,14 @@ sub add_tags {
             # Neue Verknuepfungen eintragen
             $logger->debug("Verknuepfung zu Titel noch nicht vorhanden");
 
-            # DBI: "insert into tittag (tagid,titid,titisbn,titdb,loginname,type) values (?,?,?,?,?,?)"
+            # DBI: "insert into tittag (tagid,titid,titisbn,titdb,username,type) values (?,?,?,?,?,?)"
             $tag->create_related(
                 'tit_tags',
                 {
                     titleid   => $titid,
                     titleisbn => $titisbn,
                     dbname    => $titdb,
-                    userid    => $self->get_userid_for_username($loginname),
+                    userid    => $self->get_userid_for_username($username),
                     type      => $type,                    
                 }
             );
@@ -1167,8 +1169,8 @@ sub rename_tag {
         ? $arg_ref->{oldtag  }            : undef;
     my $newtag              = exists $arg_ref->{newtag}
         ? $arg_ref->{newtag  }            : undef;
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
 
     # Log4perl logger erzeugen
   
@@ -1183,7 +1185,7 @@ sub rename_tag {
 
     return if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     # Splitten der Tags
     my @oldtaglist = split("\\s+",$oldtag);
@@ -1204,7 +1206,7 @@ sub rename_tag {
     # 1.) oldid von oldtag bestimmen
     # 2.) Uebepruefen, ob newtag schon existiert. Wenn nicht, dann anlegen
     #     und newid merken
-    # 3.) In tittag alle Vorkommen von oldid durch newid fuer loginname
+    # 3.) In tittag alle Vorkommen von oldid durch newid fuer username
     #     ersetzen
 
     my $request=$dbh->prepare("select id from tag where name = ?") or $logger->error($DBI::errstr);
@@ -1236,7 +1238,7 @@ sub rename_tag {
 
     if ($oldtagid && $newtagid){
         $request=$dbh->prepare("update tit_tag set tagid = ? where tagid = ? and userid = ?") or $logger->error($DBI::errstr);
-        $request->execute($newtagid,$oldtagid,$self->get_userid_for_username($loginname)) or $logger->error($DBI::errstr);
+        $request->execute($newtagid,$oldtagid,$self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
     }
     else {
         return 1;
@@ -1257,8 +1259,8 @@ sub del_tags {
         ? $arg_ref->{titisbn}             : '';
     my $titdb               = exists $arg_ref->{titdb}
         ? $arg_ref->{titdb}               : undef;
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
 
     # Log4perl logger erzeugen
   
@@ -1273,18 +1275,18 @@ sub del_tags {
 
     return if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     if ($tags){
         foreach my $tag (split("\\s+",$tags)){
             my $tagid = $self->get_id_of_tag({tag => $tag});
             my $request=$dbh->prepare("delete from tit_tag where titleid=? and dbname=? and userid=? and tagid=?") or $logger->error($DBI::errstr);
-            $request->execute($titid,$titdb,$self->get_userid_for_username($loginname),$tagid) or $logger->error($DBI::errstr);
+            $request->execute($titid,$titdb,$self->get_userid_for_username($username),$tagid) or $logger->error($DBI::errstr);
         }
     }
     else {
         my $request=$dbh->prepare("delete from tittag where titleid=? and dbname=? and userid=?") or $logger->error($DBI::errstr);
-        $request->execute($titid,$titdb,$self->get_userid_for_username($loginname)) or $logger->error($DBI::errstr);
+        $request->execute($titid,$titdb,$self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
     }
     
     return;
@@ -1310,7 +1312,7 @@ sub get_all_tags_of_db {
 
     return [] if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where tt.dbname=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.name") or $logger->error($DBI::errstr);
 
@@ -1366,7 +1368,7 @@ sub get_all_tags_of_tit {
 
     return [] if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where tt.titleid=? and tt.dbname=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.name") or $logger->error($DBI::errstr);
 
@@ -1408,8 +1410,8 @@ sub get_private_tags_of_tit {
         ? $arg_ref->{titisbn}             : '';
     my $titdb               = exists $arg_ref->{titdb}
         ? $arg_ref->{titdb}               : undef;
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
 
     # Log4perl logger erzeugen
   
@@ -1424,10 +1426,10 @@ sub get_private_tags_of_tit {
 
     return [] if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select t.id,t.name,tt.type from tag as t,tit_tag as tt where tt.userid=? and tt.titleid=? and tt.dbname=? and tt.tagid = t.id") or $logger->error($DBI::errstr);
-    $request->execute($self->get_userid_for_username($loginname),$titid,$titdb) or $logger->error($DBI::errstr);
+    $request->execute($self->get_userid_for_username($username),$titid,$titdb) or $logger->error($DBI::errstr);
 
     my $taglist_ref = [];
 
@@ -1450,14 +1452,14 @@ sub get_private_tags {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    $logger->debug("loginname: $loginname");
+    $logger->debug("username: $username");
 
     my $config = OpenBib::Config->instance;
     
@@ -1468,10 +1470,10 @@ sub get_private_tags {
 
     return [] if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where t.id=tt.tagid and tt.userid=? group by tt.tagid order by t.name") or $logger->error($DBI::errstr);
-    $request->execute($self->get_userid_for_username($loginname)) or $logger->error($DBI::errstr);
+    $request->execute($self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
 
     my $taglist_ref = [];
     my $maxcount = 0;
@@ -1504,14 +1506,14 @@ sub get_private_tagged_titles {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    $logger->debug("loginname: $loginname");
+    $logger->debug("username: $username");
 
     my $config = OpenBib::Config->instance;
     
@@ -1522,10 +1524,10 @@ sub get_private_tagged_titles {
 
     return [] if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select t.name, tt.titleid, tt.dbname, tt.type from tag as t, tit_tag as tt where t.id=tt.tagid and tt.userid=? group by tt.tagid order by t.name") or $logger->error($DBI::errstr);
-    $request->execute($self->get_userid_for_username($loginname)) or $logger->error($DBI::errstr);
+    $request->execute($self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
 
     my $taglist_ref = {};
 
@@ -1631,8 +1633,8 @@ sub vote_for_review {
     # Set defaults
     my $reviewid            = exists $arg_ref->{reviewid}
         ? $arg_ref->{reviewid}            : undef;
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
     my $rating              = exists $arg_ref->{rating}
         ? $arg_ref->{rating}              : undef;
 
@@ -1649,14 +1651,14 @@ sub vote_for_review {
 
     return if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     # Ratings sind Zahlen
     $rating   =~s/[^0-9]//g;
     
     # Zuerst alle Verknuepfungen loeschen
     my $request=$dbh->prepare("select reviewid from reviewrating where userid = ? and reviewid=?") or $logger->error($DBI::errstr);
-    $request->execute($self->get_userid_for_username($loginname), $reviewid) or $logger->error($DBI::errstr);
+    $request->execute($self->get_userid_for_username($username), $reviewid) or $logger->error($DBI::errstr);
 
     my $result   = $request->fetchrow_hashref;
     my $thisreviewid = $result->{reviewid};
@@ -1667,7 +1669,7 @@ sub vote_for_review {
     }
     else {
         $request=$dbh->prepare("insert into reviewrating (reviewid,userid,rating) values (?,?,?)") or $logger->error($DBI::errstr);
-        $request->execute($reviewid,$self->get_userid_for_username($loginname),$rating) or $logger->error($DBI::errstr);
+        $request->execute($reviewid,$self->get_userid_for_username($username),$rating) or $logger->error($DBI::errstr);
     }
 
     return;
@@ -1710,13 +1712,13 @@ sub get_review_properties {
     my $rating    = $result->{rating};
     my $userid    = $result->{userid};
 
-    my $loginname = $self->get_username_for_userid($userid);
+    my $username = $self->get_username_for_userid($userid);
 
     
     my $review_ref = {
 			id               => $reviewid,
 			userid           => $userid,
-                        loginname        => $loginname,
+                        username         => $username,
 			title            => $title,
                         titdb            => $titdb,
                         titid            => $titid,
@@ -1755,8 +1757,8 @@ sub add_review {
         ? $arg_ref->{titisbn}             : '';
     my $titdb               = exists $arg_ref->{titdb}
         ? $arg_ref->{titdb}               : undef;
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
     my $nickname            = exists $arg_ref->{nickname}
         ? $arg_ref->{nickname}            : undef;
     my $title              = exists $arg_ref->{title}
@@ -1779,7 +1781,7 @@ sub add_review {
 
     return if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
     $rating   =~s/[^0-9]//g;
@@ -1789,7 +1791,7 @@ sub add_review {
     
     # Zuerst alle Verknuepfungen loeschen
     my $request=$dbh->prepare("select id from review where userid = ? and titleid=? and dbname=?") or $logger->error($DBI::errstr);
-    $request->execute($self->get_userid_for_username($loginname), $titid, $titdb) or $logger->error($DBI::errstr);
+    $request->execute($self->get_userid_for_username($username), $titid, $titdb) or $logger->error($DBI::errstr);
 
     my $result   = $request->fetchrow_hashref;
     my $reviewid = $result->{id};
@@ -1797,11 +1799,11 @@ sub add_review {
     # Review schon vorhanden?
     if ($reviewid){
         $request=$dbh->prepare("update review set titleid=?, titleisbn=?, dbname=?, userid=?, nickname=?, title=?, review=?, rating=? where id=?") or $logger->error($DBI::errstr);
-        $request->execute($titid,$titisbn,$titdb,$self->get_userid_for_username($loginname),encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating,$reviewid) or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$self->get_userid_for_username($username),encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating,$reviewid) or $logger->error($DBI::errstr);
     }
     else {
         $request=$dbh->prepare("insert into review (titleid,titleisbn,dbname,userid,nickname,title,review,rating) values (?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-        $request->execute($titid,$titisbn,$titdb,$self->get_userid_for_username($loginname),encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating) or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$self->get_userid_for_username($username),encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating) or $logger->error($DBI::errstr);
     }
 
     return;
@@ -1831,7 +1833,7 @@ sub get_reviews_of_tit {
 
     return [] if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select id,nickname,userid,title,review,rating from review where titleid=? and dbname=?") or $logger->error($DBI::errstr);
     $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
@@ -1843,7 +1845,7 @@ sub get_reviews_of_tit {
 
     while (my $result=$request->fetchrow_hashref){
         my $userid    = decode_utf8($result->{userid});
-        my $loginname = $self->get_username_of_userid($userid);
+        my $username = $self->get_username_of_userid($userid);
         my $nickname  = decode_utf8($result->{nickname});
         my $title     = decode_utf8($result->{title});
         my $review    = decode_utf8($result->{review});
@@ -1866,7 +1868,7 @@ sub get_reviews_of_tit {
         
         push @$reviewlist_ref, {
             id        => $id,
-            loginname => $loginname,
+            username  => $username,
             nickname  => $nickname,
             title     => $title,
             review    => $review,
@@ -1891,8 +1893,8 @@ sub tit_reviewed_by_user {
         ? $arg_ref->{titisbn}             : '';
     my $titdb               = exists $arg_ref->{titdb}
         ? $arg_ref->{titdb}               : undef;
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
     
     # Log4perl logger erzeugen
   
@@ -1907,10 +1909,10 @@ sub tit_reviewed_by_user {
 
     return undef if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select id from review where titleid=? and dbname=? and userid=?") or $logger->error($DBI::errstr);
-    $request->execute($titid,$titdb,$self->get_userid_for_username($loginname)) or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb,$self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
 
     my $result=$request->fetchrow_hashref;
 
@@ -1925,8 +1927,8 @@ sub get_review_of_user {
     # Set defaults
     my $id                  = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : '';
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : '';
 
     # Log4perl logger erzeugen
   
@@ -1941,18 +1943,18 @@ sub get_review_of_user {
 
     return {} if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select id,titleid,dbname,nickname,userid,title,review,rating from review where id=? and userid=?") or $logger->error($DBI::errstr);
-    $request->execute($id,$self->get_userid_for_username($loginname)) or $logger->error($DBI::errstr);
+    $request->execute($id,$self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
 
-    $logger->debug("Getting Review $id for User $loginname");
+    $logger->debug("Getting Review $id for User $username");
     
     my $review_ref = {};
 
     while (my $result=$request->fetchrow_hashref){
         my $userid    = decode_utf8($result->{userid});
-        my $loginname = $self->get_username_of_userid($userid);
+        my $username = $self->get_username_of_userid($userid);
         my $nickname  = decode_utf8($result->{nickname});
         my $title     = decode_utf8($result->{title});
         my $review    = decode_utf8($result->{review});
@@ -1965,7 +1967,7 @@ sub get_review_of_user {
             id        => $id,
             titid     => $titid,
             titdb     => $titdb,
-            loginname => $loginname,
+            username  => $username,
             nickname  => $nickname,
             title     => $title,
             review    => $review,
@@ -1984,8 +1986,8 @@ sub del_review_of_user {
     # Set defaults
     my $id                  = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : '';
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : '';
 
     # Log4perl logger erzeugen
   
@@ -2000,10 +2002,10 @@ sub del_review_of_user {
 
     return if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("delete from review where id=? and userid=?") or $logger->error($DBI::errstr);
-    $request->execute($id,$self->get_userid_for_username($loginname)) or $logger->error($DBI::errstr);
+    $request->execute($id,$self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
 
     return;
 }
@@ -2012,8 +2014,8 @@ sub get_reviews {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $loginname           = exists $arg_ref->{loginname}
-        ? $arg_ref->{loginname}           : undef;
+    my $username           = exists $arg_ref->{username}
+        ? $arg_ref->{username}           : undef;
 
     # Log4perl logger erzeugen
   
@@ -2028,16 +2030,16 @@ sub get_reviews {
 
     return [] if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select id,titleid,dbname,nickname,userid,title,review,rating from review where userid=?") or $logger->error($DBI::errstr);
-    $request->execute($self->get_userid_for_username($loginname)) or $logger->error($DBI::errstr);
+    $request->execute($self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
 
     my $reviewlist_ref = [];
 
     while (my $result=$request->fetchrow_hashref){
         my $userid    = decode_utf8($result->{userid});
-        my $loginname = $self->get_username_of_userid($userid);
+        my $username = $self->get_username_of_userid($userid);
         my $nickname  = decode_utf8($result->{nickname});
         my $title     = decode_utf8($result->{title});
         my $review    = decode_utf8($result->{review});
@@ -2050,7 +2052,7 @@ sub get_reviews {
             id        => $id,
             titid     => $titid,
             titdb     => $titdb,
-            loginname => $loginname,
+            username  => $username,
             nickname  => $nickname,
             title     => $title,
             review    => $review,
@@ -2085,7 +2087,7 @@ sub add_litlist {
 
     return if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titid || !$titdb || !$username || !$tags);
 
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
     $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
@@ -2346,16 +2348,10 @@ sub get_recent_litlists {
         my $litlists = $self->{schema}->resultset('LitlistSubject')->search(
             {
                 'subjectid.id'  => $subjectid,
-                'me.litlistid'  => 'litlistitems.litlistid',
-
                 'litlistid.type' => 1,
-                'me.litlistid' => { '-in' => $litlist_not_empty->get_column('litlistid')->as_query },
-#                'count(litlistitem.id)' => { '>', 0},
             },
             {
                 group_by => [ 'me.litlistid' ],
-                having   => \[ 'count(litlistitems.litlistid) > ?', [ count => 0 ] ], #$litlist_not_empty->get_column('litlistid')->as_query,
-
                 select   => ['litlistid.id'],
                 as       => ['thislitlistid'],
                 order_by => [ 'litlistid.id DESC' ],
@@ -2371,17 +2367,13 @@ sub get_recent_litlists {
     }
     else {
         # DBI: "select l.id from litlists as l where l.type = 1 and (select count(litlistid) from litlistitems where litlistid=l.id)  > 0 order by id DESC limit $count";
+
         my $litlists = $self->{schema}->resultset('Litlist')->search(
             {
                 'me.type' => 1,
-                'me.id'   => 'litlistitems.litlistid',
-#                'me.id'   => { '-in' => $litlist_not_empty->get_column('litlistid')->as_query },
-#                'count(litlistitems.id)' => { '>', 0},
             },
             {
-                group_by => [ 'me.id' ],
-                having   => \[ 'count(litlistitems.litlistid) > ?', [ count => 0 ] ], #$litlist_not_empty->get_column('litlistid')->as_query,
-            
+                group_by => ['me.id'],
                 select   => ['me.id'],
                 as       => ['thislitlistid'],
                 order_by => [ 'me.id DESC' ],
@@ -2389,8 +2381,9 @@ sub get_recent_litlists {
                 join     => [ 'litlistitems' ],
             }
         );
-        
+
         foreach my $litlist ($litlists->all){
+            $logger->debug("Found Listlist with ID ".$litlist->get_column('thislitlistid'));
             push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid')});
         }
     }
@@ -2706,7 +2699,7 @@ sub get_subjects {
     my $logger = get_logger();
 
     # DBI: "select * from subjects order by name"
-    my $subjects = $self->{schema}->resultset('Subject')->search(
+    my $subjects = $self->{schema}->resultset('Subject')->search_rs(
         undef,        
         {
             'order_by' => ['name'],
@@ -2715,12 +2708,12 @@ sub get_subjects {
 
     my $subjects_ref = [];
     
-    while (my $subject=$subjects->all){
+    foreach my $subject ($subjects->all){
         push @{$subjects_ref}, {
             id           => $subject->id,
             name         => decode_utf8($subject->name),
             description  => decode_utf8($subject->description),
-            litlistcount => OpenBib::User->get_number_of_litlists_by_subject({subjectid => $subject->id}),
+            litlistcount => $self->get_number_of_litlists_by_subject({subjectid => $subject->id}),
         };
     }
 
@@ -2863,27 +2856,25 @@ sub get_number_of_litlists_by_subject {
     my $count_ref={};
 
     # DBI: "select count(distinct l2s.litlistid) as llcount from litlist_subject as l2s, litlist as l where l2s.litlistid=l.id and l2s.subjectid=? and l.type=1 and (select count(li.litlistid) > 0 from litlistitem as li where l2s.litlistid=li.litlistid)"
-    $count_ref->{public} = $self->{schema}->resultset('LitlistSubject')->search(
+    $count_ref->{public} = $self->{schema}->resultset('Litlist')->search(
         {
             'subjectid.id'  => $subjectid,
-            'litlistid.type' => 1,
-            'count(litlistitems.id)' => { '>', 0},
+            'me.type' => 1,
         },
         {
-            prefetch => [ { 'litlistid' => 'litlistitems' } ],
-            join     => [ 'subjectid', 'litlistid' ],
+            prefetch => [{ 'litlist_subjects' => 'subjectid' }],
+            join     => [ 'litlist_subjects', 'litlistitems' ],
         }
     )->count;
 
     # "select count(distinct litlistid) as llcount from litlist2subject as l2s where subjectid=? and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)"
-    $count_ref->{all}=$self->{schema}->resultset('LitlistSubject')->search(
+    $count_ref->{all}=$self->{schema}->resultset('Litlist')->search(
         {
             'subjectid.id'  => $subjectid,
-            'count(litlistitems.id)' => { '>', 0},
         },
         {
-            prefetch => [ { 'litlistid' => 'litlistitems' } ],
-            join     => [ 'subjectid', 'litlistid' ],
+            prefetch => [{ 'litlist_subjects' => 'subjectid' }],
+            join     => [ 'litlist_subjects', 'litlistitems' ],
         }
     )->count;
 
@@ -3583,7 +3574,7 @@ sub delete_private_info {
 }
 
 sub set_private_info {
-    my ($self,$loginname,$userinfo_ref)=@_;
+    my ($self,$username,$userinfo_ref)=@_;
     
     # Log4perl logger erzeugen
   
@@ -3598,8 +3589,8 @@ sub set_private_info {
     
     return undef if (!defined $dbh);
 
-    my $userresult=$dbh->prepare("update userinfo set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where loginname = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$loginname) or $logger->error($DBI::errstr);
+    my $userresult=$dbh->prepare("update userinfo set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where username = ?") or $logger->error($DBI::errstr);
+    $userresult->execute($userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$username) or $logger->error($DBI::errstr);
     $userresult->finish();
    
     return;
@@ -3646,8 +3637,8 @@ sub get_info {
     $userinfo_ref->{'sperrdatum'} = decode_utf8($res->{'sperrdatum'});
     $userinfo_ref->{'email'}      = decode_utf8($res->{'email'});
     $userinfo_ref->{'gebdatum'}   = decode_utf8($res->{'gebdatum'});
-    $userinfo_ref->{'loginname'}  = decode_utf8($res->{'loginname'});
-    $userinfo_ref->{'password'}   = decode_utf8($res->{'pin'});
+    $userinfo_ref->{'username'}   = decode_utf8($res->{'username'});
+    $userinfo_ref->{'password'}   = decode_utf8($res->{'password'});
     $userinfo_ref->{'masktype'}   = decode_utf8($res->{'masktype'});
     $userinfo_ref->{'autocompletiontype'} = decode_utf8($res->{'autocompletiontype'});
     $userinfo_ref->{'spelling_as_you_type'}   = decode_utf8($res->{'spelling_as_you_type'});
@@ -3658,7 +3649,7 @@ sub get_info {
     $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
 
     while (my $res=$userresult->fetchrow_hashref()){
-        $userinfo_ref->{role}{$res->{role}}=1;
+        $userinfo_ref->{role}{$res->{name}}=1;
     }
 
     return $userinfo_ref;
@@ -3689,7 +3680,7 @@ sub get_all_roles {
     while (my $res=$userresult->fetchrow_hashref()){
         push @$roles_ref, {
             id   => $res->{id},
-            role => $res->{role},
+            role => $res->{name},
         };
     }
 
@@ -3716,12 +3707,12 @@ sub get_roles_of_user {
     
     return [] if (!defined $dbh);
 
-    my $userresult=$dbh->prepare("select role.role from role,user_role where user_role.userid=? and user_role.roleid=role.id") or $logger->error($DBI::errstr);
+    my $userresult=$dbh->prepare("select role.name from role,user_role where user_role.userid=? and user_role.roleid=role.id") or $logger->error($DBI::errstr);
     $userresult->execute($userid) or $logger->error($DBI::errstr);
 
     my $role_ref = {};
     while (my $res=$userresult->fetchrow_hashref()){
-        $role_ref->{$res->{role}}=1;
+        $role_ref->{$res->{name}}=1;
     }
 
     $logger->debug("Available roles ".YAML::Dump($role_ref));
@@ -4180,8 +4171,8 @@ sub sync_all_to_bibsonomy {
 
     return undef if (!defined $dbh);
 
-    my $loginname  = $self->get_username;
-    my $titles_ref = $self->get_private_tagged_titles({loginname => $loginname});
+    my $username  = $self->get_username;
+    my $titles_ref = $self->get_private_tagged_titles({username => $username});
 
     foreach my $database (keys %$titles_ref){
         foreach my $id (keys %{$titles_ref->{$database}}){
@@ -4365,7 +4356,7 @@ sub is_admin {
     # DBI: "select count(ur.userid) as rowcount from userrole as ur, role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid"
     my $count = $self->{schema}->resultset('UserRole')->search(
         {
-            'roleid.role' => 'admin',
+            'roleid.name' => 'admin',
             'userid.id'   => $self->{ID},
         },
         {
@@ -4500,7 +4491,7 @@ sub search {
     }
     else {
         if ($username) {
-            push @sql_where,"loginname = ?";
+            push @sql_where,"username = ?";
             push @sql_args, $username;
         }
         
@@ -4556,7 +4547,7 @@ sub connectDB {
     $self->{dbh}->{RaiseError} = 1;
 
     eval {        
-        $self->{schema} = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 0,}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1,}) or $logger->error_die($DBI::errstr);
 
     };
 

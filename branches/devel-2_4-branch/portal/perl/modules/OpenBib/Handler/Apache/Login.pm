@@ -101,7 +101,7 @@ sub show_form {
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'';
-    my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
+    my $username = ($query->param('username'))?$query->param('username'):'';
     my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
 
     # Main-Actions
@@ -128,7 +128,7 @@ sub show_form {
     my $ttdata={
         logintargets => $logintargets_ref,
         validtarget  => $validtarget,
-        loginname    => $loginname,
+        username    => $username,
         return_url   => $return_url,
     };
     
@@ -166,7 +166,7 @@ sub authenticate {
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'';
-    my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
+    my $username = ($query->param('username'))?$query->param('username'):'';
     my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
 
     # Main-Actions
@@ -189,20 +189,13 @@ sub authenticate {
 
     my $loginfailed=0;
     
-    if ($loginname eq "" || $password eq "") {
+    if ($username eq "" || $password eq "") {
         $loginfailed=1;
     }
     
     my $logintarget_ref = $user->get_logintarget_by_id($targetid);
     
-    my $hostname    = $logintarget_ref->{hostname};
-    my $port        = $logintarget_ref->{port};
-    my $username    = $logintarget_ref->{username};
-    my $db          = $logintarget_ref->{dbname};
-    my $description = $logintarget_ref->{description};
-    my $type        = $logintarget_ref->{type};
-    
-    $logger->debug("Hostname: $hostname Port: $port Username: $username DB: $db Description: $description Type: $type");
+    $logger->debug(YAML::Dump($logintarget_ref));
     
     ## Ausleihkonfiguration fuer den Katalog einlesen
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
@@ -211,8 +204,8 @@ sub authenticate {
         $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($circinfotable));
         
         my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
-            username      => $loginname,
-            pin           => $password,
+            username      => $username,
+            password      => $password,
             circcheckurl  => $circinfotable->{$db}{circcheckurl},
             circdb        => $circinfotable->{$db}{circdb},
         });
@@ -230,29 +223,29 @@ sub authenticate {
             my $userid;
             
             # Eintragen, wenn noch nicht existent
-            if (!$user->user_exists($loginname)) {
+            if (!$user->user_exists($username)) {
                 # Neuen Satz eintragen
                 $user->add({
-                    loginname => $loginname,
+                    username => $username,
                     password  => $password,
                 });
             }
             else {
                 # Satz aktualisieren
                 $user->set_credentials({
-                    loginname => $loginname,
+                    username => $username,
                     password  => $password,
                 });
             }
             
             # Benuzerinformationen eintragen
-            $user->set_private_info($loginname,$userinfo_ref);
+            $user->set_private_info($username,$userinfo_ref);
         }
     }
     elsif ($type eq "self") {
         my $result = $user->authenticate_self_user({
-            username  => $loginname,
-            pin       => $password,
+            username  => $username,
+            password  => $password,
         });
         
         if ($result <= 0) {
@@ -267,7 +260,7 @@ sub authenticate {
     
     if (!$loginfailed) {
         # Jetzt wird die Session mit der Benutzerid assoziiert
-        my $userid = $user->get_userid_for_username($loginname);
+        my $userid = $user->get_userid_for_username($username);
         
         $user->connect_session({
             sessionID => $session->{ID},
@@ -362,7 +355,7 @@ sub failure {
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'';
-    my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
+    my $username = ($query->param('username'))?$query->param('username'):'';
     my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
 
     # Main-Actions
@@ -384,7 +377,7 @@ sub failure {
     }
 
     if    ($code eq "1") {
-        $self->print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"));
+        $self->print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Usernamen eingegeben"));
     }
     elsif ($code eq "2") {
         $self->print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"));

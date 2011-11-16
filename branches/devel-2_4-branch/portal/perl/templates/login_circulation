@@ -76,7 +76,7 @@ Bibliothek authentifizieren.") %]
 [%- END -%]
 </select>
 </td></tr>
-<tr><td align="right"><b>[% msg.maketext("Benutzernummer") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Benutzernummer") %]</b></td><td><input type="text" name="username" value="[% username %]" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
 </table>

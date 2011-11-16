@@ -43,8 +43,8 @@ sub authenticate_olws_user {
     # Set defaults
     my $username            = exists $arg_ref->{username}
         ? $arg_ref->{username}            : undef;
-    my $pin                 = exists $arg_ref->{pin}
-        ? $arg_ref->{pin}                 : undef;
+    my $password            = exists $arg_ref->{password}
+        ? $arg_ref->{password}            : undef;
     my $circcheckurl        = exists $arg_ref->{circcheckurl}
         ? $arg_ref->{circcheckurl}        : undef;
     my $circdb              = exists $arg_ref->{circdb}
@@ -65,7 +65,7 @@ sub authenticate_olws_user {
         my $result = $soap->authenticate_user(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username => $username)->type('string'),
-                SOAP::Data->name(password => $pin)->type('string'),
+                SOAP::Data->name(password => $password)->type('string'),
                 SOAP::Data->name(database => $circdb)->type('string')))
           );
         

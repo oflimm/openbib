@@ -113,7 +113,7 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     
-    my $subjects_ref         = OpenBib::User->get_subjects;
+    my $subjects_ref         = $user->get_subjects;
     my $public_litlists_ref  = $user->get_public_litlists();
 
     # TT-Data erzeugen
@@ -150,7 +150,7 @@ sub show_collection_recent {
     # CGI Args
     my $hitrange       = $query->param('num')    || 50;
 
-    my $subjects_ref         = OpenBib::User->get_subjects;
+    my $subjects_ref         = $user->get_subjects;
     my $public_litlists_ref  = $user->get_recent_litlists({ count => $hitrange });
 
     # TT-Data erzeugen
@@ -183,7 +183,7 @@ sub show_collection_by_subject {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
-    my $subjects_ref         = OpenBib::User->get_subjects;
+    my $subjects_ref         = $user->get_subjects;
     my $public_litlists_ref  = $user->get_public_litlists();
 
     # TT-Data erzeugen
@@ -221,7 +221,7 @@ sub show_collection_by_single_subject_recent {
     # CGI Args
     my $hitrange       = $query->param('num')    || 50;
 
-    my $subjects_ref         = OpenBib::User->get_subjects;
+    my $subjects_ref         = $user->get_subjects;
     my $public_litlists_ref  = $user->get_recent_litlists({ subjectid => $subjectid, count => $hitrange });
 
     # TT-Data erzeugen
@@ -256,7 +256,7 @@ sub show_collection_by_single_subject {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
-    my $subjects_ref         = OpenBib::User->get_subjects;
+    my $subjects_ref         = $user->get_subjects;
     my $public_litlists_ref  = $user->get_public_litlists({ subjectid => $subjectid });
 
     # TT-Data erzeugen
@@ -313,7 +313,7 @@ sub show_collection_by_single_userxxx {
     my $subjectid      = $query->param('subjectid')   || undef;
 
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = OpenBib::User->get_subjects;
+    my $subjects_ref   = $user->get_subjects;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -433,7 +433,7 @@ sub show_collection_by_single_user {
 
     
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = OpenBib::User->get_subjects;
+    my $subjects_ref   = $user->get_subjects;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -545,7 +545,7 @@ sub show_record {
     my $subjectid      = $query->param('subjectid')   || undef;
 
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = OpenBib::User->get_subjects;
+    my $subjects_ref   = $user->get_subjects;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -682,7 +682,7 @@ sub show_record_form {
     my $subjectid      = $query->param('subjectid')   || undef;
 
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = OpenBib::User->get_subjects;
+    my $subjects_ref   = $user->get_subjects;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -973,7 +973,7 @@ sub show_entry_negotiate {
     my $method         = $query->param('_method')     || '';
 
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = OpenBib::User->get_subjects;
+    my $subjects_ref   = $user->get_subjects;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;

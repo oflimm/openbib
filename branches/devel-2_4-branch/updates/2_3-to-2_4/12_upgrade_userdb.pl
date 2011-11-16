@@ -67,7 +67,7 @@ my %userid_exists = ();
     $newdbh->do(qq{ALTER TABLE userinfo DISABLE KEYS});
     
     my $request  = $olddbh->prepare("select * from user");
-    my $request2 = $newdbh->prepare("insert into userinfo (id,lastlogin,loginname,pin,nachname,vorname,strasse,ort,plz,soll,gut,avanz,branz,bsanz,vmanz,maanz,vlanz,sperre,sperrdatum,gebdatum,email,masktype,autocompletiontype,spelling_as_you_type,spelling_resultlist,bibsonomy_user,bibsonomy_key,bibsonomy_sync) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");    
+    my $request2 = $newdbh->prepare("insert into userinfo (id,lastlogin,username,password,nachname,vorname,strasse,ort,plz,soll,gut,avanz,branz,bsanz,vmanz,maanz,vlanz,sperre,sperrdatum,gebdatum,email,masktype,autocompletiontype,spelling_as_you_type,spelling_resultlist,bibsonomy_user,bibsonomy_key,bibsonomy_sync) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");    
 
     $request->execute();
     
@@ -99,7 +99,7 @@ my %userid_exists = ();
     print STDERR "### role\n";
     
     my $request  = $olddbh->prepare("select * from role");
-    my $request2 = $newdbh->prepare("insert into role (id,role) values (?,?)");
+    my $request2 = $newdbh->prepare("insert into role (id,name) values (?,?)");
     
     $request->execute();
     
@@ -518,9 +518,12 @@ my %searchprofileid = ();
         my $id          = $result->{id};
         my $name        = $result->{name};
         my $description = $result->{description};
-        
+
+        print STDERR "$id - $name - $description\n";
         $request2->execute($id,$name,$description);
     }
+
+    $newdbh->do(qq{COMMIT});
 }
 
 # litlist_subject
@@ -539,6 +542,8 @@ my %searchprofileid = ();
         
         $request2->execute($litlistid,$subjectid);
     }
+
+    $newdbh->do(qq{COMMIT});
 }
 
 # subjectclassification
@@ -558,6 +563,8 @@ my %searchprofileid = ();
         
         $request2->execute($subjectid,$classification,$type);
     }
+
+    $newdbh->do(qq{COMMIT});
 }
 
 print STDERR "### ENDE der Migration \n";

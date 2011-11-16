@@ -361,8 +361,8 @@ CREATE TABLE userinfo (
  id         BIGINT AUTO_INCREMENT,
  lastlogin  DATETIME,
 
- loginname  VARCHAR(255) UNIQUE,
- pin        TEXT,
+ username  VARCHAR(255) UNIQUE,
+ password  TEXT,
 
  /* User informatin from library system */
  nachname   TEXT,
@@ -406,7 +406,7 @@ PACK_KEYS=1;
 DROP TABLE IF EXISTS role;
 CREATE TABLE role (
   id        BIGINT AUTO_INCREMENT,
-  role      VARCHAR(255) NOT NULL,
+  name      VARCHAR(255) NOT NULL,
 
   CONSTRAINT `pk_role` PRIMARY KEY (`id`)
 )
@@ -417,11 +417,13 @@ PACK_KEYS=1;
 
 DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
+  id        BIGINT AUTO_INCREMENT,
   userid    BIGINT NOT NULL,
   roleid    BIGINT NOT NULL,
 
-  CONSTRAINT `fk_role_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`),
-  CONSTRAINT `fk_role_role` FOREIGN KEY (`roleid`) REFERENCES `role` (`id`)
+  CONSTRAINT `pk_userrole` PRIMARY KEY (`id`),
+  CONSTRAINT `fk_userrole_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`),
+  CONSTRAINT `fk_userrole_role` FOREIGN KEY (`roleid`) REFERENCES `role` (`id`)
 )
 ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
@@ -433,7 +435,7 @@ CREATE TABLE registration (
   id                  VARCHAR(60) NOT NULL,
   tstamp              TIMESTAMP,
  
-  loginname           TEXT,
+  username            TEXT,
   password            TEXT,
 
   CONSTRAINT `pk_registration` PRIMARY KEY (`id`)
@@ -463,10 +465,12 @@ PACK_KEYS=1;
 
 DROP TABLE IF EXISTS user_session;
 CREATE TABLE user_session (
+  id        BIGINT AUTO_INCREMENT,
   sid       BIGINT NOT NULL,
   userid    BIGINT NOT NULL,
   targetid  BIGINT NOT NULL,
 
+  CONSTRAINT `pk_usersession` PRIMARY KEY (`id`),
   CONSTRAINT `fk_usersession_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
   CONSTRAINT `fk_usersession_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`),
   CONSTRAINT `fk_usersession_logintarget` FOREIGN KEY (`targetid`) REFERENCES `logintarget` (`id`)
@@ -490,15 +494,17 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
-DROP TABLE IF EXISTS user_searchprofile;
+DROP TABLE IF EXISTS user_profile;
 CREATE TABLE user_profile (
+ id          BIGINT AUTO_INCREMENT,
  profileid   BIGINT NOT NULL,
  userid      BIGINT NOT NULL,
 
  profilename TEXT,
 
- CONSTRAINT `fk_searchprofile_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`),
- CONSTRAINT `fk_searchprofile_profile` FOREIGN KEY (`profileid`) REFERENCES `searchprofile` (`id`)
+ CONSTRAINT `pk_userprofile` PRIMARY KEY (`id`),
+ CONSTRAINT `fk_userprofile_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`),
+ CONSTRAINT `fk_userprofile_profile` FOREIGN KEY (`profileid`) REFERENCES `searchprofile` (`id`)
 )
 ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
@@ -695,9 +701,11 @@ PACK_KEYS=1;
 
 DROP TABLE IF EXISTS litlist_subject;
 CREATE TABLE litlist_subject (
+ id           INT(11)     NOT NULL auto_increment,
  litlistid    INT(11)     NOT NULL,
  subjectid    INT(11)     NOT NULL,
 
+ CONSTRAINT `pk_litlistsubject` PRIMARY KEY (`id`),
  CONSTRAINT `fk_litlistsubject_litlist` FOREIGN KEY (`litlistid`) REFERENCES `litlist` (`id`),
  CONSTRAINT `fk_litlistsubject_subject` FOREIGN KEY (`subjectid`) REFERENCES `subject` (`id`)
 )
@@ -730,5 +738,5 @@ insert into role values (1,'admin');
 insert into role values (2,'librarian');
 
 /* Standard ist Admin-User mit ID 1 und Passwort 'StrengGeheim' */
-insert into userinfo (id,loginname,pin) values (1,'admin','StrengGeheim');
-insert into user_role values (1,1);
+insert into userinfo (id,username,password) values (1,'admin','StrengGeheim');
+insert into user_role (userid,roleid) values (1,1);

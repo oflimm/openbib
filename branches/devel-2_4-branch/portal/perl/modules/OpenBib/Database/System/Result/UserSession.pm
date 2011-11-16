@@ -19,6 +19,12 @@ __PACKAGE__->table("user_session");
 
 =head1 ACCESSORS
 
+=head2 id
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+
 =head2 sid
 
   data_type: 'bigint'
@@ -40,6 +46,8 @@ __PACKAGE__->table("user_session");
 =cut
 
 __PACKAGE__->add_columns(
+  "id",
+  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
   "sid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "userid",
@@ -47,6 +55,7 @@ __PACKAGE__->add_columns(
   "targetid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
@@ -96,8 +105,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PTuGZEm6LzvLdc+UzOJzvQ
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-16 10:00:16
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KWgvXrWFnmTOG4GiW63//g
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

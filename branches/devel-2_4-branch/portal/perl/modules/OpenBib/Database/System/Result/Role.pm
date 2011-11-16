@@ -25,7 +25,7 @@ __PACKAGE__->table("role");
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 role
+=head2 name
 
   data_type: 'varchar'
   is_nullable: 0
@@ -36,7 +36,7 @@ __PACKAGE__->table("role");
 __PACKAGE__->add_columns(
   "id",
   { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
-  "role",
+  "name",
   { data_type => "varchar", is_nullable => 0, size => 255 },
 );
 __PACKAGE__->set_primary_key("id");
@@ -59,8 +59,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jmXwA2XwESx43eO3p/YZyQ
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-16 10:00:16
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hQIdbPtPQSCtaERNNFsotw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

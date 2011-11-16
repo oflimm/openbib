@@ -19,6 +19,12 @@ __PACKAGE__->table("user_role");
 
 =head1 ACCESSORS
 
+=head2 id
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+
 =head2 userid
 
   data_type: 'bigint'
@@ -34,11 +40,14 @@ __PACKAGE__->table("user_role");
 =cut
 
 __PACKAGE__->add_columns(
+  "id",
+  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "roleid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
@@ -73,8 +82,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:52cLKWgY7JaR6O0c7XjcKg
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-16 10:00:16
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Fo2aM9Xa1j8U7c1W/cgmjg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

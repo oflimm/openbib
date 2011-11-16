@@ -30,13 +30,13 @@ __PACKAGE__->table("userinfo");
   data_type: 'datetime'
   is_nullable: 1
 
-=head2 loginname
+=head2 username
 
   data_type: 'varchar'
   is_nullable: 1
   size: 255
 
-=head2 pin
+=head2 password
 
   data_type: 'text'
   is_nullable: 1
@@ -168,9 +168,9 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
   "lastlogin",
   { data_type => "datetime", is_nullable => 1 },
-  "loginname",
+  "username",
   { data_type => "varchar", is_nullable => 1, size => 255 },
-  "pin",
+  "password",
   { data_type => "text", is_nullable => 1 },
   "nachname",
   { data_type => "text", is_nullable => 1 },
@@ -222,7 +222,7 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
-__PACKAGE__->add_unique_constraint("loginname", ["loginname"]);
+__PACKAGE__->add_unique_constraint("username", ["username"]);
 
 =head1 RELATIONS
 
@@ -377,8 +377,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-11 11:51:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5E1rjoKJi1qTr0PR4VEKRA
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-16 10:00:16
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZE8p1ZdjHg0AKDBOAp8x8w
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

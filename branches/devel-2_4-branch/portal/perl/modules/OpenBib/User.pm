@@ -579,20 +579,11 @@ sub get_number_of_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef if (!defined $dbh);
-    
-    my $idnresult=$dbh->prepare("select count(*) as rowcount from treffer where userid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-    my $res = $idnresult->fetchrow_hashref();
-    my $numofitems = $res->{rowcount};
-    $idnresult->finish();
+    my $numofitems = $self->{schema}->resultset('Collection')->search_rs(
+        {
+            userid => $self->{ID},
+        }
+    )->count;
 
     return $numofitems;
 }
@@ -2459,43 +2450,53 @@ sub get_other_litlists {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
     my $litlists_ref = {
         same_user     => [],
         same_title    => [],
     };
 
-    return $litlists_ref if (!defined $dbh || !$litlistid);
+    return $litlists_ref if (!$litlistid);
 
     # Gleicher Nutzer
-    my $sql_stmnt = "select id,title from litlist where type = 1 and id != ? and userid in (select userid from litlist where id = ?) order by title";
+    # DBI: "select id,title from litlist where type = 1 and id != ? and userid in () order by title";
 
-    my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
-    $request->execute($litlistid,$litlistid) or $logger->error($DBI::errstr);
-
-    while (my $result=$request->fetchrow_hashref){
-      my $litlistid        = $result->{id};
+    my $inside_same_user = $self->{schema}->resultset('Litlist')->search_rs({ id => $litlistid});
+    my $same_user = $self->{schema}->resultset('Litlist')->search_rs(
+        {
+            id   => { '!=' => $litlistid },
+            type => 1,
+            userid => { -in => $inside_same_user->get_column('userid')->as_query },
+        }
+    );
+    
+    foreach my $litlist ($same_user->all){
+      my $litlistid        = $litlist->id;
       
       push @{$litlists_ref->{same_user}}, $self->get_litlist_properties({litlistid => $litlistid});
     }
 
     # Gleicher Titel
-    $sql_stmnt = "select distinct b.litlistid from litlistitems as a left join litlistitems as b on a.titdb=b.titdb where a.titid=b.titid and a.litlistid=? and b.litlistid!=?";
+    # DBI: "select distinct b.litlistid from litlistitems as a left join litlistitems as b on a.titdb=b.titdb where a.titid=b.titid and a.litlistid=? and b.litlistid!=?";
 
-    $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
-    $request->execute($litlistid,$litlistid) or $logger->error($DBI::errstr);
+    my $inside_same_title = $self->{schema}->resultset('Litlistitem')->search_rs({ litlistid => $litlistid});
+    my $same_title = $self->{schema}->resultset('Litlistitem')->search_rs(
+        {
+            'me.litlistid'   => { '!=' => $litlistid },
+            'litlistid.type' => 1,
+            'me.titleid'     => { -in => $inside_same_title->get_column('titleid')->as_query },
+            'me.dbname'      => { -in => $inside_same_title->get_column('dbname')->as_query },
+        },
+        {
+            select => ['me.litlistid'],
+            as     => ['thislitlistid'],
+            join   => ['litlistid'],
+        }
+    );
 
-
-    while (my $result=$request->fetchrow_hashref){
-      my $litlistid        = $result->{litlistid};
-      my $litlist_props    = $self->get_litlist_properties({litlistid => $litlistid});
-      push @{$litlists_ref->{same_title}}, $litlist_props if ($litlist_props->{type} == 1);
+    foreach my $litlist ($same_title->all){
+        my $litlistid        = $litlist->litlistid;
+        my $litlist_props    = $self->get_litlist_properties({litlistid => $litlistid});
+        push @{$litlists_ref->{same_title}}, $litlist_props; # if ($litlist_props->{type} == 1);
     }
 
     return $litlists_ref;
@@ -2518,39 +2519,26 @@ sub get_litlistentries {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return [] if (!defined $dbh);
-
-    #return if (!$litlistid);
-
-    my $request=$dbh->prepare("select titleid,dbname,tstamp from litlistitem where litlistid=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
+    # DBI: "select titleid,dbname,tstamp from litlistitem where litlistid=?"
+    my $litlistitems = $self->{schema}->resultset('Litlistitem')->search_rs(
+        {
+            litlistid => $litlistid,
+        }
+    );
 
     my $recordlist = new OpenBib::RecordList::Title();
 
-    while (my $result=$request->fetchrow_hashref){
-      my $titelidn  = decode_utf8($result->{titleid});
-      my $database  = decode_utf8($result->{dbname});
-      my $tstamp    = decode_utf8($result->{tstamp});
-      
-      my $dbh
-	= DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-	    or $logger->error_die($DBI::errstr);
-
-      my $record = OpenBib::Record::Title->new({id =>$titelidn, database => $database})->load_brief_record;
-      $record->{tstamp} = $tstamp;
-
-      $recordlist->add($record);
-
-      $dbh->disconnect();
+    foreach my $litlistitem ($litlistitems->all){
+        my $titelidn  = decode_utf8($litlistitem->titleid);
+        my $database  = decode_utf8($litlistitem->dbname);
+        my $tstamp    = decode_utf8($litlistitem->tstamp);
+        
+        my $record = OpenBib::Record::Title->new({id =>$titelidn, database => $database})->load_brief_record;
+        $record->{tstamp} = $tstamp;
+        
+        $recordlist->add($record);
     }
-
+    
     $recordlist->sort({order=>$sortorder,type=>$sorttype});
         
     return $recordlist;
@@ -2567,23 +2555,14 @@ sub get_number_of_litlistentries {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "select count(litlistid) as numofentries from litlistitem where litlistid=?"
+    my $numofentries = $self->{schema}->resultset('Litlistitem')->search(
+        {
+            litlistid => $litlistid,
+        }
+    )->count;
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef if (!defined $dbh);
-
-    #return if (!$litlistid);
-
-    my $request=$dbh->prepare("select count(litlistid) as numofentries from litlistitem where litlistid=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
-
-    my $result=$request->fetchrow_hashref;
-
-    return $result->{numofentries};
+    return $numofentries;
 }
 
 sub get_number_of_litlists {
@@ -2593,28 +2572,19 @@ sub get_number_of_litlists {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "select count(id) as numoflitlists from litlist where type = 1"
+    my $public_lists = $self->{schema}->resultset('Litlist')->search(
+        {
+            type => 1,
+        }
+    )->count;
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef if (!defined $dbh);
-
-    my $request=$dbh->prepare("select count(id) as numoflitlists from litlist where type = 1") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-
-    my $result=$request->fetchrow_hashref;
-
-    my $public_lists = $result->{numoflitlists};
-
-    $request=$dbh->prepare("select count(id) as numoflitlists from litlists where type = 2") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-
-    $result=$request->fetchrow_hashref;
-
-    my $private_lists = $result->{numoflitlists};
+    # DBI: "select count(id) as numoflitlists from litlists where type = 2"
+    my $private_lists = $self->{schema}->resultset('Litlist')->search(
+        {
+            type => 2,
+        }
+    )->count;
 
     return {
         public  => $public_lists,
@@ -2633,45 +2603,51 @@ sub get_litlist_properties {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return {} if (!defined $dbh);
-
     return {} if (!$litlistid);
 
-    my $request=$dbh->prepare("select * from litlist where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
+    # DBI: "select * from litlist where id = ?"
+    my $litlist = $self->{schema}->resultset('Litlist')->search_rs(
+        {
+            id => $litlistid,
+        }   
+    )->first;
 
-    my $result=$request->fetchrow_hashref;
+    return {} if (!$litlist);
 
-    my $title     = decode_utf8($result->{title});
-    my $type      = $result->{type};
-    my $lecture   = $result->{lecture};
-    my $tstamp    = $result->{tstamp};
-    my $userid    = $result->{userid};
+    my $title     = decode_utf8($litlist->title);
+    my $type      = $litlist->type;
+    my $lecture   = $litlist->lecture;
+    my $tstamp    = $litlist->tstamp;
+    my $userid    = $litlist->userid;
     my $itemcount = $self->get_number_of_litlistentries({litlistid => $litlistid});
 
-    $request=$dbh->prepare("select s.* from litlist_subject as ls, subject as s where ls.litlistid=? and ls.subjectid=s.id") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
-
+    # DBI: "select s.* from litlist_subject as ls, subject as s where ls.litlistid=? and ls.subjectid=s.id"
+    my $subjects = $self->{schema}->resultset('LitlistSubject')->search_rs(
+        {
+            'litlistid.id' => $litlistid,
+        },
+        {
+            select => ['subjectid.id','subjectid.description','subjectid.name'],
+            as     => ['thissubjectid','thissubjectdescription','thissubjectname'],
+            
+            join => ['litlistid','subjectid'],
+        }
+    );
+    
     my $subjects_ref          = [];
     my $subject_selected_ref  = {};
 
-    while (my $result=$request->fetchrow_hashref){
-        my $subjectid   = $result->{id};
-        my $name        = decode_utf8($result->{name});
-        my $description = decode_utf8($result->{description});
+    foreach my $subject ($subjects->all){
+        my $subjectid   = $subject->get_column('thissubjectid');
+        my $name        = decode_utf8($subject->get_column('thissubjectname'));
+        my $description = decode_utf8($subject->get_column('thissubjectdescription'));
 
         $subject_selected_ref->{$subjectid}=1;
         push @{$subjects_ref}, {
             id          => $subjectid,
             name        => $name,
             description => $description,
+            litlistcount => $self->get_number_of_litlists_by_subject({subjectid => $subjectid}),
         };
     }
     
@@ -2731,25 +2707,30 @@ sub get_subjects_of_litlist {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $subjects = $self->{schema}->resultset('LitlistSubject')->search_rs(
+        {
+            'litlistid.id' => $litlistid,
+        },
+        {
+            select => ['subjectid.id','subjectid.description','subjectid.name'],
+            as     => ['thissubjectid','thissubjectdescription','thissubjectname'],
+            
+            join => ['litlistid','subjectid'],
+        }
+    );
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return [] if (!defined $dbh);
-
-    my $request=$dbh->prepare("select * from subject order by name") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
-
     my $subjects_ref = [];
     
-    while (my $result=$request->fetchrow_hashref){
+    foreach my $subject ($subjects->all){
+        my $subjectid   = $subject->get_column('thissubjectid');
+        my $name        = decode_utf8($subject->get_column('thissubjectname'));
+        my $description = decode_utf8($subject->get_column('thissubjectdescription'));
+
         push @{$subjects_ref}, {
-            id           => $result->{id},
-            name         => decode_utf8($result->{name}),
-            description  => decode_utf8($result->{description}),
+            id          => $subjectid,
+            name        => $name,
+            description => $description,
+            litlistcount => $self->get_number_of_litlists_by_subject({subjectid => $subjectid}),
         };
     }
 
@@ -2770,22 +2751,20 @@ sub get_classifications_of_subject {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    return [] if (!defined $subjectid);
+
+    # DBI: "select * from subjectclassification where subjectid = ? and type = ?"
+    my $classifications = $self->{schema}->resultset('Subjectclassification')->search_rs(
+        {
+            subjectid => $subjectid,
+            type      => $type,
+        }   
+    );
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return [] if (!defined $dbh || !defined $subjectid);
-
-    my $request=$dbh->prepare("select * from subjectclassification where subjectid = ? and type = ?") or $logger->error($DBI::errstr);
-    $request->execute($subjectid,$type) or $logger->error($DBI::errstr);
-
     my $classifications_ref = [];
-    
-    while (my $result=$request->fetchrow_hashref){
-        push @{$classifications_ref}, $result->{classification};
+
+    foreach my $classification ($classifications->all){
+        push @{$classifications_ref}, $classification->classification;
     }
 
     $logger->debug("Got classifications ".YAML::Dump($classifications_ref));
@@ -2810,31 +2789,33 @@ sub set_classifications_of_subject {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-    
     $logger->debug("Classifications4 ".YAML::Dump($classifications_ref));
 
     unless (ref($classifications_ref) eq 'ARRAY') {
         $classifications_ref = [ $classifications_ref ];
     }
 
-    my $request=$dbh->prepare("delete from subjectclassification where subjectid=? and type = ?") or $logger->error($DBI::errstr);
-    $request->execute($subjectid,$type) or $logger->error($DBI::errstr);
-
-    $request=$dbh->prepare("insert into subjectclassification values (?,?,?);") or $logger->error($DBI::errstr);
+    # DBI: "delete from subjectclassification where subjectid=? and type = ?"
+    my $subjectclassifications = $self->{schema}->resultset('Subjectclassification')->search_rs(
+        {
+            subjectid => $subjectid,
+            type      => $type,
+        }
+    )->delete_all;
 
     foreach my $classification (@{$classifications_ref}){
         $logger->debug("Adding Classification $classification of type $type");
-        $request->execute($classification,$subjectid,$type) or $logger->error($DBI::errstr);
+        
+        # DBI: "insert into subjectclassification values (?,?,?);"
+        $self->{schema}->resultset('Subjectclassification')->create(
+            {
+                classification => $classification,
+                subjectid      => $subjectid,
+                type           => $type,
+            }
+        );
     }
-
+    
     return;
 }
 
@@ -2848,10 +2829,6 @@ sub get_number_of_litlists_by_subject {
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-    
-#    return { all => 0, public => 0, private => 0} if (!defined $dbh);
 
     my $count_ref={};
 
@@ -2867,17 +2844,6 @@ sub get_number_of_litlists_by_subject {
             join     => [ 'litlist_subjects', 'litlistitems' ],
         }
     )->count;
-
-#     $count_ref->{public} = $self->{schema}->resultset('LitlistSubject')->search(
-#         {
-#             'subjectid.id'  => $subjectid,
-#             'litlistid.type' => 1,
-#         },
-#         {
-#             prefetch => [{ 'litlistid' => 'litlistitems' }],
-#             join     => [ 'subjectid', 'litlistid' ],
-#         }
-#     )->count;
 
     # "select count(distinct litlistid) as llcount from litlist2subject as l2s where subjectid=? and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)"
     $count_ref->{all}=$self->{schema}->resultset('Litlist')->search(
@@ -2909,22 +2875,22 @@ sub set_subjects_of_litlist {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "delete from litlist_subject where litlistid=?"
+    $self->{schema}->resultset('LitlistSubject')->search_rs(
+        {
+            litlistid => $litlistid,
+        }   
+    )->delete_all;
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-
-    my $request=$dbh->prepare("delete from litlist_subject where litlistid=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
-
-    $request=$dbh->prepare("insert into litlist_subject values (?,?);") or $logger->error($DBI::errstr);
+    # DBI: "insert into litlist_subject values (?,?);"
 
     foreach my $subjectid (@{$subjectids_ref}){
-        $request->execute($litlistid,$subjectid) or $logger->error($DBI::errstr);
+        $self->{schema}->resultset('LitlistSubject')->create(
+            {
+                litlistid => $litlistid,
+                subjectid => $subjectid,
+            }
+        );
     }
 
     return;
@@ -2941,25 +2907,20 @@ sub get_subject {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "select * from subject where id = ?"
+    my $subject = $self->{schema}->resultset('Subject')->search_rs(
+        {
+            id => $id,
+        }
+    )->first;
+
+    my $subject_ref = {};
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return {} if (!defined $dbh);
-
-    my $request=$dbh->prepare("select * from subject where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($id) or $logger->error($DBI::errstr);
-
-    my $subject_ref;
-    
-    while (my $result=$request->fetchrow_hashref){
+    if ($subject){
         $subject_ref = {
-            id           => $result->{id},
-            name         => decode_utf8($result->{name}),
-            description  => decode_utf8($result->{description}),
+            id           => $subject->id,
+            name         => decode_utf8($subject->name),
+            description  => decode_utf8($subject->description),
         };
     }
 
@@ -3014,25 +2975,27 @@ sub get_litlists_of_tit {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return [] if (!defined $dbh);
-
     return [] if (!$titid || !$titdb);
 
-    my $request=$dbh->prepare("select ll.* from litlistitem as lli, litlist as ll where ll.id=lli.litlistid and lli.titleid=? and lli.dbname=?") or $logger->error($DBI::errstr);
-    $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
+    # DBI: "select ll.* from litlistitem as lli, litlist as ll where ll.id=lli.litlistid and lli.titleid=? and lli.dbname=?") or $logger->error($DBI::errstr);
+
+    my $litlists = $self->{schema}->resultset('Litlistitem')->search_rs(
+        {
+            'me.titleid'       => $titid,
+            'me.dbname'        => $titdb,
+        },
+        {
+            select => ['me.litlistid','litlistid.userid','litlistid.type'],
+            as     => ['thislitlistid','thisuserid','thistype'],
+            join   => ['litlistid']
+        }
+    );
 
     my $litlists_ref = [];
 
-    while (my $result=$request->fetchrow_hashref){
-        if ((defined $self->{ID} && defined $result->{userid} && $self->{ID} eq $result->{userid}) || (defined $result->{type} && $result->{type} eq "1")){
-            push @$litlists_ref, $self->get_litlist_properties({litlistid => $result->{id}});
+    foreach my $litlist ($litlists->all){
+        if ((defined $self->{ID} && defined $litlist->get_column('thisuserid') && $self->{ID} eq $litlist->get_column('userid')) || (defined $litlist->get_column('thistype') && $litlist->get_column('thistype') eq "1")){
+            push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid')});
         };
     }
 
@@ -3045,28 +3008,19 @@ sub get_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $recordlist = new OpenBib::RecordList::Title();
 
-    return $recordlist if (!defined $dbh);
+    # DBI: "select * from collection where userid = ? order by dbname"
+    my $collectionitems = $self->{schema}->resultset('Collection')->search_rs(
+        userid => $self->{ID},
+    );
 
-    my $idnresult=$dbh->prepare("select * from collection where userid = ? order by dbname") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-
-    while(my $result = $idnresult->fetchrow_hashref){
-        my $database  = decode_utf8($result->{'dbname'});
-        my $singleidn = decode_utf8($result->{'titleid'});
+    foreach my $collectionitem ($collectionitems->all){
+        my $database  = decode_utf8($collectionitem->dbname);
+        my $singleidn = decode_utf8($collectionitem->titleid);
         
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $singleidn}));
     }
-    
-    $idnresult->finish();
     
     return $recordlist;
 }
@@ -3085,30 +3039,34 @@ sub add_item_to_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    return undef if (!defined $dbh);
-
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
     # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-    my $userresult=$dbh->prepare("select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($thisuserid,$item_ref->{dbname},$item_ref->{singleidn}) or $logger->error($DBI::errstr);
-    my $res  = $userresult->fetchrow_hashref;
-    my $rows = $res->{rowcount};
-    if ($rows <= 0) {
+    
+    # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
+    my $have_title = $self->{schema}->resultset('Collection')->search_rs(
+        {
+            userid  => $thisuserid,
+            dbname  => $item_ref->{dbname},
+            titleid => $item_ref->{singleidn},
+        }
+    )->count;
+
+    if (!$have_title) {
         my $cached_title = new OpenBib::Record::Title({ database => $item_ref->{dbname} , id => $item_ref->{singleidn}});
         $cached_title->load_brief_record->to_json;
 
         $logger->debug("Adding Title to Collection: $cached_title");
 
-        $userresult=$dbh->prepare("insert into treffer values (?,?,?,?)") or $logger->error($DBI::errstr);
-        $userresult->execute($thisuserid,$item_ref->{dbname},$item_ref->{singleidn},$cached_title) or $logger->error($DBI::errstr);
+        # DBI "insert into treffer values (?,?,?,?)"
+        $self->{schema}->resultset('Collection')->create(
+            {
+                userid     => $thisuserid,
+                dbname     => $item_ref->{dbname},
+                titleid    => $item_ref->{singleidn},
+                titlecache => $cached_title,
+            }
+        );
     }
 
     return ;
@@ -3123,26 +3081,20 @@ sub delete_item_from_collection {
     my $item_ref       = exists $arg_ref->{item}
         ? $arg_ref->{item}                 : undef;
     
-#    my ($self,$userid,$item_ref)=@_;
-
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    return undef if (!defined $dbh);
-
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
-    my $idnresult=$dbh->prepare("delete from collection where userid = ? and dbname = ? and titleid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($thisuserid,$item_ref->{dbname},$item_ref->{singleidn}) or $logger->error($DBI::errstr);
-    $idnresult->finish();
-
+    # DBI: "delete from collection where userid = ? and dbname = ? and titleid = ?"
+    $self->{schema}->resultset('Collection')->search_rs(
+        {
+            userid  => $thisuserid,
+            dbname  => $item_ref->{dbname},
+            titleid => $item_ref->{singleidn},
+        }
+    )->delete;
+    
     return ;
 }
 
@@ -3156,22 +3108,14 @@ sub logintarget_exists {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
+    # DBI: "select count(description) as rowcount from logintarget where description = ?"
+    my $targetcount = $self->{schema}->resultset('Logintarget')->search_rs(
+        {
+            description => $description,
+        }   
+    )->count;
 
-    return 0 if (!defined $dbh);
-    
-    my $idnresult=$dbh->prepare("select count(description) as rowcount from logintarget where description = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description) or $logger->error($DBI::errstr);
-    
-    my $res=$idnresult->fetchrow_hashref;
-    my $rows=$res->{rowcount};
-
-    return ($rows > 0)?1:0;
+    return $targetcount;
 }
 
 sub delete_logintarget {
@@ -3181,18 +3125,11 @@ sub delete_logintarget {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
-
-    my $idnresult=$dbh->prepare("delete from logintarget where id = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($targetid) or $logger->error($DBI::errstr);
-    $idnresult->finish();
+    $self->{schema}->resultset('Logintarget')->search_rs(
+        {
+            id => $targetid,
+        }   
+    )->delete;
 
     return;
 }
@@ -3222,18 +3159,17 @@ sub new_logintarget {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
-
-    my $idnresult=$dbh->prepare("insert into logintarget (hostname,port,user,db,description,type) values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($hostname,$port,$username,$dbname,$description,$type) or $logger->error($DBI::errstr);
-    $idnresult->finish();
+    # DBI: "insert into logintarget (hostname,port,user,db,description,type) values (?,?,?,?,?,?)"
+    $self->{schema}->resultset('Logintarget')->create(
+        {
+            hostname    => $hostname,
+            port        => $port,
+            userid      => $self->get_userid_for_username($username),
+            dbname      => $dbname,
+            description => $description,
+            type        => $type,
+        }   
+    );
 
     return;
 }
@@ -3266,18 +3202,21 @@ sub update_logintarget {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
-
-    my $idnresult=$dbh->prepare("update logintarget set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where id = ?") or $logger->error($DBI::errstr); # 
-    $idnresult->execute($hostname,$port,$username,$dbname,$description,$type,$targetid) or $logger->error($DBI::errstr);
-    $idnresult->finish();
+    # DBI: "update logintarget set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where id = ?"
+    $self->{schema}->resultset('Logintarget')->search_rs(
+        {
+            id => $targetid,
+        }   
+    )->update(
+        {
+            hostname    => $hostname,
+            port        => $port,
+            userid      => $self->get_userid_for_username($username),
+            dbname      => $dbname,
+            description => $description,
+            type        => $type,
+        }
+    );
 
     $logger->debug("Logintarget updated");
     
@@ -3290,25 +3229,24 @@ sub update_userrole {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    my $del_request    = $dbh->prepare("delete from user_role where userid=?") or $logger->error($DBI::errstr); # 
-    my $insert_request = $dbh->prepare("insert into user_role values (?,?)") or $logger->error($DBI::errstr); # 
-
-    $del_request->execute($userinfo_ref->{id});
+    # DBI: "delete from user_role where userid=?"
+    $self->{schema}->resultset('UserRole')->search_rs(
+        userid => $userinfo_ref->{id},
+    )->delete_all;
     
     foreach my $roleid (@{$userinfo_ref->{roles}}){
         $logger->debug("Adding Role $roleid to user $userinfo_ref->{id}");
-        $insert_request->execute($userinfo_ref->{id},$roleid);
-    }
 
-    $del_request->finish();
-    $insert_request->finish();
+        # DBI: "insert into user_role values (?,?)"
+        $self->{schema}->resultset('UserRole')->search_rs(
+            userid => $userinfo_ref->{id},
+        )->create(
+            {
+                userid => $userinfo_ref->{id},
+                roleid => $roleid,
+            }
+        );
+    }
 
     return;
 }
@@ -3320,28 +3258,22 @@ sub dbprofile_exists {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
+    # DBI: "select profileid,count(profileid) as rowcount from user_profile where userid = ? and profilename = ? group by profileid"
+    my $profile = $self->{schema}->resultset('UserProfile')->search_rs(
+        {
+            profilename => $profilename,
+            userid      => $self->{ID},
+        }   
 
-    my $profilresult=$dbh->prepare("select profileid,count(profileid) as rowcount from user_profile where userid = ? and profilename = ? group by profileid") or $logger->error($DBI::errstr);
-    $profilresult->execute($self->{ID},$profilename) or $logger->error($DBI::errstr);
-    my $res=$profilresult->fetchrow_hashref();
-    
-    my $numrows=$res->{rowcount};
-    
-    my $profilid="";
-    
-    if ($numrows > 0){
-        return decode_utf8($res->{'profileid'});
+    )->first;
+
+    if ($profile){
+        return $profile->profileid,
     }
-
-    return 0;
+    else {
+        return 0;
+    }
+    
 }
 
 sub new_dbprofile {
@@ -3351,27 +3283,15 @@ sub new_dbprofile {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "insert into user_profile values (NULL,?,?)"
+    my $new_profile = $self->{schema}->resultset('UserProfile')->create(
+        {
+            profilename => $profilename,
+            userid      => $self->{ID},
+        }
+    );
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
-
-    my $profilresult2=$dbh->prepare("insert into user_profile values (NULL,?,?)") or $logger->error($DBI::errstr);
-    
-    $profilresult2->execute($profilename,$self->{ID}) or $logger->error($DBI::errstr);
-    $profilresult2=$dbh->prepare("select profileid from user_profile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
-    
-    $profilresult2->execute($self->{ID},$profilename) or $logger->error($DBI::errstr);
-    my $res=$profilresult2->fetchrow_hashref();
-    my $profilid = decode_utf8($res->{'profileid'});
-    
-    $profilresult2->finish();
-
-    return $profilid;
+    return $new_profile->id;
 }
 
 sub delete_dbprofile {
@@ -3381,19 +3301,14 @@ sub delete_dbprofile {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
+    # DBI: "delete from user_profile where userid = ? and profileid = ?"
+    $self->{schema}->resultset('UserProfile')->create(
+        {
+            id     => $profileid,
+            userid => $self->{ID},
+        }
+    );
 
-    my $profilresult=$dbh->prepare("delete from user_profile where userid = ? and profileid = ?") or $logger->error($DBI::errstr);
-    $profilresult->execute($self->{ID},$profileid) or $logger->error($DBI::errstr);
-    $profilresult->finish();
-    
     return;
 }
 
@@ -3436,35 +3351,35 @@ sub wipe_account {
     
     return undef if (!defined $dbh);
 
-    # Zuerst werden die Datenbankprofile geloescht
-    my $userresult;
-    $userresult=$dbh->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid") or $logger->error($DBI::errstr);
-    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-    
-    $userresult=$dbh->prepare("delete from user_profile where user_profile.userid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-    
-    # .. dann die Suchfeldeinstellungen
-    $userresult=$dbh->prepare("delete from searchfield where userid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+        id => $self->{ID}
+    );
 
-    # .. dann die Livesearcheinstellungen
-    $userresult=$dbh->prepare("delete from livesearch where userid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    if ($userinfo){
+        # Zuerst werden die Datenbankprofile geloescht
+        # DBI: "delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid"
+        $userinfo->delete_related('UserProfile');
+    
+        # .. dann die Suchfeldeinstellungen
+        # DBI: "delete from searchfield where userid = ?"
+        $userinfo->delete_related('Searchfield');
 
-    # .. dann die Merkliste
-    $userresult=$dbh->prepare("delete from collection where userid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+        # .. dann die Livesearcheinstellungen
+        # DBI: "delete from livesearch where userid = ?"
+        $userinfo->delete_related('Livesearch');
+
+        # .. dann die Merkliste
+        # DBI: "delete from collection where userid = ?"
+        $userinfo->delete_related('Collection');
+
+        # .. dann die Verknuepfung zur Session
+        # DBI: "delete from user_session where userid = ?"
+        $userinfo->delete_related('UserSession');
     
-    # .. dann die Verknuepfung zur Session
-    $userresult=$dbh->prepare("delete from user_session where userid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-    
-    # und schliesslich der eigentliche Benutzereintrag
-    $userresult=$dbh->prepare("delete from userinfo where userid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-    
-    $userresult->finish();
+        # und schliesslich der eigentliche Benutzereintrag
+        # DBI: "delete from userinfo where userid = ?"
+        $userinfo->delete;
+    }
     
     return;
 }
@@ -3499,19 +3414,15 @@ sub disconnect_session {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
+    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+        id => $self->{ID}
+    );
 
-    my $userresult=$dbh->prepare("delete from user_session where userid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-    
-    $userresult->finish();
+    if ($userinfo){
+        # Verbindung zur Session loeschen
+        # DBI: "delete from user_session where userid = ?"
+        $userinfo->delete_related('UserSession');
+    }
    
     return;
 }
@@ -3568,19 +3479,29 @@ sub delete_private_info {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
-
-    my $userresult=$dbh->prepare("update userinfo set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where id = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-    
-    $userresult->finish();
+    # DBI: "update userinfo set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where id = ?"
+    $self->{schema}->resultset('Userinfo')->search_rs(
+        id => $self->{ID},
+    )->update(
+        {
+            nachname   => '',
+            vorname    => '',
+            strasse    => '',
+            ort        => '',
+            plz        => '',
+            soll       => '',
+            gut        => '',
+            avanz      => '',
+            branz      => '',
+            bsanz      => '',
+            vmanz      => '',
+            maanz      => '',
+            vlanz      => '',
+            sperre     => '',
+            sperrdatum => '',
+            gebdatum   => '',
+        }
+    );
    
     return;
 }
@@ -3592,19 +3513,31 @@ sub set_private_info {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
+    # DBI: "update userinfo set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where username = ?"
+    #      $userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$username
+    $self->{schema}->resultset('Userinfo')->search_rs(
+        id => $self->get_username_of_userid($self->{ID}),
+    )->update(
+        {
+            nachname   => $userinfo_ref->{'Nachname'},
+            vorname    => $userinfo_ref->{'Vorname'},
+            strasse    => $userinfo_ref->{'Strasse'},
+            ort        => $userinfo_ref->{'Ort'},
+            plz        => $userinfo_ref->{'PLZ'},
+            soll       => $userinfo_ref->{'Soll'},
+            gut        => $userinfo_ref->{'Guthaben'},
+            avanz      => $userinfo_ref->{'Avanz'},
+            branz      => $userinfo_ref->{'Branz'},
+            bsanz      => $userinfo_ref->{'Bsanz'},
+            vmanz      => $userinfo_ref->{'Vmanz'},
+            maanz      => $userinfo_ref->{'Maanz'},
+            vlanz      => $userinfo_ref->{'Vlanz'},
+            sperre     => $userinfo_ref->{'Sperre'},
+            sperrdatum => $userinfo_ref->{'Sperrdatum'},
+            gebdatum   => $userinfo_ref->{'Geburtsdatum'},
+        }
+    );
 
-    my $userresult=$dbh->prepare("update userinfo set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where username = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$username) or $logger->error($DBI::errstr);
-    $userresult->finish();
-   
     return;
 }
 

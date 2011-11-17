@@ -1642,34 +1642,29 @@ sub vote_for_review {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-
-    #return if (!$titid || !$titdb || !$username || !$tags);
-
     # Ratings sind Zahlen
     $rating   =~s/[^0-9]//g;
     
-    # Zuerst alle Verknuepfungen loeschen
-    my $request=$dbh->prepare("select reviewid from reviewrating where userid = ? and reviewid=?") or $logger->error($DBI::errstr);
-    $request->execute($self->get_userid_for_username($username), $reviewid) or $logger->error($DBI::errstr);
+    # DBI: "select reviewid from reviewrating where userid = ? and reviewid=?"
+    my $reviewrating = $self->{schema}->resultset('Reviewrating')->search_rs(
+        {
+            userid   => $self->get_userid_for_username($username),
+            reviewid => $reviewid,
+        }
+    )->first;
 
-    my $result   = $request->fetchrow_hashref;
-    my $thisreviewid = $result->{reviewid};
-
-    # Review schon vorhanden?
-    if ($thisreviewid){
+    if ($reviewrating){
         return 1; # Review schon vorhanden! Es darf aber pro Nutzer nur einer abgegeben werden;
     }
     else {
-        $request=$dbh->prepare("insert into reviewrating (reviewid,userid,rating) values (?,?,?)") or $logger->error($DBI::errstr);
-        $request->execute($reviewid,$self->get_userid_for_username($username),$rating) or $logger->error($DBI::errstr);
+        # DBI: "insert into reviewrating (reviewid,userid,rating) values (?,?,?)"
+        $self->{schema}->resultset('Reviewrating')->create(
+            {
+                reviewid => $reviewid,
+                userid   => $self->get_userid_for_username($username),
+                rating   => $rating,
+            }
+        );
     }
 
     return;
@@ -1697,39 +1692,44 @@ sub get_review_properties {
 
     return {} if (!$reviewid);
 
-    my $request=$dbh->prepare("select * from review where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($reviewid) or $logger->error($DBI::errstr);
+    # DBI: "select * from review where id = ?"
+    my $review = $self->{schema}->resultset('Review')->search_rs(
+        id => $reviewid,
+    )->first;
 
-    my $result=$request->fetchrow_hashref;
+    if ($review){
+        
+        my $title     = decode_utf8($review->title);
+        my $titid     = $review->titleid;
+        my $titdb     = $review->dbname;
+        my $titisbn   = $review->titleisbn;
+        my $tstamp    = $review->tstamp;
+        my $nickname  = $review->nickname;
+        my $review    = $review->review;
+        my $rating    = $review->rating;
+        my $userid    = $review->userid;
+        
+        my $username = $self->get_username_for_userid($userid);
+        
+        my $review_ref = {
+            id               => $reviewid,
+            userid           => $userid,
+            username         => $username,
+            title            => $title,
+            titdb            => $titdb,
+            titid            => $titid,
+            tstamp           => $tstamp,
+            review           => $review,
+            rating           => $rating,
+        };
 
-    my $title     = decode_utf8($result->{title});
-    my $titid     = $result->{titleid};
-    my $titdb     = $result->{dbname};
-    my $titisbn   = $result->{titleisbn};
-    my $tstamp    = $result->{tstamp};
-    my $nickname  = $result->{nickname};
-    my $review    = $result->{review};
-    my $rating    = $result->{rating};
-    my $userid    = $result->{userid};
+        $logger->debug("Review Properties: ".YAML::Dump($review_ref));
 
-    my $username = $self->get_username_for_userid($userid);
-
-    
-    my $review_ref = {
-			id               => $reviewid,
-			userid           => $userid,
-                        username         => $username,
-			title            => $title,
-                        titdb            => $titdb,
-                        titid            => $titid,
-			tstamp           => $tstamp,
-                        review           => $review,
-                        rating           => $rating,
-		       };
-
-    $logger->debug("Review Properties: ".YAML::Dump($review_ref));
-
-    return $review_ref;
+        return $review_ref;
+    }
+    else {
+        return {};
+    }
 }
 
 sub get_review_owner {
@@ -1763,7 +1763,7 @@ sub add_review {
         ? $arg_ref->{nickname}            : undef;
     my $title              = exists $arg_ref->{title}
         ? $arg_ref->{title}               : undef;
-    my $review              = exists $arg_ref->{review}
+    my $reviewtext         = exists $arg_ref->{review}
         ? $arg_ref->{review}              : undef;
     my $rating              = exists $arg_ref->{rating}
         ? $arg_ref->{rating}              : undef;
@@ -1772,38 +1772,47 @@ sub add_review {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-
-    #return if (!$titid || !$titdb || !$username || !$tags);
-
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
-    $rating   =~s/[^0-9]//g;
-    $review   =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
-    $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
-    $nickname =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
-    
-    # Zuerst alle Verknuepfungen loeschen
-    my $request=$dbh->prepare("select id from review where userid = ? and titleid=? and dbname=?") or $logger->error($DBI::errstr);
-    $request->execute($self->get_userid_for_username($username), $titid, $titdb) or $logger->error($DBI::errstr);
+    $rating     =~s/[^0-9]//g;
+    $reviewtext =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
+    $title      =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
+    $nickname   =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
 
-    my $result   = $request->fetchrow_hashref;
-    my $reviewid = $result->{id};
+    # DBI: "select id from review where userid = ? and titleid=? and dbname=?"
+    my $review = $self->{schema}->resultset('Review')->search_rs(
+        {
+            userid => $self->get_userid_for_username($username),
+            titleid => $titid,
+            dbname => $titdb,
+        }
+    )->first;
 
     # Review schon vorhanden?
-    if ($reviewid){
-        $request=$dbh->prepare("update review set titleid=?, titleisbn=?, dbname=?, userid=?, nickname=?, title=?, review=?, rating=? where id=?") or $logger->error($DBI::errstr);
-        $request->execute($titid,$titisbn,$titdb,$self->get_userid_for_username($username),encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating,$reviewid) or $logger->error($DBI::errstr);
+    if ($review){
+        # DBI: "update review set titleid=?, titleisbn=?, dbname=?, userid=?, nickname=?, title=?, review=?, rating=? where id=?"
+        $review->update(
+            {
+                titleisbn  => $titisbn,
+                nickname   => encode_utf8($nickname),
+                title      => encode_utf8($title),
+                reviewtext => encode_utf8($reviewtext),
+                rating     => $rating,
+            }
+        );
     }
     else {
-        $request=$dbh->prepare("insert into review (titleid,titleisbn,dbname,userid,nickname,title,review,rating) values (?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-        $request->execute($titid,$titisbn,$titdb,$self->get_userid_for_username($username),encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating) or $logger->error($DBI::errstr);
+        # DBI: "insert into review (titleid,titleisbn,dbname,userid,nickname,title,review,rating) values (?,?,?,?,?,?,?,?)"
+        $self->{schema}->create(
+            titleid    => $titid,
+            dbname     => $titdb,
+            userid     => $self->get_userid_for_username($username),
+            titleisbn  => $titisbn,
+            nickname   => encode_utf8($nickname),
+            title      => encode_utf8($title),
+            reviewtext => encode_utf8($reviewtext),
+            rating     => $rating,
+            
+        );
     }
 
     return;
@@ -1824,46 +1833,48 @@ sub get_reviews_of_tit {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return [] if (!defined $dbh);
-
-    #return if (!$titid || !$titdb || !$username || !$tags);
-
-    my $request=$dbh->prepare("select id,nickname,userid,title,review,rating from review where titleid=? and dbname=?") or $logger->error($DBI::errstr);
-    $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
-
-    my $request2=$dbh->prepare("select count(id) as votecount from reviewrating where reviewid=?  group by id") or $logger->error($DBI::errstr);
-    my $request3=$dbh->prepare("select count(id) as posvotecount from reviewrating where reviewid=? and rating > 0 group by id") or $logger->error($DBI::errstr);
+    # DBI: "select id,nickname,userid,title,review,rating from review where titleid=? and dbname=?"
+    my $reviews = $self->{schema}->resultset('Review')->search_rs(
+        {
+            titleid => $titid,
+            dbname  => $titdb,
+        }
+    );
 
     my $reviewlist_ref = [];
 
-    while (my $result=$request->fetchrow_hashref){
-        my $userid    = decode_utf8($result->{userid});
+    foreach my $review ($reviews->all){
+        my $userid    = decode_utf8($review->userid);
         my $username = $self->get_username_of_userid($userid);
-        my $nickname  = decode_utf8($result->{nickname});
-        my $title     = decode_utf8($result->{title});
-        my $review    = decode_utf8($result->{review});
-        my $id        = $result->{id};
-        my $rating    = $result->{rating};
+        my $nickname  = decode_utf8($review->nickname);
+        my $title     = decode_utf8($review->title);
+        my $review    = decode_utf8($review->reviewtext);
+        my $id        = $review->id;
+        my $rating    = $review->rating;
 
-        $request2->execute($id) or $logger->error($DBI::errstr);
-
-        my $result2      = $request2->fetchrow_hashref;
-        my $votecount = $result2->{votecount};
+        # DBI: "select count(id) as votecount from reviewrating where reviewid=?  group by id"
+        my $votecount = $self->{schema}->resultset('Reviewrating')->search_rs(
+            {
+                reviewid => $review->id,
+            },
+            {
+                group_by => 'reviewid',
+            }                
+        )->count;
 
         my $posvotecount = 0;
         
         if ($votecount){
-            $request3->execute($id) or $logger->error($DBI::errstr);
-        
-            my $result3      = $request3->fetchrow_hashref;
-            $posvotecount = $result3->{posvotecount};
+            # DBI: "select count(id) as posvotecount from reviewrating where reviewid=? and rating > 0 group by id"
+            $posvotecount = $self->{schema}->resultset('Reviewrating')->search_rs(
+                {
+                    reviewid => $review->id,
+                    rating   => { '>' =>  0},
+                },
+                {
+                    group_by => 'reviewid',
+                }                
+            )->count;
         }
         
         push @$reviewlist_ref, {
@@ -1900,23 +1911,20 @@ sub tit_reviewed_by_user {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "select id from review where titleid=? and dbname=? and userid=?"
+    my $review = $self->{schema}->resultset('Review')->search_rs(
+        {
+            titleid => $titid,
+            dbname  => $titdb,
+            userid  => $self->get_userid_for_username($username),
+        }
+    )->first;
+
+    my $reviewid;
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef if (!defined $dbh);
-
-    #return if (!$titid || !$titdb || !$username || !$tags);
-
-    my $request=$dbh->prepare("select id from review where titleid=? and dbname=? and userid=?") or $logger->error($DBI::errstr);
-    $request->execute($titid,$titdb,$self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
-
-    my $result=$request->fetchrow_hashref;
-
-    my $reviewid=$result->{id};
+    if ($review){
+        $reviewid = $review->id;
+    }
 
     return $reviewid;
 }
@@ -1934,34 +1942,28 @@ sub get_review_of_user {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
+    # DBI: "select id,titleid,dbname,nickname,userid,title,review,rating from review where id=? and userid=?"
+    my $review = $self->{schema}->resultset('Review')->search_rs(
+        {
+            id => $id,
+            userid => $self->get_userid_for_username($username),
+        }
+    )->first;
 
-    return {} if (!defined $dbh);
-
-    #return if (!$titid || !$titdb || !$username || !$tags);
-
-    my $request=$dbh->prepare("select id,titleid,dbname,nickname,userid,title,review,rating from review where id=? and userid=?") or $logger->error($DBI::errstr);
-    $request->execute($id,$self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
-
-    $logger->debug("Getting Review $id for User $username");
-    
     my $review_ref = {};
+    
+    if ($review){
+        $logger->debug("Found Review $id for User $username");
 
-    while (my $result=$request->fetchrow_hashref){
-        my $userid    = decode_utf8($result->{userid});
-        my $username = $self->get_username_of_userid($userid);
-        my $nickname  = decode_utf8($result->{nickname});
-        my $title     = decode_utf8($result->{title});
-        my $review    = decode_utf8($result->{review});
-        my $id        = $result->{id};
-        my $titid     = $result->{titleid};
-        my $titdb     = $result->{dbname};
-        my $rating    = $result->{rating};
+        my $userid     = decode_utf8($review->userid);
+        my $username   = $self->get_username_of_userid($userid);
+        my $nickname   = decode_utf8($review->nickname);
+        my $title      = decode_utf8($review->title);
+        my $reviewtext = decode_utf8($review->reviewtext);
+        my $id         = $review->id;
+        my $titid      = $review->titleid;
+        my $titdb      = $review->dbname;
+        my $rating     = $review->rating;
 
         $review_ref = {
             id        => $id,
@@ -1970,7 +1972,7 @@ sub get_review_of_user {
             username  => $username,
             nickname  => $nickname,
             title     => $title,
-            review    => $review,
+            review    => $reviewtext,
             rating    => $rating,
         };
     }
@@ -1993,19 +1995,13 @@ sub del_review_of_user {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-
-    #return if (!$titid || !$titdb || !$username || !$tags);
-
-    my $request=$dbh->prepare("delete from review where id=? and userid=?") or $logger->error($DBI::errstr);
-    $request->execute($id,$self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
+    # DBI: "delete from review where id=? and userid=?"
+    $self->{schema}->resultset('Review')->search_rs(
+        {
+            id     => $id,
+            userid => $self->get_userid_for_username($username),
+        }
+    )->delete;
 
     return;
 }
@@ -2033,20 +2029,25 @@ sub get_reviews {
     #return if (!$titid || !$titdb || !$username || !$tags);
 
     my $request=$dbh->prepare("select id,titleid,dbname,nickname,userid,title,review,rating from review where userid=?") or $logger->error($DBI::errstr);
-    $request->execute($self->get_userid_for_username($username)) or $logger->error($DBI::errstr);
+
+    my $reviews = $self->{schema}->resultset('Review')->search_rs(
+        {
+            userid => $self->get_userid_for_username($username),
+        }
+    );
 
     my $reviewlist_ref = [];
-
-    while (my $result=$request->fetchrow_hashref){
-        my $userid    = decode_utf8($result->{userid});
-        my $username = $self->get_username_of_userid($userid);
-        my $nickname  = decode_utf8($result->{nickname});
-        my $title     = decode_utf8($result->{title});
-        my $review    = decode_utf8($result->{review});
-        my $id        = $result->{id};
-        my $titid     = $result->{titleid};
-        my $titdb     = $result->{dbname};
-        my $rating    = $result->{rating};
+    
+    foreach my $review ($reviews->all){
+        my $userid     = decode_utf8($review->userid);
+        my $username   = $self->get_username_of_userid($userid);
+        my $nickname   = decode_utf8($review->nickname);
+        my $title      = decode_utf8($review->title);
+        my $reviewtext = decode_utf8($review->reviewtext);
+        my $id         = $review->id;
+        my $titid      = $review->titleid;
+        my $titdb      = $review->dbname;
+        my $rating     = $review->rating;
 
         push @$reviewlist_ref, {
             id        => $id,
@@ -2078,50 +2079,51 @@ sub add_litlist {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-
-    #return if (!$titid || !$titdb || !$username || !$tags);
-
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
     $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
-    
 
     # Schon vorhanden
-    my $request=$dbh->prepare("select id from litlist where userid = ? and title = ? and type = ?");
-    $request->execute($self->{ID},$title,$type);
+    # DBI: "select id from litlist where userid = ? and title = ? and type = ?"
+    my $litlist = $self->{schema}->resultset('Litlist')->search_rs(
+        {
+            userid => $self->{ID},
+            title  => $title,
+            type   => $type,
+        }
+    )->first;
 
-    my $result=$request->fetchrow_hashref;
-    my $litlistid = $result->{id};
+    if ($litlist){
+        return $litlist->id;
+    }
 
-    return $litlistid if ($litlistid);
+    # DBI: "insert into litlist (userid,title,type) values (?,?,?)"
+    # DBI: "select id from litlist where userid = ? and title = ? and type = ?"
+    my $new_litlist = $self->{schema}->resultset('Litlist')->create(
+        userid => $self->{ID},
+        title  => $title,
+        type   => $type,
+    );
 
-    $request=$dbh->prepare("insert into litlist (userid,title,type) values (?,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($self->{ID},$title,$type) or $logger->error($DBI::errstr);
+    my $litlistid;
+    
+    if ($new_litlist){
+        $litlistid = $new_litlist->id;
+    }
     
     # Litlist-ID bestimmen und zurueckgeben
-
-    $request=$dbh->prepare("select id from litlist where userid = ? and title = ? and type = ?");
-    $request->execute($self->{ID},$title,$type);
-
-    $result=$request->fetchrow_hashref;
-    $litlistid = $result->{id};
 
     unless (ref($subjectids_ref) eq 'ARRAY') {
         $subjectids_ref = [ $subjectids_ref ];
     }
 
     if (@{$subjectids_ref}){
-        $request=$dbh->prepare("insert into litlist_subject (litlistid,subjectid) values (?,?)") or $logger->error($DBI::errstr);
-
         foreach my $subjectid (@{$subjectids_ref}){
-            $request->execute($litlistid,$subjectid) or $logger->error($DBI::errstr);
+            # DBI "insert into litlist_subject (litlistid,subjectid) values (?,?)") or $logger->error($DBI::errstr);
+            $new_litlist->insert_related('litlist_subject',
+                                         {
+                    subjectid => $subjectid,
+                }
+            );
         }
     }
 
@@ -2139,29 +2141,25 @@ sub del_litlist {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-
     return if (!$litlistid);
 
-    my $litlist_properties_ref = $self->get_litlist_properties({litlistid => $litlistid});
+    my $litlist = $self->{schema}->resultlist('Litlist')->search_rs(
+        {
+            id     => $litlistid,
+            userid => $self->{ID},
+        }
+    );
 
-    return unless ($litlist_properties_ref->{userid} eq $self->{ID});
+    return unless ($litlist);
+
+    # DBI: "delete from litlistitem where litlistid=?"
+    $litlist->delete_related('litlistitems');
+
+    # DBI: "delete from litlist_subject where litlistid=?"
+    $litlist->delete_related('litlist_subjects');
     
-    my $request=$dbh->prepare("delete from litlistitem where litlistid=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
-
-    $request=$dbh->prepare("delete from litlist where id=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
-
-    $request=$dbh->prepare("delete from litlist_subject where litlistid=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
+    # DBI: "delete from litlist where id=?"
+    $litlist->delete;
 
     return;
 }
@@ -2185,35 +2183,44 @@ sub change_litlist {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-
     return if (!$litlistid || !$title || !$type);
 
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
     $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
-    
-    my $request=$dbh->prepare("update litlist set title=?, type=?, lecture=? where id=?") or $logger->error($DBI::errstr);
-    $request->execute($title,$type,,$lecture,$litlistid) or $logger->error($DBI::errstr);
 
+    my $litlist = $self->{schema}->resultlist('Litlist')->search_rs(
+        {
+            id     => $litlistid,
+        }
+    );
+    
+    return unless ($litlist);
+
+    # DBI: "update litlist set title=?, type=?, lecture=? where id=?"
+    $litlist->update(
+        {
+            title   => $title,
+            type    => $type,
+            lecture => $lecture,
+        }
+    );
+    
     unless (ref($subjectids_ref) eq 'ARRAY') {
         $subjectids_ref = [ $subjectids_ref ];
     }
     
     if (@{$subjectids_ref}){
-        $request=$dbh->prepare("delete from litlist_subject where litlistid = ?") or $logger->error($DBI::errstr);
-        $request->execute($litlistid) or $logger->error($DBI::errstr);
+        # DBI: "delete from litlist_subject where litlistid = ?"
 
-        $request=$dbh->prepare("insert into litlist_subject (litlistid,subjectid) values (?,?)") or $logger->error($DBI::errstr);
+        $litlist->delete_related('litlist_subjects');
 
         foreach my $subjectid (@{$subjectids_ref}){
-            $request->execute($litlistid,$subjectid) or $logger->error($DBI::errstr);
+            # DBI: "insert into litlist_subject (litlistid,subjectid) values (?,?)"
+            $litlist->create_related('litlist_subjects',
+                                     {
+                                         subjectid => $subjectid,
+                                     }      
+                                 );
         }
     }
 
@@ -2235,22 +2242,26 @@ sub add_litlistentry {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "delete from litlistitem where litlistid=? and titid=? and titdb=?"
+    my $litlistitem = $self->{schema}->search_rs({        
+        litlistid => $litlistid,
+        dbname    => $titdb,
+        titleid   => $titid,
+    });
+
+    return if ($litlistitem);
+
+    my $cached_title = OpenBib::Record::Title->new({ id => $titid, database => $titdb })->load_brief_record->to_json;
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-
-    #return if (!$titid || !$titdb || !$litlitid );
-
-    my $request=$dbh->prepare("delete from litlistitem where litlistid=? and titid=? and titdb=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid,$titid,$titdb) or $logger->error($DBI::errstr);
-
-    $request=$dbh->prepare("insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($litlistid,$titid,$titdb) or $logger->error($DBI::errstr);
+    # DBI: "insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)"
+    $self->{schema}->resultset('Litlistitem')->create(
+        {
+            litlistid  => $litlistid,
+            dbname     => $titdb,
+            titleid    => $titid,
+            titlecache => $cached_title,
+        }
+    );
 
     return;
 }
@@ -2270,19 +2281,18 @@ sub del_litlistentry {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
-
     return if (!$litlistid || !$titid || !$titdb);
 
-    my $request=$dbh->prepare("delete from litlistitem where litlistid=? and titleid=? and dbname=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid,$titid,$titdb) or $logger->error($DBI::errstr);
+    # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
+    my $litlistitem = $self->{schema}->search_rs({        
+        litlistid => $litlistid,
+        dbname    => $titdb,
+        titleid   => $titid,
+    });
+
+    if ($litlistitem){
+        $litlistitem->delete;
+    }
 
     return;
 }
@@ -2294,28 +2304,19 @@ sub get_litlists {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return [] if (!defined $dbh);
-
     return [] if (!$self->{ID});
-
-    my $sql_stmnt = "select id from litlist where userid=?";
-
-    my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
-    $request->execute($self->{ID}) or $logger->error($DBI::errstr);
 
     my $litlists_ref = [];
 
-    while (my $result=$request->fetchrow_hashref){
-      my $litlistid        = $result->{id};
-      
-      push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlistid});
+    # DBI: "select id from litlist where userid=?"
+    my $litlists = $self->{schema}->resultset('Litlist')->search_rs(
+        {
+            userid => $self->{ID},
+        }
+    );
+
+    foreach my $litlist ($litlists->all){
+      push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->id});
     }
     
     return $litlists_ref;
@@ -2335,57 +2336,47 @@ sub get_recent_litlists {
   
     my $logger = get_logger();
 
-    my $litlists_ref = [];
-
-    my $litlist_not_empty = $self->{schema}->resultset('Litlistitem')->search(
-        {
-            'count(litlistid)' => { '>', 0 },
-        }
-    );
+    my $litlists;
     
     if ($subjectid){
-        # DBI: "select distinct(ls.litlistid) as id from litlist2subject as ls, litlists as l where ls.subjectid = ? and ls.litlistid = l.id and l.type = 1 and (select count(litlistid) from litlistitems where litlistid=l.id)  > 0 order by l.id DESC limit $count"
-        my $litlists = $self->{schema}->resultset('LitlistSubject')->search(
+        $litlists = $self->{schema}->resultset('Litlist')->search(
             {
                 'subjectid.id'  => $subjectid,
-                'litlistid.type' => 1,
+                'me.type'       => 1,
             },
             {
-                group_by => [ 'me.litlistid' ],
-                select   => ['litlistid.id'],
-                as       => ['thislitlistid'],
-                order_by => [ 'litlistid.id DESC' ],
-                rows     => $count,
-                prefetch => [ { 'litlistid' => 'litlistitems' } ],
-                join     => [ 'subjectid', 'litlistid' ],
-            }
-        );
-        
-        foreach my $litlist ($litlists->all){
-            push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid')});
-        }
-    }
-    else {
-        # DBI: "select l.id from litlists as l where l.type = 1 and (select count(litlistid) from litlistitems where litlistid=l.id)  > 0 order by id DESC limit $count";
-
-        my $litlists = $self->{schema}->resultset('Litlist')->search(
-            {
-                'me.type' => 1,
-            },
-            {
-                group_by => ['me.id'],
-                select   => ['me.id'],
+#                select   => [ {distinct => 'me.id'} ],
+                select   => [ 'me.id' ],
                 as       => ['thislitlistid'],
                 order_by => [ 'me.id DESC' ],
+                rows     => $count,                
+                prefetch => [{ 'litlist_subjects' => 'subjectid' }],
+                join     => [ 'litlist_subjects' ],
+            }
+        );
+    }
+    else {
+        $litlists = $self->{schema}->resultset('Litlist')->search(
+            {
+                'type' => 1,
+            },
+            {
+                select   => ['id'],
+                as       => ['thislitlistid'],
+                order_by => [ 'id DESC' ],
                 rows     => $count,
-                join     => [ 'litlistitems' ],
+
             }
         );
 
-        foreach my $litlist ($litlists->all){
-            $logger->debug("Found Listlist with ID ".$litlist->get_column('thislitlistid'));
-            push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid')});
-        }
+        # $sql_stmnt = "select id from litlist where type = 1";
+    }
+
+    my $litlists_ref = [];
+
+    foreach my $litlist ($litlists->all){
+        $logger->debug("Found Listlist with ID ".$litlist->get_column('thislitlistid'));
+        push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid')});
     }
     
     return $litlists_ref;
@@ -2402,35 +2393,44 @@ sub get_public_litlists {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return [] if (!defined $dbh);
-
-    my $sql_stmnt = "";
-    my @sql_args  = ();
+    my $litlists;
     
     if ($subjectid){
-        $sql_stmnt = "select distinct(ls.litlistid) as id from litlist_subject as ls, litlist as l where ls.subjectid = ? and ls.litlistid = l.id and l.type = 1";
-        push @sql_args, $subjectid;
+        $litlists = $self->{schema}->resultset('Litlist')->search(
+            {
+                'subjectid.id'  => $subjectid,
+                'me.type'       => 1,
+            },
+            {
+#                select   => [ {distinct => 'me.id'} ],
+                select   => [ 'me.id' ],
+                as       => ['thislitlistid'],
+                prefetch => [{ 'litlist_subjects' => 'subjectid' }],
+                join     => [ 'litlist_subjects' ],
+            }
+        );
+
+#        $sql_stmnt = "select distinct(ls.litlistid) as id from litlist_subject as ls, litlist as l where ls.subjectid = ? and ls.litlistid = l.id and l.type = 1";
+#        push @sql_args, $subjectid;
     }
     else {
-        $sql_stmnt = "select id from litlist where type = 1";
-    }
+        $litlists = $self->{schema}->resultset('Litlist')->search(
+            {
+                'type' => 1,
+            },
+            {
+                select   => ['id'],
+                as       => ['thislitlistid'],
+            }
+        );
 
-    $logger->debug($sql_stmnt);
-    
-    my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
-    $request->execute(@sql_args) or $logger->error($DBI::errstr);
+        # $sql_stmnt = "select id from litlist where type = 1";
+    }
 
     my $litlists_ref = [];
 
-    while (my $result=$request->fetchrow_hashref){
-      my $litlistid        = $result->{id};
+    foreach my $litlist ($litlists->all){
+      my $litlistid        = $litlist->get_column('thislitlistid');
 
       my $properties_ref = $self->get_litlist_properties({litlistid => $litlistid});
       push @$litlists_ref, $properties_ref if ($properties_ref->{itemcount});
@@ -2855,6 +2855,7 @@ sub get_number_of_litlists_by_subject {
 
     my $count_ref={};
 
+    $self->{schema}->storage->debug(1);
     # DBI: "select count(distinct l2s.litlistid) as llcount from litlist_subject as l2s, litlist as l where l2s.litlistid=l.id and l2s.subjectid=? and l.type=1 and (select count(li.litlistid) > 0 from litlistitem as li where l2s.litlistid=li.litlistid)"
     $count_ref->{public} = $self->{schema}->resultset('Litlist')->search(
         {
@@ -2866,6 +2867,17 @@ sub get_number_of_litlists_by_subject {
             join     => [ 'litlist_subjects', 'litlistitems' ],
         }
     )->count;
+
+#     $count_ref->{public} = $self->{schema}->resultset('LitlistSubject')->search(
+#         {
+#             'subjectid.id'  => $subjectid,
+#             'litlistid.type' => 1,
+#         },
+#         {
+#             prefetch => [{ 'litlistid' => 'litlistitems' }],
+#             join     => [ 'subjectid', 'litlistid' ],
+#         }
+#     )->count;
 
     # "select count(distinct litlistid) as llcount from litlist2subject as l2s where subjectid=? and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)"
     $count_ref->{all}=$self->{schema}->resultset('Litlist')->search(

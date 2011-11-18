@@ -28,7 +28,7 @@ $newdbh->do("truncate table tag");
 $newdbh->do("truncate table collection");
 $newdbh->do("truncate table livesearch");
 $newdbh->do("truncate table searchfield");
-$newdbh->do("truncate table user_profile");
+$newdbh->do("truncate table user_searchprofile");
 $newdbh->do("truncate table searchprofile");
 $newdbh->do("truncate table user_session");
 $newdbh->do("truncate table logintarget");
@@ -160,15 +160,15 @@ my %searchprofileid = ();
 
 # searchprofile
 {
-    print STDERR "### searchprofile / user_profile \n";
+    print STDERR "### searchprofile / user_searchprofile \n";
 
     $newdbh->do(qq{ALTER TABLE searchprofile DISABLE KEYS});
-    $newdbh->do(qq{ALTER TABLE user_profile DISABLE KEYS});
+    $newdbh->do(qq{ALTER TABLE user_searchprofile DISABLE KEYS});
          
     my $request  = $olddbh->prepare("select * from userdbprofile");
     my $request2 = $olddbh->prepare("select * from profildb where profilid = ? order by dbname");
     my $request3 = $newdbh->prepare("insert into searchprofile (databases_as_json) values (?)");
-    my $request4 = $newdbh->prepare("insert into user_profile (profileid,userid,profilename) values (?,?,?)");
+    my $request4 = $newdbh->prepare("insert into user_searchprofile (profileid,userid,profilename) values (?,?,?)");
     
     $request->execute();
     
@@ -202,7 +202,7 @@ my %searchprofileid = ();
 
     $newdbh->do(qq{COMMIT});
     $newdbh->do(qq{ALTER TABLE searchprofile ENABLE KEYS});
-    $newdbh->do(qq{ALTER TABLE user_profile ENABLE KEYS});
+    $newdbh->do(qq{ALTER TABLE user_searchprofile ENABLE KEYS});
 }
 
 # searchfield

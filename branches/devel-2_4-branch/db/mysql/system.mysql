@@ -318,18 +318,6 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
-drop table IF EXISTS dbchoice;
-CREATE TABLE dbchoice (
- sid       BIGINT NOT NULL,
- dbname    TEXT,
-
- CONSTRAINT `fk_dbchoice_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`)
-)
-ENGINE InnoDB
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
-;
-
 drop table IF EXISTS searchhistory;
 CREATE TABLE searchhistory (
  sid          BIGINT NOT NULL,
@@ -494,8 +482,21 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
-DROP TABLE IF EXISTS user_profile;
-CREATE TABLE user_profile (
+drop table IF EXISTS session_searchprofile;
+CREATE TABLE session_searchprofile (
+ sid       BIGINT NOT NULL,
+ profileid BIGINT NOT NULL,
+
+ CONSTRAINT `fk_sessionprofile_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+ CONSTRAINT `fk_sessionprofile_searchprofile` FOREIGN KEY (`profileid`) REFERENCES `searchprofile` (`id`)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+DROP TABLE IF EXISTS user_searchprofile;
+CREATE TABLE user_searchprofile (
  id          BIGINT AUTO_INCREMENT,
  profileid   BIGINT NOT NULL,
  userid      BIGINT NOT NULL,
@@ -504,7 +505,7 @@ CREATE TABLE user_profile (
 
  CONSTRAINT `pk_userprofile` PRIMARY KEY (`id`),
  CONSTRAINT `fk_userprofile_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`),
- CONSTRAINT `fk_userprofile_profile` FOREIGN KEY (`profileid`) REFERENCES `searchprofile` (`id`)
+ CONSTRAINT `fk_userprofile_searchprofile` FOREIGN KEY (`profileid`) REFERENCES `searchprofile` (`id`)
 )
 ENGINE InnoDB
 DEFAULT CHARACTER SET utf8

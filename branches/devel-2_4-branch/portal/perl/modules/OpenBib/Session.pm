@@ -121,7 +121,7 @@ sub new {
         $r->err_headers_out->set('Set-Cookie', $cookie);
     }
     
-    $logger->debug("Session-Object created: ".YAML::Dump($self));
+    #$logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
 }
 
@@ -198,7 +198,7 @@ sub _new_instance {
         $r->err_headers_out->set('Set-Cookie', $cookie);
     }
     
-    $logger->debug("Session-Object created: ".YAML::Dump($self));
+    #$logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
 }
 
@@ -443,7 +443,7 @@ sub set_dbchoice {
 
     # Datenbanken zunaechst loeschen
     eval {
-        $self->{schema}->resultset('Dbchoice')->search_rs({ sid => $sid })->delete;
+        $self->{schema}->resultset('SessionSearchprofile')->search_rs({ sid => $sid })->delete;
     };
 
     if (@$db_ref){
@@ -456,7 +456,7 @@ sub set_dbchoice {
         }
 
         # Dann die zugehoerigen Datenbanken eintragen
-        $self->{schema}->resultset('Dbchoice')->populate($this_db_ref);
+        $self->{schema}->resultset('SessionSearchprofile')->populate($this_db_ref);
     }
 
     return;
@@ -468,7 +468,7 @@ sub get_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbases = $self->{schema}->resultset('Dbchoice')->search_rs({ 'sid.sessionID' => $self->{ID}}, { join => 'sid' } );
+    my $dbases = $self->{schema}->resultset('SessionSearchprofile')->search_rs({ 'sid.sessionID' => $self->{ID}}, { join => 'sid' } );
 
     my @dbchoice=();
     foreach my $item ($dbases->all){
@@ -488,7 +488,7 @@ sub clear_dbchoice {
 
     # Datenbanken zunaechst loeschen
     eval {
-        $self->{schema}->resultset('Dbchoice')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' })->delete;
+        $self->{schema}->resultset('SessionSearchprofile')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' })->delete;
     };
 
     return;
@@ -501,7 +501,7 @@ sub get_number_of_dbchoice {
     my $logger = get_logger();
 
     # DBI: "select count(dbname) as rowcount from dbchoice where sessionid = ?"
-    my $numofdbs = $self->{schema}->resultset('Dbchoice')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
+    my $numofdbs = $self->{schema}->resultset('SessionSearchprofile')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
 
     return $numofdbs;
 }
@@ -591,7 +591,7 @@ sub get_items_in_collection {
     return $recordlist if (!defined $self->{schema});
 
     # DBI: "select dbname,singleidn from treffer where sessionid = ? order by dbname"
-    my $items = $self->{schema}->resultset('Collection')->search_rs(
+    my $items = $self->{schema}->resultset('Anoncollection')->search_rs(
         {
             'sid.sessionid' => $self->{ID},
         },
@@ -814,7 +814,7 @@ sub clear_data {
     eval {
         $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
         $self->{schema}->resultset('Collection')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
-        $self->{schema}->resultset('Dbchoice')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
+        $self->{schema}->resultset('SessionSearchprofile')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
         $self->{schema}->resultset('Recordhistory')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
         $self->{schema}->resultset('Searchhistory')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
         $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->delete;

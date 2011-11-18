@@ -126,7 +126,7 @@ sub userdb_accessible{
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
             or $logger->error($DBI::errstr);
     
     if ($dbh->ping()){
@@ -145,15 +145,6 @@ sub get_credentials {
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef if (!defined $dbh);
 
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
@@ -191,7 +182,7 @@ sub set_credentials {
             {
                 username => $username,
             }
-        )->update({ password => $password });
+        )->single()->update({ password => $password });
     }
     elsif ($self->{ID}) {
         # DBI: "update userinfo set pin = ? where id = ?"
@@ -199,7 +190,7 @@ sub set_credentials {
             {
                 id => $self->{ID},
             }
-        )->update({ password => $password });
+        )->single->update({ password => $password });
     }
     else {
         $logger->error("Neither username nor userid given");
@@ -440,7 +431,7 @@ sub clear_cached_userdata {
         {
             id => $self->{ID},
         }
-    )->update({
+    )->single()->update({
         nachname => '',
         vorname  => '',
         strasse  => '',
@@ -560,9 +551,23 @@ sub get_profiledbs_of_profileid {
 
     return if (!defined $dbh);
 
-    my $idnresult=$dbh->prepare("select profildb.dbname as dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID},$profileid) or $logger->error($DBI::errstr);
+    # DBI: "select profildb.dbname as dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname"
+    my $userprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+        {
+            'me.id'        => $profileid,
+            'me.userid'    => $self->{ID},
+        },
+        {
+            join   => ['profileid'],
+            select => ['profileid.databases_as_json'],
+            as     => ['thisdatabases_as_json'],
+        }
 
+    )->single();
+
+    my $dbs_as_json = $userprofile->get_column('thisdatabases_as_json');
+
+    my $
     my @profiledbs=();
     while (my $result=$idnresult->fetchrow_hashref()){
         push @profiledbs, decode_utf8($result->{'dbname'});
@@ -807,7 +812,7 @@ sub get_number_of_dbprofiles {
     my $logger = get_logger();
 
     # DBI "select count(profilid) as rowcount from user_profile"
-    my $numofprofiles = $self->{schema}->resultset('UserProfile')->search_rs(
+    my $numofprofiles = $self->{schema}->resultset('UserSearchprofile')->search_rs(
         undef,
     )->count;
 
@@ -852,7 +857,7 @@ sub get_all_profiles {
     my $logger = get_logger();
 
     # DBI: "select profilid, profilename from userdbprofile where userid = ? order by profilename"
-    my $userprofiles = $self->{schema}->resultset('UserProfile')->search_rs(
+    my $userprofiles = $self->{schema}->resultset('UserSearchprofile')->search_rs(
         {
             userid => $self->{ID},
         },
@@ -892,14 +897,16 @@ sub authenticate_self_user {
             username  => $username,
             password  => $password,
         }
-    )->single;
+    )->first;
     
     my $userid = -1;
 
     if ($authentication){
         $userid = $authentication->id;
     }
-  
+
+    $logger->debug("Got Userid $userid");
+
     return $userid;
 }
 
@@ -1776,7 +1783,7 @@ sub add_review {
             titleid => $titid,
             dbname => $titdb,
         }
-    )->first;
+    )->single;
 
     # Review schon vorhanden?
     if ($review){
@@ -2110,7 +2117,7 @@ sub add_litlist {
     if (@{$subjectids_ref}){
         foreach my $subjectid (@{$subjectids_ref}){
             # DBI "insert into litlist_subject (litlistid,subjectid) values (?,?)") or $logger->error($DBI::errstr);
-            $new_litlist->insert_related('litlist_subject',
+            $new_litlist->insert_related('litlist_subjects',
                                          {
                     subjectid => $subjectid,
                 }
@@ -2183,7 +2190,7 @@ sub change_litlist {
         {
             id     => $litlistid,
         }
-    );
+    )->single();
     
     return unless ($litlist);
 
@@ -2639,8 +2646,8 @@ sub get_litlist_properties {
 
     foreach my $subject ($subjects->all){
         my $subjectid   = $subject->get_column('thissubjectid');
-        my $name        = decode_utf8($subject->get_column('thissubjectname'));
-        my $description = decode_utf8($subject->get_column('thissubjectdescription'));
+        my $name        = $subject->get_column('thissubjectname');
+        my $description = $subject->get_column('thissubjectdescription');
 
         $subject_selected_ref->{$subjectid}=1;
         push @{$subjects_ref}, {
@@ -3207,7 +3214,7 @@ sub update_logintarget {
         {
             id => $targetid,
         }   
-    )->update(
+    )->single()->update(
         {
             hostname    => $hostname,
             port        => $port,
@@ -3259,7 +3266,7 @@ sub dbprofile_exists {
     my $logger = get_logger();
 
     # DBI: "select profileid,count(profileid) as rowcount from user_profile where userid = ? and profilename = ? group by profileid"
-    my $profile = $self->{schema}->resultset('UserProfile')->search_rs(
+    my $profile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
         {
             profilename => $profilename,
             userid      => $self->{ID},
@@ -3284,7 +3291,7 @@ sub new_dbprofile {
     my $logger = get_logger();
 
     # DBI: "insert into user_profile values (NULL,?,?)"
-    my $new_profile = $self->{schema}->resultset('UserProfile')->create(
+    my $new_profile = $self->{schema}->resultset('UserSearchprofile')->create(
         {
             profilename => $profilename,
             userid      => $self->{ID},
@@ -3302,7 +3309,7 @@ sub delete_dbprofile {
     my $logger = get_logger();
 
     # DBI: "delete from user_profile where userid = ? and profileid = ?"
-    $self->{schema}->resultset('UserProfile')->create(
+    $self->{schema}->resultset('UserSearchprofile')->create(
         {
             id     => $profileid,
             userid => $self->{ID},
@@ -3358,23 +3365,23 @@ sub wipe_account {
     if ($userinfo){
         # Zuerst werden die Datenbankprofile geloescht
         # DBI: "delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid"
-        $userinfo->delete_related('UserProfile');
+        $userinfo->delete_related('user_searchprofiles');
     
         # .. dann die Suchfeldeinstellungen
         # DBI: "delete from searchfield where userid = ?"
-        $userinfo->delete_related('Searchfield');
+        $userinfo->delete_related('searchfields');
 
         # .. dann die Livesearcheinstellungen
         # DBI: "delete from livesearch where userid = ?"
-        $userinfo->delete_related('Livesearch');
+        $userinfo->delete_related('livesearches');
 
         # .. dann die Merkliste
         # DBI: "delete from collection where userid = ?"
-        $userinfo->delete_related('Collection');
+        $userinfo->delete_related('collections');
 
         # .. dann die Verknuepfung zur Session
         # DBI: "delete from user_session where userid = ?"
-        $userinfo->delete_related('UserSession');
+        $userinfo->delete_related('user_sessions');
     
         # und schliesslich der eigentliche Benutzereintrag
         # DBI: "delete from userinfo where userid = ?"
@@ -3416,12 +3423,12 @@ sub disconnect_session {
 
     my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
         id => $self->{ID}
-    );
+    )->first;
 
     if ($userinfo){
         # Verbindung zur Session loeschen
         # DBI: "delete from user_session where userid = ?"
-        $userinfo->delete_related('UserSession');
+        $userinfo->delete_related('user_sessions');
     }
    
     return;
@@ -3482,7 +3489,7 @@ sub delete_private_info {
     # DBI: "update userinfo set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where id = ?"
     $self->{schema}->resultset('Userinfo')->search_rs(
         id => $self->{ID},
-    )->update(
+    )->single()->update(
         {
             nachname   => '',
             vorname    => '',
@@ -3517,7 +3524,7 @@ sub set_private_info {
     #      $userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$username
     $self->{schema}->resultset('Userinfo')->search_rs(
         id => $self->get_username_of_userid($self->{ID}),
-    )->update(
+    )->single()->update(
         {
             nachname   => $userinfo_ref->{'Nachname'},
             vorname    => $userinfo_ref->{'Vorname'},
@@ -3835,26 +3842,19 @@ sub get_spelling_suggestion {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "select * from userinfo where userid = ?"
+    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+        {
+            id => $self->{ID},
+        }
+    )->first;
+
+    my $spelling_suggestion_ref = {};
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef if (!defined $dbh);
-
-    my $targetresult=$dbh->prepare("select * from userinfo where userid = ?") or $logger->error($DBI::errstr);
-    $targetresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-    
-    my $result=$targetresult->fetchrow_hashref();
-
-    my $spelling_suggestion_ref = {
-        as_you_type => decode_utf8($result->{'spelling_as_you_type'}),
-        resultlist  => decode_utf8($result->{'spelling_resultlist'}),
+    if ($userinfo){
+        $spelling_suggestion_ref->{as_you_type} = decode_utf8($userinfo->{'spelling_as_you_type'});
+        $spelling_suggestion_ref->{resultlist}  = decode_utf8($userinfo->{'spelling_resultlist'});
     };
-    
-    $targetresult->finish();
     
     return $spelling_suggestion_ref;
 }
@@ -3866,17 +3866,21 @@ sub set_default_spelling_suggestion {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
+    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+        {
+            id => $self->{ID},
+        }
+    )->single;
 
-    return 0 if (!defined $dbh);
-
-    my $userresult=$dbh->prepare("update userinfo (spelling_as_you_type,spelling_resultlist) values (0,0) where userid=?") or $logger->error($DBI::errstr);
-    $userresult->execute($userid) or $logger->error($DBI::errstr);
+    if ($userinfo){
+        # DBI: "update userinfo (spelling_as_you_type,spelling_resultlist) values (0,0) where userid=?"
+        $userinfo->update(
+            {
+                spelling_as_you_type => 0,
+                spelling_resultlist  => 0,
+            }
+        );
+    }
     
     return;
 }
@@ -3893,19 +3897,21 @@ sub set_spelling_suggestion {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
+    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+        {
+            id => $self->{ID},
+        }
+    )->single;
 
-    return undef if (!defined $dbh);
-
-    $logger->debug("update userinfo set spelling_as_you_type = ?, spelling_resultlist = ?,$self->{ID}");
-    my $targetresult=$dbh->prepare("update userinfo set spelling_as_you_type = ?, spelling_resultlist = ? where userid = ?") or $logger->error($DBI::errstr);
-    $targetresult->execute($as_you_type,$resultlist,$self->{ID}) or $logger->error($DBI::errstr);
-    $targetresult->finish();
+    if ($userinfo){
+        # DBI: "update userinfo set spelling_as_you_type = ?, spelling_resultlist = ?,$self->{ID}"
+        $userinfo->update(
+            {
+                spelling_as_you_type => $as_you_type,
+                spelling_resultlist  => $resultlist,
+            }
+        );
+    }
     
     return;
 }
@@ -4039,27 +4045,24 @@ sub get_bibsonomy {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef if (!defined $dbh);
-
-    my $targetresult=$dbh->prepare("select bibsonomy_sync,bibsonomy_user,bibsonomy_key from userinfo where userid = ?") or $logger->error($DBI::errstr);
-    $targetresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-    
-    my $result=$targetresult->fetchrow_hashref();
+    # DBI: "select bibsonomy_sync,bibsonomy_user,bibsonomy_key from userinfo where userid = ?"
+    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+        {
+            id => $self->{ID},
+        }
+    )->first;
 
     my $bibsonomy_ref = {
-        sync      => decode_utf8($result->{'bibsonomy_sync'}),
-        user      => decode_utf8($result->{'bibsonomy_user'}),
-        key       => decode_utf8($result->{'bibsonomy_key'}),
+        sync      => '',
+        user      => '',
+        key       => '',
     };
     
-    $targetresult->finish();
+    if ($userinfo){        
+        $bibsonomy_ref->{sync} = decode_utf8($userinfo->bibsonomy_sync);
+        $bibsonomy_ref->{user} = decode_utf8($userinfo->bibsonomy_user);
+        $bibsonomy_ref->{key}  = decode_utf8($userinfo->bibsonomy_key);
+    };
     
     return $bibsonomy_ref;
 }
@@ -4078,19 +4081,20 @@ sub set_bibsonomy {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
+    # DBI: "update userinfo set bibsonomy_sync = ?, bibsonomy_user = ?, bibsonomy_key = ? where userid = ?"
+    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+        {
+            id => $self->{ID},
+        }
+    )->single()->update(
+        {
+            bibsonomy_sync => $sync,
+            bibsonomy_user => $user,
+            bibsonomy_key  => $key,
+            
+        }
+    );
 
-    return undef if (!defined $dbh);
-
-    my $targetresult=$dbh->prepare("update userinfo set bibsonomy_sync = ?, bibsonomy_user = ?, bibsonomy_key = ? where userid = ?") or $logger->error($DBI::errstr);
-    $targetresult->execute($sync,$user,$key,$self->{ID}) or $logger->error($DBI::errstr);
-    $targetresult->finish();
-    
     return;
 }
 
@@ -4492,7 +4496,7 @@ sub connectDB {
     $self->{dbh}->{RaiseError} = 1;
 
     eval {        
-        $self->{schema} = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1,}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 
     };
 

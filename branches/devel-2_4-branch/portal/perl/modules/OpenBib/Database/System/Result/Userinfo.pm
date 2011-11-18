@@ -331,21 +331,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 user_profiles
-
-Type: has_many
-
-Related object: L<OpenBib::Database::System::Result::UserProfile>
-
-=cut
-
-__PACKAGE__->has_many(
-  "user_profiles",
-  "OpenBib::Database::System::Result::UserProfile",
-  { "foreign.userid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 user_roles
 
 Type: has_many
@@ -357,6 +342,21 @@ Related object: L<OpenBib::Database::System::Result::UserRole>
 __PACKAGE__->has_many(
   "user_roles",
   "OpenBib::Database::System::Result::UserRole",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 user_searchprofiles
+
+Type: has_many
+
+Related object: L<OpenBib::Database::System::Result::UserSearchprofile>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_searchprofiles",
+  "OpenBib::Database::System::Result::UserSearchprofile",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -377,8 +377,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-16 10:00:16
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZE8p1ZdjHg0AKDBOAp8x8w
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-18 10:20:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FGecEcJFy6t1WmJjtgGaHg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

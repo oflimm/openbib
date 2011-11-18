@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::UserProfile;
+package OpenBib::Database::System::Result::UserSearchprofile;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,11 +11,11 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::UserProfile
+OpenBib::Database::System::Result::UserSearchprofile
 
 =cut
 
-__PACKAGE__->table("user_profile");
+__PACKAGE__->table("user_searchprofile");
 
 =head1 ACCESSORS
 
@@ -89,8 +89,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-16 10:00:16
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u8TH39VEHE0mCQm6aIPMsw
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-18 10:20:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kOsTXq7tB9QFep1qLqjJVg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

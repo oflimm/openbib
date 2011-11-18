@@ -441,24 +441,41 @@ sub set_dbchoice {
 
     my $sid =  $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->single->id;
 
-    # Datenbanken zunaechst loeschen
+    # Datenbankverknuepfung zunaechst loeschen
     eval {
         $self->{schema}->resultset('SessionSearchprofile')->search_rs({ sid => $sid })->delete;
     };
 
-    if (@$db_ref){
-        my $this_db_ref = [];
-        foreach my $dbname (@$db_ref){
-            push @$this_db_ref, {
-                sid    => $sid,
-                dbname => $dbname,
-            };
-        }
+    my $dbs_as_json = encode_json $db_ref;
 
-        # Dann die zugehoerigen Datenbanken eintragen
-        $self->{schema}->resultset('SessionSearchprofile')->populate($this_db_ref);
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search_rs(
+        {
+            databases_as_json => $dbs_as_json,
+        }
+    )->single();
+
+    my $profileid;
+    
+    if ($searchprofile){
+        $profileid = $searchprofile->id;
+    }
+    else {
+        my $new_profile = $self->{schema}->resultset('Searchprofile')->create(
+            {
+                databases_as_json => $dbs_as_json,
+            }
+        );
+
+        $profileid = $new_profile->id;
     }
 
+    $self->{schema}->resultset('SessionSearchprofile')->create(
+        {
+            sid       => $sid,
+            profileid => $profileid,
+        }
+    );
+    
     return;
 }
 
@@ -468,13 +485,22 @@ sub get_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbases = $self->{schema}->resultset('SessionSearchprofile')->search_rs({ 'sid.sessionID' => $self->{ID}}, { join => 'sid' } );
+    my $dbases = $self->{schema}->resultset('SessionSearchprofile')->search_rs(
+        {
+            'sid.sessionID' => $self->{ID}
+        },
+        {
+            join   => ['sid','profileid'],
+            select => ['profileid.databases_as_json'],
+            as     => ['thisdatabases_as_json'],
+        }
+    )->single();
 
-    my @dbchoice=();
-    foreach my $item ($dbases->all){
-        push @dbchoice, $item->dbname;
+    my $dbs_as_json = $dbases->get_column('thisdatabases_as_json');
 
-    }
+    my $dbs_ref = decode_json $dbs_as_json;
+
+    my @dbchoice = @{$dbs_ref};
 
     $logger->debug("DB-Choice:\n".YAML::Dump(\@dbchoice));
     return reverse @dbchoice;
@@ -500,8 +526,9 @@ sub get_number_of_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select count(dbname) as rowcount from dbchoice where sessionid = ?"
-    my $numofdbs = $self->{schema}->resultset('SessionSearchprofile')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
+    my @dbases = $self->get_dbchoice();
+
+    my $numofdbs = scalar @dbases;
 
     return $numofdbs;
 }
@@ -812,12 +839,17 @@ sub clear_data {
     
     # dann Sessiondaten loeschen
     eval {
-        $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
-        $self->{schema}->resultset('Collection')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
-        $self->{schema}->resultset('SessionSearchprofile')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
-        $self->{schema}->resultset('Recordhistory')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
-        $self->{schema}->resultset('Searchhistory')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' })->delete;
-        $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->delete;
+        my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single;
+
+        $sessioninfo->delete_related('eventlogs');
+        $sessioninfo->delete_related('queries');
+        $sessioninfo->delete_related('anoncollections');
+        $sessioninfo->delete_related('recordhistories');
+        $sessioninfo->delete_related('searchhistories');
+        $sessioninfo->delete_related('session_searchprofiles');
+        $sessioninfo->delete_related('user_sessions');
+        $sessioninfo->delete;
+
     };
 
     

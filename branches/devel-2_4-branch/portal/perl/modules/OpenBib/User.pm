@@ -34,6 +34,7 @@ use utf8;
 use base qw(Apache::Singleton);
 use Digest::MD5;
 use Encode qw(decode_utf8 encode_utf8);
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use YAML;
 
@@ -494,8 +495,8 @@ sub get_targettype_of_session {
         },
         {
             join   => ['sid','targetid'],
-            select => 'targetid.type',
-            as     => 'thistype',
+            select => ['targetid.type'],
+            as     => ['thistype'],
         }
             
     )->single;
@@ -509,31 +510,25 @@ sub get_targettype_of_session {
     return $targettype;
 }
 
+
 sub get_profilename_of_profileid {
     my ($self,$profileid)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $usersearchprofilename = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+        {
+            id     => $profileid,
+            userid => $self->{ID},
+        },
+        {
+            columns => ['profilename'],
+        }
+    )->single()->profilename;
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
 
-    return undef if (!defined $dbh);
-
-    my $idnresult=$dbh->prepare("select profilename from userdbprofile where profilid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($profileid) or $logger->error($DBI::errstr);
-      
-    my $result=$idnresult->fetchrow_hashref();
-    
-    my $profilename = decode_utf8($result->{'profilename'});
-
-    $idnresult->finish();
-
-    return $profilename;
+    return $usersearchprofilename;
 }
 
 sub get_profiledbs_of_profileid {
@@ -541,15 +536,6 @@ sub get_profiledbs_of_profileid {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return if (!defined $dbh);
 
     # DBI: "select profildb.dbname as dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname"
     my $userprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
@@ -567,13 +553,9 @@ sub get_profiledbs_of_profileid {
 
     my $dbs_as_json = $userprofile->get_column('thisdatabases_as_json');
 
-    my $
-    my @profiledbs=();
-    while (my $result=$idnresult->fetchrow_hashref()){
-        push @profiledbs, decode_utf8($result->{'dbname'});
-    }
-    
-    $idnresult->finish();
+    my $dbs_ref = decode_json $dbs_as_json;
+
+    my @profiledbs = @{$dbs_ref};
 
     return @profiledbs;
 }
@@ -681,23 +663,15 @@ sub get_id_of_tag {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef if (!defined $dbh);
     return undef if (!defined $tag);
+
+    # DBI: "select id from tag where name=?"
+    my $id = $self->{schema}->resultset('Tag')->search_rs(
+        {
+            name => $tag
+        }
+    )->single->id;
     
-    my $request=$dbh->prepare("select id from tag where name=?") or $logger->error($DBI::errstr);
-    $request->execute($tag) or $logger->error($DBI::errstr);
-    my $result = $request->fetchrow_hashref();
-    my $id     = $result->{id};
-
-    $request->finish();
-
     return $id;
 }
 
@@ -2088,7 +2062,7 @@ sub add_litlist {
             title  => $title,
             type   => $type,
         }
-    )->first;
+    )->single();
 
     if ($litlist){
         return $litlist->id;
@@ -3284,21 +3258,93 @@ sub dbprofile_exists {
 }
 
 sub new_dbprofile {
-    my ($self,$profilename)=@_;
+    my ($self,$profilename,$databases_ref)=@_;
     
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
+
+    my $dbs_as_json = encode_json $databases_ref;
+
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search(
+        {
+            databases_as_json => $dbs_as_json,
+        }
+    )->single();
+
+    my $searchprofileid;
+    
+    if ($searchprofile){
+        $searchprofileid = $searchprofile->id;
+    }
+    else {
+            my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
+                {
+                    databases_as_json => $dbs_as_json,
+                }
+            );
+
+            $searchprofileid = $new_searchprofile->id;
+    }
 
     # DBI: "insert into user_profile values (NULL,?,?)"
     my $new_profile = $self->{schema}->resultset('UserSearchprofile')->create(
         {
             profilename => $profilename,
             userid      => $self->{ID},
+            profileid   => $searchprofileid,
         }
     );
     
     return $new_profile->id;
+}
+
+sub update_dbprofile {
+    my ($self,$profileid,$profilename,$databases_ref)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $dbs_as_json = encode_json $databases_ref;
+
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search(
+        {
+            databases_as_json => $dbs_as_json,
+        }
+    )->single();
+
+    my $searchprofileid;
+    
+    if ($searchprofile){
+        $searchprofileid = $searchprofile->id;
+    }
+    else {
+            my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
+                {
+                    databases_as_json => $dbs_as_json,
+                }
+            );
+
+            $searchprofileid = $new_searchprofile->id;
+    }
+
+    # DBI: "insert into user_profile values (NULL,?,?)"
+    my $profile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+        {
+            userid      => $self->{ID},
+            id          => $profileid,
+
+        }
+    )->single()->update(
+        {
+            profilename => $profilename,
+            userid      => $self->{ID},
+            profileid   => $searchprofileid,
+        }
+    );
+    
+    return;
 }
 
 sub delete_dbprofile {
@@ -3309,36 +3355,13 @@ sub delete_dbprofile {
     my $logger = get_logger();
 
     # DBI: "delete from user_profile where userid = ? and profileid = ?"
-    $self->{schema}->resultset('UserSearchprofile')->create(
+    $self->{schema}->resultset('UserSearchprofile')->search_rs(
         {
             id     => $profileid,
             userid => $self->{ID},
         }
-    );
+    )->delete;
 
-    return;
-}
-
-sub delete_profiledbs {
-    my ($self,$profileid)=@_;
-    
-    # Log4perl logger erzeugen
-  
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
-
-    my $profilresult=$dbh->prepare("delete from profildb where profilid = ?") or $logger->error($DBI::errstr);
-    $profilresult->execute($profileid) or $logger->error($DBI::errstr);
-    $profilresult->finish();
-    
     return;
 }
 
@@ -3388,29 +3411,6 @@ sub wipe_account {
         $userinfo->delete;
     }
     
-    return;
-}
-
-sub add_profiledb {
-    my ($self,$profileid,$profiledb)=@_;
-    
-    # Log4perl logger erzeugen
-  
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return undef if (!defined $dbh);
-
-    my $profilresult=$dbh->prepare("insert into profildb (profilid,dbname) values (?,?)") or $logger->error($DBI::errstr);
-    $profilresult->execute($profileid,$profiledb) or $logger->error($DBI::errstr);
-    $profilresult->finish();
-   
     return;
 }
 

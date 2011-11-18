@@ -165,10 +165,10 @@ sub show_record {
     # Anzeigen der Profilmanagement-Seite
     #####################################################################   
 
-    my $profilname="";
+    my $profilename="";
     
     # Zuerst Profil-Description zur ID holen
-    $profilname = $user->get_profilename_of_profileid($profileid);
+    $profilename = $user->get_profilename_of_profileid($profileid);
 
     my $checkeddb_ref = {};
 
@@ -186,7 +186,7 @@ sub show_record {
     
     my $ttdata={
         targettype     => $targettype,
-        profilname     => $profilname,
+        profilename    => $profilename,
         maxcolumn      => $maxcolumn,
         colspan        => $colspan,
         catdb          => \@catdb,
@@ -224,7 +224,7 @@ sub show_record_form {
     }
 
     # Zuerst Profil-Description zur ID holen
-    my $profilname = $user->get_profilename_of_profileid($profileid);
+    my $profilename = $user->get_profilename_of_profileid($profileid);
 
     my $checkeddb_ref = {};
     
@@ -242,7 +242,7 @@ sub show_record_form {
     
     my $ttdata={
         targettype     => $targettype,
-        profilname     => $profilname,
+        profilename    => $profilename,
         profileid      => $profileid,
         maxcolumn      => $maxcolumn,
         colspan        => $colspan,
@@ -278,6 +278,7 @@ sub update_record {
 
     # CGI Args
     my @databases  = ($query->param('db'))?$query->param('db'):();
+    my $profilename = $query->param('profilename') || '';
 
     if (!$self->is_authenticated('user',$userid)){
         return;
@@ -290,15 +291,7 @@ sub update_record {
         return;
     }
     
-    # Jetzt habe ich eine profileid und kann Eintragen
-    # Auswahl wird immer durch aktuelle ueberschrieben.
-    # Daher erst potentiell loeschen
-    $user->delete_profiledbs($profileid);
-    
-    foreach my $database (@databases) {
-        # ... und dann eintragen
-        $user->add_profiledb($profileid,$database);
-    }
+    $user->update_dbprofile($profileid,$profilename,\@databases);
 
     $self->return_baseurl;
 
@@ -350,19 +343,9 @@ sub create_record {
         return;
     }
     else {
-        $profileid = $user->new_dbprofile($profilename);
+        $profileid = $user->new_dbprofile($profilename,\@databases);
     }
     
-    # Jetzt habe ich eine profileid und kann Eintragen
-    # Auswahl wird immer durch aktuelle ueberschrieben.
-    # Daher erst potentiell loeschen
-    $user->delete_profiledbs($profileid);
-    
-    foreach my $database (@databases) {
-        # ... und dann eintragen
-        $user->add_profiledb($profileid,$database);
-    }
-
     my $new_location = "$path_prefix/$config->{user_loc}/$userid/profile/$profileid.html";
 
     $self->query->method('GET');
@@ -403,7 +386,6 @@ sub delete_record {
     }
 
     $user->delete_dbprofile($profileid);
-    $user->delete_profiledbs($profileid);
 
     $self->return_baseurl;
 

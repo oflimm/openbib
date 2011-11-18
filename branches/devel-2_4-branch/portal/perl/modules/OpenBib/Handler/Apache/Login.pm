@@ -104,11 +104,6 @@ sub show_form {
     my $username = ($query->param('username'))?$query->param('username'):'';
     my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
 
-    # Main-Actions
-    my $do_login       = $query->param('do_login')        || '';
-    my $do_auth        = $query->param('do_auth' )        || '';
-    my $do_loginfailed = $query->param('do_loginfailed')  || '';
-
     my $return_url = $session->get_returnurl();
 
     # Wenn die Session schon authentifiziert ist, dann wird
@@ -161,18 +156,12 @@ sub authenticate {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $code      = ($query->param('code'))?$query->param('code'):'1';
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'';
     my $username = ($query->param('username'))?$query->param('username'):'';
     my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
-
-    # Main-Actions
-    my $do_login       = $query->param('do_login')        || '';
-    my $do_auth        = $query->param('do_auth' )        || '';
-    my $do_loginfailed = $query->param('do_loginfailed')  || '';
 
     my $return_url = $session->get_returnurl();
 
@@ -194,20 +183,20 @@ sub authenticate {
     }
     
     my $logintarget_ref = $user->get_logintarget_by_id($targetid);
-    
+
     $logger->debug(YAML::Dump($logintarget_ref));
     
     ## Ausleihkonfiguration fuer den Katalog einlesen
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     
-    if ($type eq "olws") {
+    if ($logintarget_ref->{type} eq "olws") {
         $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($circinfotable));
         
         my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
             username      => $username,
             password      => $password,
-            circcheckurl  => $circinfotable->{$db}{circcheckurl},
-            circdb        => $circinfotable->{$db}{circdb},
+            circcheckurl  => $circinfotable->{$logintarget_ref->{dbname}}{circcheckurl},
+            circdb        => $circinfotable->{$logintarget_ref->{dbname}}{circdb},
         });
         
         my %userinfo=%$userinfo_ref;
@@ -242,7 +231,7 @@ sub authenticate {
             $user->set_private_info($username,$userinfo_ref);
         }
     }
-    elsif ($type eq "self") {
+    elsif ($logintarget_ref->{type} eq "self") {
         my $result = $user->authenticate_self_user({
             username  => $username,
             password  => $password,
@@ -350,18 +339,12 @@ sub failure {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $code      = ($query->param('code'))?$query->param('code'):'1';
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'';
     my $username = ($query->param('username'))?$query->param('username'):'';
     my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
-
-    # Main-Actions
-    my $do_login       = $query->param('do_login')        || '';
-    my $do_auth        = $query->param('do_auth' )        || '';
-    my $do_loginfailed = $query->param('do_loginfailed')  || '';
 
     my $return_url = $session->get_returnurl();
 

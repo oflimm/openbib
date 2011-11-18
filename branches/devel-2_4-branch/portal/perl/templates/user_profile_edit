@@ -58,9 +58,10 @@ function update_fak(yourform, checked, fak) {
         <div id="col3_content" class="clearfix">
 
 <form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile/[% profileid %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="profilename" value="[% profilename %]" />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Derzeit angezeigtes Profil") %]: <b>[% profilname %]</b></th></tr>
+<tr><th>[% msg.maketext("Derzeit angezeigtes Profil") %]: <b>[% profilename %]</b></th></tr>
 <tr><td class="boxedclear">
 
 <table>

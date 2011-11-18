@@ -365,7 +365,7 @@ sub show_collection_by_single_userxxx {
         
     # Thematische Einordnung
         
-    my $litlist_subjects_ref   = OpenBib::User->get_subjects_of_litlist({id => $litlistid});
+    my $litlist_subjects_ref   = $user->get_subjects_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
     
     # TT-Data erzeugen
@@ -485,7 +485,7 @@ sub show_collection_by_single_user {
         
     # Thematische Einordnung
         
-    my $litlist_subjects_ref   = OpenBib::User->get_subjects_of_litlist({id => $litlistid});
+    my $litlist_subjects_ref   = $user->get_subjects_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
     
     # TT-Data erzeugen
@@ -618,7 +618,7 @@ sub show_record {
         
     # Thematische Einordnung
         
-    my $litlist_subjects_ref   = OpenBib::User->get_subjects_of_litlist({id => $litlistid});
+    my $litlist_subjects_ref   = $user->get_subjects_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
     
     # TT-Data erzeugen
@@ -734,7 +734,7 @@ sub show_record_form {
         
     # Thematische Einordnung
         
-    my $litlist_subjects_ref   = OpenBib::User->get_subjects_of_litlist({id => $litlistid});
+    my $litlist_subjects_ref   = $user->get_subjects_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
     
     # TT-Data erzeugen
@@ -1030,7 +1030,7 @@ sub show_entry_negotiate {
         
     # Thematische Einordnung
         
-    my $litlist_subjects_ref   = OpenBib::User->get_subjects_of_litlist({id => $litlistid});
+    my $litlist_subjects_ref   = $user->get_subjects_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
     
     # TT-Data erzeugen

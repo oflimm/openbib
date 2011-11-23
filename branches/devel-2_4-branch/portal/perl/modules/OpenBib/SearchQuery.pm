@@ -420,14 +420,11 @@ sub save  {
     unless ($sessionID){
         return $self;
     }
-    
+
     my $config = OpenBib::Config->instance;
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
+    $logger->debug("SessionID: $sessionID");
+    
     my $query_obj_string = "";
     
     if ($config->{internal_serialize_type} eq "packed_storable"){
@@ -457,7 +454,7 @@ sub save  {
 
     # Wenn noch nicht vorhanden, dann eintragen
     if (!$searchquery_exists){
-        my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $sessionID })->single->id;
+        my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $sessionID })->single()->id;
 
         # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
         $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string});
@@ -859,12 +856,12 @@ sub connectDB {
     my $config = OpenBib::Config->instance;
     
     eval {        
-        $self->{schema} = OpenBib::Database::Session->connect("DBI:$config->{sessiondbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Database::Session->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 
     };
 
     if ($@){
-        $logger->fatal("Unable to connect to database $config->{sessiondbname}");
+        $logger->fatal("Unable to connect to database $config->{systemdbname}");
     }
 
     return;

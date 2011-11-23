@@ -81,7 +81,7 @@ sub load {
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
             or $logger->error($DBI::errstr);
 
     return $self if (!defined $dbh);

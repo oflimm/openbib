@@ -84,7 +84,7 @@ sub show {
 
     # Test-Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
             and $sessiondbstatus="online";
 
     if ($sessiondbstatus eq "online") {

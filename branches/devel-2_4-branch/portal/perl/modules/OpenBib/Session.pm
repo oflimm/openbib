@@ -496,13 +496,18 @@ sub get_dbchoice {
         }
     )->single();
 
-    my $dbs_as_json = $dbases->get_column('thisdatabases_as_json');
+    my @dbchoice = ();
+    
+    if ($dbases){
+        my $dbs_as_json = $dbases->get_column('thisdatabases_as_json');
+        
+        my $dbs_ref = decode_json $dbs_as_json;
+        
+        @dbchoice = @{$dbs_ref};
+        
+        $logger->debug("DB-Choice:\n".YAML::Dump(\@dbchoice));
+    }
 
-    my $dbs_ref = decode_json $dbs_as_json;
-
-    my @dbchoice = @{$dbs_ref};
-
-    $logger->debug("DB-Choice:\n".YAML::Dump(\@dbchoice));
     return reverse @dbchoice;
 }
 

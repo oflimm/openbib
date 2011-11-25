@@ -97,4 +97,3 @@ Landschaftsdarstellungen des 16. und 17. Jahrhunderts</a>]</p>
 </div>
 
 [% PROCESS common/subtemplate name="std_footer" %]
-cd ..

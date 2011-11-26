@@ -23,10 +23,37 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
 [% END %]
+[% IF active_submenu == "database_record" %]
+<li><span>[% databaseinfo.description %]</span>
+    <ul>
+[% IF active_subsubmenu == "database_record_main" %]
+      <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "database_record_rss" %]
+      <li class="active"><strong>[% msg.maketext("RSS") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]/rss.html?l=[% lang %]">[% msg.maketext("RSS") %]</a></li>
+[% END %]
+    </ul>
+</li>
+[% END %]
 [% IF active_submenu == "profile" %]
   <li class="active"><strong>[% msg.maketext("Katalog-Profile") %]</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %].html?l=[% lang %]">[% msg.maketext("Katalog-Profile") %]</a></li>
+[% END %]
+[% IF active_submenu == "profile_record" %]
+<li><span>[% profileinfo.description %]</span>
+    <ul>
+[% IF active_subsubmenu == "profile_record_main" %]
+      <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.dbname %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[% END %]
+    </ul>
+</li>
 [% END %]
 [% IF active_submenu == "view" %]
   <li class="active"><strong>[% msg.maketext("Views") %]</strong></li>

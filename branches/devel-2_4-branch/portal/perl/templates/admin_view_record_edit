@@ -85,7 +85,7 @@
 
 <p />
 <b>[% msg.maketext("Katalogauswahl zu diesem View") %]</b><br /><br />
-
+[%# USE dumper;dumper.dump(dbnames)%]
 <select name="viewdb" multiple="multiple">
 [% FOREACH singledb IN dbnames %]
 <option value="[% singledb %]" [% IF viewdbs.${singledb} %]selected="selected"[% END %]>[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</option>

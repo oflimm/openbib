@@ -1203,7 +1203,7 @@ sub get_db_histogram_of_query {
             select => [ 'dbname', { sum => 'hits' }],
             as     => [ 'thisdbname', 'thiscount'],
             group_by => 'dbname',
-            order_by => [ 'hitcount desc' ],
+#            order_by => [ 'thiscount desc' ],
         }
     );
 

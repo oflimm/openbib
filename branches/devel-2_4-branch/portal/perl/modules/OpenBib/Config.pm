@@ -1079,10 +1079,16 @@ sub get_profiledbs {
     my $logger = get_logger();
 
     my @profiledbs=();
-
+    my %profiledbs_done = ();
     foreach my $orgunit ($self->get_orgunitinfo_overview($profilename)->all){
-        foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunit->id },{ join => 'dbid', group_by => 'dbid.dbname', order_by => 'dbid.dbname' })->all){
-            push @profiledbs, $item->dbid->dbname;
+        $logger->debug("Getting DBs for Orgunit ".$orgunit->orgunitname);
+        foreach my $item ($orgunit->orgunit_dbs->all){
+            my $dbname = $item->dbid->dbname;
+
+            $logger->debug("Getting DB $dbname");
+
+            push @profiledbs, $dbname unless ($profiledbs_done{$dbname});
+            $profiledbs_done{$dbname} = 1;
         }
     }
     return @profiledbs;

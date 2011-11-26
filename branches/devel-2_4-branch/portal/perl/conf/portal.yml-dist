@@ -6,7 +6,6 @@ servername: localhost
 
 # Unter diesem Name wird der Servers, der die Lastverteilung
 # vornimmt, angesprochen
-loadbalancerservername: localhost
 frontendservername: localhost
 
 # Auf folgende Server werden die Benutzer verteilt
@@ -21,30 +20,13 @@ dbport: 3306
 dbuser: root
 dbpasswd: StrengGeheim
 
-# Einstellungen fuer den Zugriff auf die Session-Datenbank
-sessiondbimodule: mysql
-sessiondbhost: localhost
-sessiondbport: 3306
-sessiondbname: openbib_session
-sessiondbuser: root
-sessiondbpasswd: StrengGeheim
-
-# Einstellungen fuer den Zugriff auf die Config-Datenbank
-configdbimodule: mysql
-configdbhost: localhost
-configdbport: 3306
-configdbname: openbib_config
-configdbuser: root
-configdbpasswd: StrengGeheim
-
-# Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
-userdbimodule: mysql
-userdbhost: localhost
-#userdbhost: localhost
-userdbport: 3306
-userdbname: openbib_user
-userdbuser: root
-userdbpasswd: StrengGeheim
+# Einstellungen fuer den Zugriff auf die System-Datenbank
+systemdbimodule: mysql
+systemdbhost: localhost
+systemdbport: 3306
+systemdbname: openbib_system
+systemdbuser: root
+systemdbpasswd: StrengGeheim
 
 # Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
 enrichmntdbimodule: mysql
@@ -1564,11 +1546,11 @@ dispatch_rules:
 
   - # admin_session_loc: Search form for archived sessions
      module: 'OpenBib::Handler::Apache::Admin::Session'
-     rule: '/portal/:view/admin/session/archive/search/form[get]'
+     rule: '/portal/:view/admin/session/archived/search/form[get]'
      runmode: 'show_archived_search_form'
   - # admin_session_loc: Search form for archived sessions
      module: 'OpenBib::Handler::Apache::Admin::Session'
-     rule: '/portal/:view/admin/session/archive/search/form.html[get]'
+     rule: '/portal/:view/admin/session/archived/search/form.html[get]'
      runmode: 'show_archived_search_form'
   - # admin_session_loc: Search results
      module: 'OpenBib::Handler:Apache::Admin::Session'

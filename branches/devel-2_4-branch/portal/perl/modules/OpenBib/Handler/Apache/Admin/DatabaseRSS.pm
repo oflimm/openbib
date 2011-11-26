@@ -116,6 +116,7 @@ sub show_collection {
     }
 
     my $rssfeed_ref= $config->get_rssfeeds_of_db($dbname);;
+    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
     
     my $katalog={
         dbname      => $dbname,
@@ -123,7 +124,8 @@ sub show_collection {
     };
     
     my $ttdata={
-        katalog    => $katalog,
+        databaseinfo => $dbinfo_ref,
+        katalog      => $katalog,
     };
     
     $self->print_page($config->{tt_admin_database_rss_tname},$ttdata);
@@ -167,9 +169,12 @@ sub show_record {
     }
 
     my $rssinfo_ref = $config->get_rssfeeds_of_db_by_type($dbname)->{$rssid};
+    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
     
     my $ttdata={
-        rssinfo    => $rssinfo_ref,
+        databaseinfo => $dbinfo_ref,
+        rssinfo      => $rssinfo_ref,
+        dbname       => $dbname,
     };
     
     $self->print_page($config->{tt_admin_database_rss_record_tname},$ttdata);
@@ -270,10 +275,12 @@ sub show_record_form {
     }
 
     my $rssinfo_ref = $config->get_rssfeed_by_id($rssid);
+    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
     
     my $ttdata={
-        rssinfo    => $rssinfo_ref,
-        dbname     => $dbname,
+        databaseinfo => $dbinfo_ref,
+        rssinfo      => $rssinfo_ref,
+        dbname       => $dbname,
     };
     
     $self->print_page($config->{tt_admin_database_rss_record_edit_tname},$ttdata);

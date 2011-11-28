@@ -388,19 +388,25 @@ sub load  {
     my $logger = get_logger();
 
     # DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
-    my $thisquery = $self->{schema}->resultset('Query')->search_rs(
+    my $query = $self->{schema}->resultset('Query')->search_rs(
         {
             'sid.sessionid' => $sessionID,
             'me.queryid'    => $queryid,
         },
         {
-            select => 'me.query',
-            as     => 'thisquery',
-            join => 'sid'
+            select => ['me.query'],
+            as     => ['thisquery'],
+            join => ['sid'],
         }
-    )->single->get_column('thisquery');
+    )->single;
 
-    $logger->debug($thisquery);
+    my $thisquery;
+    
+    if ($query){
+        $thisquery=$query->get_column('thisquery');
+    }
+    
+    $logger->debug("$sessionID/$queryid -> $thisquery");
     $self->from_json("$thisquery");
     $self->set_id($queryid);
     

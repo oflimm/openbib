@@ -14,7 +14,7 @@ use YAML::Syck;
 my $passwd=$ARGV[0];
 
 my $olddbh = DBI->connect("DBI:mysql:dbname=user;host=localhost;port=3306", 'root', $passwd);
-my $newdbh = DBI->connect("DBI:mysql:dbname=openbib_system;host=localhost;port=3306", 'root', $passwd);
+my $newdbh = DBI->connect("DBI:mysql:dbname=openbib_system;host=localhost;port=3306", 'root', $passwd,,{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]});
 
 $newdbh->do("truncate table subjectclassification");
 $newdbh->do("truncate table litlist_subject");

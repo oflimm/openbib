@@ -339,7 +339,7 @@ sub get_username {
     my $username;
     
     if ($userinfo){
-        $username=decode_utf8($userinfo->username);
+        $username=$userinfo->username;
     }
     
     return $username;
@@ -361,7 +361,7 @@ sub get_username_for_userid {
     my $username;
 
     if ($userinfo){
-        $username = decode_utf8($userinfo->username);
+        $username = $userinfo->username;
     }
     
     return $username;
@@ -504,7 +504,7 @@ sub get_targettype_of_session {
     my $targettype;
 
     if ($logintarget){
-        $targettype = decode_utf8($logintarget->get_column('thistype'));
+        $targettype = $logintarget->get_column('thistype');
     }
 
     return $targettype;
@@ -551,12 +551,16 @@ sub get_profiledbs_of_profileid {
 
     )->single();
 
-    my $dbs_as_json = $userprofile->get_column('thisdatabases_as_json');
-
-    my $dbs_ref = decode_json $dbs_as_json;
-
-    my @profiledbs = @{$dbs_ref};
-
+    my @profiledbs;
+    
+    if ($userprofile){
+        my $dbs_as_json = $userprofile->get_column('thisdatabases_as_json');
+        
+        my $dbs_ref = decode_json $dbs_as_json;
+        
+        @profiledbs = @{$dbs_ref};
+    }
+    
     return @profiledbs;
 }
 
@@ -845,7 +849,7 @@ sub get_all_profiles {
     foreach my $userprofile ($userprofiles->all){
         push @userdbprofiles, {
             profilid    => $userprofile->profileid,
-            profilename => decode_utf8($userprofile->profilename),
+            profilename => $userprofile->profilename,
         };
     }
     
@@ -920,13 +924,13 @@ sub get_logintargets {
 
     foreach my $logintarget ($logintargets->all){
         push @$logintargets_ref, {
-            id          => decode_utf8($logintarget->id),
-            hostname    => decode_utf8($logintarget->hostname),
-            port        => decode_utf8($logintarget->port),
-            username    => decode_utf8($logintarget->user),
-            dbname      => decode_utf8($logintarget->db),
-            description => decode_utf8($logintarget->description),
-            type        => decode_utf8($logintarget->type),
+            id          => $logintarget->id,
+            hostname    => $logintarget->hostname,
+            port        => $logintarget->port,
+            username    => $logintarget->user,
+            dbname      => $logintarget->db,
+            description => $logintarget->description,
+            type        => $logintarget->type,
         };
     }
 
@@ -954,13 +958,13 @@ sub get_logintarget_by_id {
     
     if ($logintarget){
         $logintarget_ref = {
-            id          => decode_utf8($logintarget->id),
-            hostname    => decode_utf8($logintarget->hostname),
-            port        => decode_utf8($logintarget->port),
-            username    => decode_utf8($logintarget->user),
-            dbname      => decode_utf8($logintarget->db),
-            description => decode_utf8($logintarget->description),
-            type        => decode_utf8($logintarget->type),
+            id          => $logintarget->id,
+            hostname    => $logintarget->hostname,
+            port        => $logintarget->port,
+            username    => $logintarget->user,
+            dbname      => $logintarget->db,
+            description => $logintarget->description,
+            type        => $logintarget->type,
         };
     }
 
@@ -1816,11 +1820,11 @@ sub get_reviews_of_tit {
     my $reviewlist_ref = [];
 
     foreach my $review ($reviews->all){
-        my $userid    = decode_utf8($review->userid);
+        my $userid    = $review->userid;
         my $username = $self->get_username_of_userid($userid);
-        my $nickname  = decode_utf8($review->nickname);
-        my $title     = decode_utf8($review->title);
-        my $review    = decode_utf8($review->reviewtext);
+        my $nickname  = $review->nickname;
+        my $title     = $review->title;
+        my $review    = $review->reviewtext;
         my $id        = $review->id;
         my $rating    = $review->rating;
 
@@ -1927,11 +1931,11 @@ sub get_review_of_user {
     if ($review){
         $logger->debug("Found Review $id for User $username");
 
-        my $userid     = decode_utf8($review->userid);
+        my $userid     = $review->userid;
         my $username   = $self->get_username_of_userid($userid);
-        my $nickname   = decode_utf8($review->nickname);
-        my $title      = decode_utf8($review->title);
-        my $reviewtext = decode_utf8($review->reviewtext);
+        my $nickname   = $review->nickname;
+        my $title      = $review->title;
+        my $reviewtext = $review->reviewtext;
         my $id         = $review->id;
         my $titid      = $review->titleid;
         my $titdb      = $review->dbname;
@@ -2498,9 +2502,9 @@ sub get_litlistentries {
     my $recordlist = new OpenBib::RecordList::Title();
 
     foreach my $litlistitem ($litlistitems->all){
-        my $titelidn  = decode_utf8($litlistitem->titleid);
-        my $database  = decode_utf8($litlistitem->dbname);
-        my $tstamp    = decode_utf8($litlistitem->tstamp);
+        my $titelidn  = $litlistitem->titleid;
+        my $database  = $litlistitem->dbname;
+        my $tstamp    = $litlistitem->tstamp;
         
         my $record = OpenBib::Record::Title->new({id =>$titelidn, database => $database})->load_brief_record;
         $record->{tstamp} = $tstamp;
@@ -2583,7 +2587,7 @@ sub get_litlist_properties {
 
     return {} if (!$litlist);
 
-    my $title     = decode_utf8($litlist->title);
+    my $title     = $litlist->title;
     my $type      = $litlist->type;
     my $lecture   = $litlist->lecture;
     my $tstamp    = $litlist->tstamp;
@@ -2656,8 +2660,8 @@ sub get_subjects {
     foreach my $subject ($subjects->all){
         push @{$subjects_ref}, {
             id           => $subject->id,
-            name         => decode_utf8($subject->name),
-            description  => decode_utf8($subject->description),
+            name         => $subject->name,
+            description  => $subject->description,
             litlistcount => $self->get_number_of_litlists_by_subject({subjectid => $subject->id}),
         };
     }
@@ -2692,8 +2696,8 @@ sub get_subjects_of_litlist {
     
     foreach my $subject ($subjects->all){
         my $subjectid   = $subject->get_column('thissubjectid');
-        my $name        = decode_utf8($subject->get_column('thissubjectname'));
-        my $description = decode_utf8($subject->get_column('thissubjectdescription'));
+        my $name        = $subject->get_column('thissubjectname');
+        my $description = $subject->get_column('thissubjectdescription');
 
         push @{$subjects_ref}, {
             id          => $subjectid,
@@ -2888,8 +2892,8 @@ sub get_subject {
     if ($subject){
         $subject_ref = {
             id           => $subject->id,
-            name         => decode_utf8($subject->name),
-            description  => decode_utf8($subject->description),
+            name         => $subject->name,
+            description  => $subject->description,
         };
     }
 
@@ -2985,8 +2989,8 @@ sub get_items_in_collection {
     );
 
     foreach my $collectionitem ($collectionitems->all){
-        my $database  = decode_utf8($collectionitem->dbname);
-        my $singleidn = decode_utf8($collectionitem->titleid);
+        my $database  = $collectionitem->dbname;
+        my $singleidn = $collectionitem->titleid;
         
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $singleidn}));
     }
@@ -3540,30 +3544,30 @@ sub get_info {
     my $userinfo_ref={};
 
     if ($userinfo){
-        $userinfo_ref->{'id'}         = decode_utf8($self->{'ID'});
-        $userinfo_ref->{'nachname'}   = decode_utf8($userinfo->nachname);
-        $userinfo_ref->{'vorname'}    = decode_utf8($userinfo->vorname);
-        $userinfo_ref->{'strasse'}    = decode_utf8($userinfo->strasse);
-        $userinfo_ref->{'ort'}        = decode_utf8($userinfo->ort);
-        $userinfo_ref->{'plz'}        = decode_utf8($userinfo->plz);
-        $userinfo_ref->{'soll'}       = decode_utf8($userinfo->soll);
-        $userinfo_ref->{'gut'}        = decode_utf8($userinfo->gut);
-        $userinfo_ref->{'avanz'}      = decode_utf8($userinfo->avanz); # Ausgeliehene Medien
-        $userinfo_ref->{'branz'}      = decode_utf8($userinfo->branz); # Buchrueckforderungen
-        $userinfo_ref->{'bsanz'}      = decode_utf8($userinfo->bsanz); # Bestellte Medien
-        $userinfo_ref->{'vmanz'}      = decode_utf8($userinfo->vmanz); # Vormerkungen
-        $userinfo_ref->{'maanz'}      = decode_utf8($userinfo->maanz); # ueberzogene Medien
-        $userinfo_ref->{'vlanz'}      = decode_utf8($userinfo->vlanz); # Verlaengerte Medien
-        $userinfo_ref->{'sperre'}     = decode_utf8($userinfo->sperre);
-        $userinfo_ref->{'sperrdatum'} = decode_utf8($userinfo->sperrdatum);
-        $userinfo_ref->{'email'}      = decode_utf8($userinfo->email);
-        $userinfo_ref->{'gebdatum'}   = decode_utf8($userinfo->gebdatum);
-        $userinfo_ref->{'username'}   = decode_utf8($userinfo->username);
-        $userinfo_ref->{'password'}   = decode_utf8($userinfo->password);
-        $userinfo_ref->{'masktype'}   = decode_utf8($userinfo->masktype);
-        $userinfo_ref->{'autocompletiontype'} = decode_utf8($userinfo->autocompletiontype);
-        $userinfo_ref->{'spelling_as_you_type'}   = decode_utf8($userinfo->spelling_as_you_type);
-        $userinfo_ref->{'spelling_resultlist'}    = decode_utf8($userinfo->spelling_resultlist);
+        $userinfo_ref->{'id'}         = $self->{'ID'};
+        $userinfo_ref->{'nachname'}   = $userinfo->nachname;
+        $userinfo_ref->{'vorname'}    = $userinfo->vorname;
+        $userinfo_ref->{'strasse'}    = $userinfo->strasse;
+        $userinfo_ref->{'ort'}        = $userinfo->ort;
+        $userinfo_ref->{'plz'}        = $userinfo->plz;
+        $userinfo_ref->{'soll'}       = $userinfo->soll;
+        $userinfo_ref->{'gut'}        = $userinfo->gut;
+        $userinfo_ref->{'avanz'}      = $userinfo->avanz; # Ausgeliehene Medien
+        $userinfo_ref->{'branz'}      = $userinfo->branz; # Buchrueckforderungen
+        $userinfo_ref->{'bsanz'}      = $userinfo->bsanz; # Bestellte Medien
+        $userinfo_ref->{'vmanz'}      = $userinfo->vmanz; # Vormerkungen
+        $userinfo_ref->{'maanz'}      = $userinfo->maanz; # ueberzogene Medien
+        $userinfo_ref->{'vlanz'}      = $userinfo->vlanz; # Verlaengerte Medien
+        $userinfo_ref->{'sperre'}     = $userinfo->sperre;
+        $userinfo_ref->{'sperrdatum'} = $userinfo->sperrdatum;
+        $userinfo_ref->{'email'}      = $userinfo->email;
+        $userinfo_ref->{'gebdatum'}   = $userinfo->gebdatum;
+        $userinfo_ref->{'username'}   = $userinfo->username;
+        $userinfo_ref->{'password'}   = $userinfo->password;
+        $userinfo_ref->{'masktype'}   = $userinfo->masktype;
+        $userinfo_ref->{'autocompletiontype'} = $userinfo->autocompletiontype;
+        $userinfo_ref->{'spelling_as_you_type'}   = $userinfo->spelling_as_you_type;
+        $userinfo_ref->{'spelling_resultlist'}    = $userinfo->spelling_resultlist;
     }
     
     # Rollen
@@ -3914,8 +3918,8 @@ sub get_spelling_suggestion {
     my $spelling_suggestion_ref = {};
     
     if ($userinfo){
-        $spelling_suggestion_ref->{as_you_type} = decode_utf8($userinfo->{'spelling_as_you_type'});
-        $spelling_suggestion_ref->{resultlist}  = decode_utf8($userinfo->{'spelling_resultlist'});
+        $spelling_suggestion_ref->{as_you_type} = $userinfo->spelling_as_you_type;
+        $spelling_suggestion_ref->{resultlist}  = $userinfo->spelling_resultlist;
     };
     
     return $spelling_suggestion_ref;
@@ -4135,9 +4139,9 @@ sub get_bibsonomy {
     };
     
     if ($userinfo){        
-        $bibsonomy_ref->{sync} = decode_utf8($userinfo->bibsonomy_sync);
-        $bibsonomy_ref->{user} = decode_utf8($userinfo->bibsonomy_user);
-        $bibsonomy_ref->{key}  = decode_utf8($userinfo->bibsonomy_key);
+        $bibsonomy_ref->{sync} = $userinfo->bibsonomy_sync;
+        $bibsonomy_ref->{user} = $userinfo->bibsonomy_user;
+        $bibsonomy_ref->{key}  = $userinfo->bibsonomy_key;
     };
     
     return $bibsonomy_ref;
@@ -4557,7 +4561,8 @@ sub connectDB {
     
     $self->{dbh}->{RaiseError} = 1;
 
-    eval {        
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
         $self->{schema} = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 
     };

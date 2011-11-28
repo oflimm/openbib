@@ -593,7 +593,7 @@ sub get_all_searchqueries {
     my @queries=();
 
     foreach my $item ($searchqueries->all){
-        my $searchquery = OpenBib::SearchQuery->new->load({sessionID => $self->{ID}, queryid => $item->get_column('thisqueryid') });
+        my $searchquery = OpenBib::SearchQuery->new->load({sessionID => $thissessionid, queryid => $item->get_column('thisqueryid') });
         push @queries, $searchquery;
     }
 
@@ -1284,7 +1284,7 @@ sub get_info_of_all_active_sessions {
     my $logger = get_logger();
 
     # DBI: "select * from session order by createtime"
-    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->search(undef, { order_by => 'createtype'});
+    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->search(undef, { order_by => 'createtime'});
     
     my @sessions=();
 
@@ -1320,11 +1320,16 @@ sub get_info {
     my $singlesessionid=(defined $sessionid)?$sessionid:$self->{ID};
     
     # DBI: "select * from session where sessionID = ?"
-    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $singlesessionid })->first;
+    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $singlesessionid });
 
-    my $createtime = decode_utf8($sessioninfos->createtime);
-    my $username   = decode_utf8($sessioninfos->username);
-
+    my $createtime;
+    my $username;
+    
+    if ($sessioninfos){
+        $createtime = decode_utf8($sessioninfos->createtime);
+        $username   = decode_utf8($sessioninfos->username);
+    }
+    
     return ($username,$createtime);
 }
 

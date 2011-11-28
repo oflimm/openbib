@@ -24,7 +24,7 @@
   <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
 [% END %]
 [% IF active_submenu == "database_record" %]
-<li><span>[% databaseinfo.description %]</span>
+<li><span style="padding-left:35px">[% databaseinfo.description %]</span>
     <ul>
 [% IF active_subsubmenu == "database_record_main" %]
       <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
@@ -45,12 +45,15 @@
   <li><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %].html?l=[% lang %]">[% msg.maketext("Katalog-Profile") %]</a></li>
 [% END %]
 [% IF active_submenu == "profile_record" %]
-<li><span>[% profileinfo.description %]</span>
+<li><span style="padding-left:35px">[% profileinfo.description %]</span>
     <ul>
 [% IF active_subsubmenu == "profile_record_main" %]
       <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
 [% ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.dbname %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "profile_record_orgunit" %]
+      <li class="active"><strong>[% orgunitinfo.description %]</strong></li>
 [% END %]
     </ul>
 </li>
@@ -59,6 +62,17 @@
   <li class="active"><strong>[% msg.maketext("Views") %]</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_view_loc') %].html?l=[% lang %]">[% msg.maketext("Views") %]</a></li>
+[% END %]
+[% IF active_submenu == "view_record" %]
+<li><span style="padding-left:35px">[% viewinfo.description %]</span>
+    <ul>
+[% IF active_subsubmenu == "view_record_main" %]
+      <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[% END %]
+    </ul>
+</li>
 [% END %]
 [% IF active_submenu == "session" %]
 <li><span>[% msg.maketext("Sessions") %]</span>

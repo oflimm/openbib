@@ -126,7 +126,7 @@ sub show_active_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $sessionid      = $self->param('sessionid');
+    my $sessionid      = $self->strip_suffix($self->param('sessionid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -143,6 +143,8 @@ sub show_active_record {
     if (!$self->is_authenticated('admin')){
         return;
     }
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my ($username,$createtime) = $session->get_info($sessionid);
     my @queries                = $session->get_all_searchqueries({
@@ -162,8 +164,9 @@ sub show_active_record {
     };
     
     my $ttdata={
-        thissession  => $singlesession,
-        queries    => \@queries,
+        dbinfo      => $dbinfotable,
+        thissession => $singlesession,
+        queries     => \@queries,
     };
     
     $self->print_page($config->{tt_admin_session_active_record_tname},$ttdata);
@@ -295,7 +298,7 @@ sub show_archived_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $sessionid      = $self->param('sessionid');
+    my $sessionid      = $self->strip_suffix($self->param('sessionid'));
 
     # Shared Args
     my $query          = $self->query();

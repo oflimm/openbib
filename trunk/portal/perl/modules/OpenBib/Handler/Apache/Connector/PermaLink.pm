@@ -59,11 +59,14 @@ sub handler {
     my $config  = OpenBib::Config->instance;
 
     my $session = OpenBib::Session->instance;
+    my $query   = Apache2::Request->new($r);
 
+    my $lang    = $query->param('l')         || 'de';
+    
     my $uri  = $r->parsed_uri;
     my $path = $uri->path;
 
-    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
+#    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
@@ -103,6 +106,7 @@ sub handler {
     }
     
     my $ttdata={
+        lang            => $lang,
         view            => $view,
         id1             => $id1,
         id2             => $id2,

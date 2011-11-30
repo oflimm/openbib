@@ -228,6 +228,7 @@ sub filterchars {
 
   $content = encode("utf8",$content);
   $content=~s/\x{c2}\x{a0}//g;
+  $content=~s/\x{c2}\x{ad}//g;
   $content=~s/\x{e2}\x{80}\x{89}//g;
   $content = decode("utf8", $content);
   # Umlaute

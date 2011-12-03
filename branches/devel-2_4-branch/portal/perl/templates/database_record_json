@@ -1,0 +1,35 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_database_record_json
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[%
+
+this_databaseinfo = {
+    database    = databaseinfo.dbname
+    description = databaseinfo.description
+    shortdesc   = databaseinfo.shortdesc
+    active      = databaseinfo.active
+    system      = databaseinfo.system
+    sigel       = databaseinfo.sigel
+    url         = databaseinfo.url
+    count_all  = databaseinfo.allcount
+    count_journals  = databaseinfo.journalcount
+    count_articles  = databaseinfo.articlecount
+    count_digital   = databaseinfo.digitalcount
+    all_all_titles  = databaseinfo.allcount
+
+    circ               = databaseinfo.circ
+};
+
+to_json(this_databaseinfo)
+
+%]

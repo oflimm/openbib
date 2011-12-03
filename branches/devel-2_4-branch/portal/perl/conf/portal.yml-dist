@@ -119,7 +119,7 @@ connector_spellcheck_loc: connector/spellcheck
 connector_ukonline_loc: connector/uk-online
 connector_unapi_loc: connector/unapi
 databasechoice_loc: selectdatabase
-databaseprofile_loc: dbprofile
+database_loc: database
 dispatchquery_loc: dispatchquery
 externaljump_loc: jumpto
 ezb_loc: ezb 
@@ -150,6 +150,7 @@ resultlists_loc: resultlists
 rssfeeds_loc: rssfeeds
 browse_loc: browse
 searchform_loc: searchform
+searchprofile_loc: searchprofile
 registration_loc: registration
 serverload_loc: getload
 startopac_loc: home
@@ -442,6 +443,11 @@ dispatch_rules:
   - # classification_loc:
      module: 'OpenBib::Handler::Apache::Classification'
      rule: '/portal/:view/classification/:database/:classificationid[get]'
+     runmode: 'show_record'
+
+  - # searchprofile_loc:
+     module: 'OpenBib::Handler::Apache::Searchprofile'
+     rule: '/portal/:view/searchprofile/:profileid[get]'
      runmode: 'show_record'
 
   - # tag_loc:
@@ -1045,14 +1051,26 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::DatabaseChoice'
      rule: '/portal/:view/selectdatabase[post]'
      runmode: 'update_collection'
-  - # databaseprofile_loc:
-     module: 'OpenBib::Handler::Apache::DatabaseProfile'
-     rule: '/portal/:view/dbprofile'
-     runmode: 'show'
-  - # databaseprofile_loc:
-     module: 'OpenBib::Handler::Apache::DatabaseProfile'
-     rule: '/portal/:view/dbprofile.html'
-     runmode: 'show'
+  - # database_loc:
+     module: 'OpenBib::Handler::Apache::Database'
+     rule: '/portal/:view/database.html[get]'
+     runmode: 'show_collection'
+  - # database_loc:
+     module: 'OpenBib::Handler::Apache::Database'
+     rule: '/portal/:view/database.json[get]'
+     runmode: 'show_collection'
+  - # database_loc:
+     module: 'OpenBib::Handler::Apache::Database'
+     rule: '/portal/:view/database.rdf[get]'
+     runmode: 'show_collection'
+  - # database_loc:
+     module: 'OpenBib::Handler::Apache::Database'
+     rule: '/portal/:view/database[get]'
+     runmode: 'show_collection'
+  - # database_loc:
+     module: 'OpenBib::Handler::Apache::Database'
+     rule: '/portal/:view/database/:databaseid[get]'
+     runmode: 'show_record'
   - # dispatchquery_loc:
      module: 'OpenBib::Handler::Apache::DispatchQuery'
      rule: '/portal/:view/dispatchquery'
@@ -2269,6 +2287,8 @@ tt_connector_unapi_mods_tname: connector_unapi_mods
 tt_connector_unapi_mets_tname: connector_unapi_mets
 tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
 tt_databasechoice_tname: databasechoice
+tt_database_collection_tname: database_collection
+tt_database_record_tname: database_record
 tt_error_tname: error
 tt_externaljump_tname: externaljump
 tt_dbis_showsubjects_tname: dbis_showsubjects
@@ -2392,6 +2412,7 @@ tt_browse_title_tname: browse_title
 tt_browse_olws_tname: browse_olws
 tt_searchform_advanced_tname: searchform
 tt_searchform_simple_tname: searchform_simple
+tt_searchprofile_tname: searchprofile
 tt_registration_success_tname: registration_success
 tt_registration_mail_message_tname: registration_mail_message
 tt_registration_confirmation_tname: registration_confirmation

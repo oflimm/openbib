@@ -120,7 +120,19 @@ sub new {
         
         $r->err_headers_out->set('Set-Cookie', $cookie);
     }
-    
+
+    if (!$self->{sid}){
+        my $search_sid = $self->{schema}->resultset('Sessioninfo')->single(
+            {
+                sessionid => $self->{ID},
+            }
+        );
+        
+        if ($search_sid){
+            $self->{sid} = $search_sid->id;
+        }
+    }
+
     #$logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
 }
@@ -197,6 +209,18 @@ sub _new_instance {
         
         $r->err_headers_out->set('Set-Cookie', $cookie);
     }
+
+    if (!$self->{sid}){
+        my $search_sid = $self->{schema}->resultset('Sessioninfo')->single(
+            {
+                sessionid => $self->{ID},
+            }
+        );
+
+        if ($search_sid){
+            $self->{sid} = $search_sid->id;
+        }
+    }
     
     #$logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
@@ -232,14 +256,15 @@ sub _init_new_session {
 
             my $queryoptions = OpenBib::QueryOptions->get_default_options;
 
-            $self->{schema}->resultset('Sessioninfo')->create({
+            my $new_session = $self->{schema}->resultset('Sessioninfo')->create({
                 sessionid    => $sessionID,
                 createtime   => $createtime,
                 queryoptions => encode_json($queryoptions),
                 searchform   => 'simple',
             });
 
-            $self->{ID} = $sessionID;
+            $self->{ID}  = $sessionID;
+            $self->{sid} = $new_session->id;
         }
     }
 
@@ -330,19 +355,29 @@ sub get_profile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select profile from sessionprofile where sessionid = ?"
-    my $prevprofile = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->single->searchprofile;
+    my $prevprofile;
 
+    # DBI: "select profile from sessionprofile where sessionid = ?"
+    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->single;
+
+    if ($sessioninfo){
+        $prevprofile =$sessioninfo->searchprofile;
+    }
+    
     return $prevprofile;
 }
 
 sub set_profile {
-    my ($self,$profile)=@_;
+    my ($self,$profileid)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->update({ searchprofile => $profile });
+    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} });
+
+    if ($sessioninfo){
+        $sessioninfo->update({ searchprofile => $profileid });
+    }
 
     return;
 }
@@ -476,7 +511,7 @@ sub set_dbchoice {
         }
     );
     
-    return;
+    return $profileid;
 }
 
 sub get_dbchoice {
@@ -491,15 +526,18 @@ sub get_dbchoice {
         },
         {
             join   => ['sid','profileid'],
-            select => ['profileid.databases_as_json'],
-            as     => ['thisdatabases_as_json'],
+            select => ['profileid.id','profileid.databases_as_json'],
+            as     => ['thisprofileid','thisdatabases_as_json'],
         }
     )->single();
 
     my @dbchoice = ();
+    my $profileid;
     
     if ($dbases){
         my $dbs_as_json = $dbases->get_column('thisdatabases_as_json');
+        
+        $profileid   = $dbases->get_column('thisprofileid');
         
         my $dbs_ref = decode_json $dbs_as_json;
         
@@ -508,7 +546,11 @@ sub get_dbchoice {
         $logger->debug("DB-Choice:\n".YAML::Dump(\@dbchoice));
     }
 
-    return reverse @dbchoice;
+        
+    return {
+        id        => $profileid,
+        databases => reverse @dbchoice,
+    };
 }
 
 sub clear_dbchoice {
@@ -607,7 +649,7 @@ sub get_number_of_items_in_collection {
     my $logger = get_logger();
 
     # DBI: "select count(*) as rowcount from treffer where sessionid = ?"
-    my $count = $self->{schema}->resultset('Collection')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
+    my $count = $self->{schema}->resultset('Anoncollection')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
 
     return $count;
 }
@@ -661,16 +703,16 @@ sub set_item_in_collection {
         return;
     }
 
-    my $count = $self->{schema}->resultset('Collection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->count;
+    my $count = $self->{schema}->resultset('Anoncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->count;
     
-    if ($count == 0) {
+    if (!$count) {
         my $record        = new OpenBib::Record::Title({ database => $database , id => $id});
         my $cached_title  = $record->load_full_record->to_json;
 
         $logger->debug("Adding Title to Collection: $cached_title");
 
         # DBI: "insert into treffer values (?,?,?,?)"
-        $self->{schema}->resultset('Collection')->create( { dbname => $database, titleid => $id, titlecache => $cached_title });
+        $self->{schema}->resultset('Anoncollection')->create( { sid => $self->{sid}, dbname => $database, titleid => $id, titlecache => $cached_title });
     }
 
     return;
@@ -697,7 +739,7 @@ sub clear_item_in_collection {
 
     eval {
         # DBI: "delete from treffer where sessionid = ? and dbname = ? and singleidn = ?"
-        $self->{schema}->resultset('Collection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->delete;
+        $self->{schema}->resultset('Anoncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->single->delete;
     };
 
     return;

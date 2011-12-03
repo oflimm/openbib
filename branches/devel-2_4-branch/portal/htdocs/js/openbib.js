@@ -61,12 +61,12 @@ function qrcodeRemove () {
   });
 };
 
-//$(document).ready(function(){
+// $(document).ready(function(){
 $(function(){
                     
-var Bibkey    = $("meta[@name='Bibkey']").attr("content");
-var Tags      = $("meta[@name='Tags']").attr("content");
-var View      = $("meta[@name='View']").attr("content");
+    // var Bibkey    = $("meta[@name='Bibkey']").attr("content");
+    // var Tags      = $("meta[@name='Tags']").attr("content");
+    // var View      = $("meta[@name='View']").attr("content");
 
   // Activate accessible tabs
 // $("#searchform_types").accessibleTabs({ tabbody: '.tabbody', tabhead: 'h3', fxspeed: 'fast', syncheights: true });
@@ -76,7 +76,7 @@ var View      = $("meta[@name='View']").attr("content");
  
  // Focus auf erstes Eingabefeld
  //$(":input:visible:enabled:first").focus();
-$("input[@id='to_focus']").focus();
+ // $("input[@id='to_focus']").focus();
 
 // Tabs fuer weitere Informationen
 //$('#additional_title_info > ul').tabs();
@@ -100,21 +100,21 @@ $('.nojs_show').css('display','none');
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
 // fest eingetragen und muss gegebenenfalls angepasst werden
 
-   if (View){
-$.get("/portal/"+View+"/collection/count",
-function (txt){
- $("#collectioncount").html("["+txt+"]"); 
-}
-);
-   }
-   else {
-     $.get("/portal/collection/count",
-function (txt){
- $("#collectioncount").html("["+txt+"]"); 
-}
-);
+//    if (View){
+// $.get("/portal/"+View+"/collection/count",
+// function (txt){
+//  $("#collectioncount").html("["+txt+"]"); 
+// }
+// );
+//    }
+//    else {
+//      $.get("/portal/collection/count",
+// function (txt){
+//  $("#collectioncount").html("["+txt+"]"); 
+// }
+// );
 
-   }
+//    }
  
 $(".rlcollect a").click(function(){
 
@@ -156,22 +156,24 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 // Ende Merkliste
 
 // Begin BibSonomy Tags
- if (Bibkey || Tags){
-   if (View){
-   $.get("/portal/"+View+"/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
-         function (txt){
-           $("#bibsonomy_tags").html(txt); 
-         }
-         );
-   }
-   else {
-   $.get("/portal/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
-         function (txt){
-           $("#bibsonomy_tags").html(txt); 
-         }
-         );
-   }
- }
+//  if (Bibkey || Tags){
+//    if (View){
+//    $.get("/portal/"+View+"/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
+//          function (txt){
+//            $("#bibsonomy_tags").html(txt); 
+//          }
+//          );
+//    }
+//    else {
+//    $.get("/portal/bibsonomy/lookup?format=ajax;bibkey="+Bibkey+";tags="+Tags,
+//          function (txt){
+//            $("#bibsonomy_tags").html(txt); 
+//          }
+//          );
+//    }
+//  }
+
+ // $(document).ready(function(){
 
 //$("#bibsonomy_tags a").click(function(){
 
@@ -262,23 +264,23 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
 // // --------------------------------------------------------------------------
 
-// // Begin Togglen / Alle Reviews
-// // Zuerst verstecken
-// $("#allreviews").hide();
-// // und bei Klick Sichtbarkeit togglen
-// $("#allreviews_toggle").click(function(){
-//  $("#allreviews").toggle();
-// });
-// // Ende Togglen / alle Reviews
+// Begin Togglen / Alle Reviews
+// Zuerst verstecken
+$("#allreviews").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#allreviews_toggle").click(function(){
+ $("#allreviews").toggle();
+});
+// Ende Togglen / alle Reviews
 
-// // Begin Togglen / Formate
-// // Zuerst verstecken
-// $("#formats_do").hide();
-// // und bei Klick Sichtbarkeit togglen
-// $("#formats_toggle").click(function(){
-//  $("#formats_do").toggle();
-// });
-// // Ende Togglen / Formate
+// Begin Togglen / Formate
+// Zuerst verstecken
+$("#formats_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#formats_toggle").click(function(){
+ $("#formats_do").toggle();
+});
+// Ende Togglen / Formate
 
 // Begin Togglen / Verwandte Personen
 // Zuerst verstecken
@@ -298,45 +300,46 @@ $("#similarsubjects_toggle").click(function(){
 });
 // Ende Togglen / Verwandte Personen
 
-// // Begin Togglen / BibSonomy Tags
-// // Zuerst verstecken
-// $("#bibsonomy_tags_do").hide();
-// // und bei Klick Sichtbarkeit togglen
-// $("#bibsonomy_tags_toggle").click(function(){
-//  $("#bibsonomy_tags_do").toggle();
-// });
-// // Ende Togglen / BibSonomy_tags
+// Begin Togglen / BibSonomy Tags
+// Zuerst verstecken
+$("#bibsonomy_tags_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#bibsonomy_tags_toggle").click(function(){
+ $("#bibsonomy_tags_do").toggle();
+});
+// Ende Togglen / BibSonomy_tags
 
-// // Begin Togglen / Verschiedenes
-// // Zuerst verstecken
-// $("#misc_do").hide();
-// // und bei Klick Sichtbarkeit togglen
-// $("#misc_toggle").click(function(){
-//  $("#misc_do").toggle();
-// });
-// // Ende Togglen / Verschiedenes
+// Begin Togglen / Verschiedenes
+// Zuerst verstecken
+$("#misc_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#misc_toggle").click(function(){
+ $("#misc_do").toggle();
+});
+// Ende Togglen / Verschiedenes
 
-// // Begin Togglen / Literaturlisten
-// // Zuerst verstecken
-// $("#litlists_do").hide();
-// // und bei Klick Sichtbarkeit togglen
-// $("#litlists_toggle").click(function(){
-//  $("#litlists_do").toggle();
-// });
-// // Ende Togglen / Literaturlisten
+// Begin Togglen / Literaturlisten
+// Zuerst verstecken
+$("#litlists_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#litlists_toggle").click(function(){                              
+  $("#litlists_do").toggle();
+});
+// Ende Togglen / Literaturlisten
 
-// // Begin Togglen / Tagging
-// // Zuerst verstecken
-// $("#tagging_do").hide();
-// // und bei Klick Sichtbarkeit togglen
-// $("#tagging_toggle").click(function(){
-//  $("#tagging_do").toggle();
-// });
-// // Ende Togglen / Tagging
- 
-// });
+// Begin Togglen / Tagging
+// Zuerst verstecken
+$("#tagging_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#tagging_toggle").click(function(){
+ $("#tagging_do").toggle();
+});
+// Ende Togglen / Tagging
 
+  });
 
+  
+  
 function insert_tag(event) {
 
   var this_element = "";

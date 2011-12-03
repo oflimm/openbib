@@ -32,7 +32,7 @@
 %]
 <p/>
 
-<table>
+<table class="full">
 <tr><td>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</td></tr>
 <tr><td><select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select></td></tr>
 <tr><td><div class="cssbutton glass kug"><input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" /></div></td></tr>
@@ -41,7 +41,7 @@
 [% END %]
 <p/>
 
-<table>
+<table class="full">
 <tr><td>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</td></tr>
 <tr><td><input type="text" name="title" /> <select name="littype"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> </td></tr>
 <tr><td><div class="cssbutton glass kug"><input type="submit" name="do_addlitlist" value="[% msg.maketext("Los") %]" /></div></td></tr>
@@ -60,20 +60,21 @@
 [% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags
 versehen: ") %]
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
-<table>
-<tr><td colspan="2"><input type="text"   name="tags"       value="" size="30" maxlength="200" id="inputfield"/></td></tr>
-<tr><td>[% msg.maketext("Typ:") %]&nbsp;<select name="tags_type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td><td><div class="cssbutton glass kug"><input type="submit" name="do_addtags" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div></td></tr>
+<table class="full">
+<tr><td><input type="text"   name="tags"       value="" size="20" maxlength="200" id="inputfield"/></td></tr>
+<tr><td>[% msg.maketext("Typ:") %]&nbsp;<select name="tags_type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_addtags" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div></td></tr>
 </table>
 </td></tr>
 </table>
 
 [% private_tags = user.get_private_tags({ username => username  }) %]
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Übernahme eigener Tags") %]</th></tr>
 <tr><td class="boxedclear">
 

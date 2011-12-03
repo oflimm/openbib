@@ -160,10 +160,10 @@ sub update_collection {
     my @databases = ($query->param('db'))?$query->param('db'):();
   
     # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
-    $session->set_dbchoice(\@databases);
+    my $profileid = $session->set_dbchoice(\@databases);
     
     # Neue Datenbankauswahl ist voreingestellt
-    $session->set_profile('dbchoice');
+    $session->set_profile($profileid);
 
     my $new_location = "$path_prefix/$config->{searchform_loc}/recent.html?l=$lang";
 

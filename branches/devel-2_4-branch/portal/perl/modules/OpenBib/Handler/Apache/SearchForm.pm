@@ -159,10 +159,7 @@ sub show {
 
     # Erzeugung der database-Input Tags fuer die suche
     my $dbinputtags = "";
-    my $dbchoice_ref = [];
-    foreach my $dbname ($session->get_dbchoice()){
-        push @$dbchoice_ref, $dbname;
-    }
+    my $dbchoice_ref = $session->get_dbchoice();
 
     my $alldbs     = $config->get_number_of_dbs($config->get_profilename_of_view($view));
     my $alldbcount = $config->get_number_of_titles({ profile => $config->get_profilename_of_view($view)});

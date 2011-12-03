@@ -86,8 +86,8 @@ else {
 my ($allcount,$journalcount,$articlecount,$digitalcount)=(0,0,0,0);
 
 # Verbindung zur SQL-Datenbank herstellen
-my $configdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+my $systemdbh
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
     or $logger->error_die($DBI::errstr);
 
 foreach $database (@databases){
@@ -127,7 +127,7 @@ foreach $database (@databases){
   
   $idnresult->finish();
 
-  $idnresult=$configdbh->prepare("update databaseinfo set allcount = ?, journalcount = ?, articlecount = ?, digitalcount = ? where dbname=?") or die "Error -- $DBI::errstr";
+  $idnresult=$systemdbh->prepare("update databaseinfo set allcount = ?, journalcount = ?, articlecount = ?, digitalcount = ? where dbname=?") or die "Error -- $DBI::errstr";
   $idnresult->execute($allcount,$journalcount,$articlecount,$digitalcount,$database);
   
   print "$database -> $allcount / $journalcount / $articlecount / $digitalcount\n";
@@ -140,12 +140,12 @@ foreach $database (@databases){
 # if ($database eq ""){
 #   my $notexist=0;
   
-#   $idnresult=$configdbh->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
+#   $idnresult=$systemdbh->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
 #   $idnresult->execute();
   
-#   $idnresult=$configdbh->prepare("insert into titcount values ('alldbs',?,?,?,?)") or die "Error -- $DBI::errstr";
+#   $idnresult=$systemdbh->prepare("insert into titcount values ('alldbs',?,?,?,?)") or die "Error -- $DBI::errstr";
 #   $idnresult->execute($allidns,$allidns_journals,$allidns_articles,$allidns_online);
 # }
 
-$configdbh->disconnect();
+$systemdbh->disconnect();
 

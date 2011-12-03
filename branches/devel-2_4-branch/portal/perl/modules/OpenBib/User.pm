@@ -510,6 +510,42 @@ sub get_targettype_of_session {
     return $targettype;
 }
 
+sub get_usersearchprofile {
+    my ($self,$profileid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $userprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+        {
+            'me.id'        => $profileid,
+            'me.userid'    => $self->{ID},
+        },
+        {
+            join   => ['profileid'],
+            select => ['me.profilename','profileid.databases_as_json'],
+            as     => ['thisprofilename','thisdatabases_as_json'],
+        }
+
+    )->single();
+
+    my $usersearchprofileinfo = {};
+        
+    if ($userprofile){
+        my $dbs_as_json = $userprofile->get_column('thisdatabases_as_json');
+        my $profilename = $userprofile->get_column('thisprofilename');
+        
+        my $dbs_ref = decode_json $dbs_as_json;
+        
+        $usersearchprofileinfo = {
+            profilename => $profilename,
+            databases   => $dbs_ref,
+        };
+        
+    }
+    
+    return $usersearchprofileinfo;
+}
 
 sub get_profilename_of_profileid {
     my ($self,$profileid)=@_;

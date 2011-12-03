@@ -43,7 +43,6 @@ use Log::Log4perl qw(get_logger :levels);
 use POSIX();
 use String::Tokenizer;
 use Template;
-use Unicode::Semantics;
 use YAML ();
 
 use OpenBib::Config;

@@ -36,6 +36,7 @@ use Apache2::Reload;
 use Apache2::Const -compile => qw(:common);
 use Cache::Memcached;
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use LWP;
 use URI::Escape qw(uri_escape);
@@ -2144,6 +2145,108 @@ sub new_logintarget {
     return;
 }
 
+sub get_databases_of_searchprofile {
+    my ($self,$profileid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search_rs(
+        {
+            id     => $profileid,
+        },
+        {
+            columns => ['databases_as_json'],
+        }
+    )->single();
+
+    if ($searchprofile){
+        my $dbs_as_json = $searchprofile->databases_as_json;
+        
+        my $dbs_ref = decode_json $dbs_as_json;
+
+        $logger->debug("Searchprofile $profileid: $dbs_as_json");
+        
+        return @{$dbs_ref};
+    }
+
+    $logger->debug("No searchprofile $profileid found");
+    return ();
+}
+
+sub get_searchprofile_of_view {
+    my ($self,$viewname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @databases = $self->get_dbs_of_view($viewname);
+
+    my $dbs_as_json = encode_json \@databases;
+
+    $logger->debug("Databases of view $viewname: $dbs_as_json");
+    
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search(
+        {
+            databases_as_json => $dbs_as_json,
+        }
+    )->single();
+
+    my $searchprofileid;
+    
+    if ($searchprofile){
+        $searchprofileid = $searchprofile->id;
+    }
+    else {
+        my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
+            {
+                databases_as_json => $dbs_as_json,
+            }
+        );
+        
+        $searchprofileid = $new_searchprofile->id;
+    }
+
+    return $searchprofileid 
+
+}
+
+sub get_searchprofile_of_orgunit {
+    my ($self,$profilename,$orgunitname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @databases = $self->get_active_databases_of_orgunit($profilename,$orgunitname);
+
+    my $dbs_as_json = encode_json \@databases;
+
+    $logger->debug("Databases of Orgunit $orgunitname in Profile $profilename: $dbs_as_json");
+    
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search(
+        {
+            databases_as_json => $dbs_as_json,
+        }
+    )->single();
+
+    my $searchprofileid;
+    
+    if ($searchprofile){
+        $searchprofileid = $searchprofile->id;
+    }
+    else {
+        my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
+            {
+                databases_as_json => $dbs_as_json,
+            }
+        );
+        
+        $searchprofileid = $new_searchprofile->id;
+    }
+
+    return $searchprofileid 
+
+}
 
 1;
 __END__

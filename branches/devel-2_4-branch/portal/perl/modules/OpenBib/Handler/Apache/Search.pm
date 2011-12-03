@@ -1573,60 +1573,14 @@ sub get_databases {
         }
         
         else {
-            if ($profile eq "alldbs") {
-                if ($view){
-                    $logger->debug("Selecting all active databases of views systemprofile");
-                    @databases = $config->get_active_databases_of_systemprofile($view);
-                }
-                else {
-                    $logger->debug("Selecting all active databases");
-                    @databases = $config->get_active_databases();
-                }
+            if ($profile) {
+                $logger->debug("Selecting all databases for profile $profile");
+                @databases = $config->get_databases_of_searchprofile($profile);
+                $session->set_profile($profile);
             }
-            elsif ($profile || $searchindex || $verfindex || $korindex || $swtindex || $notindex) {
-                if ($profile eq "dbchoice") {
-                    $logger->debug("Selecting databases of users choice");
-                    # Eventuell bestehende Auswahl zuruecksetzen
-                    @databases = $session->get_dbchoice();
-                }
-                # Wenn ein anderes Profil als 'dbchoice' ausgewaehlt wuerde
-                elsif ($profile) {
-                    $logger->debug("Selecting databases of Profile $profile");
-                    # Eventuell bestehende Auswahl zuruecksetzen
-                    @databases=();
-                    
-                    # Benutzerspezifische Datenbankprofile
-                    if ($profile=~/^user(\d+)/) {
-                        my $profileid=$1;
-                        @databases = $user->get_profiledbs_of_profileid($profileid);
-                    }
-                    # oder alle
-                    elsif ($profile eq "alldbs") {
-                        # Alle Datenbanken
-                        if ($view){
-                            $logger->debug("Selecting all active databases of views systemprofile");
-                            @databases = $config->get_active_databases_of_systemprofile($view);
-                        }
-                        else {
-                            $logger->debug("Selecting all active databases");
-                            @databases = $config->get_active_databases();
-                        }
-                    }
-                    # ansonsten orgunit
-                    else {
-                        @databases = $config->get_active_databases_of_orgunit($sysprofile,$profile);
-                    }
-                }
-                # Kein Profil
-                else {
-                    $self->print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$path_prefix/$config->{databasechoice_loc}\" target=\"body\">","</a>"));
-                    return Apache2::Const::OK;
-                }
-                
-                # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
-                if ($profile) {
-                    $session->set_profile($profile);
-                }
+            else {
+                $logger->debug("Selecting all active databases");
+                @databases = $config->get_active_databases();
             }
         }
     }

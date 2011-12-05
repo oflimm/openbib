@@ -348,9 +348,10 @@ sub update_record {
         $logger->debug("About to delete $orgunitname");
         
         if ($confirm){
-            my $orgunitinfo_ref = $config->get_orgunitinfo->search_rs({ profilename => $profilename, orgunitname => $orgunitname})->single();
+            my $orgunitinfo_ref = $config->get_orgunitinfo->search_rs({ 'profileid.profilename' => $profilename, 'me.orgunitname' => $orgunitname},{ join => ['profileid']})->single();
 
             my $ttdata={
+                profilename => $profilename,
                 orgunitinfo => $orgunitinfo_ref,
             };
 
@@ -423,7 +424,7 @@ sub delete_record {
     $config->del_orgunit($profilename,$orgunitname);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

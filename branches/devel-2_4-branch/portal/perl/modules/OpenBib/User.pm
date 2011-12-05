@@ -1282,10 +1282,10 @@ sub del_tags {
             # DBI: "delete from tit_tag where titleid=? and dbname=? and userid=? and tagid=?"
             $self->{schema}->resultset('TitTag')->search_rs(
                 {
-                    'me.titleid'  => $titid,
-                    'me.dbname'   => $titdb,
-                    'userid.name' => $username,
-                    'tagid.name'  => $tag,
+                    'me.titleid'      => $titid,
+                    'me.dbname'       => $titdb,
+                    'userid.username' => $username,
+                    'tagid.name'      => $tag,
                         
                 },
                 {
@@ -1442,7 +1442,7 @@ sub get_private_tags_of_tit {
         {
             'me.titleid'  => $titid,
             'me.dbname'   => $titdb,
-            'userid.name' => $username,
+            'userid.username' => $username,
         },
         {
             group_by => ['me.tagid'],

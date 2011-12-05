@@ -246,15 +246,15 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
-drop table IF EXISTS anoncollection;
-CREATE TABLE anoncollection (
+drop table IF EXISTS sessioncollection;
+CREATE TABLE sessioncollection (
  sid        BIGINT NOT NULL,
 
  dbname     TEXT,
  titleid    VARCHAR(255),
  titlecache BLOB,
 
- CONSTRAINT `fk_anoncollection_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+ CONSTRAINT `fk_sessioncollection_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
 
  INDEX (dbname(255)),
  INDEX (titleid)

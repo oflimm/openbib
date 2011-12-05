@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::StartOpac
+#  OpenBib::Handler::Apache::Home
 #
 #  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::StartOpac;
+package OpenBib::Handler::Apache::Home;
 
 use strict;
 use warnings;
@@ -98,7 +98,7 @@ sub show {
     
     $session->set_mask($setmask);
   
-    $logger->debug("StartOpac-sID: $session->{ID}");
+    $logger->debug("Home-sID: $session->{ID}");
     $logger->debug("Path-Prefix: ".$path_prefix);
 
     # Standard-URL

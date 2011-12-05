@@ -1447,7 +1447,7 @@ sub get_private_tags_of_tit {
         {
             group_by => ['me.tagid'],
             order_by => ['tagid.name'],
-            join => ['tagid'],
+            join => ['tagid','userid'],
             select => ['tagid.name','tagid.id','me.type'],
             as     => ['thistagname','thistagid','thistagtype'],
         }

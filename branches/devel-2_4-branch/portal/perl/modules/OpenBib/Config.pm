@@ -1937,27 +1937,30 @@ sub del_orgunit {
     my $logger = get_logger();
 
     # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
-    $self->{schema}->resultset('OrgunitDb')->search_rs(
-        {
-            'orgunitid.orgunitname' => $orgunitname,
-            'profileid.profilename' => $profilename,
-        },
-        {
-            join => [ 'orgunitid', { 'orgunitid' => 'profileid' } ],
-        }
-    )->all->delete;
-
+    eval {
+        $self->{schema}->resultset('OrgunitDb')->search_rs(
+            {
+                'orgunitid.orgunitname' => $orgunitname,
+                'profileid.profilename' => $profilename,
+            },
+            {
+                join => [ 'orgunitid', { 'orgunitid' => 'profileid' } ],
+            }
+        )->all->delete;
+    };
+    
     # DBI: "delete from orgunitinfo where profilename = ? and orgunitname = ?"
-    $self->{schema}->resultset('Orgunitinfo')->search_rs(
-        {
-            'me.orgunitname'        => $orgunitname,
-            'profileid.profilename' => $profilename,
-        },
-        {
-            join => 'profileid',
-        }
-    )->single->delete;
-
+    eval {
+        $self->{schema}->resultset('Orgunitinfo')->search_rs(
+            {
+                'me.orgunitname'        => $orgunitname,
+                'profileid.profilename' => $profilename,
+            },
+            {
+                join => 'profileid',
+            }
+        )->single->delete;
+    };
     return;
 }
 

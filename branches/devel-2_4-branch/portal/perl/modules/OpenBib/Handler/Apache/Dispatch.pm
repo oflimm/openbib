@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Dispatch
 #
-#  Dieses File ist (C) 2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -80,7 +80,8 @@ sub handler : method {
     if($r->status == 404) {
         return Apache2::Const::NOT_FOUND;
     } elsif($r->status == 500) {
-        return Apache2::Const::SERVER_ERROR;
+        return Apache2::Const::NOT_FOUND;
+#        return Apache2::Const::SERVER_ERROR;
     } elsif($r->status == 400) {
         return Apache2::Const::HTTP_BAD_REQUEST;
     } else {

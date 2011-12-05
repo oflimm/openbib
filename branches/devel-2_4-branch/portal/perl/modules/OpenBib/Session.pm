@@ -649,7 +649,7 @@ sub get_number_of_items_in_collection {
     my $logger = get_logger();
 
     # DBI: "select count(*) as rowcount from treffer where sessionid = ?"
-    my $count = $self->{schema}->resultset('Anoncollection')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
+    my $count = $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
 
     return $count;
 }
@@ -665,7 +665,7 @@ sub get_items_in_collection {
     return $recordlist if (!defined $self->{schema});
 
     # DBI: "select dbname,singleidn from treffer where sessionid = ? order by dbname"
-    my $items = $self->{schema}->resultset('Anoncollection')->search_rs(
+    my $items = $self->{schema}->resultset('Sessioncollection')->search_rs(
         {
             'sid.sessionid' => $self->{ID},
         },
@@ -703,7 +703,7 @@ sub set_item_in_collection {
         return;
     }
 
-    my $count = $self->{schema}->resultset('Anoncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->count;
+    my $count = $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->count;
     
     if (!$count) {
         my $record        = new OpenBib::Record::Title({ database => $database , id => $id});
@@ -712,7 +712,7 @@ sub set_item_in_collection {
         $logger->debug("Adding Title to Collection: $cached_title");
 
         # DBI: "insert into treffer values (?,?,?,?)"
-        $self->{schema}->resultset('Anoncollection')->create( { sid => $self->{sid}, dbname => $database, titleid => $id, titlecache => $cached_title });
+        $self->{schema}->resultset('Sessioncollection')->create( { sid => $self->{sid}, dbname => $database, titleid => $id, titlecache => $cached_title });
     }
 
     return;
@@ -739,7 +739,7 @@ sub clear_item_in_collection {
 
     eval {
         # DBI: "delete from treffer where sessionid = ? and dbname = ? and singleidn = ?"
-        $self->{schema}->resultset('Anoncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->single->delete;
+        $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->single->delete;
     };
 
     return;

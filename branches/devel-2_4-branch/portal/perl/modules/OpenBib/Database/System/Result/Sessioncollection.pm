@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Anoncollection;
+package OpenBib::Database::System::Result::Sessioncollection;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,11 +11,11 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Anoncollection
+OpenBib::Database::System::Result::Sessioncollection
 
 =cut
 
-__PACKAGE__->table("anoncollection");
+__PACKAGE__->table("sessioncollection");
 
 =head1 ACCESSORS
 

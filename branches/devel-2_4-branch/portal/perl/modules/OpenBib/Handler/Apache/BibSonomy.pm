@@ -63,10 +63,11 @@ sub setup {
 
     $self->start_mode('lookup');
     $self->run_modes(
-        'lookup'            => 'lookup',
-        'items_by_tag'      => 'items_by_tag',
-        'items_by_user'     => 'items_by_user',
-        'add_item'          => 'add_item',
+        'show_tags'               => 'show_tags',
+        'show_collection'         => 'show_collection',
+        'show_collection_by_tag'  => 'show_collection_by_tag',
+        'show_collection_by_user' => 'show_collection_by_user',
+        'create_record'           => 'create_record',
     );
 
     # Use current path as template path,
@@ -74,7 +75,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub lookup {
+sub show_tags {
     my $self = shift;
     
     # Log4perl logger erzeugen
@@ -114,7 +115,7 @@ sub lookup {
     return;
 }
 
-sub items_by_tag {
+sub show_collection {
     my $self = shift;
     
     # Log4perl logger erzeugen
@@ -122,14 +123,92 @@ sub items_by_tag {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-
+    my $type           = $self->strip_suffix($self->param('type'))           || 'publication';
+    
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');    
     
     # CGI Args
-    my $tag    = $query->param('tag');
-    my $type   = $query->param('type') || 'publication';
+    my $format = $query->param('format');
+    my $start  = $query->param('start');
+    my $end    = $query->param('end');
+    my $method = $query->param('_method');
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    
+    my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ start => $start, end => $end , type => $type});
+    
+    if ($type eq "publication"){
+
+        if ($method eq "POST"){
+            $self->create_record;
+            return;
+        }
+        
+        # Anreichern mit KUG-Verfuegbarkeit
+        
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $request = $enrichdbh->prepare("select distinct dbname from all_isbn where isbn=?");
+        
+        $logger->debug(YAML::Dump($posts_ref));
+        foreach my $post_ref (@{$posts_ref->{recordlist}}){
+            my $bibkey = $post_ref->{bibkey};
+            $request->execute($bibkey);
+            $logger->debug("Single Post:".YAML::Dump($post_ref));
+            $logger->debug("Single Post-Bibkey:$bibkey");
+            my @local_dbs = ();
+            while (my $result=$request->fetchrow_hashref){
+                push @local_dbs,$result->{dbname};
+            }
+            if (@local_dbs){
+                $post_ref->{local_availability} = 1;
+                $post_ref->{local_dbs}          = \@local_dbs;
+                
+            }
+            else {
+                $post_ref->{local_availability} = 0;
+            }       
+        }
+        $enrichdbh->disconnect;
+    }
+    
+    $logger->debug(YAML::Dump($posts_ref));
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        posts         => $posts_ref,
+        start         => $start,
+        type          => $type,
+        format        => $format,
+        dbinfo        => $dbinfotable,
+    };
+    
+    $self->print_page($config->{tt_bibsonomy_collection_tname},$ttdata);
+    
+    return Apache2::Const::OK;
+}
+
+sub show_collection_by_tag {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    my $type           = $self->param('type')           || 'publication';
+    my $tag            = $self->strip_suffix('tagid');
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+    
+    # CGI Args
     my $format = $query->param('format');
     my $start  = $query->param('start');
     my $end    = $query->param('end');
@@ -183,7 +262,7 @@ sub items_by_tag {
             dbinfo        => $dbinfotable,
         };
         
-        $self->print_page($config->{tt_bibsonomy_showtitlist_tname},$ttdata);
+        $self->print_page($config->{tt_bibsonomy_collection_by_tag_tname},$ttdata);
         
         return Apache2::Const::OK;
     }
@@ -191,7 +270,7 @@ sub items_by_tag {
     return;    
 }
 
-sub items_by_user {
+sub show_collection_by_user {
     my $self = shift;
     
     # Log4perl logger erzeugen
@@ -199,16 +278,15 @@ sub items_by_user {
     
     # Dispatches Args
     my $view           = $self->param('view')           || '';
+    my $type           = $self->param('type')           || 'publication';
+    my $bsuser         = $self->strip_suffix('userid');
 
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');    
         
     # CGI Args
-    my $bsuser = $query->param('user');
-    my $type   = $query->param('type') || 'publication';
     my $format = $query->param('format');
-    my $tag    = $query->param('tag');
     my $start  = $query->param('start');
     my $end    = $query->param('end');
 
@@ -253,20 +331,19 @@ sub items_by_user {
         # TT-Data erzeugen
         my $ttdata={
             posts         => $posts_ref,
-            tag           => $tag,
             bsuser        => $bsuser,
             format        => $format,
             type          => $type,
             dbinfo        => $dbinfotable,
         };
         
-        $self->print_page($config->{tt_bibsonomy_showtitlist_tname},$ttdata);
+        $self->print_page($config->{tt_bibsonomy_collection_by_user_tname},$ttdata);
         
         return Apache2::Const::OK;
     }
 }
 
-sub add_item {
+sub create_record {
     my $self = shift;
     
     # Log4perl logger erzeugen
@@ -284,14 +361,14 @@ sub add_item {
     # CGI Args
     my $id         = $query->param('id');
     my $database   = $query->param('db');
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+
     if ($id && $database){
         my $title = OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex;
 #        $title=~s/\n/ /g;
         
-        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}?type=510;url=".uri_escape("http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape("http://$servername/")."&description=".uri_escape($config->get_viewdesc_from_viewname($view))."&encoding=ISO-8859-1&selection=".uri_escape($title));
+        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape("http://$servername/")."&description=".uri_escape($config->get_viewdesc_from_viewname($view))."&encoding=ISO-8859-1&selection=".uri_escape($title));
         
         $logger->debug($bibsonomy_uri);
 

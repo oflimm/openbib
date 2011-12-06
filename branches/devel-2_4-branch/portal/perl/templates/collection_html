@@ -45,6 +45,9 @@ function update_collection(yourform, checked, item) {
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+    <form method="post" action="[% path_prefix %]/[% config.get('collection_loc') %]">
+      
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
@@ -60,8 +63,6 @@ function update_collection(yourform, checked, item) {
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-    <form method="post" action="[% path_prefix %]/[% config.get('collection_loc') %]">
-      
 [% IF format == 'short' %]
   [%- PROCESS common/subtemplate name="collection_html_short"  show_bibsonomy=1 -%]
 [% ELSIF format == 'full' %]
@@ -83,6 +84,6 @@ function update_collection(yourform, checked, item) {
       <!-- end: #col3 -->
     </div>
     <!-- end: #main -->
-
+     </form>
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -169,7 +169,6 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
-<!--
 [%         IF jn == 1 && category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -191,7 +190,6 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
--->
 [%         IF config.get('drilldown_option').categorized_person && category_map.3.size > 0 %]
 <tr><td valign="top">
 <table width="100%">

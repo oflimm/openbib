@@ -24,6 +24,16 @@
 #######################################################################
 -%]
 [%- username = user.get_username -%]
+    <script>
+$(document).ready(function(){
+$.get("[% path_prefix %]/[% config.get('collection_loc') %]/count",
+ function (txt){
+  $("#collectioncount").html("["+txt+"]");
+});
+
+});
+
+    </script>
     <!-- begin: main navigation #nav -->
     <div id="nav" role="navigation">
       <div class="hlist">

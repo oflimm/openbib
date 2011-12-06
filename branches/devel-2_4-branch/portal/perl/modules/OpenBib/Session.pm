@@ -541,15 +541,15 @@ sub get_dbchoice {
         
         my $dbs_ref = decode_json $dbs_as_json;
         
-        @dbchoice = @{$dbs_ref};
-        
+        @dbchoice = reverse @{$dbs_ref};
+            
         $logger->debug("DB-Choice:\n".YAML::Dump(\@dbchoice));
     }
 
         
     return {
         id        => $profileid,
-        databases => reverse @dbchoice,
+        databases => \@dbchoice,
     };
 }
 

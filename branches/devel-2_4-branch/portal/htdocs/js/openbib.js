@@ -134,24 +134,6 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
    return false;
  });
 
-$("a.collection").click(function(){
-
-   // Insert-Funktion aufrufen
-   $.get(this.href);
-
-   if (View){
-   // Merklistenfuellstand aktualisieren
-   $.get("/portal/"+View+"/collection/count",
-function (txt){ $("#collectioncount").html("["+txt+"]"); });
-   }
-   else {
-   // Merklistenfuellstand aktualisieren
-   $.get("/portal/collection/count",
-function (txt){ $("#collectioncount").html("["+txt+"]"); });
-   }
-   return false;
- });
-
 
 // Ende Merkliste
 

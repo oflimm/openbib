@@ -90,12 +90,13 @@ sub show_collection {
 
     # Shared Args
     my $config         = $self->param('config');
+    my $user           = $self->param('user');
 
     if (!$self->is_authenticated('admin')){
         return;
     }
 
-    my $subjects_ref = OpenBib::User->get_subjects;
+    my $subjects_ref = $user->get_subjects;
     
     my $ttdata={
         subjects   => $subjects_ref,
@@ -118,12 +119,13 @@ sub show_record_form {
 
     # Shared Args
     my $config         = $self->param('config');
+    my $usre           = $self->param('user');
 
     if (!$self->is_authenticated('admin')){
         return;
     }
 
-    my $subject_ref = OpenBib::User->get_subject({ id => $subjectid});
+    my $subject_ref = $user->get_subject({ id => $subjectid});
     
     my $ttdata={
         subject    => $subject_ref,

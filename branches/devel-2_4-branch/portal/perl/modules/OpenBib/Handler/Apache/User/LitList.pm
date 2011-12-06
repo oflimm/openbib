@@ -106,7 +106,7 @@ sub show_collection {
         return;
     }
 
-    my $subjects_ref = OpenBib::User->get_subjects;
+    my $subjects_ref = $user->get_subjects;
     my $userrole_ref = $user->get_roles_of_user($user->{ID});
     my $litlists     = $user->get_litlists();
     my $targettype   = $user->get_targettype_of_session($session->{ID});

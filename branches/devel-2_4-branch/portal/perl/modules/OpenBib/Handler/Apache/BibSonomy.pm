@@ -64,6 +64,7 @@ sub setup {
     $self->start_mode('lookup');
     $self->run_modes(
         'show_tags'               => 'show_tags',
+        'show_collection'         => 'show_collection',
         'show_collection_by_tag'  => 'show_collection_by_tag',
         'show_collection_by_user' => 'show_collection_by_user',
         'create_record'           => 'create_record',
@@ -112,6 +113,84 @@ sub show_tags {
     }
 
     return;
+}
+
+sub show_collection {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    my $type           = $self->strip_suffix($self->param('type'))           || 'publication';
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');    
+    
+    # CGI Args
+    my $format = $query->param('format');
+    my $start  = $query->param('start');
+    my $end    = $query->param('end');
+    my $method = $query->param('_method');
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    
+    my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ start => $start, end => $end , type => $type});
+    
+    if ($type eq "publication"){
+
+        if ($method eq "POST"){
+            $self->create_record;
+            return;
+        }
+        
+        # Anreichern mit KUG-Verfuegbarkeit
+        
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $request = $enrichdbh->prepare("select distinct dbname from all_isbn where isbn=?");
+        
+        $logger->debug(YAML::Dump($posts_ref));
+        foreach my $post_ref (@{$posts_ref->{recordlist}}){
+            my $bibkey = $post_ref->{bibkey};
+            $request->execute($bibkey);
+            $logger->debug("Single Post:".YAML::Dump($post_ref));
+            $logger->debug("Single Post-Bibkey:$bibkey");
+            my @local_dbs = ();
+            while (my $result=$request->fetchrow_hashref){
+                push @local_dbs,$result->{dbname};
+            }
+            if (@local_dbs){
+                $post_ref->{local_availability} = 1;
+                $post_ref->{local_dbs}          = \@local_dbs;
+                
+            }
+            else {
+                $post_ref->{local_availability} = 0;
+            }       
+        }
+        $enrichdbh->disconnect;
+    }
+    
+    $logger->debug(YAML::Dump($posts_ref));
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        posts         => $posts_ref,
+        start         => $start,
+        type          => $type,
+        format        => $format,
+        dbinfo        => $dbinfotable,
+    };
+    
+    $self->print_page($config->{tt_bibsonomy_collection_tname},$ttdata);
+    
+    return Apache2::Const::OK;
 }
 
 sub show_collection_by_tag {

@@ -87,7 +87,7 @@
 %]
 <h4>[% msg.maketext("Behalten Sie diesen Titel") %]:</h4><p/>
 
-<img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/add_item.html?l=[% lang %];id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
+<img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?_method=POST;l=[% lang %];id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
 <img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="collection" href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %];_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
 <img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/mail.html?l=[% lang %];format=full" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
 <img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/save.html?l=[% lang %];format=full" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
@@ -395,11 +395,23 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [% END %]
 <!-- Ende Tags -->
 
+    <script>
+$(document).ready(function(){
+
+    $.get("[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags.include?l=[% lang %];bibkey=[% record.to_bibkey %];tags=[% record.to_tags %]",
+          function (txt){
+            $("#bibsonomy_tags").html(txt); 
+    });
+
+});
+
+    </script>
+
 <!-- Anfang BibSonomy-Tags -->
 <div class="bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
 <div class="headline"><span id="bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/lookup?bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
+<span id="bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags.html?l=[% lang %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
 </div>
 <p/>
 </div>

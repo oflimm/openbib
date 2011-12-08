@@ -35,14 +35,6 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
-        <div id="col3_content" class="clearfix">
-
-   <h1>[% IF tag %][% msg.maketext("Quellen zum Tag <i>[_1]</i> in BibSonomy",tag) %][% ELSIF bsuser %][% msg.maketext("Quellen des Nutzers <i>[_1]</i> in BibSonomy",bsuser) %][% END %]</h1>
 
 [% alltags = [] %]
 [% FOREACH thistitle IN posts.recordlist %]
@@ -51,36 +43,50 @@
 [%   END %]
 [% END %]
 
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr><td class="boxedfull" align="left">
-
-[% FOREACH thistag IN alltags.unique.sort %]
-<a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;">[% thistag %]</a>&nbsp;
+<h6 class="vlist">Tag: [% tag %]</h6>
+<ul class="vlist">
+[% IF type == "publication" %]
+  <li class="active"><strong>[% msg.maketext("Publikationen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/publication/tag/[% tag %].html?l=[% lang %]">[% msg.maketext("Publikationen") %]</a></li>
 [% END %]
-<p />
+[% IF type == "bookmark" %]
+  <li class="active"><strong>[% msg.maketext("Web") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/bookmark/tag/[% tag %].html?l=[% lang %]">[% msg.maketext("Web") %]</a></li>
+[% END %]
+</ul>
 
-<form method="get" action="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/items_by_tag">
+<p/>
 
-<input type="hidden" name="type"       value="[% type %]" />
+<h6 class="vlist">Tags in den angezeigten Titeln</h6>
+<div style="padding: 10px;">
+[% FOREACH thistag IN alltags.unique.sort %]
+<a class="tag" style="display: inline; cursor: pointer;" href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/tag/[% thistag %].html?l=[% lang %]">[% thistag %]</a>&nbsp;
+[% END %]
+</div>
 
+<p/>
+
+<h6 class="vlist">Tag suchen</h6>
+<form method="get" action="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags">
 
 <table>
 <tr><td>[% msg.maketext("Tags") %]</td><td>&nbsp;<input
-type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title="[% msg.maketext("Geben Sie hier einen oder mehrere Tags ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />&nbsp;</td></tr>
+type="text" name="tags" value="" id="inputfield" size="20" maxlength="200" title="[% msg.maketext("Geben Sie hier einen oder mehrere Tags ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />&nbsp;</td></tr>
 </table>
 
 </form>
-</td></tr>
-</table>
 
-<ul class="tabbingmenu">
-   <li><a [% IF type == 'publication' %]class="active"[% END %] href="[% path_prefix %]/[% config.get('bibsonomy_loc') %][% IF tag %]/items_by_tag?tag=[% tag %];[% ELSIF bsuser %]/items_by_user?user=[% bsuser %];[% END %]type=publication">[% msg.maketext("Publikationen") %]</a></li>
-   <li><a [% IF type == 'bookmark' %]class="active"[% END %] href="[% path_prefix %]/[% config.get('bibsonomy_loc') %][% IF tag %]/items_by_tag?tag=[% tag %];[% ELSIF bsuser %]/items_by_user?user=[% bsuser %];[% END %]type=bookmark">[% msg.maketext("Web") %]</a></li>
-</ul>
+      </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
 
-<div class="content">
+   <h1>[% IF tag %][% msg.maketext("Quellen zum Tag <i>[_1]</i> in BibSonomy",tag) %][% ELSIF bsuser %][% msg.maketext("Quellen des Nutzers <i>[_1]</i> in BibSonomy",bsuser) %][% END %]</h1>
 
-<p/>
 [% IF posts.recordlist.size > 0 %]
 
 <!-- Titlelist begins here -->
@@ -112,7 +118,7 @@ style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen de
 thistitle.local_dbs %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% dbname %];fs=bkey:|[% thistitle.bibkey %]|" title="[% dbinfo.get('dbnames').${dbname}.short %]">[% loop.count %]</a>&nbsp;&nbsp;[% END %][% END %]
       </div>
       <div class="titleactions">
-<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/items_by_tag?tag=[% thistag | uri %];type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/items_by_user?user=[% thistitle.user %];type=[% type %]">[% thistitle.user %]</a>
+<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/tag/[% thistag | uri %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/user/[% thistitle.user %].html?l=[% lang %]">[% thistitle.user %]</a>
       </div>
     </div>
 [% ELSIF type == 'bookmark' %]
@@ -128,7 +134,7 @@ thistitle.local_dbs %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?
       <div class="titlemark">
       </div>
       <div class="titleactions">
-<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/items_by_tag?tag=[% thistag %];type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/items_by_user?user=[% thistitle.user %];type=[% type %]">[% thistitle.user %]</a>
+<b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/tag/[% thistag %]?l=[% lang %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/user/[% thistitle.user %].html?l=[% lang %]">[% thistitle.user %]</a>
       </div>
     </div>
 [%-  END -%]
@@ -142,7 +148,7 @@ thistitle.local_dbs %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?
 <p/>
 
 [% IF posts.next.start %]
-<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %][% IF tag %]/items_by_tag?tag=[% tag %];[% ELSIF bsuser %]/items_by_user?user=[% bsuser %];[% END %]start=[% posts.next.start %];end=[% posts.next.end %];type=[% type %]">[% msg.maketext("Weiter") %]</a>
+<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %][% IF tag %]/tag/[% tag %][% ELSIF bsuser %]/user/[% bsuser %][% END %].html?l=[% lang %];start=[% posts.next.start %];end=[% posts.next.end %]">[% msg.maketext("Weiter") %]</a>
 [% END %]
 
         </div>

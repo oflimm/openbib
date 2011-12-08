@@ -91,6 +91,10 @@ sub show {
 
     $logger->debug("SessionID: $session->{ID} - Type: $type - URL: $url");
 
+    if ($self->query->args()){
+        $url .= "?".$self->query->args();
+    }
+    
     my $valid_redirection_type_ref = {
         500 => 1, # TOC / hbz-Server
         501 => 1, # TOC / ImageWaere-Server

@@ -137,7 +137,7 @@ sub handler {
         my @local_tags=split('\s+',$tags);
         if (defined $bibkey || @local_tags){
             my @tags = ();
-            @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey, tags => \@local_tags}) if ($bibkey=~/^1[0-9a-f]{32}$/);
+            @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey, tags => \@local_tags});# if ($bibkey=~/^1[0-9a-f]{32}$/);
 
             $logger->debug(YAML::Dump(\@tags));
             

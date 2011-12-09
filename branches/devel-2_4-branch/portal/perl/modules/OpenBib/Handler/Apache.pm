@@ -464,7 +464,7 @@ sub print_page {
 
     # Mitgelieferter Username geht vor:
     if ($ttdata->{'username'}){
-        $username = $ttdata->{'username'};s
+        $username = $ttdata->{'username'};
     }
     
     if ($self->param('representation') eq "rss"){

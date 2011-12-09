@@ -123,7 +123,7 @@ close(OUTPOP);
 
 # Verbindung zur SQL-Datenbank herstellen
 my $userdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
     or $logger->error($DBI::errstr);
 
 # Tags

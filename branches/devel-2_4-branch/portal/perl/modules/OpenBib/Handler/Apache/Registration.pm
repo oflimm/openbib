@@ -95,7 +95,7 @@ sub show {
     # CGI Args
     my $action              = ($query->param('action'))?$query->param('action'):'none';
     my $targetid            = ($query->param('targetid'))?$query->param('targetid'):'none';
-    my $loginname           = ($query->param('loginname'))?$query->param('loginname'):'';
+    my $username            = ($query->param('username'))?$query->param('username'):'';
     my $password1           = ($query->param('password1'))?$query->param('password1'):'';
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
@@ -157,17 +157,17 @@ sub register {
 
     my $confirmation_info_ref = $user->get_confirmation_request({registrationid => $registrationid});
 
-    my $loginname = $confirmation_info_ref->{loginname};
+    my $username  = $confirmation_info_ref->{username};
     my $password  = $confirmation_info_ref->{password};
 
     $user->add({
-        loginname => $loginname,
+        username  => $username,
         password  => $password,
         email     => $loginname,
     });
 
     
-    my $userid   = $user->get_userid_for_username($loginname);
+    my $userid   = $user->get_userid_for_username($username);
     my $targetid = $user->get_id_of_selfreg_logintarget();
 
     $user->connect_session({
@@ -180,7 +180,7 @@ sub register {
     
     # TT-Data erzeugen
     my $ttdata={
-        username   => $loginname,
+        username   => $username,
     };
 
     $self->print_page($config->{tt_registration_success_tname},$ttdata);
@@ -212,7 +212,7 @@ sub mail_confirmation {
     # CGI Args
     my $action              = ($query->param('action'))?$query->param('action'):'none';
     my $targetid            = ($query->param('targetid'))?$query->param('targetid'):'none';
-    my $loginname           = ($query->param('loginname'))?$query->param('loginname'):'';
+    my $username            = ($query->param('username'))?$query->param('username'):'';
     my $password1           = ($query->param('password1'))?$query->param('password1'):'';
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
@@ -226,7 +226,7 @@ sub mail_confirmation {
         $r->connection->remote_ip($1);
     }
 
-    if ($loginname eq "" || $password1 eq "" || $password2 eq "") {
+    if ($username eq "" || $password1 eq "" || $password2 eq "") {
         $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"));
         return Apache2::Const::OK;
     }
@@ -237,13 +237,13 @@ sub mail_confirmation {
     }
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
-    unless (Email::Valid->address($loginname)){
+    unless (Email::Valid->address($username)){
         $self->print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
         return Apache2::Const::OK;
     }
     
-    if ($user->user_exists($loginname)) {
-        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
+    if ($user->user_exists($username)) {
+        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
         return Apache2::Const::OK;
     }
     
@@ -295,7 +295,7 @@ sub mail_confirmation {
 
     my $mailmsg = MIME::Lite->new(
         From            => $config->{contact_email},
-        To              => $loginname,
+        To              => $username,
         Subject         => $subject,
         Type            => 'multipart/mixed'
     );
@@ -310,11 +310,11 @@ sub mail_confirmation {
   
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
 
-    $user->add_confirmation_request({loginname => $loginname, password => $password1});
+    $user->add_confirmation_request({username => $username, password => $password1});
     
     # TT-Data erzeugen
     my $ttdata={
-        loginname      => $loginname,
+        username      => $username,
     };
 
     $self->print_page($config->{tt_registration_confirmation_tname},$ttdata);

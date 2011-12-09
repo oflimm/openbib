@@ -109,14 +109,14 @@ sub show_collection {
         return;
     }
 
-    my $loginname  = $user->get_username();
+    my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
     
     # TT-Data erzeugen
     my $ttdata={
         format     => $format,
         targettype => $targettype,
-        loginname  => $loginname,
+        username   => $username,
     };
 
     $self->print_page($config->{tt_user_tag_collection_tname},$ttdata,$r);
@@ -161,7 +161,7 @@ sub show_record {
         return;
     }
 
-    my $loginname = $user->get_username();
+    my $username   = $user->get_username();
     
     my $recordlist = new OpenBib::RecordList::Title;
     my $hits       = 0;
@@ -176,7 +176,7 @@ sub show_record {
     my $titles_ref;
     
     ($recordlist,$hits)= $user->get_titles_of_tag({
-        loginname => $loginname,
+        username  => $username,
         tagid     => $tagid,
         offset    => $offset,
         hitrange  => $hitrange,
@@ -206,7 +206,7 @@ sub show_record {
         template         => 'tt_user_tag_tname',
         location         => 'user_loc',
         parameter        => {
-            loginname    => $loginname,
+            username     => $username,
             tag          => $tag,
             private_tags => 1,
         },

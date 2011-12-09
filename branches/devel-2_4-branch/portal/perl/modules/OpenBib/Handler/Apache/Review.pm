@@ -148,7 +148,7 @@ sub show_collection_by_isbn_negotiate {
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    my $loginname  = $user->get_username();
+    my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
 
     if (!$user->{ID}){
@@ -156,7 +156,7 @@ sub show_collection_by_isbn_negotiate {
         return Apache2::Const::OK;
     }
     
-    my $reviewlist_ref = $user->get_reviews({loginname => $loginname});
+    my $reviewlist_ref = $user->get_reviews({username => $username});
     
     foreach my $review_ref (@$reviewlist_ref){
         my $titelidn = $review_ref->{titid};
@@ -224,7 +224,7 @@ sub update_vote {
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    my $loginname  = $user->get_username();
+    my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
 
 
@@ -243,7 +243,7 @@ sub update_vote {
     my $status = $user->vote_for_review({
         reviewid  => $reviewid,
         rating    => $rating,
-        loginname => $loginname,
+        username  => $username,
     });
     
     if ($status == 1){
@@ -334,7 +334,7 @@ sub update_record {
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    my $loginname  = $user->get_username();
+    my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
 
 
@@ -348,7 +348,7 @@ sub update_record {
     $user->add_review({
         titid     => $titid,
         titdb     => $titdb,
-        loginname => $loginname,
+        username  => $username,
         nickname  => $nickname,
         title     => $title,
         review    => $review,
@@ -391,7 +391,7 @@ sub delete_record {
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    my $loginname  = $user->get_username();
+    my $username  = $user->get_username();
 
     if (!$user->{ID}){
         $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
@@ -402,7 +402,7 @@ sub delete_record {
 
     $user->del_review_of_user({
         id        => $reviewid,
-        loginname => $loginname,
+        username  => $username,
     });
 
     $self->return_baseurl;
@@ -499,10 +499,10 @@ sub show_record_form {
         return Apache2::Const::OK;
     }
 
-    my $loginname  = $user->get_username();
+    my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
 
-    my $review_ref = $user->get_review_of_user({id => $reviewid, loginname => $loginname});
+    my $review_ref = $user->get_review_of_user({id => $reviewid, username => $username});
     
     {
         my $titelidn = $review_ref->{titid};
@@ -624,10 +624,10 @@ sub show_record_negotiate {
         return;
     }
 
-    my $loginname  = $user->get_username();
+    my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
 
-    my $review_ref = $user->get_review_of_user({id => $reviewid, loginname => $loginname});
+    my $review_ref = $user->get_review_of_user({id => $reviewid, username => $username});
     
     {
         my $titelidn = $review_ref->{titid};
@@ -749,10 +749,10 @@ sub show_record_negotiatex {
         return;
     }
 
-    my $loginname  = $user->get_username();
+    my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
 
-    my $review_ref = $user->get_review_of_user({id => $reviewid, loginname => $loginname});
+    my $review_ref = $user->get_review_of_user({id => $reviewid, username => $username});
     
     {
         my $titelidn = $review_ref->{titid};

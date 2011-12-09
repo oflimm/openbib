@@ -100,9 +100,9 @@ sub show_collection {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $loginname      = $user->get_username();
+    my $username       = $user->get_username();
     my $targettype     = $user->get_targettype_of_session($session->{ID});
-    my $reviewlist_ref = $user->get_reviews({loginname => $loginname});
+    my $reviewlist_ref = $user->get_reviews({username => $username});
     
     foreach my $review_ref (@$reviewlist_ref){
         my $titelidn = $review_ref->{titid};

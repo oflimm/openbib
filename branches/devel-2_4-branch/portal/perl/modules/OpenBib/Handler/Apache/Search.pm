@@ -428,15 +428,15 @@ sub show_search {
     my %trefferpage  = ();
     my %dbhits       = ();
 
-    my $loginname = "";
+    my $username  = "";
     my $password  = "";
 
     if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self"){
-        ($loginname,$password)=$user->get_credentials();
+        ($username,$password)=$user->get_credentials();
     }
 
     # Hash im Loginname ersetzen
-    $loginname =~s/#/\%23/;
+    $username =~s/#/\%23/;
 
     # Array aus DB-Name und Titel-ID zur Navigation
     my @resultset   = ();
@@ -488,7 +488,7 @@ sub show_search {
         stylesheet     => $stylesheet,
         sessionID      => $session->{ID},
         
-        loginname      => $loginname,
+        username       => $username,
         password       => $password,
         
         searchquery    => $searchquery,
@@ -1155,7 +1155,7 @@ sub show_search {
         
         gesamttreffer => $gesamttreffer,
         
-        loginname     => $loginname,
+        username      => $username,
         password      => $password,
         
         searchquery   => $searchquery,

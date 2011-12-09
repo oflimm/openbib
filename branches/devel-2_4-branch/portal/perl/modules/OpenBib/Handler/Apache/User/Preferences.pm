@@ -108,20 +108,20 @@ sub show_collection {
     my $spelling_suggestion_ref = $user->get_spelling_suggestion();
     my $livesearch_ref          = $user->get_livesearch();
     
-    my $loginname               = $userinfo_ref->{'loginname'};
+    my $username                = $userinfo_ref->{'username'};
     my $password                = $userinfo_ref->{'password'};
     
-    # Wenn wir eine gueltige Mailadresse als Loginnamen haben,
+    # Wenn wir eine gueltige Mailadresse als Usernamen haben,
     # dann liegt Selbstregistrierung vor und das Passwort kann
     # geaendert werden
-    my $email_valid=Email::Valid->address($loginname);
+    my $email_valid=Email::Valid->address($username);
     
     my $targettype=$user->get_targettype_of_session($session->{ID});
     
     # TT-Data erzeugen
     my $ttdata={
         qopts               => $queryoptions->get_options,
-        loginname           => $loginname,
+        username            => $username,
         password            => $password,
         email_valid         => $email_valid,
         targettype          => $targettype,

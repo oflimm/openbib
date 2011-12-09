@@ -141,8 +141,6 @@ sub show_collection {
         return Apache2::Const::OK;
     }
 
-    my $loginname  = $user->get_username();
-    
     my $targettype = $user->get_targettype_of_session($session->{ID});
     
     # TT-Data erzeugen
@@ -153,7 +151,6 @@ sub show_collection {
         
         format     => $format,
         targettype => $targettype,
-        loginname  => $loginname,
         user       => $user,
         config     => $config,
         user       => $user,
@@ -363,8 +360,6 @@ sub show_collection_form {
         return Apache2::Const::OK;
     }
 
-    my $loginname = $user->get_username();
-    
     my $targettype=$user->get_targettype_of_session($session->{ID});
     
     # TT-Data erzeugen
@@ -374,7 +369,6 @@ sub show_collection_form {
         sessionID  => $session->{ID},
         
         targettype => $targettype,
-        loginname  => $loginname,
         user       => $user,
         config     => $config,
         user       => $user,
@@ -470,7 +464,7 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
-    my $loginname = $user->get_username();
+    my $username = $user->get_username();
     
     $logger->debug("Aufnehmen/Aendern der Tags: $tags");
         
@@ -478,7 +472,7 @@ sub create_record {
         tags      => $tags,
         titid     => $titid,
         titdb     => $titdb,
-        loginname => $loginname,
+        username  => $username,
         type      => $type,
     });
 
@@ -578,7 +572,7 @@ sub delete_record {
         return Apache2::Const::OK;
     }
 
-    my $loginname = $user->get_username();
+    my $username = $user->get_username();
 
 
     $logger->debug("Loeschen der Tags $tags von $titdb:$titid");
@@ -587,7 +581,7 @@ sub delete_record {
         tags      => $tags,
         titid     => $titid,
         titdb     => $titdb,
-        loginname => $loginname,
+        username  => $username,
     });
 
     my $new_location = "$r->get_server_name$path_prefix/$config->{title_loc}/$titdb/$titid.html?queryid=$queryid;no_log=1";
@@ -691,14 +685,14 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
-    my $loginname = $user->get_username();
+    my $username = $user->get_username();
 
     $logger->debug("Aendern des Tags $oldtag in $newtag");
     
     my $status = $user->rename_tag({
         oldtag    => $oldtag,
         newtag    => $newtag,
-        loginname => $loginname,
+        username  => $username,
     });
     
     if ($status){
@@ -844,7 +838,7 @@ sub showyyy {
         return Apache2::Const::OK;
     }
 
-    my $loginname = $user->get_username();
+    my $username = $user->get_username();
     
     if ($do_add && $user->{ID}){
 
@@ -854,7 +848,7 @@ sub showyyy {
             tags      => $tags,
             titid     => $titid,
             titdb     => $titdb,
-            loginname => $loginname,
+            username  => $username,
             type      => $type,
         });
 
@@ -869,7 +863,7 @@ sub showyyy {
             tags      => $tags,
             titid     => $titid,
             titdb     => $titdb,
-            loginname => $loginname,
+            username  => $username,
         });
 
         if ($tags =~/^\w+$/){
@@ -889,7 +883,7 @@ sub showyyy {
         my $status = $user->rename_tag({
             oldtag    => $oldtag,
             newtag    => $newtag,
-            loginname => $loginname,
+            username  => $username,
         });
 
         if ($status){
@@ -913,7 +907,6 @@ sub showyyy {
             sessionID  => $session->{ID},
 
             targettype => $targettype,
-            loginname  => $loginname,
             user       => $user,
             config     => $config,
             user       => $user,
@@ -934,7 +927,6 @@ sub showyyy {
 
             format     => $format,
             targettype => $targettype,
-            loginname  => $loginname,
             user       => $user,
             config     => $config,
             user       => $user,
@@ -961,7 +953,7 @@ sub showyyy {
                 my $titles_ref;
 
                 ($recordlist,$hits)= $user->get_titles_of_tag({
-                    loginname => $loginname,
+                    username  => $username,
                     tagid     => $searchtitoftag,
                     offset    => $offset,
                     hitrange  => $hitrange,
@@ -1001,7 +993,7 @@ sub showyyy {
             template         => 'tt_tags_showtitlist_tname',
             location         => 'tags_loc',
             parameter        => {
-                loginname    => $loginname,
+                username     => $username,
                 tag          => $tag,
                 private_tags => $private_tags,
             },
@@ -1099,7 +1091,7 @@ sub showzzz {
         return Apache2::Const::OK;
     }
 
-    my $loginname = $user->get_username();
+    my $username = $user->get_username();
     
     if ($do_add && $user->{ID}){
 
@@ -1109,7 +1101,7 @@ sub showzzz {
             tags      => $tags,
             titid     => $titid,
             titdb     => $titdb,
-            loginname => $loginname,
+            username  => $username,
             type      => $type,
         });
 
@@ -1124,7 +1116,7 @@ sub showzzz {
             tags      => $tags,
             titid     => $titid,
             titdb     => $titdb,
-            loginname => $loginname,
+            username  => $username,
         });
 
         if ($tags =~/^\w+$/){
@@ -1144,7 +1136,7 @@ sub showzzz {
         my $status = $user->rename_tag({
             oldtag    => $oldtag,
             newtag    => $newtag,
-            loginname => $loginname,
+            username  => $username,
         });
 
         if ($status){
@@ -1168,7 +1160,6 @@ sub showzzz {
             sessionID  => $session->{ID},
 
             targettype => $targettype,
-            loginname  => $loginname,
             user       => $user,
             config     => $config,
             user       => $user,
@@ -1183,17 +1174,8 @@ sub showzzz {
 
         # TT-Data erzeugen
         my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            sessionID  => $session->{ID},
-
             format     => $format,
             targettype => $targettype,
-            loginname  => $loginname,
-            user       => $user,
-            config     => $config,
-            user       => $user,
-            msg        => $msg,
         };
         $self->print_page($config->{tt_tags_showusertags_tname},$ttdata);
     }
@@ -1216,7 +1198,7 @@ sub showzzz {
                 my $titles_ref;
 
                 ($recordlist,$hits)= $user->get_titles_of_tag({
-                    loginname => $loginname,
+                    username  => $username,
                     tagid     => $searchtitoftag,
                     offset    => $offset,
                     hitrange  => $hitrange,
@@ -1256,7 +1238,7 @@ sub showzzz {
             template         => 'tt_tags_showtitlist_tname',
             location         => 'tags_loc',
             parameter        => {
-                loginname    => $loginname,
+                username    => $username,
                 tag          => $tag,
                 private_tags => $private_tags,
             },

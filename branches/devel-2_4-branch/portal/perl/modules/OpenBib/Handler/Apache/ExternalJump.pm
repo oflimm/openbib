@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::ExternalJump
 #
-#  Dieses File ist (C) 2005-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -146,16 +146,16 @@ sub show {
     # Haben wir eine Benutzernummer? Dann versuchen wir den 
     # Authentifizierten Sprung in die Digibib
 
-    my ($loginname,$password) = $user->get_credentials();
+    my ($username,$password) = $user->get_credentials();
 
     my $authurl="";
-    unless (defined $loginname && defined $password && Email::Valid->address($loginname)){
+    unless (defined $username && defined $password && Email::Valid->address($username)){
 
-        # Hash im loginname durch %23 ersetzen
-        $loginname=~s/#/\%23/;
+        # Hash im username durch %23 ersetzen
+        $username=~s/#/\%23/;
 
-        if ($loginname && $password) {
-            $authurl="&USERID=$loginname&PASSWORD=$password";
+        if ($username && $password) {
+            $authurl="&USERID=$username&PASSWORD=$password";
         }
     }
 

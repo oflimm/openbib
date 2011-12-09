@@ -455,13 +455,18 @@ sub print_page {
         $config->{login_active} = 0;
     }
 
-    my $loginname="";
+    my $username="";
 
     # Wenn wir authentifiziert sind, dann
     if ($user->{ID}) {
-        $loginname=$user->get_username();
+        $username=$user->get_username();
     }
 
+    # Mitgelieferter Username geht vor:
+    if ($ttdata->{'username'}){
+        $username = $ttdata->{'username'};s
+    }
+    
     if ($self->param('representation') eq "rss"){
         my $rss = new XML::RSS ( version => '1.0' ) ;
         $ttdata->{'rss'}           = $rss;
@@ -479,7 +484,7 @@ sub print_page {
     $ttdata->{'lang'}           = $lang;
     $ttdata->{'stylesheet'}     = $stylesheet;
     $ttdata->{'servername'}     = $servername;
-    $ttdata->{'loginname'}      = $loginname;
+    $ttdata->{'username'}       = $username;
     $ttdata->{'sysprofile'}     = $sysprofile;
     $ttdata->{'path'}           = $path;
     $ttdata->{'cgiapp'}         = $self;

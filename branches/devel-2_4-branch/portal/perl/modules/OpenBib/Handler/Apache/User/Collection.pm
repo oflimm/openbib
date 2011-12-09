@@ -135,8 +135,6 @@ sub show_collection {
     }
     # Abspeichern der Merkliste
     elsif ($action eq "save" || $action eq "print" || $action eq "mail") {
-        my $loginname=$user->get_username();
-
         my $recordlist = new OpenBib::RecordList::Title();
 
         if ($singleidn && $database) {
@@ -172,12 +170,12 @@ sub show_collection {
             if ($type eq "HTML") {
                 $r->content_type('text/html');
                 $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
-                OpenBib::Common::Util::print_page($config->{tt_managecollection_save_html_tname},$ttdata,$r);
+                $self->print_page($config->{tt_managecollection_save_html_tname},$ttdata);
             }
             else {
                 $r->content_type('text/plain');
                 $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
-                OpenBib::Common::Util::print_page($config->{tt_managecollection_save_plain_tname},$ttdata,$r);
+                $self->print_page($config->{tt_managecollection_save_plain_tname},$ttdata);
             }
             return Apache2::Const::OK;
         }
@@ -190,7 +188,6 @@ sub show_collection {
                 qopts      => $queryoptions->get_options,		
                 type       => $type,
                 show       => $show,
-                loginname  => $loginname,
                 singleidn  => $singleidn,
                 database   => $database,
                 recordlist => $recordlist,
@@ -200,7 +197,7 @@ sub show_collection {
                 msg        => $msg,
             };
             
-            OpenBib::Common::Util::print_page($config->{tt_managecollection_print_tname},$ttdata,$r);
+            $self->print_page($config->{tt_managecollection_print_tname},$ttdata);
             return Apache2::Const::OK;
         }
         elsif ($action eq "mail"){
@@ -212,7 +209,6 @@ sub show_collection {
                 qopts       => $queryoptions->get_options,				
                 type        => $type,
                 show        => $show,
-                loginname   => $loginname,
                 singleidn   => $singleidn,
                 database    => $database,
                 recordlist  => $recordlist,
@@ -222,12 +218,12 @@ sub show_collection {
                 msg         => $msg,
             };
             
-            OpenBib::Common::Util::print_page($config->{tt_managecollection_mail_tname},$ttdata,$r);
+            $self->print_page($config->{tt_managecollection_mail_tname},$ttdata);
             return Apache2::Const::OK;
         }
     }
     else {
-        OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
+        $self->print_warning($msg->maketext("Unerlaubte Aktion"));
         return Apache2::Const::OK;
     }
     return Apache2::Const::OK;

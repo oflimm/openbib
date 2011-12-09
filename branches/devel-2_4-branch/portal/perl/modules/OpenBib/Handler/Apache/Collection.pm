@@ -254,7 +254,7 @@ sub show_collection {
         }
         
         if ($user->{ID}){
-            my $loginname = $user->get_username;
+            my $username = $user->get_username;
             
             if ($query->param('titid')){
                 foreach my $tit ($query->param('titid')) {
@@ -264,7 +264,7 @@ sub show_collection {
                         tags      => $tags,
                         titid     => $titid,
                         titdb     => $titdb,
-                        loginname => $loginname,
+                        username  => $username,
                         type      => $tags_type,
                     });
                     
@@ -575,7 +575,7 @@ sub create_record {
         }
         
         if ($user->{ID}){
-            my $loginname = $user->get_username;
+            my $username = $user->get_username;
             
             if ($query->param('titid')){
                 foreach my $tit ($query->param('titid')) {
@@ -585,7 +585,7 @@ sub create_record {
                         tags      => $tags,
                         titid     => $titid,
                         titdb     => $titdb,
-                        loginname => $loginname,
+                        username  => $username,
                         type      => $tags_type,
                     });
                     
@@ -711,7 +711,7 @@ sub print_collection {
 
     $logger->info("SessionID: $session->{ID}");
 
-    my $loginname=$user->get_username();
+    my $username=$user->get_username();
     
     my $recordlist = new OpenBib::RecordList::Title();
 
@@ -735,7 +735,7 @@ sub print_collection {
         qopts      => $queryoptions->get_options,		
         format     => $format,
 
-        loginname  => $loginname,
+        username   => $username,
         id         => $id,
         database   => $database,
         recordlist => $recordlist,
@@ -779,7 +779,7 @@ sub save_collection {
 
     $logger->info("SessionID: $session->{ID}");
 
-    my $loginname=$user->get_username();
+    my $username=$user->get_username();
     
     my $recordlist = new OpenBib::RecordList::Title();
     
@@ -851,7 +851,7 @@ sub mail_collection {
 
     $logger->info("SessionID: $session->{ID}");
 
-    my $loginname=$user->get_username();
+    my $username=$user->get_username();
     
     my $recordlist = new OpenBib::RecordList::Title();
     
@@ -874,7 +874,7 @@ sub mail_collection {
         qopts       => $queryoptions->get_options,				
         format      => $format,
 
-        loginname   => $loginname,
+        username    => $username,
         id          => $id,
         database    => $database,
         recordlist  => $recordlist,

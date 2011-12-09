@@ -3,7 +3,7 @@
 #
 #  OpenBib::Handler::Apache::MailPassword
 #
-#  Dieses File ist (C) 2004-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -93,7 +93,7 @@ sub show {
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $code      = ($query->param('code'))?$query->param('code'):'1';
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
-    my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
+    my $username  = ($query->param('username'))?$query->param('username'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
 
     if ($action eq "show") {
@@ -101,7 +101,7 @@ sub show {
         # TT-Data erzeugen
 
         my $ttdata={
-            loginname  => $loginname,
+            username  => $username,
         };
 
         $self->print_page($config->{tt_mailpassword_tname},$ttdata);
@@ -109,15 +109,15 @@ sub show {
     elsif ($action eq "sendpw") {
         my $loginfailed=0;
     
-        if ($loginname eq "") {
+        if ($username eq "") {
             $self->print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"));
             return Apache2::Const::OK;
         }
 
-        my ($dummy,$password)=$user->get_credentials({userid => $user->get_userid_for_username($loginname)});
+        my ($dummy,$password)=$user->get_credentials({userid => $user->get_userid_for_username($username)});
     
         if (!$password) {
-            $self->print_warning($msg->maketext("Es existiert kein Passwort für die Kennung [_1]",$loginname));
+            $self->print_warning($msg->maketext("Es existiert kein Passwort für die Kennung [_1]",$username));
             return Apache2::Const::OK;
         }
 
@@ -125,7 +125,7 @@ sub show {
 	my $afile = "an." . $$;
 
 	my $mainttdata = {
-                          loginname => $loginname,
+                          username  => $username,
                           password  => $password,
                           user      => $user,
 			  msg       => $msg,
@@ -152,7 +152,7 @@ sub show {
 
         my $mailmsg = MIME::Lite->new(
             From            => $config->{contact_email},
-            To              => $loginname,
+            To              => $username,
             Subject         => $msg->maketext("Ihr vergessenes Passwort"),
             Type            => 'multipart/mixed'
         );

@@ -43,8 +43,8 @@ pool=$1
 
 export SYBPATH="/opt/sybase"
 
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SYBPATH/OCS-12_5/lib"
-export PATH="$PATH:$SYBPATH/OCS-12_5/bin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SYBPATH/OCS-15_0/lib"
+export PATH="$PATH:$SYBPATH/OCS-15_0/bin"
 
 unset LANG LC_CTYPE
 
@@ -78,21 +78,23 @@ rm $BCPPATH/koe_daten.bcp
 rm $BCPPATH/swd_daten.bcp
 rm $BCPPATH/sys_daten.bcp
 rm $BCPPATH/titel_daten.bcp
+rm $BCPPATH/titel_buch_key.bcp
 rm $BCPPATH/d01buch.bcp
 rm $BCPPATH/d50zweig.bcp
 rm $BCPPATH/d60abteil.bcp
 
 # Entladen der sik_fstab plus Normdateien mit bcp
 
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.sik_fstab out $BCPPATH/sik_fstab.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.titel_daten out $BCPPATH/titel_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.per_daten out $BCPPATH/per_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.koe_daten out $BCPPATH/koe_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.swd_daten out $BCPPATH/swd_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.sys_daten out $BCPPATH/sys_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.d01buch out $BCPPATH/d01buch.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.d50zweig out $BCPPATH/d50zweig.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.d60abteil out $BCPPATH/d60abteil.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.sik_fstab out $BCPPATH/sik_fstab.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.titel_daten out $BCPPATH/titel_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.titel_buch_key out $BCPPATH/titel_buch_key.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.per_daten out $BCPPATH/per_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.koe_daten out $BCPPATH/koe_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.swd_daten out $BCPPATH/swd_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.sys_daten out $BCPPATH/sys_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.d01buch out $BCPPATH/d01buch.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.d50zweig out $BCPPATH/d50zweig.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.d60abteil out $BCPPATH/d60abteil.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
 
 echo "Ende des Entladens: "
 date
@@ -120,6 +122,7 @@ rm $BCPPATH/koe_daten.bcp
 rm $BCPPATH/swd_daten.bcp
 rm $BCPPATH/sys_daten.bcp
 rm $BCPPATH/titel_daten.bcp
+rm $BCPPATH/titel_buch_key.bcp
 rm $BCPPATH/d01buch.bcp
 rm $BCPPATH/d50zweig.bcp
 rm $BCPPATH/d60abteil.bcp

@@ -202,11 +202,9 @@ entsprechend Ihren eigenen Beduerfnissen an.
 Danach fuehren Sie bitte folgende Programme zur Erzeugung der
 grundlegenden Datenbanken aus:
 
-1) /opt/openbib/bin/createconfig.pl
-2) /opt/openbib/bin/createsession.pl
-3) /opt/openbib/bin/createuser.pl
-4) /opt/openbib/bin/createenrichmnt.pl
-5) /opt/openbib/bin/createstatistics.pl
+1) /opt/openbib/bin/createsystem.pl
+2) /opt/openbib/bin/createenrichmnt.pl
+3) /opt/openbib/bin/createstatistics.pl
 
 Starten Sie schliesslich bitte Apache neu.
 HINWEIS

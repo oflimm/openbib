@@ -4,7 +4,7 @@
 #
 #  fix-userdb.pl
 #
-#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -43,7 +43,7 @@ my $pool          = $ARGV[0];
 my $numericidmapping_ref = LoadFile("$rootdir/filter/$pool/$pool".".yml");
 
 # Kein Spooling von DB-Handles!
-my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=kuguser;host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd});
+my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd});
 
 my %reversemapping = ();
 foreach my $newid (keys %{$numericidmapping_ref}){
@@ -53,19 +53,19 @@ foreach my $newid (keys %{$numericidmapping_ref}){
 }
   
   
-my $sql="select titid from litlistitems where titdb=?";
+my $sql="select titid from litlistitem where dbname=?";
 my $request=$dbh->prepare($sql);
 $request->execute($pool);
 
 while (my $result=$request->fetchrow_hashref){
-    my $oldid=$result->{titid};
+    my $oldid=$result->{titleid};
     next unless ($oldid=~/^\d+$/);
     
     my $newid=$reversemapping{$oldid};
 
     next unless ($newid);
     
-    my $sql="update litlistitems set titid=? where titid=? and titdb=?";
+    my $sql="update litlistitem set titleid=? where titleid=? and dbname=?";
 
     print "REQUEST: $sql\n";
     print "NEW: $newid OLD: $oldid DB: $pool\n";
@@ -73,19 +73,19 @@ while (my $result=$request->fetchrow_hashref){
     $request2->execute($newid,$oldid,$pool);
 }
 
-$sql="select singleidn from treffer where dbname=?";
+$sql="select titleid from collection where dbname=?";
 $request=$dbh->prepare($sql);
 $request->execute($pool);
 
 while (my $result=$request->fetchrow_hashref){
-    my $oldid=$result->{singleidn};
+    my $oldid=$result->{titleid};
     next unless ($oldid=~/^\d+$/);
     
     my $newid=$reversemapping{$oldid};
 
     next unless ($newid);
     
-    my $sql="update treffer set singleidn=? where singleidn=? and dbname=?";
+    my $sql="update collection set titleid=? where titleid=? and dbname=?";
 
     print "REQUEST: $sql\n";
     print "NEW: $newid OLD: $oldid DB: $pool\n";
@@ -93,19 +93,19 @@ while (my $result=$request->fetchrow_hashref){
     $request2->execute($newid,$oldid,$pool);
 }
 
-$sql="select titid from tittag where titdb=?";
+$sql="select titid from tit_tag where dbname=?";
 $request=$dbh->prepare($sql);
 $request->execute($pool);
 
 while (my $result=$request->fetchrow_hashref){
-    my $oldid=$result->{titid};
+    my $oldid=$result->{titleid};
     next unless ($oldid=~/^\d+$/);
     
     my $newid=$reversemapping{$oldid};
 
     next unless ($newid);
     
-    my $sql="update tittag set titid=? where titid=? and titdb=?";
+    my $sql="update tit_tag set titleid=? where titleid=? and dbname=?";
 
     print "REQUEST: $sql\n";
     print "NEW: $newid OLD: $oldid DB: $pool\n";

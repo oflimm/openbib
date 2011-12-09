@@ -125,6 +125,7 @@ externaljump_loc: jumpto
 ezb_loc: ezb 
 dbis_loc: dbis
 info_loc: info
+home_loc: home
 logout_loc: logout
 login_loc: login
 mailcollection_loc: mailcollection
@@ -167,12 +168,12 @@ dispatch_rules:
      runmode: 'show'
      args:
         disable_content_negotiation: 1
-  - # startopac_loc:
-     module: 'OpenBib::Handler::Apache::StartOpac'
+  - # home_loc:
+     module: 'OpenBib::Handler::Apache::Home'
      rule: '/portal/:view/home.html'
      runmode: 'show'
-  - # startopac_loc:
-     module: 'OpenBib::Handler::Apache::StartOpac'
+  - # home_loc:
+     module: 'OpenBib::Handler::Apache::Home'
      rule: '/portal/:view/home'
      runmode: 'show'
   - # info_loc:
@@ -993,36 +994,45 @@ dispatch_rules:
 
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/lookup.html'
-     runmode: 'lookup'
+     rule: '/portal/:view/bibsonomy/tags.html[get]'
+     runmode: 'show_tags'
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/lookup'
-     runmode: 'lookup'
+     rule: '/portal/:view/bibsonomy/tags.include[get]'
+     runmode: 'show_tags'
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/add_item.html'
-     runmode: 'add_item'
+     rule: '/portal/:view/bibsonomy/tags[get]'
+     runmode: 'show_tags'
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/add_item'
-     runmode: 'add_item'
+     rule: '/portal/:view/bibsonomy.html[get]'
+     runmode: 'show_collection'
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/items_by_tag.html'
-     runmode: 'items_by_tag'
+     rule: '/portal/:view/bibsonomy[get]'
+     runmode: 'show_collection'
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/items_by_tag'
-     runmode: 'items_by_tag'
+     rule: '/portal/:view/bibsonomy[post]'
+     runmode: 'create_record'
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/items_by_user.html'
-     runmode: 'items_by_user'
+     rule: '/portal/:view/bibsonomy/:type/tag/search.html[get]'
+     runmode: 'search_collection_by_tag'
   - # bibsonomy_loc:
      module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/items_by_user'
-     runmode: 'items_by_user'
+     rule: '/portal/:view/bibsonomy/:type/tag/search[get]'
+     runmode: 'search_collection_by_tag'
+  - # bibsonomy_loc:
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy/:type/tag/:tagid'
+     runmode: 'show_collection_by_tag'
+  - # bibsonomy_loc:
+     module: 'OpenBib::Handler::Apache::BibSonomy'
+     rule: '/portal/:view/bibsonomy/:type/user/:userid'
+     runmode: 'show_collection_by_user'
+
   - # circulation_loc:
      module: 'OpenBib::Handler::Apache::Circulation'
      rule: '/portal/:view/circulation'
@@ -2259,8 +2269,10 @@ tt_admin_showstat_tname: admin_showstat
 tt_admin_showuser_tname: admin_showuser
 tt_admin_showuser_1_tname: admin_showuser_1
 tt_admin_showviews_tname: admin_showviews
-tt_bibsonomy_showtags_tname: bibsonomy_showtags
-tt_bibsonomy_showtitlist_tname: bibsonomy_showtitlist
+tt_bibsonomy_tags_tname: bibsonomy_tags
+tt_bibsonomy_collection_tname: bibsonomy_collection
+tt_bibsonomy_collection_by_tag_tname: bibsonomy_collection_by_tag
+tt_bibsonomy_collection_by_user_tname: bibsonomy_collection_by_user
 tt_catalogue_loggedin_tname: catalogue_loggedin
 tt_catalogue_login_tname: catalogue_login
 tt_catalogue_logout_tname: catalogue_logout

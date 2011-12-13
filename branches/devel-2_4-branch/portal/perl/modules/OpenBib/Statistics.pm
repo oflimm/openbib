@@ -34,6 +34,7 @@ use base qw(Apache::Singleton);
 
 use Encode qw(decode_utf8 encode_utf8);
 use Date::Manip qw/ParseDate UnixDate/;
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
 
@@ -49,6 +50,8 @@ sub new {
     my $self = { };
 
     bless ($self, $class);
+
+    $self->connectDB();
 
     return $self;
 }
@@ -73,17 +76,20 @@ sub store_relevance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type);
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
+    # DBI: insert into relevance values (?,?,?,?,?,?)
+    $self->{schema}->resultset('Relevance')->create(
+        {
+            tstamp => $tstamp,
+            id     => $id,
+            isbn   => $isbn,
+            dbname => $dbname,
+            type   => $type,
+            katkey => $katkey,
+        }
+    );
 
-    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type && defined $dbh);
-    
-    my $request=$dbh->prepare("insert into relevance values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($tstamp,$id,$isbn,$dbname,$katkey,$type) or $logger->error($DBI::errstr);
     return;
 }
 
@@ -106,40 +112,47 @@ sub store_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
     $logger->debug("About to store result");
 
-    return undef unless (defined $id && defined $type && defined $data_ref && defined $dbh);
+    return undef unless (defined $id && defined $type && defined $data_ref);
 
-    my $sqlstatement = "delete from result_data where id=? and type=?";
-    my @sql_args     = ($id,$type);
-
-    if ($subkey){
-        $sqlstatement .= " and subkey=?";
-        push @sql_args, $subkey;
-    }
+    # DBI: "delete from result_data where id=? and type=?";
+    my $where_ref     = {
+        id   => $id,
+        type => $type,
+    };
     
-    my $request=$dbh->prepare($sqlstatement) or $logger->error($DBI::errstr);
-    $request->execute(@sql_args) or $logger->error($DBI::errstr);
+    if ($subkey){
+        $where_ref->{subkey}=$subkey;
+    }
+
+    eval {
+        $self->{schema}->resultset('ResultData')->search($where_ref)->delete_all;
+    };
+
+    if ($@){
+        $logger->error("Couldn't delete item(s)");
+    }
 
     $logger->debug("Storing:\n".YAML::Dump($data_ref));
     $logger->debug(ref $data_ref);
-    
+
     if (ref $data_ref eq "ARRAY" && !@$data_ref){
         $logger->debug("Aborting: No Data");
         return;
     }
 
-    my $datastring=unpack "H*", Storable::freeze($data_ref);
-    
-    $request=$dbh->prepare("insert into result_data values (?,NULL,?,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($id,$type,$subkey,$datastring) or $logger->error($DBI::errstr);
+    my $datastring = encode_json $data_ref;
+
+    # DBI: "insert into result_data values (?,NULL,?,?,?)"
+    $self->{schema}->resultset('ResultData')->create(
+        {
+            id     => $id,
+            type   => $type,
+            subkey => $subkey,
+            data   => $datastring
+        }
+    );
 
     return;
 }
@@ -168,27 +181,29 @@ sub get_result {
             or $logger->error($DBI::errstr);
 
     return undef unless (defined $id && defined $type);
-    
-    my $sqlstatement = "select data from result_data where id=? and type=?";
-    my @sql_args     = ($id,$type);
 
+    # DBI: "select data from result_data where id=? and type=?"
+    my $where_ref     = {
+        id   => $id,
+        type => $type,
+    };
+    
     if ($subkey){
-        $sqlstatement .= " and subkey=?";
-        push @sql_args, $subkey;
+        $where_ref->{subkey}=$subkey;
     }
 
-    my $request=$dbh->prepare($sqlstatement) or $logger->error($DBI::errstr);
-    $request->execute(@sql_args) or $logger->error($DBI::errstr);
+    
+    my $resultdatas = $self->{schema}->resultset('ResultData')->search($where_ref,{ columns => qw/data/ });
 
-    $logger->debug("$sqlstatement - $id / $type");
+    $logger->debug("Searching data for Id: $id / Type: $type");
 
     my $data_ref;
-    while (my $result=$request->fetchrow_hashref){
-        my $datastring = $result->{data};
+    foreach my $resultdata ($resultdatas->all){
+        my $datastring = $resultdata->data;
 
 	$logger->debug("Found a Record");
 
-        $data_ref     = Storable::thaw(pack "H*",$datastring);
+        $data_ref     = decode_json $datastring;
     }
 
     $logger->debug(YAML::Dump($data_ref));
@@ -223,15 +238,15 @@ sub result_exists {
             or $logger->error($DBI::errstr);
 
     return 0 unless (defined $id && defined $type);
+
+    # DBI: "select count(data) as resultcount from result_data where id=? and type=? and length(data) > 300"
+    # length WHY? ;-)
+    my $where_ref     = {
+        id   => $id,
+        type => $type,
+    };
     
-    my $sqlstatement="select count(data) as resultcount from result_data where id=? and type=? and length(data) > 300";
-    my $request=$dbh->prepare($sqlstatement) or $logger->error($DBI::errstr);
-    $request->execute($id,$type) or $logger->error($DBI::errstr);
-
-    $logger->debug("$sqlstatement - $id / $type");
-
-    my $result=$request->fetchrow_hashref;
-    my $resultcount  = $result->{resultcount};
+    my $resultcount = $self->{schema}->resultset('ResultData')->search($where_ref)->count;
 
     $logger->debug("Found: $resultcount");
     
@@ -242,8 +257,8 @@ sub log_event {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $sessionID    = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}          : undef;
+    my $sid          = exists $arg_ref->{sid}
+        ? $arg_ref->{sid}                : undef;
 
     my $tstamp       = exists $arg_ref->{tstamp}
         ? $arg_ref->{tstamp}             : undef;
@@ -256,13 +271,6 @@ sub log_event {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
 
     # Moegliche Event-Typen
     #
@@ -297,10 +305,16 @@ sub log_event {
     # 540 => HBZ-Monofernleihe
     # 541 => HBZ-Dokumentenlieferung
     # 550 => WebOPAC
-    
-    my $request=$dbh->prepare("insert into eventlog values (?,?,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($sessionID,$tstamp,$type,$content) or $logger->error($DBI::errstr);
-    $request->finish;
+
+    # DBI: "insert into eventlog values (?,?,?,?)"
+    $self->{schema}->resultset('Eventlog')->create(
+        {
+            sid     => $sid,
+            tstamp  => $tstamp,
+            type    => $type,
+            content => $content,
+        }
+    );
 
     return;
 }
@@ -324,60 +338,36 @@ sub get_number_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    # DBI: "select count(tstamp) as rowcount, min(tstamp) as sincetstamp from eventlog"
+    my $where_ref     = {};
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    my $sqlstring="select count(tstamp) as rowcount, min(tstamp) as sincetstamp from eventlog";
-
-    my @sqlwhere = ();
-    my @sqlargs  = ();
-
     if ($type){
-        push @sqlwhere, " type = ?";
-	push @sqlargs,  $type;
+        $where_ref->{type} = $type,
     } 
 
     if ($from){
-        push @sqlwhere, " tstamp > ?";
-	push @sqlargs,  $from;
+        push @{$where_ref->{tstamp}}, { '>' => $from }; 
     } 
 
     if ($to){
-        push @sqlwhere, " tstamp < ?";
-	push @sqlargs,  $to;
+        push @{$where_ref->{tstamp}}, { '<' => $to } ; 
     } 
-
 
     if ($content){
         my $op = "=";
         if ($content =~m/\%$/){
 	    $op = "like";
         }
-        push @sqlwhere, " content $op ?";
-	push @sqlargs,  $content;
+
+        $where_ref->{content}= { $op => $content }; 
     } 
 
-    my $sqlwherestring  = join(" and ",@sqlwhere);
+    $logger->debug(YAML::Dump($where_ref));
 
-    if ($sqlwherestring){
-      $sqlstring.=" where $sqlwherestring";
-    }
+    my $count = $self->{schema}->resultset('Eventlog')->search($where_ref)->get_column('tstamp')->count;
+    my $since = $self->{schema}->resultset('Eventlog')->search($where_ref)->get_column('tstamp')->min;
 
-    $logger->debug($sqlstring." / ".join(" - ",@sqlargs));
-    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-    $request->execute(@sqlargs) or $logger->error($DBI::errstr);
-    
-    my $res        = $request->fetchrow_hashref;
-    my $count      = $res->{rowcount};
-    my $since      = $res->{sincetstamp};
-
-    $request->finish;
-
-    $logger->debug("Got results");
+    $logger->debug("Got results: Number $count since $since");
 
     return {
         number => $count,
@@ -395,23 +385,11 @@ sub get_tstamp_range_of_events {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-        
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    my $sqlstring="select min(tstamp) as min_tstamp, max(tstamp) as max_tstamp from eventlog";
-
-    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
+    # DBI: "select min(tstamp) as min_tstamp, max(tstamp) as max_tstamp from eventlog";
+    my $eventlog_tstamp = $self->{schema}->resultset('Eventlog')->get_column('tstamp');
     
-    my $res        = $request->fetchrow_hashref;
-    my $min_tstamp = ParseDate($res->{min_tstamp});
-    my $max_tstamp = ParseDate($res->{max_tstamp});
-
-    $request->finish;
+    my $min_tstamp = ParseDate($eventlog_tstamp->min);
+    my $max_tstamp = ParseDate($eventlog_tstamp->max);
 
     return {
         min  => UnixDate($min_tstamp, $format),
@@ -438,47 +416,26 @@ sub get_number_of_queries_by_category {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
     return 0 if (!$category);
 
-    my $sqlstring="select count(tstamp) as rowcount from querycategory";
-
-    my @sqlwhere = ("$category = 1");
-    my @sqlargs  = ();
+    # DBI: "select count(tstamp) as rowcount from querycategory";
+    my $where_ref = {
+        $category => 1,
+    };
 
     if ($from){
-        push @sqlwhere, " tstamp > ?";
-	push @sqlargs,  $from;
+        push @{$where_ref->{tstamp}}, { '>' => $from }; 
     } 
 
     if ($to){
-        push @sqlwhere, " tstamp < ?";
-	push @sqlargs,  $to;
+        push @{$where_ref->{tstamp}}, { '<' => $to } ; 
     } 
 
-    my $sqlwherestring  = join(" and ",@sqlwhere);
-
-    if ($sqlwherestring){
-      $sqlstring.=" where $sqlwherestring";
-    }
-
-    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-    $request->execute(@sqlargs) or $logger->error($DBI::errstr);
-    
-    my $res        = $request->fetchrow_hashref;
-    my $count      = $res->{rowcount};
-
-    $request->finish;
+    my $count = $self->{schema}->resultset('Querycategory')->search($where_ref)->get_column('tstamp')->count;
 
     return {
-	    number => $count,
-	    }
+	 number => $count,
+    };
 }
 
 sub get_ranking_of_event {
@@ -503,161 +460,50 @@ sub get_ranking_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    # DBI: "select count(content) as rowcount, content from eventlog" XXX "group by content order by rowcount DESC"
+    my $where_ref     = {};
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
-
-        my $sqlstring="select count(content) as rowcount, content from eventlog";
-
-    my @sqlwhere = ();
-    my @sqlargs  = ();
-
+    my $attribute_ref = {
+        group_by => 'content',
+        select => [{ count => 'content'},'content'],
+        as     => ['thiscount','thiscontent'],
+    };
+    
     if ($from){
-        push @sqlwhere, " tstamp > ?";
-        push @sqlargs,  $from;
-    }
+        push @{$where_ref->{tstamp}}, { '>' => $from }; 
+    } 
 
     if ($to){
-        push @sqlwhere, " tstamp < ?";
-        push @sqlargs,  $to;
-    }
+        push @{$where_ref->{tstamp}}, { '<' => $to } ; 
+    } 
 
-    if ($type){
-        push @sqlwhere, " type = ?";
-        push @sqlargs,  $type;
-    }
-
-        my $sqlwherestring  = join(" and ",@sqlwhere);
-
-    if ($sqlwherestring){
-      $sqlstring.=" where $sqlwherestring";
-    }
-
-    $sqlstring.=" group by content order by rowcount DESC";
-
+    if ($to){
+        $where_ref->{type} = $type;
+    } 
+    
     if ($limit){
-        $sqlstring.=" limit $limit";
+        $attribute_ref->{rows} = $limit;
     }
 
-    $logger->debug($sqlstring." ".join(" - ",@sqlargs));
-    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-    $request->execute(@sqlargs) or $logger->error($DBI::errstr);
+    $logger->debug(YAML::Dump($where_ref)." - ".YAML::Dump($attribute_ref));
 
     my @ranking=();
 
-    while (my $res = $request->fetchrow_hashref){
-        my $count      = $res->{rowcount};
-        my $content    = $res->{content};
+    my $contentrankings = $self->{schema}->resultset('Eventlog')->search($where_ref,$attribute_ref);
+
+    foreach my $contentranking ($contentrankings->all){
+        my $count      = $contentranking->get_column('thiscount');
+        my $content    = $contentranking->get_column('thiscontent');
 
         push @ranking, {
                         content   => $content,
                         number    => $count,
                        };
     }
-    $request->finish;
-
-    $logger->debug(YAML::Dump(\@ranking));
-
-    return @ranking;
-}
-
-sub get_ranking_of_event2 {
-    my ($self,$arg_ref)=@_;
-
-    # Set defaults
-    my $from       = exists $arg_ref->{from}
-        ? $arg_ref->{from}               : undef;
-
-    my $to       = exists $arg_ref->{to}
-        ? $arg_ref->{to}                 : undef;
-
-    my $tstamp       = exists $arg_ref->{tstamp}
-        ? $arg_ref->{tstamp}             : undef;
-
-    my $type         = exists $arg_ref->{type}
-        ? $arg_ref->{type}               : undef;
-
-    my $limit        = exists $arg_ref->{limit}
-        ? $arg_ref->{limit}              : '';
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
-
-    my $sqlstring="select distinct content from eventlog where type = ?";
-
-    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-    $request->execute($type) or $logger->error($DBI::errstr);
-
-    my @distinct_content = ();
-    while (my $res = $request->fetchrow_hashref){
-	my $content    = $res->{content};
-
-	push @distinct_content, $content;
-    }
-
-    $sqlstring="select count(content) as rowcount from eventlog";
-
-    my @sqlwhere = ();
-    my @sqlargs  = ();
-
-    if ($type){
-        push @sqlwhere, " type = ?";
-	push @sqlargs,  $type;
-    } 
-
-    if ($from){
-        push @sqlwhere, " tstamp > ?";
-	push @sqlargs,  $from;
-    } 
-
-    if ($to){
-        push @sqlwhere, " tstamp < ?";
-	push @sqlargs,  $to;
-    } 
-
-    push @sqlwhere, " content = ?";
-    
-    my $sqlwherestring  = join(" and ",@sqlwhere);
-
-    if ($sqlwherestring){
-      $sqlstring.=" where $sqlwherestring";
-    }
-
-    $logger->debug($sqlstring." ".join(" - ",@sqlargs));
-    $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-
-    my @ranking=();
-    
-    foreach my $content (@distinct_content){
-        $request->execute(@sqlargs,$content) or $logger->error($DBI::errstr);
-        
-        while (my $res = $request->fetchrow_hashref){
-            my $count      = $res->{rowcount};
-            
-            push @ranking, {
-                content   => $content,
-                number    => $count,
-            };
-        }
-    }
-    
-    $request->finish;
 
     my @sortedranking = sort {$b->{number} cmp $a->{number}} @ranking;
-    
-    $logger->debug(YAML::Dump(\@ranking));
+
+    $logger->debug(YAML::Dump(\@sortedranking));
 
     return @sortedranking;
 }
@@ -763,9 +609,6 @@ sub log_query {
 			  'zur'   => 1,
 			 };
 
-    my $termrequest     = $dbh->prepare("insert into queryterm values (?,?,?,?)") or $logger->error($DBI::errstr);
-    my $categoryrequest = $dbh->prepare("insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-
     foreach my $cat (keys %$cat2type_ref){
         my $thiscategory_terms = (defined $searchquery_ref->{$cat}->{val})?$searchquery_ref->{$cat}->{val}:'';
 
@@ -790,26 +633,40 @@ sub log_query {
 	  next if ($next=~/^[\p{Alphabetic}0-9]$/);
 	  next if (exists $term_stopword_ref->{$next});
 
-	  $termrequest->execute($tstamp,$view,$cat2type_ref->{$cat},encode_utf8($next)) or $logger->error($DBI::errstr);
+          # DBI: "insert into queryterm values (?,?,?,?)"
+          $self->{schema}->resultset('Queryterm')->create(
+              {
+                  tstamp  => $tstamp,
+                  view    => $view,
+                  type    => $cat2type_ref->{$cat},
+                  content => $next,
+                  
+              }
+          );
 	}
     }
-    
-    $categoryrequest->execute($tstamp,$view,
-			      $used_category_ref->{fs},
-			      $used_category_ref->{hst},
-			      $used_category_ref->{verf},
-			      $used_category_ref->{kor},
-			      $used_category_ref->{swt},
-			      $used_category_ref->{notation},
-			      $used_category_ref->{isbn},
-			      $used_category_ref->{issn},
-			      $used_category_ref->{sign},
-			      $used_category_ref->{mart},
-			      $used_category_ref->{hststring},
-			      $used_category_ref->{inhalt},
-			      $used_category_ref->{gtquelle},
-			      $used_category_ref->{ejahr}
-			     ) or $logger->error($DBI::errstr);
+
+    # DBI: "insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    $self->{schema}->resultset('Querycategory')->create(
+              {
+                  tstamp    => $tstamp,
+                  view      => $view,
+                  fs        => $used_category_ref->{fs},
+                  hst       => $used_category_ref->{hst},
+                  verf      => $used_category_ref->{verf},
+                  kor       => $used_category_ref->{kor},
+                  swt       => $used_category_ref->{swt},
+                  notation  => $used_category_ref->{notation},
+                  isbn      => $used_category_ref->{isbn},
+                  issn      => $used_category_ref->{issn},
+                  sign      => $used_category_ref->{sign},
+                  mart      => $used_category_ref->{mart},
+                  hststring => $used_category_ref->{hststring},
+                  inhalt    => $used_category_ref->{inhalt},
+                  gtquelle  => $used_category_ref->{gtquelle},
+                  ejahr     => $used_category_ref->{ejahr},
+              }
+          );
 
     return;
 }
@@ -842,33 +699,19 @@ sub get_sequencestat_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    my $sqlstring="";
-
     my @x_values = ();
     my @y_values = ();
 
-    my @sqlwhere = ();
-    my @sqlargs  = ();
-
+    my $where_ref = {};
+    
     if ($type){
-        push @sqlwhere, " type = ?";
-	push @sqlargs,  $type;
+        $where_ref->{type} = $type;
     } 
 
     if ($content){
-        push @sqlwhere, " content $contentop ?";
-	push @sqlargs,  $content;
+        $where_ref->{content} = { $contentop => $content };
     } 
     
-    my $sqlwherestring  = join(" and ",@sqlwhere);
-
     my ($thisday, $thismonth, $thisyear) = (localtime)[3,4,5];
     $thisyear  += 1900;
     $thismonth += 1;
@@ -877,33 +720,56 @@ sub get_sequencestat_of_event {
     $month  = $thismonth if (!$month);
     $day    = $thisday   if (!$day);
 
+    my $where_lhsql_ref = []; # Conditions for use of left hand sql functions
+    my $attribute_ref   = {};
+    
     # Monatsstatistik fuer Jahr $year
     if ($subtype eq 'monthly'){
-      $sqlstring="select month(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and year(tstamp) = ? group by month(tstamp)";
-      push @sqlargs, $year;
+        # DBI: "select month(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and year(tstamp) = ? group by month(tstamp)";
+        push @$where_lhsql_ref, \[ 'YEAR(tstamp) = ?', [ plain_value => $year ] ]; 
+        $attribute_ref = {
+            group_by => [ { month => 'tstamp' } ],
+            select => [ { month => 'tstamp'}, { count => 'tstamp' } ],
+            as     => ['x_value','y_value'],
+        };
     }
     # Tagesstatistik fuer Monat $month
     elsif ($subtype eq 'daily'){
-      $sqlstring="select day(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and month(tstamp) = ? and YEAR(tstamp) = ? group by day(tstamp)";
-      push @sqlargs, $month;
-      push @sqlargs, $thisyear;
+        # DBI: "select day(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and month(tstamp) = ? and YEAR(tstamp) = ? group by day(tstamp)";
+        push @$where_lhsql_ref, \[ 'MONTH(tstamp) = ?', [ plain_value => $month ] ]; 
+        push @$where_lhsql_ref, \[ 'YEAR(tstamp) = ?', [ plain_value => $year ] ]; # thisyear??
+        $attribute_ref = {
+            group_by => [ { day => 'tstamp' } ],
+            select => [ { day => 'tstamp'}, { count => 'tstamp' } ],
+            as     => ['x_value','y_value'],
+        };
     }
     # Stundenstatistik fuer Tag $day
     elsif ($subtype eq 'hourly'){
-      $sqlstring="select hour(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and DAY(tstamp) = ? and MONTH(tstamp) = ? and YEAR(tstamp) = ? group by hour(tstamp)";
-      push @sqlargs, $day;
-      push @sqlargs, $month;
-      push @sqlargs, $thisyear;
+        # DBI: "select hour(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and DAY(tstamp) = ? and MONTH(tstamp) = ? and YEAR(tstamp) = ? group by hour(tstamp)";
+        push @$where_lhsql_ref, \[ 'DAY(tstamp) = ?', [ plain_value => $day ] ]; 
+        push @$where_lhsql_ref, \[ 'MONTH(tstamp) = ?', [ plain_value => $month ] ]; 
+        push @$where_lhsql_ref, \[ 'YEAR(tstamp) = ?', [ plain_value => $year ] ]; # thisyear??
+        $attribute_ref = {
+            group_by => [ { hour => 'tstamp' } ],
+            select => [ { hour => 'tstamp'}, { count => 'tstamp' } ],
+            as     => ['x_value','y_value'],
+        };
     }
 
-    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-    $request->execute(@sqlargs) or $logger->error($DBI::errstr);
+    my $stats = $self->{schema}->resultset('Eventlog')->search(
+        {
+            -and => [
+                $where_ref,
+                $where_lhsql_ref,
+            ],
+        },
+        $attribute_ref,
+    );
 
-    $logger->debug($sqlstring." ".join("/",@sqlargs));
-
-    while (my $result=$request->fetchrow_hashref){
-        push @x_values, $result->{x_value};
-        push @y_values, $result->{y_value};
+    foreach my $row ($stats->all){
+        push @x_values, $row->get_column('x_value');
+        push @y_values, $row->get_column('y_value');
     }
 
     my $values_ref = { x_values => \@x_values,
@@ -912,6 +778,40 @@ sub get_sequencestat_of_event {
     $logger->debug(YAML::Dump($values_ref));
 
     return $values_ref;
+}
+
+sub connectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    eval {
+        # Verbindung zur SQL-Datenbank herstellen
+        $self->{dbh}
+            = OpenBib::Database::DBI->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error_die($DBI::errstr);
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect to database $config->{statisticsdbname}");
+    }
+    
+    $self->{dbh}->{RaiseError} = 1;
+
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        $self->{schema} = OpenBib::Database::Statistics->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect to database $config->{statisticsdbname}");
+    }
+
+    return;
+
 }
 1;
 

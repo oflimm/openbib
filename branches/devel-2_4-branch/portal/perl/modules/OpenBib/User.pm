@@ -4529,20 +4529,15 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $userlist_ref = [];
-    
-    my $sql_stmt = "select id from userinfo where ";
-    my @sql_where = ();
-    my @sql_args = ();
-
     my @found_userids = ();
     if ($roleid) {
         # DBI: "select userid from user_role where roleid=?"
-        my $userroles = $self->{schema}->resultset('UserRole')->search_rs(
+        my $userroles = $self->{schema}->resultset('UserRole')->search(
             roleid => $roleid,
         );
         foreach my $userrole ($userroles->all){
-            push @found_userids, $userrole->userid;
+            my $userid = $userrole->get_column('userid');
+              push @found_userids, $userid;
         }
     }
     else {
@@ -4559,13 +4554,16 @@ sub search {
             $where_ref->{vorname} = $surname;
         }
 
-        my $foundusers = $self->{schema}->resultset('Userinfo')->search_rs($where_ref);
+        my $foundusers = $self->{schema}->resultset('Userinfo')->search($where_ref);
         foreach my $founduser ($foundusers->all){
-            push @found_userids, $founduser->id;
+            my $userid = founduser->get_column('id');
+            push @found_userids, $userid;
         }
     }
     
-    $logger->debug("Looking up user $username/$surname/$commonname");
+    $logger->debug("Looking up user $username/$surname/$commonname roleid $roleid");
+
+    my $userlist_ref = [];
     
     foreach my $userid (@found_userids){
         $logger->debug("Found ID $userid");

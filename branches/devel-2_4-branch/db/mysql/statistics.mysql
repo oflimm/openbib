@@ -25,6 +25,7 @@ CREATE TABLE result_data (
  type        INT,
  subkey      VARCHAR(50),
  data        MEDIUMBLOB,
+ CONSTRAINT `pk_result_data` PRIMARY KEY (`id`),
  INDEX (id),
  INDEX (tstamp),
  INDEX (subkey),
@@ -34,12 +35,18 @@ PACK_KEYS=1;
 
 drop table IF EXISTS eventlog;
 CREATE TABLE eventlog (
- sessionid  VARCHAR(255) NOT NULL,
- tstamp     DATETIME,
- type       INT,
- content    MEDIUMBLOB,
- INDEX (sessionid),
- INDEX (tstamp),
+ sid        BIGINT NOT NULL,
+
+ tstamp      DATETIME,
+ event_year  INT,
+ event_month INT,
+ event_day   INT,
+ type        INT,
+ content     MEDIUMBLOB,
+ INDEX (sid),
+ INDEX (event_year),
+ INDEX (event_month),
+ INDEX (event_day),
  INDEX (type,tstamp,content(10)),
  INDEX (content(50))
 )

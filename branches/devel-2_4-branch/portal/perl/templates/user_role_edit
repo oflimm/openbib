@@ -43,10 +43,10 @@
 
    <h1>[% msg.maketext("Rolle bearbeiten") %]</h1>
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Personendaten") %]</th><td></tr>
 <tr><td class="boxedclear">
-<table>
+<table class="full">
 [% IF userinfo.nachname %]
 <tr><td><b>[% msg.maketext("Nachname") %]:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
 [% END %] 
@@ -81,10 +81,10 @@
 <form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% userinfo.id %]/role">
 <input type="hidden" name="_method"    value="PUT" />
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Rolle zuordnen") %]</th><td></tr>
 <tr><td class="boxedclear">
-<table>
+<table class="full">
 
 <tr><td><select name="roles" multiple="multiple" size="5">
 

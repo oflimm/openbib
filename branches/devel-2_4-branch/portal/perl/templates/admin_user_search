@@ -41,6 +41,7 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
+[%# USE dumper;dumper.dump(userlist)%]
 <!-- Userlist begins here -->
 <div class="resultlist">
   <div class="resultheader">

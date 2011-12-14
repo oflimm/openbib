@@ -71,6 +71,11 @@
 [% ELSE %]
       <li><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
 [% END %]
+[% IF active_subsubmenu == "view_record_rss" %]
+      <li class="active"><strong>[% msg.maketext("RSS") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/rss/edit.html?l=[% lang %]">[% msg.maketext("RSS") %]</a></li>
+[% END %]
     </ul>
 </li>
 [% END %]

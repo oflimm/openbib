@@ -1572,6 +1572,47 @@ dispatch_rules:
      rule: '/portal/:view/admin/view/:viewid[delete]'
      runmode: 'delete_record'
 
+  - # admin_view_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+     rule: '/portal/:view/admin/view/:viewid/rss.html[get]'
+     runmode: 'show_record'
+  - # admin_view_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+     rule: '/portal/:view/admin/view/:viewid/rss.json[get]'
+     runmode: 'show_record'
+  - # admin_view_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+     rule: '/portal/:view/admin/view/:viewid/rss.rdf[get]'
+     runmode: 'show_record'
+  - # admin_view_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+     rule: '/portal/:view/admin/view/:viewid/rss[get]'
+     runmode: 'show_record'
+#  - # admin_view_loc: Collection show from
+#     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+#     rule: '/portal/:view/admin/view/:viewid/rss/new[get]'
+#     runmode: 'show_collection_form'
+  - # admin_view_loc: Creat Record in Collection
+     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+     rule: '/portal/:view/admin/view/:viewid/rss[post]'
+     runmode: 'update_record'
+  - # admin_view_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+     rule: '/portal/:view/admin/view/:viewid/rss/edit[get]'
+     runmode: 'show_record_form'
+  - # admin_view_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+     rule: '/portal/:view/admin/view/:viewid/rss/edit.html[get]'
+     runmode: 'show_record_form'
+  - # admin_view_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+     rule: '/portal/:view/admin/view/:viewid/rss[post]'
+     runmode: 'update_record'
+  - # admin_view_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::ViewRSS'
+     rule: '/portal/:view/admin/view/:viewid/rss[put]'
+     runmode: 'update_record'
+
   - # admin_session_loc: Search form for archived sessions
      module: 'OpenBib::Handler::Apache::Admin::Session'
      rule: '/portal/:view/admin/session/archived/search/form[get]'
@@ -2205,7 +2246,6 @@ tt_admin_editlogintarget_tname: admin_editlogintarget
 tt_admin_editsession_tname: admin_editsession
 tt_admin_edituser_tname: admin_edituser
 tt_admin_editview_rss_tname: admin_editview_rss
-tt_admin_view_record_edit_tname: admin_view_record_edit
 tt_admin_searchuser_tname: admin_searchuser
 
 tt_admin_authentication_tname: admin_authentication
@@ -2232,6 +2272,8 @@ tt_admin_view_tname: admin_view
 tt_admin_view_record_tname: admin_view_record
 tt_admin_view_record_edit_tname: admin_view_record_edit
 tt_admin_view_record_delete_confirm_tname: admin_view_record_delete_confirm
+tt_admin_view_rss_record_tname: admin_view_rss_record
+tt_admin_view_rss_record_edit_tname: admin_view_rss_record_edit
 tt_admin_library_record_tname: admin_library_record
 tt_admin_library_record_edit_tname: admin_library_record_edit
 tt_admin_library_record_delete_confirm_tname: admin_library_record_delete_confirm

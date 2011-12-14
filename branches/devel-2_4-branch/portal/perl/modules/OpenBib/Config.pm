@@ -1695,7 +1695,7 @@ sub update_libinfo {
 }
 
 sub update_view {
-    my ($self,$view_ref,$db_ref,$rss_ref) = @_;
+    my ($self,$view_ref,$db_ref) = @_;
 
     # Set defaults
     my $viewname               = exists $view_ref->{viewname}
@@ -1744,6 +1744,20 @@ sub update_view {
         # Dann die zugehoerigen Datenbanken eintragen
         $self->{schema}->resultset('ViewDb')->populate($this_db_ref);
     }
+        
+    return;
+}
+
+sub update_view_rss {
+    my ($self,$viewname,$primrssfeed,$rss_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $viewid = $self->get_viewinfo->search_rs({ viewname => $viewname })->single()->id;
+
+    # Zuerst die Aenderungen des primaeren RSS-Feeds in der Tabelle Viewinfo vornehmen
+    $self->{schema}->resultset('Viewinfo')->search_rs({ viewname => $viewname})->single->update({ rssid => $primrssfeed });
     
     # RSS-Feeds zunaechst loeschen
     $self->{schema}->resultset('ViewRss')->search({ viewid => $viewid })->delete;
@@ -1817,59 +1831,6 @@ sub new_view {
     });
 
     return 1;
-}
-
-sub update_view_rss {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $viewname               = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname }           : undef;
-    my $rsstype                = exists $arg_ref->{rsstype}
-        ? $arg_ref->{rsstype }            : undef;
-    my $rssid                  = exists $arg_ref->{rssid}
-        ? $arg_ref->{rssid}               : undef;
-    my $rssids_ref             = exists $arg_ref->{rssids}
-        ? $arg_ref->{rssids}              : undef;
-
-    my @rssids = (defined $rssids_ref)?@$rssids_ref:();
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    if ($rsstype eq "primary"){
-        # DBI: "update viewinfo set rssfeed = ? where viewname = ?"
-        # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-        $self->{schema}->resultset('Viewinfo')->search_rs({ viewname => $viewname})->single->update({ rssid => $rssid });
-    }
-    elsif ($rsstype eq "all") {
-        
-        my $viewid = $self->get_viewinfo->search_rs({ viewname => $viewname })->single()->id;
-        
-        # DBI: "delete from view_rss where viewname = ?"
-        # Datenbanken zunaechst loeschen
-        $self->{schema}->resultset('ViewRss')->search_rs(
-            {
-                viewid => $viewid
-            }
-        )->delete;
-
-        # DBI: "insert into view_rss values (?,?)"
-        if (@rssids){
-            my $this_rss_ref = [];
-            foreach my $rssid (@rssids){
-                push @$this_rss_ref, {
-                    viewid => $viewid,
-                    rssid  => $rssid,
-                };
-            }
-
-            # Dann die zugehoerigen Datenbanken eintragen
-            $self->{schema}->resultset('ViewRss')->populate($this_rss_ref);
-        }
-    }
-
-    return;
 }
 
 sub del_profile {

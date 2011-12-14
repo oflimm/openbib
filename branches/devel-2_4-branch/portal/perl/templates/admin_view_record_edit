@@ -86,48 +86,11 @@
 <p />
 <b>[% msg.maketext("Katalogauswahl zu diesem View") %]</b><br /><br />
 [%# USE dumper;dumper.dump(dbnames)%]
-<select name="viewdb" multiple="multiple">
+<select name="viewdb" multiple="multiple" size="20">
 [% FOREACH singledb IN dbnames %]
 <option value="[% singledb %]" [% IF viewdbs.${singledb} %]selected="selected"[% END %]>[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</option>
 [% END %]
 </select>
-
-
-<p />
-
-<b>[% msg.maketext("RSS-Feed zu diesem View") %]</b><br /><br />
-
-<select name="rssfeeds" multiple="multiple">
-
-[% FOREACH singlefeed IN allrssfeeds %]
-[% feedid = singlefeed.feedid %]
-[% NEXT IF singlefeed.type != 1 %]
-<option value="[% feedid %]" [% IF viewrssfeed.${feedid} %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
-[% END %]
-
-
-</select>
-
-
-<p />
-
-<p />
-
-<b>[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</b><br /><br />
-
-<select name="primrssfeed">
-
-[% FOREACH singlefeed IN allrssfeeds %]
-[% feedid = singlefeed.feedid %]
-[% NEXT IF singlefeed.type != 1 %]
-
-<option value="[% feedid %]" [% IF viewinfo.rssid.id == feedid %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
-
-[% END %]
-
-
-</select>
-
 
 <p />
 

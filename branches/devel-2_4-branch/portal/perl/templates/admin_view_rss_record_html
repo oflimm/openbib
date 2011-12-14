@@ -55,45 +55,32 @@
 </td></tr>
 </table>
 
-<b>[% msg.maketext("RSS-Feed zu diesem View") %]</b><br /><br />
+<h2>[% msg.maketext("RSS-Feed zu diesem View") %]</h2>
 
-<select name="rssfeeds" multiple="multiple" size="10">
-
-[% FOREACH singlefeed IN allrssfeeds %]
+<ul>
+[% FOREACH singlefeed IN viewinfo.allrssfeeds %]
 [% feedid = singlefeed.feedid %]
 [% NEXT IF singlefeed.type != 1 %]
-<option value="[% feedid %]" [% IF viewrssfeed.${feedid} %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
+[% IF viewinfo.viewrssfeed.${feedid} %]<li>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</li>[% END %]
 [% END %]
-
-
-</select>
+</ul>
 
 
 <p />
 
 <p />
 
-<b>[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</b><br /><br />
+<h2>[% msg.maketext("Prim&auml;rer Feed f&uuml;r das Browser Auto-Discovery") %]</h2>
 
-<select name="primrssfeed">
-
-[% FOREACH singlefeed IN allrssfeeds %]
+<ul>
+[% FOREACH singlefeed IN viewinfo.allrssfeeds %]
 [% feedid = singlefeed.feedid %]
 [% NEXT IF singlefeed.type != 1 %]
 
-<option value="[% feedid %]" [% IF viewinfo.rssid.id == feedid %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
+[% IF viewinfo.primrssfeed == feedid %]<li>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</li>[% END %]
 
 [% END %]
-
-
-</select>
-
-
-<p />
-
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ändern") %]" /></div>
-
-</form>
+</ul>
 
         </div>
         <div id="ie_clearing">&nbsp;</div>

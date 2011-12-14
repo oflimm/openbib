@@ -321,7 +321,7 @@ sub update_record {
     }
 
     if (!$config->view_exists($viewname)) {
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
+        $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
@@ -366,7 +366,6 @@ sub update_record {
         stripuri    => $stripuri,
         joinindex   => $joinindex,
         active      => $active,
-        rssid       => $primrssfeed,
         start_loc   => $viewstart_loc,
         servername  => $viewservername,
         profileid   => $profileinfo_ref->id,
@@ -374,7 +373,7 @@ sub update_record {
 
     $logger->debug("Info: ".YAML::Dump($thisviewinfo_ref));
     
-    $config->update_view($thisviewinfo_ref,\@viewdb,\@rssfeeds);
+    $config->update_view($thisviewinfo_ref,\@viewdb);
 
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}");

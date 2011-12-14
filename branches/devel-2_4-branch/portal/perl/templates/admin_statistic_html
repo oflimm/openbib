@@ -48,7 +48,7 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
-<tr><td>[% msg.maketext("Anzahl der Titels&auml;tze (Alle/Zeitschriften-Serien/Artikel/Online)") %]</td><td><b>[%- titcount = config.get_number_of_titles -%][% titcount.all %] / [% titcount.serials %] / [% titcount.articles %]</b></td><td></td></tr>
+<tr><td>[% msg.maketext("Anzahl der Titels&auml;tze (Alle/Zeitschriften-Serien/Artikel/Online)") %]</td><td><b>[%- titcount = config.get_number_of_titles -%][% titcount.allcount %] / [% titcount.journalcount %] / [% titcount.articlecount %] / [% titcount.digitalcount %]</b></td><td></td></tr>
 <tr><td>[% msg.maketext("Anzahl der Kataloge (aktiv/gesamt)") %]</td><td><b>[% config.get_number_of_dbs %] / [% config.get_number_of_all_dbs %]</b></td><td></td></tr>
 <tr><td>[% msg.maketext("Anzahl der Spezialsichten (aktiv/gesamt)") %]</td><td><b>[% config.get_number_of_views %] / [% config.get_number_of_all_views %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Diagramm" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/view/session/graph.html">[% msg.maketext("Grafik") %]</a></td></tr>
 <tr><td>[% msg.maketext("Anzahl vergebener Tags / Titel / Nutzer") %]</td><td><b>[% user.get_number_of_tags %] / [% user.get_number_of_tagged_titles %] / [% user.get_number_of_tagging_users %]</b></td><td></td></tr>

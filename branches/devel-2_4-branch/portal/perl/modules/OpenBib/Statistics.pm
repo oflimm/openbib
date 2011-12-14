@@ -40,6 +40,7 @@ use Storable ();
 
 use OpenBib::Config;
 use OpenBib::Database::DBI;
+use OpenBib::Database::Statistics;
 
 sub new {
     my ($class) = @_;
@@ -173,14 +174,7 @@ sub get_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef unless (defined $id && defined $type);
+    return undef unless (defined $id && defined $type && !$self->{schema});
 
     # DBI: "select data from result_data where id=? and type=?"
     my $where_ref     = {
@@ -191,7 +185,6 @@ sub get_result {
     if ($subkey){
         $where_ref->{subkey}=$subkey;
     }
-
     
     my $resultdatas = $self->{schema}->resultset('ResultData')->search($where_ref,{ columns => qw/data/ });
 
@@ -229,13 +222,6 @@ sub result_exists {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
 
     return 0 unless (defined $id && defined $type);
 
@@ -807,7 +793,7 @@ sub connectDB {
     };
 
     if ($@){
-        $logger->fatal("Unable to connect to database $config->{statisticsdbname}");
+        $logger->fatal("Unable to connect schema to database $config->{statisticsdbname}: DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}");
     }
 
     return;

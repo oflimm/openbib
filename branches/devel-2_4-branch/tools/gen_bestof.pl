@@ -787,21 +787,22 @@ if ($type == 12){
 }
 
 # Typ 12 => Meistaufgerufene Titel allgemein
-if ($type == 12){
+if ($type == 13){
     my @profiles = ();
     if ($profile){
-        push @profiles, $profile;
+        push @profiles, $config->get_profile->single({ profilename => $profile});
     }
     else {
-        foreach my $profile_ref (@{$config->get_profileinfo_overview}){
-            push @profiles, $profile_ref->{profilename};
+        foreach my $profile_ref ($config->get_profileinfo_overview->all){
+            push @profiles, $profile_ref;
         }
     }
 
     foreach my $profile (@profiles){
-        $logger->info("Generating Type 12 BestOf-Values for profile $profile");
+        my $profilename = $profile->get_column('profilename');
+        $logger->info("Generating Type 12 BestOf-Values for profile $profilename");
 
-        my $profilestring = "('".join('\',\'',$config->get_profiledbs($profile))."')";
+        my $profilestring = "('".join('\',\'',$config->get_profiledbs($profilename))."')";
 
         $logger->info($profilestring);
         my $bestof_ref=[];
@@ -822,7 +823,7 @@ if ($type == 12){
 
         $statistics->store_result({
             type => 13,
-            id   => $profile,
+            id   => $profile->get_column('profilename'),
             data => $bestof_ref,
         });
     }

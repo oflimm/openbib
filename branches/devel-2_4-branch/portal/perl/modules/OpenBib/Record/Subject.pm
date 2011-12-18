@@ -116,8 +116,8 @@ sub load_full_record {
 
     while (my $res=$request->fetchrow_hashref) {
         my $category  = "S".sprintf "%04d",$res->{category };
-        my $indicator =        decode_utf8($res->{indicator});
-        my $content   =        decode_utf8($res->{content  });
+        my $indicator =                    $res->{indicator};
+        my $content   =                    $res->{content  };
         
         push @{$normset_ref->{$category}}, {
             indicator => $indicator,
@@ -213,7 +213,7 @@ sub load_name {
     my $subject="";
   
     if ($res->{content}) {
-        $subject = decode_utf8($res->{content});
+        $subject = $res->{content};
     }
 
     $logger->debug("Schlagwort-Name: $subject");

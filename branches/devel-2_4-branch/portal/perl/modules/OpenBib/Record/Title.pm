@@ -161,8 +161,8 @@ sub load_full_record {
         
         while (my $res=$request->fetchrow_hashref) {
             my $category  = "T".sprintf "%04d",$res->{category };
-            my $indicator =        decode_utf8($res->{indicator});
-            my $content   =        decode_utf8($res->{content  });
+            my $indicator =                    $res->{indicator};
+            my $content   =                    $res->{content  };
 
             push @{$normset_ref->{$category}}, {
                 indicator => $indicator,
@@ -193,10 +193,10 @@ sub load_full_record {
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
         while (my $res=$request->fetchrow_hashref) {
-            my $category   = "T".sprintf "%04d",$res->{category };
-            my $targetid   =        decode_utf8($res->{targetid  });
+            my $category   = "T".sprintf "%04d",$res->{category  };
+            my $targetid   =                    $res->{targetid  };
             my $targettype =                    $res->{targettype};
-            my $supplement =        decode_utf8($res->{supplement});
+            my $supplement =                    $res->{supplement};
             
 	    # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
 	    # vorgenommen
@@ -299,7 +299,7 @@ sub load_full_record {
         
         my @verknholding=();
         while (my $res=$request->fetchrow_hashref){
-            push @verknholding, decode_utf8($res->{targetid});
+            push @verknholding, $res->{targetid};
         }
         $request->finish();
         
@@ -453,7 +453,7 @@ sub load_full_record {
                 # Anreicherung der Normdaten
                 while (my $res=$request->fetchrow_hashref) {
                     my $category   = "E".sprintf "%04d",$res->{category };
-                    my $content    =        decode_utf8($res->{content});
+                    my $content    =                    $res->{content};
 
                     if ($seen_content{$content}){
                         next;
@@ -535,7 +535,7 @@ sub load_full_record {
             # Anreicherung der Normdaten
             while (my $res=$request->fetchrow_hashref) {
                 my $category   = "E".sprintf "%04d",$res->{category };
-                my $content    =        decode_utf8($res->{content});
+                my $content    =                    $res->{content};
                 
                 push @{$normset_ref->{$category}}, {
                     content    => $content,
@@ -571,7 +571,7 @@ sub load_full_record {
                 # Anreicherung der Normdaten
                 while (my $res=$request->fetchrow_hashref) {
                     my $category   = "E".sprintf "%04d",$res->{category };
-                    my $content    =        decode_utf8($res->{content});
+                    my $content    =                    $res->{content};
                     
                     push @{$normset_ref->{$category}}, {
                         content    => $content,
@@ -658,7 +658,7 @@ sub load_brief_record {
         $request->execute($id);
         
         if (my $res=$request->fetchrow_hashref){
-            my $titlistitem     = decode_utf8($res->{listitem});
+            my $titlistitem     = $res->{listitem};
             
             $logger->debug("Stored listitem: $titlistitem");
 
@@ -696,8 +696,8 @@ sub load_brief_record {
         
         while (my $res=$request->fetchrow_hashref){
             my $category  = "T".sprintf "%04d",$res->{category };
-            my $indicator =        decode_utf8($res->{indicator});
-            my $content   =        decode_utf8($res->{content  });
+            my $indicator =                    $res->{indicator};
+            my $content   =                    $res->{content  };
             
             push @{$listitem_ref->{$category}}, {
                 indicator => $indicator,
@@ -726,8 +726,8 @@ sub load_brief_record {
         
         while (my $res=$request->fetchrow_hashref){
             my $category  = "X".sprintf "%04d",$res->{category };
-            my $indicator =        decode_utf8($res->{indicator});
-            my $content   =        decode_utf8($res->{content  });
+            my $indicator =                    $res->{indicator};
+            my $content   =                    $res->{content  };
             
             push @{$listitem_ref->{$category}}, {
                 indicator => $indicator,
@@ -760,12 +760,12 @@ sub load_brief_record {
         
         while (my $res=$request->fetchrow_hashref){
             my $category  = "P".sprintf "%04d",$res->{category };
-            my $indicator =        decode_utf8($res->{indicator});
-            my $targetid  =        decode_utf8($res->{targetid});
+            my $indicator =                    $res->{indicator};
+            my $targetid  =                    $res->{targetid};
             
             my $supplement="";
             if ($res->{supplement}){
-                $supplement=" ".decode_utf8($res->{supplement});
+                $supplement=" ".$res->{supplement};
             }
 
             my $content=OpenBib::Record::Person->new({database => $self->{database}})->load_name({dbh => $dbh, id => $targetid})->name_as_string.$supplement;
@@ -797,12 +797,12 @@ sub load_brief_record {
         
         while (my $res=$request->fetchrow_hashref){
             my $category  = "C".sprintf "%04d",$res->{category };
-            my $indicator =        decode_utf8($res->{indicator});
-            my $targetid  =        decode_utf8($res->{targetid});
+            my $indicator =                    $res->{indicator};
+            my $targetid  =                    $res->{targetid};
             
             my $supplement="";
             if ($res->{supplement}){
-                $supplement.=" ".decode_utf8($res->{supplement});
+                $supplement.=" ".$res->{supplement};
             }
 
             my $content=OpenBib::Record::CorporateBody->new({database => $self->{database}})->load_name({dbh => $dbh, id => $targetid})->name_as_string.$supplement;
@@ -1078,8 +1078,8 @@ sub _get_holding {
 
     while (my $res=$result->fetchrow_hashref){
         my $category  = "X".sprintf "%04d",$res->{category };
-        my $indicator =        decode_utf8($res->{indicator});
-        my $content   =        decode_utf8($res->{content  });
+        my $indicator =                    $res->{indicator};
+        my $content   =                    $res->{content  };
         
         # Exemplar-Normdaten werden als nicht multipel angenommen
         # und dementsprechend vereinfacht in einer Datenstruktur

@@ -116,8 +116,8 @@ sub load_full_record {
 
     while (my $res=$request->fetchrow_hashref) {
         my $category  = "N".sprintf "%04d",$res->{category };
-        my $indicator =        decode_utf8($res->{indicator});
-        my $content   =        decode_utf8($res->{content  });
+        my $indicator =                    $res->{indicator};
+        my $content   =                    $res->{content  };
         
         push @{$normset_ref->{$category}}, {
             indicator => $indicator,
@@ -213,7 +213,7 @@ sub load_name {
     my $classification="Unbekannt";
     
     if ($res->{content}) {
-        $classification = decode_utf8($res->{content});
+        $classification = $res->{content};
     }
 
     $request->finish();

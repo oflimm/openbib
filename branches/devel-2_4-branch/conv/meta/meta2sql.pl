@@ -127,23 +127,23 @@ my $userdbh
     or $logger->error($DBI::errstr);
 
 # Tags
-$request=$userdbh->prepare("select t.tag, tt.titid, t.id from tags as t, tittag as tt where tt.titdb=? and tt.tagid=t.id and tt.type=1");
+$request=$userdbh->prepare("select t.name, tt.titleid, t.id from tag as t, tit_tag as tt where tt.dbname=? and tt.tagid=t.id and tt.type=1");
 $request->execute($database);
 
 while (my $res    = $request->fetchrow_hashref){
-    my $titid   = $res->{titid};
-    my $tag     = $res->{tag};
+    my $titid   = $res->{titleid};
+    my $tag     = $res->{name};
     my $id      = $res->{id};
     push @{$listitemdata_tags{$titid}}, { tag => $tag, id => $id };
 }
 $request->finish();
 
 # Titel von Literaturlisten
-$request=$userdbh->prepare("select l.title, i.titid, l.id from litlists as l, litlistitems as i where i.titdb=? and i.litlistid=l.id and l.type=1");
+$request=$userdbh->prepare("select l.title, i.titleid, l.id from litlist as l, litlistitem as i where i.dbname=? and i.litlistid=l.id and l.type=1");
 $request->execute($database);
 
 while (my $res    = $request->fetchrow_hashref){
-    my $titid   = $res->{titid};
+    my $titid   = $res->{titleid};
     my $title   = $res->{title};
     my $id      = $res->{id};
     push @{$listitemdata_litlists{$titid}}, { title => $title, id => $id };

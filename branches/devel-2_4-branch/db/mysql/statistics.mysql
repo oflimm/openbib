@@ -25,12 +25,13 @@ CREATE TABLE result_data (
  type        INT,
  subkey      VARCHAR(50),
  data        MEDIUMBLOB,
- CONSTRAINT `pk_result_data` PRIMARY KEY (`id`),
  INDEX (id),
  INDEX (tstamp),
  INDEX (subkey),
  INDEX (type)
 )
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
 PACK_KEYS=1;
 
 drop table IF EXISTS eventlog;
@@ -50,6 +51,8 @@ CREATE TABLE eventlog (
  INDEX (type,tstamp,content(10)),
  INDEX (content(50))
 )
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
 PACK_KEYS=1;
 
 drop table IF EXISTS queryterm;
@@ -63,6 +66,8 @@ CREATE TABLE queryterm (
  INDEX (type),
  INDEX (content)
 )
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
 PACK_KEYS=1;
 
 drop table IF EXISTS querycategory;

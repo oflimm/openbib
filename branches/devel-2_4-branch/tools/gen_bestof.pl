@@ -180,7 +180,7 @@ if ($type == 3){
         my $request=$dbh->prepare("select subject.content , count(distinct sourceid) as scount from conn, subject where sourcetype=1 and targettype=4 and subject.category=1 and subject.id=conn.targetid group by targetid order by scount desc limit 200");
         $request->execute();
         while (my $result=$request->fetchrow_hashref){
-            my $content = decode_utf8($result->{content});
+            my $content = $result->{content};
             my $count   = $result->{scount};
             if ($maxcount < $count){
                 $maxcount = $count;
@@ -241,7 +241,7 @@ if ($type == 4){
         my $request=$dbh->prepare("select classification.content , count(distinct sourceid) as scount from conn, classification where sourcetype=1 and targettype=5 and classification.category=1 and classification.id=conn.targetid group by targetid order by scount desc limit 200");
         $request->execute();
         while (my $result=$request->fetchrow_hashref){
-            my $content = decode_utf8($result->{content});
+            my $content = $result->{content};
             my $count   = $result->{scount};
             if ($maxcount < $count){
                 $maxcount = $count;
@@ -302,7 +302,7 @@ if ($type == 5){
         my $request=$dbh->prepare("select corporatebody.content , count(distinct sourceid) as scount from conn, corporatebody where sourcetype=1 and targettype=3 and corporatebody.category=1 and corporatebody.id=conn.targetid group by targetid order by scount desc limit 200");
         $request->execute();
         while (my $result=$request->fetchrow_hashref){
-            my $content = decode_utf8($result->{content});
+            my $content = $result->{content};
             my $count   = $result->{scount};
             if ($maxcount < $count){
                 $maxcount = $count;
@@ -363,7 +363,7 @@ if ($type == 6){
         my $request=$dbh->prepare("select person.content , count(distinct sourceid) as scount from conn, person where sourcetype=1 and targettype=2 and person.category=1 and person.id=conn.targetid group by targetid order by scount desc limit 200");
         $request->execute();
         while (my $result=$request->fetchrow_hashref){
-            my $content = decode_utf8($result->{content});
+            my $content = $result->{content};
             my $count   = $result->{scount};
             if ($maxcount < $count){
                 $maxcount = $count;
@@ -424,7 +424,7 @@ if ($type == 7){
         my $request=$dbh->prepare("select t.id,t.tag,count(tt.tagid) as scount from tags as t, tittag as tt where tt.titdb=? and tt.tagid=t.id group by tt.tagid");
         $request->execute($database);
         while (my $result=$request->fetchrow_hashref){
-            my $content = decode_utf8($result->{tag});
+            my $content = $result->{tag};
             my $id      = $result->{id};
             my $count   = $result->{scount};
             if ($maxcount < $count){
@@ -513,7 +513,7 @@ if ($type == 8){
 	  my $request=$statisticsdbh->prepare($sqlstring);
 	  $request->execute(@sqlargs);
 	  while (my $result=$request->fetchrow_hashref){
-            my $content = decode_utf8($result->{content});
+            my $content = $result->{content};
             my $count   = $result->{scount};
             if ($maxcount < $count){
 	      $maxcount = $count;
@@ -579,7 +579,7 @@ if ($type == 9){
         my $request=$dbh->prepare("select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC");
         $request->execute("^[0-9][0-9][0-9][0-9]\$");
         while (my $result=$request->fetchrow_hashref){
-            my $content = decode_utf8($result->{content});
+            my $content = $result->{content};
             my $count   = $result->{scount};
             if ($maxcount < $count){
                 $maxcount = $count;

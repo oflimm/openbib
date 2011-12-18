@@ -165,7 +165,7 @@ sub create_record {
     my $protocol           = $query->param('protocol')           || '';
     my $remotepath         = $query->param('remotepath')         || '';
     my $remoteuser         = $query->param('remoteuser')         || '';
-    my $remotepasswd       = $query->param('remotepasswd')       || '';
+    my $remotepassword     = $query->param('remotepassword')    || '';
     my $titlefile          = $query->param('titlefile')          || '';
     my $personfile         = $query->param('personfile')         || '';
     my $corporatebodyfile  = $query->param('corporatebodyfile')  || '';
@@ -205,7 +205,7 @@ sub create_record {
         protocol           => $protocol,
         remotepath         => $remotepath,
         remoteuser         => $remoteuser,
-        remotepassword     => $remotepasswd,
+        remotepassword     => $remotepassword,
         titlefile          => $titlefile,
         personfile         => $personfile,
         corporatebodyfile  => $corporatebodyfile,
@@ -395,7 +395,7 @@ sub update_record {
     my $protocol           = $query->param('protocol')           || '';
     my $remotepath         = $query->param('remotepath')         || '';
     my $remoteuser         = $query->param('remoteuser')         || '';
-    my $remotepasswd       = $query->param('remotepasswd')       || '';
+    my $remotepassword       = $query->param('remotepassword')       || '';
     my $titlefile          = $query->param('titlefile')          || '';
     my $personfile         = $query->param('personfile')         || '';
     my $corporatebodyfile  = $query->param('corporatebodyfile')  || '';
@@ -422,7 +422,7 @@ sub update_record {
         protocol           => $protocol,
         remotepath         => $remotepath,
         remoteuser         => $remoteuser,
-        remotepassword     => $remotepasswd,
+        remotepassword     => $remotepassword,
         titlefile          => $titlefile,
         personfile         => $personfile,
         corporatebodyfile  => $corporatebodyfile,

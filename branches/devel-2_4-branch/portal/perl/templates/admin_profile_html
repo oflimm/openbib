@@ -72,7 +72,7 @@
 
 [% FOREACH profile IN profiles.all %]
 
-<tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profile.profilename %]/edit">[% profile.description %]</a></td><td>[% profile.profiledb %]</td></tr>
+<tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profile.profilename %]/edit">[% profile.description %]</a></td><td><ul>[% FOREACH item IN config.get_profiledbs(profile.profilename).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
 [% END %]
 
 </table>

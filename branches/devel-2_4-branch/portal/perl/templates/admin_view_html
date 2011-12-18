@@ -74,7 +74,7 @@
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Profil") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
 
 [% FOREACH viewinfo IN views.all %]
-<tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/rss/edit"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/edit">[% viewinfo.description %]</a></td><td>[% viewinfo.profileid.description %]</td><td><ul>[% FOREACH item IN viewinfo.view_dbs_rs.all # _rs-Suffix fuer Variable viewdbs wegen TT %]<li>[% item.dbid.description %]</li>[% END %]</ul></td><td>[% IF viewinfo.active %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td></tr>
+<tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/rss/edit"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/edit">[% viewinfo.description %]</a></td><td>[% viewinfo.profileid.description %]</td><td><ul>[% FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td><td>[% IF viewinfo.active %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td></tr>
 [% END %]
 
 </table>

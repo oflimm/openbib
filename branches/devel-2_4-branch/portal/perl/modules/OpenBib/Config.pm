@@ -1084,7 +1084,7 @@ sub get_profiledbs {
     foreach my $orgunit ($self->get_orgunitinfo_overview($profilename)->all){
         $logger->debug("Getting DBs for Orgunit ".$orgunit->orgunitname);
         foreach my $item ($orgunit->orgunit_dbs->all){
-            my $dbname = $item->dbid->dbname;
+            my $dbname      = $item->dbid->dbname;
 
             $logger->debug("Getting DB $dbname");
 

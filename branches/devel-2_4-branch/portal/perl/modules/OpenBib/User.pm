@@ -2349,7 +2349,7 @@ sub get_recent_litlists {
                 select   => [ 'me.id' ],
                 as       => ['thislitlistid'],
                 order_by => [ 'me.id DESC' ],
-                rows     => $count,                
+                rows     => $count,
                 prefetch => [{ 'litlist_subjects' => 'subjectid' }],
                 join     => [ 'litlist_subjects' ],
             }

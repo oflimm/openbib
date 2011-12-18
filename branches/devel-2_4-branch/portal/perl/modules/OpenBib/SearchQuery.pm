@@ -370,7 +370,7 @@ sub set_from_apache_request {
         @{$self->{_databases}} = grep { ! $seen_dbases{$_} ++ } @{$dbases_ref};
     }
 
-    $logger->debug("SearchQuery from Apache-Request ".YAML::Dump($self));
+    # $logger->debug("SearchQuery from Apache-Request ".YAML::Dump($self));
     
     return $self;
 }

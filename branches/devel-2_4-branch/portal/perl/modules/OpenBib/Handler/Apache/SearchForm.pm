@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::SearchForm
 #
-#  Dieses File ist (C) 2001-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -164,7 +164,12 @@ sub show {
     my $alldbs     = $config->get_number_of_dbs($config->get_profilename_of_view($view));
     my $alldbcount = $config->get_number_of_titles({ profile => $config->get_profilename_of_view($view)});
 
+    $logger->debug("Mark 2");
+
     my @queries    = $session->get_all_searchqueries();
+
+    $logger->debug("Mark 3");
+
 
     my $anzahl     = $#queries;
     
@@ -173,11 +178,12 @@ sub show {
     foreach my $dbname ($session->get_dbchoice()){
         $checkeddb_ref->{$dbname}=1;
     }
-    
+
     my $maxcolumn = 1;
     my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref, maxcolumn => $maxcolumn, view => $view});
     my $colspan   = $maxcolumn*3;
-    
+
+    $logger->debug("Mark 4");
     # TT-Data erzeugen
     my $ttdata={
         viewdesc      => $viewdesc,
@@ -205,6 +211,7 @@ sub show {
         statistics    => $statistics,
     };
 
+    $logger->debug("TT-Data: ".YAML::Dump($ttdata));
     my $templatename = ($type)?"tt_searchform_".$type."_tname":"tt_searchform_tname";
     
     $self->print_page($config->{$templatename},$ttdata);

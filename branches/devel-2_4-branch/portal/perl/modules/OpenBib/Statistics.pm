@@ -174,7 +174,9 @@ sub get_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return undef unless (defined $id && defined $type && !$self->{schema});
+    $logger->debug("Getting Result");
+    
+    return undef unless (defined $id && defined $type);
 
     # DBI: "select data from result_data where id=? and type=?"
     my $where_ref     = {
@@ -186,7 +188,7 @@ sub get_result {
         $where_ref->{subkey}=$subkey;
     }
     
-    my $resultdatas = $self->{schema}->resultset('ResultData')->search($where_ref,{ columns => qw/data/ });
+    my $resultdatas = $self->{schema}->resultset('ResultData')->search($where_ref,{ columns => qw/ data / });
 
     $logger->debug("Searching data for Id: $id / Type: $type");
 
@@ -194,7 +196,7 @@ sub get_result {
     foreach my $resultdata ($resultdatas->all){
         my $datastring = $resultdata->data;
 
-	$logger->debug("Found a Record");
+	$logger->debug("Found a Record: $datastring");
 
         $data_ref     = decode_json $datastring;
     }

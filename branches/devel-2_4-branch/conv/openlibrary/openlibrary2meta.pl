@@ -98,14 +98,16 @@ my %have_author = ();
 my %have_work   = ();
 
 $logger->info("### Processing Titles: 1st pass - getting authors and works");
-open(OL,"<:utf8",$inputfile_titles);
+open(OL,"zcat $inputfile_titles |");
+binmode(OL,":utf8");
+
 open(OLOUT,">:utf8",$inputfile_titles.".filtered");
 
 my $count = 1;
 while (<OL>){
     my ($ol_type,$ol_id,$ol_revision,$ol_date,$ol_data)=split("\t",$_);
 
-    my $recordset=undef;    
+    my $recordset=undef;
     
     eval {
         $recordset = decode_json $ol_data;
@@ -130,7 +132,7 @@ while (<OL>){
     # Werke abarbeiten Anfang
     if (exists $recordset->{works}){
         foreach my $works_ref (@{$recordset->{works}}){
-            my $key     = $works_ref->{key};            
+            my $key     = $works_ref->{key};
             $key =~s{/works/}{};
 
             $have_work{$key}=1;
@@ -149,7 +151,8 @@ close(OLOUT);
 
 $logger->info("#### Processing Authors");
 
-open(OL,"<:utf8",$inputfile_authors);
+open(OL,"zcat $inputfile_authors |");
+binmode(OL,":utf8");
 
 $count = 1;
 
@@ -174,10 +177,31 @@ while (<OL>){
             $name = konv($name);
             print AUT "0000:$key\n";
             print AUT "0001:$name\n";
+
+            if (exists $recordset->{alternate_names}){
+                foreach my $alt_name (@{$recordset->{alternate_names}}){
+                    print AUT "0102:$recordset->{birth_date}\n" if ($alt_name);
+                }
+            }
+
+            print AUT "0302:$recordset->{bio}->{value}\n" if ($recordset->{bio}); # Kurzbeschreibung
             print AUT "0304:$recordset->{birth_date}\n" if ($recordset->{birth_date});
             print AUT "0306:$recordset->{death_date}\n" if ($recordset->{death_date});
+
+            if (exists $recordset->{photos}){
+                foreach my $photo_id (@{$recordset->{photos}}){
+                    print AUT "0308:$photo_id\n" if ($photo_id > 0);
+                }
+            }
+
+            print AUT "0309:$recordset->{wikipedia}\n" if ($recordset->{wikipedia});
+            print AUT "0313:$recordset->{website}\n" if ($recordset->{website}); # Website
+            print AUT "0314:$recordset->{location}\n" if ($recordset->{location}); # Ort / Location
+
             print AUT "9999:\n";
 
+            # ID merken fuer andere Personenfelder, die nicht mit der
+            # Authors-ID verknuepft werden, sondern Verbatim vorliegen
             OpenBib::Conv::Common::Util::set_person_id($key,$name);
         }
         else {
@@ -196,7 +220,8 @@ close(OL);
 
 $logger->info("#### Processing Works");
 
-open(OL,"<:utf8",$inputfile_works);
+open(OL,"zcat $inputfile_works |");
+binmode(OL,":utf8");
 
 $count = 1;
 
@@ -358,7 +383,7 @@ while (<OL>){
         print TIT "0662:$recordset->{ocaid}\n";
     }
 
-    print TIT "0800:ebook\n";
+    print TIT "0800:Digital\n";
 
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){

@@ -99,9 +99,12 @@ sub show_collection {
         return;
     }
 
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+
     my $profileinfo_ref = $config->get_profileinfo_overview();
 
     my $ttdata = {
+        dbinfo     => $dbinfotable,
         profiles   => $profileinfo_ref,
     };
     

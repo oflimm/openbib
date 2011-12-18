@@ -100,9 +100,12 @@ sub show_collection {
         return;
     }
 
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    
     my $viewinfo_ref = $config->get_viewinfo_overview();
     
     my $ttdata={
+        dbinfo     => $dbinfotable,
         views      => $viewinfo_ref,
     };
     

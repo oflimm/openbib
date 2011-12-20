@@ -441,6 +441,57 @@ sub print_page {
     my $path           = $self->param('path');
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+
+    $ttdata = add_default_ttdata($ttdata);
+    
+    $logger->debug("Using base Template $templatename");
+
+    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => $ttdata->{database},
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $templatename,
+    });
+
+    $logger->debug("Using database/view specific Template $templatename");
+  
+    my $template = Template->new({ 
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+	    ABSOLUTE       => 1,
+        }) ],
+         OUTPUT         => $r,    # Output geht direkt an Apache Request
+         RECURSION      => 1,
+    });
+  
+    # Dann Ausgabe des neuen Headers
+    $r->content_type($content_type);
+  
+    $template->process($templatename, $ttdata) || do {
+        $r->log_reason($template->error(), $r->filename);
+        return Apache2::Const::SERVER_ERROR;
+    };
+  
+    return;
+}
+
+sub add_default_ttdata {
+    my ($self,$ttdata) = @_; 
+
+    my $view           = $self->param('view');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $servername     = $self->param('servername');
+    my $path_prefix    = $self->param('path_prefix');
+    my $path           = $self->param('path');
+    my $representation = $self->param('representation');
+    my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     
     # View- und Datenbank-spezifisches Templating
     my $database  = $ttdata->{'database'};
@@ -503,36 +554,12 @@ sub print_page {
         return $string;
     };
 
-   
-    $logger->debug("Using base Template $templatename");
-
-    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => $database,
-        view         => $view,
-        profile      => $sysprofile,
-        templatename => $templatename,
-    });
-
-    $logger->debug("Using database/view specific Template $templatename");
-  
-    my $template = Template->new({ 
-        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config->{tt_include_path},
-	    ABSOLUTE       => 1,
-        }) ],
-         OUTPUT         => $r,    # Output geht direkt an Apache Request
-         RECURSION      => 1,
-    });
-  
-    # Dann Ausgabe des neuen Headers
-    $r->content_type($content_type);
-  
-    $template->process($templatename, $ttdata) || do {
-        $r->log_reason($template->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+    $ttdata->{'decode_utf8'}    = sub {
+        my $string=shift;
+        return decode_utf8($string);
     };
-  
-    return;
+    
+    return $ttdata;
 }
 
 # sub print_recordlist {

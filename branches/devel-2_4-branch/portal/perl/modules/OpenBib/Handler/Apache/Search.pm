@@ -97,19 +97,21 @@ sub show_search {
     my $view           = $self->param('view');
 
     # Shared Args
-    my $query          = $self->query();
     my $r              = $self->param('r');
+    my $query          = $self->query();
     my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
-    my $servername     = $self->param('servername');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
-    my $representation = $self->param('representation');
+    my $servername     = $self->param('servername');
     my $path_prefix    = $self->param('path_prefix');
+    my $path           = $self->param('path');
+    my $representation = $self->param('representation');
+    my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     
     # CGI Args
     my $serien        = decode_utf8($query->param('serien'))        || 0;
@@ -147,8 +149,6 @@ sub show_search {
     my $searchquery = OpenBib::SearchQuery->instance;
     
     my $sb = $config->{local_search_backend};
-
-    my $content_type = $config->{content_type_map_rev}->{$representation};
 
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
@@ -372,7 +372,7 @@ sub show_search {
         # TT-Data erzeugen
         my $ttdata={
             servername   => $servername,
-            lang               => $lang,
+            lang         => $lang,
             qopts        => $queryoptions->get_options,
             queryoptions => $queryoptions,
             
@@ -474,25 +474,8 @@ sub show_search {
     # TT-Data erzeugen
     
     my $startttdata={
-            servername   => $servername,
-        lang               => $lang,
-        representation => $representation,
-        content_type   => $content_type,
-        
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-        
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $session->{ID},
-        
-        username       => $username,
         password       => $password,
-        
         searchquery    => $searchquery,
-        
         queryid        => $queryid,
         query          => $query,
         
@@ -506,17 +489,10 @@ sub show_search {
         sortorder      => $sortorder,
         sorttype       => $sorttype,
         
-        sysprofile     => $sysprofile,
-        config         => $config,
-        user           => $user,
-        msg            => $msg,
-
-        decode_utf8    => sub {
-            my $string=shift;
-            return decode_utf8($string);
-        },
     };
-        
+
+    $startttdata = $self->add_default_ttdata($startttdata);
+    
     $starttemplate->process($starttemplatename, $startttdata) || do {
         $r->log_error($starttemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
@@ -694,19 +670,6 @@ sub show_search {
             # TT-Data erzeugen
             my $ttdata={
             servername   => $servername,
-                cgiapp             => $self,
-                lang               => $lang,
-                representation => $representation,
-                content_type   => $content_type,
-                
-                to_json       => sub {
-                    my $ref = shift;
-                    return encode_json $ref;
-                },
-                
-                view            => $view,
-                sessionID       => $session->{ID},
-                
                 profile         => $profile,
                 
                 dbinfo          => $dbinfotable,
@@ -741,12 +704,10 @@ sub show_search {
                 sortorder       => $sortorder,
                 defaultop       => $defaultop,
                 resulttime      => $resulttime,
-                sysprofile      => $sysprofile,
-                config          => $config,
-                user            => $user,
-                msg             => $msg,
             };
-            
+
+            $ttdata = $self->add_default_ttdata($ttdata);
+
             $logger->debug("Printing Combined Result");
             
             $itemtemplate->process($itemtemplatename, $ttdata) || do {
@@ -758,11 +719,7 @@ sub show_search {
             $dbhits     {'combined'} = $treffer;
             $gesamttreffer      = $treffer;
 
-            decode_utf8    => sub {
-                my $string=shift;
-                return decode_utf8($string);
-            },            
-        }
+         }
     }
     # Alternativ: getrennte Suche uber alle Kataloge
     else {
@@ -846,20 +803,6 @@ sub show_search {
                     
                     # TT-Data erzeugen
                     my $ttdata={
-            servername   => $servername,
-                        lang               => $lang,
-                        representation => $representation,
-                        content_type   => $content_type,
-                        
-                        to_json       => sub {
-                            my $ref = shift;
-                            return encode_json $ref;
-                        },
-                        
-                        view            => $view,
-                        sessionID       => $session->{ID},
-                        database        => $database,
-                        
                         dbinfo          => $dbinfotable,
                         
                         treffer         => $treffer,
@@ -876,18 +819,10 @@ sub show_search {
                         sorttype        => $sorttype,
                         sortorder       => $sortorder,
                         resulttime      => $resulttime,
-                        sysprofile      => $sysprofile,
-                        config          => $config,
-                        user            => $user,
-                        msg             => $msg,
-
-                        decode_utf8    => sub {
-                            my $string=shift;
-                            return decode_utf8($string);
-                        },
-
                     };
-                    
+
+                    $ttdata = $self->add_default_ttdata($ttdata);
+
                     $itemtemplate->process($itemtemplatename, $ttdata) || do {
                         $r->log_error($itemtemplate->error(), $r->filename);
                         return Apache2::Const::SERVER_ERROR;
@@ -1024,19 +959,6 @@ sub show_search {
                         
                             # TT-Data erzeugen
                             my $ttdata={
-            servername   => $servername,
-                                lang               => $lang,
-                                representation => $representation,
-                                content_type   => $content_type,
-                                
-                                to_json       => sub {
-                                    my $ref = shift;
-                                    return encode_json $ref;
-                                },
-
-                                view            => $view,
-                                sessionID       => $session->{ID},
-
                                 dbinfo          => $dbinfotable,
                             
                                 treffer         => $treffer,
@@ -1065,18 +987,10 @@ sub show_search {
                                 sorttype        => $sorttype,
                                 sortorder       => $sortorder,
                                 resulttime      => $resulttime,
-                                sysprofile      => $sysprofile,
-                                config          => $config,
-                                user            => $user,
-                                msg             => $msg,
-
-                                decode_utf8    => sub {
-                                    my $string=shift;
-                                    return decode_utf8($string);
-                                },
-
                             };
-                        
+
+                            $ttdata = $self->add_default_ttdata($ttdata);
+
                             $itemtemplate->process($itemtemplatename, $ttdata) || do {
                                 $r->log_error($itemtemplate->error(), $r->filename);
                                 return Apache2::Const::SERVER_ERROR;
@@ -1141,18 +1055,6 @@ sub show_search {
     
     # TT-Data erzeugen
     my $endttdata={
-            servername   => $servername,
-        lang               => $lang,
-        representation => $representation,
-
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-        
-        view          => $view,
-        sessionID     => $session->{ID},
-        
         gesamttreffer => $gesamttreffer,
         
         username      => $username,
@@ -1163,17 +1065,10 @@ sub show_search {
         queryid       => $queryid,
         qopts         => $queryoptions->get_options,
         queryoptions  => $queryoptions,        
-        sysprofile    => $sysprofile,
-        config        => $config,
-        user          => $user,
-        msg           => $msg,
-
-        decode_utf8    => sub {
-            my $string=shift;
-            return decode_utf8($string);
-        },
     };
-    
+
+    $endttdata = $self->add_default_ttdata($endttdata);
+
     $endtemplate->process($endtemplatename, $endttdata) || do {
         $r->log_error($endtemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
@@ -1441,19 +1336,6 @@ sub show_index {
     
     # TT-Data erzeugen
     my $ttdata={
-            servername   => $servername,
-        lang               => $lang,
-        representation => $representation,
-        
-        to_json       => sub {
-            my $ref = shift;
-            return encode_json $ref;
-        },
-
-        view       => $view,
-        stylesheet => $stylesheet,		
-        sessionID  => $session->{ID},
-        
         qopts        => $queryoptions->get_options,
         queryoptions => $queryoptions,
         
@@ -1466,15 +1348,6 @@ sub show_index {
         hitrange   => $hitrange,
         baseurl    => $baseurl,
         profile    => $profile,
-        sysprofile => $sysprofile,
-        config     => $config,
-        user       => $user,
-        msg        => $msg,
-
-        decode_utf8    => sub {
-            my $string=shift;
-            return decode_utf8($string);
-        },
     };
     
     $self->print_page($template,$ttdata);

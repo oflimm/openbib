@@ -530,13 +530,13 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
 <div class="fulltitle"><!-- Begin Fulltitle -->
 <div class="details subcolumns"><!-- Begin Details -->
 <!-- Title begins here -->
-<div class="images c20r"><!-- Begin Images -->
+<div class="images c25r"><!-- Begin Images -->
   <div class="subcr">
 [% PROCESS common/subtemplate name="title_html_images" %]
   </div>
 </div><!-- End Images -->
 
-<div class="categories c80l"><!-- Begin Categories -->
+<div class="categories c75l"><!-- Begin Categories -->
 
   <div class="subcl">
 [% PROCESS common/subtemplate name="visible_categories_title" %]

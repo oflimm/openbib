@@ -12,10 +12,6 @@
 #
 #######################################################################
 -%]
-[% hinweisarray = [];
-   hinweisarray.push({ content => "Weiter zum Volltext" }) ;
-   normset.${"T0663"} = hinweisarray ;  %]
-
 [% IF format == "full" %]
 [%# USE dumper;dumper.dump(record) %]
 <table cellpadding="2">
@@ -89,7 +85,7 @@ FOREACH category IN categories;
          content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE "T0662";
-         content   = "<a href=\"${path_prefix}/${config.get('redirect_loc')}/505/http://www.archive.org/details/${content}\" target=\"_blank\">Greifen Sie hier online auf den Volltext zu</a>";
+         content   = "<a href=\"${path_prefix}/${config.get('redirect_loc')}/505/http://www.archive.org/details/${content}\" target=\"_blank\">Volltext verf&uuml;gbar?</a>";
 
     CASE [ "E4100" "T4100" ];
          searchterm    = item.content.replace('&amp;','%26');
@@ -216,6 +212,28 @@ END;
 [%- IF bibkey -%]
 <tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
 [%- END -%]
+<tr><td colspan="2">
+<table class="full">
+<tr><th><img style="vertical-align:bottom"
+src="/images/openbib/hint.png" alt="Hinweis"/>&nbsp;Hinweis</th></tr>
+<tr><td class="boxedclear" style="font-size:0.8em">
+Bitte &uuml;berpr&uuml;fen Sie &uuml;ber den angegebenen Link, ob das
+Buch f&uuml;r Sie zugreifbar ist. Aufgrund von Erfassungsfehlern der
+der OpenLibrary (OL) kann es zu nicht funktionierenden Links kommen.
+Ebenso enth&auml;lt die OL eine nicht weiter herausfilterbare Menge von
+etwa 10.000 Digitalisaten im sog. verschl&uuml;sselten (!)
+DAISY-Format. Dieses Format ist f&uuml;r Sehbehinderte mit besonderen
+Leseger&auml;ten gedacht und wurde vom Internet Archiv f&uuml;r noch
+dem Urheberschutz unterliegende Werke ausschliesslich
+f&uuml;r die USA lizensiert. Auf nicht verschl&uuml;sselte DAISY-Dateien
+kann zugegriffen werden.
+<p/> Bei Werken, die j&uuml;nger als 70 Jahre
+sind, ist jedoch aus urheberrechtlichten Gr&uuml;nden die Wahrscheinlichkeit
+relativ hoch, dass sie nur im verschl&uuml;sselten DAISY Format vorliegen.
+</td></tr>
+</table>
+</td></tr>
+
 </table>
 [% ELSIF format == "BibTeX" %]
 <div>

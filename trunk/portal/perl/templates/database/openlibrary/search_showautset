@@ -28,7 +28,7 @@
 <div class="content">
 <p />
 
-<table width="100%">
+<table>
 <tr><td>
 
 <table cellpadding="2">
@@ -65,6 +65,22 @@ END;
 -%]
 </table>
 
+</td>
+<td>&nbsp;&nbsp;</td>
+<td>
+
+[% IF normset.${"P0308"} ;
+      image_id = normset.${"P0308"}.first.content;
+%]
+<p>
+<center><img src="http://covers.openlibrary.org/b/id/[% image_id
+%]-M.jpg" title="OpenLibrary Cover" />
+</p>
+[% END %]
+
+</td>
+</tr>
+</table>
 [%# USE dumper;dumper.dump(normset)%]
 [%
     searchterm        = normset.${"P0001"}.first.content;
@@ -78,21 +94,7 @@ END;
 vorhandenen Kataloge aus.","${searchterm}","<a href=\"${globalurl}\"><span
 class=\"globalsearch\">","</span></a>") %]</p>
 
-</td>
-<td>
 
-[% IF normset.${"P0308"} %]
-      image_id = normset.${"P0308"}.first.content;
-%]
-<p>
-<center><img src="http://covers.openlibrary.org/b/id/[% image_id
-%]-M.jpg" title="OpenLibrary Cover" />
-</p>
-[% END %]
-
-</td>
-</tr>
-</table>
 </div>
 
 [% PROCESS common/subtemplate name="std_footer" %]

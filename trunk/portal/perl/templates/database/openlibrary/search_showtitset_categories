@@ -36,9 +36,6 @@ FOREACH category IN categories;
 
     CASE [ "T0100" "T0101" "T0103" ];
          thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
 
          wikicontent = content.split(', ').reverse.join(' ');
          wikicontent = wikicontent.replace('¬','');
@@ -53,9 +50,6 @@ FOREACH category IN categories;
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
 
          rssfeed = "" ;
          IF activefeed.3 ;
@@ -115,9 +109,6 @@ FOREACH category IN categories;
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
 
          thiscontent = item.content;
 
@@ -134,9 +125,6 @@ FOREACH category IN categories;
 
     CASE "T0700";
          thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
 
          rssfeed = "" ;
          IF activefeed.5 ;

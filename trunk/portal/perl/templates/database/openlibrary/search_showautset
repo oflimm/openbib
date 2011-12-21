@@ -81,8 +81,8 @@ class=\"globalsearch\">","</span></a>") %]</p>
 </td>
 <td>
 
-[% FOREACH item IN normset.${"P0308"};
-      image_id = item.content;
+[% IF normset.${"P0308"} %]
+      image_id = normset.${"P0308"}.first.content;
 %]
 <p>
 <center><img src="http://covers.openlibrary.org/b/id/[% image_id

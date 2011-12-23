@@ -644,7 +644,7 @@ $('.related_titles')
 <ul class="related_titles">
 [% FOREACH related_record IN related_records.get_records %]
 [% item = related_record.get_brief_normdata %]
-[% related_url = "${path_prefix}/${config.get('title_loc')}/${related_record.database}/${related_record.id}.html?l=${lang}" %]
+[% related_url = "${config.get('search_loc')}?sessionID=${sessionID};queryid=${queryid};database=${related_record.database};searchsingletit=${related_record.id}" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]

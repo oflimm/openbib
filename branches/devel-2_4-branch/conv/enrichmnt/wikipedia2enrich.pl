@@ -4,9 +4,10 @@
 #
 #  wikipedia2enrich.pl
 #
-#  Extrahierung relevanter Artikel fuer eine Anreicherung per ISBN
+#  Extrahierung relevanter Artikel und der darin genannten Literatur
+#  fuer eine Anreicherung per ISBN
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -29,6 +30,9 @@
 
 use 5.008001;
 
+#use warnings;
+#use strict;
+
 use utf8;
 use Encode;
 
@@ -44,6 +48,7 @@ use OpenBib::Config;
 use OpenBib::Common::Util;
 
 use vars qw($isbn_ref);
+use vars qw($article_isbn_ref);
 use vars qw($counter);
 
 # Autoflush
@@ -51,10 +56,16 @@ $|=1;
 
 my ($help,$importyml,$lang,$filename,$logfile);
 
-my $lang2cat_ref = {
+my $lang2article_cat_ref = {
     'de' => '4200',
     'en' => '4201',
     'fr' => '4202',
+};
+
+my $lang2isbn_origin_ref = {
+    'de' => '1',
+    'en' => '2',
+    'fr' => '3',
 };
 
 &GetOptions("help"       => \$help,
@@ -65,7 +76,7 @@ my $lang2cat_ref = {
 	    );
 
 
-if (!$lang || !$filename || !exists $lang2cat_ref->{$lang}){
+if (!$lang || !$filename || !exists $lang2article_cat_ref->{$lang} || !exists $lang2isbn_origin_ref->{$lang}){
    print_help();
 }
 
@@ -74,7 +85,7 @@ my $config = new OpenBib::Config;
 $logfile=($logfile)?$logfile:"/var/log/openbib/wikipedia-enrichmnt-$lang.log";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=INFO, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -100,11 +111,13 @@ my $enrichdbh
 my $deleterequest = $enrichdbh->prepare("delete from normdata where category = ? and origin=30");
 my $insertrequest = $enrichdbh->prepare("insert into normdata values (?,30,?,?,?)");
 
+$article_isbn_ref = {};
+
 if ($importyml){
     YAML::LoadFile($filename);
 }
 else {
-   $deleterequest->execute($lang2cat_ref->{$lang});
+   $deleterequest->execute($lang2article_cat_ref->{$lang});
 
    my $twig= XML::Twig->new(
       TwigHandlers => {
@@ -128,11 +141,34 @@ else {
 
 $logger->info("In Datenbank speichern");
 
+my $enrich_related_request = $enrichdbh->prepare("insert into related_isbn values (?,1)");
+my $del_related_request    = $enrichdbh->prepare("delete from related_isbn where origin=?");
+$del_related_request->execute($lang2isbn_origin_ref->{$lang});
+
+my %related_done = ();
+
 foreach my $isbn (keys %$isbn_ref){
     my $indicator=1;
+    my %related_isbn= ();
+
+    # Artikelnamen anreichern
     foreach my $articlename (@{$isbn_ref->{$isbn}}){
-        $insertrequest->execute($isbn,$lang2cat_ref->{$lang},$indicator,$articlename);
+        %related_isbn = (%related_isbn,%{$article_isbn_ref->{"$articlename"}}) if (keys %{$article_isbn_ref->{"$articlename"}}); 
+        $insertrequest->execute($isbn,$lang2article_cat_ref->{$lang},$indicator,$articlename);
         $indicator++;
+    }
+
+    # b) Related ISBNs anreichern
+
+    if (keys %related_isbn){
+        my $isbnstring=join(':',sort keys %related_isbn);
+
+        # Schon bearbeitet?
+        next if ($related_done{$isbnstring});
+
+        $enrich_related_request->execute($isbnstring);
+
+        $related_done{$isbnstring} = 1;
     }
 }
 
@@ -149,7 +185,6 @@ sub parse_page {
 
     my $content  = $revision->first_child('text')->text() if ($revision->first_child('text')->text());
 
-    my $article_isbn_ref = {};
     # Zuerst 10-Stellige ISBN's
     while ($content=~m/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/g){
         my @result= ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13);
@@ -170,7 +205,7 @@ sub parse_page {
             content  => $isbn,
         });
 
-        $article_isbn_ref->{"$isbn"}=1;
+        $article_isbn_ref->{"$title"}{"$isbn"}=1;
 
     }
 
@@ -194,10 +229,10 @@ sub parse_page {
             content  => $isbn,
         });
 
-        $article_isbn_ref->{"$isbn"}=1;
+        $article_isbn_ref->{"$title"}{"$isbn"}=1;
     }
 
-    foreach my $isbn (keys %$article_isbn_ref){
+    foreach my $isbn (keys %{$article_isbn_ref->{"$title"}}){
        push @{$isbn_ref->{"$isbn"}}, $title;
     }
 

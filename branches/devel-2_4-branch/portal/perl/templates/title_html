@@ -19,6 +19,7 @@
   circulation     = record.get_circulation ; 
   same_records    = record.get_same_records ;
   similar_records = record.get_similar_records ;
+  related_records = record.get_related_records ;
   bibkey = record.to_bibkey ;
   isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
   IF NOT isbn ;
@@ -334,6 +335,32 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [% END %]
 <!-- Ende Empfehlungen -->
 
+<!-- Anfang Thematisch relevante Titel (Wikipedia) -->
+[% IF related_records.get_size > 0 %]
+<div class="related"><!-- Begin thematisch Relevant -->
+<div class="headline">Literaturanalyse in der Wikipedia</div>
+
+<ul>
+[% FOREACH related_record IN related_records.get_records %]
+[% item = related_record.get_brief_normdata %]
+[% related_url = "${path_prefix}/${config.get('title_loc')}/${related_record.database}/${related_record.id}.html?l=${lang}" %]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Edition konstruieren %]
+[%- edition   = item.${'T0403'}.first.content -%]
+<li><a href="[% related_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfo.get('dbnames').${related_record.database}.short %]</li>
+[% END %]
+</ul>
+<p/>
+</div>
+[% END %]
+<!-- Ende Empfehlungen -->
+
 <!-- Anfang Literaturlisten -->
 [% IF litlists.size > 0 %]
 <div class="available_litlists"><!-- Begin Vorhandene Literaturlisten -->
@@ -596,17 +623,17 @@ END ;
 <img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
 [%-   IF normdata.${"E4200"} %]
 [%-    FOREACH item IN normdata.${"E4200"}-%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://de.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/522/http://de.wikipedia.org/wiki/[% item.content %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
 [%-   IF normdata.${"E4201"} %]
 [%-     FOREACH item IN normdata.${"E4201"}-%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://en.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/522/http://en.wikipedia.org/wiki/[% item.content %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normdata.${"E4202"} %]
 [%-     FOREACH item IN normdata.${"E4202"}-%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape("http://fr.wikipedia.org/wiki/${uri_escape(item.content)}") %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/522/http://fr.wikipedia.org/wiki/[% item.content %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>

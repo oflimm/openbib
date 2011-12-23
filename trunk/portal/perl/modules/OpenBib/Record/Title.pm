@@ -521,6 +521,49 @@ sub load_full_record {
                 $similar_recordlist->load_brief_records;
                 
                 $self->{_similar_records} = $similar_recordlist;
+
+                # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
+                my $related_recordlist = new OpenBib::RecordList::Title();
+                
+                $reqstring="select isbn from related_isbn where match (isbn) against (?)";
+                $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                
+                my $related_isbn_ref = {};
+                while (my $res=$request->fetchrow_hashref) {
+                    my $relatedisbnstring = $res->{isbn};
+                    $logger->debug("Related ISBNs: $relatedisbnstring");
+                    foreach my $relatedisbn (split(':',$relatedisbnstring)){
+                        $related_isbn_ref->{$relatedisbn}=1 if ($relatedisbn ne $isbn);
+                    }
+                }
+                
+                my @related_args = keys %$related_isbn_ref;
+                
+                if (@related_args){
+                    my $in_select_string = join(',',map {'?'} @related_args);
+                    
+                    $logger->debug("InSelect $in_select_string");
+                    
+                    $reqstring="select distinct id,dbname from all_isbn where isbn in ($in_select_string) and dbname=?";
+                    
+                    $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                    $request->execute(@related_args,$self->{database}) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                    
+                    while (my $res=$request->fetchrow_hashref) {
+                        my $id         = $res->{id};
+                        my $database   = $res->{dbname};
+
+                        $logger->debug("Found Title: $database - $id");
+                        $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                    }
+                    
+                }
+                    
+                $related_recordlist->load_brief_records;
+                $related_recordlist->sort({order => 'up', type => 'title'});
+                
+                $self->{_related_records} = $related_recordlist;
                 
                 $request->finish();
                 $logger->debug("Enrich: $isbn -> $reqstring");
@@ -990,6 +1033,12 @@ sub get_similar_records {
     my ($self)=@_;
 
     return $self->{_similar_records}
+}
+
+sub get_related_records {
+    my ($self)=@_;
+
+    return $self->{_related_records}
 }
 
 sub get_brief_normdata {

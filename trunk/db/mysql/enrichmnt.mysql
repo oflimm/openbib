@@ -54,6 +54,18 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
+/* ISBN's belonging to the same subject area (eg. ISBNs in the same
+   Wikipedia Article */
+drop table IF EXISTS related_isbn;
+create table related_isbn (
+ isbn          TEXT NOT NULL,
+ origin        SMALLINT,
+FULLTEXT      (isbn)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
 drop table IF EXISTS all_normdata;
 create table all_normdata (
  fs            TEXT NOT NULL,
@@ -67,3 +79,4 @@ create table all_normdata (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
+

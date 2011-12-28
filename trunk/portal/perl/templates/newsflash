@@ -15,6 +15,11 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b>27.12.2011</b>: Einzelne Titel im KUG werden durch eine
+Analyse der Literaturangaben und -listen in den Artikeln der Wikipedia
+um Verweise zu thematisch verwandten Titeln im gleichen Katalog erg&auml;nzt. Weitergehende Informationen in diesem
+<a href="http://blog.openbib.org/2011/12/27/literaturvorschlage-fur-den-katalog-aus-der-wikipedia/" target="_blank">Blog-Artikel</a>
+</li>
 <li><b>9.11.2011</b>: Der Sammlungsauftritt auf den
 USB-Webseiten ist nun zentralisiert und neue Sammlungs-Portale wurden freigeschaltet. Weitergehende Informationen in diesem
 <a href="http://blog.openbib.org/2011/11/09/sammlungen-revisited/" target="_blank">Blog-Artikel</a>

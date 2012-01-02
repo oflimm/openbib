@@ -52,12 +52,12 @@ my $config = OpenBib::Config->instance;
 my ($inputfile_authors,$inputfile_titles,$inputfile_works,$logfile,$loglevel);
 
 &GetOptions(
-	    "inputfile-authors=s"         => \$inputfile_authors,
+            "inputfile-authors=s"         => \$inputfile_authors,
             "inputfile-titles=s"          => \$inputfile_titles,
             "inputfile-works=s"           => \$inputfile_works,
             "logfile=s"                   => \$logfile,
             "loglevel=s"                  => \$loglevel,
-	    );
+);
 
 if (!$inputfile_authors && !$inputfile_titles && !$inputfile_works){
     print << "HELP";
@@ -107,6 +107,10 @@ my $count = 1;
 while (<OL>){
     my ($ol_type,$ol_id,$ol_revision,$ol_date,$ol_data)=split("\t",$_);
 
+    if ($ol_data=~m/Protected DAISY/i){
+        next;
+    }
+    
     my $recordset=undef;
     
     eval {
@@ -123,7 +127,7 @@ while (<OL>){
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){
       foreach my $author_ref (@{$recordset->{authors}}){
-	my $key     = $author_ref->{key};
+        my $key     = $author_ref->{key};
         $key =~s{/authors/}{};
         $have_author{$key}=1;
       }
@@ -180,11 +184,27 @@ while (<OL>){
 
             if (exists $recordset->{alternate_names}){
                 foreach my $alt_name (@{$recordset->{alternate_names}}){
-                    print AUT "0102:$recordset->{birth_date}\n" if ($alt_name);
+                    print AUT "0102:$alt_name\n" if ($alt_name);
                 }
             }
 
-            print AUT "0302:$recordset->{bio}->{value}\n" if ($recordset->{bio}); # Kurzbeschreibung
+            if ($recordset->{bio}) { # Kurzbeschreibung
+                my $bio = "";
+                if (ref $recordset->{bio} eq "HASH"){
+                    $bio = $recordset->{bio}->{value};
+                }
+                else {
+                    $bio = $recordset->{bio};
+                }
+
+                $bio =~s{\n}{<br/>}g;
+                $bio =~s{}{}g;
+                
+                if ($bio){
+                    print AUT "0302:$bio\n";
+                }
+            }
+            
             print AUT "0304:$recordset->{birth_date}\n" if ($recordset->{birth_date});
             print AUT "0306:$recordset->{death_date}\n" if ($recordset->{death_date});
 
@@ -483,7 +503,7 @@ while (<OL>){
                     
                     my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
                     
-                    if ($new){	  
+                    if ($new){
                         print SWT "0000:$subject_id\n";
                         print SWT "0001:$content\n";
                         print SWT "9999:\n";
@@ -510,7 +530,7 @@ while (<OL>){
                     
                     my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
                     
-                    if ($new){	  
+                    if ($new){
                         print SWT "0000:$subject_id\n";
                         print SWT "0001:$content\n";
                         print SWT "9999:\n";

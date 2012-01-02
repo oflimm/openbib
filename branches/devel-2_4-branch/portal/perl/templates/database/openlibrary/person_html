@@ -106,6 +106,18 @@ END;
 
   </div> <!-- End subcl -->
 </div><!-- End Categories -->
+
+<p/>
+
+[% IF normset.${"P0302"} %]
+<h2>Zur Person</h2>
+
+<p>
+[% normset.${"P0302"}.first.content %]
+</p>
+
+[% END %]
+
 </div><!-- End Details -->
 
 [%# USE dumper;dumper.dump(normset)%]
@@ -120,6 +132,8 @@ END;
     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
 %]
+
+<p/>
 
 <p> <img style="vertical-align:bottom" src="[% config.get('hint_img')
 %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Dehnen Sie Ihre Recherche nach <i>[_1]</i> über die

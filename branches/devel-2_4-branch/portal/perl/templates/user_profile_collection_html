@@ -57,7 +57,7 @@ function update_fak(yourform, checked, fak) {
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('handler').user.name %]/[% user.ID %]/profile">
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neues Katalogprofil anlegen") %]</th></tr>

@@ -345,6 +345,8 @@ sub create_record {
     else {
         $profileid = $user->new_dbprofile($profilename,\@databases);
     }
+
+    $logger->debug("Created Profile $profilename with ID $profileid");
     
     my $new_location = "$path_prefix/$config->{user_loc}/$userid/profile/$profileid.html";
 

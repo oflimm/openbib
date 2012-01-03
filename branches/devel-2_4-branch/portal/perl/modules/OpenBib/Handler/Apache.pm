@@ -442,7 +442,7 @@ sub print_page {
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
 
-    $ttdata = add_default_ttdata($ttdata);
+    $ttdata = $self->add_default_ttdata($ttdata);
     
     $logger->debug("Using base Template $templatename");
 

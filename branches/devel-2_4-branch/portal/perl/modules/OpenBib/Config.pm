@@ -1105,7 +1105,7 @@ sub get_profilename_of_view {
     my $profilename = "";
 
     eval {
-        $profilename = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname })->single->profileid->profilename;
+        $profilename = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname })->profileid->profilename;
     };
     
     return $profilename;
@@ -1574,7 +1574,7 @@ sub del_databaseinfo {
     my $logger = get_logger();
 
     eval {
-        $self->{schema}->resultset('Databaseinfo')->search({ dbname => $dbname})->single->delete;
+        $self->{schema}->resultset('Databaseinfo')->single({ dbname => $dbname})->delete;
     };
     
     if ($@){
@@ -1597,7 +1597,7 @@ sub update_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Databaseinfo')->search({ dbname => $dbinfo_ref->{dbname}})->single->update($dbinfo_ref);
+    $self->{schema}->resultset('Databaseinfo')->single({ dbname => $dbinfo_ref->{dbname}})->update($dbinfo_ref);
     
     return;
 }
@@ -1626,7 +1626,7 @@ sub update_databaseinfo_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Rssinfo')->search({ id => $rss_ref->{id}})->single->update($rss_ref);
+    $self->{schema}->resultset('Rssinfo')->single({ id => $rss_ref->{id}})->update($rss_ref);
 
     return;
 }
@@ -1648,7 +1648,7 @@ sub del_databaseinfo_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Rssinfo')->search({ id => $id})->single->delete;
+    $self->{schema}->resultset('Rssinfo')->single({ id => $id})->delete;
 
     return;
 }
@@ -1659,7 +1659,7 @@ sub del_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname})->single->delete;
+    $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->delete;
 
     return;
 }
@@ -1670,10 +1670,10 @@ sub update_libinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbid = $self->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
+    my $dbid = $self->get_databaseinfo->single({ dbname => $dbname })->id;
 
     eval {
-        $self->{schema}->resultset('Libraryinfo')->search({ dbid => $dbid })->single->delete;
+        $self->{schema}->resultset('Libraryinfo')->search({ dbid => $dbid })->delete;
     };
    
     my $category_contents_ref = [];
@@ -1722,10 +1722,10 @@ sub update_view {
 
     delete $view_ref->{viewname};
     
-    my $viewid = $self->get_viewinfo->search_rs({ viewname => $viewname })->single()->id;
+    my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    $self->{schema}->resultset('Viewinfo')->search_rs({ viewname => $viewname})->single->update($view_ref);
+    $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->update($view_ref);
     
     # Datenbanken zunaechst loeschen
     $self->{schema}->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
@@ -1733,7 +1733,7 @@ sub update_view {
     if (@$db_ref){
         my $this_db_ref = [];
         foreach my $dbname (@$db_ref){
-            my $dbid = $self->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
+            my $dbid = $self->get_databaseinfo->single({ dbname => $dbname })->id;
                 
             push @$this_db_ref, {
                 viewid => $viewid,
@@ -1754,10 +1754,10 @@ sub update_view_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $viewid = $self->get_viewinfo->search_rs({ viewname => $viewname })->single()->id;
+    my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
 
     # Zuerst die Aenderungen des primaeren RSS-Feeds in der Tabelle Viewinfo vornehmen
-    $self->{schema}->resultset('Viewinfo')->search_rs({ viewname => $viewname})->single->update({ rssid => $primrssfeed });
+    $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->update({ rssid => $primrssfeed });
     
     # RSS-Feeds zunaechst loeschen
     $self->{schema}->resultset('ViewRss')->search({ viewid => $viewid })->delete;
@@ -1786,7 +1786,7 @@ sub strip_view_from_uri {
     my $logger = get_logger();
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    my $stripuri = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname})->single->stripuri;
+    my $stripuri = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->stripuri;
 
     $stripuri = ($stripuri == 1)?1:0;
 
@@ -1817,18 +1817,20 @@ sub new_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $profileinfo_ref = $self->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
+    my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
     
-    $self->{schema}->resultset('Viewinfo')->create({
-        profileid   => $profileinfo_ref->id,
-        viewname    => $viewname,
-        description => $description,
-        start_loc   => $start_loc,
-        servername  => $servername,
-        stripuri    => $stripuri,
-        joinindex   => $joinindex,
-        active      => $active
-    });
+    $self->{schema}->resultset('Viewinfo')->create(
+        {
+            profileid   => $profileinfo_ref->id,
+            viewname    => $viewname,
+            description => $description,
+            start_loc   => $start_loc,
+            servername  => $servername,
+            stripuri    => $stripuri,
+            joinindex   => $joinindex,
+            active      => $active
+        }
+    );
 
     return 1;
 }
@@ -1840,11 +1842,11 @@ sub del_profile {
     my $logger = get_logger();
 
     # DBI: "delete from profileinfo where profilename = ?"
-    $self->{schema}->resultset('Profileinfo')->search_rs(
+    $self->{schema}->resultset('Profileinfo')->single(
         {
             profilename => $profilename,
         }
-    )->single->delete;
+    )->delete;
     
     my $orgunits_ref=$self->get_orgunitinfo_overview($profilename);
 
@@ -1869,7 +1871,7 @@ sub update_profile {
 
     # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
 
-    $self->{schema}->resultset('Profileinfo')->search({ profilename => $profilename })->single->update($arg_ref);
+    $self->{schema}->resultset('Profileinfo')->single({ profilename => $profilename })->update($arg_ref);
 
     return;
 }
@@ -1945,7 +1947,7 @@ sub update_orgunit {
 
     # Zuerst die Aenderungen in der Tabelle Orgunit vornehmen
 
-    my $profileinfo_ref = $self->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
+    my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
     my $orgunitinfo_ref = $self->get_orgunitinfo->search_rs({ 'orgunitname' => $orgunitname, 'profileid' => $profileinfo_ref->id })->single();
 
     $orgunitinfo_ref->update({ description => $description, nr => $nr });
@@ -1958,7 +1960,7 @@ sub update_orgunit {
     if (@$orgunitdb_ref){
         my $this_db_ref = [];
         foreach my $dbname (@$orgunitdb_ref){
-            my $dbinfo_ref = $self->get_databaseinfo->search_rs({ 'dbname' => $dbname })->single();
+            my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });
             push @$this_db_ref, {
                 orgunitid   => $orgunitinfo_ref->id,
                 dbid      => $dbinfo_ref->id,
@@ -1988,7 +1990,7 @@ sub new_orgunit {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $profileinfo_ref = $self->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
+    my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
 
     $self->{schema}->resultset('Orgunitinfo')->create({ profileid => $profileinfo_ref->id, orgunitname => $orgunit, description => $description, nr => $nr});
 
@@ -2008,7 +2010,7 @@ sub del_server {
     $logger->debug("About to delete id $id");
 
     # DBI: "delete from serverinfo where id = ?"
-    $self->{schema}->resultset('Serverinfo')->search_rs({ id => $id })->single->delete;
+    $self->{schema}->resultset('Serverinfo')->single({ id => $id })->delete;
 
     return;
 }
@@ -2150,11 +2152,11 @@ sub get_searchprofile_of_view {
 
     $logger->debug("Databases of view $viewname: $dbs_as_json");
     
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search(
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
         {
             databases_as_json => $dbs_as_json,
         }
-    )->single();
+    );
 
     my $searchprofileid;
     
@@ -2187,11 +2189,11 @@ sub get_searchprofile_of_orgunit {
 
     $logger->debug("Databases of Orgunit $orgunitname in Profile $profilename: $dbs_as_json");
     
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search(
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
         {
             databases_as_json => $dbs_as_json,
         }
-    )->single();
+    );
 
     my $searchprofileid;
     

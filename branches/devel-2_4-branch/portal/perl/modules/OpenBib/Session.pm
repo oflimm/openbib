@@ -256,12 +256,14 @@ sub _init_new_session {
 
             my $queryoptions = OpenBib::QueryOptions->get_default_options;
 
-            my $new_session = $self->{schema}->resultset('Sessioninfo')->create({
-                sessionid    => $sessionID,
-                createtime   => $createtime,
-                queryoptions => encode_json($queryoptions),
-                searchform   => 'simple',
-            });
+            my $new_session = $self->{schema}->resultset('Sessioninfo')->create(
+                {
+                    sessionid    => $sessionID,
+                    createtime   => $createtime,
+                    queryoptions => encode_json($queryoptions),
+                    searchform   => 'simple',
+                }
+            );
 
             $self->{ID}  = $sessionID;
             $self->{sid} = $new_session->id;
@@ -358,7 +360,7 @@ sub get_profile {
     my $prevprofile;
 
     # DBI: "select profile from sessionprofile where sessionid = ?"
-    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->single;
+    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} });
 
     if ($sessioninfo){
         $prevprofile =$sessioninfo->searchprofile;
@@ -474,7 +476,7 @@ sub set_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sid =  $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->single->id;
+    my $sid =  $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->id;
 
     # Datenbankverknuepfung zunaechst loeschen
     eval {
@@ -483,11 +485,11 @@ sub set_dbchoice {
 
     my $dbs_as_json = encode_json $db_ref;
 
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search_rs(
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
         {
             databases_as_json => $dbs_as_json,
         }
-    )->single();
+    );
 
     my $profileid;
     
@@ -886,7 +888,7 @@ sub clear_data {
     
     # dann Sessiondaten loeschen
     eval {
-        my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single;
+        my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
 
         $sessioninfo->delete_related('eventlogs');
         $sessioninfo->delete_related('queries');
@@ -978,7 +980,7 @@ sub log_event {
 
     
     $logger->debug("Getting sid for SessionID ".$self->{ID});
-    my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
+    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     # DBI: "insert into eventlog values (?,NOW(),?,?)"
     $self->{schema}->resultset('Eventlog')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
@@ -1027,7 +1029,7 @@ sub get_queryid {
     # DBI: "select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?"
     my $rows = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid' })->count;
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
+    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     # Neuer Query
     if ($rows <= 0) {
@@ -1085,7 +1087,7 @@ sub set_all_searchresults {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
+    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     foreach my $db (keys %{$results_ref}) {
         my $res=$results_ref->{$db};
@@ -1133,7 +1135,7 @@ sub set_searchresult {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
+    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     eval {
         # DBI: "delete from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?"
@@ -1188,7 +1190,7 @@ sub get_searchresult {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
+    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     # DBI: "select searchresult from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?"
     my $searchresult = $self->{schema}->resultset('Searchhistory')->search(
@@ -1220,7 +1222,7 @@ sub get_returnurl {
     my $logger = get_logger();
 
     # DBI: "select returnurl from session where sessionid = ?"
-    my $returnurl = $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->single->returnurl;
+    my $returnurl = $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->returnurl;
 
     return $returnurl;
 }
@@ -1233,7 +1235,7 @@ sub get_db_histogram_of_query {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $self->{ID} })->single->id;
+    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     # DBI "select dbname,sum(hits) as hitcount from searchresults where sessionid = ? and queryid = ? group by dbname order by hitcount desc"
     my $searchresult = $self->{schema}->resultset('Searchhistory')->search(
@@ -1275,7 +1277,7 @@ sub get_lastresultset {
     # vorausgegangenen Kurztitelliste
 
     # DBI: "select lastresultset from session where sessionid = ?"
-    my $lastresultset = $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->single->lastresultset;
+    my $lastresultset = $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->lastresultset;
 
     return $lastresultset;
 }

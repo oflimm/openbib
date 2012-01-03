@@ -150,11 +150,11 @@ sub get_credentials {
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
     # DBI: "select username,pin from user where userid = ?"
-    my $credentials = $self->{schema}->resultset('Userinfo')->search(
+    my $credentials = $self->{schema}->resultset('Userinfo')->single(
         {
             id => $thisuserid,
         }
-    )->single;
+    );
 
     if ($credentials){
         return ($credentials->username,$credentials->password);
@@ -179,19 +179,19 @@ sub set_credentials {
 
     if ($username){
         # DBI: "update userinfo set pin = ? where username = ?"
-        my $userinfo = $self->{schema}->resultset('Userinfo')->search(
+        my $userinfo = $self->{schema}->resultset('Userinfo')->single(
             {
                 username => $username,
             }
-        )->single()->update({ password => $password });
+        )->update({ password => $password });
     }
     elsif ($self->{ID}) {
         # DBI: "update userinfo set pin = ? where id = ?"
-        my $userinfo = $self->{schema}->resultset('Userinfo')->search(
+        my $userinfo = $self->{schema}->resultset('Userinfo')->single(
             {
                 id => $self->{ID},
             }
-        )->single->update({ password => $password });
+        )->update({ password => $password });
     }
     else {
         $logger->error("Neither username nor userid given");
@@ -282,11 +282,11 @@ sub get_confirmation_request {
     my $logger = get_logger();
 
     # DBI: "select * from userregistration where registrationid = ?"
-    my $confirmationinfo = $self->{schema}->resultset('Registration')->search_rs(
+    my $confirmationinfo = $self->{schema}->resultset('Registration')->single(
         {
             id => $registrationid,
         }
-    )->single;
+    );
 
     my ($username,$password);
     
@@ -330,11 +330,11 @@ sub get_username {
     my $logger = get_logger();
 
     # DBI: "select username from user where userid = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
-    )->single;
+    );
 
     my $username;
     
@@ -352,11 +352,11 @@ sub get_username_for_userid {
     my $logger = get_logger();
 
     # DBI: "select username from user where userid = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
         {
             id => $userid,
         }
-    )->single;
+    );
 
     my $username;
 
@@ -374,11 +374,11 @@ sub get_userid_for_username {
     my $logger = get_logger();
 
     # DBI: "select userid from user where username = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
         {
             username => $username,
         }
-    )->single;
+    );
 
     my $userid;
 
@@ -428,11 +428,11 @@ sub clear_cached_userdata {
     my $logger = get_logger();
 
     # DBI: "update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?"
-    $self->{schema}->resultset('Userinfo')->search_rs(
+    $self->{schema}->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
-    )->single()->update({
+    )->update({
         nachname => '',
         vorname  => '',
         strasse  => '',
@@ -706,11 +706,11 @@ sub get_id_of_tag {
     return undef if (!defined $tag);
 
     # DBI: "select id from tag where name=?"
-    my $id = $self->{schema}->resultset('Tag')->search_rs(
+    my $id = $self->{schema}->resultset('Tag')->single(
         {
             name => $tag
         }
-    )->single->id;
+    )->id;
     
     return $id;
 }
@@ -884,7 +884,7 @@ sub get_all_profiles {
         
     foreach my $userprofile ($userprofiles->all){
         push @userdbprofiles, {
-            profilid    => $userprofile->profileid,
+            profilid    => $userprofile->id,
             profilename => $userprofile->profilename,
         };
     }
@@ -1199,11 +1199,11 @@ sub rename_tag {
     #     ersetzen
 
     # DBI: "select id from tag where name = ?"
-    my $tag_old = $self->{schema}->resultset('Tag')->search_rs(
+    my $tag_old = $self->{schema}->resultset('Tag')->single(
         {
             name => $oldtag,
         }
-    )->single();
+    );
 
     my $oldtagid;
     my $newtagid;
@@ -1217,11 +1217,11 @@ sub rename_tag {
     }
 
     # DBI: "select id from tag where name = ?"
-    my $tag_new = $self->{schema}->resultset('Tag')->search_rs(
+    my $tag_new = $self->{schema}->resultset('Tag')->single(
         {
             name => $newtag,
         }
-    )->single();
+    );
 
     if ($tag_new){
         $newtagid = $tag_new->id;
@@ -1815,15 +1815,16 @@ sub add_review {
     else {
         # DBI: "insert into review (titleid,titleisbn,dbname,userid,nickname,title,review,rating) values (?,?,?,?,?,?,?,?)"
         $self->{schema}->create(
-            titleid    => $titid,
-            dbname     => $titdb,
-            userid     => $self->get_userid_for_username($username),
-            titleisbn  => $titisbn,
-            nickname   => encode_utf8($nickname),
-            title      => encode_utf8($title),
-            reviewtext => encode_utf8($reviewtext),
-            rating     => $rating,
-            
+            {
+                titleid    => $titid,
+                dbname     => $titdb,
+                userid     => $self->get_userid_for_username($username),
+                titleisbn  => $titisbn,
+                nickname   => encode_utf8($nickname),
+                title      => encode_utf8($title),
+                reviewtext => encode_utf8($reviewtext),
+                rating     => $rating,
+            }            
         );
     }
 
@@ -2099,9 +2100,11 @@ sub add_litlist {
     # DBI: "insert into litlist (userid,title,type) values (?,?,?)"
     # DBI: "select id from litlist where userid = ? and title = ? and type = ?"
     my $new_litlist = $self->{schema}->resultset('Litlist')->create(
-        userid => $self->{ID},
-        title  => $title,
-        type   => $type,
+        {
+            userid => $self->{ID},
+            title  => $title,
+            type   => $type,
+        }
     );
 
     my $litlistid;
@@ -2119,11 +2122,11 @@ sub add_litlist {
     if (@{$subjectids_ref}){
         foreach my $subjectid (@{$subjectids_ref}){
             # DBI "insert into litlist_subject (litlistid,subjectid) values (?,?)") or $logger->error($DBI::errstr);
-            $new_litlist->insert_related('litlist_subjects',
+            $new_litlist->create_related('litlist_subjects',
                                          {
-                    subjectid => $subjectid,
-                }
-            );
+                                             subjectid => $subjectid,
+                                         }
+                                     );
         }
     }
 
@@ -2143,7 +2146,7 @@ sub del_litlist {
 
     return if (!$litlistid);
 
-    my $litlist = $self->{schema}->resultlist('Litlist')->search_rs(
+    my $litlist = $self->{schema}->resultset('Litlist')->search_rs(
         {
             id     => $litlistid,
             userid => $self->{ID},
@@ -2188,11 +2191,11 @@ sub change_litlist {
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
     $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
 
-    my $litlist = $self->{schema}->resultlist('Litlist')->search_rs(
+    my $litlist = $self->{schema}->resultset('Litlist')->single(
         {
             id     => $litlistid,
         }
-    )->single();
+    );
     
     return unless ($litlist);
 
@@ -2243,16 +2246,20 @@ sub add_litlistentry {
     my $logger = get_logger();
 
     # DBI: "delete from litlistitem where litlistid=? and titid=? and titdb=?"
-    my $litlistitem = $self->{schema}->search_rs({        
-        litlistid => $litlistid,
-        dbname    => $titdb,
-        titleid   => $titid,
-    });
+    my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
+        {        
+            litlistid => $litlistid,
+            dbname    => $titdb,
+            titleid   => $titid,
+        }
+    )->single;
 
     return if ($litlistitem);
 
     my $cached_title = OpenBib::Record::Title->new({ id => $titid, database => $titdb })->load_brief_record->to_json;
-    
+
+    $logger->debug("Caching Bibliographic Data: $cached_title");
+
     # DBI: "insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)"
     $self->{schema}->resultset('Litlistitem')->create(
         {
@@ -2284,7 +2291,7 @@ sub del_litlistentry {
     return if (!$litlistid || !$titid || !$titdb);
 
     # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
-    my $litlistitem = $self->{schema}->search_rs({        
+    my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs({        
         litlistid => $litlistid,
         dbname    => $titdb,
         titleid   => $titid,
@@ -2615,11 +2622,11 @@ sub get_litlist_properties {
     return {} if (!$litlistid);
 
     # DBI: "select * from litlist where id = ?"
-    my $litlist = $self->{schema}->resultset('Litlist')->search_rs(
+    my $litlist = $self->{schema}->resultset('Litlist')->single(
         {
             id => $litlistid,
         }   
-    )->first;
+    );
 
     return {} if (!$litlist);
 
@@ -2627,7 +2634,7 @@ sub get_litlist_properties {
     my $type      = $litlist->type;
     my $lecture   = $litlist->lecture;
     my $tstamp    = $litlist->tstamp;
-    my $userid    = $litlist->userid;
+    my $userid    = $litlist->userid->id;
     my $itemcount = $self->get_number_of_litlistentries({litlistid => $litlistid});
 
     # DBI: "select s.* from litlist_subject as ls, subject as s where ls.litlistid=? and ls.subjectid=s.id"
@@ -2969,7 +2976,11 @@ sub get_litlist_owner {
   
     my $logger = get_logger();
 
-    return $self->get_litlist_properties({ litlistid => $litlistid })->{userid};
+    my $ownerid = $self->get_litlist_properties({ litlistid => $litlistid })->{userid};
+
+    $logger->debug("Got Ownerid $ownerid for Litlist $litlistid");
+    
+    return $ownerid;
 }
 
 sub get_litlists_of_tit {
@@ -3212,11 +3223,11 @@ sub update_logintarget {
     my $logger = get_logger();
 
     # DBI: "update logintarget set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where id = ?"
-    $self->{schema}->resultset('Logintarget')->search_rs(
+    $self->{schema}->resultset('Logintarget')->single(
         {
             id => $targetid,
         }   
-    )->single()->update(
+    )->update(
         {
             hostname    => $hostname,
             port        => $port,
@@ -3294,11 +3305,11 @@ sub new_dbprofile {
 
     my $dbs_as_json = encode_json $databases_ref;
 
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search(
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
         {
             databases_as_json => $dbs_as_json,
         }
-    )->single();
+    );
 
     my $searchprofileid;
     
@@ -3324,7 +3335,7 @@ sub new_dbprofile {
         }
     );
     
-    return $new_profile->id;
+    return $new_profile->profileid->id;
 }
 
 sub update_dbprofile {
@@ -3336,11 +3347,11 @@ sub update_dbprofile {
 
     my $dbs_as_json = encode_json $databases_ref;
 
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search(
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
         {
             databases_as_json => $dbs_as_json,
         }
-    )->single();
+    );
 
     my $searchprofileid;
     
@@ -3481,7 +3492,7 @@ sub connect_session {
         }
     )->delete;
     
-    my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $sessionID })->single->id;
+    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $sessionID })->id;
 
     # DBI: "insert into user_session values (?,?,?)"
     $self->{schema}->resultset('UserSession')->create(
@@ -3506,9 +3517,9 @@ sub delete_private_info {
     my $logger = get_logger();
 
     # DBI: "update userinfo set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where id = ?"
-    $self->{schema}->resultset('Userinfo')->search_rs(
+    $self->{schema}->resultset('Userinfo')->single(
         id => $self->{ID},
-    )->single()->update(
+    )->update(
         {
             nachname   => '',
             vorname    => '',
@@ -3541,9 +3552,9 @@ sub set_private_info {
 
     # DBI: "update userinfo set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where username = ?"
     #      $userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$username
-    $self->{schema}->resultset('Userinfo')->search_rs(
+    $self->{schema}->resultset('Userinfo')->single(
         id => $self->get_username_of_userid($self->{ID}),
-    )->single()->update(
+    )->update(
         {
             nachname   => $userinfo_ref->{'Nachname'},
             vorname    => $userinfo_ref->{'Vorname'},
@@ -3999,11 +4010,11 @@ sub set_spelling_suggestion {
   
     my $logger = get_logger();
 
-    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
-    )->single;
+    );
 
     if ($userinfo){
         # DBI: "update userinfo set spelling_as_you_type = ?, spelling_resultlist = ?,$self->{ID}"
@@ -4198,11 +4209,11 @@ sub set_bibsonomy {
     my $logger = get_logger();
 
     # DBI: "update userinfo set bibsonomy_sync = ?, bibsonomy_user = ?, bibsonomy_key = ? where userid = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
-    )->single()->update(
+    )->update(
         {
             bibsonomy_sync => $sync,
             bibsonomy_user => $user,

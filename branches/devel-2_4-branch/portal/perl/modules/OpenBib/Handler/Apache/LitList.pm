@@ -650,7 +650,7 @@ sub show_record_form {
     # Dispatched Args
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->param('litlistid')      || '';
+    my $litlistid      = $self->strip_suffix($self->param('litlistid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -687,27 +687,6 @@ sub show_record_form {
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
     my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
-
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $representation = "";
-    my $content_type   = "";
-
-    my $thisid = "";
-    if ($litlistid=~/^(.+?)(\.html|\.json|\.rdf)$/){
-        $thisid           = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $thisid = $litlistid;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
-    }
-
-    $litlistid = $thisid;
 
     if (!$user_owns_litlist){
         $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
@@ -946,7 +925,7 @@ sub delete_record {
     return;
 }
 
-sub show_entry_negotiate {
+sub show_entry {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -954,10 +933,10 @@ sub show_entry_negotiate {
 
     # Dispatched Args
     my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->param('litlistid')      || '';
-    my $titdb          = $self->param('database')       || '';
-    my $titid          = $self->param('id')             || '';
+    my $view           = $self->param('view');
+    my $litlistid      = $self->param('litlistid');
+    my $titdb          = $self->param('database');
+    my $titid          = $self->strip_suffix($self->param('id'));
 
     # Shared Args
     my $query          = $self->query();
@@ -995,28 +974,7 @@ sub show_entry_negotiate {
         $self->delete_entry;
         return;
     }
-
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $representation = "";
-    my $content_type   = "";
-
-    my $thisid = "";
-    if ($titid=~/^(.+?)(\.html|\.json|\.rdf)$/){
-        $thisid           = $1;
-        ($representation) = $2 =~/^\.(.+?)$/;
-        $content_type   = $config->{'content_type_map_rev'}{$representation};
-    }
-    # Sonst Aushandlung
-    else {
-        $thisid = $titid;
-        my $negotiated_type = $self->negotiate_type;
-        $representation = $negotiated_type->{suffix};
-        $content_type   = $negotiated_type->{content_type};
-    }
-
-    $titid = $thisid;
-
+ 
     my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
         
     my $targettype    = $user->get_targettype_of_session($session->{ID});

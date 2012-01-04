@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Login
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -258,8 +258,8 @@ sub authenticate {
         });
         
         # Falls noch keins da ist, eintragen
-        if (!$user->fieldchoice_exists($userid)) {
-            $user->set_default_fieldchoice($userid);
+        if (!$user->searchfields_exists($userid)) {
+            $user->set_default_searchfields($userid);
         }
         
         if (!$user->livesearch_exists($userid)) {

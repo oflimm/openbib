@@ -19,7 +19,7 @@
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
 [% IF drilldown && fullresultcount > 0%]
-[% PROCESS common/subtemplate name="drilldown_categorized" %]
+[%# PROCESS common/subtemplate name="drilldown_categorized" %]
 [% END %]
         </div>
       </div>

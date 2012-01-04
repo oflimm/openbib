@@ -103,7 +103,7 @@ sub show_collection {
         return;
     }
 
-    my $fieldchoice_ref         = $user->get_fieldchoice();
+    my $searchfields_ref        = $user->get_searchfields();
     my $userinfo_ref            = $user->get_info();
     my $spelling_suggestion_ref = $user->get_spelling_suggestion();
     my $livesearch_ref          = $user->get_livesearch();
@@ -125,7 +125,7 @@ sub show_collection {
         password            => $password,
         email_valid         => $email_valid,
         targettype          => $targettype,
-        fieldchoice         => $fieldchoice_ref,
+        searchfields        => $searchfields_ref,
         spelling_suggestion => $spelling_suggestion_ref,
         livesearch          => $livesearch_ref,
         userinfo            => $userinfo_ref,
@@ -160,40 +160,40 @@ sub update_searchfields {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $showfs        = ($query->param('showfs'))?$query->param('showfs'):'0';
-    my $showhst       = ($query->param('showhst'))?$query->param('showhst'):'0';
-    my $showhststring = ($query->param('showhststring'))?$query->param('showhststring'):'0';
-    my $showgtquelle  = ($query->param('showgtquelle'))?$query->param('showgtquelle'):'0';
-    my $showverf      = ($query->param('showverf'))?$query->param('showverf'):'0';
-    my $showkor       = ($query->param('showkor'))?$query->param('showkor'):'0';
-    my $showswt       = ($query->param('showswt'))?$query->param('showswt'):'0';
-    my $shownotation  = ($query->param('shownotation'))?$query->param('shownotation'):'0';
-    my $showisbn      = ($query->param('showisbn'))?$query->param('showisbn'):'0';
-    my $showissn      = ($query->param('showissn'))?$query->param('showissn'):'0';
-    my $showsign      = ($query->param('showsign'))?$query->param('showsign'):'0';
-    my $showinhalt    = ($query->param('showinhalt'))?$query->param('showinhalt'):'0';
-    my $showmart      = ($query->param('showmart'))?$query->param('showmart'):'0';
-    my $showejahr     = ($query->param('showejahr'))?$query->param('showejahr'):'0';
+    my $freesearch     = ($query->param('freesearch'))?$query->param('freesearch'):'0';
+    my $title          = ($query->param('title'))?$query->param('title'):'0';
+    my $titlestring    = ($query->param('titlestring'))?$query->param('titlestring'):'0';
+    my $source         = ($query->param('source'))?$query->param('source'):'0';
+    my $person         = ($query->param('person'))?$query->param('person'):'0';
+    my $corporatebody  = ($query->param('corporatebody'))?$query->param('corporatebody'):'0';
+    my $subject        = ($query->param('subject'))?$query->param('subject'):'0';
+    my $classification = ($query->param('classification'))?$query->param('classification'):'0';
+    my $isbn           = ($query->param('isbn'))?$query->param('isbn'):'0';
+    my $issn           = ($query->param('issn'))?$query->param('issn'):'0';
+    my $mark           = ($query->param('mark'))?$query->param('mark'):'0';
+    my $content        = ($query->param('content'))?$query->param('content'):'0';
+    my $mediatype      = ($query->param('mediatype'))?$query->param('mediatype'):'0';
+    my $year           = ($query->param('year'))?$query->param('year'):'0';
 
     if (!$self->is_authenticated('user',$userid)){
         return;
     }
 
-    $user->set_fieldchoice({
-        fs        => $showfs,
-        hst       => $showhst,
-        hststring => $showhststring,
-        verf      => $showverf,
-        kor       => $showkor,
-        swt       => $showswt,
-        notation  => $shownotation,
-        isbn      => $showisbn,
-        issn      => $showissn,
-        sign      => $showsign,
-        mart      => $showmart,
-        ejahr     => $showejahr,
-        inhalt    => $showinhalt,
-        gtquelle  => $showgtquelle,
+    $user->set_searchfields({
+        freesearch     => $freesearch,
+        title          => $title,
+        titlestring    => $titlestring,
+        person         => $person,
+        corporatebody  => $corporatebody,
+        subject        => $subject,
+        classification => $classification,
+        isbn           => $isbn,
+        issn           => $issn,
+        mark           => $mark,
+        mediatype      => $mediatype,
+        year           => $year,
+        content        => $content,
+        source         => $source,
     });
 
     $self->return_baseurl;
@@ -425,20 +425,24 @@ sub update_livesearch {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $livesearch_fs   = ($query->param('livesearch_fs'))?$query->param('livesearch_fs'):'0';
-    my $livesearch_verf = ($query->param('livesearch_verf'))?$query->param('livesearch_verf'):'0';
-    my $livesearch_swt  = ($query->param('livesearch_swt'))?$query->param('livesearch_swt'):'0';
-    my $livesearch_exact= ($query->param('livesearch_exact'))?$query->param('livesearch_exact'):'0';
+    my $livesearch_freesearch       = ($query->param('livesearch_freesearch'))?$query->param('livesearch_freesearch'):'0';
+    my $livesearch_freesearch_exact = ($query->param('livesearch_freesearch_exact'))?$query->param('livesearch_freesearch_exact'):'0';
+    my $livesearch_person           = ($query->param('livesearch_person'))?$query->param('livesearch_person'):'0';
+    my $livesearch_person_exact     = ($query->param('livesearch_person_exact'))?$query->param('livesearch_person_exact'):'0';
+    my $livesearch_subject          = ($query->param('livesearch_subject'))?$query->param('livesearch_subject'):'0';
+    my $livesearch_subject_exact    = ($query->param('livesearch_subject_exact'))?$query->param('livesearch_subject_exact'):'0';
 
     if (!$self->is_authenticated('user',$userid)){
         return;
     }
 
     $user->set_livesearch({
-        fs        => $livesearch_fs,
-        verf      => $livesearch_verf,
-        swt       => $livesearch_swt,
-        exact     => $livesearch_exact,
+        freesearch       => $livesearch_freesearch,
+        freesearch_exact => $livesearch_freesearch_exact,
+        person           => $livesearch_person,
+        person_exact     => $livesearch_person_exact,
+        subject          => $livesearch_subject,
+        subject_exact    => $livesearch_subject_exact,
     });
 
     $self->return_baseurl;

@@ -205,12 +205,12 @@
 <input type="hidden" name="_method"    value="PUT" />
 
 <table>
-<tr><td align="right"><input type="checkbox" name="livesearch_exact" value="1" [% IF livesearch.exact %]checked="checked"[% END %]/></td><td>[% msg.maketext("Exakte Übereinstimmung des Begriffes") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="livesearch_fs" value="1" [% IF livesearch.fs %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="livesearch_verf" value="1" [% IF livesearch.verf %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Personen") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="livesearch_swt" value="1" [% IF livesearch.swt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Schlagworten") %]</td></tr>
-<tr><td colspan="2">&nbsp;</td></tr>
-<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
+<tr><td align="right"></td><td>Suchfeld</td><td>[% msg.maketext("Exakt?") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="livesearch_freesearch" value="1" [% IF livesearch.freesearch.active %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</td><td><input type="checkbox" name="livesearch_freesearch_exact" value="1" [% IF livesearch.freesearch.exact %]checked="checked"[% END %]/></td></tr>
+<tr><td align="right"><input type="checkbox" name="livesearch_person" value="1" [% IF livesearch.person.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Personen") %]</td><td><input type="checkbox" name="livesearch_person_exact" value="1" [% IF livesearch.person.exact %]checked="checked"[% END %]/></td></tr>
+<tr><td align="right"><input type="checkbox" name="livesearch_subject" value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Schlagworten") %]</td><td><input type="checkbox" name="livesearch_subject_exact" value="1" [% IF livesearch.subject.exact %]checked="checked"[% END %]/></td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td colspan="3"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
 </table>
 </form>
 </td></tr>
@@ -273,20 +273,20 @@
 <input type="hidden" name="_method" value="PUT" />
 
 <table>
-<tr><td align="right"><input type="checkbox" name="showfs"        value="1" [% IF fieldchoice.fs %]checked="checked"[% END %]/></td><td>[% msg.maketext("Freie Suche") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showhst"       value="1" [% IF fieldchoice.hst %]checked="checked"[% END %] /></td><td>[% msg.maketext("Hauptsachtitel (HST)") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showverf"      value="1" [% IF fieldchoice.verf %]checked="checked"[% END %] /></td><td>[% msg.maketext("Verfasser") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showkor"       value="1" [% IF fieldchoice.kor %]checked="checked"[% END %] /></td><td>[% msg.maketext("K&ouml;rperschaft") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showswt"       value="1" [% IF fieldchoice.swt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Schlagwort") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="shownotation"  value="1" [% IF fieldchoice.notation %]checked="checked"[% END %] /></td><td>[% msg.maketext("Notation") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showisbn"      value="1" [% IF fieldchoice.isbn %]checked="checked"[% END %] /></td><td>[% msg.maketext("ISBN") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showissn"      value="1" [% IF fieldchoice.issn %]checked="checked"[% END %] /></td><td>[% msg.maketext("ISSN") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showsign"      value="1" [% IF fieldchoice.sign %]checked="checked"[% END %] /></td><td>[% msg.maketext("Signatur") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showhststring" value="1" [% IF fieldchoice.hststring %]checked="checked"[% END %] /></td><td>[% msg.maketext("Titel-String") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showinhalt"    value="1" [% IF fieldchoice.inhalt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Abstrakt/Inhalt") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showgtquelle"  value="1" [% IF fieldchoice.gtquelle %]checked="checked"[% END %] /></td><td>[% msg.maketext("Serie/Band/Quelle") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showmart"      value="1" [% IF fieldchoice.mart %]checked="checked"[% END %] /></td><td>[% msg.maketext("Medienart") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showejahr"     value="1" [% IF fieldchoice.ejahr %]checked="checked"[% END %] /></td><td>[% msg.maketext("Erscheinungsjahr") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="freesearch"     value="1" [% IF searchfields.freesearch.active %]checked="checked"[% END %]/></td><td>[% msg.maketext("Freie Suche") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="title"          value="1" [% IF searchfields.title.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Hauptsachtitel (HST)") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="person"         value="1" [% IF searchfields.person.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Verfasser") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="corporatebody"  value="1" [% IF searchfields.corporatebody.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("K&ouml;rperschaft") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="subject"        value="1" [% IF searchfields.subject.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Schlagwort") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="classification" value="1" [% IF searchfields.classification.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Notation") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="isbn"           value="1" [% IF searchfields.isbn.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("ISBN") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="issn"           value="1" [% IF searchfields.issn.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("ISSN") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="mark"           value="1" [% IF searchfields.mark.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Signatur") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="titlestring"    value="1" [% IF searchfields.titlestring.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Titel-String") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="content"        value="1" [% IF searchfields.content.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Abstrakt/Inhalt") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="source"         value="1" [% IF searchfields.source.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Serie/Band/Quelle") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="mediatype"      value="1" [% IF searchfields.mediatype.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Medienart") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="year"           value="1" [% IF searchfields.year.active %]checked="checked"[% END %] /></td><td>[% msg.maketext("Erscheinungsjahr") %]</td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
 </table>

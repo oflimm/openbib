@@ -3694,7 +3694,7 @@ sub get_roles_of_user {
     return $role_ref;
 }
 
-sub fieldchoice_exists {
+sub searchfields_exist {
     my ($self,$userid)=@_;
 
     # Log4perl logger erzeugen
@@ -3711,7 +3711,7 @@ sub fieldchoice_exists {
     return $have_searchfields;
 }
 
-sub set_default_fieldchoice {
+sub set_default_searchfields {
     my ($self,$userid)=@_;
 
     # Log4perl logger erzeugen
@@ -3802,7 +3802,7 @@ sub set_default_fieldchoice {
     return;
 }
 
-sub get_fieldchoice {
+sub get_searchfields {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
@@ -3822,43 +3822,43 @@ sub get_fieldchoice {
         my $field  = $searchfield->searchfield;
         my $active = $searchfield->active;
 
-        $searchfield_ref->{$field}=$active;
+        $searchfield_ref->{$field}{active}=$active;
     };
     
     return $searchfield_ref;
 }
 
-sub set_fieldchoice {
+sub set_searchfields {
     my ($self,$arg_ref)=@_;
 
-    my $freesearch   = exists $arg_ref->{fs}
-        ? $arg_ref->{fs}              : undef;
-    my $title       = exists $arg_ref->{hst}
-        ? $arg_ref->{hst}             : undef;
-    my $titlestring = exists $arg_ref->{hststring}
-        ? $arg_ref->{hststring}       : undef;
-    my $person      = exists $arg_ref->{verf}
-        ? $arg_ref->{verf}            : undef;
-    my $corporatebody       = exists $arg_ref->{kor}
-        ? $arg_ref->{kor}             : undef;
-    my $subject       = exists $arg_ref->{swt}
-        ? $arg_ref->{swt}             : undef;
-    my $classification  = exists $arg_ref->{notation}
-        ? $arg_ref->{notation}        : undef;
-    my $isbn      = exists $arg_ref->{isbn}
-        ? $arg_ref->{isbn}            : undef;
-    my $issn      = exists $arg_ref->{issn}
-        ? $arg_ref->{issn}            : undef;
-    my $mark      = exists $arg_ref->{sign}
-        ? $arg_ref->{sign}            : undef;
-    my $mediatype      = exists $arg_ref->{mart}
-        ? $arg_ref->{mart}            : undef;
-    my $year     = exists $arg_ref->{ejahr}
-        ? $arg_ref->{ejahr}           : undef;
-    my $content    = exists $arg_ref->{inhalt}
-        ? $arg_ref->{inhalt}          : undef;
-    my $source  = exists $arg_ref->{gtquelle}
-        ? $arg_ref->{gtquelle}        : undef;
+    my $freesearch     = exists $arg_ref->{freesearch}
+        ? $arg_ref->{freesearch}           : undef;
+    my $title          = exists $arg_ref->{title}
+        ? $arg_ref->{title}                 : undef;
+    my $titlestring    = exists $arg_ref->{titlestring}
+        ? $arg_ref->{titlestring}           : undef;
+    my $person         = exists $arg_ref->{person}
+        ? $arg_ref->{person}                : undef;
+    my $corporatebody  = exists $arg_ref->{corporatebody}
+        ? $arg_ref->{corporatebody}         : undef;
+    my $subject        = exists $arg_ref->{subject}
+        ? $arg_ref->{subject}               : undef;
+    my $classification = exists $arg_ref->{classification}
+        ? $arg_ref->{classification}        : undef;
+    my $isbn           = exists $arg_ref->{isbn}
+        ? $arg_ref->{isbn}                  : undef;
+    my $issn           = exists $arg_ref->{issn}
+        ? $arg_ref->{issn}                  : undef;
+    my $mark           = exists $arg_ref->{mark}
+        ? $arg_ref->{mark}                  : undef;
+    my $mediatype      = exists $arg_ref->{mediatype}
+        ? $arg_ref->{mediatype}            : undef;
+    my $year           = exists $arg_ref->{year}
+        ? $arg_ref->{year}                 : undef;
+    my $content        = exists $arg_ref->{content}
+        ? $arg_ref->{content}              : undef;
+    my $source         = exists $arg_ref->{source}
+        ? $arg_ref->{source}               : undef;
 
     # Log4perl logger erzeugen
   
@@ -4119,14 +4119,18 @@ sub set_default_livesearch {
 sub set_livesearch {
     my ($self,$arg_ref)=@_;
 
-    my $freesearch    = exists $arg_ref->{fs}
-        ? $arg_ref->{fs}      : undef;
-    my $person        = exists $arg_ref->{verf}
-        ? $arg_ref->{verf}    : undef;
-    my $subject       = exists $arg_ref->{swt}
-        ? $arg_ref->{swt}     : undef;
-    my $exact         = exists $arg_ref->{exact}
-        ? $arg_ref->{exact}   : undef;
+    my $freesearch       = exists $arg_ref->{freesearch}
+        ? $arg_ref->{freesearch}       : undef;
+    my $freesearch_exact = exists $arg_ref->{freesearch_exact}
+        ? $arg_ref->{freesearch_exact} : undef;
+    my $person           = exists $arg_ref->{person}
+        ? $arg_ref->{person}           : undef;
+    my $person_exact     = exists $arg_ref->{person_exact}
+        ? $arg_ref->{person_exact}     : undef;
+    my $subject          = exists $arg_ref->{subject}
+        ? $arg_ref->{subject}          : undef;
+    my $subject_exact    = exists $arg_ref->{subject_exact}
+        ? $arg_ref->{subject_exact}    : undef;
 
     # Log4perl logger erzeugen
   
@@ -4145,19 +4149,19 @@ sub set_livesearch {
                 userid      => $self->{ID},
                 searchfield => 'freesearch',
                 active      => $freesearch,
-                exact       => $exact,
+                exact       => $freesearch_exact,
             },
             {
                 userid      => $self->{ID},
                 searchfield => 'person',
                 active      => $person,
-                exact       => $exact,
+                exact       => $person_exact,
             },
             {
                 userid      => $self->{ID},
                 searchfield => 'subject',
                 active      => $subject,
-                exact       => $exact,
+                exact       => $subject_exact,
             },
         ]
     );

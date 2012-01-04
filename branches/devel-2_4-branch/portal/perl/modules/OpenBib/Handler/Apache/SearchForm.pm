@@ -112,7 +112,7 @@ sub show {
 
     $logger->debug("Got Type: $type");
     
-    my $fieldchoice_ref = $config->{default_fieldchoice};
+    my $searchfields_ref = $config->{default_searchfields};
   
     my $spelling_suggestion_ref = {
         as_you_type => 0,
@@ -132,7 +132,7 @@ sub show {
     my $userprofile_ref = {};
 
     if ($user->{ID}) {
-        $fieldchoice_ref = $user->get_fieldchoice();
+        $searchfields_ref = $user->get_searchfields();
     
         $spelling_suggestion_ref = $user->get_spelling_suggestion();
         $livesearch_ref          = $user->get_livesearch();
@@ -194,9 +194,9 @@ sub show {
         dbinfo        => $dbinfotable,
         prevprofile   => $prevprofile,
 
-        fieldchoice         => $fieldchoice_ref,
-        spelling_suggestion => $spelling_suggestion_ref,
-        livesearch          => $livesearch_ref,
+        available_searchfields => $searchfields_ref,
+        spelling_suggestion    => $spelling_suggestion_ref,
+        livesearch             => $livesearch_ref,
         
         searchquery   => $searchquery->get_searchquery,
         qopts         => $queryoptions->get_options,

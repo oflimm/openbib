@@ -93,7 +93,7 @@ else {
 # Haeufigkeit von ISBNs im KUG:
 # select isbn,count(dbname) as dbcount from all_isbn group by isbn order by dbcount desc limit 10
 
-my $enrichdbh         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or die "could not connect";
+my $enrichdbh         = DBI->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or die "could not connect";
 my $enrichrequest     = $enrichdbh->prepare("insert into all_normdata values (?,?,?,?)");
 my $delrequest        = $enrichdbh->prepare("delete from all_normdata where dbname=?");
 
@@ -106,7 +106,7 @@ foreach my $database (@databases){
 
     my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
 
-    my $sqlrequest = "select distinct content from aut where category = 1";
+    my $sqlrequest = "select distinct content from person where category = 1";
     
     my $request=$dbh->prepare($sqlrequest);
     $request->execute();
@@ -126,7 +126,7 @@ foreach my $database (@databases){
 
     $logger->info("Getting subjects from database $database and adding to enrichmntdb");
     
-    $sqlrequest = "select distinct content from swt where category = 1";
+    $sqlrequest = "select distinct content from subject where category = 1";
     
     $request=$dbh->prepare($sqlrequest);
     $request->execute();

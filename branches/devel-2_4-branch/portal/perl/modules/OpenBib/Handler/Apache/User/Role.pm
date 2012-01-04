@@ -53,7 +53,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
-use OpenBib::Database::Config;
+use OpenBib::Database::System;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;

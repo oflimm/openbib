@@ -813,17 +813,17 @@ sub save_eventlog_to_statisticsdb {
         my $tstamp        = $event->tstamp;
         my $type          = $event->type;
         my $content       = $event->content;
-        my $id            = $self->{servername}.":".$self->{ID};
+        my $sid           = $event->sid;
 
         $statistics->log_event({
-            sessionID => $id,
+            sid       => $sid,
             tstamp    => $tstamp,
             type      => $type,
             content   => $content,
         });
 
 	if ($type == 1){
-	  my $searchquery_ref = Storable::thaw(pack "H*", $content);
+	  my $searchquery_ref = decode_json $content;
 	  
 	  $logger->debug(YAML::Dump($searchquery_ref));
 	  $statistics->log_query({
@@ -854,9 +854,9 @@ sub save_eventlog_to_statisticsdb {
 
     foreach my $item ($records->all){
         my $tstamp        = $item->get_column('thiststamp');
-        my $content_ref   = Storable::thaw(pack "H*", $item->get_column('content'));
+        my $content_ref   = decode_json $item->get_column('content');
 
-        my $id            = $self->{servername}.":".$self->{ID};
+        my $sid           = $self->{sid};
         my $isbn          = $content_ref->{isbn};
         my $dbname        = $content_ref->{database};
         my $katkey        = $content_ref->{id};
@@ -865,7 +865,7 @@ sub save_eventlog_to_statisticsdb {
 
         $statistics->store_relevance({
             tstamp => $tstamp,
-            id     => $id,
+            id     => $sid,
             isbn   => $isbn,
             dbname => $dbname,
             katkey => $katkey,
@@ -924,7 +924,7 @@ sub log_event {
     my $contentstring = $content;
 
     if ($serialize){
-        $contentstring=unpack "H*", Storable::freeze($content);
+        $contentstring=encode_json $content;
     }
     
     # Moegliche Event-Typen
@@ -1395,7 +1395,7 @@ sub get_recently_selected_titles {
     my $recordlist = new OpenBib::RecordList::Title;
 
     foreach my $item ($lastrecords->all){
-        my $content_ref = Storable::thaw(pack "H*",$item->get_column('thiscontent'));
+        my $content_ref = decode_json $item->get_column('thiscontent');
         $recordlist->add(new OpenBib::Record::Title({database => $content_ref->{database}, id => $content_ref->{id}}));
     }
 

@@ -58,7 +58,7 @@
 
    <h1>[% msg.maketext("Informationen zu dieser Bibliothek") %]</h1>
 
-<div class="right_side" id="map" style="width: 300px; height: 300px"></div>
+<div class="float_right" id="map" style="width: 300px; height: 300px"></div>
 
 [% PROCESS common/subtemplate name="visible_categories_library" %]
 
@@ -104,6 +104,7 @@ FOREACH category IN categories;
 END ;-%]
 <tr><td class="category">QR-Code</td><td><a class="qrcode" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
 </table>
+
 
         </div>
         <div id="ie_clearing">&nbsp;</div>

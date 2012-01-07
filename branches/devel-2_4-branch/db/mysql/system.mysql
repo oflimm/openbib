@@ -159,7 +159,6 @@ CREATE TABLE viewinfo (
  servername  TEXT,
  profileid   BIGINT NOT NULL,
  stripuri    TINYINT(4),
- joinindex   TINYINT(4),
  active      BOOL,
 
  CONSTRAINT `pk_view` PRIMARY KEY (`id`),
@@ -470,8 +469,9 @@ PACK_KEYS=1;
 
 DROP TABLE IF EXISTS searchprofile;
 CREATE TABLE searchprofile (
- id          BIGINT AUTO_INCREMENT,
- databases_as_json   TEXT,
+ id                BIGINT AUTO_INCREMENT,
+ databases_as_json TEXT, /* for quick lookup having database list and initial state */
+ own_index         TINYINT(4),
 
  CONSTRAINT `pk_searchprofile` PRIMARY KEY (`id`),
 
@@ -482,13 +482,26 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
+drop table IF EXISTS searchprofile_db;
+CREATE TABLE view_db (
+ searchprofileid   BIGINT NOT NULL,
+ dbid              BIGINT NOT NULL,
+
+ CONSTRAINT `fk_searchprofile_db_searchprofile` FOREIGN KEY (`searchprofileid`) REFERENCES `searchprofile` (`id`),
+ CONSTRAINT `fk_searchprofile_db_db` FOREIGN KEY (`dbid`) REFERENCES `databaseinfo` (`id`)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
 drop table IF EXISTS session_searchprofile;
 CREATE TABLE session_searchprofile (
- sid       BIGINT NOT NULL,
- profileid BIGINT NOT NULL,
+ sid             BIGINT NOT NULL,
+ searchprofileid BIGINT NOT NULL,
 
  CONSTRAINT `fk_sessionprofile_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
- CONSTRAINT `fk_sessionprofile_searchprofile` FOREIGN KEY (`profileid`) REFERENCES `searchprofile` (`id`)
+ CONSTRAINT `fk_sessionprofile_searchprofile` FOREIGN KEY (`searchprofileid`) REFERENCES `searchprofile` (`id`)
 )
 ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
@@ -497,15 +510,15 @@ COLLATE utf8_general_ci
 
 DROP TABLE IF EXISTS user_searchprofile;
 CREATE TABLE user_searchprofile (
- id          BIGINT AUTO_INCREMENT,
- profileid   BIGINT NOT NULL,
- userid      BIGINT NOT NULL,
+ id                BIGINT AUTO_INCREMENT,
+ searchprofileid   BIGINT NOT NULL,
+ userid            BIGINT NOT NULL,
 
  profilename TEXT,
 
  CONSTRAINT `pk_userprofile` PRIMARY KEY (`id`),
  CONSTRAINT `fk_userprofile_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`),
- CONSTRAINT `fk_userprofile_searchprofile` FOREIGN KEY (`profileid`) REFERENCES `searchprofile` (`id`)
+ CONSTRAINT `fk_userprofile_searchprofile` FOREIGN KEY (`searchprofileid`) REFERENCES `searchprofile` (`id`)
 )
 ENGINE InnoDB
 DEFAULT CHARACTER SET utf8

@@ -196,16 +196,16 @@ sub set_from_apache_request {
                     my $string = $2;
                     my $last = $3;
                     
-                    $logger->debug("Fullstring IN: $string");
+#                    $logger->debug("Fullstring IN: $string");
                     my $string_norm = OpenBib::Common::Util::grundform({
                         content   => $string,
                     });
 
                     $string_norm=~s/\W/_/g;
                     
-                    $logger->debug("1: $first String: $string_norm 3: $last");
+#                    $logger->debug("1: $first String: $string_norm 3: $last");
 
-                    $logger->debug("Fullstring OUT: $string_norm");
+#                    $logger->debug("Fullstring OUT: $string_norm");
                     $searchfield_norm_content=$first.$string_norm.$last;
                 }
             }
@@ -443,7 +443,7 @@ sub save  {
         $query_obj_string = unpack "H*", Storable::freeze($self);
     }
 
-    $logger->debug("Query Object: ".$query_obj_string);
+    # $logger->debug("Query Object: ".$query_obj_string);
 
     # DBI: "select queryid from queries where query = ? and sessionid = ?"
     my $searchquery_exists = $self->{schema}->resultset('Query')->search_rs(
@@ -465,7 +465,7 @@ sub save  {
         # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
         $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string});
 
-        $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string");
+        # $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string");
     }
     else {
         $logger->debug("Query already exists: $query_obj_string");
@@ -569,7 +569,7 @@ sub get_searchfield {
 
     $logger->debug($fieldname);
 
-    $logger->debug(YAML::Dump($self));
+#    $logger->debug(YAML::Dump($self));
     return (exists $self->{_searchquery}->{$fieldname})?$self->{_searchquery}->{$fieldname}:{val => '', norm => '', bool => '', args => ''};
 }
 

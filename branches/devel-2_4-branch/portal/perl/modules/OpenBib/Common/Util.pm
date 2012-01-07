@@ -100,7 +100,7 @@ sub grundform {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("IN: $content");
+    # $logger->debug("IN: $content");
     
     # Normalisierung auf Kleinschreibung
     $content = lc($content);
@@ -156,7 +156,7 @@ sub grundform {
     $content=~s/(c)\#/$1sharp/ig;
     $content=~s/\.(net)/dot$1/ig;
 
-    $logger->debug("Checkpoint 1: $content");
+    # $logger->debug("Checkpoint 1: $content");
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
@@ -190,7 +190,7 @@ sub grundform {
 	$content=~s/:/ /g;
     }
 
-    $logger->debug("Checkpoint 2: $content");
+    # $logger->debug("Checkpoint 2: $content");
     
     # Leerzeichen bei CJK einfuegen
 
@@ -202,7 +202,7 @@ sub grundform {
     #$content=~s/:/ /g;
     $content=~s/  / /g;
 
-    $logger->debug("Checkpoint 3: $content");
+    # $logger->debug("Checkpoint 3: $content");
 
     # Buchstabenersetzungen
     $content=~s/ü/ue/g;

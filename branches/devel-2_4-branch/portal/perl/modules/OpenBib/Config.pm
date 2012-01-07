@@ -2111,33 +2111,81 @@ sub new_logintarget {
     return;
 }
 
-sub get_databases_of_searchprofile {
-    my ($self,$profileid)=@_;
+sub get_searchprofile_or_create {
+    my ($self,$dbs_ref)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->search_rs(
+    my $dbs_as_json = encode_json $dbs_ref;
+
+    $logger->debug("Databases of Searchprofile as JSON: $dbs_as_json");
+
+    # Simplified lookup via JSON-Representation
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
         {
-            id     => $profileid,
-        },
-        {
-            columns => ['databases_as_json'],
+            databases_as_json => $dbs_as_json,
         }
-    )->single();
+    );
 
+    my $searchprofileid;
+    
     if ($searchprofile){
-        my $dbs_as_json = $searchprofile->databases_as_json;
-        
-        my $dbs_ref = decode_json $dbs_as_json;
+        $searchprofileid = $searchprofile->id;
+    }
+    else {
+        my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
+            {
+                databases_as_json => $dbs_as_json,
+            }
+        );
 
-        $logger->debug("Searchprofile $profileid: $dbs_as_json");
+        $searchprofileid = $new_searchprofile->id;
         
-        return @{$dbs_ref};
+        foreach my $database (@{$dbs_ref}){
+            my $dbid = $self->{schema}->resultset('Databaseinfo')->single({dbname => $database})->id;
+
+            $new_searchprofile->create_related(
+                'searchprofile_dbs',
+                {
+                    searchprofileid => $searchprofileid,
+                    dbid            => $dbid,
+                }
+            );
+        }
     }
 
-    $logger->debug("No searchprofile $profileid found");
-    return ();
+    return $searchprofileid 
+}
+
+sub get_databases_of_searchprofile {
+    my ($self,$searchprofileid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $searchprofiledbs = $self->{schema}->resultset('SearchprofileDb')->search_rs(
+        {
+            'me.searchprofileid' => $searchprofileid,
+            'dbid.active'        => 1,
+        },
+        {
+            join     => ['dbid'],
+            select   => ['dbid.dbname'],
+            as       => ['thisdbname'],
+            order_by => ['dbid.dbname ASC'],
+        }
+    );
+
+    my @databases = ();
+    
+    foreach my $searchprofiledb ($searchprofiledbs->all){
+        push @databases, $searchprofiledb->get_column('thisdbname');
+
+    }
+
+    $logger->debug("Searchprofile $searchprofileid: ".join(',',@databases));
+    return @databases;
 }
 
 sub get_searchprofile_of_view {
@@ -2148,33 +2196,9 @@ sub get_searchprofile_of_view {
 
     my @databases = $self->get_dbs_of_view($viewname);
 
-    my $dbs_as_json = encode_json \@databases;
-
-    $logger->debug("Databases of view $viewname: $dbs_as_json");
+    $logger->debug("Databases of View $viewname: ".join(',',@databases));
     
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
-        {
-            databases_as_json => $dbs_as_json,
-        }
-    );
-
-    my $searchprofileid;
-    
-    if ($searchprofile){
-        $searchprofileid = $searchprofile->id;
-    }
-    else {
-        my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
-            {
-                databases_as_json => $dbs_as_json,
-            }
-        );
-        
-        $searchprofileid = $new_searchprofile->id;
-    }
-
-    return $searchprofileid 
-
+    return $self->get_searchprofile_or_create(\@databases);
 }
 
 sub get_searchprofile_of_orgunit {
@@ -2185,33 +2209,9 @@ sub get_searchprofile_of_orgunit {
 
     my @databases = $self->get_active_databases_of_orgunit($profilename,$orgunitname);
 
-    my $dbs_as_json = encode_json \@databases;
+    $logger->debug("Databases of Orgunit $orgunitname in Profile $profilename: ".join(',',@databases));
 
-    $logger->debug("Databases of Orgunit $orgunitname in Profile $profilename: $dbs_as_json");
-    
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
-        {
-            databases_as_json => $dbs_as_json,
-        }
-    );
-
-    my $searchprofileid;
-    
-    if ($searchprofile){
-        $searchprofileid = $searchprofile->id;
-    }
-    else {
-        my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
-            {
-                databases_as_json => $dbs_as_json,
-            }
-        );
-        
-        $searchprofileid = $new_searchprofile->id;
-    }
-
-    return $searchprofileid 
-
+    return $self->get_searchprofile_or_create(\@databases);
 }
 
 1;

@@ -3303,39 +3303,20 @@ sub new_dbprofile {
   
     my $logger = get_logger();
 
-    my $dbs_as_json = encode_json $databases_ref;
-
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
-        {
-            databases_as_json => $dbs_as_json,
-        }
-    );
-
-    my $searchprofileid;
+    my $config = OpenBib::Config->instance;
     
-    if ($searchprofile){
-        $searchprofileid = $searchprofile->id;
-    }
-    else {
-            my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
-                {
-                    databases_as_json => $dbs_as_json,
-                }
-            );
-
-            $searchprofileid = $new_searchprofile->id;
-    }
-
+    my $searchprofileid = $config->get_searchprofile_or_create($databases_ref);
+    
     # DBI: "insert into user_profile values (NULL,?,?)"
     my $new_profile = $self->{schema}->resultset('UserSearchprofile')->create(
         {
-            profilename => $profilename,
-            userid      => $self->{ID},
-            profileid   => $searchprofileid,
+            profilename     => $profilename,
+            userid          => $self->{ID},
+            searchprofileid => $searchprofileid,
         }
     );
     
-    return $new_profile->profileid->id;
+    return $new_profile->searchprofileid->id;
 }
 
 sub update_dbprofile {
@@ -3345,28 +3326,9 @@ sub update_dbprofile {
   
     my $logger = get_logger();
 
-    my $dbs_as_json = encode_json $databases_ref;
-
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
-        {
-            databases_as_json => $dbs_as_json,
-        }
-    );
-
-    my $searchprofileid;
+    my $config = OpenBib::Config->instance;
     
-    if ($searchprofile){
-        $searchprofileid = $searchprofile->id;
-    }
-    else {
-            my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
-                {
-                    databases_as_json => $dbs_as_json,
-                }
-            );
-
-            $searchprofileid = $new_searchprofile->id;
-    }
+    my $searchprofileid = $config->get_searchprofile_or_create($databases_ref);
 
     # DBI: "insert into user_profile values (NULL,?,?)"
     my $profile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
@@ -3377,9 +3339,9 @@ sub update_dbprofile {
         }
     )->single()->update(
         {
-            profilename => $profilename,
-            userid      => $self->{ID},
-            profileid   => $searchprofileid,
+            profilename     => $profilename,
+            userid          => $self->{ID},
+            searchprofileid => $searchprofileid,
         }
     );
     

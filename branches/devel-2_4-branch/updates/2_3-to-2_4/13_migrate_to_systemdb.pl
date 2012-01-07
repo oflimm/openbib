@@ -382,6 +382,7 @@ $newdbh->do("truncate table tag");
 $newdbh->do("truncate table collection");
 $newdbh->do("truncate table livesearch");
 $newdbh->do("truncate table searchfield");
+$newdbh->do("truncate table searchprofile_db");
 $newdbh->do("truncate table user_searchprofile");
 $newdbh->do("truncate table searchprofile");
 $newdbh->do("truncate table user_session");
@@ -522,7 +523,8 @@ my %searchprofileid = ();
     my $request  = $olduserdbh->prepare("select * from userdbprofile");
     my $request2 = $olduserdbh->prepare("select * from profildb where profilid = ? order by dbname");
     my $request3 = $newdbh->prepare("insert into searchprofile (databases_as_json) values (?)");
-    my $request4 = $newdbh->prepare("insert into user_searchprofile (profileid,userid,profilename) values (?,?,?)");
+    my $request4 = $newdbh->prepare("insert into user_searchprofile (searchprofileid,userid,profilename) values (?,?,?)");
+    my $request5 = $newdbh->prepare("insert into searchprofile_db (searchprofileid,dbid) values (?,?)");
     
     $request->execute();
     
@@ -547,8 +549,12 @@ my %searchprofileid = ();
             my $insertid   = $newdbh->{'mysql_insertid'};
             
             $searchprofileid{$dbs_as_json}=$insertid;
+
+            foreach my $profiledb (@profiledbs){
+                $request5->execute($insertid,$dbid{$profiledb});
+            }
         }
-        
+
         $request4->execute($searchprofileid{$dbs_as_json},$userid,$profilename);
         
         print STDERR "Profileid: $searchprofileid{$dbs_as_json} Userid: $userid - Name: $profilename\n";

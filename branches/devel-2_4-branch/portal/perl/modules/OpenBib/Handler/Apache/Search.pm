@@ -219,7 +219,6 @@ sub show_search {
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
     ####################################################################
 
-    $logger->debug(YAML::Dump($searchquery));
     if ($searchindex || $verfindex || $korindex || $swtindex || $notindex) {
         
         my $contentreq =

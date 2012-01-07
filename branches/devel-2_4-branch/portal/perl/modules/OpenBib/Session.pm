@@ -476,44 +476,24 @@ sub set_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sid =  $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->id;
+    my $config = OpenBib::Config->instance;    
 
+    my $sid             =  $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->id;
+    my $searchprofileid =  $config->get_searchprofile_or_create($db_ref);
+    
     # Datenbankverknuepfung zunaechst loeschen
     eval {
         $self->{schema}->resultset('SessionSearchprofile')->search_rs({ sid => $sid })->delete;
     };
 
-    my $dbs_as_json = encode_json $db_ref;
-
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
-        {
-            databases_as_json => $dbs_as_json,
-        }
-    );
-
-    my $profileid;
-    
-    if ($searchprofile){
-        $profileid = $searchprofile->id;
-    }
-    else {
-        my $new_profile = $self->{schema}->resultset('Searchprofile')->create(
-            {
-                databases_as_json => $dbs_as_json,
-            }
-        );
-
-        $profileid = $new_profile->id;
-    }
-
     $self->{schema}->resultset('SessionSearchprofile')->create(
         {
-            sid       => $sid,
-            profileid => $profileid,
+            sid             => $sid,
+            searchprofileid => $searchprofileid,
         }
     );
     
-    return $profileid;
+    return $searchprofileid;
 }
 
 sub get_dbchoice {
@@ -522,35 +502,33 @@ sub get_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
     my $dbases = $self->{schema}->resultset('SessionSearchprofile')->search_rs(
         {
             'sid.sessionID' => $self->{ID}
         },
         {
-            join   => ['sid','profileid'],
-            select => ['profileid.id','profileid.databases_as_json'],
-            as     => ['thisprofileid','thisdatabases_as_json'],
+            join   => ['sid','searchprofileid'],
+            select => ['searchprofileid.id'],
+            as     => ['thissearchprofileid'],
         }
     )->single();
 
     my @dbchoice = ();
-    my $profileid;
+    my $searchprofileid;
     
     if ($dbases){
-        my $dbs_as_json = $dbases->get_column('thisdatabases_as_json');
-        
-        $profileid   = $dbases->get_column('thisprofileid');
-        
-        my $dbs_ref = decode_json $dbs_as_json;
-        
-        @dbchoice = reverse @{$dbs_ref};
+        $searchprofileid   = $dbases->get_column('thissearchprofileid');
+
+        @dbchoice = reverse $config->get_databases_of_searchprofile($searchprofileid);
             
         $logger->debug("DB-Choice:\n".YAML::Dump(\@dbchoice));
     }
 
         
     return {
-        id        => $profileid,
+        id        => $searchprofileid,
         databases => \@dbchoice,
     };
 }

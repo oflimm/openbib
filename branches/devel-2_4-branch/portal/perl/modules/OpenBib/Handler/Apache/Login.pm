@@ -258,7 +258,7 @@ sub authenticate {
         });
         
         # Falls noch keins da ist, eintragen
-        if (!$user->searchfields_exists($userid)) {
+        if (!$user->searchfields_exist($userid)) {
             $user->set_default_searchfields($userid);
         }
         

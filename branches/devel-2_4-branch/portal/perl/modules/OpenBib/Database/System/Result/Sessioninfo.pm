@@ -120,21 +120,6 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 anoncollections
-
-Type: has_many
-
-Related object: L<OpenBib::Database::System::Result::Anoncollection>
-
-=cut
-
-__PACKAGE__->has_many(
-  "anoncollections",
-  "OpenBib::Database::System::Result::Anoncollection",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 eventlogs
 
 Type: has_many
@@ -210,6 +195,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 sessioncollections
+
+Type: has_many
+
+Related object: L<OpenBib::Database::System::Result::Sessioncollection>
+
+=cut
+
+__PACKAGE__->has_many(
+  "sessioncollections",
+  "OpenBib::Database::System::Result::Sessioncollection",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 user_sessions
 
 Type: has_many
@@ -226,8 +226,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-18 10:20:39
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Rt+WdaVAI3NwEeOIL5OFqA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:aCBfyiPuHu3503KsZALz3Q
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

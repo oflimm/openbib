@@ -90,7 +90,7 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Database::System::Result::Userinfo",
   { id => "userid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 litlist_subjects
@@ -124,8 +124,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:D7XA5R9lCTB9y6Ds0kqnyA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:g1CMYZfd3CnkVfMOF8A/SQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

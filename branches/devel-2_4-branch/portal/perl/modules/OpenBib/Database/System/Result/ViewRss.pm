@@ -42,21 +42,6 @@ __PACKAGE__->add_columns(
 
 =head1 RELATIONS
 
-=head2 viewid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Database::System::Result::Viewinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "viewid",
-  "OpenBib::Database::System::Result::Viewinfo",
-  { id => "viewid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
 =head2 rssid
 
 Type: belongs_to
@@ -69,12 +54,27 @@ __PACKAGE__->belongs_to(
   "rssid",
   "OpenBib::Database::System::Result::Rssinfo",
   { id => "rssid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+=head2 viewid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Database::System::Result::Viewinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "viewid",
+  "OpenBib::Database::System::Result::Viewinfo",
+  { id => "viewid" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Q5jmOm5rxePeADFvz0HkNQ
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dAI+2Kk0menljmjF2E8hzw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

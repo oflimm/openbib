@@ -25,7 +25,7 @@ __PACKAGE__->table("session_searchprofile");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 profileid
+=head2 searchprofileid
 
   data_type: 'bigint'
   is_foreign_key: 1
@@ -36,7 +36,7 @@ __PACKAGE__->table("session_searchprofile");
 __PACKAGE__->add_columns(
   "sid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
-  "profileid",
+  "searchprofileid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
 
@@ -54,10 +54,10 @@ __PACKAGE__->belongs_to(
   "sid",
   "OpenBib::Database::System::Result::Sessioninfo",
   { id => "sid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
-=head2 profileid
+=head2 searchprofileid
 
 Type: belongs_to
 
@@ -66,15 +66,15 @@ Related object: L<OpenBib::Database::System::Result::Searchprofile>
 =cut
 
 __PACKAGE__->belongs_to(
-  "profileid",
+  "searchprofileid",
   "OpenBib::Database::System::Result::Searchprofile",
-  { id => "profileid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { id => "searchprofileid" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-18 10:20:39
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cjP9LllxaDTha8XMBqlOOA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:UFyq6Y7S37LQ1u8OioLmsA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

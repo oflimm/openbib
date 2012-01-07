@@ -67,12 +67,12 @@ __PACKAGE__->belongs_to(
   "sid",
   "OpenBib::Database::System::Result::Sessioninfo",
   { id => "sid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ym8dUU8rn1sK4XADkiX9Kw
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:keqFSMWdil5sDsGOwZP6Bw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

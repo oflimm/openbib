@@ -144,7 +144,7 @@ __PACKAGE__->belongs_to(
   "profileid",
   "OpenBib::Database::System::Result::Profileinfo",
   { id => "profileid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 rssid
@@ -159,17 +159,12 @@ __PACKAGE__->belongs_to(
   "rssid",
   "OpenBib::Database::System::Result::Rssinfo",
   { id => "rssid" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
+  { join_type => "LEFT", on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Da3459+aNcGxxn+yAHxbRg
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+9JH5gEyOCBt5rfwm7WUCw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -59,6 +59,21 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
+=head2 targetid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Database::System::Result::Logintarget>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "targetid",
+  "OpenBib::Database::System::Result::Logintarget",
+  { id => "targetid" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
 =head2 sid
 
 Type: belongs_to
@@ -71,7 +86,7 @@ __PACKAGE__->belongs_to(
   "sid",
   "OpenBib::Database::System::Result::Sessioninfo",
   { id => "sid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 userid
@@ -86,27 +101,12 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Database::System::Result::Userinfo",
   { id => "userid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-=head2 targetid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Database::System::Result::Logintarget>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "targetid",
-  "OpenBib::Database::System::Result::Logintarget",
-  { id => "targetid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-16 10:00:16
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KWgvXrWFnmTOG4GiW63//g
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:heA5M9qy84zN5TQ62bLD8A
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -377,8 +377,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-18 10:20:39
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FGecEcJFy6t1WmJjtgGaHg
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WBvlo1fTiaRmNYRsepW62w
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

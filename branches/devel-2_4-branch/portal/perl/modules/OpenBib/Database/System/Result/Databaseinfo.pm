@@ -293,6 +293,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 searchprofile_dbs
+
+Type: has_many
+
+Related object: L<OpenBib::Database::System::Result::SearchprofileDb>
+
+=cut
+
+__PACKAGE__->has_many(
+  "searchprofile_dbs",
+  "OpenBib::Database::System::Result::SearchprofileDb",
+  { "foreign.dbid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 view_dbs
 
 Type: has_many
@@ -309,8 +324,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 10:59:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:D6dcnp6Bzbwmi5xY9DdAFw
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:U53mv5vmjLajMMN+vpZEcw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

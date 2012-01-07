@@ -51,21 +51,6 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 userid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Database::System::Result::Userinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "userid",
-  "OpenBib::Database::System::Result::Userinfo",
-  { id => "userid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
 =head2 roleid
 
 Type: belongs_to
@@ -78,12 +63,27 @@ __PACKAGE__->belongs_to(
   "roleid",
   "OpenBib::Database::System::Result::Role",
   { id => "roleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+=head2 userid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Database::System::Result::Userinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "userid",
+  "OpenBib::Database::System::Result::Userinfo",
+  { id => "userid" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-16 10:00:16
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Fo2aM9Xa1j8U7c1W/cgmjg
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sCXzKs6BW+qTy8xXOOOicA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -127,7 +127,7 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Database::System::Result::Userinfo",
   { id => "userid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 reviewratings
@@ -146,8 +146,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-11 11:51:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:aMuMOcFAgzfw1BRwSisLyg
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CfXbkeLQrJU3ZutCyVHu9A
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -6,7 +6,7 @@
 #
 #  Holen per wget und Konvertieren der zbmed-Daten
 #
-#  Dieses File ist (C) 2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -63,5 +63,5 @@ system("$wgetexe -P $pooldir/$pool/ $baseurl/sik_fstab.bcp.gz     > /dev/null 2>
 system("$wgetexe -P $pooldir/$pool/ $baseurl/titel_exclude.bcp.gz > /dev/null 2>&1 ");
 system("$wgetexe -P $pooldir/$pool/ $baseurl/titel_buch_key.bcp.gz > /dev/null 2>&1 ");
 
-system("cd $pooldir/$pool ; gzip -d *.bcp.gz ; $bcp2metaexe -use-d01buch -use-mcopynum --bcp-path=$pooldir/$pool > /dev/null 2>&1 ; gzip *.bcp");
+system("cd $pooldir/$pool ; gzip -d *.bcp.gz ; $bcp2metaexe -use-d01buch -use-mcopynum --bcp-path=$pooldir/$pool --blob-encoding=\"iso-8859-1\" > /dev/null 2>&1 ; gzip *.bcp");
 system("cd $pooldir/$pool ; zcat unload.TIT.gz| $rootdir/filter/$pool/filter-rswk.pl | gzip > unload.TIT.gz.tmp ; mv -f unload.TIT.gz.tmp unload.TIT.gz");

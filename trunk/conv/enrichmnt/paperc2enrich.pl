@@ -32,7 +32,6 @@ use warnings;
 use strict;
 
 use YAML;
-use DBI;
 use LWP::Simple;
 
 use Business::ISBN;
@@ -91,7 +90,7 @@ my $wget="cd $basedir ; wget -O paperc_export.csv $url";
 
 $logger->debug($wget);
 
-# system($wget);
+system($wget);
 
 # Verbindung zur SQL-Datenbank herstellen
 my $enrichdbh

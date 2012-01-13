@@ -77,7 +77,7 @@ FOREACH category IN categories;
          content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.get('redirect_loc')}/${sessionID}/530/${config.get('ezb_exturl')}&jq_term1=${content}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE "T0662";
-         content   = "<a href=\"${config.get('redirect_loc')}/${sessionID}/512/${content}\" target=\"_blank\">Nach kostenloser Registrierung kostenfrei online lesen</a>";
+         content   = "<a class=\"ext\" href=\"${config.get('redirect_loc')}/${sessionID}/512/${content}\" target=\"_blank\">Nach kostenloser Registrierung kostenfrei online lesen</a>";
 
     CASE [ "E4100" "T4100" ];
          localurl    = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";

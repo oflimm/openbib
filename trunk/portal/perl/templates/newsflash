@@ -15,6 +15,11 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b>13.1.2012</b>: Gesamtbestand von PaperC als eigener Katalog im
+KUG recherchierbar. Beim externen Anbieter PaperC k&ouml;nnen Fachb&uuml;cher nach kostenfreier
+Registrierung kostenlos online gelesen werden. Weitergehende Informationen in diesem
+<a href="http://blog.openbib.org/2012/01/13/paperc-als-eigener-katalog/" target="_blank">Blog-Artikel</a>
+</li>
 <li><b>27.12.2011</b>: Einzelne Titel im KUG werden durch eine
 Analyse der Literaturangaben und -listen in den Artikeln der Wikipedia
 um Verweise zu thematisch verwandten Titeln im gleichen Katalog erg&auml;nzt. Weitergehende Informationen in diesem

@@ -117,13 +117,13 @@ sub show_form {
         return;
     }
 
-    my $logintargets_ref = $user->get_logintargets();
+    my $logintargets_ref = $config->get_logintargets();
     
     # TT-Data erzeugen
     my $ttdata={
         logintargets => $logintargets_ref,
         validtarget  => $validtarget,
-        username    => $username,
+        username     => $username,
         return_url   => $return_url,
     };
     
@@ -182,7 +182,7 @@ sub authenticate {
         $loginfailed=1;
     }
     
-    my $logintarget_ref = $user->get_logintarget_by_id($targetid);
+    my $logintarget_ref = $config->get_logintarget_by_id($targetid);
 
     $logger->debug(YAML::Dump($logintarget_ref));
     
@@ -195,8 +195,8 @@ sub authenticate {
         my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
             username      => $username,
             password      => $password,
-            circcheckurl  => $circinfotable->{$logintarget_ref->{dbname}}{circcheckurl},
-            circdb        => $circinfotable->{$logintarget_ref->{dbname}}{circdb},
+            circcheckurl  => $circinfotable->{$logintarget_ref->{db}}{circcheckurl},
+            circdb        => $circinfotable->{$logintarget_ref->{db}}{circdb},
         });
         
         my %userinfo=%$userinfo_ref;

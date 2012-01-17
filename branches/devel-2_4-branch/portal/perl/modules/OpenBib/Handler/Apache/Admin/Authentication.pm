@@ -133,7 +133,7 @@ sub show_record_form {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    my $logintarget_ref = $user->get_logintarget_by_id($authenticationid);
+    my $logintarget_ref = $config->get_logintarget_by_id($authenticationid);
     
     my $ttdata={
         logintarget => $logintarget_ref,
@@ -182,8 +182,8 @@ sub create_record {
         id          => $targetid,
         hostname    => $hostname,
         port        => $port,
-        username    => $username,
-        dbname      => $dbname,
+        user        => $username,
+        db          => $dbname,
         description => $description,
         type        => $type,
     };
@@ -195,7 +195,7 @@ sub create_record {
         return Apache2::Const::OK;
     }
     
-    if ($user->logintarget_exists({description => $thislogintarget_ref->{description}})) {
+    if ($config->logintarget_exists({description => $thislogintarget_ref->{description}})) {
         
         $self->print_warning($msg->maketext("Es existiert bereits ein Anmeldeziel unter diesem Namen"));
         
@@ -257,7 +257,7 @@ sub update_record {
         $logger->debug("About to delete $authenticationid");
         
         if ($confirm){
-            my $logintarget_ref = $user->get_logintarget_by_id($authenticationid);
+            my $logintarget_ref = $config->get_logintarget_by_id($authenticationid);
             
             my $ttdata={
                 stylesheet => $stylesheet,
@@ -289,8 +289,8 @@ sub update_record {
         id          => $authenticationid,
         hostname    => $hostname,
         port        => $port,
-        username    => $username,
-        dbname      => $dbname,
+        user        => $username,
+        db          => $dbname,
         description => $description,
         type        => $type,
     };
@@ -327,7 +327,7 @@ sub delete_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    $config->del_logintarget($authenticationid);
+    $config->delete_logintarget($authenticationid);
     
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");

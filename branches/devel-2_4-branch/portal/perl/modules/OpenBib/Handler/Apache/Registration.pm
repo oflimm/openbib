@@ -166,9 +166,8 @@ sub register {
         email     => $loginname,
     });
 
-    
     my $userid   = $user->get_userid_for_username($username);
-    my $targetid = $user->get_id_of_selfreg_logintarget();
+    my $targetid = $config->get_id_of_selfreg_logintarget();
 
     $user->connect_session({
         sessionID => $session->{ID},

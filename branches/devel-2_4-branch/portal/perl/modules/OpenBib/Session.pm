@@ -86,8 +86,8 @@ sub new {
         $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
         
         $logger->debug("Got SessionID-Cookie: $sessionID");
-    }   
-    
+    }        
+        
     if (!defined $sessionID || !$sessionID){
         $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
@@ -103,9 +103,9 @@ sub new {
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
-
+    
     # Neuer Cookie?, dann senden
-    if ($sessionID ne $self->{ID}){
+    if ($r && $sessionID ne $self->{ID}){
         
         $sessionID = $self->{ID};
         
@@ -120,8 +120,8 @@ sub new {
         
         $r->err_headers_out->set('Set-Cookie', $cookie);
     }
-
-    if (!$self->{sid}){
+    
+    if ($self->{ID} && !$self->{sid}){
         my $search_sid = $self->{schema}->resultset('Sessioninfo')->single(
             {
                 sessionid => $self->{ID},
@@ -174,8 +174,8 @@ sub _new_instance {
         $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
         
         $logger->debug("Got SessionID-Cookie: $sessionID");
-    }   
-
+    }
+       
     if (!defined $sessionID || !$sessionID){
         $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
@@ -192,12 +192,12 @@ sub _new_instance {
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
-
+    
     # Neuer Cookie?, dann senden
     if ($r && $sessionID ne $self->{ID}){
         
         $sessionID = $self->{ID};
-
+        
         $logger->debug("Creating new Cookie with SessionID $self->{ID}");
         
         my $cookie = Apache2::Cookie->new($r,
@@ -209,8 +209,8 @@ sub _new_instance {
         
         $r->err_headers_out->set('Set-Cookie', $cookie);
     }
-
-    if (!$self->{sid}){
+    
+    if ($self->{ID} && !$self->{sid}){
         my $search_sid = $self->{schema}->resultset('Sessioninfo')->single(
             {
                 sessionid => $self->{ID},
@@ -272,25 +272,27 @@ sub _init_new_session {
 
     $logger->debug("Request Object: ".YAML::Dump($r));
 
-    my $useragent=$r->pnotes('useragent') || '';
-
-    # Loggen des Brower-Types
-    $self->log_event({
-        type      => 101,
-        content   => $useragent,
-    });
-
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $r->connection->remote_ip($1);
+    if ($r){
+        my $useragent=$r->pnotes('useragent') || '';
+        
+        # Loggen des Brower-Types
+        $self->log_event({
+            type      => 101,
+            content   => $useragent,
+        });
+        
+        # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+        # Client-IP setzen
+        if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+            $r->connection->remote_ip($1);
+        }
+        
+        # Loggen der Client-IP
+        $self->log_event({
+            type      => 102,
+            content   => $r->connection->remote_ip,
+        });
     }
-    
-    # Loggen der Client-IP
-    $self->log_event({
-        type      => 102,
-        content   => $r->connection->remote_ip,
-    });
     
     if ($self->{view}) {
         # Loggen der View-Auswahl
@@ -764,6 +766,8 @@ sub save_eventlog_to_statisticsdb {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Saving Evenlog of Session $self->{ID}");
+    
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
     my $statistics=new OpenBib::Statistics;
 
@@ -801,14 +805,15 @@ sub save_eventlog_to_statisticsdb {
         });
 
 	if ($type == 1){
-	  my $searchquery_ref = decode_json $content;
-	  
-	  $logger->debug(YAML::Dump($searchquery_ref));
-	  $statistics->log_query({
-				  tstamp          => $tstamp,
-				  view            => $view,
-				  searchquery_ref => $searchquery_ref,
-	  });
+            my $searchquery_ref = decode_json $content;
+            
+            $logger->debug("Query: $content");
+            
+            $statistics->log_query({
+                tstamp          => $tstamp,
+                view            => $view,
+                searchquery_ref => $searchquery_ref,
+            });
 	}
     }
     
@@ -832,7 +837,9 @@ sub save_eventlog_to_statisticsdb {
 
     foreach my $item ($records->all){
         my $tstamp        = $item->get_column('thiststamp');
-        my $content_ref   = decode_json $item->get_column('content');
+        my $content       = $item->get_column('content');
+
+        my $content_ref   = decode_json $content;
 
         my $sid           = $self->{sid};
         my $isbn          = $content_ref->{isbn};
@@ -865,21 +872,26 @@ sub clear_data {
     $self->save_eventlog_to_statisticsdb;
     
     # dann Sessiondaten loeschen
-    eval {
-        my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
+    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
 
-        $sessioninfo->delete_related('eventlogs');
-        $sessioninfo->delete_related('queries');
-        $sessioninfo->delete_related('anoncollections');
-        $sessioninfo->delete_related('recordhistories');
-        $sessioninfo->delete_related('searchhistories');
-        $sessioninfo->delete_related('session_searchprofiles');
-        $sessioninfo->delete_related('user_sessions');
-        $sessioninfo->delete;
+    if ($sessioninfo){
 
-    };
+        eval {
+            $sessioninfo->delete_related('eventlogs');
+            $sessioninfo->delete_related('queries');
+            $sessioninfo->delete_related('sessioncollections');
+            $sessioninfo->delete_related('recordhistories');
+            $sessioninfo->delete_related('searchhistories');
+            $sessioninfo->delete_related('session_searchprofiles');
+            $sessioninfo->delete_related('user_sessions');
+            $sessioninfo->delete;
+        };
+        
+        if ($@){
+            $logger->fatal("Problem clearing session $self->{ID}: $@");
+        }
+    }
 
-    
     return;
 }
 

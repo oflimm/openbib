@@ -352,8 +352,8 @@ sub get_number_of_event {
 
     $logger->debug(YAML::Dump($where_ref));
 
-    my $count = $self->{schema}->resultset('Eventlog')->search($where_ref)->get_column('tstamp')->count;
-    my $since = $self->{schema}->resultset('Eventlog')->search($where_ref)->get_column('tstamp')->min;
+    my $count = $self->{schema}->resultset('Eventlog')->search_rs($where_ref)->count;
+    my $since = $self->{schema}->resultset('Eventlog')->search_rs($where_ref)->get_column('tstamp')->min;
 
     $logger->debug("Got results: Number $count since $since");
 
@@ -419,7 +419,7 @@ sub get_number_of_queries_by_category {
         push @{$where_ref->{tstamp}}, { '<' => $to } ; 
     } 
 
-    my $count = $self->{schema}->resultset('Querycategory')->search($where_ref)->get_column('tstamp')->count;
+    my $count = $self->{schema}->resultset('Querycategory')->search($where_ref)->count;
 
     return {
 	 number => $count,
@@ -638,7 +638,7 @@ sub log_query {
     $self->{schema}->resultset('Querycategory')->create(
               {
                   tstamp    => $tstamp,
-                  view      => $view,
+                  viewname  => $view,
                   fs        => $used_category_ref->{fs},
                   hst       => $used_category_ref->{hst},
                   verf      => $used_category_ref->{verf},

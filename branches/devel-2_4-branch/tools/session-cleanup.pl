@@ -6,7 +6,7 @@
 #
 #  Loeschung alter Sessions
 #
-#  Dieses File ist (C) 2003-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,53 +34,72 @@
 use strict;
 use warnings;
 
+use Date::Manip;
 use DBI;
+use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 use OpenBib::Session;
 use OpenBib::User;
 
-my $config = OpenBib::Config->instance;
+my $logfile='/var/log/openbib/session-cleanup.log';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
+
+my $config  = OpenBib::Config->new;
+my $session = OpenBib::Session->new;
 
 #####################################################################
 # Verbindung zur SQL-Datenbank herstellen
 
-my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or die "could not connect";
+my $thistimedate   = Date::Manip::ParseDate("now");
+my $expiretimedate = Date::Manip::DateCalc($thistimedate,"-24hours");
 
-my $validtimespan=84000; # in Sek. = 24 Std.
+$expiretimedate = Date::Manip::UnixDate($expiretimedate,"%Y-%m-%d %H:%M:%S");
 
-# Schleife ueber alle SessionID's
+my $open_sessions = $session->{schema}->resultset('Sessioninfo')->search(
+    {
+        createtime => { '<' => $expiretimedate },
+    },
+    {
+        group_by => ['id','createtime'],
+        order_by => ['createtime asc'],
+    }
+);
 
-my $idnresult=$sessiondbh->prepare("select distinct sessionid,createtime from session where (UNIX_TIMESTAMP()-UNIX_TIMESTAMP(createtime)) > $validtimespan order by createtime asc");
-$idnresult->execute();
+my $count = 1;
+foreach my $sessioninfo ($open_sessions->all){
+  my $sessionID  = $sessioninfo->sessionid;
+  my $createtime = $sessioninfo->createtime;
 
-my @delsessions = ();
+#  last if ($count == 10);
+  $logger->info("Purging SessionID $sessionID from $createtime");
 
-while (my $result=$idnresult->fetchrow_hashref()){
-  my $sessionID  = $result->{'sessionid'};
-  my $createtime = $result->{'createtime'};
-  push @delsessions, {
-      id         => $sessionID,
-      createtime => $createtime,
-  };
-}
-
-$idnresult->finish;
-$sessiondbh->disconnect;
-
-foreach my $session_ref (@delsessions){
-  print "Purging SessionID ".$session_ref->{id}." from ".$session_ref->{createtime};
-
-  my $session = new OpenBib::Session({sessionID => $session_ref->{id}});
+  my $session = new OpenBib::Session({sessionID => $sessionID});
   $session->clear_data();
-
-  print " .";
 
   # Zwischengespeicherte Benutzerinformationen loeschen
   my $user   = new OpenBib::User();
-  my $userid = $user->get_userid_of_session($session_ref->{id});
+  my $userid = $user->get_userid_of_session($sessionID);
 
-  $user->clear_cached_userdata($userid);
+  if ($userid){
+      $user->clear_cached_userdata($userid);
+  }
 
-  print ". done\n";
+  $count++;
 }

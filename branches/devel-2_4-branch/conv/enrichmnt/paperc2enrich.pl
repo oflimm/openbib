@@ -7,7 +7,7 @@
 #  Anreicherung mit den URL's fuer Buecher bei PaperC, die dort
 #  kostenfrei gelesen werden koennen
 #
-#  Dieses File ist (C) 2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,7 +32,6 @@ use warnings;
 use strict;
 
 use YAML;
-use DBI;
 use LWP::Simple;
 
 use Business::ISBN;
@@ -46,11 +45,12 @@ use OpenBib::Config;
 # Autoflush
 $|=1;
 
-my ($help,$importyml,$filename,$logfile,$url);
+my ($help,$importyml,$filename,$logfile,$url,$basedir);
 
 &GetOptions("help"       => \$help,
             "url=s"      => \$url,
             "import-yml" => \$importyml,
+            "base-dir=s" => \$basedir,
             "filename=s" => \$filename,
             "logfile=s"  => \$logfile,
 	    );
@@ -62,6 +62,8 @@ if ($help){
 my $config = OpenBib::Config->instance;
 
 $url=($url)?$url:"http://paperc.de/documents/export.csv";
+
+$basedir=($basedir)?$basedir:"/opt/openbib/autoconv/data/enrichment";
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/paperc-enrichmnt.log";
 
@@ -81,6 +83,14 @@ Log::Log4perl::init(\$log4Perl_config);
 
 # Log4perl logger erzeugen
 my $logger = get_logger();
+
+$logger->info("Hole PaperC E-Book-Daten von $url");
+
+my $wget="cd $basedir ; wget -O paperc_export.csv $url";
+
+$logger->debug($wget);
+
+system($wget);
 
 # Verbindung zur SQL-Datenbank herstellen
 my $enrichdbh
@@ -104,12 +114,12 @@ if ($importyml){
 else {
     # Einladen der aktuellen Feed-Liste
 
-    my $feed_list_string = get($url);
+    open(PAPERC,"$basedir/paperc_export.csv");
 
-    $logger->info("Hole PaperC E-Book-Daten");
-    
-    foreach my $feedinfo (split("\n",$feed_list_string)){
-        my ($ebookisbn,$printisbn,$title,$paperc_url) = split("\";\"",$feedinfo);
+    while (my $feedinfo=<PAPERC>){
+        next unless ($feedinfo =~m/^\"\d*?\";\"\d*?\";\".*?\";\".*?\";/);
+        
+        my ($ebookisbn,$printisbn,$title,$paperc_url) = $feedinfo =~m/^\"(\d*?)\";\"(\d*?)\";\"(.*?)\";\"(.*?)\";/;
 
         $ebookisbn=~s/^\"//;
         $paperc_url=~s/\";$//;
@@ -129,6 +139,8 @@ else {
             $logger->debug("Adding $paperc_url to ISBN $isbn");
         }
     }
+
+    close(PAPERC);
 
     YAML::DumpFile("paperc-isbn.yml",$isbn_ref);
 }

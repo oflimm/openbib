@@ -2055,60 +2055,203 @@ sub new_server {
     return 1;
 }
 
-sub del_logintarget {
-    my ($self,$targetid)=@_;
+sub authentication_exists {
+    my ($self,$targetid) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    # DBI: "select count(*) as rowcount from logintarget where targetid = ?"
+    my $targetcount = $self->{schema}->resultset('Logintarget')->search_rs(
+        {
+            id => $targetid,
+        }
+    )->count;
+    
+    return $targetcount;
+}
+
+sub get_logintargets {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    # DBI: "select * from logintarget order by type DESC,description"
+    my $logintargets = $self->{schema}->resultset('Logintarget')->search_rs(
+        undef,
+        {
+            order_by => ['type DESC','description']
+        }
+    );
+
+    my $logintargets_ref = [];
+
+    foreach my $logintarget ($logintargets->all){
+        push @$logintargets_ref, {
+            id          => $logintarget->id,
+            hostname    => $logintarget->hostname,
+            port        => $logintarget->port,
+            user        => $logintarget->user,
+            db          => $logintarget->db,
+            description => $logintarget->description,
+            type        => $logintarget->type,
+        };
+    }
+
+    return $logintargets_ref;
+}
+
+sub get_logintarget_by_id {
+    my ($self,$targetid) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    # DBI: "select * from logintarget where targetid = ?"
+    my $logintarget = $self->{schema}->resultset('Logintarget')->search_rs(
+        {
+            id => $targetid,
+        },
+        {
+            order_by => ['type DESC','description']
+        }
+    )->single;
+
+    my $logintarget_ref = {};
+    
+    if ($logintarget){
+        $logintarget_ref = {
+            id          => $logintarget->id,
+            hostname    => $logintarget->hostname,
+            port        => $logintarget->port,
+            user        => $logintarget->user,
+            db          => $logintarget->db,
+            description => $logintarget->description,
+            type        => $logintarget->type,
+        };
+    }
+
+    $logger->debug("Getting Info for Targetid: $targetid -> Got: ".YAML::Dump($logintarget_ref));
+    return $logintarget_ref;
+}
+
+sub get_number_of_logintargets {
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $user = OpenBib::User->instance;
+    # DBI: "select count(targetid) as rowcount from logintarget"
+    my $numoftargets = $self->{schema}->resultset('Logintarget')->search_rs(
+        undef,
+    )->count;
 
-    $user->delete_logintarget($targetid);
+    return $numoftargets;
+}
+
+sub logintarget_exists {
+    my ($self,$arg_ref)=@_;
+
+    my $description         = exists $arg_ref->{description}
+        ? $arg_ref->{description}               : undef;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    # DBI: "select count(description) as rowcount from logintarget where description = ?"
+    my $targetcount = $self->{schema}->resultset('Logintarget')->search_rs(
+        {
+            description => $description,
+        }   
+    )->count;
+
+    return $targetcount;
+}
+
+sub delete_logintarget {
+    my ($self,$targetid)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $self->{schema}->resultset('Logintarget')->search_rs(
+        {
+            id => $targetid,
+        }   
+    )->delete;
+
+    return;
+}
+
+sub new_logintarget {
+    my ($self,$arg_ref)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    # DBI: "insert into logintarget (hostname,port,user,db,description,type) values (?,?,?,?,?,?)"
+    $self->{schema}->resultset('Logintarget')->create(
+        $arg_ref,
+    );
 
     return;
 }
 
 sub update_logintarget {
-    my ($self,$logintarget_ref)=@_;
-
-    # Log4perl logger erzeugen
+    my ($self,$arg_ref)=@_;
+    
     my $logger = get_logger();
 
-    $logger->debug(YAML::Dump($logintarget_ref));
-    
-    my $user = OpenBib::User->instance;
+    # DBI: "update logintarget set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where id = ?"
+    $self->{schema}->resultset('Logintarget')->single(
+        {
+            id => $arg_ref->{id},
+        }   
+    )->update(
+        $arg_ref,
+    );
 
-    $user->update_logintarget({
-        targetid    => $logintarget_ref->{id},
-        hostname    => $logintarget_ref->{hostname},
-        port        => $logintarget_ref->{port},
-        username    => $logintarget_ref->{username},
-        dbname      => $logintarget_ref->{dbname},
-        description => $logintarget_ref->{description},
-        type        => $logintarget_ref->{type}
-    });
+    $logger->debug("Logintarget updated");
     
     return;
 }
 
-sub new_logintarget {
-    my ($self,$logintarget_ref)=@_;
-    
+sub get_id_of_selfreg_logintarget {
+    my ($self)=@_;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $user = OpenBib::User->instance;
+    my $config = OpenBib::Config->instance;    
 
-    $user->new_logintarget({
-        hostname    => $logintarget_ref->{hostname},
-        port        => $logintarget_ref->{port},
-        username    => $logintarget_ref->{username},
-        dbname      => $logintarget_ref->{dbname},
-        description => $logintarget_ref->{description},
-        type        => $logintarget_ref->{type}
-    });
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
+            or $logger->error_die($DBI::errstr);
 
-    return;
+    return undef if (!defined $dbh);
+
+    # DBI: "select id from logintarget where type = 'self'"
+    my $logintarget = $self->{schema}->resultset('Logintarget')->search_rs(
+        {
+            type => 'self',
+        }
+    )->single();
+
+    my $targetid;
+    
+    if ($logintarget){
+        $targetid = $logintarget->id;
+    }
+    
+    return $targetid;
 }
 
 sub get_searchprofile_or_create {

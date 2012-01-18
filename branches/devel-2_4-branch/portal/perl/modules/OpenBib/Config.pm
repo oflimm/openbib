@@ -2301,6 +2301,18 @@ sub get_searchprofile_or_create {
     return $searchprofileid 
 }
 
+sub get_searchprofile {
+    my ($self,$searchprofileid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Simplified lookup via JSON-Representation
+    my $searchprofile = $self->{schema}->resultset('Searchprofile');
+
+    return $searchprofile; 
+}
+
 sub get_databases_of_searchprofile {
     my ($self,$searchprofileid)=@_;
 
@@ -2355,6 +2367,33 @@ sub get_searchprofile_of_orgunit {
     $logger->debug("Databases of Orgunit $orgunitname in Profile $profilename: ".join(',',@databases));
 
     return $self->get_searchprofile_or_create(\@databases);
+}
+
+sub searchprofile_exists {
+    my $self            = shift;
+    my $searchprofileid = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $count = $self->{schema}->resultset('Searchprofile')->search({ id => $searchprofileid})->count;
+    
+    return $count;
+}
+
+sub update_searchprofile {
+    my ($self,$searchprofileid,$own_index) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single({ id => $searchprofileid});
+
+    if ($searchprofile){
+        $searchprofile->update({own_index => $own_index});
+    }
+        
+    return;
 }
 
 1;

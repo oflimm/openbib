@@ -3259,7 +3259,9 @@ sub delete_private_info {
 
     # DBI: "update userinfo set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where id = ?"
     $self->{schema}->resultset('Userinfo')->single(
-        id => $self->{ID},
+        {
+            id => $self->{ID},
+        }
     )->update(
         {
             nachname   => '',

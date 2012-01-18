@@ -839,7 +839,15 @@ sub save_eventlog_to_statisticsdb {
         my $tstamp        = $item->get_column('thiststamp');
         my $content       = $item->get_column('content');
 
-        my $content_ref   = decode_json $content;
+        $logger->debug("Content: $content");
+        
+        my $content_ref   = {} ;
+
+        eval {
+            $content_ref = decode_json $content;
+        };
+
+        next if ($@);
 
         my $sid           = $self->{sid};
         my $isbn          = $content_ref->{isbn};

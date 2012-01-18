@@ -79,6 +79,22 @@
     </ul>
 </li>
 [% END %]
+[% IF active_submenu == "searchprofile" %]
+  <li class="active"><strong>[% msg.maketext("Suchprofile") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_searchprofile_loc') %].html?l=[% lang %]">[% msg.maketext("Suchprofil") %]</a></li>
+[% END %]
+[% IF active_submenu == "searchprofile_record" %]
+<li><span style="padding-left:35px">[% searchprofileid %]</span>
+    <ul>
+[% IF active_subsubmenu == "searchprofile_record" %]
+      <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_searchprofile_loc') %]/[% searchprofileid %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[% END %]
+    </ul>
+</li>
+[% END %]
 [% IF active_submenu == "session" %]
 <li><span>[% msg.maketext("Sessions") %]</span>
     <ul>

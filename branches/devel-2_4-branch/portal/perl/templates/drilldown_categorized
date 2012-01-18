@@ -144,6 +144,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <tr><td>
 [%
     filter_prefix_map = {
+          ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
           ${config.get('searchfield').personstring.prefix} = msg.maketext("Person")
           ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
           ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
@@ -166,7 +167,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
                    END ;
 %]
 [%# USE dumper;dumper.dump(this_filters); dumper.dump(all_filters)%]
-<p><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF this_filters.size > 0 %];[% this_filters.join(';')%][% END %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.facet} %]: [% filter.term %]</p>
+<p><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF this_filters.size > 0 %];[% this_filters.join(';')%][% END %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.facet} %]: [% IF filter.facet == "fdb" %][% dbinfo.dbnames.${filter.term}.short %][% ELSE %][% filter.term %][% END %]</p>
 [%             END %]
 </td></tr>
 </table>
@@ -184,7 +185,11 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <span id="dd_database_[% database %]_toggle"></span>
 <div id="dd_database_[% database %]">
 [% END %]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %][% IF termitem.0 != query.param('db') %];db=[% termitem.0 %][% END %];fs=[% lastquery %][% allfilterstring %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').dbstring.prefix;
+-%]
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% dbinfo.dbnames.${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.8.size > 5 %]
 </div>

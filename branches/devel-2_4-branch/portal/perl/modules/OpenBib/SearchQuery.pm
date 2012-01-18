@@ -61,7 +61,7 @@ sub _new_instance {
     my $config = OpenBib::Config->instance;
 
     my $self = {
-        _databases             => [],
+        _searchprofile         => 0,
         _filter                => [],
         _results               => {},
         _have_searchterms      => 0,
@@ -91,7 +91,7 @@ sub new {
     my $config = OpenBib::Config->instance;
 
     my $self = {
-        _databases             => [],
+        _searchprofile         => 0,
         _filter                => [],
         _results               => {},
         _have_searchterms      => 0,
@@ -113,7 +113,7 @@ sub new {
 }
 
 sub set_from_apache_request {
-    my ($self,$r,$dbases_ref)=@_;
+    my ($self,$r,$searchprofile)=@_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -364,14 +364,10 @@ sub set_from_apache_request {
         };
     }
 
-    my %seen_dbases = ();
-
-    if (defined $dbases_ref){
-        @{$self->{_databases}} = grep { ! $seen_dbases{$_} ++ } @{$dbases_ref};
+    if (defined $searchprofile){
+        $self->{_searchprofile} = $searchprofile;
     }
 
-    # $logger->debug("SearchQuery from Apache-Request ".YAML::Dump($self));
-    
     return $self;
 }
 
@@ -555,10 +551,10 @@ sub set_id {
     $self->{_id}=$id;
 }
 
-sub get_databases {
+sub get_searchprofile {
     my ($self)=@_;
 
-    return $self->{_databases};
+    return $self->{_searchprofile};
 }
 
 sub get_searchfield {
@@ -708,8 +704,8 @@ sub get_spelling_suggestion {
     $speller->set_option('ignore-case','true');
     
     # Kombinierter Datenbank-Handle fuer Xapian generieren, um spaeter damit Term-Frequenzen abfragen zu koennen
-    my $dbh;            
-    foreach my $database (@{$self->{_databases}}) {
+    my $dbh;
+    foreach my $database ($config->get_databases_of_searchprofile($self->{_searchprofile})) {
         $logger->debug("Adding Xapian DB-Object for database $database");
         
         if (!defined $dbh){
@@ -902,7 +898,7 @@ neben der eingegebenen Form vol auch die Normierung norm, der
 zugehörige Bool'sche Verknüpfungsparameter bool sowie die ausgewählten
 Datenbanken speichern.
 
-=item set_from_apache_request($r,$dbases_ref)
+=item set_from_apache_request($r,$searchprofile)
 
 Setzen der Suchbegriffe direkt aus dem Apache-Request samt übergebener
 Suchoptionen und zusätzlicher Normierung der Suchbegriffe.
@@ -927,9 +923,9 @@ Liefert die Treffferzahl der aktuellen Suchanfrage zurück.
 
 Liefert die zugehörige Query-ID zurück.
 
-=item get_databases
+=item get_searchprofile
 
-Liefert die ausgewählten Datenbanken zur Suchanfrage zurück.
+Liefert die ID des Suchprofils zur Suchanfrage zurück.
 
 =item get_searchfield($fieldname)
 

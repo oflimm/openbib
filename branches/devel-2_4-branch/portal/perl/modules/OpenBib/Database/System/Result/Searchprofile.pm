@@ -30,6 +30,11 @@ __PACKAGE__->table("searchprofile");
   data_type: 'text'
   is_nullable: 1
 
+=head2 own_index
+
+  data_type: 'tinyint'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -37,6 +42,8 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
   "databases_as_json",
   { data_type => "text", is_nullable => 1 },
+  "own_index",
+  { data_type => "tinyint", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 

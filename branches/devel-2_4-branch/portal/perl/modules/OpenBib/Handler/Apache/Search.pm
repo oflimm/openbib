@@ -115,7 +115,6 @@ sub show_search {
     
     # CGI Args
     my $serien        = decode_utf8($query->param('serien'))        || 0;
-    my @databases     = ($query->param('db'))?$query->param('db'):();
     my $hitrange      = ($query->param('num' ))?$query->param('num'):50;
     my $page          = ($query->param('page' ))?$query->param('page'):1;
     my $listtype      = ($query->param('lt' ))?$query->param('lt'):"cover";
@@ -162,58 +161,20 @@ sub show_search {
                 content   => 'xapian',
     });
 
-    my $sysprofile = $config->get_profilename_of_view($view);
+    my $sysprofile    = $config->get_profilename_of_view($view);
 
-    @databases       = $self->get_databases();
+    my $searchprofile = $self->get_searchprofile();
 
-    $logger->debug("Searching backend $sb in databases ".join(',',@databases));
+    $logger->debug("Searching backend $sb in searchprofile $searchprofile");
+
+    # Loggen des Recherche-Profils
+    $session->log_event({
+		type      => 23,
+                content   => $searchprofile,
+    });
+
+    $searchquery->set_from_apache_request($r,$searchprofile);
     
-    my $queryalreadyexists = 0;
-
-    if ($queryid){
-        $logger->debug("Query exists for SessionID $session->{ID} -> $queryid: Loading");
-        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
-        @databases = @{$searchquery->get_databases} unless (@databases);
-        
-        $queryalreadyexists = 1;
-    }
-    else {
-        $searchquery->set_from_apache_request($r,\@databases);
-
-        $queryalreadyexists = 0;
-        
-#         # Abspeichern des Query und Generierung der Queryid
-#         if ($session->{ID} ne "-1") {
-#             ($queryalreadyexists,$queryid) = $session->get_queryid({
-#                 databases   => \@databases,
-#                 hitrange    => $hitrange,
-#             });
-#         }
-    }
-
-#     if ($searchindex){
-#         my $redirecturl = "";
-
-#         if ($indextype eq "aut"){
-#             $redirecturl = "$self->param('path_prefix')/$config->{index_loc}/person/$indexterm";
-#         }
-#         if ($indextype eq "kor"){
-#             $redirecturl = "$self->param('path_prefix')/$config->{index_loc}/corporatebody/$indexterm";
-#         }        
-#         if ($indextype eq "swt"){
-#             $redirecturl = "$self->param('path_prefix')/$config->{index_loc}/subject/$indexterm";
-#         }
-#         if ($indextype eq "notation"){
-#             $redirecturl = "$self->param('path_prefix')/$config->{index_loc}/classification/$indexterm";
-#         }
-
-#         $logger->debug("Redirecting to $redirecturl");
-
-#         $self->header_props( uri => $redirecturl);
-#         $self->header_type('redirect');
-#         return '';
-#     }
-
     # BEGIN Index
     ####################################################################
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
@@ -258,9 +219,12 @@ sub show_search {
             return Apache2::Const::OK;
         }
 
-        if ($#databases > 0 && length($contentreq) < 3) {
-            $self->print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."));
-            return Apache2::Const::OK;
+        if (length($contentreq) < 3) {
+            my @databases = $config->get_databases_of_searchprofile($searchprofile);
+            if ($#databases > 0){
+                $self->print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."));
+                return Apache2::Const::OK;
+            }
         }
 
         my %index=();
@@ -269,7 +233,7 @@ sub show_search {
 
         my $atime=new Benchmark;
 
-        foreach my $database (@databases) {
+        foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
             my $dbh
                 = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                     or $logger->error_die($DBI::errstr);
@@ -332,7 +296,7 @@ sub show_search {
         my $hits=$#sortedindex+1;
 
         my $databasestring="";
-        foreach my $database (@databases){
+        foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
             $databasestring.=";database=$database";
         }
         
@@ -527,10 +491,10 @@ sub show_search {
             my $dbh;
             my $nav;
 
-            my $profileindex_path = $config->{xapian_index_base_path}."/joined/$sysprofile/$profile";
+            my $profileindex_path = $config->{xapian_index_base_path}."/joined/$searchprofile";
 
-            if ($profile && -d $profileindex_path){
-                $logger->debug("Adding Xapian DB-Object for profile $profile in Systemprofile $sysprofile");
+            if (-d $profileindex_path){
+                $logger->debug("Adding Xapian DB-Object for profile $searchprofile");
 
                 eval {
                     $dbh = new Search::Xapian::Database ( $profileindex_path ) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
@@ -542,7 +506,7 @@ sub show_search {
                 
             }
             else {
-                foreach my $database (@databases) {
+                foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
                     $logger->debug("Adding Xapian DB-Object for database $database");
                     
                     if (!defined $dbh){
@@ -730,7 +694,7 @@ sub show_search {
         
         my $atime=new Benchmark;
         
-        foreach my $database (@databases) {
+        foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
             
             # Trefferliste
             my $recordlist;
@@ -1080,51 +1044,26 @@ sub show_search {
         $session->updatelastresultset(\@resultset);
     }
 
-    # Neuer Query
-#    if (!$queryalreadyexists) {
-
-    unless ($queryid){
+    # Jetzt update der Trefferinformationen, wenn keine ID
+    $searchquery->save({sessionID => $session->{ID}}); 
     
-        # Jetzt update der Trefferinformationen, wenn keine ID
-        $searchquery->save({sessionID => $session->{ID}}); 
-
-        # Wurde in allen Katalogen recherchiert?
-        
-        my $alldbcount = $config->get_number_of_dbs();
-        
-        my $searchquery_log_ref = $searchquery->get_searchquery;
-        
-        if ($#databases+1 == $alldbcount){
-            $searchquery_log_ref->{alldbases} = 1;
-            $logger->debug("Alle Datenbanken ausgewaehlt");
-        }
-        else {
-            $searchquery_log_ref->{dbases} = \@databases;
-        }
-        
-        $searchquery_log_ref->{hits}   = $gesamttreffer;
-        
-        # Loggen des Queries
-        $session->log_event({
-            type      => 1,
-            content   => $searchquery_log_ref,
-            serialize => 1,
-        });
-        
-#         $session->set_hits_of_query({
-#             queryid => $queryid,
-#             hits    => $gesamttreffer,
-#         });
-        
-#         $session->set_all_searchresults({
-#             queryid  => $queryid,
-#             results  => \%trefferpage,
-#             dbhits   => \%dbhits,
-#             hitrange => $hitrange,
-#         });# unless ($joindbs);
-
-    }
+    # Wurde in allen Katalogen recherchiert?
     
+    my $alldbcount = $config->get_number_of_dbs();
+    
+    my $searchquery_log_ref = $searchquery->get_searchquery;
+        
+    $searchquery_log_ref->{searchprofile} = $searchprofile;
+    
+    $searchquery_log_ref->{hits}   = $gesamttreffer;
+    
+    # Loggen des Queries
+    $session->log_event({
+        type      => 1,
+        content   => $searchquery_log_ref,
+        serialize => 1,
+    });
+
     return Apache2::Const::OK;
 }
 
@@ -1359,7 +1298,7 @@ sub show_index {
 
 }
 
-sub get_databases {
+sub get_searchprofile {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -1400,17 +1339,6 @@ sub get_databases {
 
     my $content_type = $config->{content_type_map_rev}->{$representation};
 
-    my $is_orgunit  = 0;
-  ORGUNIT_SEARCH:
-    foreach my $orgunit_ref ($orgunits_ref->all){
-        if ($orgunit_ref->orgunitname eq $profile){
-            $is_orgunit=1;
-            last ORGUNIT_SEARCH;
-        }
-    }
-    
-    $profile="" if (!$is_orgunit && $profile ne "dbchoice" && !$profile=~/^user/ && $profile ne "alldbs");
-
     # BEGIN DB-Bestimmung
     ####################################################################
     # Bestimmung der Datenbanken, in denen gesucht werden soll
@@ -1429,42 +1357,29 @@ sub get_databases {
         # Neue Datenbankauswahl ist voreingestellt
         $session->set_profile('dbchoice');
     }
+    # Wenn ein Suchprofil uebergeben wird, dann wird nur dort gesucht
+    elsif ($profile) {
+        $logger->debug("Selecting all databases for profile $profile");
+        @databases = $config->get_databases_of_searchprofile($profile);
+        $session->set_profile($profile);
+    }
+    # Sonst wird in der Datenbankvorauswahl der Sicht
+    # recherchiert.    
     else {
-        # Wenn eine Queryid uebergeben wurde, dann werden *immer* die damit
-        # assoziierten Datenbanken verwendet
-        if ($queryid){
-            my $databases_ref = $searchquery->get_databases;
-            @databases = @{$databases_ref};
-        }
-        # Wenn nur ein View angegeben wird, aber keine Submit-Funktion (s.u.),
-        # z.B. wenn direkt von extern fuer einen View eine Recherche gestartet werden soll,
-        # dann wird in den Datenbanken des View recherchiert
-        elsif ($view && !($profile||$searchindex||$verfindex||$korindex||$swtindex||$notindex)){
-            $logger->debug("Selecting databases of view");
-            @databases = $config->get_dbs_of_view($view);
-        }
-        
-        else {
-            if ($profile) {
-                $logger->debug("Selecting all databases for profile $profile");
-                @databases = $config->get_databases_of_searchprofile($profile);
-                $session->set_profile($profile);
-            }
-            else {
-                $logger->debug("Selecting all active databases");
-                @databases = $config->get_active_databases();
-            }
-        }
+        $logger->debug("Selecting databases of view");
+        @databases = $config->get_dbs_of_view($view);
     }
 
     # Dublette Datenbanken filtern
     my %seen_dbases = ();
     @databases = grep { ! $seen_dbases{$_} ++ } @databases;
 
+    my $searchprofile = ($profile)?$profile:$config->get_searchprofile_or_create(\@databases);
+    
     $logger->debug("Database List: ".YAML::Dump(\@databases));
-    return @databases;
+    $logger->debug("Searchprofie : $searchprofile");
+    return $searchprofile;
 }
-
 
 sub gen_cloud {
     my ($arg_ref) = @_;

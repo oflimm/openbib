@@ -538,7 +538,7 @@ if ($thistmpdbpath && $thistmp2dbpath){
 $logger->info("Aktiviere temporaeren Suchindex");
 
 if ($thisdbpath && $thistmp2dbpath){
-    system("rm $thisdbpath/* ; rmdir $thisdbpath ; mv  $thistmp2dbpath $thisdbpath; rm $thistmpdbpath/* rmdir $thistmpdbpath/");
+    system("rm $thisdbpath/* ; rmdir $thisdbpath ; mv  $thistmp2dbpath $thisdbpath ; rm $thistmpdbpath/* ; rmdir $thistmpdbpath/");
 }
 
 my $btime      = new Benchmark;

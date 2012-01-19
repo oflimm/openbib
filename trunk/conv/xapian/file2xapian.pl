@@ -109,9 +109,14 @@ my $dbbasedir=$config->{xapian_index_base_path};
 
 my $thisdbpath="$dbbasedir/$database";
 my $thistmpdbpath="$dbbasedir/$database.temp";
+my $thistmp2dbpath="$dbbasedir/$database.temp2";
 
 if (! -d "$thistmpdbpath"){
     mkdir "$thistmpdbpath";
+}
+
+if (! -d "$thistmp2dbpath"){
+    mkdir "$thistmp2dbpath";
 }
 
 $logger->info("Loeschung des alten temporaeren Index fuer Datenbank $database");
@@ -524,10 +529,16 @@ my $atime = new Benchmark;
     
 }
 
+$logger->info("Optimiere temporaeren Suchindex");
+
+if ($thistmpdbpath && $thistmp2dbpath){
+    system("/usr/bin/xapian-compact $thistmpdbpath $thistmp2dbpath");
+}
+
 $logger->info("Aktiviere temporaeren Suchindex");
 
-if ($thisdbpath && $thistmpdbpath){
-    system("rm $thisdbpath/* ; rmdir $thisdbpath ; mv  $thistmpdbpath $thisdbpath");
+if ($thisdbpath && $thistmp2dbpath){
+    system("rm $thisdbpath/* ; rmdir $thisdbpath ; mv  $thistmp2dbpath $thisdbpath; rm $thistmpdbpath/* rmdir $thistmpdbpath/");
 }
 
 my $btime      = new Benchmark;

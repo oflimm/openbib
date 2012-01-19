@@ -444,6 +444,10 @@ sub get_ranking_of_event {
 
     my $limit        = exists $arg_ref->{limit}
         ? $arg_ref->{limit}              : '';
+
+    my $sortorder    = exists $arg_ref->{sortorder}
+        ? $arg_ref->{sortorder}          : 'up';
+
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -472,7 +476,7 @@ sub get_ranking_of_event {
     if ($limit){
         $attribute_ref->{rows} = $limit;
     }
-
+    
     $logger->debug(YAML::Dump($where_ref)." - ".YAML::Dump($attribute_ref));
 
     my @ranking=();
@@ -489,8 +493,16 @@ sub get_ranking_of_event {
                        };
     }
 
-    my @sortedranking = sort {$b->{number} cmp $a->{number}} @ranking;
+    
+    my @sortedranking = ();
 
+    if ($sortorder eq "up"){
+        @sortedranking = sort {$b->{number} cmp $a->{number}} @ranking;
+    }
+    else {
+        @sortedranking = sort {$a->{number} cmp $b->{number}} @ranking;
+    }
+    
     $logger->debug(YAML::Dump(\@sortedranking));
 
     return @sortedranking;

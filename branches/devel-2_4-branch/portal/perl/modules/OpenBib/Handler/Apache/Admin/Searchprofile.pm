@@ -91,7 +91,11 @@ sub show_collection {
     my $view           = $self->param('view');
 
     # Shared Args
+    my $query          = $self->query();
     my $config         = $self->param('config');
+
+    # CGI Args
+    my $year           = $query->param('year');
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -103,6 +107,7 @@ sub show_collection {
     my $ttdata={
         dbinfo     => $dbinfotable,
         statistics => $statistics,
+        year       => $year,
     };
     
     $self->print_page($config->{tt_admin_searchprofile_tname},$ttdata);

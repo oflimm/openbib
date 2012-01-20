@@ -118,7 +118,7 @@ sub show_record_form {
 
     # Shared Args
     my $config         = $self->param('config');
-    my $usre           = $self->param('user');
+    my $user           = $self->param('user');
 
     if (!$self->is_authenticated('admin')){
         return;

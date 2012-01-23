@@ -52,6 +52,8 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::EZB;
+use OpenBib::DBIS;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -125,9 +127,13 @@ sub show_record_form {
     }
 
     my $subject_ref = $user->get_subject({ id => $subjectid});
+    my $ezb         = OpenBib::EZB->new;
+    my $dbis        = OpenBib::DBIS->new;
     
     my $ttdata={
         subject    => $subject_ref,
+        ezb        => $ezb,
+        dbis       => $dbis,
     };
     
     $self->print_page($config->{tt_admin_subject_record_edit_tname},$ttdata);

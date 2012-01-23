@@ -2721,7 +2721,7 @@ sub set_classifications_of_subject {
             subjectid => $subjectid,
             type      => $type,
         }
-    )->delete_all;
+    )->delete;
 
     foreach my $classification (@{$classifications_ref}){
         $logger->debug("Adding Classification $classification of type $type");
@@ -4179,7 +4179,8 @@ sub update_subject {
         }
     );
 
-    if (@{$classifications_ref}){       
+    # Angabe von type bedingt update der entsprechenden Klassifikationen
+    if ($type){       
         $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
 
         $self->set_classifications_of_subject({

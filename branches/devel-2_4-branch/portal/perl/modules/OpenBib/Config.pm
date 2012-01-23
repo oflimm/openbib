@@ -44,9 +44,6 @@ use YAML::Syck;
 
 use OpenBib::Database::DBI;
 use OpenBib::Database::System;
-#use OpenBib::EZB;
-#use OpenBib::DBIS;
-#use OpenBib::Enrichment;
 
 sub new {
     my $class = shift;
@@ -1468,24 +1465,6 @@ sub load_bk {
     $YAML::Syck::ImplicitUnicode = 1;
 
     return YAML::Syck::LoadFile("/opt/openbib/conf/bk.yml");
-}
-
-sub get_enrichmnt_object {
-    my ($self) = @_;
-
-    return OpenBib::Enrichment->instance;
-}
-
-sub get_ezb_object {
-    my ($self) = @_;
-
-    return OpenBib::EZB->new;
-}
-
-sub get_dbis_object {
-    my ($self) = @_;
-
-    return OpenBib::DBIS->new;
 }
 
 sub get_geoposition {

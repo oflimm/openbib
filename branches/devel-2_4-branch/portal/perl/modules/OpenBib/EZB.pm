@@ -36,7 +36,7 @@ use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use DBI;
 use LWP;
-use Encode 'decode_utf8';
+use Encode qw(decode decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use XML::LibXML;
@@ -95,7 +95,7 @@ sub get_subjects {
     
     $logger->debug("Request: $url");
 
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
 
     $logger->debug("Response: $response");
     
@@ -106,12 +106,12 @@ sub get_subjects {
     my $maxcount=0;
     my $mincount=999999999;
 
-    foreach my $subject_node ($root->findnodes('/ezb_page/ezb_subject_list/subject')) {        
+    foreach my $subject_node ($root->findnodes('/ezb_page/ezb_subject_list/subject')) {
         my $singlesubject_ref = {} ;
 
         $singlesubject_ref->{notation}   = $subject_node->findvalue('@notation');
         $singlesubject_ref->{count}      = $subject_node->findvalue('@journalcount');
-        $singlesubject_ref->{desc}       = decode_utf8($subject_node->textContent());
+        $singlesubject_ref->{desc}       = $subject_node->textContent();
 
         if ($maxcount < $singlesubject_ref->{count}){
             $maxcount = $singlesubject_ref->{count};
@@ -160,7 +160,7 @@ sub get_journals {
     
     $logger->debug("Request: $url");
 
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
 
     $logger->debug("Response: $response");
     
@@ -289,7 +289,7 @@ sub search_journals {
     
     $logger->debug("Request: $url");
 
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
 
     $logger->debug("Response: $response");
     
@@ -407,7 +407,7 @@ sub get_journalinfo {
     
     $logger->debug("Request: $url");
 
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
 
     $logger->debug("Response: $response");
     
@@ -486,7 +486,7 @@ sub get_journalreadme {
 
     $logger->debug("Request: $url");
 
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
 
     $logger->debug("Response: $response");
 

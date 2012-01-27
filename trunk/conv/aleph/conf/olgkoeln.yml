@@ -277,6 +277,9 @@ title:
     '451 ':            # 1. gesamttitel in vorlageform
         'newcat': '0451' # 1. gesamttitel in vorlageform
         'mult': 1
+    '453 ':            # 1. gesamttitel in vorlageform
+        'newcat': '0004' # 1. gesamttitel in vorlageform
+        'mult': 1
     '507 ':            # Titelangaben
         'newcat': '0507' # Titelangaben
         'mult': 1

@@ -40,7 +40,7 @@ enrichmntdbpasswd: StrengGeheim
 statisticsdbimodule: mysql
 statisticsdbhost: localhost
 statisticsdbport: 3306
-statisticsdbname: openbib_statistics
+statisticsdbname: statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
@@ -93,6 +93,7 @@ admin_view_loc: admin/view
 admin_library_loc: admin/library
 admin_profile_loc: admin/profile
 admin_session_loc: admin/session
+admin_searchprofile_loc: admin/searchprofile
 admin_user_loc: admin/user
 admin_statistic_loc: admin/statistic
 admin_server_loc: admin/server
@@ -1613,6 +1614,55 @@ dispatch_rules:
      rule: '/portal/:view/admin/view/:viewid/rss[put]'
      runmode: 'update_record'
 
+  - # admin_searchprofile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile.html[get]'
+     runmode: 'show_collection'
+  - # admin_searchprofile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile.json[get]'
+     runmode: 'show_collection'
+  - # admin_searchprofile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile.rdf[get]'
+     runmode: 'show_collection'
+  - # admin_searchprofile_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile[get]'
+     runmode: 'show_collection'
+#  - # admin_searchprofile_loc: Collection show from
+#     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+#     rule: '/portal/:view/admin/searchprofile/new[get]'
+#     runmode: 'show_collection_form'
+  - # admin_searchprofile_loc: Creat Record in Collection
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile[post]'
+     runmode: 'create_record'
+  - # admin_searchprofile_loc: Show Record
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile/:searchprofileid[get]'
+     runmode: 'show_record'
+  - # admin_searchprofile_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile/:searchprofileid/edit[get]'
+     runmode: 'show_record_form'
+  - # admin_searchprofile_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile/:searchprofileid/edit.html[get]'
+     runmode: 'show_record_form'
+  - # admin_searchprofile_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile/:searchprofileid[post]'
+     runmode: 'update_record'
+  - # admin_searchprofile_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile/:searchprofileid[put]'
+     runmode: 'update_record'
+  - # admin_searchprofile_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
+     rule: '/portal/:view/admin/searchprofile/:searchprofileid[delete]'
+     runmode: 'delete_record'
+
   - # admin_session_loc: Search form for archived sessions
      module: 'OpenBib::Handler::Apache::Admin::Session'
      rule: '/portal/:view/admin/session/archived/search/form[get]'
@@ -2068,6 +2118,9 @@ searchfield:
   'yearstring':
      'prefix': 'fyear'
      'type': 'string'
+  'dbstring':
+     'prefix': 'fdb'
+     'type': 'string'
   'bibkey':
      'prefix': 'bkey'
      'type': 'string'
@@ -2168,7 +2221,7 @@ xapian_sorttype_value:
   'popularity': 26
 
 # Standard-Eingabefelder fuer die Recherche
-default_fieldchoice:
+default_searchfields:
   'freesearch': 1
   'title': 1
   'person': 1
@@ -2246,6 +2299,7 @@ tt_admin_editlogintarget_tname: admin_editlogintarget
 tt_admin_editsession_tname: admin_editsession
 tt_admin_edituser_tname: admin_edituser
 tt_admin_editview_rss_tname: admin_editview_rss
+tt_admin_view_record_edit_tname: admin_view_record_edit
 tt_admin_searchuser_tname: admin_searchuser
 
 tt_admin_authentication_tname: admin_authentication
@@ -2268,6 +2322,9 @@ tt_admin_orgunit_tname: admin_orgunit
 tt_admin_orgunit_record_tname: admin_orgunit_record
 tt_admin_orgunit_record_edit_tname: admin_orgunit_record_edit
 tt_admin_orgunit_record_delete_confirm_tname: admin_orgunit_record_delete_confirm
+tt_admin_searchprofile_tname: admin_searchprofile
+tt_admin_searchprofile_record_tname: admin_searchprofile_record
+tt_admin_searchprofile_record_edit_tname: admin_searchprofile_record_edit
 tt_admin_view_tname: admin_view
 tt_admin_view_record_tname: admin_view_record
 tt_admin_view_record_edit_tname: admin_view_record_edit

@@ -440,7 +440,7 @@ SQL1
 
             my $count = $recordlist->get_size();
             my $indexfile = $acq_config->{document_root_path}.$acq_config->{this_uri}."/$branch/$type/".$year."_".$month;
-            unlink $indexfile."_*.idx";
+            system("rm ".$indexfile."_*.idx");
             system("touch ".$indexfile."_".$count.".idx");
         }
         
@@ -490,7 +490,7 @@ SQL1
         
         my $count = $recordlist_all_types->get_size();
         my $indexfile = $acq_config->{document_root_path}.$acq_config->{this_uri}."/$branch/".$year."_".$month;
-        unlink $indexfile."_*.idx";
+        system("rm ".$indexfile."_*.idx");
         system("touch ".$indexfile."_".$count.".idx");
 
     }

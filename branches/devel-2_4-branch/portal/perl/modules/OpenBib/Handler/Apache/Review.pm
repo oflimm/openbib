@@ -44,6 +44,7 @@ use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
+use URI::Escape;
 
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
@@ -481,13 +482,9 @@ sub show_record_form {
 
     if (! $user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
         
-        # Return-URL in der Session abspeichern
-        
-        $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         
         return Apache2::Const::OK;
     }
@@ -603,13 +600,9 @@ sub show_record_negotiate {
 
     if (! $user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
         
-        # Return-URL in der Session abspeichern
-        
-        $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         
         return Apache2::Const::OK;
     }
@@ -728,13 +721,9 @@ sub show_record_negotiatex {
 
     if (! $user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
         
-        # Return-URL in der Session abspeichern
-        
-        $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         
         return Apache2::Const::OK;
     }

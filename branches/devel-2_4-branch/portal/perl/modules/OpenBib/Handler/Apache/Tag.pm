@@ -40,6 +40,7 @@ use Apache2::Request ();
 use Apache2::SubRequest (); # internal_redirect
 use Apache2::URI ();
 use APR::URI ();
+use URI::Escape;
 
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
@@ -130,13 +131,9 @@ sub show_collection {
 
     unless($user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
 
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
 
         return Apache2::Const::OK;
     }
@@ -349,13 +346,9 @@ sub show_collection_form {
 
     unless($user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
 
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
 
         return Apache2::Const::OK;
     }
@@ -453,13 +446,9 @@ sub create_record {
 
     unless($user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
 
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
 
         return Apache2::Const::OK;
     }
@@ -561,13 +550,9 @@ sub delete_record {
 
     unless($user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
 
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
 
         return Apache2::Const::OK;
     }
@@ -674,13 +659,9 @@ sub update_record {
 
     unless($user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
 
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
 
         return Apache2::Const::OK;
     }
@@ -827,13 +808,9 @@ sub showyyy {
 
     unless($user->{ID} || $searchtitoftag){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
 
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
 
         return Apache2::Const::OK;
     }
@@ -1080,13 +1057,9 @@ sub showzzz {
 
     unless($user->{ID} || $searchtitoftag){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
 
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
 
         return Apache2::Const::OK;
     }

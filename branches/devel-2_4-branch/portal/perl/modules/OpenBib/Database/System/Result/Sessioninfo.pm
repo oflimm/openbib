@@ -56,11 +56,6 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'text'
   is_nullable: 1
 
-=head2 returnurl
-
-  data_type: 'text'
-  is_nullable: 1
-
 =head2 searchform
 
   data_type: 'text'
@@ -102,8 +97,6 @@ __PACKAGE__->add_columns(
   "userpassword",
   { data_type => "text", is_nullable => 1 },
   "queryoptions",
-  { data_type => "text", is_nullable => 1 },
-  "returnurl",
   { data_type => "text", is_nullable => 1 },
   "searchform",
   { data_type => "text", is_nullable => 1 },

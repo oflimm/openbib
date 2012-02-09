@@ -226,7 +226,6 @@ CREATE TABLE sessioninfo (
  userpassword  TEXT,
 
  queryoptions  TEXT,
- returnurl     TEXT,
 
  searchform     TEXT,
  searchprofile  TEXT,

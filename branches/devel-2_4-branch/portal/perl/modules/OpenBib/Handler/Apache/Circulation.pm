@@ -48,6 +48,7 @@ use POSIX;
 use SOAP::Lite;
 use Socket;
 use Template;
+use URI::Escape;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -110,17 +111,13 @@ sub show {
 
     unless($user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
 
         if ($validtarget){
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget;redirect_to=$return_uri");
         }
         else {
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
         }
         return Apache2::Const::OK;
     }
@@ -306,13 +303,9 @@ sub show {
 
         unless($sessionlogintarget eq $validtarget){
             # Aufruf-URL
-            my $return_url = $r->parsed_uri->unparse;
+            my $return_uri = uri_escape($r->parsed_uri->unparse);
             
-            # Return-URL in der Session abspeichern
-            
-            $session->set_returnurl($return_url);
-            
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget;redirect_to=$return_uri");
             
             return Apache2::Const::OK;
         }
@@ -357,13 +350,9 @@ sub show {
 
         unless($sessionlogintarget eq $validtarget){
             # Aufruf-URL
-            my $return_url = $r->parsed_uri->unparse;
+            my $return_uri = uri_escape($r->parsed_uri->unparse);
             
-            # Return-URL in der Session abspeichern
-            
-            $session->set_returnurl($return_url);
-            
-            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("http://$config->{servername}$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget;redirect_to=$return_uri");
             
             return Apache2::Const::OK;
         }
@@ -404,13 +393,9 @@ sub show {
 
         unless($sessionlogintarget eq $validtarget){
             # Aufruf-URL
-            my $return_url = $r->parsed_uri->unparse;
+            my $return_uri = uri_escape($r->parsed_uri->unparse);
             
-            # Return-URL in der Session abspeichern
-            
-            $session->set_returnurl($return_url);
-            
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget;redirect_to=$return_uri");
             
             return Apache2::Const::OK;
         }
@@ -455,13 +440,9 @@ sub show {
 
         unless($sessionlogintarget eq $validtarget){
             # Aufruf-URL
-            my $return_url = $r->parsed_uri->unparse;
+            my $return_uri = uri_escape($r->parsed_uri->unparse);
             
-            # Return-URL in der Session abspeichern
-            
-            $session->set_returnurl($return_url);
-            
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget;redirect_to=$return_uri");
             
             return Apache2::Const::OK;
         }

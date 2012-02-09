@@ -45,6 +45,7 @@ use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
+use URI::Escape;
 use XML::RSS;
 
 use OpenBib::Search::Util;
@@ -555,13 +556,9 @@ sub show_record {
 
         if (! $user->{ID}){
             # Aufruf-URL
-            my $return_url = $r->parsed_uri->unparse;
+            my $return_uri = uri_escape($r->parsed_uri->unparse);
             
-            # Return-URL in der Session abspeichern
-            
-            $session->set_returnurl($return_url);
-            
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
             
             return Apache2::Const::OK;
         }
@@ -767,13 +764,9 @@ sub create_record {
 
     if (! $user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri = uri_escape($r->parsed_uri->unparse);
         
-        # Return-URL in der Session abspeichern
-        
-        $session->set_returnurl($return_url);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         
         return Apache2::Const::OK;
     }

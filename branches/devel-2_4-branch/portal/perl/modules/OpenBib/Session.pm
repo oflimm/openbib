@@ -986,18 +986,6 @@ sub log_event {
     return;
 }
 
-sub set_returnurl {
-    my ($self,$returnurl)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # DBI: "update session set returnurl=? where sessionid = ?"
-    $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->update({ returnurl => $returnurl });
-
-    return;
-}
-
 sub get_queryid {
     my ($self,$arg_ref)=@_;
 
@@ -1211,18 +1199,6 @@ sub get_searchresult {
     $logger->debug("Suchergebnis: ".YAML::Dump($recordlist));
 
     return $recordlist;
-}
-
-sub get_returnurl {
-    my ($self)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # DBI: "select returnurl from session where sessionid = ?"
-    my $returnurl = $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->returnurl;
-
-    return $returnurl;
 }
 
 sub get_db_histogram_of_query {
@@ -1608,11 +1584,6 @@ Speichert das Event des Typs $type mit dem Inhalt $content in der
 aktuellen Session. Handelt es sich bei $content um eine Referenz einer
 komplexen Datenstruktur, dann muss zusätzlich serialize gesetzt werden.
 
-=item set_returnurl($returnurl)
-
-Speichert den URL $returnurl in der Session, auf den nach einem
-erfolgreichen Anmeldevorgang gesprungen wird.
-
 =item get_query_id({ databases => $databases_ref, hitrange => $hitrange})
 
 Liefert zur letzten Suchanfrage über die Datenbanken $databases_ref
@@ -1641,10 +1612,6 @@ Liefert das Suchergebnis $recordlist als Objekt
 OpenBib::RecordList::Title zur Recherche mit der Query-ID $queryid in
 der Datenbank $database und der aktuellen Schrittweite $hitrange
 bzw. dem Offset $offset in der aktuellen Session zurück.
-
-=item get_returnurl
-
-Liefert den in der Session abgespeichert Rücksprung-URL.
 
 =item get_db_histogram_of_query($queryid)
 

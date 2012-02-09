@@ -48,6 +48,8 @@
 <div class="left_side">
 <form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
 
+<input type="hidden" name="redirect_to" value="[% redirect_to %]">
+
 [%- FOREACH target IN logintargets -%]
 [%-   IF target.type == 'self' -%]
 <input type="hidden" name="targetid" value="[% target.id %]">

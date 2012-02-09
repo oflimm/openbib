@@ -96,15 +96,14 @@ sub show_form {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $action    = ($query->param('action'))?$query->param('action'):'none';
-    my $code      = ($query->param('code'))?$query->param('code'):'1';
-    my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
+    my $action      = ($query->param('action'))?$query->param('action'):'none';
+    my $code        = ($query->param('code'))?$query->param('code'):'1';
+    my $targetid    = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
-    my $type      = ($query->param('type'))?$query->param('type'):'';
-    my $username = ($query->param('username'))?$query->param('username'):'';
-    my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
-
-    my $return_url = $session->get_returnurl();
+    my $type        = ($query->param('type'))?$query->param('type'):'';
+    my $username    = ($query->param('username'))?$query->param('username'):'';
+    my $password    = decode_utf8($query->param('password')) || $query->param('password') || '';
+    my $redirect_to = decode_utf8($query->param('redirect_to')); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
 
     # Wenn die Session schon authentifiziert ist, dann wird
     # wird in die Benutzereinstellungen gesprungen
@@ -124,7 +123,7 @@ sub show_form {
         logintargets => $logintargets_ref,
         validtarget  => $validtarget,
         username     => $username,
-        return_url   => $return_url,
+        redirect_to  => $redirect_to,
     };
     
     my $templatename = ($type)?"tt_login_".$type."_tname":"tt_login_tname";
@@ -154,16 +153,15 @@ sub authenticate {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
+    
     # CGI Args
-    my $code      = ($query->param('code'))?$query->param('code'):'1';
-    my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
+    my $code        = ($query->param('code'))?$query->param('code'):'1';
+    my $targetid    = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
-    my $type      = ($query->param('type'))?$query->param('type'):'';
-    my $username = ($query->param('username'))?$query->param('username'):'';
-    my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
-
-    my $return_url = $session->get_returnurl();
+    my $type        = ($query->param('type'))?$query->param('type'):'';
+    my $username    = ($query->param('username'))?$query->param('username'):'';
+    my $password    = decode_utf8($query->param('password')) || $query->param('password') || '';
+    my $redirect_to = decode_utf8($query->param('redirect_to'));
 
     # Wenn die Session schon authentifiziert ist, dann wird
     # wird in die Benutzereinstellungen gesprungen
@@ -296,10 +294,8 @@ sub authenticate {
     }
     
     # Wenn Return_url existiert, dann wird im Body-Frame dorthin gesprungen
-    if ($return_url){
-        $redirecturl=$return_url;
-        
-        $session->set_returnurl('');
+    if ($redirect_to){
+        $redirecturl=$redirect_to;
     }
     
     # Fehlerbehandlung
@@ -345,8 +341,6 @@ sub failure {
     my $type      = ($query->param('type'))?$query->param('type'):'';
     my $username = ($query->param('username'))?$query->param('username'):'';
     my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
-
-    my $return_url = $session->get_returnurl();
 
     # Wenn die Session schon authentifiziert ist, dann wird
     # wird in die Benutzereinstellungen gesprungen

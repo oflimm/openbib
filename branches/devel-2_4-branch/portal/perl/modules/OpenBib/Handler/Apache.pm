@@ -350,6 +350,8 @@ sub is_authenticated {
     my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
+    my $path           = $self->param('path');
+    my $servername     = $self->param('servername');
     my $msg            = $self->param('msg');
 
     $logger->debug("Args: Role: $role UserID: $userid");
@@ -357,13 +359,11 @@ sub is_authenticated {
     
     if (! $user->{ID}){
         # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
+        my $return_uri  = uri_escape($r->parsed_uri->path);
         
         # Return-URL in der Session abspeichern
         
-        $session->set_returnurl($return_url);
-
-        return $self->redirect("$path_prefix/$config->{login_loc}",'303 See Other');
+        return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",'303 See Other');
     }
 
     if ($role eq "admin" && $user->is_admin){

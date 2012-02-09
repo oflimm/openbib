@@ -41,6 +41,7 @@ use Apache2::RequestIO (); # print, rflush
 use Apache2::SubRequest (); # internal_redirect
 use Apache2::URI ();
 use APR::URI ();
+use URI::Escape;
 
 use DBI;
 use Encode 'decode_utf8';
@@ -137,31 +138,17 @@ sub show_collection {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
+
     if (! $user->is_authenticated && $do_addlitlist) {
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
-        $logger->debug("Nicht authentifizierter Nutzer versucht Literaturliste anzulegen");
+        $logger->debug("Nicht authentifizierter Nutzer versucht Literaturlisten anzulegen");
 
         $self->return_loginurl;
         return;
     }
     elsif (! $user->is_authenticated && $do_addtags) {
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
         $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
 
         $self->return_loginurl;
-
         return;
     }
 
@@ -486,13 +473,6 @@ sub create_record {
     $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
     
     if (! $user->is_authenticated && $do_addlitlist) {
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
         $logger->debug("Nicht authentifizierter Nutzer versucht Literaturliste anzulegen");
 
         $self->return_loginurl;
@@ -500,13 +480,6 @@ sub create_record {
         return;
     }
     elsif (! $user->is_authenticated && $do_addtags) {
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
         $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
 
         $self->return_loginurl;
@@ -1081,18 +1054,21 @@ sub return_baseurl {
 }
 
 sub return_loginurl {
-    my $self = shift;
+    my $self       = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
+    my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
     my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{login_loc}.html";
+    my $return_uri  = uri_escape($r->parsed_uri->unparse);
+
+    my $new_location = "$path_prefix/$config->{login_loc}.html?redirect_to=$return_uri";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

@@ -233,6 +233,8 @@ sub filterchars {
   $content=~s/\x{cc}\x{86}//g;
   $content=~s/\x{cc}\x{87}//g;  
   $content=~s/\x{cc}\x{a7}//g;
+  $content=~s/\x{cc}\x{95}//g;
+  
   $content=~s/\x{c4}\x{99}/e/g;
   $content=~s/\x{c4}\x{90}/D/g;
   $content=~s/\x{c4}\x{85}/\\c{a}/g;

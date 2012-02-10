@@ -1762,7 +1762,7 @@ sub get_reviews_of_tit {
 
     foreach my $review ($reviews->all){
         my $userid    = $review->userid;
-        my $username = $self->get_username_of_userid($userid);
+        my $username = $self->get_username_for_userid($userid);
         my $nickname  = $review->nickname;
         my $title     = $review->title;
         my $review    = $review->reviewtext;
@@ -1873,7 +1873,7 @@ sub get_review_of_user {
         $logger->debug("Found Review $id for User $username");
 
         my $userid     = $review->userid;
-        my $username   = $self->get_username_of_userid($userid);
+        my $username   = $self->get_username_for_userid($userid);
         my $nickname   = $review->nickname;
         my $title      = $review->title;
         my $reviewtext = $review->reviewtext;
@@ -1945,7 +1945,7 @@ sub get_reviews {
     
     foreach my $review ($reviews->all){
         my $userid     = $review->userid;
-        my $username   = $self->get_username_of_userid($userid);
+        my $username   = $self->get_username_for_userid($userid);
         my $nickname   = $review->nickname;
         my $title      = $review->title;
         my $reviewtext = $review->reviewtext;
@@ -3296,7 +3296,9 @@ sub set_private_info {
     # DBI: "update userinfo set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where username = ?"
     #      $userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$username
     $self->{schema}->resultset('Userinfo')->single(
-        id => $self->get_username_of_userid($self->{ID}),
+        {
+            id => $self->get_userid_for_username($username),
+        }
     )->update(
         {
             nachname   => $userinfo_ref->{'Nachname'},

@@ -2091,14 +2091,11 @@ sub get_logintarget_by_id {
     my $logger = get_logger();
 
     # DBI: "select * from logintarget where targetid = ?"
-    my $logintarget = $self->{schema}->resultset('Logintarget')->search_rs(
+    my $logintarget = $self->{schema}->resultset('Logintarget')->single(
         {
             id => $targetid,
         },
-        {
-            order_by => ['type DESC','description']
-        }
-    )->single;
+    );
 
     my $logintarget_ref = {};
     

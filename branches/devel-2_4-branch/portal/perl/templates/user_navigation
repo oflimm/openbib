@@ -17,7 +17,7 @@
 [% IF active_submenu == "userprefs" %]
   <li class="active"><strong>[% msg.maketext("Grundeinstellungen") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html"></a></li>
+  <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html">[% msg.maketext("Grundeinstellungen") %]</a></li>
 [% END %]
 [% IF config.get('litlists') %]
 [%   IF active_submenu == "litlists" %]

@@ -140,7 +140,7 @@ sub authenticate {
     my $logger = get_logger();
     
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
 
     # Shared Args
     my $query          = $self->query();
@@ -208,6 +208,8 @@ sub authenticate {
         # Gegebenenfalls Benutzer lokal eintragen
         else {
             my $userid;
+
+            $logger->debug("Save/update user");
             
             # Eintragen, wenn noch nicht existent
             if (!$user->user_exists($username)) {
@@ -216,6 +218,8 @@ sub authenticate {
                     username => $username,
                     password  => $password,
                 });
+
+                $logger->debug("User added");
             }
             else {
                 # Satz aktualisieren
@@ -223,10 +227,14 @@ sub authenticate {
                     username => $username,
                     password  => $password,
                 });
+
+                $logger->debug("User credentials updated");
             }
             
             # Benuzerinformationen eintragen
             $user->set_private_info($username,$userinfo_ref);
+
+            $logger->debug("Updated private user info");
         }
     }
     elsif ($logintarget_ref->{type} eq "self") {
@@ -246,6 +254,9 @@ sub authenticate {
     my $redirecturl = "";
     
     if (!$loginfailed) {
+
+        $logger->debug("Authentication successful");
+                
         # Jetzt wird die Session mit der Benutzerid assoziiert
         my $userid = $user->get_userid_for_username($username);
         
@@ -266,6 +277,8 @@ sub authenticate {
         
         # Jetzt wird die bestehende Trefferliste uebernommen.
         # Gehe ueber alle Eintraege der Trefferliste
+
+        $logger->debug("Session connected, defaults for searchfields/livesearch set");
         
         my $recordlist_existing_collection = $session->get_items_in_collection();
         
@@ -282,6 +295,8 @@ sub authenticate {
                 },
             });
         }
+
+        $logger->debug("Added recently collected title");
         
         # Bestimmen des Recherchemasken-Typs
         my $masktype = $user->get_mask($userid);
@@ -293,7 +308,7 @@ sub authenticate {
         
     }
     
-    # Wenn Return_url existiert, dann wird im Body-Frame dorthin gesprungen
+    # Wenn Return_url existiert, dann wird dorthin gesprungen
     if ($redirect_to){
         $redirecturl=$redirect_to;
     }

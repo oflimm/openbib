@@ -14,6 +14,7 @@
 <![CDATA[
 [%# Verfasser konstruieren %]
 [%- item = record.to_rawdata -%]
+[%# USE dumper;dumper.dump(item) %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
 [%- persons.push("${part.content}") -%]
@@ -71,5 +72,8 @@
 [%- END -%]
 [%- IF gt -%]
 ([% gt %])<br />
+[%- END -%]
+[%- IF signatur -%]
+Signatur: [% signatur %]<br />
 [%- END -%]
 ]]>

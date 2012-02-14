@@ -72,6 +72,9 @@
 [%- IF gt -%]
 ([% gt %])<br />
 [%- END -%]
+[%- IF signatur -%]
+Signatur: [% signatur %]<br />
+[%- END -%]
 [%- IF record.tstamp -%]
 Hinzugefügt: [% record.tstamp %]<br />
 [%- END -%]

@@ -2250,19 +2250,31 @@ sub get_recent_litlists {
     my $litlists;
     
     if ($subjectid){
-        $litlists = $self->{schema}->resultset('Litlist')->search(
+#        $litlists = $self->{schema}->resultset('Litlist')->search(
+#             {
+#                 'subjectid.id'  => $subjectid,
+#                 'me.type'       => 1,
+#             },
+#             {
+#                 select   => [ 'me.id' ],
+#                 as       => ['thislitlistid'],
+#                 order_by => [ 'me.id DESC' ],
+#                 rows     => $count,
+#                 prefetch => [{ 'litlist_subjects' => 'subjectid' }],
+#                 join     => [ 'litlist_subjects' ],
+#             }
+#         );
+        $litlists = $self->{schema}->resultset('LitlistSubject')->search(
             {
-                'subjectid.id'  => $subjectid,
-                'me.type'       => 1,
+                'subjectid.id'   => $subjectid,
+                'litlistid.type' => 1,
             },
             {
-#                select   => [ {distinct => 'me.id'} ],
-                select   => [ 'me.id' ],
+                select   => [ 'litlistid.id' ],
                 as       => ['thislitlistid'],
-                order_by => [ 'me.id DESC' ],
+                order_by => [ 'litlistid.id DESC' ],
                 rows     => $count,
-                prefetch => [{ 'litlist_subjects' => 'subjectid' }],
-                join     => [ 'litlist_subjects' ],
+                join     => [ 'litlistid', 'subjectid' ],
             }
         );
     }

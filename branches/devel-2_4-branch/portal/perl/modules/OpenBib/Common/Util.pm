@@ -160,7 +160,7 @@ sub grundform {
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
-        $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*_]//g;
+        $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: '()"^*_]//g;
 
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;
@@ -171,12 +171,12 @@ sub grundform {
         $content=~s/(\w)-$/$1/g;
     }
     elsif ($tagging){
-        $content=~s/[^-+\p{Alphabetic}0-9._]//g;
+        $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9._]//g;
 
     }
     else {
         # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
-        $content=~s/[^-+\p{Alphabetic}0-9\/: ']//g;
+        $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: ']//g;
 
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;
@@ -194,7 +194,7 @@ sub grundform {
     
     # Leerzeichen bei CJK einfuegen
 
-    $content=~s/(\p{InKatakana}|\p{InHiragana}|\p{InCJKCompatibility}|\p{InCJKCompatibilityForms}|\p{InCJKCompatibilityIdeographs}|\p{InCJKCompatibilityIdeographsSupplement}|\p{InCJKRadicalsSupplement}|\p{InCJKStrokes}|\p{InCJKSymbolsAndPunctuation}|\p{InCJKUnifiedIdeographs}|\p{InCJKUnifiedIdeographsExtensionA}|\p{InCJKUnifiedIdeographsExtensionB}|\p{InEnclosedCJKLettersAndMonths})/$1 /g;
+    # $content=~s/(\p{InKatakana}|\p{InHiragana}|\p{InCJKCompatibility}|\p{InCJKCompatibilityForms}|\p{InCJKCompatibilityIdeographs}|\p{InCJKCompatibilityIdeographsSupplement}|\p{InCJKRadicalsSupplement}|\p{InCJKStrokes}|\p{InCJKSymbolsAndPunctuation}|\p{InCJKUnifiedIdeographs}|\p{InCJKUnifiedIdeographsExtensionA}|\p{InCJKUnifiedIdeographsExtensionB}|\p{InEnclosedCJKLettersAndMonths})/$1 /g;
     
     # Zeichenersetzungen
     $content=~s/'/ /g;

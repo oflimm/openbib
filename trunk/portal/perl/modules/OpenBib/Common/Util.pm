@@ -393,7 +393,7 @@ sub grundform {
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
-        $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*_]//g;
+        $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: '()"^*_]//g;
 
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;
@@ -409,7 +409,7 @@ sub grundform {
     }
     else {
         # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
-        $content=~s/[^-+\p{Alphabetic}0-9\/: ']//g;
+        $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: ']//g;
 
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;
@@ -631,6 +631,9 @@ sub grundform {
     $content=~s/¢/c/g;        # Cent
     $content=~s/£/l/g;        # Pfund
     $content=~s/¥/y/g;        # Yen
+#    $content=~s/\x{a5}/y/g;        # Yen
+#    $content=~s/\x{f7}/obelus/g;        # Obelus
+#    $content=~s/\x{bf}/?/g;        # inverted ?
     $content=~s/µ/u/g;        # Mikro
     
     $content=~s/Ð/e/g;        # Gr. Islaend. E (durchgestrichenes D)

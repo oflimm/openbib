@@ -31,7 +31,7 @@ portals          =  [];
 FOREACH classification IN normset.${"T0700"} ;
      IF sammlungen.${classification.content}.defined ;
         url = sammlungen.${classification.content};
-        classification.content = "<a href=\"${url}\" target=\"_blank\">Zum Sammlungsportal</a>" ;
+        classification.content = "<a href=\"${url}\" target=\"_blank\">Weiter zum Sammlungs-Portal</a>" ;
         portals.push(classification);
      ELSE ;
         classifications.push(classification);

@@ -21,6 +21,31 @@
 
 [%-
 
+sammlungen = {
+   'Slg. Gertrud von le Fort' => 'http://lefort.ub.uni-koeln.de/'
+};
+
+classifications  =  [];
+portals          =  [];
+
+FOREACH classification IN normset.${"T0700"} ;
+     IF sammlungen.${classification.content}.defined ;
+        url = sammlungen.${classification.content};
+        classification.content = "<a href=\"${url}\" target=\"_blank\">Zum Sammlungsportal</a>" ;
+        portals.push(classification);
+     ELSE ;
+        classifications.push(classification);
+     END ;
+END;
+
+IF classifications ;
+  normset.${"T0700"} = classifications;
+END;
+
+IF portals ;
+  normset.${"T4600"} = portals;
+END;
+
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 url_done          = {};
@@ -214,6 +239,7 @@ FOREACH category IN categories;
    END;
 END;
 -%]
+
 [%- IF bibkey -%]
 <tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
 [%- END -%]

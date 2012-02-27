@@ -12,8 +12,7 @@
 #######################################################################
 -%]
 [%-
-    #USE dumper;dumper.dump(itemcirc);
-    location = {} ;
+    location = {};
 
     FOREACH circ IN itemcirc ;
 
@@ -21,8 +20,8 @@
        caturl   = circ.${"Bibinfourl"} ;
        signatur = circ.${"Signatur"} ;
        status   = circ.${"Status"} ;
-       
-       location.${catname}.${"url"}     = caturl ;
+
+       catstring = "<a href=\"${caturl}\" target=\"_blank\">${catname}</a>" ;
 
        IF status == 'bestellbar' ;
            status = 'ausleihbar' ;
@@ -39,23 +38,20 @@
             END ;
        END ;
 
-       IF NOT location.${catname}.exists("signatur") ;
-          location.${catname}.${"signatur"} = "${signatur} (${status})" ;
-       ELSE ;
-          signaturstring = location.${catname}.${"signatur"} ;
-          signaturstring = "${signaturstring} ; ${signatur}" ;
-          location.${catname}.${"signatur"}= signaturstring  ; 
+       IF NOT location.exists(catstring) ;
+          location.${catstring} = [];
        END ;
+
+       location.${catstring}.push("${signatur} (${status})") ;
     END ;
 
     locations = [] ;
 
-    FOREACH catname IN location.keys ;
-       caturl         = location.${catname}.${"url"} ;
-       verlauf        = location.${catname}.${"verlauf"} ;
-       signaturstring = location.${catname}.${"signatur"} ;
+    FOREACH catstring IN location.keys ;
 
-       locations.push("<a href=\"${caturl}\" target=\"_blank\">${catname}</a>: ${signaturstring} ${verlauf}");
+       signaturstring = location.${catstring}.join(' ; ') ;
+
+       locations.push("${catstring}: ${signaturstring}");
 
     END ;
 

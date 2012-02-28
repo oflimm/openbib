@@ -140,7 +140,6 @@ sub show_record {
     my $servername  = $viewinfo_obj->servername;
     my $profilename = $config->get_profilename_of_view($viewname);
     my $stripuri    = $viewinfo_obj->stripuri;
-    my $joinindex   = $viewinfo_obj->joinindex;
     my $active      = $viewinfo_obj->active;
              
     my @profiledbs       = $config->get_profiledbs($profilename);
@@ -152,7 +151,6 @@ sub show_record {
         viewname     => $viewname,
         description  => $description,
         stripuri     => $stripuri,
-        joinindex    => $joinindex,
         active       => $active,
         start_loc    => $start_loc,
         servername   => $servername,
@@ -193,7 +191,6 @@ sub create_record {
     my $viewname        = $query->param('viewname')                     || '';
     my $profilename     = $query->param('profilename')                  || '';
     my $stripuri        = $query->param('stripuri')       || 0;
-    my $joinindex       = $query->param('joinindex')       || 0;
     my $active          = $query->param('active')          || 0;
     my $viewstart_loc   = $query->param('viewstart_loc')             || '';
     my $viewservername  = $query->param('viewservername')            || '';
@@ -224,7 +221,6 @@ sub create_record {
         description => $description,
         profilename => $profilename,
         stripuri    => $stripuri,
-        joinindex   => $joinindex,
         active      => $active,
         start_loc   => $viewstart_loc,
         servername  => $viewservername,
@@ -308,7 +304,6 @@ sub update_record {
     my $method          = decode_utf8($query->param('_method')) || '';
     my $confirm         = $query->param('confirm') || 0;
     my $description     = decode_utf8($query->param('description'))     || '';
-    my $joinindex       = $query->param('joinindex')       || 0;
     my $stripuri        = $query->param('stripuri')        || 0;
     my $active          = $query->param('active')          || 0;
     my $primrssfeed     = $query->param('primrssfeed')     || '';
@@ -366,7 +361,6 @@ sub update_record {
         viewname    => $viewname,
         description => $description,
         stripuri    => $stripuri,
-        joinindex   => $joinindex,
         active      => $active,
         start_loc   => $viewstart_loc,
         servername  => $viewservername,

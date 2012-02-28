@@ -1691,8 +1691,6 @@ sub update_view {
         ? $view_ref->{servername}          : undef;
     my $profilename            = exists $view_ref->{profilename}
         ? $view_ref->{profilename}         : undef;
-    my $joinindex              = exists $view_ref->{joinindex}
-        ? $view_ref->{joinindex}           : undef;
     my $stripuri               = exists $view_ref->{stripuri}
         ? $view_ref->{stripuri}            : undef;
 
@@ -1765,9 +1763,13 @@ sub strip_view_from_uri {
     my $logger = get_logger();
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    my $stripuri = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->stripuri;
+    my $stripuri_rs = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname});
 
-    $stripuri = ($stripuri == 1)?1:0;
+    my $stripuri = 0;
+
+    if ($stripuri_rs){
+       $stripuri = $stripuri_rs->stripuri;
+    }
 
     return $stripuri;
 }
@@ -1788,8 +1790,6 @@ sub new_view {
         ? $arg_ref->{servername}          : undef;
     my $stripuri               = exists $arg_ref->{stripuri}
         ? $arg_ref->{stripuri}            : undef;
-    my $joinindex              = exists $arg_ref->{joinindex}
-        ? $arg_ref->{joinindex}           : undef;
     my $active                 = exists $arg_ref->{active}
         ? $arg_ref->{active}              : undef;
 
@@ -1806,7 +1806,6 @@ sub new_view {
             start_loc   => $start_loc,
             servername  => $servername,
             stripuri    => $stripuri,
-            joinindex   => $joinindex,
             active      => $active
         }
     );

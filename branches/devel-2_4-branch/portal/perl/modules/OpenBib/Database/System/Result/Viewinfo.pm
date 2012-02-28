@@ -63,11 +63,6 @@ __PACKAGE__->table("viewinfo");
   data_type: 'tinyint'
   is_nullable: 1
 
-=head2 joinindex
-
-  data_type: 'tinyint'
-  is_nullable: 1
-
 =head2 active
 
   data_type: 'tinyint'
@@ -91,8 +86,6 @@ __PACKAGE__->add_columns(
   "profileid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "stripuri",
-  { data_type => "tinyint", is_nullable => 1 },
-  "joinindex",
   { data_type => "tinyint", is_nullable => 1 },
   "active",
   { data_type => "tinyint", is_nullable => 1 },

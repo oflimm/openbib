@@ -40,7 +40,7 @@ enrichmntdbpasswd: StrengGeheim
 statisticsdbimodule: mysql
 statisticsdbhost: localhost
 statisticsdbport: 3306
-statisticsdbname: statistics
+statisticsdbname: openbib_statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
@@ -1034,14 +1034,28 @@ dispatch_rules:
      rule: '/portal/:view/bibsonomy/:type/user/:userid'
      runmode: 'show_collection_by_user'
 
-  - # circulation_loc:
-     module: 'OpenBib::Handler::Apache::Circulation'
-     rule: '/portal/:view/circulation'
-     runmode: 'show'
-  - # circulation_loc:
-     module: 'OpenBib::Handler::Apache::Circulation'
-     rule: '/portal/:view/circulation.html'
-     runmode: 'show'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::User::Circulation'
+     rule: '/portal/:view/user/:userid/circulation.html[get]'
+     runmode: 'show_all'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::User::Circulation'
+     rule: '/portal/:view/user/:userid/circulation.json[get]'
+     runmode: 'show_all'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::User::Circulation'
+     rule: '/portal/:view/user/:userid/circulation.rdf[get]'
+     runmode: 'show_all'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::User::Circulation'
+     rule: '/portal/:view/user/:userid/circulation[get]'
+     runmode: 'show_all'
+
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::User::Circulation'
+     rule: '/portal/:view/user/:userid/circulation/:type[get]'
+     runmode: 'show_collection'
+
   - # databasechoice_loc:
      module: 'OpenBib::Handler::Apache::DatabaseChoice'
      rule: '/portal/:view/selectdatabase.html[get]'
@@ -2375,13 +2389,6 @@ tt_bibsonomy_collection_by_user_tname: bibsonomy_collection_by_user
 tt_catalogue_loggedin_tname: catalogue_loggedin
 tt_catalogue_login_tname: catalogue_login
 tt_catalogue_logout_tname: catalogue_logout
-tt_circulation_make_order_tname: circulation_make_order
-tt_circulation_make_reserv_tname: circulation_make_reserv
-tt_circulation_orders_tname: circulation_orders
-tt_circulation_remind_tname: circulation_remind
-tt_circulation_renew_loans_tname: circulation_renew_loans
-tt_circulation_reserv_tname: circulation_reserv
-tt_circulation_tname: circulation
 tt_connector_availability_tname: connector_availability
 tt_connector_digibib_result_end_tname: connector_digibib_result_end
 tt_connector_digibib_result_item_tname: connector_digibib_result_item
@@ -2529,6 +2536,13 @@ tt_registration_mail_message_tname: registration_mail_message
 tt_registration_confirmation_tname: registration_confirmation
 tt_registration_tname: registration
 tt_startopac_tname: startopac
+tt_user_circulation_make_order_tname: user_circulation_make_order
+tt_user_circulation_make_reservation_tname: user_circulation_make_reservation
+tt_user_circulation_orders_tname: user_circulation_orders
+tt_user_circulation_reminders_tname: user_circulation_reminders
+tt_user_circulation_renew_loans_tname: user_circulation_renew_loans
+tt_user_circulation_reservations_tname: user_circulation_reservations
+tt_user_circulation_borrows_tname: user_circulation_borrows
 tt_user_tag_edit_tname: user_tag_edit
 tt_user_tag_tname: user_tag
 tt_user_tag_collection_tname: user_tag_collection

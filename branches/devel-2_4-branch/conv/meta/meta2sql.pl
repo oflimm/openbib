@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -1000,6 +1000,8 @@ while (my $line=<IN>){
             $listitem = unpack "H*",Storable::freeze($listitem_ref);
         }
 
+        $listitem = decode_utf8($listitem);
+        
         print TITLELISTITEM "$id$listitem\n";
         
         my $normdatastring = encode_json $normdata_ref;

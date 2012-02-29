@@ -28,7 +28,7 @@ $(document).ready(function(){
 [%   END %]
 })
 </script>
-[% ELSIF autocompletion_type == "livesearch" && (livesearch.freesearch.active || livesearch.person.active || livesearch.subject.active %]
+[% ELSIF autocompletion_type == "livesearch" && (livesearch.freesearch.active || livesearch.person.active || livesearch.subject.active) %]
 <script type="text/javascript">
 $(document).ready(function(){
 [%   IF available_searchfields.freesearch.active %]

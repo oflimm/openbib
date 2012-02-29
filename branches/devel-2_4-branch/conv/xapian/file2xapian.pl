@@ -333,7 +333,12 @@ my $atime = new Benchmark;
                     $title_listitem_ref = Storable::thaw(pack "H*", $listitem);
                 }
                 elsif ($config->{internal_serialize_type} eq "json"){
-                    $title_listitem_ref = decode_json $listitem;
+                    eval {
+                         $title_listitem_ref = decode_json $listitem;
+                    };
+                    if ($@){
+                         next;
+                    }
                 }
                 else {
                     $title_listitem_ref = Storable::thaw(pack "H*", $listitem);

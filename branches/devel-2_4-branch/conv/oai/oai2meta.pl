@@ -88,8 +88,10 @@ sub parse_titset {
     # Id
     foreach my $desk ($titset->children('id')){
         my $id=$desk->text();
+
         print TIT "0000:$id\n";
-        last; # Nur ein Durchlauf
+
+        last; # Nur ein Durchlauf, d.h. erste gefundene ID wird genommen
     }
 
     foreach my $mdnode ($titset->children('metadata')){

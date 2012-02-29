@@ -62,6 +62,7 @@ sub setup {
     $self->start_mode('show');
     $self->run_modes(
         'show_collection'                      => 'show_collection',
+        'update_password'                      => 'update_password',
         'update_searchfields'                  => 'update_searchfields',
         'update_searchform'                    => 'update_searchform',
         'update_bibsonomy'                     => 'update_bibsonomy',

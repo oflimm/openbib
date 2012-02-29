@@ -246,18 +246,3 @@ sub parse_titset {
     $t->purge();
 }
 
-sub get_next_numeric_id {
-    my $alnumidentifier = shift;
-
-    if (exists $numericidmapping{$alnumidentifier}){
-        # (Id,New?)
-        return ($numericidmapping{$alnumidentifier},0);
-    }
-    else {
-        $numericidmapping{$alnumidentifier}= $numericidmapping{'next_unused_id'};
-        $numericidmapping{'next_unused_id'}=$numericidmapping{'next_unused_id'}+1;
-
-        # (Id,New?)
-        return ($numericidmapping{$alnumidentifier},1);
-    }
-}

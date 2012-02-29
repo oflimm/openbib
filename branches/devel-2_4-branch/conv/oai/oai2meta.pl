@@ -59,12 +59,12 @@ HELP
 exit;
 }
 
-open (TIT,     ,"|buffer | gzip > unload.TIT.gz");
-open (AUT,     ,"|buffer | gzip > unload.PER.gz");
-open (KOR,     ,"|buffer | gzip > unload.KOE.gz");
-open (NOTATION ,"|buffer | gzip > unload.SYS.gz");
-open (SWT,     ,"|buffer | gzip > unload.SWD.gz");
-open (MEX,     ,"|buffer | gzip > unload.MEX.gz");
+open (TIT,     ,"|buffer | gzip > meta.title.gz");
+open (AUT,     ,"|buffer | gzip > meta.person.gz");
+open (KOR,     ,"|buffer | gzip > meta.corporatebody.gz");
+open (NOTATION ,"|buffer | gzip > meta.classification.gz");
+open (SWT,     ,"|buffer | gzip > meta.subject.gz");
+open (MEX,     ,"|buffer | gzip > meta.holding.gz");
 
 binmode(TIT,     ":utf8");
 binmode(AUT,     ":utf8");
@@ -101,7 +101,7 @@ sub parse_titset {
             foreach my $desk ($oainode->children('dc:creator')){
                 my $content = $desk->text();
                 
-                my $autidn  = OpenBib::Conv::Common::Util::get_autidn($content);
+                my ($autidn,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                 
                 if ($autidn > 0) {
                     print AUT "0000:$autidn\n";
@@ -119,7 +119,7 @@ sub parse_titset {
             foreach my $desk ($oainode->children('dc:publisher')){
                 my $content = $desk->text();
                 
-                my $koridn  = OpenBib::Conv::Common::Util::get_koridn($content);
+                my ($koridn,$new)  = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
                 
                 if ($koridn > 0) {
                     print KOR "0000:$koridn\n";
@@ -150,7 +150,7 @@ sub parse_titset {
                     
                     foreach my $part (@parts){
                         $part=~s/^(\w)/\u$1/;
-                        my $swtidn  = OpenBib::Conv::Common::Util::get_swtidn($part);
+                        my ($swtidn,$new) = OpenBib::Conv::Common::Util::get_subject_id($part);
                         
                         if ($swtidn > 0) {
                             print SWT "0000:$swtidn\n";

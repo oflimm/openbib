@@ -54,5 +54,5 @@ system("cd $pooldir/$pool ; rm *");
 system("$harvestoaiexe --oaiurl=\"$oaiurl\" | /bin/gzip -c > $pooldir/$pool/pool.dat.gz");
 
 system("/bin/gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");
-system("cd $pooldir/$pool; $oai2metaexe --inputfile=pool.dat --idmappingfile=${pool}.yml; gzip unload.*");
+system("cd $pooldir/$pool; $oai2metaexe --inputfile=pool.dat ; gzip unload.*");
 system("rm $pooldir/$pool/pool.dat");

@@ -44,7 +44,7 @@ use OpenBib::Config;
 
 our $mexidn  =  1;
 
-my ($inputfile,$idmappingfile);
+my ($inputfile);
 
 &GetOptions(
 	    "inputfile=s"          => \$inputfile,

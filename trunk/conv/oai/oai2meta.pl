@@ -48,14 +48,13 @@ my ($inputfile,$idmappingfile);
 
 &GetOptions(
 	    "inputfile=s"          => \$inputfile,
-            "idmappingfile=s"      => \$idmappingfile,
 	    );
 
-if (!$inputfile || !$idmappingfile){
+if (!$inputfile){
     print << "HELP";
 oai2meta.pl - Aufrufsyntax
 
-    oai2meta.pl --inputfile=xxx --idmappingfile=yyy
+    oai2meta.pl --inputfile=xxx
 HELP
 exit;
 }
@@ -74,24 +73,6 @@ binmode(NOTATION,":utf8");
 binmode(SWT,     ":utf8");
 binmode(MEX,     ":utf8");
 
-our %numericidmapping;
-our %have_id = ();
-
-our $numericidmapping_ref;
-
-if (! -f $idmappingfile){
-    %numericidmapping = ();
-}
-else {
-    $numericidmapping_ref = LoadFile($idmappingfile);
-    
-    %numericidmapping = %{$numericidmapping_ref};
-}
-
-if (! exists $numericidmapping{'next_unused_id'}){
-    $numericidmapping{'next_unused_id'}=1;
-}
-
 my $twig= XML::Twig->new(
     TwigHandlers => {
         "/oairesponse/record" => \&parse_titset
@@ -101,24 +82,16 @@ my $twig= XML::Twig->new(
 
 $twig->parsefile($inputfile);
 
-DumpFile($idmappingfile,\%numericidmapping);
-
 sub parse_titset {
     my($t, $titset)= @_;
 
     # Id
     foreach my $desk ($titset->children('id')){
         my $id=$desk->text();
-        my ($intid,$is_new) = get_next_numeric_id($id);
 
-        next if ($have_id{$intid});
+        print TIT "0000:$id\n";
 
-        $have_id{$intid}=1;
-        
-        print TIT "0000:$intid\n";
-        print TIT "0010:$id\n";
-
-        last; # Nur ein Durchlauf
+        last; # Nur ein Durchlauf, d.h. erste gefundene ID wird genommen
     }
 
     foreach my $mdnode ($titset->children('metadata')){

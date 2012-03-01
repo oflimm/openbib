@@ -14,3 +14,28 @@ Ein grosses Dankeschoen geht an:
       * BSD
       * Creative Commons Attribution 2.5
   und kann daher frei in OpenBib frei verwendet werden.
+
+- jQuery JavaScript Library v1.5.1 (http://jquery.com/)
+
+  Copyright 2011, John Resig
+  Dual licensed under the MIT or GPL Version 2 licenses.
+  http://jquery.org/license
+ 
+  Includes Sizzle.js
+  http://sizzlejs.com/
+  Copyright 2011, The Dojo Foundation
+  Released under the MIT, BSD, and GPL Licenses.
+
+- jQuery Mobile v1.0b3 (http://jquerymobile.com/)
+ 
+  Copyright 2010, jQuery Project
+  Dual licensed under the MIT or GPL Version 2 licenses.
+  http://jquery.org/license
+
+- jQuery UI 1.8.14 (inkl. Module) 
+ 
+  Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+  Dual licensed under the MIT or GPL Version 2 licenses.
+  http://jquery.org/license
+ 
+  http://docs.jquery.com/UI

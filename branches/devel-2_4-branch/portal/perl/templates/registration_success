@@ -44,7 +44,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Sie sind erfolgreich registriert") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Klicken Sie nun [_1]hier[_2], um zu recherchieren.","<a href=\"${path_prefix}/${config.get('startopac_loc')}.html\">","</a>") %]
+[% msg.maketext("Sie k&ouml;nnen sich nun [_1]hier[_2] anmelden.","<a href=\"${path_prefix}/${config.get('login_loc')}.html\">","</a>") %]
 </td></tr>
 </table>
 

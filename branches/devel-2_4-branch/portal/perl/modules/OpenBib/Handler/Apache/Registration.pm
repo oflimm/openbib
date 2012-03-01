@@ -144,8 +144,6 @@ sub register {
     my $path_prefix    = $self->param('path_prefix');
     
 
-    my $recaptcha = Captcha::reCAPTCHA->new;
-
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
     if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
@@ -160,23 +158,23 @@ sub register {
     my $username  = $confirmation_info_ref->{username};
     my $password  = $confirmation_info_ref->{password};
 
-    $user->add({
-        username  => $username,
-        password  => $password,
-        email     => $username,
-    });
+    if ($username && $password){
+      $user->add({
+		  username  => $username,
+		  password  => $password,
+		  email     => $username,
+		 });
+      # An dieser Stelle darf zur Bequemlichkeit der Nutzer die Session 
+      # nicht automatisch mit dem Nutzer verknuepft werden (=automatische
+      # Anmeldung), dann dann ueber das Ausprobieren von Registrierungs-IDs 
+      # Nutzer-Identitaeten angenommen werden koennten.
+      
+      $user->clear_confirmation_request({ registrationid => $registrationid });
+    }
+    else {
+      $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht."));
+    }
 
-    my $userid   = $user->get_userid_for_username($username);
-    my $targetid = $config->get_id_of_selfreg_logintarget();
-
-    $user->connect_session({
-        sessionID => $session->{ID},
-        userid    => $userid,
-        targetid  => $targetid,
-    });
-
-    $user->clear_confirmation_request;
-    
     # TT-Data erzeugen
     my $ttdata={
         username   => $username,

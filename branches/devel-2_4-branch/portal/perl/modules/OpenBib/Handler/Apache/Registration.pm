@@ -129,7 +129,7 @@ sub register {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $registrationid = $self->param('registrationid') || '';
+    my $registrationid = $self->strip_suffix($self->param('registrationid')) || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -163,7 +163,7 @@ sub register {
     $user->add({
         username  => $username,
         password  => $password,
-        email     => $loginname,
+        email     => $username,
     });
 
     my $userid   = $user->get_userid_for_username($username);
@@ -260,6 +260,8 @@ sub mail_confirmation {
         }
     }
 
+    my $registrationid = $user->add_confirmation_request({username => $username, password => $password1});
+
     # Bestaetigungsmail versenden
 
     my $afile = "an." . $$;
@@ -271,6 +273,8 @@ sub mail_confirmation {
                       view           => $view,
                       config         => $config,
 		      msg            => $msg,
+		      servername     => $self->param('servername'),
+		      path_prefix    => $self->param('path_prefix'),
 		     };
 
     my $maintemplate = Template->new({
@@ -309,8 +313,6 @@ sub mail_confirmation {
   
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
 
-    $user->add_confirmation_request({username => $username, password => $password1});
-    
     # TT-Data erzeugen
     my $ttdata={
         username      => $username,

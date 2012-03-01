@@ -267,7 +267,7 @@ sub add_confirmation_request {
         password  => $password,
     });
     
-    return;
+    return $registrationid;
 }
 
 sub get_confirmation_request {

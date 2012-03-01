@@ -59,4 +59,4 @@ ITEM
 
 close(OUT);
 
-system("mysql -s -u ".$config->{dbuser}." --password=\"".$config->{dbpasswd}."\" -e 'load data infile \"$rootdir/filter/$pool/$pool.sql\" into table tit fields terminated by \"\" ;' $pool");
+system("mysql -s -u ".$config->{dbuser}." --password=\"".$config->{dbpasswd}."\" -e 'load data infile \"$rootdir/filter/$pool/$pool.sql\" into table title fields terminated by \"\" ;' $pool");

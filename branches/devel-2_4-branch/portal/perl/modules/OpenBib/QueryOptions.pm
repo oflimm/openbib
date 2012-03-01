@@ -2,7 +2,7 @@
 #
 #  OpenBib::QueryOptions
 #
-#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -58,12 +58,10 @@ sub _new_instance {
     my $self = {};
 
     bless ($self, $class);
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error_die($DBI::errstr);
 
+    $self->connectDB();
+    $self->connectMemcached();
+    
     # Hinweis: Bisher wuerde statt $query direkt das Request-Objekt $r
     # uebergeben und an dieser Stelle wieder ein $query-Objekt via
     # Apache2::Request daraus erzeugt. Bei Requests, die via POST
@@ -130,19 +128,14 @@ sub load {
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance;
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error_die($DBI::errstr);
+    # DBI: "select queryoptions from sessioninfo where sessionid = ?"
+    my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({sid => $session->{sid}});
 
-    my $request=$dbh->prepare("select queryoptions from sessioninfo where sessionid = ?") or $logger->error($DBI::errstr);
-
-    $request->execute($session->{ID}) or $logger->error($DBI::errstr);
-  
-    my $res=$request->fetchrow_hashref();
-    $logger->debug($res->{queryoptions});
-    $self->{option} = decode_json($res->{queryoptions});
-    $request->finish();
+    if ($queryoptions_rs){
+      my $queryoptions = $queryoptions_rs->queryoptions;
+      $logger->debug("Loaded Queryoptions: $queryoptions");
+      $self->{option} = decode_json($queryoptions);    
+    }
 
     return $self;
 }
@@ -155,18 +148,18 @@ sub dump {
 
     my $config = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance;
+
+    my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({sid => $session->{sid}});
     
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $request=$dbh->prepare("update sessioninfo set queryoptions=? where sessionid = ?") or $logger->error($DBI::errstr);
-
-    $request->execute(encode_json($self->{option}),$session->{ID}) or $logger->error($DBI::errstr);
-
+    if ($queryoptions_rs){
+      $queryoptions_rs->update(
+			      {
+			       queryoptions => encode_json($self->{option}),
+			      }
+			     );
+    }
+    
     $logger->debug("Dumped Options: ".encode_json($self->{option})." for session $session->{ID}");
-    $request->finish();
 
     return;
 }
@@ -213,6 +206,40 @@ sub to_cgi_params {
     }
     
     return join(";",@cgiparams);
+}
+
+sub connectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    eval {        
+        $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect to database $self->{systemdbname}");
+    }
+
+    return;
+}
+
+sub connectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zu Memchached herstellen
+    $self->{memc} = new Cache::Memcached($self->{memcached});
+
+    if (!$self->{memc}->set('isalive',1)){
+        $logger->fatal("Unable to connect to memcached");
+    }
+
+    return;
 }
 
 1;

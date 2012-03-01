@@ -159,11 +159,20 @@ sub register {
     my $password  = $confirmation_info_ref->{password};
 
     if ($username && $password){
+
+      # Wurde dieser Nutzername inzwischen bereits registriert?
+      if ($user->user_exists($username)) {
+        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}.html\">","</a>"));
+        return Apache2::Const::OK;
+      }
+
+      # OK, neuer Nutzer -> eintragen
       $user->add({
 		  username  => $username,
 		  password  => $password,
 		  email     => $username,
 		 });
+
       # An dieser Stelle darf zur Bequemlichkeit der Nutzer die Session 
       # nicht automatisch mit dem Nutzer verknuepft werden (=automatische
       # Anmeldung), dann dann ueber das Ausprobieren von Registrierungs-IDs 

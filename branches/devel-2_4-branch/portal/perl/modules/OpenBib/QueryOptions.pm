@@ -114,7 +114,7 @@ sub _new_instance {
     }
 
     
-    $logger->debug("QueryOptions-Object created: ".YAML::Dump($self));
+    $logger->debug("QueryOptions-Object created");
 
     return $self;
 }
@@ -129,7 +129,7 @@ sub load {
     my $session = OpenBib::Session->instance;
 
     # DBI: "select queryoptions from sessioninfo where sessionid = ?"
-    my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({sid => $session->{sid}});
+    my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({id => $session->{sid}});
 
     if ($queryoptions_rs){
       my $queryoptions = $queryoptions_rs->queryoptions;
@@ -149,7 +149,7 @@ sub dump {
     my $config = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance;
 
-    my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({sid => $session->{sid}});
+    my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({id => $session->{sid}});
     
     if ($queryoptions_rs){
       $queryoptions_rs->update(
@@ -214,13 +214,15 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config  = OpenBib::Config->instance;
+
     eval {        
-        $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 
     };
 
     if ($@){
-        $logger->fatal("Unable to connect to database $self->{systemdbname}");
+        $logger->fatal("Unable to connect to database $config->{systemdbname}");
     }
 
     return;
@@ -232,8 +234,10 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config  = OpenBib::Config->instance;
+
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached($self->{memcached});
+    $self->{memc} = new Cache::Memcached($config->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");

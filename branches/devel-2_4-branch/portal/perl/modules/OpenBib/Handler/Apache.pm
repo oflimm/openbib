@@ -373,8 +373,9 @@ sub is_authenticated {
         return 1;
     }
     else {
-        $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
-        return 0;
+      $logger->debug("User authenticated as $user->{ID}, but doesn't match required userid $userid");
+#      $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
+      return 0;
     }
 }
 

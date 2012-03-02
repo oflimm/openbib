@@ -549,36 +549,38 @@ sub get_usersearchprofile {
     return $usersearchprofileinfo;
 }
 
-sub get_profilename_of_profileid {
-    my ($self,$profileid)=@_;
+sub get_profilename_of_usersearchprofileid {
+    my ($self,$usersearchprofileid)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $usersearchprofilename = $self->{schema}->resultset('UserSearchprofile')->search_rs(
-        {
-            id     => $profileid,
-            userid => $self->{ID},
-        },
-        {
-            columns => ['profilename'],
-        }
-    )->single()->profilename;
-    
+    my $usersearchprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+											   {
+											    id     => $usersearchprofileid,						    userid => $self->{ID},
+											   },
+											   {
+            columns => ['usersearchprofilename'],
+           }
+											  )->single();
 
-    return $usersearchprofilename;
+    if ($usersearchprofile){
+       return $usersearchprofile->profilename;
+    }
+
+    return;
 }
 
-sub get_profiledbs_of_profileid {
-    my ($self,$profileid)=@_;
+sub get_profiledbs_of_usersearchprofileid {
+    my ($self,$usersearchprofileid)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # DBI: "select profildb.dbname as dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname"
-    my $userprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    my $usersearchprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
         {
-            'me.id'        => $profileid,
+            'me.id'        => $usersearchprofileid,
             'me.userid'    => $self->{ID},
         },
         {
@@ -591,8 +593,8 @@ sub get_profiledbs_of_profileid {
 
     my @profiledbs;
     
-    if ($userprofile){
-        my $dbs_as_json = $userprofile->get_column('thisdatabases_as_json');
+    if ($usersearchprofile){
+        my $dbs_as_json = $usersearchprofile->get_column('thisdatabases_as_json');
         
         my $dbs_ref = decode_json $dbs_as_json;
         
@@ -2930,7 +2932,7 @@ sub get_litlists_of_tit {
     my $litlists_ref = [];
 
     foreach my $litlist ($litlists->all){
-        if ((defined $self->{ID} && defined $litlist->get_column('thisuserid') && $self->{ID} eq $litlist->get_column('userid')) || (defined $litlist->get_column('thistype') && $litlist->get_column('thistype') eq "1")){
+        if ((defined $self->{ID} && defined $litlist->get_column('thisuserid') && $self->{ID} eq $litlist->get_column('thisuserid')) || (defined $litlist->get_column('thistype') && $litlist->get_column('thistype') eq "1")){
             push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid')});
         };
     }

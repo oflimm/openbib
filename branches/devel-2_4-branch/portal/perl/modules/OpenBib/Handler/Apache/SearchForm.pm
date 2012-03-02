@@ -138,7 +138,7 @@ sub show {
         $livesearch_ref          = $user->get_livesearch();
 
         foreach my $profile_ref ($user->get_all_profiles()){
-            my @profiledbs = $user->get_profiledbs_of_profileid($profile_ref->{profilid});
+            my @profiledbs = $user->get_profiledbs_of_usersearchprofileid($profile_ref->{profilid});
             $userprofile_ref->{$profile_ref->{profilid}} = {
                 name      => $profile_ref->{profilename},
                 databases => \@profiledbs,

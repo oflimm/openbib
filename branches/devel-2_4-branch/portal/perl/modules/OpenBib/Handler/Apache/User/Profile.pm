@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::User::Profile
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -167,12 +167,12 @@ sub show_record {
 
     my $profilename="";
     
-    # Zuerst Profil-Description zur ID holen
-    $profilename = $user->get_profilename_of_profileid($profileid);
+    # Zuerst Profil-Description zur User-ID holen
+    $profilename = $user->get_profilename_of_usersearchprofileid($profileid);
 
     my $checkeddb_ref = {};
 
-    foreach my $dbname ($user->get_profiledbs_of_profileid($profileid)){
+    foreach my $dbname ($user->get_profiledbs_of_usersearchprofileid($profileid)){
         $checkeddb_ref->{$dbname}=1;
     }
     
@@ -224,11 +224,11 @@ sub show_record_form {
     }
 
     # Zuerst Profil-Description zur ID holen
-    my $profilename = $user->get_profilename_of_profileid($profileid);
+    my $profilename = $user->get_profilename_of_usersearchprofileid($profileid);
 
     my $checkeddb_ref = {};
     
-    foreach my $dbname ($user->get_profiledbs_of_profileid($profileid)){
+    foreach my $dbname ($user->get_profiledbs_of_usersearchprofileid($profileid)){
         $checkeddb_ref->{$dbname}=1;
     }
     

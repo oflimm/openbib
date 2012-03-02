@@ -4360,7 +4360,10 @@ sub connectMemcached {
 
     my $config = OpenBib::Config->instance;
 
-    return unless ($config->{memcached});
+    if (!exists $config->{memcached}){
+      $logger->debug("No memcached configured");
+      return;
+    }
     
     # Verbindung zu Memchached herstellen
     $self->{memc} = new Cache::Memcached($config->{memcached});

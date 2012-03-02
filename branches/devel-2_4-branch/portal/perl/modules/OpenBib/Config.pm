@@ -1534,6 +1534,11 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    if (!exists $self->{memcached}){
+      $logger->debug("No memcached configured");
+      return;
+    }
+
     # Verbindung zu Memchached herstellen
     $self->{memc} = new Cache::Memcached($self->{memcached});
 

@@ -556,7 +556,11 @@
     font-variant:small-caps;
   }
 
-  #qr {
+#newreview_do { 
+  font-size: 0.8em;
+}
+
+#qr {
   margin-top:-416px;
   position:absolute;
   border:1px solid #ccc;

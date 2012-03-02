@@ -173,7 +173,9 @@ sub _new_instance {
         my $cookiejar = Apache2::Cookie::Jar->new($r);
         $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
         
-        $logger->debug("Got SessionID-Cookie: $sessionID");
+        if ($sessionID){
+	  $logger->debug("Got SessionID-Cookie: $sessionID");
+	}
     }
        
     if (!defined $sessionID || !$sessionID){
@@ -1417,13 +1419,15 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+
     if (!exists $config->{memcached}){
       $logger->debug("No memcached configured");
       return;
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached($self->{memcached});
+    $self->{memc} = new Cache::Memcached($config->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");

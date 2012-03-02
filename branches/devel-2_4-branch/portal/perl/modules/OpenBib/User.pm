@@ -967,30 +967,30 @@ sub add_tags {
     )->delete_all;
     
     my $tags_ref = [];
-    foreach my $tag (@taglist){
+    foreach my $tagname (@taglist){
 
         # Normierung
-        $tag = OpenBib::Common::Util::grundform({
-            content  => $tag,
+        $tagname = OpenBib::Common::Util::grundform({
+            content  => $tagname,
             tagging  => 1,
         });
 
-        push @$tags_ref, $tag;
+        push @$tags_ref, $tagname;
 
         # DBI: "select id from tags where tag = ?"
-        my $tag = $self->{schema}->resulset('Tag')->search_rs(
+        my $tag = $self->{schema}->resultset('Tag')->search_rs(
             {
-                name => $tag,
+                name => $tagname,
             }
-        );
+        )->single();
 
         # Wenn Tag nicht existiert, dann kann alles eintragen werden (tags/tittag)
         
         if (!$tag){
-            $logger->debug("Tag $tag noch nicht verhanden");
+            $logger->debug("Tag $tagname noch nicht verhanden");
 
             # DBI: "insert into tags (tag) values (?)"
-            my $new_tag = $self->{schema}->resultset('Tag')->create({ name => encode_utf8($tag) });
+            my $new_tag = $self->{schema}->resultset('Tag')->create({ name => encode_utf8($tagname) });
 
             # DBI: "select id from tags where tag = ?"
             #      "insert into tittag (tagid,titid,titisbn,titdb,username,type) values (?,?,?,?,?,?)"
@@ -1009,7 +1009,7 @@ sub add_tags {
         
         # Jetzt Verknuepfung mit Titel herstellen
         else {
-            $logger->debug("Tag verhanden");
+            $logger->debug("Tag $tagname verhanden");
             
             # Neue Verknuepfungen eintragen
             $logger->debug("Verknuepfung zu Titel noch nicht vorhanden");

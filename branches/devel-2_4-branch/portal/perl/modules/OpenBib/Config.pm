@@ -97,9 +97,13 @@ sub get_number_of_dbs {
     else {
         $memc_key.='all';
     }
-    
-    my $alldbs = $self->{memc}->get($memc_key);
-    return $alldbs if ($alldbs);
+
+    my $alldbs;
+
+    if ($self->{memc}){
+      $alldbs = $self->{memc}->get($memc_key);
+      return $alldbs if ($alldbs);
+    }
 
     # $self->{schema}->storage->debug(1);
 

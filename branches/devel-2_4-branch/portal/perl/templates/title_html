@@ -709,19 +709,19 @@ $(document).ready(function(){
 
 <p />
 
+OID[% ownreviewid %]
 [% IF NOT ownreviewid %]
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review">
+<form method="post" action="[% path_prefix %]/[% config.get('review_loc') %]">
 
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
-<table width="100%">
-<tr><th>[% msg.maketext("Neue Bewertung/Rezension") %]<span id="newreview_toggle"></span></th></tr>
-<tr><td id="newreview" class="boxedclear">
+<div class="headline"><span id="newreview_toggle">[% msg.maketext("Neue Bewertung/Rezension") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="newreview_do"><!-- Begin formats do -->
 
-<h3>[% msg.maketext("Bewertung") %]</h3>
+<h4>[% msg.maketext("Bewertung") %]</h4>
 <table>
 <tr><td>[% msg.maketext("schlecht") %]&nbsp;<input type="radio"
 name="rating" value="0"/>&nbsp;<input type="radio" name="rating"
@@ -732,7 +732,7 @@ value="4"/>&nbsp;<input type="radio" name="rating"
 value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 </table>
 
-<h3>[% msg.maketext("Rezension") %]</h3>
+<h4>[% msg.maketext("Rezension") %]</h4>
 <table>
 <tr><td><b>[% msg.maketext("Pseudonym") %]</b></td><td><input type="text" name="nickname" value="" size="30" maxlength="30" /></td></tr>
 <tr><td><b>[% msg.maketext("Titel") %]</b></td><td><input type="text" name="title" value="" size="30" maxlength="100" /></td></tr>
@@ -744,8 +744,7 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 <td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Löschen") %]"/></div></td>
 </tr>
 </table>
-</td></tr>
-</table>
+</div><!-- End newreview_do -->
 
 </form>
 [% END %]
@@ -756,11 +755,10 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 
 <p />
 
-<table width="100%">
-<tr><th><span id="allreviews_toggle">[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]&nbsp;<img src="/images/openbib/toggle_plus.png" alt="Alle Bewertungen anzeigen"></span></th></tr>
-<tr><td id="allreviews" class="boxedclear">
-<!-- Beginn Reviews -->
+<div class="headline"><span id="allreviews_toggle">[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="allreviews_do"><!-- Begin allreviews do -->
 
+<!-- Beginn Reviews -->
 <dl class="reviews">
 [%- FOREACH item IN reviews -%]
 <dt class="review">[% IF item.votes.all > 0 %][% msg.maketext("[_1]
@@ -768,8 +766,8 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 <dd class="review">[%    IF item.review %][% item.review %][% END %]
 [% IF item.id == ownreviewid %]
 <p />
-<a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+<a href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF username %]
 <p />
 [% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?_method=PUT;titid=[% record.id %];titdb=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
@@ -779,8 +777,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 [%  END %]
 </dl>
 
-</td></tr>
-</table>
+</div><!-- End: allreviews_do -->
 
 [%   END %]
 </div><!-- End: Reviews -->

@@ -232,26 +232,24 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 // });
 // // Ende Togglen / Eigene Tags
 
-// // --------------------------------------------------------------------------
-// // Begin Togglen / Eigene Reviews
-// // Bild setzen
-// $("#newreview_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Bewertungs/Rezensions-Eingabe anzeigen\">")
-// // Zuerst verstecken
-// $("#newreview").hide();
-// // und bei Klick Sichtbarkeit togglen
-// $("#newreview_toggle").click(function(){
-//  $("#newreview").toggle();
-// });
-// // Ende Togglen / Eigene Reviews
+// --------------------------------------------------------------------------
+// Begin Togglen / Eigene Reviews
+// Zuerst verstecken
+$("#newreview_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#newreview_toggle").click(function(){
+ $("#newreview_do").toggle();
+});
+// Ende Togglen / Eigene Reviews
 
-// // --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
 // Begin Togglen / Alle Reviews
 // Zuerst verstecken
-$("#allreviews").hide();
+$("#allreviews_do").hide();
 // und bei Klick Sichtbarkeit togglen
 $("#allreviews_toggle").click(function(){
- $("#allreviews").toggle();
+ $("#allreviews_do").toggle();
 });
 // Ende Togglen / alle Reviews
 

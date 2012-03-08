@@ -100,18 +100,198 @@ my $atime = new Benchmark;
 
     my $es = ElasticSearch->new(
         servers      => '127.0.0.1:9200',       # default '127.0.0.1:9200'
-        transport    => 'http',                 # default 'http'
+        transport    => 'httplite',                 # default 'httplite'
         max_requests => 10_000,                 # default 10_000
         trace_calls  => 'log_file',
-        no_refresh   => 0 | 1,
+        no_refresh   => 1,
     );
+
+    my $result = $es->index_exists(
+            index => $database,
+    );
+
+    if ($result->{ok}){
+        $result = $es->delete_index( index => $database );
+    }
     
+    $result = $es->create_index(
+        index => $database,
+        mappings => {
+            title => {
+                properties => {
+                    id => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    personid => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    corporatebodyid => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    classificationid => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    subjectid => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    subid => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    freesearch => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    title => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    person => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    corporatebody => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    classification => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    subject => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    facet_person => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    facet_corporatebody => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    facet_classification => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    facet_subject => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    facet_year => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    facet_tag => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    facet_litlist => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    facet_language => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    facet_mediatype => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    
+                    mark => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    tag => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    listlist => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    source => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    language => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    content => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    mediatype => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    t4100 => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    t4100 => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    t4100 => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    t4100 => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    
+                },
+            },
+        },
+    );
     
     $logger->info("Migration der Titelsaetze");
     
     my $count = 1;
 
     my $doc_buffer_ref = [];
+
     
     {
         my $atime = new Benchmark;
@@ -128,24 +308,28 @@ my $atime = new Benchmark;
 
             # ID setzen:
 
-            $searchcontent_ref->{id} = $s_id;
-            
-            push @$doc_buffer_ref, $searchcontent_ref;
+            push @$doc_buffer_ref, {
+                id   => $s_id,
+                data => $searchcontent_ref,
+            };
             
             if ($count % 1000 == 0) {
                 # Bulk-Indexieren
 
-                my $result = $es->bulk(
-                    actions     => [ 'index' ],                 # required
-                        
+                my $result = $es->bulk_index(
                     index       => $database,                   # optional
                     type        => 'title',                     # optional
-                    data        => $doc_buffer_ref,
+                    docs        => $doc_buffer_ref,
                     #                    consistency => 'quorum' |  'one' | 'all'    # optional
+                    refresh     => 1,
                     #                        refresh     => 0 | 1,                       # optional
                     #                    replication => 'sync' | 'async',            # optional
                 );
 
+#                print Dump($result);
+                
+                $result = $es->flush_index( index => $database );
+                
                 $doc_buffer_ref = [];
                 my $btime      = new Benchmark;
                 my $timeall    = timediff($btime,$atime);

@@ -17,17 +17,17 @@
     dburl    = dbinfo.get('urls').${database} ;
     request_base    = [] ;#num=${hitrange};srt=${sorttype};srto=${sortorder};dd=1;" ;
 
-    IF hitrange ;
-       request_base.push("num=${hitrange}");
+    IF searchquery.get_option('num') ;
+       request_base.push("num=${searchquery.get_option('num')}");
     END;
-    IF sorttype ;
-       request_base.push("srt=${sorttype}");
+    IF searchquery.get_option('srt') ;
+       request_base.push("srt=${searchquery.get_option('srt')}");
     END;
-    IF sortorder ;
-       request_base.push("srto=${sortorder}");
+    IF searchquery.get_option('srto') ;
+       request_base.push("srto=${searchquery.get_option('srto')}");
     END;
-    IF drilldown ;
-       request_base.push("dd=${drilldown}");
+    IF searchquery.get_option('dd') ;
+       request_base.push("dd=${searchquery.get_option('dd')}");
     END;
     FOREACH thisdb IN db ;
        request_base.push("db=${thisdb}");
@@ -35,8 +35,8 @@
 
     request_base = request_base.join(";");
 
-start_range     = nav.current_page*qopts.num-qopts.num + 1;
-    end_range       = nav.current_page*qopts.num;
+    start_range     = nav.current_page*searchquery.get_option('num')-searchquery.get_option('num') + 1;
+    end_range       = nav.current_page*searchquery.get_option('num');
     IF end_range >= fullresultcount ;
        end_range       = fullresultcount;
     END;

@@ -146,7 +146,7 @@ sub show {
         }
     }    
 
-    my $searchquery = OpenBib::SearchQuery->instance;
+    my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
 
     if ($queryid) {
         $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});

@@ -53,7 +53,13 @@ use OpenBib::Database::System;
 use OpenBib::VirtualSearch::Util;
 
 sub _new_instance {
-    my ($class) = @_;
+    my ($class,$arg_ref) = @_;
+
+    my $view        = exists $arg_ref->{view}
+        ? $arg_ref->{view}                  : undef;
+
+    my $r           = exists $arg_ref->{r}
+        ? $arg_ref->{r}                     : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -77,13 +83,28 @@ sub _new_instance {
 
     bless ($self, $class);
 
+    if ($view){
+        $self->{view} = $view;
+    }
+    
+    if ($r){
+        $self->{r} = $r;
+        $self->set_from_apache_request
+    }
+    
     $self->connectDB();
 
     return $self;
 }
 
 sub new {
-    my ($class) = @_;
+    my ($class,$arg_ref) = @_;
+
+    my $view        = exists $arg_ref->{view}
+        ? $arg_ref->{view}                  : undef;
+
+    my $r           = exists $arg_ref->{r}
+        ? $arg_ref->{r}                     : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -106,6 +127,15 @@ sub new {
     }
 
     bless ($self, $class);
+
+    if ($view){
+        $self->{view} = $view;
+    }
+
+    if ($r){
+        $self->{r} = $r;
+        $self->set_from_apache_request
+    }
 
     $self->connectDB();
     
@@ -113,16 +143,16 @@ sub new {
 }
 
 sub set_from_apache_request {
-    my ($self,$r,$searchprofile)=@_;
+    my ($self)=@_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
     
-    my $query = Apache2::Request->new($r);
+    my $query = Apache2::Request->new($self->{r});
 
-    my ($yearop,$indexterm,$indextermnorm);
+    my ($yearop,$indexterm,$indextermnorm,$indextype);
 
     # Wandlungstabelle Erscheinungsjahroperator
     my $yearop_ref={
@@ -161,7 +191,7 @@ sub set_from_apache_request {
 
     $self->{_searchquery} = {};
 
-    $logger->debug("Params: ".$r->args);
+    $logger->debug("Params: ".$self->{r}->args);
     
     # Suchfelder einlesen
     foreach my $searchfield (keys %{$config->{searchfield}}){
@@ -331,15 +361,24 @@ sub set_from_apache_request {
     }
 
     # Parameter einlesen
-    $yearop    =                  decode_utf8($query->param('yearop'))       || $query->param('yearop') || 'eq';    
-    $indexterm = $indextermnorm = decode_utf8($query->param('indexterm'))     || $query->param('indexterm')|| '';
+    $yearop    =                  decode_utf8($query->param('yearop'))       || $query->param('yearop')    || 'eq';
 
-    my $autoplus      = $query->param('autoplus')      || '';
-    my $persindex     = $query->param('persindex')     || '';
-    my $corpindex     = $query->param('corpindex')      || '';
-    my $subjindex     = $query->param('subjindex')      || '';
-    my $clnindex      = $query->param('clnindex')      || '';
+    $self->{_searchquery}->{autoplus}            = $query->param('autoplus')            || '';
+    $self->{_searchquery}->{searchtype}          = $query->param('st')            || '';    # Search type (1=simple,2=complex)
+    $self->{_searchquery}->{drilldown}           = $query->param('dd')            || 1;     # Drilldown ?
 
+    # Index zusammen mit Eingabefelder
+    $self->{_searchquery}->{personindex}         = $query->param('personindex')         || '';
+    $self->{_searchquery}->{corporatebodyindex}  = $query->param('corporatebodyindex')  || '';
+    $self->{_searchquery}->{subjectindex}        = $query->param('subjectindex')        || '';
+    $self->{_searchquery}->{classificationindex} = $query->param('classificationindex') || '';
+
+    # oder Index als Separate Funktion
+    $indexterm = $indextermnorm = decode_utf8($query->param('indexterm'))    || $query->param('indexterm') || '';
+
+    $self->{_searchquery}->{indextype}           = decode_utf8($query->param('indextype'))    || $query->param('indextype') || '';
+    $self->{_searchquery}->{searchindex}         = $query->param('searchindex')         || '';
+    
     # Setzen der arithmetischen yearop-Operatoren
     if (exists $yearop_ref->{$yearop}){
         $yearop=$yearop_ref->{$yearop};
@@ -364,9 +403,13 @@ sub set_from_apache_request {
         };
     }
 
-    if (defined $searchprofile){
-        $self->{_searchprofile} = $searchprofile;
+    if ($indextype){
+        $self->{_searchquery}->{indextype} = $indextype;
     }
+
+    $self->{_is_indexsearch} =($self->{_searchquery}->{searchindex} || $self->{_searchquery}->{personindex} || $self->{_searchquery}->{corporatebodyindex} || $self->{_searchquery}->{subjectindex} || $self->{_searchquery}->{classificationindex})?1:0;
+    
+    $self->{_searchprofile} = $self->_get_searchprofile;
 
     return $self;
 }
@@ -470,11 +513,22 @@ sub save  {
     return $self;
 }
 
+sub is_indexsearch {
+    my ($self)=@_;
+
+    return $self->{_is_indexsearch};
+}
 
 sub get_searchquery {
     my ($self)=@_;
 
     return $self->{_searchquery};
+}
+
+sub get_searchtype {
+    my ($self)=@_;
+
+    return $self->{_searchquery}->{searchtype};
 }
 
 sub get_filter {
@@ -579,7 +633,7 @@ sub get_searchterms {
 
     my @allterms = ();
     foreach my $cat (keys %{$self->{_searchquery}}){
-        push @allterms, $self->{_searchquery}->{$cat}->{val} if ($self->{_searchquery}->{$cat}->{val});
+        push @allterms, $self->{_searchquery}->{$cat}->{val} if (defined $self->{_searchquery}->{$cat}->{val} && $self->{_searchquery}->{$cat}->{val});
     }
     
     my $alltermsstring = join (" ",@allterms);
@@ -830,6 +884,7 @@ sub to_json {
     my $tmp_ref = {};
     foreach my $property (sort keys %{$self}){
         next if ($property eq "schema"); # DBIx::Class wird nicht gewandelt
+        next if ($property eq "r");      # Apache2::RequestRec wird nicht gewandelt
         $tmp_ref->{$property} = $self->{$property};
     }
     
@@ -847,6 +902,65 @@ sub from_json {
     }
 
     return $self;
+}
+
+
+sub _get_searchprofile {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $query = Apache2::Request->new($self->{r});
+    my $view  = $self->{'view'}                      || '';
+
+    my $config         = OpenBib::Config->instance;
+    my $session        = OpenBib::Session->instance;
+
+    # CGI Args
+    my @databases     = ($query->param('db'))?$query->param('db'):();
+    my $profile       = $query->param('profile')       || '';
+
+    # BEGIN DB-Bestimmung
+    ####################################################################
+    # Bestimmung der Datenbanken, in denen gesucht werden soll
+    ####################################################################
+
+    # Wenn Datenbanken uebergeben werden, dann wird nur
+    # in diesen gesucht.
+    if ($#databases != -1) {
+        $logger->debug("Selecting databases received via CGI");
+        # Wenn Datenbanken explizit ueber das Suchformular uebergeben werden,
+        # dann werden diese als neue Datenbankauswahl gesetzt
+        
+        # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
+        $session->set_dbchoice(\@databases);
+        
+        # Neue Datenbankauswahl ist voreingestellt
+        $session->set_profile('dbchoice');
+    }
+    # Wenn ein Suchprofil uebergeben wird, dann wird nur dort gesucht
+    elsif ($profile) {
+        $logger->debug("Selecting all databases for profile $profile");
+        @databases = $config->get_databases_of_searchprofile($profile);
+        $session->set_profile($profile);
+    }
+    # Sonst wird in der Datenbankvorauswahl der Sicht
+    # recherchiert.    
+    else {
+        $logger->debug("Selecting databases of view");
+        @databases = $config->get_dbs_of_view($view);
+    }
+
+    # Dublette Datenbanken filtern
+    my %seen_dbases = ();
+    @databases = grep { ! $seen_dbases{$_} ++ } @databases;
+
+    my $searchprofile = ($profile)?$profile:$config->get_searchprofile_or_create(\@databases);
+    
+    $logger->debug("Database List: ".YAML::Dump(\@databases));
+    $logger->debug("Searchprofie : $searchprofile");
+    return $searchprofile;
 }
 
 sub connectDB {

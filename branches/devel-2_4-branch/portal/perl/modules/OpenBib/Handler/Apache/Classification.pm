@@ -86,7 +86,6 @@ sub show_record {
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $searchquery   = OpenBib::SearchQuery->instance;
 
     if ($database && $classificationid ){ # Valide Informationen etc.
         $logger->debug("ID: $classificationid - DB: $database");
@@ -103,7 +102,6 @@ sub show_record {
             record        => $record,
             id            => $classificationid,
             format        => $format,
-            searchquery   => $searchquery,
             activefeed    => $config->get_activefeeds_of_db($database),
             logintargetdb => $logintargetdb,
         };

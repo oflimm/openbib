@@ -4,7 +4,7 @@
 #
 #  ehemals VirtualSearch.pm
 #
-#  Dieses File ist (C) 1997-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -114,251 +114,75 @@ sub show_search {
     my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     
     # CGI Args
-    my $serien        = decode_utf8($query->param('serien'))        || 0;
-    my $hitrange      = ($query->param('num' ))?$query->param('num'):50;
-    my $page          = ($query->param('page' ))?$query->param('page'):1;
-    my $listtype      = ($query->param('lt' ))?$query->param('lt'):"cover";
-    my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
-    my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
-    my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
-    my $joindbs    = $query->param('jn') || $query->param('combinedbs')    || 1;
+    # TODO: Warum hier und nicht in SearchQuery? Erstmal weg
+#    my $serien        = decode_utf8($query->param('serien'))        || 0;
 
-    my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
+    # Folgende Parameter wind bereis im QueryOptions-Objekt enthalten ($self->param('qopts')
+#     my $hitrange      = ($query->param('num' ))?$query->param('num'):50;
+#     my $page          = ($query->param('page' ))?$query->param('page'):1;
+#     my $listtype      = ($query->param('lt' ))?$query->param('lt'):"cover";
+#     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
+#     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
+#     my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
+#     my $joindbs       = $query->param('jn') || $query->param('combinedbs')    || 1;
 
-    # Index zusammen mit Eingabefelder 
-    my $verfindex     = $query->param('verfindex')     || '';
-    my $korindex      = $query->param('korindex')      || '';
-    my $swtindex      = $query->param('swtindex')      || '';
-    my $notindex      = $query->param('notindex')      || '';
+#    my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 
-    # oder Index als separate Funktion
-    my $indextype    = $query->param('indextype')     || ''; # (verfindex, korindex, swtindex oder notindex)
-    my $indexterm    = $query->param('indexterm')     || '';
-    my $searchindex  = $query->param('searchindex')     || '';
+    # Parameter bereits in SearchQuery Objekt
     
-    my $profile       = $query->param('profile')       || '';
+#     # Index zusammen mit Eingabefelder 
+#     my $verfindex     = $query->param('verfindex')     || '';
+#     my $korindex      = $query->param('korindex')      || '';
+#     my $swtindex      = $query->param('swtindex')      || '';
+#     my $notindex      = $query->param('notindex')      || '';
+
+#     # oder Index als separate Funktion
+#     my $indextype    = $query->param('indextype')      || ''; # (verfindex, korindex, swtindex oder notindex)
+#     my $indexterm    = $query->param('indexterm')      || '';
+#     my $searchindex  = $query->param('searchindex')    || '';
+    
+#    my $profile       = $query->param('profile')       || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
-    my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
-    my $drilldown     = $query->param('dd')            || 1;     # Drill-Down?
+
+
+    #     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
+#     my $drilldown     = $query->param('dd')            || 1;     # Drill-Down?
     
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    my $searchquery = OpenBib::SearchQuery->instance;
+    my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
     
     my $sb = $config->{local_search_backend};
 
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
 		type      => 20,
-                content   => $st,
+                content   => $searchquery->get_searchtype,
     });
 
     # Loggen des Recherche-Backends
     $session->log_event({
 		type      => 21,
-                content   => 'xapian',
+                content   => $sb,
     });
 
-    my $sysprofile    = $config->get_profilename_of_view($view);
-
-    my $searchprofile = $self->get_searchprofile();
-
-    $logger->debug("Searching backend $sb in searchprofile $searchprofile");
+    $logger->debug("Searching backend $sb in searchprofile $searchquery->get_searchprofile");
 
     # Loggen des Recherche-Profils
     $session->log_event({
 		type      => 23,
-                content   => $searchprofile,
+                content   => $searchquery->get_searchprofile,
     });
 
-    $searchquery->set_from_apache_request($r,$searchprofile);
-    
     # BEGIN Index
     ####################################################################
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
     ####################################################################
 
-    if ($searchindex || $verfindex || $korindex || $swtindex || $notindex) {
-        
-        my $contentreq =
-            ($searchindex)?$searchquery->get_searchfield('indexterm' )->{norm}:
-
-            ($verfindex)?$searchquery->get_searchfield('verf'         )->{norm}:
-            ($korindex )?$searchquery->get_searchfield('kor'          )->{norm}:
-            ($swtindex )?$searchquery->get_searchfield('swt'          )->{norm}:
-            ($notindex )?$searchquery->get_searchfield('notation'     )->{norm}:undef;
-
-        my $type =
-            ($indextype)?$indextype:
-            
-            ($verfindex)?'aut':
-            ($korindex )?'kor':
-            ($swtindex )?'swt':
-            ($notindex )?'notation':undef;
-
-        my $urlpart =
-            ($type eq "aut"      )?"verf=$contentreq;verfindex=Index":
-            ($type eq "kor"      )?"kor=$contentreq;korindex=Index":
-            ($type eq "swt"      )?"swt=$contentreq;swtindex=Index":
-            ($type eq "notation" )?"notation=$contentreq;notindex=Index":undef;
-
-        my $template =
-            ($type eq "aut"      )?$config->{"tt_search_person_tname"}:
-            ($type eq "kor"      )?$config->{"tt_search_corporatebody_tname"}:
-            ($type eq "swt"      )?$config->{"tt_search_subject_tname"}:
-            ($type eq "notation" )?$config->{"tt_search_classification_tname"}:undef;
-            
-        $contentreq=~s/\+//g;
-        $contentreq=~s/%2B//g;
-        $contentreq=~s/%//g;
-
-        if (!$contentreq) {
-            $self->print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"));
-            return Apache2::Const::OK;
-        }
-
-        if (length($contentreq) < 3) {
-            my @databases = $config->get_databases_of_searchprofile($searchprofile);
-            if ($#databases > 0){
-                $self->print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."));
-                return Apache2::Const::OK;
-            }
-        }
-
-        my %index=();
-
-        my @sortedindex=();
-
-        my $atime=new Benchmark;
-
-        foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
-            my $dbh
-                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                    or $logger->error_die($DBI::errstr);
-
-            my $thisindex_ref=OpenBib::Search::Util::get_index({
-                type       => $type,
-                category   => 1,
-                contentreq => $contentreq,
-                dbh        => $dbh,
-            });
-
-            $logger->debug("Index Ursprung ($database)".YAML::Dump($thisindex_ref));
-            
-            # Umorganisierung der Daten Teil 1
-            #
-            # Hier werden die fuer eine Datenbank mit get_index ermittelten
-            # Index-Items (AoH content,id,titcount) in einen Gesamt-Index
-            # uebertragen (HoHoAoH) mit folgenden Schluesseln pro 'Ebene'
-            # (1) <Indexbegriff>
-            # {2} databases(Array), titcount(Skalar)
-            # (3) dbname,dbdesc,id,titcount in Array databases
-            foreach my $item_ref (@$thisindex_ref) {
-                # Korrekte Initialisierung mit 0
-                if (! exists $index{$item_ref->{content}}{titcount}) {
-                    $index{$item_ref->{content}}{titcount}=0;
-                }
-
-                push @{$index{$item_ref->{content}}{databases}}, {
-                    'dbname'   => $database,
-                    'dbdesc'   => $dbinfotable->{dbnames}{$database},
-                    'id'       => $item_ref->{id},
-                    'titcount' => $item_ref->{titcount},
-                };
-
-                $index{$item_ref->{content}}{titcount}=$index{$item_ref->{content}}{titcount}+$item_ref->{titcount};
-            }
-            $dbh->disconnect;
-        }
-
-        $logger->debug("Index 1".YAML::Dump(\%index));
-
-        # Umorganisierung der Daten Teil 2
-        #
-        # Um die Begriffe sortieren zu koennen muss der HoHoAoH in ein
-        # AoHoAoH umgewandelt werden.
-        # Es werden folgende Schluessel pro 'Ebene' verwendet
-        # {1} content(Skalar), databases(Array), titcount(Skalar)
-        # (2) dbname,dbdesc,id,titcount in Array databases
-        #
-        # Ueber die Reihenfolge des ersten Arrays erfolgt die Sortierung
-        foreach my $singlecontent (sort { uc($a) cmp uc($b) } keys %index) {
-            push @sortedindex, { content   => $singlecontent,
-                                 titcount  => $index{$singlecontent}{titcount},
-                                 databases => $index{$singlecontent}{databases},
-                             };
-        }
-
-        $logger->debug("Index 2".YAML::Dump(\@sortedindex));
-        
-        my $hits=$#sortedindex+1;
-
-        my $databasestring="";
-        foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
-            $databasestring.=";database=$database";
-        }
-        
-        my $baseurl="$path_prefix/$config->{search_loc}?$urlpart;profile=$profile;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
-
-        my @nav=();
-
-        my $offset = $page*$hitrange-$hitrange;
-    
-        if ($hitrange > 0) {
-            $logger->debug("Navigation wird erzeugt: Hitrange: $hitrange Hits: $hits");
-
-            for (my $i=0; $i <= $hits-1; $i+=$hitrange) {
-                my $active=0;
-	
-                if ($i == $offset) {
-                    $active=1;
-                }
-	
-                my $item={
-                    start  => $i+1,
-                    end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
-                    url    => $baseurl.";hitrange=$hitrange;offset=$i",
-                    active => $active,
-                };
-                push @nav,$item;
-            }
-        }
-
-
-        my $btime      = new Benchmark;
-        my $timeall    = timediff($btime,$atime);
-        my $resulttime = timestr($timeall,"nop");
-        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-        
-        # TT-Data erzeugen
-        my $ttdata={
-            servername   => $servername,
-            lang         => $lang,
-            qopts        => $queryoptions->get_options,
-            queryoptions => $queryoptions,
-            
-            resulttime => $resulttime,
-            contentreq => $contentreq,
-            index      => \@sortedindex,
-            nav        => \@nav,
-            offset     => $offset,
-            page       => $page,
-            hitrange   => $hitrange,
-            baseurl    => $baseurl,
-            profile    => $profile,
-            sysprofile => $sysprofile,
-
-            decode_utf8    => sub {
-                my $string=shift;
-                return decode_utf8($string);
-            },
-        };
-
-        $self->print_page($template,$ttdata,$r);
-
-        return Apache2::Const::OK;
+    if ($searchquery->is_indexsearch){
+        $self->search_index;
     }
 
     ####################################################################
@@ -410,11 +234,32 @@ sub show_search {
     my $atime=new Benchmark;
     
     my $starttemplatename=$config->{tt_search_title_start_tname};
+
+        # TT-Data erzeugen
     
+    my $startttdata={
+        password       => $password,
+        searchquery    => $searchquery,
+        queryid        => $queryid,
+        query          => $query,
+        
+        qopts          => $queryoptions->get_options,
+        queryoptions   => $queryoptions,
+        
+        spelling_suggestion => $spelling_suggestion_ref,
+
+        page           => $queryoptions->get_option('page'),
+        sortorder      => $queryoptions->get_option('srto'),
+        sorttype       => $queryoptions->get_option('srt'),
+        
+    };
+
+    $startttdata = $self->add_default_ttdata($startttdata);
+
     $starttemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
         database     => '', # Template ist nicht datenbankabhaengig
         view         => $view,
-        profile      => $sysprofile,
+        profile      => $startttdata->{sysprofile},
         templatename => $starttemplatename,
     });
 
@@ -433,29 +278,7 @@ sub show_search {
         RECURSION      => 1,
         OUTPUT         => $r,
     });
-    
-    # TT-Data erzeugen
-    
-    my $startttdata={
-        password       => $password,
-        searchquery    => $searchquery,
-        queryid        => $queryid,
-        query          => $query,
         
-        qopts          => $queryoptions->get_options,
-        queryoptions   => $queryoptions,
-        
-        spelling_suggestion => $spelling_suggestion_ref,
-
-        hitrange       => $hitrange,
-        page           => $page,
-        sortorder      => $sortorder,
-        sorttype       => $sorttype,
-        
-    };
-
-    $startttdata = $self->add_default_ttdata($startttdata);
-    
     $starttemplate->process($starttemplatename, $startttdata) || do {
         $r->log_error($starttemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
@@ -472,217 +295,13 @@ sub show_search {
     
     # Kombinierte Suche ueber alle Kataloge
 
-    if ($joindbs){
+    if ($queryoptions->get_option('jn')){
         # Trefferliste
-        my $recordlist;
-        
-        if ($sb eq 'xapian') {
-            # Xapian
 
-            $recordlist = new OpenBib::RecordList::Title();
+        my $atime=new Benchmark;
+        my $timeall;
 
-            my $atime=new Benchmark;
-            my $category_map_ref = ();
-            my $fullresultcount;
-            my $resulttime;
-            my $request;
-            my $timeall;
-            
-            my $dbh;
-            my $nav;
-
-            my $profileindex_path = $config->{xapian_index_base_path}."/joined/$searchprofile";
-
-            if (-d $profileindex_path){
-                $logger->debug("Adding Xapian DB-Object for profile $searchprofile");
-
-                eval {
-                    $dbh = new Search::Xapian::Database ( $profileindex_path ) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-                };
-                
-                if ($@){
-                    $logger->error("Initializing with Profile: $profile - :".$@." not available");
-                }
-                
-            }
-            else {
-                foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
-                    $logger->debug("Adding Xapian DB-Object for database $database");
-                    
-                    if (!defined $dbh){
-                        # Erstes Objekt erzeugen,
-                        
-                        $logger->debug("Creating Xapian DB-Object for database $database");                
-                        
-                        eval {
-                            $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-                        };
-                        
-                        if ($@){
-                            $logger->error("Initializing with Database: $database - :".$@." not available");
-                        }
-                    }
-                    else {
-                        $logger->debug("Adding database $database");
-                        
-                        eval {
-                            $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
-                        };
-                        
-                        if ($@){
-                            $logger->error("Adding Database: $database - :".$@." not available");
-                        }                        
-                    }
-                }
-            }
-            
-            #$dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/view_kug") || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-
-            # Recherche starten
-            $request = new OpenBib::Search::Local::Xapian();
-                
-            $request->initial_search({
-                serien          => $serien,
-                dbh             => $dbh,
-                
-                sortorder       => $sortorder,
-                sorttype        => $sorttype,
-
-                hitrange        => $hitrange,
-                page            => $page,
-                defaultop       => $defaultop,
-
-                drilldown       => $drilldown,
-            });
-            
-            $fullresultcount = $request->{resultcount};
-            
-            my $btime      = new Benchmark;
-            $timeall    = timediff($btime,$atime);
-            $resulttime = timestr($timeall,"nop");
-            $resulttime    =~s/(\d+\.\d+) .*/$1/;
-            
-            $logger->info($fullresultcount . " results found in $resulttime");
-
-            $searchquery->set_hits($fullresultcount);
-            
-            if ($fullresultcount >= 1) {
-                $nav = Data::Pageset->new({
-                    'total_entries'    => $fullresultcount,
-                    'entries_per_page' => $hitrange,
-                    'current_page'     => $page,
-                    'mode'             => 'slide',
-                });
-                
-                my @matches = $request->matches;
-                foreach my $match (@matches) {
-                    my $document        = $match->get_document();
-
-                    my $titlistitem_ref;
-                    
-                    if ($config->{internal_serialize_type} eq "packed_storable"){
-                        $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
-                    }
-                    elsif ($config->{internal_serialize_type} eq "json"){
-                        $titlistitem_ref = decode_json $document->get_data();
-                    }
-                    else {
-                        $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
-                    }
-                    
-                    $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
-                }
-                
-                if ($drilldown) {
-                    $category_map_ref = $request->get_categorized_drilldown;
-                    $searchquery->set_results($category_map_ref->{8}); # Verteilung nach Datenbanken
-                }
-            }
-
-            # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
-            # den einzeltreffern
-            push @resultset, @{$recordlist->to_ids};
-            
-            my $treffer=$fullresultcount;
-            
-            my $itemtemplatename=$config->{tt_search_title_combined_tname};
-            
-            $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-                database     => '', # Template ist nicht datenbankabhaengig
-                view         => $view,
-                profile      => $sysprofile,
-                templatename => $itemtemplatename,
-            });
-            
-            # Start der Ausgabe mit korrektem Header
-            $r->content_type($content_type);
-            
-            # Es kann kein Datenbankabhaengiges Template geben
-            
-            my $itemtemplate = Template->new({
-                LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                    INCLUDE_PATH   => $config->{tt_include_path},
-                    ABSOLUTE       => 1,
-                }) ],
-                #                INCLUDE_PATH   => $config->{tt_include_path},
-                #                ABSOLUTE       => 1,
-                RECURSION      => 1,
-                OUTPUT         => $r,
-            });            
-            
-            # TT-Data erzeugen
-            my $ttdata={
-            servername   => $servername,
-                profile         => $profile,
-                
-                dbinfo          => $dbinfotable,
-                
-                searchquery     => $searchquery,
-                
-                qopts           => $queryoptions->get_options,
-                queryoptions    => $queryoptions,
-                
-                query           => $query,
-                
-                treffer         => $treffer,
-                
-                queryid         => $queryid,
-                
-                category_map    => $category_map_ref,
-                
-                fullresultcount => $fullresultcount,
-                recordlist      => $recordlist,
-                
-                nav             => $nav,
-                
-                jn              => $joindbs,
-                
-                drilldown       => $drilldown,
-                
-                page            => $page,
-                hitrange        => $hitrange,
-                
-                lastquery       => $request->querystring,
-                sorttype        => $sorttype,
-                sortorder       => $sortorder,
-                defaultop       => $defaultop,
-                resulttime      => $resulttime,
-            };
-
-            $ttdata = $self->add_default_ttdata($ttdata);
-
-            $logger->debug("Printing Combined Result");
-            
-            $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                $r->log_error($itemtemplate->error(), $r->filename);
-                return Apache2::Const::SERVER_ERROR;
-            };
-            
-            $trefferpage{'combined'} = $recordlist;
-            $dbhits     {'combined'} = $treffer;
-            $gesamttreffer      = $treffer;
-
-         }
+        $self->combined_search({sb => $sb});
     }
     # Alternativ: getrennte Suche uber alle Kataloge
     else {
@@ -693,8 +312,10 @@ sub show_search {
         ######################################################################
         
         my $atime=new Benchmark;
+
+        $self->sequential_search({sb => $sb});
         
-        foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
+        foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
             
             # Trefferliste
             my $recordlist;
@@ -738,32 +359,13 @@ sub show_search {
                         $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (suchen+holen): ist ".timestr($timeall));
                     }
                     
-                    $recordlist->sort({order=>$sortorder,type=>$sorttype});
+                    $recordlist->sort({order=>$queryoptions->get_option('srto'),type=>$queryoptions->get_option('srt')});
                     
                     # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
                     push @resultset, @{$recordlist->to_ids};
                 
                     my $treffer=$fullresultcount;
 
-                    my $itemtemplatename=$config->{tt_search_title_item_tname};
-                    
-                    $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-                        database     => $database,
-                        view         => $view,
-                        profile      => $sysprofile,
-                        templatename => $itemtemplatename,
-                    });
-
-                    my $itemtemplate = Template->new({
-                        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                            INCLUDE_PATH   => $config->{tt_include_path},
-                            ABSOLUTE       => 1,
-                        }) ],
-                        RECURSION      => 1,
-                        OUTPUT         => $r,
-                    });
-                    
-                    
                     # TT-Data erzeugen
                     my $ttdata={
                         dbinfo          => $dbinfotable,
@@ -779,12 +381,30 @@ sub show_search {
                         fullresultcount => $fullresultcount,
                         recordlist      => $recordlist,
                         
-                        sorttype        => $sorttype,
-                        sortorder       => $sortorder,
                         resulttime      => $resulttime,
                     };
 
                     $ttdata = $self->add_default_ttdata($ttdata);
+                    
+                    my $itemtemplatename=$config->{tt_search_title_item_tname};
+                    
+                    $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+                        database     => $database,
+                        view         => $view,
+                        profile      => $ttdata->{sysprofile},
+                        templatename => $itemtemplatename,
+                    });
+
+                    my $itemtemplate = Template->new({
+                        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                            INCLUDE_PATH   => $config->{tt_include_path},
+                            ABSOLUTE       => 1,
+                        }) ],
+                        RECURSION      => 1,
+                        OUTPUT         => $r,
+                    });
+                    
+                    
 
                     $itemtemplate->process($itemtemplatename, $ttdata) || do {
                         $r->log_error($itemtemplate->error(), $r->filename);
@@ -832,20 +452,7 @@ sub show_search {
                     else { 
                        my $request = new OpenBib::Search::Local::Xapian();
                     
-                        $request->initial_search({
-                            serien          => $serien,
-                            dbh             => $dbh,
-                            database        => $database,
-
-                            defaultop       => $defaultop,
-                            sortorder       => $sortorder,
-                            sorttype        => $sorttype,
-
-                            hitrange        => $hitrange,
-                            page            => $page,
-
-                            drilldown       => $drilldown,
-                        });
+                        $request->initial_search();
 
                         my $fullresultcount = $request->{resultcount};
                     
@@ -861,8 +468,8 @@ sub show_search {
                         if ($fullresultcount >= 1) {
                             my $nav = Data::Pageset->new({
                                 'total_entries'    => $fullresultcount,
-                                'entries_per_page' => $hitrange,
-                                'current_page'     => $page,
+                                'entries_per_page' => $queryoptions->get_option('num'),
+                                'current_page'     => $queryoptions->get_option('page'),
                                 'mode'             => 'slide',
                             });
 
@@ -889,7 +496,7 @@ sub show_search {
                         
                             my $termweight_ref={};
                         
-                            if ($drilldown) {
+                            if ($queryoptions->get_option('dd')) {
                                 $category_map_ref = $request->get_categorized_drilldown;
                             }
 
@@ -898,28 +505,6 @@ sub show_search {
                         
                             my $treffer=$fullresultcount;
 
-                            my $itemtemplatename=$config->{tt_search_title_item_tname};
-
-                            $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-                                database     => $database,
-                                view         => $view,
-                                profile      => $sysprofile,
-                                templatename => $itemtemplatename,
-                            });
-
-                            $logger->debug("Using Template $itemtemplatename");
-                            
-                            my $itemtemplate = Template->new({
-                                LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                                    INCLUDE_PATH   => $config->{tt_include_path},
-                                    ABSOLUTE       => 1,
-                                }) ],
-                                #                INCLUDE_PATH   => $config->{tt_include_path},
-                                #                ABSOLUTE       => 1,
-                                RECURSION      => 1,
-                                OUTPUT         => $r,
-                            });
-                        
                             # TT-Data erzeugen
                             my $ttdata={
                                 dbinfo          => $dbinfotable,
@@ -938,22 +523,39 @@ sub show_search {
 
                                 qopts           => $queryoptions->get_options,
                                 queryoptions    => $queryoptions,
-                                drilldown       => $drilldown,
 
                                 cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
 
                                 nav             => $nav,
 
-                                page            => $page,
-                                hitrange        => $hitrange,
                                 lastquery       => $request->querystring,
-                                sorttype        => $sorttype,
-                                sortorder       => $sortorder,
                                 resulttime      => $resulttime,
                             };
 
                             $ttdata = $self->add_default_ttdata($ttdata);
+                            
+                            my $itemtemplatename=$config->{tt_search_title_item_tname};
 
+                            $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+                                database     => $database,
+                                view         => $view,
+                                profile      => $ttdata->{sysprofile},
+                                templatename => $itemtemplatename,
+                            });
+
+                            $logger->debug("Using Template $itemtemplatename");
+                            
+                            my $itemtemplate = Template->new({
+                                LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                                    INCLUDE_PATH   => $config->{tt_include_path},
+                                    ABSOLUTE       => 1,
+                                }) ],
+                                #                INCLUDE_PATH   => $config->{tt_include_path},
+                                #                ABSOLUTE       => 1,
+                                RECURSION      => 1,
+                                OUTPUT         => $r,
+                            });
+                        
                             $itemtemplate->process($itemtemplatename, $ttdata) || do {
                                 $r->log_error($itemtemplate->error(), $r->filename);
                                 return Apache2::Const::SERVER_ERROR;
@@ -994,28 +596,7 @@ sub show_search {
         #    $logger->info("InitialSearch: ", $session->{ID}, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") gtquelle=(", $boolgtquelle, "#", $gtquelle, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
                 
     }
-    
-    # Ausgabe des letzten HTML-Bereichs
-    my $endtemplatename=$config->{tt_search_title_end_tname};
-    
-    $endtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => '', # Template ist nicht datenbankabhaengig
-        view         => $view,
-        profile      => $sysprofile,
-        templatename => $endtemplatename,
-    });
-    
-    my $endtemplate = Template->new({
-        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config->{tt_include_path},
-            ABSOLUTE       => 1,
-        }) ],
-        #        INCLUDE_PATH   => $config->{tt_include_path},
-        #        ABSOLUTE       => 1,
-        RECURSION      => 1,
-        OUTPUT         => $r,
-    });
-    
+
     # TT-Data erzeugen
     my $endttdata={
         gesamttreffer => $gesamttreffer,
@@ -1032,6 +613,27 @@ sub show_search {
 
     $endttdata = $self->add_default_ttdata($endttdata);
 
+    # Ausgabe des letzten HTML-Bereichs
+    my $endtemplatename=$config->{tt_search_title_end_tname};
+    
+    $endtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $view,
+        profile      => $endttdata->{sysprofile},
+        templatename => $endtemplatename,
+    });
+    
+    my $endtemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        INCLUDE_PATH   => $config->{tt_include_path},
+        #        ABSOLUTE       => 1,
+        RECURSION      => 1,
+        OUTPUT         => $r,
+    });
+    
     $endtemplate->process($endtemplatename, $endttdata) || do {
         $r->log_error($endtemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
@@ -1053,7 +655,7 @@ sub show_search {
     
     my $searchquery_log_ref = $searchquery->get_searchquery;
         
-    $searchquery_log_ref->{searchprofile} = $searchprofile;
+    $searchquery_log_ref->{searchprofile} = $searchquery->get_searchprofile;
     
     $searchquery_log_ref->{hits}   = $gesamttreffer;
     
@@ -1244,7 +846,7 @@ sub show_index {
     
     my @nav=();
     
-    my $offset = $page*$hitrange-$hitrange;
+    my $offset = $queryoptions->get_option('page')*$hitrange-$hitrange;
     
     if ($hitrange > 0) {
         $logger->debug("Navigation wird erzeugt: Hitrange: $hitrange Hits: $hits");
@@ -1282,7 +884,7 @@ sub show_index {
         index      => \@sortedindex,
         nav        => \@nav,
         offset     => $offset,
-        page       => $page,
+        page       => $queryoptions->get_option('page'),
         hitrange   => $hitrange,
         baseurl    => $baseurl,
         profile    => $profile,
@@ -1296,89 +898,6 @@ sub show_index {
     # ENDE Indizes
     #
 
-}
-
-sub get_searchprofile {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $representation = $self->param('representation');
-    my $path_prefix    = $self->param('path_prefix');
-
-    # CGI Args
-    my @databases     = ($query->param('db'))?$query->param('db'):();
-    my $queryid       = $query->param('queryid')       || '';
-    my $searchindex   = $query->param('searchindex')   || '';
-
-    my $profile       = $query->param('profile')       || '';
-
-    # Index zusammen mit Eingabefelder 
-    my $verfindex     = $query->param('verfindex')     || '';
-    my $korindex      = $query->param('korindex')      || '';
-    my $swtindex      = $query->param('swtindex')      || '';
-    my $notindex      = $query->param('notindex')      || '';
-
-    my $searchquery  = OpenBib::SearchQuery->instance;
-
-    my $sysprofile   = $config->get_profilename_of_view($view);
-
-    my $orgunits_ref = $config->get_orgunitinfo_overview($sysprofile);
-
-    my $content_type = $config->{content_type_map_rev}->{$representation};
-
-    # BEGIN DB-Bestimmung
-    ####################################################################
-    # Bestimmung der Datenbanken, in denen gesucht werden soll
-    ####################################################################
-
-    # Wenn Datenbanken uebergeben werden, dann wird nur
-    # in diesen gesucht.
-    if ($#databases != -1) {
-        $logger->debug("Selecting databases received via CGI");
-        # Wenn Datenbanken explizit ueber das Suchformular uebergeben werden,
-        # dann werden diese als neue Datenbankauswahl gesetzt
-        
-        # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
-        $session->set_dbchoice(\@databases);
-        
-        # Neue Datenbankauswahl ist voreingestellt
-        $session->set_profile('dbchoice');
-    }
-    # Wenn ein Suchprofil uebergeben wird, dann wird nur dort gesucht
-    elsif ($profile) {
-        $logger->debug("Selecting all databases for profile $profile");
-        @databases = $config->get_databases_of_searchprofile($profile);
-        $session->set_profile($profile);
-    }
-    # Sonst wird in der Datenbankvorauswahl der Sicht
-    # recherchiert.    
-    else {
-        $logger->debug("Selecting databases of view");
-        @databases = $config->get_dbs_of_view($view);
-    }
-
-    # Dublette Datenbanken filtern
-    my %seen_dbases = ();
-    @databases = grep { ! $seen_dbases{$_} ++ } @databases;
-
-    my $searchprofile = ($profile)?$profile:$config->get_searchprofile_or_create(\@databases);
-    
-    $logger->debug("Database List: ".YAML::Dump(\@databases));
-    $logger->debug("Searchprofie : $searchprofile");
-    return $searchprofile;
 }
 
 sub gen_cloud {
@@ -1529,6 +1048,415 @@ sub xxxget_modified_querystring {
     return join(";",@cgiparams) if (@cgiparams);
 
     return 'blabla';
+}
+
+sub combined_search {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $recordlist;
+    
+    if    ($arg_ref->{sb} eq "xapian"){
+        $self->combined_search_xapian($arg_ref);
+    }
+    elsif ($arg_ref->{sb} eq "es"){
+        $self->combined_search_elasticsearch($arg_ref);
+    }
+
+    $self->print_resultitem({templatename => $config->{tt_search_title_combined_tname}});
+}
+
+sub sequential_search {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $recordlist;
+    
+    if    ($arg_ref->{sb} eq "xapian"){
+        $self->combined_search_xapian($arg_ref);
+    }
+    elsif ($arg_ref->{sb} eq "es"){
+        $self->combined_search_elasticsearch($arg_ref);
+    }
+
+    $self->print_resultitem({templatename => $config->{tt_search_title_combined_tname}});
+}
+
+sub combined_search_xapian {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $searchquery  = OpenBib::SearchQuery->instance;
+    my $queryoptions = OpenBib::QueryOptions->instance;
+
+
+    my $atime=new Benchmark;
+    my $timeall;
+    
+    my $recordlist;
+    my $category_map_ref = ();
+    my $resulttime;
+    my $nav;
+    
+    # Recherche starten
+    my $request = new OpenBib::Search::Local::Xapian();
+    
+    $request->initial_search();
+    
+    my $btime      = new Benchmark;
+    $timeall    = timediff($btime,$atime);
+    $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    
+    $logger->info($request->get_resultcount . " results found in $resulttime");
+    
+    $searchquery->set_hits($request->get_resultcount);
+    
+    if ($request->have_results) {
+        $nav = Data::Pageset->new({
+            'total_entries'    => $request->get_resultcount,
+            'entries_per_page' => $queryoptions->get_option('num'),
+            'current_page'     => $queryoptions->get_option('page'),
+            'mode'             => 'slide',
+        });
+        
+        $recordlist = $request->get_records();
+        
+        if ($queryoptions->get_option('dd')) {
+            $category_map_ref = $request->get_categorized_drilldown;
+            $searchquery->set_results($category_map_ref->{8}); # Verteilung nach Datenbanken
+        }
+
+    }
+    
+    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
+    # den einzeltreffern
+
+    $self->param('searchtime',$resulttime);
+    $self->param('nav',$nav);
+    $self->param('recordlist',$recordlist);
+    $self->param('facets',$category_map_ref);
+    $self->param('hits',$request->get_resultcount);
+    $self->param('total_hits',$request->get_resultcount);
+
+    return;
+}
+
+sub print_resultitem {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $templatename = exists $arg_ref->{templatename}
+        ? $arg_ref->{templatename}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $servername     = $self->param('servername');
+    my $path_prefix    = $self->param('path_prefix');
+    my $path           = $self->param('path');
+    my $representation = $self->param('representation');
+    my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+
+    my $searchquery  = OpenBib::SearchQuery->instance;
+    my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->instance;
+
+    # TT-Data erzeugen
+    my $ttdata={
+        dbinfo          => $dbinfotable,
+        
+        searchquery     => $searchquery,
+        
+        qopts           => $queryoptions->get_options,
+        queryoptions    => $queryoptions,
+
+        
+        query           => $query,
+        
+        treffer         => $self->param('hits'),
+        
+        category_map    => $self->param('facets'),
+        
+        fullresultcount => $self->param('total_hits'),
+        recordlist      => $self->param('recordlist'),
+        
+        nav             => $self->param('nav'),
+        
+#        lastquery       => $request->querystring,
+        resulttime      => $self->param('searchtime'),
+    };
+    
+    $ttdata = $self->add_default_ttdata($ttdata);
+
+    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $templatename,
+    });
+    
+    # Start der Ausgabe mit korrektem Header
+    $r->content_type($ttdata->{content_type});
+    
+    # Es kann kein Datenbankabhaengiges Template geben
+    
+    my $itemtemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #                INCLUDE_PATH   => $config->{tt_include_path},
+        #                ABSOLUTE       => 1,
+        RECURSION      => 1,
+        OUTPUT         => $r,
+    });            
+    
+    
+    $logger->debug("Printing Combined Result");
+    
+    $itemtemplate->process($templatename, $ttdata) || do {
+        $r->log_error($itemtemplate->error(), $r->filename);
+        return Apache2::Const::SERVER_ERROR;
+    };
+}
+
+sub search_index {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+        # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $servername     = $self->param('servername');
+    my $path_prefix    = $self->param('path_prefix');
+    my $path           = $self->param('path');
+    my $representation = $self->param('representation');
+    my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+
+    my $profile       = $query->param('profile')       || '';
+
+    # Index zusammen mit Eingabefelder 
+    my $verfindex     = $query->param('verfindex')     || '';
+    my $korindex      = $query->param('korindex')      || '';
+    my $swtindex      = $query->param('swtindex')      || '';
+    my $notindex      = $query->param('notindex')      || '';
+
+    # oder Index als separate Funktion
+    my $indextype    = $query->param('indextype')     || ''; # (verfindex, korindex, swtindex oder notindex)
+    my $indexterm    = $query->param('indexterm')     || '';
+    my $searchindex  = $query->param('searchindex')     || '';
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $searchquery = OpenBib::SearchQuery->instance;
+
+    my $searchprofile = $self->get_searchprofile();
+
+    
+    my $contentreq =
+        ($searchindex)?$searchquery->get_searchfield('indexterm' )->{norm}:
+            
+            ($verfindex)?$searchquery->get_searchfield('verf'         )->{norm}:
+                ($korindex )?$searchquery->get_searchfield('kor'          )->{norm}:
+                    ($swtindex )?$searchquery->get_searchfield('swt'          )->{norm}:
+                        ($notindex )?$searchquery->get_searchfield('notation'     )->{norm}:undef;
+    
+    my $type =
+        ($indextype)?$indextype:
+        ($verfindex)?'aut':
+            ($korindex )?'kor':
+                ($swtindex )?'swt':
+                    ($notindex )?'notation':undef;
+    
+    my $urlpart =
+        ($type eq "aut"      )?"verf=$contentreq;verfindex=Index":
+            ($type eq "kor"      )?"kor=$contentreq;korindex=Index":
+                ($type eq "swt"      )?"swt=$contentreq;swtindex=Index":
+                    ($type eq "notation" )?"notation=$contentreq;notindex=Index":undef;
+    
+    my $template =
+        ($type eq "aut"      )?$config->{"tt_search_person_tname"}:
+            ($type eq "kor"      )?$config->{"tt_search_corporatebody_tname"}:
+                ($type eq "swt"      )?$config->{"tt_search_subject_tname"}:
+                    ($type eq "notation" )?$config->{"tt_search_classification_tname"}:undef;
+    
+    $contentreq=~s/\+//g;
+    $contentreq=~s/%2B//g;
+    $contentreq=~s/%//g;
+    
+    if (!$contentreq) {
+        $self->print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"));
+        return Apache2::Const::OK;
+    }
+    
+    if (length($contentreq) < 3) {
+        my @databases = $config->get_databases_of_searchprofile($searchprofile);
+        if ($#databases > 0){
+            $self->print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."));
+            return Apache2::Const::OK;
+        }
+    }
+    
+    my %index=();
+    
+    my @sortedindex=();
+    
+    my $atime=new Benchmark;
+    
+    foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $thisindex_ref=OpenBib::Search::Util::get_index({
+            type       => $type,
+            category   => 1,
+            contentreq => $contentreq,
+            dbh        => $dbh,
+        });
+        
+        $logger->debug("Index Ursprung ($database)".YAML::Dump($thisindex_ref));
+        
+        # Umorganisierung der Daten Teil 1
+        #
+        # Hier werden die fuer eine Datenbank mit get_index ermittelten
+        # Index-Items (AoH content,id,titcount) in einen Gesamt-Index
+        # uebertragen (HoHoAoH) mit folgenden Schluesseln pro 'Ebene'
+        # (1) <Indexbegriff>
+        # {2} databases(Array), titcount(Skalar)
+        # (3) dbname,dbdesc,id,titcount in Array databases
+        foreach my $item_ref (@$thisindex_ref) {
+            # Korrekte Initialisierung mit 0
+            if (! exists $index{$item_ref->{content}}{titcount}) {
+                $index{$item_ref->{content}}{titcount}=0;
+            }
+            
+            push @{$index{$item_ref->{content}}{databases}}, {
+                'dbname'   => $database,
+                'dbdesc'   => $dbinfotable->{dbnames}{$database},
+                'id'       => $item_ref->{id},
+                'titcount' => $item_ref->{titcount},
+            };
+            
+            $index{$item_ref->{content}}{titcount}=$index{$item_ref->{content}}{titcount}+$item_ref->{titcount};
+        }
+        $dbh->disconnect;
+    }
+    
+    $logger->debug("Index 1".YAML::Dump(\%index));
+    
+    # Umorganisierung der Daten Teil 2
+    #
+    # Um die Begriffe sortieren zu koennen muss der HoHoAoH in ein
+    # AoHoAoH umgewandelt werden.
+    # Es werden folgende Schluessel pro 'Ebene' verwendet
+    # {1} content(Skalar), databases(Array), titcount(Skalar)
+    # (2) dbname,dbdesc,id,titcount in Array databases
+    #
+    # Ueber die Reihenfolge des ersten Arrays erfolgt die Sortierung
+    foreach my $singlecontent (sort { uc($a) cmp uc($b) } keys %index) {
+        push @sortedindex, { content   => $singlecontent,
+                             titcount  => $index{$singlecontent}{titcount},
+                             databases => $index{$singlecontent}{databases},
+                         };
+    }
+    
+    $logger->debug("Index 2".YAML::Dump(\@sortedindex));
+    
+    my $hits=$#sortedindex+1;
+    
+    my $databasestring="";
+    foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
+        $databasestring.=";database=$database";
+    }
+    
+    my $baseurl="$path_prefix/$config->{search_loc}?$urlpart;profile=$profile;hitrange=$queryoptions->get_option('num');sorttype=$queryoptions->get_option('srt');sortorder=$queryoptions->get_option('srto')$databasestring";
+    
+    my @nav=();
+    
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+    
+    if ($queryoptions->get_option('num') > 0) {
+        $logger->debug("Navigation wird erzeugt: Hitrange: $queryoptions->get_option('num') Hits: $hits");
+        
+        for (my $i=0; $i <= $hits-1; $i+=$queryoptions->get_option('num')) {
+            my $active=0;
+            
+            if ($i == $offset) {
+                $active=1;
+            }
+            
+            my $item={
+                start  => $i+1,
+                end    => ($i+$queryoptions->get_option('num')>$hits)?$hits:$i+$queryoptions->get_option('num'),
+                url    => $baseurl.";hitrange=$queryoptions->get_option('num');offset=$i",
+                active => $active,
+            };
+            push @nav,$item;
+        }
+    }
+    
+    
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        servername   => $servername,
+        lang         => $lang,
+        qopts        => $queryoptions->get_options,
+        queryoptions => $queryoptions,
+        
+        resulttime => $resulttime,
+        contentreq => $contentreq,
+        index      => \@sortedindex,
+        nav        => \@nav,
+        offset     => $offset,
+        baseurl    => $baseurl,
+    };
+
+    $ttdata = $self->add_default_ttdata($ttdata);
+    
+    $self->print_page($template,$ttdata,$r);
+    
+    return Apache2::Const::OK;
 }
 
 1;

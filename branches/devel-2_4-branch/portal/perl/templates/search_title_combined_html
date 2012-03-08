@@ -18,7 +18,7 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% IF drilldown && fullresultcount > 0%]
+[% IF quryoptions.get_option('dd') && fullresultcount > 0%]
 [% PROCESS common/subtemplate name="drilldown_categorized" %]
 [% END %]
         </div>
@@ -38,9 +38,9 @@
 [% IF fullresultcount > 0 %]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};jn=${jn};dd=1;" ;
-    start_range     = nav.current_page*qopts.num-qopts.num + 1;
-    end_range       = nav.current_page*qopts.num;
+    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')};srto=${queryoptions.get_option('srto')};jn=${queryoptions.get_option('jn')};dd=1;" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= fullresultcount ;
        end_range       = fullresultcount;
     END;

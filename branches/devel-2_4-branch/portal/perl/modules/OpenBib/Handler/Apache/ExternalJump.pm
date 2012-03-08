@@ -133,7 +133,7 @@ sub show {
 
     my $viewdesc = $config->get_viewdesc_from_viewname($view);
 
-    my $searchquery = OpenBib::SearchQuery->instance;
+    my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
 
     if ($queryid ne "") {
         $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});

@@ -34,6 +34,7 @@ use Apache2::Reload;
 use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Search::Xapian;
 use Storable;
@@ -42,14 +43,30 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
+use OpenBib::SearchQuery;
+use OpenBib::QueryOptions;
 
 sub new {
-    my $class = shift;
+    my ($class,$arg_ref) = @_;
+
+    # Set defaults
+    my $searchprofile   = exists $arg_ref->{searchprofile}
+        ? $arg_ref->{searchprofile}           : undef;
+
+    my $database        = exists $arg_ref->{database}
+        ? $arg_ref->{database}                : undef;
 
     my $self = { };
 
     bless ($self, $class);
 
+    # Entweder genau eine Datenbank via database oder (allgemeiner) ein Suchprofil via searchprofile mit einer oder mehr Datenbanken
+    
+    $self->{_searchprofile} = $searchprofile if ($searchprofile);
+    $self->{_database}      = $database if ($database);
+    
     return $self;
 }
 
@@ -119,38 +136,95 @@ sub get_relevant_terms {
 }
 
 sub initial_search {
-    my ($self,$arg_ref) = @_;
+    my ($self) = @_;
 
-    # Set defaults
-    my $serien            = exists $arg_ref->{serien}
-        ? $arg_ref->{serien}        : undef;
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}           : undef;
-    my $database          = exists $arg_ref->{database}
-        ? $arg_ref->{database}      : undef;
-    my $sorttype          = exists $arg_ref->{sorttype}
-        ? $arg_ref->{sorttype}      : undef;
-    my $sortorder         = exists $arg_ref->{sortorder}
-        ? $arg_ref->{sortorder}     : undef;
-    my $hitrange          = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}      : 50;
-    my $defaultop         = exists $arg_ref->{defaultop}
-        ? $arg_ref->{defaultop}     : "and";
-    my $page              = exists $arg_ref->{page}
-        ? $arg_ref->{page}          : 0;
-    my $drilldown         = exists $arg_ref->{drilldown}
-        ? $arg_ref->{drilldown}     : 0;
+    # Set defaults search parameters
+#    my $serien            = exists $arg_ref->{serien}
+#        ? $arg_ref->{serien}        : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config      = OpenBib::Config->instance;
-    my $searchquery = OpenBib::SearchQuery->instance;
+    my $config       = OpenBib::Config->instance;
+    my $searchquery  = OpenBib::SearchQuery->instance;
+    my $queryoptions = OpenBib::QueryOptions->instance;
+
+    # Used Parameters
+    my $sorttype          = $queryoptions->get_option('srt');
+    my $sortorder         = $queryoptions->get_option('srto');
+    my $defaultop         = $queryoptions->get_option('dop');
+    my $drilldown         = $queryoptions->get_option('dd');
+
+    # Pagination parameters
+    my $page              = $queryoptions->get_option('page');
+    my $num               = $queryoptions->get_option('num');
     
     my ($atime,$btime,$timeall);
   
     if ($config->{benchmark}) {
         $atime=new Benchmark;
+    }
+
+    my $dbh;
+    
+    if ($searchquery->get_searchprofile){
+        my $profileindex_path = $config->{xapian_index_base_path}."/joined/".$searchquery->get_searchprofile;
+        
+        if (-d $profileindex_path){
+            $logger->debug("Adding Xapian DB-Object for profile $searchquery->get_searchprofile");
+            
+            eval {
+                $dbh = new Search::Xapian::Database ( $profileindex_path ) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+            };
+            
+            if ($@){
+                $logger->error("Initializing with Profile: $self->{_searchprofile} - :".$@." not available");
+            }
+            
+        }        
+        else {
+            foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
+                $logger->debug("Adding Xapian DB-Object for database $database");
+                
+                if (!defined $dbh){
+                    # Erstes Objekt erzeugen,
+                    
+                    $logger->debug("Creating Xapian DB-Object for database $database");                
+                
+                    eval {
+                        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+                    };
+                    
+                    if ($@){
+                        $logger->error("Initializing with Database: $database - :".$@." not available");
+                    }
+                }
+                else {
+                    $logger->debug("Adding database $database");
+                    
+                    eval {
+                        $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
+                    };
+                    
+                    if ($@){
+                        $logger->error("Adding Database: $database - :".$@." not available");
+                    }                        
+                }
+            }
+        }
+    }
+    elsif ($self->{_database}){
+        $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
+        
+        eval {
+            $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$self->{_database}) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+        };
+        
+        if ($@) {
+            $logger->error("Database: $self->{_database} - :".$@);
+            return;
+        }
+
     }
 
     my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
@@ -246,11 +320,11 @@ sub initial_search {
 
     my $rset = Search::Xapian::RSet->new();
 
-    my $offset = $page*$hitrange-$hitrange;
+    my $offset = $page*$num-$num;
 
-    my $mset = ($drilldown)?$enq->get_mset($offset,$hitrange,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$hitrange,$maxmatch);
+    my $mset = ($drilldown)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
 
-    $logger->debug("DB: $database") if (defined $database);
+    $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
     
     $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
 
@@ -270,7 +344,7 @@ sub initial_search {
         push @matches, $match;
     }
     
-#    my @this_matches      = splice(@matches,$offset,$hitrange);
+#    my @this_matches      = splice(@matches,$offset,$num);
     $self->{_matches}     = \@matches;
 
     if ($singletermcount > $maxmatch){
@@ -282,8 +356,27 @@ sub initial_search {
 
     $logger->info("Running query ".$self->{_querystring}." with filters ".$self->{_filter});
 
-    $logger->info("Found ".scalar(@matches)." matches in database $database") if (defined $database);
+    $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
     return;
+}
+
+sub get_records {
+    my $self=shift;
+
+    my $config     = OpenBib::Config->instance;
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    my @matches = $self->matches;
+    
+    foreach my $match (@matches) {
+        my $document        = $match->get_document();
+        my $titlistitem_ref = decode_json $document->get_data();
+        
+        $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
+    }
+
+    return $recordlist;
 }
 
 sub matches {
@@ -458,6 +551,16 @@ sub get_values {
     }
     
     return $values_ref;
+}
+
+sub have_results {
+    my $self = shift;
+    return ($self->{resultcount})?$self->{resultcount}:0;
+}
+
+sub get_resultcount {
+    my $self = shift;
+    return $self->{resultcount};
 }
 
 sub DESTROY {

@@ -190,9 +190,7 @@ sub show {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $searchquery = OpenBib::SearchQuery->instance;
-
-    $searchquery->set_from_apache_request($r);
+    my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
 
     # Bestimmung der Datenbanken, in denen gesucht werden soll
     my @databases = $config->get_dbs_of_view($view);

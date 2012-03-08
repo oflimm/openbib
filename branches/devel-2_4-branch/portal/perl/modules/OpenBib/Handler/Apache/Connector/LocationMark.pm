@@ -53,7 +53,6 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
-use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::VirtualSearch::Util;
 

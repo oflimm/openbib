@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -313,6 +313,22 @@ my $atime = new Benchmark;
 
     $logger->info("### $database: Importing data into searchengine");   
     system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-fields -with-sorting -with-positions --database=$database");
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
+}
+
+# Suchmaschinen-Index aufbauen - Elasticsearch
+
+{
+    my $atime = new Benchmark;
+
+    $logger->info("### $database: Importing data into elasticsearch");   
+    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

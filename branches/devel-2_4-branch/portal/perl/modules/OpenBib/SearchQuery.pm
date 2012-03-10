@@ -199,7 +199,7 @@ sub set_from_apache_request {
         my ($searchfield_content, $searchfield_norm_content,$searchfield_bool_op);
         $searchfield_content = $searchfield_norm_content = decode_utf8($query->param("$searchfieldprefix")) || $query->param("$searchfieldprefix")      || '';
         $searchfield_bool_op = (defined $query && $query->param("b$searchfieldprefix"))?$query->param("b$searchfieldprefix"):
-            ($query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}))?$query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}):"AND";
+            (defined $legacy_bool_op_ref->{"b$searchfieldprefix"} && $query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}))?$query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}):"AND";
         
         # Inhalts-Check
         $searchfield_bool_op = (exists $valid_bools_ref->{$searchfield_bool_op})?$valid_bools_ref->{$searchfield_bool_op}:"AND";
@@ -356,39 +356,39 @@ sub set_from_apache_request {
                 term   => $term,
                 norm   => $string,
                 facet  => $facet,
-            };            
+            };
         }
     }
 
     # Parameter einlesen
-    $yearop    =                  decode_utf8($query->param('yearop'))       || $query->param('yearop')    || 'eq';
+    $yearop                      = decode_utf8($query->param('yearop')) || $query->param('yearop')    || 'eq';
 
-    $self->{_searchquery}->{autoplus}            = $query->param('autoplus')            || '';
-    $self->{_searchquery}->{searchtype}          = $query->param('st')            || '';    # Search type (1=simple,2=complex)
-    $self->{_searchquery}->{drilldown}           = $query->param('dd')            || 1;     # Drilldown ?
+    $self->{autoplus}            = $query->param('autoplus')            || '';
+    $self->{searchtype}          = $query->param('st')                  || '';    # Search type (1=simple,2=complex)
+    $self->{drilldown}           = $query->param('dd')                  || 1;     # Drilldown ?
 
     # Index zusammen mit Eingabefelder
-    $self->{_searchquery}->{personindex}         = $query->param('personindex')         || '';
-    $self->{_searchquery}->{corporatebodyindex}  = $query->param('corporatebodyindex')  || '';
-    $self->{_searchquery}->{subjectindex}        = $query->param('subjectindex')        || '';
-    $self->{_searchquery}->{classificationindex} = $query->param('classificationindex') || '';
+    $self->{personindex}         = $query->param('personindex')         || '';
+    $self->{corporatebodyindex}  = $query->param('corporatebodyindex')  || '';
+    $self->{subjectindex}        = $query->param('subjectindex')        || '';
+    $self->{classificationindex} = $query->param('classificationindex') || '';
 
     # oder Index als Separate Funktion
-    $indexterm = $indextermnorm = decode_utf8($query->param('indexterm'))    || $query->param('indexterm') || '';
+    $indexterm = $indextermnorm  = decode_utf8($query->param('indexterm'))    || $query->param('indexterm') || '';
 
-    $self->{_searchquery}->{indextype}           = decode_utf8($query->param('indextype'))    || $query->param('indextype') || '';
-    $self->{_searchquery}->{searchindex}         = $query->param('searchindex')         || '';
+    $self->{indextype}           = decode_utf8($query->param('indextype'))    || $query->param('indextype') || '';
+    $self->{searchindex}         = $query->param('searchindex')               || '';
     
     # Setzen der arithmetischen yearop-Operatoren
     if (exists $yearop_ref->{$yearop}){
-        $yearop=$yearop_ref->{$yearop};
+        $yearop = $yearop_ref->{$yearop};
     }
     else {
-        $yearop="=";
+        $yearop = "=";
     }
 
     if (exists $self->{_searchquery}->{year}){
-       $self->{_searchquery}->{year}->{arg}= $yearop;
+       $self->{_searchquery}->{year}->{arg} = $yearop;
     }
 
     if ($indexterm){
@@ -404,12 +404,12 @@ sub set_from_apache_request {
     }
 
     if ($indextype){
-        $self->{_searchquery}->{indextype} = $indextype;
+        $self->{indextype} = $indextype;
     }
 
     $self->{_is_indexsearch} =($self->{_searchquery}->{searchindex} || $self->{_searchquery}->{personindex} || $self->{_searchquery}->{corporatebodyindex} || $self->{_searchquery}->{subjectindex} || $self->{_searchquery}->{classificationindex})?1:0;
     
-    $self->{_searchprofile} = $self->_get_searchprofile;
+    $self->{_searchprofile}  = $self->_get_searchprofile;
 
     return $self;
 }
@@ -528,7 +528,7 @@ sub get_searchquery {
 sub get_searchtype {
     my ($self)=@_;
 
-    return $self->{_searchquery}->{searchtype};
+    return $self->{searchtype};
 }
 
 sub get_filter {
@@ -623,6 +623,28 @@ sub get_searchfield {
     return (exists $self->{_searchquery}->{$fieldname})?$self->{_searchquery}->{$fieldname}:{val => '', norm => '', bool => '', args => ''};
 }
 
+sub set_searchfield {
+    my ($self,$fieldname,$content,$bool)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $contentnorm  = OpenBib::Common::Util::grundform({
+        content   => $contentnorm,
+        searchreq => 1,
+    });
+
+    $logger->debug($fieldname);
+
+    $self->{_searchquery}->{$fieldname} = {
+        val => $content, norm => $contentnorm, bool => $bool
+    };
+
+    return;
+}
+
+}
+
 sub get_searchterms {
     my ($self) = @_;
     
@@ -631,9 +653,13 @@ sub get_searchterms {
 
     my $term_ref = [];
 
+    $logger->debug("_searchquery is: ".YAML::Dump($self->{_searchquery}));
+    
+    return $term_ref unless (defined $self->{_searchquery} && exists $self->{_searchquery});
+
     my @allterms = ();
     foreach my $cat (keys %{$self->{_searchquery}}){
-        push @allterms, $self->{_searchquery}->{$cat}->{val} if (defined $self->{_searchquery}->{$cat}->{val} && $self->{_searchquery}->{$cat}->{val});
+        push @allterms, $self->{_searchquery}->{$cat}->{val} if (ref $self->{_searchquery}->{$cat} eq "HASH" && $self->{_searchquery}->{$cat}->{val});
     }
     
     my $alltermsstring = join (" ",@allterms);
@@ -737,6 +763,93 @@ sub to_xapian_querystring {
     return {
         query  => $xapianquerystring,
         filter => $xapianfilterstring
+    };
+}
+
+sub to_elasticsearch_querystring {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Aufbau des elasticsearchquerystrings
+    my @elasticsearchquerystrings = ();
+    my $elasticsearchquerystring  = "";
+
+    # Aufbau des elasticsearchfilterstrings
+    my @elasticsearchfilterstrings = ();
+    my $elasticsearchfilterstring  = "";
+
+    my $ops_ref = {
+        'AND'     => 'AND ',
+        'AND NOT' => 'NOT ',
+        'OR'      => 'OR ',
+    };
+
+    foreach my $field (keys %{$config->{searchfield}}){
+        my $searchtermstring = (defined $self->{_searchquery}->{$field}->{norm})?$self->{_searchquery}->{$field}->{norm}:'';
+        my $searchtermop     = (defined $self->{_searchquery}->{$field}->{bool} && defined $ops_ref->{$self->{_searchquery}->{$field}->{bool}})?$ops_ref->{$self->{_searchquery}->{$field}->{bool}}:'';
+        if ($searchtermstring) {
+            # Freie Suche einfach uebernehmen
+            if ($field eq "freesearch" && $searchtermstring) {
+#                 my @searchterms = split('\s+',$searchtermstring);
+                
+#                 # Inhalte von @searchterms mit Suchprefix bestuecken
+#                 foreach my $searchterm (@searchterms){                    
+#                     $searchterm="+".$searchtermstring if ($searchtermstring=~/^\w/);
+#                 }
+#                 $searchtermstring = "(".join(' ',@searchterms).")";
+
+                push @elasticsearchquerystrings, $searchtermstring;
+            }
+            # Titelstring mit _ ersetzten
+            elsif (($field eq "titlestring" || $field eq "mark") && $searchtermstring) {
+                my @chars = split("",$searchtermstring);
+                my $newsearchtermstring = "";
+                foreach my $char (@chars){
+                    if ($char ne "*"){
+                        $char=~s/\W/_/g;
+                    }
+                    $newsearchtermstring.=$char;
+                }
+                    
+                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":$newsearchtermstring";
+                push @elasticsearchquerystrings, $searchtermstring;                
+            }
+            # Sonst Operator und Prefix hinzufuegen
+            elsif ($searchtermstring) {
+                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":($searchtermstring)";
+                push @elasticsearchquerystrings, $searchtermstring;                
+            }
+
+            # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
+            # Nochmal explizites Setzen von +, weil sonst Wildcards innerhalb mehrerer
+            # Suchterme ignoriert werden.
+
+        }
+    }
+
+    # Filter
+    foreach my $filter_ref (@{$self->get_filter}){
+        push @elasticsearchfilterstrings, "$filter_ref->{facet}:$filter_ref->{norm}";
+    }
+    
+    $elasticsearchquerystring  = join(" ",@elasticsearchquerystrings);
+    $elasticsearchfilterstring = join(" ",@elasticsearchfilterstrings);
+
+    $elasticsearchquerystring=~s/^AND //;
+    $elasticsearchquerystring=~s/^OR //;
+    $elasticsearchquerystring=~s/^NOT //;
+
+#    $elasticsearchquerystring=~s/^OR /FALSE OR /;
+#    $elasticsearchquerystring=~s/^NOT /TRUE NOT /;
+    
+    $logger->debug("Elasticsearch-Querystring: $elasticsearchquerystring - Elasticsearch-Filterstring: $elasticsearchfilterstring");
+    return {
+        query  => $elasticsearchquerystring,
+        filter => $elasticsearchfilterstring
     };
 }
 

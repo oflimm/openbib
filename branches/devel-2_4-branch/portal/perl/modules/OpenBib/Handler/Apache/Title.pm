@@ -118,7 +118,7 @@ sub show_collection_form {
     # Shared Args
     my $config         = $self->param('config');
 
-    $logger->debug("Showing For for Title Record");
+    $logger->debug("Showing Form for Title Record");
     
     if (!$self->is_authenticated('admin')){
         return;
@@ -187,7 +187,7 @@ sub show_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
-    my $lang            = $self->param('lang');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');

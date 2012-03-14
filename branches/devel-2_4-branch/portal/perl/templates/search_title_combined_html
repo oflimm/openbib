@@ -18,7 +18,7 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% IF quryoptions.get_option('dd') && fullresultcount > 0%]
+[% IF queryoptions.get_option('dd') && fullresultcount > 0%]
 [% PROCESS common/subtemplate name="drilldown_categorized" %]
 [% END %]
         </div>

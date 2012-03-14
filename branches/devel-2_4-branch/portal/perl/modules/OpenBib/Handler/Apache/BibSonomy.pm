@@ -44,7 +44,7 @@ use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
-use URI::Escape qw(uri_escape);
+use URI::Escape qw(uri_escape uri_escape_utf8);
 
 use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
@@ -365,16 +365,16 @@ sub create_record {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if ($id && $database){
-        my $title = OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex;
+        my $title = OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex({utf8 => 1});
 #        $title=~s/\n/ /g;
         
-        # my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape("http://$servername$path_prefix/$config->{title_loc}/$database/$id")."&description=".uri_escape($config->get_viewdesc_from_viewname($view))."&encoding=ISO-8859-1&selection=".uri_escape($title);
-        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&encoding=ISO-8859-1&selection=".uri_escape($title);
+        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape_utf8("http://$servername$path_prefix/$config->{home_loc}")."&description=".uri_escape_utf8($config->get_viewdesc_from_viewname($view))."&encoding=UTF-8&selection=".uri_escape_utf8($title);
+#        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&encoding=UTF-8&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG Recherche-Portal&selection=".uri_escape_utf8($title);
         
         $logger->debug($bibsonomy_uri);
 
         $self->query->method('GET');
-        $self->query->content_type('text/html');
+        $self->query->content_type('text/html; charset=UTF-8');
         $self->query->headers_out->add(Location => $bibsonomy_uri);
         $self->query->status(Apache2::Const::REDIRECT);
         

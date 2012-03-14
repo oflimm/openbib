@@ -506,7 +506,8 @@ my @inhalt                 = ();
 my $listitem_ref={};
 my $thisitem_ref={};
 my $searchfield_ref = {};
-my $normdata_ref={};
+my $normdata_ref= {};
+
 $count=0;
 
 CATLINE:
@@ -550,7 +551,10 @@ while (my $line=<IN>){
         $listitem_ref          = {};
         $thisitem_ref          = {};
 
-        $normdata_ref          = {};
+        $normdata_ref             = {};
+        $normdata_ref->{id}       = $id;
+        $normdata_ref->{dbstring} = $database;
+        $normdata_ref->{facet_database} = $database;
 
         $listitem_ref->{id}       = $id;
         $listitem_ref->{database} = $database;
@@ -988,17 +992,7 @@ while (my $line=<IN>){
         # - in MLDB auslagern
         # - Kategorien als eigene Spalten
 
-        my $listitem = "";
-
-        if ($config->{internal_serialize_type} eq "packed_storable"){
-            $listitem = unpack "H*",Storable::freeze($listitem_ref);
-        }
-        elsif ($config->{internal_serialize_type} eq "json"){
-            $listitem = encode_json $listitem_ref;
-        }
-        else {
-            $listitem = unpack "H*",Storable::freeze($listitem_ref);
-        }
+        my $listitem = encode_json $listitem_ref;
 
         $listitem = decode_utf8($listitem);
         

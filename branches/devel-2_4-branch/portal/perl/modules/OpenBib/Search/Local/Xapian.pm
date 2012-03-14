@@ -308,7 +308,7 @@ sub initial_search {
     # - aber die korrekte Treffermengenzahl zurueck gegeben
     # Generell gilt aber auch hier: Es sind maximal maxmatch
     # Treffer ueber die Recherche zugreifbar!
-    
+
     my $singletermcount = 0;
     if ($is_singleterm){
       $singletermcount = $dbh->get_termfreq($is_singleterm);
@@ -322,6 +322,8 @@ sub initial_search {
 
     my $offset = $page*$num-$num;
 
+    $logger->debug("Drilldown: $drilldown");
+    
     my $mset = ($drilldown)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
 
     $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
@@ -347,6 +349,7 @@ sub initial_search {
 #    my @this_matches      = splice(@matches,$offset,$num);
     $self->{_matches}     = \@matches;
 
+    $logger->debug(YAML::Dump(\%decider_map));
     if ($singletermcount > $maxmatch){
       $self->{categories} = {};
     }

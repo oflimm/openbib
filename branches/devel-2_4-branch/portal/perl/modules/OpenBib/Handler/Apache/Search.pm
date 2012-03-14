@@ -785,7 +785,7 @@ sub joined_search {
     if    ($arg_ref->{sb} eq "xapian"){
         $self->search_xapian($arg_ref);
     }
-    elsif ($arg_ref->{sb} eq "es"){
+    elsif ($arg_ref->{sb} eq "elasticsearch"){
         $self->search_elasticsearch($arg_ref);
     }
 
@@ -815,7 +815,7 @@ sub sequential_search {
         elsif ($arg_ref->{sb} eq "xapian"){
             $self->search_xapian({ database => $database });
         }
-        elsif ($arg_ref->{sb} eq "es"){
+        elsif ($arg_ref->{sb} eq "elasticsearch"){
             $self->search_elasticsearch({ database => $database });
         }
         
@@ -879,10 +879,10 @@ sub search_xapian {
         
         $recordlist = $request->get_records();
         
-        if ($queryoptions->get_option('dd')) {
+#        if ($queryoptions->get_option('dd')) {
             $category_map_ref = $request->get_categorized_drilldown;
             $searchquery->set_results($category_map_ref->{8}); # Verteilung nach Datenbanken
-        }
+#        }
 
     }
     
@@ -954,10 +954,10 @@ sub search_elasticsearch {
         
         $recordlist = $request->get_records();
         
-        if ($queryoptions->get_option('dd')) {
+#        if ($queryoptions->get_option('dd')) {
             $category_map_ref = $request->get_categorized_drilldown;
             $searchquery->set_results($category_map_ref->{8}); # Verteilung nach Datenbanken
-        }
+#        }
 
     }
     

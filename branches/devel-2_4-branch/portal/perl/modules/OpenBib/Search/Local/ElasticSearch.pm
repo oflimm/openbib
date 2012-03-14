@@ -159,6 +159,8 @@ sub initial_search {
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');
     my $num               = $queryoptions->get_option('num');
+
+    my $from              = ($page - 1)*$num;
     
     my ($atime,$btime,$timeall);
   
@@ -189,38 +191,74 @@ sub initial_search {
             $index = "profile_$searchprofile"
         }
         else {
-            $index = $config->get_databases_of_searchprofile($searchprofile);
+            my @index = ();
+            foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
+                push @index, $database if ($es->index_exists(
+                    index => $database,
+                ));
+            }
+            $index = \@index;
         }
     }
     elsif ($self->{_database}){
-        $index = $self->{_database};
+        $index = $self->{_database} if ($es->index_exists(
+            index => $self->{_database},
+        ));;
     }
 
-    my $querystring     = $searchquery->to_xapian_querystring;
+    my $querystring     = $searchquery->to_elasticsearch_querystring;
 
+    $logger->debug("Query: ".YAML::Dump($querystring));
+
+    my $facets_ref = {};
+
+    foreach my $facet (keys %{$config->{xapian_drilldown_value}}){
+        $facets_ref->{$facet} = {
+            terms => {
+                field => "facet_$facet",
+                size => 25,
+            }
+        };
+
+#         my $thisfilterstring = $querystring->{filter}{"facet_$facet"};
+#         if ($thisfilterstring){
+#             push @{$facets_ref->{$facet}{facet_filter}}, { term => { "facet_$facet" =>  $thisfilterstring }};
+#         }
+    }
+    
     my $results = $es->search(
         index => $index,
         type  => 'title',
-        query => {
-            query_string => {
-                query => $es->query_parser->filter($querystring->{query})
-            },
-        },
-        facets => $querystring->{filter}
+        queryb => $querystring->{query},
+        filterb => $querystring->{filter},
+        facets => $facets_ref,
+        from   => $from,
+        size   => $num,
     );
 
-    $logger->debug(YAML::Dump($results));
+    my @matches = ();
+    foreach my $match (@{$results->{hits}->{hits}}){
+        push @matches, {
+            database => $match->{_index},
+            id       => $match->{_id}
+        };
+    }
+
+    # Facets
+    $self->{categories} = $results->{facets};
+
+    $logger->debug("Results: ".YAML::Dump($results));
     
     $self->{_querystring} = $querystring->{query};
     $self->{_filter}      = $querystring->{filter};
 #    $self->{_enq}         = $enq;
 
-    #$self->{resultcount} = $singletermcount;
+    $self->{resultcount} = $results->{hits}->{total};
 
-#    $self->{_matches}     = \@matches;
+    $self->{_matches}     = \@matches;
 
 
-    $logger->info("Running query ".$self->{_querystring}." with filters ".$self->{_filter});
+    $logger->info("Running query ".YAML::Dump($self->{_querystring})." with filters ".YAML::Dump($self->{_filter}));
 
 #    $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
     return;
@@ -236,10 +274,7 @@ sub get_records {
     my @matches = $self->matches;
     
     foreach my $match (@matches) {
-        my $document        = $match->get_document();
-        my $titlistitem_ref = decode_json $document->get_data();
-        
-        $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
+        $recordlist->add(OpenBib::Record::Title->new({database => $match->{database}, id => $match->{id}})->load_brief_record);
     }
 
     return $recordlist;
@@ -275,21 +310,34 @@ sub get_categorized_drilldown {
     
     # Transformation Hash->Array zur Sortierung
 
+    my $type_map_ref = {
+        database => 8,
+        person => 3,
+        corporatebody => 7,
+        subject => 1,
+        classification => 2,
+        year => 5,
+        mediatype => 4,
+        tag => 9,
+        litlist => 10,
+        language => 6,
+    };
+    
     my $category_map_ref     = ();
     my $tmp_category_map_ref = $self->{categories};
                                 
     foreach my $type (keys %{$tmp_category_map_ref}) {
         my $contents_ref = [] ;
-        foreach my $content (keys %{$tmp_category_map_ref->{$type}}) {
+        foreach my $item_ref (@{$tmp_category_map_ref->{$type}->{terms}}) {
             my $normcontent = OpenBib::Common::Util::grundform({
-                content   => decode_utf8($content),
+                content   => decode_utf8($item_ref->{term}),
                 searchreq => 1,
             });
             
             $normcontent=~s/\W/_/g;
             push @{$contents_ref}, [
-                decode_utf8($content),
-                $tmp_category_map_ref->{$type}{$content},
+                decode_utf8($item_ref->{term}),
+                $item_ref->{count},
                 $normcontent,
             ];
         }
@@ -298,7 +346,7 @@ sub get_categorized_drilldown {
         
         # Schwartz'ian Transform
         
-        @{$category_map_ref->{$type}} = map { $_->[0] }
+        @{$category_map_ref->{$type_map_ref->{$type}}} = map { $_->[0] }
             sort { $b->[1] <=> $a->[1] }
                 map { [$_, $_->[1]] }
                     @{$contents_ref};

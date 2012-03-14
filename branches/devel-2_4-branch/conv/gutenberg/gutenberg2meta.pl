@@ -57,12 +57,12 @@ HELP
 exit;
 }
 
-open (TIT,     ">:utf8","unload.TIT");
-open (AUT,     ">:utf8","unload.PER");
-open (KOR,     ">:utf8","unload.KOE");
-open (NOTATION,">:utf8","unload.SYS");
-open (SWT,     ">:utf8","unload.SWD");
-open (MEX,     ">:utf8","unload.MEX");
+open (TIT,     ">:utf8","meta.title");
+open (AUT,     ">:utf8","meta.person");
+open (KOR,     ">:utf8","meta.corporatebody");
+open (NOTATION,">:utf8","meta.classification");
+open (SWT,     ">:utf8","meta.subject");
+open (MEX,     ">:utf8","meta.holding");
 
 my $parser = XML::LibXML->new();
 $parser->keep_blanks(0);
@@ -93,7 +93,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     # Einzelner Verfasser
     foreach my $item ($etext_node->findnodes ('dc:creator//text()')) {
         my $content = $item->textContent;
-        my $autidn  = OpenBib::Conv::Common::Util::get_autidn($content);
+        my ($autidn,$flag_new)  = OpenBib::Conv::Common::Util::get_person_id($content);
         
         if ($autidn > 0){
             print AUT "0000:$autidn\n";
@@ -110,7 +110,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     # Verfasser, Personen
     foreach my $item ($etext_node->findnodes ('dc:contributor//text()')) {
         my $content = $item->textContent;
-        my $autidn  = OpenBib::Conv::Common::Util::get_autidn($content);
+        my ($autidn,$flag_new) = OpenBib::Conv::Common::Util::get_person_id($content);
         
         if ($autidn > 0){
             print AUT "0000:$autidn\n";
@@ -159,7 +159,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     # Schlagworte
     foreach my $item ($etext_node->findnodes ('dc:subject/dcterms:LCSH//text()')) {
         my $content = $item->textContent;
-        my $swtidn  = OpenBib::Conv::Common::Util::get_swtidn($content);
+        my ($swtidn,$flag_new)  = OpenBib::Conv::Common::Util::get_subject_id($content);
         
         if ($swtidn > 0){
             print SWT "0000:$swtidn\n";

@@ -541,15 +541,23 @@ sub to_cgi_params {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $exclude_array_ref    = exists $arg_ref->{exclude}
-        ? $arg_ref->{exclude}        : [];
+    my $exclude_array_ref        = exists $arg_ref->{exclude}
+        ? $arg_ref->{exclude}         : [];
 
-    my $exclude_ref = {};
+    my $exclude_filter_array_ref = exists $arg_ref->{exclude_filter}
+        ? $arg_ref->{exclude_filter}  : [];
+
+    my $exclude_ref        = {};
+    my $exclude_filter_ref = {};
 
     foreach my $param (@{$exclude_array_ref}){
         $exclude_ref->{$param} = 1;
     }
-    
+
+    foreach my $content (@{$exclude_filter_array_ref}){
+        $exclude_filter_ref->{$content} = 1;
+    }
+
     my $config = OpenBib::Config->instance;
 
     my @cgiparams = ();
@@ -563,7 +571,7 @@ sub to_cgi_params {
     }
 
     foreach my $filter (@{$self->{_filter}}){
-        push @cgiparams, "filter=$filter->{val}";
+        push @cgiparams, "filter=$filter->{val}" if (!$exclude_filter_ref->{$filter->{val}});
     }
     
     return join(";",@cgiparams);
@@ -630,7 +638,7 @@ sub set_searchfield {
     my $logger = get_logger();
 
     my $contentnorm  = OpenBib::Common::Util::grundform({
-        content   => $contentnorm,
+        content   => $content,
         searchreq => 1,
     });
 
@@ -641,8 +649,6 @@ sub set_searchfield {
     };
 
     return;
-}
-
 }
 
 sub get_searchterms {
@@ -788,21 +794,29 @@ sub to_elasticsearch_querystring {
         'OR'      => 'OR ',
     };
 
+    my $query_ref = {};
+    
     foreach my $field (keys %{$config->{searchfield}}){
         my $searchtermstring = (defined $self->{_searchquery}->{$field}->{norm})?$self->{_searchquery}->{$field}->{norm}:'';
         my $searchtermop     = (defined $self->{_searchquery}->{$field}->{bool} && defined $ops_ref->{$self->{_searchquery}->{$field}->{bool}})?$ops_ref->{$self->{_searchquery}->{$field}->{bool}}:'';
         if ($searchtermstring) {
             # Freie Suche einfach uebernehmen
             if ($field eq "freesearch" && $searchtermstring) {
-#                 my @searchterms = split('\s+',$searchtermstring);
+                my @searchterms = split('\s+',$searchtermstring);
                 
-#                 # Inhalte von @searchterms mit Suchprefix bestuecken
-#                 foreach my $searchterm (@searchterms){                    
-#                     $searchterm="+".$searchtermstring if ($searchtermstring=~/^\w/);
+#                  if (@searchterms > 1){
+#                      push @{$query_ref->{freesearch}},'-and';
+#                      push @{$query_ref->{freesearch}},@searchterms;
+#                  }
+#                  else {
+#                      $query_ref->{freesearch} = $searchtermstring;
+                #                  }
+                
+#                 foreach my $term (@searchterms){
+#                     push @elasticsearchquerystrings, $config->{searchfield}{$field}{prefix}.":$term";
 #                 }
-#                 $searchtermstring = "(".join(' ',@searchterms).")";
 
-                push @elasticsearchquerystrings, $searchtermstring;
+                $query_ref->{freesearch} = $searchtermstring;
             }
             # Titelstring mit _ ersetzten
             elsif (($field eq "titlestring" || $field eq "mark") && $searchtermstring) {
@@ -814,14 +828,12 @@ sub to_elasticsearch_querystring {
                     }
                     $newsearchtermstring.=$char;
                 }
-                    
-                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":$newsearchtermstring";
-                push @elasticsearchquerystrings, $searchtermstring;                
+
+                $query_ref->{titlestring} = $newsearchtermstring;
             }
             # Sonst Operator und Prefix hinzufuegen
             elsif ($searchtermstring) {
-                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":($searchtermstring)";
-                push @elasticsearchquerystrings, $searchtermstring;                
+                $query_ref->{$field} = $searchtermstring;
             }
 
             # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
@@ -831,25 +843,36 @@ sub to_elasticsearch_querystring {
         }
     }
 
+
+    my $rev_searchfield_ref = {};
+
+    foreach my $searchfield (keys %{$config->{searchfield}}){
+        $rev_searchfield_ref->{$config->{searchfield}{$searchfield}{prefix}} = $searchfield;
+    }
     # Filter
-    foreach my $filter_ref (@{$self->get_filter}){
-        push @elasticsearchfilterstrings, "$filter_ref->{facet}:$filter_ref->{norm}";
+
+    my $filter_ref;
+
+    if (@{$self->get_filter}){
+        $filter_ref = { };
+        foreach my $thisfilter_ref (@{$self->get_filter}){
+            my $term = $thisfilter_ref->{norm};
+            $term=~s/_/ /g;
+            if (exists $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}}){
+                if (ref $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}} eq "SCALAR"){
+                    $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}}=[ $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}} ];
+                }
+                push @{$filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}}},'"'.$term.'"';
+            }
+            else {
+                $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}} = $term;
+            }
+        }
     }
     
-    $elasticsearchquerystring  = join(" ",@elasticsearchquerystrings);
-    $elasticsearchfilterstring = join(" ",@elasticsearchfilterstrings);
-
-    $elasticsearchquerystring=~s/^AND //;
-    $elasticsearchquerystring=~s/^OR //;
-    $elasticsearchquerystring=~s/^NOT //;
-
-#    $elasticsearchquerystring=~s/^OR /FALSE OR /;
-#    $elasticsearchquerystring=~s/^NOT /TRUE NOT /;
-    
-    $logger->debug("Elasticsearch-Querystring: $elasticsearchquerystring - Elasticsearch-Filterstring: $elasticsearchfilterstring");
     return {
-        query  => $elasticsearchquerystring,
-        filter => $elasticsearchfilterstring
+        query  => $query_ref,
+        filter => $filter_ref,
     };
 }
 

@@ -44,7 +44,7 @@ use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
-use URI::Escape qw(uri_escape);
+use URI::Escape qw(uri_escape uri_escape_utf8);
 
 use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
@@ -292,13 +292,11 @@ sub handler {
     }
     elsif ($action eq "add_title"){
         if ($id && $database){
-            my $title = uri_escape(OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex);
+            my $title = uri_escape_utf8(OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex({utf8 => 1}));
             
-            my $bibsonomy_uri = "$config->{redirect_loc}/$session->{ID}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=selection=$title";
-
-            $logger->debug($bibsonomy_uri);
+            my $bibsonomy_uri = "$config->{redirect_loc}/$session->{ID}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=UTF-8&selection=$title";
             
-            $r->content_type('text/html');
+            $r->content_type('text/html; charset=UTF-8');
             $r->headers_out->add("Location" => $bibsonomy_uri);
             
             return Apache2::Const::REDIRECT;

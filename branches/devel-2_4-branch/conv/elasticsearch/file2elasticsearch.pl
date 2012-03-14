@@ -91,7 +91,7 @@ if (!$database){
 $logger->info("### POOL $database");
 
 open(TITLE_LISTITEM,  "<:utf8","title_listitem.mysql" ) || die "TITLE_LISTITEM konnte nicht geoeffnet werden";
-open(SEARCHENGINE, "<:utf8","searchengine.csv"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
+open(SEARCHENGINE,    "<:utf8","searchengine.csv"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
 
 my $atime = new Benchmark;
 
@@ -99,11 +99,11 @@ my $atime = new Benchmark;
     $logger->info("Aufbau eines neuen temporaeren Index fuer Datenbank $database");
 
     my $es = ElasticSearch->new(
-        servers      => '127.0.0.1:9200',       # default '127.0.0.1:9200'
-        transport    => 'httplite',                 # default 'httplite'
-        max_requests => 10_000,                 # default 10_000
-        trace_calls  => 'log_file',
-        no_refresh   => 1,
+        servers      => $config->{elasticsearch}->{servers},       # default '127.0.0.1:9200'
+        transport    => $config->{elasticsearch}->{transport},     # default 'httplite'
+        max_requests => $config->{elasticsearch}->{max_requests},  # default 10_000
+        trace_calls  => $config->{elasticsearch}->{trace_calls},
+        no_refresh   => $config->{elasticsearch}->{no_refesh},
     );
 
     my $result = $es->index_exists(
@@ -179,6 +179,18 @@ my $atime = new Benchmark;
                         index => 'not_analyzed', # analyzed | not_analyzed | no
                         #analyze => 'default',
                     },
+
+                    database => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+
+                    facet_database => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
                     facet_person => {
                         type => 'string',
                         index => 'not_analyzed', # analyzed | not_analyzed | no
@@ -220,6 +232,62 @@ my $atime = new Benchmark;
                         #analyze => 'default',
                     },
                     facet_mediatype => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+
+                    personstring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    corporatebodystring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    classificationstring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    subjectstring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    yearstring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    tagstring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    litliststring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    languagestring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    mediatypestring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    markstring => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    dbstring => {
                         type => 'string',
                         index => 'not_analyzed', # analyzed | not_analyzed | no
                         #analyze => 'default',
@@ -326,7 +394,7 @@ my $atime = new Benchmark;
                     #                    replication => 'sync' | 'async',            # optional
                 );
 
-#                print Dump($result);
+                print Dump($result);
                 
                 $result = $es->flush_index( index => $database );
                 
@@ -341,6 +409,23 @@ my $atime = new Benchmark;
             
             $count++;
         }
+
+        # Bulk-Indexieren
+        
+        my $result = $es->bulk_index(
+            index       => $database,                   # optional
+            type        => 'title',                     # optional
+            docs        => $doc_buffer_ref,
+            #                    consistency => 'quorum' |  'one' | 'all'    # optional
+            refresh     => 1,
+            #                        refresh     => 0 | 1,                       # optional
+            #                    replication => 'sync' | 'async',            # optional
+        );
+        
+        print Dump($result);
+        
+        $result = $es->flush_index( index => $database );
+        
     }
     
 }

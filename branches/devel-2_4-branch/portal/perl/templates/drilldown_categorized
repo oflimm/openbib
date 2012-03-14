@@ -125,7 +125,15 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <table>
 
 [%
-   drilldown_query_args_base = cgiapp.modify_querystring({ change = {'page' = 1 }, exclude = ['fs','filter']}) ;
+
+   exclude_args = [ 'filter' ];
+   FOREACH field IN config.searchfield.keys ;
+     thisprefix = config.searchfield.${field}.prefix;
+     exclude_args.push(thisprefix);
+     exclude_args.push("b${thisprefix}");
+   END;
+
+   drilldown_query_args_base = cgiapp.modify_querystring({ change = {'page' = 1 }, exclude = exclude_args }) ;
 
    all_filters = [];
    have_filter = {};
@@ -133,7 +141,6 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
           all_filters.push("filter=${filter.val}");
           have_filter.${"$filter.val"} = 1;
    END ;
-   allfilterstring = ";${all_filters.join(';')}";
 %]
 
 [%# USE dumper;dumper.dump(have_filter)%]
@@ -166,14 +173,14 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
                        END;
                    END ;
 %]
-[%# USE dumper;dumper.dump(this_filters); dumper.dump(all_filters)%]
-<p><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF this_filters.size > 0 %];[% this_filters.join(';')%][% END %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.facet} %]: [% IF filter.facet == "fdb" %][% dbinfo.dbnames.${filter.term}.short %][% ELSE %][% filter.term %][% END %]</p>
+[%# USE dumper;dumper.dump(category_map) %]
+<p><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.facet} %]: [% IF filter.facet == "fdb" %][% dbinfo.dbnames.${filter.term}.short %][% ELSE %][% filter.term %][% END %]</p>
 [%             END %]
 </td></tr>
 </table>
 </td></tr>
 [%         END %]
-[%         IF jn == 1 && category_map.8.size > 0 %]
+[%         IF queryoptions.get_option('jn') == 1 && category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_database_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>
@@ -189,7 +196,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').dbstring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% dbinfo.dbnames.${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% dbinfo.dbnames.${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.8.size > 5 %]
 </div>
@@ -213,8 +220,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').personstring.prefix;
+    filterstring  = "${searchprefix}:|${searchterm}|";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${filterstring} %];filter=[% filterstring %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.3.size > 5 %]
 </div>
@@ -239,7 +247,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.7.size > 5 %]
 </div>
@@ -264,7 +272,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').subjectstring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.1.size > 5 %]
 </div>
@@ -289,7 +297,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').classificationstring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.2.size > 5 %]
 </div>
@@ -314,7 +322,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').yearstring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
 [% IF category_map.5.size > 5 %]
 </div>
@@ -339,7 +347,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').mediatypestring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.4.size > 5 %]
 </div>
@@ -364,7 +372,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').tagstring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.9.size > 5 %]
 </div>
@@ -389,7 +397,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').litliststring.prefix;
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.10.size > 5 %]
 </div>
@@ -465,7 +473,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     sprstring = spr.join(';');
 
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];fs=[% lastquery %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %][% allfilterstring %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
+<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.6.size > 5 %]
 </div>

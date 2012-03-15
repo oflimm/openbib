@@ -844,31 +844,53 @@ sub to_elasticsearch_querystring {
     }
 
 
-    my $rev_searchfield_ref = {};
+    my $rev_searchfield_ref = {
+        fper => "facet_person",
+        fcln => "facet_classification",
+        fsubj => "facet_subject",
+        ftyp => "facet_mediatype",
+        fyear => "facet_year",
+        flang => "facet_language",
+        fdb => "facet_database",
+        ftag => "facet_tag",
+        flitlist => "facet_litlist",
+    };
 
-    foreach my $searchfield (keys %{$config->{searchfield}}){
-        $rev_searchfield_ref->{$config->{searchfield}{$searchfield}{prefix}} = $searchfield;
-    }
+#     foreach my $searchfield (keys %{$config->{searchfield}}){
+#         $rev_searchfield_ref->{$config->{searchfield}{$searchfield}{prefix}} = $searchfield;
+#     }
     # Filter
 
     my $filter_ref;
 
+    $logger->debug("All filters: ".YAML::Dump($self->get_filter));
     if (@{$self->get_filter}){
         $filter_ref = { };
         foreach my $thisfilter_ref (@{$self->get_filter}){
-            my $term = $thisfilter_ref->{norm};
+            my $facet = $rev_searchfield_ref->{$thisfilter_ref->{facet}};
+            my $term  = $thisfilter_ref->{term};
             $term=~s/_/ /g;
-            if (exists $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}}){
-                if (ref $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}} eq "SCALAR"){
-                    $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}}=[ $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}} ];
+            
+            $logger->debug("Facet: $facet / Term: $term / Ref: ".ref(${$filter_ref}{$facet}));
+
+            if (exists $filter_ref->{$facet}){
+                if (! ref($filter_ref->{$facet})){
+                    my $oldterm = $filter_ref->{$facet};
+                    $logger->debug("String -> Array: $oldterm");
+                    $filter_ref->{$facet}= [ '-and' ];
+                    push @{$filter_ref->{$facet}}, $oldterm;
                 }
-                push @{$filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}}},'"'.$term.'"';
+                $logger->debug("Add Array: $term");
+                push @{$filter_ref->{$facet}}, $term; #'"'.$term.'"';                    
             }
             else {
-                $filter_ref->{$rev_searchfield_ref->{$thisfilter_ref->{facet}}} = $term;
+                $filter_ref->{$facet} = $term; #'"'.$term.'"';
             }
         }
     }
+
+    $logger->debug("Query: ".YAML::Dump($query_ref));
+    $logger->debug("Filter: ".YAML::Dump($filter_ref));
     
     return {
         query  => $query_ref,

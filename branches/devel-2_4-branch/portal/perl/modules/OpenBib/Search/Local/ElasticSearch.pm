@@ -225,12 +225,23 @@ sub initial_search {
 #             push @{$facets_ref->{$facet}{facet_filter}}, { term => { "facet_$facet" =>  $thisfilterstring }};
 #         }
     }
+
+    # Facetten filtern
+
+#     foreach my $filter (keys %{$querystring->{filter}}){
+#         $facets_ref->{$filter}{facet_filter}{term} = {
+#             "${filter}string" => $querystring->{filter}{$filter},
+#         };
+#     }    
+
+    my $query_ref = $querystring->{query};
+
+    $query_ref->{'-filter'} = $querystring->{filter};
     
     my $results = $es->search(
         index => $index,
         type  => 'title',
-        queryb => $querystring->{query},
-        filterb => $querystring->{filter},
+        queryb => $query_ref,
         facets => $facets_ref,
         from   => $from,
         size   => $num,

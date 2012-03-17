@@ -125,7 +125,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <table>
 
 [%
-   drilldown_query_args_base = cgiapp.modify_querystring({ change = {'page' = 1 }, exclude = ['fs','filter']}) ;
+   drilldown_query_args_base = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = ['fs','filter']}) ;
 
    all_filters = [];
        FOREACH filter IN searchquery.get_filter ;

@@ -45,7 +45,7 @@
        end_range       = fullresultcount;
     END;
 
-    query_args_base = cgiapp.modify_querystring({ exclude = ['page']}) ;
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
 <div class="resultlist">

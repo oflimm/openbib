@@ -251,7 +251,8 @@ sub initial_search {
     foreach my $match (@{$results->{hits}->{hits}}){
         push @matches, {
             database => $match->{_index},
-            id       => $match->{_id}
+            id       => $match->{_id},
+            listitem => $match->{_source}{listitem},
         };
     }
 
@@ -278,14 +279,20 @@ sub initial_search {
 sub get_records {
     my $self=shift;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     my $config     = OpenBib::Config->instance;
 
     my $recordlist = new OpenBib::RecordList::Title();
 
     my @matches = $self->matches;
-    
+
+    $logger->debug(YAML::Dump(\@matches));
+
     foreach my $match (@matches) {
-        $recordlist->add(OpenBib::Record::Title->new({database => $match->{database}, id => $match->{id}})->load_brief_record);
+    
+        $recordlist->add(OpenBib::Record::Title->new({database => $match->{database}, id => $match->{id}})->set_brief_normdata_from_storable($match->{listitem}));
     }
 
     return $recordlist;

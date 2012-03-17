@@ -191,7 +191,10 @@ sub set_from_apache_request {
 
     $self->{_searchquery} = {};
 
-    $logger->debug("Params: ".$self->{r}->args);
+    $logger->debug("Paramstring: ".$self->{r}->args);
+
+    my @param_names = $query->param;
+    $logger->debug("CGI-Parameters: ".YAML::Dump(@param_names));
     
     # Suchfelder einlesen
     foreach my $searchfield (keys %{$config->{searchfield}}){
@@ -281,17 +284,25 @@ sub set_from_apache_request {
         
     }
 
-    # Filter einlesen (filter oder facet)
+    # Filter einlesen f[<searchfield prefix>]
     # Problem: Filter ist bei der Integration in bestimmte Systeme (z.B. CMS)
-    # bereits vorbelegt. Daher kann alternativ facet verwendet werden
-    
-    foreach my $filter ($query->param('filter')) {
-        #$filter = uri_unescape($filter);
-        if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
-            my $facet = $1;
-            my $term = decode_utf8($2);
+    # bereits vorbelegt. Daher sowie zur besseren Strukturierung f[...]
 
-            my $string = $term;
+    my %seen_filter = ();
+    my @available_filters = grep { /^f\[/ } $query->param;
+
+    foreach my $filter (@available_filters) {
+        next if ($seen_filter{$filter} ++);
+        
+        my ($field) = $filter =~m/^f\[(.+)\]/;
+        my @terms   = ($query->param($filter))? $query->param($filter) : ();
+
+        $logger->debug("Filter: $filter with terms ".YAML::Dump(\@terms));
+        
+        foreach my $term (@terms){
+            $term = decode_utf8($term);
+            
+            my $string  = $term;
             
             $string = OpenBib::Common::Util::grundform({
                 content   => $string,
@@ -299,63 +310,13 @@ sub set_from_apache_request {
             
             $string=~s/\W/_/g;
             
-            $logger->debug("Facet: $facet Norm: $string Term: $term");
+            $logger->debug("Field: $field Norm: $string Term: $term");
             
             push @{$self->{_filter}}, {
-                val    => $filter,
+                val    => "$field:$term",
                 term   => $term,
                 norm   => $string,
-                facet  => $facet,
-            };            
-        }
-    }
-
-    foreach my $filter ($query->param('facet')) {
-        #$filter = uri_unescape($filter);
-        if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
-            my $facet = $1;
-            my $term = decode_utf8($2);
-
-            my $string = $term;
-            
-            $string = OpenBib::Common::Util::grundform({
-                content   => $string,
-            });
-            
-            $string=~s/\W/_/g;
-            
-            $logger->debug("Facet: $facet Norm: $string Term: $term");
-            
-            push @{$self->{_filter}}, {
-                val    => $filter,
-                term   => $term,
-                norm   => $string,
-                facet  => $facet,
-            };            
-        }
-    }
-
-    foreach my $filter ($query->param('facet:list')) {
-        if ($filter=~m/^([^\|]+):\|([^\|]+)\|.*$/){
-            my $facet = $1;
-            my $term = $2;
-
-            my $string = $term;
-            
-            $string = OpenBib::Common::Util::grundform({
-                content   => $string,
-                searchreq => 1,
-            });
-            
-            $string=~s/\W/_/g;
-            
-            $logger->debug("Facet: $facet Norm: $string Term: $term");
-            
-            push @{$self->{_filter}}, {
-                val    => $filter,
-                term   => $term,
-                norm   => $string,
-                facet  => $facet,
+                field  => $field,
             };
         }
     }
@@ -554,7 +515,11 @@ sub to_cgi_params {
         $exclude_ref->{$param} = 1;
     }
 
+    my $no_filter = 0;
     foreach my $content (@{$exclude_filter_array_ref}){
+        if ($content eq "all"){
+            $no_filter = 1;
+        }
         $exclude_filter_ref->{$content} = 1;
     }
 
@@ -565,16 +530,58 @@ sub to_cgi_params {
     foreach my $param (keys %{$self->{_searchquery}}){
         if ($self->{_searchquery}->{$param}{val} && !exists $exclude_ref->{$param}){
             my $searchparam = $config->{searchfield}{$param}{prefix};
-            push @cgiparams, "b$searchparam=".$self->{_searchquery}->{$param}{bool};
-            push @cgiparams, "$searchparam=".$self->{_searchquery}->{$param}{val};
+            push @cgiparams, {
+                param  => "b$searchparam",
+                val    => $self->{_searchquery}->{$param}{bool}
+            };
+            push @cgiparams, {
+                param  => $searchparam,
+                val    => $self->{_searchquery}->{$param}{val}
+            };
         }
     }
 
-    foreach my $filter (@{$self->{_filter}}){
-        push @cgiparams, "filter=$filter->{val}" if (!$exclude_filter_ref->{$filter->{val}});
+    if (!$no_filter){
+        foreach my $filter (@{$self->{_filter}}){
+            push @cgiparams, {
+                param => "f\[$filter->{field}\]",
+                val   => $filter->{term}
+            } if (!$exclude_filter_ref->{$filter->{val}});
+        }
     }
     
-    return join(";",@cgiparams);
+    return @cgiparams;
+}
+
+sub to_cgi_querystring {
+    my ($self,$arg_ref)=@_;
+
+    my @cgiparams = ();
+    
+    foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
+        push @cgiparams, "$arg_ref->{param}=$arg_ref->{val}";
+    }   
+        
+    return join(';',@cgiparams);
+}
+
+sub to_cgi_hidden_input {
+    my ($self,$arg_ref)=@_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Querystring as hidden input");
+    
+    $logger->debug("Args".YAML::Dump($arg_ref));
+
+    my @cgiparams = ();
+
+    foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
+        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"$arg_ref->{val}\" />";
+    }   
+
+    return join("\n",@cgiparams);
 }
 
 sub get_results {
@@ -752,7 +759,7 @@ sub to_xapian_querystring {
 
     # Filter
     foreach my $filter_ref (@{$self->get_filter}){
-        push @xapianfilterstrings, "$filter_ref->{facet}:$filter_ref->{norm}";
+        push @xapianfilterstrings, "$filter_ref->{field}:$filter_ref->{norm}";
     }
     
     $xapianquerystring  = join(" ",@xapianquerystrings);
@@ -844,21 +851,24 @@ sub to_elasticsearch_querystring {
     }
 
 
-    my $rev_searchfield_ref = {
-        fper => "facet_person",
-        fcln => "facet_classification",
-        fsubj => "facet_subject",
-        ftyp => "facet_mediatype",
-        fyear => "facet_year",
-        flang => "facet_language",
-        fdb => "facet_database",
-        ftag => "facet_tag",
-        flitlist => "facet_litlist",
-    };
+     my $rev_searchfield_ref = {
+         fper => "facet_person",
+         fcln => "facet_classification",
+         fsubj => "facet_subject",
+         ftyp => "facet_mediatype",
+         fyear => "facet_year",
+         flang => "facet_language",
+         fdb => "facet_database",
+         ftag => "facet_tag",
+         flitlist => "facet_litlist",
+     };
 
-#     foreach my $searchfield (keys %{$config->{searchfield}}){
-#         $rev_searchfield_ref->{$config->{searchfield}{$searchfield}{prefix}} = $searchfield;
-#     }
+#    my $rev_searchfield_ref = {};
+#    
+#    foreach my $searchfield (keys %{$config->{searchfield}}){
+#        $rev_searchfield_ref->{$config->{searchfield}{$searchfield}{prefix}} = $searchfield;
+#    }
+    
     # Filter
 
     my $filter_ref;
@@ -867,24 +877,24 @@ sub to_elasticsearch_querystring {
     if (@{$self->get_filter}){
         $filter_ref = { };
         foreach my $thisfilter_ref (@{$self->get_filter}){
-            my $facet = $rev_searchfield_ref->{$thisfilter_ref->{facet}};
+            my $field = $rev_searchfield_ref->{$thisfilter_ref->{field}};
             my $term  = $thisfilter_ref->{term};
-            $term=~s/_/ /g;
+#            $term=~s/_/ /g;
             
-            $logger->debug("Facet: $facet / Term: $term / Ref: ".ref(${$filter_ref}{$facet}));
+            $logger->debug("Facet: $field / Term: $term / Ref: ".ref(${$filter_ref}{$field}));
 
-            if (exists $filter_ref->{$facet}){
-                if (! ref($filter_ref->{$facet})){
-                    my $oldterm = $filter_ref->{$facet};
+            if (exists $filter_ref->{$field}){
+                if (! ref($filter_ref->{$field})){
+                    my $oldterm = $filter_ref->{$field};
                     $logger->debug("String -> Array: $oldterm");
-                    $filter_ref->{$facet}= [ '-and' ];
-                    push @{$filter_ref->{$facet}}, $oldterm;
+                    $filter_ref->{$field}= [ '-and' ];
+                    push @{$filter_ref->{$field}}, $oldterm;
                 }
                 $logger->debug("Add Array: $term");
-                push @{$filter_ref->{$facet}}, $term; #'"'.$term.'"';                    
+                push @{$filter_ref->{$field}}, $term; #'"'.$term.'"';                    
             }
             else {
-                $filter_ref->{$facet} = $term; #'"'.$term.'"';
+                $filter_ref->{$field} = $term; #'"'.$term.'"';
             }
         }
     }

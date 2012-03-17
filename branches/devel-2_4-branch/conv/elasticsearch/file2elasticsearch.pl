@@ -29,11 +29,6 @@ use strict;
 use warnings;
 use utf8;
 
-BEGIN {
-#    $ENV{XAPIAN_PREFER_CHERT}    = '1';
-    $ENV{XAPIAN_FLUSH_THRESHOLD} = '200000';
-}
-
 use Benchmark ':hireswallclock';
 use DB_File;
 use DBI;
@@ -62,7 +57,7 @@ if ($help){
 }
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/file2elasticsearch.log';
-$loglevel=($loglevel)?$loglevel:"INFO";
+$loglevel=($loglevel)?$loglevel:"DEBUG";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -119,6 +114,11 @@ my $atime = new Benchmark;
         mappings => {
             title => {
                 properties => {
+                    listitem => {
+                        type => 'object',
+                        enabled => 'false',
+                    },
+
                     id => {
                         type => 'string',
                         index => 'not_analyzed', # analyzed | not_analyzed | no
@@ -374,6 +374,9 @@ my $atime = new Benchmark;
             
             my $searchcontent_ref = decode_json $searchcontent;
 
+            $searchcontent_ref->{listitem} = decode_json $listitem;
+
+            $logger->debug(YAML::Dump($searchcontent_ref));
             # ID setzen:
 
             push @$doc_buffer_ref, {

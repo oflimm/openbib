@@ -1,4 +1,29 @@
 [% IF fullresultcount <= config.get('xapian_option').maxmatch %]
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+[%
+
+   exclude_args = [ ];
+   FOREACH field IN config.searchfield.keys ;
+     thisprefix = config.searchfield.${field}.prefix;
+     exclude_args.push(thisprefix);
+     exclude_args.push("b${thisprefix}");
+     exclude_args.push("f\[${thisprefix}\]");
+   END;
+
+   drilldown_query_args_base    = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = exclude_args }) ;
+
+   all_filters = [];
+   have_filter = {};
+       FOREACH filter IN searchquery.get_filter ;
+          all_filters.push("f[${filter.field}]=${filter.term}");
+          have_filter.${"${filter.field}:${filter.term}"} = 1;
+   END ;
+
+%]
+
+[% cgiapp.to_cgi_hidden_input({ change = {'page' = 1 }, exclude = exclude_args }) %]
+[% searchquery.to_cgi_hidden_input({ exclude_filter = [ 'all' ] }) %]
+
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -124,25 +149,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <h4>[% msg.maketext("Treffermenge eingrenzen") %]</h4>
 <table>
 
-[%
-
-   exclude_args = [ 'filter' ];
-   FOREACH field IN config.searchfield.keys ;
-     thisprefix = config.searchfield.${field}.prefix;
-     exclude_args.push(thisprefix);
-     exclude_args.push("b${thisprefix}");
-   END;
-
-   drilldown_query_args_base = cgiapp.modify_querystring({ change = {'page' = 1 }, exclude = exclude_args }) ;
-
-   all_filters = [];
-   have_filter = {};
-       FOREACH filter IN searchquery.get_filter ;
-          all_filters.push("filter=${filter.val}");
-          have_filter.${"$filter.val"} = 1;
-   END ;
-%]
-
+[% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
 [%         IF searchquery.get_filter.size > 0 %]
 <tr><td valign="top">
@@ -166,7 +173,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 %]
 [%             FOREACH filter IN searchquery.get_filter ;
                    this_filters = [];
-                   this_filterstring = "filter=${filter.val}";
+                   this_filterstring = "f[${filter.field}]=${filter.term}";
                    FOREACH all_filter IN all_filters;
                        IF all_filter != this_filterstring ;
                            this_filters.push(all_filter);
@@ -174,12 +181,14 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
                    END ;
 %]
 [%# USE dumper;dumper.dump(category_map) %]
-<p><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.facet} %]: [% IF filter.facet == "fdb" %][% dbinfo.dbnames.${filter.term}.short %][% ELSE %][% filter.term %][% END %]</p>
+<p><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.dbnames.${filter.term}.short %][% ELSE %][% filter.term %][% END %]</p>
 [%             END %]
 </td></tr>
 </table>
 </td></tr>
+[%  END %]
 [%         END %]
+<!-- Begin database facet -->
 [%         IF queryoptions.get_option('jn') == 1 && category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -195,8 +204,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').dbstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% dbinfo.dbnames.${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% dbinfo.dbnames.${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.8.size > 5 %]
 </div>
@@ -205,6 +215,8 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
+<!-- End database facet -->
+<!-- Begin person facet -->
 [%         IF config.get('drilldown_option').categorized_person && category_map.3.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -220,9 +232,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').personstring.prefix;
-    filterstring  = "${searchprefix}:|${searchterm}|";
+    filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${filterstring} %];filter=[% filterstring %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% searchterm %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.3.size > 5 %]
 </div>
@@ -231,6 +243,8 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
+<!-- End person facet -->
+<!-- Begin corporatebody facet -->
 [%         IF config.get('drilldown_option').categorized_corporatebody && category_map.7.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -246,8 +260,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.7.size > 5 %]
 </div>
@@ -256,6 +271,8 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
+<!-- End corporatebody facet -->
+<!-- Begin subject facet -->
 [%         IF config.get('drilldown_option').categorized_subject && category_map.1.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -271,8 +288,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').subjectstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.1.size > 5 %]
 </div>
@@ -281,6 +299,8 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
+<!-- End subject facet -->
+<!-- Begin classification facet -->
 [%         IF config.get('drilldown_option').categorized_classification && category_map.2.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -296,8 +316,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').classificationstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.2.size > 5 %]
 </div>
@@ -306,6 +327,8 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
+<!-- End classification facet -->
+<!-- Begin year facet -->
 [%         IF config.get('drilldown_option').categorized_year && category_map.5.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -321,8 +344,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').yearstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
 [% IF category_map.5.size > 5 %]
 </div>
@@ -331,6 +355,8 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
+<!-- End year facet -->
+<!-- Begin mediatype facet -->
 [%         IF config.get('drilldown_option').categorized_mediatype && category_map.4.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -346,8 +372,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').mediatypestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.4.size > 5 %]
 </div>
@@ -356,6 +383,8 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
+<!-- End mediatype facet -->
+<!-- Begin tag facet -->
 [%         IF config.get('drilldown_option').categorized_tag && category_map.9.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -371,8 +400,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').tagstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.9.size > 5 %]
 </div>
@@ -381,6 +411,8 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
+<!-- End tag facet -->
+<!-- Begin litlist facet -->
 [%         IF config.get('drilldown_option').categorized_litlist && category_map.10.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -396,8 +428,9 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').litliststring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.10.size > 5 %]
 </div>
@@ -406,6 +439,8 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
+<!-- End litlist facet -->
+<!-- Begin language facet -->
 [%         IF config.get('drilldown_option').categorized_language && category_map.6.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
@@ -421,6 +456,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').languagestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
 
     spr_mapping = {
         "de"       => msg.maketext("Deutsch"),
@@ -473,7 +509,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
     sprstring = spr.join(';');
 
 -%]
-<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_params %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
+<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
 [% IF category_map.6.size > 5 %]
 </div>
@@ -483,9 +519,12 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 
 </td></tr>
 [%        END %]
+<!-- End language facet -->
 </table>
 
 </div>
+</form>
+
 [% ELSE %]
 <div class="drilldown">
 <h2><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h2>
@@ -504,4 +543,5 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 </p>
 
 </div>
+
 [% END %]

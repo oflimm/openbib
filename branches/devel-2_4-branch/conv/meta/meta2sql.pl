@@ -994,7 +994,7 @@ while (my $line=<IN>){
 
         my $listitem = encode_json $listitem_ref;
 
-        $listitem = decode_utf8($listitem);
+        # $listitem = decode_utf8($listitem);
         
         print TITLELISTITEM "$id$listitem\n";
         

@@ -14,10 +14,10 @@
 [% IF format == "ajax" %]
 <div style="padding:5px;">
 [% rss = utils.load_rss_feed(id) %]
-<h1>[% rss.channel.title %]</h1>
+<h1>[% rss.channel.title.replace('JournalTOCs API - ','') %]</h1>
 
 <p>
-[% rss.channel.description %]
+[%# rss.channel.description %]
 </p>
 
 [% FOREACH item IN rss.items %]

@@ -642,10 +642,14 @@ END ;
 
 <div id="additional_title_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
-[%- tictocs_feed = normdata.${"E4115"}.first.content -%]
+[%- issn              = normset.${"T0543"}.first.content ;
+    IF issn ;
+       journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
+    END ;
+-%]
 
 [% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
-> 0 || similar_records.get_size > 0 || config.get('reviews') || tictocs_feed %]
+> 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
 <ul>
 [% IF circulation.size > 0 %]
 <li><a href="#circinfo">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
@@ -654,8 +658,8 @@ END ;
 <li><a href="#mexinfo">[% msg.maketext("Bestand") %]</a></li>
 [%   END %]
 [% END %]
-[% IF tictocs_feed %]
-<li><a href="#tictocs">[% msg.maketext("Letzte Artikel") %]</a></li>
+[% IF journaltocs_feed %]
+<li><a href="#journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
 [% END %]
 [% IF same_records.get_size > 0 %]
 <li><a href="#same_records">[% msg.maketext("In anderen Katalogen") %]</a></li>
@@ -683,20 +687,20 @@ END ;
 [%   END %]
 [% END %]
 
-[% IF tictocs_feed %]
+[% IF journaltocs_feed %]
 <script type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% path_prefix %]/[% config.get('info_loc') %]/62?id=[% normdata.${"E4115"}.first.content %];format=ajax",
+  $.get("[% path_prefix %]/[% config.get('info_loc') %]/journaltocs?id=[% normdata.${"E4115"}.first.content %];format=ajax",
          function (txt){
-           $("#tictocs").html(txt); 
+           $("#journaltocs").html(txt); 
   });
 });
 </script>
 
-<div id="tictocs"><!-- Begin TicTocs -->
-[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/62?id=${tictocs_feed}\">","</a>") %]
-</div><!-- End TicTocs -->
+<div id="journaltocs"><!-- Begin Journaltocs -->
+[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/journaltocs?id=${journaltocs_feed}\">","</a>") %]
+</div><!-- End Journaltocs -->
 [% END %]
 <!-- Begin: Reviews -->
 [% IF config.get('reviews') %]

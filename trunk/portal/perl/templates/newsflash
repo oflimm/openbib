@@ -15,6 +15,10 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b>19.3.2012</b>: Die Anzeige "Letzte Artikel" bei Zeitschriften
+wurde wegen der Einstellung des <a href="http://www.tictocs.ac.uk/"
+target="_blank">TicTocs-Dienstes</a> auf den Nachfolger <a href="http://www.journaltocs.hw.ac.uk/" target="_blank">JournalTocs</a> umgestellt.
+</li>
 <li><b>13.1.2012</b>: Gesamtbestand von PaperC als eigener Katalog im
 KUG recherchierbar. Beim externen Anbieter PaperC k&ouml;nnen Fachb&uuml;cher nach kostenfreier
 Registrierung kostenlos online gelesen werden. Weitergehende Informationen in diesem

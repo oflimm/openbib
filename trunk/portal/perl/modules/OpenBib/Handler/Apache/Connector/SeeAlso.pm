@@ -166,28 +166,6 @@ sub handler {
                 return $response;
             }
         },
-        'issn2tictocs' => {
-            'description' => 'TicTocs-Feeds of a given ISSN',
-            'query_proc'  => sub {
-                my $identifier = shift;
-
-                my $logger = get_logger();
-                
-                my $response = SeeAlso::Response->new($identifier);
-
-                my $enrichmnt = new OpenBib::Enrichment;
-
-                my $result_ref = $enrichmnt->get_additional_normdata({isbn => $identifier});
-                
-                foreach my $content (@{$result_ref->{E4115}}){
-                    my $uri = URI->new( $content )->canonical;
-                    $response->add("Recent Articles","TicTocs RSS-Feed","$uri");
-                    $logger->debug("Added $content");
-                }
-
-                return $response;
-            }
-        },
         'thingisbn' => {
             'description' => 'Other manifestations of a work for a given ISBN',
             'query_proc'  => sub {

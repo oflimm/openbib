@@ -127,10 +127,13 @@ END ;
 
 <div id="additional_title_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
-[%- tictocs_feed = normset.${"E4115"}.first.content -%]
-
+[%- issn              = normset.${"T0543"}.first.content ;
+    IF issn ;
+       journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
+    END ;
+%]
 [% IF circset.size > 0 || mexnormset.size > 0 || same_records.get_size
-> 0 || similar_records.get_size > 0 || config.get('reviews') || tictocs_feed %]
+> 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
 <ul class="nojs_hidden">
 [% IF circset.size > 0 %]
 <li><a href="#circinfo"><span>[% msg.maketext("Ausleihe/Exemplare") %]</span></a></li>
@@ -139,8 +142,8 @@ END ;
 <li><a href="#mexinfo"><span>[% msg.maketext("Bestand") %]</span></a></li>
 [%   END %]
 [% END %]
-[% IF tictocs_feed %]
-<li><a href="#tictocs"><span>[% msg.maketext("Letzte Artikel") %]</span></a></li>
+[% IF journaltocs_feed %]
+<li><a href="#journaltocs"><span>[% msg.maketext("Letzte Artikel") %]</span></a></li>
 [% END %]
 [% IF same_records.get_size > 0 %]
 <li><a href="#same_records"><span>[% msg.maketext("In anderen Katalogen") %]</span></a></li>
@@ -170,22 +173,22 @@ END ;
 [%   END %]
 [% END %]
 
-[% IF tictocs_feed %]
+[% IF journaltocs_feed %]
 <script type="text/javascript">
 $(document).ready(function(){
 // Begin Verwandte Personen
-  $.get("[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=62;id=[% normset.${"E4115"}.first.content %];format=ajax",
+  $.get("[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=62;id=[% journaltocs_feed %];format=ajax",
          function (txt){
-           $("#tictocs").html(txt); 
+           $("#journaltocs").html(txt); 
   });
 });
 </script>
 
 <h2 class="nojs_show">[% msg.maketext("Letzte Artikel") %]</h2>
 
-<div id="tictocs"><!-- Begin TicTocs -->
-[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${config.get('info_loc')}?sessionID=${sessionID};stid=62;id=${tictocs_feed}\">","</a>") %]
-</div><!-- End TicTocs -->
+<div id="journaltocs"><!-- Begin JournalTocs -->
+[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${config.get('info_loc')}?sessionID=${sessionID};stid=62;id=${journaltocs_feed}\">","</a>") %]
+</div><!-- End JournalTocs -->
 [% END %]
 <!-- Begin: Reviews -->
 [% IF config.get('reviews') %]

@@ -67,7 +67,7 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$sourcepool;host=$config->
 
 print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs SB\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content rlike '^SB' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content COLLATE utf8_bin rlike '^SB' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

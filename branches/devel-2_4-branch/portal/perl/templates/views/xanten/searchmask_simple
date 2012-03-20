@@ -50,10 +50,10 @@
 
 <form method="get" id="openbib" action="http://[% config.get('servername') %][% path_prefix %]/[% config.get('virtualsearch_loc') %]">
 
-<input type="hidden" name="num"  value="50" />
+<input type="hidden" name="num"  value="20" />
 
-<input type="hidden" name="srt"  value="author" />
-<input type="hidden" name="srto" value="up" />
+<input type="hidden" name="srt"  value="relevance" />
+<input type="hidden" name="srto" value="desc" />
 
 <input type="hidden" name="st"        value="1" />
 [% IF config.get('drilldown') %]

@@ -127,11 +127,11 @@ $(document).ready(function(){
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
-<input type="hidden" name="num"        value="50" />
+<input type="hidden" name="num"        value="20" />
 <input type="hidden" name="page"       value="1" />
 
-<input type="hidden" name="srt"        value="author" />
-<input type="hidden" name="srto"       value="up" />
+<input type="hidden" name="srt"        value="relevance" />
+<input type="hidden" name="srto"       value="desc" />
 <input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
@@ -217,11 +217,11 @@ $(document).ready(function(){
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
-<input type="hidden" name="num"  value="50" />
+<input type="hidden" name="num"  value="20" />
 <input type="hidden" name="page"      value="1" />
 
-<input type="hidden" name="srt"  value="author" />
-<input type="hidden" name="srto" value="up" />
+<input type="hidden" name="srt"  value="relevance" />
+<input type="hidden" name="srto" value="desc" />
 <input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
@@ -310,11 +310,11 @@ $(document).ready(function(){
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
-<input type="hidden" name="num"  value="50" />
+<input type="hidden" name="num"  value="20" />
 <input type="hidden" name="page"      value="1" />
 
-<input type="hidden" name="srt"  value="author" />
-<input type="hidden" name="srto" value="up" />
+<input type="hidden" name="srt"  value="relevance" />
+<input type="hidden" name="srto" value="desc" />
 <input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
@@ -404,11 +404,11 @@ $(document).ready(function(){
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
-<input type="hidden" name="num"  value="50" />
+<input type="hidden" name="num"  value="20" />
 <input type="hidden" name="page"      value="1" />
 
-<input type="hidden" name="srt"  value="author" />
-<input type="hidden" name="srto" value="up" />
+<input type="hidden" name="srt"  value="relevance" />
+<input type="hidden" name="srto" value="desc" />
 <input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />

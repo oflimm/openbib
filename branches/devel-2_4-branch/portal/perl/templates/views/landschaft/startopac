@@ -36,7 +36,7 @@ IF searchsingletit && database;
 END;
 
 IF fs;
-    bodyframeurl = "${path_prefix}/${config.get('virtualsearch_loc')}?searchall=1;fs=${fs};num=50;srt=author;srto=up;profil=;autoplus=1";
+    bodyframeurl = "${path_prefix}/${config.get('virtualsearch_loc')}?searchall=1;fs=${fs};num=20;srt=relevance;srto=desc;profil=;autoplus=1";
 END;
 -%]
 [% PROCESS common/subtemplate name="frameset" %]

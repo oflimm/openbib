@@ -124,8 +124,8 @@ sub show_search {
 #     my $hitrange      = ($query->param('num' ))?$query->param('num'):50;
 #     my $page          = ($query->param('page' ))?$query->param('page'):1;
 #     my $listtype      = ($query->param('lt' ))?$query->param('lt'):"cover";
-#     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
-#     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
+#     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"person";
+#     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'asc';
 #     my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
 #     my $joindbs       = $query->param('jn') || $query->param('combinedbs')    || 1;
 
@@ -418,8 +418,8 @@ sub show_index {
     my @databases     = ($query->param('db'))?$query->param('db'):();
     my $hitrange      = ($query->param('num' ))?$query->param('num'):50;
     my $page          = ($query->param('page' ))?$query->param('page'):1;
-    my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"author";
-    my $sortorder     = ($query->param('srto'))?$query->param('srto'):'up';
+    my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"person";
+    my $sortorder     = ($query->param('srto'))?$query->param('srto'):'asc';
     my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
     my $joindbs       = $query->param('jn') || $query->param('combinedbs')    || 1;
 

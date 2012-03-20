@@ -308,8 +308,8 @@ sub show_collection_by_single_userxxx {
     my $do_delentry    = $query->param('do_delentry')    || '';
     my $do_addlist     = $query->param('do_addlist')     || '';
     my $do_dellist     = $query->param('do_dellist')     || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
     my $subjectid      = $query->param('subjectid')   || undef;
 
@@ -427,8 +427,8 @@ sub show_collection_by_single_user {
     my $do_delentry    = $query->param('do_delentry')    || '';
     my $do_addlist     = $query->param('do_addlist')     || '';
     my $do_dellist     = $query->param('do_dellist')     || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
     my $subjectid      = $query->param('subjectid')   || undef;
 
@@ -540,8 +540,8 @@ sub show_record {
     my $type           = $query->param('type')        || 1;
     my $lecture        = $query->param('lecture')     || 0;
     my $format         = $query->param('format')      || 'short';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
     my $subjectid      = $query->param('subjectid')   || undef;
 
@@ -673,8 +673,8 @@ sub show_record_form {
     my $do_delentry    = $query->param('do_delentry')    || '';
     my $do_addlist     = $query->param('do_addlist')     || '';
     my $do_dellist     = $query->param('do_dellist')     || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
     my $subjectid      = $query->param('subjectid')   || undef;
 

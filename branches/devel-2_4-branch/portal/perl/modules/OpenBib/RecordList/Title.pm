@@ -4,7 +4,7 @@
 #
 #  Titel-Liste
 #
-#  Dieses File ist (C) 2007-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -105,58 +105,59 @@ sub sort {
         $atime=new Benchmark;
     }
 
-    if ($type eq "author" && $order eq "up") {
-        @$sortedoutputbuffer_ref=sort _by_author @{$self->{recordlist}};
+    if ($type eq "person" && $order eq "asc") {
+        @$sortedoutputbuffer_ref=sort _by_person_asc @{$self->{recordlist}};
     }
-    elsif ($type eq "author" && $order eq "down") {
-        @$sortedoutputbuffer_ref=sort _by_author_down @{$self->{recordlist}};
+    elsif ($type eq "person" && $order eq "desc") {
+        @$sortedoutputbuffer_ref=sort _by_person_desc @{$self->{recordlist}};
     }
-    elsif ($type eq "yearofpub" && $order eq "up") {
-        @$sortedoutputbuffer_ref=sort _by_yearofpub @{$self->{recordlist}};
+    elsif ($type eq "year" && $order eq "asc") {
+        @$sortedoutputbuffer_ref=sort _by_year_asc @{$self->{recordlist}};
     }
-    elsif ($type eq "yearofpub" && $order eq "down") {
-        @$sortedoutputbuffer_ref=sort _by_yearofpub_down @{$self->{recordlist}};
+    elsif ($type eq "year" && $order eq "desc") {
+        @$sortedoutputbuffer_ref=sort _by_year_desc @{$self->{recordlist}};
     }
-    elsif ($type eq "publisher" && $order eq "up") {
-        @$sortedoutputbuffer_ref=sort _by_publisher @{$self->{recordlist}};
+    elsif ($type eq "publisher" && $order eq "asc") {
+        @$sortedoutputbuffer_ref=sort _by_publisher_asc @{$self->{recordlist}};
     }
-    elsif ($type eq "publisher" && $order eq "down") {
-        @$sortedoutputbuffer_ref=sort _by_publisher_down @{$self->{recordlist}};
+    elsif ($type eq "publisher" && $order eq "desc") {
+        @$sortedoutputbuffer_ref=sort _by_publisher_desc @{$self->{recordlist}};
     }
-    elsif ($type eq "signature" && $order eq "up") {
-        @$sortedoutputbuffer_ref=sort _by_signature @{$self->{recordlist}};
+    elsif ($type eq "mark" && $order eq "asc") {
+        @$sortedoutputbuffer_ref=sort _by_mark_asc @{$self->{recordlist}};
     }
-    elsif ($type eq "signature" && $order eq "down") {
-        @$sortedoutputbuffer_ref=sort _by_signature_down @{$self->{recordlist}};
+    elsif ($type eq "signature" && $order eq "desc") {
+        @$sortedoutputbuffer_ref=sort _by_mark_desc @{$self->{recordlist}};
     }
-    elsif ($type eq "title" && $order eq "up") {
-        @$sortedoutputbuffer_ref=sort _by_title @{$self->{recordlist}};
+    elsif ($type eq "title" && $order eq "asc") {
+        @$sortedoutputbuffer_ref=sort _by_title_asc @{$self->{recordlist}};
     }
-    elsif ($type eq "title" && $order eq "down") {
-        @$sortedoutputbuffer_ref=sort _by_title_down @{$self->{recordlist}};
+    elsif ($type eq "title" && $order eq "desc") {
+        @$sortedoutputbuffer_ref=sort _by_title_desc @{$self->{recordlist}};
     }
-    elsif ($type eq "order" && $order eq "up") {
-        @$sortedoutputbuffer_ref=sort _by_order @{$self->{recordlist}};
+    elsif ($type eq "order" && $order eq "asc") {
+        @$sortedoutputbuffer_ref=sort _by_order_asc @{$self->{recordlist}};
     }
-    elsif ($type eq "order" && $order eq "down") {
-        @$sortedoutputbuffer_ref=sort _by_order_down @{$self->{recordlist}};
+    elsif ($type eq "order" && $order eq "desc") {
+        @$sortedoutputbuffer_ref=sort _by_order_desc @{$self->{recordlist}};
     }
-    elsif ($type eq "popularity" && $order eq "up") {
-        @$sortedoutputbuffer_ref=sort _by_popularity @{$self->{recordlist}};
+    elsif ($type eq "popularity" && $order eq "asc") {
+        @$sortedoutputbuffer_ref=sort _by_popularity_asc @{$self->{recordlist}};
     }
-    elsif ($type eq "popularity" && $order eq "down") {
-        @$sortedoutputbuffer_ref=sort _by_popularity_down @{$self->{recordlist}};
+    elsif ($type eq "popularity" && $order eq "desc") {
+        @$sortedoutputbuffer_ref=sort _by_popularity_desc @{$self->{recordlist}};
     }
-    elsif ($type eq "tstamp" && $order eq "up") {
-        @$sortedoutputbuffer_ref=sort _by_tstamp @{$self->{recordlist}};
+    elsif ($type eq "tstamp" && $order eq "asc") {
+        @$sortedoutputbuffer_ref=sort _by_tstamp_asc @{$self->{recordlist}};
     }
-    elsif ($type eq "tstamp" && $order eq "down") {
-        @$sortedoutputbuffer_ref=sort _by_tstamp_down @{$self->{recordlist}};
+    elsif ($type eq "tstamp" && $order eq "desc") {
+        @$sortedoutputbuffer_ref=sort _by_tstamp_desc @{$self->{recordlist}};
     }
-    elsif ($type eq "relevance" && $order eq "up") {
+    # Default der Suchmaschine ist Sortierung nach Relevanz
+    elsif ($type eq "relevance" && $order eq "asc") {
         @$sortedoutputbuffer_ref=@{$self->{recordlist}};
     }
-    elsif ($type eq "relevance" && $order eq "down") {
+    elsif ($type eq "relevance" && $order eq "desc") {
         @$sortedoutputbuffer_ref=reverse @{$self->{recordlist}};
     }
     else {
@@ -476,7 +477,7 @@ sub set_from_storable {
         $self->{_size}      = $storable_ref->{_size};
     }
 
-    $logger->debug(YAML::Dump($self));    
+    $logger->debug(YAML::Dump($self));
 
     return $self;
 }
@@ -529,7 +530,7 @@ sub get_titlecount_per_db {
     return $count_per_db_ref;
 }
 
-sub _by_yearofpub {
+sub _by_year {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -545,7 +546,7 @@ sub _by_yearofpub {
     $yline1 <=> $yline2;
 }
 
-sub _by_yearofpub_down {
+sub _by_year_desc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -572,7 +573,7 @@ sub _by_publisher {
     $line1 cmp $line2;
 }
 
-sub _by_publisher_down {
+sub _by_publisher_desc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -593,7 +594,7 @@ sub _by_signature {
     $line1 cmp $line2;
 }
 
-sub _by_signature_down {
+sub _by_signature_desc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -604,7 +605,7 @@ sub _by_signature_down {
     $line2 cmp $line1;
 }
 
-sub _by_author {
+sub _by_person {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -614,7 +615,7 @@ sub _by_author {
     $line1 cmp $line2;
 }
 
-sub _by_author_down {
+sub _by_person_desc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -634,7 +635,7 @@ sub _by_title {
     $line1 cmp $line2;
 }
 
-sub _by_title_down {
+sub _by_title_desc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -678,7 +679,7 @@ sub _by_order {
     $line1 cmp $line2;
 }
 
-sub _by_order_down {
+sub _by_order_desc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -725,7 +726,7 @@ sub _by_popularity {
     $line1 <=> $line2;
 }
 
-sub _by_popularity_down {
+sub _by_popularity_desc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -748,7 +749,7 @@ sub _by_tstamp {
     $line1 cmp $line2;
 }
 
-sub _by_tstamp_down {
+sub _by_tstamp_desc {
     my $line1=(exists $a->{tstamp} && defined $a->{tstamp})?$a->{tstamp}:"";
     my $line2=(exists $b->{tstamp} && defined $b->{tstamp})?$b->{tstamp}:"";
  

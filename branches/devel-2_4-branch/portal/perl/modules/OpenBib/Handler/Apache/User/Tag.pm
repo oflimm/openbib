@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::User::Tag.pm
 #
-#  Copyright 2007-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -153,8 +153,8 @@ sub show_record {
     my $offset         = $query->param('offset') || 0;
     my $hitrange       = $query->param('num')    || 50;
     my $database       = $query->param('db')     || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my $format         = $query->param('format') || 'cloud';
 
     if (!$self->is_authenticated('user',$userid)){

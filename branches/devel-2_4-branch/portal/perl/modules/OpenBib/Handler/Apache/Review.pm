@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Review.pm
 #
-#  Copyright 2007-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -107,8 +107,8 @@ sub show_collection_by_isbn_negotiate {
     my $hitrange       = $query->param('hitrange')    || 50;
     my $queryid        = $query->param('queryid')     || '';
     my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my $reviewid       = $query->param('reviewid')    || '';
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
@@ -293,8 +293,8 @@ sub update_record {
     my $hitrange       = $query->param('hitrange')    || 50;
     my $queryid        = $query->param('queryid')     || '';
     my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my $reviewid       = $query->param('reviewid')    || '';
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
@@ -439,8 +439,8 @@ sub show_record_form {
     my $hitrange       = $query->param('hitrange')    || 50;
     my $queryid        = $query->param('queryid')     || '';
     my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
@@ -557,8 +557,8 @@ sub show_record_negotiate {
     my $hitrange       = $query->param('hitrange')    || 50;
     my $queryid        = $query->param('queryid')     || '';
     my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
@@ -678,8 +678,8 @@ sub show_record_negotiatex {
     my $hitrange       = $query->param('hitrange')    || 50;
     my $queryid        = $query->param('queryid')     || '';
     my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "author";
-    my $sortorder      = $query->param('srto')   || "up";
+    my $sorttype       = $query->param('srt')    || "person";
+    my $sortorder      = $query->param('srto')   || "asc";
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
     my $titisbn        = $query->param('titisbn')     || '';

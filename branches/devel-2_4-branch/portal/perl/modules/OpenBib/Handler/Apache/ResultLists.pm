@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::ResultLists.pm
 #
-#  Dieses File ist (C) 2003-2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -95,9 +95,9 @@ sub show {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args  
-    my $sorttype     = ($query->param('srt'))?$query->param('srt'):"author";
+    my $sorttype     = ($query->param('srt'))?$query->param('srt'):"person";
     my $sortall      = ($query->param('sortall'))?$query->param('sortall'):'0';
-    my $sortorder    = ($query->param('srto'))?$query->param('srto'):'up';
+    my $sortorder    = ($query->param('srto'))?$query->param('srto'):'asc';
     my $queryid      = $query->param('queryid')      || '';
     my $offset       = (defined $query->param('offset'))?$query->param('offset'):0;
     ($offset)=$offset=~/^(-?\d+)$/; # offset muss numerisch sein (SQL-Injection)

@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Search::Local::Xapian
+#  OpenBib::Search::Driver::ElasticSearch
 #
-#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -23,7 +23,7 @@
 #
 #####################################################################
 
-package OpenBib::Search::Local::Xapian;
+package OpenBib::Search::Driver::ElasticSearch;
 
 use strict;
 use warnings;
@@ -36,7 +36,8 @@ use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use Search::Xapian;
+use ElasticSearch;
+use ElasticSearch::SearchBuilder;
 use Storable;
 use String::Tokenizer;
 use YAML ();
@@ -158,6 +159,8 @@ sub initial_search {
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');
     my $num               = $queryoptions->get_option('num');
+
+    my $from              = ($page - 1)*$num;
     
     my ($atime,$btime,$timeall);
   
@@ -166,217 +169,130 @@ sub initial_search {
     }
 
     my $dbh;
+
+    my $es = ElasticSearch->new(
+        servers      => $config->{elasticsearch}->{servers},       # default '127.0.0.1:9200'
+        transport    => $config->{elasticsearch}->{transport},     # default 'httplite'
+        max_requests => $config->{elasticsearch}->{max_requests},  # default 10_000
+        trace_calls  => $config->{elasticsearch}->{trace_calls},
+        no_refresh   => $config->{elasticsearch}->{no_refesh},
+    );
+
+    my $searchprofile = $searchquery->get_searchprofile;
+
+    my $index;
     
-    if ($searchquery->get_searchprofile){
-        my $profileindex_path = $config->{xapian_index_base_path}."/joined/".$searchquery->get_searchprofile;
-        
-        if (-d $profileindex_path){
-            $logger->debug("Adding Xapian DB-Object for profile $searchquery->get_searchprofile");
-            
-            eval {
-                $dbh = new Search::Xapian::Database ( $profileindex_path ) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-            };
-            
-            if ($@){
-                $logger->error("Initializing with Profile: $self->{_searchprofile} - :".$@." not available");
-            }
-            
-        }        
+    if ($searchprofile){
+        my $result = $es->index_exists(
+            index => "profile_$searchprofile",
+        );
+
+        if ($result->{ok}){
+            $index = "profile_$searchprofile"
+        }
         else {
-            foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
-                $logger->debug("Adding Xapian DB-Object for database $database");
-                
-                if (!defined $dbh){
-                    # Erstes Objekt erzeugen,
-                    
-                    $logger->debug("Creating Xapian DB-Object for database $database");                
-                
-                    eval {
-                        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-                    };
-                    
-                    if ($@){
-                        $logger->error("Initializing with Database: $database - :".$@." not available");
-                    }
-                }
-                else {
-                    $logger->debug("Adding database $database");
-                    
-                    eval {
-                        $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
-                    };
-                    
-                    if ($@){
-                        $logger->error("Adding Database: $database - :".$@." not available");
-                    }                        
-                }
+            my @index = ();
+            foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
+                push @index, $database if ($es->index_exists(
+                    index => $database,
+                ));
             }
+            $index = \@index;
         }
     }
     elsif ($self->{_database}){
-        $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
-        
-        eval {
-            $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$self->{_database}) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+        $index = $self->{_database} if ($es->index_exists(
+            index => $self->{_database},
+        ));;
+    }
+
+    my $querystring     = $searchquery->to_elasticsearch_querystring;
+
+    $logger->debug("Query: ".YAML::Dump($querystring));
+
+    my $facets_ref = {};
+
+    foreach my $facet (keys %{$config->{xapian_drilldown_value}}){
+        $facets_ref->{$facet} = {
+            terms => {
+                field => "facet_$facet",
+                size => 25,
+            }
         };
-        
-        if ($@) {
-            $logger->error("Database: $self->{_database} - :".$@);
-            return;
-        }
 
+#         my $thisfilterstring = $querystring->{filter}{"facet_$facet"};
+#         if ($thisfilterstring){
+#             push @{$facets_ref->{$facet}{facet_filter}}, { term => { "facet_$facet" =>  $thisfilterstring }};
+#         }
     }
 
-    my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+    # Facetten filtern
 
-    my @stopwords = ();
-    if (exists $config->{stopword_filename} && -e $config->{stopword_filename}){
-        open(SW,$config->{stopword_filename});
-        while (my $stopword=<SW>){
-            chomp $stopword ;
-            $stopword = OpenBib::Common::Util::grundform({
-                content  => $stopword,
-            });
-            push @stopwords, $stopword;
-        }
-        close(SW);
-    }
+#     foreach my $filter (keys %{$querystring->{filter}}){
+#         $facets_ref->{$filter}{facet_filter}{term} = {
+#             "${filter}string" => $querystring->{filter}{$filter},
+#         };
+#     }    
 
-    my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
-    $qp->set_stopper($stopper);
+    my $query_ref = $querystring->{query};
+
+    $query_ref->{'-filter'} = $querystring->{filter};
     
-    my $querystring    = $searchquery->to_xapian_querystring;
-
-    my $fullquerystring = $querystring->{query}." ".$querystring->{filter};
-    
-    my ($is_singleterm) = $fullquerystring =~m/^(\w+)$/;
-
-    my $default_op_ref = {
-        'and' => "Search::Xapian::OP_AND",
-        'or'  => "Search::Xapian::OP_OR",
-    };
-    
-    # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
-    $qp->set_database($dbh);
-    $qp->set_default_op($default_op_ref->{$defaultop});
-
-    foreach my $prefix (keys %{$config->{xapian_search_prefix}}){
-        $qp->add_prefix($prefix,$config->{xapian_search_prefix}{$prefix});
-    }
-    
-    my $category_map_ref = {};
-    my $enq       = $dbh->enquire($qp->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
-
-    # Sorting
-    if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
-        $sortorder = ($sortorder eq "up")?0:1;
-        $logger->debug("Set Sorting to type ".$config->{xapian_sorttype_value}{$sorttype}." / order ".$sortorder);
-
-        $enq->set_sort_by_value($config->{xapian_sorttype_value}{$sorttype},$sortorder)
-    }
-    
-    my $thisquery = $enq->get_query()->get_description();
-        
-    $logger->debug("Internal Xapian Query: $thisquery");
-    
-    my %decider_map   = ();
-    my @decider_types = ();
-
-    foreach my $drilldown_value (keys %{$config->{xapian_drilldown_value}}){
-        push @decider_types, $config->{xapian_drilldown_value}{$drilldown_value};
-    }
-
-    my $decider_ref = sub {
-      foreach my $value (@decider_types){
-	my $mvalues = $_[0]->get_value($value);
-	foreach my $mvalue (split("\t",$mvalues)){
-	  $decider_map{$value}{$mvalue}+=1;
-	}
-      }
-      return 1;
-    };
-
-    my $maxmatch=$config->{xapian_option}{maxmatch};
-
-    # Abkuerzung fuer Suchanfragen mit nur einem Begriff:
-    #
-    # Hier wird direkt die Begriffsfrequenz bestimmt.
-    # Wenn diese die maximale Treffermengengroesse (maxmatch)
-    # uebersteigt, dann werden
-    # - drilldowns deaktiviert, da diese bei so unspezifischen
-    #   Recherchen keine Hilfe bieten
-    # - aber die korrekte Treffermengenzahl zurueck gegeben
-    # Generell gilt aber auch hier: Es sind maximal maxmatch
-    # Treffer ueber die Recherche zugreifbar!
-
-    my $singletermcount = 0;
-    if ($is_singleterm){
-      $singletermcount = $dbh->get_termfreq($is_singleterm);
-
-      if ($singletermcount > $maxmatch){
-	$drilldown = "";
-      }
-    }
-
-    my $rset = Search::Xapian::RSet->new();
-
-    my $offset = $page*$num-$num;
-
-    $logger->debug("Drilldown: $drilldown");
-    
-    my $mset = ($drilldown)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
-
-    $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
-    
-    $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
-
-    $self->{_querystring} = $querystring->{query};
-    $self->{_filter}      = $querystring->{filter};
-    $self->{_enq}         = $enq;
-
-    if ($singletermcount > $maxmatch){
-      $self->{resultcount} = $singletermcount;
-    }
-    else {
-      $self->{resultcount} = $mset->get_matches_estimated;
-    }
+    my $results = $es->search(
+        index => $index,
+        type  => 'title',
+        queryb => $query_ref,
+        facets => $facets_ref,
+        from   => $from,
+        size   => $num,
+    );
 
     my @matches = ();
-    foreach my $match ($mset->items()) {
-        push @matches, $match;
+    foreach my $match (@{$results->{hits}->{hits}}){
+        push @matches, {
+            database => $match->{_index},
+            id       => $match->{_id},
+            listitem => $match->{_source}{listitem},
+        };
     }
+
+    # Facets
+    $self->{categories} = $results->{facets};
+
+    $logger->debug("Results: ".YAML::Dump($results));
     
-#    my @this_matches      = splice(@matches,$offset,$num);
+    $self->{_querystring} = $querystring->{query};
+    $self->{_filter}      = $querystring->{filter};
+#    $self->{_enq}         = $enq;
+
+    $self->{resultcount} = $results->{hits}->{total};
+
     $self->{_matches}     = \@matches;
 
-    $logger->debug(YAML::Dump(\%decider_map));
-    if ($singletermcount > $maxmatch){
-      $self->{categories} = {};
-    }
-    else {
-      $self->{categories}   = \%decider_map;
-    }
 
-    $logger->info("Running query ".$self->{_querystring}." with filters ".$self->{_filter});
+    $logger->info("Running query ".YAML::Dump($self->{_querystring})." with filters ".YAML::Dump($self->{_filter}));
 
-    $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
+#    $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
     return;
 }
 
 sub get_records {
     my $self=shift;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     my $config     = OpenBib::Config->instance;
 
     my $recordlist = new OpenBib::RecordList::Title();
 
     my @matches = $self->matches;
-    
+
+    $logger->debug(YAML::Dump(\@matches));
+
     foreach my $match (@matches) {
-        my $document        = $match->get_document();
-        my $titlistitem_ref = decode_json $document->get_data();
-        
-        $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
+    
+        $recordlist->add(OpenBib::Record::Title->new({database => $match->{database}, id => $match->{id}})->set_brief_normdata_from_storable($match->{listitem}));
     }
 
     return $recordlist;
@@ -412,21 +328,34 @@ sub get_categorized_drilldown {
     
     # Transformation Hash->Array zur Sortierung
 
+    my $type_map_ref = {
+        database => 8,
+        person => 3,
+        corporatebody => 7,
+        subject => 1,
+        classification => 2,
+        year => 5,
+        mediatype => 4,
+        tag => 9,
+        litlist => 10,
+        language => 6,
+    };
+    
     my $category_map_ref     = ();
     my $tmp_category_map_ref = $self->{categories};
                                 
     foreach my $type (keys %{$tmp_category_map_ref}) {
         my $contents_ref = [] ;
-        foreach my $content (keys %{$tmp_category_map_ref->{$type}}) {
+        foreach my $item_ref (@{$tmp_category_map_ref->{$type}->{terms}}) {
             my $normcontent = OpenBib::Common::Util::grundform({
-                content   => decode_utf8($content),
+                content   => decode_utf8($item_ref->{term}),
                 searchreq => 1,
             });
             
             $normcontent=~s/\W/_/g;
             push @{$contents_ref}, [
-                decode_utf8($content),
-                $tmp_category_map_ref->{$type}{$content},
+                decode_utf8($item_ref->{term}),
+                $item_ref->{count},
                 $normcontent,
             ];
         }
@@ -435,7 +364,7 @@ sub get_categorized_drilldown {
         
         # Schwartz'ian Transform
         
-        @{$category_map_ref->{$type}} = map { $_->[0] }
+        @{$category_map_ref->{$type_map_ref->{$type}}} = map { $_->[0] }
             sort { $b->[1] <=> $a->[1] }
                 map { [$_, $_->[1]] }
                     @{$contents_ref};

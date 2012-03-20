@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Search::Z3950::USBK
+#  OpenBib::Search::Driver::Z3950::USBK
 #
 #  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
@@ -23,13 +23,12 @@
 #
 #####################################################################
 
-package OpenBib::Search::Z3950::USBK;
+package OpenBib::Search::Driver::Z3950::USBK;
 
-use base 'OpenBib::Search::Z3950';
+use base 'OpenBib::Search::Driver::Z3950';
 
 use strict;
 use warnings;
-use lib '/usr/lib/perl5';
 
 no warnings 'redefine';
 use utf8;

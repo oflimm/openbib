@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Search::HTTP
+#  OpenBib::Search::Driver::Z3950::USBK::Config
 #
 #  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
 #
@@ -23,7 +23,7 @@
 #
 #####################################################################
 
-package OpenBib::Search::HTTP;
+package OpenBib::Search::Driver::USBK::Config;
 
 use strict;
 use warnings;
@@ -31,17 +31,49 @@ no warnings 'redefine';
 use utf8;
 
 use Apache2::Reload;
-use Apache2::Request ();
-use Benchmark ':hireswallclock';
-use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
-use SOAP::Lite;
-use Storable;
-use YAML ();
 
 use OpenBib::Config;
 
+# Importieren der Konfigurationsdaten als Globale Variablen
+# in diesem Namespace
+use vars qw(%config %z39config);
+
+*config = \%OpenBib::Config::config;
+
+if ($OpenBib::Config::config{benchmark}){
+    use Benchmark ':hireswallclock';
+}
+
+%z39config = (
+    databaseName          => "",
+    user                  => "",
+    password              => "",
+    groupid               => "1",
+
+    hostname              => "",
+    port                  => "",
+
+    querytype             => "CQL",
+    elementSetName        => "B",
+    preferredRecordSyntax => "MAB",
+    hitrange              => 10,
+);
+
+sub new {
+    my $class = shift;
+
+    # Ininitalisierung mit Config-Parametern
+    my $self = \%z39config;
+
+    bless ($self, $class);
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self;
+}
 
 1;
 

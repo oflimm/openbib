@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Search::Z3950
+#  OpenBib::Search::Driver::Z3950
 #
 #  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
 #
@@ -23,7 +23,7 @@
 #
 #####################################################################
 
-package OpenBib::Search::Z3950;
+package OpenBib::Search::Driver::Z3950;
 
 use strict;
 use warnings;

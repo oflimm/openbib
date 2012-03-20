@@ -106,7 +106,7 @@ sub identify_by_mark {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $request=$self->{dbh}->prepare("select distinct conn.sourceid as titid from conn,holding where holding.category=14 and holding.content rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select distinct conn.sourceid as titid from conn,holding where holding.category=14 and holding.content COLLATE utf8_bin rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
     my @marks = (ref $mark)?@$mark:($mark);
 

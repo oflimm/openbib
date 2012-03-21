@@ -348,6 +348,41 @@ my $atime = new Benchmark;
                         index => 'not_analyzed', # analyzed | not_analyzed | no
                         #analyze => 'default',
                     },
+                    sort_person => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    sort_title => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    sort_order => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    sort_year => {
+                        type => 'integer',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    sort_publisher => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    sort_mark => {
+                        type => 'string',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
+                    sort_popularity => {
+                        type => 'integer',
+                        index => 'not_analyzed', # analyzed | not_analyzed | no
+                        #analyze => 'default',
+                    },
                     
                 },
             },
@@ -371,12 +406,100 @@ my $atime = new Benchmark;
                 $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
                 next;
             }
-            
+
             my $searchcontent_ref = decode_json $searchcontent;
 
-            $searchcontent_ref->{listitem} = decode_json $listitem;
+            my $title_listitem_ref = decode_json $listitem;
 
+            $searchcontent_ref->{listitem} = $title_listitem_ref;
+            
+            my $sorting_ref = [
+                {
+                    # Verfasser/Koepeschaft
+                    id         => $config->{elasticsearch_sorttype_value}{'person'},
+                    category   => 'PC0001',
+                    type       => 'stringcategory',
+                },
+                {
+                    # Titel
+                    id         => $config->{elasticsearch_sorttype_value}{'title'},
+                    category   => 'T0331',
+                    type       => 'stringcategory',
+                },
+                {
+                    # Zaehlung
+                    id         => $config->{elasticsearch_sorttype_value}{'order'},
+                    category   => 'T5100',
+                    type       => 'integercategory',
+                },
+                {
+                    # Jahr
+                    id         => $config->{elasticsearch_sorttype_value}{'year'},
+                    category   => 'T0425',
+                    type       => 'integercategory',
+                },
+                {
+                    # Verlag
+                    id         => $config->{elasticsearch_sorttype_value}{'publisher'},
+                    category   => 'T0412',
+                    type       => 'stringcategory',
+                    },
+                {
+                    # Signatur
+                    id         => $config->{elasticsearch_sorttype_value}{'mark'},
+                        category   => 'X0014',
+                    type       => 'stringcategory',
+                },
+                {
+                    # Popularitaet
+                    id         => $config->{elasticsearch_sorttype_value}{'popularity'},
+                    category   => 'popularity',
+                    type       => 'integervalue',
+                },
+                
+            ];
+
+            foreach my $this_sorting_ref (@{$sorting_ref}){
+                
+                if ($this_sorting_ref->{type} eq "stringcategory"){
+                    my $content = (exists $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content})?$title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}:"";
+                    next unless ($content);
+                    
+                    $content = OpenBib::Common::Util::grundform({
+                        content   => $content,
+                    });
+                    
+                    if ($content){
+                        $logger->debug("Adding $content as sortvalue");                        
+                        $searchcontent_ref->{$this_sorting_ref->{id}} = $content;
+                    }
+                }
+                elsif ($this_sorting_ref->{type} eq "integercategory"){
+                    my $content = 0;
+                    if (exists $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}){
+                        ($content) = $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}=~m/^(\d+)/;
+                    }
+                    if ($content){
+                        $content = sprintf "%08d", $content;
+                        $logger->debug("Adding $content as sortvalue");
+                        $searchcontent_ref->{$this_sorting_ref->{id}} = $content;
+                    }
+                }
+                elsif ($this_sorting_ref->{type} eq "integervalue"){
+                    my $content = 0 ;
+                    if (exists $title_listitem_ref->{$this_sorting_ref->{category}}){
+                        ($content) = $title_listitem_ref->{$this_sorting_ref->{category}}=~m/^(\d+)/;
+                    }
+                    if ($content){                    
+                        $content = sprintf "%08d",$content;
+                        $logger->debug("Adding $content as sortvalue");
+                        $searchcontent_ref->{$this_sorting_ref->{id}} = $content;
+                    }
+                }
+            }
+            
             $logger->debug(YAML::Dump($searchcontent_ref));
+
             # ID setzen:
 
             push @$doc_buffer_ref, {

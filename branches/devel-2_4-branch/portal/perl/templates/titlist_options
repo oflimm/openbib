@@ -25,8 +25,8 @@
   <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
 </select>&nbsp;
 <select name="srto">
-  <option value="up"[%- IF query.param('srto') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="down"[%- IF query.param('srto') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+  <option value="asc"[%- IF query.param('srto') == 'asc' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="desc"[%- IF query.param('srto') == 'desc' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
 [% IF NOT no_jn %]
 &nbsp;

@@ -237,12 +237,27 @@ sub initial_search {
     my $query_ref = $querystring->{query};
 
     $query_ref->{'-filter'} = $querystring->{filter};
+
+    my $sort_ref = { };
+
+    if ($sorttype eq "relevance"){
+        $sort_ref->{_score} = {
+            order => $sortorder,
+        };
+    }
+    else {
+        $sort_ref->{"sort_$sorttype"} = {
+            order => $sortorder,
+        };
+
+    }
     
     my $results = $es->search(
-        index => $index,
-        type  => 'title',
+        index  => $index,
+        type   => 'title',
         queryb => $query_ref,
         facets => $facets_ref,
+        sort   => $sort_ref, 
         from   => $from,
         size   => $num,
     );

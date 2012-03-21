@@ -36,7 +36,7 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::Search::Local::Xapian;
+use OpenBib::Search::Driver::Xapian;
 use OpenBib::Record::Title;
 use OpenBib::Template::Utilities;
 

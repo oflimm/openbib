@@ -47,7 +47,7 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::RecordList::Title;
-use OpenBib::Search::Z3950::USBK::Config;
+use OpenBib::Search::Driver::Z3950::USBK::Config;
 use OpenBib::SearchQuery;
 
 sub new {

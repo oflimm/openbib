@@ -37,7 +37,7 @@ use OpenBib::Config::DatabaseInfoTable;
 # Hier folgen alle verfuegbaren Z3950-Module. Der letzte Teil des
 # Methoden-Namens gibt den Datenbanknamen dieses Kataloges in
 # der Web-Administration an
-use OpenBib::Search::Z3950::USBK;
+use OpenBib::Search::Driver::Z3950::USBK;
 
 # Dispatcher-Methode
 sub new {

@@ -201,8 +201,8 @@ sub set_from_apache_request {
         my $searchfieldprefix=$config->{searchfield}{$searchfield}{prefix};
         my ($searchfield_content, $searchfield_norm_content,$searchfield_bool_op);
         $searchfield_content = $searchfield_norm_content = decode_utf8($query->param("$searchfieldprefix")) || $query->param("$searchfieldprefix")      || '';
-        $searchfield_bool_op = (defined $query && $query->param("b$searchfieldprefix"))?$query->param("b$searchfieldprefix"):
-            (defined $legacy_bool_op_ref->{"b$searchfieldprefix"} && $query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}))?$query->param($legacy_bool_op_ref->{"b$searchfieldprefix"}):"AND";
+        $searchfield_bool_op = (defined $query && $query->param("b\[$searchfieldprefix\]"))?$query->param("b\[$searchfieldprefix\]"):
+            (defined $legacy_bool_op_ref->{"b\[$searchfieldprefix\]"} && $query->param($legacy_bool_op_ref->{"b\[$searchfieldprefix\]"}))?$query->param($legacy_bool_op_ref->{"b\[$searchfieldprefix\]"}):"AND";
         
         # Inhalts-Check
         $searchfield_bool_op = (exists $valid_bools_ref->{$searchfield_bool_op})?$valid_bools_ref->{$searchfield_bool_op}:"AND";

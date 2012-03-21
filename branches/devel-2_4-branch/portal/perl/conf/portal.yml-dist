@@ -51,7 +51,16 @@ memcached:
      - '127.0.0.1:11211'
   compress_threshold: 10000
 
-local_search_backend: xapian
+# Einstellungen fuer ElasticSearch
+
+elasticsearch:
+  servers: '127.0.0.1:9200'
+  transport: 'httplite'
+  max_requests: 10000
+#  trace_calls: '/var/log/openbib/elasticsearch.log'
+  no_refresh: 1
+
+local_search_backend: elasticsearch
 
 # Benutzer, Passwort und Default view fuer die Administration
 adminuser: admin
@@ -2156,6 +2165,15 @@ searchfield:
      'prefix': 't4300'
      'type': 'string'
 
+elasticsearch_sorttype_value:
+  'person': 'sort_person'
+  'title': 'sort_title'
+  'order': 'sort_order'
+  'year': 'sort_year'
+  'publisher': sort_publisher
+  'mark': sort_mark
+  'popularity': sort_popularity
+
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
 xapian_option:
@@ -2221,7 +2239,7 @@ xapian_drilldown_value:
   subject: 1
   year: 5
   corporatebody: 7
-  db: 8
+  database: 8
   tag: 9
   litlist: 10
 
@@ -2236,21 +2254,34 @@ xapian_sorttype_value:
 
 # Standard-Eingabefelder fuer die Recherche
 default_searchfields:
-  'freesearch': 1
-  'title': 1
-  'person': 1
-  'corporatebody': 1
-  'subject': 1
-  'classification': 1
-  'isbn': 1
-  'issn': 1
-  'mediatype': 0
-  'titlestring': 1
-  'content': 1
-  'source': 1
-  'year': 1
+  'freesearch':
+    'active': 1
+  'title':
+    'active': 1
+  'person':
+    'active': 1
+  'corporatebody':
+    'active': 1
+  'subject':
+    'active': 1
+  'classification':
+    'active': 1
+  'isbn':
+    'active': 1
+  'issn':
+    'active': 1
+  'mediatype':
+    'active': 0
+  'titlestring':
+    'active': 1
+  'content':
+    'active': 1
+  'source':
+    'active': 1
+  'year':
+    'active': 1
 
-search_defaultparams: 'page=1;num=50;srt=author;srto=up;dd=1;jn=1;'
+search_defaultparams: 'page=1;num=20;srt=person;srto=asc;dd=1;jn=1;'
 
 # Stopwort-Liste
 stopword_filename: /opt/openbib/ft/stopwords.txt
@@ -2448,7 +2479,7 @@ tt_info_52_tname: info_52
 tt_info_53_tname: info_53
 tt_info_54_tname: info_54
 tt_info_60_tname: info_60
-tt_info_62_tname: info_62
+tt_info_journaltocs_tname: info_journaltocs
 tt_info_cardcatalogues_tname: info_cardcatalogues
 tt_info_64_tname: info_64
 tt_info_65_tname: info_65
@@ -2639,12 +2670,15 @@ representation:
 
 # Default Query-Options (Session)
 default_query_options:
-  num: 50
+  num: 20
   page: 1
-  srto: 'up'
-  srt: 'author'
+  srto: 'asc'
+  srt: 'person'
+  srta: 0
   profil: ''
   jn: 1
+  dd: 1
+  dop: 'and'
   lt: 'cover'
 
 # Generierte BestOf-Daten

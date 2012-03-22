@@ -36,7 +36,7 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::Search::Driver::Xapian;
+use OpenBib::Search::Backend::Xapian;
 use OpenBib::Record::Title;
 use OpenBib::Template::Utilities;
 
@@ -328,8 +328,8 @@ sub show_record_searchindex {
     my $r              = $self->param('r');
     my $config         = $self->param('config');
 
-    my $terms_ref  = OpenBib::Search::Driver::Xapian->get_indexterms({ database => $database, id => $titleid });
-    my $values_ref = OpenBib::Search::Driver::Xapian->get_values({ database => $database, id => $titleid });
+    my $terms_ref  = OpenBib::Search::Backend::Xapian->get_indexterms({ database => $database, id => $titleid });
+    my $values_ref = OpenBib::Search::Backend::Xapian->get_values({ database => $database, id => $titleid });
 
     my $ttdata = {
         terms  => $terms_ref,

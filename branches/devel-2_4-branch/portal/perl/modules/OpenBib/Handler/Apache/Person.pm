@@ -56,7 +56,6 @@ sub setup {
 
 sub show_record {
     my $self = shift;
-    my $r    = $self->param('r');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();

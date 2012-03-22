@@ -63,9 +63,9 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
-use OpenBib::Search::Driver::Xapian;
-use OpenBib::Search::Driver::ElasticSearch;
-use OpenBib::Search::Driver::Z3950;
+use OpenBib::Search::Backend::Xapian;
+use OpenBib::Search::Backend::ElasticSearch;
+use OpenBib::Search::Backend::Z3950;
 use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::Template::Provider;
@@ -856,7 +856,7 @@ sub search_xapian {
     }
 
     # Recherche starten
-    my $request = new OpenBib::Search::Driver::Xapian($request_args);
+    my $request = new OpenBib::Search::Backend::Xapian($request_args);
     
     $request->initial_search();
     
@@ -931,7 +931,7 @@ sub search_elasticsearch {
     }
 
     # Recherche starten
-    my $request = new OpenBib::Search::Driver::ElasticSearch($request_args);
+    my $request = new OpenBib::Search::Backend::ElasticSearch($request_args);
 
     $request->initial_search();
     

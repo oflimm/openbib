@@ -309,7 +309,7 @@ sub show {
             }
 
             if (!$fallbacksb){
-                my $request = new OpenBib::Search::Driver::Xapian();
+                my $request = new OpenBib::Search::Backend::Xapian();
                 
                 $request->initial_search({
                     serien          => $serien,

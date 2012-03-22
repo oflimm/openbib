@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Search::Driver::HTTP
+#  OpenBib::Search::Backend::HTTP
 #
 #  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
 #
@@ -23,7 +23,7 @@
 #
 #####################################################################
 
-package OpenBib::Search::Driver::HTTP;
+package OpenBib::Search::Backend::HTTP;
 
 use strict;
 use warnings;

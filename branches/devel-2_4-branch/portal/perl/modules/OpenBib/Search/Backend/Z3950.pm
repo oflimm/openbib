@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Search::Driver::Z3950
+#  OpenBib::Search::Backend::Z3950
 #
 #  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
 #
@@ -23,7 +23,7 @@
 #
 #####################################################################
 
-package OpenBib::Search::Driver::Z3950;
+package OpenBib::Search::Backend::Z3950;
 
 use strict;
 use warnings;
@@ -37,7 +37,7 @@ use OpenBib::Config::DatabaseInfoTable;
 # Hier folgen alle verfuegbaren Z3950-Module. Der letzte Teil des
 # Methoden-Namens gibt den Datenbanknamen dieses Kataloges in
 # der Web-Administration an
-use OpenBib::Search::Driver::Z3950::USBK;
+use OpenBib::Search::Backend::Z3950::USBK;
 
 # Dispatcher-Methode
 sub new {

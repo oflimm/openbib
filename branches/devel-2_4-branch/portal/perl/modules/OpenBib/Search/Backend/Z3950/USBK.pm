@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Search::Driver::Z3950::USBK
+#  OpenBib::Search::Backend::Z3950::USBK
 #
 #  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
@@ -23,9 +23,9 @@
 #
 #####################################################################
 
-package OpenBib::Search::Driver::Z3950::USBK;
+package OpenBib::Search::Backend::Z3950::USBK;
 
-use base 'OpenBib::Search::Driver::Z3950';
+use base 'OpenBib::Search::Backend::Z3950';
 
 use strict;
 use warnings;
@@ -47,7 +47,7 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::RecordList::Title;
-use OpenBib::Search::Driver::Z3950::USBK::Config;
+use OpenBib::Search::Backend::Z3950::USBK::Config;
 use OpenBib::SearchQuery;
 
 sub new {

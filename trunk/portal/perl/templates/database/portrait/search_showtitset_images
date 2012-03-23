@@ -14,12 +14,27 @@
 #
 #######################################################################
 -%]
-<a class="invisible cloud-zoom" rel="zoomWidth:400, zoomHeight:400, position:'left'" href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web_200x.jpg" /></a>
+[% 
+   cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fportrait&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${record.id}";
+
+   cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
+%]
+[% IF cdm.total > 0 ;
+   FOREACH cdmrecord IN cdm.records ;
+     cdm_url       = "http://www.ub.uni-koeln.de/cdm4/item_viewer.php?CISOROOT=/portrait&CISOPTR=${cdmrecord.pointer}&CISOBOX=1&REC=1";
+     cdm_imgurl    = "http://www.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=200";
+     cdm_webimgurl = "http://www.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=800";
+%]
+<a class="invisible cloud-zoom" rel="zoomWidth:400, zoomHeight:400, position:'left'" href="[% cdm_webimgurl %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
+
 <p>
-<a href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
-<br /><br />
-<a href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait.tif"><span style="font-size:0.7em">Als Tiff-Datei (Original)</span></a>
+&gt;&gt;&nbsp;<a href="[% config.get('redirect_loc') %]/[% sessionID %]/534/[% cdm_url %]" target="_blank">Zum Digitalisat in ContentDM</a>
 </p>
+
+  [% END %]
+
+[% END %]
+
 <p style="font-size:0.7em;font-weight:bold;">
 Bestellung in den Lesesaal Historische Sammlungen:
 </p>

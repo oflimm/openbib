@@ -90,6 +90,7 @@ END ;
 <div class="headline">[% msg.maketext("Werkzeug-Daten") %]</div>
 
 <table cellpadding=2>
+<tr><td class="category">Werkzeug-Abbildungen</td><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer" class="cssbutton glass kug"><span>[% msg.maketext("Anzeigen") %]</span></a></td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>
 
 [% PROCESS common/subtemplate name="visible_categories_toolset" %]

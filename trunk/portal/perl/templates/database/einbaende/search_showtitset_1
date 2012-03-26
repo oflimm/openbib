@@ -127,7 +127,7 @@ END ;
 [%- END -%]
 
 <tr><td><b>Anzahl Abbildungen</b></td><td colspan="2">[% record.olws.images.size %]</td></tr>
-
+<tr><td><b>[% msg.maketext("Textangaben") %]</b></td><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %]" class="cssbutton glass kug"><span>[% msg.maketext("Anzeigen") %]</span></a></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
 </table>
 

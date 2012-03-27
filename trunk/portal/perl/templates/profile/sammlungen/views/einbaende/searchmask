@@ -134,25 +134,6 @@ $(document).ready(function(){
 
 </form>
 
-<p/>
-
-[% IF queries.size > 0 %]
-<p />
-<form method="get" id="queries" action="[% config.get('dispatchquery_loc') %]">
-<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-
-<table>
-<tr>
-<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
-<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
-</tr>
-</table>
-
-</form>
-[% END %]
-
-
 </td>
 <td>&nbsp;</td>
 <td style="vertical-align:top">
@@ -184,6 +165,25 @@ $(document).ready(function(){
 </td>
 </tr>
 </table>
+
+<p/>
+
+[% IF queries.size > 0 %]
+<p />
+<form method="get" id="queries" action="[% config.get('dispatchquery_loc') %]">
+<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<table>
+<tr>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
+</tr>
+</table>
+
+</form>
+[% END %]
+
 <p />
 
 

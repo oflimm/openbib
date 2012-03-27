@@ -57,7 +57,7 @@ if ($help){
 }
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/file2elasticsearch.log';
-$loglevel=($loglevel)?$loglevel:"DEBUG";
+$loglevel=($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen

@@ -109,7 +109,6 @@ my %cvs_links = (
     "$repositoryroot/conv/enrichmnt/natliz_eb2enrich.pl" => "/opt/openbib/conv/natliz_eb2enrich.pl",
     "$repositoryroot/conv/enrichmnt/picafiles2enrich.pl" => "/opt/openbib/conv/picafiles2enrich.pl",
     "$repositoryroot/conv/enrichmnt/swt2enrich.pl"       => "/opt/openbib/conv/swt2enrich.pl",
-    "$repositoryroot/conv/enrichmnt/tictocs2enrich.pl"   => "/opt/openbib/conv/tictocs2enrich.pl",
     "$repositoryroot/conv/enrichmnt/usb_bk2enrich.pl"    => "/opt/openbib/conv/usb_bk2enrich.pl",
     "$repositoryroot/conv/enrichmnt/usb_eb2enrich.pl"    => "/opt/openbib/conv/usb_eb2enrich.pl",
     "$repositoryroot/conv/enrichmnt/usb_toc2enrich.pl"   => "/opt/openbib/conv/usb_toc2enrich.pl",
@@ -141,6 +140,7 @@ my %cvs_links = (
     "$repositoryroot/conv/wikisource/wikisource2meta.pl" => "/opt/openbib/conv/wikisource2meta.pl",
     "$repositoryroot/conv/xapian/db2xapian.pl"           => "/opt/openbib/conv/db2xapian.pl",
     "$repositoryroot/conv/xapian/file2xapian.pl"         => "/opt/openbib/conv/file2xapian.pl",
+    "$repositoryroot/conv/elasticsearch/file2elasticsearch.pl"         => "/opt/openbib/conv/file2elasticsearch.pl",
     "$repositoryroot/conv/zms/zmslibinfo2configdb.pl"    => "/opt/openbib/conv/zmslibinfo2configdb.pl",,
     "$repositoryroot/db"                                 => "/opt/openbib/db",
     "$repositoryroot/portal/perl/modules/OpenBib"        => "/usr/local/lib/site_perl/OpenBib",
@@ -157,8 +157,8 @@ my %copy_files = (
     "$repositoryroot/portal/perl/conf/portal.log4perl"                => "/opt/openbib/conf/portal.log4perl",
     "$repositoryroot/portal/perl/conf/portal.yml-dist"                => "/opt/openbib/conf/portal.yml",
     "$repositoryroot/portal/perl/conf/convert.yml-dist"               => "/opt/openbib/conf/convert.yml",
-    "$repositoryroot/portal/perl/modules/OpenBib/Search/Z3950/USBK/Config.pm-dist"
-                                                           => "$repositoryroot/portal/perl/modules/OpenBib/Search/Z3950/USBK/Config.pm",
+    "$repositoryroot/portal/perl/modules/OpenBib/Search/Driver/Z3950/USBK/Config.pm-dist"
+                                                           => "$repositoryroot/portal/perl/modules/OpenBib/Search/Driver/Z3950/USBK/Config.pm",
 );
 
 print "Erzeuge Verzeichnisse\n";

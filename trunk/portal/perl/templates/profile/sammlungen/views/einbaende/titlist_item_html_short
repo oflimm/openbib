@@ -137,6 +137,8 @@
       <div class="numbering">[% loop.count+offset %]</div>
       <div class="thumbnail">
 [%- IF qopts.listtype == 'cover' -%]
+<a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% record.id %];stid=1;olws=Viewer"><img src="http://einbandsammlung.ub.uni-koeln.de/digiarchive/einbaende/[% record.id %]/einband_thumb.jpg" alt="Einband Thumbnail"/></a>
+[% IF 1 == 0 %]
 [% 
    cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fportrait&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${record.id}";
 
@@ -148,6 +150,7 @@
 %]
 <img src="[% cdm_imgurl %]" style="max-height: 80px; max-width:65px" />
 [% END %]
+[% END #0=1%]
 [%- END -%]
       </div> 
       <div class="brieftitle">

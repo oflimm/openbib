@@ -636,10 +636,10 @@ sub log_query {
           # DBI: "insert into queryterm values (?,?,?,?)"
           $self->{schema}->resultset('Queryterm')->create(
               {
-                  tstamp  => $tstamp,
-                  view    => $view,
-                  type    => $cat2type_ref->{$cat},
-                  content => $next,
+                  tstamp   => $tstamp,
+                  viewname => $view,
+                  type     => $cat2type_ref->{$cat},
+                  content  => $next,
                   
               }
           );

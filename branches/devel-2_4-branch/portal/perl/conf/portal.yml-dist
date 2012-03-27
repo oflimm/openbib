@@ -60,7 +60,7 @@ elasticsearch:
 #  trace_calls: '/var/log/openbib/elasticsearch.log'
   no_refresh: 1
 
-local_search_backend: elasticsearch
+local_search_backend: xapian
 
 # Benutzer, Passwort und Default view fuer die Administration
 adminuser: admin

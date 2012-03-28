@@ -548,6 +548,37 @@
   width: 100%;;
 }
 
+.drilldown h4 {
+    border-bottom:2px solid #ddd;
+}
+
+dl.facet_items a:hover {
+    /*text-decoration: underline;*/
+}
+dl.facet_items a {
+    text-decoration: none;
+}
+
+.facet_items {
+   padding: 0px;
+   left-margin: 0px;
+    
+}
+.facet_items dd {
+    padding: 0.1em 0 0.1em 0.4em;
+    list-style-type: none;
+    border-bottom: 1px solid #e3e3e3;
+    margin: 0;
+}
+
+.facet_items dt {
+    margin-top:.75em;
+    font-weight:bold;
+    padding:0.2em 0.4em;
+    background-color: #eee;
+}
+
+  
 .reuse_data h4, .discover_sources h4 {
     display: block;
     margin: 10px 5px 5px 5px;

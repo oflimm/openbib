@@ -61,8 +61,8 @@ sub _new_instance {
 
     $self->connectDB();
     $self->connectMemcached();
-    
-    # Hinweis: Bisher wuerde statt $query direkt das Request-Objekt $r
+
+    # Hinweis: Bisher wurde statt $query direkt das Request-Objekt $r
     # uebergeben und an dieser Stelle wieder ein $query-Objekt via
     # Apache2::Request daraus erzeugt. Bei Requests, die via POST
     # sowohl mit dem enctype multipart/form-data wie auch
@@ -80,7 +80,7 @@ sub _new_instance {
     $self->load;
 
     my $default_queryoptions_ref = $self->get_default_options;
-
+    
     my $altered=0;
     # Abgleich mit uebergebenen Parametern
     # Uebergebene Parameter 'ueberschreiben'und gehen vor
@@ -92,9 +92,13 @@ sub _new_instance {
             # geholt werden
             unless ($option eq "num" && $query->param($option) eq "-1"){
                 $self->{option}->{$option}=$query->param($option);
+                
                 $logger->debug("Option $option received via HTTP");
                 $altered=1;
             }
+        }
+        else {
+            $logger->debug("Option $option NOT received via HTTP");
         }
     }
 
@@ -113,8 +117,17 @@ sub _new_instance {
       $logger->debug("Options changed and dumped to DB");
     }
 
+    $logger->debug("srt Option: ".$self->{option}->{'srt'});
     
-    $logger->debug("QueryOptions-Object created");
+    # Wenn srto in srt enthalten, dann aufteilen
+    if ($self->{option}{'srt'} =~m/^([^_]+)_([^_]+)$/){
+        $self->{option}{'srt'}=$1;
+        $self->{option}{'srto'}=$2;
+        $logger->debug("srt Option split: srt = $1, srto = $2");
+    }
+
+    
+    $logger->debug("QueryOptions-Object created with options ".YAML::Syck::Dump($self->{option}));
 
     return $self;
 }
@@ -174,6 +187,13 @@ sub get_option {
     my ($self,$option)=@_;
 
     return $self->{option}->{$option};
+}
+
+sub set_option {
+    my ($self,$option,$value)=@_;
+
+    $self->{option}->{$option} = $value;
+    return;
 }
 
 sub get_default_options {

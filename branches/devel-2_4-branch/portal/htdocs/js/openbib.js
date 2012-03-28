@@ -95,6 +95,10 @@ $('#searchform_types').tabs();
 $('.nojs_hidden').css('display','block');
 $('.nojs_show').css('display','none');
 
+$('select.autosubmit').change(function(){
+                                       this.form.submit();
+                                     });
+ 
  // Begin Merkliste
 // Merklistenfuellstand aktualisieren
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier

@@ -14,19 +14,14 @@
 <table>
 <tr><td><b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
 
-<select name="srt">
-  <option value="relevance"[%- IF query.param('srt') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>
-  <option value="person"[%- IF query.param('srt') == 'person' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
-  <option value="title"[%- IF query.param('srt') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-  <option value="order"[%- IF query.param('srt') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
-  <option value="year"[%- IF query.param('srt') == 'year' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
-  <option value="publisher"[%- IF query.param('srt') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
-  <option value="mark"[%- IF query.param('srt') == 'mark' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
-  <option value="popularity"[%- IF query.param('srt') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
-</select>&nbsp;
-<select name="srto">
-  <option value="asc"[%- IF query.param('srto') == 'asc' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="desc"[%- IF query.param('srto') == 'desc' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+<select name="srt" class="autosubmit">
+  <option value="relevance_desc"[%- IF query.param('srt') == 'relevance_dsc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>
+  <option value="popularity_desc"[%- IF query.param('srt') == 'popularity_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+  <option value="year_desc"[%- IF query.param('srt') == 'year_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&darr;</option>
+  <option value="year_asc"[%- IF query.param('srt') == 'year_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&uarr;</option>
+  <option value="person_asc"[%- IF query.param('srt') == 'person_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title_asc"[%- IF query.param('srt') == 'title_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order_asc"[%- IF query.param('srt') == 'order_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
 </select>
 [% IF NOT no_jn %]
 &nbsp;
@@ -36,6 +31,6 @@
   <option value="1"[%- IF query.param('jn') == '1' && NOT database -%] selected="selected"[%- END -%]>[% msg.maketext("katalogübergreifend") %]</option>
 </select>
 [% END %]
-</td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td>
+</td><td><div class="nojs_show cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td>
 </tr>
 </table>

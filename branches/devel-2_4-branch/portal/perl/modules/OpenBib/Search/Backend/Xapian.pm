@@ -269,7 +269,7 @@ sub initial_search {
 
     # Sorting
     if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
-        $sortorder = ($sortorder eq "up")?0:1;
+        $sortorder = ($sortorder eq "asc")?0:1;
         $logger->debug("Set Sorting to type ".$config->{xapian_sorttype_value}{$sorttype}." / order ".$sortorder);
 
         $enq->set_sort_by_value($config->{xapian_sorttype_value}{$sorttype},$sortorder)

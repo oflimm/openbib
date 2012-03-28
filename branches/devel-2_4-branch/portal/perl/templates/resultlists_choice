@@ -28,7 +28,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "resultlists" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "searchhistory" %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
@@ -136,8 +136,9 @@
 </table>
 <p />
 
+[%# USE dumper;dumper.dump(queries)%]
 [% IF queryids.size >= 0 %]
-<form method="get" action="[% path_prefix %]/[% config.get('resultlists_loc') %]">
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 	  
 <p />
 <table width="100%"><tr>

@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::ResultLists.pm
+#  OpenBib::Handler::Apache::Search::History.pm
 #
 #  Dieses File ist (C) 2003-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::ResultLists;
+package OpenBib::Handler::Apache::Search::History;
 
 use strict;
 use warnings;

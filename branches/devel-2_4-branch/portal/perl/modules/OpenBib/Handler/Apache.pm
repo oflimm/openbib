@@ -158,11 +158,12 @@ sub cgiapp_init() {
    my $view         = $self->param('view') || $config->get('defaultview');
    my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
+   my $query        = $self->query();
+   
    my $useragent    = $r->headers_in->{'User-Agent'} || "OpenBib Search Portal: http://search.openbib.org/";
    
    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-   my $queryoptions = OpenBib::QueryOptions->instance($self->query());
+   my $queryoptions = OpenBib::QueryOptions->instance($query);
 
    my $servername   = $r->get_server_name;
    

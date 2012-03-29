@@ -185,7 +185,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- Begin database facet -->
 [%         IF queryoptions.get_option('jn') == 1 && category_map.8.size > 0 %]
-<dl class="facet_items">
+<dl class="categorized_items">
 <dt class="headline" id="dd_database_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
 [%             FOREACH termitem IN category_map.8 ;
                   LAST IF loop.count > 25 ;
@@ -207,9 +207,153 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </dl>
 [%         END %]
 <!-- End database facet -->
+<!-- Begin mediatype facet -->
+[%         IF config.get('drilldown_option').categorized_mediatype && category_map.4.size > 0 %]
+<dl class="categorized_items">
+<dt class="headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Medienart") %]</dt>
+[%             FOREACH termitem IN category_map.4 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.4.size > 5 && loop.count == 5 %]
+<span id="dd_mediatype_[% database %]_toggle"></span>
+<div id="dd_mediatype_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').mediatypestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF category_map.4.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End mediatype facet -->
+<!-- Begin subject facet -->
+[%         IF config.get('drilldown_option').categorized_subject && category_map.1.size > 0 %]
+<dl class="categorized_items">
+<dt class="headline" id="dd_subject_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
+[%             FOREACH termitem IN category_map.1 ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF category_map.1.size > 5 && loop.count == 5 %]
+<span id="dd_subject_[% database %]_toggle"></span>
+<div id="dd_subject_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').subjectstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF category_map.1.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End subject facet -->
+<!-- Begin year facet -->
+[%         IF config.get('drilldown_option').categorized_year && category_map.5.size > 0 %]
+<dl class="categorized_items">
+<dt class="headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</dt>
+[%             FOREACH termitem IN category_map.5 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.5.size > 5 && loop.count == 5 %]
+<span id="dd_year_[% database %]_toggle"></span>
+<div id="dd_year_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').yearstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])</dd>
+[%             END %]
+[% IF category_map.5.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End year facet -->
+<!-- Begin classification facet -->
+[%         IF config.get('drilldown_option').categorized_classification && category_map.2.size > 0 %]
+<dl class="categorized_items">
+<dt class="headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</dt>
+[%             FOREACH termitem IN category_map.2 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.2.size > 5 && loop.count == 5 %]
+<span id="dd_classification_[% database %]_toggle"></span>
+<div id="dd_classification_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').classificationstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF category_map.2.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End classification facet -->
+<!-- Begin tag facet -->
+[%         IF config.get('drilldown_option').categorized_tag && category_map.9.size > 0 %]
+<dl class="categorized_items">
+<dt class="headline" id="dd_tag_[% database %]_anchor">[% msg.maketext("nach Tags") %]</dt>
+[%             FOREACH termitem IN category_map.9 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.9.size > 5 && loop.count == 5 %]
+<span id="dd_tag_[% database %]_toggle"></span>
+<div id="dd_tag_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').tagstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF category_map.9.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End tag facet -->
+<!-- Begin litlist facet -->
+[%         IF config.get('drilldown_option').categorized_litlist && category_map.10.size > 0 %]
+<dl class="categorized_items">
+<dt class="headline" id="dd_litlist_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</dt>
+[%             FOREACH termitem IN category_map.10 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.10.size > 5 && loop.count == 5 %]
+<span id="dd_litlist_[% database %]_toggle"></span>
+<div id="dd_litlist_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').litliststring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF category_map.10.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End litlist facet -->
 <!-- Begin person facet -->
 [%         IF config.get('drilldown_option').categorized_person && category_map.3.size > 0 %]
-<dl class="facet_items">
+<dl class="categorized_items">
 <dt class="headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Personen") %]</dt>
 [%             FOREACH termitem IN category_map.3 ;
                   LAST IF loop.count > 25 ;
@@ -233,7 +377,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- End person facet -->
 <!-- Begin corporatebody facet -->
 [%         IF config.get('drilldown_option').categorized_corporatebody && category_map.7.size > 0 %]
-<dl class="facet_items">
+<dl class="categorized_items">
 <dt class="headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
 <tr><td>
 [%             FOREACH termitem IN category_map.7 ;
@@ -256,185 +400,10 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </dl>
 [%         END %]
 <!-- End corporatebody facet -->
-<!-- Begin subject facet -->
-[%         IF config.get('drilldown_option').categorized_subject && category_map.1.size > 0 %]
-<dl class="facet_items">
-<tr><td valign="top">
-<table width="100%">
-<tr><th class="headline" id="dd_subject_[% database %]_anchor">[% msg.maketext("nach Themen") %]</th></tr>
-<tr><td>
-[%             FOREACH termitem IN category_map.1 ;
-                  LAST IF loop.count > 25 ;
-%]
-[% IF category_map.1.size > 5 && loop.count == 5 %]
-<span id="dd_subject_[% database %]_toggle"></span>
-<div id="dd_subject_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').subjectstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
-[%             END %]
-[% IF category_map.1.size > 5 %]
-</div>
-[% END %]
-</td></tr>
-</table>
-</td></tr>
-[%         END %]
-<!-- End subject facet -->
-<!-- Begin classification facet -->
-[%         IF config.get('drilldown_option').categorized_classification && category_map.2.size > 0 %]
-<dl class="facet_items">
-<tr><td valign="top">
-<table width="100%">
-<tr><th class="headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</th></tr>
-<tr><td>
-[%             FOREACH termitem IN category_map.2 ;
-                  LAST IF loop.count > 25 ;
- %]
-[% IF category_map.2.size > 5 && loop.count == 5 %]
-<span id="dd_classification_[% database %]_toggle"></span>
-<div id="dd_classification_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').classificationstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
-[%             END %]
-[% IF category_map.2.size > 5 %]
-</div>
-[% END %]
-</td></tr>
-</table>
-</td></tr>
-[%         END %]
-<!-- End classification facet -->
-<!-- Begin year facet -->
-[%         IF config.get('drilldown_option').categorized_year && category_map.5.size > 0 %]
-<dl class="facet_items">
-<tr><td valign="top">
-<table width="100%">
-<tr><th class="headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</th></tr>
-<tr><td>
-[%             FOREACH termitem IN category_map.5 ;
-                  LAST IF loop.count > 25 ;
- %]
-[% IF category_map.5.size > 5 && loop.count == 5 %]
-<span id="dd_year_[% database %]_toggle"></span>
-<div id="dd_year_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').yearstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
-[%             END %]
-[% IF category_map.5.size > 5 %]
-</div>
-[% END %]
-</td></tr>
-</table>
-</td></tr>
-[%         END %]
-<!-- End year facet -->
-<!-- Begin mediatype facet -->
-[%         IF config.get('drilldown_option').categorized_mediatype && category_map.4.size > 0 %]
-<dl class="facet_items">
-<tr><td valign="top">
-<table width="100%">
-<tr><th class="headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Medienart") %]</th></tr>
-<tr><td>
-[%             FOREACH termitem IN category_map.4 ;
-                  LAST IF loop.count > 25 ;
- %]
-[% IF category_map.4.size > 5 && loop.count == 5 %]
-<span id="dd_mediatype_[% database %]_toggle"></span>
-<div id="dd_mediatype_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').mediatypestring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
-[%             END %]
-[% IF category_map.4.size > 5 %]
-</div>
-[% END %]
-</td></tr>
-</table>
-</td></tr>
-[%         END %]
-<!-- End mediatype facet -->
-<!-- Begin tag facet -->
-[%         IF config.get('drilldown_option').categorized_tag && category_map.9.size > 0 %]
-<dl class="facet_items">
-<tr><td valign="top">
-<table width="100%">
-<tr><th class="headline" id="dd_tag_[% database %]_anchor">[% msg.maketext("nach Tags") %]</th></tr>
-<tr><td>
-[%             FOREACH termitem IN category_map.9 ;
-                  LAST IF loop.count > 25 ;
- %]
-[% IF category_map.9.size > 5 && loop.count == 5 %]
-<span id="dd_tag_[% database %]_toggle"></span>
-<div id="dd_tag_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').tagstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
-[%             END %]
-[% IF category_map.9.size > 5 %]
-</div>
-[% END %]
-</td></tr>
-</table>
-</td></tr>
-[%         END %]
-<!-- End tag facet -->
-<!-- Begin litlist facet -->
-[%         IF config.get('drilldown_option').categorized_litlist && category_map.10.size > 0 %]
-<dl class="facet_items">
-<tr><td valign="top">
-<table width="100%">
-<tr><th class="headline" id="dd_litlist_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</th></tr>
-<tr><td>
-[%             FOREACH termitem IN category_map.10 ;
-                  LAST IF loop.count > 25 ;
- %]
-[% IF category_map.10.size > 5 && loop.count == 5 %]
-<span id="dd_litlist_[% database %]_toggle"></span>
-<div id="dd_litlist_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').litliststring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<input type="checkbox" name="f[[% searchprefix %]]" value="[% searchterm %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${"${searchprefix}:|${searchterm}|"} %];filter=[% searchprefix %]:|[% searchterm %]|[% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
-[%             END %]
-[% IF category_map.10.size > 5 %]
-</div>
-[% END %]
-</td></tr>
-</table>
-</td></tr>
-[%         END %]
-<!-- End litlist facet -->
 <!-- Begin language facet -->
 [%         IF config.get('drilldown_option').categorized_language && category_map.6.size > 0 %]
-<dl class="facet_items">
+<dl class="categorized_items">
 <dt class="headline" id="dd_language_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</dt>
-<tr><td>
 [%             FOREACH termitem IN category_map.6 ;
                   LAST IF loop.count > 25 ;
  %]

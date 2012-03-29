@@ -108,77 +108,27 @@ sub show {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    # Gibt es bereits Rechercheergebnisse?
-    if ($session->get_number_of_queries() <= 0) {
-
-        my $loginname="";
-        my $password="";
-        
-        ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
-        
-        # Hash im Loginname ersetzen
-        $loginname=~s/#/\%23/;
-
-        # TT-Data erzeugen
-        my $ttdata={
-            loginname      => $loginname,
-            password       => $password,
-            
-            query          => $query,
-            
-            qopts          => $queryoptions->get_options,
-            queryoptions   => $queryoptions,
-            
-            database       => $database,
-            queryid        => $queryid,
-            offset         => $offset,
-            hitrange       => $hitrange,
-        };
-        
-        $self->print_page($config->{tt_resultlists_empty_tname},$ttdata);
-
-        return Apache2::Const::OK;
-    }
-    
     my @queryids     = ();
     my @querystrings = ();
     my @queryhits    = ();
     
     my @queries      = $session->get_all_searchqueries;
     
-    # Finde den aktuellen Query
-    my $thisquery_ref={};
-    
-    # Wenn keine Queryid angegeben wurde, dann nehme den ersten Eintrag,
-    # da dieser der aktuellste ist
-    if ($queryid eq "") {
-        $thisquery_ref=$queries[0];
-    }
-    # ansonsten nehmen den ausgewaehlten
-    else {
-        foreach my $query_ref (@queries) {
-            if ($query_ref->get_id eq "$queryid") {
-                $thisquery_ref=$query_ref;
-            }
-        }
-    }
-    
-    my ($resultdbs_ref,$hitcount)=$session->get_db_histogram_of_query(@{$thisquery_ref}{id}) ;
+#    my ($resultdbs_ref,$hitcount)=$session->get_db_histogram_of_query(@{$thisquery_ref}{id}) ;
     
     # TT-Data erzeugen
     my $ttdata={
-        thisquery  => $thisquery_ref,
         queryid    => $queryid,
 
         dbinfo     => $dbinfotable,
         qopts      => $queryoptions->get_options,
         queryoptions => $queryoptions,
         
-        hitcount   => $hitcount,
-        resultdbs  => $resultdbs_ref,
+#        hitcount   => $hitcount,
+#        resultdbs  => $resultdbs_ref,
         queries    => \@queries,
     };
-    $self->print_page($config->{tt_resultlists_choice_tname},$ttdata);
+    $self->print_page($config->{tt_search_history_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

@@ -162,25 +162,10 @@ $(document).ready(function(){
 <tr><td colspan="2"><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 <tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchform_profile" %]</td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
 </table>
 
 </form>
-
-[% IF queries.size > 0 %]
-<p />
-<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
-<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
-
-
-<table>
-<tr>
-<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
-<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
-</tr>
-</table>
-</form>
-[% END %]
 
 <p />
 
@@ -227,27 +212,10 @@ $(document).ready(function(){
 <tr><td colspan="2"><input id="input_box_serials" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 <tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchform_profile" %]</td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
 </table>
 
 </form>
-
-[% IF queries.size > 0 %]
-<p />
-
-<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
-<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
-
-
-<table>
-<tr>
-<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
-<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
-</tr>
-</table>
-
-</form>
-[% END %]
 
 <p />
 
@@ -294,27 +262,10 @@ $(document).ready(function(){
 <tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 <tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchform_profile" %]</td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
 </table>
 
 </form>
-
-[% IF queries.size > 0 %]
-<p />
-
-<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
-<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
-
-
-<table>
-<tr>
-<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
-<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
-</tr>
-</table>
-
-</form>
-[% END %]
 
 <p />
 
@@ -362,27 +313,10 @@ $(document).ready(function(){
 <tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 <tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchform_profile" %]</td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
 </table>
 
 </form>
-
-[% IF queries.size > 0 %]
-<p />
-
-<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
-<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
-
-
-<table>
-<tr>
-<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
-<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
-</tr>
-</table>
-
-</form>
-[% END %]
 
 <p />
 

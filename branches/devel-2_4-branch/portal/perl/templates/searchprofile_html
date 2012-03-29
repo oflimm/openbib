@@ -49,7 +49,7 @@
 [% IF databases.size > 0 %]
 <ul>
 [% FOREACH database IN databases %]
-<li>[% database %]: [% dbinfo.dbnames.${database}.full %]</li>
+<li><b>[% dbinfo.dbnames.${database}.full %]</b> / [% database %]</li>
 [% END %]
 </ul>
 [% ELSE %]

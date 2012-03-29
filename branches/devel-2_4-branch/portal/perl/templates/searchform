@@ -113,23 +113,6 @@ $(document).ready(function(){
 
 </form>
 
-[% IF queries.size > 0 %]
-<p />
-<form method="get" id="queries" action="[% path_prefix %]/[% config.get('dispatchquery_loc') %]">
-<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
-
-
-<table>
-<tr>
-<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
-<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
-</tr>
-</table>
-
-</form>
-[% END %]
-
-
         </div>
         <div id="ie_clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

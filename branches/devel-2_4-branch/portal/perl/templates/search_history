@@ -1,0 +1,121 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_history
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe des Ergebnisses der zurueckliegenden Recherchen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "searchhistory" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+    <div class="page_title">Ihre bisherigen Recherchen</div>
+
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<p />
+
+[% IF queries.size > 0 %]
+[% count = 1 %]
+<table class="full">
+<tr><th>Nr</th><th>Suche</th><th>Filter</th><th>Suchprofil</th><th>Treffer</th></tr>
+[% FOREACH query IN queries %]	  
+<tr><td>[% count %]</td><td>
+<a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% query.to_cgi_querystring %]"><img style="vertical-align: bottom;" src="[% config.get('search_small_img') %]" alt="Search Icon"/>&nbsp;
+[%- IF query.get_searchquery.freesearch.val -%]
+&nbsp;[% query.get_searchquery.freesearch.val %] 
+[%- END -%]
+[%- IF query.get_searchquery.person.val -%]
+&nbsp;Person: [% query.get_searchquery.person.val %]
+[%- END -%]
+[%- IF query.get_searchquery.title.val -%]
+&nbsp;Titel: [% query.get_searchquery.title.val %]
+[%- END -%]
+[%- IF query.get_searchquery.subject.val -%]
+&nbsp;Schlagwort: [% query.get_searchquery.subject.val %]
+[%- END -%]
+[%- IF query.get_searchquery.corporatebody.val -%]
+&nbsp;K&ouml;perschaft: [% query.get_searchquery.corporatebody.val %]
+[%- END -%]
+[%- IF query.get_searchquery.classification.val -%]
+&nbsp;Systematik: [% query.get_searchquery.classification.val %] 
+[%- END -%]
+[%- IF query.get_searchquery.mark.val -%]
+&nbsp;Signatur: [% query.get_searchquery.mark.val %]
+[%- END -%]
+[%- IF query.get_searchquery.year.val -%]
+&nbsp;Jahr: [% query.get_searchquery.year.val %]
+[%- END -%]
+[%- IF query.get_searchquery.isbn.val -%]
+&nbsp;ISBN: [% query.get_searchquery.isbn.val %]
+[%- END -%]
+[%- IF query.get_searchquery.issn.val -%]
+&nbsp;ISSN: [% query.get_searchquery.issn.val %]
+[%- END -%]
+[%- IF query.get_searchquery.mediatype.val -%]
+&nbsp;Medientyp: [% query.get_searchquery.mediatype.val %]
+[%- END -%]
+[%- IF query.get_searchquery.titlestring.val -%]
+&nbsp;Titelstring: [% query.get_searchquery.titlestring.val %] 
+[%- END -%]
+</a>
+</td>
+<td>
+[% used_filters = [] %]
+[%- FOREACH filter IN query.get_filter  -%]
+[% used_filters.push( filter.val ) %]
+[%- END -%]
+[% used_filters.join(' ; ') %] 
+</td>
+<td>
+<a href="[% path_prefix %]/[% config.get('searchprofile_loc') %]/[% query.get_searchprofile %].html">[% query.get_searchprofile %]</a>
+</td>
+<td>
+[% query.get_hits %]
+</td>
+[%- count = count + 1 -%]
+[% END %]
+</tr>
+</table>
+[% ELSE %]
+Sie haben noch keine Suchanfragen gestellt.
+[% END %]
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -36,19 +36,14 @@ __PACKAGE__->table("queries");
   data_type: 'text'
   is_nullable: 1
 
-=head2 hitrange
-
-  data_type: 'integer'
-  is_nullable: 1
-
 =head2 hits
 
   data_type: 'integer'
   is_nullable: 1
 
-=head2 dbases
+=head2 searchprofileid
 
-  data_type: 'text'
+  data_type: 'bigint'
   is_nullable: 1
 
 =cut
@@ -60,12 +55,10 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
   "query",
   { data_type => "text", is_nullable => 1 },
-  "hitrange",
-  { data_type => "integer", is_nullable => 1 },
   "hits",
   { data_type => "integer", is_nullable => 1 },
-  "dbases",
-  { data_type => "text", is_nullable => 1 },
+  "searchprofileid",
+  { data_type => "bigint", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("queryid");
 
@@ -83,6 +76,22 @@ __PACKAGE__->belongs_to(
   "sid",
   "OpenBib::Database::System::Result::Sessioninfo",
   { id => "sid" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+
+=head2 searchprofileid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Database::System::Result::Searchprofile>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "searchprofileid",
+  "OpenBib::Database::System::Result::Searchprofile",
+  { id => "searchprofileid" },
   { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 

@@ -297,19 +297,19 @@ COLLATE utf8_general_ci
 
 drop table IF EXISTS queries;
 CREATE TABLE queries (
- sid       BIGINT NOT NULL,
+ sid             BIGINT NOT NULL,
 
- queryid   BIGINT AUTO_INCREMENT PRIMARY KEY,
- query     TEXT,
- hitrange  INT,
- hits      INT,
- dbases    TEXT,
+ queryid         BIGINT AUTO_INCREMENT PRIMARY KEY,
+ query           TEXT,
+ hits            INT,
+ searchprofileid BIGINT,
 
  CONSTRAINT `fk_queries_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+ CONSTRAINT `fk_queries_searchprofile` FOREIGN KEY (`searchprofileid`) REFERENCES `searchprofile` (`id`),
 
  INDEX (queryid),
  INDEX (query(255)),
- INDEX (dbases(255))
+ INDEX (searchprofileid)
 )
 ENGINE InnoDB
 DEFAULT CHARACTER SET utf8

@@ -293,6 +293,8 @@ sub set_from_apache_request {
 
     foreach my $filter (@available_filters) {
         next if ($seen_filter{$filter} ++);
+
+        $self->{_have_searchterms} = 1;
         
         my ($field) = $filter =~m/^f\[(.+)\]/;
         my @terms   = ($query->param($filter))? $query->param($filter) : ();
@@ -463,7 +465,7 @@ sub save  {
         my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $sessionID })->single()->id;
 
         # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
-        $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string});
+        $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile });
 
         # $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string");
     }
@@ -549,7 +551,13 @@ sub to_cgi_params {
             } if (!$exclude_filter_ref->{$filter->{val}});
         }
     }
-    
+
+    # Wo wird gesucht? => Searchprofileid
+    push @cgiparams, {
+        param => "profile",
+        val   => $self->get_searchprofile,
+    };
+        
     return @cgiparams;
 }
 
@@ -561,7 +569,7 @@ sub to_cgi_querystring {
     foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
         push @cgiparams, "$arg_ref->{param}=$arg_ref->{val}";
     }   
-        
+
     return join(';',@cgiparams);
 }
 

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Searchprofile.pm
 #
-#  Copyright 2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2011-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -36,7 +36,6 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::Search::Local::Xapian;
 use OpenBib::Record::Title;
 use OpenBib::Template::Utilities;
 

@@ -225,6 +225,14 @@ sub to_cgi_params {
         }
     }
     
+    return @cgiparams;
+}
+
+sub to_cgi_querystring {
+    my ($self,$arg_ref)=@_;
+
+    my @cgiparams = $self->to_cgi_params($arg_ref);
+    
     return join(";",@cgiparams);
 }
 

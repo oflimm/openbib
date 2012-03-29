@@ -530,7 +530,7 @@ sub get_titlecount_per_db {
     return $count_per_db_ref;
 }
 
-sub _by_year {
+sub _by_year_asc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -563,7 +563,7 @@ sub _by_year_desc {
 }
 
 
-sub _by_publisher {
+sub _by_publisher_asc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -583,7 +583,7 @@ sub _by_publisher_desc {
     $line2 cmp $line1;
 }
 
-sub _by_signature {
+sub _by_signature_asc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -605,7 +605,7 @@ sub _by_signature_desc {
     $line2 cmp $line1;
 }
 
-sub _by_person {
+sub _by_person_asc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -625,7 +625,7 @@ sub _by_person_desc {
     $line2 cmp $line1;
 }
 
-sub _by_title {
+sub _by_title_asc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -645,7 +645,7 @@ sub _by_title_desc {
     $line2 cmp $line1;
 }
 
-sub _by_order {
+sub _by_order_asc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -713,7 +713,7 @@ sub _by_order_desc {
     $line2 cmp $line1;
 }
 
-sub _by_popularity {
+sub _by_popularity_asc {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
@@ -739,7 +739,7 @@ sub _by_popularity_desc {
     $line2 <=> $line1;
 }
 
-sub _by_tstamp {
+sub _by_tstamp_asc {
     my $line1=(exists $a->{tstamp} && defined $a->{tstamp})?$a->{tstamp}:"";
     my $line2=(exists $b->{tstamp} && defined $b->{tstamp})?$b->{tstamp}:"";
 

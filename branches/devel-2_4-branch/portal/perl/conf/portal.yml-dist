@@ -1,5 +1,5 @@
 # Versionsnummer
-version: OpenBib v2.4alpha
+version: OpenBib v2.4alpha2
 
 # Unter diesem Namen wird der lokale Server angesprochen
 servername: localhost
@@ -157,7 +157,6 @@ litlist_public_user_loc: litlist/user
 library_loc: library
 user_loc: user
 cloud_loc: cloud
-resultlists_loc: resultlists
 rssfeeds_loc: rssfeeds
 browse_loc: browse
 searchform_loc: searchform
@@ -170,6 +169,7 @@ userprefs_loc: userprefs
 userreviews_loc: review
 index_loc: index
 search_loc: search
+search_history_loc: search/history
 
 dispatch_rules:
   - # serverload_loc:
@@ -1263,13 +1263,13 @@ dispatch_rules:
      runmode: 'show'
      args:
         disable_content_negotiation: 1
-  - # resultlists_loc:
-     module: 'OpenBib::Handler::Apache::ResultLists'
-     rule: '/portal/:view/resultlists'
+  - # searchhistory_loc:
+     module: 'OpenBib::Handler::Apache::Search::History'
+     rule: '/portal/:view/search/history'
      runmode: 'show'
-  - # resultlists_loc:
-     module: 'OpenBib::Handler::Apache::ResultLists'
-     rule: '/portal/:view/resultlists.html'
+  - # search_history_loc:
+     module: 'OpenBib::Handler::Apache::Search::History'
+     rule: '/portal/:view/search/history.html'
      runmode: 'show'
   - # rssfeeds_loc:
      module: 'OpenBib::Handler::Apache::RSSFeeds'
@@ -2009,6 +2009,11 @@ coverscans_full_exturl: http://covers.openlibrary.org/b/isbn/ISBNINHERE-M.jpg
 coverscans_credits_exturl: http://www.openlibrary.org/
 coverscans_creditstext_exturl: 'Cover aus der OpenLibrary'
 
+#coverscans_exturl: http://covers.librarything.com/devkey/API_KEY/small/isbn/ISBNINHERE
+#coverscans_full_exturl: http://covers.librarything.com/devkey/API_KEY/large/isbn/ISBNINHERE
+#coverscans_credits_exturl: http://www.librarything.com/
+#coverscans_creditstext_exturl: 'Cover aus LibraryThing'
+
 # Pfad zur Konfigurationsdatei von Log4Perl
 log4perl_path: /opt/openbib/conf/portal.log4perl
 
@@ -2281,7 +2286,7 @@ default_searchfields:
   'year':
     'active': 1
 
-search_defaultparams: 'page=1;num=20;srt=person;srto=asc;dd=1;jn=1;'
+search_defaultparams: 'page=1;num=20;srt=person;srto=asc;jn=1;'
 
 # Stopwort-Liste
 stopword_filename: /opt/openbib/ft/stopwords.txt
@@ -2330,6 +2335,7 @@ qrcode_img: /images/openbib/qrsymb.png
 rssfeed_img: /images/openbib/rssfeed.png
 save_img: /images/openbib/3d-file-blue-disk35.png
 search_img: /images/openbib/search.png
+search_small_img: /images/openbib/search_small.png
 share_img: /images/openbib/share.png
 top20_img: /images/openbib/top20-12px.png
 thumbnail_img: /images/openbib/thumbnail.png
@@ -2547,11 +2553,6 @@ tt_cloud_year_tname: cloud_year
 tt_cloud_searchterm_tname: cloud_searchterm
 tt_cloud_litlist_tname: cloud_litlist
 tt_cloud_tag_tname: cloud_tag
-tt_resultlists_choice_tname: resultlists_choice
-tt_resultlists_empty_tname: resultlists_empty
-tt_resultlists_showall_sortall_tname: resultlists_showall_sortall
-tt_resultlists_showall_tname: resultlists_showall
-tt_resultlists_showsinglepool_tname: resultlists_showsinglepool
 tt_rssfeeds_tname: rssfeeds
 tt_browse_person_tname: browse_person
 tt_browse_corporatebody_tname: browse_corporatebody
@@ -2583,6 +2584,7 @@ tt_user_profile_edit_tname: user_profile_edit
 
 #tt_userprefs_ask_delete_tname: userprefs_ask_delete
 #tt_userprefs_changefields_tname: userprefs_changefields
+tt_search_history_tname: search_history
 tt_search_title_end_tname: search_title_end
 tt_search_title_combined_tname: search_title_combined
 tt_search_title_item_tname: search_title_item
@@ -2605,6 +2607,9 @@ tool_dir: /opt/openbib/bin
 # Zugriffsinformationen fuer das BibSonomy-API
 bibsonomy_api_key: ''
 bibsonomy_api_user: ''
+
+# Zugriffsinformationen fuer die LibraryThing-APIs
+librarything_api_key: ''
 
 # Zugriffsinformationen fuer ReCaptcha
 recaptcha_user: ''
@@ -2639,7 +2644,7 @@ use_https: 0
 use_admin_https: 0
 
 # Testsystem
-testsystem: 1
+testsystem: 0
 
 # Drill-Down
 drilldown: 1
@@ -2672,12 +2677,11 @@ representation:
 default_query_options:
   num: 20
   page: 1
-  srto: 'asc'
-  srt: 'person'
+#  srto: 'asc'
+  srt: 'relevance_desc'
   srta: 0
   profil: ''
   jn: 1
-  dd: 1
   dop: 'and'
   lt: 'cover'
 

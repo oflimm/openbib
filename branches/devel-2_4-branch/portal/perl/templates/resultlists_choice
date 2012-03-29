@@ -109,7 +109,7 @@
       END ;
    END ;
 %]
-[%- request_base    = "page=1;num=20;srt=relevance;srto=desc;dd=1;" -%]
+[%- request_base    = "page=1;num=20;srt=relevance_desc;" -%]
 
 <tr><td colspan="2"></td></tr>
 

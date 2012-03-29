@@ -15,7 +15,7 @@
 <!-- Beginn Result Item -->
 [%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
     dburl    = dbinfo.get('urls').${database} ;
-    request_base    = [] ;#num=${hitrange};srt=${sorttype};srto=${sortorder};dd=1;" ;
+    request_base    = [] ;#num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
 
     IF searchquery.get_option('num') ;
        request_base.push("num=${searchquery.get_option('num')}");
@@ -25,9 +25,6 @@
     END;
     IF searchquery.get_option('srto') ;
        request_base.push("srto=${searchquery.get_option('srto')}");
-    END;
-    IF searchquery.get_option('dd') ;
-       request_base.push("dd=${searchquery.get_option('dd')}");
     END;
     FOREACH thisdb IN db ;
        request_base.push("db=${thisdb}");
@@ -73,9 +70,9 @@
 [%- END -%]
     </div>
   </div>
-[% IF drilldown %]
+[% IF fullresultcount > 0 %]
   <div class="resultdrilldown">
-[% PROCESS common/subtemplate name="drilldown_categorized" %]
+[% PROCESS common/subtemplate name="search_facet" %]
   </div>
 [% END %]
   <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">

@@ -18,8 +18,8 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% IF queryoptions.get_option('dd') && fullresultcount > 0%]
-[% PROCESS common/subtemplate name="drilldown_categorized" %]
+[% IF fullresultcount > 0%]
+[% PROCESS common/subtemplate name="search_facet" %]
 [% END %]
         </div>
       </div>
@@ -31,14 +31,14 @@
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% search_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance;srto=down;st=[% query.param('st') %];dd=1;dd_categorized=1;autoplus=0;jn=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% search_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance_desc;st=[% query.param('st') %];autoplus=0;jn=0;fs=[% suggestion %]">[% suggestion %]</b>
 [%     END %]
 [% END %]
 
 [% IF fullresultcount > 0 %]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')};srto=${queryoptions.get_option('srto')};jn=${queryoptions.get_option('jn')};dd=1;" ;
+    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};jn=${queryoptions.get_option('jn')};" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= fullresultcount ;

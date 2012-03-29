@@ -184,8 +184,6 @@ sub show_record {
     my $offset         = $query->param('offset')            || 0;
     my $num            = $query->param('num')               || 50;
     my $database       = $query->param('db')                || '';
-    my $sorttype       = $query->param('srt')               || "person";
-    my $sortorder      = $query->param('srto')              || "asc";
     my $titid          = $query->param('titid')             || '';
     my $titdb          = $query->param('titdb')             || '';
     my $titisbn        = $query->param('titisbn')           || '';
@@ -253,10 +251,12 @@ sub show_record {
     $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
 
     $recordlist->load_brief_records;
+
+    $recordlist->sort({order => $queryoptions->get_option('srto'), type => $queryoptions->get_option('srt')});
     
     my $ttdata = {
-        sortorder        => $sortorder,
-        sorttype         => $sorttype,
+        sortorder        => $queryoptions->get_option('srto'),
+        sorttype         => $queryoptions->get_option('srt'),
         hits             => $hits,
         offset           => $offset,
         num              => $num,
@@ -264,6 +264,7 @@ sub show_record {
         recordlist       => $recordlist,
         query            => $query,
         tag              => $tag,
+        tagid            => $tagid,
     };
 
     $self->print_page($config->{'tt_tag_tname'},$ttdata);

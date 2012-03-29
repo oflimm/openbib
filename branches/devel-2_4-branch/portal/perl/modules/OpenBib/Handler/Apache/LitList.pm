@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::LitList.pm
 #
-#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -608,7 +608,7 @@ sub show_record {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt')}),
         properties => $litlist_properties_ref,
     };
         

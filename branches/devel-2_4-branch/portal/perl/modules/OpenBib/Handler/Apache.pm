@@ -67,6 +67,9 @@ sub cgiapp_prerun {
     $logger->debug("Entering cgiapp_prerun");
    
     my $r            = $self->param('r');
+    my $config       = OpenBib::Config->instance;
+    my $view         = $self->param('view') || $config->get('defaultview');
+    my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
 
     if (!$self->param('disable_content_negotiation')){
 
@@ -100,7 +103,14 @@ sub cgiapp_prerun {
             
             my $args="";
             if (!$self->query->param('l')){
-                $self->negotiate_language;
+                if ($session->{lang}){
+                    $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
+                    $self->param('lang',$session->{lang});
+                }
+                else {
+                    $self->negotiate_language;
+                }
+                
                 $args="?l=".$self->param('lang');
                 if ($self->query->args()){
                     $args="$args;".$self->query->args();
@@ -117,10 +127,15 @@ sub cgiapp_prerun {
             #        return;
             return $self->redirect($path.".".$self->param('representation').$args,'303 See Other');
         }
-        
+
         if ($r->method eq "GET" && !$self->query->param('l')){
-            
-            $self->negotiate_language;
+            if ($session->{lang}){
+                $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
+                $self->param('lang',$session->{lang});
+            }
+            else {
+                $self->negotiate_language;
+            }
             
             # Pfade sind immer mit base_loc und view
             my $baseloc    = $config->get('base_loc');
@@ -200,8 +215,16 @@ sub cgiapp_init() {
    if ($self->query->param('l')){
        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$self->query->param('l'));
        $self->param('lang',$self->query->param('l'));
+
+       # Setzen als Cookie
+       $session->set_cookie($r,'lang',$self->param('lang'));
    }
-   
+   # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
+   elsif ($session->{lang}){
+       $logger->debug("Korrektur der ausgehandelten Sprache durch Cookie: ".$session->{lang});
+       $self->param('lang',$session->{lang});
+   }
+
    # Message Katalog laden
    my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
    $msg->fail_with( \&OpenBib::L10N::failure_handler );

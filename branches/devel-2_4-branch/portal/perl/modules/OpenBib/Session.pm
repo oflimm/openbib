@@ -168,14 +168,23 @@ sub _new_instance {
     # Setzen der Defaults
 
     $logger->debug("Entering Session->instance");
+
+    my $lang;
     
     if ($r){
         my $cookiejar = Apache2::Cookie::Jar->new($r);
         $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
+        $lang      = ($cookiejar->cookies("lang"))?$cookiejar->cookies("lang")->value:undef;
         
         if ($sessionID){
 	  $logger->debug("Got SessionID-Cookie: $sessionID");
 	}
+
+        if ($lang){
+            $self->{lang} = $lang;
+            $logger->debug("Got language-Cookie: $lang");
+	}
+
     }
        
     if (!defined $sessionID || !$sessionID){
@@ -333,6 +342,21 @@ sub _init_new_session {
     }
 
     return $sessionID;
+}
+
+sub set_cookie {
+    my ($self,$r,$name,$value)=@_;
+
+    my $cookie = Apache2::Cookie->new($r,
+                                      -name    => $name,
+                                      -value   => $value,
+                                      -expires => '+24h',
+                                      -path    => '/',
+                                  );
+    
+    $r->err_headers_out->set('Set-Cookie', $cookie);
+
+    return;
 }
 
 sub is_valid {

@@ -60,11 +60,6 @@ function update_fak(yourform, checked, fak) {
 <input type="hidden" name="l" value="[% lang %]" />
 
 
-
-<table>
-<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
-</table>
-
 [%# USE dumper;dumper.dump(catdb)%]
 [%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
 <p />
@@ -117,9 +112,9 @@ function update_fak(yourform, checked, fak) {
 [%- END -%]
 </table>
 <p />
-<table>
-<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
-</table>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>
+
 </form>
 <p />
 

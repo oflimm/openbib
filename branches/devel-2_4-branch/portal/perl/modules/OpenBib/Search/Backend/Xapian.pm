@@ -153,7 +153,7 @@ sub initial_search {
     my $sorttype          = $queryoptions->get_option('srt');
     my $sortorder         = $queryoptions->get_option('srto');
     my $defaultop         = $queryoptions->get_option('dop');
-    my $drilldown         = $queryoptions->get_option('dd');
+    my $drilldown         = 1;
 
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');

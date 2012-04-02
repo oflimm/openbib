@@ -247,9 +247,9 @@ sub initial_search {
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
     $qp->set_stopper($stopper);
     
-    my $querystring    = $searchquery->to_xapian_querystring;
+    $self->parse_query($searchquery);
 
-    my $fullquerystring = $querystring->{query}." ".$querystring->{filter};
+    my $fullquerystring = $self->{_query}." ".$self->{_filter};
     
     my ($is_singleterm) = $fullquerystring =~m/^(\w+)$/;
 
@@ -332,8 +332,6 @@ sub initial_search {
     
     $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
 
-    $self->{_querystring} = $querystring->{query};
-    $self->{_filter}      = $querystring->{filter};
     $self->{_enq}         = $enq;
 
     if ($singletermcount > $maxmatch){
@@ -566,6 +564,93 @@ sub have_results {
 sub get_resultcount {
     my $self = shift;
     return $self->{resultcount};
+}
+
+sub parse_query {
+    my ($self,$searchquery)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Aufbau des xapianquerystrings
+    my @xapianquerystrings = ();
+    my $xapianquerystring  = "";
+
+    # Aufbau des xapianfilterstrings
+    my @xapianfilterstrings = ();
+    my $xapianfilterstring  = "";
+
+    my $ops_ref = {
+        'AND'     => 'AND ',
+        'AND NOT' => 'NOT ',
+        'OR'      => 'OR ',
+    };
+
+    foreach my $field (keys %{$config->{searchfield}}){
+        my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
+        my $searchtermop     = (defined $searchquery->get_searchfield($field)->{bool} && defined $ops_ref->{$searchquery->get_searchfield($field)->{bool}})?$ops_ref->{$searchquery->get_searchfield($field)->{bool}}:'';
+        if ($searchtermstring) {
+            # Freie Suche einfach uebernehmen
+            if ($field eq "freesearch" && $searchtermstring) {
+#                 my @searchterms = split('\s+',$searchtermstring);
+                
+#                 # Inhalte von @searchterms mit Suchprefix bestuecken
+#                 foreach my $searchterm (@searchterms){                    
+#                     $searchterm="+".$searchtermstring if ($searchtermstring=~/^\w/);
+#                 }
+#                 $searchtermstring = "(".join(' ',@searchterms).")";
+
+                push @xapianquerystrings, $searchtermstring;
+            }
+            # Titelstring mit _ ersetzten
+            elsif (($field eq "titlestring" || $field eq "mark") && $searchtermstring) {
+                my @chars = split("",$searchtermstring);
+                my $newsearchtermstring = "";
+                foreach my $char (@chars){
+                    if ($char ne "*"){
+                        $char=~s/\W/_/g;
+                    }
+                    $newsearchtermstring.=$char;
+                }
+                    
+                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":$newsearchtermstring";
+                push @xapianquerystrings, $searchtermstring;                
+            }
+            # Sonst Operator und Prefix hinzufuegen
+            elsif ($searchtermstring) {
+                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":($searchtermstring)";
+                push @xapianquerystrings, $searchtermstring;                
+            }
+
+            # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
+            # Nochmal explizites Setzen von +, weil sonst Wildcards innerhalb mehrerer
+            # Suchterme ignoriert werden.
+
+        }
+    }
+
+    # Filter
+    foreach my $filter_ref (@{$searchquery->get_filter}){
+        push @xapianfilterstrings, "$filter_ref->{field}:$filter_ref->{norm}";
+    }
+    
+    $xapianquerystring  = join(" ",@xapianquerystrings);
+    $xapianfilterstring = join(" ",@xapianfilterstrings);
+
+    $xapianquerystring=~s/^AND //;
+    $xapianquerystring=~s/^OR //;
+    $xapianquerystring=~s/^NOT //;
+
+#    $xapianquerystring=~s/^OR /FALSE OR /;
+#    $xapianquerystring=~s/^NOT /TRUE NOT /;
+    
+    $logger->debug("Xapian-Querystring: $xapianquerystring - Xapian-Filterstring: $xapianfilterstring");
+    $self->{_querystring} = $xapianquerystring;
+    $self->{_filter}      = $xapianfilterstring;
+
+    return $self;
 }
 
 sub DESTROY {

@@ -206,9 +206,10 @@ sub initial_search {
         ));;
     }
 
-    my $querystring     = $searchquery->to_elasticsearch_querystring;
+    $self->parse_query($searchquery);
 
-    $logger->debug("Query: ".YAML::Dump($querystring));
+    $logger->debug("Query:  ".YAML::Dump($self->{_query}));
+    $logger->debug("Filter: ".YAML::Dump($self->{_filter}));
 
     my $facets_ref = {};
 
@@ -234,9 +235,9 @@ sub initial_search {
 #         };
 #     }    
 
-    my $query_ref = $querystring->{query};
+    my $query_ref = $self->{_query};
 
-    $query_ref->{'-filter'} = $querystring->{filter};
+    $query_ref->{'-filter'} = $self->{_filter};
 
     my $sort_ref = { };
 
@@ -276,9 +277,6 @@ sub initial_search {
 
     $logger->debug("Results: ".YAML::Dump($results));
     
-    $self->{_querystring} = $querystring->{query};
-    $self->{_filter}      = $querystring->{filter};
-#    $self->{_enq}         = $enq;
 
     $self->{resultcount} = $results->{hits}->{total};
 
@@ -508,6 +506,135 @@ sub have_results {
 sub get_resultcount {
     my $self = shift;
     return $self->{resultcount};
+}
+
+sub parse_query {
+    my ($self,$searchquery)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Aufbau des elasticsearchquerystrings
+    my @elasticsearchquerystrings = ();
+    my $elasticsearchquerystring  = "";
+
+    # Aufbau des elasticsearchfilterstrings
+    my @elasticsearchfilterstrings = ();
+    my $elasticsearchfilterstring  = "";
+
+    my $ops_ref = {
+        'AND'     => 'AND ',
+        'AND NOT' => 'NOT ',
+        'OR'      => 'OR ',
+    };
+
+    my $query_ref = {};
+    
+    foreach my $field (keys %{$config->{searchfield}}){
+        my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
+        my $searchtermop     = (defined $searchquery->get_searchfield($field)->{bool} && defined $ops_ref->{$searchquery->get_searchfield($field)->{bool}})?$ops_ref->{$searchquery->get_searchfield($field)->{bool}}:'';
+        if ($searchtermstring) {
+            # Freie Suche einfach uebernehmen
+            if ($field eq "freesearch" && $searchtermstring) {
+                my @searchterms = split('\s+',$searchtermstring);
+                
+#                  if (@searchterms > 1){
+#                      push @{$query_ref->{freesearch}},'-and';
+#                      push @{$query_ref->{freesearch}},@searchterms;
+#                  }
+#                  else {
+#                      $query_ref->{freesearch} = $searchtermstring;
+                #                  }
+                
+#                 foreach my $term (@searchterms){
+#                     push @elasticsearchquerystrings, $config->{searchfield}{$field}{prefix}.":$term";
+#                 }
+
+                $query_ref->{freesearch} = $searchtermstring;
+            }
+            # Titelstring mit _ ersetzten
+            elsif (($field eq "titlestring" || $field eq "mark") && $searchtermstring) {
+                my @chars = split("",$searchtermstring);
+                my $newsearchtermstring = "";
+                foreach my $char (@chars){
+                    if ($char ne "*"){
+                        $char=~s/\W/_/g;
+                    }
+                    $newsearchtermstring.=$char;
+                }
+
+                $query_ref->{titlestring} = $newsearchtermstring;
+            }
+            # Sonst Operator und Prefix hinzufuegen
+            elsif ($searchtermstring) {
+                $query_ref->{$field} = $searchtermstring;
+            }
+
+            # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
+            # Nochmal explizites Setzen von +, weil sonst Wildcards innerhalb mehrerer
+            # Suchterme ignoriert werden.
+
+        }
+    }
+
+
+     my $rev_searchfield_ref = {
+         fper => "facet_person",
+         fcln => "facet_classification",
+         fsubj => "facet_subject",
+         ftyp => "facet_mediatype",
+         fyear => "facet_year",
+         flang => "facet_language",
+         fdb => "facet_database",
+         ftag => "facet_tag",
+         flitlist => "facet_litlist",
+     };
+
+#    my $rev_searchfield_ref = {};
+#    
+#    foreach my $searchfield (keys %{$config->{searchfield}}){
+#        $rev_searchfield_ref->{$config->{searchfield}{$searchfield}{prefix}} = $searchfield;
+#    }
+    
+    # Filter
+
+    my $filter_ref;
+
+    $logger->debug("All filters: ".YAML::Dump($searchquery->get_filter));
+    if (@{$searchquery->get_filter}){
+        $filter_ref = { };
+        foreach my $thisfilter_ref (@{$searchquery->get_filter}){
+            my $field = $rev_searchfield_ref->{$thisfilter_ref->{field}};
+            my $term  = $thisfilter_ref->{term};
+#            $term=~s/_/ /g;
+            
+            $logger->debug("Facet: $field / Term: $term / Ref: ".ref(${$filter_ref}{$field}));
+
+            if (exists $filter_ref->{$field}){
+                if (! ref($filter_ref->{$field})){
+                    my $oldterm = $filter_ref->{$field};
+                    $logger->debug("String -> Array: $oldterm");
+                    $filter_ref->{$field}= [ '-and' ];
+                    push @{$filter_ref->{$field}}, $oldterm;
+                }
+                $logger->debug("Add Array: $term");
+                push @{$filter_ref->{$field}}, $term; #'"'.$term.'"';                    
+            }
+            else {
+                $filter_ref->{$field} = $term; #'"'.$term.'"';
+            }
+        }
+    }
+
+    $logger->debug("Query: ".YAML::Dump($query_ref));
+    $logger->debug("Filter: ".YAML::Dump($filter_ref));
+
+    $self->{_query} = $query_ref;
+    $self->{_filter} = $filter_ref;
+
+    return $self;
 }
 
 sub DESTROY {

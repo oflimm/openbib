@@ -37,6 +37,7 @@ use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
+use HTML::Entities;
 use JSON::XS qw(encode_json decode_json);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
@@ -538,7 +539,7 @@ sub to_cgi_params {
             };
             push @cgiparams, {
                 param  => $searchparam,
-                val    => $self->{_searchquery}->{$param}{val}
+                val    => $self->_html_escape($self->{_searchquery}->{$param}{val}),
             };
         }
     }
@@ -547,7 +548,7 @@ sub to_cgi_params {
         foreach my $filter (@{$self->{_filter}}){
             push @cgiparams, {
                 param => "f\[$filter->{field}\]",
-                val   => $filter->{term}
+                val   => $self->_html_escape($filter->{term}),
             } if (!$exclude_filter_ref->{$filter->{val}});
         }
     }
@@ -1080,6 +1081,11 @@ sub from_json {
     return $self;
 }
 
+sub _html_escape {
+    my ($self,$content)=@_;
+
+    return encode_entities($content);
+}
 
 sub _get_searchprofile {
     my $self = shift;

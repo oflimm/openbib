@@ -166,12 +166,14 @@ sub initial_search {
     }
 
     my $dbh;
-    
-    if ($searchquery->get_searchprofile){
-        my $profileindex_path = $config->{xapian_index_base_path}."/joined/".$searchquery->get_searchprofile;
+
+    my $searchprofile = $searchquery->get_searchprofile;
+
+    if ($searchprofile){
+        my $profileindex_path = $config->{xapian_index_base_path}."/profile/".$searchprofile;
         
         if (-d $profileindex_path){
-            $logger->debug("Adding Xapian DB-Object for profile $searchquery->get_searchprofile");
+            $logger->debug("Adding Xapian DB-Object for profile $searchprofile");
             
             eval {
                 $dbh = new Search::Xapian::Database ( $profileindex_path ) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
@@ -183,7 +185,7 @@ sub initial_search {
             
         }        
         else {
-            foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
+            foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
                 $logger->debug("Adding Xapian DB-Object for database $database");
                 
                 if (!defined $dbh){

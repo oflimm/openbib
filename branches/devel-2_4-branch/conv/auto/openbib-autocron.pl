@@ -136,6 +136,10 @@ autoconvert({ sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal
 
 ##############################
 
+$logger->info("### Generierung der Suchprofil-Indizes");
+
+system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
+
 $logger->info("###### Ende der automatischen Konvertierung");
 
 sub autoconvert {

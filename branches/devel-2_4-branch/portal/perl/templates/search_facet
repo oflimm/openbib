@@ -9,6 +9,7 @@
      exclude_args.push("b${thisprefix}");
      exclude_args.push("f\[${thisprefix}\]");
    END;
+   exclude_args.push("profile");
 
    drilldown_query_args_base    = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = exclude_args }) ;
 
@@ -22,6 +23,7 @@
 %]
 
 [% cgiapp.to_cgi_hidden_input({ change = {'page' = 1 }, exclude = exclude_args }) %]
+
 [% searchquery.to_cgi_hidden_input({ exclude_filter = [ 'all' ] }) %]
 
 <script type="text/javascript">

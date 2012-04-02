@@ -552,9 +552,9 @@ while (my $line=<IN>){
         $thisitem_ref          = {};
 
         $normdata_ref             = {};
-        $normdata_ref->{id}       = $id;
-        $normdata_ref->{dbstring} = $database;
-        $normdata_ref->{facet_database} = $database;
+        push @{$normdata_ref->{id}}, $id;
+        push @{$normdata_ref->{dbstring}}, $database;
+        push @{$normdata_ref->{facet_database}}, $database;
 
         $listitem_ref->{id}       = $id;
         $listitem_ref->{database} = $database;
@@ -564,7 +564,7 @@ while (my $line=<IN>){
                 $listitem_ref->{popularity} = $listitemdata_popularity{$id};
             }
 
-            $normdata_ref->{popularity} = $listitemdata_popularity{$id};
+            push @{$normdata_ref->{popularity}}, $listitemdata_popularity{$id};
         }
 
         if (exists $listitemdata_tags{$id}){

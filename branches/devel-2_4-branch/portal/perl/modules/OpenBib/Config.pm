@@ -2380,6 +2380,23 @@ sub update_searchprofile {
     return;
 }
 
+sub get_searchprofiles_with_own_index {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @searchprofiles;
+    
+    my $searchprofiles = $self->{schema}->resultset('Searchprofile')->search_rs({ own_index => 1 });
+
+    foreach my $thissearchprofile ($searchprofiles->all){
+        push @searchprofiles, $thissearchprofile->id;
+    }
+        
+    return @searchprofiles;
+}
+
 1;
 __END__
 

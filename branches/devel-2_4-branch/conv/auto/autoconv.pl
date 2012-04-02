@@ -328,7 +328,7 @@ my $atime = new Benchmark;
     my $atime = new Benchmark;
 
     $logger->info("### $database: Importing data into elasticsearch");   
-    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database");
+    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database > /dev/null 2>&1");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

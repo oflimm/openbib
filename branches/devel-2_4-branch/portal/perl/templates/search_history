@@ -46,6 +46,21 @@
 <p />
 
 [% IF queries.size > 0 %]
+[%
+    filter_prefix_map = {
+          ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
+          ${config.get('searchfield').personstring.prefix} = msg.maketext("Person")
+          ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
+          ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
+          ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
+          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
+          ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
+          ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
+          ${config.get('searchfield').tagstring.prefix} = msg.maketext("Tag")
+          ${config.get('searchfield').litliststring.prefix} = msg.maketext("Literaturliste")
+};
+
+%]
 [% count = 1 %]
 <table class="full">
 <tr><th>Nr</th><th>Suche</th><th>Filter</th><th>Suchprofil</th><th>Treffer</th></tr>
@@ -93,7 +108,10 @@
 <td>
 [% used_filters = [] %]
 [%- FOREACH filter IN query.get_filter  -%]
-[% used_filters.push( filter.val ) %]
+[%-
+    filtername = filter_prefix_map.${filter.field};
+-%]
+[% used_filters.push( "<b>${filtername}</b>:${filter.term}" ) %]
 [%- END -%]
 [% used_filters.join(' ; ') %] 
 </td>

@@ -46,8 +46,21 @@
 <p />
 
 [% IF queries.size > 0 %]
-[%
-    filter_prefix_map = {
+
+[%    field_prefix_map = {
+          ${config.get('searchfield').freesearch.prefix} = msg.maketext("Freie Suche")
+          ${config.get('searchfield').title.prefix} = msg.maketext("Titel")
+          ${config.get('searchfield').database.prefix} = msg.maketext("Katalog")
+          ${config.get('searchfield').content.prefix} = msg.maketext("Inhalt")
+          ${config.get('searchfield').person.prefix} = msg.maketext("Person")
+          ${config.get('searchfield').corporatebody.prefix} = msg.maketext("K&ouml;perschaft")
+          ${config.get('searchfield').subject.prefix} = msg.maketext("Thema")
+          ${config.get('searchfield').classification.prefix} = msg.maketext("Systematik")
+          ${config.get('searchfield').mediatype.prefix} = msg.maketext("Medientyp")
+          ${config.get('searchfield').language.prefix} = msg.maketext("Sprache")
+          ${config.get('searchfield').year.prefix} = msg.maketext("Jahr")
+          ${config.get('searchfield').tag.prefix} = msg.maketext("Tag")
+          ${config.get('searchfield').litlist.prefix} = msg.maketext("Literaturliste")
           ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
           ${config.get('searchfield').personstring.prefix} = msg.maketext("Person")
           ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
@@ -67,49 +80,25 @@
 [% FOREACH query IN queries %]	  
 <tr><td>[% count %]</td><td>
 <a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% query.to_cgi_querystring %]"><img style="vertical-align: bottom;" src="[% config.get('search_small_img') %]" alt="Search Icon"/>&nbsp;
-[%- IF query.get_searchquery.freesearch.val -%]
-&nbsp;[% query.get_searchquery.freesearch.val %] 
+[% used_fields = [] %]
+[%- FOREACH field IN query.get_searchquery.keys  -%]
+[%-
+    fieldprefix  = config.get('searchfield').${field}.prefix
+    fieldname    = field_prefix_map.${fieldprefix};
+    fieldcontent = query.get_searchquery.${field}.val;
+    NEXT IF NOT fieldcontent ;
+-%]
+[% used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" ) %]
 [%- END -%]
-[%- IF query.get_searchquery.person.val -%]
-&nbsp;Person: [% query.get_searchquery.person.val %]
-[%- END -%]
-[%- IF query.get_searchquery.title.val -%]
-&nbsp;Titel: [% query.get_searchquery.title.val %]
-[%- END -%]
-[%- IF query.get_searchquery.subject.val -%]
-&nbsp;Schlagwort: [% query.get_searchquery.subject.val %]
-[%- END -%]
-[%- IF query.get_searchquery.corporatebody.val -%]
-&nbsp;K&ouml;perschaft: [% query.get_searchquery.corporatebody.val %]
-[%- END -%]
-[%- IF query.get_searchquery.classification.val -%]
-&nbsp;Systematik: [% query.get_searchquery.classification.val %] 
-[%- END -%]
-[%- IF query.get_searchquery.mark.val -%]
-&nbsp;Signatur: [% query.get_searchquery.mark.val %]
-[%- END -%]
-[%- IF query.get_searchquery.year.val -%]
-&nbsp;Jahr: [% query.get_searchquery.year.val %]
-[%- END -%]
-[%- IF query.get_searchquery.isbn.val -%]
-&nbsp;ISBN: [% query.get_searchquery.isbn.val %]
-[%- END -%]
-[%- IF query.get_searchquery.issn.val -%]
-&nbsp;ISSN: [% query.get_searchquery.issn.val %]
-[%- END -%]
-[%- IF query.get_searchquery.mediatype.val -%]
-&nbsp;Medientyp: [% query.get_searchquery.mediatype.val %]
-[%- END -%]
-[%- IF query.get_searchquery.titlestring.val -%]
-&nbsp;Titelstring: [% query.get_searchquery.titlestring.val %] 
-[%- END -%]
+[% used_fields.join(' ; ') %] 
+[%# USE dumper;dumper.dump(query.get_searchquery);%]
 </a>
 </td>
 <td>
 [% used_filters = [] %]
 [%- FOREACH filter IN query.get_filter  -%]
 [%-
-    filtername = filter_prefix_map.${filter.field};
+    filtername = field_prefix_map.${filter.field};
 -%]
 [% used_filters.push( "<b>${filtername}</b>:${filter.term}" ) %]
 [%- END -%]

@@ -76,9 +76,9 @@
 %]
 [% count = 1 %]
 <table class="full">
-<tr><th>Nr</th><th>Suche</th><th>Filter</th><th>Suchprofil</th><th>Treffer</th></tr>
+<tr><th>Wann</th><th>Suche</th><th>Filter</th><th>Suchprofil</th><th>Treffer</th></tr>
 [% FOREACH query IN queries %]	  
-<tr><td>[% count %]</td><td>
+<tr><td>[% query.get_tstamp %]</td><td>
 <a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% query.to_cgi_querystring %]"><img style="vertical-align: bottom;" src="[% config.get('search_small_img') %]" alt="Search Icon"/>&nbsp;
 [% used_fields = [] %]
 [%- FOREACH field IN query.get_searchquery.keys  -%]

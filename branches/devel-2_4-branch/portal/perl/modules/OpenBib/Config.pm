@@ -2332,6 +2332,17 @@ sub get_databases_of_searchprofile {
     return @databases;
 }
 
+sub get_searchprofile_of_database {
+    my ($self,$database)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting searchprofile of databases $database");
+    
+    return $self->get_searchprofile_or_create([ $database ]);
+}
+
 sub get_searchprofile_of_view {
     my ($self,$viewname)=@_;
 

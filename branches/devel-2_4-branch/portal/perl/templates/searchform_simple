@@ -145,14 +145,10 @@ $(document).ready(function(){
 <input type="hidden" name="num"        value="20" />
 <input type="hidden" name="page"       value="1" />
 
-<input type="hidden" name="srt"        value="relevance" />
-<input type="hidden" name="srto"       value="desc" />
+<input type="hidden" name="srt"        value="relevance_desc" />
 <input type="hidden" name="jn"         value="1" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="dd"         value="1" />
-[% END %]
 
 [%# sysprofile%]
 [%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
@@ -194,19 +190,12 @@ $(document).ready(function(){
 <input type="hidden" name="num"  value="20" />
 <input type="hidden" name="page"      value="1" />
 
-<input type="hidden" name="srt"  value="relevance" />
-<input type="hidden" name="srto" value="desc" />
-<input type="hidden" name="jn" value="1" />
-<input type="hidden" name="st"        value="1" />
-<input type="hidden" name="lt"         value="[% qopts.lt %]" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="dd"      value="1" />
-[% END %]
+<input type="hidden" name="srt"  value="relevance_desc" />
+<input type="hidden" name="jn"   value="1" />
+<input type="hidden" name="st"   value="1" />
+<input type="hidden" name="lt"   value="[% qopts.lt %]" />
 
-
-
-<input type="hidden" name="ftyp"      value="Zeitschrift_Serie" />
-<input type="hidden" name="bftyp"     value="AND" />
+<input type="hidden" name="f[typ]"      value="Zeitschrift/Serie" />
 
 <table>
 <tr><td colspan="2"><input id="input_box_serials" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
@@ -242,21 +231,15 @@ $(document).ready(function(){
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
 <input type="hidden" name="num"  value="20" />
-<input type="hidden" name="page"      value="1" />
+<input type="hidden" name="page" value="1" />
 
-<input type="hidden" name="srt"  value="relevance" />
-<input type="hidden" name="srto" value="desc" />
-<input type="hidden" name="jn" value="1" />
-<input type="hidden" name="st"        value="1" />
-<input type="hidden" name="lt"         value="[% qopts.lt %]" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="dd"      value="1" />
-[% END %]
+<input type="hidden" name="srt"  value="relevance_desc" />
+<input type="hidden" name="jn"   value="1" />
+<input type="hidden" name="st"   value="1" />
+<input type="hidden" name="lt"   value="[% qopts.lt %]" />
 
 
-
-<input type="hidden" name="ftyp"      value="Aufsatz" />
-<input type="hidden" name="bftyp"     value="AND" />
+<input type="hidden" name="f[typ]"    value="Aufsatz" />
 
 <table>
 <tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
@@ -293,21 +276,15 @@ $(document).ready(function(){
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
 <input type="hidden" name="num"  value="20" />
-<input type="hidden" name="page"      value="1" />
+<input type="hidden" name="page" value="1" />
 
-<input type="hidden" name="srt"  value="relevance" />
+<input type="hidden" name="srt"  value="relevance_desc" />
 <input type="hidden" name="srto" value="desc" />
-<input type="hidden" name="jn" value="1" />
-<input type="hidden" name="st"        value="1" />
-<input type="hidden" name="lt"         value="[% qopts.lt %]" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="dd"      value="1" />
-[% END %]
+<input type="hidden" name="jn"   value="1" />
+<input type="hidden" name="st"   value="1" />
+<input type="hidden" name="lt"   value="[% qopts.lt %]" />
 
-
-
-<input type="hidden" name="ftyp"      value="E-Medien mit Online-Zugriff" />
-<input type="hidden" name="bftyp"  value="AND" />
+<input type="hidden" name="f[typ]" value="Digital" />
 
 <table>
 <tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>

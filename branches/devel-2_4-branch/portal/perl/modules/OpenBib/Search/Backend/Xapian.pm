@@ -249,7 +249,7 @@ sub initial_search {
     
     $self->parse_query($searchquery);
 
-    my $fullquerystring = $self->{_query}." ".$self->{_filter};
+    my $fullquerystring = $self->{_querystring}." ".$self->{_filter};
     
     my ($is_singleterm) = $fullquerystring =~m/^(\w+)$/;
 

@@ -397,21 +397,23 @@ sub load  {
             'me.queryid'    => $queryid,
         },
         {
-            select => ['me.query'],
-            as     => ['thisquery'],
+            select => ['me.tstamp','me.query'],
+            as     => ['thiststamp','thisquery'],
             join => ['sid'],
         }
     )->single;
 
-    my $thisquery;
+    my ($thisquery,$thiststamp);
     
     if ($query){
-        $thisquery=$query->get_column('thisquery');
+        $thisquery  = $query->get_column('thisquery');
+        $thiststamp = $query->get_column('thiststamp');
     }
     
     $logger->debug("$sessionID/$queryid -> $thisquery");
     $self->from_json("$thisquery");
     $self->set_id($queryid);
+    $self->set_tstamp($thiststamp);
     
     return $self;
 }
@@ -446,7 +448,7 @@ sub save  {
         $query_obj_string = unpack "H*", Storable::freeze($self);
     }
 
-    # $logger->debug("Query Object: ".$query_obj_string);
+    $logger->debug("Query Object: ".$query_obj_string);
 
     # DBI: "select queryid from queries where query = ? and sessionid = ?"
     my $searchquery_exists = $self->{schema}->resultset('Query')->search_rs(
@@ -627,6 +629,18 @@ sub set_id {
     my ($self,$id)=@_;
 
     $self->{_id}=$id;
+}
+
+sub set_tstamp {
+    my ($self,$tstamp)=@_;
+
+    $self->{_tstamp}=$tstamp;
+}
+
+sub get_tstamp {
+    my ($self)=@_;
+
+    return $self->{_tstamp};
 }
 
 sub get_searchprofile {

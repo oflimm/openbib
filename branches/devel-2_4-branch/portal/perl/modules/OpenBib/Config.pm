@@ -412,7 +412,7 @@ sub get_valid_rsscache_entry {
     # Bestimmung, ob ein valider Cacheeintrag existiert
 
     # DBI ehemals: "select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?"
-    my $rss_content = $self->{schema}->resultset('Rssinfo')->search(
+    my $rss_content = $self->{schema}->resultset('Rssinfo')->search_rs(
         {
             'dbid.dbname'  => $database,
             'type'         => $type,
@@ -420,12 +420,17 @@ sub get_valid_rsscache_entry {
             'cache_tstamp' => { '>' => $expiretimedate },
         },
         {
-            select => 'cache_content',
+            select => ['cache_content'],
+            as     => ['thiscache_content'],
             join   => 'dbid',
         }
-    )->get_column('cache_content');
-    
-    return $rss_content;
+    )->single;
+
+    my $rss;
+    if ($rss_content){
+        $rss = $rss_content->get_column('thiscache_content');
+    }
+    return $rss;
 }
 
 sub get_dbs_of_view {

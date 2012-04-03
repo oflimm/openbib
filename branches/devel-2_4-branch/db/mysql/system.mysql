@@ -299,6 +299,8 @@ drop table IF EXISTS queries;
 CREATE TABLE queries (
  sid             BIGINT NOT NULL,
 
+ tstamp          TIMESTAMP,
+
  queryid         BIGINT AUTO_INCREMENT PRIMARY KEY,
  query           TEXT,
  hits            INT,

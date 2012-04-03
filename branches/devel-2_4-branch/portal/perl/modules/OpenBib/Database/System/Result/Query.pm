@@ -25,6 +25,12 @@ __PACKAGE__->table("queries");
   is_foreign_key: 1
   is_nullable: 0
 
+=head2 tstamp
+
+  data_type: 'timestamp'
+  default_value: current_timestamp
+  is_nullable: 0
+
 =head2 queryid
 
   data_type: 'bigint'
@@ -51,6 +57,12 @@ __PACKAGE__->table("queries");
 __PACKAGE__->add_columns(
   "sid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
+  "cache_tstamp",
+  {
+    data_type     => "timestamp",
+    default_value => \"current_timestamp",
+    is_nullable   => 0,
+  },
   "queryid",
   { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
   "query",

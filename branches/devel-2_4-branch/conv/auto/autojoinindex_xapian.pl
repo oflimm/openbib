@@ -87,6 +87,12 @@ else {
     push @searchprofiles, $config->get_searchprofiles_with_own_index;
 }
 
+if (! -d "$xapian_base/profile"){
+    $logger->info("Profil-Verzeichnis wurde angelegt");
+    
+    mkdir "$xapian_base/profile";
+}
+
 foreach my $searchprofile (@searchprofiles){
     $logger->fatal("Bearbeite Suchprofil $searchprofile");
 

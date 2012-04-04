@@ -10,7 +10,7 @@ body {
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 0px; */
 
-  background-color: #FFFDF3;
+  background-color: #FFFFFF;
 
   font-family: trebuchet ms,verdana,tahoma,arial,sans-serif;  
   font-size: 84%;
@@ -23,7 +23,7 @@ body {
   margin: 0px; 
   padding: 0px; 
 
-  background: #FFFDF3 url("/images/openbib/bgsiegel.gif") top right no-repeat; 
+  background: #FFFFFF url("/images/openbib/bgsiegel.gif") top right no-repeat; 
 
 }
 
@@ -285,7 +285,7 @@ a:active.invisible {
 
 
 .tabbingmenu {
-  color: #FFFDF3;
+  color: #FFFFFF;
   border-bottom: 1px solid #919191;
   margin: 12px 0px 0px 0px;
   padding: 0px;
@@ -301,7 +301,7 @@ a:active.invisible {
 
 .tabbingmenu a, a.active {
   color: #000000;
-  background: #FFFDF3; /* Hintergrundfarbe Tab 'weiss'*/
+  background: #FFFFFF; /* Hintergrundfarbe Tab 'weiss'*/
   font: bold 1em "Trebuchet MS", Arial, sans-serif;
   border: 1px solid #919191;
   padding: 2px 5px 0px 5px;
@@ -314,13 +314,13 @@ a:active.invisible {
 }
 
 .tabbingmenu a.active {
-  background: #FFFDF3;
-  border-bottom: 3px solid #FFFDF3; 
+  background: #FFFFFF;
+  border-bottom: 3px solid #FFFFFF; 
 }
 
 .tabbingmenu a:visited {
   color: #000000; 
-  background: #FFFDF3; 
+  background: #FFFFFF; 
 }
 
 #langchoice {  
@@ -358,7 +358,7 @@ h2[class=nojs_show] {
 .content {
   width: 99%; 
   overflow: hidden; 
-  background-color: #FFFDF3;
+  background-color: #FFFFFF;
 /*  position: static; */
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 5px;
@@ -530,7 +530,7 @@ dt.review {
 
 #header #header_logo {
   float: left;
-  width: 407px;
+  width: 462px;
 }
 
 #header #header_right {
@@ -550,10 +550,10 @@ dt.review {
 
 #header_logo_image {
   background: url(/images/openbib/views/einbaende/logo.png) center no-repeat;
-  width: 407px;
-  height: 110px;
+  width: 510px;
+  height: 130px;
   position: absolute;
-  top: 6px;
+  top: 0px;
   left: 10px;
 }
 
@@ -945,7 +945,7 @@ dt.review {
 }
 
 .boxedclear {
-  background-color: #FFFDF3;
+  background-color: #FFFFFF;
   padding: 5px;
   border: 1px solid #919191;
 

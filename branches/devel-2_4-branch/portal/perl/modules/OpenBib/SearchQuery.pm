@@ -869,13 +869,22 @@ sub to_json {
 sub from_json {
     my ($self,$json) = @_;
 
-    return unless ($json);
-    
-    my $tmp_ref = decode_json $json;
-    foreach my $property (keys %{$tmp_ref}){
-        $self->{$property} = $tmp_ref->{$property};
-    }
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
+    return unless ($json);
+
+    eval {
+        my $tmp_ref = decode_json $json;
+        foreach my $property (keys %{$tmp_ref}){
+            $self->{$property} = $tmp_ref->{$property};
+        }
+    };
+
+    if ($@){
+        $logger->error("JSON decoding: ".$@);
+    }
+    
     return $self;
 }
 

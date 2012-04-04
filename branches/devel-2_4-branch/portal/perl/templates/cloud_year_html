@@ -71,6 +71,7 @@
 
 [%- IF resultlist.size > 5 -%]
 [%- searchprefix  = config.get('searchfield').yearstring.prefix -%]
+[%- default_query_options = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%]
 
 <ol class="cloud">
 [%- FOREACH thisitem IN resultlist -%]
@@ -79,12 +80,11 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];fs=[% searchprefix %]:|[% item %]|;db=[% database %]" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% IF default_query_options %][% default_query_options %];[% END %]profile=[% config.get_searchprofile_of_database(database) %];f[[% searchprefix %]]=[% item | uri %]" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]
-[% msg.maketext("Leider k&ouml;nnen wir Ihnen für diesen Katalog keine
-Wolke der Erscheinungsjahre anbieten.") %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der Erscheinungsjahre anbieten.") %]
 [% END %]
 </td></tr>
 </table>

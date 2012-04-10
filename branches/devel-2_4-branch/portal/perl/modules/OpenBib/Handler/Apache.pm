@@ -72,7 +72,6 @@ sub cgiapp_prerun {
     my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
 
     if (!$self->param('disable_content_negotiation')){
-
         my $config       = OpenBib::Config->instance;
         my $view         = $self->param('view') || $config->get('defaultview');
         my $servername   = $r->get_server_name;
@@ -98,7 +97,19 @@ sub cgiapp_prerun {
             # Pfade sind immer mit base_loc und view
             my $baseloc    = $config->get('base_loc');
             $path =~s{^$baseloc/[^/]+}{$path_prefix};
-            
+
+            # Personalisierte URIs
+            if ($self->param('personalized_loc')){
+                my $user = OpenBib::User->instance({sessionID => $session->{ID}});
+                if ($user->{ID}){
+                    my $loc = $self->param('personalized_loc');
+                    $logger->debug("Replacing $path_prefix/$loc with $path_prefix/user/$user->{ID}/$loc");
+                    my $old_loc = "$path_prefix/$loc";
+                    my $new_loc = "$path_prefix/user/$user->{ID}/$loc";
+                    $path=~s{$old_loc}{$new_loc};
+                }
+            }
+
             $logger->debug("Corrected External Path: $path");
             
             my $args="";
@@ -128,32 +139,52 @@ sub cgiapp_prerun {
             return $self->redirect($path.".".$self->param('representation').$args,'303 See Other');
         }
 
-        if ($r->method eq "GET" && !$self->query->param('l')){
-            if ($session->{lang}){
-                $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
-                $self->param('lang',$session->{lang});
-            }
-            else {
-                $self->negotiate_language;
-            }
-            
-            # Pfade sind immer mit base_loc und view
-            my $baseloc    = $config->get('base_loc');
-            $path =~s{^$baseloc/[^/]+}{$path_prefix};
-            
-            $logger->debug("Corrected External Path: $path");
-            
-            my $args = "?l=".$self->param('lang');
-            
-            $args=$args.";".$self->query->args() if ($self->query->args());
-            
-            #        $self->query->method('GET');
-            #        $self->query->content_type($self->param('content_type'));
-            #        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
-            #        $self->query->status(Apache2::Const::REDIRECT);
-            #        return;
-            return $self->redirect($path.$args,'303 See Other');
+    }
+
+    if ($r->method eq "GET" && !$self->query->param('l')){
+        my $config       = OpenBib::Config->instance;
+        my $view         = $self->param('view') || $config->get('defaultview');
+        my $servername   = $r->get_server_name;
+        
+        my $path_prefix          = $config->get('base_loc');
+        my $complete_path_prefix = "$path_prefix/$view";
+        
+        if (! $config->strip_view_from_uri($view)){
+            $path_prefix = $complete_path_prefix;
         }
+        
+        # Letztes Pfad-Element bestimmen
+        my $uri  = $r->parsed_uri;
+        my $path = $uri->path;
+        
+        my ($last_uri_element) = $path =~m/([^\/]+)$/;
+        
+        $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element ");
+
+        if ($session->{lang}){
+            $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
+            $self->param('lang',$session->{lang});
+        }
+        else {
+            $self->negotiate_language;
+        }
+        
+        # Pfade sind immer mit base_loc und view
+        my $baseloc    = $config->get('base_loc');
+        $path =~s{^$baseloc/[^/]+}{$path_prefix};
+        
+        $logger->debug("Corrected External Path: $path");
+        
+        my $args = "?l=".$self->param('lang');
+        
+        $args=$args.";".$self->query->args() if ($self->query->args());
+        
+        #        $self->query->method('GET');
+        #        $self->query->content_type($self->param('content_type'));
+        #        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
+        #        $self->query->status(Apache2::Const::REDIRECT);
+        #        return;
+        return $self->redirect($path.$args,'303 See Other');
     }
     
     return;
@@ -316,7 +347,7 @@ sub negotiate_type {
         if (any { $_ eq $information_type } @accepted_types) {
             $logger->debug("Negotiated Type: $information_type - Suffix: ".$config->{content_type_map}->{$information_type});
             $self->param('content_type',$information_type);
-            $self->param('represenatione',$config->{content_type_map}->{$information_type});
+            $self->param('representation',$config->{content_type_map}->{$information_type});
             last;
         }
     }
@@ -825,31 +856,33 @@ sub to_cgi_params {
     $logger->debug("Args".YAML::Dump($arg_ref));
 
     my @cgiparams = ();
-    
-    foreach my $param (keys %{$self->query->param}){
-        next unless ($self->query->param($param));
-        $logger->debug("Processing $param");
-        if (exists $arg_ref->{change}->{$param}){
-            push @cgiparams, {
-                param => $param,
-                val   => $arg_ref->{change}->{$param},
-            };
-        }
-        elsif (! exists $exclude_ref->{$param}){
-            my @values = $self->query->param($param);
-            if (@values){
-                foreach my $value (@values){
-                    push @cgiparams, {
-                        param => $param,
-                        val   => $value
-                    };
-                }
-            }
-            else {
+
+    if ($self->query->param){
+        foreach my $param (keys %{$self->query->param}){
+            next unless ($self->query->param($param));
+            $logger->debug("Processing $param");
+            if (exists $arg_ref->{change}->{$param}){
                 push @cgiparams, {
                     param => $param,
-                    val => $self->query->param($param)
+                    val   => $arg_ref->{change}->{$param},
                 };
+            }
+            elsif (! exists $exclude_ref->{$param}){
+                my @values = $self->query->param($param);
+                if (@values){
+                    foreach my $value (@values){
+                        push @cgiparams, {
+                            param => $param,
+                            val   => $value
+                        };
+                    }
+                }
+                else {
+                    push @cgiparams, {
+                        param => $param,
+                        val => $self->query->param($param)
+                    };
+                }
             }
         }
     }

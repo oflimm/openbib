@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Title.pm
 #
-#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,6 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Search::Backend::Xapian;
@@ -177,6 +178,7 @@ sub show_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
     my $database       = $self->param('database');
     my $titleid        = $self->strip_suffix($self->param('titleid'));
 
@@ -191,6 +193,8 @@ sub show_record {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    my $representation = $self->param('represenation');
 
     # CGI Args
     my $stid          = $query->param('stid')              || '';
@@ -199,6 +203,16 @@ sub show_record {
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
 
+    if ($user->{ID} && !$userid){
+        my $args = "?l=".$self->param('lang');
+
+        return $self->redirect("$path_prefix/$config->{user_loc}/$user->{ID}/title/$database/$titleid.$representation$args",'303 See Other');
+    }
+    
+    if ($userid && !$self->is_authenticated('user',$userid)){
+        return;
+    }
+    
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $searchquery   = OpenBib::SearchQuery->instance({r => $r, view => $view});
@@ -261,6 +275,7 @@ sub show_record {
         my $ttdata={
             database    => $database, # Zwingend wegen common/subtemplate
             dbinfo      => $dbinfotable,
+            userid      => $userid,
             poolname    => $poolname,
             prevurl     => $prevurl,
             nexturl     => $nexturl,

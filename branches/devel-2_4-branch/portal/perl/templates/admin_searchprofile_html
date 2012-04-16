@@ -64,7 +64,7 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
-[% searchprofiles = statistics.get_ranking_of_event({ type => 23, from => "${year}0101", to => "${year}1231", sortorder => "down"}) %]
+[% searchprofiles = statistics.get_ranking_of_event({ type => 23, from => "${year}0101", to => "${year}1231"}) %]
 [% FOREACH searchprofile IN searchprofiles %]
 [%
      searchprofile_obj = config.get_searchprofile.single({id => searchprofile.content});     

@@ -6,7 +6,7 @@
 #
 #  Konvertierung von Aleph MAB2-Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2007-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,41 +38,38 @@ use Encode::MAB2;
 use MAB2::Record::Base;
 use Tie::MAB2::Recno;
 use Data::Dumper;
-use YAML;
+use YAML::Syck;
 
-######################################################################
-# Personen-Daten
+my ($titlefile,$personfile,$corporatebodyfile,$subjectfile,$classificationfile,$holdingfile,$configfile);
 
-my $perdefs_ref = {
-    '001'  => {
-        newcat => '0000', # ID
-        mult   => 0,
-    },    
-    '002'  => {
-        newcat => '0100', # SDN
-        mut => 0,
-    },
-    '800' => {
-        newcat => '0001', # Ansetzung
-        mult => 0,
-    },
-    '820' => {
-        newcat => '0102', # ansetzungsform nach einem weiteren regelwerk => verweisungsform
-        mult => 1,
-    },
-    '830' => {
-        newcat => '0102', # verweisungsform 
-        mult => 1,
-    },
+&GetOptions(
+	    "titlefile=s"          => \$titlefile,
+            "personfile=s"         => \$personfile,
+            "corporatebodyfile=s"  => \$corporatebodyfile,
+            "subjectfile=s"        => \$subjectfile,
+            "classificationfile=s" => \$classificationfile,
+            "holdingfile=s"        => \$holdingfile,
+            "configfile=s"         => \$configfile,
+	    );
 
-};
+if (!$configfile){
+    print << "HELP";
+alephmab2meta.pl - Aufrufsyntax
+
+    alephmab2meta.pl --titlefile=xxx --configfile=yyy.yml
+HELP
+exit;
+}
+
+# Ininitalisierung mit Config-Parametern
+my $convconfig = YAML::Syck::LoadFile($configfile);
 
 print "Bearbeite Personen\n";
 
-if (-e "tmp.PER"){
+if (-e $personfile){
     open(PEROUT,'>:utf8','unload.PER');
     
-    tie @mab2perdata, 'Tie::MAB2::Recno', file => "tmp.PER";
+    tie @mab2perdata, 'Tie::MAB2::Recno', file => $personfile;
     
     foreach my $rawrec (@mab2perdata){
         my $rec = MAB2::Record::Base->new($rawrec);
@@ -86,7 +83,7 @@ if (-e "tmp.PER"){
             
             my $newcategory = "";
             
-            if (!exists $perdefs_ref->{$category}){
+            if (!exists $convconfig->{person}{$category}){
                 next;
             }
             
@@ -101,15 +98,15 @@ if (-e "tmp.PER"){
             
             # Standard-Konvertierung mit perkonv
             
-            if (!$perdefs_ref->{$category}{mult}){
+            if (!$convconfig->{person}{$category}{mult}){
                 $indicator="";
             }
             
-            if (exists $perdefs_ref->{$category}{newcat}){
-                $newcategory = $perdefs_ref->{$category}{newcat};
+            if (exists $convconfig->{person}{$category}{newcat}){
+                $newcategory = $convconfig->{person}{$category}{newcat};
             }
             
-            if ($newcategory && $perdefs_ref->{$category}{mult} && $content){
+            if ($newcategory && $convconfig->{person}{$category}{mult} && $content){
                 my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
                 print PEROUT "$newcategory.$multcount:$content\n";
             }
@@ -129,172 +126,12 @@ else {
 ######################################################################
 # Koerperschafts-Daten
 
-my $kordefs_ref = {
-    '001'  => {
-        newcat => '0000', # ID
-        mult   => 0,
-    },    
-    '002'  => {
-        newcat => '0100', # SDN
-        mut => 0,
-    },
-    '800' => {
-        newcat => '0001', # Ansetzung
-        mult => 0,
-    },
-    '801' => {
-        newcat => '0110', # Abkuerzung der Ansetzung
-        mult => 0,
-    },
-    '810' => {            # 1. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '811' => {            # zusaetzliche angaben zur 1. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '812' => {            # 2. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '813' => {            # zusaetzliche angaben zur 2. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '814' => {            # 3. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '815' => {            # zusaetzliche angaben zur 3. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '816' => {            # 4. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '817' => {            # zusaetzliche angaben zur 4. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '818' => {            # 5. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '819' => {            # zusaetzliche angaben zur 5. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '820' => {            # 6. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '821' => {            # zusaetzliche angaben zur 6. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '822' => {            # 7. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '823' => {            # zusaetzliche angaben zur 7. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '824' => {            # 8. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '825' => {            # zusaetzliche angaben zur 8. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '826' => {            # 9. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '827' => {            # zusaetzliche angaben zur 9. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '828' => {            # 10. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '829' => {            # zusaetzliche angaben zur 10. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '830' => {            # 11. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '831' => {            # zusaetzliche angaben zur 11. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '832' => {            # 12. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '833' => {            # zusaetzliche angaben zur 12. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '834' => {            # 13. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '835' => {            # zusaetzliche angaben zur 13. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '836' => {            # 14. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '837' => {            # zusaetzliche angaben zur 14. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '838' => {            # 15. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '839' => {            # zusaetzliche angaben zur 15. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '840' => {            # 16. verweisungsform zum namen der koerperschaft
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '841' => {            # zusaetzliche angaben zur 16. verweisungsform
-        newcat => '0102', # Verweisung
-        mult => 1,
-    },
-    '850' => {            # 1. frueherer, zeitweiser oder spaeterer name der koerperschaft
-        newcat => '0111', # Frueher/Spaeter
-        mult => 1,
-    },
-    '853' => {            # 2. frueherer, zeitweiser oder spaeterer name der koerperschaft
-        newcat => '0111', # Frueher/Spaeter
-        mult => 1,
-    },
-    '856' => {            # 3. frueherer, zeitweiser oder spaeterer name der koerperschaft
-        newcat => '0111', # Frueher/Spaeter
-        mult => 1,
-    },
-
-};
-
 print "Bearbeite Koerperschaften\n";
 
-if (-e "tmp.KOE"){
+if (-e $corporatebodyfile){
     open(KOROUT,'>:utf8','unload.KOE');
     
-    tie @mab2kordata, 'Tie::MAB2::Recno', file => "tmp.KOE";
+    tie @mab2kordata, 'Tie::MAB2::Recno', file => $corporatebodyfile;
     
     foreach my $rawrec (@mab2kordata){
         my $rec = MAB2::Record::Base->new($rawrec);
@@ -308,7 +145,7 @@ if (-e "tmp.KOE"){
             
             my $newcategory = "";
             
-            if (!exists $kordefs_ref->{$category}){
+            if (!exists $convconfig->{corporatebody}{$category}){
                 next;
             }
             
@@ -323,15 +160,15 @@ if (-e "tmp.KOE"){
             
             # Standard-Konvertierung mit perkonv
             
-            if (!$kordefs_ref->{$category}{mult}){
+            if (!$convconfig->{corporatebody}{$category}{mult}){
                 $indicator="";
             }
             
-            if (exists $kordefs_ref->{$category}{newcat}){
-                $newcategory = $kordefs_ref->{$category}{newcat};
+            if (exists $convconfig->{corporatebody}{$category}{newcat}){
+                $newcategory = $convconfig->{corporatebody}{$category}{newcat};
             }
             
-            if ($newcategory && $kordefs_ref->{$category}{mult} && $content){
+            if ($newcategory && $convconfig->{corporatebody}{$category}{mult} && $content){
                 my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
                 print KOROUT "$newcategory.$multcount:$content\n";
             }
@@ -351,52 +188,12 @@ else {
 ######################################################################
 # Schlagwort-Daten
 
-my $swtdefs_ref = {
-    '001'  => {
-        newcat => '0000', # ID
-        mult   => 0,
-    },    
-    '002'  => {
-        newcat => '0100', # SDN
-        mut    => 0,
-    },
-    '800' => {            # hauptschlagwort
-        newcat => '0001', # Ansetzung
-        mult   => 1,
-    },
-    '820' => {            # alternativform zum hauptschlagwort
-        newcat => '0102', # verweisungsform 
-        mult   => 1,
-    },
-    '830' => {            # aequivalente bezeichnung
-        newcat => '0102', # verweisungsform 
-        mult   => 1,
-    },
-    '850' => {            # uebergeordnetes schlagwort
-        newcat => '0113', # uebergeordnet
-        mult   => 1,
-    },
-    '860' => {            # verwandtes schlagwort
-        newcat => '0113', # assoziiert
-        mult   => 1,
-    },
-    '870' => {            # schlagwort fuer eine fruehere benennung
-        newcat => '0117', # frueher
-        mult   => 1,
-    },
-    '880' => {            # schlagwort fuer eine spaetere benennung
-        newcat => '0119', # spaeter
-        mult   => 1,
-    },
-
-};
-
 print "Bearbeite Schlagworte\n";
 
-if (-e "tmp.SWD"){
+if (-e $subjectfile){
     open(SWTOUT,'>:utf8','unload.SWD');
     
-    tie @mab2swtdata, 'Tie::MAB2::Recno', file => "tmp.SWD";
+    tie @mab2swtdata, 'Tie::MAB2::Recno', file => $subjectfile;
     
   SWTLOOP: foreach my $rawrec (@mab2swtdata){
         my $rec = MAB2::Record::Base->new($rawrec);
@@ -410,7 +207,7 @@ if (-e "tmp.SWD"){
             
             my $newcategory = "";
             
-            if (!exists $swtdefs_ref->{$category}){
+            if (!exists $convconfig->{subject}{$category}){
                 next;
             }
             
@@ -427,15 +224,15 @@ if (-e "tmp.SWD"){
             
             # Standard-Konvertierung mit perkonv
             
-            if (!$swtdefs_ref->{$category}{mult}){
+            if (!$convconfig->{subject}{$category}{mult}){
                 $indicator="";
             }
             
-            if (exists $swtdefs_ref->{$category}{newcat}){
-                $newcategory = $swtdefs_ref->{$category}{newcat};
+            if (exists $convconfig->{subject}{$category}{newcat}){
+                $newcategory = $convconfig->{subject}{$category}{newcat};
             }
             
-            if ($newcategory && $swtdefs_ref->{$category}{mult} && $content){
+            if ($newcategory && $convconfig->{subject}{$category}{mult} && $content){
                 my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
                 print SWTOUT "$newcategory.$multcount:$content\n";
             }
@@ -456,53 +253,12 @@ else {
 ######################################################################
 # Systematik-Daten
 
-my $notdefs_ref = {
-    '001'  => {
-        newcat => '0000', # ID
-        mult   => 0,
-    },    
-    '002'  => {
-        newcat => '0100', # SDN
-        mut    => 0,
-    },
-    '800' => {            # hauptschlagwort
-        newcat => '0001', # Ansetzung
-        mult   => 0,
-    },
-    '820' => {            # alternativform zum hauptschlagwort
-        newcat => '0102', # verweisungsform 
-        mult   => 1,
-    },
-    '830' => {            # aequivalente bezeichnung
-        newcat => '0102', # verweisungsform 
-        mult   => 1,
-    },
-    '850' => {            # uebergeordnetes schlagwort
-        newcat => '0113', # uebergeordnet
-        mult   => 1,
-    },
-    '860' => {            # verwandtes schlagwort
-        newcat => '0113', # assoziiert
-        mult   => 1,
-    },
-    '870' => {            # schlagwort fuer eine fruehere benennung
-        newcat => '0117', # frueher
-        mult   => 1,
-    },
-    '880' => {            # schlagwort fuer eine spaetere benennung
-        newcat => '0119', # spaeter
-        mult   => 1,
-    },
-
-};
-
-
 print "Bearbeite Systematik\n";
 
-if (-e "tmp.SYS"){
+if (-e $classificationfile){
     open(NOTOUT,'>:utf8','unload.SYS');
 
-    tie @mab2notdata, 'Tie::MAB2::Recno', file => "tmp.SYS";
+    tie @mab2notdata, 'Tie::MAB2::Recno', file => $classificationfile;
     
     foreach my $rawrec (@mab2notdata){
         my $rec = MAB2::Record::Base->new($rawrec);
@@ -516,7 +272,7 @@ if (-e "tmp.SYS"){
             
             my $newcategory = "";
             
-            if (!exists $notdefs_ref->{$category}){
+            if (!exists $convconfig->{classification}{$category}){
                 next;
             }
             
@@ -531,15 +287,15 @@ if (-e "tmp.SYS"){
             
             # Standard-Konvertierung mit perkonv
             
-            if (!$notdefs_ref->{$category}{mult}){
+            if (!$convconfig->{classification}{$category}{mult}){
                 $indicator="";
             }
             
-            if (exists $notdefs_ref->{$category}{newcat}){
-                $newcategory = $notdefs_ref->{$category}{newcat};
+            if (exists $convconfig->{classification}{$category}{newcat}){
+                $newcategory = $convconfig->{classification}{$category}{newcat};
             }
             
-            if ($newcategory && $notdefs_ref->{$category}{mult} && $content){
+            if ($newcategory && $convconfig->{classification}{$category}{mult} && $content){
                 my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
                 print NOTOUT "$newcategory.$multcount:$content\n";
             }
@@ -559,220 +315,12 @@ else {
 ######################################################################
 # Titel-Daten
 
-my $titdefs_ref = {
-    '001 '  => {
-        newcat => '0000', # ID
-        mult   => 0,
-    },    
-    '002a'  => {
-        newcat => '0002', # SDN
-        mut    => 0,
-    },
-    '010'  => {           # identifikationsnummer des direkt uebergeordneten datensatzes
-        newcat => '0004', # Uebergeordn. Satz
-        mut    => 1,
-    },
-    '020a' => {            # ZDBID
-        newcat => '0572', # ZDBID
-        mult   => 1,
-    },
-    '036a' => {            # Erschland
-        newcat => '0035', # Erschland
-        mult   => 1,
-    },
-    '037b'  => {           # Sprache
-        newcat => '0015', # Sprache
-        mut    => 1,
-    },
-    '089' => {            # bandangaben in vorlageform
-        newcat => '0089', # bandangaben in vorlageform
-        mult   => 1,
-    },
-    '310 ' => {            # ansetzungssachtitel
-        newcat => '0310' , # ansetzungssachtitel
-        mult   => 1,
-    },    
-    '331 ' => {            # hauptsachtitel in vorlageform oder mischform
-        newcat => '0331', # hauptsachtitel in vorlageform oder mischform
-        mult   => 1,
-    },
-    '333 ' => {            # Zu erg. URH
-        newcat => '0333', # Zu erg. URH
-        mult   => 1,
-    },
-    '335 ' => {            # zusaetze zum hauptsachtitel
-        newcat => '0335', # zusaetze zum hauptsachtitel
-        mult   => 1,
-    },
-    '359 ' => {            # Vorl. Verf/Koerp
-        newcat => '0359', # Vorl. Verf/Koerp
-        mult   => 1,
-    },
-    '370a' => {            # WST
-        newcat => '0370', # WST
-        mult   => 1,
-    },
-    '403' => {            # ausgabebezeichnung in vorlageform
-        newcat => '0403', # ausgabebezeichnung in vorlageform
-        mult   => 1,
-    },
-    '405 ' => {            # Erschverlauf
-        newcat => '0405', # Erschverlauf
-        mult   => 1,
-    },
-    '410 ' => {            # ort(e) des 1. verlegers, druckers usw.
-        newcat => '0410', # ort(e) des 1. verlegers, druckers usw.
-        mult   => 1,
-    },
-    '412 ' => {            # name des 1. verlegers, druckers usw.
-        newcat => '0412', # name des 1. verlegers, druckers usw.
-        mult   => 1,
-    },
-    '425c' => {            # erscheinungsjahr(e)
-        newcat => '0425', # erscheinungsjahr(e)
-        mult   => 1,
-    },
-    '433' => {            # umfangsangabe
-        newcat => '0433', # umfangsangabe
-        mult   => 1,
-    },
-    '451' => {            # 1. gesamttitel in vorlageform
-        newcat => '0451', # 1. gesamttitel in vorlageform
-        mult   => 1,
-    },
-    '507 ' => {            # Titelangaben
-        newcat => '0507', # Titelangaben
-        mult   => 1,
-    },
-    '523 ' => {            # Erscheinungsweise
-        newcat => '0523', # Erscheinungsweise
-        mult   => 1,
-    },
-    '527z' => {            # Parallele Ausg.
-        newcat => '0527', # Parallele Ausg.
-        mult   => 1,
-    },
-    '529z' => {            # Tit beilage
-        newcat => '0529', # Tit beilage
-        mult   => 1,
-    },
-    '530z' => {            # Bezugswerk
-        newcat => '0530', # Bezugswerk
-        mult   => 1,
-    },
-    '531z' => {            # FruehAusg.
-        newcat => '0531', # FruehAusg.
-        mult   => 1,
-    },
-    '532z' => {            # FruehTit.
-        newcat => '0532', # FruehTit.
-        mult   => 1,
-    },
-    '533z' => {            # SpaetAusg.
-        newcat => '0533', # SpaetAusg.
-        mult   => 1,
-    },
-    '534' => {            # Titelkonk.
-        newcat => '0534', # Titelkonk.
-        mult   => 1,
-    },
-    '540' => {            # internationale standardbuchnummer (isbn)
-        newcat => '0540', # internationale standardbuchnummer (isbn)
-        mult   => 1,
-    },
-    '542a' => {            # ISSN
-        newcat => '0543', # ISSN
-        mult   => 1,
-    },
-    
-#     '710' => {            # schlagwoerter und schlagwortketten
-#         newcat => '0710', # schlagwoerter und schlagwortketten
-#         mult   => 1,
-#         ref    => 1,
-#     },
-    '902k' => {            # schlagwoerter mit ID's
-         newcat => '0710', # schlagwoerter und schlagwortketten
-         mult   => 1,
-         ref    => 1,
-     },
-    '902g' => {            # schlagwoerter mit ID's
-         newcat => '0710', # schlagwoerter und schlagwortketten
-         mult   => 1,
-         ref    => 1,
-     },
-    '902s' => {            # schlagwoerter mit ID's
-         newcat => '0710', # schlagwoerter und schlagwortketten
-         mult   => 1,
-         ref    => 1,
-     },
-#     '100' => {            # name der 1. person in ansetzungsform
-#         newcat => '0100', # verfasser
-#         mult   => 1,
-#         ref    => 1,
-#     },
-    '102' => {            # ID der 1. person
-        newcat => '0100', # verfasser
-        mult   => 1,
-        ref    => 1,
-    },
-#     '104' => {            # name der 2. person in ansetzungsform
-#         newcat => '0100', # verfasser
-#         mult   => 1,
-#         ref    => 1,
-#     },
-    '106' => {            # ID der 2. person
-        newcat => '0100', # verfasser
-        mult   => 1,
-        ref    => 1,
-    },
-#     '108' => {            # name der 3. person in ansetzungsform
-#         newcat => '0100', # verfasser
-#         mult   => 1,
-#         ref    => 1,
-#     },
-    '110' => {            # ID der 3. person
-        newcat => '0100', # verfasser
-        mult   => 1,
-        ref    => 1,
-    },
-#    '200' => {            # name der 1. koerperschaft in ansetzungsform
-#        newcat => '0200', # koerperschaft
-#        mult   => 1,
-#    },
-    '202a' => {            # ID der 1. koerperschaft
-        newcat => '0200', # koerperschaft
-        mult   => 1,
-        ref    => 1,
-    },
-#     '204' => {            # name der 2. koerperschaft in ansetzungsform
-#         newcat => '0200', # koerperschaft
-#         mult   => 1,
-#         ref    => 1,
-#     },
-    '206a' => {            # ID der 2. koerperschaft
-        newcat => '0200', # koerperschaft
-        mult   => 1,
-        ref    => 1,
-    },
-#     '208' => {            # name der 3. koerperschaft in ansetzungsform
-#         newcat => '0200', # koerperschaft
-#         mult   => 1,
-#         ref    => 1,
-#     },
-    '210a' => {            # ID der 3. koerperschaft
-        newcat => '0200', # koerperschaft
-        mult   => 1,
-        ref    => 1,
-    },
-
-};
-
 print "Bearbeite Titel\n";
 
-if (-e "tmp.TIT"){
+if (-e $titlefile){
     open(TITOUT,'>:utf8','unload.TIT');
     
-    tie @mab2titdata, 'Tie::MAB2::Recno', file => "tmp.TIT";
+    tie @mab2titdata, 'Tie::MAB2::Recno', file => $titlefile;
     
     foreach my $rawrec (@mab2titdata){
         my $rec = MAB2::Record::Base->new($rawrec);
@@ -790,7 +338,7 @@ if (-e "tmp.TIT"){
             
             my $newcategory = "";
             
-            if (!exists $titdefs_ref->{$category}){
+            if (!exists $convconfig->{title}{$category}){
                 next;
             }
             
@@ -820,15 +368,15 @@ if (-e "tmp.TIT"){
             
             # Standard-Konvertierung mit perkonv
             
-            if (!$titdefs_ref->{$category}{mult}){
+            if (!$convconfig->{title}{$category}{mult}){
                 $indicator="";
             }
             
-            if (exists $titdefs_ref->{$category}{newcat}){
-                $newcategory = $titdefs_ref->{$category}{newcat};
+            if (exists $convconfig->{title}{$category}{newcat}){
+                $newcategory = $convconfig->{title}{$category}{newcat};
             }
             
-            if (exists $titdefs_ref->{$category}{ref}){
+            if (exists $convconfig->{title}{$category}{ref}){
                 
                 if ($category =~/^9[0123][27][kgs]/){
                     my $tmpcontent=$content;
@@ -840,7 +388,7 @@ if (-e "tmp.TIT"){
                 $content="IDN: $content" if ($content);
             }
             
-            if ($newcategory && $titdefs_ref->{$category}{mult} && $content){
+            if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
                 my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
                 print TITOUT "$newcategory.$multcount:$content\n";
             }
@@ -861,99 +409,91 @@ else {
 ######################################################################
 # Exemplar-Daten
 
-my $mexdefs_ref = {
-    '001 '  => {
-        newcat => '0000', # ID
-        mult   => 0,
-    },    
-    '012 '  => {
-        newcat => '0004', # TitelID
-        mut => 0,
-    },
-    '200 ' => {
-         # Bestandsverlauf
-        mult => 0,
-        subfields => {
-            '1200' => [ 'a' ],
-            '1204' => [ 'b', 'c'],
-            '0014' => [ 'f' ],
-        }
-    },
-    '071 ' => {
-        newcat => '3330', # Bestandsverlauf
-        mult => 0,
-    },
-
-};
-
 print "Bearbeite Exemplare\n";
-open(MEXOUT,'>:utf8','unload.MEX');
 
-tie @mab2mexdata, 'Tie::MAB2::Recno', file => "tmp.MEX";
+if (-e $holdingfile){
+    open(MEXOUT,'>:utf8','unload.MEX');
 
-foreach my $rawrec (@mab2mexdata){
-    my $rec = MAB2::Record::Base->new($rawrec);
-    #print $rec->readable."\n----------------------\n";    
-    my $multcount_ref = {};
+    tie @mab2mexdata, 'Tie::MAB2::Recno', file => $holdingfile;
     
-    foreach my $category_ref (@{$rec->_struct->[1]}){
-        my $category  = $category_ref->[0];
-        my $indicator = $category_ref->[1];
-        my $content   = $category_ref->[2];
-
-#        print "$category - $indicator - $content\n";
+    foreach my $rawrec (@mab2mexdata){
+        my $rec = MAB2::Record::Base->new($rawrec);
+        #print $rec->readable."\n----------------------\n";    
+        my $multcount_ref = {};
         
-        $category = $category.$indicator;
-
-        my %subfield=();        
-        if (exists $mexdefs_ref->{$category}{subfields}){
-            foreach my $item (split("",$content)){
-                if ($item=~/^(.)(.+)/){
-                    $subfield{$1}=$2;
-                }
-            }
-        }
-        
-        my $newcategory = "";
-        
-        if (!exists $mexdefs_ref->{$category}){
-            next;
-        }
-        
-        # Vorabfilterung
-#         if ($category =~ /^001$/){
-#             $content=~s/\D//g;
-#         }
-
-        
-        if ($category =~ /^002 $/){
-            $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
-        }
-
-        if ($category =~ /^071 $/){
-            $content=~s/^38\///;
-        }
-
-        # Standard-Konvertierung mit perkonv
-
-        if (!$mexdefs_ref->{$category}{mult}){
-            $indicator="";
-        }
-
-#        print YAML::Dump(\%subfield);
-        
-        if (exists $mexdefs_ref->{$category}{subfields}){
-            foreach my $newcategory (keys %{$mexdefs_ref->{$category}{subfields}}){
-                my @newcontent=();
-                foreach my $thissubfield (@{$mexdefs_ref->{$category}{subfields}{$newcategory}}){
-                    if ($subfield{$thissubfield}){
-                        push @newcontent,$subfield{$thissubfield};
+        foreach my $category_ref (@{$rec->_struct->[1]}){
+            my $category  = $category_ref->[0];
+            my $indicator = $category_ref->[1];
+            my $content   = $category_ref->[2];
+            
+            #        print "$category - $indicator - $content\n";
+            
+            $category = $category.$indicator;
+            
+            my %subfield=();        
+            if (exists $convconfig->{holding}{$category}{subfields}){
+                foreach my $item (split("",$content)){
+                    if ($item=~/^(.)(.+)/){
+                        $subfield{$1}=$2;
                     }
                 }
-
-                $content=konv(join(" ",@newcontent));
+            }
+            
+            my $newcategory = "";
+            
+            if (!exists $convconfig->{holding}{$category}){
+                next;
+            }
+            
+            # Vorabfilterung
+            #         if ($category =~ /^001$/){
+            #             $content=~s/\D//g;
+            #         }
+            
+            
+            if ($category =~ /^002 $/){
+                $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
+            }
+            
+            if ($category =~ /^071 $/){
+                $content=~s/^38\///;
+            }
+            
+            # Standard-Konvertierung mit perkonv
+            
+            if (!$convconfig->{holding}{$category}{mult}){
+                $indicator="";
+            }
+            
+            #        print YAML::Dump(\%subfield);
+            
+            if (exists $convconfig->{holding}{$category}{subfields}){
+                foreach my $newcategory (keys %{$convconfig->{holding}{$category}{subfields}}){
+                    my @newcontent=();
+                    foreach my $thissubfield (@{$convconfig->{holding}{$category}{subfields}{$newcategory}}){
+                        if ($subfield{$thissubfield}){
+                            push @newcontent,$subfield{$thissubfield};
+                        }
+                    }
+                    
+                    $content=konv(join(" ",@newcontent));
+                    
+                    if ($newcategory && $convconfig->{holding}{$category}{mult} && $content){
+                        my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
+                        print MEXOUT "$newcategory.$multcount:$content\n";
+                    }
+                    elsif ($newcategory && $content){
+                        print MEXOUT "$newcategory:$content\n";
+                    }
+                }
+            }
+            else {
+                $content=konv($content);
+                if (exists $convconfig->{holding}{$category}{newcat}){
+                    $newcategory = $convconfig->{holding}{$category}{newcat};
+                }
                 
-                if ($newcategory && $mexdefs_ref->{$category}{mult} && $content){
+                if ($newcategory && $convconfig->{holding}{$category}{mult} && $content){
                     my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
                     print MEXOUT "$newcategory.$multcount:$content\n";
                 }
@@ -961,27 +501,14 @@ foreach my $rawrec (@mab2mexdata){
                     print MEXOUT "$newcategory:$content\n";
                 }
             }
-        }
-        else {
-            $content=konv($content);
-            if (exists $mexdefs_ref->{$category}{newcat}){
-                $newcategory = $mexdefs_ref->{$category}{newcat};
-            }
             
-            if ($newcategory && $mexdefs_ref->{$category}{mult} && $content){
-                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-                print MEXOUT "$newcategory.$multcount:$content\n";
-            }
-            elsif ($newcategory && $content){
-                print MEXOUT "$newcategory:$content\n";
-            }
         }
-        
+        print MEXOUT "9999:\n\n";
     }
-    print MEXOUT "9999:\n\n";
+
+    close(MEXOUT);
 }
 
-close(MEXOUT);
 
 sub konv {
   my ($line)=@_;

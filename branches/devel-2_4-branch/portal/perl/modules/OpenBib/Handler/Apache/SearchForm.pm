@@ -166,12 +166,12 @@ sub show {
 
     $logger->debug("Mark 2");
 
-    my @queries    = $session->get_all_searchqueries();
+#    my @queries    = $session->get_all_searchqueries();
 
     $logger->debug("Mark 3");
 
 
-    my $anzahl     = $#queries;
+#    my $anzahl     = $#queries;
     
     # Ausgewaehlte Datenbanken bestimmen
     my $checkeddb_ref = {};
@@ -201,8 +201,8 @@ sub show {
         searchquery   => $searchquery->get_searchquery,
         qopts         => $queryoptions->get_options,
 
-        anzahl        => $anzahl,
-        queries       => \@queries,
+#        anzahl        => $anzahl,
+#        queries       => \@queries,
 
         catdb         => \@catdb,
         maxcolumn     => $maxcolumn,

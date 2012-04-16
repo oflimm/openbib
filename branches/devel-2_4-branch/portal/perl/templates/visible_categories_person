@@ -16,6 +16,10 @@
                  'P0001', # msg.maketext("P0001") Ansetzung
 	         'P0102', # msg.maketext("P0102") Verweisung
 
+                 # Erweiterungen
+	         'P0200', # msg.maketext("P0200") Lebensjahre
+	         'P0201', # msg.maketext("P0201") Beruf
+
                  # Erweiterungen Wikisource
 #	         'P0300', # msg.maketext("P0300") Nachname
 #	         'P0301', # msg.maketext("P0301") Vornamen

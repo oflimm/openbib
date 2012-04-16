@@ -69,7 +69,7 @@ my $config      = OpenBib::Config->instance;
 my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$database.log";
-$loglevel=($loglevel)?$loglevel:"INFO";
+$loglevel=($loglevel)?$loglevel:"DEBUG";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -92,6 +92,7 @@ my $dir=`pwd`;
 chop $dir;
 
 my %listitemdata_person        = ();
+my %listitemdata_person_date   = ();
 my %listitemdata_corporatebody        = ();
 my %listitemdata_classification        = ();
 my %listitemdata_subject        = ();
@@ -100,6 +101,7 @@ my %listitemdata_superid    = ();
 my %listitemdata_popularity = ();
 my %listitemdata_tags       = ();
 my %listitemdata_litlists   = ();
+my %listitemdata_enriched_years = ();
 my %enrichmntdata           = ();
 
 # Verbindung zur SQL-Datenbank herstellen
@@ -154,7 +156,10 @@ $request->finish();
 if ($reducemem){
     tie %listitemdata_person,        'MLDBM', "./listitemdata_person.db"
         or die "Could not tie listitemdata_person.\n";
-    
+
+    tie %listitemdata_person_date,   'MLDBM', "./listitemdata_person_date.db"
+        or die "Could not tie listitemdata_person_date.\n";
+
     tie %listitemdata_corporatebody,        'MLDBM', "./listitemdata_corporatebody.db"
         or die "Could not tie listitemdata_corporatebody.\n";
 
@@ -166,6 +171,9 @@ if ($reducemem){
 
     tie %listitemdata_holding,        'MLDBM', "./listitemdata_holding.db"
         or die "Could not tie listitemdata_holding.\n";
+
+    tie %listitemdata_enriched_years,      'MLDBM', "./listitemdata_enriched_years.db"
+        or die "Could not tie listitemdata_enriched_years.\n";
 
     tie %listitemdata_superid,    "DB_File", "./listitemdata_superid.db"
         or die "Could not tie listitemdata_superid.\n";
@@ -280,7 +288,13 @@ foreach my $type (keys %{$stammdateien_ref}){
            $listitemdata_subject{$id}=$content;
         }
     }
-    
+
+    if (defined $category && $category == 200){
+        if ($type eq "person"){
+            $listitemdata_person_date{$id}=$content;
+        }
+    }
+
     my $contentnorm   = "";
     my $contentnormft = "";
     if (defined $category && exists $stammdateien_ref->{$type}{inverted_ref}->{$category}){
@@ -345,6 +359,8 @@ open(OUTCONNECTION,">:utf8","conn.mysql")       || die "OUTCONNECTION konnte nic
 
 my $id;
 my $titleid;
+my $thisyear = `date +"%Y"`;
+
 CATLINE:
 while (my $line=<IN>){
     my ($category,$indicator,$content);
@@ -373,7 +389,40 @@ while (my $line=<IN>){
         push @$array_ref, $content;
         $listitemdata_holding{$titleid}=$array_ref;
     }
-    
+
+    # Bestandsverlauf in Jahreszahlen umwandeln
+    if ($category == 1204 && $titleid){        
+        my $array_ref=exists $listitemdata_enriched_years{$titleid}?$listitemdata_enriched_years{$titleid}:[];
+
+        foreach my $date (split(";",$content)){
+            if ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-\s+.*?(\d\d\d\d)/){
+                my $startyear = $1;
+                my $endyear   = $2;
+
+                $logger->info("Expanding yearstring $date from $startyear to $endyear");
+                for (my $year=$startyear;$year<=$endyear; $year++){
+                    $logger->debug("Adding year $year");
+                    push @$array_ref, $year;
+                }
+            }
+            elsif ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-/){
+                my $startyear = $1;
+                my $endyear   = $thisyear;
+                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                for (my $year=$startyear;$year<=$endyear;$year++){
+                    $logger->info("Adding year $year");
+                    push @$array_ref, $year;
+                }                
+            }
+            elsif ($date =~/(\d\d\d\d)/){
+                $logger->debug("Not expanding $date, just adding year $1");
+                push @$array_ref, $1;
+            }
+        }
+        
+        $listitemdata_enriched_years{$titleid}=$array_ref;
+    }
+
     my $contentnorm   = "";
     my $contentnormft = "";
 
@@ -983,6 +1032,18 @@ while (my $line=<IN>){
             push @{$normdata_ref->{'bkey'}}, $bibkey;
         }
 
+        # Automatische Anreicherung mit Bestandsjahren wenn kein
+        # Erscheinungsjahr vorhanden, aber Bestandsverlauf besetzt.
+
+        if (!exists $normdata_ref->{'year'} && !exists $normdata_ref->{'T0424'} && !exists $normdata_ref->{'T0425'}){
+            if (exists $listitemdata_enriched_years{$id}){
+                foreach my $year (@{$listitemdata_enriched_years{$id}}){
+                    $logger->debug("Enriching year $year to Title-ID $id");
+                    push @{$normdata_ref->{year}}, $year;
+                    push @{$normdata_ref->{freesearch}}, $year;
+                }
+            }
+        } 
         # Hinweis: Weder das verpacken via pack "u" noch Base64 koennten
         # eventuell fuer die Recherche schnell genug sein. Allerdings
         # funktioniert es sehr gut.
@@ -1101,7 +1162,8 @@ while (my $line=<IN>){
                 push @person, $targetid;
                 
                 my $content = $listitemdata_person{$targetid};
-                
+
+                # Bibliographical data
                 push @{$thisitem_ref->{"T".$category}}, {
                     indicator => $indicator,
                     content   => $content,
@@ -1114,6 +1176,12 @@ while (my $line=<IN>){
                 } if (exists $conv_config->{listitemcat}{'0100'});
 
                 push @personcorporatebody, $content;
+
+                # Searchengine
+                my $date = $listitemdata_person_date{$targetid};
+                if ($date){
+                    $content = "$content ($date)";
+                }
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){                    
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
@@ -1165,7 +1233,8 @@ while (my $line=<IN>){
                 push @person, $targetid;
                 
                 my $content = $listitemdata_person{$targetid};
-                
+
+                # Bibliographical data
                 push @{$thisitem_ref->{"T".$category}}, {
                     indicator  => $indicator,
                     content    => $content,
@@ -1181,6 +1250,12 @@ while (my $line=<IN>){
 
                 push @personcorporatebody, $content;
 
+                # Searchengine
+                my $date = $listitemdata_person_date{$targetid};
+                if ($date){
+                    $content = "$content ($date)";
+                }
+                
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -1193,6 +1268,7 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{facet}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{facet}}){
+                        my $date = $listitemdata_person_date{$targetid};
                         push @{$normdata_ref->{"facet_".$searchfield}}, $content;
                     }
                 }
@@ -1231,7 +1307,8 @@ while (my $line=<IN>){
                 push @person, $targetid;
                 
                 my $content = $listitemdata_person{$targetid};
-                
+
+                # Bibliographical data
                 push @{$listitem_ref->{P0102}}, {
                     id         => $targetid,
                     type       => 'person',
@@ -1240,7 +1317,13 @@ while (my $line=<IN>){
                 } if (exists $conv_config->{listitemcat}{'0102'});
 
                 push @personcorporatebody, $content;
-                
+
+                # Searchengine
+                my $date = $listitemdata_person_date{$targetid};
+                if ($date){
+                    $content = "$content ($date)";
+                }
+
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -1291,7 +1374,8 @@ while (my $line=<IN>){
                 push @person, $targetid;
                 
                 my $content = $listitemdata_person{$targetid};
-                
+
+                # Bibliographical data
                 push @{$listitem_ref->{P0103}}, {
                     id         => $targetid,
                     type       => 'person',
@@ -1301,6 +1385,12 @@ while (my $line=<IN>){
 
                 push @personcorporatebody, $content;
 
+                # Searchengine
+                my $date = $listitemdata_person_date{$targetid};
+                if ($date){
+                    $content = "$content ($date)";
+                }
+                
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -1347,7 +1437,8 @@ while (my $line=<IN>){
                     push @person, $targetid;
                     
                     my $content = $listitemdata_person{$targetid};
-                    
+
+                    # Bibliographical data
                     push @{$thisitem_ref->{"T".$category}}, {
                         indicator => $indicator,
                         content   => $content,
@@ -1360,6 +1451,12 @@ while (my $line=<IN>){
                     } if (exists $conv_config->{listitemcat}{'1800'});
                     
                     push @personcorporatebody, $content;
+
+                    # Searchengine
+                    my $date = $listitemdata_person_date{$targetid};
+                    if ($date){
+                        $content = "$content ($date)";
+                    }
                     
                     if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){                    
                         foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){

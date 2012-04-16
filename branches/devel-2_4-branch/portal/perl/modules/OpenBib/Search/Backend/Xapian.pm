@@ -463,6 +463,7 @@ sub get_indexterms {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Getting indexterms for id $id in database $database");
     my $config = OpenBib::Config->instance;
 
     my $dbh = undef;
@@ -487,9 +488,11 @@ sub get_indexterms {
 
     my @matches = $enq->matches(0,10);
 
+    $logger->debug(YAML::Dump(\@matches));
+    
     my $indexterms_ref = [];
     
-    if (scalar(@matches) == 1){
+    if (scalar(@matches) > 0){
         my $docid         = $matches[0]->get_docid;;
         my $termlist_iter = $dbh->termlist_begin($docid);
 

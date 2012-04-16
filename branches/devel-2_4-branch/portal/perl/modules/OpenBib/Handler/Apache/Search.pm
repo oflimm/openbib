@@ -321,7 +321,7 @@ sub show_search {
 
     # TT-Data erzeugen
     my $endttdata={
-        gesamttreffer => $gesamttreffer,
+        fullresultcount => $self->param('total_hits'),
         
         username      => $username,
         password      => $password,

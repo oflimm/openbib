@@ -2,7 +2,9 @@
 
 #####################################################################
 #
-#  pre_conv.pl
+#  sample_prepost.pl
+#
+#  Beispielfilter
 #
 #  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
 #
@@ -36,12 +38,11 @@ my $config = OpenBib::Config->instance;
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
+my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
 
 my $pool          = $ARGV[0];
 
-print "### $pool: ZDBID wird zur ID\n";
+print "### $pool: Alternative Umwandlung\n";
 
-system("$rootdir/filter/$pool/zdbid2id.pl < $rootdir/data/$pool/meta.title > $rootdir/data/$pool/meta.title.tmp");
-system("mv -f $rootdir/data/$pool/meta.title.tmp $rootdir/data/$pool/meta.title");
-system("$rootdir/filter/$pool/zdbid2id-mex.pl < $rootdir/data/$pool/meta.holding > $rootdir/data/$pool/meta.holding.tmp");
-system("mv -f $rootdir/data/$pool/meta.holding.tmp $rootdir/data/$pool/meta.holding");
+system("cd $rootdir/data/$pool ; $meta2sqlexe -reduce-mem -add-superpers -add-mediatype --database=$pool");
+

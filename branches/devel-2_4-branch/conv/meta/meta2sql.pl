@@ -54,22 +54,28 @@ use OpenBib::Record::Subject;
 use OpenBib::Record::Title;
 use OpenBib::Statistics;
 
-my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile,$loglevel,$count);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$addpersondate,$incremental,$logfile,$loglevel,$count,$help);
 
 &GetOptions("reduce-mem"    => \$reducemem,
             "add-superpers" => \$addsuperpers,
             "add-mediatype" => \$addmediatype,
+            "add-persondate" => \$addpersondate,
             "incremental"   => \$incremental,
 	    "database=s"    => \$database,
             "logfile=s"     => \$logfile,
             "loglevel=s"    => \$loglevel,
+            "help"          => \$help,
 	    );
+
+if ($help){
+    print_help();
+}
 
 my $config      = OpenBib::Config->instance;
 my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$database.log";
-$loglevel=($loglevel)?$loglevel:"DEBUG";
+$loglevel=($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -391,7 +397,7 @@ while (my $line=<IN>){
     }
 
     # Bestandsverlauf in Jahreszahlen umwandeln
-    if ($category == 1204 && $titleid){        
+    if ($addpersondate && $category == 1204 && $titleid){        
         my $array_ref=exists $listitemdata_enriched_years{$titleid}?$listitemdata_enriched_years{$titleid}:[];
 
         foreach my $date (split(";",$content)){
@@ -1178,11 +1184,13 @@ while (my $line=<IN>){
                 push @personcorporatebody, $content;
 
                 # Searchengine
-                my $date = $listitemdata_person_date{$targetid};
-                if ($date){
-                    $content = "$content ($date)";
+                if ($addpersondate){
+                    my $date = $listitemdata_person_date{$targetid};
+                    if ($date){
+                        $content = "$content ($date)";
+                    }
                 }
-
+                
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){                    
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -1251,9 +1259,11 @@ while (my $line=<IN>){
                 push @personcorporatebody, $content;
 
                 # Searchengine
-                my $date = $listitemdata_person_date{$targetid};
-                if ($date){
-                    $content = "$content ($date)";
+                if ($addpersondate){
+                    my $date = $listitemdata_person_date{$targetid};
+                    if ($date){
+                        $content = "$content ($date)";
+                    }
                 }
                 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
@@ -1268,7 +1278,6 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{facet}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{facet}}){
-                        my $date = $listitemdata_person_date{$targetid};
                         push @{$normdata_ref->{"facet_".$searchfield}}, $content;
                     }
                 }
@@ -1319,11 +1328,13 @@ while (my $line=<IN>){
                 push @personcorporatebody, $content;
 
                 # Searchengine
-                my $date = $listitemdata_person_date{$targetid};
-                if ($date){
-                    $content = "$content ($date)";
+                if ($addpersondate){
+                    my $date = $listitemdata_person_date{$targetid};
+                    if ($date){
+                        $content = "$content ($date)";
+                    }
                 }
-
+                
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -1386,9 +1397,11 @@ while (my $line=<IN>){
                 push @personcorporatebody, $content;
 
                 # Searchengine
-                my $date = $listitemdata_person_date{$targetid};
-                if ($date){
-                    $content = "$content ($date)";
+                if ($addpersondate){
+                    my $date = $listitemdata_person_date{$targetid};
+                    if ($date){
+                        $content = "$content ($date)";
+                    }
                 }
                 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
@@ -1453,9 +1466,11 @@ while (my $line=<IN>){
                     push @personcorporatebody, $content;
 
                     # Searchengine
-                    my $date = $listitemdata_person_date{$targetid};
-                    if ($date){
-                        $content = "$content ($date)";
+                    if ($addpersondate){
+                        my $date = $listitemdata_person_date{$targetid};
+                        if ($date){
+                            $content = "$content ($date)";
+                        }
                     }
                     
                     if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){                    
@@ -2476,6 +2491,26 @@ if ($reducemem){
     untie %listitemdata_subject;
     untie %listitemdata_holding;
     untie %listitemdata_superid;
+}
+
+sub print_help {
+    print << "ENDHELP";
+meta2sql.pl - Migration der Metadaten in Einladedateien fuer eine SQL-Datenbank 
+              und einen Suchmaschinenindex
+   Optionen:
+   -help                 : Diese Informationsseite
+       
+   -add-superpers        : Anreicherung mit Personen der Ueberordnung (Schiller-Raeuber)
+   -add-mediatype        : Anreicherung mit Medientyp durch Kategorieanalyse
+   -add-persondate       : Anreicherung mit Lebensjahren bei Personen fuer Facetten/Filter
+   -reduce-mem           : Optimierter Speicherverbrauch durch Auslagerung in DB-Dateien
+   -incremental          : Incrementelle Aktualisierung (experimentell)
+   --database=...        : Angegebenen Datenpool verwenden
+   --logfile=...         : Logfile inkl Pfad.
+   --loglevel=...        : Loglevel
+
+ENDHELP
+    exit;
 }
 
 1;

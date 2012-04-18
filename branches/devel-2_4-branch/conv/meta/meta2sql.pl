@@ -397,7 +397,7 @@ while (my $line=<IN>){
     }
 
     # Bestandsverlauf in Jahreszahlen umwandeln
-    if ($addpersondate && $category == 1204 && $titleid){        
+    if ($category == 1204 && $titleid){        
         my $array_ref=exists $listitemdata_enriched_years{$titleid}?$listitemdata_enriched_years{$titleid}:[];
 
         foreach my $date (split(";",$content)){

@@ -4,7 +4,7 @@
 #
 #  file2xapian.pl
 #
-#  Dieses File ist (C) 2007-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -49,12 +49,11 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Common::Util;
 
-my ($database,$help,$logfile,$withfields,$withsorting,$withpositions,$loglevel);
+my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
             "loglevel=s"      => \$loglevel,
-            "with-fields"     => \$withfields,
             "with-sorting"    => \$withsorting,
             "with-positions"  => \$withpositions,
 	    "help"            => \$help
@@ -140,6 +139,8 @@ my $atime = new Benchmark;
         }
         close(SW);
     }
+
+    my $stopwords = join(' ',keys %$stopword_ref);
     
     my $tokenizer = String::Tokenizer->new();
     
@@ -148,6 +149,9 @@ my $atime = new Benchmark;
     my $count = 1;
 
     {
+        my $tg = new Search::Xapian::TermGenerator();
+        $tg->set_stopper(new Search::Xapian::SimpleStopper($stopwords));
+        
         my $atime = new Benchmark;
         while (my $title_listitem=<TITLE_LISTITEM>, my $searchengine=<SEARCHENGINE>) {
             my ($s_id,$searchcontent)=split ("",$searchengine);
@@ -163,6 +167,7 @@ my $atime = new Benchmark;
             my $seen_token_ref = {};
             
             my $doc=Search::Xapian::Document->new();
+            $tg->set_document($doc);
             
             # ID des Satzes recherchierbar machen
             $doc->add_term($config->{xapian_search_prefix}{'id'}.$s_id);
@@ -172,6 +177,7 @@ my $atime = new Benchmark;
             
             my $k = 0;
             
+
             foreach my $searchfield (keys %{$config->{searchfield}}) {
                 
                 $logger->debug("Processing Searchfield $searchfield for id $s_id");
@@ -181,55 +187,30 @@ my $atime = new Benchmark;
                     # Tokenize
                     next if (! exists $searchcontent_ref->{$searchfield});
 
-                    foreach my $thisid (@{$searchcontent_ref->{$searchfield}}){
+                    foreach my $weight (keys %{$searchcontent_ref->{$searchfield}}){
                         # Naechstes, wenn keine ID
-                        next if (!$thisid);
-                        
-                        my $fieldtoken=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$thisid;
-                        
-                        my $fieldtoken_octet = encode_utf8($fieldtoken); 
-                        $fieldtoken=(length($fieldtoken_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
-                        
-                        $doc->add_term($fieldtoken);
+                        foreach my $content (@{$searchcontent_ref->{$searchfield}{$weight}}){
+                            next if (!$content);
+                            # IDs haben keine Position
+                            $tg->index_text_without_positions($content,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
+                        }
                     }
                 }
                 # Einzelne Worte (Fulltext)
                 elsif ($config->{searchfield}{$searchfield}{type} eq 'ft'){
                     # Tokenize
                     next if (! exists $searchcontent_ref->{$searchfield});
-                    
-                    my $tokenstring = join(' ',@{$searchcontent_ref->{$searchfield}});
-                    
-                    # Split cjk
-                    
-                    
-                    $tokenizer->tokenize($tokenstring);
-                    
-                    my $i = $tokenizer->iterator();
-                    
-                    my @saved_tokens=();
-                    while ($i->hasNextToken()) {
-                        my $next = $i->nextToken();
-                        
-                        # Naechstes, wenn kein Token
-                        next if (!$next);
-                        # Naechstes, wenn keine Zahl oder einstellig
-                        # next if (length($next) < 2 && $next !~ /\d/);
-                        # Naechstes, wenn Stopwort
-                        next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
-                        
-                        my $fieldtoken=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$next;
-                        
-                        # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
-                        
-                        my $fieldtoken_octet = encode_utf8($fieldtoken); 
-                        $fieldtoken=(length($fieldtoken_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
-                        
-                        $doc->add_term($fieldtoken);
-                        
-                        if ($withpositions){
-                            $doc->add_posting($fieldtoken,$k);
-                            $k++;
+
+                    foreach my $weight (keys %{$searchcontent_ref->{$searchfield}}){
+                        # Naechstes, wenn keine ID
+                        foreach my $content (@{$searchcontent_ref->{$searchfield}{$weight}}){
+                            next if (!$content);
+                            if ($withpositions){
+                                $tg->index_text($content,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
+                            }
+                            else {
+                                $tg->index_text_without_positions($content,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
+                            }
                         }
                     }
                 }
@@ -237,28 +218,31 @@ my $atime = new Benchmark;
                 elsif ($config->{searchfield}{$searchfield}{type} eq 'string'){
                     next if (!exists $searchcontent_ref->{$searchfield});
                     
-                    my %seen_terms = ();
-                    my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$searchcontent_ref->{$searchfield}}; 
-                    
-                    foreach my $unique_term (@unique_terms){
-                        next unless ($unique_term);
+                    foreach my $weight (keys %{$searchcontent_ref->{$searchfield}}){
+                        my %seen_terms = ();
+                        my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$searchcontent_ref->{$searchfield}{$weight}}; 
                         
-                        if (exists $config->{searchfield}{$searchfield}{option}{string_first_stopword}){
-                            $unique_term = OpenBib::Common::Stopwords::strip_first_stopword($unique_term);
-                            $logger->debug("Stripped first stopword");
+                        
+                        foreach my $unique_term (@unique_terms){
+                            next unless ($unique_term);
                             
+                            if (exists $config->{searchfield}{$searchfield}{option}{string_first_stopword}){
+                                $unique_term = OpenBib::Common::Stopwords::strip_first_stopword($unique_term);
+                                $logger->debug("Stripped first stopword");
+                                
+                            }
+                        
+                            $unique_term=~s/\W/_/g;
+                            
+                            $unique_term=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$unique_term;
+                        
+                            # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
+                            my $unique_term_octet = encode_utf8($unique_term); 
+                            $unique_term=(length($unique_term_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($unique_term_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$unique_term;
+                            
+                            $logger->debug("Added Stringvalue $unique_term");
+                            $doc->add_term($unique_term);
                         }
-                        
-                        $unique_term=~s/\W/_/g;
-                        
-                        $unique_term=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$unique_term;
-                        
-                        # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
-                        my $unique_term_octet = encode_utf8($unique_term); 
-                        $unique_term=(length($unique_term_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($unique_term_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$unique_term;
-                        
-                        $logger->debug("Added Stringvalue $unique_term");
-                        $doc->add_term($unique_term);
                     }
                 }
             }

@@ -121,6 +121,9 @@ convtab:
      #'4720': 1        # Testdaten Inhaltsverzeichnis-Scans
      #'4725': 1        # Temporaeres Schlagwort
 # Kategorien, die in den einzelnen Normdaten indexiert werden
+# Unter index werden die Recherchefelder aufgefuehrt, in dem der Inhalt der
+# Katagorie gesammelt wird, der Hashwert des Recherchefeldes
+# kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_person:
       '0001':         # Ansetzung
         ft: 1
@@ -207,7 +210,7 @@ convtab:
         index:
           'subject': 1
           'subjectstring': 1
-          'freesearch': 1
+          'freesearch': 20
       '0102':         # Verweisform
         ft: 1
         string: 1
@@ -292,9 +295,9 @@ convtab:
         ft: 1
         string: 1
         index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
       '0335':         # Zusatz zum HST
         ft: 1
         string: 0
@@ -311,9 +314,9 @@ convtab:
           'freesearch': 1
       '0361':       # Vorlage beigefuegtes Werk
         index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+          'title': 40
+          'titlestring': 40
+          'freesearch': 40
       '0370':         # WST
         ft: 1
         string: 1
@@ -423,9 +426,9 @@ convtab:
           'freesearch': 1
       '4300':         # Fremde Schlagworte
         index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
           't4300': 1
       '5050':         # Bibkey
         index:

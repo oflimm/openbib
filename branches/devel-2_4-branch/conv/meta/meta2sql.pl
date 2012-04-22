@@ -56,15 +56,15 @@ use OpenBib::Statistics;
 
 my ($database,$reducemem,$addsuperpers,$addmediatype,$addpersondate,$incremental,$logfile,$loglevel,$count,$help);
 
-&GetOptions("reduce-mem"    => \$reducemem,
-            "add-superpers" => \$addsuperpers,
-            "add-mediatype" => \$addmediatype,
+&GetOptions("reduce-mem"     => \$reducemem,
+            "add-superpers"  => \$addsuperpers,
+            "add-mediatype"  => \$addmediatype,
             "add-persondate" => \$addpersondate,
-            "incremental"   => \$incremental,
-	    "database=s"    => \$database,
-            "logfile=s"     => \$logfile,
-            "loglevel=s"    => \$loglevel,
-            "help"          => \$help,
+            "incremental"    => \$incremental,
+	    "database=s"     => \$database,
+            "logfile=s"      => \$logfile,
+            "loglevel=s"     => \$loglevel,
+            "help"           => \$help,
 	    );
 
 if ($help){
@@ -319,7 +319,9 @@ foreach my $type (keys %{$stammdateien_ref}){
 
        if (exists $stammdateien_ref->{$type}{inverted_ref}{$category}->{index}){
            foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$category}->{index}}){
-               push @{$stammdateien_ref->{$type}{data}{$id}{$searchfield}}, $contentnormtmp;               
+               my $weight = $stammdateien_ref->{$type}{inverted_ref}{$category}->{index}{$searchfield};
+
+               push @{$stammdateien_ref->{$type}{data}{$id}{$searchfield}{$weight}}, $contentnormtmp;
            }
        }
    }
@@ -450,7 +452,9 @@ while (my $line=<IN>){
 
             if (exists $stammdateien_ref->{holding}{inverted_ref}{$category}->{index}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{holding}{inverted_ref}{$category}->{index}}){
-                    push @{$stammdateien_ref->{holding}{data}{$titleid}{$searchfield}}, $contentnormtmp;               
+                    my $weight = $stammdateien_ref->{holding}{inverted_ref}{$category}->{index}{$searchfield};
+
+                    push @{$stammdateien_ref->{holding}{data}{$titleid}{$searchfield}{$weight}}, $contentnormtmp;               
                 }
             }
 	}
@@ -607,8 +611,8 @@ while (my $line=<IN>){
         $thisitem_ref          = {};
 
         $normdata_ref             = {};
-        push @{$normdata_ref->{id}}, $id;
-        push @{$normdata_ref->{dbstring}}, $database;
+        push @{$normdata_ref->{id}{1}}, $id;
+        push @{$normdata_ref->{dbstring}{1}}, $database;
         push @{$normdata_ref->{facet_database}}, $database;
 
         $listitem_ref->{id}       = $id;
@@ -619,7 +623,7 @@ while (my $line=<IN>){
                 $listitem_ref->{popularity} = $listitemdata_popularity{$id};
             }
 
-            push @{$normdata_ref->{popularity}}, $listitemdata_popularity{$id};
+            push @{$normdata_ref->{popularity}{1}}, $listitemdata_popularity{$id};
         }
 
         if (exists $listitemdata_tags{$id}){
@@ -631,7 +635,9 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{tag}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{tag}->{index}}){
-                        push @{$normdata_ref->{$searchfield}}, OpenBib::Common::Util::grundform({
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
+
+                        push @{$normdata_ref->{$searchfield}{$weight}}, OpenBib::Common::Util::grundform({
                             content  => $tag_ref->{tag},
                         });
                     }
@@ -655,7 +661,8 @@ while (my $line=<IN>){
             foreach my $litlist_ref (@{$listitemdata_litlists{$id}}){
                 if (exists $stammdateien_ref->{title}{inverted_ref}{litlist}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{litlist}->{index}}){
-                        push @{$normdata_ref->{$searchfield}}, OpenBib::Common::Util::grundform({
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{litlist}->{index}{$searchfield};
+                        push @{$normdata_ref->{$searchfield}{$weight}}, OpenBib::Common::Util::grundform({
                             content  => $litlist_ref->{title},
                         });
                     }
@@ -688,8 +695,26 @@ while (my $line=<IN>){
         # Zentrale Anreicherungsdaten lokal einspielen
         if ($local_enrichmnt && (exists $normdata_ref->{isbn13} || exists $normdata_ref->{issn})){
             foreach my $category (keys %{$conv_config->{local_enrichmnt}}){
-                my $enrichmnt_data_ref = (exists $normdata_ref->{isbn13} && exists $enrichmntdata{$normdata_ref->{isbn13}}{$category})?$enrichmntdata{$normdata_ref->{isbn13}}{$category}:
-                    (exists $normdata_ref->{issn} && exists $enrichmntdata{$normdata_ref->{issn}}{$category})?$enrichmntdata{$normdata_ref->{issn}}{$category}:undef;
+                my $enrichmnt_data_ref = [];
+                if    (exists $normdata_ref->{isbn13}){
+                    foreach my $weight (keys %{$normdata_ref->{isbn13}}){
+                        foreach my $isbn13 (@{$normdata_ref->{isbn13}{$weight}}){
+                            if (exists $enrichmntdata{$isbn13}{$category}){
+                                push @$enrichmnt_data_ref, @{$enrichmntdata{$isbn13}{$category}};
+                            }
+                        }
+                    }
+                }
+                elsif (exists $normdata_ref->{issn}){
+                    foreach my $weight (keys %{$normdata_ref->{issn}}){
+                        foreach my $issn (@{$normdata_ref->{issn}{$weight}}){
+                            if (exists $enrichmntdata{$issn}{$category}){
+                                push @$enrichmnt_data_ref, @{$enrichmntdata{$issn}{$category}};
+                            }
+                        }
+                    }
+                }
+                
                 if ($enrichmnt_data_ref){
                     my $indicator = 1;
                     foreach my $content (@{$enrichmnt_data_ref}){
@@ -725,7 +750,9 @@ while (my $line=<IN>){
                             
                             if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                                 foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
-                                    push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                                    my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
+
+                                    push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                                 }
                             }
 
@@ -762,10 +789,10 @@ while (my $line=<IN>){
 
                 if (!$have_journal){
                     if (! exists $normdata_ref->{mart} ){
-                        $normdata_ref->{mart} = [];
+                        $normdata_ref->{mart}{1} = [];
                     }
                     
-                    push @{$normdata_ref->{mart}}, "Zeitschrift/Serie";
+                    push @{$normdata_ref->{mart}{1}}, "Zeitschrift/Serie";
 
                     print OUT       "$id800$type_indicatorZeitschrift/Serie\n";
                     my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -792,10 +819,10 @@ while (my $line=<IN>){
 
                 if (!$have_article){
                     if (! exists $normdata_ref->{mart} ){
-                        $normdata_ref->{mart} = [];
+                        $normdata_ref->{mart}{1} = [];
                     }
 
-                    push @{$normdata_ref->{mart}}, "Aufsatz";
+                    push @{$normdata_ref->{mart}{1}}, "Aufsatz";
 
                     print OUT       "$id800$type_indicatorAufsatz\n";
                     my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -831,10 +858,10 @@ while (my $line=<IN>){
 
                 if (!$have_digital){
                     if (! exists $normdata_ref->{mart} ){
-                        $normdata_ref->{mart} = [];
+                        $normdata_ref->{mart}{1} = [];
                     }
 
-                    push @{$normdata_ref->{mart}}, "Digital";
+                    push @{$normdata_ref->{mart}{1}}, "Digital";
 
                     print OUT       "$id800$type_indicatorDigital\n";
                     my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -856,7 +883,7 @@ while (my $line=<IN>){
                 }
 
                 if (!$have_toc){
-                    push @{$normdata_ref->{mart}}, "mit Inhaltsverzeichnis";
+                    push @{$normdata_ref->{mart}{1}}, "mit Inhaltsverzeichnis";
 
                     print OUT       "$id800$type_indicatormit Inhaltsverzeichnis\n";
                     my $contentnormtmp = OpenBib::Common::Util::grundform({
@@ -878,11 +905,13 @@ while (my $line=<IN>){
             next if (exists $seen_person{$item});
 
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$normdata_ref->{'personid'}}, $item;
+            push @{$normdata_ref->{'personid'}{1}}, $item;
 
             if (exists $stammdateien_ref->{person}{data}{$item}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{person}{data}{$item}}){
-                    push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{person}{data}{$item}{$searchfield}};
+                    foreach my $weight (keys %{$stammdateien_ref->{person}{data}{$item}{$searchfield}}){                        
+                        push @{$normdata_ref->{$searchfield}{$weight}}, @{$stammdateien_ref->{person}{data}{$item}{$searchfield}{$weight}};
+                    }
                 }
             }
 
@@ -891,22 +920,26 @@ while (my $line=<IN>){
 
         foreach my $item (@corporatebody){
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$normdata_ref->{'corporatebodyid'}}, $item;
+            push @{$normdata_ref->{'corporatebodyid'}{1}}, $item;
 
             if (exists $stammdateien_ref->{corporatebody}{data}{$item}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{corporatebody}{data}{$item}}){
-                    push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{corporatebody}{data}{$item}{$searchfield}};
+                    foreach my $weight (keys %{$stammdateien_ref->{corporatebody}{data}{$item}{$searchfield}}){
+                        push @{$normdata_ref->{$searchfield}{$weight}}, @{$stammdateien_ref->{corporatebody}{data}{$item}{$searchfield}{$weight}};
+                    }
                 }
             }
         }
 
         foreach my $item (@subject){
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$normdata_ref->{'subjectid'}}, $item;
+            push @{$normdata_ref->{'subjectid'}{1}}, $item;
 
             if (exists $stammdateien_ref->{subject}{data}{$item}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{subject}{data}{$item}}){
-                    push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{subject}{data}{$item}{$searchfield}};
+                    foreach my $weight (keys %{$stammdateien_ref->{subject}{data}{$item}{$searchfield}}){
+                        push @{$normdata_ref->{$searchfield}{$weight}}, @{$stammdateien_ref->{subject}{data}{$item}{$searchfield}{$weight}};
+                    }
                 }
             }
         }
@@ -917,14 +950,18 @@ while (my $line=<IN>){
 
             if (exists $stammdateien_ref->{classification}{data}{$item}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{classification}{data}{$item}}){
-                    push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{classification}{data}{$item}{$searchfield}};
+                    foreach my $weight (keys %{$stammdateien_ref->{classification}{data}{$item}{$searchfield}}){
+                        push @{$normdata_ref->{$searchfield}{$weight}}, @{$stammdateien_ref->{classification}{data}{$item}{$searchfield}{$weight}};
+                    }
                 }
             }
         }
 
         if (exists $stammdateien_ref->{holding}{data}{$id}){
             foreach my $searchfield (keys %{$stammdateien_ref->{holding}{data}{$id}}){
-                push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{holding}{data}{$id}{$searchfield}};
+                foreach my $weight (keys %{$stammdateien_ref->{holding}{data}{$id}{$searchfield}}){
+                    push @{$normdata_ref->{$searchfield}}, @{$stammdateien_ref->{holding}{data}{$id}{$searchfield}{$weight}};
+                }
             }
         }
 
@@ -1035,7 +1072,7 @@ while (my $line=<IN>){
             print OUTSTRING "$id5051$bibkey_base\n" if (exists $stammdateien_ref->{title}{inverted_ref}->{'5051'}{string});
 
             # Bibkey merken fuer Recherche ueber Suchmaschine
-            push @{$normdata_ref->{'bkey'}}, $bibkey;
+            push @{$normdata_ref->{'bkey'}{1}}, $bibkey;
         }
 
         # Automatische Anreicherung mit Bestandsjahren wenn kein
@@ -1045,8 +1082,8 @@ while (my $line=<IN>){
             if (exists $listitemdata_enriched_years{$id}){
                 foreach my $year (@{$listitemdata_enriched_years{$id}}){
                     $logger->debug("Enriching year $year to Title-ID $id");
-                    push @{$normdata_ref->{year}}, $year;
-                    push @{$normdata_ref->{freesearch}}, $year;
+                    push @{$normdata_ref->{year}{1}}, $year;
+                    push @{$normdata_ref->{freesearch}{1}}, $year;
                 }
             }
         } 
@@ -1130,7 +1167,9 @@ while (my $line=<IN>){
 
             if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
-                    push @{$normdata_ref->{$searchfield}}, $targetid;
+                    my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
+
+                    push @{$normdata_ref->{$searchfield}{$weight}}, $targetid;
                 }
             }
             
@@ -1193,11 +1232,13 @@ while (my $line=<IN>){
                 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){                    
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
+
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1268,11 +1309,12 @@ while (my $line=<IN>){
                 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1337,11 +1379,12 @@ while (my $line=<IN>){
                 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1406,11 +1449,12 @@ while (my $line=<IN>){
                 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1475,11 +1519,12 @@ while (my $line=<IN>){
                     
                     if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){                    
                         foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                            my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                             my $contentnormtmp = OpenBib::Common::Util::grundform({
                                 category => $category,
                                 content  => $content,
                             });
-                            push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                            push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                         }
                     }
                     
@@ -1505,11 +1550,12 @@ while (my $line=<IN>){
                     
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){                    
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
                 
@@ -1563,11 +1609,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1617,11 +1664,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1681,11 +1729,12 @@ while (my $line=<IN>){
                     
                     if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                         foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                            my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                             my $contentnormtmp = OpenBib::Common::Util::grundform({
                                 category => $category,
                                 content  => $content,
                             });
-                            push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                            push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                         }
                     }
                     
@@ -1711,11 +1760,12 @@ while (my $line=<IN>){
                     
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
                 
@@ -1758,11 +1808,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1810,11 +1861,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1862,11 +1914,12 @@ while (my $line=<IN>){
                 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1914,11 +1967,12 @@ while (my $line=<IN>){
                 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -1966,11 +2020,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -2018,11 +2073,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -2070,11 +2126,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -2122,11 +2179,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -2174,11 +2232,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{weight}}, $contentnormtmp;
                     }
                 }
 
@@ -2226,11 +2285,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -2278,11 +2338,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -2330,11 +2391,12 @@ while (my $line=<IN>){
 
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                        my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                         my $contentnormtmp = OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $content,
                         });
-                        push @{$normdata_ref->{$searchfield}}, $contentnormtmp;
+                        push @{$normdata_ref->{$searchfield}{$weight}}, $contentnormtmp;
                     }
                 }
 
@@ -2360,6 +2422,7 @@ while (my $line=<IN>){
 
             if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{index}}){
+                    my $weight = $stammdateien_ref->{title}{inverted_ref}{$category}->{index}{$searchfield};
                     if ($searchfield eq "isbn"){
                         # Alternative ISBN zur Rechercheanreicherung erzeugen
                         my $isbn = Business::ISBN->new($contentnorm);
@@ -2374,18 +2437,18 @@ while (my $line=<IN>){
                             }
                             
                             if (defined $isbnXX){
-                                if (!exists $normdata_ref->{isbn13}){
+                                if (!exists $normdata_ref->{isbn13}{1}){
                                     my $isbn13 = OpenBib::Common::Util::grundform({
                                         category => $category,
                                         content  => $isbnXX->as_isbn13->as_string,
                                     });
-                                    $normdata_ref->{isbn13} = $isbn13;
-                                    push @{$normdata_ref->{fs}}, $contentnorm;
+                                    push @{$normdata_ref->{isbn13}{1}}, $isbn13;
+                                    push @{$normdata_ref->{freesearch}{1}}, $contentnorm;
                                 }
                             }
                         }
                     }
-                    push @{$normdata_ref->{$searchfield}}, $contentnorm;
+                    push @{$normdata_ref->{$searchfield}{$weight}}, $contentnorm;
                 }
             }
 

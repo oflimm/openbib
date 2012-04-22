@@ -14,24 +14,24 @@
   width: 990px;
 }
 .cloud .fast-nicht-genutzt {
-  font-size: 1,4em;
+  font-size: 0.9em;
 }
 .cloud .nicht-sehr-genutzt {
-  font-size: 2.0em;
+  font-size: 1.2em;
 }
 .cloud .etwas-genutzt {
-  font-size: 2.6em;
+  font-size: 1.3em;
 }
 .cloud .genutzt {
-  font-size: 3em;
+  font-size: 1.6em;
 }
 .cloud .sehr-viel-genutzt {
-  font-size: 3.8em;
+  font-size: 1.9m;
 }
 .cloud .ultra-genutzt {
-  font-size: 4.4em;
+  font-size: 2.5em;
 }
 .cloud .am-meisten-genutzt {
-  font-size: 4.8em;
+  font-size: 3em;
 }
 </style>

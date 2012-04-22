@@ -11,9 +11,17 @@
 #
 #######################################################################
 -%]
-[%# USE dumper;dumper.dump(recent_tags)%]
+[%-
+   viewdbs = config.get_dbs_of_view(view);
+
+   IF viewdbs.size == 1 ;
+      lasttags = user.get_recent_tags({count => 5, database => viewdbs.first }) ;
+   ELSE ;
+      lasttags = user.get_recent_tags({count => 5 }) ;
+   END ;
+-%]
 <ul class="subjectlist">
-[%- FOREACH thistag IN recent_tags -%]
+[%- FOREACH thistag IN lasttags -%]
 <li><a href="http://wwwtest.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/526/tag/index_ger.html?id=[% thistag.id %]">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
 [% END %]
 </ul>

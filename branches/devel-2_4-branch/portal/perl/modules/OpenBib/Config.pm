@@ -2128,6 +2128,38 @@ sub get_logintarget_by_id {
     return $logintarget_ref;
 }
 
+sub get_logintarget_self {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    # DBI: "select * from logintarget where type = ?"
+    my $logintarget = $self->{schema}->resultset('Logintarget')->single(
+        {
+            type => 'self',
+        },
+    );
+
+    my $logintarget_ref = {};
+    
+    if ($logintarget){
+        $logintarget_ref = {
+            id          => $logintarget->id,
+            hostname    => $logintarget->hostname,
+            port        => $logintarget->port,
+            user        => $logintarget->user,
+            db          => $logintarget->db,
+            description => $logintarget->description,
+            type        => $logintarget->type,
+        };
+    }
+
+    $logger->debug("Getting Info for Type self:  -> Got: ".YAML::Dump($logintarget_ref));
+    return $logintarget_ref;
+}
+
 sub get_number_of_logintargets {
     my ($self)=@_;
 

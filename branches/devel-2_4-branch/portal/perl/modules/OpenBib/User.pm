@@ -76,7 +76,7 @@ sub new {
     }
     elsif (defined $id) {
         $self->{ID} = $id ;
-        $logger->debug("Got UserID $id - NO session assiziated");
+        $logger->debug("Got UserID $id - NO session assoziated");
     }
 
     return $self;
@@ -3235,6 +3235,11 @@ sub connect_session {
   
     my $logger = get_logger();
 
+    if (!$sessionID){
+        $logger->debug("No SessionID given. Can't connect session to userid $userid");
+        return;        
+    }
+    
     # Es darf keine Session assoziiert sein. Daher stumpf loeschen
 
     # DBI: "delete from user_session where sessionid = ?"

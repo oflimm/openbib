@@ -678,76 +678,93 @@ sub get_items_in_collection {
             'sid.sessionid' => $self->{ID},
         },
         {
-            select => [ 'me.dbname', 'me.titleid' ],
-            as     => [ 'thisdbname', 'thistitleid' ],
+            select => [ 'me.dbname', 'me.titleid', 'me.titlecache', 'me.id' ],
+            as     => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid' ],
             join   => 'sid'
         }
     );
 
     foreach my $item ($items->all){
-        my $database = $item->get_column('thisdbname');
-        my $titleid  = $item->get_column('thistitleid');
+        my $database   = $item->get_column('thisdbname');
+        my $titleid    = $item->get_column('thistitleid');
+        my $titlecache = $item->get_column('thistitlecache');
+        my $listid     = $item->get_column('thislistid');
 
-        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $titleid}));
+        if ($database && $titleid){
+            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid}));
+        }
+        elsif ($titlecache) {
+            my $record = new OpenBib::Record::Title({listid => $listid});
+            $record->set_brief_normdata_from_json($titlecache);
+            $recordlist->add($record);
+        }
     }
 
     return $recordlist;
 }
 
-sub set_item_in_collection {
+sub add_item_to_collection {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $database  = exists $arg_ref->{database}
+    my $database        = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
 
-    my $id        = exists $arg_ref->{id}
+    my $id              = exists $arg_ref->{id}
         ? $arg_ref->{id}                 : undef;
 
+    my $json            = exists $arg_ref->{json}
+        ? $arg_ref->{json}                 : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if (!$database || !$id){
-        return;
+    if ($database && $id){
+        my $count = $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->count;
+        
+        if (!$count) {
+            my $record        = new OpenBib::Record::Title({ database => $database , id => $id});
+            my $cached_title  = $record->load_full_record->to_json;
+            
+            $logger->debug("Adding Title to Collection: $cached_title");
+            
+            # DBI: "insert into treffer values (?,?,?,?)"
+            $self->{schema}->resultset('Sessioncollection')->create( { sid => $self->{sid}, dbname => $database, titleid => $id, titlecache => $cached_title });
+        }
     }
-
-    my $count = $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->count;
-    
-    if (!$count) {
-        my $record        = new OpenBib::Record::Title({ database => $database , id => $id});
-        my $cached_title  = $record->load_full_record->to_json;
-
-        $logger->debug("Adding Title to Collection: $cached_title");
-
-        # DBI: "insert into treffer values (?,?,?,?)"
-        $self->{schema}->resultset('Sessioncollection')->create( { sid => $self->{sid}, dbname => $database, titleid => $id, titlecache => $cached_title });
+    elsif ($json){
+        my $count = $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.titlecache' => $json },{ join => 'sid' })->count;
+        
+        if (!$count) {
+            $logger->debug("Adding Title to Collection: $json");
+            
+            # DBI: "insert into treffer values (?,?,?,?)"
+            $self->{schema}->resultset('Sessioncollection')->create( { sid => $self->{sid}, titlecache => $json });
+        }
     }
 
     return;
 }
 
-sub clear_item_in_collection {
+sub delete_item_from_collection {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $database  = exists $arg_ref->{database}
-        ? $arg_ref->{database}           : undef;
-
     my $id        = exists $arg_ref->{id}
         ? $arg_ref->{id}                 : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if (!$database || !$id){
+    if (!$id){
         return;
     }
 
-    $logger->debug("Deleting item $database - $id");
+    $logger->debug("Deleting item $id");
 
     eval {
         # DBI: "delete from treffer where sessionid = ? and dbname = ? and singleidn = ?"
-        $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.dbname' => $database, 'me.titleid' => $id },{ join => 'sid' })->single->delete;
+        $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.id' => $id },{ join => 'sid' })->single->delete;
     };
 
     return;

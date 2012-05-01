@@ -1,5 +1,5 @@
 # Versionsnummer
-version: OpenBib v2.4alpha2
+version: OpenBib v2.4alpha
 
 # Unter diesem Namen wird der lokale Server angesprochen
 servername: localhost
@@ -393,6 +393,14 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Title'
      rule: '/portal/:view/title/:database/:titleid[get]'
      runmode: 'show_record'
+     args:
+        personalized_loc: 'title'        
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/user/:userid/title/:database/:titleid[get]'
+     runmode: 'show_record'
+     args:
+        disable_content_negotiation: 1        
   - # title_loc:
      module: 'OpenBib::Handler::Apache::Title'
      rule: '/portal/:view/title/:database/:titleid/edit.html[get]'
@@ -1239,23 +1247,23 @@ dispatch_rules:
      runmode: 'create_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:database/:id[get]'
+     rule: '/portal/:view/collection/:id[get]'
      runmode: 'show_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:database/:id/edit[get]'
+     rule: '/portal/:view/collection/:id/edit[get]'
      runmode: 'edit_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:database/:id/edit.html[get]'
+     rule: '/portal/:view/collection/:id/edit.html[get]'
      runmode: 'edit_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:database/:id[put]'
+     rule: '/portal/:view/collection/:id[put]'
      runmode: 'update_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:database/:id[delete]'
+     rule: '/portal/:view/collection/:id[delete]'
      runmode: 'delete_record'
   - # redirect_loc:
      module: 'OpenBib::Handler::Apache::Redirect'
@@ -2107,7 +2115,7 @@ searchfield:
      'type': 'ft'
   'year': # fest inkl. prefix
      'prefix': 'year'
-     'type': 'ft'
+     'type': 'integer'
   'subid':
      'prefix': 'fsub'
      'type': 'id'
@@ -2142,9 +2150,6 @@ searchfield:
      'type': 'string'
   'markstring':
      'prefix': 'fmark'
-     'type': 'string'
-  'yearstring':
-     'prefix': 'fyear'
      'type': 'string'
   'dbstring':
      'prefix': 'fdb'

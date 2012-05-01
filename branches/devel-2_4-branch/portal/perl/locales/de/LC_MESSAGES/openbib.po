@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2012-03-29 11:27+0200\n"
+"PO-Revision-Date: 2012-04-30 14:37+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -119,7 +119,7 @@ msgid "%1 Titel"
 msgstr "%1 Titel"
 
 #. (titlecount,thisclassifications.size,subject.litlistcount.public)
-#: ../templates/info_53:55 ../templates/searchform_simple:405
+#: ../templates/info_53:55 ../templates/searchform_simple:316
 #: ../templates/views/richter/searchform_simple:494
 msgid "%1 Titel in %2 Gruppen, %3 Literaturlisten"
 msgstr "%1 Titel in %2 Gruppen, %3 Literaturlisten"
@@ -546,6 +546,7 @@ msgid "Abgleich zu BibSonomy"
 msgstr "Abgleich zu BibSonomy"
 
 #: ../templates/corporate_banner:7
+#: ../templates/views/richter/corporate_banner:7
 msgid "Abmelden"
 msgstr "Abmelden"
 
@@ -597,7 +598,7 @@ msgid "Aktiv"
 msgstr "Aktiv"
 
 #: ../templates/profile/usb/drilldown_categorized:140
-#: ../templates/search_facet:155
+#: ../templates/search_facet:157
 #: ../templates/views/richter/drilldown_categorized:140
 msgid "Aktive Filter"
 msgstr "Aktive Filter"
@@ -607,7 +608,6 @@ msgstr "Aktive Filter"
 msgid "Aktivieren Sie ihre Kennung"
 msgstr "Aktivieren Sie ihre Kennung"
 
-#: ../templates/resultlists_choice:54
 #: ../templates/views/richter/resultlists_choice:54
 msgid "Aktuelle Recherche"
 msgstr "Aktuelle Recherche"
@@ -624,7 +624,7 @@ msgstr "Alle &ouml;ffentlichen Literaturlisten"
 msgid "Alle Datenbanken"
 msgstr "Alle Datenbanken"
 
-#: ../templates/collection_html_short:29
+#: ../templates/collection_html_short:23
 #: ../templates/views/richter/collection_html_short:29
 msgid "Alle Eintr&auml;ge ausw&auml;hlen"
 msgstr "Alle Eintr&auml;ge ausw&auml;hlen"
@@ -639,10 +639,10 @@ msgstr "Alle Fachgebiete"
 msgid "Alle Formate"
 msgstr "Alle Formate"
 
-#: ../templates/databasechoice:72
+#: ../templates/databasechoice:67
 #: ../templates/profile/usb/searchform_query:154
-#: ../templates/searchform_profile:16 ../templates/searchform_query:154
-#: ../templates/user_profile_edit:75 ../templates/user_profile_html:91
+#: ../templates/searchform_profile:16 ../templates/user_profile_edit:75
+#: ../templates/user_profile_html:91
 #: ../templates/views/richter/searchform_simple:162
 #: ../templates/views/richter/searchform_simple:253
 #: ../templates/views/richter/searchform_simple:346
@@ -662,7 +662,6 @@ msgstr "Alle Listen"
 msgid "Alle Titel zum Tag"
 msgstr "Alle Titel zum Tag"
 
-#: ../templates/resultlists_choice:117
 #: ../templates/views/richter/resultlists_choice:117
 msgid "Alle Treffer"
 msgstr "Alle Treffer"
@@ -763,7 +762,7 @@ msgstr "Also:"
 msgid "An"
 msgstr "An"
 
-#: ../templates/collection_html_short:147
+#: ../templates/collection_html_short:144
 #: ../templates/database/alff/search_showtitlist:159
 #: ../templates/database/alff/search_showtitlist_of_cnt:159
 #: ../templates/database/alff/virtualsearch_result_item:143
@@ -868,6 +867,7 @@ msgid "Anleitung"
 msgstr "Anleitung"
 
 #: ../templates/corporate_banner:9
+#: ../templates/views/richter/corporate_banner:9
 msgid "Anmelden"
 msgstr "Anmelden"
 
@@ -1103,7 +1103,7 @@ msgid "Anzeigen"
 msgstr "Anzeigen"
 
 #: ../templates/profile/usb/drilldown_categorized:442
-#: ../templates/search_facet:452
+#: ../templates/search_facet:454
 #: ../templates/views/richter/drilldown_categorized:444
 msgid "Arabisch"
 msgstr "Arabisch"
@@ -1193,7 +1193,6 @@ msgstr "Ausgeliehen"
 msgid "Ausgew&auml;hlte Kataloge"
 msgstr "Ausgew&auml;hlte Kataloge"
 
-#: ../templates/resultlists_choice:52
 #: ../templates/views/richter/resultlists_choice:52
 msgid "Ausgew&auml;hlte Recherche"
 msgstr "Ausgew&auml;hlte Recherche"
@@ -1287,7 +1286,7 @@ msgstr "Ausleihstatus"
 msgid "Ausleihsystem"
 msgstr "Ausleihsystem"
 
-#: ../templates/databasechoice:121 ../templates/databasechoice:65
+#: ../templates/databasechoice:116
 #: ../templates/views/richter/user_profile_edit:123
 #: ../templates/views/richter/user_profile_edit:67
 msgid "Auswählen"
@@ -1322,9 +1321,6 @@ msgid "Beginn"
 msgstr "Beginn"
 
 #: ../templates/profile/usb/searchform_query:166
-#: ../templates/searchform_query:166 ../templates/searchform_simple:165
-#: ../templates/searchform_simple:230 ../templates/searchform_simple:297
-#: ../templates/searchform_simple:365
 #: ../templates/views/richter/searchform_simple:174
 #: ../templates/views/richter/searchform_simple:265
 #: ../templates/views/richter/searchform_simple:358
@@ -1514,7 +1510,7 @@ msgid "Benutzer"
 msgstr "Benutzer"
 
 #: ../templates/profile/usb/searchform_query:148
-#: ../templates/searchform_profile:10 ../templates/searchform_query:148
+#: ../templates/searchform_profile:10
 #: ../templates/views/richter/searchform_simple:156
 #: ../templates/views/richter/searchform_simple:247
 #: ../templates/views/richter/searchform_simple:340
@@ -1847,11 +1843,11 @@ msgstr ""
 msgid "Bisher haben Sie noch keine Tags vergeben."
 msgstr "Bisher haben Sie noch keine Tags vergeben."
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:266
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:257
 msgid "Bitte authentifizieren Sie sich unter Mein KUG."
 msgstr "Bitte authentifizieren Sie sich unter Mein KUG."
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:573
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:560
 msgid "Bitte authentifizieren Sie sich unter Mein OpenBib."
 msgstr "Bitte authentifizieren Sie sich unter Mein OpenBib."
 
@@ -1915,7 +1911,7 @@ msgid "C5000"
 msgstr "Anzahl Titel"
 
 #: ../templates/profile/usb/drilldown_categorized:441
-#: ../templates/search_facet:451
+#: ../templates/search_facet:453
 #: ../templates/views/richter/drilldown_categorized:443
 msgid "Chinesisch"
 msgstr "Chinesisch"
@@ -2166,7 +2162,7 @@ msgstr ""
 msgid "Der Titel ist hier abholbar"
 msgstr "Der Titel ist hier abholbar"
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:600
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:587
 msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 msgstr "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 
@@ -2193,8 +2189,8 @@ msgstr "Derzeit werden folgende externe Recherchequellen angeboten:"
 #: ../templates/profile/usb/drilldown_categorized:410
 #: ../templates/profile/usb/drilldown_categorized:411
 #: ../templates/profile/usb/drilldown_categorized:412
-#: ../templates/search_facet:420 ../templates/search_facet:421
-#: ../templates/search_facet:422
+#: ../templates/search_facet:422 ../templates/search_facet:423
+#: ../templates/search_facet:424
 #: ../templates/views/richter/drilldown_categorized:412
 #: ../templates/views/richter/drilldown_categorized:413
 #: ../templates/views/richter/drilldown_categorized:414
@@ -2296,7 +2292,7 @@ msgstr ""
 #: ../modules/OpenBib/Handler/Apache/CorporateBody.pm:125
 #: ../modules/OpenBib/Handler/Apache/Person.pm:125
 #: ../modules/OpenBib/Handler/Apache/Subject.pm:125
-#: ../modules/OpenBib/Handler/Apache/Title.pm:309
+#: ../modules/OpenBib/Handler/Apache/Title.pm:324
 msgid "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 msgstr "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 
@@ -2360,7 +2356,7 @@ msgstr ""
 "wahrscheinlich am 8. November 1942 starb."
 
 #: ../templates/profile/usb/drilldown_categorized:478
-#: ../templates/search_facet:488
+#: ../templates/search_facet:490
 #: ../templates/views/richter/drilldown_categorized:480
 msgid ""
 "Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine\n"
@@ -2805,7 +2801,7 @@ msgid "Einfache Recherchemaske"
 msgstr "Einfache Recherchemaske"
 
 #: ../templates/profile/usb/searchform_query:166
-#: ../templates/searchform_query:166
+#: ../templates/searchform_query:145
 msgid "Einfache Suche"
 msgstr "Einfache Suche"
 
@@ -2820,7 +2816,7 @@ msgid "Eingabe neuer Tags"
 msgstr "Eingabe neuer Tags"
 
 #: ../templates/profile/usb/searchform_query:138
-#: ../templates/searchform_query:138
+#: ../templates/searchform_query:140
 #: ../templates/views/richter/searchform_query:138
 msgid "Eingrenzung auf Gesamttitel (Serien)"
 msgstr "Eingrenzung auf Gesamttitel (Serien)"
@@ -2966,8 +2962,8 @@ msgstr "Ende"
 #: ../templates/profile/usb/drilldown_categorized:413
 #: ../templates/profile/usb/drilldown_categorized:414
 #: ../templates/profile/usb/drilldown_categorized:415
-#: ../templates/search_facet:423 ../templates/search_facet:424
-#: ../templates/search_facet:425
+#: ../templates/search_facet:425 ../templates/search_facet:426
+#: ../templates/search_facet:427
 #: ../templates/views/richter/drilldown_categorized:415
 #: ../templates/views/richter/drilldown_categorized:416
 #: ../templates/views/richter/drilldown_categorized:417
@@ -2996,12 +2992,12 @@ msgid "Entdecken Sie weitere Titel &uuml;ber:"
 msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 
 #: ../templates/collection_html_actions:110
-#: ../templates/collection_html_short:148
+#: ../templates/collection_html_short:145
 #: ../templates/database/openlibrary/titlist_item_html_short:189
 #: ../templates/database/openlibrary/titlist_item_html_short:192
 #: ../templates/profile/usb/drilldown_categorized:166
 #: ../templates/review_edit:201 ../templates/review_edit:204
-#: ../templates/search_facet:181 ../templates/titlist_item_html_short:189
+#: ../templates/search_facet:183 ../templates/titlist_item_html_short:189
 #: ../templates/titlist_item_html_short:192
 #: ../templates/user_litlist_collection_html:89
 #: ../templates/user_profile_collection_html:97
@@ -3102,8 +3098,8 @@ msgstr "Erscheinungsverlauf  "
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
-#: ../templates/searchform_simple:165 ../templates/searchform_simple:230
-#: ../templates/searchform_simple:297 ../templates/searchform_simple:365
+#: ../templates/searchform_simple:161 ../templates/searchform_simple:204
+#: ../templates/searchform_simple:248 ../templates/searchform_simple:293
 #: ../templates/views/richter/searchform_simple:174
 #: ../templates/views/richter/searchform_simple:265
 #: ../templates/views/richter/searchform_simple:358
@@ -3283,7 +3279,7 @@ msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
-#: ../modules/OpenBib/Handler/Apache.pm:629
+#: ../modules/OpenBib/Handler/Apache.pm:730
 #: ../modules/OpenBib/RecordList/Title.pm:325
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
@@ -3293,7 +3289,6 @@ msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
 
 #: ../templates/search_title_end:19
-#: ../templates/views/richter/search_title_end:19
 msgid "Es wurden keine Treffer gefunden"
 msgstr "Es wurden keine Treffer gefunden"
 
@@ -3400,7 +3395,6 @@ msgid "Fachgebiet"
 msgstr "Fachgebiet"
 
 #: ../templates/profile/usb/searchform_query:155
-#: ../templates/searchform_query:155
 #: ../templates/views/richter/searchform_simple:254
 #: ../templates/views/richter/searchform_simple:347
 #: ../templates/views/richter/searchform_simple:441
@@ -3484,7 +3478,7 @@ msgid "Film ohne Ton"
 msgstr "Film ohne Ton"
 
 #: ../templates/profile/usb/drilldown_categorized:440
-#: ../templates/search_facet:450
+#: ../templates/search_facet:452
 #: ../templates/views/richter/drilldown_categorized:442
 msgid "Finnisch"
 msgstr "Finnisch"
@@ -3509,8 +3503,8 @@ msgstr "Franz&ouml;sische Wikipedia"
 #: ../templates/profile/usb/drilldown_categorized:416
 #: ../templates/profile/usb/drilldown_categorized:417
 #: ../templates/profile/usb/drilldown_categorized:418
-#: ../templates/search_facet:426 ../templates/search_facet:427
-#: ../templates/search_facet:428
+#: ../templates/search_facet:428 ../templates/search_facet:429
+#: ../templates/search_facet:430
 #: ../templates/views/richter/drilldown_categorized:418
 #: ../templates/views/richter/drilldown_categorized:419
 #: ../templates/views/richter/drilldown_categorized:420
@@ -3520,7 +3514,7 @@ msgstr "Französisch"
 #: ../templates/admin_statistic_query_html:81
 #: ../templates/profile/sammlungen/searchmask_query:66
 #: ../templates/profile/sammlungen/views/inst404abklatsch/searchmask_query:65
-#: ../templates/profile/usb/searchform_query:69
+#: ../templates/profile/usb/searchform_query:69 ../templates/search_history:51
 #: ../templates/searchform_query:69 ../templates/user_preferences_html:276
 #: ../templates/views/richter/searchform_query:69
 #: ../templates/views/richter/user_preferences_html:276
@@ -3545,10 +3539,6 @@ msgstr "Freie Suche"
 #: ../templates/profile/sammlungen/views/syndikatsbibliothek/searchmask_simple:131
 #: ../templates/profile/sammlungen/views/wallraf/searchmask:131
 #: ../templates/profile/sammlungen/views/wallraf/searchmask_simple:131
-#: ../templates/searchform:119 ../templates/searchform_simple:173
-#: ../templates/searchform_simple:239 ../templates/searchform_simple:306
-#: ../templates/searchform_simple:374
-#: ../templates/views/richter/searchform:119
 #: ../templates/views/richter/searchform_simple:182
 #: ../templates/views/richter/searchform_simple:274
 #: ../templates/views/richter/searchform_simple:367
@@ -3557,8 +3547,8 @@ msgid "Frühere Recherchen"
 msgstr "Frühere Recherchen"
 
 #. ("<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>")
-#: ../templates/searchform_simple:187 ../templates/searchform_simple:254
-#: ../templates/searchform_simple:321 ../templates/searchform_simple:389
+#: ../templates/searchform_simple:168 ../templates/searchform_simple:211
+#: ../templates/searchform_simple:255 ../templates/searchform_simple:300
 #: ../templates/views/richter/searchform_simple:196
 #: ../templates/views/richter/searchform_simple:289
 #: ../templates/views/richter/searchform_simple:382
@@ -3665,7 +3655,7 @@ msgstr ""
 
 #: ../templates/profile/usb/drilldown_categorized:421
 #: ../templates/profile/usb/drilldown_categorized:422
-#: ../templates/search_facet:431 ../templates/search_facet:432
+#: ../templates/search_facet:433 ../templates/search_facet:434
 #: ../templates/views/richter/drilldown_categorized:423
 #: ../templates/views/richter/drilldown_categorized:424
 msgid "Griechisch"
@@ -3786,9 +3776,9 @@ msgstr ""
 #: ../templates/profile/sammlungen/searchmask_query:110
 #: ../templates/profile/sammlungen/views/inst404abklatsch/searchmask_query:78
 #: ../templates/profile/usb/searchform_query:164
-#: ../templates/searchform_query:164 ../templates/searchform_simple:162
-#: ../templates/searchform_simple:227 ../templates/searchform_simple:294
-#: ../templates/searchform_simple:362
+#: ../templates/searchform_query:143 ../templates/searchform_simple:158
+#: ../templates/searchform_simple:201 ../templates/searchform_simple:245
+#: ../templates/searchform_simple:290
 #: ../templates/views/richter/searchform_query:140
 #: ../templates/views/richter/searchform_simple:147
 #: ../templates/views/richter/searchform_simple:238
@@ -3814,7 +3804,7 @@ msgstr "Hilfe"
 #: ../templates/person_html:125 ../templates/person_include:73
 #: ../templates/profile/usb/drilldown_categorized:475
 #: ../templates/registration:46 ../templates/rssfeeds_html:48
-#: ../templates/search_facet:485 ../templates/subject_html:108
+#: ../templates/search_facet:487 ../templates/subject_html:108
 #: ../templates/views/richter/corporatebody_html:100
 #: ../templates/views/richter/drilldown_categorized:477
 #: ../templates/views/richter/mailpassword:47
@@ -4530,7 +4520,7 @@ msgstr "Informationen zur Zeitschrift"
 #: ../templates/person_include:22
 #: ../templates/profile/sammlungen/views/inst404abklatsch/search_showkorset:32
 #: ../templates/profile/sammlungen/views/inst404abklatsch/search_showswtset:33
-#: ../templates/subject_html:57
+#: ../templates/search_history:54 ../templates/subject_html:57
 #: ../templates/views/richter/classification_html:56
 #: ../templates/views/richter/collection_html_simple:42
 #: ../templates/views/richter/corporatebody_html:55
@@ -4636,14 +4626,14 @@ msgid "Inventarnummer       "
 msgstr "Inventarnummer       "
 
 #: ../templates/profile/usb/drilldown_categorized:439
-#: ../templates/search_facet:449
+#: ../templates/search_facet:451
 #: ../templates/views/richter/drilldown_categorized:441
 msgid "Isländisch"
 msgstr "Isländisch"
 
 #: ../templates/profile/usb/drilldown_categorized:426
 #: ../templates/profile/usb/drilldown_categorized:427
-#: ../templates/search_facet:436 ../templates/search_facet:437
+#: ../templates/search_facet:438 ../templates/search_facet:439
 #: ../templates/views/richter/drilldown_categorized:428
 #: ../templates/views/richter/drilldown_categorized:429
 msgid "Italienisch"
@@ -4702,8 +4692,9 @@ msgstr "Ja"
 #: ../templates/cloud_navigation:34
 #: ../templates/profile/sammlungen/searchmask_query:106
 #: ../templates/profile/usb/drilldown_categorized:150
-#: ../templates/profile/usb/searchform_query:135 ../templates/search_facet:165
-#: ../templates/searchform_query:135 ../templates/subnavigation:50
+#: ../templates/profile/usb/searchform_query:135 ../templates/search_facet:167
+#: ../templates/search_history:61 ../templates/search_history:73
+#: ../templates/searchform_query:137 ../templates/subnavigation:50
 #: ../templates/subnavigation:52
 #: ../templates/views/richter/drilldown_categorized:150
 #: ../templates/views/richter/searchform_query:135
@@ -4712,18 +4703,27 @@ msgstr "Ja"
 msgid "Jahr"
 msgstr "Jahr"
 
+#: ../templates/search_history:63
+msgid "Jahr bis"
+msgstr "Jahr bis"
+
+#: ../templates/search_history:62
+msgid "Jahr von"
+msgstr "Jahr von"
+
 #: ../templates/clouds_navigation:15
 msgid "Jahre"
 msgstr "Jahre"
 
 #: ../templates/profile/usb/drilldown_categorized:432
-#: ../templates/search_facet:442
+#: ../templates/search_facet:444
 #: ../templates/views/richter/drilldown_categorized:434
 msgid "Japanisch"
 msgstr "Japanisch"
 
 #: ../templates/profile/usb/drilldown_categorized:145
-#: ../templates/search_facet:160
+#: ../templates/search_facet:162 ../templates/search_history:56
+#: ../templates/search_history:68
 #: ../templates/views/richter/drilldown_categorized:145
 msgid "K&ouml;perschaft"
 msgstr "K&ouml;perschaft"
@@ -4766,12 +4766,13 @@ msgstr "Kartenkatalog Philosoph. Fakultät"
 msgid "Kartenkataloge der Philosophischen Fakultät"
 msgstr "Kartenkataloge der Philosophischen Fakultät"
 
+#: ../templates/collection_html_short:134
 #: ../templates/database/openlibrary/titlist_item_html_short:174
 #: ../templates/profile/mobile/views/richtermobile/titlist_item_html_short:152
 #: ../templates/profile/usb/titlist_item_html_short:178
-#: ../templates/resultlists_choice:116 ../templates/review_edit:189
-#: ../templates/search_facet:158 ../templates/title_popular_html:163
-#: ../templates/title_popular_include:157
+#: ../templates/review_edit:189 ../templates/search_facet:160
+#: ../templates/search_history:53 ../templates/search_history:66
+#: ../templates/title_popular_html:163 ../templates/title_popular_include:157
 #: ../templates/titlist_item_html_short:174
 #: ../templates/views/richter/resultlists_choice:116
 #: ../templates/views/richter/titlist_item_html_short:174
@@ -4984,7 +4985,7 @@ msgstr "L&ouml;schung des ausgew&auml;hlten Profils"
 
 #: ../templates/profile/usb/drilldown_categorized:419
 #: ../templates/profile/usb/drilldown_categorized:420
-#: ../templates/search_facet:429 ../templates/search_facet:430
+#: ../templates/search_facet:431 ../templates/search_facet:432
 #: ../templates/views/richter/drilldown_categorized:421
 #: ../templates/views/richter/drilldown_categorized:422
 msgid "Latein"
@@ -5001,7 +5002,7 @@ msgstr "Lebenslauf"
 msgid "Legen Sie Literaturlisten an und vergeben Sie Tags"
 msgstr "Legen Sie Literaturlisten an und vergeben Sie Tags"
 
-#: ../templates/cloud_year_html:86 ../templates/cloud_year_include:51
+#: ../templates/cloud_year_include:51
 #: ../templates/profile/mobile/views/richtermobile/cloud_year_html:109
 #: ../templates/profile/sammlungen/info_9:73
 #: ../templates/profile/sammlungen/views/inst404abklatsch/info_9:73
@@ -5013,6 +5014,14 @@ msgid ""
 msgstr ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine\n"
 "Wolke der Erscheinungsjahre anbieten."
+
+#: ../templates/cloud_year_html:87
+msgid ""
+"Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der "
+"Erscheinungsjahre anbieten."
+msgstr ""
+"Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der "
+"Erscheinungsjahre anbieten."
 
 #: ../templates/cloud_corporatebody_html:88
 #: ../templates/cloud_corporatebody_include:52
@@ -5034,7 +5043,7 @@ msgstr ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe diese Kategorie anbieten."
 
-#: ../templates/cloud_classification_html:87
+#: ../templates/cloud_classification_html:88
 #: ../templates/cloud_classification_include:51
 #: ../templates/profile/sammlungen/info_16:76
 #: ../templates/profile/usb/cloud_classification_include:50
@@ -5098,7 +5107,8 @@ msgstr "Listen-Ansicht"
 #: ../templates/database/einbaende/search_showtitset_1:613
 #: ../templates/database/umschlaege/search_showtitset:602
 #: ../templates/profile/usb/drilldown_categorized:152
-#: ../templates/search_facet:167 ../templates/title_html:110
+#: ../templates/search_facet:169 ../templates/search_history:65
+#: ../templates/search_history:75 ../templates/title_html:110
 #: ../templates/title_include:379
 #: ../templates/views/richter/collection_html_actions:20
 #: ../templates/views/richter/drilldown_categorized:152
@@ -5132,7 +5142,6 @@ msgid "LiveSearch"
 msgstr "LiveSearch"
 
 #: ../templates/login_circulation:44
-#: ../templates/views/richter/corporate_banner:8
 msgid "Login"
 msgstr "Login"
 
@@ -5193,7 +5202,6 @@ msgstr "Lokale Signatur      "
 #: ../templates/views/richter/collection_html_actions:47
 #: ../templates/views/richter/title_html:123
 #: ../templates/views/richter/title_html:136
-#: ../templates/views/richter/titlist_options:39
 #: ../templates/views/richter/user_preferences_html:258
 msgid "Los"
 msgstr "Los"
@@ -5215,7 +5223,6 @@ msgid "Löschen"
 msgstr "Löschen"
 
 #: ../templates/search_title_end:21
-#: ../templates/views/richter/search_title_end:21
 msgid "M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?"
 msgstr "M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?"
 
@@ -5248,7 +5255,8 @@ msgid "Medienart"
 msgstr "Medienart"
 
 #: ../templates/profile/usb/drilldown_categorized:148
-#: ../templates/search_facet:163
+#: ../templates/search_facet:165 ../templates/search_history:59
+#: ../templates/search_history:71
 #: ../templates/views/richter/drilldown_categorized:148
 msgid "Medientyp"
 msgstr "Medientyp"
@@ -5297,11 +5305,11 @@ msgstr "Medientyp"
 #: ../templates/profile/usb/drilldown_categorized:8
 #: ../templates/profile/usb/drilldown_categorized:86
 #: ../templates/profile/usb/drilldown_categorized:98
-#: ../templates/search_facet:110 ../templates/search_facet:122
-#: ../templates/search_facet:134 ../templates/search_facet:32
-#: ../templates/search_facet:43 ../templates/search_facet:54
-#: ../templates/search_facet:65 ../templates/search_facet:76
-#: ../templates/search_facet:87 ../templates/search_facet:98
+#: ../templates/search_facet:100 ../templates/search_facet:112
+#: ../templates/search_facet:124 ../templates/search_facet:136
+#: ../templates/search_facet:34 ../templates/search_facet:45
+#: ../templates/search_facet:56 ../templates/search_facet:67
+#: ../templates/search_facet:78 ../templates/search_facet:89
 #: ../templates/searchform_bottom_left:77
 #: ../templates/searchform_bottom_right:32 ../templates/title_html:504
 #: ../templates/title_include:735
@@ -5332,7 +5340,6 @@ msgid "Meine Titel mit Tag"
 msgstr "Meine Titel mit Tag"
 
 #: ../templates/search_title_combined_html:34
-#: ../templates/views/richter/search_title_combined_html:34
 msgid "Meinten Sie vielleicht:"
 msgstr "Meinten Sie vielleicht:"
 
@@ -5348,9 +5355,9 @@ msgstr "Meistgenutzte Kataloge"
 msgid "Meldung"
 msgstr "Meldung"
 
-#: ../templates/collection_html_full:23 ../templates/collection_html_short:23
-#: ../templates/collection_save_html:50 ../templates/info_tutorials:68
-#: ../templates/mainnavigation:62 ../templates/mainnavigation:64
+#: ../templates/collection_html_full:23 ../templates/collection_save_html:50
+#: ../templates/info_tutorials:68 ../templates/mainnavigation:62
+#: ../templates/mainnavigation:64
 #: ../templates/profile/sammlungen/mainnavigation:31
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:31
 #: ../templates/views/richter/collection_html_full:23
@@ -5580,7 +5587,7 @@ msgid "Neu"
 msgstr "Neu"
 
 #: ../templates/profile/usb/drilldown_categorized:423
-#: ../templates/search_facet:433
+#: ../templates/search_facet:435
 #: ../templates/views/richter/drilldown_categorized:425
 msgid "Neu-Griechisch"
 msgstr "Neu-Griechisch"
@@ -5647,9 +5654,6 @@ msgid "Neue Sitzung beginnen?"
 msgstr "Neue Sitzung beginnen?"
 
 #: ../templates/profile/usb/searchform_query:166
-#: ../templates/searchform_query:166 ../templates/searchform_simple:165
-#: ../templates/searchform_simple:230 ../templates/searchform_simple:297
-#: ../templates/searchform_simple:365
 #: ../templates/views/richter/searchform_simple:174
 #: ../templates/views/richter/searchform_simple:265
 #: ../templates/views/richter/searchform_simple:358
@@ -5729,7 +5733,7 @@ msgstr "Nichtkommerzielle Natur dieser Webseite"
 
 #: ../templates/profile/usb/drilldown_categorized:437
 #: ../templates/profile/usb/drilldown_categorized:438
-#: ../templates/search_facet:447 ../templates/search_facet:448
+#: ../templates/search_facet:449 ../templates/search_facet:450
 #: ../templates/views/richter/drilldown_categorized:439
 #: ../templates/views/richter/drilldown_categorized:440
 msgid "Niederländisch"
@@ -5888,83 +5892,91 @@ msgstr "Ansetzung"
 msgid "P0102"
 msgstr "Verweisung"
 
-#: ../templates/database/openlibrary/visible_categories_person:20
 #: ../templates/visible_categories_person:20
+msgid "P0200"
+msgstr "Lebensjahre"
+
+#: ../templates/visible_categories_person:21
+msgid "P0201"
+msgstr "Beruf"
+
+#: ../templates/database/openlibrary/visible_categories_person:20
+#: ../templates/visible_categories_person:24
 msgid "P0300"
 msgstr "Nachname"
 
 #: ../templates/database/openlibrary/visible_categories_person:21
-#: ../templates/visible_categories_person:21
+#: ../templates/visible_categories_person:25
 msgid "P0301"
 msgstr "Vornamen"
 
 #: ../templates/database/openlibrary/visible_categories_person:22
-#: ../templates/visible_categories_person:22
+#: ../templates/visible_categories_person:26
 msgid "P0302"
 msgstr "Kurzbeschreibung"
 
 #: ../templates/database/openlibrary/visible_categories_person:23
-#: ../templates/visible_categories_person:23
+#: ../templates/visible_categories_person:27
 msgid "P0303"
 msgstr "Sonstiges"
 
 #: ../templates/database/openlibrary/visible_categories_person:24
-#: ../templates/visible_categories_person:24
+#: ../templates/visible_categories_person:28
 msgid "P0304"
 msgstr "Geburtsdatum"
 
 #: ../templates/database/openlibrary/visible_categories_person:25
-#: ../templates/visible_categories_person:25
+#: ../templates/visible_categories_person:29
 msgid "P0305"
 msgstr "Geburtsort"
 
 #: ../templates/database/openlibrary/visible_categories_person:26
-#: ../templates/visible_categories_person:26
+#: ../templates/visible_categories_person:30
 msgid "P0306"
 msgstr "Sterbedatum"
 
 #: ../templates/database/openlibrary/visible_categories_person:27
-#: ../templates/visible_categories_person:27
+#: ../templates/visible_categories_person:31
 msgid "P0307"
 msgstr "Sterbeort"
 
 #: ../templates/database/openlibrary/visible_categories_person:28
-#: ../templates/visible_categories_person:28
+#: ../templates/visible_categories_person:32
 msgid "P0308"
 msgstr "Bild"
 
 #: ../templates/database/openlibrary/visible_categories_person:29
-#: ../templates/visible_categories_person:29
+#: ../templates/visible_categories_person:33
 msgid "P0309"
 msgstr "Artikel in Wikipedia"
 
 #: ../templates/database/openlibrary/visible_categories_person:30
-#: ../templates/visible_categories_person:30
+#: ../templates/visible_categories_person:34
 msgid "P0310"
 msgstr "Zitate in Wikiquote"
 
 #: ../templates/database/openlibrary/visible_categories_person:31
-#: ../templates/visible_categories_person:31
+#: ../templates/visible_categories_person:35
 msgid "P0311"
 msgstr "Medien in Wikicommons"
 
 #: ../templates/database/openlibrary/visible_categories_person:32
-#: ../templates/visible_categories_person:32
+#: ../templates/visible_categories_person:36
 msgid "P0312"
 msgstr "PND"
 
 #: ../templates/database/openlibrary/visible_categories_person:33
-#: ../templates/visible_categories_person:33
+#: ../templates/visible_categories_person:37
 msgid "P0313"
 msgstr "Sonstiges"
 
 #: ../templates/database/openlibrary/visible_categories_person:34
-#: ../templates/visible_categories_person:34
+#: ../templates/visible_categories_person:38
 msgid "P0314"
 msgstr "Ort"
 
 #: ../templates/database/openlibrary/visible_categories_person:36
-#: ../templates/visible_categories_person:36
+#: ../templates/visible_categories_person:40
 msgid "P5000"
 msgstr "Anzahl Titel"
 
@@ -6012,7 +6024,8 @@ msgid "Permanenter Link zu diesem Titel"
 msgstr "Permanenter Link zu diesem Titel"
 
 #: ../templates/profile/usb/drilldown_categorized:144
-#: ../templates/search_facet:159
+#: ../templates/search_facet:161 ../templates/search_history:55
+#: ../templates/search_history:67
 #: ../templates/views/richter/drilldown_categorized:144
 msgid "Person"
 msgstr "Person"
@@ -6067,7 +6080,7 @@ msgstr ""
 "           z.B: %3kernighan, brian%4 (alle Titel von Brian Kernighan)"
 
 #: ../templates/profile/usb/drilldown_categorized:436
-#: ../templates/search_facet:446
+#: ../templates/search_facet:448
 #: ../templates/views/richter/drilldown_categorized:438
 msgid "Polnisch"
 msgstr "Polnisch"
@@ -6305,21 +6318,21 @@ msgstr "Recherchieren Sie in %1 Titeln und %2 Katalogen"
 
 #. ("${alldbcount.articlecount.chunk(-3)
 #. ("${alldbcount.articles.chunk(-3)
-#: ../templates/searchform_simple:272
+#: ../templates/searchform_simple:229
 #: ../templates/views/richter/searchform_simple:309
 msgid "Recherchieren Sie nach %1 Aufs&auml;tzen in %2 Katalogen"
 msgstr "Recherchieren Sie nach %1 Aufs&auml;tzen in %2 Katalogen"
 
 #. ("${alldbcount.digitalcount.chunk(-3)
 #. ("${alldbcount.online.chunk(-3)
-#: ../templates/searchform_simple:340
+#: ../templates/searchform_simple:274
 #: ../templates/views/richter/searchform_simple:403
 msgid "Recherchieren Sie nach %1 E-Medien mit Online-Zugriff in %2 Katalogen"
 msgstr "Recherchieren Sie nach %1 E-Medien mit Online-Zugriff in %2 Katalogen"
 
 #. ("${alldbcount.journalcount.chunk(-3)
 #. ("${alldbcount.serials.chunk(-3)
-#: ../templates/searchform_simple:205
+#: ../templates/searchform_simple:186
 #: ../templates/views/richter/searchform_simple:216
 msgid "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
 msgstr "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
@@ -6397,7 +6410,7 @@ msgstr "Rolle zuordnen"
 
 #: ../templates/profile/usb/drilldown_categorized:430
 #: ../templates/profile/usb/drilldown_categorized:431
-#: ../templates/search_facet:440 ../templates/search_facet:441
+#: ../templates/search_facet:442 ../templates/search_facet:443
 #: ../templates/views/richter/drilldown_categorized:432
 #: ../templates/views/richter/drilldown_categorized:433
 msgid "Russisch"
@@ -6490,7 +6503,7 @@ msgid "Schlagworte"
 msgstr "Schlagworte"
 
 #: ../templates/profile/usb/drilldown_categorized:433
-#: ../templates/search_facet:443
+#: ../templates/search_facet:445
 #: ../templates/views/richter/drilldown_categorized:435
 msgid "Schwedisch"
 msgstr "Schwedisch"
@@ -6573,8 +6586,6 @@ msgstr "Seit"
 #: ../templates/tag_include:41 ../templates/user_tag_html:73
 #: ../templates/views/richter/litlist_edit:130
 #: ../templates/views/richter/litlist_html:84
-#: ../templates/views/richter/search_title_combined_html:60
-#: ../templates/views/richter/search_title_combined_html:96
 #: ../templates/views/richter/user_tag_html:58
 msgid "Seite:"
 msgstr "Seite:"
@@ -6589,7 +6600,6 @@ msgstr "Seite:"
 #: ../templates/search_title_combined_html:93
 #: ../templates/search_title_combined_include:80
 #: ../templates/search_title_item:101
-#: ../templates/views/richter/search_title_combined_html:113
 msgid "Sekunden"
 msgstr "Sekunden"
 
@@ -6656,7 +6666,7 @@ msgstr ""
 "aktuelle Version auf diesem System nicht eingefroren und in eine offiziell "
 "bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 
-#: ../modules/OpenBib/Handler/Apache.pm:378
+#: ../modules/OpenBib/Handler/Apache.pm:479
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:270
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:330
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:490
@@ -6680,7 +6690,7 @@ msgstr ""
 "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurück%2 und "
 "versuchen Sie es erneut."
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:898
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:880
 #: ../modules/OpenBib/Handler/Apache/MailCollection.pm:112
 msgid "Sie haben eine ungültige Mailadresse eingegeben."
 msgstr "Sie haben eine ungültige Mailadresse eingegeben."
@@ -6721,13 +6731,13 @@ msgstr "Sie haben keine Bestellungen get&auml;tigt."
 msgid "Sie haben keine E-Mail Adresse eingegeben"
 msgstr "Sie haben keine E-Mail Adresse eingegeben"
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:893
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:875
 #: ../modules/OpenBib/Handler/Apache/MailCollection.pm:107
 msgid "Sie haben keine Mailadresse eingegeben."
 msgstr "Sie haben keine Mailadresse eingegeben."
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:261
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:568
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:252
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:555
 msgid "Sie haben keine Titel ausgew&auml;hlt."
 msgstr "Sie haben keine Titel ausgew&auml;hlt."
 
@@ -6882,8 +6892,8 @@ msgstr ""
 "          Kernighan</tt> suchen. Sie k&ouml;nnen dann Folgendes in das\n"
 "        Personenfeld eingeben:"
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:239
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:546
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:230
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:533
 msgid "Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."
 msgstr "Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."
 
@@ -6895,8 +6905,8 @@ msgstr "Sie müssen einen RSS-Typ eingeben."
 msgid "Sie müssen einen Servernamen eingeben."
 msgstr "Sie müssen einen Servernamen eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:227
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:533
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:218
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:520
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:789
 msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
@@ -7021,7 +7031,6 @@ msgstr "Sind sie sicher?"
 
 #: ../templates/profile/sammlungen/mainnavigation:45
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:46
-#: ../templates/views/richter/corporate_banner:11
 msgid "Sitzung beenden"
 msgstr "Sitzung beenden"
 
@@ -7057,7 +7066,6 @@ msgstr ""
 #: ../templates/database/einbaende/titlist_options:17
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:17
 #: ../templates/titlist_options:14
-#: ../templates/views/richter/titlist_options:15
 msgid "Sortierung"
 msgstr "Sortierung"
 
@@ -7067,7 +7075,7 @@ msgstr "Sortierung nach"
 
 #: ../templates/profile/usb/drilldown_categorized:428
 #: ../templates/profile/usb/drilldown_categorized:429
-#: ../templates/search_facet:438 ../templates/search_facet:439
+#: ../templates/search_facet:440 ../templates/search_facet:441
 #: ../templates/views/richter/drilldown_categorized:430
 #: ../templates/views/richter/drilldown_categorized:431
 msgid "Spanisch"
@@ -7123,7 +7131,8 @@ msgid "Sprach-Icon für %1"
 msgstr "Sprach-Icon für %1"
 
 #: ../templates/profile/usb/drilldown_categorized:149
-#: ../templates/search_facet:164
+#: ../templates/search_facet:166 ../templates/search_history:60
+#: ../templates/search_history:72
 #: ../templates/views/richter/drilldown_categorized:149
 msgid "Sprache"
 msgstr "Sprache"
@@ -7264,9 +7273,9 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/profile/usb/searchform_query:164
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
-#: ../templates/searchform_query:164 ../templates/searchform_simple:162
-#: ../templates/searchform_simple:227 ../templates/searchform_simple:294
-#: ../templates/searchform_simple:362
+#: ../templates/searchform_query:143 ../templates/searchform_simple:158
+#: ../templates/searchform_simple:201 ../templates/searchform_simple:245
+#: ../templates/searchform_simple:290
 #: ../templates/views/richter/mainnavigation:37
 #: ../templates/views/richter/mainnavigation:39
 #: ../templates/views/richter/searchform_query:140
@@ -7287,6 +7296,12 @@ msgid "Suchhilfe"
 msgstr "Suchhilfe"
 
 #: ../templates/mainnavigation:57 ../templates/mainnavigation:59
+#: ../templates/searchform_query:145 ../templates/searchform_simple:161
+#: ../templates/searchform_simple:204 ../templates/searchform_simple:248
+#: ../templates/searchform_simple:293
+#: ../templates/views/richter/mainnavigation:52
+#: ../templates/views/richter/mainnavigation:54
+#: ../templates/views/richter/searchform_query:140
 msgid "Suchhistorie"
 msgstr "Suchhhistorie"
 
@@ -7335,7 +7350,8 @@ msgstr "System"
 
 #: ../templates/cloud_navigation:60 ../templates/cloud_navigation:62
 #: ../templates/profile/usb/drilldown_categorized:147
-#: ../templates/search_facet:162 ../templates/subnavigation:70
+#: ../templates/search_facet:164 ../templates/search_history:58
+#: ../templates/search_history:70 ../templates/subnavigation:70
 #: ../templates/subnavigation:72
 #: ../templates/views/richter/drilldown_categorized:147
 #: ../templates/views/richter/subnavigation:84
@@ -10230,7 +10246,8 @@ msgid "T5100"
 msgstr "Zählung"
 
 #: ../templates/profile/usb/drilldown_categorized:151
-#: ../templates/search_facet:166
+#: ../templates/search_facet:168 ../templates/search_history:64
+#: ../templates/search_history:74
 #: ../templates/views/richter/drilldown_categorized:151
 msgid "Tag"
 msgstr "Tag"
@@ -10289,7 +10306,8 @@ msgid "Textangaben"
 msgstr "Textangaben"
 
 #: ../templates/profile/usb/drilldown_categorized:146
-#: ../templates/search_facet:161
+#: ../templates/search_facet:163 ../templates/search_history:57
+#: ../templates/search_history:69
 #: ../templates/views/richter/drilldown_categorized:146
 msgid "Thema"
 msgstr "Thema"
@@ -10345,17 +10363,17 @@ msgstr "Themengebiete"
 msgid "Thumbnail"
 msgstr "Thumbnail"
 
-#: ../templates/collection_html_full:26 ../templates/collection_html_short:26
+#: ../templates/collection_html_full:26
 #: ../templates/database/einbaende/search_showtitset:466
 #: ../templates/database/einbaende/search_showtitset_1:447
 #: ../templates/database/umschlaege/search_showtitset:436
 #: ../templates/dbis_showdbinfo:54 ../templates/ezb_showjournalinfo:50
 #: ../templates/litlist_edit:118 ../templates/litlist_html:76
 #: ../templates/litlist_include:35 ../templates/profile/usb/litlist_include:42
-#: ../templates/searchform_options:3 ../templates/tag_html:64
-#: ../templates/tag_include:29 ../templates/title_html:742
-#: ../templates/title_include:211 ../templates/user_circulation_make_order:82
-#: ../templates/user_tag_html:61
+#: ../templates/search_history:52 ../templates/searchform_options:3
+#: ../templates/tag_html:64 ../templates/tag_include:29
+#: ../templates/title_html:742 ../templates/title_include:211
+#: ../templates/user_circulation_make_order:82 ../templates/user_tag_html:61
 #: ../templates/views/richter/collection_html_full:26
 #: ../templates/views/richter/collection_html_short:26
 #: ../templates/views/richter/litlist_edit:118
@@ -10511,13 +10529,12 @@ msgstr "Top 20"
 #: ../templates/profile/mobile/views/richtermobile/search_title_combined_html:31
 #: ../templates/profile/sammlungen/virtualsearch_result_item:32
 #: ../templates/profile/usb/search_title_combined_include:48
-#: ../templates/resultlists_choice:116 ../templates/search_classification:44
-#: ../templates/search_corporatebody:44 ../templates/search_person:44
-#: ../templates/search_subject:44 ../templates/search_title_combined_html:54
+#: ../templates/search_classification:44 ../templates/search_corporatebody:44
+#: ../templates/search_person:44 ../templates/search_subject:44
+#: ../templates/search_title_combined_html:54
 #: ../templates/search_title_combined_include:32
 #: ../templates/search_title_item:53 ../templates/select_queries:65
 #: ../templates/views/richter/resultlists_choice:116
-#: ../templates/views/richter/search_title_combined_html:57
 msgid "Treffer"
 msgstr "Treffer"
 
@@ -10527,8 +10544,6 @@ msgstr "Treffer-, Merk- und Literaturlisten"
 
 #: ../templates/profile/sammlungen/mainnavigation:31
 #: ../templates/profile/sammlungen/views/inst404abklatsch/mainnavigation:31
-#: ../templates/views/richter/mainnavigation:52
-#: ../templates/views/richter/mainnavigation:54
 msgid "Trefferliste"
 msgstr "Trefferliste"
 
@@ -10541,7 +10556,7 @@ msgstr "Treffermenge"
 #: ../templates/database/portrait/drilldown_categorized:100
 #: ../templates/database/umschlaege/drilldown_categorized:100
 #: ../templates/profile/usb/drilldown_categorized:124
-#: ../templates/search_facet:149
+#: ../templates/search_facet:151
 #: ../templates/views/richter/drilldown_categorized:124
 msgid "Treffermenge eingrenzen"
 msgstr "Treffermenge eingrenzen"
@@ -10579,7 +10594,7 @@ msgstr ""
 "beliebig enden, wie programming, programme, programm usw.)"
 
 #: ../templates/profile/usb/drilldown_categorized:435
-#: ../templates/search_facet:445
+#: ../templates/search_facet:447
 #: ../templates/views/richter/drilldown_categorized:437
 msgid "Tschechisch"
 msgstr "Tschechisch"
@@ -10618,7 +10633,7 @@ msgid "Typ:"
 msgstr "Typ:"
 
 #: ../templates/profile/usb/drilldown_categorized:434
-#: ../templates/search_facet:444
+#: ../templates/search_facet:446
 #: ../templates/views/richter/drilldown_categorized:436
 msgid "Türkisch"
 msgstr "Türkisch"
@@ -10702,7 +10717,7 @@ msgstr "Unerlaubte Aktion"
 
 #: ../templates/profile/usb/drilldown_categorized:424
 #: ../templates/profile/usb/drilldown_categorized:425
-#: ../templates/search_facet:434 ../templates/search_facet:435
+#: ../templates/search_facet:436 ../templates/search_facet:437
 #: ../templates/views/richter/drilldown_categorized:426
 #: ../templates/views/richter/drilldown_categorized:427
 msgid "Ungarisch"
@@ -10810,7 +10825,6 @@ msgstr ""
 "Profildefinitionen und Suchfeldeinstellungen bleiben gespeichert, auch für\n"
 "zukünftige Recherchen."
 
-#: ../templates/databasechoice:121 ../templates/databasechoice:65
 #: ../templates/user_profile_edit:124 ../templates/user_profile_edit:68
 #: ../templates/views/richter/user_profile_edit:123
 #: ../templates/views/richter/user_profile_edit:67
@@ -10867,7 +10881,7 @@ msgid "Verschlagwortung anderer Kataloge"
 msgstr "Verschlagwortung aus anderen Katalogen"
 
 #: ../templates/profile/usb/drilldown_categorized:484
-#: ../templates/search_facet:494
+#: ../templates/search_facet:496
 #: ../templates/views/richter/drilldown_categorized:486
 msgid ""
 "Versuchen Sie daher Ihre Rechercheanfrage zu pr&auml;zisieren, indem\n"
@@ -11435,6 +11449,10 @@ msgstr ""
 msgid "Zahl Recherchen/Sessions"
 msgstr "Zahl Recherchen/Sessions"
 
+#: ../templates/searchform_query:138
+msgid "Zeitraum"
+msgstr "Zeitraum"
+
 #: ../templates/searchform_simple:80
 #: ../templates/views/richter/searchform_simple:200
 #: ../templates/views/richter/searchform_simple:61
@@ -11523,10 +11541,6 @@ msgstr "Zuletzt in der Zeitschrift ver&ouml;ffentlichte Artikel"
 #: ../templates/profile/sammlungen/views/syndikatsbibliothek/searchmask_simple:137
 #: ../templates/profile/sammlungen/views/wallraf/searchmask:137
 #: ../templates/profile/sammlungen/views/wallraf/searchmask_simple:137
-#: ../templates/searchform:125 ../templates/searchform_simple:179
-#: ../templates/searchform_simple:245 ../templates/searchform_simple:312
-#: ../templates/searchform_simple:380
-#: ../templates/views/richter/searchform:125
 #: ../templates/views/richter/searchform_simple:188
 #: ../templates/views/richter/searchform_simple:280
 #: ../templates/views/richter/searchform_simple:373
@@ -11536,8 +11550,6 @@ msgstr "Zur Trefferliste"
 
 #. ("<a href=\"${path_prefix}/${config.get('searchform_loc')
 #: ../templates/search_title_end:19 ../templates/search_title_end:21
-#: ../templates/views/richter/search_title_end:19
-#: ../templates/views/richter/search_title_end:21
 msgid "Zur&uuml;ck zur %1Suchanfrage%2"
 msgstr "Zur&uuml;ck zur %1Suchanfrage%2"
 
@@ -11557,7 +11569,6 @@ msgstr ""
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:27
 #: ../templates/profile/usb/search_title_combined_include:72
 #: ../templates/searchform_options:3
-#: ../templates/views/richter/titlist_options:29
 msgid "absteigend"
 msgstr "absteigend"
 
@@ -11573,11 +11584,9 @@ msgstr "Administrator"
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:26
 #: ../templates/profile/usb/search_title_combined_include:71
 #: ../templates/searchform_options:3
-#: ../templates/views/richter/titlist_options:28
 msgid "aufsteigend"
 msgstr "aufsteigend"
 
-#: ../templates/collection_html_short:137
 #: ../templates/views/richter/collection_html_short:137
 msgid "aus:"
 msgstr "aus:"
@@ -11658,6 +11667,10 @@ msgstr "beim Lieferanten storniert"
 msgid "bestellt beim Lieferanten"
 msgstr "bestellt beim Lieferanten"
 
+#: ../templates/searchform_query:138
+msgid "bis"
+msgstr "bis"
+
 #: ../templates/dbis_searchdbs:77 ../templates/dbis_showdbs:46
 #: ../templates/dbis_showsubjects:48
 msgid "deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)"
@@ -11703,9 +11716,9 @@ msgstr "im Gesch&auml;ftsgang"
 #: ../templates/dbis_showsubjects:50 ../templates/ezb_searchjournals:83
 #: ../templates/ezb_showjournals:48 ../templates/ezb_showsubjects:48
 #: ../templates/profile/usb/searchform_query:141
-#: ../templates/searchform_query:141 ../templates/searchform_simple:163
-#: ../templates/searchform_simple:228 ../templates/searchform_simple:295
-#: ../templates/searchform_simple:363
+#: ../templates/searchform_query:141 ../templates/searchform_simple:159
+#: ../templates/searchform_simple:202 ../templates/searchform_simple:246
+#: ../templates/searchform_simple:291
 #: ../templates/views/richter/searchform_simple:148
 #: ../templates/views/richter/searchform_simple:239
 #: ../templates/views/richter/searchform_simple:332
@@ -11734,7 +11747,6 @@ msgstr "ja, seit"
 #: ../templates/database/einbaende/titlist_options:35
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:33
 #: ../templates/titlist_options:29
-#: ../templates/views/richter/titlist_options:36
 msgid "katalogübergreifend"
 msgstr "katalogübergreifend"
 
@@ -11837,10 +11849,9 @@ msgstr "nach Fert.Jahr"
 #: ../templates/database/umschlaege/drilldown_categorized:225
 #: ../templates/profile/usb/drilldown_categorized:296
 #: ../templates/profile/usb/search_title_combined_include:65
-#: ../templates/search_facet:261 ../templates/titlist_options:18
+#: ../templates/search_facet:263 ../templates/titlist_options:18
 #: ../templates/titlist_options:19
 #: ../templates/views/richter/drilldown_categorized:298
-#: ../templates/views/richter/titlist_options:22
 msgid "nach Jahr"
 msgstr "nach Jahr"
 
@@ -11850,7 +11861,7 @@ msgstr "nach Jahrhundert"
 
 #: ../templates/database/inst001/drilldown_categorized:161
 #: ../templates/profile/usb/drilldown_categorized:221
-#: ../templates/search_facet:381
+#: ../templates/search_facet:383
 #: ../templates/views/richter/drilldown_categorized:223
 msgid "nach K&ouml;perschaften"
 msgstr "nach K&ouml;perschaften"
@@ -11860,13 +11871,13 @@ msgstr "nach K&ouml;perschaften"
 #: ../templates/database/portrait/drilldown_categorized:120
 #: ../templates/database/umschlaege/drilldown_categorized:120
 #: ../templates/profile/usb/drilldown_categorized:175
-#: ../templates/search_facet:189
+#: ../templates/search_facet:191
 #: ../templates/views/richter/drilldown_categorized:176
 msgid "nach Katalog"
 msgstr "nach Katalog"
 
 #: ../templates/profile/usb/drilldown_categorized:371
-#: ../templates/search_facet:333
+#: ../templates/search_facet:335
 #: ../templates/views/richter/drilldown_categorized:373
 msgid "nach Literaturliste"
 msgstr "nach Literaturliste"
@@ -11875,14 +11886,13 @@ msgstr "nach Literaturliste"
 #: ../templates/database/portrait/drilldown_categorized:246
 #: ../templates/database/umschlaege/drilldown_categorized:246
 #: ../templates/profile/usb/drilldown_categorized:321
-#: ../templates/search_facet:213
+#: ../templates/search_facet:215
 #: ../templates/views/richter/drilldown_categorized:323
 msgid "nach Medienart"
 msgstr "nach Medienart"
 
 #: ../templates/profile/usb/search_title_combined_include:62
 #: ../templates/titlist_options:20
-#: ../templates/views/richter/titlist_options:19
 msgid "nach Person"
 msgstr "nach Person"
 
@@ -11893,7 +11903,7 @@ msgstr "nach Person/Region"
 #: ../templates/database/inst001/drilldown_categorized:140
 #: ../templates/database/portrait/drilldown_categorized:141
 #: ../templates/profile/usb/drilldown_categorized:196
-#: ../templates/search_facet:357
+#: ../templates/search_facet:359
 #: ../templates/views/richter/drilldown_categorized:198
 msgid "nach Personen"
 msgstr "nach Personen"
@@ -11902,7 +11912,6 @@ msgstr "nach Personen"
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:23
 #: ../templates/profile/usb/search_title_combined_include:68
 #: ../templates/titlist_options:17
-#: ../templates/views/richter/titlist_options:25
 msgid "nach Popularit&auml;t"
 msgstr "nach Popularit&auml;t"
 
@@ -11922,13 +11931,11 @@ msgstr "nach Regionen"
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:19
 #: ../templates/profile/usb/search_title_combined_include:61
 #: ../templates/titlist_options:16
-#: ../templates/views/richter/titlist_options:18
 msgid "nach Relevanz"
 msgstr "nach Relevanz"
 
 #: ../templates/database/einbaende/titlist_options:24
 #: ../templates/profile/usb/search_title_combined_include:67
-#: ../templates/views/richter/titlist_options:24
 msgid "nach Signatur"
 msgstr "nach Signatur"
 
@@ -11937,7 +11944,7 @@ msgstr "nach Signatur"
 #: ../templates/database/portrait/drilldown_categorized:267
 #: ../templates/database/umschlaege/drilldown_categorized:267
 #: ../templates/profile/usb/drilldown_categorized:396
-#: ../templates/search_facet:406
+#: ../templates/search_facet:408
 #: ../templates/views/richter/drilldown_categorized:398
 msgid "nach Sprache"
 msgstr "nach Sprache"
@@ -11945,20 +11952,20 @@ msgstr "nach Sprache"
 #: ../templates/database/inst001/drilldown_categorized:206
 #: ../templates/database/umschlaege/drilldown_categorized:204
 #: ../templates/profile/usb/drilldown_categorized:271
-#: ../templates/search_facet:285
+#: ../templates/search_facet:287
 #: ../templates/views/richter/drilldown_categorized:273
 msgid "nach Systematik"
 msgstr "nach Systematik"
 
 #: ../templates/profile/usb/drilldown_categorized:346
-#: ../templates/search_facet:309
+#: ../templates/search_facet:311
 #: ../templates/views/richter/drilldown_categorized:348
 msgid "nach Tags"
 msgstr "nach Tags"
 
 #: ../templates/database/inst001/drilldown_categorized:182
 #: ../templates/profile/usb/drilldown_categorized:246
-#: ../templates/search_facet:237
+#: ../templates/search_facet:239
 #: ../templates/views/richter/drilldown_categorized:248
 msgid "nach Themen"
 msgstr "nach Themen"
@@ -11966,7 +11973,6 @@ msgstr "nach Themen"
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:21
 #: ../templates/profile/usb/search_title_combined_include:63
 #: ../templates/titlist_options:21
-#: ../templates/views/richter/titlist_options:20
 msgid "nach Titel"
 msgstr "nach Titel"
 
@@ -11976,13 +11982,11 @@ msgstr "nach Titel/Z&auml;hlung"
 
 #: ../templates/database/einbaende/titlist_options:23
 #: ../templates/profile/usb/search_title_combined_include:66
-#: ../templates/views/richter/titlist_options:23
 msgid "nach Verlag"
 msgstr "nach Verlag"
 
 #: ../templates/profile/usb/search_title_combined_include:64
 #: ../templates/titlist_options:22
-#: ../templates/views/richter/titlist_options:21
 msgid "nach Z&auml;hlung"
 msgstr "nach Z&auml;hlung"
 
@@ -12045,7 +12049,6 @@ msgstr "privat"
 #: ../templates/database/einbaende/titlist_options:34
 #: ../templates/profile/sammlungen/views/inst404abklatsch/titlist_options:32
 #: ../templates/titlist_options:28
-#: ../templates/views/richter/titlist_options:35
 msgid "pro Katalog"
 msgstr "pro Katalog"
 
@@ -12093,7 +12096,6 @@ msgstr "usw. usf."
 #: ../templates/search_title_combined_html:54
 #: ../templates/search_title_combined_include:32
 #: ../templates/search_title_item:53
-#: ../templates/views/richter/search_title_combined_html:57
 msgid "von"
 msgstr "von"
 

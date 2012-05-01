@@ -74,6 +74,9 @@ sub new {
 
     my $date      = exists $arg_ref->{date}
         ? $arg_ref->{date}           : undef;
+
+    my $listid    = exists $arg_ref->{listid}
+        ? $arg_ref->{listid}           : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -92,6 +95,10 @@ sub new {
 
     if (defined $date){
         $self->{date}     = $date;
+    }
+
+    if (defined $listid){
+        $self->{listid}   = $listid;
     }
 
     $logger->debug("Title-Record-Object created: ".YAML::Dump($self));
@@ -1075,6 +1082,27 @@ sub set_brief_normdata_from_storable {
     $self->{_brief_normdata} = $storable_ref;
 
     $logger->debug(YAML::Dump($self));    
+
+    return $self;
+}
+
+sub set_brief_normdata_from_json {
+    my ($self,$json_string)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # (Re-)Initialisierung
+    delete $self->{_exists}         if (exists $self->{_exists});
+    delete $self->{_normdata}       if (exists $self->{_normdata});
+    delete $self->{_holding}        if (exists $self->{_holding});
+    delete $self->{_circulation}    if (exists $self->{_circulation});
+    delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
+
+    my $json_ref = decode_json $json_string;
+    $self->{_brief_normdata} = $json_ref;
+
+#    $logger->debug(YAML::Dump($self));
 
     return $self;
 }

@@ -47,30 +47,32 @@
 
 [% IF queries.size > 0 %]
 
-[%    field_prefix_map = {
-          ${config.get('searchfield').freesearch.prefix} = msg.maketext("Freie Suche")
-          ${config.get('searchfield').title.prefix} = msg.maketext("Titel")
-          ${config.get('searchfield').database.prefix} = msg.maketext("Katalog")
-          ${config.get('searchfield').content.prefix} = msg.maketext("Inhalt")
-          ${config.get('searchfield').person.prefix} = msg.maketext("Person")
-          ${config.get('searchfield').corporatebody.prefix} = msg.maketext("K&ouml;perschaft")
-          ${config.get('searchfield').subject.prefix} = msg.maketext("Thema")
-          ${config.get('searchfield').classification.prefix} = msg.maketext("Systematik")
-          ${config.get('searchfield').mediatype.prefix} = msg.maketext("Medientyp")
-          ${config.get('searchfield').language.prefix} = msg.maketext("Sprache")
-          ${config.get('searchfield').year.prefix} = msg.maketext("Jahr")
-          ${config.get('searchfield').tag.prefix} = msg.maketext("Tag")
-          ${config.get('searchfield').litlist.prefix} = msg.maketext("Literaturliste")
-          ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
-          ${config.get('searchfield').personstring.prefix} = msg.maketext("Person")
-          ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
-          ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
-          ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
-          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
-          ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
-          ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
-          ${config.get('searchfield').tagstring.prefix} = msg.maketext("Tag")
-          ${config.get('searchfield').litliststring.prefix} = msg.maketext("Literaturliste")
+[%    field_map = {
+          "freesearch" = msg.maketext("Freie Suche")
+          "title"      = msg.maketext("Titel")
+          "database"   = msg.maketext("Katalog")
+          "content" = msg.maketext("Inhalt")
+          "person" = msg.maketext("Person")
+          "corporatebody" = msg.maketext("K&ouml;perschaft")
+          "subject" = msg.maketext("Thema")
+          "classification" = msg.maketext("Systematik")
+          "mediatype" = msg.maketext("Medientyp")
+          "language" = msg.maketext("Sprache")
+          "year" = msg.maketext("Jahr")
+          "year_from" = msg.maketext("Jahr von")
+          "year_to" = msg.maketext("Jahr bis")
+          "tag" = msg.maketext("Tag")
+          "litlist" = msg.maketext("Literaturliste")
+          "dbstring" = msg.maketext("Katalog")
+          "personstring" = msg.maketext("Person")
+          "corporatebodystring" = msg.maketext("K&ouml;perschaft")
+          "subjectstring" = msg.maketext("Thema")
+          "classificationstring" = msg.maketext("Systematik")
+          "mediatypestring" = msg.maketext("Medientyp")
+          "languagestring" = msg.maketext("Sprache")
+          "yearstring" = msg.maketext("Jahr")
+          "tagstring" = msg.maketext("Tag")
+          "litliststring" = msg.maketext("Literaturliste")
 };
 
 %]
@@ -83,8 +85,7 @@
 [% used_fields = [] %]
 [%- FOREACH field IN query.get_searchquery.keys  -%]
 [%-
-    fieldprefix  = config.get('searchfield').${field}.prefix
-    fieldname    = field_prefix_map.${fieldprefix};
+    fieldname    = field_map.${field};
     fieldcontent = query.get_searchquery.${field}.val;
     NEXT IF NOT fieldcontent ;
 -%]

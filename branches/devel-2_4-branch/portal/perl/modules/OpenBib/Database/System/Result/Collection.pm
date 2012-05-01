@@ -19,6 +19,12 @@ __PACKAGE__->table("collection");
 
 =head1 ACCESSORS
 
+=head2 id
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+
 =head2 userid
 
   data_type: 'bigint'
@@ -44,6 +50,8 @@ __PACKAGE__->table("collection");
 =cut
 
 __PACKAGE__->add_columns(
+  "id",
+  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "dbname",
@@ -53,6 +61,7 @@ __PACKAGE__->add_columns(
   "titlecache",
   { data_type => "blob", is_nullable => 1 },
 );
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 

@@ -246,12 +246,14 @@ COLLATE utf8_general_ci
 
 drop table IF EXISTS sessioncollection;
 CREATE TABLE sessioncollection (
- sid        BIGINT NOT NULL,
+ id         BIGINT  NOT NULL auto_increment,
+ sid        BIGINT  NOT NULL,
 
  dbname     TEXT,
  titleid    VARCHAR(255),
  titlecache BLOB,
 
+ CONSTRAINT `pk_sessioncollection` PRIMARY KEY (`id`),
  CONSTRAINT `fk_sessioncollection_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
 
  INDEX (dbname(255)),
@@ -557,12 +559,14 @@ PACK_KEYS=1;
 
 DROP TABLE IF EXISTS collection;
 CREATE TABLE collection (
- userid     BIGINT NOT NULL,
+ id         BIGINT  NOT NULL auto_increment,
+ userid     BIGINT  NOT NULL,
 
  dbname     TEXT,
  titleid    VARCHAR(255),
  titlecache BLOB,
 
+ CONSTRAINT `pk_collection` PRIMARY KEY (`id`),
  CONSTRAINT `fk_collection_user` FOREIGN KEY (`userid`) REFERENCES `userinfo` (`id`)
 )
 ENGINE InnoDB

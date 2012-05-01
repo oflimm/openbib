@@ -180,29 +180,20 @@ sub show_collection {
         return Apache2::Const::OK;
     }
     elsif ($do_collection_delentry) {
-        foreach my $tit ($query->param('titid')) {
-            my ($titdb,$titid)=$tit=~m/^(\w+?):(.+)$/;
-            
+        foreach my $listid ($query->param('id')) {
             if ($user->{ID}) {
                 $user->delete_item_from_collection({
-                    item => {
-                        dbname    => $titdb,
-                        singleidn => $titid,
-                    },
+                    id       => $listid,
                 });
-            } else {
-                $session->clear_item_in_collection({
-                    database => $titdb,
-                    id       => $titid,
+            }
+            else {
+                $session->delete_item_from_collection({
+                    id       => $listid,
                 });
             }
         }
         
-        my $redirecturl   = "$config->{base_loc}/$view/$config->{managecollection_loc}";
-        
-        if ($view ne "") {
-            $redirecturl.=";view=$view";
-        }
+        my $redirecturl   = "$config->{base_loc}/$view/$config->{collection_loc}";
         
         $r->internal_redirect($redirecturl);
         return Apache2::Const::OK;
@@ -265,15 +256,8 @@ sub show_collection {
         else {
             $self->print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."));
         }
-        
-        my $redirecturl   = "$config->{base_loc}/$view/$config->{managecollection_loc}";
-        
-        if ($view ne "") {
-            $redirecturl.=";view=$view";
-        }
-        
-        $r->internal_redirect($redirecturl);
-        return Apache2::Const::OK;
+
+        $self->return_baseurl;
     }
     
     my $recordlist = new OpenBib::RecordList::Title();
@@ -284,7 +268,7 @@ sub show_collection {
     else {
         $recordlist = $session->get_items_in_collection();
     }
-    
+
     if ($recordlist->get_size() == 0) {
         
         # TT-Data erzeugen
@@ -294,6 +278,13 @@ sub show_collection {
         
         $self->print_page($config->{tt_collection_empty_tname},$ttdata);
         return Apache2::Const::OK;
+    }
+
+    my $sorttype          = $queryoptions->get_option('srt');
+    my $sortorder         = $queryoptions->get_option('srto');
+
+    if ($sortorder && $sorttype){
+         $recordlist->sort({order=>$sortorder,type=>$sorttype});
     }
 
     # TT-Data erzeugen
@@ -447,8 +438,9 @@ sub create_record {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $database                = $query->param('db')                || '';
-    my $id                      = $query->param('id')                || '';
+    my $database                = $query->param('db')                      || '';
+    my $id                      = $query->param('id')                      || '';
+    my $json                    = $query->param('json')                    || {};
     my $litlistid               = $query->param('litlistid')               || '';
     my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
     my $do_collection_showcount = $query->param('do_collection_showcount') || '';
@@ -490,20 +482,15 @@ sub create_record {
     $logger->info("SessionID: $session->{ID}");
 
     if ($do_collection_delentry) {
-        foreach my $tit ($query->param('titid')) {
-            my ($titdb,$titid)=split(":",$tit);
-            
+        foreach my $listid ($query->param('id')) {
             if ($user->{ID}) {
                 $user->delete_item_from_collection({
-                    item => {
-                        dbname    => $titdb,
-                        singleidn => $titid,
-                    },
+                    id => $listid,
                 });
-            } else {
-                $session->clear_item_in_collection({
-                    database => $titdb,
-                    id       => $titid,
+            }
+            else {
+                $session->delete_item_from_collection({
+                    id => $listid,
                 });
             }
         }
@@ -578,23 +565,23 @@ sub create_record {
         return;
     }
 
-    my $idnresult="";
+    my $create_args = {};
 
-    # Einfuegen eines Titels ind die Merkliste
+    if ($id && $database){
+        $create_args->{id}       = $id;
+        $create_args->{database} = $database;
+    }
+    elsif ($json){
+        $create_args->{json}     = $json;        
+    }
+    
+    # Einfuegen eines Titels in die Merkliste
     if ($user->{ID}) {
-        $user->add_item_to_collection({
-            item => {
-                dbname    => $database,
-                singleidn => $id,
-            },
-        });
+        $user->add_item_to_collection($create_args);
     }
     # Anonyme Session
     else {
-        $session->set_item_in_collection({
-            database => $database,
-            id       => $id,
-        });
+        $session->add_item_to_collection($create_args);
     }
     
     $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
@@ -609,7 +596,6 @@ sub delete_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
     my $id             = $self->strip_suffix($self->param('id'));
 
     # Shared Args
@@ -629,19 +615,15 @@ sub delete_record {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    $logger->info("Trying to delete $database - $id in SessionID: $session->{ID}");
+    $logger->info("Trying to delete $id in SessionID: $session->{ID}");
 
     if ($user->{ID}) {
         $user->delete_item_from_collection({
-            item => {
-                dbname    => $database,
-                singleidn => $id,
-            },
+            id => $id,
         });
     }
     else {
-        $session->clear_item_in_collection({
-            database => $database,
+        $session->delete_item_from_collection({
             id       => $id,
         });
     }

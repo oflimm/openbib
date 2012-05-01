@@ -524,8 +524,8 @@ sub get_usersearchprofile {
             'me.userid'    => $self->{ID},
         },
         {
-            join   => ['profileid'],
-            select => ['me.profilename','profileid.databases_as_json'],
+            join   => ['searchprofileid'],
+            select => ['me.profilename','searchprofileid.databases_as_json'],
             as     => ['thisprofilename','thisdatabases_as_json'],
         }
 
@@ -556,13 +556,14 @@ sub get_profilename_of_usersearchprofileid {
     my $logger = get_logger();
 
     my $usersearchprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
-											   {
-											    id     => $usersearchprofileid,						    userid => $self->{ID},
-											   },
-											   {
+        {
+            id     => $usersearchprofileid,
+            userid => $self->{ID},
+        },
+        {
             columns => ['usersearchprofilename'],
-           }
-											  )->single();
+        }
+    )->single();
 
     if ($usersearchprofile){
        return $usersearchprofile->profilename;
@@ -584,8 +585,8 @@ sub get_profiledbs_of_usersearchprofileid {
             'me.userid'    => $self->{ID},
         },
         {
-            join   => ['profileid'],
-            select => ['profileid.databases_as_json'],
+            join   => ['searchprofileid'],
+            select => ['searchprofileid.databases_as_json'],
             as     => ['thisdatabases_as_json'],
         }
 
@@ -2955,9 +2956,10 @@ sub get_items_in_collection {
 
     foreach my $collectionitem ($collectionitems->all){
         my $database  = $collectionitem->dbname;
-        my $singleidn = $collectionitem->titleid;
+        my $titleid   = $collectionitem->titleid;
+        my $listid    = $collectionitem->id;
         
-        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $singleidn}));
+        $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid}));
     }
     
     return $recordlist;
@@ -3016,8 +3018,8 @@ sub delete_item_from_collection {
     my $userid         = exists $arg_ref->{userid}
         ? $arg_ref->{userid}               : undef;
 
-    my $item_ref       = exists $arg_ref->{item}
-        ? $arg_ref->{item}                 : undef;
+    my $id       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                   : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -3028,8 +3030,7 @@ sub delete_item_from_collection {
     $self->{schema}->resultset('Collection')->search_rs(
         {
             userid  => $thisuserid,
-            dbname  => $item_ref->{dbname},
-            titleid => $item_ref->{singleidn},
+            id      => $id,
         }
     )->delete;
     

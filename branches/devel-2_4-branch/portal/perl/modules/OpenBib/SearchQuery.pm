@@ -153,14 +153,7 @@ sub set_from_apache_request {
     
     my $query = Apache2::Request->new($self->{r});
 
-    my ($yearop,$indexterm,$indextermnorm,$indextype);
-
-    # Wandlungstabelle Erscheinungsjahroperator
-    my $yearop_ref={
-        'eq' => '=',
-        'gt' => '>',
-        'lt' => '<',
-    };
+    my ($indexterm,$indextermnorm,$indextype);
 
     my $legacy_bool_op_ref = {
         'btit'          => 'bool1',
@@ -199,90 +192,107 @@ sub set_from_apache_request {
     
     # Suchfelder einlesen
     foreach my $searchfield (keys %{$config->{searchfield}}){
-        my $searchfieldprefix=$config->{searchfield}{$searchfield}{prefix};
-        my ($searchfield_content, $searchfield_norm_content,$searchfield_bool_op);
-        $searchfield_content = $searchfield_norm_content = decode_utf8($query->param("$searchfieldprefix")) || $query->param("$searchfieldprefix")      || '';
-        $searchfield_bool_op = (defined $query && $query->param("b\[$searchfieldprefix\]"))?$query->param("b\[$searchfieldprefix\]"):
-            (defined $legacy_bool_op_ref->{"b\[$searchfieldprefix\]"} && $query->param($legacy_bool_op_ref->{"b\[$searchfieldprefix\]"}))?$query->param($legacy_bool_op_ref->{"b\[$searchfieldprefix\]"}):"AND";
-        
-        # Inhalts-Check
-        $searchfield_bool_op = (exists $valid_bools_ref->{$searchfield_bool_op})?$valid_bools_ref->{$searchfield_bool_op}:"AND";
-        
-        #####################################################################
-        ## searchfield_content: Inhalt der Suchfelder des Nutzers
+        my $searchfieldtype   = $config->{searchfield}{$searchfield}{type};
 
-        $self->{_searchquery}->{$searchfield}->{val}  = $searchfield_content;
+        my @available_searchfields = ({ name => $searchfield, prefix => $config->{searchfield}{$searchfield}{prefix} });
 
-        #####################################################################
-        ## searchfield_bool_op: Verknuepfung der Eingabefelder (leere Felder werden ignoriert)
-        ##        AND  - Und-Verknuepfung
-        ##        OR   - Oder-Verknuepfung
-        ##        NOT  - Und Nicht-Verknuepfung
-
-        $self->{_searchquery}->{$searchfield}->{bool} = $searchfield_bool_op;
-
-        if ($searchfield_norm_content){
-            # Zuerst Stringsuchen in der Freie Suche
-
-            if ($searchfield eq "freesearch" || $searchfield_norm_content=~/:|.+?|/){
-                while ($searchfield_norm_content=~m/^([^\|]+)\|([^\|]+)\|(.*)$/){
-                    my $first = $1;
-                    my $string = $2;
-                    my $last = $3;
-                    
-#                    $logger->debug("Fullstring IN: $string");
-                    my $string_norm = OpenBib::Common::Util::grundform({
-                        content   => $string,
-                    });
-
-                    $string_norm=~s/\W/_/g;
-                    
-#                    $logger->debug("1: $first String: $string_norm 3: $last");
-
-#                    $logger->debug("Fullstring OUT: $string_norm");
-                    $searchfield_norm_content=$first.$string_norm.$last;
-                }
-            }
-            
-            if ($config->{'searchfield'}{$searchfield}{option} eq "filter_isbn"){
-                $searchfield_norm_content = lc($searchfield_norm_content);
-                # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
-                $searchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
-                $searchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
-            }
-
-            # Entfernung der Minus-Zeichen bei der ISSN
-            if ($config->{'searchfield'}{$searchfield}{option} eq "filter_issn"){
-                $searchfield_norm_content = lc($searchfield_norm_content);
-                $searchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8/g;
-            }
-
-            if ($config->{'searchfield'}{$searchfield}{option} eq "strip_first_stopword"){
-                 $searchfield_norm_content = OpenBib::Common::Util::grundform({
-                     category  => "0331", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
-                     content   => $searchfield_norm_content,
-                     searchreq => 1,
-                 });
-            }
-            else {
-                 $searchfield_norm_content = OpenBib::Common::Util::grundform({
-                     content   => $searchfield_norm_content,
-                     searchreq => 1,
-                 });
-            }
-
-            if ($config->{'searchfield'}{$searchfield}{type} eq "string"){
-                $searchfield_norm_content =~s/\W/_/g;
-            }
-            
-            if ($searchfield_norm_content){
-                $self->{_have_searchterms} = 1;
-                $self->{_searchquery}{$searchfield}{norm} = $searchfield_norm_content;
-            }
-
-            $logger->debug("Added searchterm $searchfield_bool_op - $searchfield_content - $searchfield_norm_content");
+        # Fuer Suchfelder des Typs integer existieren immer auch davon abgeleitete Bereichs-Suchfelder <suchfeld>_from und <suchfeld>_to
+        if ($searchfieldtype eq "integer"){
+            push @available_searchfields, { name => "${searchfield}_from", prefix => "${searchfield}_from" };
+            push @available_searchfields, { name => "${searchfield}_to",   prefix => "${searchfield}_to" }; 
         }
-        
+
+        foreach my $thissearchfield (@available_searchfields){
+            my $prefix = $thissearchfield->{prefix};
+            my $name   = $thissearchfield->{name};
+            my ($thissearchfield_content, $thissearchfield_norm_content,$thissearchfield_bool_op);
+            $thissearchfield_content = $thissearchfield_norm_content = decode_utf8($query->param("$prefix")) || $query->param("$prefix")      || '';
+            $thissearchfield_bool_op = (defined $query && $query->param("b\[$prefix\]"))?$query->param("b\[$prefix\]"):
+                (defined $legacy_bool_op_ref->{"b\[$prefix\]"} && $query->param($legacy_bool_op_ref->{"b\[$prefix\]"}))?$query->param($legacy_bool_op_ref->{"b\[$prefix\]"}):"AND";
+            
+            # Inhalts-Check
+            $thissearchfield_bool_op = (exists $valid_bools_ref->{$thissearchfield_bool_op})?$valid_bools_ref->{$thissearchfield_bool_op}:"AND";
+
+            #####################################################################
+            ## searchfield_content: Inhalt der Suchfelder des Nutzers
+            
+            $self->{_searchquery}->{$name}->{val}  = $thissearchfield_content;
+            
+            #####################################################################
+            ## searchfield_bool_op: Verknuepfung der Eingabefelder (leere Felder werden ignoriert)
+            ##        AND  - Und-Verknuepfung
+            ##        OR   - Oder-Verknuepfung
+            ##        NOT  - Und Nicht-Verknuepfung
+            
+            $self->{_searchquery}->{$name}->{bool} = $thissearchfield_bool_op;
+            
+            if ($thissearchfield_norm_content){
+                # Zuerst Stringsuchen in der Freie Suche
+                
+                if ($name eq "freesearch" || $thissearchfield_norm_content=~/:|.+?|/){
+                    while ($thissearchfield_norm_content=~m/^([^\|]+)\|([^\|]+)\|(.*)$/){
+                        my $first = $1;
+                        my $string = $2;
+                        my $last = $3;
+                        
+                        #                    $logger->debug("Fullstring IN: $string");
+                        my $string_norm = OpenBib::Common::Util::grundform({
+                            content   => $string,
+                        });
+                        
+                        $string_norm=~s/\W/_/g;
+                        
+                        #                    $logger->debug("1: $first String: $string_norm 3: $last");
+                        
+                        #                    $logger->debug("Fullstring OUT: $string_norm");
+                        $thissearchfield_norm_content=$first.$string_norm.$last;
+                    }
+                }
+
+                # Filter fuer Suchfeld und gegebenenfalls davon abgeleitete Felder (_from/_to). Daher $searchfield und nicht $name!
+                if ($config->{'searchfield'}{$searchfield}{option} eq "filter_isbn"){
+                    $thissearchfield_norm_content = lc($thissearchfield_norm_content);
+                    # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
+                    $thissearchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+                    $thissearchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
+                }
+                
+                # Entfernung der Minus-Zeichen bei der ISSN
+                if ($config->{'searchfield'}{$searchfield}{option} eq "filter_issn"){
+                    $thissearchfield_norm_content = lc($thissearchfield_norm_content);
+                    $thissearchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8/g;
+                }
+                
+                if ($config->{'searchfield'}{$searchfield}{option} eq "strip_first_stopword"){
+                    $thissearchfield_norm_content = OpenBib::Common::Util::grundform({
+                        category  => "0331", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
+                        content   => $thissearchfield_norm_content,
+                        searchreq => 1,
+                    });
+                }
+                else {
+                    $thissearchfield_norm_content = OpenBib::Common::Util::grundform({
+                        content   => $thissearchfield_norm_content,
+                        searchreq => 1,
+                    });
+                }
+                
+                if ($config->{'searchfield'}{$searchfield}{type} eq "string"){
+                    $thissearchfield_norm_content =~s/\W/_/g;
+                }
+                
+                if ($config->{'searchfield'}{$searchfield}{type} eq "integer"){
+                    $thissearchfield_norm_content =~s/\D//g;
+                }
+                
+                if ($thissearchfield_norm_content){
+                    $self->{_have_searchterms} = 1;
+                    $self->{_searchquery}{$name}{norm} = $thissearchfield_norm_content;
+                }
+                
+                $logger->debug("Added searchterm $thissearchfield_bool_op - $thissearchfield_content - $thissearchfield_norm_content");
+            }
+        }
     }
 
     # Filter einlesen f[<searchfield prefix>]
@@ -324,9 +334,6 @@ sub set_from_apache_request {
         }
     }
 
-    # Parameter einlesen
-    $yearop                      = decode_utf8($query->param('yearop')) || $query->param('yearop')    || 'eq';
-
     $self->{autoplus}            = $query->param('autoplus')            || '';
     $self->{searchtype}          = $query->param('st')                  || '';    # Search type (1=simple,2=complex)
     $self->{drilldown}           = $query->param('dd')                  || 1;     # Drilldown ?
@@ -343,18 +350,6 @@ sub set_from_apache_request {
     $self->{indextype}           = decode_utf8($query->param('indextype'))    || $query->param('indextype') || '';
     $self->{searchindex}         = $query->param('searchindex')               || '';
     
-    # Setzen der arithmetischen yearop-Operatoren
-    if (exists $yearop_ref->{$yearop}){
-        $yearop = $yearop_ref->{$yearop};
-    }
-    else {
-        $yearop = "=";
-    }
-
-    if (exists $self->{_searchquery}->{year}){
-       $self->{_searchquery}->{year}->{arg} = $yearop;
-    }
-
     if ($indexterm){
         $indextermnorm  = OpenBib::Common::Util::grundform({
            content   => $indextermnorm,

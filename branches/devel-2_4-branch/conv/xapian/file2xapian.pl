@@ -349,7 +349,7 @@ my $atime = new Benchmark;
                             ($content) = $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}=~m/^(\d+)/;
                         }
                         if ($content){
-                            $content = sprintf "%08d", $content;
+                            $content = sprintf "%08d",$content;
                             $logger->debug("Adding $content as sortvalue");
                             $doc->add_value($this_sorting_ref->{id},$content);
                         }
@@ -359,7 +359,7 @@ my $atime = new Benchmark;
                         if (exists $title_listitem_ref->{$this_sorting_ref->{category}}){
                             ($content) = $title_listitem_ref->{$this_sorting_ref->{category}}=~m/^(\d+)/;
                         }
-                        if ($content){                    
+                        if ($content){
                             $content = sprintf "%08d",$content;
                             $logger->debug("Adding $content as sortvalue");
                             $doc->add_value($this_sorting_ref->{id},$content);

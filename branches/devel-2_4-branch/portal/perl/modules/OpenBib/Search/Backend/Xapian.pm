@@ -229,7 +229,7 @@ sub initial_search {
 
     }
 
-    my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+    $self->{qp} = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
 
     my @stopwords = ();
     if (exists $config->{stopword_filename} && -e $config->{stopword_filename}){
@@ -245,7 +245,7 @@ sub initial_search {
     }
 
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
-    $qp->set_stopper($stopper);
+    $self->{qp}->set_stopper($stopper);
     
     $self->parse_query($searchquery);
 
@@ -259,15 +259,15 @@ sub initial_search {
     };
     
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
-    $qp->set_database($dbh);
-    $qp->set_default_op($default_op_ref->{$defaultop});
+    $self->{qp}->set_database($dbh);
+    $self->{qp}->set_default_op($default_op_ref->{$defaultop});
 
     foreach my $prefix (keys %{$config->{xapian_search_prefix}}){
-        $qp->add_prefix($prefix,$config->{xapian_search_prefix}{$prefix});
+        $self->{qp}->add_prefix($prefix,$config->{xapian_search_prefix}{$prefix});
     }
     
     my $category_map_ref = {};
-    my $enq       = $dbh->enquire($qp->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
+    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
 
     # Sorting
     if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
@@ -631,6 +631,35 @@ sub parse_query {
             # Nochmal explizites Setzen von +, weil sonst Wildcards innerhalb mehrerer
             # Suchterme ignoriert werden.
 
+        }
+    }
+
+    # Ranges fuer Integer-Felder
+    foreach my $field (keys %{$config->{searchfield}}){
+
+        # Achtung: Bisher nur ein einziges Suchfeld: year
+        next unless ($config->{searchfield}{$field}{type} eq "integer");
+        
+        my $searchtermstring_from = (defined $searchquery->get_searchfield("${field}_from")->{norm})?$searchquery->get_searchfield("${field}_from")->{norm}:'';
+        my $searchtermstring_to   = (defined $searchquery->get_searchfield("${field}_to")->{norm})?$searchquery->get_searchfield("${field}_to")->{norm}:'';
+        my $searchtermop_from     = (defined $searchquery->get_searchfield("${field}_from")->{bool} && defined $ops_ref->{$searchquery->get_searchfield("${field}_from")->{bool}})?$ops_ref->{$searchquery->get_searchfield("${field}_from")->{bool}}:'';
+        my $searchtermop_to       = (defined $searchquery->get_searchfield("${field}_to")->{bool} && defined $ops_ref->{$searchquery->get_searchfield("${field}_to")->{bool}})?$ops_ref->{$searchquery->get_searchfield("${field}_to")->{bool}}:'';
+
+        my $slot = $config->{xapian_sorttype_value}{$field};
+        
+        if ($searchtermstring_from || $searchtermstring_to) {
+            $searchtermstring_from = ($searchtermstring_from)?$searchtermstring_from:0;
+            $searchtermstring_to   = ($searchtermstring_to)?$searchtermstring_to:9999;
+
+            $searchtermstring_from = sprintf "%08d", $searchtermstring_from;
+            $searchtermstring_to   = sprintf "%08d", $searchtermstring_to;
+
+            
+            $logger->debug("Adding Value range processor $searchtermstring_from .. $searchtermstring_to");
+            
+            my $vrp = new Search::Xapian::StringValueRangeProcessor($slot);
+            $self->{qp}->add_valuerangeprocessor($vrp);
+            push @xapianquerystrings, $searchtermstring_from."..".$searchtermstring_to;
         }
     }
 

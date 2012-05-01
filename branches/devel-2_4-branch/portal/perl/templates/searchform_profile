@@ -7,7 +7,7 @@
 [%- FOREACH profile IN userprofile -%]
 [%     pid   = profile.key %]
 [%     pdata = profile.value %]
-<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}'  && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
+<option value="[% pid %]"[%- IF prevprofile == '${pid}'  && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
 [%  END %]
 <option value="[% searchprofileid_of_view %]"
 [%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%]

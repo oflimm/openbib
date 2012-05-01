@@ -946,7 +946,7 @@ while (my $line=<IN>){
 
         foreach my $item (@classification){
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$normdata_ref->{'classificationid'}}, $item;
+            push @{$normdata_ref->{'classificationid'}{1}}, $item;
 
             if (exists $stammdateien_ref->{classification}{data}{$item}){
                 foreach my $searchfield (keys %{$stammdateien_ref->{classification}{data}{$item}}){

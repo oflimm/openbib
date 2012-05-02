@@ -529,13 +529,23 @@ sub to_cgi_params {
 
     foreach my $param (keys %{$self->{_searchquery}}){
         if ($self->{_searchquery}->{$param}{val} && !exists $exclude_ref->{$param}){
-            my $searchparam = $config->{searchfield}{$param}{prefix};
+
+            my $base_param   = $param;
+            my $param_suffix = "";
+            # Automatisch abgeleitete Suchfelder auf Basis-Suchfeld reduzieren
+            if ($param =~/^(.+?)(_from)/ || $param =~/^(.+?)(_to)/){
+                $base_param   = $1;
+                $param_suffix = $2;
+            }
+
+            my $base_prefix = $config->{searchfield}{$base_param}{prefix};
+
             push @cgiparams, {
-                param  => "b$searchparam",
+                param  => "b".$base_prefix.$param_suffix,
                 val    => $self->{_searchquery}->{$param}{bool}
             };
             push @cgiparams, {
-                param  => $searchparam,
+                param  => $base_prefix.$param_suffix,
                 val    => $self->_html_escape($self->{_searchquery}->{$param}{val}),
             };
         }

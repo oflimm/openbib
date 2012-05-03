@@ -2175,14 +2175,243 @@ searchfield:
      'prefix': 't4300'
      'type': 'string'
 
+elasticsearch_index_mappings:
+  title:
+     properties:
+        - listitem:
+             type: 'object'
+             enabled: 'false'
+        - id:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - personid:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - corporatebodyid:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - classificationid:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - subjectid:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - subid:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - freesearch:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - title:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             boost: 20
+             #analyze: 'default'
+        - person:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             boost: 20
+             #analyze: 'default'
+        - corporatebody:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             boost: 20
+             #analyze: 'default'
+        - classification:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             boost: 20
+             #analyze: 'default'
+        - subject:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             boost: 20
+             #analyze: 'default'
+        - database:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_database:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_person:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_corporatebody:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_subject:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_classification:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_year:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_tag:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_litlist:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_language:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - facet_mediatype:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - titlestring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - personstring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - corporatebodystring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - classificationstring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - subjectstring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - yearstring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - litliststring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - languagestring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - mediatypestring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - markstring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - dbstring:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - mark:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - tag:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - litlist:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - source:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - language:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - content:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - mediatype:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - t4100:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - sort_person:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - sort_title:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - sort_order:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - sort_year:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - sort_publisher:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - sort_mark:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+        - sort_popularity:
+             type: 'string'
+             index: 'not_analyzed' # analyzed | not_analyzed | no
+             #analyze: 'default'
+
 elasticsearch_sorttype_value:
-  'person': 'sort_person'
-  'title': 'sort_title'
-  'order': 'sort_order'
-  'year': 'sort_year'
-  'publisher': sort_publisher
-  'mark': sort_mark
-  'popularity': sort_popularity
+  'person':
+     field: 'sort_person'
+     category: 'PC0001'
+     type: 'stringcategory'
+  'title':
+     field: 'sort_title'
+     category: 'T0331'
+     type: 'stringcategory'
+  'order':
+     field: 'sort_order'
+     category: 'T5001'
+     type: 'integercategory'
+  'year':
+     field: 'sort_year'
+     category: 'T0425'
+     type: 'integercategory'
+  'publisher':
+     id: 'sort_publisher'
+     category: 'T0412'
+     type: 'stringcategory'
+  'mark':
+     id: 'sort_mark'
+     category: 'X0014'
+     type: 'stringcategory'
+  'popularity':
+     id: 'sort_popularity'
+     category: 'popularity'
+     type: 'integervalue'
 
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index

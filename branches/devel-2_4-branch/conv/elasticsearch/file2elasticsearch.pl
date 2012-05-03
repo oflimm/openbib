@@ -110,283 +110,8 @@ my $atime = new Benchmark;
     }
     
     $result = $es->create_index(
-        index => $database,
-        mappings => {
-            title => {
-                properties => {
-                    listitem => {
-                        type => 'object',
-                        enabled => 'false',
-                    },
-
-                    id => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    personid => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    corporatebodyid => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    classificationid => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    subjectid => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    subid => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    freesearch => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    title => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    person => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    corporatebody => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    classification => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    subject => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-
-                    database => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-
-                    facet_database => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    facet_person => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    facet_corporatebody => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    facet_classification => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    facet_subject => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    facet_year => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    facet_tag => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    facet_litlist => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    facet_language => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    facet_mediatype => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-
-                    personstring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    corporatebodystring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    classificationstring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    subjectstring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    yearstring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    tagstring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    litliststring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    languagestring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    mediatypestring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    markstring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    dbstring => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    
-                    mark => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    tag => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    listlist => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    source => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    language => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    content => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    mediatype => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    t4100 => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    t4100 => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    t4100 => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    t4100 => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    sort_person => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    sort_title => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    sort_order => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    sort_year => {
-                        type => 'integer',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    sort_publisher => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    sort_mark => {
-                        type => 'string',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    sort_popularity => {
-                        type => 'integer',
-                        index => 'not_analyzed', # analyzed | not_analyzed | no
-                        #analyze => 'default',
-                    },
-                    
-                },
-            },
-        },
+        index    => $database,
+        mappings => $config->{elasticsearch_index_mappings},
     );
     
     $logger->info("Migration der Titelsaetze");
@@ -447,7 +172,7 @@ my $atime = new Benchmark;
                 {
                     # Signatur
                     id         => $config->{elasticsearch_sorttype_value}{'mark'},
-                        category   => 'X0014',
+                    category   => 'X0014',
                     type       => 'stringcategory',
                 },
                 {
@@ -459,10 +184,10 @@ my $atime = new Benchmark;
                 
             ];
 
-            foreach my $this_sorting_ref (@{$sorting_ref}){
+            foreach my $sorttype (keys %{$config->{elasticsearch_sorttype_value}}){
                 
-                if ($this_sorting_ref->{type} eq "stringcategory"){
-                    my $content = (exists $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content})?$title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}:"";
+                if ($config->{elasticsearch_sorttype_value}{$sorttype}{type} eq "stringcategory"){
+                    my $content = (exists $title_listitem_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{category}}[0]{content})?$title_listitem_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{category}}[0]{content}:"";
                     next unless ($content);
                     
                     $content = OpenBib::Common::Util::grundform({
@@ -471,29 +196,29 @@ my $atime = new Benchmark;
                     
                     if ($content){
                         $logger->debug("Adding $content as sortvalue");                        
-                        $searchcontent_ref->{$this_sorting_ref->{id}} = $content;
+                        $searchcontent_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{field}} = $content;
                     }
                 }
-                elsif ($this_sorting_ref->{type} eq "integercategory"){
+                elsif ($config->{elasticsearch_sorttype_value}{$sorttype}{type} eq "integercategory"){
                     my $content = 0;
-                    if (exists $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}){
-                        ($content) = $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}=~m/^(\d+)/;
+                    if (exists $title_listitem_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{category}}[0]{content}){
+                        ($content) = $title_listitem_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{category}}[0]{content}=~m/^(\d+)/;
                     }
                     if ($content){
                         $content = sprintf "%08d", $content;
                         $logger->debug("Adding $content as sortvalue");
-                        $searchcontent_ref->{$this_sorting_ref->{id}} = $content;
+                        $searchcontent_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{field}} = $content;
                     }
                 }
-                elsif ($this_sorting_ref->{type} eq "integervalue"){
+                elsif ($config->{elasticsearch_sorttype_value}{$sorttype}{type} eq "integervalue"){
                     my $content = 0 ;
-                    if (exists $title_listitem_ref->{$this_sorting_ref->{category}}){
-                        ($content) = $title_listitem_ref->{$this_sorting_ref->{category}}=~m/^(\d+)/;
+                    if (exists $title_listitem_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{category}}){
+                        ($content) = $title_listitem_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{category}}=~m/^(\d+)/;
                     }
                     if ($content){                    
                         $content = sprintf "%08d",$content;
                         $logger->debug("Adding $content as sortvalue");
-                        $searchcontent_ref->{$this_sorting_ref->{id}} = $content;
+                        $searchcontent_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{field}} = $content;
                     }
                 }
             }

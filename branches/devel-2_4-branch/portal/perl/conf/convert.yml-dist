@@ -237,10 +237,9 @@ convtab:
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
-      '0089':
+      '0014':         # Signatur, wenn nicht in den Exemplardaten
         index:
-          'source': 1
-          'freesearch': 1
+          'mark': 1
       '0015':
         index:
           'language': 1
@@ -248,6 +247,10 @@ convtab:
           'freesearch': 1
         facet:
           'language': 1
+      '0089':
+        index:
+          'source': 1
+          'freesearch': 1
       '0100':
         index:
           'personstring': 1
@@ -326,6 +329,8 @@ convtab:
           'freesearch': 1
       '0413':         # Drucker
         string: 1
+        index:
+          'person': 1
       '0424':
         index:
           'year': 1
@@ -342,6 +347,9 @@ convtab:
         index:
           'source': 1
           'freesearch': 1
+      '0508':
+        index:
+          'source': 1
       '0540':         # ISBN
         string: 1
         index:
@@ -349,7 +357,7 @@ convtab:
           'freesearch': 1
       '0543':         # ISSN
         index:
-          'isbn': 1
+          'issn': 1
           'freesearch': 1
       '0553':         # ISBN
         string: 1
@@ -408,6 +416,9 @@ convtab:
       '0947':
         facet:
           'subject': 1
+      '1203':         # Signatur, wenn nicht in den Exemplardaten
+        index:
+          'mark': 1
       '4100':         # BK
         index:
           't4100': 1
@@ -416,7 +427,7 @@ convtab:
         index:
           'content': 1
           'freesearch': 1
-      '4201':         # Wikipedia
+      '4202':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -458,68 +469,7 @@ convtab:
       '1203': 1
       '4110': 1
       '4120': 1
-# In die initiale Volltextsuche werden neben den bereits definierten
-# Normdateikategorien inverted_*_ref folgende weitere Kategorien aus dem
-# Titelbereich einbezogen. So koennen z.B. bestimmte im Titelbereich
-# angesiedelte Kategorien in den anderen Normdaten-Klassen person, corporatebody oder
-# subject recherchierbar gemacht werden.
-    search:
-      '0004':
-        subid: 1    # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
-      '0800':       # ArtInhalt
-        mediatype: 1
-      '0425':       # Erschjahr
-        year: 1
-        yearft: 1
-      '0089':       # Bandkennzeichen
-        source: 1
-      '0451':       # Quelle
-        source: 1
-      '0590':       # Serie/Band
-        source: 1
-      '0304':       # EST
-        title: 1
-        titlestring: 1
-      '0310':       # AST
-        title: 1
-        titlestring: 1
-      '0331':       # HST
-        title: 1
-        titlestring: 1
-      '0335':       # Zusatz zum HST
-        title: 1
-        titlestring: 1
-      '0341':       # PSTVorlage
-        title: 1
-        titlestring: 1
-      '0361':       # Vorlage beigefuegtes Werk
-        title: 1
-        titlestring: 1
-      '0370':       # WST
-        title: 1
-        titlestring: 1
-      '0750':       # Abstract
-        content: 1
-      '4201':       # Wikipedia
-        content: 1
-      '4202':       # Wikipedia
-        content: 1
-      '4203':       # Wikipedia
-        content: 1
-      '0540':       # ISBN
-        isbn: 1
-      '0553':       # ArtikelNr als 13-stellige ISBN
-        isbn: 1
-      '0543':       # ISSN
-        issn: 1
-      '0014':
-        mark: 1
-      '1203':
-        mark: 1
-      '4300':       # Fremde Schlagworte
-        subject: 1
-      '0413':       # Drucker
-        person: 1
+
 ##############################################################################
 # Sonderanpassungen fuer einzelne Kataloge
 ##############################################################################
@@ -665,30 +615,35 @@ convtab:
     inverted_classification:
       '0001':         # Ansetzung
         ft: 1
-        index: 1
         string: 1
+        index:
+          'classification': 1
+          'classificationstring': 1
+          'freesearch': 1
+
       '0102':         # Verweisform
         ft: 1
-        index: 1
         string: 1
+        index:
+          'classification': 1
+          'classificationstring': 1
+          'freesearch': 1
+
     inverted_subject:
       '0001':         # Ansetzung
         ft: 1
-        index: 1
         string: 1
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 20
       '0103':         # Verweisform
         ft: 1
-        index: 1
         string: 1
-  nationallizenzen:
-    search:
-      '0089':       # Bandkennzeichen
-        source: 1
-      '0451':       # Gesamttitel
-        source: 1
-      '0508':       # Sammlung
-        source: 1
-      '0590':       # Serie/Band
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 20
   richter:
     inverted_title:
       'tag':
@@ -914,9 +869,236 @@ convtab:
         index:
            'freesearch': 1
   einbaende:
-    search:
-      '0304':       # Werkzeug
-        source: 1
+    inverted_title:
+      'tag':
+        index:
+          'tag': 1
+          'tagstring': 1
+          'freesearch': 1
+        facet:
+          'tag': 1      
+      'litlist':
+        index:
+          'litlist': 1
+          'litliststring': 1
+          'freesearch': 1
+        facet:
+          'litlist': 1
+      '0002':         # Aufnahmedatum
+        string: 1
+      '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+        index:
+          'subid': 1
+      '0014':         # Signatur, wenn nicht in den Exemplardaten
+        index:
+          'mark': 1
+      '0015':
+        index:
+          'language': 1
+          'languagestring': 1
+          'freesearch': 1
+        facet:
+          'language': 1
+      '0089':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0100':
+        index:
+          'personstring': 1
+        facet:
+          'person': 1
+      '0101':
+        index:
+          'personstring': 1
+        facet:
+          'person': 1
+      '0102':
+        index:
+          'personstring': 1
+        facet:
+          'person': 1
+      '0103':
+        index:
+          'personstring': 1
+        facet:
+          'person': 1
+      '0200':
+        facet:
+          'corporatebody': 1
+      '0201':
+        facet:
+          'corporatebody': 1
+      '0103':
+        facet:
+          'person': 1
+      '0304':         # Hier: Werkzeug
+        ft: 1
+        string: 1
+        index:
+          'source': 1
+          'freesearch': 1
+      '0310':         # AST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'freesearch': 1
+          'titlestring': 1
+      '0331':         # HST
+        ft: 1
+        string: 1
+        index:
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0335':         # Zusatz zum HST
+        ft: 1
+        string: 0
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0341':         # PSTVorlage
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0361':       # Vorlage beigefuegtes Werk
+        index:
+          'title': 40
+          'titlestring': 40
+          'freesearch': 40
+      '0370':         # WST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0413':         # Drucker
+        string: 1
+        index:
+          'person': 1
+      '0424':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+      '0425':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+        facet:
+          'year': 1
+      '0451':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0508':
+        index:
+          'source': 1
+      '0540':         # ISBN
+        string: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0543':         # ISSN
+        index:
+          'issn': 1
+          'freesearch': 1
+      '0553':         # ISBN
+        string: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0590':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0700':
+        facet:
+          'classification': 1
+      '0710':
+        facet:
+          'subject': 1
+      '0750':         # Abstract
+        index:
+          'content': 1
+          'freesearch': 1
+      '0800':         # Medienart
+        string: 1
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
+          'freesearch': 1
+        facet:
+          'mediatype': 1
+      '0902':
+        facet:
+          'subject': 1
+      '0907':
+        facet:
+          'subject': 1
+      '0912':
+        facet:
+          'subject': 1
+      '0917':
+        facet:
+          'subject': 1
+      '0922':
+        facet:
+          'subject': 1
+      '0927':
+        facet:
+          'subject': 1
+      '0932':
+        facet:
+          'subject': 1
+      '0937':
+        facet:
+          'subject': 1
+      '0942':
+        facet:
+          'subject': 1
+      '0947':
+        facet:
+          'subject': 1
+      '1203':         # Signatur, wenn nicht in den Exemplardaten
+        index:
+          'mark': 1
+      '4100':         # BK
+        index:
+          't4100': 1
+        string: 1
+      '4201':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4202':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4203':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4300':         # Fremde Schlagworte
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+          't4300': 1
+      '5050':         # Bibkey
+        index:
+          'bkey': 1
+          'freesearch': 1
+        string: 1
+      '5051':         # Bibkey Base
+        string: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
       'tag': 1
@@ -963,43 +1145,238 @@ convtab:
       '0540': 1
       '1203': 1
   umschlaege:
-    search:
-      '0412':       # Verlag
-        source: 1
     inverted_title:
+      'tag':
+        index:
+          'tag': 1
+          'tagstring': 1
+          'freesearch': 1
+        facet:
+          'tag': 1      
+      'litlist':
+        index:
+          'litlist': 1
+          'litliststring': 1
+          'freesearch': 1
+        facet:
+          'litlist': 1
       '0002':         # Aufnahmedatum
         string: 1
+      '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+        index:
+          'subid': 1
+      '0014':         # Signatur, wenn nicht in den Exemplardaten
+        index:
+          'mark': 1
+      '0015':
+        index:
+          'language': 1
+          'languagestring': 1
+          'freesearch': 1
+        facet:
+          'language': 1
+      '0089':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0100':
+        index:
+          'personstring': 1
+        facet:
+          'person': 1
+      '0101':
+        index:
+          'personstring': 1
+        facet:
+          'person': 1
+      '0102':
+        index:
+          'personstring': 1
+        facet:
+          'person': 1
+      '0103':
+        index:
+          'personstring': 1
+        facet:
+          'person': 1
+      '0200':
+        facet:
+          'corporatebody': 1
+      '0201':
+        facet:
+          'corporatebody': 1
+      '0103':
+        facet:
+          'person': 1
       '0304':         # EST
         ft: 1
         string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0310':         # AST
         ft: 1
         string: 1
+        index:
+          'title': 1
+          'freesearch': 1
+          'titlestring': 1
       '0331':         # HST
         ft: 1
         string: 1
+        index:
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
       '0335':         # Zusatz zum HST
         ft: 1
         string: 0
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0341':         # PSTVorlage
         ft: 1
         string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0361':       # Vorlage beigefuegtes Werk
+        index:
+          'title': 40
+          'titlestring': 40
+          'freesearch': 40
       '0370':         # WST
         ft: 1
         string: 1
-      '0412':         # Verlag *
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0412':         # Hier: Verlag recherchierbar via source
         string: 1
+        index:
+          'source': 1
       '0413':         # Drucker
         string: 1
-      '0425':         # Erscheinungsjahr *
-        string: 1
+        index:
+          'person': 1
+      '0424':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+      '0425':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+        facet:
+          'year': 1
+      '0451':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0508':
+        index:
+          'source': 1
       '0540':         # ISBN
         string: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0543':         # ISSN
+        index:
+          'issn': 1
+          'freesearch': 1
+      '0553':         # ISBN
+        string: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '0590':
+        index:
+          'source': 1
+          'freesearch': 1
+      '0700':
+        facet:
+          'classification': 1
+      '0710':
+        facet:
+          'subject': 1
+      '0750':         # Abstract
+        index:
+          'content': 1
+          'freesearch': 1
       '0800':         # Medienart
         string: 1
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
+          'freesearch': 1
+        facet:
+          'mediatype': 1
+      '0902':
+        facet:
+          'subject': 1
+      '0907':
+        facet:
+          'subject': 1
+      '0912':
+        facet:
+          'subject': 1
+      '0917':
+        facet:
+          'subject': 1
+      '0922':
+        facet:
+          'subject': 1
+      '0927':
+        facet:
+          'subject': 1
+      '0932':
+        facet:
+          'subject': 1
+      '0937':
+        facet:
+          'subject': 1
+      '0942':
+        facet:
+          'subject': 1
+      '0947':
+        facet:
+          'subject': 1
+      '1203':         # Signatur, wenn nicht in den Exemplardaten
+        index:
+          'mark': 1
       '4100':         # BK
+        index:
+          't4100': 1
         string: 1
+      '4201':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4202':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4203':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
+      '4300':         # Fremde Schlagworte
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+          't4300': 1
       '5050':         # Bibkey
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
         string: 1

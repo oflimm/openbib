@@ -138,52 +138,6 @@ my $atime = new Benchmark;
 
             $searchcontent_ref->{listitem} = $title_listitem_ref;
             
-            my $sorting_ref = [
-                {
-                    # Verfasser/Koepeschaft
-                    id         => $config->{elasticsearch_sorttype_value}{'person'},
-                    category   => 'PC0001',
-                    type       => 'stringcategory',
-                },
-                {
-                    # Titel
-                    id         => $config->{elasticsearch_sorttype_value}{'title'},
-                    category   => 'T0331',
-                    type       => 'stringcategory',
-                },
-                {
-                    # Zaehlung
-                    id         => $config->{elasticsearch_sorttype_value}{'order'},
-                    category   => 'T5100',
-                    type       => 'integercategory',
-                },
-                {
-                    # Jahr
-                    id         => $config->{elasticsearch_sorttype_value}{'year'},
-                    category   => 'T0425',
-                    type       => 'integercategory',
-                },
-                {
-                    # Verlag
-                    id         => $config->{elasticsearch_sorttype_value}{'publisher'},
-                    category   => 'T0412',
-                    type       => 'stringcategory',
-                    },
-                {
-                    # Signatur
-                    id         => $config->{elasticsearch_sorttype_value}{'mark'},
-                    category   => 'X0014',
-                    type       => 'stringcategory',
-                },
-                {
-                    # Popularitaet
-                    id         => $config->{elasticsearch_sorttype_value}{'popularity'},
-                    category   => 'popularity',
-                    type       => 'integervalue',
-                },
-                
-            ];
-
             foreach my $sorttype (keys %{$config->{elasticsearch_sorttype_value}}){
                 
                 if ($config->{elasticsearch_sorttype_value}{$sorttype}{type} eq "stringcategory"){
@@ -225,6 +179,18 @@ my $atime = new Benchmark;
             
             $logger->debug(YAML::Dump($searchcontent_ref));
 
+            # Gewichtungen aus Suchfeldern entfernen
+
+            foreach my $searchfield (keys %{$config->{searchfield}}){
+                if (exists $searchcontent_ref->{$searchfield}){
+                    my $newcontent_ref = [];
+                    foreach my $weight (keys %{$searchcontent_ref->{$searchfield}}){
+                        push @$newcontent_ref, @{$searchcontent_ref->{$searchfield}{$weight}};
+                    }
+                    $searchcontent_ref->{$searchfield} = $newcontent_ref;
+                }
+            }
+            
             # ID setzen:
 
             push @$doc_buffer_ref, {

@@ -649,23 +649,23 @@ dispatch_rules:
      runmode: 'create_entry'
   - # litlist_loc:
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:database/:id[get]'
+     rule: '/portal/:view/litlist/:litlistid/item/:id[get]'
      runmode: 'show_entry'
   - # litlist_loc:
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:database/:id/edit[get]'
+     rule: '/portal/:view/litlist/:litlistid/item/:id/edit[get]'
      runmode: 'edit_entry'
   - # litlist_loc:
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:database/:id/edit.html[get]'
+     rule: '/portal/:view/litlist/:litlistid/item/:id/edit.html[get]'
      runmode: 'edit_entry'
   - # litlist_loc:
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:database/:id[put]'
+     rule: '/portal/:view/litlist/:litlistid/item/:id[put]'
      runmode: 'update_entry'
   - # litlist_loc:
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:database/:id[delete]'
+     rule: '/portal/:view/litlist/:litlistid/item/:id[delete]'
      runmode: 'delete_entry'
 
 # Anzeige privater Listen ueber separaten user_loc

@@ -2147,35 +2147,60 @@ sub add_litlistentry {
         ? $arg_ref->{titid}               : undef;
     my $titdb               = exists $arg_ref->{titdb}
         ? $arg_ref->{titdb}               : undef;
+    my $json                = exists $arg_ref->{json}
+        ? $arg_ref->{json}                : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # DBI: "delete from litlistitem where litlistid=? and titid=? and titdb=?"
-    my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
-        {        
-            litlistid => $litlistid,
-            dbname    => $titdb,
-            titleid   => $titid,
-        }
-    )->single;
-
-    return if ($litlistitem);
-
-    my $cached_title = OpenBib::Record::Title->new({ id => $titid, database => $titdb })->load_brief_record->to_json;
-
-    $logger->debug("Caching Bibliographic Data: $cached_title");
-
-    # DBI: "insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)"
-    $self->{schema}->resultset('Litlistitem')->create(
-        {
-            litlistid  => $litlistid,
-            dbname     => $titdb,
-            titleid    => $titid,
-            titlecache => $cached_title,
-        }
-    );
+    if ($titid && $titdb){
+        # DBI: "delete from litlistitem where litlistid=? and titid=? and titdb=?"
+        my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
+            {        
+                litlistid => $litlistid,
+                dbname    => $titdb,
+                titleid   => $titid,
+            }
+        )->single;
+        
+        return if ($litlistitem);
+    
+        my $cached_title = OpenBib::Record::Title->new({ id => $titid, database => $titdb })->load_brief_record->to_json;
+        
+        $logger->debug("Caching Bibliographic Data: $cached_title");
+        
+        # DBI: "insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)"
+        $self->{schema}->resultset('Litlistitem')->create(
+            {
+                litlistid  => $litlistid,
+                dbname     => $titdb,
+                titleid    => $titid,
+                titlecache => $cached_title,
+            }
+        );
+    }
+    elsif ($json){
+        # DBI: "delete from litlistitem where litlistid=? and titid=? and titdb=?"
+        my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
+            {        
+                litlistid  => $litlistid,
+                titlecache => $json,
+            }
+        )->single;
+        
+        return if ($litlistitem);
+    
+        $logger->debug("Caching Bibliographic Data: $json");
+        
+        # DBI: "insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)"
+        $self->{schema}->resultset('Litlistitem')->create(
+            {
+                litlistid  => $litlistid,
+                titlecache => $json,
+            }
+        );
+    }
 
     return;
 }
@@ -2186,22 +2211,19 @@ sub del_litlistentry {
     # Set defaults
     my $litlistid           = exists $arg_ref->{litlistid}
         ? $arg_ref->{litlistid}           : undef;
-    my $titid               = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}               : undef;
-    my $titdb               = exists $arg_ref->{titdb}
-        ? $arg_ref->{titdb}               : undef;
+    my $entryid             = exists $arg_ref->{entryid}
+        ? $arg_ref->{entryid}             : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    return if (!$litlistid || !$titid || !$titdb);
+    return if (!$litlistid && !$entryid );
 
     # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
     my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs({        
         litlistid => $litlistid,
-        dbname    => $titdb,
-        titleid   => $titid,
+        id        => $entryid,
     });
 
     if ($litlistitem){
@@ -2464,11 +2486,13 @@ sub get_litlistentries {
     my $recordlist = new OpenBib::RecordList::Title();
 
     foreach my $litlistitem ($litlistitems->all){
-        my $titelidn  = $litlistitem->titleid;
-        my $database  = $litlistitem->dbname;
-        my $tstamp    = $litlistitem->tstamp;
+        my $listid     = $litlistitem->id;
+        my $titleidn   = $litlistitem->titleid;
+        my $database   = $litlistitem->dbname;
+        my $tstamp     = $litlistitem->tstamp;
+        my $titlecache = $litlistitem->titlecache;
         
-        my $record = OpenBib::Record::Title->new({id =>$titelidn, database => $database})->load_brief_record;
+        my $record = ($titleidn && $database)?OpenBib::Record::Title->new({id =>$titleidn, database => $database, listid => $listid })->load_brief_record:OpenBib::Record::Title->new({listid => $listid })->set_brief_normdate_from_json($titlecache);
         $record->{tstamp} = $tstamp;
         
         $recordlist->add($record);
@@ -2981,32 +3005,57 @@ sub add_item_to_collection {
 
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
-    # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-    
-    # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-    my $have_title = $self->{schema}->resultset('Collection')->search_rs(
-        {
-            userid  => $thisuserid,
-            dbname  => $item_ref->{dbname},
-            titleid => $item_ref->{singleidn},
+    if ($item_ref->{dbname} && $item_ref->{singleidn}){
+        # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
+        
+        # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
+        my $have_title = $self->{schema}->resultset('Collection')->search_rs(
+            {
+                userid  => $thisuserid,
+                dbname  => $item_ref->{dbname},
+                titleid => $item_ref->{singleidn},
+            }
+        )->count;
+        
+        if (!$have_title) {
+            my $cached_title = new OpenBib::Record::Title({ database => $item_ref->{dbname} , id => $item_ref->{singleidn}});
+            $cached_title->load_brief_record->to_json;
+            
+            $logger->debug("Adding Title to Collection: $cached_title");
+            
+            # DBI "insert into treffer values (?,?,?,?)"
+            $self->{schema}->resultset('Collection')->create(
+                {
+                    userid     => $thisuserid,
+                    dbname     => $item_ref->{dbname},
+                    titleid    => $item_ref->{singleidn},
+                    titlecache => $cached_title,
+                }
+            );
         }
-    )->count;
-
-    if (!$have_title) {
-        my $cached_title = new OpenBib::Record::Title({ database => $item_ref->{dbname} , id => $item_ref->{singleidn}});
-        $cached_title->load_brief_record->to_json;
-
-        $logger->debug("Adding Title to Collection: $cached_title");
-
-        # DBI "insert into treffer values (?,?,?,?)"
-        $self->{schema}->resultset('Collection')->create(
+    }
+    elsif ($item_ref->{json}){
+        # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
+        
+        # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
+        my $have_title = $self->{schema}->resultset('Collection')->search_rs(
             {
                 userid     => $thisuserid,
-                dbname     => $item_ref->{dbname},
-                titleid    => $item_ref->{singleidn},
-                titlecache => $cached_title,
+                titlecache => $item_ref->{json},
             }
-        );
+        )->count;
+        
+        if (!$have_title) {
+            $logger->debug("Adding Title to Collection: $item_ref->{json}");
+            
+            # DBI "insert into treffer values (?,?,?,?)"
+            $self->{schema}->resultset('Collection')->create(
+                {
+                    userid     => $thisuserid,
+                    titlecache => $item_ref->{json},
+                }
+            );
+        }
     }
 
     return ;

@@ -1029,13 +1029,15 @@ sub create_entry {
     # CGI Args
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
+    my $json           = $query->param('json')                    || {};
+
     my $comment        = decode_utf8($query->param('comment'))      || '';
     
     my $type           = $query->param('type')        || 1;
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
     
-    if (!$litlistid || !$titid || !$titdb ){
-        $self->print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben oder Titel und Datenbank existieren nicht."));
+    if (!$litlistid || !$titid || !$titdb || !$json ){
+        $self->print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben, Titel und Datenbank existieren nicht oder Sie haben die Daten nicht via JSON geliefert."));
         
         return Apache2::Const::OK;
     }
@@ -1054,9 +1056,16 @@ sub create_entry {
         return;
     }
 
-    $logger->debug("Adding entry ($titdb/$titid) to litlist $litlistid");
-    
-    $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb, comment => $comment});
+    if ($titdb && $titid){
+        $logger->debug("Adding entry ($titdb/$titid) to litlist $litlistid");
+        
+        $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb, comment => $comment});
+    }
+    elsif ($json){        
+        $logger->debug("Adding entry $json to litlist $litlistid");
+        
+        $user->add_litlistentry({ litlistid =>$litlistid, json => $json, comment => $comment});
+    }
 
     my $new_location = "$path_prefix/$config->{litlist_loc}/$litlistid/edit";
     
@@ -1134,8 +1143,7 @@ sub delete_entry {
     my $view           = $self->param('view')           || '';
     my $litlistid      = $self->param('litlistid')      || '';
     my $representation = $self->param('representation') || 'html';
-    my $titid          = $self->param('id')             || '';
-    my $titdb          = $self->param('database')       || '';
+    my $entryid        = $self->param('id')             || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -1148,7 +1156,7 @@ sub delete_entry {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$titid || !$titdb || !$litlistid) {
+    if (!$entryid || !$litlistid) {
         $self->print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."));
         
         return Apache2::Const::OK;
@@ -1169,7 +1177,7 @@ sub delete_entry {
     }
 
     
-    $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
+    $user->del_litlistentry({ entryid => $entryid, litlistid => $litlistid});
     
     my $new_location = "$path_prefix/$config->{litlist_loc}/$litlistid/edit";
     

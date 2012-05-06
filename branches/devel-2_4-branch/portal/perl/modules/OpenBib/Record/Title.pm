@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2007-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -102,6 +102,7 @@ sub new {
     }
 
     $logger->debug("Title-Record-Object created: ".YAML::Dump($self));
+
     return $self;
 }
 

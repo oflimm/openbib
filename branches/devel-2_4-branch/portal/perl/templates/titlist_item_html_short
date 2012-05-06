@@ -22,8 +22,9 @@
      ebook_i18n      = msg.maketext("E-Book");
      toc_i18n        = msg.maketext("Inhaltsverzeichnis");
      popularity_i18n = msg.maketext("Popularität");
-
-     item = record.get_brief_normdata;
+     
+     item   = record.get_brief_normdata;
+     listid = record.listid;
 
      # Verfasser konstruieren
      persons = [] ;
@@ -169,6 +170,7 @@
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.lt == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="brieftitle">
+[%# USE dumper;dumper.dump(item) %]
          <span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% IF user.ID %]user/[% user.ID %]/[% END %][% config.get('title_loc') %]/[% item.database %]/[% item.id %].html?l=[% lang %]"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>   
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
@@ -186,7 +188,7 @@
       <div class="titleactions">
 <a class="collection" href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %];_method=POST;db=[% item.database %];id=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?_method=POST;l=[% lang %];id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
 [% IF user_owns_litlist %]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %]/item/[% item.database %]/[% item.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %]/item/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]
 [% IF parameter.private_tags %]
 &nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tag_loc') %]/[% parameter.tag %]?titid=[% item.id %];titdb=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>

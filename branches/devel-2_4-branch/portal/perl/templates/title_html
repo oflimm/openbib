@@ -114,28 +114,42 @@
 
       IF userlitlists.size > 0 ;
 %]
-<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]">
+<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="yform">
+<fieldset class="full">
+<legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
 <input type="hidden" name="titid"           value="[% record.id %]" />
 <input type="hidden" name="titdb"           value="[% record.database %]" />
-<p>
-<table>
-<tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</td></tr>
-<tr><td><select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select></td><tr>
-<td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td></tr>
-</table>
-</p>
+<div class="type-select">
+<label for="litlistid">[% msg.maketext("Name") %]</label>
+<select name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div>
+
+</fieldset>
 </form>
 [% END %]
 
 <p>
-<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]">
+<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="yform">
+<fieldset class="full">
+<legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
 <input type="hidden" name="titid"           value="[% record.id %]" />
 <input type="hidden" name="titdb"           value="[% record.database %]" />
-<table>
-<tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</td></tr>
-<tr><td><input type="text" name="title" size="20" /> <select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> </td></tr>
-<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td></tr>
-</table>
+
+<div class="type-text">
+<label for="title">[% msg.maketext("Name") %]</label>
+<input type="text" name="title" id="title" size="20" />
+</div>
+
+<div class="type-select">
+<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
+<select name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div>
+
+</fieldset>
 </form>
 </p>
 

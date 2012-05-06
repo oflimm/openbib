@@ -19,6 +19,7 @@
 
 /* import screen layout | Screen-Layout einbinden */
 @import url(/yaml/navigation/nav_shinybuttons.css);
+@import url(/yaml/screen/forms.css);
 @import url(screen/basemod.css);
 @import url(screen/basemod_2col_right_31.css);
 @import url(screen/content.css);

@@ -143,15 +143,16 @@ while (my $result=$request->fetchrow_hashref){
                     next REFERENCES;
                 }
 
-                my $tititem_ref = OpenBib::Record::Title->new({database => $item_ref->{dbname}, id => $item_ref->{katkey}})->load_full_record({dbh => $dbh})->get_normdata;
+                my $record = OpenBib::Record::Title->new({database => $item_ref->{dbname}, id => $item_ref->{katkey}})->load_full_record({dbh => $dbh});
 
-#                print YAML::Dump($tititem_ref);
-                my $content = << "CONTENT";
-<span class="rlauthor">$tititem_ref->{PC0001}[0]{content}</span><br /><strong><span class="rltitle">$tititem_ref->{T0331}[0]{content}</span></strong>, <span class="rlpublisher">$tititem_ref->{T0412}[0]{content}</span> <span class="rlyearofpub">$tititem_ref->{T0425}[0]{content}</span> ($references_ref->{count}&nbsp;Nutzer)
-CONTENT
+                # Add user count
+                $record->{user_count} = $references_ref->{count} ;
+
+                my $content = $record->to_json;
+                
                 $count++;
                
-                if ($tititem_ref->{T0331} && $item_ref->{isbn}){
+                if ($record->get_category({ category => 'T0331' }) && $item_ref->{isbn}){
                     $request2->execute($isbn13,50,4000,$count,$item_ref->{isbn});
                     $request2->execute($isbn13,50,4001,$count,$content);
                 }

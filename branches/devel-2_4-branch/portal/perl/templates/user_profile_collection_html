@@ -26,20 +26,6 @@
 <div class="page_margins">
   <div class="page">
 
-<script language="JavaScript" type="text/javascript">
-<!--
-
-function update_fak(yourform, checked, fak) {
-    for (var i = 0; i < yourform.elements.length; i++) {
-         if (yourform.elements[i].title.indexOf(fak) != -1) {
-              yourform.elements[i].checked = checked;
-         }
-    }
-}
-
-// -->
-</script>
-
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
@@ -57,29 +43,29 @@ function update_fak(yourform, checked, fak) {
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile">
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile" class="yform">
+<fieldset>
+<legend>[% msg.maketext("Neues Katalogprofil anlegen") %]</legend>
 
-<table width="100%">
-<tr><th>[% msg.maketext("Neues Katalogprofil anlegen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td><b>[% msg.maketext("Names des Profils") %]</b></td><td></td></tr>
-<tr><td><input type="text" name="profilename" size="50" /></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Neu") %]" /></div></td></tr>
-</table>
-</td></tr>
-</table>
+<div class="type-text">
+<label for="profilename">[% msg.maketext("Names des Profils") %]</label>
+<input type="text" name="profilename" id="profilename" size="50" />
+</div>
 
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Neu") %]" /></div>
+
+</fieldset>
 </form>
 
 <p />
 
 [%# USE dumper;dumper.dump(userdbprofiles)%]
 
-<table width="100%">
+<table class="full">
 <tr><th>[% msg.maketext("Bereits existierende Profile") %]</th></tr>
 <tr><td class="boxedclear">
 [%- IF userdbprofiles.size > 0 -%]
-<table>
+<table class="full">
 <tr><td>[% msg.maketext("Name") %]</td><td>[% msg.maketext("Ausgew&auml;hlte Kataloge") %]</td><td></td></tr>
 [% listrow = 'listrow1' %]
 [%-   FOREACH userdbprofile IN userdbprofiles -%]

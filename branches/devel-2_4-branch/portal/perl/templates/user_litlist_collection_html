@@ -41,31 +41,36 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]">
+<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="yform">
+<fieldset>
+<legend>[% msg.maketext("Neue Literaturliste anlegen") %]</legend>
 
-<table width="100%">
-<tr><th>[% msg.maketext("Neue Literaturliste anlegen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table width="100%">
-<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td></td></tr>
-<tr><td><input type="text" name="title" size="50" /></td><td><select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td><td><div class="cssbutton glass kug"><input type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></div></td></tr>
-<tr><td colspan="3"></td></tr>
+<div class="type-text">
+<label for="title">[% msg.maketext("Titel der Liste") %]</label>
+<input type="text" name="title" id="title" size="50" />
+</div>
 
-<tr><td colspan="3">Ordnen Sie Ihre Literaturliste thematisch ein</td></tr>
-<tr><td colspan="3">
+<div class="type-select">
+<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
+<select name="type">
+  <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
+  <option value="2">[% msg.maketext("privat") %]</option>
+</select>
+</div>
+
+<div class="type-select">
+<label for="subjectids">[% msg.maketext("Ordnen Sie Ihre Literaturliste thematisch ein") %]</label>
 <select name="subjectids" multiple="multiple" size="5">
 
 [% FOREACH subject IN subjects %]
 <option value="[% subject.id %]">[% subject.name %][% IF subject.description%] ([% subject.description %])[% END %]</option>
 
 [% END %]
-
-
 </select>
-</td></tr>
-</table>
-</td></tr>
-</table>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></div>
+</fieldset>
 
 </form>
 

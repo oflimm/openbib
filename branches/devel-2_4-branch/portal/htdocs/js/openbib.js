@@ -324,7 +324,7 @@ $("#tagging_toggle").click(function(){
 
   
   
-function insert_tag(event) {
+function insert_tag(event,id) {
 
   var this_element = "";
   
@@ -344,7 +344,7 @@ function insert_tag(event) {
 
   tag = tag.replace(/ /,"");
   
-  var this_input = document.getElementById('inputfield');
+  var this_input = document.getElementById(id);
   
   var tags = this_input.value.split(" ");
   

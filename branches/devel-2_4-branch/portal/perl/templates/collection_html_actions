@@ -16,13 +16,12 @@
 
 [% IF extended_actions == 1 %]
 
+[%    IF config.get('litlists') %]
 <div class="litlists"><!-- Begin Litlist -->
 <div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
 
 [% 
-   IF config.get('litlists') ;
-
       litlists = [] ;
       IF user.ID ;
           litlists = user.get_litlists();
@@ -32,20 +31,44 @@
 %]
 <p/>
 
-<table class="full">
-<tr><td>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</td></tr>
-<tr><td><select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select></td></tr>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" /></div></td></tr>
-</table>
-[%    END %]
+<fieldset class="full">
+<legend>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</legend>
+
+<div class="type-select">
+<label for="litlistid">[% msg.maketext("Name") %]</label>
+<select name="litlistid" id="litlistid">
+[% FOREACH litlist IN litlists %]
+  <option value="[% litlist.id %]">[% litlist.title %]</option>
 [% END %]
+</select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" /></div>
+</fieldset>
+[%    END %]
 <p/>
 
-<table class="full">
-<tr><td>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</td></tr>
-<tr><td><input type="text" name="title" /> <select name="littype"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> </td></tr>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_addlitlist" value="[% msg.maketext("Los") %]" /></div></td></tr>
-</table>
+<fieldset class="full">
+<legend>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</legend>
+
+<div class="type-text">
+<label for="title">[% msg.maketext("Name") %]</label>
+<input type="text" name="title" id="title" size="20" />
+</div>
+
+<div class="type-select">
+<label for="littype">[% msg.maketext("Sichtbarkeit") %]</label>
+<select name="littype" id="littype">
+  <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
+  <option value="2">[% msg.maketext("privat") %]</option>
+</select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" name="do_addlitlist" value="[% msg.maketext("Los") %]" /></div>
+</fieldset>
+
+[% END %]
+
 </div> <!-- End: Listlist do -->
 <p/>
 </div><!-- End: Listlist -->
@@ -57,28 +80,42 @@
 <div class="headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
 <div id="tagging_do"><!-- Begin Tagging do -->
 <p/>
-[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags
-versehen: ") %]
+[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
 
-<table class="full">
-<tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
-<tr><td class="boxedclear">
+<fieldset class="full">
+<legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
 
-<table class="full">
-<tr><td><input type="text"   name="tags"       value="" size="20" maxlength="200" id="inputfield"/></td></tr>
-<tr><td>[% msg.maketext("Typ:") %]&nbsp;<select name="tags_type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td></tr>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_addtags" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div></td></tr>
-</table>
-</td></tr>
-</table>
+<div class="type-text">
+<input type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
+</div>
+
+<div class="type-select">
+<label for="tags_type">[% msg.maketext("Sichtbarkeit") %]</label>
+<select name="tags_type" id="tags_type">
+  <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
+  <option value="2">[% msg.maketext("privat") %]</option>
+</select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" name="do_addtags" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div>
+</fieldset>
 
 [% private_tags = user.get_private_tags({ username => username  }) %]
 
-<table class="full">
-<tr><th>[% msg.maketext("Übernahme eigener Tags") %]</th></tr>
-<tr><td class="boxedclear">
+<h4>[% msg.maketext("Übernahme eigener Tags") %]</h4>
 
 <!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
 
 [%-   IF private_tags.size > 0 -%]
 <ol class="cloud">
@@ -90,15 +127,13 @@ versehen: ") %]
           itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% msg.maketext("[_1] Titel sind
-verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'tags'); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%      END %]
 </ol>
 [%    ELSE %]
 [% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
 [%    END %]
 
-</td></tr>
-</table>
 </div><!-- End: Tagging do -->
 </div><!-- End: Tagging -->
 [%# END %]

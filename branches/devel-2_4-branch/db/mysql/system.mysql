@@ -284,13 +284,31 @@ CREATE TABLE eventlog (
 
  tstamp     DATETIME,
  type       INT,
- content    MEDIUMBLOB,
+ content    VARCHAR(255),
 
- CONSTRAINT `fk_lastrecord_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+ CONSTRAINT `fk_eventlog_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
 
  INDEX (tstamp),
  INDEX (type),
- INDEX (content(50))
+ INDEX (content)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS eventlogjson;
+CREATE TABLE eventlogjson (
+ sid        BIGINT NOT NULL,
+
+ tstamp     DATETIME,
+ type       INT,
+ content    MEDIUMBLOB,
+
+ CONSTRAINT `fk_eventlogjson_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
+ INDEX (tstamp),
+ INDEX (type)
 )
 ENGINE InnoDB
 DEFAULT CHARACTER SET utf8

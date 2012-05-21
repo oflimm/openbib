@@ -703,6 +703,37 @@ sub get_items_in_collection {
     return $recordlist;
 }
 
+sub get_single_item_in_collection {
+    my ($self,$listid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $collectionitem = $self->{schema}->resultset('Sessioncollection')->search_rs(
+        {
+            'me.id'         => $listid,
+            'sid.sessionid' => $self->{ID},
+        },
+        {
+            select => [ 'me.dbname', 'me.titleid', 'me.titlecache'],
+            as     => [ 'thisdbname', 'thistitleid', 'thistitlecache' ],
+            join   => 'sid'
+        }
+    )->single;
+
+    if ($collectionitem){
+        my $database   = $collectionitem->get_column('thisdbname');
+        my $titleid    = $collectionitem->get_column('thistitleid');
+        my $titlecache = $collectionitem->get_column('thistitlecache');
+        
+        my $record = new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid});
+        
+        return $record;
+    }
+    
+    return;
+}
+
 sub add_item_to_collection {
     my ($self,$arg_ref)=@_;
 
@@ -832,13 +863,20 @@ sub save_eventlog_to_statisticsdb {
     
     # Alle Events in Statistics-DB uebertragen
     # DBI: "select * from eventlog where sessionid = ?"
-    my $events = $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID} },{ join => 'sid' });
+    my $events = $self->{schema}->resultset('Eventlog')->search_rs(
+        {
+            'sid.sessionid' => $self->{ID}
+        },
+        {
+            join => 'sid'
+        }
+    );
 
     foreach my $event ($events->all){
         my $tstamp        = $event->tstamp;
         my $type          = $event->type;
         my $content       = $event->content;
-        my $sid           = $event->sid;
+        my $sid           = $event->sid->id;
 
         $statistics->log_event({
             sid       => $sid,
@@ -895,20 +933,20 @@ sub save_eventlog_to_statisticsdb {
         my $sid           = $self->{sid};
         my $isbn          = $content_ref->{isbn};
         my $dbname        = $content_ref->{database};
-        my $katkey        = $content_ref->{id};
+        my $id            = $content_ref->{id};
 
-	next if (exists $seen_title{"$dbname:$katkey"});
+	next if (exists $seen_title{"$dbname:$id"});
 
-        $statistics->store_relevance({
+        $statistics->store_titleusage({
             tstamp => $tstamp,
-            id     => $sid,
+            sid    => $sid,
             isbn   => $isbn,
             dbname => $dbname,
-            katkey => $katkey,
+            id     => $id,
             type   => 2,
         });
 
-	$seen_title{"$dbname:$katkey"}=1;
+	$seen_title{"$dbname:$id"}=1;
     }
 
     return;

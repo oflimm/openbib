@@ -57,7 +57,7 @@ sub new {
     return $self;
 }
 
-sub store_relevance {
+sub store_titleusage {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
@@ -69,32 +69,38 @@ sub store_relevance {
         ? $arg_ref->{isbn  }        : undef;
     my $dbname            = exists $arg_ref->{dbname}
         ? $arg_ref->{dbname}        : undef;
-    my $katkey            = exists $arg_ref->{katkey}
-        ? $arg_ref->{katkey}        : undef;
+    my $sid               = exists $arg_ref->{sid}
+        ? $arg_ref->{sid}           : undef;
     my $type              = exists $arg_ref->{type}
         ? $arg_ref->{type  }        : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type);
+    return undef unless (defined $id && defined $dbname && defined $sid && defined $type);
 
+    my $parsed_tstamp = new Date::Manip::Date;
+    $parsed_tstamp->parse($tstamp);
+    
     # DBI: insert into relevance values (?,?,?,?,?,?)
-    $self->{schema}->resultset('Relevance')->create(
+    $self->{schema}->resultset('Titleusage')->create(
         {
-            tstamp => $tstamp,
-            id     => $id,
-            isbn   => $isbn,
-            dbname => $dbname,
-            type   => $type,
-            katkey => $katkey,
+            tstamp       => $parsed_tstamp->printf("%y%m%d%H%M%S"),
+            tstamp_year  => $parsed_tstamp->printf("%y"),
+            tstamp_month => $parsed_tstamp->printf("%m"),
+            tstamp_day   => $parsed_tstamp->printf("%d"),
+            id           => $id,
+            isbn         => $isbn,
+            dbname       => $dbname,
+            type         => $type,
+            sid          => $sid,
         }
     );
 
     return;
 }
 
-sub store_result {
+sub cache_data {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
@@ -128,7 +134,7 @@ sub store_result {
     }
 
     eval {
-        $self->{schema}->resultset('ResultData')->search($where_ref)->delete_all;
+        $self->{schema}->resultset('Datacache')->search($where_ref)->delete_all;
     };
 
     if ($@){
@@ -146,7 +152,7 @@ sub store_result {
     my $datastring = encode_json $data_ref;
 
     # DBI: "insert into result_data values (?,NULL,?,?,?)"
-    $self->{schema}->resultset('ResultData')->create(
+    $self->{schema}->resultset('Datacache')->create(
         {
             id     => $id,
             type   => $type,
@@ -188,7 +194,7 @@ sub get_result {
         $where_ref->{subkey}=$subkey;
     }
     
-    my $resultdatas = $self->{schema}->resultset('ResultData')->search($where_ref,{ columns => qw/ data / });
+    my $resultdatas = $self->{schema}->resultset('Datacache')->search($where_ref,{ columns => qw/ data / });
 
     $logger->debug("Searching data for Id: $id / Type: $type");
 
@@ -234,7 +240,7 @@ sub result_exists {
         type => $type,
     };
     
-    my $resultcount = $self->{schema}->resultset('ResultData')->search($where_ref)->count;
+    my $resultcount = $self->{schema}->resultset('Datacache')->search($where_ref)->count;
 
     $logger->debug("Found: $resultcount");
     
@@ -294,13 +300,19 @@ sub log_event {
     # 541 => HBZ-Dokumentenlieferung
     # 550 => WebOPAC
 
+    my $parsed_tstamp = new Date::Manip::Date;
+    $parsed_tstamp->parse($tstamp);
+    
     # DBI: "insert into eventlog values (?,?,?,?)"
     $self->{schema}->resultset('Eventlog')->create(
         {
-            sid     => $sid,
-            tstamp  => $tstamp,
-            type    => $type,
-            content => $content,
+            sid          => $sid,
+            tstamp       => $parsed_tstamp->printf("%y%m%d%H%M%S"),
+            tstamp_year  => $parsed_tstamp->printf("%y"),
+            tstamp_month => $parsed_tstamp->printf("%m"),
+            tstamp_day   => $parsed_tstamp->printf("%d"),
+            type         => $type,
+            content      => $content,
         }
     );
 
@@ -316,7 +328,13 @@ sub get_number_of_event {
 
     my $to       = exists $arg_ref->{to}
         ? $arg_ref->{to}                 : undef;
-    
+
+    my $year       = exists $arg_ref->{year}
+        ? $arg_ref->{year}               : undef;
+
+    my $month      = exists $arg_ref->{month}
+        ? $arg_ref->{month}               : undef;
+
     my $type         = exists $arg_ref->{type}
         ? $arg_ref->{type}               : undef;
     
@@ -326,6 +344,8 @@ sub get_number_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;    
+
     # DBI: "select count(tstamp) as rowcount, min(tstamp) as sincetstamp from eventlog"
     my $where_ref     = {};
     
@@ -333,14 +353,22 @@ sub get_number_of_event {
         $where_ref->{type} = $type,
     } 
 
+    if ($year){
+        push @{$where_ref->{tstamp_year}}, { '=' => $year }; 
+    } 
+    
+    if ($month){
+        push @{$where_ref->{tstamp_month}}, { '=' => $month } ; 
+    } 
+
     if ($from){
         push @{$where_ref->{tstamp}}, { '>' => $from }; 
     } 
-
+    
     if ($to){
         push @{$where_ref->{tstamp}}, { '<' => $to } ; 
     } 
-
+    
     if ($content){
         my $op = "=";
         if ($content =~m/\%$/){
@@ -352,14 +380,35 @@ sub get_number_of_event {
 
     $logger->debug(YAML::Dump($where_ref));
 
-    my $count = $self->{schema}->resultset('Eventlog')->search_rs($where_ref)->count;
-    my $since = $self->{schema}->resultset('Eventlog')->search_rs($where_ref)->get_column('tstamp')->min;
-
-    $logger->debug("Got results: Number $count since $since");
-
-    return {
-        number => $count,
-        since  => $since,
+    if (exists $config->{eventlogjson_type}{$type}){
+        my $count = $self->{schema}->resultset('Eventlogjson')->search_rs($where_ref)->count;
+        
+        $logger->debug("Since when?");
+        
+        my $since = $self->{schema}->resultset('Eventlogjson')->search_rs($where_ref)->get_column('tstamp')->min;
+        
+        #    my $since = "ultimo";
+        $logger->debug("Got results: Number $count since $since");
+        
+        return {
+            number => $count,
+            since  => $since,
+        };
+    }
+    else {            
+        my $count = $self->{schema}->resultset('Eventlog')->search_rs($where_ref)->count;
+        
+        $logger->debug("Since when?");
+        
+        my $since = $self->{schema}->resultset('Eventlog')->search_rs($where_ref)->get_column('tstamp')->min;
+        
+        #    my $since = "ultimo";
+        $logger->debug("Got results: Number $count since $since");
+        
+        return {
+            number => $count,
+            since  => $since,
+        };
     }
 }
 
@@ -372,16 +421,30 @@ sub get_tstamp_range_of_events {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    # DBI: "select min(tstamp) as min_tstamp, max(tstamp) as max_tstamp from eventlog";
-    my $eventlog_tstamp = $self->{schema}->resultset('Eventlog')->get_column('tstamp');
     
-    my $min_tstamp = ParseDate($eventlog_tstamp->min);
-    my $max_tstamp = ParseDate($eventlog_tstamp->max);
-
-    return {
-        min  => UnixDate($min_tstamp, $format),
-        max  => UnixDate($max_tstamp, $format),
+    # Shortcut fuer Jahr
+    if ($format == '%Y'){
+        my $eventlog_tstamp = $self->{schema}->resultset('Eventlog')->get_column('tstamp_year');
+        
+        my $min_tstamp = $eventlog_tstamp->min;
+        my $max_tstamp = $eventlog_tstamp->max;
+        
+        return {
+            min  => $min_tstamp,
+            max  => $max_tstamp,
+        };
+    }
+    else {
+        # DBI: "select min(tstamp) as min_tstamp, max(tstamp) as max_tstamp from eventlog";
+        my $eventlog_tstamp = $self->{schema}->resultset('Eventlog')->get_column('tstamp');
+        
+        my $min_tstamp = ParseDate($eventlog_tstamp->min);
+        my $max_tstamp = ParseDate($eventlog_tstamp->max);
+        
+        return {
+            min  => UnixDate($min_tstamp, $format),
+            max  => UnixDate($max_tstamp, $format),
+        };
     }
 }
 
@@ -395,8 +458,11 @@ sub get_number_of_queries_by_category {
     my $to       = exists $arg_ref->{to}
         ? $arg_ref->{to}                 : undef;
 
-    my $tstamp       = exists $arg_ref->{tstamp}
-        ? $arg_ref->{tstamp}             : undef;
+    my $year       = exists $arg_ref->{year}
+        ? $arg_ref->{year}               : undef;
+
+    my $month      = exists $arg_ref->{month}
+        ? $arg_ref->{month}               : undef;
 
     my $category     = exists $arg_ref->{category}
         ? $arg_ref->{category}           : undef;
@@ -411,6 +477,14 @@ sub get_number_of_queries_by_category {
         $category => 1,
     };
 
+    if ($year){
+        push @{$where_ref->{tstamp_year}}, { '=' => $year }; 
+    } 
+
+    if ($month){
+        push @{$where_ref->{tstamp_month}}, { '=' => $month } ; 
+    } 
+
     if ($from){
         push @{$where_ref->{tstamp}}, { '>' => $from }; 
     } 
@@ -419,7 +493,7 @@ sub get_number_of_queries_by_category {
         push @{$where_ref->{tstamp}}, { '<' => $to } ; 
     } 
 
-    my $count = $self->{schema}->resultset('Querycategory')->search($where_ref)->count;
+    my $count = $self->{schema}->resultset('Searchfield')->search($where_ref)->count;
 
     return {
 	 number => $count,
@@ -436,8 +510,11 @@ sub get_ranking_of_event {
     my $to       = exists $arg_ref->{to}
         ? $arg_ref->{to}                 : undef;
 
-    my $tstamp       = exists $arg_ref->{tstamp}
-        ? $arg_ref->{tstamp}             : undef;
+    my $year       = exists $arg_ref->{year}
+        ? $arg_ref->{year}               : undef;
+
+    my $month      = exists $arg_ref->{month}
+        ? $arg_ref->{month}               : undef;
 
     my $type         = exists $arg_ref->{type}
         ? $arg_ref->{type}               : undef;
@@ -460,6 +537,14 @@ sub get_ranking_of_event {
         select => [{ count => 'content'},'content'],
         as     => ['thiscount','thiscontent'],
     };
+
+    if ($year){
+        push @{$where_ref->{tstamp_year}}, { '=' => $year }; 
+    } 
+
+    if ($month){
+        push @{$where_ref->{tstamp_month}}, { '=' => $month } ; 
+    } 
     
     if ($from){
         push @{$where_ref->{tstamp}}, { '>' => $from }; 
@@ -469,7 +554,7 @@ sub get_ranking_of_event {
         push @{$where_ref->{tstamp}}, { '<' => $to } ; 
     } 
 
-    if ($to){
+    if ($type){
         $where_ref->{type} = $type;
     } 
     
@@ -526,58 +611,56 @@ sub log_query {
 
     my $config = OpenBib::Config->instance;    
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
+    my $parsed_tstamp = new Date::Manip::Date;
+    $parsed_tstamp->parse($tstamp);
 
     # Moegliche Queryterm-Typen
     #
-    # 01 => fs
-    # 02 => hst 
-    # 03 => verf
-    # 04 => kor
-    # 05 => swt
-    # 06 => notation
+    # 01 => fressearch
+    # 02 => title
+    # 03 => person
+    # 04 => corporatebody
+    # 05 => subject
+    # 06 => classification
     # 07 => isbn
     # 08 => issn
-    # 09 => sign
-    # 10 => mart
-    # 11 => hststring
-    # 12 => gtquelle
-    # 13 => ejahr
+    # 09 => mark
+    # 10 => mediatype
+    # 11 => titlestring
+    # 12 => source
+    # 13 => year
 
     my $cat2type_ref = {
-			fs        => 1,
-			hst       => 2,
-			verf      => 3,
-			kor       => 4,
-			swt       => 5,
-			notation  => 6,
-			isbn      => 7,
-			issn      => 8,
-			sign      => 9,
-			mart      => 10,
-			hststring => 11,
-			gtquelle  => 12,
-			ejahr     => 13,
+			freeesearch    => 1,
+			title          => 2,
+			person         => 3,
+			corporatebody  => 4,
+			subject        => 5,
+			classification => 6,
+			isbn           => 7,
+			issn           => 8,
+			mark           => 9,
+			mediatype      => 10,
+		        titlestring    => 11,
+			source         => 12,
+			year           => 13,
 		       };
 
     my $used_category_ref = {
-			fs        => 0,
-			hst       => 0,
-			verf      => 0,
-			kor       => 0,
-			swt       => 0,
-			notation  => 0,
-			isbn      => 0,
-			issn      => 0,
-			sign      => 0,
-			mart      => 0,
-			hststring => 0,
-			gtquelle  => 0,
-			ejahr     => 0,
-			    };
+        freeesearch    => 0,
+        title          => 0,
+        person         => 0,
+        corporatebody  => 0,
+        subject        => 0,
+        classification => 0,
+        isbn           => 0,
+        issn           => 0,
+        mark           => 0,
+        mediatype      => 0,
+        titlestring    => 0,
+        source         => 0,
+        year           => 0,
+    };
 
     my $term_stopword_ref = {
 			  'a'     => 1,
@@ -634,12 +717,15 @@ sub log_query {
 	  next if (exists $term_stopword_ref->{$next});
 
           # DBI: "insert into queryterm values (?,?,?,?)"
-          $self->{schema}->resultset('Queryterm')->create(
+          $self->{schema}->resultset('Searchterm')->create(
               {
-                  tstamp   => $tstamp,
-                  viewname => $view,
-                  type     => $cat2type_ref->{$cat},
-                  content  => $next,
+                  tstamp       => $parsed_tstamp->printf("%y%m%d%H%M%S"),
+                  tstamp_year  => $parsed_tstamp->printf("%y"),
+                  tstamp_month => $parsed_tstamp->printf("%m"),
+                  tstamp_day   => $parsed_tstamp->printf("%d"),
+                  viewname     => $view,
+                  type         => $cat2type_ref->{$cat},
+                  content      => $next,
                   
               }
           );
@@ -647,24 +733,28 @@ sub log_query {
     }
 
     # DBI: "insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-    $self->{schema}->resultset('Querycategory')->create(
+    $self->{schema}->resultset('Searchfield')->create(
               {
-                  tstamp    => $tstamp,
-                  viewname  => $view,
-                  fs        => $used_category_ref->{fs},
-                  hst       => $used_category_ref->{hst},
-                  verf      => $used_category_ref->{verf},
-                  kor       => $used_category_ref->{kor},
-                  swt       => $used_category_ref->{swt},
-                  notation  => $used_category_ref->{notation},
-                  isbn      => $used_category_ref->{isbn},
-                  issn      => $used_category_ref->{issn},
-                  sign      => $used_category_ref->{sign},
-                  mart      => $used_category_ref->{mart},
-                  hststring => $used_category_ref->{hststring},
-                  inhalt    => $used_category_ref->{inhalt},
-                  gtquelle  => $used_category_ref->{gtquelle},
-                  ejahr     => $used_category_ref->{ejahr},
+                  tstamp       => $parsed_tstamp->printf("%y%m%d%H%M%S"),
+                  tstamp_year  => $parsed_tstamp->printf("%y"),
+                  tstamp_month => $parsed_tstamp->printf("%m"),
+                  tstamp_day   => $parsed_tstamp->printf("%d"),
+                  
+                  viewname       => $view,
+                  freesearch     => $used_category_ref->{freesearch},
+                  title          => $used_category_ref->{title},
+                  person         => $used_category_ref->{person},
+                  corporategody  => $used_category_ref->{corporatebody},
+                  subject        => $used_category_ref->{subject},
+                  classification => $used_category_ref->{classification},
+                  isbn           => $used_category_ref->{isbn},
+                  issn           => $used_category_ref->{issn},
+                  mark           => $used_category_ref->{mark},
+                  mediatype      => $used_category_ref->{mediatype},
+                  titlestring    => $used_category_ref->{titlestring},
+                  content        => $used_category_ref->{content},
+                  source         => $used_category_ref->{source},
+                  year           => $used_category_ref->{year},
               }
           );
 
@@ -839,7 +929,7 @@ Erzeugung als herkömmliches Objektes und nicht als
 Apache-Singleton. Damit kann auch ausserhalb des Apache mit mod_perl
 auf Statistikdaten in Perl-Skripten zugegriffen werden.
 
-=item store_relevance({ tstamp => $tstamp, id => $id, dbname => $dbname, isbn => $isbn, $katkey => $katkey, type => $type})
+=item store_titleusage({ tstamp => $tstamp, id => $id, dbname => $dbname, isbn => $isbn, $katkey => $katkey, type => $type})
 
 Speichert den Aufruf eines Einzeltreffers als Relevanzinformation in
 der Statistik-Datenbank. Die gespeicherten Informationen sind die
@@ -847,7 +937,7 @@ Sessionidentifikation $id, der Aufrufzeitpunkt $tstamp, eine etwaige
 $isbn, Datenbankname $dbname und $katkey des Titels in dieser Datenbank,
 sowie der Aufruftyp $type (1=Einzeltrefferaufruf)
 
-=item store_result({ id => $id, type => $type, subkey  => $subkey, $data => $data_ref });
+=item cache_data({ id => $id, type => $type, subkey  => $subkey, $data => $data_ref });
 
 Speichert eine statistische Auswertung oder generell komplexe
 Datenstrukturen $data_ref für einen schnellen Lookup in der

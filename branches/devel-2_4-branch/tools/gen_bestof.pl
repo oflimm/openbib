@@ -5,7 +5,7 @@
 #
 #  Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 #
-#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -109,7 +109,7 @@ if ($type == 1){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-        my $request=$statisticsdbh->prepare("select katkey, count(id) as idcount from relevance where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
+        my $request=$statisticsdbh->prepare("select katkey, count(id) as idcount from titleusage where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
         $request->execute($database);
         while (my $result=$request->fetchrow_hashref){
             my $katkey = $result->{katkey};
@@ -123,7 +123,7 @@ if ($type == 1){
             };
         }
 
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 1,
             id   => $database,
             data => $bestof_ref,
@@ -136,7 +136,7 @@ if ($type == 2){
     $logger->info("Generating Type 2 BestOf-Values for all databases");
     
     my $bestof_ref=[];
-    my $request=$statisticsdbh->prepare("select dbname, count(katkey) as kcount from relevance where origin=2 group by dbname order by kcount desc limit 20");
+    my $request=$statisticsdbh->prepare("select dbname, count(katkey) as kcount from titleusage where origin=2 group by dbname order by kcount desc limit 20");
     $request->execute();
     while (my $result=$request->fetchrow_hashref){
         my $dbname = $result->{dbname};
@@ -148,7 +148,7 @@ if ($type == 2){
         };
     }
 
-    $statistics->store_result({
+    $statistics->cache_data({
         type => 2,
         id   => 'all',
         data => $bestof_ref,
@@ -208,7 +208,7 @@ if ($type == 3){
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 3,
             id   => $database,
             data => $sortedbestof_ref,
@@ -269,7 +269,7 @@ if ($type == 4){
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 4,
             id   => $database,
             data => $sortedbestof_ref,
@@ -330,7 +330,7 @@ if ($type == 5){
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 5,
             id   => $database,
             data => $sortedbestof_ref,
@@ -391,7 +391,7 @@ if ($type == 6){
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 6,
             id   => $database,
             data => $sortedbestof_ref,
@@ -454,7 +454,7 @@ if ($type == 7){
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 7,
             id   => $database,
             data => $sortedbestof_ref,
@@ -546,7 +546,7 @@ if ($type == 8){
 
         $logger->debug(YAML::Dump($bestof_ref));
 
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 8,
             id   => $view,
             data => $bestof_ref,
@@ -607,7 +607,7 @@ if ($type == 9){
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 9,
             id   => $database,
             data => $sortedbestof_ref,
@@ -660,7 +660,7 @@ if ($type == 10){
         
         $logger->debug(YAML::Dump($bk_ref));
 
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 10,
             id   => $view,
             data => $bk_ref,
@@ -715,7 +715,7 @@ if ($type == 11){
         }
 
         foreach my $bk (keys %{$bk_ref}){
-            $statistics->store_result({
+            $statistics->cache_data({
                 type   => 11,
                 subkey => $bk,
                 id     => $view,
@@ -779,7 +779,7 @@ if ($type == 12){
             map { [$_, $_->{item}] }
                 @{$bestof_ref};
     
-    $statistics->store_result({
+    $statistics->cache_data({
         type => 12,
         id   => 'litlist_usage',
         data => $sortedbestof_ref,
@@ -806,7 +806,7 @@ if ($type == 13){
 
         $logger->info($profilestring);
         my $bestof_ref=[];
-        my $request=$statisticsdbh->prepare("select katkey, dbname, count(id) as idcount from relevance where origin=2 and dbname in $profilestring and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
+        my $request=$statisticsdbh->prepare("select katkey, dbname, count(id) as idcount from titleusage where origin=2 and dbname in $profilestring and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
         $request->execute();
         while (my $result=$request->fetchrow_hashref){
             my $katkey   = $result->{katkey};
@@ -821,7 +821,7 @@ if ($type == 13){
             };
         }
 
-        $statistics->store_result({
+        $statistics->cache_data({
             type => 13,
             id   => $profile->get_column('profilename'),
             data => $bestof_ref,

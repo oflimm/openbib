@@ -2965,6 +2965,30 @@ sub get_litlists_of_tit {
     return $litlists_ref;
 }
 
+sub get_single_item_in_collection {
+    my ($self,$listid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $collectionitem = $self->{schema}->resultset('Collection')->search_rs(
+        id     => $listid,
+        userid => $self->{ID},
+    )->single;
+
+    if ($collectionitem){
+        my $database  = $collectionitem->dbname;
+        my $titleid   = $collectionitem->titleid;
+        my $listid    = $collectionitem->id;
+        
+        my $record = new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid});
+        
+        return $record;
+    }
+    
+    return;
+}
+
 sub get_items_in_collection {
     my ($self)=@_;
 

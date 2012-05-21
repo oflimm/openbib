@@ -201,11 +201,17 @@ sub show_collection {
     elsif ($do_litlist_addentry) {
         my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
         
-        foreach my $tit ($query->param('titid')) {
-            my ($titdb,$titid)=split(":",$tit);
-	    
-            if ($litlist_properties_ref->{userid} eq $user->{ID}) {
-                $user->add_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
+        foreach my $listid ($query->param('id')) {
+            my $record;
+            if ($user->{ID}) {
+                $record = $user->get_single_item_in_collection($listid);
+            }
+            else {
+                $record = $session->get_single_item_in_collection($listid);
+            }
+
+            if ($record && $litlist_properties_ref->{userid} eq $user->{ID}) {
+                $user->add_litlistentry({ titid => $record->{id}, titdb => $record->{database}, litlistid => $litlistid});
             }
         }
         
@@ -234,18 +240,19 @@ sub show_collection {
         if ($user->{ID}){
             my $username = $user->get_username;
             
-            if ($query->param('titid')){
-                foreach my $tit ($query->param('titid')) {
-                    my ($titdb,$titid)=split(":",$tit);
-                    
-                    $user->add_tags({
-                        tags      => $tags,
-                        titid     => $titid,
-                        titdb     => $titdb,
-                        username  => $username,
-                        type      => $tags_type,
-                    });
-                    
+            if ($query->param('id')){
+                foreach my $listid ($query->param('id')) {
+                    my $record = $user->get_single_item_in_collection($listid);
+
+                    if ($record){
+                        $user->add_tags({
+                            tags      => $tags,
+                            titid     => $record->{id},
+                            titdb     => $record->{database},
+                            username  => $username,
+                            type      => $tags_type,
+                        });
+                    }
                 }
             }
             else {

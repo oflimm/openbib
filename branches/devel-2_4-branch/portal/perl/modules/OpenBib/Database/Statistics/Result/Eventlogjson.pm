@@ -1,4 +1,4 @@
-package OpenBib::Database::Statistics::Result::Eventlog;
+package OpenBib::Database::Statistics::Result::Eventlogjson;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,11 +11,11 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Statistics::Result::Eventlog
+OpenBib::Database::Statistics::Result::Eventlogjson
 
 =cut
 
-__PACKAGE__->table("eventlog");
+__PACKAGE__->table("eventlogjson");
 
 =head1 ACCESSORS
 

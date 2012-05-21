@@ -1,4 +1,4 @@
-package OpenBib::Database::Statistics::Result::Queryterm;
+package OpenBib::Database::Statistics::Result::Searchterm;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,17 +11,32 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Statistics::Result::Queryterm
+OpenBib::Database::Statistics::Result::Searchterm
 
 =cut
 
-__PACKAGE__->table("queryterm");
+__PACKAGE__->table("searchterms");
 
 =head1 ACCESSORS
 
 =head2 tstamp
 
-  data_type: 'datetime'
+  data_type: 'bigint'
+  is_nullable: 1
+
+=head2 tstamp_year
+
+  data_type: 'smallint'
+  is_nullable: 1
+
+=head2 tstamp_month
+
+  data_type: 'tinyint'
+  is_nullable: 1
+
+=head2 tstamp_day
+
+  data_type: 'tinyint'
   is_nullable: 1
 
 =head2 viewname
@@ -45,7 +60,13 @@ __PACKAGE__->table("queryterm");
 
 __PACKAGE__->add_columns(
   "tstamp",
-  { data_type => "datetime", is_nullable => 1 },
+  { data_type => "bigint", is_nullable => 1 },
+  "tstamp_year",
+  { data_type => "smallint", is_nullable => 1 },
+  "tstamp_month",
+  { data_type => "tinyint", is_nullable => 1 },
+  "tstamp_day",
+  { data_type => "tinyint", is_nullable => 1 },
   "viewname",
   { data_type => "varchar", is_nullable => 1, size => 20 },
   "type",
@@ -55,8 +76,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2011-12-13 11:06:13
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:p9mKS5FqTVH+CXnpy+jDLA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-05-14 11:16:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0+TiaO35QKDsVMMp5zhPZQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -2,95 +2,177 @@
 --------------- T A B E L L E N -----------------
 -------------------------------------------------
 
-drop table IF EXISTS relevance;
-CREATE TABLE relevance (
- tstamp      TIMESTAMP,
- id          VARCHAR(100),
- isbn        VARCHAR(15),
- dbname      VARCHAR(25),
- katkey      INT,
- origin      INT
-);
-
-create index relevance_id on relevance (id);
-create index relevance_isbn on relevance (isbn);
-create index relevance_dbname on relevance (dbname);
-create index relevance_katkey on relevance (katkey);
-create index relevance_origin on relevance (origin);
-
-drop table IF EXISTS result_data;
-CREATE TABLE result_data (
- id          VARCHAR(100),
+drop table IF EXISTS datacache;
+CREATE TABLE datacache (
+ id          VARCHAR(100) primary key,
  tstamp      TIMESTAMP,
  type        INT,
  subkey      VARCHAR(50),
  data        TEXT
 );
 
-create index result_data_id on result_data (id);
-create index result_data_tstamp on result_data (tstamp);
-create index result_data_subkey on result_data (subkey);
-create index result_data_type on result_data (type);
+create index datacache_id on datacache (id);
+create index datacache_tstamp on datacache (tstamp);
+create index datacache_subkey on datacache (subkey);
+create index datacache_type on datacache (type);
+
+drop table IF EXISTS sessioninfo;
+CREATE TABLE sessioninfo (
+ id            BIGINT primary key,
+ sessionid     VARCHAR(70),
+ createtime    BIGINT,
+
+ createtime_year   SMALLINT,
+ createtime_month  SMALLINT,
+ createtime_day    SMALLINT
+);
+
+create index sessioninfo_id on sessioninfo (id);
+create index sessioninfo_sessionid on sessioninfo (sessionid);
+create index sessioninfo_createtime on sessioninfo (createtime);
+create index sessioninfo_createtime_year on sessioninfo (createtime_year);
+create index sessioninfo_createtime_month on sessioninfo (createtime_month);
+create index sessioninfo_createtime_day on sessioninfo (createtime_day);
+
+drop table IF EXISTS titleusage;
+CREATE TABLE titleusage (
+ sid          BIGINT,
+
+ tstamp       BIGINT,
+ tstamp_year  SMALLINT,
+ tstamp_month SMALLINT,
+ tstamp_day   SMALLINT,
+
+ isbn         VARCHAR(15),
+ dbname       VARCHAR(25),
+ id           VARCHAR(255) NOT NULL,
+ origin       SMALLINT
+);
+
+ALTER TABLE titleusage ADD CONSTRAINT fk_titleusage_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
+
+create index titleusage_sid on titleusage (sid);
+create index titleusage_tstamp on titleusage (tstamp);
+create index titleusage_tstamp_year on titleusage (tstamp_year);
+create index titleusage_tstamp_month on titleusage (tstamp_month);
+create index titleusage_tstamp_day on titleusage (tstamp_day);
+create index titleusage_isbn on titleusage (isbn);
+create index titleusage_dbname on titleusage (dbname);
+create index titleusage_id on titleusage (id);
+create index titleusage_origin on titleusage (origin);
+
 
 drop table IF EXISTS eventlog;
 CREATE TABLE eventlog (
- sessionid  VARCHAR(255) NOT NULL,
- tstamp     TIMESTAMP,
- type       INT,
- content    TEXT
+ sid          BIGINT,
+
+ tstamp       BIGINT,
+ tstamp_year  SMALLINT,
+ tstamp_month SMALLINT,
+ tstamp_day   SMALLINT,
+
+ type         INT,
+ content      TEXT
 );
 
-create index eventlog_sessionid on eventlog (sessionid);
-create index eventlog_tstamp on eventlog (tstamp);
-create index eventlog_type on eventlog (type);
-create index eventlog_content on eventlog (content);
-create index eventlog_type_tstamp_content on eventlog (type,tstamp,content);
+ALTER TABLE eventlog ADD CONSTRAINT fk_eventlog_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 
-drop table IF EXISTS queryterm;
-CREATE TABLE queryterm (
- tstamp     TIMESTAMP,
+create index eventlog_sid on eventlog (sid);
+create index eventlog_tstamp on eventlog (tstamp);
+create index eventlog_tstamp_year on eventlog (tstamp_year);
+create index eventlog_tstamp_month on eventlog (tstamp_month);
+create index eventlog_tstamp_day on eventlog (tstamp_day);
+create index eventlog_type on eventlog (type);
+create index eventlog_content on eventlog (content text_pattern_ops);
+
+drop table IF EXISTS eventlogjson;
+CREATE TABLE eventlogjson (
+ sid          BIGINT,
+
+ tstamp       BIGINT,
+ tstamp_year  SMALLINT,
+ tstamp_month SMALLINT,
+ tstamp_day   SMALLINT,
+
+ type         INT,
+ content      TEXT
+);
+
+ALTER TABLE eventlogjson ADD CONSTRAINT fk_eventlogjson_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
+
+create index eventlogjson_sid on eventlogjson (sid);
+create index eventlogjson_tstamp on eventlogjson (tstamp);
+create index eventlogjson_tstamp_year on eventlogjson (tstamp_year);
+create index eventlogjson_tstamp_month on eventlogjson (tstamp_month);
+create index eventlogjson_tstamp_day on eventlogjson (tstamp_day);
+create index eventlogjson_type on eventlogjson (type);
+
+drop table IF EXISTS searchterms;
+CREATE TABLE searchterms (
+ sid          BIGINT references sessioninfo(id),
+
+ tstamp       BIGINT,
+ tstamp_year  SMALLINT,
+ tstamp_month SMALLINT,
+ tstamp_day   SMALLINT,
+
  viewname   VARCHAR(20),
  type       INT,
  content    VARCHAR(40)
 );
 
-create index queryterm_tstamp on queryterm (tstamp);
-create index queryterm_viewname on queryterm (viewname);
-create index queryterm_type on queryterm (type);
-create index queryterm_content on queryterm (content);
+ALTER TABLE searchterms ADD CONSTRAINT fk_searchterms_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 
-drop table IF EXISTS querycategory;
-CREATE TABLE querycategory (
- tstamp     TIMESTAMP,
- viewname   VARCHAR(20),
- fs        BOOL,
- hst       BOOL,
- verf      BOOL,
- kor       BOOL,
- swt       BOOL,
- notation  BOOL,
- isbn      BOOL,
- issn      BOOL,
- sign      BOOL,
- mart      BOOL,
- hststring BOOL,
- inhalt    BOOL,
- gtquelle  BOOL,
- ejahr     BOOL
+create index searchterms_sid on searchterms (sid);
+create index searchterms_tstamp on searchterms (tstamp);
+create index searchterms_viewname on searchterms (viewname);
+create index searchterms_type on searchterms (type);
+create index searchterms_content on searchterms (content);
+
+drop table IF EXISTS searchfields;
+CREATE TABLE searchfields (
+ sid          BIGINT,
+
+ tstamp       BIGINT,
+ tstamp_year  SMALLINT,
+ tstamp_month SMALLINT,
+ tstamp_day   SMALLINT,
+
+ viewname       VARCHAR(20),
+ freesearch     BOOL,
+ title          BOOL,
+ person         BOOL,
+ corporatebody  BOOL,
+ subject        BOOL,
+ classification BOOL,
+ isbn           BOOL,
+ issn           BOOL,
+ mark           BOOL,
+ mediatype      BOOL,
+ titlestring    BOOL,
+ content        BOOL,
+ source         BOOL,
+ year           BOOL
 );
 
-create index querycategory_tstamp on querycategory (tstamp);
-create index querycategory_viewname on querycategory (viewname);
-create index querycategory_fs on querycategory (fs);
-create index querycategory_hst on querycategory (hst);
-create index querycategory_verf on querycategory (verf);
-create index querycategory_kor on querycategory (kor);
-create index querycategory_swt on querycategory (swt);
-create index querycategory_notation on querycategory (notation);
-create index querycategory_isbn on querycategory (isbn);
-create index querycategory_issn on querycategory (issn);
-create index querycategory_sign on querycategory (sign);
-create index querycategory_mart on querycategory (mart);
-create index querycategory_hststring on querycategory (hststring);
-create index querycategory_gtquelle on querycategory (gtquelle);
-create index querycategory_ejahr on querycategory (ejahr);
+ALTER TABLE searchfields ADD CONSTRAINT fk_searchfields_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
+
+create index searchfields_sid on searchfields (sid);
+create index searchfields_tstamp on searchfields (tstamp);
+create index searchfields_tstamp_year on searchfields (tstamp_year);
+create index searchfields_tstamp_month on searchfields (tstamp_month);
+create index searchfields_tstamp_day on searchfields (tstamp_day);
+create index searchfields_viewname on searchfields (viewname);
+create index searchfields_freesearch on searchfields (freesearch);
+create index searchfields_title on searchfields (title);
+create index searchfields_person on searchfields (person);
+create index searchfields_corporatebody on searchfields (corporatebody);
+create index searchfields_subject on searchfields (subject);
+create index searchfields_classification on searchfields (classification);
+create index searchfields_isbn on searchfields (isbn);
+create index searchfields_issn on searchfields (issn);
+create index searchfields_mark on searchfields (mark);
+create index searchfields_mediatype on searchfields (mediatype);
+create index searchfields_titlestring on searchfields (titlestring);
+create index searchfields_source on searchfields (source);
+create index searchfields_year on searchfields (year);

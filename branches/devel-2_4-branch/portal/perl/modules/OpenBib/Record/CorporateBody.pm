@@ -44,6 +44,8 @@ use YAML ();
 
 use OpenBib::Search::Util;
 
+use base 'OpenBib::Record';
+
 sub new {
     my ($class,$arg_ref) = @_;
 
@@ -287,28 +289,5 @@ sub name_as_string {
     return $self->{name};
 }
 
-sub set_category {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $category          = exists $arg_ref->{category}
-        ? $arg_ref->{category}          : undef;
-
-    my $indicator         = exists $arg_ref->{indicator}
-        ? $arg_ref->{indicator}         : undef;
-
-    my $content            = exists $arg_ref->{content}
-        ? $arg_ref->{content}           : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    push @{$self->{_normset}{$category}}, {
-        indicator => $indicator,
-        content   => $content,
-    };
-
-    return $self;
-}
 
 1;

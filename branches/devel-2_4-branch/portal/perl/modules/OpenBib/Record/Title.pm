@@ -62,6 +62,8 @@ use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::User;
 
+use base 'OpenBib::Record';
+
 sub new {
     my ($class,$arg_ref) = @_;
 
@@ -2185,74 +2187,6 @@ sub _delete_from_searchengine {
     my $self = shift;
 
     
-    return $self;
-}
-
-sub set_category {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $category          = exists $arg_ref->{category}
-        ? $arg_ref->{category}          : undef;
-
-    my $indicator         = exists $arg_ref->{indicator}
-        ? $arg_ref->{indicator}         : undef;
-
-    my $id                = exists $arg_ref->{id}
-        ? $arg_ref->{id}                : undef;
-
-    my $content           = exists $arg_ref->{content}
-        ? $arg_ref->{content}           : undef;
-
-    my $supplement        = exists $arg_ref->{supplement}
-        ? $arg_ref->{supplement}        : undef;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $category_content_ref = {};
-
-    $category_content_ref->{indicator}  = $indicator  if ($indicator);
-    $category_content_ref->{content}    = $content    if ($content);
-    $category_content_ref->{supplement} = $supplement if ($supplement);
-    $category_content_ref->{id}         = $id         if ($id);
-
-    push @{$self->{_normdata}{$category}}, $category_content_ref;
-
-    return $self;
-}
-
-sub set_holding_category {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $category          = exists $arg_ref->{category}
-        ? $arg_ref->{category}          : undef;
-
-    my $indicator         = exists $arg_ref->{indicator}
-        ? $arg_ref->{indicator}         : undef;
-
-    my $id                = exists $arg_ref->{id}
-        ? $arg_ref->{id}                : undef;
-
-    my $content           = exists $arg_ref->{content}
-        ? $arg_ref->{content}           : undef;
-
-    my $supplement        = exists $arg_ref->{supplement}
-        ? $arg_ref->{supplement}        : undef;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $category_content_ref = {};
-
-    $category_content_ref->{indicator}  = $indicator  if ($indicator);
-    $category_content_ref->{content}    = $content    if ($content);
-    $category_content_ref->{supplement} = $supplement if ($supplement);
-    $category_content_ref->{id}         = $id         if ($id);
-
-    push @{$self->{_holding}{$category}}, $category_content_ref;
-
     return $self;
 }
 

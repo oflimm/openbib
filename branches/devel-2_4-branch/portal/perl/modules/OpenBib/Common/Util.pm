@@ -745,7 +745,7 @@ sub gen_bibkey_base {
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];
     my $editors_ref=[];
-    foreach my $category (qw/T0100 T0101/){
+    foreach my $category (qw/0100 0101/){
         next if (!exists $normdata_ref->{$category});
         foreach my $part_ref (@{$normdata_ref->{$category}}){
             my $single_person = lc($part_ref->{content});
@@ -780,11 +780,11 @@ sub gen_bibkey_base {
     $author    = "[".join(",", sort(@$persons_ref))."]" if (defined $persons_ref && @$persons_ref);
 
     # Titel
-    my $title  = (exists $normdata_ref->{T0331})?lc($normdata_ref->{T0331}[0]{content}):"";
+    my $title  = (exists $normdata_ref->{0331})?lc($normdata_ref->{0331}[0]{content}):"";
     $title     =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
 
     # Jahr
-    my $year   = (exists $normdata_ref->{T0425})?$normdata_ref->{T0425}[0]{content}:undef;
+    my $year   = (exists $normdata_ref->{0425})?$normdata_ref->{0425}[0]{content}:undef;
     $year      =~ s/[^0-9]+//g if ($year);
 
     if ($author && $title && $year){

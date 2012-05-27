@@ -425,7 +425,7 @@ my $titleid;
 my $thisyear = `date +"%Y"`;
 
 my ($category,$mult,$content);
-my $record_ref = {};
+$record_ref = {};
 CATLINE:
 while (my $line=<IN>){
     
@@ -630,38 +630,114 @@ open(SEARCHENGINE,  ">:utf8","searchengine.csv" )       || die "SEARCHENGINE kon
 
 
 my $id;
+my $count = 0;
 
 my ($category,$mult,$content);
-my $record_ref = {};
+$record_ref = {};
 CATLINE:
 while (my $line=<IN>){
     
     if ($line=~m/^0000:(.+)$/){
+        $count++;
+
         $record_ref = {};
         $id         = $1;
     }
     elsif ($line=~m/^9999:/){
         my $titlecache_ref   = {}; # Inhalte fuer den Titel-Cache
         my $searchengine_ref = {}; # Inhalte fuer die Suchmaschinen
+
+        # Basisinformationen setzen
+        {
+            push @{$searchengine_ref->{id}{1}}, $id;
+            push @{$searchengine_ref->{dbstring}{1}}, $database;
+            push @{$searchengine_ref->{facet_database}}, $database;
+            
+            $titlecache_ref->{id}       = $id;
+            $titlecache_ref->{database} = $database;
+        }
+        
+        # Popularitaet verarbeiten fuer titlecache / searchengine
+        {
+            if (exists $listitemdata_popularity{$id}){
+                if (exists $conv_config->{'listitemcat'}{popularity}){
+                    $titlecache_ref->{popularity} = $listitemdata_popularity{$id};
+                }
+                
+                push @{$searchengine_ref->{popularity}{1}}, $listitemdata_popularity{$id};
+            }
+        }
+
+        # Tags verarbeiten fuer titlecache / searchengine
+        {
+            if (exists $listitemdata_tags{$id}){
+                if (exists $conv_config->{'listitemcat'}{tags}){
+                    $titlecache_ref->{tag} = $listitemdata_tags{$id};
+                }
+                
+                foreach my $tag_ref (@{$listitemdata_tags{$id}}){
+                    
+                    if (exists $stammdateien_ref->{title}{inverted_ref}{tag}->{index}){
+                        foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{tag}->{index}}){
+                            my $weight = $stammdateien_ref->{title}{inverted_ref}{tag}->{index}{$searchfield};
+                            
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, OpenBib::Common::Util::grundform({
+                                content  => $tag_ref->{tag},
+                            });
+                        }
+                    }
+                    
+                    if (exists $stammdateien_ref->{title}{inverted_ref}{tag}->{facet}){
+                        foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{tag}->{facet}}){
+                            push @{$searchengine_ref->{"facet_$searchfield"}}, $tag_ref->{tag};
+                        }
+                    }
+                }
+                
+                $logger->info("Adding Tags to ID $id");
+            }
+        }
+
+        # Literaturlisten verarbeiten fuer titlecache / searchengine
+        {
+            if (exists $listitemdata_litlists{$id}){
+                if (exists $conv_config->{'listitemcat'}{litlists}){
+                    $titlecache_ref->{litlist} = $listitemdata_litlists{$id};
+                }
+                
+                foreach my $litlist_ref (@{$listitemdata_litlists{$id}}){
+                    if (exists $stammdateien_ref->{title}{inverted_ref}{litlist}->{index}){
+                        foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{litlist}->{index}}){
+                            my $weight = $stammdateien_ref->{title}{inverted_ref}{litlist}->{index}{$searchfield};
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, OpenBib::Common::Util::grundform({
+                                content  => $litlist_ref->{title},
+                            });
+                        }
+                    }
+                    
+                    if (exists $stammdateien_ref->{title}{inverted_ref}{litlist}->{facet}){
+                        foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{litlist}->{facet}}){
+                            push @{$searchengine_ref->{"facet_$searchfield"}}, $litlist_ref->{title};
+                        }
+                    }
+                }            
+                
+                $logger->info("Adding Listlists to ID $id");
+            }
+        }
+        
         my @superids         = (); # IDs der Ueberordnungen fuer Schiller-Raeuber-Anreicherung
 
+        my @isbn13           = ();
+        
         my @person                 = ();
         my @corporatebody          = ();
         my @subject                = ();
         my @classification         = ();
-        my @hststring              = ();
-        my @sign                   = ();
         my @isbn                   = ();
         my @issn                   = ();
-        my @artinh                 = ();
-        my @gtquelle               = ();
-        my @titleperson            = ();
-        my @titlecorporatebody     = ();
-        my @titlesubject           = ();
         my @personcorporatebody    = ();
-        my @inhalt                 = ();
-        
-        
+                
         # Verknuepfungskategorien bearbeiten
 
         if (exists $record_ref->{'0004'}){
@@ -1005,22 +1081,473 @@ while (my $line=<IN>){
                                 push @{$searchengine_ref->{"facet_".$searchfield}}, $mainentry;
                             }
                         }
-                    } else {
+                    }
+                    else {
                         $logger->error("SYS ID $subjectid doesn't exist in TITLE ID $id");
                     }
                 }
             }
         }
+
+
+        # Suchmaschinen eintraege mit den Standard-Titelkategorien fuellen
+        {
+            foreach my $field (keys %{$record_ref}) {
+                foreach my $item_ref (@{$record_ref->{$field}}) {
+                    next if ($item_ref->{ignore});
                 
+                    my $contentnorm   = "";
+                    if (defined $field && exists $stammdateien_ref->{title}{inverted_ref}->{$field}) {
+                        $contentnorm = OpenBib::Common::Util::grundform({
+                            category => $field,
+                            content  => $item_ref->{content},
+                        });
+                    }
+
+                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {
+                        foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}) {
+                            my $weight = $stammdateien_ref->{title}{inverted_ref}{$field}->{index}{$searchfield};
+                            if ($searchfield eq "isbn") {
+                                # Alternative ISBN zur Rechercheanreicherung erzeugen
+                                my $isbn = Business::ISBN->new($contentnorm);
+                            
+                                if (defined $isbn && $isbn->is_valid) {
+                                    my $isbnXX;
+                                    if (length($contentnorm) == 10) {
+                                        $isbnXX = $isbn->as_isbn13;
+                                    } else {
+                                        $isbnXX = $isbn->as_isbn10;
+                                    }
+                                
+                                    if (defined $isbnXX) {
+                                        if (!exists $searchengine_ref->{isbn13}{1}) {
+                                            my $isbn13 = OpenBib::Common::Util::grundform({
+                                                category => $category,
+                                                content  => $isbnXX->as_isbn13->as_string,
+                                            });
+                                            push @isbn13, $isbn13;
+                                            push @{$searchengine_ref->{isbn13}{1}}, $isbn13;
+                                            push @{$searchengine_ref->{freesearch}{1}}, $isbn13;
+                                            # push @{$searchengine_ref->{freesearch}{1}}, $contentnorm;
+                                        }
+                                    }
+                                }
+                            }
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, $contentnorm;
+                        }
+                    }
+
+                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{facet}) {
+                        foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$category}->{facet}}) {
+                            push @{$searchengine_ref->{"facet_".$searchfield}}, $item_ref->{content};
+                        }
+                    }
+                }
+            }
+        }
+        
+        # Personen der Ueberordnung anreichern (Schiller-Raeuber)
+        if ($addsuperpers){
+            foreach my $superid (@superids){
+                if (exists $listitemdata_superid{$superid}){
+                    my @superpersids = split (":",$listitemdata_superid{$superid}); 
+                    push @person, @superpersids;
+                }
+            }
+        }
+        
+        # Zentrale Anreicherungsdaten lokal einspielen
+        if ($local_enrichmnt && (exists $searchengine_ref->{isbn13} || exists $searchengine_ref->{issn})){
+            foreach my $field (keys %{$conv_config->{local_enrichmnt}}){
+                my $enrichmnt_data_ref = [];
+                if    (exists $searchengine_ref->{isbn13}){
+                    foreach my $weight (keys %{$searchengine_ref->{isbn13}}){
+                        foreach my $isbn13 (@{$searchengine_ref->{isbn13}{$weight}}){
+                            if (exists $enrichmntdata{$isbn13}{$field}){
+                                push @$enrichmnt_data_ref, @{$enrichmntdata{$isbn13}{$field}};
+                            }
+                        }
+                    }
+                }
+                elsif (exists $searchengine_ref->{issn}){
+                    foreach my $weight (keys %{$searchengine_ref->{issn}}){
+                        foreach my $issn (@{$searchengine_ref->{issn}{$weight}}){
+                            if (exists $enrichmntdata{$issn}{$field}){
+                                push @$enrichmnt_data_ref, @{$enrichmntdata{$issn}{$field}};
+                            }
+                        }
+                    }
+                }
                 
+                if ($enrichmnt_data_ref){
+                    my $mult = 1;
+                    foreach my $content (@{$enrichmnt_data_ref}){
+                        $content = decode_utf8($content);
+                        
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+
+                        # ToDo: Parametrisierbarkeit in convert.yml im Bereich search fuer
+                        #       die Recherchierbarkeit via Suchmaschine
+                        
+                        $logger->debug("Id: $id - Adding $field -> $content");
+                        push @{$record_ref->{$field}}, {
+                            mult      => $mult,
+                            content   => $content,
+                            indicator => '',
+                        };
+                        
+                        $mult++;
+                    }
+
+                    # ToDo: Wird Suchmaschine hiermit befuellt?
+                    
+                    if (exists $conv_config->{'listitemcat'}{$field}){
+                        push @{$titlecache_ref->{"T".$field}}, {
+                            content => $content,
+                        };
+                    }
+                
+                }
+            }
+        }
+    
+    
+        # Medientypen erkennen und anreichern
+        if ($addmediatype){
+
+            # Zeitschriften/Serien:
+            # ISSN und/oder ZDB-ID besetzt
+            if (exists $record_ref->{'0572'} || exists $record_ref->{'0543'}) {
+                # Steht Medientyp schon auf Zeitschrift?
+                my $have_journal   = 0;
+                my $type_mult = 1;
+                foreach my $item_ref (@{$record_ref->{'0800'}}){
+                    $have_journal = 1 if ($item_ref->{content} eq "Zeitschrift/Serie");
+                    $type_mult++;
+                }
+
+                if (!$have_journal){
+                    if (! exists $searchengine_ref->{mediatype} ){
+                        $searchengine_ref->{mediatype}{1} = [];
+                    }
+                    
+                    push @{$searchengine_ref->{mediatype}{1}}, "Zeitschrift/Serie";
+
+                    push @{$record_ref->{'0800'}}, {
+                        mult      => $type_mult,
+                        content   => 'Zeitschrift/Serie',
+                        indicator => '',
+                    };
+                }
+            }   
+
+
+            # Aufsatz
+            # HSTQuelle besetzt
+            if (exists $record_ref->{'0590'}) {
+                # Steht Medientyp schon auf Aufsatz?
+                my $have_article=0;
+                my $type_mult = 1;
+                foreach my $item_ref (@{$record_ref->{'0800'}}){
+                    if ($item_ref->{content} eq "Aufsatz"){
+                        $have_article = 1 ;
+                    }
+                    $type_mult++;
+                }
+
+                if (!$have_article){
+                    if (! exists $searchengine_ref->{mediatype} ){
+                        $searchengine_ref->{mediatype}{1} = [];
+                    }
+
+                    push @{$searchengine_ref->{mediatype}{1}}, "Aufsatz";
+                    
+                    push @{$record_ref->{'0800'}}, {
+                        mult      => $type_mult,
+                        content   => 'Aufsatz',
+                        indicator => '',
+                    };
+                }
+            }   
+
+            # Elektronisches Medium mit Online-Zugriff
+            # Besetzung der folgenden Kategorien
+            # [02]807:g
+            # 0334:Elektronische Ressource
+            # 0652:Online-Ressource
+            #
+            # Lizensiert:
+            # [02]663.001:Info: Zugriff nur im Hochschulnetz der Universitaet Koeln bzw.
+            #          fuer autorisierte Benutzer moeglich
+            
+            if (((exists $record_ref->{'0807'} && $record_ref->{'0807'}[0]{content} eq "g") || (exists $record_ref->{'2807'} && $record_ref->{'2807'}[0]{content} eq "g"))
+                && exists $record_ref->{'0334'} && $record_ref->{'0334'}[0]{content} eq "Elektronische Ressource"
+                    && exists $record_ref->{'0652'} && $record_ref->{'0652'}[0]{content} eq "Online-Ressource"){
+                # Steht Medientyp schon auf Online-Zugriff?
+                my $have_digital=0;
+                my $type_mult = 1;
+                foreach my $item_ref (@{$record_ref->{'0800'}}){
+                    if ($item_ref->{content} eq "Digital"){
+                        $have_digital = 1 ;
+                    }
+                    $type_mult++;
+                }
+
+                if (!$have_digital){
+                    if (! exists $searchengine_ref->{mediatype} ){
+                        $searchengine_ref->{mediatype}{1} = [];
+                    }
+
+                    push @{$searchengine_ref->{mediatype}{1}}, "Digital";
+
+                    push @{$record_ref->{'0800'}}, {
+                        mult      => $type_mult,
+                        content   => 'Digital',
+                        indicator => '',
+                    };
+                }
+            }   
+            
+            # mit Inhaltsverzeichnis
+            # Anreicherungskategorie 4110
+            if (exists $record_ref->{'4110'}) {
+                my $have_toc=0;
+                my $type_mult = 1;
+                foreach my $item_ref (@{$record_ref->{'0800'}}){
+                    $have_toc = 1 if ($item_ref->{content} eq "mit Inhaltsverzeichnis");
+                    $type_mult++;
+                }
+
+                if (!$have_toc){
+                    push @{$searchengine_ref->{mediatype}{1}}, "mit Inhaltsverzeichnis";
+
+                    push @{$record_ref->{'0800'}}, {
+                        mult      => $type_mult,
+                        content   => 'mit Inhaltsverzeichnis',
+                        indicator => '',
+                    };
+                }
+            }   
+            
+        } 
+
+
+        # Indexierte Informationen aus anderen Normdateien fuer Suchmaschine
+        {
+            # Im Falle einer Personenanreicherung durch Ueberordnungen mit
+            # -add-superpers sollen Dubletten entfernt werden.
+            my %seen_person=();
+            foreach my $item (@person){
+                next if (exists $seen_person{$item});
+                
+                # ID-Merken fuer Recherche ueber Suchmaschine
+                push @{$searchengine_ref->{'personid'}{1}}, $item;
+
+                if (exists $stammdateien_ref->{person}{data}{$item}) {
+                    foreach my $searchfield (keys %{$stammdateien_ref->{person}{data}{$item}}) {
+                        foreach my $weight (keys %{$stammdateien_ref->{person}{data}{$item}{$searchfield}}) {                        
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, @{$stammdateien_ref->{person}{data}{$item}{$searchfield}{$weight}};
+                        }
+                    }
+                }
+
+                $seen_person{$item}=1;
+            }
+
+            foreach my $item (@corporatebody) {
+                # ID-Merken fuer Recherche ueber Suchmaschine
+                push @{$searchengine_ref->{'corporatebodyid'}{1}}, $item;
+
+                if (exists $stammdateien_ref->{corporatebody}{data}{$item}) {
+                    foreach my $searchfield (keys %{$stammdateien_ref->{corporatebody}{data}{$item}}) {
+                        foreach my $weight (keys %{$stammdateien_ref->{corporatebody}{data}{$item}{$searchfield}}) {
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, @{$stammdateien_ref->{corporatebody}{data}{$item}{$searchfield}{$weight}};
+                        }
+                    }
+                }
+            }
+
+            foreach my $item (@subject) {
+                # ID-Merken fuer Recherche ueber Suchmaschine
+                push @{$searchengine_ref->{'subjectid'}{1}}, $item;
+
+                if (exists $stammdateien_ref->{subject}{data}{$item}) {
+                    foreach my $searchfield (keys %{$stammdateien_ref->{subject}{data}{$item}}) {
+                        foreach my $weight (keys %{$stammdateien_ref->{subject}{data}{$item}{$searchfield}}) {
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, @{$stammdateien_ref->{subject}{data}{$item}{$searchfield}{$weight}};
+                        }
+                    }
+                }
+            }
+
+            foreach my $item (@classification) {
+                # ID-Merken fuer Recherche ueber Suchmaschine
+                push @{$searchengine_ref->{'classificationid'}{1}}, $item;
+
+                if (exists $stammdateien_ref->{classification}{data}{$item}) {
+                    foreach my $searchfield (keys %{$stammdateien_ref->{classification}{data}{$item}}) {
+                        foreach my $weight (keys %{$stammdateien_ref->{classification}{data}{$item}{$searchfield}}) {
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, @{$stammdateien_ref->{classification}{data}{$item}{$searchfield}{$weight}};
+                        }
+                    }
+                }
+            }
+
+            if (exists $stammdateien_ref->{holding}{data}{$id}) {
+                foreach my $searchfield (keys %{$stammdateien_ref->{holding}{data}{$id}}) {
+                    foreach my $weight (keys %{$stammdateien_ref->{holding}{data}{$id}{$searchfield}}) {
+                        push @{$searchengine_ref->{$searchfield}}, @{$stammdateien_ref->{holding}{data}{$id}{$searchfield}{$weight}};
+                    }
+                }
+            }
+        }
+        
+        # Listitem zusammensetzen
+        {
+        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+        # der Kurztitelliste:
+        #
+        # 1. Fall: Es existiert ein HST
+        #
+        # Dann:
+        #
+        # Ist nichts zu tun
+        #
+        # 2. Fall: Es existiert kein HST(331)
+        #
+        # Dann:
+        #
+        # Unterfall 2.1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.3: Es existieren keine Bandzahlen, aber ein (erster)
+        #                Gesamttitel(451)
+        #
+        # Dann: Verwende diesen GT
+        #
+        # Unterfall 2.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
+        #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
+        #
+        # Dann: Verwende diese Zeitschriftensignatur
+        #
+            if (!exists $titlecache_ref->{'T0331'}) {
+                # UnterFall 2.1:
+                if (exists $record_ref->{'0089'}) {
+                    $titlecache_ref->{T0331}[0]{content}=$record_ref->{'0089'}[0]{content};
+                }
+                # Unterfall 2.2:
+                elsif (exists $record_ref->{'0455'}) {
+                    $titlecache_ref->{T0331}[0]{content}=$record_ref->{'0455'}[0]{content};
+                }
+                # Unterfall 2.3:
+                elsif (exists $record_ref->{'0451'}) {
+                    $titlecache_ref->{T0331}[0]{content}=$record_ref->{'0451'}[0]{content};
+                }
+                # Unterfall 2.4:
+                elsif (exists $record_ref->{'1203'}) {
+                    $titlecache_ref->{T0331}[0]{content}=$record_ref->{'1203'}[0]{content};
+                }
+                else {
+                    $titlecache_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
+                }
+            }
+
+            # Bestimmung der Zaehlung
+
+            # Fall 1: Es existiert eine (erste) Bandzahl(089)
+            #
+            # Dann: Setze diese Bandzahl
+            #
+            # Fall 2: Es existiert keine Bandzahl(089), aber eine (erste)
+            #                Bandzahl(455)
+            #
+            # Dann: Setze diese Bandzahl
+
+            # Fall 1:
+            if (exists $record_ref->{'0089'}) {
+                $titlecache_ref->{'T5100'}= [
+                    {
+                        content => $record_ref->{'0089'}[0]{content}
+                    }
+                ];
+            }
+            # Fall 2:
+            elsif (exists $record_ref->{'0455'}) {
+                $titlecache_ref->{'T5100'}= [
+                    {
+                        content => $record_ref->{'0455'}[0]{content}
+                    }
+                ];
+            }
+        
+            # Exemplardaten-Hash zu listitem-Hash hinzufuegen
+
+            foreach my $content (@{$listitemdata_holding{$id}}) {
+                push @{$titlecache_ref->{'X0014'}}, {
+                    content => $content,
+                };
+            }
+        
+            # Kombinierte Verfasser/Koerperschaft hinzufuegen fuer Sortierung
+            push @{$titlecache_ref->{'PC0001'}}, {
+                content   => join(" ; ",@personcorporatebody),
+            };
+        }
+
+        
+        # Bibkey-Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel
+        {
+            my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ normdata => $record_ref});
+            my $bibkey      = OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base });
+        
+            if ($bibkey) {
+                push @{$record_ref->{'5050'}}, {
+                    mult      => 1,
+                    content   => $bibkey,
+                    indicator => '',
+                };
+
+                push @{$record_ref->{'5051'}}, {
+                    mult      => 1,
+                    content   => $bibkey_base,
+                    indicator => '',
+                };
+
+                # Bibkey merken fuer Recherche ueber Suchmaschine
+                push @{$searchengine_ref->{'bkey'}{1}}, $bibkey;
+            }
+        }
+        
+        # Automatische Anreicherung mit Bestandsjahren wenn kein
+        # Erscheinungsjahr vorhanden, aber Bestandsverlauf besetzt.
+        {
+            if (!exists $searchengine_ref->{'year'} && !exists $searchengine_ref->{'T0424'} && !exists $searchengine_ref->{'T0425'}) {
+                if (exists $listitemdata_enriched_years{$id}) {
+                    foreach my $year (@{$listitemdata_enriched_years{$id}}) {
+                        $logger->debug("Enriching year $year to Title-ID $id");
+                        push @{$searchengine_ref->{year}{1}}, $year;
+                        push @{$searchengine_ref->{freesearch}{1}}, $year;
+                    }
+                }
+            } 
+        }
+
         # Titlecache erstellen                
-        foreach my $field (keys %{$record_ref}) {
+        foreach my $field (keys %{$record_ref}) {            
             # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
             if (exists $conv_config->{listitemcat}{$field}) {
                 foreach my $item_ref (@{$record_ref->{$field}}) {
                     push @{$titlecache_ref->{"T".$field}}, $item_ref unless ($item_ref->{ignore});
                 }
-                ;
             }
         }        
         my $titlecache = encode_json $titlecache_ref;
@@ -1073,7 +1600,6 @@ while (my $line=<IN>){
                     });
                 }
                 
-                
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}){
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}){
                         my $weight = $stammdateien_ref->{title}{inverted_ref}{$field}->{index}{$searchfield};
@@ -1090,6 +1616,10 @@ while (my $line=<IN>){
         # Suchmaschinen-Daten schreiben
         my $searchengine = encode_json $searchengine_ref;
         print SEARCHENGINE "$id$searchengine\n";
+
+        if ($count % 1000 == 0) {
+            $logger->debug("$count Titelsaetze bearbeitet");
+        } 
 
         next CATLINE;
     }
@@ -1280,12 +1810,12 @@ __END__
 
  Folgende Normdatentypen existieren:
 
- Titel                 (title)      -> numerische Typentsprechung: 1
- Verfasser/Person      (person)      -> numerische Typentsprechung: 2
- Koerperschaft/Urheber (corporatebody)      -> numerische Typentsprechung: 3
- Schlagwort            (subject)      -> numerische Typentsprechung: 4
+ Titel                 (title)          -> numerische Typentsprechung: 1
+ Verfasser/Person      (person)         -> numerische Typentsprechung: 2
+ Koerperschaft/Urheber (corporatebody)  -> numerische Typentsprechung: 3
+ Schlagwort            (subject)        -> numerische Typentsprechung: 4
  Notation/Systematik   (classification) -> numerische Typentsprechung: 5
- Exemplardaten         (holding)      -> numerische Typentsprechung: 6
+ Exemplardaten         (holding)        -> numerische Typentsprechung: 6
 
 
  Die numerische Entsprechung wird bei der Verknuepfung einzelner Saetze

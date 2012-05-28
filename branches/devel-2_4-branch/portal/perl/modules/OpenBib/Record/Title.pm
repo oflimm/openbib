@@ -49,6 +49,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::Database::Catalog;
 use OpenBib::Database::DBI;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
@@ -89,6 +90,7 @@ sub new {
 
     if (defined $database){
         $self->{database} = $database;
+        $self->connectDB();
     }
 
     if (defined $id){
@@ -115,9 +117,6 @@ sub load_full_record {
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id}                :
             (exists $self->{id})?$self->{id}:undef;
-
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -148,14 +147,6 @@ sub load_full_record {
         return $self;
     }
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
-
     # Titelkategorien
     {
         
@@ -164,29 +155,38 @@ sub load_full_record {
         if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
-        
-        my $reqstring="select * from title where id = ?";
-        my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-        
-        while (my $res=$request->fetchrow_hashref) {
-            my $category  = "T".sprintf "%04d",$res->{category };
-            my $indicator =                    $res->{indicator};
-            my $content   =                    $res->{content  };
 
-            push @{$normset_ref->{$category}}, {
-                indicator => $indicator,
+        # DBI: select * from title where id = ?
+        my $title_fields = $self->{schema}->resultset('Title')->search(
+            {
+                'me.id' => $id,
+            },
+            {
+                select => ['title_fields.field','title_fields.mult','title_fields.subfield','title_fields.content'],
+                as     => ['thisfield','thismult','thissubfield','thiscontent'],
+                join   => ['title_fields'],
+            }
+        );
+
+        foreach my $item ($title_fields->all){
+            my $field    = "T".sprintf "%04d",$item->get_column('thisfield');
+            my $subfield =                    $item->get_column('thissubfield');
+            my $mult     =                    $item->get_column('thismult');
+            my $content  =                    $item->get_column('thiscontent');
+
+            push @{$normset_ref->{$field}}, {
+                mult      => $mult,
+                subfield  => $subfield,
                 content   => $content,
             };
 
             $record_exists = 1 if (!$record_exists);
         }
-        $request->finish();
 
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
+            $logger->info("Zeit fuer Bestimmung der Titeldaten ist ".timestr($timeall));
         }
     }
     
@@ -197,45 +197,128 @@ sub load_full_record {
         if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
+
         
-        my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
-        my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-        
-        while (my $res=$request->fetchrow_hashref) {
-            my $category   = "T".sprintf "%04d",$res->{category  };
-            my $targetid   =                    $res->{targetid  };
-            my $targettype =                    $res->{targettype};
-            my $supplement =                    $res->{supplement};
-            
-	    # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
-	    # vorgenommen
-            
-            my $recordclass    =
-                ($targettype == 2 )?"OpenBib::Record::Person":
-                    ($targettype == 3 )?"OpenBib::Record::CorporateBody":
-                        ($targettype == 4 )?"OpenBib::Record::Subject":
-                            ($targettype == 5 )?"OpenBib::Record::Classification":undef;
-            
-            my $content = "";
-            if (defined $recordclass){
-                my $record=$recordclass->new({database=>$self->{database}});
-                $record->load_name({dbh => $dbh, id=>$targetid});
-                $content=$record->name_as_string;
+        # Personen
+        # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+        my $title_persons = $self->{schema}->resultset('Title')->search(
+            {
+                'me.id' => $id,
+            },
+            {
+                select => ['title_people.field','title_people.personid','title_people.supplement'],
+                as     => ['thisfield','thispersonid','thissupplement'],
+                join   => ['title_people'],
             }
-            
-            push @{$normset_ref->{$category}}, {
-                id         => $targetid,
+        );
+
+        foreach my $item ($title_persons->all){
+            my $field      = "T".sprintf "%04d",$item->get_column('thisfield');
+            my $personid   =                    $item->get_column('thispersonid');
+            my $supplement =                    $item->get_column('thissupplement');
+
+            my $record = OpenBib::Record::Person->new({database=>$self->{database}});
+            $record->load_name({id=>$personid});
+            my $content = $record->name_as_string;
+
+            push @{$normset_ref->{$field}}, {
+                id         => $personid,
                 content    => $content,
                 supplement => $supplement,
             };
         }
-        $request->finish();
-        
+
+        # Koerperschaften
+        # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+        my $title_corporatebodies = $self->{schema}->resultset('Title')->search(
+            {
+                'me.id' => $id,
+            },
+            {
+                select => ['title_corporatebodies.field','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
+                as     => ['thisfield','thiscorporatebodyid','thissupplement'],
+                join   => ['title_corporatebodies'],
+            }
+        );
+
+        foreach my $item ($title_corporatebodies->all){
+            my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
+            my $corporatebodyid   =                    $item->get_column('thiscorporatebodyid');
+            my $supplement        =                    $item->get_column('thissupplement');
+
+            my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}});
+            $record->load_name({id=>$corporatebodyid});
+            my $content = $record->name_as_string;
+
+            push @{$normset_ref->{$field}}, {
+                id         => $corporatebodyid,
+                content    => $content,
+                supplement => $supplement,
+            };
+        }
+
+        # Schlagworte
+        # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+        my $title_subjects = $self->{schema}->resultset('Title')->search(
+            {
+                'me.id' => $id,
+            },
+            {
+                select => ['title_subjects.field','title_subjects.subjectid','title_subjects.supplement'],
+                as     => ['thisfield','thissubjectid','thissupplement'],
+                join   => ['title_subjects'],
+            }
+        );
+
+        foreach my $item ($title_subjects->all){
+            my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
+            my $subjectid         =                    $item->get_column('thissubjectid');
+            my $supplement        =                    $item->get_column('thissupplement');
+
+            my $record = OpenBib::Record::Subject->new({database=>$self->{database}});
+            $record->load_name({id=>$subjectid});
+            my $content = $record->name_as_string;
+
+            push @{$normset_ref->{$field}}, {
+                id         => $subjectid,
+                content    => $content,
+                supplement => $supplement,
+            };
+        }
+
+        # Klassifikationen
+        # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+        my $title_classifications = $self->{schema}->resultset('Title')->search(
+            {
+                'me.id' => $id,
+            },
+            {
+                select => ['title_classifications.field','title_classifications.classificationid','title_classifications.supplement'],
+                as     => ['thisfield','thisclassificationid','thissupplement'],
+                join   => ['title_classifications'],
+            }
+        );
+
+        foreach my $item ($title_classifications->all){
+            my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
+            my $classificationid  =                    $item->get_column('thisclassificationid');
+            my $supplement        =                    $item->get_column('thissupplement');
+
+            my $record = OpenBib::Record::Classification->new({database=>$self->{database}});
+            $record->load_name({id=>$classificationid});
+            my $content = $record->name_as_string;
+
+            push @{$normset_ref->{$field}}, {
+                id         => $classificationid,
+                content    => $content,
+                supplement => $supplement,
+            };
+        }
+
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
+            $logger->info("Zeit fuer Bestimmung der verknuepften Normdaten : ist ".timestr($timeall));
         }
     }
     
@@ -303,24 +386,27 @@ sub load_full_record {
     my $holding_ref=[];
     {
         
-        my $reqstring="select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
-        my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-        
-        my @verknholding=();
-        while (my $res=$request->fetchrow_hashref){
-            push @verknholding, $res->{targetid};
-        }
-        $request->finish();
-        
-        if ($#verknholding >= 0) {
-            foreach my $holdingid (@verknholding) {
-                push @$holding_ref, $self->_get_holding({
-                    id             => $holdingid,
-                });
-            }
-        }
+        # DBI: "select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
 
+        my $title_holdings = $self->{schema}->resultset('Title')->search(
+            {
+                'me.id' => $id,
+            },
+            {
+                select   => ['title_holdings.holdingid'],
+                as       => ['thisholdingid'],
+                group_by => ['title_holdings.holdingid'], # = distinct holdingid
+                join     => ['title_holdings'],
+            }
+        );
+
+        foreach my $item ($title_holdings->all){
+            my $holdingid =                    $item->get_column('thisholdingid');
+
+            push @$holding_ref, $self->_get_holding({
+                id             => $holdingid,
+            });
+        }
     }
 
     # Ausleihinformationen der Exemplare
@@ -647,8 +733,6 @@ sub load_full_record {
         }
     }
 
-    $dbh->disconnect() if ($local_dbh);
-    
     $logger->debug(YAML::Dump($normset_ref));
     ($self->{_normdata},$self->{_holding},$self->{_circulation},$self->{_exists})=($normset_ref,$holding_ref,$circulation_ref,$record_exists);
 
@@ -2235,6 +2319,27 @@ sub enrich_cdm {
 
     return $enrich_data_ref;
     
+}
+
+sub connectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect schema to database $self->{database}: DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}");
+    }
+
+    return;
+
 }
 
 1;

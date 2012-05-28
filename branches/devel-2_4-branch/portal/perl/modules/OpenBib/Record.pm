@@ -42,11 +42,33 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::Database::Catalog;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
 use OpenBib::Record::Classification;
 use OpenBib::Search::Util;
+
+sub connectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect schema to database $self->{database}: DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}");
+    }
+
+    return;
+
+}
 
 
 # sub set_field {
@@ -150,4 +172,4 @@ use OpenBib::Search::Util;
 
 #     }
 
-1;
+1

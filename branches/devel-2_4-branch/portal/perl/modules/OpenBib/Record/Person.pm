@@ -69,6 +69,7 @@ sub new {
 
     if (defined $database){
         $self->{database} = $database;
+        $self->connectDB();
     }
 
     if (defined $id){
@@ -86,9 +87,6 @@ sub load_full_record {
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id}                :
             (exists $self->{id})?$self->{id}:undef;
-
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
 
     # Log4perl logger erzeugen
     
@@ -108,27 +106,27 @@ sub load_full_record {
 	$atime=new Benchmark;
     }
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
+    # DBI "select category,content,indicator from person where id = ?";
+    my $person_fields = $self->{schema}->resultset('Person')->search(
+        {
+            'me.id' => $id,
+        },
+        {
+            select => ['person_fields.field','person_fields.mult','person_fields.subfield','person_fields.content'],
+            as     => ['thisfield','thismult','thissubfield','thiscontent'],
+            join   => ['person_fields'],
+        }
+    );
     
-    my $sqlrequest;
-
-    $sqlrequest="select category,content,indicator from person where id = ?";
-    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($id);
-
-    while (my $res=$request->fetchrow_hashref) {
-        my $category  = "P".sprintf "%04d",$res->{category };
-        my $indicator =                    $res->{indicator};
-        my $content   =                    $res->{content  };
+    foreach my $item ($person_fields->all){
+        my $field    = "P".sprintf "%04d",$item->get_column('thisfield');
+        my $subfield =                    $item->get_column('thissubfield');
+        my $mult     =                    $item->get_column('thismult');
+        my $content  =                    $item->get_column('thiscontent');
         
-        push @{$normset_ref->{$category}}, {
-            indicator => $indicator,
+        push @{$normset_ref->{$field}}, {
+            mult      => $mult,
+            subfield  => $subfield,
             content   => $content,
         };
     }
@@ -136,7 +134,7 @@ sub load_full_record {
     if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
+	$logger->info("Benoetigte Zeit fuer Personenbestimmung ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -156,14 +154,11 @@ sub load_full_record {
     if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
+	$logger->info("Benoetigte Zeit ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
-
-    $request->finish();
-    $dbh->disconnect() if ($local_dbh);
 
     $logger->debug(YAML::Dump($normset_ref));
     
@@ -180,54 +175,48 @@ sub load_name {
         ? $arg_ref->{id}                :
             (exists $self->{id})?$self->{id}:undef;
 
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
-    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
-    
+
+    $logger->debug("Loading main entry");
     my ($atime,$btime,$timeall);
 
     if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
-    
-    my $sqlrequest;
+    # DBI: "select content from person where id = ? and category=0001";
+    my $person_fields = $self->{schema}->resultset('Person')->search(
+        {
+            'me.id'                 => $id,
+            'person_fields.field'   => '0001',
+        },
+        {
+            select => ['person_fields.content'],
+            as     => ['thiscontent'],
+            join   => ['person_fields'],
+        }
+    )->single;
 
-    $sqlrequest="select content from person where id = ? and category=0001";
-    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($id);
-    
-    my $res=$request->fetchrow_hashref;
+    my $main_entry="Unbekannt";
+
+    if ($person_fields){
+        $main_entry  =                    $person_fields->get_column('thiscontent');
+        $logger->debug("Got main entry $main_entry");
+    }
     
     if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
+	$logger->info("Benoetigte Zeit ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
-    my $ans="Unbekannt";
-    if (defined $res->{content}) {
-        $ans = $res->{content};
-    }
-
-    $request->finish();
-    $dbh->disconnect() if ($local_dbh);
-    
-    $self->{name}=$ans;
+    $self->{name}=$main_entry;
 
     return $self;
 }

@@ -425,7 +425,7 @@ my $titleid;
 my $thisyear = `date +"%Y"`;
 
 my ($category,$mult,$content);
-$record_ref = {};
+my $record_ref = {};
 CATLINE:
 while (my $line=<IN>){
     
@@ -769,6 +769,8 @@ while (my $line=<IN>){
         }
 
         # Verfasser/Personen
+#        $logger->info(YAML::Dump($record_ref));
+
         foreach my $field ('0100','0101','0102','0103','1800'){
             if (exists $record_ref->{$field}){
                 foreach my $item_ref (@{$record_ref->{$field}}){
@@ -1651,23 +1653,24 @@ while (my $line=<IN>){
 #         }
 
         # Gegebenenfalls Inhalt indexieren (=wenn keine Verknuepfungen)
+        my $norm = "";
         unless ($content =~/^IDN: \S+/){
-            my $norm = "";
             if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}){                    
                 $norm = OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            
-            # Kategorie in Record setzen
-            push @{$record_ref->{$category}}, {
-                mult     => $mult,
-                subfield => '',
-                content  => $content,
-                norm     => $norm
-            };
         }
+        
+        # Kategorie in Record setzen
+        push @{$record_ref->{$category}}, {
+            mult     => $mult,
+            subfield => '',
+            content  => $content,
+            norm     => $norm
+        };
+        
     }
 }
 

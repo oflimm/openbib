@@ -2,7 +2,7 @@
 #
 #  OpenBib::Record::Classification.pm
 #
-#  Notation/Systematik
+#  Klassifikation/Notation
 #
 #  Dieses File ist (C) 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -42,6 +42,10 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Subject;
+use OpenBib::Record::Classification;
 use OpenBib::Search::Util;
 
 use base 'OpenBib::Record';
@@ -65,6 +69,7 @@ sub new {
 
     if (defined $database){
         $self->{database} = $database;
+        $self->connectDB();
     }
 
     if (defined $id){
@@ -83,46 +88,45 @@ sub load_full_record {
         ? $arg_ref->{id}                :
             (exists $self->{id})?$self->{id}:undef;
 
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
-
     # Log4perl logger erzeugen
+    
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
-    
+
     my $normset_ref={};
 
+    $self->{id      }        = $id;
     $normset_ref->{id      } = $id;
     $normset_ref->{database} = $self->{database};
 
     my ($atime,$btime,$timeall);
-    
+
     if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
-
-    my $sqlrequest;
-
-    $sqlrequest="select category,content,indicator from classification where id = ?";
-    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($id);
-
-    while (my $res=$request->fetchrow_hashref) {
-        my $category  = "N".sprintf "%04d",$res->{category };
-        my $indicator =                    $res->{indicator};
-        my $content   =                    $res->{content  };
+    # DBI "select category,content,indicator from classification where id = ?";
+    my $classification_fields = $self->{schema}->resultset('Classification')->search(
+        {
+            'me.id' => $id,
+        },
+        {
+            select => ['classification_fields.field','classification_fields.mult','classification_fields.subfield','classification_fields.content'],
+            as     => ['thisfield','thismult','thissubfield','thiscontent'],
+            join   => ['classification_fields'],
+        }
+    );
+    
+    foreach my $item ($classification_fields->all){
+        my $field    = "N".sprintf "%04d",$item->get_column('thisfield');
+        my $subfield =                    $item->get_column('thissubfield');
+        my $mult     =                    $item->get_column('thismult');
+        my $content  =                    $item->get_column('thiscontent');
         
-        push @{$normset_ref->{$category}}, {
-            indicator => $indicator,
+        push @{$normset_ref->{$field}}, {
+            mult      => $mult,
+            subfield  => $subfield,
             content   => $content,
         };
     }
@@ -130,17 +134,17 @@ sub load_full_record {
     if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
+	$logger->info("Benoetigte Zeit fuer Classificationenbestimmung ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     if ($config->{benchmark}) {
-        $atime=new Benchmark;
+	$atime=new Benchmark;
     }
 
-    # Ausgabe der Anzahl verk"upfter Titel
+    # Ausgabe der Anzahl verkuepfter Titel
     my $titcount = $self->get_number_of_titles;
     
     push @{$normset_ref->{N5000}}, {
@@ -150,15 +154,13 @@ sub load_full_record {
     if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
+	$logger->info("Benoetigte Zeit ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
-    $request->finish();
-
-    $dbh->disconnect() if ($local_dbh);
+    $logger->debug(YAML::Dump($normset_ref));
     
     $self->{_normset}=$normset_ref;
 
@@ -173,56 +175,47 @@ sub load_name {
         ? $arg_ref->{id}                :
             (exists $self->{id})?$self->{id}:undef;
 
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
-
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
-    
+
+    $logger->debug("Loading main entry");
     my ($atime,$btime,$timeall);
-    
+
     if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
+    # DBI: "select content from classification whree id = ? and category=0001";
+    my $classification_fields = $self->{schema}->resultset('Classification')->search(
+        {
+            'me.id'                 => $id,
+            'classification_fields.field'   => '0001',
+        },
+        {
+            select => ['classification_fields.content'],
+            as     => ['thiscontent'],
+            join   => ['classification_fields'],
+        }
+    )->single;
+
+    my $main_entry="Unbekannt";
+
+    if ($classification_fields){
+        $main_entry  =                    $classification_fields->get_column('thiscontent');
     }
     
-    my $sqlrequest;
-
-    $sqlrequest="select content from classification where id = ? and category=0001";
-    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($id);
-    
-    my $res=$request->fetchrow_hashref;
-  
     if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
-        undef $atime;
-        undef $btime;
-        undef $timeall;
-    }
-    
-    my $classification="Unbekannt";
-    
-    if ($res->{content}) {
-        $classification = $res->{content};
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	$logger->info("Benoetigte Zeit ist ".timestr($timeall));
+	undef $atime;
+	undef $btime;
+	undef $timeall;
     }
 
-    $request->finish();
-
-    $dbh->disconnect() if ($local_dbh);
-    
-    $self->{name}=$classification;
+    $self->{name}=$main_entry;
 
     return $self;
 }
@@ -235,9 +228,6 @@ sub get_number_of_titles {
         ? $arg_ref->{id}                :
             (exists $self->{id})?$self->{id}:undef;
     
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
-
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -249,23 +239,20 @@ sub get_number_of_titles {
         $atime=new Benchmark;
     }
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
-    
-    my $sqlrequest;
+    # DBI: "select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=5";
+    my $titlecount = $self->{schema}->resultset('Classification')->search(
+        {
+            'me.id'                 => $id,
+        },
+        {
+            join   => ['title_classifications'],
+            columns  => [ qw/title_classifications.titleid/ ], # columns/group_by -> versch. titleid 
+            group_by => [ qw/title_classifications.titleid/ ], # via group_by und nicht via distinct (Performance)
 
-    # Ausgabe der Anzahl verk"upfter Titel
-    $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=5";
-    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($id);
-    my $res=$request->fetchrow_hashref;
-    
-    return $res->{conncount},
+        }
+    )->count;
+
+    return $titlecount;
 }
 
 sub to_rawdata {
@@ -289,5 +276,6 @@ sub name_as_string {
     
     return $self->{name};
 }
+
 
 1;

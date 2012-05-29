@@ -204,7 +204,6 @@ sub load_name {
 
     if ($person_fields){
         $main_entry  =                    $person_fields->get_column('thiscontent');
-        $logger->debug("Got main entry $main_entry");
     }
     
     if ($config->{benchmark}) {
@@ -229,9 +228,6 @@ sub get_number_of_titles {
         ? $arg_ref->{id}                :
             (exists $self->{id})?$self->{id}:undef;
     
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
-
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -243,23 +239,20 @@ sub get_number_of_titles {
         $atime=new Benchmark;
     }
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
-    
-    my $sqlrequest;
+    # DBI: "select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2";
+    my $titlecount = $self->{schema}->resultset('Person')->search(
+        {
+            'me.id'                 => $id,
+        },
+        {
+            join   => ['title_people'],
+            columns  => [ qw/title_people.titleid/ ], # columns/group_by -> versch. titleid 
+            group_by => [ qw/title_people.titleid/ ], # via group_by und nicht via distinct (Performance)
 
-    # Ausgabe der Anzahl verk"upfter Titel
-    $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2";
-    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($id);
-    my $res=$request->fetchrow_hashref;
-    
-    return $res->{conncount},
+        }
+    )->count;
+
+    return $titlecount;
 }
 
 sub to_rawdata {

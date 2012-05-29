@@ -1937,9 +1937,6 @@ sub get_connected_titles {
     my $type              = exists $arg_ref->{type}
         ? $arg_ref->{type}              : 'sub'; # sub oder super
 
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
-
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -1951,33 +1948,48 @@ sub get_connected_titles {
         $atime=new Benchmark;
     }
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
-    
     my $sqlrequest;
 
     # Ausgabe der Anzahl verk"upfter Titel
 
+    my $titles;
     if ($type eq "sub"){
-        $sqlrequest="select distinct targetid as titleid from conn where sourceid=? and sourcetype=1 and targettype=1";
+        # DBI "select distinct targetid as titleid from conn where sourceid=? and sourcetype=1 and targettype=1"
+        $titles = $self->{schema}->resultset('Title')->search(
+            {
+                'me.id'                 => $id,
+            },
+            {
+                join     => ['title_title_source_titleids'],
+                select   => [ qw/title_title_source_titleids.target_titleid/ ],
+                as       => [ qw/thistitleid/ ], 
+                group_by => [ qw/title_title_source_titleids.target_titleid/ ], # via group_by und nicht via distinct (Performance)
+                
+            }
+        );
     }
     elsif ($type eq "super"){
-        $sqlrequest="select distinct sourceid as titleid from conn where targetid=? and sourcetype=1 and targettype=1";
+        # DBI "select distinct sourceid as titleid from conn where targetid=? and sourcetype=1 and targettype=1";
+        $titles = $self->{schema}->resultset('Title')->search(
+            {
+                'me.id'                 => $id,
+            },
+            {
+                join     => ['title_title_target_titleids'],
+                select   => [ qw/title_title_target_titleids.source_titleid/ ],
+                as       => [ qw/thistitleid/ ], 
+                group_by => [ qw/title_title_target_titleids.source_titleid/ ], # via group_by und nicht via distinct (Performance)
+                
+            }
+        );
     }
     else {
         return undef;
     }
 
     my @titles = ();
-    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($id);
-    while (my $result=$request->fetchrow_hashref){
-        push @titles, $result->{titleid};
+    foreach my $item ($titles->all){
+        push @titles, $item->get_column('thistitleid');
     }
     
     return @titles;

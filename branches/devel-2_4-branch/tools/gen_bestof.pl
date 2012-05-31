@@ -79,7 +79,7 @@ my $logger = get_logger();
 
 my $config     = OpenBib::Config->instance;
 my $user       = OpenBib::User->instance;
-my $statistics = new OpenBib::Statistics();
+my $statistics = OpenBib::Statistics->instance;
 
 # Verbindung zur SQL-Datenbank herstellen
 my $statisticsdbh
@@ -104,18 +104,50 @@ if ($type == 1){
     
     foreach my $database (@databases){
         $logger->info("Generating Type 1 BestOf-Values for database $database");
+
+        my $schema;
+        
+        eval {
+            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+            next;
+        }
+
+
         my $dbh
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-        my $request=$statisticsdbh->prepare("select katkey, count(id) as idcount from titleusage where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
-        $request->execute($database);
-        while (my $result=$request->fetchrow_hashref){
-            my $katkey = $result->{katkey};
-            my $count  = $result->{idcount};
 
-            my $item=OpenBib::Record::Title->new({database => $database, id => $katkey})->load_brief_record({dbh => $dbh});
+        # DBI "select id, count(sid) as sidcount from titleusage where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20"
+        my $titleusage = $statistics->{schema}->resultset('Titleusage')->search_rs(
+            {
+                dbname => $database,
+                origin => 2,
+#                tstamp => { '>' => 20110101000000 },
+                tstamp => { '>' => \'DATE_SUB(CURDATE(),INTERVAL 6 MONTH)' },
+                
+            },
+            {
+                select   => ['id', {'count' => 'sid'}],
+                as       => ['id','sidcount'],
+                group_by => ['id'],
+                order_by => { -desc => \'count(sid)' },
+                rows     => 20,
+            }
+        );
+        foreach my $item ($titleusage->all){
+            my $id     = $item->get_column('id');
+            my $count  = $item->get_column('sidcount');
+
+            $logger->debug("Got Title with id $id and Session-Count $count");
+            
+            my $item=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record();
 
             push @$bestof_ref, {
                 item  => $item,

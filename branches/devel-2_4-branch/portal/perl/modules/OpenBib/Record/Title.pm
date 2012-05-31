@@ -105,8 +105,6 @@ sub new {
         $self->{listid}   = $listid;
     }
 
-    $logger->debug("Title-Record-Object created: ".YAML::Dump($self));
-
     return $self;
 }
 
@@ -1168,8 +1166,6 @@ sub set_brief_normdata_from_storable {
 
     $self->{_brief_normdata} = $storable_ref;
 
-    $logger->debug(YAML::Dump($self));    
-
     return $self;
 }
 
@@ -1188,8 +1184,6 @@ sub set_brief_normdata_from_json {
 
     my $json_ref = decode_json $json_string;
     $self->{_brief_normdata} = $json_ref;
-
-#    $logger->debug(YAML::Dump($self));
 
     return $self;
 }
@@ -1955,30 +1949,28 @@ sub get_connected_titles {
     my $titles;
     if ($type eq "sub"){
         # DBI "select distinct targetid as titleid from conn where sourceid=? and sourcetype=1 and targettype=1"
-        $titles = $self->{schema}->resultset('Title')->search(
+        $titles = $self->{schema}->resultset('TitleTitle')->search(
             {
-                'me.id'                 => $id,
+                'me.source_titleid'            => $id,
             },
             {
-                join     => ['title_title_source_titleids'],
-                select   => [ qw/title_title_source_titleids.target_titleid/ ],
-                as       => [ qw/thistitleid/ ], 
-                group_by => [ qw/title_title_source_titleids.target_titleid/ ], # via group_by und nicht via distinct (Performance)
+                select   => ['target_titleid'],
+                as       => ['thistitleid' ], 
+                group_by => ['target_titleid'], # via group_by und nicht via distinct (Performance)
                 
             }
         );
     }
     elsif ($type eq "super"){
         # DBI "select distinct sourceid as titleid from conn where targetid=? and sourcetype=1 and targettype=1";
-        $titles = $self->{schema}->resultset('Title')->search(
+        $titles = $self->{schema}->resultset('TitleTitle')->search(
             {
-                'me.id'                 => $id,
+                'me.target_titleid'                 => $id,
             },
             {
-                join     => ['title_title_target_titleids'],
-                select   => [ qw/title_title_target_titleids.source_titleid/ ],
-                as       => [ qw/thistitleid/ ], 
-                group_by => [ qw/title_title_target_titleids.source_titleid/ ], # via group_by und nicht via distinct (Performance)
+                select   => ['source_titleid'],
+                as       => ['thistitleid'], 
+                group_by => ['source_titleid'], # via group_by und nicht via distinct (Performance)
                 
             }
         );

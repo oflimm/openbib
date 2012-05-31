@@ -1584,9 +1584,6 @@ sub get_number_of_titles {
     my $type              = exists $arg_ref->{type}
         ? $arg_ref->{type}              : 'sub'; # sub oder super
 
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
-
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -1598,33 +1595,38 @@ sub get_number_of_titles {
         $atime=new Benchmark;
     }
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
-    
-    my $sqlrequest;
-
     # Ausgabe der Anzahl verk"upfter Titel
-
+    my $titlecount;
     if ($type eq "sub"){
-        $sqlrequest="select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
+        # DBI "select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
+        $titlecount = $self->{schema}->resultset('TitleTitle')->search(
+            {
+                'me.source_titleid'            => $id,
+            },
+            {
+                select   => ['target_titleid'],
+                as       => ['thistitleid' ], 
+                group_by => ['target_titleid'], # via group_by und nicht via distinct (Performance)
+                
+            }
+        )->count;
     }
     elsif ($type eq "super"){
-        $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
-    }
-    else {
-        return undef;
+        # DBI "select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
+        $titlecount = $self->{schema}->resultset('TitleTitle')->search(
+            {
+                'me.target_titleid'                 => $id,
+            },
+            {
+                select   => ['source_titleid'],
+                as       => ['thistitleid'], 
+                group_by => ['source_titleid'], # via group_by und nicht via distinct (Performance)
+                
+            }
+        )->count;
     }
     
-    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($id);
-    my $res=$request->fetchrow_hashref;
-    
-    return $res->{conncount},
+    return $titlecount,
 }
 
 sub get_connected_titles {
@@ -1648,8 +1650,6 @@ sub get_connected_titles {
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
-
-    my $sqlrequest;
 
     # Ausgabe der Anzahl verk"upfter Titel
 
@@ -1788,202 +1788,202 @@ sub set_from_apache_request {
     return $self;
 }
 
-sub store {
-    my ($self,$arg_ref) = @_;
+# sub store {
+#     my ($self,$arg_ref) = @_;
 
-    # Set defaults
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
+#     # Set defaults
+#     my $dbh               = exists $arg_ref->{dbh}
+#         ? $arg_ref->{dbh}               : undef;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
+#     # Log4perl logger erzeugen
+#     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+#     my $config = OpenBib::Config->instance;
 
-    my $is_new = (exists $self->{id})?1:0;
+#     my $is_new = (exists $self->{id})?1:0;
 
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
+#     my $local_dbh = 0;
+#     if (!defined $dbh){
+#         # Kein Spooling von DB-Handles!
+#         $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+#             or $logger->error_die($DBI::errstr);
+#         $local_dbh = 1;
+#     }
 
-    if ($is_new){
+#     if ($is_new){
 
-    # Titelkategorien
-    {
-        # Neue ID bestimmen
-        my $request = $dbh->prepare("select max(id)+1 as nextid from title");
-        $request->execute();
-        my $result=$request->fetchrow_hashref;
-
-        $self->set_id($result->{nextid});
-
-        # Kategorien eintragen
-        my ($atime,$btime,$timeall)=(0,0,0);
-        
-        if ($config->{benchmark}) {
-            $atime=new Benchmark;
-        }
-        
-        my $reqstring="insert into title (id,category,indicator,content) values(?,?,?,?)";
-        $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-
-        foreach my $category (keys %{$self->{_normdata}}){
-            $category=~s/^T//;
-
-            # Hierarchieverknuepfung
-            if ($category eq "0004"){
-                my $reqstring2 = "insert into conn (category,sourceid,sourcetype,targetid,targettype) values ('0004',?,1,?,1);where targetid=? and sourcetype=1 and targettype=1";
-                my $request2 = $dbh->prepare($reqstring2);
-                foreach my $item (@{$self->{_normdata}->{$category}}){
-                    $request2->execute($item->{content},$self->{id});
-                }
-                $request2->finish;
-            }
-            # oder 'normale' Kategorie
-            else {
-                foreach my $item (@{$self->{_normdata}->{$category}}){
-                    $request->execute($self->{id},$category,$item->{indicator},$item->{content});
-                }
-            }
-        }
-        
-        $request->finish();
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
-        }
-    }
-    
-#     # Verknuepfte Normdaten
+#     # Titelkategorien
 #     {
+#         # Neue ID bestimmen
+#         my $request = $dbh->prepare("select max(id)+1 as nextid from title");
+#         $request->execute();
+#         my $result=$request->fetchrow_hashref;
+
+#         $self->set_id($result->{nextid});
+
+#         # Kategorien eintragen
 #         my ($atime,$btime,$timeall)=(0,0,0);
         
 #         if ($config->{benchmark}) {
 #             $atime=new Benchmark;
 #         }
         
-#         my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
-#         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-#         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-        
-#         while (my $res=$request->fetchrow_hashref) {
-#             my $category   = "T".sprintf "%04d",$res->{category };
-#             my $targetid   =        decode_utf8($res->{targetid  });
-#             my $targettype =                    $res->{targettype};
-#             my $supplement =        decode_utf8($res->{supplement});
-            
-# 	    # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
-# 	    # vorgenommen
-            
-#             my $recordclass    =
-#                 ($targettype == 2 )?"OpenBib::Record::Person":
-#                     ($targettype == 3 )?"OpenBib::Record::CorporateBody":
-#                         ($targettype == 4 )?"OpenBib::Record::Subject":
-#                             ($targettype == 5 )?"OpenBib::Record::Classification":undef;
-            
-#             my $content = "";
-#             if (defined $recordclass){
-#                 my $record=$recordclass->new({database=>$self->{database}});
-#                 $record->load_name({dbh => $dbh, id=>$targetid});
-#                 $content=$record->name_as_string;
+#         my $reqstring="insert into title (id,category,indicator,content) values(?,?,?,?)";
+#         $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+
+#         foreach my $category (keys %{$self->{_normdata}}){
+#             $category=~s/^T//;
+
+#             # Hierarchieverknuepfung
+#             if ($category eq "0004"){
+#                 my $reqstring2 = "insert into conn (category,sourceid,sourcetype,targetid,targettype) values ('0004',?,1,?,1);where targetid=? and sourcetype=1 and targettype=1";
+#                 my $request2 = $dbh->prepare($reqstring2);
+#                 foreach my $item (@{$self->{_normdata}->{$category}}){
+#                     $request2->execute($item->{content},$self->{id});
+#                 }
+#                 $request2->finish;
 #             }
-            
-#             push @{$normset_ref->{$category}}, {
-#                 id         => $targetid,
-#                 content    => $content,
-#                 supplement => $supplement,
-#             };
+#             # oder 'normale' Kategorie
+#             else {
+#                 foreach my $item (@{$self->{_normdata}->{$category}}){
+#                     $request->execute($self->{id},$category,$item->{indicator},$item->{content});
+#                 }
+#             }
 #         }
-#         $request->finish();
         
+#         $request->finish();
+
 #         if ($config->{benchmark}) {
 #             $btime=new Benchmark;
 #             $timeall=timediff($btime,$atime);
 #             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
 #         }
-    }
-    else {
-        $self->_delete_from_rdbms;
-        $self->_delete_from_searchengine;
-    }
+#     }
     
-    return $self;
-}
-
-sub _delete_from_rdbms {
-    my ($self,$arg_ref) = @_;
+# #     # Verknuepfte Normdaten
+# #     {
+# #         my ($atime,$btime,$timeall)=(0,0,0);
+        
+# #         if ($config->{benchmark}) {
+# #             $atime=new Benchmark;
+# #         }
+        
+# #         my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
+# #         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+# #         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+        
+# #         while (my $res=$request->fetchrow_hashref) {
+# #             my $category   = "T".sprintf "%04d",$res->{category };
+# #             my $targetid   =        decode_utf8($res->{targetid  });
+# #             my $targettype =                    $res->{targettype};
+# #             my $supplement =        decode_utf8($res->{supplement});
+            
+# # 	    # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
+# # 	    # vorgenommen
+            
+# #             my $recordclass    =
+# #                 ($targettype == 2 )?"OpenBib::Record::Person":
+# #                     ($targettype == 3 )?"OpenBib::Record::CorporateBody":
+# #                         ($targettype == 4 )?"OpenBib::Record::Subject":
+# #                             ($targettype == 5 )?"OpenBib::Record::Classification":undef;
+            
+# #             my $content = "";
+# #             if (defined $recordclass){
+# #                 my $record=$recordclass->new({database=>$self->{database}});
+# #                 $record->load_name({dbh => $dbh, id=>$targetid});
+# #                 $content=$record->name_as_string;
+# #             }
+            
+# #             push @{$normset_ref->{$category}}, {
+# #                 id         => $targetid,
+# #                 content    => $content,
+# #                 supplement => $supplement,
+# #             };
+# #         }
+# #         $request->finish();
+        
+# #         if ($config->{benchmark}) {
+# #             $btime=new Benchmark;
+# #             $timeall=timediff($btime,$atime);
+# #             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
+# #         }
+#     }
+#     else {
+#         $self->_delete_from_rdbms;
+#         $self->_delete_from_searchengine;
+#     }
     
-    # Set defaults
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
+#     return $self;
+# }
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
-
-    my $request = $dbh->prepare("delete from title where id=?");
-    $request->execute($self->get_id);
+# sub _delete_from_rdbms {
+#     my ($self,$arg_ref) = @_;
     
-    $request = $dbh->prepare("delete from conn where sourcetype=1 and sourceid=?");
-    $request->execute($self->get_id);
-    $request = $dbh->prepare("delete from titlelistitem where id=?");
-    $request->execute($self->get_id);
+#     # Set defaults
+#     my $dbh               = exists $arg_ref->{dbh}
+#         ? $arg_ref->{dbh}               : undef;
+
+#     # Log4perl logger erzeugen
+#     my $logger = get_logger();
+
+#     my $config = OpenBib::Config->instance;
+
+#     my $local_dbh = 0;
+#     if (!defined $dbh){
+#         # Kein Spooling von DB-Handles!
+#         $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+#             or $logger->error_die($DBI::errstr);
+#         $local_dbh = 1;
+#     }
+
+#     my $request = $dbh->prepare("delete from title where id=?");
+#     $request->execute($self->get_id);
     
-    return $self;
-}
-
-sub _store_into_rdbms {
-    my ($self,$arg_ref) = @_;
+#     $request = $dbh->prepare("delete from conn where sourcetype=1 and sourceid=?");
+#     $request->execute($self->get_id);
+#     $request = $dbh->prepare("delete from titlelistitem where id=?");
+#     $request->execute($self->get_id);
     
-    # Set defaults
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
+#     return $self;
+# }
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    my $local_dbh = 0;
-    if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $local_dbh = 1;
-    }
-
-    my $request = $dbh->prepare("delete from title where id=?");
-    $request->execute($self->get_id);
+# sub _store_into_rdbms {
+#     my ($self,$arg_ref) = @_;
     
-    $request = $dbh->prepare("delete from conn where sourcetype=1 and sourceid=?");
-    $request->execute($self->get_id);
-    $request = $dbh->prepare("delete from titlelistitem where id=?");
-    $request->execute($self->get_id);
-    
-    return $self;
-}
+#     # Set defaults
+#     my $dbh               = exists $arg_ref->{dbh}
+#         ? $arg_ref->{dbh}               : undef;
 
-sub _delete_from_searchengine {
-    my $self = shift;
+#     # Log4perl logger erzeugen
+#     my $logger = get_logger();
+
+#     my $config = OpenBib::Config->instance;
+
+#     my $local_dbh = 0;
+#     if (!defined $dbh){
+#         # Kein Spooling von DB-Handles!
+#         $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+#             or $logger->error_die($DBI::errstr);
+#         $local_dbh = 1;
+#     }
+
+#     my $request = $dbh->prepare("delete from title where id=?");
+#     $request->execute($self->get_id);
+    
+#     $request = $dbh->prepare("delete from conn where sourcetype=1 and sourceid=?");
+#     $request->execute($self->get_id);
+#     $request = $dbh->prepare("delete from titlelistitem where id=?");
+#     $request->execute($self->get_id);
+    
+#     return $self;
+# }
+
+# sub _delete_from_searchengine {
+#     my $self = shift;
 
     
-    return $self;
-}
+#     return $self;
+# }
 
 sub have_brief_record {
     my ($self) = @_;

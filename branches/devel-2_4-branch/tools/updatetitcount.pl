@@ -7,7 +7,7 @@
 #  Aktualisierung der Information ueber die Titelanzahl in den
 #  Katalogen
 #
-#  Dieses File ist (C) 2003-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-20012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -35,11 +35,11 @@
 use strict;
 use warnings;
 
-use DBI;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
+use OpenBib::Database::Catalog;
 
 # Definition der Programm-Optionen
 my ($database,$logfile);
@@ -49,7 +49,7 @@ my ($database,$logfile);
     "logfile=s"  => \$logfile,    
 );
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/gen-subset.log';
+$logfile=($logfile)?$logfile:'/var/log/openbib/updatetitcount.log';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=INFO, LOGFILE, Screen
@@ -85,67 +85,79 @@ else {
 
 my ($allcount,$journalcount,$articlecount,$digitalcount)=(0,0,0,0);
 
-# Verbindung zur SQL-Datenbank herstellen
-my $systemdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-    or $logger->error_die($DBI::errstr);
-
 foreach $database (@databases){
-  my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
+    my $schema;
+    
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+    };
 
-  # Titel bestimmen;
-  my $idnresult=$dbh->prepare("select count(*) as rowcount from title_listitem") or die "Error -- $DBI::errstr";
-  $idnresult->execute();
+    if ($@){
+        $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+        next;
+    }
+    
+    # Gesamt-Titelzahl bestimmen;
+    my $allcount = $schema->resultset('Title')->count;
 
-  my $result=$idnresult->fetchrow_hashref;
+    # Serien/Zeitschriften bestimmen
+    # DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'"
+    my $journalcount = $schema->resultset('TitleField')->search(
+        {
+            'field'                   => '0800',
+            'content'                 => 'Zeitschrift/Serie',
+        },
+        {
+            select   => ['titleid'],
+            as       => ['thistitleid'], 
+            group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
+            
+        }
+    )->count;
+
+    # Aufsaetze bestimmen
+    # DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'"
+    my $articlecount = $schema->resultset('TitleField')->search(
+        {
+            'field'                   => '0800',
+            'content'                 => 'Aufsatz',
+        },
+        {
+            select   => ['titleid'],
+            as       => ['thistitleid'], 
+            group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
+            
+        }
+    )->count;
+    
+    # E-Median bestimmen
+    # DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Digital'"
+    my $digitalcount = $schema->resultset('TitleField')->search(
+        {
+            'field'                   => '0800',
+            'content'                 => 'Digital',
+        },
+        {
+            select   => ['titleid'],
+            as       => ['thistitleid'], 
+            group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
+            
+        }
+    )->count;
+
+    # DBI "update databaseinfo set allcount = ?, journalcount = ?, articlecount = ?, digitalcount = ? where dbname=?"
+    $config->update_databaseinfo(
+        {
+            dbname       => $database,
+            
+            allcount     => $allcount,
+            journalcount => $journalcount,
+            articlecount => $articlecount,
+            digitalcount => $digitalcount,
+        }
+    );
   
-  $allcount=$result->{rowcount};
-
-  # Serien/Zeitschriften bestimmen
-  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'") or die "Error -- $DBI::errstr";
-  $idnresult->execute();
-
-  $result=$idnresult->fetchrow_hashref;
-  
-  $journalcount=$result->{rowcount};
-
-  # Aufsaetze bestimmen
-  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'") or die "Error -- $DBI::errstr";
-  $idnresult->execute();
-
-  $result=$idnresult->fetchrow_hashref;
-  
-  $articlecount=$result->{rowcount};
-
-  # E-Median bestimmen
-  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from title where category=800 and content = 'Digital'") or die "Error -- $DBI::errstr";
-  $idnresult->execute();
-
-  $result=$idnresult->fetchrow_hashref;
-  
-  $digitalcount=$result->{rowcount};
-  
-  $idnresult->finish();
-
-  $idnresult=$systemdbh->prepare("update databaseinfo set allcount = ?, journalcount = ?, articlecount = ?, digitalcount = ? where dbname=?") or die "Error -- $DBI::errstr";
-  $idnresult->execute($allcount,$journalcount,$articlecount,$digitalcount,$database);
-  
-  print "$database -> $allcount / $journalcount / $articlecount / $digitalcount\n";
-
-  $idnresult->finish();
-  $dbh->disconnect();
+    $logger->info("$database -> $allcount / $journalcount / $articlecount / $digitalcount");
   
 }
-
-# if ($database eq ""){
-#   my $notexist=0;
-  
-#   $idnresult=$systemdbh->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
-#   $idnresult->execute();
-  
-#   $idnresult=$systemdbh->prepare("insert into titcount values ('alldbs',?,?,?,?)") or die "Error -- $DBI::errstr";
-#   $idnresult->execute($allidns,$allidns_journals,$allidns_articles,$allidns_online);
-# }
-
-$systemdbh->disconnect();
-

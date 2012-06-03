@@ -57,6 +57,21 @@ sub new {
     return $self;
 }
 
+sub _new_instance {
+    my ($class) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $self = { };
+
+    bless ($self, $class);
+
+    $self->connectDB();
+
+    return $self;
+}
+
 sub store_titleusage {
     my ($self,$arg_ref)=@_;
 

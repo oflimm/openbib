@@ -773,7 +773,7 @@ sub load_brief_record {
         $atime  = new Benchmark;
     }
 
-    $logger->debug("Getting cached brief title");
+    $logger->debug("Getting cached brief title for id $id");
     
     # DBI: "select listitem from title_listitem where id = ?"
     my $titlecache_json = $self->{schema}->resultset('Title')->single(

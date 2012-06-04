@@ -6,7 +6,7 @@
 #  Aktualisierung der all_isbn-Tabelle, in der die ISBN's aller Kataloge
 #  nachgewiesen sind.
 #
-#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -41,6 +41,8 @@ use Getopt::Long;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::Database::Catalog;
+use OpenBib::Database::Enrichment;
 use OpenBib::Common::Util;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
@@ -62,7 +64,7 @@ if ($help){
 $logfile=($logfile)?$logfile:'/var/log/openbib/update_all_isbn.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=INFO, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -94,71 +96,96 @@ else {
 # Haeufigkeit von ISBNs im KUG:
 # select isbn,count(dbname) as dbcount from all_isbn group by isbn order by dbcount desc limit 10
 
-my $enrichdbh         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or die "could not connect";
-my $enrichrequest     = $enrichdbh->prepare("insert into all_isbn values (?,?,?,?)");
-my $delrequest        = $enrichdbh->prepare("delete from all_isbn where dbname=?");
+my $enrich_schema;
+    
+eval {
+    # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+    $enrich_schema = OpenBib::Database::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+};
 
-my $insertion_date_available = 0; # wird fuer inkrementelles Update benoetigt
+if ($@){
+    $logger->fatal("Unable to connect schema to Enrichmntment database");
+    exit;
+}
+
+my $last_insertion_date = 0; # wird fuer inkrementelles Update benoetigt
 
 foreach my $database (@databases){
     $logger->info("Getting ISBNs from database $database and adding to enrichmntdb");
 
-    my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
-
-    my $enriched_id_ref = {};
-
-    if ($incr){
-        my $insertdaterequest = $dbh->prepare("select count(*) as insertdatecount from title where category=2");
-        $insertdaterequest->execute();
-        
-        my $insertdateresult=$insertdaterequest->fetchrow_hashref;
-        $insertion_date_available = $insertdateresult->{insertdatecount};
-        
-        $insertdaterequest->finish;
+    my $schema;
+    
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+    };
+    
+    if ($@){
+        $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+        next;
     }
     
-    if (!$insertion_date_available && $incr){
+    if ($incr){
+        $last_insertion_date = $schema->resultset('Title')->get_column('tstamp_create')->max;
+    }
+    
+    if (!$last_insertion_date && $incr){
         $logger->fatal("Inkrementelle Updates werden fuer die Datenbank $database nicht unterstuetzt");
         next;
     }
-
-    my $sqlrequest = "select t1.id as id,t1.content as isbn,t2.content as thisdate from title_string as t1 left join title_string as t2 on t1.id=t2.id where t2.category = 2 and t1.category in (540,553)";
-
-    if (!$insertion_date_available){
-        $sqlrequest = "select id, content as isbn from title where category in (540,553)";
+    else {
+        $enrich_schema->resultset('AllIsbn')->search_rs(
+            {
+                dbname => $database
+            }
+        )->delete;
     }
 
-    my @sqlargs    = ();
-    my $lastdate   = "";
-
+    my $all_isbns;
+    
     if ($incr){
-        my $request=$enrichdbh->request("select max(tstamp) as lastdate from all_isbn where database=?");
-        
-        my $result=$request->fetchrow_hashref;
-        
-        $lastdate=$result->{'lastdate'};
-        
-        $sqlrequest.=" and t2.content > ?";
-        push @sqlargs, $lastdate;
+        $all_isbns = $schema->resultset('Title')->search_rs(
+            {
+                'me.tstamp_create'   => { '>' => $last_insertion_date },
+                -or => [
+                    'title_fields.field' => '0540',
+                    'title_fields.field' => '0553',
+                ],
+            },
+            {
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
+                as     => ['thistitleid', 'thisisbn', 'thisdate'],
+                join =>   ['title_fields'],
+            }
+        );
     }
     else {
-        $delrequest->execute($database);
+        $all_isbns = $schema->resultset('Title')->search_rs(
+            {
+                -or => [
+                    'title_fields.field' => '0540',
+                    'title_fields.field' => '0553',
+                ],
+            },
+            {
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
+                as     => ['thistitleid', 'thisisbn','thisdate'],
+                join   => ['title_fields'],
+            }
+        );
     }
 
-    $logger->debug("SQL-Request: $sqlrequest");
-    
-    my $request=$dbh->prepare($sqlrequest);
-    $request->execute(@sqlargs);
-
     my $isbn_insertcount = 0;
-    while (my $result=$request->fetchrow_hashref()){
-        my $id       = $result->{id};
-        my $thisisbn = $result->{isbn};
-        my $date     = $result->{thisdate} || 0;
-
+    foreach my $item ($all_isbns->all){
+        my $thistitleid       = $item->get_column('thistitleid');
+        my $thisisbn = $item->get_column('thisisbn');
+        my $thisdate = $item->get_column('thisdate');
+        
+        $logger->debug("Got Title with id $thistitleid and ISBN $thisisbn");
+        
         # Normierung auf ISBN13
         my $isbn13 = Business::ISBN->new($thisisbn);
-
+        
         if (defined $isbn13 && $isbn13->is_valid){
             $thisisbn = $isbn13->as_isbn13->as_string;
         }
@@ -166,89 +193,139 @@ foreach my $database (@databases){
             $logger->error("ISBN $thisisbn nicht gueltig!");
             next;
         }
-
+        
         # Normierung als String
         $thisisbn = OpenBib::Common::Util::grundform({
             category => '0540',
             content  => $thisisbn,
         });
 
-        $enrichrequest->execute($thisisbn,$database,$id,$date);
-
-        $enriched_id_ref->{$id}=1;
+        $enrich_schema->resultset('AllIsbn')->create(
+            {
+                isbn   => $thisisbn,
+                id     => $thistitleid,
+                dbname => $database,
+                tstamp => $thisdate,
+            }
+        );
 
         $isbn_insertcount++;
     }
 
     $logger->info("$isbn_insertcount ISBN's inserted");
-    
+
     $logger->info("Getting Bibkeys from database $database and adding to enrichmntdb");
-
-    $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from title as t1 left join title as t2 on t1.id=t2.id where t2.category = 2 and t1.category=5050";
-
-    if (!$insertion_date_available){
-        $sqlrequest = "select id, content as bibkey from title where category=5050";
+    
+    if ($incr){
+        $all_isbns = $schema->resultset('Title')->search_rs(
+            {
+                'me.tstamp_create'   => { '>' => $last_insertion_date },
+                'title_fields.field' => '5050',
+            },
+            {
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
+                as     => ['thistitleid', 'thisbibkey', 'thisdate'],
+                join =>   ['title_fields'],
+            }
+        );
+    }
+    else {
+        $all_isbns = $schema->resultset('Title')->search_rs(
+            {
+                'title_fields.field' => '5050',
+            },
+            {
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
+                as     => ['thistitleid', 'thisbibkey','thisdate'],
+                join   => ['title_fields'],
+            }
+        );
     }
 
-    $logger->debug("SQL-Request: $sqlrequest");
-    
-    $request=$dbh->prepare($sqlrequest);
-    $request->execute();
-    
     my $bibkey_insertcount = 0;
-    while (my $result=$request->fetchrow_hashref()){
-        my $id       = $result->{id};
-        my $bibkey   = $result->{bibkey};
-        my $date     = $result->{thisdate} || 0;
+    foreach my $item ($all_isbns->all){
+        my $thistitleid         = $item->get_column('thistitleid');
+        my $thisbibkey = $item->get_column('thisbibkey');
+        my $thisdate   = $item->get_column('thisdate');
+        
+        if ($thisbibkey){
+            $logger->debug("Got Title with id $thistitleid and bibkey $thisbibkey");
 
-        if ($bibkey){
-            $enrichrequest->execute($bibkey,$database,$id,$date);
+            $enrich_schema->resultset('AllIsbn')->create(
+                {
+                    isbn   => $thisbibkey,
+                    id     => $thistitleid,
+                    dbname => $database,
+                    tstamp => $thisdate,
+                }
+            );
             $bibkey_insertcount++;
         }
+        
     }
-
+    
     $logger->info("$bibkey_insertcount Bibkeys inserted");
 
     $logger->info("Getting ISSNs from database $database and adding to enrichmntdb");
 
-    $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from title as t1 left join title as t2 on t1.id=t2.id where t2.category = 2 and t1.category=543";
-
-    if (!$insertion_date_available){
-        $sqlrequest = "select id, content as issn from title where category=543";
+    if ($incr){
+        $all_isbns = $schema->resultset('Title')->search_rs(
+            {
+                'me.tstamp_create'   => { '>' => $last_insertion_date },
+                'title_fields.field' => '0543',
+            },
+            {
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
+                as     => ['thistitleid', 'thisissn', 'thisdate'],
+                join =>   ['title_fields'],
+            }
+        );
     }
-
-    $logger->debug("SQL-Request: $sqlrequest");
-    
-    $request=$dbh->prepare($sqlrequest);
-    $request->execute();
+    else {
+        $all_isbns = $schema->resultset('Title')->search_rs(
+            {
+                'title_fields.field' => '0543',
+            },
+            {
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
+                as     => ['thistitleid', 'thisissn','thisdate'],
+                join   => ['title_fields'],
+            }
+        );
+    }
     
     my $issn_insertcount = 0;
-    while (my $result=$request->fetchrow_hashref()){
-        my $id       = $result->{id};
-        my $issn     = $result->{issn};
-        my $date     = $result->{thisdate} || 0;
+    foreach my $item ($all_isbns->all){
+        my $thistitleid = $item->get_column('thistitleid');
+        my $thisissn    = $item->get_column('thisissn');
+        my $thisdate    = $item->get_column('thisdate');
         
-        if ($issn){
+
+        if ($thisissn){
             # Normierung als String
-            $issn = OpenBib::Common::Util::grundform({
+            $thisissn = OpenBib::Common::Util::grundform({
                 category => '0543',
-                content  => $issn,
+                content  => $thisissn,
             });
             
-            $enrichrequest->execute($issn,$database,$id,$date);
+            $logger->debug("Got Title with id $thistitleid and ISSN $thisissn");
+
+            $enrich_schema->resultset('AllIsbn')->create(
+                {
+                    isbn   => $thisissn,
+                    id     => $thistitleid,
+                    dbname => $database,
+                    tstamp => $thisdate,
+                }
+            );
+            
             $issn_insertcount++;
         }
     }
 
     $logger->info("$issn_insertcount ISSNs inserted");
     
-    $request->finish;
-    $dbh->disconnect();
 }
-
-$enrichrequest->finish();
-$delrequest->finish();
-$enrichdbh->disconnect();
 
 sub print_help {
     print << "ENDHELP";

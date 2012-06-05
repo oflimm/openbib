@@ -134,7 +134,7 @@ foreach my $database (@databases){
         next;
     }
     else {
-        $enrich_schema->resultset('AllIsbn')->search_rs(
+        $enrich_schema->resultset('AllTitleByIsbn')->search_rs(
             {
                 dbname => $database
             }
@@ -200,12 +200,12 @@ foreach my $database (@databases){
             content  => $thisisbn,
         });
 
-        $enrich_schema->resultset('AllIsbn')->create(
+        $enrich_schema->resultset('AllTitleByIsbn')->create(
             {
-                isbn   => $thisisbn,
-                id     => $thistitleid,
-                dbname => $database,
-                tstamp => $thisdate,
+                isbn    => $thisisbn,
+                titleid => $thistitleid,
+                dbname  => $database,
+                tstamp  => $thisdate,
             }
         );
 
@@ -251,12 +251,12 @@ foreach my $database (@databases){
         if ($thisbibkey){
             $logger->debug("Got Title with id $thistitleid and bibkey $thisbibkey");
 
-            $enrich_schema->resultset('AllIsbn')->create(
+            $enrich_schema->resultset('AllTitleByBibkey')->create(
                 {
-                    isbn   => $thisbibkey,
-                    id     => $thistitleid,
-                    dbname => $database,
-                    tstamp => $thisdate,
+                    bibkey  => $thisbibkey,
+                    titleid => $thistitleid,
+                    dbname  => $database,
+                    tstamp  => $thisdate,
                 }
             );
             $bibkey_insertcount++;
@@ -310,12 +310,12 @@ foreach my $database (@databases){
             
             $logger->debug("Got Title with id $thistitleid and ISSN $thisissn");
 
-            $enrich_schema->resultset('AllIsbn')->create(
+            $enrich_schema->resultset('AllTitleByIssn')->create(
                 {
-                    isbn   => $thisissn,
-                    id     => $thistitleid,
-                    dbname => $database,
-                    tstamp => $thisdate,
+                    issn    => $thisissn,
+                    titleid => $thistitleid,
+                    dbname  => $database,
+                    tstamp  => $thisdate,
                 }
             );
             

@@ -492,11 +492,10 @@ sub load_full_record {
         if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
-        
-        # Verbindung zur SQL-Datenbank herstellen
-        my $enrichdbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-                or $logger->error_die($DBI::errstr);
+
+        if (!exists $self->{enrich_schema}){
+            $self->connectEnrichmentDB;
+        }
         
         my @isbn_refs = ();
         push @isbn_refs, @{$normset_ref->{T0540}} if (exists $normset_ref->{T0540});
@@ -509,7 +508,12 @@ sub load_full_record {
         
         $logger->debug("Enrichment ISBN's ".YAML::Dump(\@isbn_refs));
         $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
-        
+
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+
         if (@isbn_refs){
             my @isbn_refs_tmp = ();
             # Normierung auf ISBN-13
@@ -540,14 +544,22 @@ sub load_full_record {
 
             my %seen_content = ();            
             foreach my $isbn (@isbn_refs){
-                my $reqstring="select distinct category,content from normdata where isbn=? order by category,indicator";
-                my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-                $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                # DBI "select distinct category,content from normdata where isbn=? order by category,indicator";
+                my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByIsbn')->search_rs(
+                    {
+                        isbn => $isbn,
+                    },
+                    {                        
+                        group_by => ['field','content'],
+                        order_by => ['field','content'],
+                    }
+                );
                 
                 # Anreicherung der Normdaten
-                while (my $res=$request->fetchrow_hashref) {
-                    my $category   = "E".sprintf "%04d",$res->{category };
-                    my $content    =                    $res->{content};
+                foreach my $item ($enriched_contents->all){
+                    my $field      = "E".sprintf "%04d",$item->field;
+                    my $subfield   =                    $item->subfield;
+                    my $content    =                    $item->content;
 
                     if ($seen_content{$content}){
                         next;
@@ -556,21 +568,30 @@ sub load_full_record {
                         $seen_content{$content} = 1;
                     }                    
                     
-                    push @{$normset_ref->{$category}}, {
+                    push @{$normset_ref->{$field}}, {
+                        subfield   => $subfield,
                         content    => $content,
                     };
                 }
                 
                 # Anreicherung mit 'gleichen' (=gleiche ISBN) Titeln aus anderen Katalogen
                 my $same_recordlist = new OpenBib::RecordList::Title();
+
+                # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
+                my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+                    {
+                        isbn    => $isbn,
+                        titleid => {'!=' => $self->{id} },
+                        dbname  => {'!=' => $self->{database} },
+                    },
+                    {                        
+                        group_by => ['titleid','dbname'],
+                    }
+                );
                 
-                $reqstring="select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
-                $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-                $request->execute($isbn,$self->{database},$self->{id}) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-                
-                while (my $res=$request->fetchrow_hashref) {
-                    my $id         = $res->{id};
-                    my $database   = $res->{dbname};
+                foreach my $item ($same_titles->all){
+                    my $id         = $item->titleid;
+                    my $database   = $item->dbname;
                     
                     $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
                 }
@@ -580,8 +601,8 @@ sub load_full_record {
                 # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
                 my $similar_recordlist = new OpenBib::RecordList::Title();
                 
-                $reqstring="select isbn from similar_isbn where match (isbn) against (?)";
-                $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                my $reqstring="select isbn from same_work_by_isbn where match (isbn) against (?)";
+                my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                 $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
                 
                 my $similar_isbn_ref = {};
@@ -599,7 +620,7 @@ sub load_full_record {
                     
                     $logger->debug("InSelect $in_select_string");
                     
-                    $reqstring="select distinct id,dbname from all_isbn where isbn in ($in_select_string) order by dbname";
+                    $reqstring="select distinct id,dbname from all_titles_by_isbn where isbn in ($in_select_string) order by dbname";
                     
                     $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                     $request->execute(@similar_args) or $logger->error("Request: $reqstring - ".$DBI::errstr);
@@ -616,7 +637,6 @@ sub load_full_record {
                 $similar_recordlist->load_brief_records;
                 
                 $self->{_similar_records} = $similar_recordlist;
-
 
                 # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
                 my $related_recordlist = new OpenBib::RecordList::Title();
@@ -2047,6 +2067,27 @@ sub connectDB {
 
     if ($@){
         $logger->fatal("Unable to connect schema to database $self->{database}: DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}");
+    }
+
+    return;
+
+}
+
+sub connectEnrichmentDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        $self->{enrich_schema} = OpenBib::Database::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect schema to database $config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}, $config->{enrichmntdbuser}");
     }
 
     return;

@@ -1198,7 +1198,7 @@ while (my $line=<IN>){
                         push @{$record_ref->{$field}}, {
                             mult      => $mult,
                             content   => $content,
-                            indicator => '',
+                            subfield  => '',
                         };
                         
                         $mult++;
@@ -1241,7 +1241,7 @@ while (my $line=<IN>){
                     push @{$record_ref->{'0800'}}, {
                         mult      => $type_mult,
                         content   => 'Zeitschrift/Serie',
-                        indicator => '',
+                        subfield  => '',
                     };
                 }
             }   
@@ -1270,7 +1270,7 @@ while (my $line=<IN>){
                     push @{$record_ref->{'0800'}}, {
                         mult      => $type_mult,
                         content   => 'Aufsatz',
-                        indicator => '',
+                        subfield  => '',
                     };
                 }
             }   
@@ -1308,7 +1308,7 @@ while (my $line=<IN>){
                     push @{$record_ref->{'0800'}}, {
                         mult      => $type_mult,
                         content   => 'Digital',
-                        indicator => '',
+                        subfield  => '',
                     };
                 }
             }   
@@ -1329,7 +1329,7 @@ while (my $line=<IN>){
                     push @{$record_ref->{'0800'}}, {
                         mult      => $type_mult,
                         content   => 'mit Inhaltsverzeichnis',
-                        indicator => '',
+                        subfield  => '',
                     };
                 }
             }   
@@ -1398,13 +1398,13 @@ while (my $line=<IN>){
                 }
             }
 
-            if (exists $stammdateien_ref->{holding}{data}{$id}) {
-                foreach my $searchfield (keys %{$stammdateien_ref->{holding}{data}{$id}}) {
-                    foreach my $weight (keys %{$stammdateien_ref->{holding}{data}{$id}{$searchfield}}) {
-                        push @{$searchengine_ref->{$searchfield}}, @{$stammdateien_ref->{holding}{data}{$id}{$searchfield}{$weight}};
-                    }
-                }
-            }
+#             if (exists $stammdateien_ref->{holding}{data}{$id}) {
+#                 foreach my $searchfield (keys %{$stammdateien_ref->{holding}{data}{$id}}) {
+#                     foreach my $weight (keys %{$stammdateien_ref->{holding}{data}{$id}{$searchfield}}) {
+#                         push @{$searchengine_ref->{$searchfield}}, @{$stammdateien_ref->{holding}{data}{$id}{$searchfield}{$weight}};
+#                     }
+#                 }
+#             }
         }
         
         # Listitem zusammensetzen
@@ -1515,13 +1515,13 @@ while (my $line=<IN>){
                 push @{$record_ref->{'5050'}}, {
                     mult      => 1,
                     content   => $bibkey,
-                    indicator => '',
+                    subfield  => '',
                 };
 
                 push @{$record_ref->{'5051'}}, {
                     mult      => 1,
                     content   => $bibkey_base,
-                    indicator => '',
+                    subfield   => '',
                 };
 
                 # Bibkey merken fuer Recherche ueber Suchmaschine
@@ -1594,9 +1594,8 @@ while (my $line=<IN>){
             foreach my $item_ref (@{$record_ref->{$field}}){
                 next if ($item_ref->{ignore});
                 
-                my $contentnorm   = "";
                 if (defined $field && exists $stammdateien_ref->{title}{inverted_ref}->{$field}){
-                    $contentnorm = OpenBib::Common::Util::grundform({
+                    $item_ref->{norm} = OpenBib::Common::Util::grundform({
                         category => $field,
                         content  => $item_ref->{content},
                     });
@@ -1610,7 +1609,8 @@ while (my $line=<IN>){
                     }
                 }
                 
-                
+#                $logger->info(defined($id).":".defined($field).":".defined($item_ref->{mult}).":".defined($item_ref->{subfield}).":".defined($item_ref->{norm}));
+
                 print OUTNORMFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{norm}\n";
             }
         }                

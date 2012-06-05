@@ -1,4 +1,4 @@
-package OpenBib::Database::Enrichment::Result::AllIsbn;
+package OpenBib::Database::Enrichment::Result::AllTitleByBibkey;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,15 +11,15 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Enrichment::Result::AllIsbn
+OpenBib::Database::Enrichment::Result::AllTitleByBibkey
 
 =cut
 
-__PACKAGE__->table("all_isbn");
+__PACKAGE__->table("all_titles_by_bibkey");
 
 =head1 ACCESSORS
 
-=head2 isbn
+=head2 bibkey
 
   data_type: 'varchar'
   is_nullable: 0
@@ -31,7 +31,7 @@ __PACKAGE__->table("all_isbn");
   is_nullable: 0
   size: 25
 
-=head2 id
+=head2 titleid
 
   data_type: 'varchar'
   is_nullable: 0
@@ -45,19 +45,19 @@ __PACKAGE__->table("all_isbn");
 =cut
 
 __PACKAGE__->add_columns(
-  "isbn",
+  "bibkey",
   { data_type => "varchar", is_nullable => 0, size => 33 },
   "dbname",
   { data_type => "varchar", is_nullable => 0, size => 25 },
-  "id",
+  "titleid",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "tstamp",
   { data_type => "datetime", is_nullable => 1 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-02-28 11:58:46
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lBoThkimGjhevjcQFcvdiQ
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-06-05 10:09:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:csGiVAfZjzGkxse8gvwvCQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

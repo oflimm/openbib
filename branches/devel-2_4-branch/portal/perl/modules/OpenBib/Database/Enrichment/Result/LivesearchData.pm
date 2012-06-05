@@ -1,4 +1,4 @@
-package OpenBib::Database::Enrichment::Result::AllNormdata;
+package OpenBib::Database::Enrichment::Result::LivesearchData;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,11 +11,11 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Enrichment::Result::AllNormdata
+OpenBib::Database::Enrichment::Result::LivesearchData
 
 =cut
 
-__PACKAGE__->table("all_normdata");
+__PACKAGE__->table("livesearch_data");
 
 =head1 ACCESSORS
 
@@ -54,8 +54,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-02-28 11:58:46
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:nDto8h0/naTtYqXYRzRNJQ
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-06-05 10:09:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:v39H1r24BU7TlorQG5IBtw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

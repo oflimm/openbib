@@ -517,8 +517,8 @@ sub load_full_record {
 
         if (@isbn_refs){
             my @isbn_refs_tmp = ();
-            # Normierung auf ISBN-13
 
+            # Normierung auf ISBN-13
             foreach my $isbn_ref (@isbn_refs){
                 my $thisisbn = $isbn_ref->{content};
 
@@ -544,44 +544,46 @@ sub load_full_record {
             $logger->debug(YAML::Dump(\@isbn_refs));
 
             my %seen_content = ();            
-            foreach my $isbn (@isbn_refs){
+
+            # Anreicherung der Normdaten
+            {
                 # DBI "select distinct category,content from normdata where isbn=? order by category,indicator";
                 my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByIsbn')->search_rs(
                     {
-                        isbn => $isbn,
+                        isbn => \@isbn_refs,
                     },
                     {                        
                         group_by => ['field','content'],
                         order_by => ['field','content'],
                     }
                 );
-                
-                # Anreicherung der Normdaten
-                foreach my $item ($enriched_contents->all){
+                    
+                foreach my $item ($enriched_contents->all) {
                     my $field      = "E".sprintf "%04d",$item->field;
                     my $subfield   =                    $item->subfield;
                     my $content    =                    $item->content;
-
-                    if ($seen_content{$content}){
+                        
+                    if ($seen_content{$content}) {
                         next;
-                    }
-                    else {
+                    } else {
                         $seen_content{$content} = 1;
                     }                    
-                    
+                        
                     push @{$normset_ref->{$field}}, {
                         subfield   => $subfield,
                         content    => $content,
                     };
                 }
+            }
                 
-                # Anreicherung mit 'gleichen' (=gleiche ISBN) Titeln aus anderen Katalogen
+            # Anreicherung mit 'gleichen' (=gleiche ISBN) Titeln aus anderen Katalogen
+            {
                 my $same_recordlist = new OpenBib::RecordList::Title();
 
                 # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
                 my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
                     {
-                        isbn    => $isbn,
+                        isbn    => \@isbn_refs,
                         titleid => {'!=' => $self->{id} },
                         dbname  => {'!=' => $self->{database} },
                     },
@@ -589,99 +591,114 @@ sub load_full_record {
                         group_by => ['titleid','dbname'],
                     }
                 );
-                
-                foreach my $item ($same_titles->all){
+                    
+                foreach my $item ($same_titles->all) {
                     my $id         = $item->titleid;
                     my $database   = $item->dbname;
-                    
+                        
                     $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
                 }
-                
+                    
                 $self->{_same_records} = $same_recordlist;
+            }
                 
-                # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
+            # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
+            {
                 my $similar_recordlist = new OpenBib::RecordList::Title();
-                
-                my $reqstring="select isbn from same_work_by_isbn where match (isbn) against (?)";
-                my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-                $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-                
-                my $similar_isbn_ref = {};
-                while (my $res=$request->fetchrow_hashref) {
-                    my $similarisbnstring = $res->{isbn};
-                    foreach my $similarisbn (split(':',$similarisbnstring)){
-                        $similar_isbn_ref->{$similarisbn}=1 if ($similarisbn ne $isbn);
+                    
+                my $similar_titles = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
+                    {
+                        isbn    => \@isbn_refs,,
+                    },
+                    {
+                        columns => ['workid'],
+                        group_by => ['workid'],
                     }
-                }
-                
-                my @similar_args = keys %$similar_isbn_ref;
-                
-                if (@similar_args){
-                    my $in_select_string = join(',',map {'?'} @similar_args);
+                );
                     
-                    $logger->debug("InSelect $in_select_string");
-                    
-                    $reqstring="select distinct id,dbname from all_titles_by_isbn where isbn in ($in_select_string) order by dbname";
-                    
-                    $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-                    $request->execute(@similar_args) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-                    
-                    while (my $res=$request->fetchrow_hashref) {
-                        my $id         = $res->{id};
-                        my $database   = $res->{dbname};
+                foreach my $workitem ($similar_titles->all) {
+                    my $workid         = $workitem->workid;
                         
-                        $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                    my $isbns = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
+                        {
+                            isbn      => { '!=' => \@isbn_refs },
+                            workid    => $workid,
+                        },
+                        {
+                                
+                            columns => ['isbn'],
+                            group_by => ['isbn'],
+                        }
+                    );
+                        
+                    foreach my $isbnitem ($isbns->all) {
+                        my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+                            {
+                                isbn      => $isbnitem->isbn,
+                            },
+                        );
+                            
+                        foreach my $titleitem ($titles->all) {
+                            my $id         = $titleitem->titleid;
+                            my $database   = $titleitem->dbname;
+                                
+                            $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                        }
                     }
-                    
                 }
-                    
                 $similar_recordlist->load_brief_records;
-                
+                    
                 $self->{_similar_records} = $similar_recordlist;
-
-                # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
+            }
+                
+            # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
+            {
                 my $related_recordlist = new OpenBib::RecordList::Title();
-                
-                $reqstring="select isbn from related_isbn where match (isbn) against (?)";
-                $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-                $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-                
-                my $related_isbn_ref = {};
-                while (my $res=$request->fetchrow_hashref) {
-                    my $relatedisbnstring = $res->{isbn};
-                    foreach my $relatedisbn (split(':',$relatedisbnstring)){
-                        $related_isbn_ref->{$relatedisbn}=1 if ($relatedisbn ne $isbn);
+                    
+                my $related_titles = $self->{enrich_schema}->resultset('RelatedByIsbn')->search_rs(
+                    {
+                        isbn    => \@isbn_refs,
+                    },
+                    {
+                        columns => ['id'],
+                        group_by => ['id'],
                     }
-                }
-                
-                my @related_args = keys %$related_isbn_ref;
-                
-                if (@related_args){
-                    my $in_select_string = join(',',map {'?'} @related_args);
+                );
                     
-                    $logger->debug("InSelect $in_select_string");
-                    
-                    $reqstring="select distinct id,dbname from all_isbn where isbn in ($in_select_string) and dbname=?";
-                    
-                    $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-                    $request->execute(@related_args,$self->{database}) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-                    
-                    while (my $res=$request->fetchrow_hashref) {
-                        my $id         = $res->{id};
-                        my $database   = $res->{dbname};
+                foreach my $item ($related_titles->all) {
+                    my $id         = $item->id;
                         
-                        $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                    my $isbns = $self->{enrich_schema}->resultset('RelatedByIsbn')->search_rs(
+                        {
+                            isbn      => { '!=' => \@isbn_refs },
+                            id    => $id,
+                        },
+                        {
+                                
+                            columns => ['isbn'],
+                            group_by => ['isbn'],
+                        }
+                    );
+                        
+                    foreach my $isbnitem ($isbns->all) {
+                        my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+                            {
+                                isbn      => $isbnitem->isbn,
+                            },
+                        );
+                            
+                        foreach my $titleitem ($titles->all) {
+                            my $id         = $titleitem->titleid;
+                            my $database   = $titleitem->dbname;
+                                
+                            $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                        }
                     }
-                    
                 }
-                    
                 $related_recordlist->load_brief_records;
                 $related_recordlist->sort({order => 'up', type => 'title'});
                 
                 $self->{_related_records} = $related_recordlist;
-                
-                $request->finish();
-                $logger->debug("Enrich: $isbn -> $reqstring");
             }
         }
         elsif ($bibkey){

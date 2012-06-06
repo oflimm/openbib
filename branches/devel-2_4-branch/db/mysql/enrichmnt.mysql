@@ -19,6 +19,40 @@ ENGINE InnoDB
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+/* Enriched content by bibkey */
+drop table IF EXISTS enriched_content_by_bibkey;
+create table enriched_content_by_bibkey (
+ bibkey        VARCHAR(13) NOT NULL,
+ origin        SMALLINT,
+ field         SMALLINT NOT NULL,
+ subfield      SMALLINT,
+ content       TEXT NOT NULL,
+ index         (bibkey),
+ index         (origin),
+ index         (field),
+ index         (content(20))
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* Enriched content by issn */
+drop table IF EXISTS enriched_content_by_issn;
+create table enriched_content_by_issn (
+ issn          VARCHAR(13) NOT NULL,
+ origin        SMALLINT,
+ field         SMALLINT NOT NULL,
+ subfield      SMALLINT,
+ content       TEXT NOT NULL,
+ index         (issn),
+ index         (origin),
+ index         (field),
+ index         (content(20))
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
 /*  references to all available titles in all databases by specific */
 /*  identification keys */
 drop table IF EXISTS all_titles_by_isbn;
@@ -82,7 +116,7 @@ create table related_titles_by_isbn (
  isbn          VARCHAR(13)  NOT NULL,
  origin        SMALLINT,
  index        (isbn),
- index        (workid)
+ index        (id)
 )
 ENGINE InnoDB
 DEFAULT CHARACTER SET utf8

@@ -50,6 +50,7 @@ use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Database::Catalog;
+use OpenBib::Database::Enrichment;
 use OpenBib::Database::DBI;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;

@@ -1696,6 +1696,7 @@ foreach my $type (keys %{$stammdateien_ref}){
 alter table $type        disable keys;
 alter table ${type}_fields     disable keys;
 alter table ${type}_normfields disable keys;
+SET FOREIGN_KEY_CHECKS=0;
 DISABLEKEYS
 }
 
@@ -1744,6 +1745,7 @@ TITLEITEM
 
 foreach my $type (keys %{$stammdateien_ref}){
     print CONTROLINDEXON << "ENABLEKEYS";
+SET FOREIGN_KEY_CHECKS=1;
 alter table $type          enable keys;
 alter table ${type}_fields     enable keys;
 alter table ${type}_normfields enable keys;

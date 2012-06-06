@@ -163,7 +163,6 @@
 ../modules/OpenBib/SearchQuery.pm
 ../modules/OpenBib/LoadBalancer/Util.pm
 ../modules/OpenBib/Session.pm
-../modules/OpenBib/VirtualSearch/Util.pm
 ../modules/OpenBib/L10N.pm
 ../modules/OpenBib/RecordList/Title.pm
 ../templates/admin_authentication

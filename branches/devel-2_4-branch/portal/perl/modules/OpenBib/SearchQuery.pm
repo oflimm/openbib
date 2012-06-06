@@ -51,7 +51,6 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Database::DBI;
 use OpenBib::Database::System;
-use OpenBib::VirtualSearch::Util;
 
 sub _new_instance {
     my ($class,$arg_ref) = @_;

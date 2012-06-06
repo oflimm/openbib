@@ -54,7 +54,6 @@ use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
-use OpenBib::VirtualSearch::Util;
 
 use base 'OpenBib::Handler::Apache';
 

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Util
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -51,7 +51,6 @@ use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Session;
-use OpenBib::VirtualSearch::Util;
 
 sub get_result_navigation {
     my ($arg_ref) = @_;
@@ -153,7 +152,7 @@ sub get_index {
         # Normdaten-Volltext-Recherche
         else {
             $sqlrequest="select distinct ${type}.content as content from $type, ${type}_ft where ${type}.category = ? and ${type}_ft.category = ? and match (${type}_ft.content) against (? IN BOOLEAN MODE) and ${type}.id=${type}_ft.id order by ${type}.content";
-            $contentreq = OpenBib::VirtualSearch::Util::conv2autoplus($contentreq);
+            $contentreq = conv2autoplus($contentreq);
         }
         $logger->info($sqlrequest." - $category, $contentreq");
         my $request=$dbh->prepare($sqlrequest);
@@ -506,6 +505,59 @@ sub get_recent_titids_by_not {
 
     return $recordlist;
 }
+
+# Ehemals in VirtualSearch.pm
+
+sub conv2autoplus {
+    my ($eingabe)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Original: $eingabe");
+
+    my @phrasenbuf=();
+
+    chomp($eingabe);
+
+    # Token fuer Phrasensuche aussondern
+    while ($eingabe=~/(".*?")/) {
+        my $phrase=$1;
+
+        # Merken
+        push @phrasenbuf, $phrase;
+
+        # Entfernen
+        $eingabe=~s/$phrase//;
+    }
+
+    # Innenliegende - durch Leerzeichen ersetzen
+    $eingabe=~s/(\w)-(\w)/$1 $2/gi;
+    #  $eingabe=~s/\+(\w)/ $1/gi;
+    $eingabe=~s/\+(\S)/ $1/gi;
+
+    # Generell Plus vor Woertern durch Leerzeichen ersetzen
+    #  $eingabe=~s/(\S+)/%2B$1/gi;
+    $eingabe=~s/(\S+)/%2B$1/gi;
+
+    # Kombination -+ wird nun eliminiert
+    $eingabe=~s/-%2B/-/gi;
+
+    # URL-Code fuer + in richtiges Plus umwandeln
+    $eingabe=~s/%2B/+/g;
+
+    push @phrasenbuf, $eingabe;
+
+    # Gemerkte Phrase werden wieder hinzugefuegt
+    if ($#phrasenbuf >= 0) {
+        $eingabe=join(" ",@phrasenbuf);
+    }
+
+    $logger->debug("Gewandelt: $eingabe");
+
+    return $eingabe;
+}
+
 
 1;
 

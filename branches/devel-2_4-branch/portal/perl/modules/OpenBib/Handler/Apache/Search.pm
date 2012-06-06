@@ -54,7 +54,6 @@ use Search::Xapian;
 use YAML ();
 
 use OpenBib::Search::Util;
-use OpenBib::VirtualSearch::Util;
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;

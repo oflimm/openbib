@@ -510,10 +510,7 @@ sub load_full_record {
         $logger->debug("Enrichment ISBN's ".YAML::Dump(\@isbn_refs));
         $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
 
-        # Verbindung zur SQL-Datenbank herstellen
-        my $enrichdbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-                or $logger->error_die($DBI::errstr);
+        my %seen_content = ();            
 
         if (@isbn_refs){
             my @isbn_refs_tmp = ();
@@ -542,8 +539,6 @@ sub load_full_record {
             @isbn_refs = grep { ! $seen_isbns{$_} ++ } @isbn_refs_tmp;
 
             $logger->debug(YAML::Dump(\@isbn_refs));
-
-            my %seen_content = ();            
 
             # Anreicherung der Normdaten
             {
@@ -702,19 +697,34 @@ sub load_full_record {
             }
         }
         elsif ($bibkey){
-            my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
-            my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-            $request->execute($bibkey) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+            # DBI "select category,content from normdata where isbn=? order by category,indicator";
+            my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByBibkey')->search_rs(
+                {
+                    bibkey => $bibkey,
+                },
+                {                        
+                    group_by => ['field','content'],
+                    order_by => ['field','content'],
+                }
+            );
             
-            # Anreicherung der Normdaten
-            while (my $res=$request->fetchrow_hashref) {
-                my $category   = "E".sprintf "%04d",$res->{category };
-                my $content    =                    $res->{content};
+            foreach my $item ($enriched_contents->all) {
+                my $field      = "E".sprintf "%04d",$item->field;
+                my $subfield   =                    $item->subfield;
+                my $content    =                    $item->content;
                 
-                push @{$normset_ref->{$category}}, {
+                if ($seen_content{$content}) {
+                    next;
+                }
+                else {
+                    $seen_content{$content} = 1;
+                }                    
+                
+                push @{$normset_ref->{$field}}, {
+                    subfield   => $subfield,
                     content    => $content,
                 };
-            }            
+            }
         }
         elsif (@issn_refs){
             my @issn_refs_tmp = ();
@@ -736,28 +746,37 @@ sub load_full_record {
             @issn_refs = grep { ! $seen_issns{$_} ++ } @issn_refs_tmp;
 
             $logger->debug("ISSN: ".YAML::Dump(\@issn_refs));
-           
-            foreach my $issn (@issn_refs){
-                my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
-                my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-                $request->execute($issn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-                
-                # Anreicherung der Normdaten
-                while (my $res=$request->fetchrow_hashref) {
-                    my $category   = "E".sprintf "%04d",$res->{category };
-                    my $content    =                    $res->{content};
-                    
-                    push @{$normset_ref->{$category}}, {
-                        content    => $content,
-                    };
+            
+            # DBI "select category,content from normdata where isbn=? order by category,indicator"
+            my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByIssn')->search_rs(
+                {
+                    issn => \@issn_refs,
+                },
+                {                        
+                    group_by => ['field','content'],
+                    order_by => ['field','content'],
                 }
+            );
+            
+            foreach my $item ($enriched_contents->all) {
+                my $field      = "E".sprintf "%04d",$item->field;
+                my $subfield   =                    $item->subfield;
+                my $content    =                    $item->content;
                 
-                $request->finish();
-                $logger->debug("Enrich: $issn -> $reqstring");
+                if ($seen_content{$content}) {
+                    next;
+                } else {
+                    $seen_content{$content} = 1;
+                }                    
+                
+                push @{$normset_ref->{$field}}, {
+                    subfield   => $subfield,
+                    content    => $content,
+                };
             }
 
+
         }
-        $enrichdbh->disconnect();
 
         if ($config->{benchmark}) {
             $btime=new Benchmark;

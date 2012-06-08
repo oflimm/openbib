@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::SimilarPersons
 #
-#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -102,6 +102,18 @@ sub show {
         return Apache2::Const::OK;
     }
 
+#     my $schema;
+    
+#     eval {
+#         # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+#         $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+#     };
+    
+#     if ($@){
+#         $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+#         return;
+#     }
+
     my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
     my $similar_persons_ref = [];
@@ -117,7 +129,7 @@ sub show {
 
         # Nur 'praezisere' Verfasser werden analysiert
         if ($titcount < 100){
-            my $request = $dbh->prepare("select distinct c2.targetid as id from conn as c1 left join conn as c2 on c1.sourceid=c2.sourceid where c1.sourcetype=1 and c2.sourcetype=1 and c1.targettype=2 and c2.targettype=2 and c1.targetid=? and c2.targetid != ?");
+            my $request = $dbh->prepare("select distinct c2.personid as id from title_person as c1 left join title_person as c2 on c1.titleid=c2.titleid where c1.personid=? and c2.personid != ?");
             $request->execute($id,$id);
             
             while (my $result=$request->fetchrow_hashref){
@@ -128,7 +140,7 @@ sub show {
                 my $content=$record->name_as_string;
                 
                 # Ausgabe der Anzahl verk"upfter Titel
-                my $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2";
+                my $sqlrequest="select count(distinct titleid) as conncount from title_person where personid=?";
                 my $request2=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
                 $request2->execute($similarid);
                 my $result2=$request2->fetchrow_hashref;
@@ -154,7 +166,7 @@ sub show {
     if ($type eq "tit" && $id){
         $logger->debug("Getting similar Persons for Titleid $id");
 
-        my $request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype=2 and sourceid=?");
+        my $request = $dbh->prepare("select distinct personid as id from title_person where titleid=?");
         $request->execute($id);
 
         my @autids=();
@@ -174,7 +186,7 @@ sub show {
             if ($titcount < 100){
                 
                 #$request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype=2 and targetid != ? and sourceid in (select sourceid from conn where sourcetype=1 and targettype =2 and targetid = ?)");
-                $request = $dbh->prepare("select distinct c2.targetid as id, count(c2.sourceid) as titcount from conn as c1 left join conn as c2 on c1.sourceid=c2.sourceid where c1.sourcetype=1 and c2.sourcetype=1 and c1.targettype=2 and c2.targettype=2 and c1.targetid=? and c2.targetid != ? group by c2.sourceid");
+                $request = $dbh->prepare("select distinct c2.personid as id, count(c2.titleid) as titcount from title_person as c1 left join title_person as c2 on c1.titleid=c2.titleid where c1.personid=? and c2.personid != ? group by c2.titleid");
                 
                 $request->execute($autid,$autid);
                 

@@ -41,6 +41,16 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]">Wolken</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/[% database %].html?l=[% lang %]">[% dbinfo.dbnames.${database}.short %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Systematik") %]</a></li>
+      </ul>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
@@ -52,7 +62,7 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<h1>Systematik</h1>
+<h1>[% msg.maketext("Systematik") %]</h1>
 
 <table width="100%">
 <tr><th>Wolke der h&auml;ufigsten Begriffe</th></tr>

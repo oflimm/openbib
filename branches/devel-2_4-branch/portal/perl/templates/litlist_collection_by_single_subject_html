@@ -28,8 +28,26 @@
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
 
+[%
+   thissubject = "";
+   FOREACH subject IN subjects;
+     IF subject.id == subjectid;
+       thissubject = subject.name ;
+     END;
+   END;
+%]
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %].html?l=[% lang %]">Literaturlisten</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/subject.html?l=[% lang %]">Themengebiete</a></li>
+         <li><a href="#" class="lastitem">[% thissubject %]</a></li>
+      </ul>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
@@ -47,7 +65,7 @@
 
    <h1>[% msg.maketext("Literaturlisten") %]</h1>
 
-<h2>[% FOREACH subject IN subjects %][% IF subject.id == subjectid %][% subject.name%][% END %][% END %]</h2>
+<h2>[% thissubject %]</h2>
 
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul class="subjectlist">

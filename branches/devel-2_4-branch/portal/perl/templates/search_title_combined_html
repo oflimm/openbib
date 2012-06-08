@@ -15,6 +15,54 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+[%    field_map = {
+          "freesearch" = msg.maketext("Freie Suche")
+          "title"      = msg.maketext("Titel")
+          "database"   = msg.maketext("Katalog")
+          "content" = msg.maketext("Inhalt")
+          "person" = msg.maketext("Person")
+          "corporatebody" = msg.maketext("K&ouml;perschaft")
+          "subject" = msg.maketext("Thema")
+          "classification" = msg.maketext("Systematik")
+          "mediatype" = msg.maketext("Medientyp")
+          "language" = msg.maketext("Sprache")
+          "year" = msg.maketext("Jahr")
+          "year_from" = msg.maketext("Jahr von")
+          "year_to" = msg.maketext("Jahr bis")
+          "tag" = msg.maketext("Tag")
+          "litlist" = msg.maketext("Literaturliste")
+          "dbstring" = msg.maketext("Katalog")
+          "personstring" = msg.maketext("Person")
+          "corporatebodystring" = msg.maketext("K&ouml;perschaft")
+          "subjectstring" = msg.maketext("Thema")
+          "classificationstring" = msg.maketext("Systematik")
+          "mediatypestring" = msg.maketext("Medientyp")
+          "languagestring" = msg.maketext("Sprache")
+          "yearstring" = msg.maketext("Jahr")
+          "tagstring" = msg.maketext("Tag")
+          "litliststring" = msg.maketext("Literaturliste")
+};
+
+%]
+
+   <div class="breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Recherche") %]:&nbsp;
+[%- used_fields = [] ;
+    FOREACH field IN searchquery.get_searchquery.keys ;
+       fieldname    = field_map.${field};
+       fieldcontent = searchquery.get_searchquery.${field}.val;
+       NEXT IF NOT fieldcontent ;
+       used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
+     END;
+-%]
+<em>[% used_fields.join(' ; ') %]</em></a>
+        </li>
+      </ul>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">

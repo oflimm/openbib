@@ -650,7 +650,7 @@ sub load_full_record {
             {
                 my $related_recordlist = new OpenBib::RecordList::Title();
                     
-                my $related_titles = $self->{enrich_schema}->resultset('RelatedByIsbn')->search_rs(
+                my $related_titles = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
                     {
                         isbn    => \@isbn_refs,
                     },
@@ -663,7 +663,7 @@ sub load_full_record {
                 foreach my $item ($related_titles->all) {
                     my $id         = $item->id;
                         
-                    my $isbns = $self->{enrich_schema}->resultset('RelatedByIsbn')->search_rs(
+                    my $isbns = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
                         {
                             isbn      => { '!=' => \@isbn_refs },
                             id    => $id,
@@ -833,20 +833,24 @@ sub load_brief_record {
     $logger->debug("Getting cached brief title for id $id");
     
     # DBI: "select listitem from title_listitem where id = ?"
-    my $titlecache_json = $self->{schema}->resultset('Title')->single(
+    my $titlecache = $self->{schema}->resultset('Title')->single(
         {
             'id' => $id,
         },
-    )->titlecache;
+    );
     
-    if ($titlecache_json){
+    if ($titlecache){
+        my $titlecache_json = $titlecache->titlecache;
+
         $logger->debug("Stored listitem: $titlecache_json");
-        
-        my $titlecache_ref = decode_json $titlecache_json;
-        
-        %$listitem_ref=(%$listitem_ref,%$titlecache_ref);
-        
-        $record_exists = 1 if (!$record_exists);
+
+        if ($titlecache_json){
+            my $titlecache_ref = decode_json $titlecache_json;
+            
+            %$listitem_ref=(%$listitem_ref,%$titlecache_ref);
+            
+            $record_exists = 1 if (!$record_exists);
+        }
     }
 
     if ($config->{benchmark}) {

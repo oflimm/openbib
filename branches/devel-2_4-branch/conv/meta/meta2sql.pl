@@ -114,8 +114,8 @@ if ($reducemem){
     tie %listitemdata_person,        'MLDBM', "./listitemdata_person.db"
         or die "Could not tie listitemdata_person.\n";
 
-    tie %listitemdata_person_date,   'MLDBM', "./listitemdata_person_date.db"
-        or die "Could not tie listitemdata_person_date.\n";
+#    tie %listitemdata_person_date,   'MLDBM', "./listitemdata_person_date.db"
+#        or die "Could not tie listitemdata_person_date.\n";
 
     tie %listitemdata_corporatebody,        'MLDBM', "./listitemdata_corporatebody.db"
         or die "Could not tie listitemdata_corporatebody.\n";
@@ -129,17 +129,17 @@ if ($reducemem){
     tie %listitemdata_holding,        'MLDBM', "./listitemdata_holding.db"
         or die "Could not tie listitemdata_holding.\n";
 
-    tie %listitemdata_popularity,        'MLDBM', "./listitemdata_popularity.db"
-        or die "Could not tie listitemdata_popularity.\n";
+#    tie %listitemdata_popularity,        'MLDBM', "./listitemdata_popularity.db"
+#        or die "Could not tie listitemdata_popularity.\n";
 
-    tie %listitemdata_tags,           'MLDBM', "./listitemdata_tags.db"
-        or die "Could not tie listitemdata_tags.\n";
+#    tie %listitemdata_tags,           'MLDBM', "./listitemdata_tags.db"
+#        or die "Could not tie listitemdata_tags.\n";
     
-    tie %listitemdata_litlists,        'MLDBM', "./listitemdata_litlists.db"
-        or die "Could not tie listitemdata_litlists.\n";
+#    tie %listitemdata_litlists,        'MLDBM', "./listitemdata_litlists.db"
+#        or die "Could not tie listitemdata_litlists.\n";
 
-    tie %listitemdata_enriched_years,      'MLDBM', "./listitemdata_enriched_years.db"
-        or die "Could not tie listitemdata_enriched_years.\n";
+#    tie %listitemdata_enriched_years,      'MLDBM', "./listitemdata_enriched_years.db"
+#        or die "Could not tie listitemdata_enriched_years.\n";
 
     tie %listitemdata_superid,    "DB_File", "./listitemdata_superid.db"
         or die "Could not tie listitemdata_superid.\n";
@@ -149,6 +149,8 @@ if ($reducemem){
 my $statisticsdbh
     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
     or $logger->error($DBI::errstr);
+
+$logger->info("Popularitaet fuer Titel dieses Kataloges bestimmen");
 
 # Popularitaet
 my $request=$statisticsdbh->prepare("select id, count(id) as idcount from titleusage where origin=2 and dbname=? group by id");
@@ -166,6 +168,8 @@ my $userdbh
     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
     or $logger->error($DBI::errstr);
 
+$logger->info("Tags fuer Titel dieses Kataloges bestimmen");
+
 # Tags
 $request=$userdbh->prepare("select t.name, tt.titleid, t.id from tag as t, tit_tag as tt where tt.dbname=? and tt.tagid=t.id and tt.type=1");
 $request->execute($database);
@@ -177,6 +181,8 @@ while (my $res    = $request->fetchrow_hashref){
     push @{$listitemdata_tags{$titid}}, { tag => $tag, id => $id };
 }
 $request->finish();
+
+$logger->info("Literaturlisten fuer Titel dieses Kataloges bestimmen");
 
 # Titel von Literaturlisten
 $request=$userdbh->prepare("select l.title, i.titleid, l.id from litlist as l, litlistitem as i where i.dbname=? and i.litlistid=l.id and l.type=1");
@@ -206,36 +212,36 @@ my $stammdateien_ref = {
     person => {
         type               => "person",
         infile             => "meta.person",
-        outfile            => "person.mysql",
-        outfile_fields     => "person_fields.mysql",
-        outfile_normfields => "person_normfields.mysql",
+        outfile            => "person.dump",
+        outfile_fields     => "person_fields.dump",
+        outfile_normfields => "person_normfields.dump",
         inverted_ref       => $conv_config->{inverted_person},
         blacklist_ref      => $conv_config->{blacklist_person},
     },
     
     corporatebody => {
         infile             => "meta.corporatebody",
-        outfile            => "corporatebody.mysql",
-        outfile_fields     => "corporatebody_fields.mysql",
-        outfile_normfields => "corporatebody_normfields.mysql",
+        outfile            => "corporatebody.dump",
+        outfile_fields     => "corporatebody_fields.dump",
+        outfile_normfields => "corporatebody_normfields.dump",
         inverted_ref       => $conv_config->{inverted_corporatebody},
         blacklist_ref      => $conv_config->{blacklist_corporatebody},
     },
     
     subject => {
         infile             => "meta.subject",
-        outfile            => "subject.mysql",
-        outfile_fields     => "subject_fields.mysql",
-        outfile_normfields => "subject_normfields.mysql",
+        outfile            => "subject.dump",
+        outfile_fields     => "subject_fields.dump",
+        outfile_normfields => "subject_normfields.dump",
         inverted_ref       => $conv_config->{inverted_subject},
         blacklist_ref      => $conv_config->{blacklist_subject},
     },
     
     classification => {
         infile             => "meta.classification",
-        outfile            => "classification.mysql",
-        outfile_fields     => "classification_fields.mysql",
-        outfile_normfields => "classification_normfields.mysql",
+        outfile            => "classification.dump",
+        outfile_fields     => "classification_fields.dump",
+        outfile_normfields => "classification_normfields.dump",
         inverted_ref       => $conv_config->{inverted_classification},
         blacklist_ref      => $conv_config->{blacklist_classification},
     },
@@ -401,24 +407,24 @@ foreach my $type (keys %{$stammdateien_ref}){
 
 $stammdateien_ref->{holding} = {
     infile             => "meta.holding",
-    outfile            => "holding.mysql",
-    outfile_fields     => "holding_fields.mysql",
-    outfile_normfields => "holding_normfields.mysql",
+    outfile            => "holding.dump",
+    outfile_fields     => "holding_fields.dump",
+    outfile_normfields => "holding_normfields.dump",
     inverted_ref       => $conv_config->{inverted_holding},
 };
 
 $logger->info("Bearbeite meta.holding");
 
 open(IN ,          "<:utf8","meta.holding"        ) || die "IN konnte nicht geoeffnet werden";
-open(OUT,          ">:utf8","holding.mysql"       ) || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,    ">:utf8","holding_fields.mysql"    ) || die "OUTFIELDS konnte nicht geoeffnet werden";
-open(OUTNORMFIELDS,">:utf8","holding_normfields.mysql") || die "OUTNORMFIELDS konnte nicht geoeffnet werden";
-open(OUTTITLETITLE,         ">:utf8","title_title.mysql")           || die "OUTTITLETITLE konnte nicht geoeffnet werden";
-open(OUTTITLEHOLDING,       ">:utf8","title_holding.mysql")         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
-open(OUTTITLEPERSON,        ">:utf8","title_person.mysql")          || die "OUTTITLEPERSON konnte nicht geoeffnet werden";
-open(OUTTITLECORPORATEBODY, ">:utf8","title_corporatebody.mysql")    || die "OUTTITLECORPORATEBODY konnte nicht geoeffnet werden";
-open(OUTTITLESUBJECT,       ">:utf8","title_subject.mysql")         || die "OUTTITLESUBJECT konnte nicht geoeffnet werden";
-open(OUTTITLECLASSIFICATION,">:utf8","title_classification.mysql")  || die "OUTTITLECLASSIFICATION konnte nicht geoeffnet werden";
+open(OUT,          ">:utf8","holding.dump"       ) || die "OUT konnte nicht geoeffnet werden";
+open(OUTFIELDS,    ">:utf8","holding_fields.dump"    ) || die "OUTFIELDS konnte nicht geoeffnet werden";
+open(OUTNORMFIELDS,">:utf8","holding_normfields.dump") || die "OUTNORMFIELDS konnte nicht geoeffnet werden";
+open(OUTTITLETITLE,         ">:utf8","title_title.dump")           || die "OUTTITLETITLE konnte nicht geoeffnet werden";
+open(OUTTITLEHOLDING,       ">:utf8","title_holding.dump")         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
+open(OUTTITLEPERSON,        ">:utf8","title_person.dump")          || die "OUTTITLEPERSON konnte nicht geoeffnet werden";
+open(OUTTITLECORPORATEBODY, ">:utf8","title_corporatebody.dump")    || die "OUTTITLECORPORATEBODY konnte nicht geoeffnet werden";
+open(OUTTITLESUBJECT,       ">:utf8","title_subject.dump")         || die "OUTTITLESUBJECT konnte nicht geoeffnet werden";
+open(OUTTITLECLASSIFICATION,">:utf8","title_classification.dump")  || die "OUTTITLECLASSIFICATION konnte nicht geoeffnet werden";
 
 my $id;
 my $titleid;
@@ -503,7 +509,7 @@ while (my $line=<IN>){
                     my $startyear = $1;
                     my $endyear   = $2;
                     
-                    $logger->info("Expanding yearstring $date from $startyear to $endyear");
+                    $logger->debug("Expanding yearstring $date from $startyear to $endyear");
                     for (my $year=$startyear;$year<=$endyear; $year++){
                         $logger->debug("Adding year $year");
                         push @$array_ref, $year;
@@ -514,7 +520,7 @@ while (my $line=<IN>){
                     my $endyear   = $thisyear;
                     $logger->debug("Expanding yearstring $date from $startyear to $endyear");
                     for (my $year=$startyear;$year<=$endyear;$year++){
-                        $logger->info("Adding year $year");
+                        $logger->debug("Adding year $year");
                         push @$array_ref, $year;
                     }                
                 }
@@ -574,9 +580,9 @@ close(IN);
 
 $stammdateien_ref->{title} = {
     infile             => "meta.title",
-    outfile            => "title.mysql",
-    outfile_fields     => "title_fields.mysql",
-    outfile_normfields => "title_normfields.mysql",
+    outfile            => "title.dump",
+    outfile_fields     => "title_fields.dump",
+    outfile_normfields => "title_normfields.dump",
     inverted_ref       => $conv_config->{inverted_title},
     blacklist_ref      => $conv_config->{blacklist_title},
 };
@@ -623,16 +629,14 @@ if ($addsuperpers){
 $logger->info("Bearbeite meta.title");
 
 open(IN ,           "<:utf8","meta.title"         )     || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","title.mysql"        )     || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,     ">:utf8","title_fields.mysql"     ) || die "OUTFIELDS konnte nicht geoeffnet werden";
-open(OUTNORMFIELDS, ">:utf8","title_normfields.mysql" ) || die "OUTNORMFIELDS konnte nicht geoeffnet werden";
+open(OUT,           ">:utf8","title.dump"        )     || die "OUT konnte nicht geoeffnet werden";
+open(OUTFIELDS,     ">:utf8","title_fields.dump"     ) || die "OUTFIELDS konnte nicht geoeffnet werden";
+open(OUTNORMFIELDS, ">:utf8","title_normfields.dump" ) || die "OUTNORMFIELDS konnte nicht geoeffnet werden";
 open(SEARCHENGINE,  ">:utf8","searchengine.csv" )       || die "SEARCHENGINE konnte nicht goeffnet werden";
 
 
-my $id;
-my $count = 0;
+$count = 0;
 
-my ($category,$mult,$content);
 $record_ref = {};
 CATLINE:
 while (my $line=<IN>){
@@ -1620,7 +1624,7 @@ while (my $line=<IN>){
         print SEARCHENGINE "$id$searchengine\n";
 
         if ($count % 1000 == 0) {
-            $logger->debug("$count Titelsaetze bearbeitet");
+            $logger->info("$count Titelsaetze bearbeitet");
         } 
 
         next CATLINE;
@@ -1687,43 +1691,40 @@ close(IN);
 #######################
 
 
-open(CONTROL,        ">control.mysql");
-open(CONTROLINDEXOFF,">control_index_off.mysql");
-open(CONTROLINDEXON, ">control_index_on.mysql");
+open(CONTROL,        ">control.sql");
+open(CONTROLINDEXOFF,">control_index_off.sql");
+open(CONTROLINDEXON, ">control_index_on.sql");
 
-foreach my $type (keys %{$stammdateien_ref}){
-    print CONTROLINDEXOFF << "DISABLEKEYS";
+if ($config->{dbimodule} eq "mysql"){
+    foreach my $type (keys %{$stammdateien_ref}){
+        print CONTROLINDEXOFF << "DISABLEKEYS";
 alter table $type        disable keys;
 alter table ${type}_fields     disable keys;
 alter table ${type}_normfields disable keys;
 SET FOREIGN_KEY_CHECKS=0;
 DISABLEKEYS
-}
+    }
 
-print CONTROLINDEXOFF "alter table title_title        disable keys;\n";
-print CONTROLINDEXOFF "alter table title_person        disable keys;\n";
-print CONTROLINDEXOFF "alter table title_corporatebody        disable keys;\n";
-print CONTROLINDEXOFF "alter table title_subject        disable keys;\n";
-print CONTROLINDEXOFF "alter table title_classification        disable keys;\n";
-print CONTROLINDEXOFF "alter table title_holding        disable keys;\n";
+    print CONTROLINDEXOFF "alter table title_title          disable keys;\n";
+    print CONTROLINDEXOFF "alter table title_person         disable keys;\n";
+    print CONTROLINDEXOFF "alter table title_corporatebody  disable keys;\n";
+    print CONTROLINDEXOFF "alter table title_subject        disable keys;\n";
+    print CONTROLINDEXOFF "alter table title_classification disable keys;\n";
+    print CONTROLINDEXOFF "alter table title_holding        disable keys;\n";
 
-foreach my $type (keys %{$stammdateien_ref}){
-    if (!$incremental){
+    foreach my $type (keys %{$stammdateien_ref}){
         print CONTROL << "ITEMTRUNC";
 truncate table $type;
 truncate table ${type}_fields;
 truncate table ${type}_normfields;
 ITEMTRUNC
-    }
-
-    print CONTROL << "ITEM";
-load data local infile '$dir/$stammdateien_ref->{$type}{outfile}'        into table $type        fields terminated by '' ;
+        print CONTROL << "ITEM";
+load data local infile '$dir/$stammdateien_ref->{$type}{outfile}'            into table $type              fields terminated by '' ;
 load data local infile '$dir/$stammdateien_ref->{$type}{outfile_fields}'     into table ${type}_fields     fields terminated by '' ;
 load data local infile '$dir/$stammdateien_ref->{$type}{outfile_normfields}' into table ${type}_normfields fields terminated by '' ;
 ITEM
-}
+    }
 
-if (!$incremental){
     print CONTROL << "TITLEITEMTRUNC";
 truncate table title_title;
 truncate table title_person;
@@ -1732,32 +1733,37 @@ truncate table title_subject;
 truncate table title_classification;
 truncate table title_holding;
 TITLEITEMTRUNC
-}
     
-print CONTROL << "TITLEITEM";
-load data local infile '$dir/title_title.mysql'        into table title_title   fields terminated by '' ;
-load data local infile '$dir/title_person.mysql'        into table title_person   fields terminated by '' ;
-load data local infile '$dir/title_corporatebody.mysql'        into table title_corporatebody   fields terminated by '' ;
-load data local infile '$dir/title_subject.mysql'        into table title_subject   fields terminated by '' ;
-load data local infile '$dir/title_classification.mysql'        into table title_classification   fields terminated by '' ;
-load data local infile '$dir/title_holding.mysql'        into table title_holding   fields terminated by '' ;
+    print CONTROL << "TITLEITEM";
+load data local infile '$dir/title_title.dump'          into table title_title   fields terminated by '' ;
+load data local infile '$dir/title_person.dump'         into table title_person   fields terminated by '' ;
+load data local infile '$dir/title_corporatebody.dump'  into table title_corporatebody   fields terminated by '' ;
+load data local infile '$dir/title_subject.dump'        into table title_subject   fields terminated by '' ;
+load data local infile '$dir/title_classification.dump' into table title_classification   fields terminated by '' ;
+load data local infile '$dir/title_holding.dump'        into table title_holding   fields terminated by '' ;
 TITLEITEM
 
-foreach my $type (keys %{$stammdateien_ref}){
-    print CONTROLINDEXON << "ENABLEKEYS";
+    foreach my $type (keys %{$stammdateien_ref}){
+        print CONTROLINDEXON << "ENABLEKEYS";
 SET FOREIGN_KEY_CHECKS=1;
-alter table $type          enable keys;
+alter table $type              enable keys;
 alter table ${type}_fields     enable keys;
 alter table ${type}_normfields enable keys;
 ENABLEKEYS
+    }
+
+    print CONTROLINDEXON "alter table title_title           enable keys;\n";
+    print CONTROLINDEXON "alter table title_person          enable keys;\n";
+    print CONTROLINDEXON "alter table title_corporatebody   enable keys;\n";
+    print CONTROLINDEXON "alter table title_subject         enable keys;\n";
+    print CONTROLINDEXON "alter table title_classification  enable keys;\n";
+    print CONTROLINDEXON "alter table title_holding         enable keys;\n";
+}
+elsif ($config->{dbimodule} eq "Pg"){
 }
 
-print CONTROLINDEXON "alter table title_title           enable keys;\n";
-print CONTROLINDEXON "alter table title_person           enable keys;\n";
-print CONTROLINDEXON "alter table title_corporatebody           enable keys;\n";
-print CONTROLINDEXON "alter table title_subject           enable keys;\n";
-print CONTROLINDEXON "alter table title_classification           enable keys;\n";
-print CONTROLINDEXON "alter table title_holding           enable keys;\n";
+elsif ($config->{dbimodule} eq "SQLite"){
+}
 
 close(CONTROL);
 close(CONTROLINDEXOFF);
@@ -1783,7 +1789,6 @@ meta2sql.pl - Migration der Metadaten in Einladedateien fuer eine SQL-Datenbank
    -add-mediatype        : Anreicherung mit Medientyp durch Kategorieanalyse
    -add-persondate       : Anreicherung mit Lebensjahren bei Personen fuer Facetten/Filter
    -reduce-mem           : Optimierter Speicherverbrauch durch Auslagerung in DB-Dateien
-   -incremental          : Incrementelle Aktualisierung (experimentell)
    --database=...        : Angegebenen Datenpool verwenden
    --logfile=...         : Logfile inkl Pfad.
    --loglevel=...        : Loglevel

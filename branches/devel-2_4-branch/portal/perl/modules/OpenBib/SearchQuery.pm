@@ -249,25 +249,31 @@ sub set_from_apache_request {
                 }
 
                 # Filter fuer Suchfeld und gegebenenfalls davon abgeleitete Felder (_from/_to). Daher $searchfield und nicht $name!
-                if ($config->{'searchfield'}{$searchfield}{option} eq "filter_isbn"){
+
+                $logger->debug("Filter Option: ".$config->{'searchfield'}{$searchfield}{option});
+                
+                if ($config->{'searchfield'}{$searchfield}{option}{filter_isbn}){
                     $thissearchfield_norm_content = lc($thissearchfield_norm_content);
                     # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
                     $thissearchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
                     $thissearchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
+                    $logger->debug("Filtering ISBN -> $thissearchfield_norm_content");
                 }
                 
                 # Entfernung der Minus-Zeichen bei der ISSN
-                if ($config->{'searchfield'}{$searchfield}{option} eq "filter_issn"){
+                if ($config->{'searchfield'}{$searchfield}{option}{filter_issn}){
                     $thissearchfield_norm_content = lc($thissearchfield_norm_content);
                     $thissearchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8/g;
+                    $logger->debug("Filtering ISSN -> $thissearchfield_norm_content");
                 }
                 
-                if ($config->{'searchfield'}{$searchfield}{option} eq "strip_first_stopword"){
+                if ($config->{'searchfield'}{$searchfield}{option}{strip_first_stopword}){
                     $thissearchfield_norm_content = OpenBib::Common::Util::grundform({
                         category  => "0331", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
                         content   => $thissearchfield_norm_content,
                         searchreq => 1,
                     });
+                    $logger->debug("Filtering Stopword -> $thissearchfield_norm_content");
                 }
                 else {
                     $thissearchfield_norm_content = OpenBib::Common::Util::grundform({
@@ -286,7 +292,7 @@ sub set_from_apache_request {
                 
                 if ($thissearchfield_norm_content){
                     $self->{_have_searchterms} = 1;
-                    $self->{_searchquery}{$name}{norm} = $thissearchfield_norm_content;
+                    $self->{_searchquery}->{$name}->{norm} = $thissearchfield_norm_content;
                 }
                 
                 $logger->debug("Added searchterm $thissearchfield_bool_op - $thissearchfield_content - $thissearchfield_norm_content");

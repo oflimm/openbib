@@ -42,9 +42,9 @@
 
    <div class="breadcrumb">
        <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %].html?l=[% lang %]">Literaturlisten</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/subject.html?l=[% lang %]">Themengebiete</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/subject.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/subject/[% subjectid %].html?l=[% lang %]">[% thissubject %]</a></li>
          <li><a href="#" class="lastitem">Zuletzt angelegt</a></li>
       </ul>

@@ -38,9 +38,9 @@
 
    <div class="breadcrumb">
        <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]">Wolken</a></li>
-         <li><a href="#" class="lastitem">Literaturlisten</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]">[% msg.maketext("Wolken") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Literaturlisten") %]</a></li>
       </ul>
    </div>
 

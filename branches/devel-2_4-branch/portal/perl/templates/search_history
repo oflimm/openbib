@@ -31,7 +31,15 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-    <div class="page_title">Ihre bisherigen Recherchen</div>
+   <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Suchhistorie") %]</a></li>
+      </ul>
+   </div>
+
+<p/>
+    <div class="page_title">[% msg.maketext("Ihre bisherigen Recherchen") %]</div>
 
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
@@ -78,7 +86,7 @@
 %]
 [% count = 1 %]
 <table class="full">
-<tr><th>Wann</th><th>Suche</th><th>Filter</th><th>Suchprofil</th><th>Treffer</th></tr>
+<tr><th>[% msg.maketext("Wann") %]</th><th>[% msg.maketext("Suchanfrage") %]</th><th>[% msg.maketext("Filter") %]</th><th>[% msg.maketext("Suchprofil") %]</th><th>[% msg.maketext("Treffer") %]</th></tr>
 [% FOREACH query IN queries %]	  
 <tr><td>[% query.get_tstamp %]</td><td>
 <a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% query.to_cgi_querystring %]"><img style="vertical-align: bottom;" src="[% config.get('search_small_img') %]" alt="Search Icon"/>&nbsp;
@@ -116,7 +124,7 @@
 </tr>
 </table>
 [% ELSE %]
-Sie haben noch keine Suchanfragen gestellt.
+[% msg.maketext("Sie haben noch keine Suchanfragen gestellt.") %]
 [% END %]
         </div>
         <div id="ie_clearing">&nbsp;</div>

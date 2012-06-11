@@ -44,8 +44,8 @@
 
    <div class="breadcrumb">
        <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]">Wolken</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]">[% msg.maketext("Wolken") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/[% database %].html?l=[% lang %]">[% dbinfo.dbnames.${database}.short %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Erscheinungsjahre") %]</a></li>
       </ul>

@@ -47,8 +47,8 @@ function update_fak(yourform, checked, fak) {
 
    <div class="breadcrumb">
        <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="#" class="lastitem">Katalogauswahl</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Katalogauswahl") %]</a></li>
       </ul>
    </div>
 

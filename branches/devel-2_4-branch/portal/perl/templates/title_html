@@ -97,7 +97,7 @@
 
    <div class="breadcrumb">
        <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
 [% IF searchquery %]
          <li><a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% searchquery.to_cgi_querystring %]">[% msg.maketext("Recherche") %]:&nbsp;
 [%- 
@@ -111,7 +111,7 @@
 <em>[% used_fields.join(' ; ') %]</em></a>
         </li>
 [% END %]
-        <li><a href="#" class="lastitem">Einzeltitel</a></li>
+        <li><a href="#" class="lastitem">[% msg.maketext("Titel") %]</a></li>
       </ul>
    </div>
 

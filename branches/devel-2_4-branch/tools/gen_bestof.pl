@@ -39,6 +39,8 @@ use Getopt::Long;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::Database::Catalog;
+use OpenBib::Database::System;
 use OpenBib::Statistics;
 use OpenBib::Record::Title;
 use OpenBib::Search::Util;
@@ -168,12 +170,28 @@ if ($type == 2){
     $logger->info("Generating Type 2 BestOf-Values for all databases");
     
     my $bestof_ref=[];
-    my $request=$statisticsdbh->prepare("select dbname, count(katkey) as kcount from titleusage where origin=2 group by dbname order by kcount desc limit 20");
-    $request->execute();
-    while (my $result=$request->fetchrow_hashref){
-        my $dbname = $result->{dbname};
-        my $count  = $result->{kcount};
-
+    # DBI: "select dbname, count(katkey) as kcount from titleusage where origin=2 group by dbname order by kcount desc limit 20"
+    my $databaseusage = $statistics->{schema}->resultset('Titleusage')->search_rs(
+        {
+            dbname => $database,
+            origin => 2,
+            #                tstamp => { '>' => 20110101000000 },
+            tstamp => { '>' => \'DATE_SUB(CURDATE(),INTERVAL 6 MONTH)' },
+            
+        },
+        {
+            select   => ['dbname', {'count' => 'id'}],
+            as       => ['dbname','idcount'],
+            group_by => ['dbname'],
+            order_by => { -desc => \'count(idcount)' },
+            rows     => 20,
+        }
+    );
+    
+    foreach my $item ($databaseusage->all){
+        my $dbname = $item->get_column('dbname');
+        my $count  = $item->get_column('kcount');
+        
         push @$bestof_ref, {
             item  => $dbname,
             count => $count,
@@ -203,37 +221,63 @@ if ($type == 3){
 
         my $maxcount=0;
 	my $mincount=999999999;
-	
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
+
+        my $schema;
+        
+        eval {
+            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+            next;
+        }
         
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select subject.content , count(distinct sourceid) as scount from conn, subject where sourcetype=1 and targettype=4 and subject.category=1 and subject.id=conn.targetid group by targetid order by scount desc limit 200");
-        $request->execute();
-        while (my $result=$request->fetchrow_hashref){
-            my $content = $result->{content};
-            my $count   = $result->{scount};
+
+        # DBI: "select subject.content , count(distinct sourceid) as scount from conn, subject where sourcetype=1 and targettype=4 and subject.category=1 and subject.id=conn.targetid group by targetid order by scount desc limit 200"
+        my $usage = $schema->resultset('Subject')->search_rs(
+            {
+                'subject_fields.field' => 1,
+            },
+            {
+                select   => ['subject_fields.content', {'count' => 'title_subjects.titleid'}],
+                as       => ['thiscontent','titlecount'],
+                join     => ['subject_fields','title_subjects'],
+                group_by => ['title_subjects.subjectid'],
+                order_by => { -desc => \'count(title_subjects.titleid)' },
+                rows     => 200,
+            }
+        );
+
+        foreach my $item ($usage->all){
+            my $content = $item->get_column('thiscontent');
+            my $count   = $item->get_column('titlecount');
+            
             if ($maxcount < $count){
                 $maxcount = $count;
             }
-        
+            
             if ($mincount > $count){
                 $mincount = $count;
             }
-    
+            
             push @$bestof_ref, {
                 item  => $content,
                 count => $count,
             };
         }
-
-	$bestof_ref = gen_cloud_class({
-				       items => $bestof_ref, 
-				       min   => $mincount, 
-				       max   => $maxcount, 
-				       type  => $config->{best_of}{$type}{cloud}});
-
+        
+	$bestof_ref = gen_cloud_class(
+            {
+                items => $bestof_ref, 
+                min   => $mincount, 
+                max   => $maxcount, 
+                type  => $config->{best_of}{$type}{cloud}
+            }
+        );
+        
         my $sortedbestof_ref ;
         @{$sortedbestof_ref} = map { $_->[0] }
             sort { $a->[1] cmp $b->[1] }
@@ -265,16 +309,39 @@ if ($type == 4){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
+        my $schema;
         
+        eval {
+            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+            next;
+        }
+
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select classification.content , count(distinct sourceid) as scount from conn, classification where sourcetype=1 and targettype=5 and classification.category=1 and classification.id=conn.targetid group by targetid order by scount desc limit 200");
-        $request->execute();
-        while (my $result=$request->fetchrow_hashref){
-            my $content = $result->{content};
-            my $count   = $result->{scount};
+
+        # DBI: "select classification.content , count(distinct sourceid) as scount from conn, classification where sourcetype=1 and targettype=5 and classification.category=1 and classification.id=conn.targetid group by targetid order by scount desc limit 200"
+        my $usage = $schema->resultset('Classification')->search_rs(
+            {
+                'classification_fields.field' => 1,
+            },
+            {
+                select   => ['classification_fields.content', {'count' => 'title_classifications.titleid'}],
+                as       => ['thiscontent','titlecount'],
+                join     => ['classification_fields','title_classifications'],
+                group_by => ['title_classifications.classificationid'],
+                order_by => { -desc => \'count(title_classifications.titleid)' },
+                rows     => 200,
+            }
+        );
+
+        foreach my $item ($usage->all){
+            my $content = $item->get_column('thiscontent');
+            my $count   = $item->get_column('titlecount');
+
             if ($maxcount < $count){
                 $maxcount = $count;
             }
@@ -326,16 +393,39 @@ if ($type == 5){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
+        my $schema;
         
+        eval {
+            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+            next;
+        }
+
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select corporatebody.content , count(distinct sourceid) as scount from conn, corporatebody where sourcetype=1 and targettype=3 and corporatebody.category=1 and corporatebody.id=conn.targetid group by targetid order by scount desc limit 200");
-        $request->execute();
-        while (my $result=$request->fetchrow_hashref){
-            my $content = $result->{content};
-            my $count   = $result->{scount};
+
+        # DBI: "select corporatebody.content , count(distinct sourceid) as scount from conn, corporatebody where sourcetype=1 and targettype=3 and corporatebody.category=1 and corporatebody.id=conn.targetid group by targetid order by scount desc limit 200"
+        my $usage = $schema->resultset('Corporatebody')->search_rs(
+            {
+                'corporatebody_fields.field' => 1,
+            },
+            {
+                select   => ['corporatebody_fields.content', {'count' => 'title_corporatebodies.titleid'}],
+                as       => ['thiscontent','titlecount'],
+                join     => ['corporatebody_fields','title_corporatebodies'],
+                group_by => ['title_corporatebodies.corporatebodyid'],
+                order_by => { -desc => \'count(title_corporatebodies.titleid)' },
+                rows     => 200,
+            }
+        );
+
+        foreach my $item ($usage->all){
+            my $content = $item->get_column('thiscontent');
+            my $count   = $item->get_column('titlecount');
+
             if ($maxcount < $count){
                 $maxcount = $count;
             }
@@ -387,16 +477,39 @@ if ($type == 6){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
+        my $schema;
         
+        eval {
+            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+            next;
+        }
+
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select person.content , count(distinct sourceid) as scount from conn, person where sourcetype=1 and targettype=2 and person.category=1 and person.id=conn.targetid group by targetid order by scount desc limit 200");
-        $request->execute();
-        while (my $result=$request->fetchrow_hashref){
-            my $content = $result->{content};
-            my $count   = $result->{scount};
+
+        # DBI: "select person.content , count(distinct sourceid) as scount from conn, person where sourcetype=1 and targettype=2 and person.category=1 and person.id=conn.targetid group by targetid order by scount desc limit 200"
+        my $usage = $schema->resultset('Person')->search_rs(
+            {
+                'person_fields.field' => 1,
+            },
+            {
+                select   => ['person_fields.content', {'count' => 'title_people.titleid'}],
+                as       => ['thiscontent','titlecount'],
+                join     => ['person_fields','title_people'],
+                group_by => ['title_people.personid'],
+                order_by => { -desc => \'count(title_people.titleid)' },
+                rows     => 200,
+            }
+        );
+
+        foreach my $item ($usage->all){
+            my $content = $item->get_column('thiscontent');
+            my $count   = $item->get_column('titlecount');
+        
             if ($maxcount < $count){
                 $maxcount = $count;
             }
@@ -442,23 +555,46 @@ if ($type == 7){
         @databases=$config->get_active_databases();
     }
 
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
+    my $schema;
+    
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        $schema = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+    };
+    
+    if ($@){
+        $logger->fatal("Unable to connect schema to system database: DBI:$config->{systemdbimodule}:systemdbname=$database;host=$config->{systemdbhost};port=$config->{systemdbport}");
+        next;
+    }
 
     foreach my $database (@databases){
         $logger->info("Generating Type 7 BestOf-Values for database $database");
 
         my $maxcount=0;
 	my $mincount=999999999;
+
         
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select t.id,t.tag,count(tt.tagid) as scount from tags as t, tittag as tt where tt.titdb=? and tt.tagid=t.id group by tt.tagid");
-        $request->execute($database);
-        while (my $result=$request->fetchrow_hashref){
-            my $content = $result->{tag};
-            my $id      = $result->{id};
-            my $count   = $result->{scount};
+        
+        # DBI: "select t.id,t.tag,count(tt.tagid) as scount from tags as t, tittag as tt where tt.titdb=? and tt.tagid=t.id group by tt.tagid"
+        my $usage = $schema->resultset('Tag')->search_rs(
+            {
+                'tit_tags.dbname' => $database,
+            },
+            {
+                select   => ['me.name', 'me.id',{'count' => 'tit_tags.tagid'}],
+                as       => ['thiscontent','thisid','titlecount',],
+                join     => ['tit_tags'],
+                group_by => ['tit_tags.tagid'],
+                rows     => 200,
+            }
+        );
+        
+        foreach my $item ($usage->all){
+            my $content = $item->get_column('thiscontent');
+            my $id      = $item->get_column('thisid');
+            my $count   = $item->get_column('titlecount');
+
             if ($maxcount < $count){
                 $maxcount = $count;
             }
@@ -603,16 +739,39 @@ if ($type == 9){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
+        my $schema;
         
+        eval {
+            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+            next;
+        }
+
         my $bestof_ref=[];
-        my $request=$dbh->prepare("select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC");
-        $request->execute("^[0-9][0-9][0-9][0-9]\$");
-        while (my $result=$request->fetchrow_hashref){
-            my $content = $result->{content};
-            my $count   = $result->{scount};
+
+        # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
+        my $usage = $schema->resultset('Title')->search_rs(
+            {
+                'title_fields.field' => 425,
+            },
+            {
+                select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
+                as       => ['thiscontent','titlecount'],
+                join     => ['title_fields'],
+                group_by => ['title_fields.content'],
+                order_by => { -desc => \'count(title_fields.titleid)' },
+                rows     => 200,
+            }
+        );
+
+        foreach my $item ($usage->all){
+            my $content = $item->get_column('thiscontent');
+            my $count   = $item->get_column('titlecount');
+
             if ($maxcount < $count){
                 $maxcount = $count;
             }

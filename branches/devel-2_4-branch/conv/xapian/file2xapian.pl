@@ -98,7 +98,7 @@ my %xapian_idmapping;
 
 tie %xapian_idmapping, 'DB_File', $config->{'autoconv_dir'}."/pools/$database/xapian_idmapping.db";
 
-open(TITLE_LISTITEM,  "<:utf8","title_listitem.mysql" ) || die "TITLE_LISTITEM konnte nicht geoeffnet werden";
+open(TITLECACHE,   "<:utf8","title.dump" ) || die "TITLECACHE konnte nicht geoeffnet werden";
 open(SEARCHENGINE, "<:utf8","searchengine.csv"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
 
 my $dbbasedir=$config->{xapian_index_base_path};
@@ -153,9 +153,9 @@ my $atime = new Benchmark;
         $tg->set_stopper(new Search::Xapian::SimpleStopper($stopwords));
         
         my $atime = new Benchmark;
-        while (my $title_listitem=<TITLE_LISTITEM>, my $searchengine=<SEARCHENGINE>) {
+        while (my $title_listitem=<TITLECACHE>, my $searchengine=<SEARCHENGINE>) {
             my ($s_id,$searchcontent)=split ("",$searchengine);
-            my ($t_id,$listitem)=split ("",$title_listitem);
+            my ($t_id,$tstamp_create,$tstamp_update,$listitem)=split ("",$title_listitem);
             
             if ($s_id ne $t_id) {
                 $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
@@ -390,7 +390,7 @@ my $atime = new Benchmark;
     
 }
 
-close(TITLE_LISTITEM);
+close(TITLECACHE);
 close(SEARCHENGINE);
 
 untie(%xapian_idmapping);

@@ -69,7 +69,7 @@ Literatur zur Geschichte des 20. Jahrhunderts, beinhaltet die
 Bibliothek Brosch&uuml;ren und Flugschriften zu damals aktuellen
 politischen Geschehnissen. Die Literatur entstammt in der Hauptsache
 dem fr&uuml;hen 20. Jahrhundert. Die Bibliothek steht geschlossen unter der
-Signatur DIRK.
+Signaturengruppe DIRK.
 
 </p>
 
@@ -92,6 +92,12 @@ M&uuml;nchen gestorben.  [<a href="[% config.get('info_loc')
 <p>
 <!--Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
 Lesesaal.-->
+</p>
+
+<p>
+<a
+href="http://www.ub.uni-koeln.de/digital/digitsam/dirksen">Informationen
+zur Digitalisierung der Bibliothek Dirksen</a>
 </p>
 
 <!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->

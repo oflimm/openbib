@@ -741,6 +741,11 @@ sub gen_bibkey_base {
     my $logger = get_logger();
 
     return "" unless (defined $normdata_ref);
+
+
+    # Nur Bibkeys mit allen relevanten Informationen sinnvoll!
+    
+    return "" unless ( (exists $normdata_ref->{0100} || exists $normdata_ref->{0101}) && exists $normdata_ref->{0331} && exists $normdata_ref->{0425});
     
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];

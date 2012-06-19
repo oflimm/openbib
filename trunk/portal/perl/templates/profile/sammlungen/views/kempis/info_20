@@ -80,8 +80,10 @@ meisten verbreiteten Bücher des ausgehenden Mittelalters.
 %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 </p>
 
-<p> Die Einsichtnahme für Forschungszwecke erfolgt im Historischen
-Lesesaal.
+<p>
+Die Einsichtnahme für Forschungszwecke erfolgt im  <a
+href="http://www.ub.uni-koeln.de/bibliothek//kontakt/zeiten/index_ger.html#e1968/index_ger.html/"target="_blank">
+Lesesaal Historische Sammlungen</a>.
 </p>
 
 <!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->

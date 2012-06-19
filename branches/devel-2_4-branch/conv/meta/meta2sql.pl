@@ -975,11 +975,13 @@ while (my $line=<IN>){
         # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
         {
             foreach my $field (keys %{$stammdateien_ref->{title}{inverted_ref}}){
+#                $logger->debug("Processing field $field");
                 # a) Indexierung in der Suchmaschine
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}){
+#                    $logger->debug("Field $field to be indexed");
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}) {
                         my $weight = $stammdateien_ref->{title}{inverted_ref}{$field}->{index}{$searchfield};
-                        
+#                        $logger->debug("Field $field -> Index $searchfield with weight $weight");
                         if    ($field eq "tag"){
                             if (exists $listitemdata_tags{$id}) {
                                 
@@ -1007,7 +1009,7 @@ while (my $line=<IN>){
                         }
                         else {
                             foreach my $item_ref (@{$record_ref->{$field}}){
-                                next if $item_ref->{ignore};
+                                next unless $item_ref->{content};
 
                                 $item_ref->{norm} = OpenBib::Common::Util::grundform({
                                     category => $field,

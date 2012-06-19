@@ -405,14 +405,6 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 }
             }
             
-            if ($type eq "person" && exists $record_ref->{'0200'} && exists $record_ref->{'0200'}[0]) {
-                my $lifedates = $record_ref->{'0200'}[0]{content};
-                
-                if ($lifedates) {
-                    $listitemdata_person_date{$id}=$lifedates;
-                }
-            }
-            
             next CATLINE;
         }
         elsif ($line=~m/^\d\d\d\d/){
@@ -744,7 +736,7 @@ while (my $line=<IN>){
             }        
         }
         
-        my @superids         = (); # IDs der Ueberordnungen fuer Schiller-Raeuber-Anreicherung
+        my @superids               = (); # IDs der Ueberordnungen fuer Schiller-Raeuber-Anreicherung
         
         my @person                 = ();
         my @corporatebody          = ();
@@ -786,7 +778,7 @@ while (my $line=<IN>){
                     # Verknuepfungsfelder werden ignoriert
                     $item_ref->{ignore} = 1;
                     
-                    my ($personid) = $item_ref->{id};
+                    my $personid   = $item_ref->{id};
                     my $titleid    = $id;
                     my $supplement = $item_ref->{supplement};
                     
@@ -830,12 +822,7 @@ while (my $line=<IN>){
         # Bei 1800 ohne Normdatenverknuepfung muss der Inhalt analog verarbeitet werden
         if (exists $record_ref->{'1800'}) {
             foreach my $item_ref (@{$record_ref->{'1800'}}) {
-                # Verknuepfungsfelder werden ignoriert
-                $item_ref->{ignore} = 1;
-                
                 unless (exists $item_ref->{id}) {
-                    my $field = '1800';
-                    
                     push @personcorporatebody, $item_ref->{content};
                 }
             }
@@ -848,7 +835,7 @@ while (my $line=<IN>){
                     # Verknuepfungsfelder werden ignoriert
                     $item_ref->{ignore} = 1;
                     
-                    my ($corporatebodyid) = $item_ref->{id};
+                    my $corporatebodyid = $item_ref->{id};
                     my $titleid    = $id;
                     my $supplement = "";
                     
@@ -902,8 +889,7 @@ while (my $line=<IN>){
                 }
             }
         }
-        
-        
+                
         # Klassifikation
         foreach my $field ('0700') {
             if (exists $record_ref->{$field}) {
@@ -912,8 +898,8 @@ while (my $line=<IN>){
                     $item_ref->{ignore} = 1;
                     
                     my $classificationid = $item_ref->{id};
-                    my $titleid    = $id;
-                    my $supplement = "";
+                    my $titleid          = $id;
+                    my $supplement       = "";
                     
                     next unless $classificationid;
                     
@@ -980,7 +966,7 @@ while (my $line=<IN>){
                         }
                     } 
                     else {
-                        #                    $logger->error("SUBJECT ID $subjectid doesn't exist in TITLE ID $id");
+                        $logger->error("SUBJECT ID $subjectid doesn't exist in TITLE ID $id");
                     }
                 }
             }
@@ -1552,17 +1538,6 @@ while (my $line=<IN>){
                     });
                 }
                 
-                # Folgendes wird niemals abgerufen...
-                #             if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {
-                #                 foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}) {
-                #                     my $weight = $stammdateien_ref->{title}{inverted_ref}{$field}->{index}{$searchfield};
-                
-                #                     push @{$stammdateien_ref->{title}{data}{$id}{$searchfield}{$weight}}, $item_ref->{norm};
-                #                 }
-                #             }
-                
-                #                $logger->info(defined($id).":".defined($field).":".defined($item_ref->{mult}).":".defined($item_ref->{subfield}).":".defined($item_ref->{norm}));
-                
                 print OUTNORMFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{norm}\n" if ($item_ref->{norm});
             }
         }                
@@ -1581,37 +1556,7 @@ while (my $line=<IN>){
             $logger->info("$count Titelsaetze in $resulttime bearbeitet");
         } 
         
-        
-        #         # Todo: Indikatoren auswerten
-        
-        #         #         if ($record->have_indicators($content){
-        #         #             foreach my $subcontent ($record->content_per_indicator($content)){
-        #         #                 $record->set_category({ category => $category, mult => $mult, indicator => $subcontent->{indicator}, content => $subcontent->{content} });
-        #         #             }
-        #         #         }
-        
-        #         # Gegebenenfalls Inhalt indexieren (=wenn keine Verknuepfungen)
-        #         my $norm = "";
-        #         unless ($content =~/^IDN: \S+/){
-        #             if (exists $stammdateien_ref->{title}{inverted_ref}{$category}->{index}) {                    
-        #                 $norm = OpenBib::Common::Util::grundform({
-        #                     category => $category,
-        #                     content  => $content,
-        #                 });
-        #             }
-        #         }
-        
-        #         # Kategorie in Record setzen
-        #         push @{$record_ref->{$category}}, {
-        #             mult     => $mult,
-        #             subfield => '',
-        #             content  => $content,
-        #             norm     => $norm
-        #         };
-        
-        #     }
-        
-                next CATLINE;
+        next CATLINE;
     }
     elsif ($line=~m/^\d\d\d\d/){
 
@@ -1641,7 +1586,7 @@ while (my $line=<IN>){
 #         }
 
         if ($content =~/^IDN: (\S+)/){
-            my $id = $1;
+            my $refid      = $1;
             my $supplement = "";
             if ($content =~/^IDN: \S+ ; (.+)/){
                 $supplement = $1;
@@ -1649,9 +1594,9 @@ while (my $line=<IN>){
             
             # Kategorie in Record setzen
             push @{$record_ref->{$category}}, {
-                mult     => $mult,
-                subfield => '',
-                id  => $id,
+                mult       => $mult,
+                subfield   => '',
+                id         => $refid,
                 supplement => $supplement,
             };
         }

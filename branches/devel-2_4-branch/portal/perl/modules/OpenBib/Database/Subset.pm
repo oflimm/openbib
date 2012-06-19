@@ -5,7 +5,7 @@
 #  Zusammenfassung von Funktionen, die von mehreren Datenbackends
 #  verwendet werden
 #
-#  Dieses File ist (C) 1997-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,6 +34,7 @@ no warnings 'redefine';
 use utf8;
 
 use DBI;
+use OpenBib::Database::Catalog;
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 
@@ -49,11 +50,12 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{config}   = new OpenBib::Config;
+    bless ($self, $class);
 
+    $self->{config}   = new OpenBib::Config;
+    
     if ($source){
-        $self->{source} = $source;
-        $self->{dbh}      = DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd}) or $logger->error_die($DBI::errstr);
+        $self->set_source($source);
     }
 
     if ($destination){
@@ -61,8 +63,6 @@ sub new {
     }
     
     $self->{titleid}  = ();
-
-    bless ($self, $class);
 
     return $self;
 }
@@ -75,7 +75,16 @@ sub set_source {
     my $logger = get_logger();
 
     $self->{source} = $source;
-    $self->{dbh}      = DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd}) or $logger->error_die($DBI::errstr);
+
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+    };
+    
+    if ($@){
+        $logger->fatal("Unable to connect schema to database $source: DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}");
+        exit;
+    }
 
     return $self;
 }
@@ -105,77 +114,136 @@ sub identify_by_mark {
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $request=$self->{dbh}->prepare("select distinct conn.sourceid as titid from conn,holding where holding.category=14 and holding.content COLLATE utf8_bin rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
     my @marks = (ref $mark)?@$mark:($mark);
 
     foreach my $thismark (@marks){
         $logger->debug("Searching for Mark $thismark");
         
-        $request->execute($thismark) or $logger->error($DBI::errstr);;
+        # DBI: "select distinct conn.sourceid as titid from conn,holding where holding.category=14 and holding.content COLLATE utf8_bin rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6"
+        my $titles = $self->{schema}->resultset('TitleHolding')->search_rs(
+            {
+                'holding_fields.field' => 14,
+                'holding_fields.content' => { 'rlike' => $mark },
+            },
+            {
+                select   => ['me.titleid'],
+                as       => ['thistitleid'],
+                join     => ['holdingid', {'holdingid' => 'holding_fields' }],
+                group_by => ['me.titleid'],
+            }
+        );
         
-        while (my $result=$request->fetchrow_hashref()){
-            $self->{titleid}{$result->{'titid'}} = 1;
+        foreach my $item ($titles->all){
+            my $titleid = $item->get_column('thistitleid');
+            
+            $self->{titleid}{$titleid} = 1;
         }
     }
     
     my $count=0;
-
+    
     foreach my $key (keys %{$self->{titleid}}){
         $count++;
     }
-
-    $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
-
-    $self->get_title_hierarchy;
-
-    $self->get_title_normdata;
-
-    $self->{holdingid} = {};
-
-    # Exemplardaten *nur* vom entsprechenden Institut!
-    $request=$self->{dbh}->prepare("select distinct id from holding where category=14 and content rlike ?") or $logger->error($DBI::errstr);
-
-    foreach my $thismark (@marks){
-        $request->execute($thismark);
     
-        while (my $result=$request->fetchrow_hashref()){
-            $self->{holdingid}{$result->{'id'}}=1;
+    $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
+    
+    $self->get_title_hierarchy;
+    
+    $self->get_title_normdata;
+    
+    $self->{holdingid} = {};
+    
+    foreach my $thismark (@marks){
+        # Exemplardaten *nur* vom entsprechenden Institut!
+        # DBI: "select distinct id from holding where category=14 and content rlike ?"
+        my $holdings = $self->{schema}->resultset('Holding')->search_rs(
+            {
+                'holding_fields.field' => 14,
+                'holding_fields.content' => { 'rlike' => $mark },
+            },
+            {
+                select   => ['me.id'],
+                as       => ['thisholdingid'],
+                join     => ['holding_fields'],
+                group_by => ['me.id'],
+            }
+        );
+        
+        foreach my $item ($holdings->all){
+            my $holdingid = $item->get_column('thisholdingid');
+            
+            $self->{holdingid}{$holdingid} = 1;
         }
     }
-        
+    
     return $self;
 }
-
+        
 sub identify_by_category_content {
     my $self    = shift;
     my $table   = shift;
     my $arg_ref = shift;
-
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my %table_type = (
-        'title'          => 1,
-        'person'         => 2,
-        'corporatebody'  => 3,
-        'subject'        => 4,
-        'classification' => 5,
+        'person'         => {
+            resultset => 'TitlePerson',
+            field => 'person_fields.field',
+            join => ['personid', { 'personid' => 'person_fields' }]
+        },
+        'corporatebody'  => {
+            resultset => 'TitleCorporatebody',
+            field => 'corporatebody_fields.field',
+            join => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }]
+        },
+        'subject'        => {
+            resultset => 'TitleSubject',
+            field => 'subject_fields.field',
+            join => ['subjectid', { 'subjectid' => 'subject_fields' }]
+        },
+        'classification' => {
+            resultset => 'TitleClassification',
+            field => 'classification_fields.field',
+            join => ['classificationid', { 'classificationid' => 'classification_fields' }]
+        },
     );
     
-    my $request=$self->{dbh}->prepare("select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
-
-    if ($table ne "title"){
-        $request = $self->{dbh}->prepare("select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
-    }
-    
     foreach my $criteria_ref (@$arg_ref){        
+        # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
+        my $titles = $self->{schema}->resultset('TitleFields')->search_rs(
+            {
+                'field'   => $criteria_ref->{category},
+                'content' => { 'rlike' => $criteria_ref->{content} },
+            },
+            {
+                select   => ['titleid'],
+                as       => ['thisid'],
+            }
+        );
+
+        if ($table ne "title"){
+            # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
+            $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
+                {
+                    $table_type{$table}{join} => $criteria_ref->{category},
+                    'content' => { 'rlike' => $criteria_ref->{content} },
+                },
+                {
+                    select   => ['titleid'],
+                    as       => ['thisid'],
+                    join     => $table_type{$table}{join},
+                }
+            );
+        }
+
+        foreach my $item ($titles->all){
+            my $thisid = $item->get_column('thisid');
         
-        $request->execute($criteria_ref->{category},$criteria_ref->{content}) or $logger->error($DBI::errstr);;
-        
-        while (my $result=$request->fetchrow_hashref()){
-            $self->{titleid}{$result->{'titleid'}} = 1;
+            $self->{titleid}{$thisid} = 1;
         }
     }
     
@@ -194,13 +262,23 @@ sub identify_by_category_content {
     $self->{holdingid} = {};
 
     # Exemplardaten
-    $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=6") or $logger->error($DBI::errstr);
+    # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
 
     foreach my $id (keys %{$self->{titleid}}){
-        $request->execute($id);
-    
-        while (my $result=$request->fetchrow_hashref()){
-            $self->{holdingid}{$result->{'targetid'}}=1;
+        my $holdings = $self->{schema}->resultset('TitleHolding')->search_rs(
+            {
+                'titleid' => $id,
+            },
+            {
+                select   => ['holdingid'],
+                as       => ['thisid'],
+            }
+        );
+        
+        foreach my $item ($holdings->all){
+            my $thisid = $item->get_column('thisid');
+
+            $self->{holdingid}{$thisid}=1;
         }    
     }
 
@@ -291,13 +369,24 @@ sub get_title_hierarchy {
         foreach my $titidn (keys %tmp_titleid_super){
             
             # Ueberordnungen
-            my $request=$self->{dbh}->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-            $request->execute($titidn) or $logger->error($DBI::errstr);;
-            
-            while (my $result=$request->fetchrow_hashref()){
-                $self->{titleid}{$result->{'targetid'}} = 1;
-                if ($titidn != $result->{'targetid'}){ # keine Ringschluesse - ja, das gibt es
-                    $found{$result->{'targetid'}}   = 1;
+            # DBI: "select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1"
+            my $supertitles = $self->{schema}->resultset('TitleTitle')->search_rs(
+                {
+                    'source_titleid' => $titidn,
+                },
+                {
+                    select   => ['target_titleid'],
+                    as       => ['supertitleid'],
+                    group_by => ['target_titleid'],
+                }
+            );
+
+            foreach my $item ($supertitles->all){
+                my $supertitleid = $item->get_column('supertitleid');
+
+                $self->{titleid}{$supertitleid} = 1;
+                if ($titidn != $supertitleid){ # keine Ringschluesse - ja, das gibt es
+                    $found{$supertitleid}   = 1;
                 }                
             }            
         }        
@@ -330,35 +419,75 @@ sub get_title_normdata {
     foreach my $id (keys %{$self->{titleid}}){
         
         # Verfasser/Personen
-        my $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
-        $request->execute($id);
+        # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=2"
+        my $persons = $self->{schema}->resultset('TitlePerson')->search_rs(
+            {
+                'titleid' => $id,
+            },
+            {
+                select   => ['personid'],
+                as       => ['thisid'],
+            }
+        );
         
-        while (my $result=$request->fetchrow_hashref()){
-            $personid_ref->{$result->{'targetid'}}=1;
+        foreach my $item ($persons->all){
+            my $thisid = $item->get_column('thisid');
+
+            $personid_ref->{$thisid}=1;
         }
         
         # Urheber/Koerperschaften
-        $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
-        $request->execute($id);
+        # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=3
+        my $corporatebodies = $self->{schema}->resultset('TitleCorporatebody')->search_rs(
+            {
+                'titleid' => $id,
+            },
+            {
+                select   => ['corporatebodyid'],
+                as       => ['thisid'],
+            }
+        );
         
-        while (my $result=$request->fetchrow_hashref()){
-            $corporatebodyid_ref->{$result->{'targetid'}}=1;
+        foreach my $item ($corporatebodies->all){
+            my $thisid = $item->get_column('thisid');
+
+            $corporatebodyid_ref->{$thisid}=1;
         }
         
         # Notationen
-        $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
-        $request->execute($id);
+        # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=5"
+        my $classifications = $self->{schema}->resultset('TitleClassification')->search_rs(
+            {
+                'titleid' => $id,
+            },
+            {
+                select   => ['classificationid'],
+                as       => ['thisid'],
+            }
+        );
         
-        while (my $result=$request->fetchrow_hashref()){
-            $classificationid_ref->{$result->{'targetid'}}=1;
+        foreach my $item ($classifications->all){
+            my $thisid = $item->get_column('thisid');
+
+            $classificationid_ref->{$thisid}=1;
         }
         
         # Schlagworte
-        $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
-        $request->execute($id);
+        # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=4"
+        my $subjects = $self->{schema}->resultset('TitleSubject')->search_rs(
+            {
+                'titleid' => $id,
+            },
+            {
+                select   => ['subjectid'],
+                as       => ['thisid'],
+            }
+        );
         
-        while (my $result=$request->fetchrow_hashref()){
-            $subjectid_ref->{$result->{'targetid'}}=1;
+        foreach my $item ($subjects->all){
+            my $thisid = $item->get_column('thisid');
+
+            $subjectid_ref->{$thisid}=1;
         }
     }
 

@@ -1,6 +1,6 @@
 # Encoding der Daten
-encoding: iso-8859-1
-#encoding: utf8
+#encoding: iso-8859-1
+encoding: utf8
 
 # Tracelevel
 tracelevel:
@@ -16,8 +16,8 @@ csv:
 uniqueidfield: 'upi'
 
 category_split_chars:
-  'identifier': '\s*,\s*'
-  'person_all': '\s+;\s+'
+  'identifier': ';'
+  'person_all': ';'
 
 # Personen
 pers:
@@ -41,14 +41,5 @@ title:
   'publisher': '0412:'
 
 filter:
-  'person_all':
-    'filter_generic':
-       -
-         'from': '\\,'
-         'to': '#x#'
-       -
-         'from': ','
-         'to': ' ; '
-       -
-         'from': '#x#'
-         'to': ','
+  'releasedate_':
+     filter_match: "^(\d\d\d\d)"

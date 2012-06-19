@@ -6,7 +6,7 @@
 #
 #  Konverierung der einfach aufgebauter CVS-Daten in das Meta-Format
 #
-#  Dieses File ist (C) 1999-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1999-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -89,12 +89,12 @@ $request->execute();
 
 my $outputencoding = ($convconfig->{outputencoding})?$convconfig->{outputencoding}:'utf8';
 
-open (TIT,     ">:encoding($outputencoding)","unload.TIT");
-open (AUT,     ">:encoding($outputencoding)","unload.PER");
-open (KOR,     ">:encoding($outputencoding)","unload.KOE");
-open (NOTATION,">:encoding($outputencoding)","unload.SYS");
-open (SWT,     ">:encoding($outputencoding)","unload.SWD");
-open (MEX,     ">:encoding($outputencoding)","unload.MEX");
+open (TIT,     ">:encoding($outputencoding)","meta.title");
+open (AUT,     ">:encoding($outputencoding)","meta.person");
+open (KOR,     ">:encoding($outputencoding)","meta.corporatebody");
+open (NOTATION,">:encoding($outputencoding)","meta.classification");
+open (SWT,     ">:encoding($outputencoding)","meta.subject");
+open (MEX,     ">:encoding($outputencoding)","meta.holding");
 
 my $titid = 1;
 my $have_titid_ref = {};
@@ -144,6 +144,10 @@ while (my $result=$request->fetchrow_hashref){
                 $content = filter_newline2br($content);
             }
 
+            if ($convconfig->{filter}{$kateg}{filter_match}){
+                $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
+            }
+
             my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
@@ -187,6 +191,18 @@ while (my $result=$request->fetchrow_hashref){
                 }
             }
 
+            if ($convconfig->{filter}{$kateg}{filter_junk}){
+                $content = filter_junk($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+                $content = filter_newline2br($content);
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_match}){
+                $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
+            }
+
             my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
@@ -198,16 +214,13 @@ while (my $result=$request->fetchrow_hashref){
             }
             
             foreach my $part (@parts){
-                my $autidn=OpenBib::Conv::Common::Util::get_autidn($part);
+                my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($part);
                 
-                if ($autidn > 0){
-                    print AUT "0000:$autidn\n";
+                if ($new){
+                    print AUT "0000:$person_id\n";
                     print AUT "0001:$part\n";
                     print AUT "9999:\n";
                     
-                }
-                else {
-                    $autidn=(-1)*$autidn;
                 }
 
                 my $new_category = $convconfig->{pers}{$kateg};
@@ -217,7 +230,7 @@ while (my $result=$request->fetchrow_hashref){
                     $multiple++;
                 }
 
-                print TIT $new_category."IDN: $autidn\n";
+                print TIT $new_category."IDN: $person_id\n";
             }
         }
 
@@ -242,6 +255,18 @@ while (my $result=$request->fetchrow_hashref){
                 }
             }
 
+            if ($convconfig->{filter}{$kateg}{filter_junk}){
+                $content = filter_junk($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+                $content = filter_newline2br($content);
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_match}){
+                $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
+            }
+
             my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
@@ -253,17 +278,13 @@ while (my $result=$request->fetchrow_hashref){
             }
             
             foreach my $part (@parts){
+                my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                 
-                my $koridn=OpenBib::Conv::Common::Util::get_koridn($part);
-                
-                if ($koridn > 0){
-                    print KOR "0000:$koridn\n";
+                if ($new){
+                    print KOR "0000:$corporatebody_id\n";
                     print KOR "0001:$part\n";
                     print KOR "9999:\n";
                     
-                }
-                else {
-                    $koridn=(-1)*$koridn;
                 }
 
                 my $new_category = $convconfig->{corp}{$kateg};
@@ -273,7 +294,7 @@ while (my $result=$request->fetchrow_hashref){
                     $multiple++;
                 }
                 
-                print TIT $new_category."IDN: $koridn\n";
+                print TIT $new_category."IDN: $corporatebody_id\n";
             }
         }
     }
@@ -297,6 +318,18 @@ while (my $result=$request->fetchrow_hashref){
 #                    print STDERR "New content $content\n";
                 }
             }
+            
+            if ($convconfig->{filter}{$kateg}{filter_junk}){
+                $content = filter_junk($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+                $content = filter_newline2br($content);
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_match}){
+                $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
+            }
 
             my $multiple = 0;
             my @parts = ();
@@ -309,15 +342,13 @@ while (my $result=$request->fetchrow_hashref){
             }
             
             foreach my $part (@parts){
-                my $notidn=OpenBib::Conv::Common::Util::get_notidn($part);
+                my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                 
-                if ($notidn > 0){	  
-                    print NOTATION "0000:$notidn\n";
+                if ($new){
+                    print NOTATION "0000:$classification_id\n";
                     print NOTATION "0001:$part\n";
                     print NOTATION "9999:\n";
-                }
-                else {
-                    $notidn=(-1)*$notidn;
+                    
                 }
 
                 my $new_category = $convconfig->{sys}{$kateg};
@@ -327,7 +358,7 @@ while (my $result=$request->fetchrow_hashref){
                     $multiple++;
                 }
                 
-                print TIT $new_category."IDN: $notidn\n";
+                print TIT $new_category."IDN: $classification_id\n";
             }
         }
     }
@@ -350,6 +381,18 @@ while (my $result=$request->fetchrow_hashref){
 #                    print STDERR "New content $content\n";
                 }
             }
+
+            if ($convconfig->{filter}{$kateg}{filter_junk}){
+                $content = filter_junk($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+                $content = filter_newline2br($content);
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_match}){
+                $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
+            }
             
             my $multiple = 0;
             my @parts = ();
@@ -362,15 +405,13 @@ while (my $result=$request->fetchrow_hashref){
             }
             
             foreach my $part (@parts){
-                my $swtidn=OpenBib::Conv::Common::Util::get_swtidn($part);
+                my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                 
-                if ($swtidn > 0){	  
-                    print SWT "0000:$swtidn\n";
+                if ($new){
+                    print SWT "0000:$subject_id\n";
                     print SWT "0001:$part\n";
                     print SWT "9999:\n";
-                }
-                else {
-                    $swtidn=(-1)*$swtidn;
+                    
                 }
 
                 my $new_category = $convconfig->{subj}{$kateg};
@@ -380,7 +421,7 @@ while (my $result=$request->fetchrow_hashref){
                     $multiple++;
                 }
                 
-                print TIT $new_category."IDN: $swtidn\n";
+                print TIT $new_category."IDN: $subject_id\n";
             }
             
         }
@@ -405,6 +446,18 @@ while (my $result=$request->fetchrow_hashref){
                     
 #                    print STDERR "New content $content\n";
                 }
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_junk}){
+                $content = filter_junk($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+                $content = filter_newline2br($content);
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_match}){
+                $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
             }
 
             my $multiple = 1;
@@ -469,7 +522,7 @@ sub filter_newline2br {
 sub filter_match {
     my ($content,$regexp) = @_;
 
-    my ($match)=$content=~m/($regexp)/g;
-    
+    my ($match)=$content=~m/$regexp/g;
+
     return $match;
 }

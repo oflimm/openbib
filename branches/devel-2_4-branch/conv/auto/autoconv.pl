@@ -270,7 +270,7 @@ my $atime = new Benchmark;
     
     # Index entfernen
     $logger->info("### $database: Index in temporaerer Datenbank entfernen");
-    system("$mysqlexe $databasetmp < $rootdir/data/$database/control_index_off.mysql");
+    system("$mysqlexe $databasetmp < $rootdir/data/$database/control_index_off.sql");
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_index_off.pl"){
         $logger->info("### $database: Verwende Plugin post_index_off.pl");
@@ -279,7 +279,7 @@ my $atime = new Benchmark;
     
     # Einladen der Daten
     $logger->info("### $database: Einladen der Daten in temporaere Datenbank");
-    system("$mysqlexe $databasetmp < $rootdir/data/$database/control.mysql");
+    system("$mysqlexe $databasetmp < $rootdir/data/$database/control.sql");
 
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_dbload.pl"){
         $logger->info("### $database: Verwende Plugin post_dbload.pl");
@@ -288,7 +288,7 @@ my $atime = new Benchmark;
 
     # Index setzen
     $logger->info("### $database: Index in temporaerer Datenbank aufbauen");
-    system("$mysqlexe $databasetmp < $rootdir/data/$database/control_index_on.mysql");
+    system("$mysqlexe $databasetmp < $rootdir/data/$database/control_index_on.sql");
 
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_index_on.pl"){
         $logger->info("### $database: Verwende Plugin post_index_on.pl");
@@ -340,26 +340,26 @@ my $atime = new Benchmark;
 
 # Potentiell Blockierende Prozesse entfernen
 
-{
-    $logger->info("### $database: Marodierende Processe auf der Datenbank toeten");
+# {
+#     $logger->info("### $database: Marodierende Processe auf der Datenbank toeten");
 
-    my $request=$dbh->prepare("show processlist");
-    $request->execute();
+#     my $request=$dbh->prepare("show processlist");
+#     $request->execute();
     
-    while (my $result=$request->fetchrow_hashref){
-        my $id    = $result->{Id}    || 'n/a';
-        my $db    = $result->{db}    || 'n/a';
-        my $time  = $result->{Time}  || 'n/a';
-        my $state = $result->{State} || 'n/a';
-        my $info  = $result->{Info}  || 'n/a';
+#     while (my $result=$request->fetchrow_hashref){
+#         my $id    = $result->{Id}    || 'n/a';
+#         my $db    = $result->{db}    || 'n/a';
+#         my $time  = $result->{Time}  || 'n/a';
+#         my $state = $result->{State} || 'n/a';
+#         my $info  = $result->{Info}  || 'n/a';
         
-        next unless ($db eq $database);
+#         next unless ($db eq $database);
 
-        my $request2=$dbh->prepare("kill ?");
-        $request2->execute($id);
-        $logger->error("Killed process Id: $id - Db: $db - Time: $time - State: $state - Info: $info");
-    }
-}
+#         my $request2=$dbh->prepare("kill ?");
+#         $request2->execute($id);
+#         $logger->error("Killed process Id: $id - Db: $db - Time: $time - State: $state - Info: $info");
+#     }
+# }
 
 # Tabellen aus temporaerer Datenbank in finale Datenbank verschieben
 
@@ -413,7 +413,7 @@ CLEANUP:
 $logger->info("### $database: Cleanup");
 
 system("$mysqladminexe drop   $databasetmp");
-system("rm $rootdir/data/$database/*") unless ($database eq "openbib");
+system("rm $rootdir/data/$database/*") unless ($database eq "inst001");
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

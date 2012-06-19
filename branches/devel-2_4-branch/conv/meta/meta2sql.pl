@@ -290,7 +290,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
             
             my $create_tstamp = 0;
             
-            if (exists $record_ref->{'0100'} && exists $record_ref->{'0100'}[0]) {
+            if (defined $record_ref->{'0100'} && defined $record_ref->{'0100'}[0]) {
                 $create_tstamp = $record_ref->{'0100'}[0]{content};
                 if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
                     $create_tstamp=$3.$2.$1;
@@ -748,7 +748,7 @@ while (my $line=<IN>){
         
         # Verknuepfungskategorien bearbeiten
         
-        if (exists $record_ref->{'0004'}) {
+        if (defined $record_ref->{'0004'}) {
             foreach my $item_ref (@{$record_ref->{'0004'}}) {
                 my ($target_titleid) = $item_ref->{content};
                 my $source_titleid   = $id;
@@ -773,7 +773,7 @@ while (my $line=<IN>){
         #        $logger->info(YAML::Dump($record_ref));
         
         foreach my $field ('0100','0101','0102','0103','1800') {
-            if (exists $record_ref->{$field}) {
+            if (defined $record_ref->{$field}) {
                 foreach my $item_ref (@{$record_ref->{$field}}) {
                     # Verknuepfungsfelder werden ignoriert
                     $item_ref->{ignore} = 1;
@@ -820,9 +820,9 @@ while (my $line=<IN>){
         }
         
         # Bei 1800 ohne Normdatenverknuepfung muss der Inhalt analog verarbeitet werden
-        if (exists $record_ref->{'1800'}) {
+        if (defined $record_ref->{'1800'}) {
             foreach my $item_ref (@{$record_ref->{'1800'}}) {
-                unless (exists $item_ref->{id}) {
+                unless (defined $item_ref->{id}) {
                     push @personcorporatebody, $item_ref->{content};
                 }
             }
@@ -830,7 +830,7 @@ while (my $line=<IN>){
         
         #Koerperschaften/Urheber
         foreach my $field ('0200','0201','1802') {
-            if (exists $record_ref->{$field}) {
+            if (defined $record_ref->{$field}) {
                 foreach my $item_ref (@{$record_ref->{$field}}) {
                     # Verknuepfungsfelder werden ignoriert
                     $item_ref->{ignore} = 1;
@@ -877,7 +877,7 @@ while (my $line=<IN>){
         }
         
         # Bei 1802 ohne Normdatenverknuepfung muss der Inhalt analog verarbeitet werden
-        if (exists $record_ref->{'1802'}) {
+        if (defined $record_ref->{'1802'}) {
             foreach my $item_ref (@{$record_ref->{'1802'}}) {
                 # Verknuepfungsfelder werden ignoriert
                 $item_ref->{ignore} = 1;
@@ -892,7 +892,7 @@ while (my $line=<IN>){
                 
         # Klassifikation
         foreach my $field ('0700') {
-            if (exists $record_ref->{$field}) {
+            if (defined $record_ref->{$field}) {
                 foreach my $item_ref (@{$record_ref->{$field}}) {
                     # Verknuepfungsfelder werden ignoriert
                     $item_ref->{ignore} = 1;
@@ -930,10 +930,10 @@ while (my $line=<IN>){
                 }
             }
         }
-        
+
         # Schlagworte
         foreach my $field ('0710','0902','0907','0912','0917','0922','0927','0932','0937','0942','0947') {
-            if (exists $record_ref->{$field}) {
+            if (defined $record_ref->{$field}) {
                 foreach my $item_ref (@{$record_ref->{$field}}) {
                     # Verknuepfungsfelder werden ignoriert
                     $item_ref->{ignore} = 1;
@@ -971,17 +971,14 @@ while (my $line=<IN>){
                 }
             }
         }
-        
+
         # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
         {
             foreach my $field (keys %{$stammdateien_ref->{title}{inverted_ref}}){
-#                $logger->debug("Processing field $field");
                 # a) Indexierung in der Suchmaschine
                 if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}){
-#                    $logger->debug("Field $field to be indexed");
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}) {
                         my $weight = $stammdateien_ref->{title}{inverted_ref}{$field}->{index}{$searchfield};
-#                        $logger->debug("Field $field -> Index $searchfield with weight $weight");
                         if    ($field eq "tag"){
                             if (exists $listitemdata_tags{$id}) {
                                 
@@ -1008,6 +1005,8 @@ while (my $line=<IN>){
                             }
                         }
                         else {
+                            next unless (defined $record_ref->{$field});
+                            
                             foreach my $item_ref (@{$record_ref->{$field}}){
                                 next unless $item_ref->{content};
 
@@ -1061,6 +1060,8 @@ while (my $line=<IN>){
                             }
                         }            
                         else {
+                            next unless (defined $record_ref->{$field});
+                            
                             foreach my $item_ref (@{$record_ref->{$field}}) {
                                 push @{$searchengine_ref->{"facet_".$searchfield}}, $item_ref->{content};
                             }
@@ -1069,7 +1070,7 @@ while (my $line=<IN>){
                 }
             }
         }
-        
+
         # Personen der Ueberordnung anreichern (Schiller-Raeuber)
         if ($addsuperpers) {
             foreach my $superid (@superids) {
@@ -1081,22 +1082,22 @@ while (my $line=<IN>){
         }
         
         # Zentrale Anreicherungsdaten lokal einspielen
-        if ($local_enrichmnt && (exists $searchengine_ref->{isbn} || exists $searchengine_ref->{issn})) {
+        if ($local_enrichmnt && (defined $searchengine_ref->{isbn} || defined $searchengine_ref->{issn})) {
             foreach my $field (keys %{$conv_config->{local_enrichmnt}}) {
                 my $enrichmnt_data_ref = [];
-                if (exists $searchengine_ref->{isbn}) {
+                if (defined $searchengine_ref->{isbn}) {
                     foreach my $weight (keys %{$searchengine_ref->{isbn}}) {
                         foreach my $isbn13 (@{$searchengine_ref->{isbn}{$weight}}) {
-                            if (exists $enrichmntdata{$isbn13}{$field}) {
+                            if (defined $enrichmntdata{$isbn13}{$field}) {
                                 push @$enrichmnt_data_ref, @{$enrichmntdata{$isbn13}{$field}};
                             }
                         }
                     }
                 }
-                elsif (exists $searchengine_ref->{issn}) {
+                elsif (defined $searchengine_ref->{issn}) {
                     foreach my $weight (keys %{$searchengine_ref->{issn}}) {
                         foreach my $issn (@{$searchengine_ref->{issn}{$weight}}) {
-                            if (exists $enrichmntdata{$issn}{$field}) {
+                            if (defined $enrichmntdata{$issn}{$field}) {
                                 push @$enrichmnt_data_ref, @{$enrichmntdata{$issn}{$field}};
                             }
                         }
@@ -1125,7 +1126,7 @@ while (my $line=<IN>){
                         
                         # ToDo: Wird Suchmaschine hiermit befuellt?
                         
-                        if (exists $conv_config->{'listitemcat'}{$field}) {
+                        if (defined $conv_config->{'listitemcat'}{$field}) {
                             push @{$titlecache_ref->{"T".$field}}, {
                                 content => $content,
                             };
@@ -1140,20 +1141,20 @@ while (my $line=<IN>){
         
         # Medientypen erkennen und anreichern
         if ($addmediatype) {
-            
+
             # Zeitschriften/Serien:
             # ISSN und/oder ZDB-ID besetzt
-            if (exists $record_ref->{'0572'} || exists $record_ref->{'0543'}) {
+            if (defined $record_ref->{'0572'} || defined $record_ref->{'0543'}) {
                 # Steht Medientyp schon auf Zeitschrift?
                 my $have_journal   = 0;
-                my $type_mult = 1;
+                my $type_mult      = 1;
                 foreach my $item_ref (@{$record_ref->{'0800'}}) {
                     $have_journal = 1 if ($item_ref->{content} eq "Zeitschrift/Serie");
                     $type_mult++;
                 }
                 
                 if (!$have_journal) {
-                    if (! exists $searchengine_ref->{mediatype} ) {
+                    if (! defined $searchengine_ref->{mediatype} ) {
                         $searchengine_ref->{mediatype}{1} = [];
                     }
                     
@@ -1170,7 +1171,7 @@ while (my $line=<IN>){
             
             # Aufsatz
             # HSTQuelle besetzt
-            if (exists $record_ref->{'0590'}) {
+            if ($record_ref->{'0590'}) {
                 # Steht Medientyp schon auf Aufsatz?
                 my $have_article=0;
                 my $type_mult = 1;
@@ -1182,7 +1183,7 @@ while (my $line=<IN>){
                 }
                 
                 if (!$have_article) {
-                    if (! exists $searchengine_ref->{mediatype} ) {
+                    if (! defined $searchengine_ref->{mediatype} ) {
                         $searchengine_ref->{mediatype}{1} = [];
                     }
                     
@@ -1206,9 +1207,9 @@ while (my $line=<IN>){
             # [02]663.001:Info: Zugriff nur im Hochschulnetz der Universitaet Koeln bzw.
             #          fuer autorisierte Benutzer moeglich
             
-            if (((exists $record_ref->{'0807'} && $record_ref->{'0807'}[0]{content} eq "g") || (exists $record_ref->{'2807'} && $record_ref->{'2807'}[0]{content} eq "g"))
-                    && exists $record_ref->{'0334'} && $record_ref->{'0334'}[0]{content} eq "Elektronische Ressource"
-                        && exists $record_ref->{'0652'} && $record_ref->{'0652'}[0]{content} eq "Online-Ressource") {
+            if (((defined $record_ref->{'0807'} && $record_ref->{'0807'}[0]{content} eq "g") || (defined $record_ref->{'2807'} && $record_ref->{'2807'}[0]{content} eq "g"))
+                    && defined $record_ref->{'0334'} && $record_ref->{'0334'}[0]{content} eq "Elektronische Ressource"
+                        && defined $record_ref->{'0652'} && $record_ref->{'0652'}[0]{content} eq "Online-Ressource") {
                 # Steht Medientyp schon auf Online-Zugriff?
                 my $have_digital=0;
                 my $type_mult = 1;
@@ -1220,7 +1221,7 @@ while (my $line=<IN>){
                 }
                 
                 if (!$have_digital) {
-                    if (! exists $searchengine_ref->{mediatype} ) {
+                    if (! defined $searchengine_ref->{mediatype} ) {
                         $searchengine_ref->{mediatype}{1} = [];
                     }
                     
@@ -1236,7 +1237,7 @@ while (my $line=<IN>){
             
             # mit Inhaltsverzeichnis
             # Anreicherungskategorie 4110
-            if (exists $record_ref->{'4110'}) {
+            if (defined $record_ref->{'4110'}) {
                 my $have_toc=0;
                 my $type_mult = 1;
                 foreach my $item_ref (@{$record_ref->{'0800'}}) {
@@ -1363,7 +1364,7 @@ while (my $line=<IN>){
         # Automatische Anreicherung mit Bestandsjahren wenn kein
         # Erscheinungsjahr vorhanden, aber Bestandsverlauf besetzt.
         {
-            if (!exists $record_ref->{'0424'} && !exists $record_ref->{'0425'}) {
+            if (!defined $record_ref->{'0424'} && !defined $record_ref->{'0425'}) {
                 if (exists $listitemdata_enriched_years{$id}) {
                     foreach my $year (@{$listitemdata_enriched_years{$id}}) {
                         $logger->debug("Enriching year $year to Title-ID $id");
@@ -1377,7 +1378,7 @@ while (my $line=<IN>){
         # Titlecache mit Titelfeldern fuellen
         foreach my $field (keys %{$record_ref}) {            
             # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
-            if (exists $conv_config->{listitemcat}{$field}) {
+            if (defined $conv_config->{listitemcat}{$field}) {
                 foreach my $item_ref (@{$record_ref->{$field}}) {
                     push @{$titlecache_ref->{"T".$field}}, $item_ref unless ($item_ref->{ignore});
                 }
@@ -1418,21 +1419,21 @@ while (my $line=<IN>){
             #
             # Dann: Verwende diese Zeitschriftensignatur
             #
-            if (!exists $record_ref->{'0331'}) {
+            if (!defined $record_ref->{'0331'}) {
                 # UnterFall 2.1:
-                if (exists $record_ref->{'0089'}) {
+                if (defined $record_ref->{'0089'}) {
                     $titlecache_ref->{T0331}[0]{content}=$record_ref->{'0089'}[0]{content};
                 }
                 # Unterfall 2.2:
-                elsif (exists $record_ref->{'0455'}) {
+                elsif (defined $record_ref->{'0455'}) {
                     $titlecache_ref->{T0331}[0]{content}=$record_ref->{'0455'}[0]{content};
                 }
                 # Unterfall 2.3:
-                elsif (exists $record_ref->{'0451'}) {
+                elsif (defined $record_ref->{'0451'}) {
                     $titlecache_ref->{T0331}[0]{content}=$record_ref->{'0451'}[0]{content};
                 }
                 # Unterfall 2.4:
-                elsif (exists $record_ref->{'1203'}) {
+                elsif (defined $record_ref->{'1203'}) {
                     $titlecache_ref->{T0331}[0]{content}=$record_ref->{'1203'}[0]{content};
                 }
                 else {
@@ -1452,7 +1453,7 @@ while (my $line=<IN>){
             # Dann: Setze diese Bandzahl
             
             # Fall 1:
-            if (exists $record_ref->{'0089'}) {
+            if (defined $record_ref->{'0089'}) {
                 $titlecache_ref->{'T5100'}= [
                     {
                         content => $record_ref->{'0089'}[0]{content}
@@ -1460,7 +1461,7 @@ while (my $line=<IN>){
                 ];
             }
             # Fall 2:
-            elsif (exists $record_ref->{'0455'}) {
+            elsif (defined $record_ref->{'0455'}) {
                 $titlecache_ref->{'T5100'}= [
                     {
                         content => $record_ref->{'0455'}[0]{content}
@@ -1491,7 +1492,7 @@ while (my $line=<IN>){
         
         my $create_tstamp = 0;
         
-        if (exists $record_ref->{'0002'} && exists $record_ref->{'0002'}[0]) {
+        if (defined $record_ref->{'0002'} && defined $record_ref->{'0002'}[0]) {
             $create_tstamp = $record_ref->{'0002'}[0]{content};
             if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
                 $create_tstamp=$3.$2.$1;
@@ -1500,7 +1501,7 @@ while (my $line=<IN>){
         
         my $update_tstamp = 0;
         
-        if (exists $record_ref->{'0003'} && exists $record_ref->{'0003'}[0]) {
+        if (defined $record_ref->{'0003'} && defined $record_ref->{'0003'}[0]) {
             $update_tstamp = $record_ref->{'0003'}[0]{content};
             if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
                 $update_tstamp=$3.$2.$1;
@@ -1516,7 +1517,7 @@ while (my $line=<IN>){
         # Abhaengige Feldspezifische Saetze erstellen und schreiben
         
         foreach my $field (keys %{$record_ref}) {
-            next if ($field eq "id" || exists $stammdateien_ref->{title}{blacklist_ref}->{$field});
+            next if ($field eq "id" || defined $stammdateien_ref->{title}{blacklist_ref}->{$field});
             
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 next if ($item_ref->{ignore});
@@ -1528,12 +1529,12 @@ while (my $line=<IN>){
         # Abhaengige normalisierte Feldspezifische Saetze erstellen und schreiben
         
         foreach my $field (keys %{$record_ref}) {
-            next if ($field eq "id" || exists $stammdateien_ref->{title}{blacklist_ref}->{$field});
+            next if ($field eq "id" || defined $stammdateien_ref->{title}{blacklist_ref}->{$field});
             
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 next if ($item_ref->{ignore});
                 
-                if (! exists $item_ref->{norm} && defined $field && exists $stammdateien_ref->{title}{inverted_ref}->{$field}){
+                if (! defined $item_ref->{norm} && defined $field && defined $stammdateien_ref->{title}{inverted_ref}->{$field}){
                     $item_ref->{norm} = OpenBib::Common::Util::grundform({
                         category => $field,
                         content  => $item_ref->{content},
@@ -1577,7 +1578,7 @@ while (my $line=<IN>){
 
         chomp($content);
 
-        next CATLINE if (exists $stammdateien_ref->{title}{blacklist_ref}->{$category});
+        next CATLINE if (defined $stammdateien_ref->{title}{blacklist_ref}->{$category});
 
         # Todo: Indikatoren auswerten
 

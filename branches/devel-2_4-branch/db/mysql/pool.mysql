@@ -18,7 +18,7 @@ create table person (
  INDEX         (tstamp_create),
  INDEX         (tstamp_update)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -39,7 +39,7 @@ create table person_fields (
  INDEX         (content(10)),
  INDEX         (personid,field)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -59,7 +59,7 @@ create table person_normfields (
  INDEX         (subfield),
  INDEX         (content(10))
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -79,7 +79,7 @@ create table corporatebody (
  INDEX         (tstamp_create),
  INDEX         (tstamp_update)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -100,7 +100,7 @@ create table corporatebody_fields (
  INDEX         (content(10)),
  INDEX         (corporatebodyid,field)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -120,7 +120,7 @@ create table corporatebody_normfields (
  INDEX         (subfield),
  INDEX         (content(10))
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -140,7 +140,7 @@ create table subject (
  INDEX         (tstamp_create),
  INDEX         (tstamp_update)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -161,7 +161,7 @@ create table subject_fields (
  INDEX         (content(10)),
  INDEX         (subjectid,field)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -181,7 +181,7 @@ create table subject_normfields (
  INDEX         (subfield),
  INDEX         (content(10))
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -201,7 +201,7 @@ create table classification (
  INDEX         (tstamp_create),
  INDEX         (tstamp_update)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -222,7 +222,7 @@ create table classification_fields (
  INDEX         (content(10)),
  INDEX         (classificationid,field)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -242,7 +242,7 @@ create table classification_normfields (
  INDEX         (subfield),
  INDEX         (content(10))
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -265,7 +265,7 @@ create table title (
  INDEX         (tstamp_create),
  INDEX         (tstamp_update)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -286,7 +286,7 @@ create table title_fields (
  INDEX         (content(10)),
  INDEX         (titleid,field)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -306,7 +306,7 @@ create table title_normfields (
  INDEX         (subfield),
  INDEX         (content(10))
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -322,7 +322,7 @@ create table holding (
 
  INDEX         (id)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -343,7 +343,7 @@ create table holding_fields (
  INDEX         (content(10)),
  INDEX         (holdingid,field)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -363,7 +363,7 @@ create table holding_normfields (
  INDEX         (subfield),
  INDEX         (content(10))
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -382,7 +382,7 @@ CONSTRAINT `fk_titletitle_targettitle` FOREIGN KEY (`target_titleid`) REFERENCES
 index      (source_titleid),
 index      (target_titleid)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -399,7 +399,7 @@ CONSTRAINT `fk_titleperson_title` FOREIGN KEY (`titleid`) REFERENCES `title` (`i
 index      (personid),
 index      (titleid)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -416,7 +416,7 @@ CONSTRAINT `fk_titlecorporatebody_title` FOREIGN KEY (`titleid`) REFERENCES `tit
 index      (corporatebodyid),
 index      (titleid)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -433,7 +433,7 @@ CONSTRAINT `fk_titlesubject_title` FOREIGN KEY (`titleid`) REFERENCES `title` (`
 index      (subjectid),
 index      (titleid)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -450,7 +450,7 @@ CONSTRAINT `fk_titleclassification_title` FOREIGN KEY (`titleid`) REFERENCES `ti
 index      (classificationid),
 index      (titleid)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -467,6 +467,6 @@ CONSTRAINT `fk_titleholding_title` FOREIGN KEY (`titleid`) REFERENCES `title` (`
 index      (holdingid),
 index      (titleid)
 )
-ENGINE InnoDB
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci;

@@ -344,10 +344,11 @@ my $atime = new Benchmark;
                         }
                     }
                     elsif ($this_sorting_ref->{type} eq "integercategory"){
-                        my $content = 0;
-                        if (exists $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}){
-                            ($content) = $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}=~m/^(\d+)/;
-                        }
+                        my $content = (exists $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content})?$title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}:0;
+                        next unless ($content);
+
+                        ($content) = $content=~m/^(\d+)/;
+                        
                         if ($content){
                             $content = sprintf "%08d",$content;
                             $logger->debug("Adding $content as sortvalue");

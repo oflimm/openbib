@@ -76,7 +76,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $subset = new OpenBib::Database::Subset("inst001",$pool);
-$subset->identify_by_category_content('classification',([ { category => '0001', content => '^Slg. Reinhold Schneider' } ]));
+$subset->identify_by_category_content('classification',([ { category => '0001', content => '^Sammlung Reinhold Schneider' } ]));
 $subset->write_set;
 
 sub print_help {

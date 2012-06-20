@@ -65,7 +65,7 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbh
 
 print "### $pool: Bestimme Titel-ID's anhand der Notation\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,notation where notation.category=1 and notation.content = 'Slg. Islandica' and conn.targetid=notation.id and conn.sourcetype=1 and conn.targettype=5") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,notation where notation.category=1 and notation.content = 'Sammlung Islandica' and conn.targetid=notation.id and conn.sourcetype=1 and conn.targettype=5") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

@@ -214,7 +214,7 @@ sub identify_by_category_content {
     
     foreach my $criteria_ref (@$arg_ref){        
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
-        my $titles = $self->{schema}->resultset('TitleFields')->search_rs(
+        my $titles = $self->{schema}->resultset('TitleField')->search_rs(
             {
                 'field'   => $criteria_ref->{category},
                 'content' => { 'rlike' => $criteria_ref->{content} },
@@ -229,11 +229,11 @@ sub identify_by_category_content {
             # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
             $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
                 {
-                    $table_type{$table}{join} => $criteria_ref->{category},
+                    $table_type{$table}{field} => $criteria_ref->{category},
                     'content' => { 'rlike' => $criteria_ref->{content} },
                 },
                 {
-                    select   => ['titleid'],
+                    select   => ['me.titleid'],
                     as       => ['thisid'],
                     join     => $table_type{$table}{join},
                 }

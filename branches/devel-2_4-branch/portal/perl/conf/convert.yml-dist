@@ -143,7 +143,6 @@ convtab:
         string: 1
         index:
           'corporatebody': 1
-          'corporatebodystring': 1
           'freesearch': 1
       '0102':         # Verweisform
         ft: 1
@@ -183,7 +182,6 @@ convtab:
         string: 1
         index:
           'classification': 1
-          'classificationstring': 1
           'freesearch': 1
       '0002':         # Ansetzung
         ft: 1
@@ -209,7 +207,6 @@ convtab:
         string: 1
         index:
           'subject': 1
-          'subjectstring': 1
           'freesearch': 20
       '0102':         # Verweisform
         ft: 1
@@ -240,6 +237,7 @@ convtab:
       '0014':         # Signatur, wenn nicht in den Exemplardaten
         index:
           'mark': 1
+          'markstring': 1
       '0015':
         index:
           'language': 1
@@ -272,14 +270,15 @@ convtab:
         facet:
           'person': 1
       '0200':
+        index:
+          'corporatebodystring': 1
         facet:
           'corporatebody': 1
       '0201':
+        index:
+          'corporatebodystring': 1
         facet:
           'corporatebody': 1
-      '0103':
-        facet:
-          'person': 1
       '0304':         # EST
         ft: 1
         string: 1
@@ -369,9 +368,13 @@ convtab:
           'source': 1
           'freesearch': 1
       '0700':
+        index:
+          'classificationstring': 1
         facet:
           'classification': 1
       '0710':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0750':         # Abstract
@@ -387,37 +390,58 @@ convtab:
         facet:
           'mediatype': 1
       '0902':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0907':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0912':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0917':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0922':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0927':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0932':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0937':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0942':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0947':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '1203':         # Signatur, wenn nicht in den Exemplardaten
         index:
+          'markstring': 1
           'mark': 1
       '4100':         # BK
         index:

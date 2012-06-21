@@ -115,8 +115,6 @@ my %indexed_subject             = ();
 my %indexed_classification      = ();
 my %indexed_holding             = ();
 
-$reducemem = 1;
-
 if ($reducemem) {
     tie %indexed_person,        'MLDBM', "./indexed_person.db"
         or die "Could not tie indexed_person.\n";
@@ -750,12 +748,12 @@ while (my $line=<IN>){
         
         if (defined $record_ref->{'0004'}) {
             foreach my $item_ref (@{$record_ref->{'0004'}}) {
-                my ($target_titleid) = $item_ref->{content};
+                my $target_titleid   = $item_ref->{content};
                 my $source_titleid   = $id;
                 my $supplement       = "";
                 my $field            = "0004";
                 
-                if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {
+                if (defined $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {
                     foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}) {
                         my $weight = $stammdateien_ref->{title}{inverted_ref}{$field}->{index}{$searchfield};
                         
@@ -1001,7 +999,7 @@ while (my $line=<IN>){
                                     });
                                 }
                                 
-                                $logger->info("Adding Listlists to ID $id");
+                                $logger->info("Adding Litlists to ID $id");
                             }
                         }
                         else {

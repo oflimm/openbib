@@ -364,6 +364,8 @@ sub highlightquery {
     
     # Highlight Query
 
+    return $content unless ($searchquery);
+    
     my $term_ref = $searchquery->get_searchterms();
 
     return $content if (scalar(@$term_ref) <= 0);

@@ -75,7 +75,11 @@ sub handler : method {
           . Data::Dumper::Dumper(\%args) . "\n";
     }
 
+    $logger->debug("Dispatching");
+    
     $self->dispatch(%args);
+
+    $logger->debug("Dispatching done with status ".$r->status);
 
     if($r->status == 404) {
         return Apache2::Const::NOT_FOUND;

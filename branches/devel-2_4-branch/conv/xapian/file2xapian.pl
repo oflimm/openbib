@@ -252,7 +252,7 @@ my $atime = new Benchmark;
                 # Datenbankname
                 $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($database)) if ($type eq "db" && $database);
                 
-                next if (!exists $searchcontent_ref->{"facet_".$type});
+                next if (!defined $searchcontent_ref->{"facet_".$type});
                 
                 my %seen_terms = ();
                 my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$searchcontent_ref->{"facet_".$type}}; 

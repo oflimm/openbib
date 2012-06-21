@@ -345,7 +345,7 @@ sub negotiate_content {
         if (any { $_ eq $information_type } @accepted_types) {
             $logger->debug("Negotiated Type: $information_type - Suffix: ".$config->{content_type_map}->{$information_type});
             $self->param('content_type',$information_type);
-            $self->param('represenatione',$config->{content_type_map}->{$information_type});
+            $self->param('representation',$config->{content_type_map}->{$information_type});
             last;
         }
     }

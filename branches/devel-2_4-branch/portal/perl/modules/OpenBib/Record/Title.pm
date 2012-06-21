@@ -325,7 +325,6 @@ sub load_full_record {
     {
         my ($atime,$btime,$timeall)=(0,0,0);
         
-        my $reqstring;
         my $request;
         my $res;
         
@@ -351,7 +350,7 @@ sub load_full_record {
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
+            $logger->info("Zeit fuer  ist ".timestr($timeall));
         }
 
         # Ueberordnungen
@@ -376,7 +375,7 @@ sub load_full_record {
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
+            $logger->info("Zeit ist ".timestr($timeall));
         }
 
     }
@@ -845,11 +844,18 @@ sub load_brief_record {
         $logger->debug("Stored listitem: $titlecache_json");
 
         if ($titlecache_json){
-            my $titlecache_ref = decode_json $titlecache_json;
-            
-            %$listitem_ref=(%$listitem_ref,%$titlecache_ref);
-            
-            $record_exists = 1 if (!$record_exists);
+            my $titlecache_ref = {};
+            eval {                
+                $titlecache_ref = decode_json $titlecache_json;
+            };
+            if ($@){
+                $logger->error("Can't decode JSON string $titlecache_json");
+            }
+            else {
+                %$listitem_ref=(%$listitem_ref,%$titlecache_ref);
+                
+                $record_exists = 1 if (!$record_exists);
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 # Versionsnummer
-version: OpenBib v2.4alpha
+version: OpenBib v2.4alpha3
 
 # Unter diesem Namen wird der lokale Server angesprochen
 servername: localhost
@@ -2133,6 +2133,9 @@ searchfield:
   'subjectstring':
      'prefix': 'fsubj'
      'type': 'string'
+  'yearstring':
+     'prefix': 'fyear'
+     'type': 'string'
   'languagestring':
      'prefix': 'flang'
      'type': 'string'
@@ -2916,8 +2919,8 @@ default_query_options:
   srta: 0
   profil: ''
   jn: 1
-  dop: 'and'
   lt: 'cover'
+  ips_user: '' 
 
 # Generierte BestOf-Daten
 best_of:
@@ -2961,6 +2964,10 @@ unAPI_formats:
   mods: 0
   oai_dc: 1
   mets: 0
+
+eventlogjson_type:
+  1: 1
+  10: 1
 
 # Katalogabhaengige Kategorie-Mappings
 categorymapping:

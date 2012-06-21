@@ -133,6 +133,7 @@ create table livesearch_data (
  index         (dbname),
  index         (content(20))
 )
+ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;

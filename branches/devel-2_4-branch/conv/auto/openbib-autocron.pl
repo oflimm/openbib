@@ -4,9 +4,9 @@
 #
 #  openbib-autocron.pl
 #
-#  CRON-Job zumr automatischen aktualisieren aller OpenBib-Datenbanken
+#  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -130,9 +130,15 @@ autoconvert({ sync => 1, databases => ['inst001'] });
 
 ##############################
 
-$logger->info("### Aufgesplittete Kataloge aus USB Katalog");
+$logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
 
-autoconvert({ sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'wiso', 'islandica'] });
+autoconvert({ sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'wiso'] });
+
+##############################
+
+$logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
+
+autoconvert({ sync => 1, databases => ['afrikaans','alff','baeumker','becker','dante','digitalis','dirksen','evang','fichte','gabel','gruen','gymnasialbibliothek','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
 
 ##############################
 

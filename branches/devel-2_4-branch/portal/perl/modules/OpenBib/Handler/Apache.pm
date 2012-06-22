@@ -274,7 +274,7 @@ sub cgiapp_prerun {
 
     }
 
-    if ($r->method eq "GET" && !$self->query->param('l')){
+    if ($r->method eq "GET" && !$self->query->param('l') && !$self->param('disable_content_negotiation')){
 #        my $config       = OpenBib::Config->instance;
 #        my $view         = $self->param('view') || $config->get('defaultview');
         my $servername   = $r->get_server_name;

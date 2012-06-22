@@ -255,7 +255,7 @@ my $atime = new Benchmark;
                 next if (!defined $searchcontent_ref->{"facet_".$type});
                 
                 my %seen_terms = ();
-                my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$searchcontent_ref->{"facet_".$type}}; 
+                my @unique_terms = grep { defined $_ && ! $seen_terms{$_} ++ } @{$searchcontent_ref->{"facet_".$type}}; 
                 
                 my $multstring = join("\t",@unique_terms);
                 

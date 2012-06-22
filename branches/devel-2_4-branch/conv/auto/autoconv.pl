@@ -108,8 +108,8 @@ if (!$config->db_exists($database)){
 
 my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
 
-my $dbh           = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-    or $logger->error_die($DBI::errstr);
+#my $dbh           = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+#    or $logger->error_die($DBI::errstr);
 
 
 $logger->info("### POOL $database");
@@ -262,7 +262,7 @@ my $atime = new Benchmark;
 
     if ($config->{dbimodule} eq "Pg"){
         # Temporaer Zugriffspassword setzen
-        system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ");
+        system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
     }
     
     if ($config->{dbimodule} eq "mysql"){
@@ -281,16 +281,16 @@ my $atime = new Benchmark;
         system("$mysqlexe $databasetmp < $rootdir/data/$database/control_index_off.sql");
     }
     elsif ($config->{dbimodule} eq "Pg"){
-        system("$pgsqlexe -c 'drop database $databasetmp'");
-        system("$pgsqlexe -c 'create database $databasetmp'");
+        system("/usr/bin/dropdb -U $config->{'dbuser'} $databasetmp");
+        system("/usr/bin/createdb -U $config->{'dbuser'} -O root $databasetmp");
         
         $logger->info("### $database: Datendefinition einlesen");
 
-        system("$pgsqlexe -f $config->{'dbdesc_dir'}/postgresql/pool.sql' $databasetmp'");
+        system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool.sql' $databasetmp");
         
         # Index entfernen
         $logger->info("### $database: Index in temporaerer Datenbank entfernen");
-        system("$pgsqlexe -f $config->{'dbdesc_dir'}/postgresql/pool_drop_index.sql' $databasetmp'");
+        system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool_drop_index.sql' $databasetmp");
     }
 
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_index_off.pl"){
@@ -461,7 +461,7 @@ if ($config->{dbimodule} eq "Pg"){
 }
 
 system("$mysqladminexe drop   $databasetmp");
-system("rm $rootdir/data/$database/*") unless ($database eq "inst001");
+#system("rm $rootdir/data/$database/*") unless ($database eq "inst001");
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

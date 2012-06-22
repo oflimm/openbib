@@ -259,7 +259,16 @@ sub initial_search {
     };
     
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
-    $self->{qp}->set_database($dbh);
+    # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
+    eval {
+        $self->{qp}->set_database($dbh);
+    };
+
+    if ($@){
+        $logger->error("Error setting dbh $dbh :".$@);
+        return [];
+    }
+
     $self->{qp}->set_default_op($default_op_ref->{$defaultop});
 
     foreach my $prefix (keys %{$config->{xapian_search_prefix}}){
@@ -533,7 +542,15 @@ sub get_values {
     my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
 
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
-    $qp->set_database($dbh);    
+    eval {
+        $qp->set_database($dbh);
+    };
+
+    if ($@){
+        $logger->error("Error setting database $database :".$@);
+        return [];
+    }
+    
     $qp->add_prefix('id', 'Q');
     $qp->set_default_op(Search::Xapian::OP_AND);
 
@@ -623,7 +640,11 @@ sub parse_query {
             }
             # Sonst Operator und Prefix hinzufuegen
             elsif ($searchtermstring) {
-                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":($searchtermstring)";
+                if ($config->{searchfield}{$field}{type} eq "ft"){
+                    $searchtermstring = "($searchtermstring)";
+                }
+                
+                $searchtermstring=$searchtermop.$config->{searchfield}{$field}{prefix}.":$searchtermstring";
                 push @xapianquerystrings, $searchtermstring;                
             }
 

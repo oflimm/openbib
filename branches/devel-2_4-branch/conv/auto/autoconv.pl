@@ -92,6 +92,8 @@ my $wais2sqlexe   = "$config->{'conv_dir'}/wais2searchSQL.pl";
 my $mysqlexe      = "/usr/bin/mysql -u $config->{'dbuser'} --password=$config->{'dbpasswd'} -f";
 my $mysqladminexe = "/usr/bin/mysqladmin -u $config->{'dbuser'} --password=$config->{'dbpasswd'} -f";
 
+my $pgsqlexe      = "/usr/bin/psql -U $config->{'dbuser'} ";
+
 if (!$database){
   $logger->fatal("Kein Katalog mit --database= ausgewaehlt");
   exit;
@@ -258,43 +260,77 @@ my $atime = new Benchmark;
         
     $logger->info("### $database: Temporaere Datenbank erzeugen");
 
-    # Fuer das Einladen externer SQL-Daten mit 'load' wird das File_priv
-    # fuer den Benutzer dbuser benoetigt
+    if ($config->{dbimodule} eq "Pg"){
+        # Temporaer Zugriffspassword setzen
+        system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ");
+    }
+    
+    if ($config->{dbimodule} eq "mysql"){
+        # Fuer das Einladen externer SQL-Daten mit 'load' wird das File_priv
+        # fuer den Benutzer dbuser benoetigt
+        
+        system("$mysqladminexe drop   $databasetmp");
+        system("$mysqladminexe create $databasetmp");
+        
+        $logger->info("### $database: Datendefinition einlesen");
+        
+        system("$mysqlexe $databasetmp < $config->{'dbdesc_dir'}/mysql/pool.mysql");
+        
+        # Index entfernen
+        $logger->info("### $database: Index in temporaerer Datenbank entfernen");
+        system("$mysqlexe $databasetmp < $rootdir/data/$database/control_index_off.sql");
+    }
+    elsif ($config->{dbimodule} eq "Pg"){
+        system("$pgsqlexe -c 'drop database $databasetmp'");
+        system("$pgsqlexe -c 'create database $databasetmp'");
+        
+        $logger->info("### $database: Datendefinition einlesen");
 
-    system("$mysqladminexe drop   $databasetmp");
-    system("$mysqladminexe create $databasetmp");
-    
-    $logger->info("### $database: Datendefinition einlesen");
-    
-    system("$mysqlexe $databasetmp < $config->{'dbdesc_dir'}/mysql/pool.mysql");
-    
-    # Index entfernen
-    $logger->info("### $database: Index in temporaerer Datenbank entfernen");
-    system("$mysqlexe $databasetmp < $rootdir/data/$database/control_index_off.sql");
-    
+        system("$pgsqlexe -f $config->{'dbdesc_dir'}/postgresql/pool.sql' $databasetmp'");
+        
+        # Index entfernen
+        $logger->info("### $database: Index in temporaerer Datenbank entfernen");
+        system("$pgsqlexe -f $config->{'dbdesc_dir'}/postgresql/pool_drop_index.sql' $databasetmp'");
+    }
+
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_index_off.pl"){
         $logger->info("### $database: Verwende Plugin post_index_off.pl");
         system("$config->{autoconv_dir}/filter/$database/post_index_off.pl $databasetmp");
     }
     
-    # Einladen der Daten
-    $logger->info("### $database: Einladen der Daten in temporaere Datenbank");
-    system("$mysqlexe $databasetmp < $rootdir/data/$database/control.sql");
 
+    if ($config->{dbimodule} eq "mysql"){
+        # Einladen der Daten
+        $logger->info("### $database: Einladen der Daten in temporaere Datenbank");
+        system("$mysqlexe $databasetmp < $rootdir/data/$database/control.sql");
+    }
+    elsif ($config->{dbimodule} eq "Pg"){
+        # Einladen der Daten
+        $logger->info("### $database: Einladen der Daten in temporaere Datenbank");
+        system("$pgsqlexe -f '$rootdir/data/$database/control.sql' $databasetmp");
+    }
+    
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_dbload.pl"){
         $logger->info("### $database: Verwende Plugin post_dbload.pl");
         system("$config->{autoconv_dir}/filter/$database/post_dbload.pl $databasetmp");
     }
 
-    # Index setzen
-    $logger->info("### $database: Index in temporaerer Datenbank aufbauen");
-    system("$mysqlexe $databasetmp < $rootdir/data/$database/control_index_on.sql");
-
+    if ($config->{dbimodule} eq "mysql"){
+        # Index setzen
+        $logger->info("### $database: Index in temporaerer Datenbank aufbauen");
+        system("$mysqlexe $databasetmp < $rootdir/data/$database/control_index_on.sql");
+    }
+    elsif ($config->{dbimodule} eq "Pg"){
+        # Index setzen
+        $logger->info("### $database: Index in temporaerer Datenbank aufbauen");
+        system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool_create_index.sql' $databasetmp'");
+    }
+    
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_index_on.pl"){
         $logger->info("### $database: Verwende Plugin post_index_on.pl");
         system("$config->{autoconv_dir}/filter/$database/post_index_on.pl $databasetmp");
     }
-
+    
     # Tabellen Packen
     system("$config->{autoconv_dir}/filter/common/pack_data.pl $databasetmp");
 
@@ -368,23 +404,30 @@ my $atime = new Benchmark;
 
     $logger->info("### $database: Tabellen aus temporaerer Datenbank in finale Datenbank verschieben");
 
-    system("$mysqladminexe drop $database ");
-    system("$mysqladminexe create $database ");
-    #system("mv /var/lib/mysql/$databasetmp /var/lib/mysql/$database");
+    if ($config->{dbimodule} eq "mysql"){
+
+        system("$mysqladminexe drop $database ");
+        system("$mysqladminexe create $database ");
+        #system("mv /var/lib/mysql/$databasetmp /var/lib/mysql/$database");
 
 
-    open(COPYIN, "echo \"show tables;\" | $mysqlexe -s $databasetmp |");
-    open(COPYOUT,"| $mysqlexe -s $databasetmp |");
-
-    while (<COPYIN>){
+        open(COPYIN, "echo \"show tables;\" | $mysqlexe -s $databasetmp |");
+        open(COPYOUT,"| $mysqlexe -s $databasetmp |");
+        
+        while (<COPYIN>){
         chomp();
     print COPYOUT <<"ENDE";
 rename table $databasetmp.$_ to $database.$_ ;
 ENDE
     }
 
-    close(COPYIN);
-    close(COPYOUT);
+        close(COPYIN);
+        close(COPYOUT);
+    }
+    elsif ($config->{dbimodule} eq "Pg"){
+        system("$pgsqlexe -c 'drop database $database'");
+        system("$pgsqlexe -c 'alter database $databasetmp rename to $database'");
+    }
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
@@ -411,6 +454,11 @@ ENDE
 CLEANUP:
 
 $logger->info("### $database: Cleanup");
+
+if ($config->{dbimodule} eq "Pg"){
+    # Temporaer Zugriffspassword setzen
+    system("rm ~/.pgpass ");
+}
 
 system("$mysqladminexe drop   $databasetmp");
 system("rm $rootdir/data/$database/*") unless ($database eq "inst001");

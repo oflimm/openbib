@@ -231,7 +231,6 @@ my $stammdateien_ref = {
         infile             => "meta.person",
         outfile            => "person.dump",
         outfile_fields     => "person_fields.dump",
-        outfile_normfields => "person_normfields.dump",
         inverted_ref       => $conv_config->{inverted_person},
         blacklist_ref      => $conv_config->{blacklist_person},
     },
@@ -240,7 +239,6 @@ my $stammdateien_ref = {
         infile             => "meta.corporatebody",
         outfile            => "corporatebody.dump",
         outfile_fields     => "corporatebody_fields.dump",
-        outfile_normfields => "corporatebody_normfields.dump",
         inverted_ref       => $conv_config->{inverted_corporatebody},
         blacklist_ref      => $conv_config->{blacklist_corporatebody},
     },
@@ -249,7 +247,6 @@ my $stammdateien_ref = {
         infile             => "meta.subject",
         outfile            => "subject.dump",
         outfile_fields     => "subject_fields.dump",
-        outfile_normfields => "subject_normfields.dump",
         inverted_ref       => $conv_config->{inverted_subject},
         blacklist_ref      => $conv_config->{blacklist_subject},
     },
@@ -258,7 +255,6 @@ my $stammdateien_ref = {
         infile             => "meta.classification",
         outfile            => "classification.dump",
         outfile_fields     => "classification_fields.dump",
-        outfile_normfields => "classification_normfields.dump",
         inverted_ref       => $conv_config->{inverted_classification},
         blacklist_ref      => $conv_config->{blacklist_classification},
     },
@@ -271,7 +267,6 @@ foreach my $type (keys %{$stammdateien_ref}) {
     open(IN ,           "<:utf8",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
     open(OUT,           ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
     open(OUTFIELDS,     ">:utf8",$stammdateien_ref->{$type}{outfile_fields})     || die "OUTFIELDS konnte nicht geoeffnet werden";
-    open(OUTNORMFIELDS, ">:utf8",$stammdateien_ref->{$type}{outfile_normfields}) || die "OUTNORMFIELDS konnte nicht geoeffnet werden";
 
     my $id;
     my ($category,$mult,$content);
@@ -309,10 +304,6 @@ foreach my $type (keys %{$stammdateien_ref}) {
             foreach my $field (keys %{$record_ref}) {
                 next if ($field eq "id"); # || exists $stammdateien_ref->{$type}{blacklist_ref}->{$field});
                 foreach my $item_ref (@{$record_ref->{$field}}) {
-                    
-                    # Abhaengige Feldspezifische Saetze erstellen und schreiben
-                    print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
-                    
                     
                     my $contentnorm   = "";
                     if (defined $field && exists $stammdateien_ref->{$type}{inverted_ref}->{$field}) {
@@ -366,9 +357,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
                         }
                     }
                     
-                    
-                    # Abhaengige normalisierte Feldspezifische Saetze erstellen und schreiben
-                    print OUTNORMFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$contentnorm\n";
+                    # Abhaengige Feldspezifische Saetze erstellen und schreiben
+                    print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
                 }
             }
             
@@ -421,8 +411,13 @@ foreach my $type (keys %{$stammdateien_ref}) {
             next CATLINE unless (defined $content && defined $category);
             
             chomp($content);
-            
+
+            next CATLINE unless ($content && $category);
+
             next CATLINE if (exists $stammdateien_ref->{$type}{blacklist_ref}->{$category});
+
+            # To make PostgreSQL happy
+            $content =~s/\r/\\r/g;
             
             # Kategorie in Record setzen            
             push @{$record_ref->{$category}}, {
@@ -433,7 +428,6 @@ foreach my $type (keys %{$stammdateien_ref}) {
 
     close(OUT);
     close(OUTFIELDS);
-    close(OUTNORMFIELDS);
 
     close(IN);
 }
@@ -444,7 +438,6 @@ $stammdateien_ref->{holding} = {
     infile             => "meta.holding",
     outfile            => "holding.dump",
     outfile_fields     => "holding_fields.dump",
-    outfile_normfields => "holding_normfields.dump",
     inverted_ref       => $conv_config->{inverted_holding},
 };
 
@@ -453,7 +446,6 @@ $logger->info("Bearbeite meta.holding");
 open(IN ,          "<:utf8","meta.holding"        ) || die "IN konnte nicht geoeffnet werden";
 open(OUT,          ">:utf8","holding.dump"       ) || die "OUT konnte nicht geoeffnet werden";
 open(OUTFIELDS,    ">:utf8","holding_fields.dump"    ) || die "OUTFIELDS konnte nicht geoeffnet werden";
-open(OUTNORMFIELDS,">:utf8","holding_normfields.dump") || die "OUTNORMFIELDS konnte nicht geoeffnet werden";
 open(OUTTITLETITLE,         ">:utf8","title_title.dump")           || die "OUTTITLETITLE konnte nicht geoeffnet werden";
 open(OUTTITLEHOLDING,       ">:utf8","title_holding.dump")         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
 open(OUTTITLEPERSON,        ">:utf8","title_person.dump")          || die "OUTTITLEPERSON konnte nicht geoeffnet werden";
@@ -503,9 +495,6 @@ while (my $line=<IN>){
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 next unless ($item_ref->{content});
                 
-                # Abhaengige Feldspezifische Saetze erstellen und schreiben        
-                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
-                
                 my $contentnorm   = "";
                 if (defined $field && exists $stammdateien_ref->{holding}{inverted_ref}->{$field}) {
                     $contentnorm = OpenBib::Common::Util::grundform({
@@ -528,9 +517,9 @@ while (my $line=<IN>){
                         $indexed_holding{$titleid} = $hash_ref;
                     }
                 }
-                
-                # Abhaengige normalisierte Feldspezifische Saetze erstellen und schreiben            
-                print OUTNORMFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$contentnorm\n";            
+
+                # Abhaengige Feldspezifische Saetze erstellen und schreiben        
+                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
             }
         }
         
@@ -610,9 +599,14 @@ while (my $line=<IN>){
         next CATLINE unless (defined $content && defined $category);
         
         chomp($content);
-        
+
+        next CATLINE unless ($content && $category);
+
         next CATLINE if (exists $stammdateien_ref->{holding}{blacklist_ref}->{$category});
-        
+
+        # To make PostgreSQL happy
+        $content =~s/\r/\\r/g;
+
         # Kategorie in Record setzen
         
         push @{$record_ref->{$category}}, {
@@ -623,14 +617,12 @@ while (my $line=<IN>){
 
 close(OUT);
 close(OUTFIELDS);
-close(OUTNORMFIELDS);
 close(IN);
 
 $stammdateien_ref->{title} = {
     infile             => "meta.title",
     outfile            => "title.dump",
     outfile_fields     => "title_fields.dump",
-    outfile_normfields => "title_normfields.dump",
     inverted_ref       => $conv_config->{inverted_title},
     blacklist_ref      => $conv_config->{blacklist_title},
 };
@@ -679,7 +671,6 @@ $logger->info("Bearbeite meta.title");
 open(IN ,           "<:utf8","meta.title"         )     || die "IN konnte nicht geoeffnet werden";
 open(OUT,           ">:utf8","title.dump"        )      || die "OUT konnte nicht geoeffnet werden";
 open(OUTFIELDS,     ">:utf8","title_fields.dump"     )  || die "OUTFIELDS konnte nicht geoeffnet werden";
-open(OUTNORMFIELDS, ">:utf8","title_normfields.dump" )  || die "OUTNORMFIELDS konnte nicht geoeffnet werden";
 open(SEARCHENGINE,  ">:utf8","searchengine.csv" )       || die "SEARCHENGINE konnte nicht goeffnet werden";
 
 
@@ -763,7 +754,9 @@ while (my $line=<IN>){
                 
                 push @superids, $target_titleid;
                 
-                print OUTTITLETITLE "$field$source_titleid$target_titleid$supplement\n";
+                if (exists $listitemdata_superid{$target_titleid}){
+                    print OUTTITLETITLE "$field$source_titleid$target_titleid$supplement\n";
+                }
             }
         }
         
@@ -786,8 +779,10 @@ while (my $line=<IN>){
                     #                 }
                     
                     next unless $personid;
-                    
-                    print OUTTITLEPERSON "$field$id$personid$supplement\n";
+
+                    if (exists $listitemdata_person{$personid}){
+                        print OUTTITLEPERSON "$field$id$personid$supplement\n";
+                    }
                     
                     # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
                     # auch wirklich existiert -> schlechte Katalogisate
@@ -844,7 +839,9 @@ while (my $line=<IN>){
                     
                     next unless $corporatebodyid;
                     
-                    print OUTTITLECORPORATEBODY "$field$id$corporatebodyid$supplement\n";
+                    if (exists $listitemdata_corporatebody{$corporatebodyid}){
+                        print OUTTITLECORPORATEBODY "$field$id$corporatebodyid$supplement\n";
+                    }
                     
                     # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
                     # auch wirklich existiert -> schlechte Katalogisate
@@ -901,7 +898,9 @@ while (my $line=<IN>){
                     
                     next unless $classificationid;
                     
-                    print OUTTITLECLASSIFICATION "$field$id$classificationid$supplement\n";
+                    if (exists $listitemdata_classification{$classificationid}){
+                        print OUTTITLECLASSIFICATION "$field$id$classificationid$supplement\n";
+                    }
                     
                     # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
                     # auch wirklich existiert -> schlechte Katalogisate
@@ -942,7 +941,9 @@ while (my $line=<IN>){
                     
                     next unless $subjectid;
                     
-                    print OUTTITLESUBJECT "$field$id$subjectid$supplement\n";
+                    if (exists $listitemdata_subject{$subjectid}){
+                        print OUTTITLESUBJECT "$field$id$subjectid$supplement\n";
+                    }
                     
                     # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
                     # auch wirklich existiert -> schlechte Katalogisate
@@ -1513,33 +1514,22 @@ while (my $line=<IN>){
         print OUT "$id$create_tstamp$update_tstamp$titlecache$popularity\n";
         
         # Abhaengige Feldspezifische Saetze erstellen und schreiben
-        
+         
         foreach my $field (keys %{$record_ref}) {
             next if ($field eq "id" || defined $stammdateien_ref->{title}{blacklist_ref}->{$field});
             
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 next if ($item_ref->{ignore});
-                
-                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n" if ($item_ref->{content});
-            }
-        }
-        
-        # Abhaengige normalisierte Feldspezifische Saetze erstellen und schreiben
-        
-        foreach my $field (keys %{$record_ref}) {
-            next if ($field eq "id" || defined $stammdateien_ref->{title}{blacklist_ref}->{$field});
-            
-            foreach my $item_ref (@{$record_ref->{$field}}) {
-                next if ($item_ref->{ignore});
-                
+
                 if (! defined $item_ref->{norm} && defined $field && defined $stammdateien_ref->{title}{inverted_ref}->{$field}){
                     $item_ref->{norm} = OpenBib::Common::Util::grundform({
                         category => $field,
                         content  => $item_ref->{content},
                     });
                 }
-                
-                print OUTNORMFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{norm}\n" if ($item_ref->{norm});
+
+                $item_ref->{norm} = "" unless ($item_ref->{norm});
+                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$item_ref->{norm}\n";
             }
         }                
         
@@ -1576,6 +1566,8 @@ while (my $line=<IN>){
 
         chomp($content);
 
+        next CATLINE unless ($content && $category);
+
         next CATLINE if (defined $stammdateien_ref->{title}{blacklist_ref}->{$category});
 
         # Todo: Indikatoren auswerten
@@ -1585,6 +1577,9 @@ while (my $line=<IN>){
 #                 $record->set_category({ category => $category, mult => $mult, indicator => $subcontent->{indicator}, content => $subcontent->{content} });
 #             }
 #         }
+
+        # To make PostgreSQL happy
+        $content =~s/\r/\\r/g;
 
         if ($content =~/^IDN: (\S+)/){
             my $refid      = $1;
@@ -1617,7 +1612,6 @@ while (my $line=<IN>){
 
 close(OUT);
 close(OUTFIELDS);
-close(OUTNORMFIELDS);
 close(SEARCHENGINE);
 
 close(IN);
@@ -1636,7 +1630,6 @@ if ($config->{dbimodule} eq "mysql") {
         print CONTROLINDEXOFF << "DISABLEKEYS";
 alter table $type        disable keys;
 alter table ${type}_fields     disable keys;
-alter table ${type}_normfields disable keys;
 SET FOREIGN_KEY_CHECKS=0;
 DISABLEKEYS
     }
@@ -1652,12 +1645,10 @@ DISABLEKEYS
         print CONTROL << "ITEMTRUNC";
 truncate table $type;
 truncate table ${type}_fields;
-truncate table ${type}_normfields;
 ITEMTRUNC
         print CONTROL << "ITEM";
-load data local infile '$dir/$stammdateien_ref->{$type}{outfile}'            into table $type              fields terminated by '' ;
-load data local infile '$dir/$stammdateien_ref->{$type}{outfile_fields}'     into table ${type}_fields     fields terminated by '' ;
-load data local infile '$dir/$stammdateien_ref->{$type}{outfile_normfields}' into table ${type}_normfields fields terminated by '' ;
+load data infile '$dir/$stammdateien_ref->{$type}{outfile}'            into table $type              fields terminated by '' ;
+load data infile '$dir/$stammdateien_ref->{$type}{outfile_fields}'     into table ${type}_fields     fields terminated by '' ;
 ITEM
     }
 
@@ -1671,12 +1662,12 @@ truncate table title_holding;
 TITLEITEMTRUNC
     
     print CONTROL << "TITLEITEM";
-load data local infile '$dir/title_title.dump'          into table title_title   fields terminated by '' ;
-load data local infile '$dir/title_person.dump'         into table title_person   fields terminated by '' ;
-load data local infile '$dir/title_corporatebody.dump'  into table title_corporatebody   fields terminated by '' ;
-load data local infile '$dir/title_subject.dump'        into table title_subject   fields terminated by '' ;
-load data local infile '$dir/title_classification.dump' into table title_classification   fields terminated by '' ;
-load data local infile '$dir/title_holding.dump'        into table title_holding   fields terminated by '' ;
+load data infile '$dir/title_title.dump'          into table title_title   fields terminated by '' ;
+load data infile '$dir/title_person.dump'         into table title_person   fields terminated by '' ;
+load data infile '$dir/title_corporatebody.dump'  into table title_corporatebody   fields terminated by '' ;
+load data infile '$dir/title_subject.dump'        into table title_subject   fields terminated by '' ;
+load data infile '$dir/title_classification.dump' into table title_classification   fields terminated by '' ;
+load data infile '$dir/title_holding.dump'        into table title_holding   fields terminated by '' ;
 TITLEITEM
 
     foreach my $type (keys %{$stammdateien_ref}){
@@ -1684,7 +1675,6 @@ TITLEITEM
 SET FOREIGN_KEY_CHECKS=1;
 alter table $type              enable keys;
 alter table ${type}_fields     enable keys;
-alter table ${type}_normfields enable keys;
 ENABLEKEYS
     }
 
@@ -1704,12 +1694,10 @@ elsif ($config->{dbimodule} eq "Pg"){
         print CONTROL << "ITEMTRUNC";
 truncate table $type;
 truncate table ${type}_fields;
-truncate table ${type}_normfields;
 ITEMTRUNC
         print CONTROL << "ITEM";
-COPY $type FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' ;
-COPY ${type}_fields FROM '$dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' ;
-COPY ${type}_normfields FROM '$dir/$stammdateien_ref->{$type}{outfile_normfields}' WITH DELIMITER '' ;
+COPY $type FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
+COPY ${type}_fields FROM '$dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';
 ITEM
     }
 
@@ -1723,12 +1711,12 @@ truncate table title_holding;
 TITLEITEMTRUNC
     
     print CONTROL << "TITLEITEM";
-COPY title_title FROM '$dir/title_title.dump' WITH DELIMITER '' ;
-COPY title_person FROM '$dir/title_person.dump' WITH DELIMITER '' ;
-COPY title_corporatebody FROM '$dir/title_corporatebody.dump' WITH DELIMITER '' ;
-COPY title_subject FROM '$dir/title_subject.dump' WITH DELIMITER '' ;
-COPY title_classification FROM '$dir/title_classification.dump' WITH DELIMITER '' ;
-COPY title_holding FROM '$dir/title_holding.dump' WITH DELIMITER '' ;
+COPY title_title FROM '$dir/title_title.dump' WITH DELIMITER '' NULL AS '';
+COPY title_person FROM '$dir/title_person.dump' WITH DELIMITER '' NULL AS '';
+COPY title_corporatebody FROM '$dir/title_corporatebody.dump' WITH DELIMITER '' NULL AS '';
+COPY title_subject FROM '$dir/title_subject.dump' WITH DELIMITER '' NULL AS '';
+COPY title_classification FROM '$dir/title_classification.dump' WITH DELIMITER '' NULL AS '';
+COPY title_holding FROM '$dir/title_holding.dump' WITH DELIMITER '' NULL AS '';
 TITLEITEM
 
     # Index und Contstraints werden zentral via pool_create_index.sql eingerichtet

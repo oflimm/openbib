@@ -58,21 +58,6 @@ __PACKAGE__->add_columns(
 
 =head1 RELATIONS
 
-=head2 classificationid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Database::Catalog::Result::Classification>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "classificationid",
-  "OpenBib::Database::Catalog::Result::Classification",
-  { id => "classificationid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
 =head2 titleid
 
 Type: belongs_to
@@ -88,10 +73,25 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
+=head2 classificationid
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2012-05-28 20:52:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+cpkyWmf77QfBMgIZ0D/Qw
+Type: belongs_to
+
+Related object: L<OpenBib::Database::Catalog::Result::Classification>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "classificationid",
+  "OpenBib::Database::Catalog::Result::Classification",
+  { id => "classificationid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZOIWiKcfb4ZZj1n1VK3IhQ
+
+
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

@@ -34,7 +34,6 @@ __PACKAGE__->table("title_title");
 =head2 target_titleid
 
   data_type: 'varchar'
-  is_foreign_key: 1
   is_nullable: 0
   size: 255
 
@@ -51,7 +50,7 @@ __PACKAGE__->add_columns(
   "source_titleid",
   { data_type => "varchar", is_foreign_key => 1, is_nullable => 0, size => 255 },
   "target_titleid",
-  { data_type => "varchar", is_foreign_key => 1, is_nullable => 0, size => 255 },
+  { data_type => "varchar", is_nullable => 0, size => 255 },
   "supplement",
   { data_type => "text", is_nullable => 1 },
 );
@@ -73,25 +72,10 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
-=head2 target_titleid
 
-Type: belongs_to
-
-Related object: L<OpenBib::Database::Catalog::Result::Title>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "target_titleid",
-  "OpenBib::Database::Catalog::Result::Title",
-  { id => "target_titleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ItubnQlovNs+3qfZ1k+ndA
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2012-05-28 20:52:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TbEo5+0iqr++u5oTEIb1zg
-
-
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

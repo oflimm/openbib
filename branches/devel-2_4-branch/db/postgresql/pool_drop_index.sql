@@ -56,16 +56,6 @@ DROP INDEX person_fields_content;
 
 -------------------------------------------------
 
-ALTER TABLE person_normfields DROP CONSTRAINT fk_person_normfields;
-
-DROP INDEX person_normfields_personid;
-DROP INDEX person_normfields_field;
-DROP INDEX person_normfields_mult;
-DROP INDEX person_normfields_subfield;
-DROP INDEX person_normfields_content;
-
--------------------------------------------------
-
 ALTER TABLE person DROP CONSTRAINT person_pkey;
 
 DROP INDEX person_id;
@@ -81,16 +71,6 @@ DROP INDEX corporatebody_fields_field;
 DROP INDEX corporatebody_fields_mult;
 DROP INDEX corporatebody_fields_subfield;
 DROP INDEX corporatebody_fields_content;
-
--------------------------------------------------
-
-ALTER TABLE corporatebody_normfields DROP CONSTRAINT fk_corporatebody_normfields;
-
-DROP INDEX corporatebody_normfields_corporatebodyid;
-DROP INDEX corporatebody_normfields_field;
-DROP INDEX corporatebody_normfields_mult;
-DROP INDEX corporatebody_normfields_subfield;
-DROP INDEX corporatebody_normfields_content;
 
 -------------------------------------------------
 
@@ -112,16 +92,6 @@ DROP INDEX subject_fields_content;
 
 -------------------------------------------------
 
-ALTER TABLE subject_normfields DROP CONSTRAINT fk_subject_normfields;
-
-DROP INDEX subject_normfields_subjectid;
-DROP INDEX subject_normfields_field;
-DROP INDEX subject_normfields_mult;
-DROP INDEX subject_normfields_subfield;
-DROP INDEX subject_normfields_content;
-
--------------------------------------------------
-
 ALTER TABLE subject DROP CONSTRAINT subject_pkey;
 
 DROP INDEX subject_id;
@@ -137,16 +107,6 @@ DROP INDEX classification_fields_field;
 DROP INDEX classification_fields_mult;
 DROP INDEX classification_fields_subfield;
 DROP INDEX classification_fields_content;
-
--------------------------------------------------
-
-ALTER TABLE classification_normfields DROP CONSTRAINT fk_classification_normfields;
-
-DROP INDEX classification_normfields_classificationid;
-DROP INDEX classification_normfields_field;
-DROP INDEX classification_normfields_mult;
-DROP INDEX classification_normfields_subfield;
-DROP INDEX classification_normfields_content;
 
 -------------------------------------------------
 
@@ -168,16 +128,6 @@ DROP INDEX title_fields_content;
 
 -------------------------------------------------
 
-ALTER TABLE title_normfields DROP CONSTRAINT fk_title_normfields;
-
-DROP INDEX title_normfields_titleid;
-DROP INDEX title_normfields_field;
-DROP INDEX title_normfields_mult;
-DROP INDEX title_normfields_subfield;
-DROP INDEX title_normfields_content;
-
--------------------------------------------------
-
 ALTER TABLE title DROP CONSTRAINT title_pkey;
 
 DROP INDEX title_id;
@@ -195,16 +145,6 @@ DROP INDEX holding_fields_field;
 DROP INDEX holding_fields_mult;
 DROP INDEX holding_fields_subfield;
 DROP INDEX holding_fields_content;
-
--------------------------------------------------
-
-ALTER TABLE holding_normfields DROP CONSTRAINT fk_holding_normfields;
-
-DROP INDEX holding_normfields_holdingid;
-DROP INDEX holding_normfields_field;
-DROP INDEX holding_normfields_mult;
-DROP INDEX holding_normfields_subfield;
-DROP INDEX holding_normfields_content;
 
 -------------------------------------------------
 

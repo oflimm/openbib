@@ -47,6 +47,11 @@ __PACKAGE__->table("corporatebody_fields");
   data_type: 'text'
   is_nullable: 0
 
+=head2 content_norm
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -60,6 +65,8 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 2 },
   "content",
   { data_type => "text", is_nullable => 0 },
+  "content_norm",
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 RELATIONS
@@ -80,9 +87,9 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2012-05-28 20:52:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2RRB64iAI7bGDoi46wThRw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:nKgYVeft9mZmi6w0Uj9A/g
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

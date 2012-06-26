@@ -15,16 +15,6 @@ create index person_fields_content on person_fields (content);
 
 -------------------------------------------------
 
-ALTER TABLE person_normfields ADD CONSTRAINT fk_person_normfields FOREIGN KEY (personid) REFERENCES person (id);
-
-create index person_normfields_personid on person_normfields (personid);
-create index person_normfields_field on person_normfields (field);
-create index person_normfields_mult on person_normfields (mult);
-create index person_normfields_subfield on person_normfields (subfield);
-create index person_normfields_content on person_normfields (content);
-
--------------------------------------------------
-
 ALTER TABLE corporatebody ADD PRIMARY KEY (id);
 
 create index corporatebody_tstamp_create on corporatebody (tstamp_create);
@@ -39,16 +29,6 @@ create index corporatebody_fields_field on corporatebody_fields (field);
 create index corporatebody_fields_mult on corporatebody_fields (mult);
 create index corporatebody_fields_subfield on corporatebody_fields (subfield);
 create index corporatebody_fields_content on corporatebody_fields (content);
-
--------------------------------------------------
-
-ALTER TABLE corporatebody_normfields ADD CONSTRAINT fk_corporatebody_normfields FOREIGN KEY (corporatebodyid) REFERENCES corporatebody (id);
-
-create index corporatebody_normfields_corporatebodyid on corporatebody_normfields (corporatebodyid);
-create index corporatebody_normfields_field on corporatebody_normfields (field);
-create index corporatebody_normfields_mult on corporatebody_normfields (mult);
-create index corporatebody_normfields_subfield on corporatebody_normfields (subfield);
-create index corporatebody_normfields_content on corporatebody_normfields (content);
 
 -------------------------------------------------
 
@@ -69,16 +49,6 @@ create index subject_fields_content on subject_fields (content);
 
 -------------------------------------------------
 
-ALTER TABLE subject_normfields ADD CONSTRAINT fk_subject_normfields FOREIGN KEY (subjectid) REFERENCES subject (id);
-
-create index subject_normfields_subjectid on subject_normfields (subjectid);
-create index subject_normfields_field on subject_normfields (field);
-create index subject_normfields_mult on subject_normfields (mult);
-create index subject_normfields_subfield on subject_normfields (subfield);
-create index subject_normfields_content on subject_normfields (content);
-
--------------------------------------------------
-
 ALTER TABLE classification ADD PRIMARY KEY (id);
 
 create index classification_tstamp_create on classification (tstamp_create);
@@ -93,16 +63,6 @@ create index classification_fields_field on classification_fields (field);
 create index classification_fields_mult on classification_fields (mult);
 create index classification_fields_subfield on classification_fields (subfield);
 create index classification_fields_content on classification_fields (content);
-
--------------------------------------------------
-
-ALTER TABLE classification_normfields ADD CONSTRAINT fk_classification_normfields FOREIGN KEY (classificationid) REFERENCES classification (id);
-
-create index classification_normfields_classificationid on classification_normfields (classificationid);
-create index classification_normfields_field on classification_normfields (field);
-create index classification_normfields_mult on classification_normfields (mult);
-create index classification_normfields_subfield on classification_normfields (subfield);
-create index classification_normfields_content on classification_normfields (content);
 
 -------------------------------------------------
 
@@ -124,16 +84,6 @@ create index title_fields_content on title_fields (content);
 
 -------------------------------------------------
 
-ALTER TABLE title_normfields ADD CONSTRAINT fk_title_normfields FOREIGN KEY (titleid) REFERENCES title (id);
-
-create index title_normfields_titleid on title_normfields (titleid);
-create index title_normfields_field on title_normfields (field);
-create index title_normfields_mult on title_normfields (mult);
-create index title_normfields_subfield on title_normfields (subfield);
-create index title_normfields_content on title_normfields (content);
-
--------------------------------------------------
-
 ALTER TABLE holding ADD PRIMARY KEY (id);
 
 -------------------------------------------------
@@ -145,16 +95,6 @@ create index holding_fields_field on holding_fields (field);
 create index holding_fields_mult on holding_fields (mult);
 create index holding_fields_subfield on holding_fields (subfield);
 create index holding_fields_content on holding_fields (content);
-
--------------------------------------------------
-
-ALTER TABLE holding_normfields ADD CONSTRAINT fk_holding_normfields FOREIGN KEY (holdingid) REFERENCES holding (id);
-
-create index holding_normfields_holdingid on holding_normfields (holdingid);
-create index holding_normfields_field on holding_normfields (field);
-create index holding_normfields_mult on holding_normfields (mult);
-create index holding_normfields_subfield on holding_normfields (subfield);
-create index holding_normfields_content on holding_normfields (content);
 
 -------------------------------------------------
 

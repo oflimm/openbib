@@ -37,7 +37,7 @@ __PACKAGE__->table("title");
 
 =head2 titlecache
 
-  data_type: 'blob'
+  data_type: 'text'
   is_nullable: 1
 
 =head2 popularity
@@ -55,7 +55,7 @@ __PACKAGE__->add_columns(
   "tstamp_update",
   { data_type => "bigint", is_nullable => 1 },
   "titlecache",
-  { data_type => "blob", is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "popularity",
   { data_type => "integer", is_nullable => 1 },
 );
@@ -123,21 +123,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 title_normfields
-
-Type: has_many
-
-Related object: L<OpenBib::Database::Catalog::Result::TitleNormfield>
-
-=cut
-
-__PACKAGE__->has_many(
-  "title_normfields",
-  "OpenBib::Database::Catalog::Result::TitleNormfield",
-  { "foreign.titleid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 title_people
 
 Type: has_many
@@ -168,7 +153,7 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 title_title_source_titleids
+=head2 title_titles
 
 Type: has_many
 
@@ -177,31 +162,16 @@ Related object: L<OpenBib::Database::Catalog::Result::TitleTitle>
 =cut
 
 __PACKAGE__->has_many(
-  "title_title_source_titleids",
+  "title_titles",
   "OpenBib::Database::Catalog::Result::TitleTitle",
   { "foreign.source_titleid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 title_title_target_titleids
 
-Type: has_many
-
-Related object: L<OpenBib::Database::Catalog::Result::TitleTitle>
-
-=cut
-
-__PACKAGE__->has_many(
-  "title_title_target_titleids",
-  "OpenBib::Database::Catalog::Result::TitleTitle",
-  { "foreign.target_titleid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lpCPAV+KB1Tj7KDOn99I6g
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2012-05-28 20:52:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XXAGTUPNBRbMEP23HuVsXQ
-
-
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

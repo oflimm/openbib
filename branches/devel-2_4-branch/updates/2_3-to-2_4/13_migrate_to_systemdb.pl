@@ -11,10 +11,36 @@ use DBI;
 use Encode qw/encode_utf8 decode_utf8/;
 use JSON::XS qw(encode_json decode_json);
 use YAML::Syck;
+use OpenBib::Config;
+use OpenBib::Database::Catalog;
 
 my $host=$ARGV[0];
 my $passwd=$ARGV[1];
 
+my $config        = new OpenBib::Config;
+
+my $mysqlexe      = "/usr/bin/mysql -u $config->{'systemdbuser'} --password=$config->{'systemdbpasswd'} -f";
+my $mysqladminexe = "/usr/bin/mysqladmin -u $config->{'systemdbuser'} --password=$config->{'systemdbpasswd'} -f";
+
+if ($config->{systemdbimodule} eq "Pg"){
+    system("echo \"*:*:*:$config->{'systemdbuser'}:$config->{'systemdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
+    system("/usr/bin/dropdb -U $config->{'systemdbuser'} $config->{'systemdbpasswd'} $config->{'systemdbname'}");
+    system("/usr/bin/createdb -U $config->{'systemdbuser'} -E UTF-8 -O $config->{'systemdbuser'} $config->{'systemdbname'}");
+
+    print STDERR "### Datendefinition einlesen\n";
+
+    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system.sql' $config->{'systemdbname'}");
+    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system_create_index.sql' $config->{'systemdbname'}");
+}
+elsif ($config->{systemdbimodule} eq "mysql"){
+    system("$mysqladminexe drop   $config->{systemdbname}");
+    system("$mysqladminexe create  $config->{systemdbname}");
+    
+    print STDERR "### Datendefinition einlesen\n";
+    
+    system("$mysqlexe  $config->{systemdbname} < $config->{'dbdesc_dir'}/mysql/system.mysql");
+}
+       
 my $old_orgunits_ref = [
     {
         desc  => 'Fakultätsungebunden',
@@ -70,20 +96,23 @@ foreach my $orgunit_ref (@{$old_orgunits_ref}){
 my $olduserdbh = DBI->connect("DBI:mysql:dbname=kuguser;host=$host;port=3306", 'root', $passwd);
 my $oldconfigdbh = DBI->connect("DBI:mysql:dbname=config;host=$host;port=3306", 'root', $passwd);
 
-my $newdbh = DBI->connect("DBI:mysql:dbname=openbib_system;host=localhost;port=3306", 'root', $passwd,,{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]});
+my $newschema;
+        
+eval {
+    if ($config->{systemdbimodule} eq "Pg"){
+        $newschema = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd});
+    }
+    elsif ($config->{systemdbimodule} eq "mysql"){
+        $newschema = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},,{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]})
+    }
+};
+        
+if ($@){
+    print STDERR "Unable to connect schema to database openbib_system: $@";
+    exit;
+}
 
 # Migration ConfigDB
-
-$newdbh->do("truncate table serverinfo");
-$newdbh->do("truncate table view_rss");
-$newdbh->do("truncate table view_db");
-$newdbh->do("truncate table viewinfo");
-$newdbh->do("truncate table orgunit_db");
-$newdbh->do("truncate table orgunitinfo");
-$newdbh->do("truncate table rssinfo");
-$newdbh->do("truncate table profileinfo");
-$newdbh->do("truncate table libraryinfo");
-$newdbh->do("truncate table databaseinfo");
 
 # databaseinfo
 
@@ -123,62 +152,83 @@ while (my $result=$request->fetchrow_hashref){
     $titcount_ref->{$dbname}{$type}=$count;
 }
 
-$newdbh->do(qq{SET AUTOCOMMIT = 0});
-
-$newdbh->do(qq{ALTER TABLE databaseinfo DISABLE KEYS});
-
-$request = $oldconfigdbh->prepare("select * from dbinfo");
+$request = $oldconfigdbh->prepare("select * from dbinfo order by dbname");
 
 $request->execute();
 
 my $orgunit_db_ref = {};
 
 while (my $result=$request->fetchrow_hashref){
+    my $active = ($result->{active})?'true':'false';
+    my $new_databaseinfo = $newschema->resultset('Databaseinfo')->create(
+        {
+            description => $result->{description},
+            shortdesc => $result->{shortdesc},
+            system => $result->{system},
+            dbname => $result->{dbname},
+            sigel => $result->{sigel},
+            url => $result->{url},
+            use_libinfo => $result->{use_libinfo},
+            active => $active,
+            protocol => $dboptions_ref->{$result->{dbname}}{protocol},
+            host => $dboptions_ref->{$result->{dbname}}{host},
+            remotepath => $dboptions_ref->{$result->{dbname}}{remotepath},
+            remoteuser => $dboptions_ref->{$result->{dbname}}{remoteuser},
+            remotepassword =>$dboptions_ref->{$result->{dbname}}{remotepasswd}  ,
+            titlefile => $dboptions_ref->{$result->{dbname}}{titfilename},
+            personfile => $dboptions_ref->{$result->{dbname}}{autfilename},
+            corporatebodyfile => $dboptions_ref->{$result->{dbname}}{korfilename},
+            subjectfile => $dboptions_ref->{$result->{dbname}}{swtfilename},
+            classificationfile => $dboptions_ref->{$result->{dbname}}{notfilename},
+            holdingfile => $dboptions_ref->{$result->{dbname}}{mexfilename},
+            autoconvert => $dboptions_ref->{$result->{dbname}}{autoconvert},
+            circ => $dboptions_ref->{$result->{dbname}}{circ},
+            circurl => $dboptions_ref->{$result->{dbname}}{circurl},
+            circwsurl => $dboptions_ref->{$result->{dbname}}{circcheckurl},
+            circdb => $dboptions_ref->{$result->{dbname}}{circdb},
+            allcount => $titcount_ref->{$result->{dbname}}{allcount},
+            journalcount => $titcount_ref->{$result->{dbname}}{journalcount},
+            articlecount => $titcount_ref->{$result->{dbname}}{articlecount},
+            digitalcount => 0,
+            
+        }
+    );
 
-    my $request2 = $newdbh->prepare("insert into databaseinfo (description,shortdesc,system,dbname,sigel,url,use_libinfo,active,protocol,host,remotepath,remoteuser,remotepassword,titlefile,personfile,corporatebodyfile,subjectfile,classificationfile,holdingfile,autoconvert,circ,circurl,circwsurl,circdb,allcount,journalcount,articlecount,digitalcount) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $request2->execute($result->{description},$result->{shortdesc},$result->{system},$result->{dbname},$result->{sigel},$result->{url},$result->{use_libinfo},$result->{active},$dboptions_ref->{$result->{dbname}}{protocol},$dboptions_ref->{$result->{dbname}}{host},$dboptions_ref->{$result->{dbname}}{remotepath},$dboptions_ref->{$result->{dbname}}{remoteuser},$dboptions_ref->{$result->{dbname}}{remotepasswd},$dboptions_ref->{$result->{dbname}}{titfilename},$dboptions_ref->{$result->{dbname}}{autfilename},$dboptions_ref->{$result->{dbname}}{korfilename},$dboptions_ref->{$result->{dbname}}{swtfilename},$dboptions_ref->{$result->{dbname}}{notfilename},$dboptions_ref->{$result->{dbname}}{mexfilename},$dboptions_ref->{$result->{dbname}}{autoconvert},$dboptions_ref->{$result->{dbname}}{circ},$dboptions_ref->{$result->{dbname}}{circurl},$dboptions_ref->{$result->{dbname}}{circcheckurl},$dboptions_ref->{$result->{dbname}}{circdb},$titcount_ref->{$result->{dbname}}{allcount},$titcount_ref->{$result->{dbname}}{journalcount},$titcount_ref->{$result->{dbname}}{articlecount},0);
-    my $insertid   = $newdbh->{'mysql_insertid'};
+    my $insertid   = $new_databaseinfo->id;
 
     $dbid{$dboptions_ref->{$result->{dbname}}{dbname}}=$insertid;
 
     push @{$orgunit_db_ref->{$result->{orgunit}}}, $insertid;
     
     print STDERR $result->{dbname},  " -> ID: ", $dbid{$result->{dbname}} ,"\n";
-}
 
-$newdbh->do(qq{COMMIT});
-$newdbh->do(qq{ALTER TABLE databaseinfo ENABLE KEYS});
+    # libraryinfo
+    
+    print STDERR "### libraryinfo\n";
+    
+    my $request2 = $oldconfigdbh->prepare("select * from libraryinfo where dbname=?");
+    
+    $request2->execute($result->{dbname});
 
-# libraryinfo
-
-print STDERR "### libraryinfo\n";
-
-$newdbh->do(qq{ALTER TABLE libraryinfo DISABLE KEYS});
-
-$request = $oldconfigdbh->prepare("select * from libraryinfo");
-
-$request->execute();
-
-while (my $result=$request->fetchrow_hashref){
-    if (!$dboptions_ref->{$result->{dbname}}{dbname} || ! $dbid{$result->{dbname}}){
-        print STDERR "Ziel $result->{dbname} existiert nicht in databaseinfo\n"; 
-        next;
+    my $category_contents_ref = [];
+    while (my $result2=$request2->fetchrow_hashref){
+        next unless ($result2->{category} && $result2->{content});
+        push @$category_contents_ref, {
+            dbid     => $insertid,
+            indicator => 1,
+            category => $result2->{category},
+            content  => $result2->{content},
+        };
     }
-
-    my $request2 = $newdbh->prepare("insert into libraryinfo (dbid,category,indicator,content) values (?,?,?,?)");
-    $request2->execute($dbid{$result->{dbname}},$result->{category},$result->{indicator},$result->{content});
+    
+    $newschema->resultset('Libraryinfo')->populate($category_contents_ref);
 }
-
-$newdbh->do(qq{COMMIT});
-$newdbh->do(qq{ALTER TABLE libraryinfo ENABLE KEYS});
 
 # profileinfo
 
 my %profileid = ();
 
 print STDERR "### profileinfo\n";
-
-$newdbh->do(qq{ALTER TABLE profileinfo DISABLE KEYS});
 
 $request = $oldconfigdbh->prepare("select * from profileinfo");
 
@@ -188,10 +238,15 @@ my $profileinfos_ref = [];
 
 while (my $result=$request->fetchrow_hashref){
     print STDERR $result->{profilename},  "\n";
-    
-    my $request2 = $newdbh->prepare("insert into profileinfo (profilename,description) values (?,?)");
-    $request2->execute($result->{profilename},$result->{description});
-    my $insertid   = $newdbh->{'mysql_insertid'};
+
+    my $new_profileinfo = $newschema->resultset('Profileinfo')->create(
+        {
+            profilename => $result->{profilename},
+            description => $result->{description},
+        }
+    );
+
+    my $insertid   = $new_profileinfo->id;
 
     $profileid{$result->{profilename}}=$insertid;
 
@@ -203,9 +258,6 @@ while (my $result=$request->fetchrow_hashref){
     
     print STDERR $result->{profilename},  " -> ID: ", $profileid{$result->{profilename}} ,"\n";
 }
-
-$newdbh->do(qq{COMMIT});
-$newdbh->do(qq{ALTER TABLE profileinfo ENABLE KEYS});
 
 # profiledb
 
@@ -224,8 +276,6 @@ print STDERR "### rssinfo\n";
 
 my %rssid        = ();
 
-$newdbh->do(qq{ALTER TABLE rssinfo DISABLE KEYS});
-
 $request = $oldconfigdbh->prepare("select * from rssfeeds");
 
 $request->execute();
@@ -237,13 +287,20 @@ while (my $result=$request->fetchrow_hashref){
     }
 
     print STDERR $result->{dbname},  "\n";
-    
-    my $request2 = $newdbh->prepare("insert into rssinfo (id,dbid,type,subtype,subtypedesc,active) values (?,?,?,?,?,?)");
-    $request2->execute($result->{id},$dbid{$result->{dbname}},$result->{type},$result->{subtype},$result->{subtypedesc},$result->{active});
-}
 
-$newdbh->do(qq{COMMIT});
-$newdbh->do(qq{ALTER TABLE rssinfo ENABLE KEYS});
+    my $active = ($result->{active})?'true':'false';
+    
+    my $new_rssinfo = $newschema->resultset('Rssinfo')->create(
+        {
+            id => $result->{id},
+            dbid => $dbid{$result->{dbname}},
+            type => $result->{type},
+            subtype => $result->{subtype},
+            subtypedesc => $result->{subtypedesc},
+            active => $active,
+        }
+    ); 
+}
 
 # orgunitinfo
 
@@ -252,9 +309,6 @@ print STDERR "### orgunitinfo fuer jedes Profil\n";
 my %orgunitid        = ();
 my %orgunitprofileid = ();
 
-$newdbh->do(qq{ALTER TABLE orgunitinfo DISABLE KEYS});
-$newdbh->do(qq{ALTER TABLE orgunit_db DISABLE KEYS});
-
 foreach my $profileinfo_ref (@{$profileinfos_ref}){
     if (!$profileinfo_ref->{profilename} || ! $profileinfo_ref->{id}){
         print STDERR "Ziel $profileinfo_ref->{profilename} existiert nicht in profileinfo\n"; 
@@ -262,26 +316,34 @@ foreach my $profileinfo_ref (@{$profileinfos_ref}){
     }
 
     foreach my $old_orgunit_ref (@{$old_orgunits_ref}){
-        my $request2 = $newdbh->prepare("insert into orgunitinfo (profileid,orgunitname,description,nr) values (?,?,?,?)");
-        $request2->execute($profileinfo_ref->{id},$old_orgunit_ref->{short},$old_orgunit_ref->{desc},$old_orgunit_ref->{nr});
-        my $insertid   = $newdbh->{'mysql_insertid'};
+        my $new_orgunitinfo = $newschema->resultset('Orgunitinfo')->create(
+            {
+                profileid => $profileinfo_ref->{id},
+                orgunitname => $old_orgunit_ref->{short},
+                description => $old_orgunit_ref->{desc},
+                nr => $old_orgunit_ref->{nr},
+            }
+        ); 
+
+        my $insertid   = $new_orgunitinfo->id;
         
         $orgunitid{$old_orgunit_ref->{short}}=$insertid;
         $orgunitprofileid{$profileinfo_ref->{profilename}}{$old_orgunit_ref->{short}}=$insertid;
         
         print STDERR $old_orgunit_ref->{short},  " -> ID: ", $orgunitid{$old_orgunit_ref->{short}} ,"\n";
 
-        my $request3 = $newdbh->prepare("insert into orgunit_db (orgunitid,dbid) values (?,?)");
 
+        my $orgunitdbs_ref = [];
         foreach my $dbid (@{$orgunit_db_ref->{$old_orgunit_ref->{short}}}){
-            $request3->execute($insertid,$dbid) if ($profiledbs_ref->{$profileinfo_ref->{id}}{$dbid});
+            push @$orgunitdbs_ref, {
+                orgunitid     => $insertid,
+                dbid          => $dbid,
+            } if ($profiledbs_ref->{$profileinfo_ref->{id}}{$dbid});
         }
+
+        $newschema->resultset('OrgunitDb')->populate($orgunitdbs_ref);
     }
 }
-
-$newdbh->do(qq{COMMIT});
-$newdbh->do(qq{ALTER TABLE orgunitinfo ENABLE KEYS});
-$newdbh->do(qq{ALTER TABLE orgunit_db ENABLE KEYS});
 
 # viewinfo
 
@@ -289,17 +351,28 @@ print STDERR "### viewinfo\n";
 
 my %viewid        = ();
 
-$newdbh->do(qq{ALTER TABLE viewinfo DISABLE KEYS});
-
 $request = $oldconfigdbh->prepare("select * from viewinfo");
 
 $request->execute();
 
 while (my $result=$request->fetchrow_hashref){
+    my $active = ($result->{active})?'true':'false';
+    
+    my $new_viewinfo = $newschema->resultset('Viewinfo')->create(
+            {
+                viewname => $result->{viewname},
+                description => $result->{description},
+                rssid => $result->{rssfeed},
+                start_loc => $result->{start_loc},
+                servername => "",
+                profileid => $profileid{$result->{profilename}},
+                stripuri => 0,
+                joinindex => 0,
+                active => $active,
+            }
+        ); 
 
-    my $request2 = $newdbh->prepare("insert into viewinfo (viewname,description,rssid,start_loc,servername,profileid,stripuri,joinindex,active) values (?,?,?,?,?,?,?,?,?)");
-    $request2->execute($result->{viewname},$result->{description},$result->{rssfeed},$result->{start_loc},'',$profileid{$result->{profilename}},0,0,$result->{active});
-    my $insertid   = $newdbh->{'mysql_insertid'};
+    my $insertid   = $new_viewinfo->id;
 
     $viewid{$result->{viewname}}=$insertid;
 
@@ -307,14 +380,9 @@ while (my $result=$request->fetchrow_hashref){
 
 }
 
-$newdbh->do(qq{COMMIT});
-$newdbh->do(qq{ALTER TABLE viewinfo ENABLE KEYS});
-
 # viewdbs
 
 print STDERR "### viewdbs\n";
-
-$newdbh->do(qq{ALTER TABLE view_db DISABLE KEYS});
 
 $request = $oldconfigdbh->prepare("select * from viewdbs");
 
@@ -322,18 +390,18 @@ $request->execute();
 
 while (my $result=$request->fetchrow_hashref){
     next unless ($result->{viewname} && $viewid{$result->{viewname}} && $result->{dbname} && $dbid{$result->{dbname}});
-    my $request2 = $newdbh->prepare("insert into view_db (viewid,dbid) values (?,?)");
-    $request2->execute($viewid{$result->{viewname}},$dbid{$result->{dbname}});
-}
 
-$newdbh->do(qq{COMMIT});
-$newdbh->do(qq{ALTER TABLE view_db ENABLE KEYS});
+    my $new_viewinfo = $newschema->resultset('Viewinfo')->create(
+        {
+            dbid   => $dbid{$result->{dbname}},
+            viewid => $viewid{$result->{viewname}},
+        }
+    );
+}
 
 # viewrssfeeds
 
 print STDERR "### view_rss\n";
-
-$newdbh->do(qq{ALTER TABLE view_rss DISABLE KEYS});
 
 $request = $oldconfigdbh->prepare("select * from viewrssfeeds");
 
@@ -341,60 +409,39 @@ $request->execute();
 
 while (my $result=$request->fetchrow_hashref){
     next unless ($result->{viewname} && $viewid{$result->{viewname}} && $result->{rssfeed} );
-    my $request2 = $newdbh->prepare("insert into view_rss (viewid,rssid) values (?,?)");
-    $request2->execute($viewid{$result->{viewname}},$result->{rssfeed});
-}
 
-$newdbh->do(qq{COMMIT});
-$newdbh->do(qq{ALTER TABLE view_rss ENABLE KEYS});
+    my $new_viewrss = $newschema->resultset('ViewRss')->create(
+        {
+            rssid   => $result->{rssfeed},
+            viewid  => $viewid{$result->{viewname}},
+        }
+    );
+}
 
 # serverinfo
 
 print STDERR "### serverinfo\n";
 
-$newdbh->do(qq{ALTER TABLE serverinfo DISABLE KEYS});
-            
 $request = $oldconfigdbh->prepare("select * from loadbalancertargets");
 
 $request->execute();
 
 while (my $result=$request->fetchrow_hashref){
-    my $request2 = $newdbh->prepare("insert into serverinfo (id,host,active) values (?,?,?)");
-    $request2->execute($result->{id},$result->{host},$result->{active});
+    my $active = ($result->{active})?'true':'false';
+    
+    my $new_serverinfo = $newschema->resultset('Serverinfo')->create(
+        {
+            id     => $result->{id},
+            host   => $result->{host},
+            active => $active,
+        }
+    );
 }
-
-$newdbh->do(qq{COMMIT});
-$newdbh->do(qq{ALTER TABLE serverinfo ENABLE KEYS});
-
 
 #####################################
 # Migration der UserDB
 
-$newdbh->do("truncate table subjectclassification");
-$newdbh->do("truncate table litlist_subject");
-$newdbh->do("truncate table subject");
-$newdbh->do("truncate table litlistitem");
-$newdbh->do("truncate table litlist");
-$newdbh->do("truncate table reviewratings");
-$newdbh->do("truncate table review");
-$newdbh->do("truncate table tit_tag");
-$newdbh->do("truncate table tag");
-$newdbh->do("truncate table collection");
-$newdbh->do("truncate table livesearch");
-$newdbh->do("truncate table searchfield");
-$newdbh->do("truncate table searchprofile_db");
-$newdbh->do("truncate table user_searchprofile");
-$newdbh->do("truncate table searchprofile");
-$newdbh->do("truncate table user_session");
-$newdbh->do("truncate table logintarget");
-$newdbh->do("truncate table registration");
-$newdbh->do("truncate table user_role");
-$newdbh->do("truncate table role");
-$newdbh->do("truncate table userinfo");
-
 my %user_spelling = ();
-
-$newdbh->do(qq{SET AUTOCOMMIT = 0});
 
 # Spelling
 {
@@ -419,26 +466,52 @@ my %userid_exists = ();
 {
     print STDERR "### userinfo\n";
 
-    $newdbh->do(qq{ALTER TABLE userinfo DISABLE KEYS});
-    
     my $request  = $olduserdbh->prepare("select * from user");
-    my $request2 = $newdbh->prepare("insert into userinfo (id,lastlogin,username,password,nachname,vorname,strasse,ort,plz,soll,gut,avanz,branz,bsanz,vmanz,maanz,vlanz,sperre,sperrdatum,gebdatum,email,masktype,autocompletiontype,spelling_as_you_type,spelling_resultlist,bibsonomy_user,bibsonomy_key,bibsonomy_sync) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");    
-
     $request->execute();
     
     while (my $result=$request->fetchrow_hashref){
         my $userid    = $result->{userid};
         my $loginname = $result->{loginname};
+
+        my $new_userinfo = $newschema->resultset('Userinfo')->create(
+            {
+                id => $userid,
+                lastlogin => $result->{lastlogin},
+                username => $loginname,
+                password => $result->{pin},
+                nachname => $result->{nachname},
+                vorname => $result->{vorname},
+                strasse => $result->{strasse},
+                ort => $result->{ort},
+                plz => $result->{plz},
+                soll => $result->{soll},
+                gut => $result->{gut},
+                avanz => $result->{avanz},
+                branz => $result->{branz},
+                bsanz => $result->{bsanz},
+                vmanz => $result->{vmanz},
+                maanz => $result->{maanz},
+                vlanz => $result->{vlanz},
+                sperre => $result->{sperre},
+                sperrdatum => $result->{sperrdatum},
+                gebdatum => $result->{gebdatum},
+                email => $result->{email},
+                masktype => $result->{masktype},
+                autocompletiontype => $result->{autocompletiontype},
+                spelling_as_you_type => $user_spelling{$result->{userid}}{as_you_type},
+                spelling_resultlist => $user_spelling{$result->{userid}}{resultlist},
+                bibsonomy_user => $result->{bibsonomy_user},
+                bibsonomy_key => $result->{bibsonomy_key},
+                bibsonomy_sync => $result->{bibsonomy_sync},
+            }
+        );
         
-        $request2->execute($userid,$result->{lastlogin},$loginname,$result->{pin},$result->{nachname},$result->{vorname},$result->{strasse},$result->{ort},$result->{plz},$result->{soll},$result->{gut},$result->{avanz},$result->{branz},$result->{bsanz},$result->{vmanz},$result->{maanz},$result->{vlanz},$result->{sperre},$result->{sperrdatum},$result->{gebdatum},$result->{email},$result->{masktype},$result->{autocompletiontype},$user_spelling{$result->{userid}}{as_you_type},$user_spelling{$result->{userid}}{resultlist},$result->{bibsonomy_user},$result->{bibsonomy_key},$result->{bibsonomy_sync});
         $loginname{$loginname} = $userid;
         $userid_exists{$userid} = 1 if ($loginname && $userid);
         
         print STDERR $userid," - ",$loginname,"\n";
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE userinfo ENABLE KEYS});
 #    YAML::Syck::DumpFile("loginname.yml",\%loginname)
 }
 
@@ -454,12 +527,15 @@ my %userid_exists = ();
     print STDERR "### role\n";
     
     my $request  = $olduserdbh->prepare("select * from role");
-    my $request2 = $newdbh->prepare("insert into role (id,name) values (?,?)");
-    
     $request->execute();
     
     while (my $result=$request->fetchrow_hashref){
-        $request2->execute($result->{id},$result->{role});
+        my $new_role = $newschema->resultset('Role')->create(
+            {
+                id => $result->{id},
+                name => $result->{role},
+            }
+        );
         
         print STDERR $result->{id}," - ",$result->{role},"\n";
     }
@@ -470,16 +546,19 @@ my %userid_exists = ();
     print STDERR "### role\n";
     
     my $request  = $olduserdbh->prepare("select * from userrole");
-    my $request2 = $newdbh->prepare("insert into user_role (userid,roleid) values (?,?)");
-    
     $request->execute();
     
     while (my $result=$request->fetchrow_hashref){
         my $userid = $result->{userid};
 
         next unless ($userid_exists{$userid});
-        
-        $request2->execute($result->{userid},$result->{roleid});
+
+        my $new_userrole = $newschema->resultset('UserRole')->create(
+            {
+                userid => $result->{userid},
+                roleid => $result->{roleid},
+            }
+        );
         
         print STDERR $result->{roleid}," - ",$result->{roleid},"\n";
     }
@@ -495,12 +574,20 @@ my %userid_exists = ();
     print STDERR "### logintarget\n";
     
     my $request  = $olduserdbh->prepare("select * from logintarget");
-    my $request2 = $newdbh->prepare("insert into logintarget (id,hostname,port,user,db,description,type) values (?,?,?,?,?,?,?)");    
-
     $request->execute();
     
     while (my $result=$request->fetchrow_hashref){
-        $request2->execute($result->{targetid},$result->{hostname},$result->{port},$result->{user},$result->{db},$result->{description},$result->{type});
+        my $new_logintarget = $newschema->resultset('Logintarget')->create(
+            {
+                id => $result->{targetid},
+                hostname => $result->{hostname},
+                port => $result->{port},
+                user => $result->{user},
+                db => $result->{db},
+                description => $result->{description},
+                type => $result->{type},
+            }
+        );
         
         print STDERR $result->{targetid}," - ",$result->{description},"\n";
     }
@@ -517,15 +604,8 @@ my %searchprofileid = ();
 {
     print STDERR "### searchprofile / user_searchprofile \n";
 
-    $newdbh->do(qq{ALTER TABLE searchprofile DISABLE KEYS});
-    $newdbh->do(qq{ALTER TABLE user_searchprofile DISABLE KEYS});
-         
     my $request  = $olduserdbh->prepare("select * from userdbprofile");
     my $request2 = $olduserdbh->prepare("select * from profildb where profilid = ? order by dbname");
-    my $request3 = $newdbh->prepare("insert into searchprofile (databases_as_json) values (?)");
-    my $request4 = $newdbh->prepare("insert into user_searchprofile (searchprofileid,userid,profilename) values (?,?,?)");
-    my $request5 = $newdbh->prepare("insert into searchprofile_db (searchprofileid,dbid) values (?,?)");
-    
     $request->execute();
     
     while (my $result=$request->fetchrow_hashref){
@@ -544,36 +624,44 @@ my %searchprofileid = ();
         my $dbs_as_json = encode_json(\@profiledbs);
         
         unless ($searchprofileid{$dbs_as_json}){
-            $request3->execute($dbs_as_json);
+            my $new_searchprofile = $newschema->resultset('Searchprofile')->create(
+                {
+                    databases_as_json => $dbs_as_json,
+                }
+            );
             
-            my $insertid   = $newdbh->{'mysql_insertid'};
+            my $insertid   = $new_searchprofile->id;
             
             $searchprofileid{$dbs_as_json}=$insertid;
 
             foreach my $profiledb (@profiledbs){
-                $request5->execute($insertid,$dbid{$profiledb});
+                my $new_searchprofiledbs = $newschema->resultset('SearchprofileDb')->create(
+                    {
+                        searchprofileid => $insertid,
+                        dbid => $dbid{$profiledb},
+                    }
+                );
             }
         }
 
-        $request4->execute($searchprofileid{$dbs_as_json},$userid,$profilename);
-        
+        my $new_usersearchprofile = $newschema->resultset('UserSearchprofile')->create(
+            {
+                searchprofileid => $searchprofileid{$dbs_as_json},
+                userid => $userid,
+                profilename => $profilename,
+            }
+        );
+
         print STDERR "Profileid: $searchprofileid{$dbs_as_json} Userid: $userid - Name: $profilename\n";
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE searchprofile ENABLE KEYS});
-    $newdbh->do(qq{ALTER TABLE user_searchprofile ENABLE KEYS});
 }
 
 # searchfield
 {
     print STDERR "### searchfield \n";
 
-    $newdbh->do(qq{ALTER TABLE searchfield DISABLE KEYS});
-
     my $request  = $olduserdbh->prepare("select * from fieldchoice");
-    my $request2 = $newdbh->prepare("insert into searchfield (userid,searchfield,active) values (?,?,?)");
-    
     $request->execute();
 
     my %userid_done = ();
@@ -587,52 +675,143 @@ my %searchprofileid = ();
 
         next unless ($userid_exists{$userid});
                      
-        my $fs = (defined $result->{fs} && $result->{fs} eq "1")?1:0;
-        my $title = (defined $result->{hst} && $result->{hst} eq "1")?1:0;
-        my $person = (defined $result->{verf} && $result->{verf} eq "1")?1:0;
-        my $corporatebody = (defined $result->{kor} && $result->{kor} eq "1")?1:0;
-        my $subject = (defined $result->{swt} && $result->{swt} eq "1")?1:0;
-        my $classification = (defined $result->{notation} && $result->{notation} eq "1")?1:0;
-        my $isbn = (defined $result->{isbn} && $result->{isbn} eq "1")?1:0;
-        my $issn = (defined $result->{issn} && $result->{issn} eq "1")?1:0;
-        my $mark = (defined $result->{sign} && $result->{sign} eq "1")?1:0;
-        my $mediatype = (defined $result->{mart} && $result->{mart} eq "1")?1:0;
-        my $titlestring = (defined $result->{hststring} && $result->{hststring} eq "1")?1:0;
-        my $content = (defined $result->{inhalt} && $result->{inhalt} eq "1")?1:0;
-        my $source = (defined $result->{gtquelle} && $result->{gtquelle} eq "1")?1:0;
-        my $year = (defined $result->{ejahr} && $result->{ejahr} eq "1")?1:0;
-        
-        $request2->execute($userid,'freesearch',$fs);
-        $request2->execute($userid,'title',$title);
-        $request2->execute($userid,'titlestring',$titlestring);
-        $request2->execute($userid,'classification',$classification);
-        $request2->execute($userid,'corporatebody',$corporatebody);
-        $request2->execute($userid,'subject',$subject);
-        $request2->execute($userid,'source',$source);
-        $request2->execute($userid,'person',$person);
-        $request2->execute($userid,'year',$year);
-        $request2->execute($userid,'isbn',$isbn);
-        $request2->execute($userid,'issn',$issn);
-        $request2->execute($userid,'content',$content);
-        $request2->execute($userid,'mediatype',$mediatype);
-        $request2->execute($userid,'mark',$mark);
+        my $fs = (defined $result->{fs} && $result->{fs} eq "1")?'true':'false';
+        my $title = (defined $result->{hst} && $result->{hst} eq "1")?'true':'false';
+        my $person = (defined $result->{verf} && $result->{verf} eq "1")?'true':'false';
+        my $corporatebody = (defined $result->{kor} && $result->{kor} eq "1")?'true':'false';
+        my $subject = (defined $result->{swt} && $result->{swt} eq "1")?'true':'false';
+        my $classification = (defined $result->{notation} && $result->{notation} eq "1")?'true':'false';
+        my $isbn = (defined $result->{isbn} && $result->{isbn} eq "1")?'true':'false';
+        my $issn = (defined $result->{issn} && $result->{issn} eq "1")?'true':'false';
+        my $mark = (defined $result->{sign} && $result->{sign} eq "1")?'true':'false';
+        my $mediatype = (defined $result->{mart} && $result->{mart} eq "1")?'true':'false';
+        my $titlestring = (defined $result->{hststring} && $result->{hststring} eq "1")?'true':'false';
+        my $content = (defined $result->{inhalt} && $result->{inhalt} eq "1")?'true':'false';
+        my $source = (defined $result->{gtquelle} && $result->{gtquelle} eq "1")?'true':'false';
+        my $year = (defined $result->{ejahr} && $result->{ejahr} eq "1")?'true':'false';
 
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'freesearch',
+                active => $fs,
+            }
+        );
+
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'title',
+                active => $title,
+            }
+        );
+        
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'titlestring',
+                active => $titlestring,
+            }
+        );
+
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'classification',
+                active => $classification,
+            }
+        );
+        
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'corporatebody',
+                active => $corporatebody,
+            }
+        );
+        
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'subject',
+                active => $subject,
+            }
+        );
+
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'source',
+                active => $source,
+            }
+        );
+
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'person',
+                active => $person,
+            }
+        );
+
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'year',
+                active => $year,
+            }
+        );
+
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'isbn',
+                active => $isbn,
+            }
+        );
+
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'issn',
+                active => $issn,
+            }
+        );
+
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'content',
+                active => $content,
+            }
+        );
+        
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'mediatype',
+                active => $mediatype,
+            }
+        );
+
+        $newschema->resultset('Searchfield')->create(
+            {
+                userid => $userid,
+                searchfield => 'mark',
+                active => $mark,
+            }
+        );
+        
         print STDERR $userid,"\n";
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE searchfield ENABLE KEYS});
 }
 
 # livesearch
 {
     print STDERR "### livesearch \n";
 
-    $newdbh->do(qq{ALTER TABLE livesearch DISABLE KEYS});
-
     my $request  = $olduserdbh->prepare("select * from livesearch");
-    my $request2 = $newdbh->prepare("insert into livesearch (userid,searchfield,exact,active) values (?,?,?,?)");
-    
     $request->execute();
 
     my %userid_done = ();
@@ -647,32 +826,49 @@ my %searchprofileid = ();
         
         next unless ($userid && $userid_exists{$userid});
         
-        my $fs = ($result->{fs} eq "1")?1:0;
-        my $person = ($result->{verf} eq "1")?1:0;
-        my $subject = ($result->{swt} eq "1")?1:0;
-        
-        $request2->execute($userid,'freesearch',$exact,$fs);
-        $request2->execute($userid,'subject',$exact,$subject);
-        $request2->execute($userid,'person',$exact,$person);
+        my $fs = ($result->{fs} eq "1")?'true':'false';
+        my $person = ($result->{verf} eq "1")?'true':'false';
+        my $subject = ($result->{swt} eq "1")?'true':'false';
+
+        $newschema->resultset('Livesearch')->create(
+            {
+                userid => $userid,
+                searchfield => 'freesearch',
+                exact => $exact,
+                active => $fs,
+            }
+        );
+
+        $newschema->resultset('Livesearch')->create(
+            {
+                userid => $userid,
+                searchfield => 'subject',
+                exact => $exact,
+                active => $subject,
+            }
+        );
+
+        $newschema->resultset('Livesearch')->create(
+            {
+                userid => $userid,
+                searchfield => 'person',
+                exact => $exact,
+                active => $person,
+            }
+        );
 
         print STDERR $userid,"\n";
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE livesearch ENABLE KEYS});
 }
 
 # collection    
 {
     print STDERR "### collection \n";
 
-    $newdbh->do(qq{ALTER TABLE collection DISABLE KEYS});
-    
     my $request = $olduserdbh->prepare("select * from treffer");
     
     $request->execute();
-    
-    my $request2 = $newdbh->prepare("insert into collection (userid,dbname,titleid) values (?,?,?)");
     
     while (my $result=$request->fetchrow_hashref){        
         my $userid   = $result->{userid};
@@ -680,48 +876,47 @@ my %searchprofileid = ();
         my $titleid  = $result->{singleidn};
 
         next unless ($userid_exists{$userid});
-        
-        $request2->execute($userid,$dbname,$titleid);
+
+        $newschema->resultset('Collection')->create(
+            {
+                userid  => $userid,
+                dbname  => $dbname,
+                titleid => $titleid,
+            }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE collection ENABLE KEYS});
 }
 
 # tag
 {
     print STDERR "### tag \n";
 
-    $newdbh->do(qq{ALTER TABLE tag DISABLE KEYS});
-    
     my $request = $olduserdbh->prepare("select * from tags");
     
     $request->execute();
     
-    my $request2 = $newdbh->prepare("insert into tag (id,name) values (?,?)");
-    
     while (my $result=$request->fetchrow_hashref){        
         my $id       = $result->{id};
         my $name     = $result->{tag};
-        
-        $request2->execute($id,$name);
+
+        $newschema->resultset('Tag')->create(
+            {
+                id => $id,
+                name => $name,
+            }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE tag ENABLE KEYS});
 }
 
 # tit_tag
 {
     print STDERR "### tit_tag \n";
 
-    $newdbh->do(qq{ALTER TABLE tit_tag DISABLE KEYS});
-    
     my $request = $olduserdbh->prepare("select * from tittag");
     
     $request->execute();
-    
-    my $request2 = $newdbh->prepare("insert into tit_tag (id,tagid,userid,dbname,titleid,titleisbn,type) values (?,?,?,?,?,?,?)");
     
     while (my $result=$request->fetchrow_hashref){        
         my $id        = $result->{ttid};
@@ -735,25 +930,29 @@ my %searchprofileid = ();
         my $userid    = $loginname{$loginname};
 
         next unless ($userid && $userid_exists{$userid});
-        
-        $request2->execute($id,$tagid,$userid,$dbname,$titleid,$titleisbn,$type);
+
+        $newschema->resultset('TitTag')->create(
+            {
+                id => $id,
+                tagid => $tagid,
+                userid => $userid,
+                dbname => $dbname,
+                titleid => $titleid,
+                titleisbn => $titleisbn,
+                type => $type,
+            }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE tit_tag ENABLE KEYS});
 }
 
 # review
 {
     print STDERR "### review \n";
 
-    $newdbh->do(qq{ALTER TABLE review DISABLE KEYS});
-    
     my $request = $olduserdbh->prepare("select * from reviews");
     
     $request->execute();
-    
-    my $request2 = $newdbh->prepare("insert into review (id,userid,nickname,title,reviewtext,rating,dbname,titleid,titleisbn) values (?,?,?,?,?,?,?,?,?)");
     
     while (my $result=$request->fetchrow_hashref){        
         my $id         = $result->{id};
@@ -771,11 +970,21 @@ my %searchprofileid = ();
 
         next unless ($userid_exists{$userid});
         
-        $request2->execute($id,$userid,$nickname,$title,$reviewtext,$rating,$dbname,$titleid,$titleisbn);
+        $newschema->resultset('Review')->create(
+            {
+                id => $id,
+                userid => $userid,
+                nickname => $nickname,
+                title => $title,
+                reviewtext => $reviewtext,
+                rating => $rating,
+                dbname => $dbname,
+                titleid => $titleid,
+                titleisbn => $titleisbn,
+            }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE review ENABLE KEYS});
 
 }
 
@@ -783,13 +992,9 @@ my %searchprofileid = ();
 {
     print STDERR "### reviewrating \n";
 
-    $newdbh->do(qq{ALTER TABLE reviewratings DISABLE KEYS});
-    
     my $request = $olduserdbh->prepare("select * from reviewratings");
     
     $request->execute();
-    
-    my $request2 = $newdbh->prepare("insert into reviewrating (id,userid,reviewid,tstamp,rating) values (?,?,?,?,?)");
     
     while (my $result=$request->fetchrow_hashref){        
         my $id         = $result->{id};
@@ -801,25 +1006,27 @@ my %searchprofileid = ();
         my $userid     = $loginname{$loginname};
 
         next unless ($userid_exists{$userid});
-        
-        $request2->execute($id,$userid,$reviewid,$tstamp,$rating);
+
+        $newschema->resultset('Reviewrating')->create(
+            {
+                id => $id,
+                userid => $userid,
+                reviewid => $reviewid,
+                tstamp => $tstamp,
+                rating => $rating,
+            }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE reviewratings ENABLE KEYS});
 }
 
 # litlist
 {
     print STDERR "### litlist \n";
 
-    $newdbh->do(qq{ALTER TABLE litlist DISABLE KEYS});
-    
     my $request = $olduserdbh->prepare("select * from litlists");
     
     $request->execute();
-    
-    my $request2 = $newdbh->prepare("insert into litlist (id,userid,tstamp,title,type,lecture) values (?,?,?,?,?,?)");
     
     while (my $result=$request->fetchrow_hashref){        
         my $id         = $result->{id};
@@ -830,25 +1037,28 @@ my %searchprofileid = ();
         my $lecture    = $result->{lecture};
 
         next unless ($userid_exists{$userid});
-        
-        $request2->execute($id,$userid,$tstamp,$title,$type,$lecture);
+
+        $newschema->resultset('Litlist')->create(
+            {
+                id => $id,
+                userid => $userid,
+                tstamp => $tstamp,
+                title => $title,
+                type => $type,
+                lecture => $lecture,
+            }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE litlist ENABLE KEYS});
 }
 
 # litlistitem
 {
     print STDERR "### litlistitem \n";
 
-    $newdbh->do(qq{ALTER TABLE litlistitem DISABLE KEYS});
-    
     my $request = $olduserdbh->prepare("select * from litlistitems");
     
     $request->execute();
-    
-    my $request2 = $newdbh->prepare("insert into litlistitem (litlistid,tstamp,dbname,titleid,titleisbn) values (?,?,?,?,?)");
     
     while (my $result=$request->fetchrow_hashref){        
         my $litlistid  = $result->{litlistid};
@@ -856,12 +1066,18 @@ my %searchprofileid = ();
         my $titleid    = $result->{titid};
         my $titleisbn  = $result->{titisbn};
         my $dbname     = $result->{titdb};
-        
-        $request2->execute($litlistid,$tstamp,$dbname,$titleid,$titleisbn);
+
+        $newschema->resultset('Litlistitem')->create(
+            {
+                litlistid => $litlistid,
+                tstamp => $tstamp,
+                dbname => $dbname,
+                titleid => $titleid,
+                titleisbn => $titleisbn,
+            }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
-    $newdbh->do(qq{ALTER TABLE litlistitem ENABLE KEYS});
 }
 
 # subject
@@ -872,18 +1088,22 @@ my %searchprofileid = ();
     
     $request->execute();
     
-    my $request2 = $newdbh->prepare("insert into subject (id,name,description) values (?,?,?)");
-    
     while (my $result=$request->fetchrow_hashref){        
         my $id          = $result->{id};
         my $name        = $result->{name};
         my $description = $result->{description};
 
         print STDERR "$id - $name - $description\n";
-        $request2->execute($id,$name,$description);
+        
+        $newschema->resultset('Subject')->create(
+            {
+                id => $id,
+                name => $name,
+                description => $description,
+            }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
 }
 
 # litlist_subject
@@ -894,16 +1114,18 @@ my %searchprofileid = ();
     
     $request->execute();
     
-    my $request2 = $newdbh->prepare("insert into litlist_subject (litlistid,subjectid) values (?,?)");
-    
     while (my $result=$request->fetchrow_hashref){        
         my $litlistid   = $result->{litlistid};
         my $subjectid   = $result->{subjectid};
-        
-        $request2->execute($litlistid,$subjectid);
+
+        $newschema->resultset('LitlistSubject')->create(
+            {
+                litlistid => $litlistid,
+                subjectid => $subjectid,
+                }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
 }
 
 # subjectclassification
@@ -914,17 +1136,20 @@ my %searchprofileid = ();
     
     $request->execute();
     
-    my $request2 = $newdbh->prepare("insert into subjectclassification (subjectid,classification,type) values (?,?,?)");
-    
     while (my $result=$request->fetchrow_hashref){        
         my $subjectid        = $result->{subjectid};
         my $classification   = $result->{classification};
         my $type             = $result->{type};
         
-        $request2->execute($subjectid,$classification,$type);
+        $newschema->resultset('LitlistSubject')->create(
+            {
+                subjectid => $subjectid,
+                classification => $classification,
+                type => $type,
+            }
+        );
     }
 
-    $newdbh->do(qq{COMMIT});
 }
 
 print STDERR "### ENDE der Migration \n";

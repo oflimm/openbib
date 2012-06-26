@@ -29,6 +29,7 @@ create table person_fields (
  mult          SMALLINT,
  subfield      VARCHAR(2),
  content       TEXT NOT NULL,
+ content_norm  TEXT,
 
  CONSTRAINT `fk_person_fields` FOREIGN KEY (`personid`) REFERENCES `person` (`id`),
 
@@ -37,27 +38,8 @@ create table person_fields (
  INDEX         (mult),
  INDEX         (subfield),
  INDEX         (content(10)),
+ INDEX         (content_norm(10)),
  INDEX         (personid,field)
-)
-ENGINE MyISAM
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
-drop table IF EXISTS person_normfields;
-create table person_normfields (
- personid      VARCHAR(255) NOT NULL,
- field         SMALLINT  NOT NULL,
- mult          SMALLINT,
- subfield      VARCHAR(2),
- content       TEXT ,
-
- CONSTRAINT `fk_person_normfields` FOREIGN KEY (`personid`) REFERENCES `person` (`id`),
-
- INDEX         (personid),
- INDEX         (field),
- INDEX         (mult),
- INDEX         (subfield),
- INDEX         (content(10))
 )
 ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
@@ -90,6 +72,7 @@ create table corporatebody_fields (
  mult            SMALLINT,
  subfield        VARCHAR(2),
  content         TEXT NOT NULL,
+ content_norm    TEXT,
 
  CONSTRAINT `fk_corporatebody_fields` FOREIGN KEY (`corporatebodyid`) REFERENCES `corporatebody` (`id`),
 
@@ -98,27 +81,8 @@ create table corporatebody_fields (
  INDEX         (mult),
  INDEX         (subfield),
  INDEX         (content(10)),
+ INDEX         (content_norm(10)),
  INDEX         (corporatebodyid,field)
-)
-ENGINE MyISAM
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
-drop table IF EXISTS corporatebody_normfields;
-create table corporatebody_normfields (
- corporatebodyid   VARCHAR(255) NOT NULL,
- field             SMALLINT  NOT NULL,
- mult              SMALLINT,
- subfield          VARCHAR(2),
- content           TEXT ,
-
- CONSTRAINT `fk_corporatebody_normfields` FOREIGN KEY (`corporatebodyid`) REFERENCES `corporatebody` (`id`),
-
- INDEX         (corporatebodyid),
- INDEX         (field),
- INDEX         (mult),
- INDEX         (subfield),
- INDEX         (content(10))
 )
 ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
@@ -151,6 +115,7 @@ create table subject_fields (
  mult          SMALLINT,
  subfield      VARCHAR(2),
  content       TEXT NOT NULL,
+ content_norm  TEXT,
 
  CONSTRAINT `fk_subject_fields` FOREIGN KEY (`subjectid`) REFERENCES `subject` (`id`),
 
@@ -159,27 +124,8 @@ create table subject_fields (
  INDEX         (mult),
  INDEX         (subfield),
  INDEX         (content(10)),
+ INDEX         (content_norm(10)),
  INDEX         (subjectid,field)
-)
-ENGINE MyISAM
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
-drop table IF EXISTS subject_normfields;
-create table subject_normfields (
- subjectid     VARCHAR(255) NOT NULL,
- field         SMALLINT  NOT NULL,
- mult          SMALLINT,
- subfield      VARCHAR(2),
- content       TEXT ,
-
- CONSTRAINT `fk_subject_normfields` FOREIGN KEY (`subjectid`) REFERENCES `subject` (`id`),
-
- INDEX         (subjectid),
- INDEX         (field),
- INDEX         (mult),
- INDEX         (subfield),
- INDEX         (content(10))
 )
 ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
@@ -212,6 +158,7 @@ create table classification_fields (
  mult             SMALLINT,
  subfield         VARCHAR(2),
  content          TEXT NOT NULL,
+ content_norm     TEXT,
 
  CONSTRAINT `fk_classification_fields` FOREIGN KEY (`classificationid`) REFERENCES `classification` (`id`),
 
@@ -220,27 +167,8 @@ create table classification_fields (
  INDEX         (mult),
  INDEX         (subfield),
  INDEX         (content(10)),
+ INDEX         (content_norm(10)),
  INDEX         (classificationid,field)
-)
-ENGINE MyISAM
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
-drop table IF EXISTS classification_normfields;
-create table classification_normfields (
- classificationid  VARCHAR(255) NOT NULL,
- field             SMALLINT  NOT NULL,
- mult              SMALLINT,
- subfield          VARCHAR(2),
- content           TEXT ,
-
- CONSTRAINT `fk_classification_normfields` FOREIGN KEY (`classificationid`) REFERENCES `classification` (`id`),
-
- INDEX         (classificationid),
- INDEX         (field),
- INDEX         (mult),
- INDEX         (subfield),
- INDEX         (content(10))
 )
 ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
@@ -276,6 +204,7 @@ create table title_fields (
  mult          SMALLINT,
  subfield      VARCHAR(2),
  content       TEXT NOT NULL,
+ content_norm  TEXT,
 
  CONSTRAINT `fk_title_fields` FOREIGN KEY (`titleid`) REFERENCES `title` (`id`),
 
@@ -284,27 +213,8 @@ create table title_fields (
  INDEX         (mult),
  INDEX         (subfield),
  INDEX         (content(10)),
+ INDEX         (content_norm(10)),
  INDEX         (titleid,field)
-)
-ENGINE MyISAM
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
-drop table IF EXISTS title_normfields;
-create table title_normfields (
- titleid       VARCHAR(255) NOT NULL,
- field         SMALLINT  NOT NULL,
- mult          SMALLINT,
- subfield      VARCHAR(2),
- content       TEXT ,
-
- CONSTRAINT `fk_title_normfields` FOREIGN KEY (`titleid`) REFERENCES `title` (`id`),
-
- INDEX         (titleid),
- INDEX         (field),
- INDEX         (mult),
- INDEX         (subfield),
- INDEX         (content(10))
 )
 ENGINE MyISAM
 DEFAULT CHARACTER SET utf8
@@ -333,6 +243,7 @@ create table holding_fields (
  mult          SMALLINT,
  subfield      VARCHAR(2),
  content       TEXT NOT NULL,
+ content_norm  TEXT,
 
  CONSTRAINT `fk_holding_fields` FOREIGN KEY (`holdingid`) REFERENCES `holding` (`id`),
 
@@ -341,27 +252,8 @@ create table holding_fields (
  INDEX         (mult),
  INDEX         (subfield),
  INDEX         (content(10)),
+ INDEX         (content_norm(10)),
  INDEX         (holdingid,field)
-)
-ENGINE MyISAM
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
-drop table IF EXISTS holding_normfields;
-create table holding_normfields (
- holdingid     VARCHAR(255) NOT NULL,
- field         SMALLINT  NOT NULL,
- mult          SMALLINT,
- subfield      VARCHAR(2),
- content       TEXT ,
-
- CONSTRAINT `fk_holding_normfields` FOREIGN KEY (`holdingid`) REFERENCES `holding` (`id`),
-
- INDEX         (holdingid),
- INDEX         (field),
- INDEX         (mult),
- INDEX         (subfield),
- INDEX         (content(10))
 )
 ENGINE MyISAM
 DEFAULT CHARACTER SET utf8

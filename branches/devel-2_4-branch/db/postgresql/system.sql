@@ -181,7 +181,7 @@ CREATE TABLE eventlogjson (
 
  tstamp     TIMESTAMP,
  type       INT,
- content    TEXT,
+ content    TEXT
 );
 
 drop table IF EXISTS queries;
@@ -203,15 +203,15 @@ CREATE TABLE searchhistory (
  tstamp       TIMESTAMP,
 
  dbname       VARCHAR(255) NOT NULL,
- offset       INT,
+ "offset"       INT,
  hitrange     INT,
- searchresult LONGTEXT,
+ searchresult TEXT,
  hits         INT,
  queryid      BIGINT
 );
 
-/* Users and user generated data                   */
-/* ----------------------------------------------- */
+-- Users and user generated data               --   
+-------------------------------------------------
 
 DROP TABLE IF EXISTS userinfo;
 CREATE TABLE userinfo (
@@ -241,14 +241,14 @@ CREATE TABLE userinfo (
 
  email      TEXT,
 
- /* Personalization */
+-- Personalization --
  masktype             TEXT,
  autocompletiontype   TEXT,
 
  spelling_as_you_type BOOL,
  spelling_resultlist  BOOL,
 
- /* Bibsonomy Credentials for automatic sync */
+-- Bibsonomy Credentials for automatic sync --
  bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
  bibsonomy_sync TEXT
@@ -282,7 +282,7 @@ CREATE TABLE logintarget (
 
  hostname    TEXT,
  port        TEXT,
- user        TEXT,
+ "user"      TEXT,
  db          TEXT,
  description TEXT,
  type        TEXT
@@ -299,7 +299,7 @@ CREATE TABLE user_session (
 DROP TABLE IF EXISTS searchprofile;
 CREATE TABLE searchprofile (
  id                BIGSERIAL primary key,
- databases_as_json TEXT, /* for quick lookup having database list and initial state */
+ databases_as_json TEXT, -- for quick lookup having database list and initial state --
  own_index         SMALLINT
 );
 
@@ -367,7 +367,7 @@ CREATE TABLE tit_tag (
  titleisbn  CHAR(14)     NOT NULL default '',
 
  titlecache TEXT,
- type       INT(3)       NOT NULL default '1'
+ type       SMALLINT       NOT NULL default '1'
 );
 
 DROP TABLE IF EXISTS review;
@@ -378,8 +378,8 @@ CREATE TABLE review (
 
  nickname   VARCHAR(30)  NOT NULL default '',
  title      VARCHAR(100) NOT NULL default '',
- reviewtext MEDIUMTEXT   NOT NULL default '',
- rating     INT(3)       NOT NULL default '0',
+ reviewtext TEXT         NOT NULL default '',
+ rating     SMALLINT     NOT NULL default '0',
 
  dbname    VARCHAR(25)  NOT NULL default '',
  titleid   VARCHAR(255) NOT NULL default '0',
@@ -390,10 +390,10 @@ DROP TABLE IF EXISTS reviewrating;
 CREATE TABLE reviewratings (
  id        BIGSERIAL primary key,
  userid    BIGINT      NOT NULL,
- reviewid  INT(11)     NOT NULL,
+ reviewid  BIGINT     NOT NULL,
 
  tstamp    TIMESTAMP,
- rating    INT(3)      NOT NULL default '0'
+ rating    SMALLINT      NOT NULL default '0'
 );
 
 DROP TABLE IF EXISTS litlist;
@@ -404,14 +404,14 @@ CREATE TABLE litlist (
  tstamp    TIMESTAMP,
 
  title     TEXT        NOT NULL,
- type      INT(3)      NOT NULL default '1',
- lecture   INT(3)      NOT NULL default '0'
+ type      SMALLINT      NOT NULL default '1',
+ lecture   SMALLINT      NOT NULL default '0'
 );
 
 DROP TABLE IF EXISTS litlistitem;
 CREATE TABLE litlistitem (
  id        BIGSERIAL primary key,
- litlistid INT(11)     NOT NULL,
+ litlistid BIGINT     NOT NULL,
 
  tstamp    TIMESTAMP,
 
@@ -432,13 +432,13 @@ CREATE TABLE subject (
 DROP TABLE IF EXISTS litlist_subject;
 CREATE TABLE litlist_subject (
  id           BIGSERIAL primary key,
- litlistid    INT(11)     NOT NULL,
- subjectid    INT(11)     NOT NULL
+ litlistid    BIGINT     NOT NULL,
+ subjectid    BIGINT     NOT NULL
 );
 
 DROP TABLE IF EXISTS subjectclassification;
 CREATE TABLE subjectclassification (
- subjectid      INT(11)     NOT NULL,
+ subjectid      BIGINT     NOT NULL,
  classification VARCHAR(20) NOT NULL,
  type           VARCHAR(5)  NOT NULL
 );

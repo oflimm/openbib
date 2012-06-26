@@ -24,7 +24,7 @@ my $mysqladminexe = "/usr/bin/mysqladmin -u $config->{'systemdbuser'} --password
 
 if ($config->{systemdbimodule} eq "Pg"){
     system("echo \"*:*:*:$config->{'systemdbuser'}:$config->{'systemdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-    system("/usr/bin/dropdb -U $config->{'systemdbuser'} $config->{'systemdbpasswd'} $config->{'systemdbname'}");
+    system("/usr/bin/dropdb -U $config->{'systemdbuser'} $config->{'systemdbname'}");
     system("/usr/bin/createdb -U $config->{'systemdbuser'} -E UTF-8 -O $config->{'systemdbuser'} $config->{'systemdbname'}");
 
     print STDERR "### Datendefinition einlesen\n";

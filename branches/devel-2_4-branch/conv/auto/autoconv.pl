@@ -282,15 +282,11 @@ my $atime = new Benchmark;
     }
     elsif ($config->{dbimodule} eq "Pg"){
         system("/usr/bin/dropdb -U $config->{'dbuser'} $databasetmp");
-        system("/usr/bin/createdb -U $config->{'dbuser'} -O root $databasetmp");
+        system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $databasetmp");
         
         $logger->info("### $database: Datendefinition einlesen");
 
         system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool.sql' $databasetmp");
-        
-        # Index entfernen
-        $logger->info("### $database: Index in temporaerer Datenbank entfernen");
-        system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool_drop_index.sql' $databasetmp");
     }
 
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_index_off.pl"){
@@ -323,7 +319,7 @@ my $atime = new Benchmark;
     elsif ($config->{dbimodule} eq "Pg"){
         # Index setzen
         $logger->info("### $database: Index in temporaerer Datenbank aufbauen");
-        system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool_create_index.sql' $databasetmp'");
+        system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool_create_index.sql' $databasetmp");
     }
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_index_on.pl"){
@@ -332,8 +328,10 @@ my $atime = new Benchmark;
     }
     
     # Tabellen Packen
-    system("$config->{autoconv_dir}/filter/common/pack_data.pl $databasetmp");
-
+    if (-e "$config->{autoconv_dir}/filter/common/pack_data.pl"){
+        system("$config->{autoconv_dir}/filter/common/pack_data.pl $databasetmp");
+    }
+    
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
     my $resulttime = timestr($timeall,"nop");
@@ -425,8 +423,8 @@ ENDE
         close(COPYOUT);
     }
     elsif ($config->{dbimodule} eq "Pg"){
-        system("$pgsqlexe -c 'drop database $database'");
-        system("$pgsqlexe -c 'alter database $databasetmp rename to $database'");
+        system("$pgsqlexe -c 'drop database $database' $config->{systemdbname}");
+        system("$pgsqlexe -c 'alter database $databasetmp rename to $database' $config->{systemdbname}");
     }
 
     my $btime      = new Benchmark;

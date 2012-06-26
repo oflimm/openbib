@@ -102,6 +102,8 @@ sub grundform {
 
     # $logger->debug("IN: $content");
     
+    return "" unless (defined $content);
+
     # Normalisierung auf Kleinschreibung
     $content = lc($content);
     

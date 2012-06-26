@@ -307,6 +307,8 @@ foreach my $database (@databases){
                 category => '0543',
                 content  => $thisissn,
             });
+
+            next unless (length($thisissn) == 8);
             
             $logger->debug("Got Title with id $thistitleid and ISSN $thisissn");
 

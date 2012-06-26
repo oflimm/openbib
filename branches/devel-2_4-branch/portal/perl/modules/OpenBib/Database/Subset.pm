@@ -34,6 +34,7 @@ no warnings 'redefine';
 use utf8;
 
 use DBI;
+use OpenBib::Config;
 use OpenBib::Database::Catalog;
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
@@ -117,6 +118,11 @@ sub identify_by_mark {
 
     my @marks = (ref $mark)?@$mark:($mark);
 
+    my $config = new OpenBib::Config;
+    
+    my $regexp_op = ($config->{dbimodule} eq "mysql")?"rlike":
+        ($config->{dbimodule} eq "Pg")?"~":"rlike";
+    
     foreach my $thismark (@marks){
         $logger->debug("Searching for Mark $thismark");
         
@@ -124,7 +130,7 @@ sub identify_by_mark {
         my $titles = $self->{schema}->resultset('TitleHolding')->search_rs(
             {
                 'holding_fields.field' => 14,
-                'holding_fields.content' => { 'rlike' => $mark },
+                'holding_fields.content' => { $regexp_op => $mark },
             },
             {
                 select   => ['me.titleid'],
@@ -154,14 +160,14 @@ sub identify_by_mark {
     $self->get_title_normdata;
     
     $self->{holdingid} = {};
-    
+
     foreach my $thismark (@marks){
         # Exemplardaten *nur* vom entsprechenden Institut!
         # DBI: "select distinct id from holding where category=14 and content rlike ?"
         my $holdings = $self->{schema}->resultset('Holding')->search_rs(
             {
                 'holding_fields.field' => 14,
-                'holding_fields.content' => { 'rlike' => $mark },
+                'holding_fields.content' => { $regexp_op => $mark },
             },
             {
                 select   => ['me.id'],
@@ -189,6 +195,8 @@ sub identify_by_category_content {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config;
+    
     my %table_type = (
         'person'         => {
             resultset => 'TitlePerson',
@@ -211,26 +219,29 @@ sub identify_by_category_content {
             join => ['classificationid', { 'classificationid' => 'classification_fields' }]
         },
     );
-    
+
+    my $regexp_op = ($config->{dbimodule} eq "mysql")?"rlike":
+        ($config->{dbimodule} eq "Pg")?"~":"rlike";
+
     foreach my $criteria_ref (@$arg_ref){        
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
         my $titles = $self->{schema}->resultset('TitleField')->search_rs(
             {
                 'field'   => $criteria_ref->{category},
-                'content' => { 'rlike' => $criteria_ref->{content} },
+                'content' => { $regexp_op => $criteria_ref->{content} },
             },
             {
                 select   => ['titleid'],
                 as       => ['thisid'],
             }
         );
-
+        
         if ($table ne "title"){
             # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
             $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
                 {
                     $table_type{$table}{field} => $criteria_ref->{category},
-                    'content' => { 'rlike' => $criteria_ref->{content} },
+                    'content' => { $regexp_op => $criteria_ref->{content} },
                 },
                 {
                     select   => ['me.titleid'],

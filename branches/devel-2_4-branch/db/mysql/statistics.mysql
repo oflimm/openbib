@@ -22,6 +22,7 @@ PACK_KEYS=1;
 drop table IF EXISTS sessioninfo;
 CREATE TABLE sessioninfo (
  id            BIGINT,
+ sessionid     VARCHAR(70),
  tstamp        BIGINT,
 
  tstamp_year   SMALLINT,

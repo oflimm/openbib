@@ -6,7 +6,7 @@
 #
 #  Erzeugung einer Katalog-Datenbank
 #
-#  Dieses File ist (C) 1997-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -41,11 +41,23 @@ my $config = OpenBib::Config->instance;
 
 print "Creating Pool $pool\n";
 
-system("/usr/bin/mysqladmin -u $config->{'dbuser'} --password=$config->{'dbpasswd'} create $pool");
+if ($config->{'dbimodule'} eq "mysql"){
+    system("/usr/bin/mysqladmin -u $config->{'dbuser'} --password=$config->{'dbpasswd'} create $pool");
+    
+    # Einladen der Datenbankdefinitionen
+    
+    system("/usr/bin/mysql -u $config->{'dbuser'} --password=$config->{'dbpasswd'} $pool < $config->{'dbdesc_dir'}/mysql/pool.mysql");
+}
+elsif ($config->{'dbimodule'} eq "Pg"){
+    system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
+    system("/usr/bin/dropdb -U $config->{'dbuser'} $pool");
+    system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $pool");
 
-# Einladen der Datenbankdefinitionen
+    # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/mysql -u $config->{'dbuser'} --password=$config->{'dbpasswd'} $pool < $config->{'dbdesc_dir'}/mysql/pool.mysql");
+    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system.sql' $pool");
+    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system_create_index.sql' $pool");
+}
 
 # Anlegen des Verzeichnisses zur lokalen Speicherung der Daten
 

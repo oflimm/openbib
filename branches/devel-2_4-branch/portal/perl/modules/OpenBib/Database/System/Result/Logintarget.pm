@@ -24,6 +24,7 @@ __PACKAGE__->table("logintarget");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'logintarget_id_seq'
 
 =head2 hostname
 
@@ -35,12 +36,12 @@ __PACKAGE__->table("logintarget");
   data_type: 'text'
   is_nullable: 1
 
-=head2 user
+=head2 remoteuser
 
   data_type: 'text'
   is_nullable: 1
 
-=head2 db
+=head2 remotedb
 
   data_type: 'text'
   is_nullable: 1
@@ -59,14 +60,19 @@ __PACKAGE__->table("logintarget");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "logintarget_id_seq",
+  },
   "hostname",
   { data_type => "text", is_nullable => 1 },
   "port",
   { data_type => "text", is_nullable => 1 },
-  "user",
+  "remoteuser",
   { data_type => "text", is_nullable => 1 },
-  "db",
+  "remotedb",
   { data_type => "text", is_nullable => 1 },
   "description",
   { data_type => "text", is_nullable => 1 },
@@ -93,9 +99,9 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VkYzOInch9eKVwQeJPPaMA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:esgFyseSMG4ByUkOh9M3Mw
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

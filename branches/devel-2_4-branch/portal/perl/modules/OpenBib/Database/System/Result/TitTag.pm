@@ -21,13 +21,14 @@ __PACKAGE__->table("tit_tag");
 
 =head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'tit_tag_id_seq'
 
 =head2 tagid
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_foreign_key: 1
   is_nullable: 0
 
@@ -58,22 +59,27 @@ __PACKAGE__->table("tit_tag");
 
 =head2 titlecache
 
-  data_type: 'blob'
+  data_type: 'text'
   is_nullable: 1
 
 =head2 type
 
-  data_type: 'integer'
-  default_value: 1
+  data_type: 'smallint'
+  default_value: '1::smallint'
   is_nullable: 0
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "tit_tag_id_seq",
+  },
   "tagid",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "dbname",
@@ -83,9 +89,13 @@ __PACKAGE__->add_columns(
   "titleisbn",
   { data_type => "char", default_value => "", is_nullable => 0, size => 14 },
   "titlecache",
-  { data_type => "blob", is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "type",
-  { data_type => "integer", default_value => 1, is_nullable => 0 },
+  {
+    data_type     => "smallint",
+    default_value => "1::smallint",
+    is_nullable   => 0,
+  },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -103,7 +113,7 @@ __PACKAGE__->belongs_to(
   "tagid",
   "OpenBib::Database::System::Result::Tag",
   { id => "tagid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 userid
@@ -118,13 +128,13 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Database::System::Result::Userinfo",
   { id => "userid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NB0jw2BvsekS2oSet/jtCg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:QBIn0lWEE1FCCYqKFJfh+g
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

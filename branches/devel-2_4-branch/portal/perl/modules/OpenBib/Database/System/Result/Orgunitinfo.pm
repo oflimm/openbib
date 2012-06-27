@@ -24,6 +24,7 @@ __PACKAGE__->table("orgunitinfo");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'orgunitinfo_id_seq'
 
 =head2 profileid
 
@@ -51,7 +52,12 @@ __PACKAGE__->table("orgunitinfo");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "orgunitinfo_id_seq",
+  },
   "profileid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "orgunitname",
@@ -92,13 +98,13 @@ __PACKAGE__->belongs_to(
   "profileid",
   "OpenBib::Database::System::Result::Profileinfo",
   { id => "profileid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZXv7I3pcc9VskdzxRTz5Ow
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:i0hiGsk0/0NQOEvA+zanjQ
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

@@ -33,12 +33,12 @@ __PACKAGE__->table("livesearch");
 
 =head2 exact
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =head2 active
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =cut
@@ -49,9 +49,9 @@ __PACKAGE__->add_columns(
   "searchfield",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "exact",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
   "active",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
 );
 
 =head1 RELATIONS
@@ -68,13 +68,13 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Database::System::Result::Userinfo",
   { id => "userid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rcjr2F5GuKO9AMWS6Lz0UA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Pdkvmf4tTorPBVIinuq2Zw
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

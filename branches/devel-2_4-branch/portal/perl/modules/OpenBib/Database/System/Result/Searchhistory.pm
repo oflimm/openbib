@@ -27,7 +27,7 @@ __PACKAGE__->table("searchhistory");
 
 =head2 tstamp
 
-  data_type: 'datetime'
+  data_type: 'timestamp'
   is_nullable: 1
 
 =head2 dbname
@@ -48,7 +48,7 @@ __PACKAGE__->table("searchhistory");
 
 =head2 searchresult
 
-  data_type: 'longtext'
+  data_type: 'text'
   is_nullable: 1
 
 =head2 hits
@@ -67,7 +67,7 @@ __PACKAGE__->add_columns(
   "sid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "tstamp",
-  { data_type => "datetime", is_nullable => 1 },
+  { data_type => "timestamp", is_nullable => 1 },
   "dbname",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "offset",
@@ -75,7 +75,7 @@ __PACKAGE__->add_columns(
   "hitrange",
   { data_type => "integer", is_nullable => 1 },
   "searchresult",
-  { data_type => "longtext", is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "hits",
   { data_type => "integer", is_nullable => 1 },
   "queryid",
@@ -96,13 +96,13 @@ __PACKAGE__->belongs_to(
   "sid",
   "OpenBib::Database::System::Result::Sessioninfo",
   { id => "sid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:boTrMzVAFYC4UKIr/viyeg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0ztusZi7WtoQjUEHSi7Egg
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

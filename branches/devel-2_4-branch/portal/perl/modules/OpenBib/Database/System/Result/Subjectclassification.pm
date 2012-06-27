@@ -21,7 +21,7 @@ __PACKAGE__->table("subjectclassification");
 
 =head2 subjectid
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_foreign_key: 1
   is_nullable: 0
 
@@ -41,7 +41,7 @@ __PACKAGE__->table("subjectclassification");
 
 __PACKAGE__->add_columns(
   "subjectid",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "classification",
   { data_type => "varchar", is_nullable => 0, size => 20 },
   "type",
@@ -62,13 +62,13 @@ __PACKAGE__->belongs_to(
   "subjectid",
   "OpenBib::Database::System::Result::Subject",
   { id => "subjectid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FkEXo8muzta9xoDChX+IPQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Qi9PXYNTUxB1CNFWBfwJ3Q
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

@@ -15,15 +15,16 @@ OpenBib::Database::System::Result::Reviewrating
 
 =cut
 
-__PACKAGE__->table("reviewratings");
+__PACKAGE__->table("reviewrating");
 
 =head1 ACCESSORS
 
 =head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'reviewrating_id_seq'
 
 =head2 userid
 
@@ -33,39 +34,43 @@ __PACKAGE__->table("reviewratings");
 
 =head2 reviewid
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_foreign_key: 1
   is_nullable: 0
 
 =head2 tstamp
 
   data_type: 'timestamp'
-  default_value: current_timestamp
-  is_nullable: 0
+  is_nullable: 1
 
 =head2 rating
 
-  data_type: 'integer'
-  default_value: 0
+  data_type: 'smallint'
+  default_value: '0::smallint'
   is_nullable: 0
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "reviewrating_id_seq",
+  },
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "reviewid",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "tstamp",
+  { data_type => "timestamp", is_nullable => 1 },
+  "rating",
   {
-    data_type     => "timestamp",
-    default_value => \"current_timestamp",
+    data_type     => "smallint",
+    default_value => "0::smallint",
     is_nullable   => 0,
   },
-  "rating",
-  { data_type => "integer", default_value => 0, is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -83,7 +88,7 @@ __PACKAGE__->belongs_to(
   "reviewid",
   "OpenBib::Database::System::Result::Review",
   { id => "reviewid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 userid
@@ -98,13 +103,13 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Database::System::Result::Userinfo",
   { id => "userid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:eLSORYE1KtdvYqIrB2vEqA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9sJvrBIJz+Mi9NFP1W3sAg
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

@@ -21,21 +21,21 @@ __PACKAGE__->table("litlistitem");
 
 =head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'litlistitem_id_seq'
 
 =head2 litlistid
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_foreign_key: 1
   is_nullable: 0
 
 =head2 tstamp
 
   data_type: 'timestamp'
-  default_value: current_timestamp
-  is_nullable: 0
+  is_nullable: 1
 
 =head2 dbname
 
@@ -58,22 +58,23 @@ __PACKAGE__->table("litlistitem");
 
 =head2 titlecache
 
-  data_type: 'blob'
+  data_type: 'text'
   is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "litlistid",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
-  "tstamp",
   {
-    data_type     => "timestamp",
-    default_value => \"current_timestamp",
-    is_nullable   => 0,
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "litlistitem_id_seq",
   },
+  "litlistid",
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
+  "tstamp",
+  { data_type => "timestamp", is_nullable => 1 },
   "dbname",
   { data_type => "varchar", is_nullable => 0, size => 25 },
   "titleid",
@@ -81,7 +82,7 @@ __PACKAGE__->add_columns(
   "titleisbn",
   { data_type => "char", default_value => "", is_nullable => 0, size => 14 },
   "titlecache",
-  { data_type => "blob", is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -99,13 +100,13 @@ __PACKAGE__->belongs_to(
   "litlistid",
   "OpenBib::Database::System::Result::Litlist",
   { id => "litlistid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ByppuF9JitSARlOjrGMYRA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/0UEY+8X/KL1CZUCWgJzLA
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

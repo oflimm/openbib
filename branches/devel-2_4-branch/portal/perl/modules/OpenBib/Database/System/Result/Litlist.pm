@@ -21,9 +21,10 @@ __PACKAGE__->table("litlist");
 
 =head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'litlist_id_seq'
 
 =head2 userid
 
@@ -34,8 +35,7 @@ __PACKAGE__->table("litlist");
 =head2 tstamp
 
   data_type: 'timestamp'
-  default_value: current_timestamp
-  is_nullable: 0
+  is_nullable: 1
 
 =head2 title
 
@@ -44,35 +44,40 @@ __PACKAGE__->table("litlist");
 
 =head2 type
 
-  data_type: 'integer'
-  default_value: 1
+  data_type: 'smallint'
+  default_value: '1::smallint'
   is_nullable: 0
 
 =head2 lecture
 
-  data_type: 'integer'
-  default_value: 0
+  data_type: 'boolean'
+  default_value: false
   is_nullable: 0
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "litlist_id_seq",
+  },
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "tstamp",
-  {
-    data_type     => "timestamp",
-    default_value => \"current_timestamp",
-    is_nullable   => 0,
-  },
+  { data_type => "timestamp", is_nullable => 1 },
   "title",
   { data_type => "text", is_nullable => 0 },
   "type",
-  { data_type => "integer", default_value => 1, is_nullable => 0 },
+  {
+    data_type     => "smallint",
+    default_value => "1::smallint",
+    is_nullable   => 0,
+  },
   "lecture",
-  { data_type => "integer", default_value => 0, is_nullable => 0 },
+  { data_type => "boolean", default_value => \"false", is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -90,22 +95,7 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Database::System::Result::Userinfo",
   { id => "userid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-=head2 litlist_subjects
-
-Type: has_many
-
-Related object: L<OpenBib::Database::System::Result::LitlistSubject>
-
-=cut
-
-__PACKAGE__->has_many(
-  "litlist_subjects",
-  "OpenBib::Database::System::Result::LitlistSubject",
-  { "foreign.litlistid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 litlistitems
@@ -123,10 +113,25 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 litlist_subjects
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:g1CMYZfd3CnkVfMOF8A/SQ
+Type: has_many
+
+Related object: L<OpenBib::Database::System::Result::LitlistSubject>
+
+=cut
+
+__PACKAGE__->has_many(
+  "litlist_subjects",
+  "OpenBib::Database::System::Result::LitlistSubject",
+  { "foreign.litlistid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lTVy1Q2EuJjKGjFwIXvB8Q
+
+
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

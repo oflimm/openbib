@@ -24,6 +24,7 @@ __PACKAGE__->table("role");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'role_id_seq'
 
 =head2 name
 
@@ -35,7 +36,12 @@ __PACKAGE__->table("role");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "role_id_seq",
+  },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 255 },
 );
@@ -59,9 +65,9 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HxM25vNjpd3Ok4Qdoiz4yA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JidAG9dZ8/qWQkqHa2sryg
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

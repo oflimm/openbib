@@ -24,6 +24,7 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'sessioninfo_id_seq'
 
 =head2 sessionid
 
@@ -33,12 +34,12 @@ __PACKAGE__->table("sessioninfo");
 
 =head2 createtime
 
-  data_type: 'datetime'
+  data_type: 'timestamp'
   is_nullable: 1
 
 =head2 lastresultset
 
-  data_type: 'blob'
+  data_type: 'text'
   is_nullable: 1
 
 =head2 username
@@ -85,13 +86,18 @@ __PACKAGE__->table("sessioninfo");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "sessioninfo_id_seq",
+  },
   "sessionid",
   { data_type => "char", is_nullable => 0, size => 33 },
   "createtime",
-  { data_type => "datetime", is_nullable => 1 },
+  { data_type => "timestamp", is_nullable => 1 },
   "lastresultset",
-  { data_type => "blob", is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "username",
   { data_type => "text", is_nullable => 1 },
   "userpassword",
@@ -124,6 +130,21 @@ Related object: L<OpenBib::Database::System::Result::Eventlog>
 __PACKAGE__->has_many(
   "eventlogs",
   "OpenBib::Database::System::Result::Eventlog",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 eventlogjsons
+
+Type: has_many
+
+Related object: L<OpenBib::Database::System::Result::Eventlogjson>
+
+=cut
+
+__PACKAGE__->has_many(
+  "eventlogjsons",
+  "OpenBib::Database::System::Result::Eventlogjson",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -173,21 +194,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 session_searchprofiles
-
-Type: has_many
-
-Related object: L<OpenBib::Database::System::Result::SessionSearchprofile>
-
-=cut
-
-__PACKAGE__->has_many(
-  "session_searchprofiles",
-  "OpenBib::Database::System::Result::SessionSearchprofile",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 sessioncollections
 
 Type: has_many
@@ -199,6 +205,21 @@ Related object: L<OpenBib::Database::System::Result::Sessioncollection>
 __PACKAGE__->has_many(
   "sessioncollections",
   "OpenBib::Database::System::Result::Sessioncollection",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 session_searchprofiles
+
+Type: has_many
+
+Related object: L<OpenBib::Database::System::Result::SessionSearchprofile>
+
+=cut
+
+__PACKAGE__->has_many(
+  "session_searchprofiles",
+  "OpenBib::Database::System::Result::SessionSearchprofile",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -219,9 +240,9 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:aCBfyiPuHu3503KsZALz3Q
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BN5VIIxJv3h9T+anjlGzfw
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

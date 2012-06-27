@@ -28,8 +28,7 @@ __PACKAGE__->table("registration");
 =head2 tstamp
 
   data_type: 'timestamp'
-  default_value: current_timestamp
-  is_nullable: 0
+  is_nullable: 1
 
 =head2 username
 
@@ -47,11 +46,7 @@ __PACKAGE__->add_columns(
   "id",
   { data_type => "varchar", is_nullable => 0, size => 60 },
   "tstamp",
-  {
-    data_type     => "timestamp",
-    default_value => \"current_timestamp",
-    is_nullable   => 0,
-  },
+  { data_type => "timestamp", is_nullable => 1 },
   "username",
   { data_type => "text", is_nullable => 1 },
   "password",
@@ -60,9 +55,9 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oEnQLJzANlaMwezncxe02Q
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:QW9UHsiBcXuva8V7kw/vLg
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

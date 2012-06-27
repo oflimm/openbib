@@ -21,9 +21,10 @@ __PACKAGE__->table("tag");
 
 =head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'tag_id_seq'
 
 =head2 name
 
@@ -36,7 +37,12 @@ __PACKAGE__->table("tag");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "tag_id_seq",
+  },
   "name",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
 );
@@ -60,9 +66,9 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PmDDdV7kP46XJ9gldfQB8Q
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Z9T6xFx19jo6qoIRHTRKXA
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

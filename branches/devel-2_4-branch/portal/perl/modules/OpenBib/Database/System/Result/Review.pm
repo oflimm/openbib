@@ -21,9 +21,10 @@ __PACKAGE__->table("review");
 
 =head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'review_id_seq'
 
 =head2 userid
 
@@ -34,8 +35,7 @@ __PACKAGE__->table("review");
 =head2 tstamp
 
   data_type: 'timestamp'
-  default_value: current_timestamp
-  is_nullable: 0
+  is_nullable: 1
 
 =head2 nickname
 
@@ -53,13 +53,14 @@ __PACKAGE__->table("review");
 
 =head2 reviewtext
 
-  data_type: 'mediumtext'
+  data_type: 'text'
+  default_value: (empty string)
   is_nullable: 0
 
 =head2 rating
 
-  data_type: 'integer'
-  default_value: 0
+  data_type: 'smallint'
+  default_value: '0::smallint'
   is_nullable: 0
 
 =head2 dbname
@@ -87,23 +88,28 @@ __PACKAGE__->table("review");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "review_id_seq",
+  },
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "tstamp",
-  {
-    data_type     => "timestamp",
-    default_value => \"current_timestamp",
-    is_nullable   => 0,
-  },
+  { data_type => "timestamp", is_nullable => 1 },
   "nickname",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
   "title",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 100 },
   "reviewtext",
-  { data_type => "mediumtext", is_nullable => 0 },
+  { data_type => "text", default_value => "", is_nullable => 0 },
   "rating",
-  { data_type => "integer", default_value => 0, is_nullable => 0 },
+  {
+    data_type     => "smallint",
+    default_value => "0::smallint",
+    is_nullable   => 0,
+  },
   "dbname",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 25 },
   "titleid",
@@ -127,7 +133,7 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Database::System::Result::Userinfo",
   { id => "userid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 reviewratings
@@ -146,9 +152,9 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CfXbkeLQrJU3ZutCyVHu9A
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TlNjJqEyLBw6wViO17PrLg
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

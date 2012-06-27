@@ -27,7 +27,7 @@ __PACKAGE__->table("eventlog");
 
 =head2 tstamp
 
-  data_type: 'datetime'
+  data_type: 'timestamp'
   is_nullable: 1
 
 =head2 type
@@ -37,8 +37,9 @@ __PACKAGE__->table("eventlog");
 
 =head2 content
 
-  data_type: 'mediumblob'
+  data_type: 'varchar'
   is_nullable: 1
+  size: 255
 
 =cut
 
@@ -46,11 +47,11 @@ __PACKAGE__->add_columns(
   "sid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "tstamp",
-  { data_type => "datetime", is_nullable => 1 },
+  { data_type => "timestamp", is_nullable => 1 },
   "type",
   { data_type => "integer", is_nullable => 1 },
   "content",
-  { data_type => "mediumblob", is_nullable => 1 },
+  { data_type => "varchar", is_nullable => 1, size => 255 },
 );
 
 =head1 RELATIONS
@@ -67,13 +68,13 @@ __PACKAGE__->belongs_to(
   "sid",
   "OpenBib::Database::System::Result::Sessioninfo",
   { id => "sid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:keqFSMWdil5sDsGOwZP6Bw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vr6gW1moMNRM4T5M8ldQ/Q
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

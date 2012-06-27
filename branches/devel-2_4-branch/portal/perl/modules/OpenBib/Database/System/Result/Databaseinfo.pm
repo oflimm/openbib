@@ -24,6 +24,7 @@ __PACKAGE__->table("databaseinfo");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'databaseinfo_id_seq'
 
 =head2 description
 
@@ -59,12 +60,12 @@ __PACKAGE__->table("databaseinfo");
 
 =head2 use_libinfo
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =head2 active
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =head2 protocol
@@ -134,12 +135,12 @@ __PACKAGE__->table("databaseinfo");
 
 =head2 autoconvert
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =head2 circ
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =head2 circurl
@@ -185,7 +186,12 @@ __PACKAGE__->table("databaseinfo");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "databaseinfo_id_seq",
+  },
   "description",
   { data_type => "text", is_nullable => 1 },
   "shortdesc",
@@ -199,9 +205,9 @@ __PACKAGE__->add_columns(
   "url",
   { data_type => "text", is_nullable => 1 },
   "use_libinfo",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
   "active",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
   "protocol",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "host",
@@ -225,9 +231,9 @@ __PACKAGE__->add_columns(
   "holdingfile",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "autoconvert",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
   "circ",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
   "circurl",
   { data_type => "text", is_nullable => 1 },
   "circwsurl",
@@ -244,7 +250,7 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", default_value => 0, is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
-__PACKAGE__->add_unique_constraint("dbname", ["dbname"]);
+__PACKAGE__->add_unique_constraint("uq_databaseinfo_dbname", ["dbname"]);
 
 =head1 RELATIONS
 
@@ -324,9 +330,9 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:U53mv5vmjLajMMN+vpZEcw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0vSKLKgnuQqvGZKys/jpMw
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

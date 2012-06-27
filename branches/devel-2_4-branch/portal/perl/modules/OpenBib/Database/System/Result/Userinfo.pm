@@ -24,10 +24,11 @@ __PACKAGE__->table("userinfo");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'userinfo_id_seq'
 
 =head2 lastlogin
 
-  data_type: 'datetime'
+  data_type: 'timestamp'
   is_nullable: 1
 
 =head2 username
@@ -138,12 +139,12 @@ __PACKAGE__->table("userinfo");
 
 =head2 spelling_as_you_type
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =head2 spelling_resultlist
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =head2 bibsonomy_user
@@ -165,9 +166,14 @@ __PACKAGE__->table("userinfo");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "userinfo_id_seq",
+  },
   "lastlogin",
-  { data_type => "datetime", is_nullable => 1 },
+  { data_type => "timestamp", is_nullable => 1 },
   "username",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "password",
@@ -211,9 +217,9 @@ __PACKAGE__->add_columns(
   "autocompletiontype",
   { data_type => "text", is_nullable => 1 },
   "spelling_as_you_type",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
   "spelling_resultlist",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
   "bibsonomy_user",
   { data_type => "text", is_nullable => 1 },
   "bibsonomy_key",
@@ -222,7 +228,7 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
-__PACKAGE__->add_unique_constraint("username", ["username"]);
+__PACKAGE__->add_unique_constraint("uq_userinfo_username", ["username"]);
 
 =head1 RELATIONS
 
@@ -377,9 +383,9 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WBvlo1fTiaRmNYRsepW62w
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EqNm2Y421ZH7i8ZFA/RtYA
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

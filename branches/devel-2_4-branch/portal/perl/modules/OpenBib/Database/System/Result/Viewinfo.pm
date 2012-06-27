@@ -24,11 +24,12 @@ __PACKAGE__->table("viewinfo");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'viewinfo_id_seq'
 
 =head2 viewname
 
   data_type: 'varchar'
-  is_nullable: 1
+  is_nullable: 0
   size: 20
 
 =head2 description
@@ -60,21 +61,26 @@ __PACKAGE__->table("viewinfo");
 
 =head2 stripuri
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =head2 active
 
-  data_type: 'tinyint'
+  data_type: 'boolean'
   is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "viewinfo_id_seq",
+  },
   "viewname",
-  { data_type => "varchar", is_nullable => 1, size => 20 },
+  { data_type => "varchar", is_nullable => 0, size => 20 },
   "description",
   { data_type => "text", is_nullable => 1 },
   "rssid",
@@ -86,12 +92,12 @@ __PACKAGE__->add_columns(
   "profileid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "stripuri",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
   "active",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "boolean", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
-__PACKAGE__->add_unique_constraint("viewname", ["viewname"]);
+__PACKAGE__->add_unique_constraint("uq_viewinfo_viewname", ["viewname"]);
 
 =head1 RELATIONS
 
@@ -110,6 +116,41 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 rssid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Database::System::Result::Rssinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "rssid",
+  "OpenBib::Database::System::Result::Rssinfo",
+  { id => "rssid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+=head2 profileid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Database::System::Result::Profileinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "profileid",
+  "OpenBib::Database::System::Result::Profileinfo",
+  { id => "profileid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
 =head2 view_rsses
 
 Type: has_many
@@ -125,40 +166,10 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 profileid
 
-Type: belongs_to
-
-Related object: L<OpenBib::Database::System::Result::Profileinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "profileid",
-  "OpenBib::Database::System::Result::Profileinfo",
-  { id => "profileid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-=head2 rssid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Database::System::Result::Rssinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "rssid",
-  "OpenBib::Database::System::Result::Rssinfo",
-  { id => "rssid" },
-  { join_type => "LEFT", on_delete => "CASCADE", on_update => "CASCADE" },
-);
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CgGu2yzolXIfns0jV/xb3g
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-01-06 13:01:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+9JH5gEyOCBt5rfwm7WUCw
-
-
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

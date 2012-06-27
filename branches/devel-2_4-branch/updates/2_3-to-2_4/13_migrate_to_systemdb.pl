@@ -14,33 +14,44 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Database::Catalog;
 
-my $host=$ARGV[0];
-my $passwd=$ARGV[1];
+my $host   = $ARGV[0];
+my $passwd = $ARGV[1];
 
-my $config        = new OpenBib::Config;
+# Hier anpassen, denn:
+# Das Config-Objekt kann nicht verwendet werden, da es selbst eine Verbindung zur System-DB
+# oeffnet und damit eine Entfernung der DB nicht moeglich ist!!!
 
-my $mysqlexe      = "/usr/bin/mysql -u $config->{'systemdbuser'} --password=$config->{'systemdbpasswd'} -f";
-my $mysqladminexe = "/usr/bin/mysqladmin -u $config->{'systemdbuser'} --password=$config->{'systemdbpasswd'} -f";
+my $systemdbimodule = "Pg";
+my $systemdbhost    = "localhost";
+my $systemdbname    = "openbib_system";
+my $systemdbuser    = "root";
+my $systemdbpasswd  = $passwd; # oder fest ala "StrengGeheim"
+my $systemdbport    = "5432";
 
-if ($config->{systemdbimodule} eq "Pg"){
-    system("echo \"*:*:*:$config->{'systemdbuser'}:$config->{'systemdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-    system("/usr/bin/dropdb -U $config->{'systemdbuser'} $config->{'systemdbname'}");
-    system("/usr/bin/createdb -U $config->{'systemdbuser'} -E UTF-8 -O $config->{'systemdbuser'} $config->{'systemdbname'}");
+my $dbdesc_dir      = "/opt/openbib/db";
+
+my $mysqlexe      = "/usr/bin/mysql -u $systemdbuser --password=$systemdbpasswd -f";
+my $mysqladminexe = "/usr/bin/mysqladmin -u $systemdbuser --password=$systemdbpasswd -f";
+
+if ($systemdbimodule eq "Pg"){
+    system("echo \"*:*:*:$systemdbuser:$systemdbpasswd\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
+    system("/usr/bin/dropdb -U $systemdbuser $systemdbname");
+    system("/usr/bin/createdb -U $systemdbuser -E UTF-8 -O $systemdbuser $systemdbname");
 
     print STDERR "### Datendefinition einlesen\n";
 
-    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system.sql' $config->{'systemdbname'}");
-    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system_create_index.sql' $config->{'systemdbname'}");
+    system("/usr/bin/psql -U $systemdbuser -f '$dbdesc_dir/postgresql/system.sql' $systemdbname");
+    system("/usr/bin/psql -U $systemdbuser -f '$dbdesc_dir/postgresql/system_create_index.sql' $systemdbname");
 }
-elsif ($config->{systemdbimodule} eq "mysql"){
-    system("$mysqladminexe drop   $config->{systemdbname}");
-    system("$mysqladminexe create  $config->{systemdbname}");
+elsif ($systemdbimodule eq "mysql"){
+    system("$mysqladminexe drop   $systemdbname");
+    system("$mysqladminexe create  $systemdbname");
     
     print STDERR "### Datendefinition einlesen\n";
     
-    system("$mysqlexe  $config->{systemdbname} < $config->{'dbdesc_dir'}/mysql/system.mysql");
+    system("$mysqlexe  $systemdbname < $dbdesc_dir/mysql/system.mysql");
 }
-       
+
 my $old_orgunits_ref = [
     {
         desc  => 'Fakultätsungebunden',
@@ -99,11 +110,11 @@ my $oldconfigdbh = DBI->connect("DBI:mysql:dbname=config;host=$host;port=3306", 
 my $newschema;
         
 eval {
-    if ($config->{systemdbimodule} eq "Pg"){
-        $newschema = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd});
+    if ($systemdbimodule eq "Pg"){
+        $newschema = OpenBib::Database::System->connect("DBI:$systemdbimodule:dbname=$systemdbname;host=$systemdbhost;port=$systemdbport", $systemdbuser, $systemdbpasswd);
     }
-    elsif ($config->{systemdbimodule} eq "mysql"){
-        $newschema = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},,{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]})
+    elsif ($systemdbimodule eq "mysql"){
+        $newschema = OpenBib::Database::System->connect("DBI:$systemdbimodule:dbname=$systemdbname;host=$systemdbhost;port=$systemdbport", $systemdbuser, $systemdbpasswd,,{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]})
     }
 };
         
@@ -115,6 +126,8 @@ if ($@){
 # Migration ConfigDB
 
 # databaseinfo
+
+#goto USERINFO;
 
 my %dbid = ();
 
@@ -158,8 +171,14 @@ $request->execute();
 
 my $orgunit_db_ref = {};
 
+my $libraryinfo_ref = [];
+
 while (my $result=$request->fetchrow_hashref){
-    my $active = ($result->{active})?'true':'false';
+    my $active      = ($result->{active})?'true':'false';
+    my $use_libinfo = ($result->{use_libinfo})?'true':'false';
+    my $autoconvert = ($dboptions_ref->{$result->{dbname}}{autoconvert})?'true':'false';
+    my $circ        = ($dboptions_ref->{$result->{dbname}}{circ})?'true':'false';
+
     my $new_databaseinfo = $newschema->resultset('Databaseinfo')->create(
         {
             description => $result->{description},
@@ -168,7 +187,7 @@ while (my $result=$request->fetchrow_hashref){
             dbname => $result->{dbname},
             sigel => $result->{sigel},
             url => $result->{url},
-            use_libinfo => $result->{use_libinfo},
+            use_libinfo => $use_libinfo,
             active => $active,
             protocol => $dboptions_ref->{$result->{dbname}}{protocol},
             host => $dboptions_ref->{$result->{dbname}}{host},
@@ -181,8 +200,8 @@ while (my $result=$request->fetchrow_hashref){
             subjectfile => $dboptions_ref->{$result->{dbname}}{swtfilename},
             classificationfile => $dboptions_ref->{$result->{dbname}}{notfilename},
             holdingfile => $dboptions_ref->{$result->{dbname}}{mexfilename},
-            autoconvert => $dboptions_ref->{$result->{dbname}}{autoconvert},
-            circ => $dboptions_ref->{$result->{dbname}}{circ},
+            autoconvert => $autoconvert,
+            circ => $circ,
             circurl => $dboptions_ref->{$result->{dbname}}{circurl},
             circwsurl => $dboptions_ref->{$result->{dbname}}{circcheckurl},
             circdb => $dboptions_ref->{$result->{dbname}}{circdb},
@@ -210,19 +229,19 @@ while (my $result=$request->fetchrow_hashref){
     
     $request2->execute($result->{dbname});
 
-    my $category_contents_ref = [];
     while (my $result2=$request2->fetchrow_hashref){
         next unless ($result2->{category} && $result2->{content});
-        push @$category_contents_ref, {
+        push @$libraryinfo_ref, {
             dbid     => $insertid,
             indicator => 1,
             category => $result2->{category},
             content  => $result2->{content},
         };
     }
-    
-    $newschema->resultset('Libraryinfo')->populate($category_contents_ref);
 }
+
+
+$newschema->resultset('Libraryinfo')->populate($libraryinfo_ref);
 
 # profileinfo
 
@@ -247,7 +266,7 @@ while (my $result=$request->fetchrow_hashref){
     );
 
     my $insertid   = $new_profileinfo->id;
-
+    
     $profileid{$result->{profilename}}=$insertid;
 
     push @{$profileinfos_ref}, {
@@ -280,27 +299,27 @@ $request = $oldconfigdbh->prepare("select * from rssfeeds");
 
 $request->execute();
 
+my $rssinfo_ref = [];
+
 while (my $result=$request->fetchrow_hashref){
     if (!$result->{dbname} || ! $dbid{$result->{dbname}}){
         print STDERR "Ziel $result->{dbname} existiert nicht in databaseinfo\n"; 
         next;
     }
 
-    print STDERR $result->{dbname},  "\n";
-
     my $active = ($result->{active})?'true':'false';
-    
-    my $new_rssinfo = $newschema->resultset('Rssinfo')->create(
-        {
-            id => $result->{id},
-            dbid => $dbid{$result->{dbname}},
-            type => $result->{type},
-            subtype => $result->{subtype},
-            subtypedesc => $result->{subtypedesc},
-            active => $active,
-        }
-    ); 
+
+    push @$rssinfo_ref, {
+        id          => $result->{id},
+        dbid        => $dbid{$result->{dbname}},
+        type        => $result->{type},
+        subtype     => $result->{subtype},
+        subtypedesc => $result->{subtypedesc},
+        active      => $active,
+    };
 }
+
+$newschema->resultset('Rssinfo')->populate($rssinfo_ref);
 
 # orgunitinfo
 
@@ -366,8 +385,7 @@ while (my $result=$request->fetchrow_hashref){
                 start_loc => $result->{start_loc},
                 servername => "",
                 profileid => $profileid{$result->{profilename}},
-                stripuri => 0,
-                joinindex => 0,
+                stripuri => 'false',
                 active => $active,
             }
         ); 
@@ -388,16 +406,18 @@ $request = $oldconfigdbh->prepare("select * from viewdbs");
 
 $request->execute();
 
+my $viewdb_ref = [];
+
 while (my $result=$request->fetchrow_hashref){
     next unless ($result->{viewname} && $viewid{$result->{viewname}} && $result->{dbname} && $dbid{$result->{dbname}});
 
-    my $new_viewinfo = $newschema->resultset('Viewinfo')->create(
-        {
-            dbid   => $dbid{$result->{dbname}},
-            viewid => $viewid{$result->{viewname}},
-        }
-    );
+    push @$viewdb_ref, {
+        dbid   => $dbid{$result->{dbname}},
+        viewid => $viewid{$result->{viewname}},
+    };
 }
+
+$newschema->resultset('ViewDb')->populate($viewdb_ref);
 
 # viewrssfeeds
 
@@ -407,16 +427,18 @@ $request = $oldconfigdbh->prepare("select * from viewrssfeeds");
 
 $request->execute();
 
+my $viewrss_ref = [];
 while (my $result=$request->fetchrow_hashref){
     next unless ($result->{viewname} && $viewid{$result->{viewname}} && $result->{rssfeed} );
 
-    my $new_viewrss = $newschema->resultset('ViewRss')->create(
-        {
-            rssid   => $result->{rssfeed},
-            viewid  => $viewid{$result->{viewname}},
-        }
-    );
+    push @$viewrss_ref, {
+        rssid   => $result->{rssfeed},
+        viewid  => $viewid{$result->{viewname}},
+    };
+
 }
+
+$newschema->resultset('ViewRss')->populate($viewrss_ref);
 
 # serverinfo
 
@@ -457,14 +479,16 @@ my %user_spelling = ();
     }
 }
 
-#goto START;
 
+USERINFO:
 my %loginname = ();
 my %userid_exists = ();
 
 # userinfo
 {
     print STDERR "### userinfo\n";
+    
+    my $userinfo_ref = [];
 
     my $request  = $olduserdbh->prepare("select * from user");
     $request->execute();
@@ -472,45 +496,44 @@ my %userid_exists = ();
     while (my $result=$request->fetchrow_hashref){
         my $userid    = $result->{userid};
         my $loginname = $result->{loginname};
-
-        my $new_userinfo = $newschema->resultset('Userinfo')->create(
-            {
-                id => $userid,
-                lastlogin => $result->{lastlogin},
-                username => $loginname,
-                password => $result->{pin},
-                nachname => $result->{nachname},
-                vorname => $result->{vorname},
-                strasse => $result->{strasse},
-                ort => $result->{ort},
-                plz => $result->{plz},
-                soll => $result->{soll},
-                gut => $result->{gut},
-                avanz => $result->{avanz},
-                branz => $result->{branz},
-                bsanz => $result->{bsanz},
-                vmanz => $result->{vmanz},
-                maanz => $result->{maanz},
-                vlanz => $result->{vlanz},
-                sperre => $result->{sperre},
-                sperrdatum => $result->{sperrdatum},
-                gebdatum => $result->{gebdatum},
-                email => $result->{email},
-                masktype => $result->{masktype},
-                autocompletiontype => $result->{autocompletiontype},
-                spelling_as_you_type => $user_spelling{$result->{userid}}{as_you_type},
-                spelling_resultlist => $user_spelling{$result->{userid}}{resultlist},
-                bibsonomy_user => $result->{bibsonomy_user},
-                bibsonomy_key => $result->{bibsonomy_key},
-                bibsonomy_sync => $result->{bibsonomy_sync},
-            }
-        );
         
+        push @$userinfo_ref, {
+            id => $userid,
+            username => $loginname,
+            password => $result->{pin},
+            nachname => $result->{nachname},
+            vorname => $result->{vorname},
+            strasse => $result->{strasse},
+            ort => $result->{ort},
+            plz => $result->{plz},
+            soll => $result->{soll},
+            gut => $result->{gut},
+            avanz => $result->{avanz},
+            branz => $result->{branz},
+            bsanz => $result->{bsanz},
+            vmanz => $result->{vmanz},
+            maanz => $result->{maanz},
+            vlanz => $result->{vlanz},
+            sperre => $result->{sperre},
+            sperrdatum => $result->{sperrdatum},
+            gebdatum => $result->{gebdatum},
+            email => $result->{email},
+            masktype => $result->{masktype},
+            autocompletiontype => $result->{autocompletiontype},
+            spelling_as_you_type => $user_spelling{$result->{userid}}{as_you_type},
+            spelling_resultlist => $user_spelling{$result->{userid}}{resultlist},
+            bibsonomy_user => $result->{bibsonomy_user},
+            bibsonomy_key => $result->{bibsonomy_key},
+            bibsonomy_sync => $result->{bibsonomy_sync},
+        };
+
         $loginname{$loginname} = $userid;
         $userid_exists{$userid} = 1 if ($loginname && $userid);
         
         print STDERR $userid," - ",$loginname,"\n";
     }
+
+    $newschema->resultset('Userinfo')->populate($userinfo_ref);
 
 #    YAML::Syck::DumpFile("loginname.yml",\%loginname)
 }
@@ -582,8 +605,8 @@ my %userid_exists = ();
                 id => $result->{targetid},
                 hostname => $result->{hostname},
                 port => $result->{port},
-                user => $result->{user},
-                db => $result->{db},
+                remoteuser => $result->{user},
+                remotedb => $result->{db},
                 description => $result->{description},
                 type => $result->{type},
             }
@@ -607,7 +630,9 @@ my %searchprofileid = ();
     my $request  = $olduserdbh->prepare("select * from userdbprofile");
     my $request2 = $olduserdbh->prepare("select * from profildb where profilid = ? order by dbname");
     $request->execute();
-    
+
+    my $searchprofiledb_ref   = [];
+    my $usersearchprofile_ref = [];
     while (my $result=$request->fetchrow_hashref){
         my $userid      = $result->{userid};
         my $profilename = $result->{profilename};
@@ -627,6 +652,7 @@ my %searchprofileid = ();
             my $new_searchprofile = $newschema->resultset('Searchprofile')->create(
                 {
                     databases_as_json => $dbs_as_json,
+                    own_index => 'false',
                 }
             );
             
@@ -635,26 +661,24 @@ my %searchprofileid = ();
             $searchprofileid{$dbs_as_json}=$insertid;
 
             foreach my $profiledb (@profiledbs){
-                my $new_searchprofiledbs = $newschema->resultset('SearchprofileDb')->create(
-                    {
-                        searchprofileid => $insertid,
-                        dbid => $dbid{$profiledb},
-                    }
-                );
+                push @$searchprofiledb_ref, {
+                    searchprofileid => $insertid,
+                    dbid            => $dbid{$profiledb},
+                } if ($insertid && $dbid{$profiledb});
             }
         }
 
-        my $new_usersearchprofile = $newschema->resultset('UserSearchprofile')->create(
-            {
-                searchprofileid => $searchprofileid{$dbs_as_json},
-                userid => $userid,
-                profilename => $profilename,
-            }
-        );
+        push @$usersearchprofile_ref, {
+            searchprofileid => $searchprofileid{$dbs_as_json},
+            userid          => $userid,
+            profilename     => $profilename,
+        };
 
         print STDERR "Profileid: $searchprofileid{$dbs_as_json} Userid: $userid - Name: $profilename\n";
     }
 
+    $newschema->resultset('SearchprofileDb')->populate($searchprofiledb_ref);
+    $newschema->resultset('UserSearchprofile')->populate($usersearchprofile_ref);
 }
 
 # searchfield
@@ -665,7 +689,8 @@ my %searchprofileid = ();
     $request->execute();
 
     my %userid_done = ();
-    
+
+    my $searchfield_ref = [];
     while (my $result=$request->fetchrow_hashref){
         my $userid = $result->{userid};
 
@@ -690,121 +715,92 @@ my %searchprofileid = ();
         my $source = (defined $result->{gtquelle} && $result->{gtquelle} eq "1")?'true':'false';
         my $year = (defined $result->{ejahr} && $result->{ejahr} eq "1")?'true':'false';
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'freesearch',
-                active => $fs,
-            }
-        );
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'freesearch',
+            active => $fs,
+        };
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'title',
-                active => $title,
-            }
-        );
-        
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'titlestring',
-                active => $titlestring,
-            }
-        );
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'title',
+            active => $title,
+        };
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'classification',
-                active => $classification,
-            }
-        );
-        
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'corporatebody',
-                active => $corporatebody,
-            }
-        );
-        
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'subject',
-                active => $subject,
-            }
-        );
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'titlestring',
+            active => $titlestring,
+        };
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'source',
-                active => $source,
-            }
-        );
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'classification',
+            active => $classification,
+        };
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'person',
-                active => $person,
-            }
-        );
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'corporatebody',
+            active => $corporatebody,
+        };
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'year',
-                active => $year,
-            }
-        );
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'subject',
+            active => $subject,
+        };
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'isbn',
-                active => $isbn,
-            }
-        );
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'source',
+            active => $source,
+        };
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'issn',
-                active => $issn,
-            }
-        );
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'person',
+            active => $person,
+        };
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'content',
-                active => $content,
-            }
-        );
-        
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'mediatype',
-                active => $mediatype,
-            }
-        );
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'year',
+            active => $year,
+        };
 
-        $newschema->resultset('Searchfield')->create(
-            {
-                userid => $userid,
-                searchfield => 'mark',
-                active => $mark,
-            }
-        );
-        
-        print STDERR $userid,"\n";
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'isbn',
+            active => $isbn,
+        };
+
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'issn',
+            active => $issn,
+        };
+
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'content',
+            active => $content,
+        };
+
+        push @$searchfield_ref, {        
+            userid => $userid,
+            searchfield => 'mediatype',
+            active => $mediatype,
+        };
+
+        push @$searchfield_ref, {
+            userid => $userid,
+            searchfield => 'mark',
+            active => $mark,
+        };
     }
 
+    $newschema->resultset('Searchfield')->populate($searchfield_ref);
 }
 
 # livesearch
@@ -813,6 +809,8 @@ my %searchprofileid = ();
 
     my $request  = $olduserdbh->prepare("select * from livesearch");
     $request->execute();
+
+    my $livesearch_ref = [];
 
     my %userid_done = ();
     while (my $result=$request->fetchrow_hashref){
@@ -830,36 +828,29 @@ my %searchprofileid = ();
         my $person = ($result->{verf} eq "1")?'true':'false';
         my $subject = ($result->{swt} eq "1")?'true':'false';
 
-        $newschema->resultset('Livesearch')->create(
-            {
-                userid => $userid,
-                searchfield => 'freesearch',
-                exact => $exact,
-                active => $fs,
-            }
-        );
+        push @$livesearch_ref, {
+            userid => $userid,
+            searchfield => 'freesearch',
+            exact => $exact,
+            active => $fs,
+        };
 
-        $newschema->resultset('Livesearch')->create(
-            {
-                userid => $userid,
-                searchfield => 'subject',
-                exact => $exact,
-                active => $subject,
-            }
-        );
+        push @$livesearch_ref, {
+            userid => $userid,
+            searchfield => 'subject',
+            exact => $exact,
+            active => $subject,
+        };
 
-        $newschema->resultset('Livesearch')->create(
-            {
-                userid => $userid,
-                searchfield => 'person',
-                exact => $exact,
-                active => $person,
-            }
-        );
-
-        print STDERR $userid,"\n";
+        push @$livesearch_ref, {
+            userid => $userid,
+            searchfield => 'person',
+            exact => $exact,
+            active => $person,
+        };
     }
 
+    $newschema->resultset('Livesearch')->populate($livesearch_ref);
 }
 
 # collection    
@@ -869,7 +860,8 @@ my %searchprofileid = ();
     my $request = $olduserdbh->prepare("select * from treffer");
     
     $request->execute();
-    
+
+    my $collection_ref = [];
     while (my $result=$request->fetchrow_hashref){        
         my $userid   = $result->{userid};
         my $dbname   = $result->{dbname};
@@ -877,14 +869,13 @@ my %searchprofileid = ();
 
         next unless ($userid_exists{$userid});
 
-        $newschema->resultset('Collection')->create(
-            {
-                userid  => $userid,
-                dbname  => $dbname,
-                titleid => $titleid,
-            }
-        );
+        push @$collection_ref, {
+            userid  => $userid,
+            dbname  => $dbname,
+            titleid => $titleid,
+        };
     }
+    $newschema->resultset('Collection')->populate($collection_ref);
 
 }
 
@@ -917,7 +908,8 @@ my %searchprofileid = ();
     my $request = $olduserdbh->prepare("select * from tittag");
     
     $request->execute();
-    
+
+    my $tittag_ref = [];
     while (my $result=$request->fetchrow_hashref){        
         my $id        = $result->{ttid};
         my $tagid     = $result->{tagid};
@@ -931,19 +923,18 @@ my %searchprofileid = ();
 
         next unless ($userid && $userid_exists{$userid});
 
-        $newschema->resultset('TitTag')->create(
-            {
-                id => $id,
-                tagid => $tagid,
-                userid => $userid,
-                dbname => $dbname,
-                titleid => $titleid,
-                titleisbn => $titleisbn,
-                type => $type,
-            }
-        );
+        push @$tittag_ref, {
+            id => $id,
+            tagid => $tagid,
+            userid => $userid,
+            dbname => $dbname,
+            titleid => $titleid,
+            titleisbn => $titleisbn,
+            type => $type,
+        };
     }
-
+    
+    $newschema->resultset('TitTag')->populate($tittag_ref);
 }
 
 # review
@@ -1021,12 +1012,16 @@ my %searchprofileid = ();
 }
 
 # litlist
+my %litlistid_exists = ();
+
 {
     print STDERR "### litlist \n";
-
+    
     my $request = $olduserdbh->prepare("select * from litlists");
     
     $request->execute();
+
+    my $litlist_ref = [];
     
     while (my $result=$request->fetchrow_hashref){        
         my $id         = $result->{id};
@@ -1034,22 +1029,23 @@ my %searchprofileid = ();
         my $userid     = $result->{userid};
         my $title      = $result->{title};
         my $type       = $result->{type};
-        my $lecture    = $result->{lecture};
+        my $lecture    = ($result->{lecture})?'true':'false';
 
         next unless ($userid_exists{$userid});
 
-        $newschema->resultset('Litlist')->create(
-            {
-                id => $id,
-                userid => $userid,
-                tstamp => $tstamp,
-                title => $title,
-                type => $type,
-                lecture => $lecture,
-            }
-        );
+        $litlistid_exists{$id} = 1;
+        
+        push @$litlist_ref, {
+            id => $id,
+            userid => $userid,
+            tstamp => $tstamp,
+            title => $title,
+            type => $type,
+            lecture => $lecture,
+        };
     }
-
+    
+    $newschema->resultset('Litlist')->populate($litlist_ref);
 }
 
 # litlistitem
@@ -1059,24 +1055,28 @@ my %searchprofileid = ();
     my $request = $olduserdbh->prepare("select * from litlistitems");
     
     $request->execute();
+
+    my $litlistitem_ref = [];
     
-    while (my $result=$request->fetchrow_hashref){        
+    while (my $result=$request->fetchrow_hashref){
         my $litlistid  = $result->{litlistid};
         my $tstamp     = $result->{tstamp};
         my $titleid    = $result->{titid};
         my $titleisbn  = $result->{titisbn};
         my $dbname     = $result->{titdb};
 
-        $newschema->resultset('Litlistitem')->create(
-            {
-                litlistid => $litlistid,
-                tstamp => $tstamp,
-                dbname => $dbname,
-                titleid => $titleid,
-                titleisbn => $titleisbn,
-            }
-        );
+        next unless ($litlistid_exists{$litlistid});
+
+        push @$litlistitem_ref, {
+            litlistid => $litlistid,
+            tstamp => $tstamp,
+            dbname => $dbname,
+            titleid => $titleid,
+            titleisbn => $titleisbn,
+        };
     }
+
+    $newschema->resultset('Litlistitem')->populate($litlistitem_ref);
 
 }
 
@@ -1118,6 +1118,8 @@ my %searchprofileid = ();
         my $litlistid   = $result->{litlistid};
         my $subjectid   = $result->{subjectid};
 
+        next unless ($litlistid_exists{$litlistid});
+
         $newschema->resultset('LitlistSubject')->create(
             {
                 litlistid => $litlistid,
@@ -1141,11 +1143,11 @@ my %searchprofileid = ();
         my $classification   = $result->{classification};
         my $type             = $result->{type};
         
-        $newschema->resultset('LitlistSubject')->create(
+        $newschema->resultset('Subjectclassification')->create(
             {
-                subjectid => $subjectid,
+                subjectid      => $subjectid,
                 classification => $classification,
-                type => $type,
+                type           => $type,
             }
         );
     }

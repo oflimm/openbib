@@ -22,11 +22,12 @@ __PACKAGE__->table("titleusage");
 =head2 sid
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 tstamp
 
-  data_type: 'bigint'
+  data_type: 'timestamp'
   is_nullable: 1
 
 =head2 tstamp_year
@@ -36,12 +37,12 @@ __PACKAGE__->table("titleusage");
 
 =head2 tstamp_month
 
-  data_type: 'tinyint'
+  data_type: 'smallint'
   is_nullable: 1
 
 =head2 tstamp_day
 
-  data_type: 'tinyint'
+  data_type: 'smallint'
   is_nullable: 1
 
 =head2 isbn
@@ -64,22 +65,22 @@ __PACKAGE__->table("titleusage");
 
 =head2 origin
 
-  data_type: 'integer'
+  data_type: 'smallint'
   is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
   "sid",
-  { data_type => "bigint", is_nullable => 1 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "tstamp",
-  { data_type => "bigint", is_nullable => 1 },
+  { data_type => "timestamp", is_nullable => 1 },
   "tstamp_year",
   { data_type => "smallint", is_nullable => 1 },
   "tstamp_month",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "smallint", is_nullable => 1 },
   "tstamp_day",
-  { data_type => "tinyint", is_nullable => 1 },
+  { data_type => "smallint", is_nullable => 1 },
   "isbn",
   { data_type => "varchar", is_nullable => 1, size => 15 },
   "dbname",
@@ -87,13 +88,35 @@ __PACKAGE__->add_columns(
   "id",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "origin",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "smallint", is_nullable => 1 },
+);
+
+=head1 RELATIONS
+
+=head2 sid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Database::Statistics::Result::Sessioninfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "sid",
+  "OpenBib::Database::Statistics::Result::Sessioninfo",
+  { id => "sid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-05-14 11:16:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iEfj/elQJBKWAK/1Zol/cQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 14:32:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YIzNWiniZcrcMh2J6kjs4A
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

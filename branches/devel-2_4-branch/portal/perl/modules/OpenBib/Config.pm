@@ -218,6 +218,8 @@ sub get_number_of_titles {
 
 #     $self->{schema}->storage->debug(1);
 
+    $logger->debug("Parameters: Database = $database / View = $view / Profile = $profile");
+    
     if ($database){
         # DBI: "select allcount, journalcount, articlecount, digitalcount from databaseinfo where dbname = ? and databaseinfo.active is true"
         $counts = $self->{schema}->resultset('Databaseinfo')->search(
@@ -254,11 +256,10 @@ sub get_number_of_titles {
                 'profileid.profilename' => $profile,
             }, 
             {
-                join => [ 'orgunitid', 'dbid',  ],
-                prefetch => [ { 'orgunitid' => 'profileid' } ],
-                select => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
-                as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
-
+                join     => [ 'orgunitid', 'dbid', { 'orgunitid' => 'profileid' } ],
+                select   => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
+                as       => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
+                group_by => ['orgunitid.id'],
             }
         )->first;
 
@@ -2086,8 +2087,8 @@ sub get_logintargets {
             id          => $logintarget->id,
             hostname    => $logintarget->hostname,
             port        => $logintarget->port,
-            user        => $logintarget->user,
-            db          => $logintarget->db,
+            remoteuser  => $logintarget->remoteuser,
+            remotedb    => $logintarget->remotedb,
             description => $logintarget->description,
             type        => $logintarget->type,
         };
@@ -2117,8 +2118,8 @@ sub get_logintarget_by_id {
             id          => $logintarget->id,
             hostname    => $logintarget->hostname,
             port        => $logintarget->port,
-            user        => $logintarget->user,
-            db          => $logintarget->db,
+            remoteuser  => $logintarget->remoteuser,
+            remotedb    => $logintarget->remotedb,
             description => $logintarget->description,
             type        => $logintarget->type,
         };
@@ -2149,8 +2150,8 @@ sub get_logintarget_self {
             id          => $logintarget->id,
             hostname    => $logintarget->hostname,
             port        => $logintarget->port,
-            user        => $logintarget->user,
-            db          => $logintarget->db,
+            remoteuser  => $logintarget->remoteuser,
+            remotedb    => $logintarget->remotedb,
             description => $logintarget->description,
             type        => $logintarget->type,
         };
@@ -2307,15 +2308,17 @@ sub get_searchprofile_or_create {
         $searchprofileid = $new_searchprofile->id;
         
         foreach my $database (@{$dbs_ref}){
-            my $dbid = $self->{schema}->resultset('Databaseinfo')->single({dbname => $database})->id;
+            my $dbinfo = $self->{schema}->resultset('Databaseinfo')->single({dbname => $database});
 
-            $new_searchprofile->create_related(
-                'searchprofile_dbs',
-                {
-                    searchprofileid => $searchprofileid,
-                    dbid            => $dbid,
-                }
-            );
+            if ($dbinfo){            
+                $new_searchprofile->create_related(
+                    'searchprofile_dbs',
+                    {
+                        searchprofileid => $searchprofileid,
+                        dbid            => $dbinfo->id,
+                    }
+                );
+            }
         }
     }
 

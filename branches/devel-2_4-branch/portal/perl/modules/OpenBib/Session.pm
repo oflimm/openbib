@@ -860,6 +860,19 @@ sub save_eventlog_to_statisticsdb {
             }
         )->single->get_column('thisview');
     };
+
+    # Rudimentaere Session-Informationen uebertragen
+    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->search_rs(
+        {
+            sessionid => $self->{ID},
+        }
+    )->single;
+
+    $statistics->create_session({
+        id         => $sessioninfo->id,
+        sessionid  => $self->{ID},
+        createtime => $sessioninfo->createtime,
+    });
     
     # Alle Events in Statistics-DB uebertragen
     # DBI: "select * from eventlog where sessionid = ?"
@@ -884,6 +897,32 @@ sub save_eventlog_to_statisticsdb {
             type      => $type,
             content   => $content,
         });
+    }
+
+    # Alle Events im JSON-Format in Statistics-DB uebertragen
+    # DBI: "select * from eventlog where sessionid = ?"
+    my $jsonevents = $self->{schema}->resultset('Eventlogjson')->search_rs(
+        {
+            'sid.sessionid' => $self->{ID}
+        },
+        {
+            join => 'sid'
+        }
+    );
+
+    foreach my $event ($events->all){
+        my $tstamp        = $event->tstamp;
+        my $type          = $event->type;
+        my $content       = $event->content;
+        my $sid           = $event->sid->id;
+
+        $statistics->log_event({
+            sid       => $sid,
+            tstamp    => $tstamp,
+            type      => $type,
+            content   => $content,
+            serialize => 1,
+        });
 
 	if ($type == 1){
             my $searchquery_ref = decode_json $content;
@@ -897,10 +936,10 @@ sub save_eventlog_to_statisticsdb {
             });
 	}
     }
-    
+
     # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)
     # DBI: "select tstamp,content from eventlog where sessionid = ? and type=10"
-    my $records = $self->{schema}->resultset('Eventlog')->search_rs(
+    my $records = $self->{schema}->resultset('Eventlogjson')->search_rs(
         {
             'sid.sessionid' => $self->{ID},
             'me.type' => 10,
@@ -1062,8 +1101,13 @@ sub log_event {
     my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     # DBI: "insert into eventlog values (?,NOW(),?,?)"
-    $self->{schema}->resultset('Eventlog')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
-
+    if ($serialize){
+        $self->{schema}->resultset('Eventlogjson')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
+    }
+    else {
+        $self->{schema}->resultset('Eventlog')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
+    }
+    
     return;
 }
 

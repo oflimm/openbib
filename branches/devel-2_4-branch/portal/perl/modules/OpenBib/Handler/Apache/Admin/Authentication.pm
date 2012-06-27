@@ -182,8 +182,8 @@ sub create_record {
         id          => $targetid,
         hostname    => $hostname,
         port        => $port,
-        user        => $username,
-        db          => $dbname,
+        remoteuser  => $username,
+        remotedb    => $dbname,
         description => $description,
         type        => $type,
     };
@@ -289,8 +289,8 @@ sub update_record {
         id          => $authenticationid,
         hostname    => $hostname,
         port        => $port,
-        user        => $username,
-        db          => $dbname,
+        remoteuser  => $username,
+        remotedb    => $dbname,
         description => $description,
         type        => $type,
     };

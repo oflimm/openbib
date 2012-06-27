@@ -547,7 +547,7 @@ sub load_full_record {
                         isbn => \@isbn_refs,
                     },
                     {                        
-                        group_by => ['field','content'],
+                        group_by => ['isbn','field','content','origin','subfield'],
                         order_by => ['field','content'],
                     }
                 );
@@ -582,7 +582,7 @@ sub load_full_record {
                         dbname  => {'!=' => $self->{database} },
                     },
                     {                        
-                        group_by => ['titleid','dbname'],
+                        group_by => ['titleid','dbname','isbn','tstamp'],
                     }
                 );
                     

@@ -262,6 +262,37 @@ sub result_exists {
     return $resultcount;
 }
 
+sub create_session {
+    my ($self,$arg_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Set defaults
+    my $id           = exists $arg_ref->{id}
+        ? $arg_ref->{id}                : undef;
+
+    my $sessionid    = exists $arg_ref->{sessionid}
+        ? $arg_ref->{sessionid}         : undef;
+
+    my $createtime         = exists $arg_ref->{createtime}
+        ? $arg_ref->{createtime}               : undef;
+
+    my $parsed_tstamp = new Date::Manip::Date;
+    $parsed_tstamp->parse($createtime);
+
+    $self->{schema}->resultset('Sessioninfo')->find_or_create({
+        id         => $id,
+        sessionid  => $sessionid,
+        createtime => $createtime,
+        createtime_year  => $parsed_tstamp->printf("%y"),
+        createtime_month => $parsed_tstamp->printf("%m"),
+        createtime_day   => $parsed_tstamp->printf("%d"),
+    });
+
+    return;
+}       
+
 sub log_event {
     my ($self,$arg_ref)=@_;
 
@@ -277,6 +308,9 @@ sub log_event {
     
     my $content      = exists $arg_ref->{content}
         ? $arg_ref->{content}            : undef;
+
+    my $serialize    = exists $arg_ref->{serialize}
+        ? $arg_ref->{serialize}          : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -317,12 +351,17 @@ sub log_event {
 
     my $parsed_tstamp = new Date::Manip::Date;
     $parsed_tstamp->parse($tstamp);
+
+    my $resultset = "Eventlog";
     
-    # DBI: "insert into eventlog values (?,?,?,?)"
-    $self->{schema}->resultset('Eventlog')->create(
+    if ($serialize){
+        $resultset = "Eventlogjson";
+    }
+    
+    $self->{schema}->resultset($resultset)->create(
         {
             sid          => $sid,
-            tstamp       => $parsed_tstamp->printf("%y%m%d%H%M%S"),
+            tstamp       => $tstamp,
             tstamp_year  => $parsed_tstamp->printf("%y"),
             tstamp_month => $parsed_tstamp->printf("%m"),
             tstamp_day   => $parsed_tstamp->printf("%d"),

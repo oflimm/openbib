@@ -469,7 +469,7 @@ sub get_targetdb_of_session {
         },
         {
             join   => ['sid','targetid'],
-            select => ['targetid.db'],
+            select => ['targetid.remotedb'],
             as     => ['thisdbname'],
         }
             
@@ -1293,7 +1293,7 @@ sub get_all_tags_of_tit {
             'me.type'    => 1,
         },
         {
-            group_by => ['me.tagid'],
+            group_by => ['tagid.id','tagid.name'],
             order_by => ['tagid.name'],
             join => ['tagid'],
             select => ['tagid.name','tagid.id',{ count => 'me.tagid' }],
@@ -1352,7 +1352,7 @@ sub get_private_tags_of_tit {
             'userid.username' => $username,
         },
         {
-            group_by => ['me.tagid'],
+            group_by => ['tagid.id','tagid.name','me.type'],
             order_by => ['tagid.name'],
             join => ['tagid','userid'],
             select => ['tagid.name','tagid.id','me.type'],
@@ -1396,7 +1396,7 @@ sub get_private_tags {
             'userid.username' => $username,
         },
         {
-            group_by => ['me.tagid'],
+            group_by => ['tagid.id','tagid.name'],
             order_by => ['tagid.name'],
             join     => ['tagid','userid'],
             select   => ['tagid.name','tagid.id',{ count => 'me.tagid' }],
@@ -1531,7 +1531,7 @@ sub get_recent_tags {
                 'me.type'   => 1,
             },
             {
-                group_by => ['me.tagid'],
+                group_by => ['tagid.id'],
                 order_by => ['tagid.id DESC'],
                 rows     => $count,
                 select   => ['count(me.tagid)','tagid.id','tagid.name'],
@@ -3361,7 +3361,7 @@ sub delete_private_info {
             vorname    => '',
             strasse    => '',
             ort        => '',
-            plz        => '',
+            plz        => 0,
             soll       => '',
             gut        => '',
             avanz      => '',

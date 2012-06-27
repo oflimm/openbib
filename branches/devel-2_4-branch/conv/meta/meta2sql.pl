@@ -356,9 +356,11 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             }
                         }
                     }
-                    
-                    # Abhaengige Feldspezifische Saetze erstellen und schreiben
-                    print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
+
+                    if ($id && $field && $item_ref->{content}){
+                        # Abhaengige Feldspezifische Saetze erstellen und schreiben
+                        print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
+                    }
                 }
             }
             
@@ -518,8 +520,10 @@ while (my $line=<IN>){
                     }
                 }
 
-                # Abhaengige Feldspezifische Saetze erstellen und schreiben        
-                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
+                if ($id && $field && $item_ref->{content}){
+                    # Abhaengige Feldspezifische Saetze erstellen und schreiben        
+                    print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
+                }
             }
         }
         
@@ -754,7 +758,7 @@ while (my $line=<IN>){
                 
                 push @superids, $target_titleid;
                 
-                if (exists $listitemdata_superid{$target_titleid}){
+                if (defined $listitemdata_superid{$target_titleid}){
                     print OUTTITLETITLE "$field$source_titleid$target_titleid$supplement\n";
                 }
             }
@@ -780,7 +784,7 @@ while (my $line=<IN>){
                     
                     next unless $personid;
 
-                    if (exists $listitemdata_person{$personid}){
+                    if (defined $listitemdata_person{$personid}){
                         print OUTTITLEPERSON "$field$id$personid$supplement\n";
                     }
                     
@@ -839,7 +843,7 @@ while (my $line=<IN>){
                     
                     next unless $corporatebodyid;
                     
-                    if (exists $listitemdata_corporatebody{$corporatebodyid}){
+                    if (defined $listitemdata_corporatebody{$corporatebodyid}){
                         print OUTTITLECORPORATEBODY "$field$id$corporatebodyid$supplement\n";
                     }
                     
@@ -898,7 +902,7 @@ while (my $line=<IN>){
                     
                     next unless $classificationid;
                     
-                    if (exists $listitemdata_classification{$classificationid}){
+                    if (defined $listitemdata_classification{$classificationid}){
                         print OUTTITLECLASSIFICATION "$field$id$classificationid$supplement\n";
                     }
                     
@@ -941,7 +945,7 @@ while (my $line=<IN>){
                     
                     next unless $subjectid;
                     
-                    if (exists $listitemdata_subject{$subjectid}){
+                    if (defined $listitemdata_subject{$subjectid}){
                         print OUTTITLESUBJECT "$field$id$subjectid$supplement\n";
                     }
                     
@@ -1529,7 +1533,9 @@ while (my $line=<IN>){
                 }
 
                 $item_ref->{norm} = "" unless ($item_ref->{norm});
-                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$item_ref->{norm}\n";
+                if ($id && $field && $item_ref->{content}){
+                    print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$item_ref->{norm}\n";
+                }
             }
         }                
         

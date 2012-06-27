@@ -1,5 +1,5 @@
 ALTER TABLE databaseinfo ADD PRIMARY KEY (id);
-ALTER TABLE databaseinfo ADD CONSTRAINT uq_databaseinfo_dbname UNIQUE;
+ALTER TABLE databaseinfo ADD CONSTRAINT uq_databaseinfo_dbname UNIQUE (dbname);
 CREATE INDEX databaseinfo_dbname ON databaseinfo (dbname);
 CREATE INDEX databaseinfo_active ON databaseinfo (active);
 CREATE INDEX databaseinfo_description ON databaseinfo (description);
@@ -16,7 +16,7 @@ CREATE INDEX rssinfo_subtype ON rssinfo (subtype);
 CREATE INDEX rssinfo_cachetstamp ON rssinfo (cache_tstamp);
 
 ALTER TABLE profileinfo ADD PRIMARY KEY (id);
-ALTER TABLE profileinfo ADD CONSTRAINT uq_profileinfo_profilename UNIQUE;
+ALTER TABLE profileinfo ADD CONSTRAINT uq_profileinfo_profilename UNIQUE (profilename);
 CREATE INDEX profileinfo_profilename ON profileinfo (profilename);
 
 ALTER TABLE orgunitinfo ADD PRIMARY KEY (id);
@@ -28,9 +28,9 @@ ALTER TABLE orgunit_db ADD CONSTRAINT fk_orgunitdb_db FOREIGN KEY (dbid) REFEREN
 ALTER TABLE orgunit_db ADD CONSTRAINT fk_orgunitdb_orgunit FOREIGN KEY (orgunitid) REFERENCES orgunitinfo (id);
 
 ALTER TABLE viewinfo ADD PRIMARY KEY (id);
-ALTER TABLE viewinfo ADD CONSTRAINT uq_viewinfo_viewname UNIQUE;
+ALTER TABLE viewinfo ADD CONSTRAINT uq_viewinfo_viewname UNIQUE (viewname);
 ALTER TABLE viewinfo ADD CONSTRAINT fk_viewinfo_profile FOREIGN KEY (profileid) REFERENCES profileinfo (id);
-ALTER TABLE viewinfo ADD CONSTRAINT fk_viewinfo_rss FOREIGN KEY (rssid) REFERENCES rssinfoinfo (id);
+ALTER TABLE viewinfo ADD CONSTRAINT fk_viewinfo_rss FOREIGN KEY (rssid) REFERENCES rssinfo (id);
 CREATE INDEX viewinfo_viewname ON viewinfo (viewname);
 
 ALTER TABLE view_db ADD CONSTRAINT fk_viewdb_db FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
@@ -73,13 +73,13 @@ CREATE INDEX searchhistory_dbname ON searchhistory (dbname);
 CREATE INDEX searchhistory_queryid ON searchhistory (queryid);
 
 ALTER TABLE userinfo ADD PRIMARY KEY (id);
-ALTER TABLE userinfo ADD CONSTRAINT uq_userinfo_username UNIQUE;
+ALTER TABLE userinfo ADD CONSTRAINT uq_userinfo_username UNIQUE (username);
 
 ALTER TABLE role ADD PRIMARY KEY (id);
 
-ALTER TABLE userrole ADD PRIMARY KEY (id);
-ALTER TABLE userrole ADD CONSTRAINT fk_userrole_user FOREIGN KEY (userid) REFERENCES userinfo (id);
-ALTER TABLE userrole ADD CONSTRAINT fk_userrole_role FOREIGN KEY (roleid) REFERENCES role (id);
+ALTER TABLE user_role ADD PRIMARY KEY (id);
+ALTER TABLE user_role ADD CONSTRAINT fk_userrole_user FOREIGN KEY (userid) REFERENCES userinfo (id);
+ALTER TABLE user_role ADD CONSTRAINT fk_userrole_role FOREIGN KEY (roleid) REFERENCES role (id);
 
 ALTER TABLE registration ADD PRIMARY KEY (id);
 

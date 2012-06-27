@@ -7,13 +7,13 @@
 
 drop table IF EXISTS databaseinfo;
 CREATE TABLE databaseinfo (
- id          BIGSERIAL primary key,
+ id          BIGSERIAL,
 
 /* Generel Information */
  description TEXT,
  shortdesc   TEXT,
  system      TEXT, 
- dbname      VARCHAR(25) UNIQUE,
+ dbname      VARCHAR(25),
  sigel       VARCHAR(20),
  url         TEXT,
  use_libinfo BOOL,
@@ -57,7 +57,7 @@ create table libraryinfo (
 
 drop table IF EXISTS rssinfo;
 create table rssinfo (
- id            BIGSERIAL primary key,
+ id            BIGSERIAL,
  dbid          BIGINT NOT NULL,
  type          SMALLINT,
  subtype       SMALLINT,
@@ -65,12 +65,12 @@ create table rssinfo (
  cache_tstamp  TIMESTAMP,
  cache_content TEXT,
 
- active        SMALLINT
+ active        BOOL
 );
 
 drop table IF EXISTS profileinfo;
 CREATE TABLE profileinfo (
- id          BIGSERIAL primary key,
+ id          BIGSERIAL,
 
  profilename VARCHAR(20) NOT NULL,
  description TEXT
@@ -78,7 +78,7 @@ CREATE TABLE profileinfo (
 
 drop table IF EXISTS orgunitinfo;
 CREATE TABLE orgunitinfo (
- id          BIGSERIAL primary key,
+ id          BIGSERIAL,
  profileid   BIGINT NOT NULL,
 
  orgunitname VARCHAR(20) NOT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE orgunit_db (
 
 drop table IF EXISTS viewinfo;
 CREATE TABLE viewinfo (
- id          BIGSERIAL primary key,
+ id          BIGSERIAL,
 
  viewname    VARCHAR(20) NOT NULL,
  description TEXT,
@@ -102,7 +102,7 @@ CREATE TABLE viewinfo (
  start_loc   TEXT,
  servername  TEXT,
  profileid   BIGINT NOT NULL,
- stripuri    SMALLINT,
+ stripuri    BOOL,
  active      BOOL
 );
 
@@ -122,7 +122,7 @@ DROP TABLE IF EXISTS serverinfo;
 CREATE TABLE serverinfo (
  id         BIGSERIAL,
  host       TEXT,
- active     SMALLINT
+ active     BOOL
 );
 
 
@@ -150,7 +150,7 @@ CREATE TABLE sessioninfo (
 
 drop table IF EXISTS sessioncollection;
 CREATE TABLE sessioncollection (
- id         BIGSERIAL primary key,
+ id         BIGSERIAL,
  sid        BIGINT NOT NULL,
 
  dbname     TEXT,
@@ -190,7 +190,7 @@ CREATE TABLE queries (
 
  tstamp          TIMESTAMP,
 
- queryid         BIGSERIAL PRIMARY KEY,
+ queryid         BIGSERIAL,
  query           TEXT,
  hits            INT,
  searchprofileid BIGINT
@@ -215,7 +215,7 @@ CREATE TABLE searchhistory (
 
 DROP TABLE IF EXISTS userinfo;
 CREATE TABLE userinfo (
- id         BIGSERIAL primary key,
+ id         BIGSERIAL,
  lastlogin  TIMESTAMP,
 
  username  VARCHAR(255),
@@ -256,20 +256,20 @@ CREATE TABLE userinfo (
 
 DROP TABLE IF EXISTS role;
 CREATE TABLE role (
-  id        BIGSERIAL primary key,
+  id        BIGSERIAL,
   name      VARCHAR(255) NOT NULL
 );
 
 DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
-  id        BIGSERIAL primary key,
+  id        BIGSERIAL,
   userid    BIGINT NOT NULL,
   roleid    BIGINT NOT NULL
 );
 
 DROP TABLE IF EXISTS registration;
 CREATE TABLE registration (
-  id                  VARCHAR(60) primary key,
+  id                  VARCHAR(60),
   tstamp              TIMESTAMP,
  
   username            TEXT,
@@ -278,19 +278,19 @@ CREATE TABLE registration (
 
 DROP TABLE IF EXISTS logintarget;
 CREATE TABLE logintarget (
- id          BIGSERIAL primary key,
+ id          BIGSERIAL,
 
  hostname    TEXT,
  port        TEXT,
- "user"      TEXT,
- db          TEXT,
+ remoteuser  TEXT,
+ remotedb    TEXT,
  description TEXT,
  type        TEXT
 );
 
 DROP TABLE IF EXISTS user_session;
 CREATE TABLE user_session (
-  id        BIGSERIAL primary key,
+  id        BIGSERIAL,
   sid       BIGINT NOT NULL,
   userid    BIGINT NOT NULL,
   targetid  BIGINT NOT NULL
@@ -298,9 +298,9 @@ CREATE TABLE user_session (
 
 DROP TABLE IF EXISTS searchprofile;
 CREATE TABLE searchprofile (
- id                BIGSERIAL primary key,
+ id                BIGSERIAL,
  databases_as_json TEXT, -- for quick lookup having database list and initial state --
- own_index         SMALLINT
+ own_index         BOOL
 );
 
 drop table IF EXISTS searchprofile_db;
@@ -317,7 +317,7 @@ CREATE TABLE session_searchprofile (
 
 DROP TABLE IF EXISTS user_searchprofile;
 CREATE TABLE user_searchprofile (
- id                BIGSERIAL primary key,
+ id                BIGSERIAL,
  searchprofileid   BIGINT NOT NULL,
  userid            BIGINT NOT NULL,
 
@@ -342,7 +342,7 @@ CREATE TABLE livesearch (
 
 DROP TABLE IF EXISTS collection;
 CREATE TABLE collection (
- id         BIGSERIAL primary key,
+ id         BIGSERIAL,
  userid     BIGINT  NOT NULL,
 
  dbname     TEXT,
@@ -352,13 +352,13 @@ CREATE TABLE collection (
 
 DROP TABLE IF EXISTS tag;
 CREATE TABLE tag (
- id     BIGSERIAL primary key,
+ id     BIGSERIAL,
  name   VARCHAR(255) NOT NULL default ''
 );
 
 DROP TABLE IF EXISTS tit_tag;
 CREATE TABLE tit_tag (
- id         BIGSERIAL primary key,
+ id         BIGSERIAL,
  tagid      BIGINT      NOT NULL,
  userid     BIGINT       NOT NULL,
 
@@ -372,7 +372,7 @@ CREATE TABLE tit_tag (
 
 DROP TABLE IF EXISTS review;
 CREATE TABLE review (
- id        BIGSERIAL primary key,
+ id        BIGSERIAL,
  userid    BIGINT       NOT NULL,
  tstamp    TIMESTAMP,
 
@@ -387,8 +387,8 @@ CREATE TABLE review (
 );
 
 DROP TABLE IF EXISTS reviewrating;
-CREATE TABLE reviewratings (
- id        BIGSERIAL primary key,
+CREATE TABLE reviewrating (
+ id        BIGSERIAL,
  userid    BIGINT      NOT NULL,
  reviewid  BIGINT     NOT NULL,
 
@@ -398,19 +398,19 @@ CREATE TABLE reviewratings (
 
 DROP TABLE IF EXISTS litlist;
 CREATE TABLE litlist (
- id        BIGSERIAL primary key,
+ id        BIGSERIAL,
  userid    BIGINT      NOT NULL,
 
  tstamp    TIMESTAMP,
 
  title     TEXT        NOT NULL,
- type      SMALLINT      NOT NULL default '1',
- lecture   SMALLINT      NOT NULL default '0'
+ type      SMALLINT    NOT NULL default '1',
+ lecture   BOOL        NOT NULL default 'false'
 );
 
 DROP TABLE IF EXISTS litlistitem;
 CREATE TABLE litlistitem (
- id        BIGSERIAL primary key,
+ id        BIGSERIAL,
  litlistid BIGINT     NOT NULL,
 
  tstamp    TIMESTAMP,
@@ -424,14 +424,14 @@ CREATE TABLE litlistitem (
 
 DROP TABLE IF EXISTS subject;
 CREATE TABLE subject (
- id           BIGSERIAL primary key,
+ id           BIGSERIAL,
  name         TEXT        NOT NULL default '',
  description  TEXT        NOT NULL default ''
 );
 
 DROP TABLE IF EXISTS litlist_subject;
 CREATE TABLE litlist_subject (
- id           BIGSERIAL primary key,
+ id           BIGSERIAL,
  litlistid    BIGINT     NOT NULL,
  subjectid    BIGINT     NOT NULL
 );
@@ -443,19 +443,3 @@ CREATE TABLE subjectclassification (
  type           VARCHAR(5)  NOT NULL
 );
 
-/* Standard ist Selbstregistrierung */
-insert into logintarget values(1,NULL,NULL,NULL,NULL,'Registrierte E-Mail Adresse','self');
-
-/* Standard sind Rollen Admin und Bibliothekar */
-insert into role values (1,'admin');
-insert into role values (2,'librarian');
-
-/* Standard ist Admin-User mit ID 1 und Passwort 'StrengGeheim' */
-insert into userinfo (id,username,password) values (1,'admin','StrengGeheim');
-insert into user_role (userid,roleid) values (1,1);
-
-/* Standard-Profil ist openbib */
-insert into profileinfo (id,profilename,description) values (1,'openbib','OpenBib Beispiel-Portal');
-
-/* Standard-View ist openbib */
-insert into viewinfo (id,viewname,description,start_loc,servername,profileid,stripuri,active) values (1,'openbib','OpenBib Beispiel-Portal','','',1,0,1);

@@ -20,7 +20,7 @@
 
 [%-
 request_base = config.get('search_defaultparams');
-local_searchprofile = config.get_searchprofile_of_database(record.id) ;
+local_searchprofile = config.get_searchprofile_of_database(record.database) ;
 view_searchprofile  = config.get_searchprofile_of_view(view) ;
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};

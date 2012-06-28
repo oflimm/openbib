@@ -50,8 +50,8 @@
 <table>
 <tr><td><b>[% msg.maketext("Hostname") %]</b></td><td><input type="text" name="hostname" value="[% logintarget.hostname %]" /></td></tr>
 <tr><td><b>[% msg.maketext("Port") %]</b></td><td><input type="text" name="port" value="[% logintarget.port %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td><input type="text" name="username" value="[% logintarget.user %]" /></td></tr>
-<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><input type="text" name="dbname" value="[% logintarget.db %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td><input type="text" name="username" value="[% logintarget.remoteuser %]" /></td></tr>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><input type="text" name="dbname" value="[% logintarget.remotedb %]" /></td></tr>
 <tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% logintarget.description %]" /></td></tr>
 <tr><td><b>[% msg.maketext("Typ") %]</b></td><td><input type="text" name="type" value="[% logintarget.type %]" /></td></tr>
 </table>

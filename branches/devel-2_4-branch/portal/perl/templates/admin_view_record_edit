@@ -54,25 +54,16 @@
 <tr><td><b>[% msg.maketext("URI ohne View") %]</b></td>
 <td>
 <select name="stripuri">
-<option value="1" [% IF viewinfo.stripuri == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
-<option value="0" [% IF viewinfo.stripuri != '1' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+<option value="true" [% IF viewinfo.stripuri == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="false" [% IF viewinfo.stripuri == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
 </td>
-</tr>
-<tr><td><b>[% msg.maketext("Eigener Index") %]</b></td>
-<td>
-<select name="joinindex">
-<option value="1" [% IF viewinfo.joinindex == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
-<option value="0" [% IF viewinfo.joinindex != '1' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
-</select>
-</td>
-<td>
 </tr>
 <tr><td><b>[% msg.maketext("Aktiv") %]</b></td>
 <td>
 <select name="active">
-<option value="1" [% IF viewinfo.active == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
-<option value="0" [% IF viewinfo.active != '1' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+<option value="true" [% IF viewinfo.active == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="false" [% IF viewinfo.active == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
 </td>
 </tr>

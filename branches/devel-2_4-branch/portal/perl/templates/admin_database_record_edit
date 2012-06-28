@@ -62,13 +62,13 @@
 <tr><td><b>[% msg.maketext("URL") %]</b></td><td><input type="text" name="url" value="[% databaseinfo.url %]" size="60" /></td></tr>
 <tr><td><b>[% msg.maketext("Bibliotheksinformationen statt URL") %]</b></td><td>
 <select name="use_libinfo">
-<option value="1" [%- IF databaseinfo.use_libinfo == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
-<option value="0" [%- IF databaseinfo.use_libinfo == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+<option value="true" [%- IF databaseinfo.use_libinfo == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+<option value="false" [%- IF databaseinfo.use_libinfo == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
 </td></tr>
 <tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>
 <select name="active">
-<option value="1" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
-<option value="0" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+<option value="true" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+<option value="false" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
 </td></tr>
 </table>
 <p />
@@ -102,8 +102,8 @@
     
 <tr><td><b>[% msg.maketext("Autokonvertierung (cron)") %]</b></td><td>
 <select name="autoconvert">
-<option value="0" [% IF databaseinfo.autoconvert == '0' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
-<option value="1" [% IF databaseinfo.autoconvert == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="false" [% IF databaseinfo.autoconvert == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+<option value="true" [% IF databaseinfo.autoconvert == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
 </select>
 </td></tr>
 </table>
@@ -118,8 +118,8 @@
 <table class="full">
 <tr><td><b>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</b></td><td>
 <select name="circ">
-<option value="0" [% IF databaseinfo.circ == '0' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
-<option value="1" [% IF databaseinfo.circ == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="false" [% IF databaseinfo.circ == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+<option value="true" [% IF databaseinfo.circ == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
 </select>
 </td></tr>
 <tr><td><b>[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</b></td><td><input type="text" size="50" name="circdb" value="[% databaseinfo.circdb %]" /></td></tr>

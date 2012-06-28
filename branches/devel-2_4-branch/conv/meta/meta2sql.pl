@@ -419,6 +419,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
             next CATLINE if (exists $stammdateien_ref->{$type}{blacklist_ref}->{$category});
 
             # To make PostgreSQL happy
+            $content =~s/\\/\\\\/g; # Escape Literal Backslash
             $content =~s/\r/\\r/g;
             
             # Kategorie in Record setzen            
@@ -609,6 +610,7 @@ while (my $line=<IN>){
         next CATLINE if (exists $stammdateien_ref->{holding}{blacklist_ref}->{$category});
 
         # To make PostgreSQL happy
+        $content =~s/\\/\\\\/g; # Escape Literal Backslash
         $content =~s/\r/\\r/g;
 
         # Kategorie in Record setzen
@@ -1585,6 +1587,7 @@ while (my $line=<IN>){
 #         }
 
         # To make PostgreSQL happy
+        $content =~s/\\/\\\\/g; # Escape Literal Backslash
         $content =~s/\r/\\r/g;
 
         if ($content =~/^IDN: (\S+)/){

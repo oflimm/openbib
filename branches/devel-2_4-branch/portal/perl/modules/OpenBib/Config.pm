@@ -1525,16 +1525,28 @@ sub connectDB {
     
     $self->{dbh}->{RaiseError} = 1;
 
-    eval {        
-#        $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd}) or $logger->error_die($DBI::errstr)
-        $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-
-    };
-
-    if ($@){
-        $logger->fatal("Unable to connect to database $self->{systemdbname}");
+    if ($self->{dbimodule} eq "Pg"){
+        # UTF8: {'pg_enable_utf8'    => 1}
+        eval {        
+            $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $self->{systemdbname}");
+        }
     }
-
+    elsif ($self->{dbimodule} eq "mysql"){
+        eval {        
+            $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $self->{systemdbname}");
+        }
+    }
+    
     return;
 }
 
@@ -2297,8 +2309,10 @@ sub get_searchprofile_or_create {
     
     if ($searchprofile){
         $searchprofileid = $searchprofile->id;
+        $logger->debug("Searchprofile-ID $searchprofileid found for databases $dbs_as_json");
     }
     else {
+        $logger->debug("Creating new Searchprofile for databases $dbs_as_json");
         my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
             {
                 databases_as_json => $dbs_as_json,
@@ -2318,6 +2332,9 @@ sub get_searchprofile_or_create {
                         dbid            => $dbinfo->id,
                     }
                 );
+            }
+            else {
+                $logger->error("Can't get Databaseinfo for database $database");
             }
         }
     }

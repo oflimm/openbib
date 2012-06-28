@@ -252,8 +252,10 @@ foreach my $database (@databases){
         $isbn_insertcount++;
     }
 
-    $enrich_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
-
+    if (@$alltitlebyisbn_ref){
+        $enrich_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+    }
+    
     $logger->info("$isbn_insertcount ISBN's inserted");
 
     $logger->info("Getting Bibkeys from database $database and adding to enrichmntdb");
@@ -304,8 +306,10 @@ foreach my $database (@databases){
         }
     }
 
-    $enrich_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
-
+    if (@$alltitlebybibkey_ref){
+        $enrich_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+    }
+    
     $logger->info("$bibkey_insertcount Bibkeys inserted");
 
     $logger->info("Getting ISSNs from database $database and adding to enrichmntdb");
@@ -367,8 +371,10 @@ foreach my $database (@databases){
         }
     }
 
-    $enrich_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
-
+    if (@$alltitlebyissn_ref){
+        $enrich_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+    }
+    
     $logger->info("$issn_insertcount ISSNs inserted");
     
 }

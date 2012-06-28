@@ -84,9 +84,15 @@ my $user       = OpenBib::User->instance;
 my $statistics = OpenBib::Statistics->instance;
 
 # Verbindung zur SQL-Datenbank herstellen
-my $statisticsdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-    or $logger->error($DBI::errstr);
+my $statisticsdbh;
+if ($config->{statisticsdbimodule} eq "Pg"){
+    $statisticsdbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1})
+        or $logger->error($DBI::errstr);
+}
+elsif ($config->{statisticsdbimodule} eq "mysql"){
+    $statisticsdbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]})
+        or $logger->error($DBI::errstr);
+}
 
 if (!$type){
   $logger->fatal("Kein Type mit --type= ausgewaehlt");
@@ -109,16 +115,28 @@ if ($type == 1){
 
         my $schema;
         
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
+        if ($config->{dbimodule} eq "Pg"){
+            eval {
+                # UTF8: {'pg_enable_utf8'    => 1}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
         }
-
+        elsif ($config->{dbimodule} eq "mysql"){
+            eval {
+                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
+        }
 
         my $dbh
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
@@ -223,15 +241,28 @@ if ($type == 3){
 	my $mincount=999999999;
 
         my $schema;
-        
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
+
+        if ($config->{dbimodule} eq "Pg"){
+            eval {
+                # UTF8: {'pg_enable_utf8'    => 1}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
+        }
+        elsif ($config->{dbimodule} eq "mysql"){
+            eval {
+                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
         }
         
         my $bestof_ref=[];
@@ -245,7 +276,7 @@ if ($type == 3){
                 select   => ['subject_fields.content', {'count' => 'title_subjects.titleid'}],
                 as       => ['thiscontent','titlecount'],
                 join     => ['subject_fields','title_subjects'],
-                group_by => ['title_subjects.subjectid'],
+                group_by => ['title_subjects.subjectid','subject_fields.content'],
                 order_by => { -desc => \'count(title_subjects.titleid)' },
                 rows     => 200,
             }
@@ -311,14 +342,27 @@ if ($type == 4){
 
         my $schema;
         
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
+        if ($config->{dbimodule} eq "Pg"){
+            eval {
+                # UTF8: {'pg_enable_utf8'    => 1}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
+        }
+        elsif ($config->{dbimodule} eq "mysql"){
+            eval {
+                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
         }
 
         my $bestof_ref=[];
@@ -332,7 +376,7 @@ if ($type == 4){
                 select   => ['classification_fields.content', {'count' => 'title_classifications.titleid'}],
                 as       => ['thiscontent','titlecount'],
                 join     => ['classification_fields','title_classifications'],
-                group_by => ['title_classifications.classificationid'],
+                group_by => ['title_classifications.classificationid','classification_fields.content'],
                 order_by => { -desc => \'count(title_classifications.titleid)' },
                 rows     => 200,
             }
@@ -395,14 +439,27 @@ if ($type == 5){
 
         my $schema;
         
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
+        if ($config->{dbimodule} eq "Pg"){
+            eval {
+                # UTF8: {'pg_enable_utf8'    => 1}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
+        }
+        elsif ($config->{dbimodule} eq "mysql"){
+            eval {
+                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
         }
 
         my $bestof_ref=[];
@@ -416,7 +473,7 @@ if ($type == 5){
                 select   => ['corporatebody_fields.content', {'count' => 'title_corporatebodies.titleid'}],
                 as       => ['thiscontent','titlecount'],
                 join     => ['corporatebody_fields','title_corporatebodies'],
-                group_by => ['title_corporatebodies.corporatebodyid'],
+                group_by => ['title_corporatebodies.corporatebodyid','corporatebody_fields.content'],
                 order_by => { -desc => \'count(title_corporatebodies.titleid)' },
                 rows     => 200,
             }
@@ -479,14 +536,27 @@ if ($type == 6){
 
         my $schema;
         
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
+        if ($config->{dbimodule} eq "Pg"){
+            eval {
+                # UTF8: {'pg_enable_utf8'    => 1}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
+        }
+        elsif ($config->{dbimodule} eq "mysql"){
+            eval {
+                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
         }
 
         my $bestof_ref=[];
@@ -500,7 +570,7 @@ if ($type == 6){
                 select   => ['person_fields.content', {'count' => 'title_people.titleid'}],
                 as       => ['thiscontent','titlecount'],
                 join     => ['person_fields','title_people'],
-                group_by => ['title_people.personid'],
+                group_by => ['title_people.personid','person_fields.content'],
                 order_by => { -desc => \'count(title_people.titleid)' },
                 rows     => 200,
             }
@@ -585,7 +655,7 @@ if ($type == 7){
                 select   => ['me.name', 'me.id',{'count' => 'tit_tags.tagid'}],
                 as       => ['thiscontent','thisid','titlecount',],
                 join     => ['tit_tags'],
-                group_by => ['tit_tags.tagid'],
+                group_by => ['tit_tags.tagid','me.name','me.id'],
                 rows     => 200,
             }
         );
@@ -741,14 +811,27 @@ if ($type == 9){
 
         my $schema;
         
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
+        if ($config->{dbimodule} eq "Pg"){
+            eval {
+                # UTF8: {'pg_enable_utf8'    => 1}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
+        }
+        elsif ($config->{dbimodule} eq "mysql"){
+            eval {
+                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+                $schema = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            };
+            
+            if ($@){
+                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+                next;
+            }
         }
 
         my $bestof_ref=[];

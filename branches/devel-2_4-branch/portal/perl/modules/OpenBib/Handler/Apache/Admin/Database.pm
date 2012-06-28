@@ -157,8 +157,8 @@ sub create_record {
     my $dbname          = $query->param('dbname')          || '';
     my $sigel           = $query->param('sigel')           || '';
     my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('use_libinfo')     || 0;
-    my $active          = $query->param('active')          || 0;
+    my $use_libinfo     = $query->param('use_libinfo')     || 'false';
+    my $active          = $query->param('active')          || 'false';
 
     my $host               = $query->param('host')               || '';
     my $protocol           = $query->param('protocol')           || '';
@@ -171,8 +171,8 @@ sub create_record {
     my $subjectfile        = $query->param('subjectfile')        || '';
     my $classificationfile = $query->param('classificationfile') || '';
     my $holdingfile        = $query->param('holdingfile')        || '';
-    my $autoconvert        = $query->param('autoconvert')        || '';
-    my $circ               = $query->param('circ')               || '';
+    my $autoconvert        = $query->param('autoconvert')        || 'false';
+    my $circ               = $query->param('circ')               || 'false';
     my $circurl            = $query->param('circurl')            || '';
     my $circcheckurl       = $query->param('circcheckurl')       || '';
     my $circdb             = $query->param('circdb')             || '';
@@ -387,8 +387,8 @@ sub update_record {
     my $system          = $query->param('system')          || '';
     my $sigel           = $query->param('sigel')           || '';
     my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('use_libinfo')     || 0;
-    my $active          = $query->param('active')          || 0;
+    my $use_libinfo     = $query->param('use_libinfo')     || 'false';
+    my $active          = $query->param('active')          || 'false';
 
     my $host               = $query->param('host')               || '';
     my $protocol           = $query->param('protocol')           || '';
@@ -401,8 +401,8 @@ sub update_record {
     my $subjectfile        = $query->param('subjectfile')        || '';
     my $classificationfile = $query->param('classificationfile') || '';
     my $holdingfile        = $query->param('holdingfile')        || '';
-    my $autoconvert        = $query->param('autoconvert')        || '';
-    my $circ               = $query->param('circ')               || '';
+    my $autoconvert        = $query->param('autoconvert')        || 'false';
+    my $circ               = $query->param('circ')               || 'false';
     my $circurl            = $query->param('circurl')            || '';
     my $circcheckurl       = $query->param('circcheckurl')       || '';
     my $circdb             = $query->param('circdb')             || '';

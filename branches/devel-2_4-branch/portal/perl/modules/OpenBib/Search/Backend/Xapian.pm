@@ -253,6 +253,8 @@ sub initial_search {
     
     my ($is_singleterm) = $fullquerystring =~m/^(\w+)$/;
 
+    $logger->debug("Full querystring: $fullquerystring");
+    
     my $default_op_ref = {
         'and' => "Search::Xapian::OP_AND",
         'or'  => "Search::Xapian::OP_OR",

@@ -87,7 +87,7 @@ create table rssinfo (
  cache_tstamp  TIMESTAMP,
  cache_content TEXT,
 
- active      TINYINT,
+ active      BOOL,
 
  CONSTRAINT `pk_rss` PRIMARY KEY (`id`),
  CONSTRAINT `fk_rss_db` FOREIGN KEY (`dbid`) REFERENCES `databaseinfo` (`id`),
@@ -158,7 +158,7 @@ CREATE TABLE viewinfo (
  start_loc   TEXT,
  servername  TEXT,
  profileid   BIGINT NOT NULL,
- stripuri    TINYINT(4),
+ stripuri    BOOL,
  active      BOOL,
 
  CONSTRAINT `pk_view` PRIMARY KEY (`id`),
@@ -202,7 +202,7 @@ DROP TABLE IF EXISTS serverinfo;
 CREATE TABLE serverinfo (
  id         INT(11) AUTO_INCREMENT,
  host       TEXT,
- active     INT(1),
+ active     BOOL,
 
  CONSTRAINT `pk_server` PRIMARY KEY (`id`),
 
@@ -492,7 +492,7 @@ DROP TABLE IF EXISTS searchprofile;
 CREATE TABLE searchprofile (
  id                BIGINT AUTO_INCREMENT,
  databases_as_json TEXT, /* for quick lookup having database list and initial state */
- own_index         TINYINT(4),
+ own_index         BOOL,
 
  CONSTRAINT `pk_searchprofile` PRIMARY KEY (`id`),
 
@@ -659,7 +659,7 @@ COLLATE utf8_general_ci
 PACK_KEYS=1;
 
 DROP TABLE IF EXISTS reviewrating;
-CREATE TABLE reviewratings (
+CREATE TABLE reviewrating (
  id        INT(11)     NOT NULL auto_increment,
  userid    BIGINT      NOT NULL,
  reviewid  INT(11)     NOT NULL,
@@ -782,4 +782,4 @@ insert into user_role (userid,roleid) values (1,1);
 insert into profileinfo (id,profilename,description) values (1,'openbib','OpenBib Beispiel-Portal');
 
 /* Standard-View ist openbib */
-insert into viewinfo (id,viewname,description,start_loc,servername,profileid,stripuri,active) values (1,'openbib','OpenBib Beispiel-Portal','','',1,0,1);
+insert into viewinfo (id,viewname,description,start_loc,servername,profileid,stripuri,active) values (1,'openbib','OpenBib Beispiel-Portal','','',1,'false','true');

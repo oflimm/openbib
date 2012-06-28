@@ -12,44 +12,44 @@ csv:
   'escape_char': ""
 
 # Feld der eindeutigen Titel-ID
-uniqueidfield: 'Nr'
+uniqueidfield: 'nr'
 
 category_split_chars:
-  'Autor': '\s*;\s*'
-  'Herausgeber': '\s*;\s*'
+  'autor': '\s*;\s*'
+  'herausgeber': '\s*;\s*'
 
 # Personen
 pers:
-  'Autor': '0100:'        # Verfasser
-  'Herausgeber': '0101:'  # Person
+  'autor': '0100:'        # Verfasser
+  'herausgeber': '0101:'  # Person
 
 # Koerperschaften
 corp:
 
 # Systematik
 sys: 
-  'Paket1': '0700:'
-  'Paket2': '0700:'
+  'paket1': '0700:'
+  'paket2': '0700:'
 
 # Schlagworte
 subj:
-  'Paket': '0710:' # GBV-Schlagwoerter
-  'Subject': '0710:'
-  'Subject2': '0710:'
-  'Subject3': '0710:'
+  'paket': '0710:' # GBV-Schlagwoerter
+  'subject': '0710:'
+  'subject2': '0710:'
+  'subject3': '0710:'
 
 # Titel
 title:
-  'Titel': '0331:'
-  'Serientitel': '0451:'
-  'Untertitel': '0370:'
-  'Auflage': '0403:'
-  'PrintISBN as ISBN_Hardcover': '0540:'
-  'Dummy as ISBN_Paperback': '0540:'
-  'EBookISBN': '0553:'
-  'Erscheinungsjahr': '0425:'
+  'titel': '0331:'
+  'serientitel': '0451:'
+  'untertitel': '0370:'
+  'auflage': '0403:'
+  'printisbn as isbn_Hardcover': '0540:'
+  'dummy_as_isbn_paperback': '0540:'
+  'ebookisbn': '0553:'
+  'erscheinungsjahr': '0425:'
 # 'DOI': ''
-  'Hosting': '0508:'
-# 'Kurzbeschreibung': '0750:'
-  'URL': '0662:'
-  'Verlag': '0412:'
+  'hosting': '0508:'
+# 'kurzbeschreibung': '0750:'
+  'url': '0662:'
+  'verlag': '0412:'

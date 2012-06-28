@@ -1,7 +1,6 @@
 -------------------------------------------------
 -------- Indizes / Primary / Foreign Keys -------
 -------------------------------------------------
-
 CREATE INDEX datacache_id ON datacache (id);
 CREATE INDEX datacache_tstamp ON datacache (tstamp);
 CREATE INDEX datacache_subkey ON datacache (subkey);
@@ -9,7 +8,7 @@ CREATE INDEX datacache_type ON datacache (type);
 
 -------------------------------------------------
 
-CREATE INDEX sessioninfo_id ON sessioninfo (id);
+ALTER TABLE sessioninfo ADD PRIMARY KEY (id);
 CREATE INDEX sessioninfo_sessionid ON sessioninfo (sessionid);
 CREATE INDEX sessioninfo_createtime ON sessioninfo (createtime);
 CREATE INDEX sessioninfo_createtime_year ON sessioninfo (createtime_year);

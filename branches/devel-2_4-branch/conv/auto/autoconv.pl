@@ -421,6 +421,7 @@ ENDE
 
         close(COPYIN);
         close(COPYOUT);
+        system("$mysqladminexe drop   $databasetmp");
     }
     elsif ($config->{dbimodule} eq "Pg"){
         system("$pgsqlexe -c 'drop database $database' $config->{systemdbname}");
@@ -458,8 +459,7 @@ if ($config->{dbimodule} eq "Pg"){
     system("rm ~/.pgpass ");
 }
 
-system("$mysqladminexe drop   $databasetmp");
-#system("rm $rootdir/data/$database/*") unless ($database eq "inst001");
+system("rm $rootdir/data/$database/*") unless ($database eq "openbib");
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

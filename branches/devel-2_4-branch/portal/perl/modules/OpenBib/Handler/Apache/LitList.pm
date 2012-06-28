@@ -519,7 +519,7 @@ sub show_record {
     # Dispatched Args
     my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->param('litlistid')      || '';
+    my $litlistid      = $self->strip_suffix($self->param('litlistid'))      || '';
     my $path_prefix    = $self->param('path_prefix');
 
     # Shared Args

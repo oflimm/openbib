@@ -39,6 +39,7 @@ use Benchmark ':hireswallclock';
 use DBI;
 use Getopt::Long;
 use YAML;
+use POSIX qw/strftime/;
 
 use OpenBib::Config;
 use OpenBib::Database::Catalog;
@@ -221,7 +222,7 @@ foreach my $database (@databases){
     foreach my $item ($all_isbns->all){
         my $thistitleid       = $item->get_column('thistitleid');
         my $thisisbn = $item->get_column('thisisbn');
-        my $thisdate = $item->get_column('thisdate');
+        my $thisdate = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
         
         $logger->debug("Got Title with id $thistitleid and ISBN $thisisbn");
         
@@ -291,7 +292,7 @@ foreach my $database (@databases){
     foreach my $item ($all_isbns->all){
         my $thistitleid         = $item->get_column('thistitleid');
         my $thisbibkey = $item->get_column('thisbibkey');
-        my $thisdate   = $item->get_column('thisdate');
+        my $thisdate   = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
         
         if ($thisbibkey){
             $logger->debug("Got Title with id $thistitleid and bibkey $thisbibkey");
@@ -346,7 +347,7 @@ foreach my $database (@databases){
     foreach my $item ($all_isbns->all){
         my $thistitleid = $item->get_column('thistitleid');
         my $thisissn    = $item->get_column('thisissn');
-        my $thisdate    = $item->get_column('thisdate');
+        my $thisdate    = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
         
 
         if ($thisissn){

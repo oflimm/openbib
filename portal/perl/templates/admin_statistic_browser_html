@@ -1,0 +1,124 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_statistic_browser_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="statistic" active_subsubmenu="browser" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<div class="listoptions">
+<b>Jahr:</b>&nbsp;
+[%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');
+    i         = ret.min ;
+
+    IF NOT year ;
+     year = ret.max ;
+    END ;
+
+    WHILE i <= ret.max ; -%]
+<a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/browser.html?year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
+[%- i = i+1 -%]
+[%- END -%]
+</div>
+</p>
+
+<table width="100%">
+<tr><th>Genutzte Browser</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table>
+[% browsers = statistics.get_ranking_of_event({ type => 101, limit => 20, from => "${year}0101", to => "${year}1231"}) %]
+[% count_msie    = 0;
+   count_msie6   = 0;
+   count_msie6   = 0;
+   count_ff      = 0;
+   count_safari  = 0;
+   count_opera   = 0;
+   count_all     = 0;
+%]
+[% FOREACH browser IN browsers %]
+<tr><td>[% browser.content %]</td><td><b>[% browser.number %]</b></td></tr>
+[%
+   IF browser.content.match('MSIE 6') ;
+      count_msie   =  count_msie + browser.number;
+      count_msie6  =  count_msie6 + browser.number;
+   ELSIF browser.content.match('MSIE 7') ;
+      count_msie   =  count_msie + browser.number;
+      count_msie7  =  count_msie7 + browser.number;
+   ELSIF browser.content.match('Firefox') ;
+      count_ff     =  count_ff + browser.number;
+   ELSIF browser.content.match('Safari') ;
+      count_safari =  count_safari + browser.number;
+   ELSIF browser.content.match('Opera') ;
+      count_opera  =  count_opera + browser.number;
+   END ;
+   count_all = count_all + browser.number;
+%]
+[% END %]
+</table>
+</td></td>
+</table>
+
+<p />
+<table width="100%">
+<tr><th>Browserverteilung</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+[% IF countall %]
+<table>
+<tr><td>Firefox</td><td>[% count_ff * 100.0 / count_all %]</td></tr>
+<tr><td>MSIE</td><td>[% count_msie * 100.0 / count_all %] (6: [% count_msie6 * 100.0 / count_all %] / 7: [% count_msie7 * 100.0 / count_all %])</td></tr>
+<tr><td>Safari</td><td>[% count_safari * 100.0 / count_all %]</td></tr>
+<tr><td>Opera</td><td>[% count_opera * 100.0 / count_all %]</td></tr>
+</table>
+[% ELSE %]
+Es liegen keine Daten vor
+[% END %]
+</tr></tr>
+</table>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

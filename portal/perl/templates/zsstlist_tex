@@ -1,0 +1,250 @@
+\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\usepackage{german}
+\usepackage{typearea}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[utf8x]{inputenc}
+
+% Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
+\usepackage{picins}
+
+% Header anpassbar
+\usepackage{fancyhdr}
+
+% Headings umdefinieren
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyhead[LE]{\nouppercase{\leftmark}}
+\fancyfoot[RO, LE]{\thepage}
+
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+\addtolength{\headwidth}{1cm}
+
+\parindent0.0mm
+\parskip0.3cm    
+\typearea{13}
+
+\begin{document}
+
+\frontmatter
+\begin{titlepage}
+
+\begin{center}
+[%- beschreibung = filterchars(dbinfo.get('sigel').${sigel}.full) -%]
+
+\vspace{2cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Liste der Zeitschriften in der ZDB}
+
+  \vspace{0.5cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont [% beschreibung %]\\[3mm]Sigel: 38/[% sigel %]}
+
+\vspace{0.5cm}
+
+\includegraphics[width=12cm]{/usr/share/images/openbib/blaues-siegel-uni-koeln.jpg}
+
+  \vspace{1cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Stand: \today}
+
+\end{center}
+
+[%- IF beschreibung.length > 70 -%]
+\vspace{2mm}
+[%- ELSE -%]
+\vspace{1cm}
+[%- END -%]
+
+\rule[-.1in]{16cm}{0.1mm}\\[2mm]
+\begin{tabular}{lc}
+\raisebox{-0.6cm}{\includegraphics[width=3.2cm]{/usr/share/images/openbib/usblogo.jpg}} &
+\raisebox{-0.1cm}{\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont
+Abteilung Universit"atsGesamtKatalog / USB K"oln}}\\
+\end{tabular}
+
+\rule[1cm]{16cm}{0.1mm}
+
+\newpage 
+
+Liebe Kolleginnen und Kollegen,
+
+am 01.09.2006 hat die Abt. UGK die Aufgabe der Pflege der
+Zeitschriftenbest"ande der Institute in der Zeitschriftendatenbank
+(ZDB) "ubernommen.
+
+Durch die neue KUG 2.0 Version gibt es f"ur Sie die M"oglichkeit die
+Liste Ihre Zeitschriftenbest"ande als PDF-Dokument von unserem Server
+herunterzuladen. Wir verschicken also keine Zeitschriftentitellisten
+mehr an Sie mit der Bitte um Korrektur, sondern Sie entscheiden, wann
+sie eine Revision Ihres Zeitschriftenbestandes durchf"uhren wollen und
+k"onnen sich dann Ihre Liste herunterladen, ausdrucken und nach der
+Bearbeitung an uns schicken.
+
+\minisec{Allgemeine Hinweise zur Zeitschriftenbearbeitung:}
+
+Bei neuen Zeitschriften, die noch nicht in der ZDB vorhanden sind,
+schicken Sie uns bitte Kopien des Titelblattes und aller relevanten
+Daten aus dem Impressum.
+
+Von Ihnen gemeldete "Anderungen in der ZDB-Online sind dort auch sofort
+sichtbar. Allerdings werden diese "Anderungen in der KUG-Datenbank
+\emph{Zeitschriften der Institute} erst beim viertelj"ahrlichen Update
+angezeigt. (Viertelj"ahrlich erhalten wir vom HBZ einen Abzug der
+ZDB-Daten f"ur die Best"ande der K"olner Instituts- und
+Seminarbibliotheken). Es nutzt also nichts nach unserer R"uckmeldung
+"uber durchgef"uhrte "Anderungen, diese in der \emph{Zeitschriften der
+Institute}-Datenbank zu recherchieren. Gehen Sie dazu auf die ZDB-URL:
+\texttt{http://dispatch.opac.ddb.de/}
+
+Zus"atzlich sollten Sie uns nat"urlich alle laufenden Bestands"anderungen
+per Mail (gk@ub.uni-koeln.de ) mitteilen.
+
+Bitte beachten Sie bei "Anderungsmitteilungen:
+
+\begin{itemize}
+\item Geben Sie mit dem Erscheinungsjahr auch immer die
+Band/Volume-Z"ahlung an:\newline
+Falsch:  - 1993\newline
+Richtig: - 34.1993
+\item \lbrack{}N=34.1993\rbrack = Nicht vorhanden, d.h. der Band 34.1993 ist (komplett) nicht vorhanden.
+\item \lbrack{}L=34.1993\rbrack = L"uckenhaft vorhanden, d.h. der Band 34.1993 ist nur l"uckenhaft vorhanden. Es fehlen einzelne Hefte.
+\end{itemize}
+
+\minisec{URL der Zeitschriftenlisten}
+
+Unter dem URL \texttt{http://kug.ub.uni-koeln.de/zsstlisten/} finden
+Sie aufgeschl"usselt nach Sigeln zu jedem Institut/Seminar jeweils
+eine pdf-Datei, in der nur die Bestandsnachweise des jeweiligen
+Instituts/Seminars stehen (ohne \texttt{-all}) sowie eine pdf-Datei
+(mit \texttt{-all}), in der neben dem lokalen Bestandsnachweis auch
+die Best"ande anderer Institute/Seminare an der Universit"at zu K"oln
+verzeichnet sind.  \vspace{1cm}
+
+  \begin{tabular}[t]{ll}
+    AnsprechpartnerInnen : & Abt. Universit"atsGesamtKatalog / USB K"oln\\
+    Telefon : & 0221-470 3306 \\
+    Fax     : & 0221-470 5166 \\
+    E-Mail  : & gk@ub.uni-koeln.de \\
+  \end{tabular}
+
+\end{titlepage}
+
+
+
+
+%\thispagestyle{empty}
+
+%\begin{verbatim}
+
+
+%Copyright (c) 2005 Oliver Flimm <flimm@openbib.org>
+
+%Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
+%und/oder zu veraendern unter den Bedingungen der GNU Free
+%Documentation License, Version 1.1 oder einer spaeteren, von der Free 
+%Software Foundation veroeffentlichten Version; mit den
+%Unveraenderlichen Abschnitten DEREN TITEL AUFGEZAEHLT sind, mit den 
+%Vorderseitentexten die AUFGEZAEHLT sind, und mit den Rueckseitentexten
+%die AUFGEZAEHLT sind. Eine Kopie dieser Lizenz ist in dem Abschnitt 
+%enthalten, der mit "GNU Free Documentation License"
+%\end{verbatim}
+
+\mainmatter
+
+\section*{Allgemeine Informationen}
+
+\begin{description}
+\item[Gesamtzahl der Zeitschriften] [% gesamtzahl %]
+\item[Davon sind auch in anderen Bibliotheken vorhanden] [% externzahl %]
+\end{description}
+
+Die Instituts- und Seminarnamen zu den angegebenen Sigeln erhalten Sie
+online von unserer Sigel-Liste:
+
+\begin{center}
+\begin{verbatim}
+http://www.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/sigel/index_ger.html
+\end{verbatim}
+\end{center}
+
+\section*{Aufstellung der Zeitschriften}
+
+[% FOREACH record IN recordlist %]
+[% thistitset = record.get_normdata %]
+[% thisholding = record.get_holding %]
+
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+[% FOREACH item IN thistitset.${"T0572"} %]
+  \textbf{ZDB-Id} & \textbf{[% filterchars(item.content) %]}\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0200"} %]
+  Urheber & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0201"} %]
+  K"orperschaft & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0310"} %]
+  AST & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0331"} %]
+  HST & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0335"} %]
+   Zusatz zum HST & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0370"} %]
+   WST & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0412"} %]
+   Verlag     & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0410"} %]
+   Verlagsort & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0405"} %]
+   Erschverlauf & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0543"} %]
+   ISSN & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0531"} %]
+   Fr"uher u.d.T. & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0532"} %]
+   Teilw. u.d.T. & [% filterchars(item.content) %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0533"} %]
+   Sp"ater u.d.T. & [% filterchars(item.content) %]\\
+[% END %]
+\end{tabular}
+
+[% IF thisholding %]
+\begin{tabular}{cccp{10cm}}
+Sigel & Signatur & Standort & Bestand \\
+[%   FOREACH item IN thisholding %]
+[%     IF showall %]
+[%       IF item.${"X3330"}.content == sigel %]
+\textbf{[% filterchars(item.${"X3330"}.content) %]} & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
+[%       ELSE %]
+[% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
+[%       END %]
+[%     ELSE %]
+[%       IF item.${"X3330"}.content == sigel %]
+[% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
+[%       END %]
+[%     END %]
+[%   END %]
+\end{tabular}
+[% END %]
+
+\end{shadowenv}
+
+[% END %]
+
+\end{document}

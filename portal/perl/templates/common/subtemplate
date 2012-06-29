@@ -1,0 +1,59 @@
+[%#-
+#######################################################################
+#
+# Templatename: subtemplate
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# View- und datenbankspezifische Kaskadierung von Templates
+# Uebergabeparameter ist der Templatename name
+#
+#######################################################################
+-%]
+[%- ttname = '' -%]
+[%- IF database -%]
+  [%- TRY -%]
+    [%- USE File "${config.get('tt_include_path')}/profile/$sysprofile/database/$database/$name" -%]
+    [%- ttname = "${config.get('tt_include_path')}/profile/$sysprofile/database/$database/$name" -%]
+  [%- CATCH -%]
+    [%- nodbtt = 1 -%]
+  [%- END -%]
+[%- END -%]
+[%- IF NOT ttname && view -%]
+  [%- TRY -%]
+    [%- USE File "${config.get('tt_include_path')}/profile/$sysprofile/views/$view/$name" -%]
+    [%- ttname = "${config.get('tt_include_path')}/profile/$sysprofile/views/$view/$name" -%]
+  [%- CATCH -%]
+    [%- noviewtt = 1 -%]
+  [%- END -%]
+[%- END -%]
+[%- IF NOT ttname  -%]
+  [%- TRY -%]
+    [%- USE File "${config.get('tt_include_path')}/profile/$sysprofile/$name" -%]
+    [%- ttname = "${config.get('tt_include_path')}/profile/$sysprofile/$name" -%]
+  [%- CATCH -%]
+    [%- nodbtt = 1 -%]
+  [%- END -%]
+[%- END -%]
+[%- IF NOT ttname && database -%]
+  [%- TRY -%]
+    [%- USE File "${config.get('tt_include_path')}/database/$database/$name" -%]
+    [%- ttname = "${config.get('tt_include_path')}/database/$database/$name" -%]
+  [%- CATCH -%]
+    [%- nodbtt = 1 -%]
+  [%- END -%]
+[%- END -%]
+[%- IF NOT ttname && view -%]
+  [%- TRY -%]
+    [%- USE File "${config.get('tt_include_path')}/views/$view/$name" -%]
+    [%- ttname = "${config.get('tt_include_path')}/views/$view/$name" -%]
+  [%- CATCH -%]
+    [%- noviewtt = 1 -%]
+  [%- END -%]
+[%- END -%]
+[%- IF NOT ttname  -%]
+    [%- ttname = "$name" -%]
+[%- END -%]
+[%- PROCESS "$ttname" -%]

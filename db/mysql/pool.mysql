@@ -1,0 +1,364 @@
+/*-------------------------------------------------*/
+/*--------------- T A B E L L E N -----------------*/
+/*-------------------------------------------------*/
+
+/*-------------------------------------------------*/
+/*-------------- Autorenstammdatei ----------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS person;
+create table person (
+ id            VARCHAR(255) NOT NULL,
+ tstamp_create BIGINT,
+ tstamp_update BIGINT,
+
+ CONSTRAINT `pk_person` PRIMARY KEY (`id`),
+
+ INDEX         (id),
+ INDEX         (tstamp_create),
+ INDEX         (tstamp_update)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS person_fields;
+create table person_fields (
+ personid      VARCHAR(255) NOT NULL,
+ field         SMALLINT  NOT NULL,
+ mult          SMALLINT,
+ subfield      VARCHAR(2),
+ content       TEXT NOT NULL,
+ content_norm  TEXT,
+
+ CONSTRAINT `fk_person_fields` FOREIGN KEY (`personid`) REFERENCES `person` (`id`),
+
+ INDEX         (personid),
+ INDEX         (field),
+ INDEX         (mult),
+ INDEX         (subfield),
+ INDEX         (content(10)),
+ INDEX         (content_norm(10)),
+ INDEX         (personid,field)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/*-------------------------------------------------*/
+/*------------Koerperschaftsstammdatei ------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS corporatebody;
+create table corporatebody (
+ id            VARCHAR(255) NOT NULL,
+ tstamp_create BIGINT,
+ tstamp_update BIGINT,
+
+ CONSTRAINT `pk_corporatebody` PRIMARY KEY (`id`),
+
+ INDEX         (id),
+ INDEX         (tstamp_create),
+ INDEX         (tstamp_update)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS corporatebody_fields;
+create table corporatebody_fields (
+ corporatebodyid VARCHAR(255) NOT NULL,
+ field           SMALLINT  NOT NULL,
+ mult            SMALLINT,
+ subfield        VARCHAR(2),
+ content         TEXT NOT NULL,
+ content_norm    TEXT,
+
+ CONSTRAINT `fk_corporatebody_fields` FOREIGN KEY (`corporatebodyid`) REFERENCES `corporatebody` (`id`),
+
+ INDEX         (corporatebodyid),
+ INDEX         (field),
+ INDEX         (mult),
+ INDEX         (subfield),
+ INDEX         (content(10)),
+ INDEX         (content_norm(10)),
+ INDEX         (corporatebodyid,field)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/*-------------------------------------------------*/
+/*------------ Schlagwortstammdatei ---------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS subject;
+create table subject (
+ id            VARCHAR(255) NOT NULL,
+ tstamp_create BIGINT,
+ tstamp_update BIGINT,
+
+ CONSTRAINT `pk_subject` PRIMARY KEY (`id`),
+
+ INDEX         (id),
+ INDEX         (tstamp_create),
+ INDEX         (tstamp_update)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS subject_fields;
+create table subject_fields (
+ subjectid     VARCHAR(255) NOT NULL,
+ field         SMALLINT  NOT NULL,
+ mult          SMALLINT,
+ subfield      VARCHAR(2),
+ content       TEXT NOT NULL,
+ content_norm  TEXT,
+
+ CONSTRAINT `fk_subject_fields` FOREIGN KEY (`subjectid`) REFERENCES `subject` (`id`),
+
+ INDEX         (subjectid),
+ INDEX         (field),
+ INDEX         (mult),
+ INDEX         (subfield),
+ INDEX         (content(10)),
+ INDEX         (content_norm(10)),
+ INDEX         (subjectid,field)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/*-------------------------------------------------*/
+/*-------------- Notationstammdatei ---------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS classification;
+create table classification (
+ id            VARCHAR(255) NOT NULL,
+ tstamp_create BIGINT,
+ tstamp_update BIGINT,
+
+ CONSTRAINT `pk_classification` PRIMARY KEY (`id`),
+
+ INDEX         (id),
+ INDEX         (tstamp_create),
+ INDEX         (tstamp_update)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS classification_fields;
+create table classification_fields (
+ classificationid VARCHAR(255) NOT NULL,
+ field            SMALLINT  NOT NULL,
+ mult             SMALLINT,
+ subfield         VARCHAR(2),
+ content          TEXT NOT NULL,
+ content_norm     TEXT,
+
+ CONSTRAINT `fk_classification_fields` FOREIGN KEY (`classificationid`) REFERENCES `classification` (`id`),
+
+ INDEX         (classificationid),
+ INDEX         (field),
+ INDEX         (mult),
+ INDEX         (subfield),
+ INDEX         (content(10)),
+ INDEX         (content_norm(10)),
+ INDEX         (classificationid,field)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/*-------------------------------------------------*/
+/*--------------- Titelstammdatei -----------------*/
+/*-------------------------------------------------*/
+ 
+drop table IF EXISTS title;
+create table title (
+ id            VARCHAR(255) NOT NULL,
+ tstamp_create BIGINT,
+ tstamp_update BIGINT,
+ titlecache    BLOB,
+ popularity    INT,
+
+ CONSTRAINT `pk_title` PRIMARY KEY (`id`),
+
+ INDEX         (id),
+ INDEX         (popularity),
+ INDEX         (tstamp_create),
+ INDEX         (tstamp_update)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS title_fields;
+create table title_fields (
+ titleid       VARCHAR(255) NOT NULL,
+ field         SMALLINT  NOT NULL,
+ mult          SMALLINT,
+ subfield      VARCHAR(2),
+ content       TEXT NOT NULL,
+ content_norm  TEXT,
+
+ CONSTRAINT `fk_title_fields` FOREIGN KEY (`titleid`) REFERENCES `title` (`id`),
+
+ INDEX         (titleid),
+ INDEX         (field),
+ INDEX         (mult),
+ INDEX         (subfield),
+ INDEX         (content(10)),
+ INDEX         (content_norm(10)),
+ INDEX         (titleid,field)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/*-------------------------------------------------*/
+/*-------------- Exemplarstammdatei ---------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS holding;
+create table holding (
+ id            VARCHAR(255) NOT NULL,
+
+ CONSTRAINT `pk_holding` PRIMARY KEY (`id`),
+
+ INDEX         (id)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS holding_fields;
+create table holding_fields (
+ holdingid     VARCHAR(255) NOT NULL,
+ field         SMALLINT  NOT NULL,
+ mult          SMALLINT,
+ subfield      VARCHAR(2),
+ content       TEXT NOT NULL,
+ content_norm  TEXT,
+
+ CONSTRAINT `fk_holding_fields` FOREIGN KEY (`holdingid`) REFERENCES `holding` (`id`),
+
+ INDEX         (holdingid),
+ INDEX         (field),
+ INDEX         (mult),
+ INDEX         (subfield),
+ INDEX         (content(10)),
+ INDEX         (content_norm(10)),
+ INDEX         (holdingid,field)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/*-------Connectoren ---------*/
+
+drop table IF EXISTS title_title;
+create table title_title (
+field   SMALLINT,
+source_titleid    VARCHAR(255) NOT NULL,
+target_titleid    VARCHAR(255) NOT NULL,
+supplement TEXT,
+
+CONSTRAINT `fk_titletitle_sourcetitle` FOREIGN KEY (`source_titleid`) REFERENCES `title` (`id`),
+CONSTRAINT `fk_titletitle_targettitle` FOREIGN KEY (`target_titleid`) REFERENCES `title` (`id`),
+
+index      (source_titleid),
+index      (target_titleid)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS title_person;
+create table title_person (
+field   SMALLINT,
+titleid    VARCHAR(255) NOT NULL,
+personid   VARCHAR(255) NOT NULL,
+supplement TEXT,
+
+CONSTRAINT `fk_titleperson_person` FOREIGN KEY (`personid`) REFERENCES `person` (`id`),
+CONSTRAINT `fk_titleperson_title` FOREIGN KEY (`titleid`) REFERENCES `title` (`id`),
+
+index      (personid),
+index      (titleid)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS title_corporatebody;
+create table title_corporatebody (
+field   SMALLINT,
+titleid    VARCHAR(255) NOT NULL,
+corporatebodyid   VARCHAR(255) NOT NULL,
+supplement TEXT,
+
+CONSTRAINT `fk_titlecorporatebody_corporatebody` FOREIGN KEY (`corporatebodyid`) REFERENCES `corporatebody` (`id`),
+CONSTRAINT `fk_titlecorporatebody_title` FOREIGN KEY (`titleid`) REFERENCES `title` (`id`),
+
+index      (corporatebodyid),
+index      (titleid)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS title_subject;
+create table title_subject (
+field   SMALLINT,
+titleid    VARCHAR(255) NOT NULL,
+subjectid   VARCHAR(255) NOT NULL,
+supplement TEXT,
+
+CONSTRAINT `fk_titlesubject_subject` FOREIGN KEY (`subjectid`) REFERENCES `subject` (`id`),
+CONSTRAINT `fk_titlesubject_title` FOREIGN KEY (`titleid`) REFERENCES `title` (`id`),
+
+index      (subjectid),
+index      (titleid)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS title_classification;
+create table title_classification (
+field   SMALLINT,
+titleid    VARCHAR(255) NOT NULL,
+classificationid   VARCHAR(255) NOT NULL,
+supplement TEXT,
+
+CONSTRAINT `fk_titleclassification_classification` FOREIGN KEY (`classificationid`) REFERENCES `classification` (`id`),
+CONSTRAINT `fk_titleclassification_title` FOREIGN KEY (`titleid`) REFERENCES `title` (`id`),
+
+index      (classificationid),
+index      (titleid)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+drop table IF EXISTS title_holding;
+create table title_holding (
+field      SMALLINT,
+titleid    VARCHAR(255) NOT NULL,
+holdingid  VARCHAR(255) NOT NULL,
+supplement TEXT,
+
+CONSTRAINT `fk_titleholding_holding` FOREIGN KEY (`holdingid`) REFERENCES `holding` (`id`),
+CONSTRAINT `fk_titleholding_title` FOREIGN KEY (`titleid`) REFERENCES `title` (`id`),
+
+index      (holdingid),
+index      (titleid)
+)
+ENGINE MyISAM
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;

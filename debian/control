@@ -1,0 +1,19 @@
+Source: openbib
+Section: web
+Priority: optional
+Maintainer: Oliver Flimm <flimm@openbib.org>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.1
+
+Package: openbib
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, debconf, apache-perl, mysql-server-4.1, libtemplate-perl, libapache-request-perl, libapache-reload-perl, libwww-perl, libdbi-perl, libdbd-mysql-perl, liblog-log4perl-perl, libipc-shareable-perl, libmime-lite-perl, libemail-valid-perl, libyaml-perl, libclass-std-perl, libconfig-std-perl, libversion-perl, libgtop-perl, libapache-gtoplimit-perl, libsoap-lite-perl, libdate-manip-perl, libmldbm-perl, libxml-rss-perl, libxml-twig-perl, liboai-perl
+Description: open source bibliographic multi-catalogue search-portal
+ Build a search-portal (virtual OPAC) consisting of multiple catalogues
+ using different (integrated) library systems. Currently the following
+ origin catalogues are supported: Sisis, Lidos, Filemaker, OAI among
+ others. The meta-data format is German MAB2-oriented (Maschinelles
+ Austauschformat fuer Bibliotheken) but the database-scheme isn't
+ restricted to any special meta-data format, so a port to MARC21 is
+ possible.
+

@@ -1,0 +1,98 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_22
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<div data-role="page">
+
+       <div  data-role="header">
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+	   <h1>Portal der Richter-Bibliothek</h1> 
+       </div>
+
+    <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="num"        value="50" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="author" />
+<input type="hidden" name="srto"       value="up" />
+<input type="hidden" name="jn" value="1" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"         value="1" />
+[% END %]
+
+    <fieldset> 
+      <div data-role="fieldcontain">
+         <label for="search">Search Input:</label>
+         <input type="search" name="fs" id="search" value="" />
+      </div>
+    </fieldset> 
+    </form>
+
+       <div data-role="content">
+
+<h1>Elise Richter</h1>
+
+<h2>[% msg.maketext("Lebenslauf") %]</h2>
+
+<p>
+<b>[% msg.maketext("Elise Richter (* 2. März 1865 in Wien; † 21. Juni 1943 im Ghetto Theresienstadt) war eine österreichische Romanistin und Universitätsprofessorin. 1905 habilitierte sie als erste Frau an der Universität Wien.") %]</b>
+</p>
+
+<p>
+[% msg.maketext("Elise Richter wurde als Tochter des Chefarzts der
+k.k. priv. Südbahngesellschaft Dr. Maximilian Richter (* 1824
+Trencsen, Ungarn; † 1890 Wien) und dessen Frau, Emilie (Emmy)
+Lackenbacher (* 1832 Essegg; † 1889 Wien) geboren und wuchs in
+großbürgerlichen Verhältnissen einer assimilierten jüdischen Familie
+auf. Sie hatte eine ältere Schwester Helene, die als Anglistin bekannt
+wurde. Mit 20 Jahren erkrankte sie an Rheuma, das sie nie mehr
+loswurde. Ab 1891 durfte sie einzelne Vorlesungen an der Universität
+Wien als Gasthörerin besuchen. Als es 1896 Frauen gestattet wurde, zur
+Reifeprüfung anzutreten, legte Richter 31-jährig als Externistin am
+Akademischen Gymnasium in Wien die Matura ab - als erste Frau. Ein
+Jahr später wurden Frauen auch an der philosophischen Fakultät der
+Universität Wien zugelassen. Richter inskribierte Romanistik als
+ordentliche Hörerin, schloss ihr Studium 1901 ab und habilitierte 1905
+als erste Frau an der Universität Wien. 1921 wurde sie wiederum als
+erste Frau zum Außerordentlichen Professor (sic) ernannt. Später
+leitete sie das Phonetische Institut. Sie untersuchte die
+physiologischen und psychologischen Grundlagen der Sprache. Als 1929
+der Lehrstuhl für Romanistische Literaturwissenschaft an der
+Universität Innsbruck vakant war, gab es in ganz Österreich keine
+habilitierten Romanisten außer der schon 61-jährigen Elise Richter,
+die aufgrund ihres Alters nicht infrage kam.") %]
+</p>
+
+<p>
+[% msg.maketext("Richter war auch politisch aktiv, gründete den 'Verband der
+Akademikerinnen' und rief 1927 zur Gründung einer Frauenpartei
+auf. Sie lehrte bis zu ihrem Rauswurf aus der Universität aufgrund der
+Rassengesetze im Jahr 1938.") %]
+</p>
+
+<p>
+[% msg.maketext("1943 wurde Richter ins Ghetto Theresienstadt deportiert. Wenige Monate
+nach der Deportation starb sie am 21. Juni 1943.") %]
+</p>
+<p>
+[% msg.maketext("Im Jahr 2008 wurde in Wien Floridsdorf (21. Bezirk) der Elise-Richter-Weg nach ihr benannt.") %]
+</p>
+([% msg.maketext("Quelle:") %]<a href="http://de.wikipedia.org/wiki/Elise_Richter" target="_blank">Wikipedia</a>)
+
+        </div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

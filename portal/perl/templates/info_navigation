@@ -1,0 +1,23 @@
+<h6 class="vlist">[% msg.maketext("Hilfe") %]</h6>
+<ul class="vlist">
+[% IF active_submenu == "help" %]
+  <li class="active"><strong>[% msg.maketext("Suchhilfe") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/help.html">[% msg.maketext("Suchhilfe") %]</a></li>
+[% END %]
+[% IF active_submenu == "project" %]
+  <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/project.html">[% msg.maketext("Projekt") %]</a></li>
+[% END %]
+[% IF active_submenu == "versions" %]
+  <li class="active"><strong>[% msg.maketext("OpenBib-Versionen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/versions.html">[% msg.maketext("OpenBib-Versionen") %]</a></li>
+[% END %]
+[% IF active_submenu == "feedback" %]
+  <li class="active"><strong>[% msg.maketext("Artikel/Stimmen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/feedback.html">[% msg.maketext("Artikel/Stimmen") %]</a></li>
+[% END %]
+</ul>

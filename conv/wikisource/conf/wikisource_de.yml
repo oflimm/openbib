@@ -1,0 +1,92 @@
+# Tracelevel
+#tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'id'
+
+category_split_chars:
+  'AUTOR': '(?:\s*<br.*?>\s*|\s*und\s*|\s*,\s*|\s*;\s*)'
+  'HERAUSGEBER': '(?:\s*<br.*?>\s*|\s*und\s*|\s*,\s*|\s*;\s*)'
+
+pers_templatename: 'Personendaten'
+title_templatename: 'Textdaten'
+
+index_prefix: 'Index:'
+
+wiki_category: 'Kategorie'
+
+# Personen
+perstit:
+  # Fuer Titelnormdaten
+  'AUTOR': '0100:'            # Verfasser
+  'HERAUSGEBER': '0101:'      # Person
+
+pers:
+  # Fuer Personennormdaten
+  'ALTERNATIVNAMEN': '0102:'   # Verweisung
+  'NACHNAME': '0300:'
+  'VORNAMEN': '0301:'
+  'KURZBESCHREIBUNG': '0302:'
+  'SONSTIGES': '0303:'
+  'GEBURTSDATUM': '0304:'
+  'GEBURTSORT': '0305:'
+  'STERBEDATUM': '0306:'
+  'STERBEORT': '0307:'
+  'BILD': '0308:'
+  'WIKIPEDIA': '0309:'
+  'WIKIQUOTE': '0310:'
+  'COMMONS': '0311:'
+  'PND': '0312:'
+
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys: 
+
+# Schlagworte
+subj:
+
+# Titel
+title:
+  'TITEL': '0331:'
+  'SUBTITEL': '0335:'
+  'HERKUNFT': '0590:'
+  'AUFLAGE': '0403:'
+  'ENTSTEHUNGSJAHR': '0595:'
+  'ERSCHEINUNGSJAHR': '0425:'
+  'VERLAG': '0412:'
+  'ERSCHEINUNGSORT': '0410:'
+#  'ÜBERSETZER': ''
+#  'ORIGINALTITEL': ''
+#  'ORIGINALSUBTITEL': ''
+#  'ORIGINALHERKUNFT': ''
+#  'WIKIPEDIA': ''
+#  'BILD': ''
+  'QUELLE': '0508:'
+  'KURZBESCHREIBUNG': '0750:'
+  'SONSTIGES': '0501:'
+  'BEARBEITUNGSSTAND': '0501:'
+#  'INDEXSEITE': '4120:'
+
+
+# Exemplare
+exempl:
+
+no_wiki_filter:
+  'AUTOR': 1
+  'HERAUSGEBER': 1
+  'TITEL': 1
+
+baseurl: 'http://de.wikisource.org/wiki/'
+
+commons_baseurl: 'http://commons.wikimedia.org/wiki/'
+
+GFDL-Text: 'Dieser Text steht unter der <a href="http://de.wikipedia.org/wiki/GNU_Free_Documentation_License" class="ext" title="w:GNU Free Documentation License">GFDL</a>'
+
+PD-Text: 'Dieser Text ist <a href="http://de.wikipedia.org/wiki/gemeinfrei" class="extiw" title="w:gemeinfrei">gemeinfrei</a>'
+
+owner: 'Wikisource'
+ownerLogo: 'http://upload.wikimedia.org/wikisource/de/b/bc/Wiki.png'
+ownerSiteURL: 'http://de.wikisource.org/'

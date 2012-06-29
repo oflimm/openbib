@@ -1,0 +1,21 @@
+[%-
+
+all_databaseinfo = [] ;
+FOREACH katalog IN kataloge.all ;
+  this_databaseinfo = {
+    description = katalog.description
+    active      = katalog.active
+    dbname      = katalog.dbname
+    system      = katalog.system
+    sigel       = katalog.sigel
+    url         = katalog.url
+    use_libinfo = katalog.use_libinfo
+    autoconvert = katalog.autoconvert
+    count       = katalog.count
+  };
+  all_databaseinfo.push(this_databaseinfo);
+END;
+
+to_json(all_databaseinfo) ;
+
+-%]

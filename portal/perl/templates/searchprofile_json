@@ -1,0 +1,11 @@
+[%-
+
+  json_info = [];
+
+  FOREACH database IN databases ;
+    json_info.push({ database => database, description => dbinfo.dbnames.${database}.full});
+  END ;
+
+  to_json(json_info) ;
+
+-%]

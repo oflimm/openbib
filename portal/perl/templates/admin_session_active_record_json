@@ -1,0 +1,15 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_session_record_json
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Meta-Informationen einer einzelnen Session, z.B.
+# die getaetigten Suchanfragen etc.
+#
+#######################################################################
+-%]
+[% to_json(thissession) %]

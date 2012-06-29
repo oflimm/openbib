@@ -1,0 +1,23 @@
+[%-
+
+all_databaseinfo = [] ;
+FOREACH database IN databases.all ;
+  this_databaseinfo = {
+    description = database.description
+    active      = database.active
+    dbname      = database.dbname
+    system      = database.system
+    sigel       = database.sigel
+    url         = database.url
+    autoconvert = database.autoconvert
+    count_all      = database.allcount
+    count_digital  = database.digitalcount
+    count_journals = database.journalscount
+    count_articles = database.articlecount
+  };
+  all_databaseinfo.push(this_databaseinfo);
+END;
+
+to_json(all_databaseinfo) ;
+
+-%]

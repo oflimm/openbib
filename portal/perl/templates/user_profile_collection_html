@@ -1,0 +1,105 @@
+[%#-
+#######################################################################
+#
+# Templatename: databaseprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle und weiterer
+# Eingabeelemte fuer die Erstellung und Bearbeitung eigener
+# Katalogsuchprofile
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="user_navigation" active_submenu="databaseprofile" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile" class="yform">
+<fieldset>
+<legend>[% msg.maketext("Neues Katalogprofil anlegen") %]</legend>
+
+<div class="type-text">
+<label for="profilename">[% msg.maketext("Names des Profils") %]</label>
+<input type="text" name="profilename" id="profilename" size="50" />
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Neu") %]" /></div>
+
+</fieldset>
+</form>
+
+<p />
+
+[%# USE dumper;dumper.dump(userdbprofiles)%]
+
+<table class="full">
+<tr><th>[% msg.maketext("Bereits existierende Profile") %]</th></tr>
+<tr><td class="boxedclear">
+[%- IF userdbprofiles.size > 0 -%]
+<table class="full">
+<tr><td>[% msg.maketext("Name") %]</td><td>[% msg.maketext("Ausgew&auml;hlte Kataloge") %]</td><td></td></tr>
+[% listrow = 'listrow1' %]
+[%-   FOREACH userdbprofile IN userdbprofiles -%]
+<tr class="[% listrow %]">
+<td><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile/[% userdbprofile.profilid %]/edit">[% userdbprofile.profilename %]</a></td>
+<td>[% FOREACH db IN user.get_profiledbs_of_profileid(userdbprofile.profilid) %]
+[% dbinfo.dbnames.${db}.short %]<br/>
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+[% END %]
+</td>
+<td><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile/[% userdbprofile.profilid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td>
+</tr>
+
+[%-   END -%]
+</table>
+[% ELSE %]
+Sie haben noch keine Profile angelegt.
+[% END %]
+</td></tr>
+</table>
+
+</form>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]
+

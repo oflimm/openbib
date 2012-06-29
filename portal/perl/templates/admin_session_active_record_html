@@ -1,0 +1,133 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_session_active_record_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Meta-Informationen einer einzelnen Session, z.B.
+# die getaetigten Suchanfragen etc.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Bestehende Session bearbeiten' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="session" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]">
+<input type="hidden" name="do_editsession" value="1" />
+
+
+<table width="100%">
+<tr><th>[% msg.maketext("Allgemeine Informationen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table cellpadding="3">
+<tr><td><b>[% msg.maketext("Session") %]</b></td><td>[% thissession.sessionid %]</td></tr>
+<tr><td><b>[% msg.maketext("Seit") %]</b></td><td>[% thissession.createtime %]</td></tr>
+<tr><td><b>[% msg.maketext("Anzahl Recherchen") %]</b></td><td>[% thissession.numqueries %]</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+<p />
+
+[%# USE dumper;dumper.dump(thissession) %]
+[%# USE dumper;dumper.dump(queries) %]
+<table width="100%">
+<tr><th>[% msg.maketext("Recherchen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+[% IF queries.size > 0 %]
+<table cellpadding="3">
+<tr><td><b>[% msg.maketext("Recherche") %]</b></td><td><b>[% msg.maketext("Treffer") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td></tr>
+
+[% FOREACH query IN queries %]
+
+<tr><td>
+[%- IF query.get_searchquery.freesearch.val -%]
+&nbsp;FS: [% query.get_searchquery.freesearch.val %] 
+[%- END -%]
+[%- IF query.get_searchquery.person.val -%]
+&nbsp;[% query.get_searchquery.person.bool %]&nbsp;PER: [% query.get_searchquery.person.val %]
+[%- END -%]
+[%- IF query.get_searchquery.title.val -%]
+&nbsp;[% query.get_searchquery.title.bool %]&nbsp;TIT: [% query.get_searchquery.title.val %]
+[%- END -%]
+[%- IF query.get_searchquery.subject.val -%]
+&nbsp;[% query.get_searchquery.subject.bool %]&nbsp;SWT: [% query.get_searchquery.subject.val %]
+[%- END -%]
+[%- IF query.get_searchquery.corporatebody.val -%]
+&nbsp;[% query.get_searchquery.corporatebody.bool %]&nbsp;KOR: [% query.get_searchquery.corporatebody.val %]
+[%- END -%]
+[%- IF query.get_searchquery.classification.val -%]
+&nbsp;[% query.get_searchquery.classificiation.bool %]&nbsp;NOT: [% query.get_searchquery.classification.val %] 
+[%- END -%]
+[%- IF query.get_searchquery.mark.val -%]
+&nbsp;[% query.get_searchquery.mark.bool %]&nbsp;SIG: [% query.get_searchquery.mark.val %]
+[%- END -%]
+[%- IF query.get_searchquery.year.val -%]
+&nbsp;[% query.get_searchquery.year.bool %]&nbsp;EJAHR: [% query.get_searchquery.year.val %]
+[%- END -%]
+[%- IF query.get_searchquery.isbn.val -%]
+&nbsp;[% query.get_searchquery.isbn.bool %]&nbsp;ISBN: [% query.get_searchquery.isbn.val %]
+[%- END -%]
+[%- IF query.get_searchquery.issn.val -%]
+&nbsp;[% query.get_searchquery.issn.bool %]&nbsp;ISSN: [% query.get_searchquery.issn.val %]
+[%- END -%]
+[%- IF query.get_searchquery.mediatype.val -%]
+&nbsp;[% query.get_searchquery.mediatype.bool %]&nbsp;MART: [% query.get_searchquery.mediatype.val %]
+[%- END -%]
+[%- IF query.get_searchquery.titlestring.val -%]
+&nbsp;[% query.get_searchquery.titlestring.bool %]&nbsp;TITSTR: [% query.get_searchquery.titlestring.val %] 
+[%- END -%]
+</td><td align="center">[% query.get_hits %]</td><td>[% FOREACH dbname IN query.get_databases %][% dbinfo.get('dbnames').${dbname}.full %]<br/>[% END %]</td></tr>
+
+[% END %]
+
+
+</table>
+[% ELSE %]
+[% msg.maketext("In dieser Session wurden bisher keine Rechercheanfragen gestellt") %]
+[% END %]
+</td></tr>
+</table>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

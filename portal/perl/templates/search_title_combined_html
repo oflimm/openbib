@@ -1,0 +1,150 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+[%    field_map = {
+          "freesearch" = msg.maketext("Freie Suche")
+          "title"      = msg.maketext("Titel")
+          "database"   = msg.maketext("Katalog")
+          "content" = msg.maketext("Inhalt")
+          "person" = msg.maketext("Person")
+          "corporatebody" = msg.maketext("K&ouml;perschaft")
+          "subject" = msg.maketext("Thema")
+          "classification" = msg.maketext("Systematik")
+          "mediatype" = msg.maketext("Medientyp")
+          "language" = msg.maketext("Sprache")
+          "year" = msg.maketext("Jahr")
+          "year_from" = msg.maketext("Jahr von")
+          "year_to" = msg.maketext("Jahr bis")
+          "tag" = msg.maketext("Tag")
+          "litlist" = msg.maketext("Literaturliste")
+          "dbstring" = msg.maketext("Katalog")
+          "personstring" = msg.maketext("Person")
+          "corporatebodystring" = msg.maketext("K&ouml;perschaft")
+          "subjectstring" = msg.maketext("Thema")
+          "classificationstring" = msg.maketext("Systematik")
+          "mediatypestring" = msg.maketext("Medientyp")
+          "languagestring" = msg.maketext("Sprache")
+          "yearstring" = msg.maketext("Jahr")
+          "tagstring" = msg.maketext("Tag")
+          "litliststring" = msg.maketext("Literaturliste")
+};
+
+%]
+
+   <div class="breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Recherche") %]:&nbsp;
+[%- used_fields = [] ;
+    FOREACH field IN searchquery.get_searchquery.keys ;
+       fieldname    = field_map.${field};
+       fieldcontent = searchquery.get_searchquery.${field}.val;
+       NEXT IF NOT fieldcontent ;
+       used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
+     END;
+-%]
+<em>[% used_fields.join(' ; ') %]</em></a>
+        </li>
+      </ul>
+   </div>
+
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% IF fullresultcount > 0%]
+[% PROCESS common/subtemplate name="search_facet" %]
+[% END %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+[% IF spelling_suggestion.resultlist %]
+[%    suggestion = searchquery.get_spelling_suggestion %]
+[%     IF suggestion%]
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% search_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance_desc;st=[% query.param('st') %];autoplus=0;jn=0;fs=[% suggestion %]">[% suggestion %]</b>
+[%     END %]
+[% END %]
+
+[% IF fullresultcount > 0 %]
+<!-- Beginn Result Item -->
+[%-
+    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};jn=${queryoptions.get_option('jn')};" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= fullresultcount ;
+       end_range       = fullresultcount;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="left">
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% fullresultcount %]</b>
+    </div>
+    <div class="right">
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="page" value="1" />
+[%- FOREACH qparam IN query.param -%]
+[%-   IF qparam != 'srt' && qparam != 'srto' && qparam != 'page' %]
+<input type="hidden" name="[% qparam %]" value="[% query.param(qparam) %]" />
+[%-   END -%]
+[%- END -%]
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') no_jn=1 %]
+</form>
+
+    </div>
+  </div>
+  <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
+[%- END -%]
+  <div class="footer">
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% nav.first_page %];[% query_args_base %]">[% nav.first_page %]</a>&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% query_args_base %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% nav.last_page %];[% query_args_base %]">[% nav.last_page %]</a>
+[%- END -%]
+    </div>
+    <div class="resulttime">
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
+    </div>
+  </div>
+</div>
+<div class="resultfooter">
+   &nbsp;
+</div>
+<p/>
+[% END %]
+

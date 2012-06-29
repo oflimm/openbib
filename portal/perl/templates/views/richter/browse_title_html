@@ -1,0 +1,83 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation"  active_menu='register' %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_submenu="register_${category}" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+[%- IF category == 'T0720' -%]
+<h2>Provenienzen</h2>
+<p>
+[% msg.maketext("Das Register der Provenienzen listet die Namen von Privatpersonen und Rezensionszeitschriften auf.") %]
+</p>
+<p>
+[% msg.maketext("Bei den Personennamen handelt es sich um Besitzeintr&auml;ge, die den
+Vorbesitzer der Richterschen B&uuml;cher ausweisen. Au&szlig;erdem
+werden Personen verzeichnet, die ihre B&uuml;cher mit einer
+entsprechenden Widmung an Elise Richter weitergeleitet haben.") %]
+</p>
+<p>
+[% msg.maketext("Unter den noch in der USB K&ouml;ln vorhandenen Richterb&uuml;chern
+befinden sich auch einige Rezensionsexemplare. Sie sind durch
+handschriftlichen Eintrag von Elise Richter selbst oder durch einen
+Stempel als solche gekennzeichnet.") %]
+</p>
+<p>
+[% msg.maketext("Im Register werden sie unter dem Namen der Zeitschrift
+aufgef&uuml;hrt.") %]
+</p>
+[%- END -%]
+
+<p />
+
+<table width="100%">
+[% FOREACH item IN browselist %]
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=richter;fs=t0720:|[% item.replace('&amp;','%26') %]|">[% item %]</a></td></tr>
+[% END %]
+</table>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

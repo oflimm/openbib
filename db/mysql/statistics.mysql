@@ -1,0 +1,200 @@
+/*-------------------------------------------------*/
+/*--------------- T A B E L L E N -----------------*/
+/*-------------------------------------------------*/
+
+drop table IF EXISTS datacache;
+CREATE TABLE datacache (
+ id          VARCHAR(100),
+ tstamp      BIGINT,
+ type        INT,
+ subkey      VARCHAR(50),
+ data        MEDIUMBLOB,
+ INDEX (id),
+ INDEX (tstamp),
+ INDEX (subkey),
+ INDEX (type)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS sessioninfo;
+CREATE TABLE sessioninfo (
+ id            BIGINT,
+ sessionid     VARCHAR(70),
+ tstamp        BIGINT,
+
+ tstamp_year   SMALLINT,
+ tstamp_month  TINYINT,
+ tstamp_day    TINYINT,
+
+ CONSTRAINT `pk_session` PRIMARY KEY (`id`),
+
+ INDEX (tstamp),
+ INDEX (tstamp_year),
+ INDEX (tstamp_month),
+ INDEX (tstamp_day)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS eventlog;
+CREATE TABLE eventlog (
+ sid          BIGINT NOT NULL,
+
+ tstamp       BIGINT,
+ tstamp_year  SMALLINT,
+ tstamp_month TINYINT,
+ tstamp_day   TINYINT,
+ type         INT,
+ content      VARCHAR(255),
+
+ CONSTRAINT `fk_eventlog_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
+ INDEX (sid),
+ INDEX (tstamp),
+ INDEX (tstamp_year),
+ INDEX (tstamp_month),
+ INDEX (tstamp_day),
+ INDEX (type),
+ INDEX (content)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS eventlogjson;
+CREATE TABLE eventlogjson (
+ sid          BIGINT NOT NULL,
+
+ tstamp       BIGINT,
+ tstamp_year  SMALLINT,
+ tstamp_month TINYINT,
+ tstamp_day   TINYINT,
+ type         INT,
+ content      MEDIUMBLOB,
+
+ CONSTRAINT `fk_eventlogjson_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
+ INDEX (sid),
+ INDEX (tstamp),
+ INDEX (tstamp_year),
+ INDEX (tstamp_month),
+ INDEX (tstamp_day),
+ INDEX (type)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS titleusage;
+CREATE TABLE titleusage (
+ sid          BIGINT,
+
+ tstamp       BIGINT,
+ tstamp_year  SMALLINT,
+ tstamp_month TINYINT,
+ tstamp_day   TINYINT,
+
+ isbn        VARCHAR(15),
+ dbname      VARCHAR(25),
+ id          VARCHAR(255) NOT NULL,
+ origin      INT,
+
+ CONSTRAINT `fk_titleusage_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
+ INDEX (tstamp),
+ INDEX (tstamp_year),
+ INDEX (tstamp_month),
+ INDEX (tstamp_day),
+ INDEX (id),
+ INDEX (isbn),
+ INDEX (dbname),
+ INDEX (sid),
+ INDEX (origin)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS searchterms;
+CREATE TABLE searchterms (
+ sid          BIGINT NOT NULL,
+
+ tstamp       BIGINT,
+ tstamp_year  SMALLINT,
+ tstamp_month TINYINT,
+ tstamp_day   TINYINT,
+ viewname     VARCHAR(20),
+ type         INT,
+ content      VARCHAR(40),
+
+ CONSTRAINT `fk_searchterms_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
+ INDEX (tstamp),
+ INDEX (tstamp_year),
+ INDEX (tstamp_month),
+ INDEX (tstamp_day),
+ INDEX (viewname),
+ INDEX (type),
+ INDEX (content)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS searchfields;
+CREATE TABLE searchfields (
+ sid          BIGINT NOT NULL,
+ tstamp         BIGINT,
+ tstamp_year    SMALLINT,
+ tstamp_month   TINYINT,
+ tstamp_day     TINYINT,
+ viewname       VARCHAR(20),
+ freesearch     BOOL,
+ title          BOOL,
+ person         BOOL,
+ corporatebody  BOOL,
+ subject        BOOL,
+ classification BOOL,
+ isbn           BOOL,
+ issn           BOOL,
+ mark           BOOL,
+ mediatype      BOOL,
+ titlestring    BOOL,
+ content        BOOL,
+ source         BOOL,
+ year           BOOL,
+
+ CONSTRAINT `fk_searchfields_session` FOREIGN KEY (`sid`) REFERENCES `sessioninfo` (`id`),
+
+ INDEX (tstamp),
+ INDEX (tstamp_year),
+ INDEX (tstamp_month),
+ INDEX (tstamp_day),
+ INDEX (viewname),
+ INDEX (freesearch),
+ INDEX (title),
+ INDEX (person),
+ INDEX (corporatebody),
+ INDEX (subject),
+ INDEX (classification),
+ INDEX (isbn),
+ INDEX (issn),
+ INDEX (mark),
+ INDEX (mediatype),
+ INDEX (content),
+ INDEX (source),
+ INDEX (year)
+)
+ENGINE InnoDB
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

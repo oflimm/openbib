@@ -1,0 +1,14 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Profiles
+#
+#######################################################################
+-%]
+[% to_json(orgunits) %]

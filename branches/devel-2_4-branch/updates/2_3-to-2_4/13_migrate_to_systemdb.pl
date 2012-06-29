@@ -360,7 +360,10 @@ foreach my $profileinfo_ref (@{$profileinfos_ref}){
             } if ($profiledbs_ref->{$profileinfo_ref->{id}}{$dbid});
         }
 
-        $newschema->resultset('OrgunitDb')->populate($orgunitdbs_ref);
+        print STDERR (encode_json $orgunitdbs_ref), "\n";
+        if (@$orgunitdbs_ref){
+            $newschema->resultset('OrgunitDb')->populate($orgunitdbs_ref);
+        }
     }
 }
 

@@ -217,7 +217,7 @@ title:
     '002a':
         'newcat': '0002' # SDN
         'mult': 0
-    '010':           # identifikationsnummer des direkt uebergeordneten datensatzes
+    '010 ':           # identifikationsnummer des direkt uebergeordneten datensatzes
         'newcat': '0004' # Uebergeordn. Satz
         mut: 1
     '020a':              # ZDBID
@@ -229,13 +229,16 @@ title:
     '037b':           # Sprache
         'newcat': '0015' # Sprache
         mut: 1
-    '089':            # bandangaben in vorlageform
+    '089 ':            # bandangaben in vorlageform
         'newcat': '0089' # bandangaben in vorlageform
         'mult': 1
     '310 ':            # ansetzungssachtitel
         'newcat': '0310'  # ansetzungssachtitel
         'mult': 1
     '331 ':            # hauptsachtitel in vorlageform oder mischform
+        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
+        'mult': 1
+    '331a':            # hauptsachtitel in vorlageform oder mischform
         'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
         'mult': 1
     '333 ':            # Zu erg. URH
@@ -250,7 +253,7 @@ title:
     '370a':            # WST
         'newcat': '0370' # WST
         'mult': 1
-    '403':            # ausgabebezeichnung in vorlageform
+    '403 ':            # ausgabebezeichnung in vorlageform
         'newcat': '0403' # ausgabebezeichnung in vorlageform
         'mult': 1
     '405 ':            # Erschverlauf
@@ -280,8 +283,35 @@ title:
     '453 ':            # 1. gesamttitel in vorlageform
         'newcat': '0004' # 1. gesamttitel in vorlageform
         'mult': 1
+    '501 ':            # Fussnoten
+        'newcat': '0501' # Fussnoten
+        'mult': 1
+    '504 ':            # Fussnoten
+        'newcat': '0504' # Fussnoten
+        'mult': 1
+    '505 ':            # Fussnoten
+        'newcat': '0505' # Fussnoten
+        'mult': 1
     '507 ':            # Titelangaben
         'newcat': '0507' # Titelangaben
+        'mult': 1
+    '509 ':            # Titelangaben
+        'newcat': '0509' # Titelangaben
+        'mult': 1
+    '510 ':            # Titelangaben
+        'newcat': '0510' # Titelangaben
+        'mult': 1
+    '511 ':              # Fussnoten
+        'newcat': '0511' # Fussnoten
+        'mult': 1
+    '512 ':              # Fussnoten
+        'newcat': '0512' # Fussnoten
+        'mult': 1
+    '513 ':              # Fussnoten
+        'newcat': '0513' # Fussnoten
+        'mult': 1
+    '515 ':              # Fussnoten
+        'newcat': '0515' # Fussnoten
         'mult': 1
     '523 ':            # Erscheinungsweise
         'newcat': '0523' # Erscheinungsweise
@@ -304,10 +334,10 @@ title:
     '533z':            # SpaetAusg.
         'newcat': '0533' # SpaetAusg.
         'mult': 1
-    '534':            # Titelkonk.
+    '534 ':            # Titelkonk.
         'newcat': '0534' # Titelkonk.
         'mult': 1
-    '540':            # internationale standardbuchnummer (isbn)
+    '540 ':            # internationale standardbuchnummer (isbn)
         'newcat': '0540' # internationale standardbuchnummer (isbn)
         'mult': 1
     '542a':            # ISSN

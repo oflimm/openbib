@@ -55,8 +55,8 @@ elsif ($config->{'dbimodule'} eq "Pg"){
 
     # Einladen der Datenbankdefinitionen
 
-    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system.sql' $pool");
-    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system_create_index.sql' $pool");
+    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/pool.sql' $pool");
+    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/pool_create_index.sql' $pool");
 }
 
 # Anlegen des Verzeichnisses zur lokalen Speicherung der Daten

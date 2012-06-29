@@ -41,4 +41,4 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Extrahiere der Daten der Humanwissenschaftl. Abteilung aus den USB-Daten\n";
 
-system("$rootdir/filter/$pool/gen-subset-mex-hwa.pl $pool");
+system("$rootdir/filter/$pool/gen-subset.pl $pool");

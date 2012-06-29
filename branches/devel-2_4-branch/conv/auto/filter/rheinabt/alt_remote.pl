@@ -41,4 +41,4 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Extrahiere der Daten der Rheinischen Abteilung aus den USB-Daten\n";
 
-system("$rootdir/filter/$pool/gen-subset-mex-rheinischeabt.pl $pool");
+system("$rootdir/filter/$pool/gen-subset.pl $pool");

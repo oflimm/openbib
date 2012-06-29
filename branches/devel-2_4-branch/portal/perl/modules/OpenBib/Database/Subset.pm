@@ -63,7 +63,13 @@ sub new {
         $self->{destination} = $destination;
     }
     
-    $self->{titleid}  = ();
+    $self->{titleid}          = {};
+    $self->{personid}         = {};
+    $self->{corporatebodyid}  = {};
+    $self->{subjectid}        = {};
+    $self->{classificationid} = {};
+    $self->{holdingid}        = {};
+
 
     return $self;
 }
@@ -77,16 +83,29 @@ sub set_source {
 
     $self->{source} = $source;
 
-    eval {
-        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-        $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-    };
-    
-    if ($@){
-        $logger->fatal("Unable to connect schema to database $source: DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}");
-        exit;
+    if ($self->{config}->{dbimodule} eq "Pg"){
+        eval {
+            # UTF8: {'pg_enable_utf8'    => 1}
+            $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $source: DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}");
+            exit;
+        }
     }
-
+    elsif ($self->{config}->{dbimodule} eq "mysql"){
+        eval {
+            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+            $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $source: DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}");
+            exit;
+        }
+    }
+    
     return $self;
 }
 
@@ -159,8 +178,6 @@ sub identify_by_mark {
     
     $self->get_title_normdata;
     
-    $self->{holdingid} = {};
-
     foreach my $thismark (@marks){
         # Exemplardaten *nur* vom entsprechenden Institut!
         # DBI: "select distinct id from holding where category=14 and content rlike ?"
@@ -270,8 +287,6 @@ sub identify_by_category_content {
 
     $self->get_title_normdata;
 
-    $self->{holdingid} = {};
-
     # Exemplardaten
     # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
 
@@ -338,8 +353,6 @@ sub identify_by_olws_circulation {
     $self->get_title_hierarchy;
 
     $self->get_title_normdata;
-
-    $self->{holdingid} = {};
 
     # Exemplardaten
     my $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=6") or $logger->error($DBI::errstr);
@@ -421,12 +434,6 @@ sub get_title_normdata {
 
     $logger->debug("### $self->{source} -> $self->{destination}: Bestimme Normdaten");
 
-    my $subjectid_ref        = {};
-    my $personid_ref         = {};
-    my $corporatebodyid_ref  = {};
-    my $classificationid_ref = {};
-    my $holdingid_ref        = {};
-
     foreach my $id (keys %{$self->{titleid}}){
         
         # Verfasser/Personen
@@ -444,7 +451,7 @@ sub get_title_normdata {
         foreach my $item ($persons->all){
             my $thisid = $item->get_column('thisid');
 
-            $personid_ref->{$thisid}=1;
+            $self->{personid}{$thisid}=1;
         }
         
         # Urheber/Koerperschaften
@@ -462,7 +469,7 @@ sub get_title_normdata {
         foreach my $item ($corporatebodies->all){
             my $thisid = $item->get_column('thisid');
 
-            $corporatebodyid_ref->{$thisid}=1;
+            $self->{corporatebodyid}{$thisid}=1;
         }
         
         # Notationen
@@ -480,7 +487,7 @@ sub get_title_normdata {
         foreach my $item ($classifications->all){
             my $thisid = $item->get_column('thisid');
 
-            $classificationid_ref->{$thisid}=1;
+            $self->{classificationid}{$thisid}=1;
         }
         
         # Schlagworte
@@ -498,14 +505,9 @@ sub get_title_normdata {
         foreach my $item ($subjects->all){
             my $thisid = $item->get_column('thisid');
 
-            $subjectid_ref->{$thisid}=1;
+            $self->{subjectid}{$thisid}=1;
         }
     }
-
-    $self->{personid}         = $personid_ref;
-    $self->{corporatebodyid}  = $corporatebodyid_ref;
-    $self->{subjectid}        = $subjectid_ref;
-    $self->{classificationid} = $classificationid_ref;
 
     return $self;
 }

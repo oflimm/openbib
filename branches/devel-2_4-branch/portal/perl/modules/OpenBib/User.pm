@@ -1531,7 +1531,7 @@ sub get_recent_tags {
                 'me.type'   => 1,
             },
             {
-                group_by => ['tagid.id'],
+                group_by => ['tagid.id','tagid.name'],
                 order_by => ['tagid.id DESC'],
                 rows     => $count,
                 select   => ['count(me.tagid)','tagid.id','tagid.name'],

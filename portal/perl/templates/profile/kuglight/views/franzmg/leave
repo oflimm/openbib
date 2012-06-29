@@ -1,0 +1,43 @@
+[%#-
+#######################################################################
+#
+# Templatename: leave
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung beim Abmelden aus dem Portal, sowie
+# einer view-sensitiven Verlinkung fuer einen erneuten Aufruf
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+<br />
+  <br />
+  <center>
+    <p style="font-size:1.5em">
+      [% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
+        <br />Vielen Dank f&uuml;r Ihren Besuch der Bibliothek der
+Franziskaner in M&ouml;nchengladbach aus der Virtuellen Bibliothek der Arbeitsstelle Historische Best&auml;nde im Rheinland.
+
+    </p>
+  </center>
+
+  <center>
+    <p>
+      <a href="http://[% config.get('loadbalancerservername') %][% config.get('loadbalancer_loc') %]?view=[% view %]" target="_parent"><span style="font-size:2.5em;font-weight:bold">Neue Sitzung starten</span></a>
+    </p>
+  </center>
+<br />
+<br />
+<br />
+<br />
+[% PROCESS common/subtemplate name="std_footer" hide_foot_banner=1 %]

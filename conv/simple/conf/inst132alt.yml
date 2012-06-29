@@ -1,0 +1,44 @@
+# Encoding der Daten
+encoding: cp437
+
+# Tracelevel
+tracelevel:
+
+file:
+  'sep_char': "=="
+  'rec_sep': "9999:"
+
+# Feld der eindeutigen Titel-ID
+#uniqueidfield: 'ID'
+
+category_split_chars:
+  'AU': '\s*·\s*'
+
+# Personen
+pers:
+  'AU': '0100:'        # Verfasser
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys: 
+
+# Schlagworte
+subj:
+  'SW': '0710:'
+
+# Titel
+title:
+  'TI': '0331:'
+  'EJ': '0425:'
+  'SO': '0412:'
+  'OR': '0410:'
+  'KO': '0433:'
+  'AS': '0403:'
+  'IS': '0540:'
+
+# Exemplare
+exempl:
+  'SI': '0014.001:'
+

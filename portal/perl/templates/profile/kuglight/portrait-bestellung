@@ -1,0 +1,16 @@
+Sehr geehrte Damen und Herren,
+
+Ueber die Bestellfunktion der Portraitsammlung wurde folgendes
+Portrait in den Lesesaal Historische Sammlungen bestellt:
+
+Nutzernummer        : [% bnr %]
+Name des Nutzers    : [% userinfo.Vorname %] [% userinfo.Nachname %]
+
+Dargestellte Person : [% person %]
+Portrait-Titel      : [% titel %]
+Signatur(en)        : [% signatur %]
+
+Mit freundlichen Gruessen
+
+Die Portraitsammlung
+

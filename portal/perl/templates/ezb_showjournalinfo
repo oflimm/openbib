@@ -1,0 +1,81 @@
+[%#-
+#######################################################################
+#
+# Templatename: ezb_showsubjects
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe genereller Informationen zur Zeitschrift
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('ezb_loc') %]?sessionID=[% sessionID %];action=show_subjects;show_cloud=1"><span class="dbdescshort">[% msg.maketext("Informationen zur Zeitschrift") %]</span></a></li>
+</ul>
+
+<div class="content">
+
+[%# USE dumper; dumper.dump(subjects) %]
+
+<h3><img src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_468x64.gif" alt="Elektronische Zeitschriftenbibliothek" /></h3>
+
+<div style="width:60%;">
+<div class="right_side boxedclear" style="width:auto;">
+<span class="headline">[% msg.maketext("Recherche starten") %]</span>
+<p>
+<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="http://rzblx1.uni-regensburg.de/ezeit/warpto.phtml?bibid=[% config.get('ezb_bibid') %]&colors=[% config.get('ezb_colors') %]&lang=de&jour_id=[% journalinfo.id %]" target="_blank" style="font-size:1.6em">[% msg.maketext("Weiter") %]</a>
+</p>
+</div>
+
+<div class="categories"><!-- Begin Categories -->
+<table cellpadding="2">
+<tr><td class="category">id</td><td>[% journalinfo.id %]</td></tr>
+[% IF journalinfo.title %]
+<tr><td class="category">[% msg.maketext("Titel") %]</td><td>[% journalinfo.title %]</td></tr>
+[% END %]
+<!-- <tr><td class="category">[% msg.maketext("Recherche starten") %]</td><td> <img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="http://rzblx1.uni-regensburg.de/ezeit/warpto.phtml?bibid=[% config.get('ezb_bibid') %]&colors=[% config.get('ezb_colors') %]&lang=de&jour_id=[% journalinfo.id %]" target="_blank">[% msg.maketext("Weiter") %]</a></td></tr> -->
+[% IF journalinfo.publisher %]
+<tr><td class="category">[% msg.maketext("Herausgeber/Verlag") %]</td><td>[% journalinfo.publisher %]</td></tr>
+[%   FOREACH subject IN journalinfo.subjects %]
+<tr><td class="category">[% msg.maketext("Fachgebiet") %]</td><td>[% subject %]</td></tr>
+[%   END %]
+[% END %]
+[% IF journalinfo.keywords %]
+[%   FOREACH keyword IN journalinfo.keywords %]
+<tr><td class="category">[% msg.maketext("Schlagwort") %]</td><td>[% keyword %]</td></tr>
+[%   END %]
+[% END %]
+[% IF journalinfo.firstvolume %]
+<tr><td class="category">[% msg.maketext("Volume (Jahr) der ersten Ausgabe") %]</td><td>[% journalinfo.firstvolume %] [% IF journalinfo.firstdate %]([% journalinfo.firstdate %])[% END %]</td></tr>
+[% END %]
+[% IF journalinfo.homepages %]
+[%   FOREACH homepage IN journalinfo.homepages %]
+<tr><td class="category">[% msg.maketext("Homepage") %]</td><td><a href="[% homepage %]" target="_blank">[% homepage %]</a></td></tr>
+[%   END %]
+[% END %]
+[% IF journalinfo.appearance %]
+<tr><td class="category">[% msg.maketext("Ver&ouml;ffentlichungsart") %]</td><td>[% journalinfo.appearence %]</td></tr>
+[% END %]
+[% IF journalinfo.costs %]
+<tr><td class="category">[% msg.maketext("Kosten") %]</td><td>[% journalinfo.costs %]</td></tr>
+[% END %]
+[% IF journalinfo.remarks %]
+<tr><td class="category">[% msg.maketext("Bemerkungen") %]</td><td>[% journalinfo.remarks %]</td></tr>
+[% END %]
+</table>
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

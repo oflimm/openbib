@@ -1,0 +1,95 @@
+[%     IF drilldown_categorized && fullresultcount >= 10 %]
+<table width="100%">
+<tr><th colspan="4" style="font-size:0.9em">Treffermenge eingrenzen&nbsp;</th></tr>
+<tr><td colspan="4" class="boxedclear" style="font-size:0.8em;">
+
+<table>
+<tr><td valign="top">
+[%         IF config.get('drilldown_option').categorized_aut && category_map.3.size > 0 %]
+<table width="100%">
+<tr><th>[% msg.maketext("nach Buchbinder/Werkst&auml;tten") %]</th></tr>
+<tr><td class="boxedclear">
+[%             FOREACH termitem IN category_map.3 ;
+                  LAST IF loop.count > 5 ;
+%]
+<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddper:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+</td></tr>
+</table>
+[%         END %]
+</td></tr>
+<tr><td valign="top">
+[%         IF config.get('drilldown_option').categorized_swt && category_map.1.size > 0 %]
+<table width="100%">
+<tr><th>[% msg.maketext("nach Jahrhundert") %]</th></tr>
+<tr><td class="boxedclear">
+[%             FOREACH termitem IN category_map.1 ;
+                  LAST IF loop.count > 5 ;
+%]
+<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddswt:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+</td></tr>
+</table>
+[%         END %]
+</td></tr>
+<tr><td valign="top">
+[%         IF config.get('drilldown_option').categorized_not && category_map.2.size > 0 %]
+<table width="100%">
+<tr><th>[% msg.maketext("nach Einband") %]</th></tr>
+<tr><td class="boxedclear">
+[%             FOREACH termitem IN category_map.2 ;
+                  LAST IF loop.count > 5 ;
+ %]
+<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddnot:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+</td></tr>
+</table>
+[%         END %]
+</td></tr>
+<tr><td valign="top">
+[%         IF config.get('drilldown_option').categorized_year && category_map.5.size > 0 %]
+<table width="100%">
+<tr><th>[% msg.maketext("nach Jahr") %]</th></tr>
+<tr><td class="boxedclear">
+[%             FOREACH termitem IN category_map.5 ;
+                  LAST IF loop.count > 5 ;
+ %]
+<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddyear:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
+[%             END %]
+</td></tr>
+</table>
+[%         END %]
+</td></tr>
+<tr><td valign="top">
+[%         IF config.get('drilldown_option').categorized_mart && category_map.4.size > 0 %]
+<table width="100%">
+<tr><th>nach Art</th></tr>
+<tr><td class="boxedclear">
+[%             FOREACH termitem IN category_map.4 ;
+                  LAST IF loop.count > 5 ;
+ %]
+<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddtyp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+</td></tr>
+</table>
+[%        END %]
+</td></tr>
+<tr><td valign="top">
+[%         IF config.get('drilldown_option').categorized_spr && category_map.6.size > 0 %]
+<table width="100%">
+<tr><th>[% msg.maketext("nach Sprache") %]</th></tr>
+<tr><td class="boxedclear">
+[%             FOREACH termitem IN category_map.6 ;
+                  LAST IF loop.count > 5 ;
+ %]
+<a href="[% config.get('virtualsearch_loc') %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddspr:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+</td></tr>
+</table>
+[%        END %]
+
+</td></tr>
+</table>
+</td></tr>
+</table>
+[%    END %]

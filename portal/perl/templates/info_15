@@ -1,0 +1,83 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Liste der verschiedenen aktiven Sichten
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+      viewlist     = config.get_active_views();
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Spezialisierte KUG-Portale") %]">[% msg.maketext("Spezialisierte KUG-Portale") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<table width="100%">
+<tr><th><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.8em">
+[% msg.maketext("Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an
+Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgew&auml;hlt
+sind, die weitergehende Informationen anbieten oder ein
+eigenst&auml;ndiges Fach-Portal bilden. Auf dieser Seite finden Sie
+eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.") %]
+</td></tr>
+</table>
+<p />
+
+[% FOREACH viewname IN viewlist %]
+[% active_viewdbs = config.get_dbs_of_view(viewname) %]
+[%# Achtung: An TT uebergebene einelementige Listen werden vom TT
+    ungewollt als Skalar abgespeichert. Das ist ein Problem bei leeren
+    Listen, da der Skalar dann zwar definiert ist, aber leer. Wird darauf
+    eine Listen-VMethode angewand, dann wird der leere String im Listenkontext
+    zu einem leeren aber definierten ersten Listenelement- size
+    liefert faelschlicherweise 1 zurueck. Daher wird nun auf die
+    Laenge des Listenelementes geprueft %]
+[%- IF active_viewdbs.first.length > 0  -%]
+<table width="100%">
+<tr><th>[% config.get_viewdesc_from_viewname(viewname)%]</th></tr>
+<tr><td class="boxedclear">
+<!-- Kataloge des Views -->
+<p />
+<span style="font-size:1.2em">[% msg.maketext("Kataloge dieser Spezial-Sicht") %]:</span>
+<ul>
+[% FOREACH dbname IN active_viewdbs %]
+<li>[% dbinfo.get('dbnames').${dbname}.short %]</li>
+[% END %]
+</ul>
+<p />
+<img style="vertical-align:bottom"
+src="[% config.get('follow_img') %]" alt="[% msg.maketext("Weiterleitungs-Icon") %]"
+/>&nbsp;<a
+href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=[%
+viewname %]" target="_blank"><b>[% msg.maketext("Aufruf dieser Spezial-Sicht") %]</b></a>
+<p />
+([% msg.maketext("Bitte bookmarken unter:") %]<b>http://kug.ub.uni-koeln.de/portal/lastverteilung?view=[%
+viewname %]</b>)
+</td></tr>
+</table>
+<p />
+[%- END -%]
+[% END %]
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

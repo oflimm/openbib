@@ -1,0 +1,57 @@
+[%#-
+#######################################################################
+#
+# Templatename: newsflash
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe aktueller Meldungen und Hinweise
+#
+#######################################################################
+-%]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
+
+<ul>
+<li><b>19.3.2012</b>: Die Anzeige "Letzte Artikel" bei Zeitschriften
+wurde wegen der Einstellung des <a href="http://www.tictocs.ac.uk/"
+target="_blank">TicTocs-Dienstes</a> auf den Nachfolger <a href="http://www.journaltocs.hw.ac.uk/" target="_blank">JournalTocs</a> umgestellt.
+</li>
+<li><b>13.1.2012</b>: Gesamtbestand von PaperC als eigener Katalog im
+KUG recherchierbar. Beim externen Anbieter PaperC k&ouml;nnen Fachb&uuml;cher nach kostenfreier
+Registrierung kostenlos online gelesen werden. Weitergehende Informationen in diesem
+<a href="http://blog.openbib.org/2012/01/13/paperc-als-eigener-katalog/" target="_blank">Blog-Artikel</a>
+</li>
+<li><b>27.12.2011</b>: Einzelne Titel im KUG werden durch eine
+Analyse der Literaturangaben und -listen in den Artikeln der Wikipedia
+um Verweise zu thematisch verwandten Titeln im gleichen Katalog erg&auml;nzt. Weitergehende Informationen in diesem
+<a href="http://blog.openbib.org/2011/12/27/literaturvorschlage-fur-den-katalog-aus-der-wikipedia/" target="_blank">Blog-Artikel</a>
+</li>
+<li><b>9.11.2011</b>: Der Sammlungsauftritt auf den
+USB-Webseiten ist nun zentralisiert und neue Sammlungs-Portale wurden freigeschaltet. Weitergehende Informationen in diesem
+<a href="http://blog.openbib.org/2011/11/09/sammlungen-revisited/" target="_blank">Blog-Artikel</a>
+</li>
+<li><b>17.5.2011</b>: Verbesserung bei der Nutzung von QR-Codes. Der QR-Code bleibt
+nun permanent sichtbar, wenn Sie auf das zugehörige Symbol klicken.
+</li>
+<li><b>29.4.2011</b>: Für einen besseren Überblick der Leihfristenden
+können im Benutzerkonto nun die entliehenen Titel im iCalendar-Format
+abgespeichert und in das eigene Kalenderprogramm importiert
+werden. Zusätzlich können die Fristenden auch per QR-Code direkt in
+den Handy-Kalender übernommen werden (über eine Internetverbundung
+können zusätzliche Kosten anfallen). Weitergehende Informationen in diesem
+<a href="http://blog.openbib.org/2011/04/29/ausleihkonto-als-kalender-und-qr-code/" target="_blank">Blog-Artikel</a></li>
+<li><b>21.4.2011</b>: Zur schnellen Übernahme wesentlicher
+Informationen aus dem KUG mit dem Handy als "Merkzettel" - Signatur/Standort, um ein Buch im Regal zu
+finden oder Adresse/Öffnungszeiten einer Instituts-Bibliothek, um
+diese zu finden - setzt der KUG nun <a
+href="http://de.wikipedia.org/wiki/QR-Code"
+target="_blank">QR-Codes</a> <img style="vertical-align:bottom;"
+src="[% config.get('qrcode_img') %]" alt="QR-Code Icon" />
+ein. Geeignete Programme, wie z.B. <a class="ext" href="http://www.i-nigma.com/Downloadi-nigmaReader.html"
+target="_blank">i-nigma Reader</a> oder <a class="ext" href="http://reader.kaywa.com/" target="_blank">Kaywa Reader</a>, sind für
+viele Handys verfügbar. (weitergehende Informationen in diesem
+<a href="http://blog.openbib.org/2011/04/21/qr-codes-im-kug/" target="_blank">Blog-Artikel</a>)</li>
+</ul>

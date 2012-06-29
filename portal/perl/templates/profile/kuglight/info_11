@@ -1,0 +1,104 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
+  <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Wolken">Wolken</a></li>
+  <li><a                href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="Sichten">Sichten</a></li>
+  <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+</ul>
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" title="Katalogauswahl">Katalogauswahl</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<table width="100%">
+<tr><th>Hinweis</th></tr>
+<tr><td class="boxedclear" style="font-size:0.8em">
+W&auml;hlen Sie einen Katalog aus, um Informationen &uuml;ber dessen
+Nutzung zu erhalten.
+</td></tr>
+</table>
+<p />
+
+[%
+  catdb = config.get_infomatrix_of_active_databases(session);
+  maxcolumn = config.get('databasechoice_maxcolumn');
+  colspan = config.get('databasechoice_maxcolumn') * 3;
+%]
+<table>
+[%- FOREACH category = config.get('orgunits') -%]
+  [%- IF category.nr >= 1 -%]
+<tr><td colspan="[% colspan %]">&nbsp;</td></tr>
+  [%- END -%]
+<tr class="titlerow"><td colspan="[% colspan %]" align="left"><b>[% category.desc %]</b></td></tr>
+
+  [%- FOREACH db = catdb -%]
+    [%- IF db.category == category.short -%]
+      [%- IF db.column == 1 -%]
+<tr><td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% db.db %];stid=10" title="Top 20">[% db.name %]</a></td>
+      [%- END -%]
+      [%- IF db.column > 1 && db.column < maxcolumn -%]
+        [%- IF db.db -%]
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% db.db %];stid=10" title="Top 20">[% db.name %]</a></td>
+        [%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        [%- END -%]
+
+      [%- END -%]
+      [%- IF db.column == maxcolumn -%]
+        [%- IF db.column != 1 -%]
+
+          [%- IF db.db -%]
+<td>&nbsp;</td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];database=[% db.db %];stid=10" title="Top 20">[% db.name %]</a></td>
+          [%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+          [%- END -%]
+
+        [%- END -%]
+</tr>
+      [%- END -%]
+    [%- END -%]
+  [%- END -%]
+[%- END -%]
+</table>
+</div>
+</div>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

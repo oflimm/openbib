@@ -1,0 +1,43 @@
+# Encoding der Daten
+encoding: cp437
+
+# Tracelevel
+tracelevel:
+
+file:
+  'sep_char': ":"
+  'rec_sep': "9999:"
+
+# Feld der eindeutigen Titel-ID
+#uniqueidfield: 'ID'
+
+# Personen
+pers:
+  '40': '0100:'        # Verfasser
+  '41': '0101:'        # Herausgeber
+
+# Koerperschaften
+corp:
+  '61': '0200:'        # Koerpeschaft
+
+# Systematik
+sys: 
+
+# Schlagworte
+subj:
+
+# Titel
+title:
+  '20': '0331:'
+  '76': '0425:'
+  '75': '0412:'
+  '74': '0410:'
+  '77': '0433:'
+  '71': '0403:'
+  '87': '0540:'
+  '85': '0451:'
+
+# Exemplare
+exempl:
+  '90': '0014.001:'
+

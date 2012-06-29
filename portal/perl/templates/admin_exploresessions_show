@@ -1,0 +1,115 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showsessions
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Bestehende Sessions anzeigen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="sessions" %] 
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1">Aktive Sessions (lokal)</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_showsessions=1;stid=1">Explorer</a></li>
+</ul>
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_exploresessions=1;clientip=[% clientip %];fromdate=[% fromdate %];todate=[% todate %]">Liste der Sessions</a></li>
+   <li><a class="active" href="[% config.get('admin_loc') %]?sessionID=[% sessionID %];do_exploresessions=1;do_show=1;singlesessionid=[% singlesessionid %];clientip=[% clientip %];fromdate=[% fromdate %];todate=[% todate %]">Ausgew&auml;hlte Session</a></li>
+</ul>
+
+<div class="content">
+
+<form method="get" action="[%config.get('admin_loc') %]">
+<input type="hidden" name="do_exploresession" value="1" />
+<input type="hidden" name="sessionID"         value="[% sessionID %]" />
+
+[%# USE dumper; dumper.dump(events)%]
+
+<table width="100%">
+<tr><th>Einzelne Session [% singlesessionid %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table>
+<tr><td>Event</td><td>Inhalt</td></td><td></td></tr>
+[% FOREACH event IN events %]
+[%  SWITCH event.type %]
+[%    CASE 1 %]
+[%       searchquery = event.content %]
+<tr><td>Recherche</td><td>
+[%- IF searchquery.fs.val -%]&nbsp;FS: [% searchquery.fs.val %] 
+[%- END -%]
+[%- IF searchquery.verf.val -%]
+&nbsp;[% searchquery.verf.bool %]&nbsp;AUT: [% searchquery.verf.val %]
+[%- END -%]
+[%- IF searchquery.hst.val -%]
+&nbsp;[% searchquery.hst.bool %]&nbsp;HST: [% searchquery.hst.val %]
+[%- END -%]
+[%- IF searchquery.swt.val -%]
+&nbsp;[% searchquery.swt.bool %]&nbsp;SWT: [% searchquery.swt.val %]
+[%- END -%]
+[%- IF searchquery.kor.val -%]
+&nbsp;[% searchquery.kor.bool %]&nbsp;KOR: [% searchquery.kor.val %]
+[%- END -%]
+[%- IF searchquery.notation.val -%]
+&nbsp;[% searchquery.notation.bool %]&nbsp;NOT: [% searchquery.notation.val %] 
+[%- END -%]
+[%- IF searchquery.sign.val -%]
+&nbsp;[% searchquery.sign.bool %]&nbsp;SIG: [% searchquery.sign.val %]
+[%- END -%]
+[%- IF searchquery.ejahr.val -%]
+&nbsp;[% searchquery.ejahr.bool %]&nbsp;EJAHR: [% searchquery.ejahr.val %]
+[%- END -%]
+[%- IF searchquery.isbn.val -%]
+&nbsp;[% searchquery.isbn.bool %]&nbsp;ISBN: [% searchquery.isbn.val %]
+[%- END -%]
+[%- IF searchquery.issn.val -%]
+&nbsp;[% searchquery.issn.bool %]&nbsp;ISSN: [% searchquery.issn.val %]
+[%- END -%]
+[%- IF searchquery.mart.val -%]
+&nbsp;[% searchquery.mart.bool %]&nbsp;MART: [% searchquery.mart.val %]
+[%- END -%]
+[%- IF searchquery.hststring.val -%]
+&nbsp;[% searchquery.hststring.bool %]&nbsp;HSTR: [% searchquery.hststring.val %] 
+[%- END -%]
+</td><td align="center">Treffer: [% searchquery.hits %]</td><td>DB's: [% searchquery.dbases.join(';') %]</td></tr>
+[%    CASE 10 %]
+<tr><td>Einzeltreffer</td><td>[% event.content.id %] in [% event.content.database %]</td><td></td></tr>
+[%    CASE 100 %]
+<tr><td>View</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE 101 %]
+<tr><td>Browser</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE 102 %]
+<tr><td>IP</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE ; %]
+<tr><td>[% event.type %]</td><td>[% event.content %]</td><td></td></tr>
+[%    END %]
+[% END %]
+
+</table>
+</td></tr>
+</table>
+
+</div>
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

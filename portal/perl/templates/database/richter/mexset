@@ -1,0 +1,26 @@
+[%# USE dumper;dumper.dump(mexnormset)%]
+<table width="100%">
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Bestand") %]</td></tr>
+
+[% listrow = 'listrow1' %]
+[% FOREACH mex IN mexnormset %]
+<tr class="[% listrow %]" align="center"><td><strong>
+[%- IF mex.${"X4000"}.content.short == "(001)" -%]
+USB K&ouml;ln
+[%- ELSE -%]
+[% mex.${"X4000"}.content.full %]
+[%- END -%]
+</strong>
+</td><td>
+[%- IF mex.${"X4000"}.content.short == "(001)" -%]
+Handapparat Richterbibliothek Abt. UGK
+[% ELSE %][% mex.${"X0016"}.content %][% END %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% IF mex.${"X1200"} %][% mex.${"X1200"}.content %] [% END %][% mex.${"X1204"}.content %][% IF mex.${"X1203"} %] ([% mex.${"X1203"}.content %])[% END %]</td></tr>
+
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+
+[% END %]
+</table>

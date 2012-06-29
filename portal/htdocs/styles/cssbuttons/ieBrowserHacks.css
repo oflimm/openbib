@@ -1,0 +1,22 @@
+/*	This file is part of CSS Buttons.
+
+    CSS Buttons is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CSS Buttons is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with CSSButtons. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+/* 	for IE 6 and 7 (conditionalize as needed) 
+	When designing button Backgrounds, ensure there's a white(transparent) gap between top and bottom states */
+	
+	button.cssbutton {width:1%;} /* IE FLOAT HACK */
+	button.cssbutton span {float:left;} /* IE HACK - This FLOAT is sometimes not need. As tested IE7 Needs it. */

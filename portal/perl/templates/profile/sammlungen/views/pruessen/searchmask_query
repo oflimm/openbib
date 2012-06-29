@@ -1,0 +1,24 @@
+<table>
+[% IF showfs %]
+<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="30" maxlength="200" /></td></tr>
+[% END %]
+
+[% IF showhst %]
+<tr><td class="category">[% msg.maketext("Titel / Bildbeschreibung") %]</td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td></tr>
+[% END %]
+
+[% IF showverf %]
+<tr><td class="category">[% msg.maketext("Person") %]</td><td><input type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td></tr>
+[% END %]
+
+[% IF showswt %]
+<tr><td class="category">[% msg.maketext("Schlagworte") %]</td><td><input type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td></tr>
+[% END %]
+
+[% IF showejahr %]
+<tr><td class="category">[% msg.maketext("Jahr") %]</td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val | html %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td></tr>
+[% END %]
+
+<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></td>
+
+</table>

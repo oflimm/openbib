@@ -1,0 +1,82 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<h1>Europäische St&auml;dte- und Landschaftsdarstellungen des 16. und 17. Jahrhunderts</h1>
+
+<table cellpadding="10">
+
+<tr>
+
+<td> <center> <img src="/images/openbib/views/landschaft/landschaft.jpg"
+alt="Aachen um 1616" /><br /><br /><i
+style="font-size:0.8em">Aachen um 1616</i></center>
+</td>
+
+<td valign="top">
+<p>
+
+Ziel des Projekts ist die Digitalisierung und Eintragung in die
+HIDA-Datenbank von rund 4000 Bildern (derzeit noch im Aufbau) aus den
+Buchbeständen der Universitäts- und
+Stadtbibliothek Köln. Es handelt sich um eine reiche
+Sammlung europäischer Städte- und
+Landschaftsdarstellungen aus Publikationen des 16. und
+17. Jahrhunderts.
+</p>
+
+<p>
+
+Die Digitalisierung dieser Spezialbestände dient in erster Linie der
+Verbesserung der Zugriffsmöglichkeiten. Damit soll eine erweiterte
+wissenschaftlichen Nutzung der Bildmaterialien ermöglicht werden, die
+für die Erforschung der europäischen Architektur-, Kunst- und
+Kulturgeschichte von grundlegender Bedeutung sind. Da Teile der
+betreffenden Werke nur noch eingeschränkt benutzbar und bei
+Beschädigung unersetzlich sind, ist die Sicherung dieses
+kulturhistorisch wichtigen Schrifttums ein weiteres Ziel der
+Digitalisierung. Das Projekt erweitert zudem das Aufgabenspektrum der
+Bibliothek und trägt der wachsenden Internationalisierung der
+Forschung Rechnung.
+
+
+</p>
+
+
+</td></tr>
+</table>
+
+
+<p> Das Bildmaterial stammt vorerst aus Stadt- und
+Landschaftsbeschreibungen des 16. und 17. Jahrhunderts. Die
+Digitalisierung dieser Darstellungen schafft die Basis für einen
+virtuellen Bestand, an dessen Aufbau sich zukünftig auch andere
+Bibliotheken in Deutschland und Europa beteiligen werden. Damit sollen
+die unterschiedlichsten Sammelgebiete, z.B. Rechts- und
+Sozialwissenschaft, Wissenschafts-, Kultur- und Rechtsgeschichte, für
+das Projekt genutzt werden. Es geht um ein inhaltlich und in seinen
+Ausmaßen offenes Konzept. Nach Abschluss dieser Digitalisierungen wäre
+die Ausdehnung des Verfahrens auf Bildbestände des 18. Jahrhunderts
+ein weiteres wünschenswertes Ziel.  </p>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,24 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchmask_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="newsflash" %]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Steckbrief des Katalogs") %]" />&nbsp;[% msg.maketext("Steckbrief des Katalogs") %]</h3>
+
+<table>
+<tr><td class="category">[% msg.maketext("Katalog") %]</td><td>Freie Digitalisate / E-Books der Open Library</td></tr>
+<tr><td class="category">[% msg.maketext("Ursprung") %]</td><td>Internet Archiv</td></tr>
+<tr><td class="category">[% msg.maketext("Online-Bestand") %]</td><td>[% config.get_number_of_titles({ database => 'openlibrary' }).all.chunk(-3).join('.') %] Titel</td></tr>
+</table>
+
+<a href="http://openlibrary.org"><img src="http://openlibrary.org/static/logos/logo-en.png" alt="OpenLibrary Logo"/></a>

@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_end
+#
+# Typ         : Mastertemplate (3/3)
+#
+# Aufgabe:
+#
+# Ausgabe das unteren Teils der initialen Trefferliste
+#
+# Anpassungen:
+#
+# - Entfernung der weitergehenden Suchhinweise
+#
+#######################################################################
+-%]
+[% IF gesamttreffer == 0 %]
+<tr><td colspan="5"><span style="font-size:2em;font-face:bold">[% msg.maketext("Es wurden keine Treffer gefunden") %]</span></td></tr>
+[% END %]
+</table>
+</div>
+
+<p>
+
+[% PROCESS common/subtemplate name="std_footer" %]

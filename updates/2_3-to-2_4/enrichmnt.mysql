@@ -1,0 +1,1 @@
+alter table all_isbn modify id varchar(255) not null;

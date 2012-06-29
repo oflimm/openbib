@@ -1,0 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs_navigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+<ul class="tabbingmenu">
+   <li><a [% IF active_menu == "info" %]class="active" [% END %] href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];stid=20">Informationen</a></li>
+   <li><a [% IF active_menu == "searchmask" %]class="active" [% END %] href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">Recherche</a></li>
+   <li><a [% IF active_menu == "register" %]class="active" [% END %] href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=totenzettel;browsecat=T0425" title="Register">Register</a></li>
+   <li><a [% IF active_menu == "cloud" %]class="active" [% END %] href="[% config.get('info_loc') %]?sessionID=[% sessionID %];view=[% view %];[% IF viewdbs.size == 1 %]database=[% viewdbs.first %];stid=9[% ELSE %]stid=13[% END %]" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+</ul>

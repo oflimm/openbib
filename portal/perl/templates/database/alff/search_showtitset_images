@@ -1,0 +1,27 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+# Anpassung: Thumbnail geaendert und verlinkt
+#
+#######################################################################
+-%]
+<p>
+<a href="[% normset.${'T0662'}.first.content %]" height="120" target="Digitalisat" title="Zum Digitalisat"><img src="[% normset.${'T2662'}.first.content %]" alt="[% msg.maketext("Thumbnail") %]" border="0" /></a>
+</p>
+<p>
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+</p>
+<p>
+[%- IF bibkey -%]
+<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.get('connector_availabilityimage_loc') %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+[%- END -%]
+</p>

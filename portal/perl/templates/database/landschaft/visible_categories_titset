@@ -1,0 +1,88 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                   'T0102', # msg.maketext("T0102") Dargestellte Person
+                   'T0100', # msg.maketext("T0100-landschaft") Kuenstler
+                   'T0101', # msg.maketext("T0101") Stecher, Lithograph
+                   'T0103', # msg.maketext("T0103") Weitere Person
+                   'T0331', # msg.maketext("T0331-landschaft") Objekt-Titel 
+                   'T0750', # msg.maketext("T0750-landschaft") Transkription 
+                   'T0425', # msg.maketext("T0425-landschaft") Jahr
+                   'T0591', # msg.maketext("T0591-landschaft") Entstehungsort
+                   'T0592', # msg.maketext("T0592") Abteilung Unterreiche der Quelle
+                   'T0593', # msg.maketext("T0593") Ausgabebez. der Quelle
+                   'T0594', # msg.maketext("T0594-landschaft") Entstehungslandschaft
+                   'T0595', # msg.maketext("T0595-landschaft") Entstehungsland
+                   'T0407', # msg.maketext("T0407-landschaft") HoehexBreite
+                   'T0334', # msg.maketext("T0334-landschaft") Traegermaterial
+                   'T0359', # msg.maketext("T0359") Vorlageform
+                   'T0501', # msg.maketext("T0501") Lebensdaten
+                   'T0200', # msg.maketext("T0200-landschaft") Topographisches Schlagwort
+                   'T0700', # msg.maketext("T0700-landschaft") Prim. Ikonographisches Schlagwort
+                   'T0710', # msg.maketext("T0710-landschaft") Sek. Ikonographisches Schlagwort
+                   'T3001', # msg.maketext("T3001") Fruehere Signatur
+                   'T3000', # msg.maketext("T3000") Besitzer
+                   'T0410', # msg.maketext("T0410") Erscheinungsort
+                   'T0412', # msg.maketext("T0412") Verleger/Drucker
+                   'T0424', # msg.maketext("T0424") Jahr/Ansetzung
+                   'T0433', # msg.maketext("T0433") Umfang
+
+                   'T0434', # msg.maketext("T0434") Illustrationsangabe
+                   'T0502', # msg.maketext("T0502") EST beig. Werk
+                   'T0504', # msg.maketext("T0504") Angabe Paralelltitel
+                   'T0505', # msg.maketext("T0505") Angabe Nebentitel
+                   'T0509', # msg.maketext("T0509") Vermerke zur Personenangabe
+                   'T0510', # msg.maketext("T0510") Angabe Ausgabebezeichnung
+                   'T0511', # msg.maketext("T0511") Angabe Erscheinungsvermerk
+                   'T0512', # msg.maketext("T0512") Angabe Kollationsvermerk
+                   'T0513', # msg.maketext("T0513") Aenderung im Impressum
+                   'T0515', # msg.maketext("T0515") Ergaenzung Gesamttitelangabe
+                   'T0521', # msg.maketext("T0521") Angaben zum Inhalt
+                   'T0522', # msg.maketext("T0522") Teilungsvermerk    
+                   'T0525', # msg.maketext("T0525") Herkunftsangaben
+                   'T0527', # msg.maketext("T0527") Hinweis Parallelausgabe
+                   'T0529', # msg.maketext("T0529") Titel von fortl. Beilagen
+                   'T0530', # msg.maketext("T0530") Titel von Bezugswerken
+                   'T0531', # msg.maketext("T0531") Hinweis auf fruehrere Ausgaben
+                   'T0532', # msg.maketext("T0532") Hinweis auf andere gueltige Titel
+                   'T0533', # msg.maketext("T0533") Hinweis auf spaetere Ausgaben
+                   'T0534', # msg.maketext("T0534") Titelkonkordanzen
+                   'T0535', # msg.maketext("T0535") Anzahl von Exemplaren
+                   'T0536', # msg.maketext("T0536") Voraussichtl. Erscheinungstermin
+                   'T0537', # msg.maketext("T0537") Redaktionelle Bemerkungen
+                   'T0538', # msg.maketext("T0538") Angabe Vervielfaeltigungsart
+                   'T0578', # msg.maketext("T0578") Fingerprint
+                   'T0580', # msg.maketext("T0580") Sonstige Standardnummern
+                   'T0590', # msg.maketext("T0590") Erg. Urheber der Quelle
+                   'T0596', # msg.maketext("T0596") Weitere Angaben zur Quelle
+                   'T0597', # msg.maketext("T0597") Gesamttitel der Quelle
+                   'T0598', # msg.maketext("T0598") Fussnote der Quelle
+                   'T0599', # msg.maketext("T0599") Standardnummer der Quelle
+                   'T0619', # msg.maketext("T0619") Erscheinungsjahr Sekundaerform
+                   'T0646', # msg.maketext("T0646") Besitznachweis fuer Verfilmungsvorlage 
+                   'T0655', # msg.maketext("T0655") Elektronische Adresse
+                   'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
+                   'T0672', # msg.maketext("T0672") Autorenname in normierter Form
+                   'T0673', # msg.maketext("T0673") Ort in normierter Form
+                   'T0674', # msg.maketext("T0674") Jahr des Orginals
+                   'T0675', # msg.maketext("T0675") Abweichende Orthographie
+                   'T0800', # msg.maketext("T0800") Medienart
+                   'T0840', # msg.maketext("T0840") Konkordanz
+                   'T1202', # msg.maketext("T1202") Bestand Bemerkung
+                   'T0508', # msg.maketext("T0508") Bibl. Nachweis
+                   'T0662', # msg.maketext("T0662") Weitere Infos
+                ]
+
+%]

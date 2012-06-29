@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_33
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="project" %] 
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="subnavigation_projekt" active_menu="bibliographie" %]
+
+<div class="content">
+<p />
+
+<h1>Bibliographie zur K&ouml;lner Buch- und Einbandgeschichte</h1>
+<br /><br />
+
+Das alphabetische Verzeichnis der Bibliographie zur K&ouml;lner Buch- und Einbandgeschichte finden Sie <a href="http://www.ub.uni-koeln.de/bibliothek/ssg/einband/biblio/abisz/index_ger.html" target="_blank">hier</a>.
+
+<p />
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

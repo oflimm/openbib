@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs_change_fields
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung bei der Loeschung einer Benutzerkennung
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Erfolgsmeldung") %]</th></tr>
+<tr><td class="boxedclear">
+[% msg.maketext("Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht") %]
+<p />
+[% msg.maketext("Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte [_1]<b>hier</b>[_2}, um eine neue Sitzung zu beginnen.","<a href=\"http://${config.get('loadbalancerservername')}${config.get('loadbalancer_loc')}?view=${view}\">","</a>") %]
+</td></tr>
+</table>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

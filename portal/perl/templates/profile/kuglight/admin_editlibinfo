@@ -1,0 +1,80 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editlibinfo
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Bibliothek
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="catalogues" %] 
+
+<div class="content">
+[%# USE dumper;dumper.dump(libinfo)%]
+[% PROCESS common/subtemplate name="visible_categories_libinfoset" %]
+
+<form method="get" action="[% config.get('admin_loc') %]">
+<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<input type="hidden" name="dbname"         value="[% dbname %]" />
+<input type="hidden" name="do_editlibinfo" value="1" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bibliotheksinformationen bearbeiten") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+[%-
+FOREACH category IN categories;
+
+    IF libinfo.${category}.size > 0 ;
+      FOREACH item IN libinfo.$category;
+        content = item.content;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}")
+%]</td><td><input type="text" name="[% category %]" value="[% content | replace('"','%22') %]" size="100"/></td></tr>
+[%-   END ;
+     ELSE ;
+        thiscategory = category ;
+        IF config.get('categorymapping').${libinfo.database}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td><input type="text" name="[% category %]" value="" size="100"/></td></tr>
+[%-  END ;
+END ;-%]
+</table>
+
+</td></tr>
+</table>
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change"
+value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]"></td></tr>
+</table>
+
+</form>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

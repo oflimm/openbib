@@ -1,0 +1,20 @@
+dbname: inst431
+dbuser: dbuser
+dbpasswd: StrengGeheim
+
+dsn_at_proxy: "dbi:Sybase:server=serverSYB;database=inst431"
+proxy: "hostname=localhost;port=12400"
+
+document_root_path: /var/www
+base_uri: /neuerwerbungslisten
+this_uri: /neuerwerbungslisten/inst431
+
+valid_type:
+  1: 1
+  2: 1
+  3: 1
+  5: 1
+  6: 1
+  7: 1
+  13: 1
+  14: 1

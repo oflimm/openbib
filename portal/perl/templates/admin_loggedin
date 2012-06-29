@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_loggedin
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung bei korrekter Authentifizierung
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Funktionsmenu' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="login" %] 
+
+<div class="content">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Erfolgsmeldung") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+[% msg.maketext("Sie sind nun als Administrator eingeloggt.") %]
+</td></tr>
+</table>
+
+<p />
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

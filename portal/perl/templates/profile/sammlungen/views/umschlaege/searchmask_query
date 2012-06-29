@@ -1,0 +1,32 @@
+<table>
+[% IF showfs %]
+<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showhst %]
+<tr><td class="category">[% msg.maketext("Titel") %]</td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showverf %]
+<tr><td class="category">[% msg.maketext("Autor") %]</td><td><input type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=umschlaege;browsecat=T0100">[% msg.maketext("Register") %]</a></td></tr>
+[% END %]
+
+[% IF showswt %]
+<tr><td class="category">[% msg.maketext("Am Umschlag Beteiligte") %]</td><td><input type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=umschlaege;browsecat=T0710">[% msg.maketext("Register") %]</a></td></tr>
+[% END %]
+
+[% IF showkor %]
+<tr><td class="category">[% msg.maketext("Zusammenarbeit") %]</td><td><input type="text" name="kor" value="[% searchquery.kor.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=umschlaege;browsecat=T0200">[% msg.maketext("Register") %]</a></td></tr>
+[% END %]
+
+[% IF showgtquelle %]
+<tr><td class="category">[% msg.maketext("T0412") %]</td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=umschlaege;browsecat=T0412">[% msg.maketext("Register") %]</a></td></tr>
+[% END %]
+
+[% IF showejahr %]
+<tr><td class="category">[% msg.maketext("Jahr") %]</td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val | html %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td><a href="[% config.get('search_loc') %]?sessionID=[% sessionID %];view=[% view %];database=umschlaege;browsecat=T0425">[% msg.maketext("Register") %]</a></td></tr>
+[% END %]
+
+<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></td>
+
+</table>

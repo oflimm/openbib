@@ -1,0 +1,68 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_make_reserv
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Meldung nach dem Versuch eine Vormerkung auszufuehren.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#1">[% msg.maketext("Vormerkung") %]</a></li>
+</ul>
+
+<div class="content">
+[% IF result.Vormerkung.Error ;
+     errorstring = result.Vormerkung.Error ;
+%]
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Vormerkung nicht m&ouml;glich") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+[% msg.maketext("Eine Vormerkung auf das von Ihnen gew&uuml;nsche
+Medium ist leider nicht m&ouml;glich!") %]
+<p />
+[% msg.maketext("Grund:") %]
+<p/ >
+[% IF    errorstring == "MehrfachExemplarNichtErlaubtVM" %]
+[% msg.maketext("Sie haben dieses Medium bereits vorgemerkt") %]
+[% ELSIF errorstring == "VMNochAusleihbar" %]
+[% msg.maketext("Dieses Medium ist direkt ausleihbar") %]
+[% ELSE %]
+[% errorstring %]
+[% END %]
+</td></tr>
+</table>
+[% ELSIF result.Vormerkung.OK ;
+     successstring = result.Vormerkung.OK ;
+%]
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Vormerkung erfolgreich durchgef&uuml;hrt") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+[% msg.maketext("Die Vormerkung wurde erfolgreich durchgef&uuml;hrt.") %]
+<p />
+<p/ >
+[% successstring %]
+</td></tr>
+</table>
+[% END %]
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

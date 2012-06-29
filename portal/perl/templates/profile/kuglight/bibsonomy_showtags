@@ -1,0 +1,50 @@
+[%#-
+#######################################################################
+#
+# Templatename: bibsonomy_showtags
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[%- IF format == 'ajax' -%]
+[% IF tags.first %]
+[% FOREACH tag IN tags %]
+<a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];tag=[% tag.name |uri %];action=get_tit_of_tag">[% tag.name %]</a>&nbsp;
+[% END %]
+[% ELSE %]
+[% msg.maketext("Titel/Schlagworte nicht in BibSonomy enthalten") %]
+[% END %]
+[%- ELSE -%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Tags in BibSonomy") %]</span></a></li>
+</ul>
+
+<div class="content">
+<h3>[% msg.maketext("Zu diesem Titel bzw. seinen Schlagworten konnten in BibSonomy folgende Tags gefunden werden.") %]</h3>
+<p/>
+<ul>
+[% FOREACH tag IN tags %]
+<li><a href="[% config.get('bibsonomy_loc') %]?sessionID=[% sessionID %];tag=[% tag.name |uri %];action=get_tit_of_tag">[% tag.name %]</a></li>
+[% END %]
+</ul>
+<p/>
+
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]
+[%- END -%]

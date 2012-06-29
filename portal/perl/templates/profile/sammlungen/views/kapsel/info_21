@@ -1,0 +1,82 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_21
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der weitergehenden Sammlungsinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div class="boxedclear">
+
+<table>
+<tr><td style="vertical-align: top;padding-top:10px;">
+
+<p> <img
+src="/images/openbib/views/landschaft/info21_1.png"
+class="img" alt="Hagia Sophia 1688, F. Wichmann [Radierer]" />
+<center>Hagia Saphia 1688, F. Wichmann [Radierer]</center>
+</p>
+
+<p> <img
+src="/images/openbib/views/landschaft/info21_2.png"
+class="img" alt="Wie Fridlew und Frotho kämpfen gegen einen Lindwurm,
+1567 Olaus Magnus [Autor]" />
+<center>Wie Fridlew und Frotho kämpfen gegen einen Lindwurm,<br />
+1567 Olaus Magnus [Autor]</center>
+</p>
+</td>
+
+
+<td style="vertical-align: top;padding-left:20px;">
+<h2>Überschrift</h2>
+
+<p>
+
+</p>
+
+<p>
+
+</p>
+
+<p>
+
+</p>
+
+<p>
+
+</p>
+
+
+<p>
+(Text:  )
+</p>
+
+<p>
+</p>
+
+<h3>Ansprechpartner:</h3>
+<strong></strong><br />
+
+Tel.: 0221 470-<br />
+<a href="http://www.ub.uni-koeln.de/e50/e996/e6745/index_ger.html?preview=preview" target="_blank"></a><br /></p>
+</td></tr>
+</table>
+
+</div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

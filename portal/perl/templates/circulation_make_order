@@ -1,0 +1,78 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_make_order
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Meldung nach dem Versuch eine Bestellung auszufuehren.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#1">Bestellung</a></li>
+</ul>
+
+<div class="content">
+[%# USE dumper;dumper.dump(result); %]
+[% IF result.OpacBestellung.Ergebnis == 'N' ;
+     errorstring = result.OpacBestellung.ErrorCode ;
+%]
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Bestellung nicht m&ouml;glich") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+[% msg.maketext("Eine Bestellung des von Ihnen gew&uuml;nschen
+Mediums ist leider nicht m&ouml;glich!") %]
+<p />
+[% msg.maketext("Grund:") %]
+<p/ >
+[% IF    errorstring == "OpsOrderMehrfExemplBestellt" %]
+[% msg.maketext("Sie haben dieses Medium bereits bestellt") %]
+[% ELSIF errorstring == "VMNochAusleihbar" %]
+[% msg.maketext("Dieses Medium ist direkt ausleihbar") %]
+[% ELSE %]
+[% errorstring %]
+[% END %]
+</td></tr>
+</table>
+[% ELSIF result.OpacBestellung.Ergebnis == 'J' ;
+     successstring = result.OpacBestellung.OK ;
+%]
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Bestellung erfolgreich durchgef&uuml;hrt") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+[% msg.maketext("Die Bestellung wurde erfolgreich durchgef&uuml;hrt.") %]
+<p />
+<p/ >
+[% IF result.OpacBestellung.Verfasser %]
+[% msg.maketext("Verfasser") %]: [% result.OpacBestellung.Verfasser %]<br />
+[% END %]
+[% IF result.OpacBestellung.Titel %]
+[% msg.maketext("Titel") %]: [% result.OpacBestellung.Titel %]<br />
+[% END %]
+[% IF result.OpacBestellung.AusgabeOrtBez %]
+[% msg.maketext("Der Titel ist hier abholbar") %]: [% result.OpacBestellung.AusgabeOrtBez %]
+[% END %]
+[% successstring %]
+</td></tr>
+</table>
+[% END %]
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

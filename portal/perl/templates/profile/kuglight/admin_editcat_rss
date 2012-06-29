@@ -1,0 +1,348 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat_rss
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen der RSS-Feeds
+# eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="catalogues" %] 
+
+<div class="content">
+
+<table width="100%">
+<tr><th>[% msg.maketext("RSS-Einstellungen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<!-- Anfang: RSS Feed fuer Neuaufnahmen (generell) -->
+<form method="get" action="[% config.get('admin_loc') %]">
+<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
+<input type="hidden" name="do_editcat_rss" value="1" />
+<input type="hidden" name="rss_type"       value="1" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuaufnahmen (generell)") %]</th></tr>
+
+[%
+t1feed = '' ;
+FOREACH feed IN katalog.rssfeeds ;
+IF feed.type == 1 ;
+t1feed = feed ;
+END ;
+END ;
+
+%]
+
+<tr><td class="boxedclear" style="font-size:10pt">
+
+[% IF NOT t1feed %]
+[% msg.maketext("Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen") %]
+<p />
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+[% ELSE %]
+<input type="hidden" name="rssid" value="[% t1feed.id %]" />
+<table>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
+<select name="active"><option value="0"
+[% IF t1feed.active == '0' %]
+selected
+[% END %]
+
+>[% msg.maketext("Nein") %]</option><option value="1" 
+
+[% IF t1feed.active == '1' %]
+selected
+[% END %]
+
+>[% msg.maketext("Ja") %]</option></td></tr>
+</table>
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+</table>
+[% END %]
+
+</td></tr>
+</table>
+
+</form>
+
+<!-- Ende: RSS Feed fuer Neuaufnahmen (generell) -->
+
+<!-- Anfang: RSS Feed fuer Neuaufnahmen nach Verfasser -->
+<form method="get" action="[% config.get('admin_loc') %]">
+<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
+<input type="hidden" name="do_editcat_rss" value="1" />
+<input type="hidden" name="rss_type"       value="2" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuaufnahmen nach Verfasser") %]</th></tr>
+
+[%
+t2feed = '' ;
+FOREACH feed IN katalog.rssfeeds ;
+IF feed.type == 2 ;
+t2feed = feed ;
+END ;
+END ;
+
+%]
+
+<tr><td class="boxedclear" style="font-size:10pt">
+
+[% IF NOT t2feed %]
+[% msg.maketext("Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser") %]
+<p />
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+[% ELSE %]
+<input type="hidden" name="rssid" value="[% t2feed.id %]" />
+<table>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
+<select name="active"><option value="0"
+[% IF t2feed.active == '0' %]
+selected
+[% END %]
+
+>[% msg.maketext("Nein") %]</option><option value="1" 
+
+[% IF t2feed.active == '1' %]
+selected
+[% END %]
+
+>[% msg.maketext("Ja") %]</option></td></tr>
+</table>
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+</table>
+[% END %]
+
+</td></tr>
+</table>
+
+</form>
+
+<!-- Ende: RSS Feed fuer Neuaufnahmen nach Verfasser -->
+
+<!-- Anfang: RSS Feed fuer Neuaufnahmen nach Koerperschaft -->
+<form method="get" action="[% config.get('admin_loc') %]">
+<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
+<input type="hidden" name="do_editcat_rss" value="1" />
+<input type="hidden" name="rss_type"       value="3" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuaufnahmen nach K&ouml;rperschaft") %]</th></tr>
+
+[%
+t3feed = '' ;
+FOREACH feed IN katalog.rssfeeds ;
+IF feed.type == 3 ;
+t3feed = feed ;
+END ;
+END ;
+
+%]
+
+<tr><td class="boxedclear" style="font-size:10pt">
+
+[% IF NOT t3feed %]
+[% msg.maketext("Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft") %]
+<p />
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+[% ELSE %]
+<input type="hidden" name="rssid" value="[% t3feed.id %]" />
+<table>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
+<select name="active"><option value="0"
+[% IF t3feed.active == '0' %]
+selected
+[% END %]
+
+>[% msg.maketext("Nein") %]</option><option value="1" 
+
+[% IF t3feed.active == '1' %]
+selected
+[% END %]
+
+>[% msg.maketext("Ja") %]</option></td></tr>
+</table>
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+</table>
+[% END %]
+
+</td></tr>
+</table>
+
+</form>
+
+<!-- Ende: RSS Feed fuer Neuaufnahmen nach Koerperschaft -->
+
+<!-- Anfang: RSS Feed fuer Neuaufnahmen nach Schlagwort -->
+<form method="get" action="[% config.get('admin_loc') %]">
+<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
+<input type="hidden" name="do_editcat_rss" value="1" />
+<input type="hidden" name="rss_type"       value="4" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuaufnahmen nach Schlagwort") %]</th></tr>
+
+[%
+t4feed = '' ;
+FOREACH feed IN katalog.rssfeeds ;
+IF feed.type == 4 ;
+t4feed = feed ;
+END ;
+END ;
+
+%]
+
+<tr><td class="boxedclear" style="font-size:10pt">
+
+[% IF NOT t4feed %]
+[% msg.maketext("Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort") %]
+<p />
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+[% ELSE %]
+<input type="hidden" name="rssid" value="[% t4feed.id %]" />
+<table>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
+<select name="active"><option value="0"
+[% IF t4feed.active == '0' %]
+selected
+[% END %]
+
+>[% msg.maketext("Nein") %]</option><option value="1" 
+
+[% IF t4feed.active == '1' %]
+selected
+[% END %]
+
+>[% msg.maketext("Ja") %]</option></td></tr>
+</table>
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+</table>
+[% END %]
+
+</td></tr>
+</table>
+
+</form>
+
+<!-- Ende: RSS Feed fuer Neuaufnahmen nach Schlagwort -->
+
+<!-- Anfang: RSS Feed fuer Neuaufnahmen nach Systematik -->
+<form method="get" action="[% config.get('admin_loc') %]">
+<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
+<input type="hidden" name="do_editcat_rss" value="1" />
+<input type="hidden" name="rss_type"       value="5" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuaufnahmen nach Systematik") %]</th></tr>
+
+[%
+t5feed = '' ;
+FOREACH feed IN katalog.rssfeeds ;
+IF feed.type == 5 ;
+t5feed = feed ;
+END ;
+END ;
+
+%]
+
+<tr><td class="boxedclear" style="font-size:10pt">
+
+[% IF NOT t5feed %]
+[% msg.maketext("Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen") %]
+<p />
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+[% ELSE %]
+<input type="hidden" name="rssid" value="[% t5feed.id %]" />
+<table>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
+<select name="active"><option value="0"
+[% IF t5feed.active == '0' %]
+selected
+[% END %]
+
+>[% msg.maketext("Nein") %]</option><option value="1" 
+
+[% IF t5feed.active == '1' %]
+selected
+[% END %]
+
+>[% msg.maketext("Ja") %]</option></td></tr>
+</table>
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td></tr>
+</table>
+[% END %]
+
+</td></tr>
+</table>
+
+</form>
+
+<!-- Ende: RSS Feed fuer Neuaufnahmen (generell) -->
+
+
+<!--
+<form method="get" action="[% config.get('admin_loc') %]">
+<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+<input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
+<input type="hidden" name="do_editcat_rss" value="1" />
+<input type="hidden" name="rss_type"       value="2" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neuerwerbungen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:10pt">
+[% msg.maketext("&Uuml;bernahme der F&auml;cherstruktur der Erwerbung") %]<input type="submit" name="do_getacqgrp" value="[% msg.maketext("Übernehmen") %]" />
+<p />
+
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]" /></td></tr>
+</table>
+
+</td></tr>
+</table>
+
+</form>
+
+-->
+
+</td></tr>
+</table>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

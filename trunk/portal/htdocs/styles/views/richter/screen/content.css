@@ -470,7 +470,7 @@ background: url(/images/openbib/views/richter/logo.png) center no-repeat;
   -webkit-border-radius-bottomleft: 12px; */
 }
 
-.resultitems .footer .navigation {
+.footer .navigation {
     float: left;
     text-align: left;
     width: auto;
@@ -604,4 +604,51 @@ dl.categorized_items {
 }
 
   
+}
+
+
+  .breadcrumb {
+    position:relative;
+    height:30px;
+    width:100%;
+  }
+
+  .breadcrumb ul {
+    border-top: 1px #e3e3e3 solid;
+    border-bottom: 1px #e3e3e3 solid;
+
+    position:relative;
+    margin:0 5px 0 5px;
+    padding:0;
+    height:32px;
+  }
+  .breadcrumb ul li {
+    padding:0;
+    margin:0;
+    list-style:none;
+    float:left;
+    height:30px
+    display:inline;
+  }
+  .breadcrumb ul li a {
+    font:12px Arial, Helvetica, sans-serif;
+    color:rgb(0,0,0);
+    text-decoration:none;
+    line-height:30px;
+    display:block;
+    background:url('/images/openbib/breadcrumb.png') 100% no-repeat;
+    padding:0 17px 0 15px;
+  }
+  .breadcrumb ul li a:hover {
+    text-decoration:underline;
+    color:rbg(0,0,0);
+  }
+  .breadcrumb ul li a.lastitem {
+    background:none;
+    color:rgb(0,0,0);
+  }
+  .breadcrumb ul li a.lastitem:hover {
+    text-decoration:none;
+  }
+
 }

@@ -36,6 +36,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
 use DBI;
 use Getopt::Long;
+use Unicode::Collate;
 use YAML;
 
 use OpenBib::Config;
@@ -308,10 +309,12 @@ if ($type == 3){
                 type  => $config->{best_of}{$type}{cloud}
             }
         );
-        
+
         my $sortedbestof_ref ;
+        my $collator = Unicode::Collate->new();
+        
         @{$sortedbestof_ref} = map { $_->[0] }
-            sort { $a->[1] cmp $b->[1] }
+            sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
@@ -406,9 +409,12 @@ if ($type == 4){
 				       max   => $maxcount, 
 				       type  => $config->{best_of}{$type}{cloud}});
 
+
         my $sortedbestof_ref ;
+        my $collator = Unicode::Collate->new();
+        
         @{$sortedbestof_ref} = map { $_->[0] }
-            sort { $a->[1] cmp $b->[1] }
+            sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
@@ -504,8 +510,10 @@ if ($type == 5){
 				       type  => $config->{best_of}{$type}{cloud}});
 
         my $sortedbestof_ref ;
+        my $collator = Unicode::Collate->new();
+        
         @{$sortedbestof_ref} = map { $_->[0] }
-            sort { $a->[1] cmp $b->[1] }
+            sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
@@ -600,9 +608,12 @@ if ($type == 6){
 				       max   => $maxcount, 
 				       type  => $config->{best_of}{$type}{cloud}});
 
+
         my $sortedbestof_ref ;
+        my $collator = Unicode::Collate->new();
+        
         @{$sortedbestof_ref} = map { $_->[0] }
-            sort { $a->[1] cmp $b->[1] }
+            sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
@@ -686,9 +697,12 @@ if ($type == 7){
 				       max   => $maxcount, 
 				       type  => $config->{best_of}{$type}{cloud}});
 
+
         my $sortedbestof_ref ;
+        my $collator = Unicode::Collate->new();
+        
         @{$sortedbestof_ref} = map { $_->[0] }
-            sort { $a->[1] cmp $b->[1] }
+            sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
@@ -767,23 +781,26 @@ if ($type == 8){
 	  }
 
 	  $thisbestof_ref = gen_cloud_class({
-					     items => $thisbestof_ref, 
-					     min   => $mincount, 
-					     max   => $maxcount, 
-					     type  => $config->{best_of}{$type}{cloud}});
-
-	  my $sortedbestof_ref ;
-	  @{$sortedbestof_ref} = map { $_->[0] }
-            sort { $a->[1] cmp $b->[1] }
-	      map { [$_, $_->{item}] }
-		@{$thisbestof_ref};
-
-
+              items => $thisbestof_ref, 
+              min   => $mincount, 
+              max   => $maxcount, 
+              type  => $config->{best_of}{$type}{cloud}});
+          
+          
+          my $sortedbestof_ref ;
+          my $collator = Unicode::Collate->new();
+          
+          @{$sortedbestof_ref} = map { $_->[0] }
+              sort { $collator->cmp($a->[1],$b->[1]) }
+                  map { [$_, $_->{item}] }
+                      @{$thisbestof_ref};
+          
+          
 	  $bestof_ref->{$category}=$sortedbestof_ref;
-	}
-
+      }
+        
         $logger->debug(YAML::Dump($bestof_ref));
-
+        
         $statistics->cache_data({
             type => 8,
             id   => $view,
@@ -876,8 +893,10 @@ if ($type == 9){
 				       type  => $config->{best_of}{$type}{cloud}});
 
         my $sortedbestof_ref ;
+        my $collator = Unicode::Collate->new();
+        
         @{$sortedbestof_ref} = map { $_->[0] }
-            sort { $a->[1] cmp $b->[1] }
+            sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
         
@@ -1046,10 +1065,12 @@ if ($type == 12){
         min   => $mincount, 
         max   => $maxcount, 
         type  => $config->{best_of}{$type}{cloud}});
-    
+
     my $sortedbestof_ref ;
+    my $collator = Unicode::Collate->new();
+    
     @{$sortedbestof_ref} = map { $_->[0] }
-        sort { $a->[1] cmp $b->[1] }
+        sort { $collator->cmp($a->[1],$b->[1]) }
             map { [$_, $_->{item}] }
                 @{$bestof_ref};
     

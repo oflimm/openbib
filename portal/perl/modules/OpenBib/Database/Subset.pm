@@ -235,6 +235,12 @@ sub identify_by_category_content {
             field => 'classification_fields.field',
             join => ['classificationid', { 'classificationid' => 'classification_fields' }]
         },
+        'holding' => {
+            resultset => 'TitleHolding',
+            field => 'holding_fields.field',
+            join => ['holdingid', { 'holdingid' => 'holding_fields' }]
+        },
+
     );
 
     my $regexp_op = ($config->{dbimodule} eq "mysql")?"rlike":

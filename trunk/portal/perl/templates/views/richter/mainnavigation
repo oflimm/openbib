@@ -41,7 +41,7 @@
 [% IF active_menu == "register" %]
          <li class="active"><strong>[% msg.maketext("Register") %]</strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('browse_loc') %]/richter/T0720.html?l=[% lang %]" title="Register">[% msg.maketext("Register") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('browse_loc') %]/richter/T0720.html?l=page=1;[% lang %]" title="Register">[% msg.maketext("Register") %]</a></li>
 [% END %]
 [% IF active_menu == "cloud" %]
          <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>

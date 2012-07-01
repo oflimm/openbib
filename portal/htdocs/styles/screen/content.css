@@ -471,7 +471,7 @@
   -webkit-border-radius-bottomleft: 12px; */
 }
 
-.resultitems .footer .navigation {
+.footer .navigation {
     float: left;
     text-align: left;
     width: auto;

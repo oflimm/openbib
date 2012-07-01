@@ -149,7 +149,7 @@ sub cache_data {
     }
 
     eval {
-        $self->{schema}->resultset('Datacache')->search($where_ref)->delete_all;
+        $self->{schema}->resultset('Datacache')->search($where_ref)->delete;
     };
 
     if ($@){

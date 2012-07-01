@@ -386,7 +386,7 @@ sub get_records {
     foreach my $match (@matches) {
         my $document        = $match->get_document();
         my $titlistitem_ref = decode_json $document->get_data();
-        
+
         $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
     }
 

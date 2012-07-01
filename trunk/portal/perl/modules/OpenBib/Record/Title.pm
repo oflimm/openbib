@@ -940,6 +940,7 @@ sub set_brief_normdata_from_storable {
     delete $self->{_circulation}       if (exists $self->{_circulation});
     delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
 
+    $logger->debug("Got :".YAML::Dump($storable_ref));
     $self->{_brief_normdata} = $storable_ref;
 
     return $self;

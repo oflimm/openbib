@@ -869,6 +869,9 @@ sub search_xapian {
     $searchquery->set_hits($request->get_resultcount);
     
     if ($request->have_results) {
+
+        $logger->debug("Results found #".$request->get_resultcount);
+        
         $nav = Data::Pageset->new({
             'total_entries'    => $request->get_resultcount,
             'entries_per_page' => $queryoptions->get_option('num'),
@@ -883,6 +886,9 @@ sub search_xapian {
             $searchquery->set_results($category_map_ref->{8}); # Verteilung nach Datenbanken
 #        }
 
+    }
+    else {
+        $logger->debug("No results found #".$request->get_resultcount);
     }
     
     # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in

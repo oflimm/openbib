@@ -421,6 +421,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
             # To make PostgreSQL happy
             $content =~s/\\/\\\\/g; # Escape Literal Backslash
             $content =~s/\r/\\r/g;
+            $content =~s///g;
             
             # Kategorie in Record setzen            
             push @{$record_ref->{$category}}, {
@@ -612,6 +613,7 @@ while (my $line=<IN>){
         # To make PostgreSQL happy
         $content =~s/\\/\\\\/g; # Escape Literal Backslash
         $content =~s/\r/\\r/g;
+        $content =~s///g;
 
         # Kategorie in Record setzen
         
@@ -1589,6 +1591,7 @@ while (my $line=<IN>){
         # To make PostgreSQL happy
         $content =~s/\\/\\\\/g; # Escape Literal Backslash
         $content =~s/\r/\\r/g;
+        $content =~s///g;
 
         if ($content =~/^IDN: (\S+)/){
             my $refid      = $1;

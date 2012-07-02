@@ -59,7 +59,7 @@
 <tr><td class="boxedclear" style="font-size:9pt">
 <p />
 <table>
-<tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]</b></td><td><input type="text" name="username" value="[% loginname %]" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
 <tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
 </table>

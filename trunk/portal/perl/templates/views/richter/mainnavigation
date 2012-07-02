@@ -58,7 +58,7 @@
 [% ELSE %]
           <li><a href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></li>
 [% END %]
-[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<a href="[% config.get('base_loc') %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">[% msg.maketext("admin") %]</a></li>[%- END -%]
+[%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<li><a href="[% config.get('base_loc') %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">[% msg.maketext("admin") %]</a></li>[%- END -%]
        </ul>
       </div>
     </div>

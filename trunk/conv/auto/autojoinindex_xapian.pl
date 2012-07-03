@@ -38,6 +38,7 @@ use Benchmark ':hireswallclock';
 use DBI;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
+use Search::Xapian;
 
 use OpenBib::Config;
 
@@ -99,6 +100,27 @@ foreach my $searchprofile (@searchprofiles){
     my $atime = new Benchmark;
 
     my @databases = $config->get_databases_of_searchprofile($searchprofile);
+
+    # Check, welche Indizes irregulaer sind
+
+    my $sane_index = 1;
+    foreach my $database (@databases){
+        my $dbh;
+        eval {
+            $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+        };
+        
+        if ($@) {
+            $logger->error("Database: $database - :".$@);
+            $sane_index = 0;
+        }
+        
+    }
+
+    if (!$sane_index){
+        $logger->info("Mindestens ein Index korrupt");
+        exit;
+    }
     
     if (@databases > 3){
         push @xapian_args, "--multipass";

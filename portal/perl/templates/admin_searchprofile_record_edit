@@ -53,8 +53,8 @@
 <td>[% msg.maketext("Eigener Index") %]</td>
 <td>
 <select name="own_index">
-<option value="1" [% IF searchprofile.own_index == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
-<option value="0" [% IF searchprofile.own_index != '1' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+<option value="true" [% IF searchprofile.own_index == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="false" [% IF searchprofile.own_index != '1' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
 </td>
 </tr>

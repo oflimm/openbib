@@ -2441,6 +2441,28 @@ sub update_searchprofile {
 
     my $searchprofile = $self->{schema}->resultset('Searchprofile')->single({ id => $searchprofileid});
 
+    
+    my $profileindex_path = $self->{xapian_index_base_path}."/profile/".$searchprofile;        
+
+    # Delete joind profile index
+    if ($own_index eq "false" && -d $profileindex_path){
+        eval {
+            opendir (DIR, $profileindex_path);
+            my @files = readdir(DIR);
+            closedir DIR;
+            
+            foreach my $file (@files) {
+                unlink ("$profileindex_path/$file");
+            }
+            
+            rmdir $profileindex_path;
+        };
+
+        if ($@){
+            $logger->error("Couldn't delete profileindex $profileindex_path");
+        }
+    }
+    
     if ($searchprofile){
         $searchprofile->update({own_index => $own_index});
     }

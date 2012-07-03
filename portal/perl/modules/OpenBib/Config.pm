@@ -2440,10 +2440,11 @@ sub update_searchprofile {
     my $logger = get_logger();
 
     my $searchprofile = $self->{schema}->resultset('Searchprofile')->single({ id => $searchprofileid});
-
     
-    my $profileindex_path = $self->{xapian_index_base_path}."/profile/".$searchprofile;        
+    my $profileindex_path = $self->{xapian_index_base_path}."/profile/".$searchprofileid;        
 
+    $logger->debug("Updating searchprofile $searchprofileid with own_index=$own_index and path $profileindex_path");
+    
     # Delete joind profile index
     if ($own_index eq "false" && -d $profileindex_path){
         eval {

@@ -173,14 +173,14 @@ sub initial_search {
         my $profileindex_path = $config->{xapian_index_base_path}."/profile/".$searchprofile;
         
         if (-d $profileindex_path){
-            $logger->debug("Adding Xapian DB-Object for profile $searchprofile");
+            $logger->debug("Adding Xapian DB-Object for profile $searchprofile with path $profileindex_path");
             
             eval {
                 $dbh = new Search::Xapian::Database ( $profileindex_path ) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
             };
             
             if ($@){
-                $logger->error("Initializing with Profile: $self->{_searchprofile} - :".$@." not available");
+                $logger->error("Initializing with Profile: $searchprofile - :".$@." not available");
             }
             
         }        

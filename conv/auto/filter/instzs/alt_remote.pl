@@ -79,20 +79,11 @@ foreach my $file(@FILES){
     if ($file=~m/export_mab_HBZ01.K1.F.$lastdate.\d+\.zip/){
         system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.TIT");
     }
-    if ($file=~m/export_mab_HBZ10.K1.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.PER");
-    }
-    if ($file=~m/export_mab_HBZ11.K1.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.KOE");
-    }
-    if ($file=~m/export_mab_HBZ12.K1.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.SWD");
-    }
     if ($file=~m/export_mab_HBZ60.K1.F.$lastdate.\d+\.zip/){
         system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.MEX");
     }
 }
 
-system("cd $pooldir/$pool; $alephmab2metaexe");
+system("cd $pooldir/$pool; $alephmab2metaexe --titlefile=tmp.TIT --holdingfile=tmp.MEX --configfile=/opt/openbib/conf/$pool.yml");
 system("cd $pooldir/$pool; gzip unload.*");
 

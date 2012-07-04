@@ -99,7 +99,7 @@ open (MEX,     ">:encoding($outputencoding)","unload.MEX");
 my $titid = 1;
 my $have_titid_ref = {};
 while (my $result=$request->fetchrow_hashref){
-    print YAML::Dump($result);
+    #print YAML::Dump($result);
     if ($convconfig->{uniqueidfield}){
         my $id = $result->{$convconfig->{uniqueidfield}};
         if ($convconfig->{uniqueidmatch}){
@@ -116,7 +116,7 @@ while (my $result=$request->fetchrow_hashref){
 	    next;
         }
         printf TIT "0000:$id\n";
-        $have_titid_ref->{$result->{$convconfig->{uniqueidfield}}} = 1;
+        $have_titid_ref->{$id} = 1;
     }
     else {
         printf TIT "0000:%d\n", $titid++;
@@ -125,15 +125,25 @@ while (my $result=$request->fetchrow_hashref){
     foreach my $kateg (keys %{$convconfig->{title}}){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
 
-        if ($convconfig->{filter}{$kateg}{filter_junk}){
-            $content = filter_junk($content);
-        }
-
-        if ($convconfig->{filter}{$kateg}{filter_newline2br}){
-            $content = filter_newline2br($content);
-        }
-
         if ($content){
+            if ($convconfig->{filter}{$kateg}{filter_generic}){
+                foreach my $filter (@{$convconfig->{filter}{$kateg}{filter_generic}}){
+                    my $from = $filter->{from};
+                    my $to   = $filter->{to};
+                    $content =~s/$from/$to/g;
+                    
+                    #                print STDERR "Filtering from $from to $to: New content $content\n";
+                }
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_junk}){
+                $content = filter_junk($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+                $content = filter_newline2br($content);
+            }
+
             my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
@@ -161,8 +171,22 @@ while (my $result=$request->fetchrow_hashref){
     # Autoren abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{pers}}){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
-        
+
         if ($content){
+
+            if ($convconfig->{filter}{$kateg}{filter_generic}){
+                foreach my $filter (@{$convconfig->{filter}{$kateg}{filter_generic}}){
+                    my $from = $filter->{from};
+                    my $to   = $filter->{to};
+                    
+#                    print STDERR "Filtering $content from $from to $to\n";
+                    
+                    $content =~s/$from/$to/g;
+                    
+#                    print STDERR "New content $content\n";
+                }
+            }
+
             my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
@@ -205,6 +229,19 @@ while (my $result=$request->fetchrow_hashref){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
         
         if ($content){
+            if ($convconfig->{filter}{$kateg}{filter_generic}){
+                foreach my $filter (@{$convconfig->{filter}{$kateg}{filter_generic}}){
+                    my $from = $filter->{from};
+                    my $to   = $filter->{to};
+                    
+#                    print STDERR "Filtering $content from $from to $to\n";
+                    
+                    $content =~s/$from/$to/g;
+                    
+#                    print STDERR "New content $content\n";
+                }
+            }
+
             my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
@@ -248,6 +285,19 @@ while (my $result=$request->fetchrow_hashref){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
         
         if ($content){
+            if ($convconfig->{filter}{$kateg}{filter_generic}){
+                foreach my $filter (@{$convconfig->{filter}{$kateg}{filter_generic}}){
+                    my $from = $filter->{from};
+                    my $to   = $filter->{to};
+                    
+#                    print STDERR "Filtering $content from $from to $to\n";
+                    
+                    $content =~s/$from/$to/g;
+                    
+#                    print STDERR "New content $content\n";
+                }
+            }
+
             my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
@@ -288,6 +338,19 @@ while (my $result=$request->fetchrow_hashref){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
 
         if ($content){
+            if ($convconfig->{filter}{$kateg}{filter_generic}){
+                foreach my $filter (@{$convconfig->{filter}{$kateg}{filter_generic}}){
+                    my $from = $filter->{from};
+                    my $to   = $filter->{to};
+                    
+#                    print STDERR "Filtering $content from $from to $to\n";
+                    
+                    $content =~s/$from/$to/g;
+                    
+#                    print STDERR "New content $content\n";
+                }
+            }
+            
             my $multiple = 0;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
@@ -331,6 +394,19 @@ while (my $result=$request->fetchrow_hashref){
         my $content = decode($convconfig->{encoding},$result->{$kateg});
 
         if ($content){
+            if ($convconfig->{filter}{$kateg}{filter_generic}){
+                foreach my $filter (@{$convconfig->{filter}{$kateg}{filter_generic}}){
+                    my $from = $filter->{from};
+                    my $to   = $filter->{to};
+                    
+#                    print STDERR "Filtering $content from $from to $to\n";
+                    
+                    $content =~s/$from/$to/g;
+                    
+#                    print STDERR "New content $content\n";
+                }
+            }
+
             my $multiple = 1;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){

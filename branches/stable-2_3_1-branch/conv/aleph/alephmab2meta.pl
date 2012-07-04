@@ -40,6 +40,8 @@ use Tie::MAB2::Recno;
 use Data::Dumper;
 use YAML::Syck;
 
+use OpenBib::Conv::Common::Util;
+
 my ($titlefile,$personfile,$corporatebodyfile,$subjectfile,$classificationfile,$holdingfile,$configfile);
 
 &GetOptions(
@@ -319,12 +321,18 @@ print "Bearbeite Titel\n";
 
 if (-e $titlefile){
     open(TITOUT,'>:utf8','unload.TIT');
+
+    if (!$personfile && !$corporatebodyfile && !$subjectfile){
+        open(PEROUT,'>:utf8','unload.PER');
+        open(KOROUT,'>:utf8','unload.KOE');
+        open(SWTOUT,'>:utf8','unload.SWD');
+    }
     
     tie @mab2titdata, 'Tie::MAB2::Recno', file => $titlefile;
     
     foreach my $rawrec (@mab2titdata){
         my $rec = MAB2::Record::Base->new($rawrec);
-        #print $rec->readable."\n----------------------\n";    
+#        print $rec->readable."\n----------------------\n";    
         my $multcount_ref = {};
         
         foreach my $category_ref (@{$rec->_struct->[1]}){
@@ -332,7 +340,7 @@ if (-e $titlefile){
             my $indicator = $category_ref->[1];
             my $content   = konv($category_ref->[2]);
             
-#            print "$category - $indicator - $content\n";
+            # print "$category - $indicator - $content\n";
 
             $category = $category.$indicator;
             
@@ -387,6 +395,59 @@ if (-e $titlefile){
                 #            ($content)=$tmpcontent=~m/^(\d+.*)/;
                 $content="IDN: $content" if ($content);
             }
+            elsif (exists $convconfig->{title}{$category}{type}){
+                my $type = $convconfig->{title}{$category}{type};
+
+                if ($type eq "person"){
+                    my $autidn=OpenBib::Conv::Common::Util::get_autidn($content);
+                    
+                    if ($autidn > 0){
+                        print PEROUT "0000:$autidn\n";
+                        print PEROUT "0001:$content\n";
+                        print PEROUT "9999:\n";
+                        
+                    }
+                    else {
+                        $autidn=(-1)*$autidn;
+                    }
+
+                    
+                    $content = "IDN: $autidn";
+                    
+                }
+                elsif ($type eq "corporatebody"){
+                    my $koridn=OpenBib::Conv::Common::Util::get_koridn($content);
+                    
+                    if ($koridn > 0){
+                        print KOROUT "0000:$koridn\n";
+                        print KOROUT "0001:$content\n";
+                        print KOROUT "9999:\n";
+                        
+                    }
+                    else {
+                        $koridn=(-1)*$koridn;
+                    }
+                    
+                    
+                    $content = "IDN: $koridn";
+                }                        
+                elsif ($type eq "subject"){
+                    my $swtidn=OpenBib::Conv::Common::Util::get_swtidn($content);
+                    
+                    if ($swtidn > 0){
+                        print KOROUT "0000:$swtidn\n";
+                        print KOROUT "0001:$content\n";
+                        print KOROUT "9999:\n";
+                        
+                    }
+                    else {
+                        $swtidn=(-1)*$swtidn;
+                    }
+                    
+                    
+                    $content = "IDN: $swtidn";
+                }                                        
+            }
             
             if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
                 my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
@@ -397,6 +458,12 @@ if (-e $titlefile){
             }
         }
         print TITOUT "9999:\n\n";
+    }
+
+    if (!$personfile && !$corporatebodyfile && !$subjectfile){
+        close(PEROUT);
+        close(KOROUT);
+        close(SWTOUT);
     }
     
     close(TITOUT);

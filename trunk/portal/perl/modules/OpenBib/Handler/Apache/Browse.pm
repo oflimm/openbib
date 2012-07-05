@@ -342,6 +342,7 @@ sub show {
                 {
                     select   => [$table_type{$table}{select}],
                     group_by => $table_type{$table}{select},
+                    order_by => [ { -asc => $table_type{$table}{select} } ],
                     as       => ['thiscontent'],
                     join     => $table_type{$table}{join},
                     rows => $hitrange,
@@ -423,6 +424,7 @@ sub show {
             {
                 select   => ['content'],
                 as       => ['thiscontent'],
+                order_by => [ { -asc => 'content' } ],
                 group_by => ['content'],
                 rows     => $hitrange,
                 offset   => $offset,

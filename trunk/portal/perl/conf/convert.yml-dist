@@ -130,6 +130,7 @@ convtab:
         string: 1
         index:
           'person': 1
+          'personstring': 1
           'freesearch': 1
       '0102':         # Verweisform
         ft: 1
@@ -143,6 +144,7 @@ convtab:
         string: 1
         index:
           'corporatebody': 1
+          'corporatebodystring': 1
           'freesearch': 1
       '0102':         # Verweisform
         ft: 1
@@ -182,6 +184,7 @@ convtab:
         string: 1
         index:
           'classification': 1
+          'classificationstring': 1
           'freesearch': 1
       '0002':         # Ansetzung
         ft: 1
@@ -207,8 +210,27 @@ convtab:
         string: 1
         index:
           'subject': 1
+          'subjectstring': 1
           'freesearch': 20
       '0102':         # Verweisform
+        ft: 1
+        string: 1
+        index:
+          'subject': 1
+          'freesearch': 1
+      '0105':         # Definition
+        ft: 1
+        string: 1
+        index:
+          'subject': 1
+          'freesearch': 1
+      '0115':         # Assoziiert
+        ft: 1
+        string: 1
+        index:
+          'subject': 1
+          'freesearch': 1
+      '0117':         # Frueher
         ft: 1
         string: 1
         index:
@@ -374,6 +396,8 @@ convtab:
           'classification': 1
       '0710':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
@@ -701,21 +725,33 @@ convtab:
         facet:
           'language': 1
       '0100':
+        index:
+          'personstring': 1
         facet:
           'person': 1
       '0101':
+        index:
+          'personstring': 1
         facet:
           'person': 1
       '0102':
+        index:
+          'personstring': 1
         facet:
           'person': 1
       '0103':
+        index:
+          'personstring': 1
         facet:
           'person': 1
       '0200':
+        index:
+          'corporatebodystring': 1
         facet:
           'corporatebody': 1
       '0201':
+        index:
+          'corporatebodystring': 1
         facet:
           'corporatebody': 1
       '0103':
@@ -828,33 +864,53 @@ convtab:
         facet:
           'mediatype': 1
       '0902':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0907':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0912':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0917':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0922':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0927':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0932':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0937':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0942':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0947':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '4100':         # BK

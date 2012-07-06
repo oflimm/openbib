@@ -1,0 +1,129 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+[% IF active_menu == "info" %]
+<h6 class="vlist">[% msg.maketext("Informationen") %]</h6>
+<ul class="vlist">
+[% IF active_submenu == "portal" %]
+  <li class="active"><strong>Die RheinlandBib</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=[% lang %]">Die RheinlandBib</a></li>
+[% END %]
+[% IF active_submenu == "gdonck"  %]
+  <li class="active"><strong>Bibliotheca Domus Presbyterorum Gaesdonck</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/gaesdonck.html?l=[% lang %]">Bibliotheca Domus Presbyterorum Gaesdonck</a></li>
+[% END %]
+[% IF active_submenu == "kwinter" %]
+  <li class="active"><strong>Heimatverein Siebengebirge in Königswinter</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/koenigswinter.html?l=[% lang %]">Heimatverein Siebengebirge in Königswinter</a></li>
+[% END %]
+[% IF active_submenu == "gleuel" %]
+  <li class="active"><strong>Alte Pfarrbibliothek St. Dionysius Hürth-Gleuel</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/gleuel.html?l=[% lang %]">Alte Pfarrbibliothek St. Dionysius Hürth-Gleuel</a></li>
+[% END %]
+[% IF active_submenu == "gbroich" %]
+  <li class="active"><strong>Alte Pfarrbibliothek in St. Georg, Grevenbroich-Neu-Elfgen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/grevenbroich.html?l=[% lang %]">Alte Pfarrbibliothek in St. Georg, Grevenbroich-Neu-Elfgen</a></li>
+[% END %]
+[% IF active_submenu == "kempen" %]
+  <li class="active"><strong>Kreis- und Stadtbibliothek Kempen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/kempen.html?l=[% lang %]">Kreis- und Stadtbibliothek Kempen</a></li>
+[% END %]
+[% IF active_submenu == "kevelaer" %]
+  <li class="active"><strong>Bibliothek des Oratoriums Kevelaeriense</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/kevelaer.html?l=[% lang %]">Bibliothek des Oratoriums Kevelaeriense</a></li>
+[% END %]
+[% IF active_submenu == "wickrath" %]
+  <li class="active"><strong>Kreuzherrenbibliothek Wickrath im Stadtarchiv M&ouml;nchengladbach</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/wickrath.html?l=[% lang %]">Kreuzherrenbibliothek Wickrath im Stadtarchiv M&ouml;nchengladbach</a></li>
+[% END %]
+[% IF active_submenu == "hennef" %]
+  <li class="active"><strong>Stadtarchiv Hennef (mit Turmmuseum Stadt Blankenberg)</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/hennef.html?l=[% lang %]">Stadtarchiv Hennef (mit Turmmuseum Stadt Blankenberg)</a></li>
+[% END %]
+[% IF active_submenu == "xanten" %]
+  <li class="active"><strong>Stiftsbibliothek Xanten</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/xanten.html?l=[% lang %]">Stiftsbibliothek Xanten</a></li>
+[% END %]
+[% IF active_submenu == "rheinabt" %]
+  <li class="active"><strong>Rheinische Abteilung der USB K&ouml;ln</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]">Rheinische Abteilung der USB K&ouml;ln</a></li>
+[% END %]
+</ul> 
+[% END %]
+[% IF active_menu == "searchform" %]
+<h6 class="vlist">Recherche</h6>
+<ul class="vlist">
+[% IF active_submenu == "search_advanced" %]
+  <li class="active"><strong>Erweiterte Recherche</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]">Erweiterte Recherche</a></li>
+[% END %]
+</ul>
+[% END %]
+[% IF active_menu == "register" %]
+<h6 class="vlist">Register</h6>
+<ul class="vlist">
+[% IF active_submenu == "register_T0720" %]
+  <li class="active"><strong>Provenienzen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('browse_loc') %]/richter/T0720.html?l=[% lang %]">Provenienzen</a></li>
+[% END %]
+</ul> 
+[% END %]
+[% IF active_menu == "cloud" %]
+<h6 class="vlist">[% msg.maketext("&Uuml;bersichten") %]</h6>
+<ul class="vlist">
+[% IF active_submenu == "cloud_year" %]
+  <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/year/richter.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[% END %]
+[% IF active_submenu == "cloud_person" %]
+  <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/person/richter.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[% END %]
+[% IF active_submenu == "cloud_corporatebody" %]
+  <li class="active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/corporatebody/richter.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[% END %]
+[% IF active_submenu == "cloud_subject" %]
+  <li class="active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/subject/richter.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[% END %]
+[% IF active_submenu == "cloud_classification" %]
+  <li class="active"><strong>[% msg.maketext("Systematik") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/classification/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[% END %]
+</ul> 
+[% END %]

@@ -106,6 +106,8 @@ sub new {
         $self->{listid}   = $listid;
     }
 
+    $logger->debug("Title-Record-Object created with id $id in database $database");
+
     return $self;
 }
 

@@ -76,7 +76,8 @@ sub new {
         $self->{id}       = $id;
     }
 
-    $logger->debug("CorporateBody-Record-Object created: ".YAML::Dump($self));
+    $logger->debug("CorporateBody-Record-Object created with id $id in database $database");
+
     return $self;
 }
 

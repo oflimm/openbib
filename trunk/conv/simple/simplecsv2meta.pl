@@ -99,7 +99,7 @@ open (MEX,     ">:encoding($outputencoding)","meta.holding");
 my $titid = 1;
 my $have_titid_ref = {};
 while (my $result=$request->fetchrow_hashref){
-    #print YAML::Dump($result);
+    print YAML::Dump($result);
     if ($convconfig->{uniqueidfield}){
         my $id = $result->{$convconfig->{uniqueidfield}};
         if ($convconfig->{uniqueidmatch}){

@@ -166,7 +166,7 @@ sub parse_record {
                 $content=decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
                                               
                 if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);                    
                 }
                 else {
                     push @parts, $content;
@@ -175,18 +175,18 @@ sub parse_record {
         }
         
         foreach my $part (@parts){
-            my $autidn=OpenBib::Conv::Common::Util::get_autidn($part);
+            my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($part);
             
-            if ($autidn > 0){
-                print AUT "0000:$autidn\n";
+            if ($new){
+                print AUT "0000:$person_id\n";
                 print AUT "0001:$part\n";
                 print AUT "9999:\n";
-            }
-            else {
-                $autidn=(-1)*$autidn;
+                
             }
             
-            print TIT $convconfig->{pers}{$kateg}."IDN: $autidn\n";
+            my $new_category = $convconfig->{pers}{$kateg};
+
+            print TIT $new_category."IDN: $person_id\n";
         }
         # Autoren abarbeiten Ende
     }
@@ -226,18 +226,18 @@ sub parse_record {
         }
         
         foreach my $part (@parts){
-            my $koridn=OpenBib::Conv::Common::Util::get_koridn($part);
+            my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
             
-            if ($koridn > 0){
-                print KOR "0000:$koridn\n";
+            if ($new){
+                print KOR "0000:$corporatebody_id\n";
                 print KOR "0001:$part\n";
                 print KOR "9999:\n";
-            }
-            else {
-                $koridn=(-1)*$koridn;
+                
             }
             
-            print TIT $convconfig->{corp}{$kateg}."IDN: $koridn\n";
+            my $new_category = $convconfig->{corp}{$kateg};
+            
+            print TIT $new_category."IDN: $corporatebody_id\n";
         }
     }
     # Koerperschaften abarbeiten Ende
@@ -277,17 +277,18 @@ sub parse_record {
         }
                 
         foreach my $part (@parts){
-            my $notidn=OpenBib::Conv::Common::Util::get_notidn($part);
+            my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
             
-            if ($notidn > 0){
-                print NOTATION "0000:$notidn\n";
+            if ($new){
+                print NOTATION "0000:$classification_id\n";
                 print NOTATION "0001:$part\n";
                 print NOTATION "9999:\n";
+                
             }
-            else {
-                $notidn=(-1)*$notidn;
-            }
-            print TIT $convconfig->{sys}{$kateg}."IDN: $notidn\n";
+            
+            my $new_category = $convconfig->{sys}{$kateg};
+            
+            print TIT $new_category."IDN: $classification_id\n";
         }
     }
     # Notationen abarbeiten Ende
@@ -327,17 +328,18 @@ sub parse_record {
         }
                 
         foreach my $part (@parts){
-            my $swtidn=OpenBib::Conv::Common::Util::get_swtidn($part);
+            my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
             
-            if ($swtidn > 0){	  
-                print SWT "0000:$swtidn\n";
+            if ($new){
+                print SWT "0000:$subject_id\n";
                 print SWT "0001:$part\n";
                 print SWT "9999:\n";
+                
             }
-            else {
-                $swtidn=(-1)*$swtidn;
-            }
-            print TIT $convconfig->{subj}{$kateg}."IDN: $swtidn\n";
+            
+            my $new_category = $convconfig->{subj}{$kateg};
+            
+            print TIT $new_category."IDN: $subject_id\n";
         }
     }
     # Schlagworte abarbeiten Ende

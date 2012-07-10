@@ -103,13 +103,10 @@ sub parse_titset {
                 
                 my ($autidn,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                 
-                if ($autidn > 0) {
+                if ($new) {
                     print AUT "0000:$autidn\n";
                     print AUT "0001:$content\n";
                     print AUT "9999:\n";
-                }
-                else {
-                    $autidn=(-1)*$autidn;
                 }
                 
                 print TIT "0100:IDN: $autidn\n";
@@ -121,13 +118,10 @@ sub parse_titset {
                 
                 my ($koridn,$new)  = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
                 
-                if ($koridn > 0) {
+                if ($new) {
                     print KOR "0000:$koridn\n";
                     print KOR "0001:$content\n";
                     print KOR "9999:\n";
-                }
-                else {
-                    $koridn=(-1)*$koridn;
                 }
                 
                 print TIT "0201:IDN: $koridn\n";
@@ -169,17 +163,17 @@ sub parse_titset {
             # Titelkategorien
             
             # Titel
-            if($oainode->first_child('dc:title')->text()){
+            if(defined $oainode->first_child('dc:title') && $oainode->first_child('dc:title')->text()){
                 print TIT "0331:".$oainode->first_child('dc:title')->text()."\n";
             }
             
             # Datum
-            if($oainode->first_child('dc:date')->text()){
-                print TIT "0002:".$oainode->first_child('dc:date')->text()."\n";
-            }
+#            if($oainode->first_child('dc:date')->text()){
+#                print TIT "0002:".$oainode->first_child('dc:date')->text()."\n";
+#            }
             
             # HSFN
-            if ($oainode->first_child('dc:type')->text()) {
+            if (defined $oainode->first_child('dc:type') && $oainode->first_child('dc:type')->text()) {
                 my $type=$oainode->first_child('dc:type')->text();
 
                 if ($type=~/Text.Thesis.Doctoral/) {
@@ -232,7 +226,7 @@ sub parse_titset {
 
     
             # Jahr
-            if ($oainode->first_child('dc:date')->text()) {
+            if (defined $oainode->first_child('dc:date') && $oainode->first_child('dc:date')->text()) {
                 print TIT "0425:".$oainode->first_child('dc:date')->text()."\n";
             }
         }

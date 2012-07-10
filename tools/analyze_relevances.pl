@@ -24,6 +24,9 @@
 #
 #####################################################################   
 
+use strict;
+use warnings;
+
 use Business::ISBN;
 use DBI;
 use Getopt::Long;
@@ -40,8 +43,6 @@ my ($statisticsdbname,$enrichmntdbname,$help,$logfile);
 
 &GetOptions("statisticsdbname=s" => \$statisticsdbname,
             "enrichmntdbname=s"  => \$enrichmntdbname,
-            "profile=s"          => \$profile,
-            "view=s"             => \$view,
             "logfile=s"          => \$logfile,
 	    "help"               => \$help
 	    );
@@ -82,6 +83,7 @@ unless ($enrichmntdbname){
 my $enrichmnt  = new OpenBib::Enrichment({enrichmntdbname => $enrichmntdbname });
 my $statistics = new OpenBib::Statistics({statisticsdbname => $statisticsdbname });
 
+# $enrichmnt->{schema}->storage->debug(1);
 
 # "select distinct isbn from relevance where isbn != ''"
 my $isbns = $statistics->{schema}->resultset('Titleusage')->search_rs(
@@ -98,39 +100,48 @@ my $isbns = $statistics->{schema}->resultset('Titleusage')->search_rs(
 $logger->info("Processing ".$isbns->count." ISBN's");
 
 my $isbncount = 1;
+
 # Bestimme Nutzungsinformationen fuer jede ISBN
 foreach my $item ($isbns->all){
-    my $isbn13 = $isbn = $item->isbn;
-
-    # Alternative ISBN zur Rechercheanrei
-    my $isbnXX = Business::ISBN->new($isbn);
+    my $processed_isbn13 = $item->isbn;
+    my $processed_isbn   = $processed_isbn13;
+    
+    # Alternative ISBN zur Rechercheanreicherung
+    my $isbnXX = Business::ISBN->new($processed_isbn);
 
     if (defined $isbnXX && $isbnXX->is_valid){
-        $isbn13 = $isbnXX->as_isbn13->as_string;
+        $processed_isbn13 = $isbnXX->as_isbn13->as_string;
     }
 
-    $isbn13 = OpenBib::Common::Util::grundform({
+    $processed_isbn13 = OpenBib::Common::Util::grundform({
         category => '0540',
-        content  => $isbn13,
+        content  => $processed_isbn13,
     });
+
+    $logger->debug("Processing ISBN $processed_isbn -> $processed_isbn13");
 
     # Bestimme alle Nutzer (=Sessions), die diese ISBN ausgeliehen/angeklickt haben
 
     # select distinct id from relevance where isbn=?;
     my $sessions = $statistics->{schema}->resultset('Sessioninfo')->search_rs(
         {
-            'titleusages.isbn' => $isbn,
+            'titleusages.isbn' => $processed_isbn,
         },
         {
+            select => ['me.id'],
+            as     => ['thisid'],
+                
             join     => ['titleusages'],
         }
     );
     
-#    my @ids=();
-#    while (my $result=$request->fetchrow_hashref){
-#        my $id = $result->{id};
-#        push @ids, "'$id'";
-#    }
+    $logger->debug("ISBN belongs to ".$sessions->count." sessions");
+    
+    my $ids_ref= [];
+    foreach my $session ($sessions->all){
+        my $id = $session->get_column('thisid');
+        push @$ids_ref, { 'me.id' => $id };
+    }
 
 #    my $idstring=join(",",@ids);
     
@@ -138,9 +149,10 @@ foreach my $item ($isbns->all){
     # daraus ein Nutzungshistogramm
 
     # "select isbn,dbname,katkey from relevance where isbn != ? and id in ($idstring)"
-    my $titles = $sessions->search_rs(
+    my $titles = $statistics->{schema}->resultset('Sessioninfo')->search_rs(
         {
-            isbn => { '!=' => $isbn },             
+            -or                => $ids_ref,
+            'titleusages.isbn' => { '!=' => $processed_isbn },             
         },
         {
             select => ['titleusages.isbn','titleusages.id','titleusages.dbname'],
@@ -150,33 +162,47 @@ foreach my $item ($isbns->all){
         
     );
 
+    $logger->debug("ISBN connected to ".$titles->count." titles");
+    
     my %isbnhist=();
   ISBNHIST:
 
     foreach my $title ($titles->all){
-        my $isbn   = $title->titleisbn;
-        my $dbname = $title->titledbname;
-        my $id     = $title->titleid;
+        my $titleisbn   = $title->get_column('titleisbn');
+        my $titledbname = $title->get_column('titledbname');
+        my $titleid     = $title->get_column('titleid');
+
+        $logger->debug("Found related ISBN $titleisbn");
+
+        next ISBNHIST if ("$processed_isbn" eq "$titleisbn");
         
-        if (!exists $isbnhist{$isbn}){
-            $isbnhist{$isbn}={
+
+        
+        if (!exists $isbnhist{$titleisbn}){
+            $isbnhist{$titleisbn}={
                 count  => 0,
-                dbname => $dbname,
-                id     => $id,
+                dbname => $titledbname,
+                id     => $titleid,
             };
         }
-        $isbnhist{$isbn}{count}=$isbnhist{$isbn}{count}+1;
+        $isbnhist{$titleisbn}{count}=$isbnhist{$titleisbn}{count}+1;
     }
 
+    $logger->debug("Collected Titles ".YAML::Dump(\%isbnhist));
+    
+    $logger->debug("Generating histogram");
+    
     my @histo=();
-    foreach my $isbn (keys %isbnhist){
-        push @{$histo[$isbnhist{$isbn}{count}]}, {
-            isbn   => $isbn,
-            dbname => $isbnhist{$isbn}{dbname},
-            id     => $isbnhist{$isbn}{id},
+    foreach my $thisisbn (keys %isbnhist){
+        push @{$histo[$isbnhist{$thisisbn}{count}]}, {
+            isbn   => $thisisbn,
+            dbname => $isbnhist{$thisisbn}{dbname},
+            id     => $isbnhist{$thisisbn}{id},
         };
     }
 
+    $logger->debug("Histogram: ".YAML::Dump(\@histo));
+    
     if ($#histo >= 3){
         my $i=$#histo;
 
@@ -195,27 +221,29 @@ foreach my $item ($isbns->all){
 
         # Anreicherungen fuer diese Kategorie entfernen,
 
+        $logger->debug("Removing enriched content for isbn $processed_isbn");
+        
         # DBI: 'delete from normdata where isbn=? and category=?'
-        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs(
+        $enrichmnt->{schema}->resultset('EnrichedContentByIsbn')->search_rs(
             {
                 -or => [
                     'field' => '4000',
                     'field' => '4001',
                 ],
-                isbn => $isbn,
+                isbn => $processed_isbn13,
             }
         )->delete;
         
             ;
         # 5 References werden bestimmt
-#        my $request2=$enrichdbh->prepare('insert into normdata values (?,?,?,?,?)');
-
-        my $enriched_content_ref  = [];
+        
       REFERENCES:
         foreach my $references_ref (@references){
 
+            my $enriched_content_ref  = [];
+        
             foreach my $item_ref (@{$references_ref->{references}}){
-                my $record = OpenBib::Record::Title->new({database => $item_ref->{dbname}, id => $item_ref->{id}})->load_full_record({dbh => $dbh});
+                my $record = OpenBib::Record::Title->new({database => $item_ref->{dbname}, id => $item_ref->{id}})->load_full_record();
                 
                 # Add user count
                 $record->{user_count} = $references_ref->{count} ;
@@ -228,7 +256,7 @@ foreach my $item ($isbns->all){
 
                     # ISBN
                     push @$enriched_content_ref, {
-                        isbn    => $isbn13,
+                        isbn    => $processed_isbn13,
                         origin  => 50,
                         field   => 4000,
                         subfield => $count,
@@ -237,7 +265,7 @@ foreach my $item ($isbns->all){
 
                     # Title als JSON
                     push @$enriched_content_ref, {
-                        isbn    => $isbn13,
+                        isbn    => $processed_isbn13,
                         origin  => 50,
                         field   => 4001,
                         subfield => $count,
@@ -246,9 +274,17 @@ foreach my $item ($isbns->all){
                 }
                 last if ($count > 5);
             }
+            
+            $logger->debug("Adding enriched content for isbn $processed_isbn");
+            $logger->debug(YAML::Dump($enriched_content_ref));
+            
+            $enrichmnt->{schema}->resultset('EnrichedContentByIsbn')->populate($enriched_content_ref);
+
         }
 
-        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populatet($enriched_content_ref);
+    }
+    else {
+        $logger->debug("Related ISBN NOT relevant enought");
     }
 
     if ($isbncount % 1000 == 0){

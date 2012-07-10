@@ -37,7 +37,7 @@ use utf8;
 
 use Encode 'decode';
 use Getopt::Long;
-use DBI;
+use Text::CSV_XS;
 use YAML::Syck;
 
 use OpenBib::Config;
@@ -67,27 +67,19 @@ my $convconfig = YAML::Syck::LoadFile($configfile);
 
 # Einlesen und Reorganisieren
 
-if (defined $convconfig->{tracelevel} && $convconfig->{tracelevel} >= 0){
-    DBI->trace($convconfig->{tracelevel});
-}
+my $outputencoding = ($convconfig->{outputencoding})?$convconfig->{outputencoding}:'utf8';
+my $inputencoding  = ($convconfig->{encoding})?$convconfig->{encoding}:'utf8';
 
-my $dbh = DBI->connect("DBI:CSV:");
-$dbh->{'csv_tables'}->{'data'} = {
+my $csv = Text::CSV_XS->new ({
     'eol'         => $convconfig->{csv}{eol},
     'sep_char'    => $convconfig->{csv}{sep_char},
     'quote_char'  => $convconfig->{csv}{quote_char},
     'escape_char' => $convconfig->{csv}{escape_char},
-    'file'        => "$inputfile",
-};
-
-$dbh->{'RaiseError'} = 1;
+});
 
 our $mexidn=1;
 
-my $request = $dbh->prepare("select * from data") || die $dbh->errstr;
-$request->execute();
-
-my $outputencoding = ($convconfig->{outputencoding})?$convconfig->{outputencoding}:'utf8';
+open my $in,   "<:encoding($inputencoding)",$inputfile;
 
 open (TIT,     ">:encoding($outputencoding)","meta.title");
 open (AUT,     ">:encoding($outputencoding)","meta.person");
@@ -98,10 +90,15 @@ open (MEX,     ">:encoding($outputencoding)","meta.holding");
 
 my $titid = 1;
 my $have_titid_ref = {};
-while (my $result=$request->fetchrow_hashref){
-    print YAML::Dump($result);
+
+my @cols = @{$csv->getline ($in)};
+my $row = {};
+$csv->bind_columns (\@{$row}{@cols});
+
+while ($csv->getline ($in)){
+    print YAML::Dump($row);
     if ($convconfig->{uniqueidfield}){
-        my $id = $result->{$convconfig->{uniqueidfield}};
+        my $id = $row->{$convconfig->{uniqueidfield}};
         if ($convconfig->{uniqueidmatch}){
             my $uniquematchregexp = $convconfig->{uniqueidmatch};
             ($id)=$id=~m/$uniquematchregexp/;
@@ -123,7 +120,8 @@ while (my $result=$request->fetchrow_hashref){
     }
 
     foreach my $kateg (keys %{$convconfig->{title}}){
-        my $content = decode($convconfig->{encoding},$result->{$kateg});
+        my $content = $row->{$kateg};
+        #my $content = decode($convconfig->{encoding},$row->{$kateg});
 
         if ($content){
             if ($convconfig->{filter}{$kateg}{filter_generic}){
@@ -174,7 +172,8 @@ while (my $result=$request->fetchrow_hashref){
 
     # Autoren abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{pers}}){
-        my $content = decode($convconfig->{encoding},$result->{$kateg});
+        my $content = $row->{$kateg};
+        #my $content = decode($convconfig->{encoding},$row->{$kateg});
 
         if ($content){
 
@@ -239,7 +238,8 @@ while (my $result=$request->fetchrow_hashref){
     
     # Koerperschaften abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{corp}}){
-        my $content = decode($convconfig->{encoding},$result->{$kateg});
+        my $content = $row->{$kateg};
+        #my $content = decode($convconfig->{encoding},$row->{$kateg});
         
         if ($content){
             if ($convconfig->{filter}{$kateg}{filter_generic}){
@@ -303,7 +303,8 @@ while (my $result=$request->fetchrow_hashref){
 
     # Notationen abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{sys}}){
-        my $content = decode($convconfig->{encoding},$result->{$kateg});
+        my $content = $row->{$kateg};
+        #my $content = decode($convconfig->{encoding},$row->{$kateg});
         
         if ($content){
             if ($convconfig->{filter}{$kateg}{filter_generic}){
@@ -366,7 +367,8 @@ while (my $result=$request->fetchrow_hashref){
 
     # Schlagworte abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{subj}}){
-        my $content = decode($convconfig->{encoding},$result->{$kateg});
+        my $content = $row->{$kateg};
+        #my $content = decode($convconfig->{encoding},$row->{$kateg});
 
         if ($content){
             if ($convconfig->{filter}{$kateg}{filter_generic}){
@@ -432,7 +434,8 @@ while (my $result=$request->fetchrow_hashref){
     my %mex = ();
     # Exemplare abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{exempl}}){
-        my $content = decode($convconfig->{encoding},$result->{$kateg});
+#        my $content = decode($convconfig->{encoding},$row->{$kateg});
+        my $content = $row->{$kateg};
 
         if ($content){
             if ($convconfig->{filter}{$kateg}{filter_generic}){

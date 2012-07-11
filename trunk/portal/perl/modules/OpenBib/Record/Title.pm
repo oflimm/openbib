@@ -1632,7 +1632,7 @@ sub get_category {
         ? $arg_ref->{category}               : undef;
 
     my $indicator           = exists $arg_ref->{indicator}
-        ? $arg_ref->{indicator}              : undef;
+        ? $arg_ref->{indicator}              : 1;
 
 
     if (exists $self->{_brief_normdata}){

@@ -67,13 +67,17 @@ sub new {
 
     bless ($self, $class);
 
+    $logger->debug("Creating CorporateBody-Record-Object");
+
     if (defined $database){
         $self->{database} = $database;
         $self->connectDB();
+        $logger->debug("Setting CorporateBody database: $database");
     }
 
     if (defined $id){
         $self->{id}       = $id;
+        $logger->debug("Setting CorporateBody id: $id");
     }
 
     $logger->debug("CorporateBody-Record-Object created with id $id in database $database");

@@ -1496,7 +1496,9 @@ while (my $line=<IN>){
         
         
         my $titlecache = encode_json $titlecache_ref;
-        
+
+        $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
+
         my $create_tstamp = 0;
         
         if (defined $record_ref->{'0002'} && defined $record_ref->{'0002'}[0]) {

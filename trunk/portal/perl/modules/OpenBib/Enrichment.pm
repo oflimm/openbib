@@ -43,7 +43,7 @@ use OpenBib::Database::DBI;
 use OpenBib::Record::Title;
 
 sub new {
-    my ($class) = @_;
+    my ($class,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -52,6 +52,8 @@ sub new {
 
     bless ($self, $class);
 
+    $self->connectDB($arg_ref);
+    
     return $self;
 }
 
@@ -375,6 +377,32 @@ sub get_common_holdings {
     }
 
     return $common_holdings_ref;
+}
+
+sub connectDB {
+    my $self = shift;
+    my $arg_ref = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    if (defined $arg_ref->{enrichmntdbname} && $arg_ref->{enrichmntdbname}){
+        $config->{enrichmntdbname} = $arg_ref->{enrichmntdbname};
+    }
+
+    eval {
+        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        $self->{schema} = OpenBib::Database::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+    };
+
+    if ($@){
+        $logger->fatal("Unable to connect schema to database $config->{enrichmntdbname}: DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}");
+    }
+
+    return;
+
 }
 
 1;

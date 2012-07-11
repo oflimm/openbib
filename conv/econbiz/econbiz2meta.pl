@@ -35,12 +35,32 @@
 use utf8;
 
 use DBI;
+use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
+
+my $logfile = '/var/log/openbib/econbiz2meta.log';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
 
 my $config = new OpenBib::Config;
 
@@ -76,6 +96,7 @@ open (KOR,     ">:utf8","meta.corporatebody");
 open (NOTATION,">:utf8","meta.classification");
 open (SWT,     ">:utf8","meta.subject");
 
+my $titlecount = 1;
 while (my $res=$result->fetchrow_hashref){
     my $pid  = $res->{'pid'};
     my $hst  = $res->{'cnt'};
@@ -84,6 +105,8 @@ while (my $res=$result->fetchrow_hashref){
     chomp($hst );
     chomp($lang);
 
+    $logger->debug("ID: $pid - HST: $hst - LANG: $lang");
+    
     print TIT "0000:$pid\n";
 
 
@@ -175,8 +198,9 @@ while (my $res=$result->fetchrow_hashref){
     } 
     
     $korresult->finish();
-    
-    print TIT "0331:stripjunk($hst)\n";
+
+    $hst=stripjunk($hst);
+    print TIT "0331:$hst\n";
     
     my $swtresult=$dbh->prepare("select cntg,cnte from dc_sub_f where pid=?");
     $swtresult->execute($pid);
@@ -198,7 +222,7 @@ while (my $res=$result->fetchrow_hashref){
                 print SWT "9999:\n";
             }
 
-            print TIT "0710:IDN: $swtidn\n";
+            print TIT "0710:IDN: $subject_id\n";
         }
         
         if ($swte){
@@ -324,6 +348,10 @@ while (my $res=$result->fetchrow_hashref){
     
     print TIT "9999:\n";
 
+    if ($titlecount % 1000 == 0){
+        $logger->info("Processed $titlecount titles");
+    }
+    $titlecount++;
 }
 
 $result->finish();

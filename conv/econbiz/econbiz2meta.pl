@@ -110,14 +110,14 @@ while (my $res=$result->fetchrow_hashref){
     print TIT "0000:$pid\n";
 
 
-    my $cdateresult=$dbh->prepare("select cnt from dc_dat_cre where pid=?");
-    $cdateresult->execute($pid);
-    
-    while (my $cdateres=$cdateresult->fetchrow_hashref){
-        my $cdate=$cdateres->{'cnt'};
-        chomp($cdate);
-        print TIT "0002:$cdate\n";
-    }
+    #my $cdateresult=$dbh->prepare("select cnt from dc_dat_cre where pid=?");
+    #$cdateresult->execute($pid);
+    #
+    #while (my $cdateres=$cdateresult->fetchrow_hashref){
+    #    my $cdate=$cdateres->{'cnt'};
+    #    chomp($cdate);
+    #    print TIT "0002:$cdate\n";
+    #}
     
     my $urhresult=$dbh->prepare("select cnt from dc_cre_per_nam where pid=?");
     $urhresult->execute($pid);

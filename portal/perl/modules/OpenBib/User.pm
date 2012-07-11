@@ -1503,7 +1503,7 @@ sub get_recent_tags {
                 'me.dbname' => $database,
             },
             {
-                group_by => ['me.tagid'],
+                group_by => ['me.tagid','tagid.id','tagid.name'],
                 order_by => ['tagid.id DESC'],
                 rows     => $count,
                 select   => ['count(me.tagid)','tagid.id','tagid.name'],

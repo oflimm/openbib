@@ -45,14 +45,15 @@ my $alephmab2metaexe   = "$konvdir/alephmab2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $url    = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+my $url        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->titlefile;
 
 my $ftpauthstring="";
 if ($dbinfo->protocol eq "ftp" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
     $ftpauthstring=" --ftp-user=".$dbinfo->remoteuser." --ftp-password=".$dbinfo->remotepassword;
 }
+
 
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm meta.* ; rm tmp.*");
@@ -75,22 +76,13 @@ print "Letztes Datum: $lastdate\n";
 
 foreach my $file(@FILES){
     if ($file=~m/export_mab_HBZ01.K1.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > tmp.title");
-    }
-    if ($file=~m/export_mab_HBZ10.K1.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > tmp.person");
-    }
-    if ($file=~m/export_mab_HBZ11.K1.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > tmp.corporatebody");
-    }
-    if ($file=~m/export_mab_HBZ12.K1.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > tmp.subject");
+        system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.TIT");
     }
     if ($file=~m/export_mab_HBZ60.K1.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > tmp.holding");
+        system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.MEX");
     }
 }
 
-system("cd $pooldir/$pool; $alephmab2metaexe");
+system("cd $pooldir/$pool; $alephmab2metaexe --titlefile=tmp.TIT --holdingfile=tmp.MEX --configfile=/opt/openbib/conf/$pool.yml");
 system("cd $pooldir/$pool; gzip meta.*");
 

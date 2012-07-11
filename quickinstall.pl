@@ -105,6 +105,7 @@ my %cvs_links = (
     "$repositoryroot/conv/cdm/cdm2meta.pl"               => "/opt/openbib/conv/cdm2meta.pl",
     "$repositoryroot/conv/cdm/conf/alff.yml"             => "/opt/openbib/conf/alff.yml",
     "$repositoryroot/conv/cdm/conf/umschlaege.yml"       => "/opt/openbib/conf/umschlaege.yml",
+    "$repositoryroot/conv/colonia/colonia2meta.pl"       => "/opt/openbib/conv/colonia2meta.pl",
     "$repositoryroot/conv/econbiz/econbiz2meta.pl"       => "/opt/openbib/conv/econbiz2meta.pl",
     "$repositoryroot/conv/enrichmnt/natliz_eb2enrich.pl" => "/opt/openbib/conv/natliz_eb2enrich.pl",
     "$repositoryroot/conv/enrichmnt/picafiles2enrich.pl" => "/opt/openbib/conv/picafiles2enrich.pl",

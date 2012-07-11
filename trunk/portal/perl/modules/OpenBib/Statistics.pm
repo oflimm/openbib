@@ -43,8 +43,8 @@ use OpenBib::Database::DBI;
 use OpenBib::Database::Statistics;
 
 sub new {
-    my ($class) = @_;
-
+    my ($class,$arg_ref) = @_;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -52,13 +52,13 @@ sub new {
 
     bless ($self, $class);
 
-    $self->connectDB();
+    $self->connectDB($arg_ref);
 
     return $self;
 }
 
 sub _new_instance {
-    my ($class) = @_;
+    my ($class,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -67,7 +67,7 @@ sub _new_instance {
 
     bless ($self, $class);
 
-    $self->connectDB();
+    $self->connectDB($arg_ref);
 
     return $self;
 }
@@ -926,11 +926,16 @@ sub get_sequencestat_of_event {
 
 sub connectDB {
     my $self = shift;
-
+    my $arg_ref = shift;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
+
+    if (defined $arg_ref->{statisticsdbname} && $arg_ref->{statisticsdbname}){
+        $config->{statisticsdbname} = $arg_ref->{statisticsdbname};
+    }
 
     eval {
         # Verbindung zur SQL-Datenbank herstellen
@@ -946,8 +951,8 @@ sub connectDB {
     $self->{dbh}->{RaiseError} = 1;
 
     eval {
-        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-        $self->{schema} = OpenBib::Database::Statistics->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        # UTF8: {'pg_enable_utf8'    => 1 |
+        $self->{schema} = OpenBib::Database::Statistics->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
     };
 
     if ($@){

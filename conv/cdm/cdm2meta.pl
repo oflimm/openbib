@@ -7,7 +7,7 @@
 #  Konvertierung des CDM XML-Formates in des OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -92,16 +92,16 @@ sub parse_titset {
     print TITLE "0000:".$titset->first_child($convconfig->{uniqueidfield})->text()."\n";
 
     # Erstellungsdatum
-    if(defined $titset->first_child('cdmcreated') && $titset->first_child('cdmcreated')->text()){
-        my ($year,$month,$day)=split("-",$titset->first_child('cdmcreated')->text());
-        print TITLE "0002:$day.$month.$year\n";
-    }
+#    if(defined $titset->first_child('cdmcreated') && $titset->first_child('cdmcreated')->text()){
+#        my ($year,$month,$day)=split("-",$titset->first_child('cdmcreated')->text());
+#        print TITLE "0002:$day.$month.$year\n";
+#    }
     
     # Aenderungsdatum
-    if(defined $titset->first_child('cdmmodified') && $titset->first_child('cdmmodified')->text()){
-        my ($year,$month,$day)=split("-",$titset->first_child('cdmmodified')->text());
-        print TITLE "0003:$day.$month.$year\n";
-    }
+#    if(defined $titset->first_child('cdmmodified') && $titset->first_child('cdmmodified')->text()){
+#        my ($year,$month,$day)=split("-",$titset->first_child('cdmmodified')->text());
+#        print TITLE "0003:$day.$month.$year\n";
+#    }
 
     foreach my $kateg (keys %{$convconfig->{title}}){
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
@@ -140,15 +140,12 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my $autidn=OpenBib::Conv::Common::Util::get_autidn($part);
+                    my ($autidn,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
                     
-                    if ($autidn > 0){
+                    if ($new){
                         print PERSON "0000:$autidn\n";
                         print PERSON "0001:$part\n";
                         print PERSON "9999:\n";
-                    }
-                    else {
-                        $autidn=(-1)*$autidn;
                     }
                     
                     print TITLE $convconfig->{pers}{$kateg}."IDN: $autidn\n";
@@ -174,15 +171,12 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my $koridn=OpenBib::Conv::Common::Util::get_koridn($part);
+                    my ($koridn,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                 
-                    if ($koridn > 0){
+                    if ($new){
                         print CORPORATEBODY "0000:$koridn\n";
                         print CORPORATEBODY "0001:$part\n";
                         print CORPORATEBODY "9999:\n";
-                    }
-                    else {
-                        $koridn=(-1)*$koridn;
                     }
                     
                     print TITLE $convconfig->{corp}{$kateg}."IDN: $koridn\n";
@@ -208,16 +202,14 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my $notidn=OpenBib::Conv::Common::Util::get_notidn($part);
+                    my ($notidn,$new)=OpenBib::Conv::Common::Util::get_classification_id($part);
                 
-                    if ($notidn > 0){
+                    if ($new){
                         print CLASSIFICATION "0000:$notidn\n";
                         print CLASSIFICATION "0001:$content\n";
                         print CLASSIFICATION "9999:\n";
                     }
-                    else {
-                        $notidn=(-1)*$notidn;
-                    }
+
                     print TITLE $convconfig->{sys}{$kateg}."IDN: $notidn\n";
                 }
             }
@@ -241,16 +233,14 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my $swtidn=OpenBib::Conv::Common::Util::get_swtidn($part);
+                    my ($swtidn,$new)=OpenBib::Conv::Common::Util::get_subject_id($part);
                     
-                    if ($swtidn > 0){	  
+                    if ($new){	  
                         print SUBJECT "0000:$swtidn\n";
                         print SUBJECT "0001:$part\n";
                         print SUBJECT "9999:\n";
                     }
-                    else {
-                        $swtidn=(-1)*$swtidn;
-                    }
+
                     print TITLE $convconfig->{subj}{$kateg}."IDN: $swtidn\n";
                 }
             }

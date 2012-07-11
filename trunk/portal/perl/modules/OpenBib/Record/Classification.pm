@@ -67,16 +67,18 @@ sub new {
 
     bless ($self, $class);
 
+    $logger->debug("Creating Classification-Record-Object");    
+
     if (defined $database){
         $self->{database} = $database;
         $self->connectDB();
+        $logger->debug("Setting Classification database: $database");    
     }
 
     if (defined $id){
         $self->{id}       = $id;
+        $logger->debug("Setting Classification id: $id");    
     }
-
-    $logger->debug("Classification-Record-Object created with id $id in database $database");    
 
     return $self;
 }

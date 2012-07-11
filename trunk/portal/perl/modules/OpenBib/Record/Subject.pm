@@ -67,16 +67,18 @@ sub new {
 
     bless ($self, $class);
 
+    $logger->debug("Creating Subject-Record-Object");
+
     if (defined $database){
         $self->{database} = $database;
         $self->connectDB();
+        $logger->debug("Setting subject database: $database");
     }
 
     if (defined $id){
         $self->{id}       = $id;
+        $logger->debug("Setting subject id: $id");
     }
-
-    $logger->debug("Subject-Record-Object created with id $id in database $database");    
 
     return $self;
 }

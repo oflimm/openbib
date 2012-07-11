@@ -361,16 +361,26 @@ sub identify_by_olws_circulation {
     $self->get_title_normdata;
 
     # Exemplardaten
-    my $request=$self->{dbh}->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=6") or $logger->error($DBI::errstr);
+    # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
 
     foreach my $id (keys %{$self->{titleid}}){
-        $request->execute($id);
-    
-        while (my $result=$request->fetchrow_hashref()){
-            $self->{holdingid}{$result->{'targetid'}}=1;
+        my $holdings = $self->{schema}->resultset('TitleHolding')->search_rs(
+            {
+                'titleid' => $id,
+            },
+            {
+                select   => ['holdingid'],
+                as       => ['thisid'],
+            }
+        );
+        
+        foreach my $item ($holdings->all){
+            my $thisid = $item->get_column('thisid');
+
+            $self->{holdingid}{$thisid}=1;
         }    
     }
-
+    
     return $self;
 }
 

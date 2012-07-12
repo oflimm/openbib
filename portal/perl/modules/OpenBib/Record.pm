@@ -42,7 +42,7 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
-use OpenBib::Database::Catalog;
+use OpenBib::Schema::Catalog;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
@@ -60,7 +60,7 @@ sub connectDB {
     if ($config->{dbimodule} eq "Pg"){
         eval {
             # UTF8: {'pg_enable_utf8'    => 1}
-            $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
         };
         
         if ($@){
@@ -70,7 +70,7 @@ sub connectDB {
     elsif ($config->{dbimodule} eq "mysql"){
         eval {
             # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
         };
         
         if ($@){
@@ -93,7 +93,7 @@ sub connectEnrichmentDB {
     if ($config->{dbimodule} eq "Pg"){
         eval {
             # UTF8: {'pg_enable_utf8'    => 1}
-            $self->{enrich_schema} = OpenBib::Database::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            $self->{enrich_schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
         };
         
         if ($@){
@@ -103,7 +103,7 @@ sub connectEnrichmentDB {
     elsif ($config->{dbimodule} eq "mysql"){
         eval {
             # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $self->{enrich_schema} = OpenBib::Database::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            $self->{enrich_schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
         };
         
         if ($@){

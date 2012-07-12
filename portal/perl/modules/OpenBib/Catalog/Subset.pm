@@ -35,7 +35,7 @@ use utf8;
 
 use DBI;
 use OpenBib::Config;
-use OpenBib::Database::Catalog;
+use OpenBib::Schema::Catalog;
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 
@@ -86,7 +86,7 @@ sub set_source {
     if ($self->{config}->{dbimodule} eq "Pg"){
         eval {
             # UTF8: {'pg_enable_utf8'    => 1}
-            $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
         };
         
         if ($@){
@@ -97,7 +97,7 @@ sub set_source {
     elsif ($self->{config}->{dbimodule} eq "mysql"){
         eval {
             # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $self->{schema} = OpenBib::Database::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
         };
         
         if ($@){

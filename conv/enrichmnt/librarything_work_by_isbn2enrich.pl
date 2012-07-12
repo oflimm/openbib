@@ -42,7 +42,7 @@ use YAML;
 use XML::Twig;
 
 use OpenBib::Common::Util;
-use OpenBib::Database::Enrichment;
+use OpenBib::Schema::Enrichment;
 use OpenBib::Config;
 use OpenBib::Search::Util;
 use OpenBib::Statistics;
@@ -85,7 +85,7 @@ our $schema;
 
 eval {
     # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-    $schema = OpenBib::Database::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+    $schema = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 };
 
 if ($@){

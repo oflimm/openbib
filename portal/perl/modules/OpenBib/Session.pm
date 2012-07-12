@@ -43,7 +43,7 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Database::DBI;
-use OpenBib::Database::System;
+use OpenBib::Schema::System;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
@@ -1524,8 +1524,8 @@ sub connectDB {
     $self->{dbh}->{RaiseError} = 1;
 
     eval {        
-#        $self->{schema} = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd}) or $logger->error_die($DBI::errstr)
-        $self->{schema} = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+#        $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd}) or $logger->error_die($DBI::errstr)
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 
     };
 

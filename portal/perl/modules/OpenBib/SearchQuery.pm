@@ -50,7 +50,7 @@ use URI::Escape;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Database::DBI;
-use OpenBib::Database::System;
+use OpenBib::Schema::System;
 
 sub _new_instance {
     my ($class,$arg_ref) = @_;
@@ -971,7 +971,7 @@ sub connectDB {
     my $config = OpenBib::Config->instance;
     
     eval {        
-        $self->{schema} = OpenBib::Database::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
 
     };
 

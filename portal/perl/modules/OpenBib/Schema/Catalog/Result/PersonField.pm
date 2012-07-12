@@ -1,4 +1,4 @@
-package OpenBib::Database::Catalog::Result::PersonField;
+package OpenBib::Schema::Catalog::Result::PersonField;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Catalog::Result::PersonField
+OpenBib::Schema::Catalog::Result::PersonField
 
 =cut
 
@@ -75,21 +75,21 @@ __PACKAGE__->add_columns(
 
 Type: belongs_to
 
-Related object: L<OpenBib::Database::Catalog::Result::Person>
+Related object: L<OpenBib::Schema::Catalog::Result::Person>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "personid",
-  "OpenBib::Database::Catalog::Result::Person",
+  "OpenBib::Schema::Catalog::Result::Person",
   { id => "personid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CslWQiDaeApoyr+4XUmqKA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:31:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5vXs8jXwdf4O+8hM1RZ2lg
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

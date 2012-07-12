@@ -1,4 +1,4 @@
-package OpenBib::Database::Catalog::Result::TitleSubject;
+package OpenBib::Schema::Catalog::Result::TitleSubject;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Catalog::Result::TitleSubject
+OpenBib::Schema::Catalog::Result::TitleSubject
 
 =cut
 
@@ -62,36 +62,36 @@ __PACKAGE__->add_columns(
 
 Type: belongs_to
 
-Related object: L<OpenBib::Database::Catalog::Result::Subject>
+Related object: L<OpenBib::Schema::Catalog::Result::Subject>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "subjectid",
-  "OpenBib::Database::Catalog::Result::Subject",
+  "OpenBib::Schema::Catalog::Result::Subject",
   { id => "subjectid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 titleid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Database::Catalog::Result::Title>
+Related object: L<OpenBib::Schema::Catalog::Result::Title>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "titleid",
-  "OpenBib::Database::Catalog::Result::Title",
+  "OpenBib::Schema::Catalog::Result::Title",
   { id => "titleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Xt917tYsSTriG2njSztn6A
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:31:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:IrtLx6vLT3rO9r+Ov4ZE8A
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

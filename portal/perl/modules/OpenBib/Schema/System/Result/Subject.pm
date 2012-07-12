@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Subject;
+package OpenBib::Schema::System::Result::Subject;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Subject
+OpenBib::Schema::System::Result::Subject
 
 =cut
 
@@ -61,13 +61,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::LitlistSubject>
+Related object: L<OpenBib::Schema::System::Result::LitlistSubject>
 
 =cut
 
 __PACKAGE__->has_many(
   "litlist_subjects",
-  "OpenBib::Database::System::Result::LitlistSubject",
+  "OpenBib::Schema::System::Result::LitlistSubject",
   { "foreign.subjectid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -76,21 +76,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Subjectclassification>
+Related object: L<OpenBib::Schema::System::Result::Subjectclassification>
 
 =cut
 
 __PACKAGE__->has_many(
   "subjectclassifications",
-  "OpenBib::Database::System::Result::Subjectclassification",
+  "OpenBib::Schema::System::Result::Subjectclassification",
   { "foreign.subjectid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:n+hzN5YWoy49vMB44eAdrQ
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MB25hi20ZsPtA2rVjVQVQQ
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

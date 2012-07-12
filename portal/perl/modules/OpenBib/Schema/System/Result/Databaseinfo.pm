@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Databaseinfo;
+package OpenBib::Schema::System::Result::Databaseinfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Databaseinfo
+OpenBib::Schema::System::Result::Databaseinfo
 
 =cut
 
@@ -258,13 +258,13 @@ __PACKAGE__->add_unique_constraint("uq_databaseinfo_dbname", ["dbname"]);
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Libraryinfo>
+Related object: L<OpenBib::Schema::System::Result::Libraryinfo>
 
 =cut
 
 __PACKAGE__->has_many(
   "libraryinfos",
-  "OpenBib::Database::System::Result::Libraryinfo",
+  "OpenBib::Schema::System::Result::Libraryinfo",
   { "foreign.dbid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -273,13 +273,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::OrgunitDb>
+Related object: L<OpenBib::Schema::System::Result::OrgunitDb>
 
 =cut
 
 __PACKAGE__->has_many(
   "orgunit_dbs",
-  "OpenBib::Database::System::Result::OrgunitDb",
+  "OpenBib::Schema::System::Result::OrgunitDb",
   { "foreign.dbid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -288,13 +288,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Rssinfo>
+Related object: L<OpenBib::Schema::System::Result::Rssinfo>
 
 =cut
 
 __PACKAGE__->has_many(
   "rssinfos",
-  "OpenBib::Database::System::Result::Rssinfo",
+  "OpenBib::Schema::System::Result::Rssinfo",
   { "foreign.dbid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -303,13 +303,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::SearchprofileDb>
+Related object: L<OpenBib::Schema::System::Result::SearchprofileDb>
 
 =cut
 
 __PACKAGE__->has_many(
   "searchprofile_dbs",
-  "OpenBib::Database::System::Result::SearchprofileDb",
+  "OpenBib::Schema::System::Result::SearchprofileDb",
   { "foreign.dbid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -318,21 +318,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::ViewDb>
+Related object: L<OpenBib::Schema::System::Result::ViewDb>
 
 =cut
 
 __PACKAGE__->has_many(
   "view_dbs",
-  "OpenBib::Database::System::Result::ViewDb",
+  "OpenBib::Schema::System::Result::ViewDb",
   { "foreign.dbid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0vSKLKgnuQqvGZKys/jpMw
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:eh1NTxrRzxw69YkFXhqorg
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

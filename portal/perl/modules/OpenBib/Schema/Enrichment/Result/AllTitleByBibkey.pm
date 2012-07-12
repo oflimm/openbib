@@ -1,4 +1,4 @@
-package OpenBib::Database::Enrichment::Result::AllTitleByBibkey;
+package OpenBib::Schema::Enrichment::Result::AllTitleByBibkey;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Enrichment::Result::AllTitleByBibkey
+OpenBib::Schema::Enrichment::Result::AllTitleByBibkey
 
 =cut
 
@@ -39,7 +39,7 @@ __PACKAGE__->table("all_titles_by_bibkey");
 
 =head2 tstamp
 
-  data_type: 'datetime'
+  data_type: 'timestamp'
   is_nullable: 1
 
 =cut
@@ -52,12 +52,12 @@ __PACKAGE__->add_columns(
   "titleid",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "tstamp",
-  { data_type => "datetime", is_nullable => 1 },
+  { data_type => "timestamp", is_nullable => 1 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-06-06 13:07:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:llWvj3wPvAIJlMAWp2EhpQ
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:40
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:RKyh2frJnm5KVUs01dUWXQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

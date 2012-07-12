@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Searchfield;
+package OpenBib::Schema::System::Result::Searchfield;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Searchfield
+OpenBib::Schema::System::Result::Searchfield
 
 =cut
 
@@ -53,21 +53,21 @@ __PACKAGE__->add_columns(
 
 Type: belongs_to
 
-Related object: L<OpenBib::Database::System::Result::Userinfo>
+Related object: L<OpenBib::Schema::System::Result::Userinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "userid",
-  "OpenBib::Database::System::Result::Userinfo",
+  "OpenBib::Schema::System::Result::Userinfo",
   { id => "userid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GouUw6+V9MSPAQZ/TLTfeA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:s32ErpvbBOd2Rsg6z82rlA
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

@@ -1,4 +1,4 @@
-package OpenBib::Database::Catalog::Result::TitleField;
+package OpenBib::Schema::Catalog::Result::TitleField;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Catalog::Result::TitleField
+OpenBib::Schema::Catalog::Result::TitleField
 
 =cut
 
@@ -75,21 +75,21 @@ __PACKAGE__->add_columns(
 
 Type: belongs_to
 
-Related object: L<OpenBib::Database::Catalog::Result::Title>
+Related object: L<OpenBib::Schema::Catalog::Result::Title>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "titleid",
-  "OpenBib::Database::Catalog::Result::Title",
+  "OpenBib::Schema::Catalog::Result::Title",
   { id => "titleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:y8DD5TszKMQy67OxB8BVoQ
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:31:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TaPzb6YfNuR+NMl/UC3Xag
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

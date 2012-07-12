@@ -1,4 +1,4 @@
-package OpenBib::Database::Catalog::Result::Title;
+package OpenBib::Schema::Catalog::Result::Title;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Catalog::Result::Title
+OpenBib::Schema::Catalog::Result::Title
 
 =cut
 
@@ -67,13 +67,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::TitleClassification>
+Related object: L<OpenBib::Schema::Catalog::Result::TitleClassification>
 
 =cut
 
 __PACKAGE__->has_many(
   "title_classifications",
-  "OpenBib::Database::Catalog::Result::TitleClassification",
+  "OpenBib::Schema::Catalog::Result::TitleClassification",
   { "foreign.titleid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -82,13 +82,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::TitleCorporatebody>
+Related object: L<OpenBib::Schema::Catalog::Result::TitleCorporatebody>
 
 =cut
 
 __PACKAGE__->has_many(
   "title_corporatebodies",
-  "OpenBib::Database::Catalog::Result::TitleCorporatebody",
+  "OpenBib::Schema::Catalog::Result::TitleCorporatebody",
   { "foreign.titleid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -97,13 +97,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::TitleField>
+Related object: L<OpenBib::Schema::Catalog::Result::TitleField>
 
 =cut
 
 __PACKAGE__->has_many(
   "title_fields",
-  "OpenBib::Database::Catalog::Result::TitleField",
+  "OpenBib::Schema::Catalog::Result::TitleField",
   { "foreign.titleid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -112,13 +112,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::TitleHolding>
+Related object: L<OpenBib::Schema::Catalog::Result::TitleHolding>
 
 =cut
 
 __PACKAGE__->has_many(
   "title_holdings",
-  "OpenBib::Database::Catalog::Result::TitleHolding",
+  "OpenBib::Schema::Catalog::Result::TitleHolding",
   { "foreign.titleid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -127,13 +127,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::TitlePerson>
+Related object: L<OpenBib::Schema::Catalog::Result::TitlePerson>
 
 =cut
 
 __PACKAGE__->has_many(
   "title_people",
-  "OpenBib::Database::Catalog::Result::TitlePerson",
+  "OpenBib::Schema::Catalog::Result::TitlePerson",
   { "foreign.titleid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -142,36 +142,51 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::TitleSubject>
+Related object: L<OpenBib::Schema::Catalog::Result::TitleSubject>
 
 =cut
 
 __PACKAGE__->has_many(
   "title_subjects",
-  "OpenBib::Database::Catalog::Result::TitleSubject",
+  "OpenBib::Schema::Catalog::Result::TitleSubject",
   { "foreign.titleid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 title_titles
+=head2 title_title_target_titleids
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::TitleTitle>
+Related object: L<OpenBib::Schema::Catalog::Result::TitleTitle>
 
 =cut
 
 __PACKAGE__->has_many(
-  "title_titles",
-  "OpenBib::Database::Catalog::Result::TitleTitle",
+  "title_title_target_titleids",
+  "OpenBib::Schema::Catalog::Result::TitleTitle",
+  { "foreign.target_titleid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 title_title_source_titleids
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::Catalog::Result::TitleTitle>
+
+=cut
+
+__PACKAGE__->has_many(
+  "title_title_source_titleids",
+  "OpenBib::Schema::Catalog::Result::TitleTitle",
   { "foreign.source_titleid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lpCPAV+KB1Tj7KDOn99I6g
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:31:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pMXjfUxWJ1Tk+z5x8RsL9A
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

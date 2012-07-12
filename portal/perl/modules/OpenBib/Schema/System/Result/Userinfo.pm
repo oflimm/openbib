@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Userinfo;
+package OpenBib::Schema::System::Result::Userinfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Userinfo
+OpenBib::Schema::System::Result::Userinfo
 
 =cut
 
@@ -236,13 +236,13 @@ __PACKAGE__->add_unique_constraint("uq_userinfo_username", ["username"]);
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Collection>
+Related object: L<OpenBib::Schema::System::Result::Collection>
 
 =cut
 
 __PACKAGE__->has_many(
   "collections",
-  "OpenBib::Database::System::Result::Collection",
+  "OpenBib::Schema::System::Result::Collection",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -251,13 +251,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Litlist>
+Related object: L<OpenBib::Schema::System::Result::Litlist>
 
 =cut
 
 __PACKAGE__->has_many(
   "litlists",
-  "OpenBib::Database::System::Result::Litlist",
+  "OpenBib::Schema::System::Result::Litlist",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -266,13 +266,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Livesearch>
+Related object: L<OpenBib::Schema::System::Result::Livesearch>
 
 =cut
 
 __PACKAGE__->has_many(
   "livesearches",
-  "OpenBib::Database::System::Result::Livesearch",
+  "OpenBib::Schema::System::Result::Livesearch",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -281,13 +281,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Review>
+Related object: L<OpenBib::Schema::System::Result::Review>
 
 =cut
 
 __PACKAGE__->has_many(
   "reviews",
-  "OpenBib::Database::System::Result::Review",
+  "OpenBib::Schema::System::Result::Review",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -296,13 +296,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Reviewrating>
+Related object: L<OpenBib::Schema::System::Result::Reviewrating>
 
 =cut
 
 __PACKAGE__->has_many(
   "reviewratings",
-  "OpenBib::Database::System::Result::Reviewrating",
+  "OpenBib::Schema::System::Result::Reviewrating",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -311,13 +311,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Searchfield>
+Related object: L<OpenBib::Schema::System::Result::Searchfield>
 
 =cut
 
 __PACKAGE__->has_many(
   "searchfields",
-  "OpenBib::Database::System::Result::Searchfield",
+  "OpenBib::Schema::System::Result::Searchfield",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -326,13 +326,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::TitTag>
+Related object: L<OpenBib::Schema::System::Result::TitTag>
 
 =cut
 
 __PACKAGE__->has_many(
   "tit_tags",
-  "OpenBib::Database::System::Result::TitTag",
+  "OpenBib::Schema::System::Result::TitTag",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -341,13 +341,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::UserRole>
+Related object: L<OpenBib::Schema::System::Result::UserRole>
 
 =cut
 
 __PACKAGE__->has_many(
   "user_roles",
-  "OpenBib::Database::System::Result::UserRole",
+  "OpenBib::Schema::System::Result::UserRole",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -356,13 +356,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::UserSearchprofile>
+Related object: L<OpenBib::Schema::System::Result::UserSearchprofile>
 
 =cut
 
 __PACKAGE__->has_many(
   "user_searchprofiles",
-  "OpenBib::Database::System::Result::UserSearchprofile",
+  "OpenBib::Schema::System::Result::UserSearchprofile",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -371,21 +371,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::UserSession>
+Related object: L<OpenBib::Schema::System::Result::UserSession>
 
 =cut
 
 __PACKAGE__->has_many(
   "user_sessions",
-  "OpenBib::Database::System::Result::UserSession",
+  "OpenBib::Schema::System::Result::UserSession",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EqNm2Y421ZH7i8ZFA/RtYA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lVu/B0Caqq9yOyUXxA/mbA
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Registration;
+package OpenBib::Schema::System::Result::Registration;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Registration
+OpenBib::Schema::System::Result::Registration
 
 =cut
 
@@ -55,9 +55,9 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:QW9UHsiBcXuva8V7kw/vLg
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WhUX5hghqEVCDrcdC5o8uA
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

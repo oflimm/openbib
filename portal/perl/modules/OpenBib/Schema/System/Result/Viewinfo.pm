@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Viewinfo;
+package OpenBib::Schema::System::Result::Viewinfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Viewinfo
+OpenBib::Schema::System::Result::Viewinfo
 
 =cut
 
@@ -105,13 +105,13 @@ __PACKAGE__->add_unique_constraint("uq_viewinfo_viewname", ["viewname"]);
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::ViewDb>
+Related object: L<OpenBib::Schema::System::Result::ViewDb>
 
 =cut
 
 __PACKAGE__->has_many(
   "view_dbs",
-  "OpenBib::Database::System::Result::ViewDb",
+  "OpenBib::Schema::System::Result::ViewDb",
   { "foreign.viewid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -120,56 +120,51 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<OpenBib::Database::System::Result::Rssinfo>
+Related object: L<OpenBib::Schema::System::Result::Rssinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "rssid",
-  "OpenBib::Database::System::Result::Rssinfo",
+  "OpenBib::Schema::System::Result::Rssinfo",
   { id => "rssid" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
+  { join_type => "LEFT", on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 profileid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Database::System::Result::Profileinfo>
+Related object: L<OpenBib::Schema::System::Result::Profileinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "profileid",
-  "OpenBib::Database::System::Result::Profileinfo",
+  "OpenBib::Schema::System::Result::Profileinfo",
   { id => "profileid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 view_rsses
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::ViewRss>
+Related object: L<OpenBib::Schema::System::Result::ViewRss>
 
 =cut
 
 __PACKAGE__->has_many(
   "view_rsses",
-  "OpenBib::Database::System::Result::ViewRss",
+  "OpenBib::Schema::System::Result::ViewRss",
   { "foreign.viewid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CgGu2yzolXIfns0jV/xb3g
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:beoTOg81eh0oRgGZHe87gQ
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

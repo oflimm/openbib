@@ -1,4 +1,4 @@
-package OpenBib::Database::Catalog::Result::Holding;
+package OpenBib::Schema::Catalog::Result::Holding;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Catalog::Result::Holding
+OpenBib::Schema::Catalog::Result::Holding
 
 =cut
 
@@ -39,13 +39,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::HoldingField>
+Related object: L<OpenBib::Schema::Catalog::Result::HoldingField>
 
 =cut
 
 __PACKAGE__->has_many(
   "holding_fields",
-  "OpenBib::Database::Catalog::Result::HoldingField",
+  "OpenBib::Schema::Catalog::Result::HoldingField",
   { "foreign.holdingid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -54,21 +54,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::TitleHolding>
+Related object: L<OpenBib::Schema::Catalog::Result::TitleHolding>
 
 =cut
 
 __PACKAGE__->has_many(
   "title_holdings",
-  "OpenBib::Database::Catalog::Result::TitleHolding",
+  "OpenBib::Schema::Catalog::Result::TitleHolding",
   { "foreign.holdingid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JWwl1RBiv2q2yMQ7poC2jA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:31:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rcjA9RHxHrDsGSmyAFDIhw
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

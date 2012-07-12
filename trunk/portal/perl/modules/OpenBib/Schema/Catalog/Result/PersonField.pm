@@ -83,13 +83,13 @@ __PACKAGE__->belongs_to(
   "personid",
   "OpenBib::Schema::Catalog::Result::Person",
   { id => "personid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:31:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5vXs8jXwdf4O+8hM1RZ2lg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-07-12 11:41:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ujkep7uFCFwxG9Zgqor66g
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

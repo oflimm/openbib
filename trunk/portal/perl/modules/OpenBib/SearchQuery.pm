@@ -49,7 +49,7 @@ use URI::Escape;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Database::DBI;
+use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 
 sub _new_instance {

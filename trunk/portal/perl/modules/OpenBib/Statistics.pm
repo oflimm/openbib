@@ -39,7 +39,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Storable ();
 
 use OpenBib::Config;
-use OpenBib::Database::DBI;
+use OpenBib::Schema::DBI;
 use OpenBib::Schema::Statistics;
 
 sub new {
@@ -940,7 +940,7 @@ sub connectDB {
     eval {
         # Verbindung zur SQL-Datenbank herstellen
         $self->{dbh}
-            = OpenBib::Database::DBI->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            = OpenBib::Schema::DBI->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
             or $logger->error_die($DBI::errstr);
     };
 

@@ -41,7 +41,7 @@ use YAML;
 use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Database::DBI;
+use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
@@ -127,7 +127,7 @@ sub userdb_accessible{
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
+        = OpenBib::Schema::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
             or $logger->error($DBI::errstr);
     
     if ($dbh->ping()){
@@ -4127,7 +4127,7 @@ sub get_mask {
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
+        = OpenBib::Schema::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
             or $logger->error($DBI::errstr);
 
     return undef if (!defined $dbh);
@@ -4408,7 +4408,7 @@ sub connectDB {
     eval {
         # Verbindung zur SQL-Datenbank herstellen
         $self->{dbh}
-            = OpenBib::Database::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
+            = OpenBib::Schema::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
             or $logger->error_die($DBI::errstr);
     };
 

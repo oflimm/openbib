@@ -42,7 +42,7 @@ use YAML::Syck;
 
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
-use OpenBib::Database::DBI;
+use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -1513,7 +1513,7 @@ sub connectDB {
     eval {
         # Verbindung zur SQL-Datenbank herstellen
         $self->{dbh}
-            = OpenBib::Database::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
+            = OpenBib::Schema::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
             or $logger->error_die($DBI::errstr);
     };
 

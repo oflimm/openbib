@@ -42,7 +42,7 @@ use LWP;
 use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
-use OpenBib::Database::DBI;
+use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 
 sub new {
@@ -1515,7 +1515,7 @@ sub connectDB {
     eval {
         # Verbindung zur SQL-Datenbank herstellen
         $self->{dbh}
-            = OpenBib::Database::DBI->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd})
+            = OpenBib::Schema::DBI->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd})
             or $logger->error_die($DBI::errstr);
     };
 
@@ -2267,7 +2267,7 @@ sub get_id_of_selfreg_logintarget {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
+        = OpenBib::Schema::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     return undef if (!defined $dbh);

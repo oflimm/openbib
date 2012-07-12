@@ -39,7 +39,7 @@ use MLDBM qw(DB_File Storable);
 use Storable ();
 
 use OpenBib::Config;
-use OpenBib::Database::DBI;
+use OpenBib::Schema::DBI;
 use OpenBib::Record::Title;
 
 sub new {

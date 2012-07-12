@@ -41,7 +41,7 @@ use YAML::Syck;
 
 
 use OpenBib::Config;
-use OpenBib::Database::DBI;
+use OpenBib::Schema::DBI;
 use OpenBib::Session;
 
 sub _new_instance {

@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Database::DBI
+#  OpenBib::Schema::DBI
 #
 #  Singleton fuer den DBI-Zugriff
 #
@@ -27,7 +27,7 @@
 #
 #####################################################################
 
-package OpenBib::Database::DBI;
+package OpenBib::Schema::DBI;
 
 use strict;
 use warnings;
@@ -69,7 +69,7 @@ __END__
 
 =head1 NAME
 
-OpenBib::Database::DBI - Singleton zum Spooling von DB-Handles
+OpenBib::Schema::DBI - Singleton zum Spooling von DB-Handles
 
 =head1 DESCRIPTION
 
@@ -80,9 +80,9 @@ user verwendet - nicht jedoch für die Vielzahl an Katalogdatenbanken.
 
 =head1 SYNOPSIS
 
- use OpenBib::Database::DBI;
+ use OpenBib::Schema::DBI;
 
- my $dbh = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};
+ my $dbh = OpenBib::Schema::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};
                  host=$config->{userdbhost};port=$config->{userdbport}",
                  $config->{userdbuser}, $config->{userdbpasswd})
            or $logger->error($DBI::errstr);

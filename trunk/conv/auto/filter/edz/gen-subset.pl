@@ -38,7 +38,7 @@ use warnings;
 use Getopt::Long;
 use SOAP::Lite;
 
-use OpenBib::Database::Subset;
+use OpenBib::Catalog::Subset;
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -82,7 +82,7 @@ my $soap_params = SOAP::Data->name('paramaters'  =>\SOAP::Data->value(
     SOAP::Data->name('password' => "")->type('string'),
     SOAP::Data->name('database' => "sisis")->type('string')));
 
-my $subset = new OpenBib::Database::Subset("inst001",$pool);
+my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
 $subset->identify_by_olws_circulation({
     'urn'         => "urn:/Circulation",
     'proxy'       => "http://hardtberg.ub.uni-koeln.de:8888/olws",

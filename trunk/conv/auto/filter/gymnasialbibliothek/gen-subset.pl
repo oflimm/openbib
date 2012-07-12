@@ -36,7 +36,7 @@ use strict;
 use warnings;
 
 use Getopt::Long;
-use OpenBib::Database::Subset;
+use OpenBib::Catalog::Subset;
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -75,7 +75,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Database::Subset("inst001",$pool);
+my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
 $subset->identify_by_mark(["^GBI[0-9]","^GBII*[0-9]","^GBVI*[0-9]","^GBIX[0-9]","^GBXI*[0-9]","^GBXIV[0-9]"]);
 $subset->write_set;
 

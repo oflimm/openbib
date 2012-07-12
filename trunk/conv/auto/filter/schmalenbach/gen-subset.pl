@@ -36,7 +36,7 @@ use strict;
 use warnings;
 
 use Getopt::Long;
-use OpenBib::Database::Subset;
+use OpenBib::Catalog::Subset;
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -85,7 +85,7 @@ my $enrich_mediatype_ref = sub {
     return;
 };
 
-my $subset = new OpenBib::Database::Subset("inst001",$pool);
+my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
 $subset->set_title_filter($enrich_mediatype_ref);
 $subset->identify_by_mark("^SCHM");
 $subset->write_set;

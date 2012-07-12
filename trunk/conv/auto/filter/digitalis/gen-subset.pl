@@ -36,7 +36,7 @@ use strict;
 use warnings;
 
 use Getopt::Long;
-use OpenBib::Database::Subset;
+use OpenBib::Catalog::Subset;
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -75,7 +75,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Database::Subset("inst137",$pool);
+my $subset = new OpenBib::Catalog::Subset("inst137",$pool);
 $subset->identify_by_category_content('title',[ { category => '0662', content => '^http://www.digitalis.uni-koeln.de' } ]);
 $subset->write_set;
 

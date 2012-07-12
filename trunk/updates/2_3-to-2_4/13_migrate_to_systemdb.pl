@@ -12,7 +12,7 @@ use Encode qw/encode_utf8 decode_utf8/;
 use JSON::XS qw(encode_json decode_json);
 use YAML::Syck;
 use OpenBib::Config;
-use OpenBib::Database::Catalog;
+use OpenBib::Schema::Catalog;
 
 my $host   = $ARGV[0];
 my $passwd = $ARGV[1];
@@ -111,10 +111,10 @@ my $newschema;
         
 eval {
     if ($systemdbimodule eq "Pg"){
-        $newschema = OpenBib::Database::System->connect("DBI:$systemdbimodule:dbname=$systemdbname;host=$systemdbhost;port=$systemdbport", $systemdbuser, $systemdbpasswd);
+        $newschema = OpenBib::Schema::System->connect("DBI:$systemdbimodule:dbname=$systemdbname;host=$systemdbhost;port=$systemdbport", $systemdbuser, $systemdbpasswd);
     }
     elsif ($systemdbimodule eq "mysql"){
-        $newschema = OpenBib::Database::System->connect("DBI:$systemdbimodule:dbname=$systemdbname;host=$systemdbhost;port=$systemdbport", $systemdbuser, $systemdbpasswd,,{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]})
+        $newschema = OpenBib::Schema::System->connect("DBI:$systemdbimodule:dbname=$systemdbname;host=$systemdbhost;port=$systemdbport", $systemdbuser, $systemdbpasswd,,{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]})
     }
 };
         

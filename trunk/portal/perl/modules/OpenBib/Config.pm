@@ -43,7 +43,7 @@ use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
 use OpenBib::Database::DBI;
-use OpenBib::Database::System;
+use OpenBib::Schema::System;
 
 sub new {
     my $class = shift;
@@ -1528,7 +1528,7 @@ sub connectDB {
     if ($self->{dbimodule} eq "Pg"){
         # UTF8: {'pg_enable_utf8'    => 1}
         eval {        
-            $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
             
         };
         
@@ -1538,7 +1538,7 @@ sub connectDB {
     }
     elsif ($self->{dbimodule} eq "mysql"){
         eval {        
-            $self->{schema} = OpenBib::Database::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
             
         };
         

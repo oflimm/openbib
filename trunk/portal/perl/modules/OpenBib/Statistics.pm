@@ -40,7 +40,7 @@ use Storable ();
 
 use OpenBib::Config;
 use OpenBib::Database::DBI;
-use OpenBib::Database::Statistics;
+use OpenBib::Schema::Statistics;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -952,7 +952,7 @@ sub connectDB {
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1 |
-        $self->{schema} = OpenBib::Database::Statistics->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::Statistics->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
     };
 
     if ($@){

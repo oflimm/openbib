@@ -51,7 +51,7 @@ use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::Catalog;
 use OpenBib::Schema::Enrichment;
-use OpenBib::Database::DBI;
+use OpenBib::Schema::DBI;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Person;

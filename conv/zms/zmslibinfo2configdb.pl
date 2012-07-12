@@ -33,7 +33,7 @@ use YAML;
 use Web::Scraper;
 use Encode qw/decode encode_utf8/;
 use OpenBib::Config;
-use OpenBib::Database::DBI;
+use OpenBib::Schema::DBI;
 use URI::Escape;
 
 my $database=$ARGV[0];
@@ -42,7 +42,7 @@ my $config = OpenBib::Config->instance;
 
 # Verbindung zur SQL-Datenbank herstellen
 my $dbh
-    = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+    = OpenBib::Schema::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
     or $logger->error_die($DBI::errstr);
 
 my $s = scraper {

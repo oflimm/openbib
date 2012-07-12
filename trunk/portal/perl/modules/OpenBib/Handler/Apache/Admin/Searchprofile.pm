@@ -197,7 +197,7 @@ sub update_record {
 
     # CGI Args
     my $method          = decode_utf8($query->param('_method')) || '';
-    my $ownindex        = $query->param('own_index')       || 0;
+    my $ownindex        = $query->param('own_index')       || 'false';
     
     if (!$self->is_authenticated('admin')){
         return;

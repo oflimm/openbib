@@ -1510,22 +1510,8 @@ sub connectDB {
 
     my $config = OpenBib::Config->instance;
     
-    eval {
-        # Verbindung zur SQL-Datenbank herstellen
-        $self->{dbh}
-            = OpenBib::Schema::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error_die($DBI::errstr);
-    };
-
-    if ($@){
-        $logger->fatal("Unable to connect to database $config->{systemdbname}");
-    }
-    
-    $self->{dbh}->{RaiseError} = 1;
-
     eval {        
-#        $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd}) or $logger->error_die($DBI::errstr)
-        $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
 
     };
 

@@ -1512,19 +1512,6 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    eval {
-        # Verbindung zur SQL-Datenbank herstellen
-        $self->{dbh}
-            = OpenBib::Schema::DBI->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd})
-            or $logger->error_die($DBI::errstr);
-    };
-
-    if ($@){
-        $logger->fatal("Unable to connect to database $self->{systemdbname}");
-    }
-    
-    $self->{dbh}->{RaiseError} = 1;
-
     if ($self->{dbimodule} eq "Pg"){
         # UTF8: {'pg_enable_utf8'    => 1}
         eval {        

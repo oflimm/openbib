@@ -114,33 +114,33 @@ sub connectEnrichmentDB {
     return;
 }
 
-# sub set_field {
-#     my ($self,$arg_ref) = @_;
+sub set_field {
+    my ($self,$arg_ref) = @_;
 
-#     # Set defaults
-#     my $field          = exists $arg_ref->{field}
-#         ? $arg_ref->{field}          : undef;
+    # Set defaults
+    my $field          = exists $arg_ref->{field}
+        ? $arg_ref->{field}          : undef;
 
-#     my $mult              = exists $arg_ref->{mult}
-#         ? $arg_ref->{mult}              : 1;
+    my $mult              = exists $arg_ref->{mult}
+        ? $arg_ref->{mult}              : 1;
 
-#     my $subfield         = exists $arg_ref->{subfield}
-#         ? $arg_ref->{subfield}         : undef;
+    my $subfield         = exists $arg_ref->{subfield}
+        ? $arg_ref->{subfield}         : undef;
 
-#     my $content            = exists $arg_ref->{content}
-#         ? $arg_ref->{content}           : undef;
+    my $content            = exists $arg_ref->{content}
+        ? $arg_ref->{content}           : undef;
 
-#     # Log4perl logger erzeugen
-#     my $logger = get_logger();
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
-#     push @{$self->{_normset}{$field}}, {
-#         mult      => $mult,
-#         subfield => $subfield,
-#         content   => $content,
-#     };
+    push @{$self->{_normset}{$field}}, {
+        mult      => $mult,
+        subfield => $subfield,
+        content   => $content,
+    };
 
-#     return $self;
-# }
+    return $self;
+}
 
 # sub have_subfields {
 #     my ($self,$content) = @_;

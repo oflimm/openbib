@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Database::Subset
+#  OpenBib::Catalog::Subset
 #
 #  Zusammenfassung von Funktionen, die von mehreren Datenbackends
 #  verwendet werden
@@ -26,7 +26,7 @@
 #
 #####################################################################
 
-package OpenBib::Database::Subset;
+package OpenBib::Catalog::Subset;
 
 use strict;
 use warnings;

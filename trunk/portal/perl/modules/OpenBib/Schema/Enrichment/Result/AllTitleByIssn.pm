@@ -1,4 +1,4 @@
-package OpenBib::Database::Enrichment::Result::AllTitleByIssn;
+package OpenBib::Schema::Enrichment::Result::AllTitleByIssn;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Enrichment::Result::AllTitleByIssn
+OpenBib::Schema::Enrichment::Result::AllTitleByIssn
 
 =cut
 
@@ -23,7 +23,7 @@ __PACKAGE__->table("all_titles_by_issn");
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 33
+  size: 8
 
 =head2 dbname
 
@@ -39,25 +39,25 @@ __PACKAGE__->table("all_titles_by_issn");
 
 =head2 tstamp
 
-  data_type: 'datetime'
+  data_type: 'timestamp'
   is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
   "issn",
-  { data_type => "varchar", is_nullable => 0, size => 33 },
+  { data_type => "varchar", is_nullable => 0, size => 8 },
   "dbname",
   { data_type => "varchar", is_nullable => 0, size => 25 },
   "titleid",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "tstamp",
-  { data_type => "datetime", is_nullable => 1 },
+  { data_type => "timestamp", is_nullable => 1 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-06-06 13:07:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/FesonlHO9E1OhwkUU8wtA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:40
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ImN78rPj/L1Zzyh5bYP0bQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

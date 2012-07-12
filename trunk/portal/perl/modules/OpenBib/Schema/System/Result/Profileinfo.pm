@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Profileinfo;
+package OpenBib::Schema::System::Result::Profileinfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Profileinfo
+OpenBib::Schema::System::Result::Profileinfo
 
 =cut
 
@@ -61,13 +61,13 @@ __PACKAGE__->add_unique_constraint("uq_profileinfo_profilename", ["profilename"]
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Orgunitinfo>
+Related object: L<OpenBib::Schema::System::Result::Orgunitinfo>
 
 =cut
 
 __PACKAGE__->has_many(
   "orgunitinfos",
-  "OpenBib::Database::System::Result::Orgunitinfo",
+  "OpenBib::Schema::System::Result::Orgunitinfo",
   { "foreign.profileid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -76,21 +76,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Viewinfo>
+Related object: L<OpenBib::Schema::System::Result::Viewinfo>
 
 =cut
 
 __PACKAGE__->has_many(
   "viewinfos",
-  "OpenBib::Database::System::Result::Viewinfo",
+  "OpenBib::Schema::System::Result::Viewinfo",
   { "foreign.profileid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LyYMqR6rOKOBMmi5DDwjdw
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2iNWjTkEgEo0e/H6wedgwA
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

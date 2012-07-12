@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Sessioninfo;
+package OpenBib::Schema::System::Result::Sessioninfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Sessioninfo
+OpenBib::Schema::System::Result::Sessioninfo
 
 =cut
 
@@ -123,13 +123,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Eventlog>
+Related object: L<OpenBib::Schema::System::Result::Eventlog>
 
 =cut
 
 __PACKAGE__->has_many(
   "eventlogs",
-  "OpenBib::Database::System::Result::Eventlog",
+  "OpenBib::Schema::System::Result::Eventlog",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -138,13 +138,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Eventlogjson>
+Related object: L<OpenBib::Schema::System::Result::Eventlogjson>
 
 =cut
 
 __PACKAGE__->has_many(
   "eventlogjsons",
-  "OpenBib::Database::System::Result::Eventlogjson",
+  "OpenBib::Schema::System::Result::Eventlogjson",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -153,13 +153,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Query>
+Related object: L<OpenBib::Schema::System::Result::Query>
 
 =cut
 
 __PACKAGE__->has_many(
   "queries",
-  "OpenBib::Database::System::Result::Query",
+  "OpenBib::Schema::System::Result::Query",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -168,13 +168,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Recordhistory>
+Related object: L<OpenBib::Schema::System::Result::Recordhistory>
 
 =cut
 
 __PACKAGE__->has_many(
   "recordhistories",
-  "OpenBib::Database::System::Result::Recordhistory",
+  "OpenBib::Schema::System::Result::Recordhistory",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -183,13 +183,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Searchhistory>
+Related object: L<OpenBib::Schema::System::Result::Searchhistory>
 
 =cut
 
 __PACKAGE__->has_many(
   "searchhistories",
-  "OpenBib::Database::System::Result::Searchhistory",
+  "OpenBib::Schema::System::Result::Searchhistory",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -198,13 +198,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::Sessioncollection>
+Related object: L<OpenBib::Schema::System::Result::Sessioncollection>
 
 =cut
 
 __PACKAGE__->has_many(
   "sessioncollections",
-  "OpenBib::Database::System::Result::Sessioncollection",
+  "OpenBib::Schema::System::Result::Sessioncollection",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -213,13 +213,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::SessionSearchprofile>
+Related object: L<OpenBib::Schema::System::Result::SessionSearchprofile>
 
 =cut
 
 __PACKAGE__->has_many(
   "session_searchprofiles",
-  "OpenBib::Database::System::Result::SessionSearchprofile",
+  "OpenBib::Schema::System::Result::SessionSearchprofile",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -228,21 +228,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::UserSession>
+Related object: L<OpenBib::Schema::System::Result::UserSession>
 
 =cut
 
 __PACKAGE__->has_many(
   "user_sessions",
-  "OpenBib::Database::System::Result::UserSession",
+  "OpenBib::Schema::System::Result::UserSession",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BN5VIIxJv3h9T+anjlGzfw
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vof7XtqkI1XGkuKN4IMV7w
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

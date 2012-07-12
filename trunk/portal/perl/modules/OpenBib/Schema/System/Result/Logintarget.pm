@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Logintarget;
+package OpenBib::Schema::System::Result::Logintarget;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Logintarget
+OpenBib::Schema::System::Result::Logintarget
 
 =cut
 
@@ -87,21 +87,21 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::UserSession>
+Related object: L<OpenBib::Schema::System::Result::UserSession>
 
 =cut
 
 __PACKAGE__->has_many(
   "user_sessions",
-  "OpenBib::Database::System::Result::UserSession",
+  "OpenBib::Schema::System::Result::UserSession",
   { "foreign.targetid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:esgFyseSMG4ByUkOh9M3Mw
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:UAQsC6RdIVdAsA1LS9K0Tg
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

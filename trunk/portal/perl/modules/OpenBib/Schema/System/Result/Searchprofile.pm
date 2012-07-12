@@ -1,4 +1,4 @@
-package OpenBib::Database::System::Result::Searchprofile;
+package OpenBib::Schema::System::Result::Searchprofile;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::System::Result::Searchprofile
+OpenBib::Schema::System::Result::Searchprofile
 
 =cut
 
@@ -59,13 +59,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::SearchprofileDb>
+Related object: L<OpenBib::Schema::System::Result::SearchprofileDb>
 
 =cut
 
 __PACKAGE__->has_many(
   "searchprofile_dbs",
-  "OpenBib::Database::System::Result::SearchprofileDb",
+  "OpenBib::Schema::System::Result::SearchprofileDb",
   { "foreign.searchprofileid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -74,13 +74,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::SessionSearchprofile>
+Related object: L<OpenBib::Schema::System::Result::SessionSearchprofile>
 
 =cut
 
 __PACKAGE__->has_many(
   "session_searchprofiles",
-  "OpenBib::Database::System::Result::SessionSearchprofile",
+  "OpenBib::Schema::System::Result::SessionSearchprofile",
   { "foreign.searchprofileid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -89,21 +89,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::System::Result::UserSearchprofile>
+Related object: L<OpenBib::Schema::System::Result::UserSearchprofile>
 
 =cut
 
 __PACKAGE__->has_many(
   "user_searchprofiles",
-  "OpenBib::Database::System::Result::UserSearchprofile",
+  "OpenBib::Schema::System::Result::UserSearchprofile",
   { "foreign.searchprofileid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-27 13:44:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Azyf6UQzGQTF6qMPwHBhpg
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:q6R+mfFtW2SdxaNyKIRqcQ
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

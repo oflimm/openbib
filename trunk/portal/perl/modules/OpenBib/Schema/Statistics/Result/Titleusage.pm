@@ -1,4 +1,4 @@
-package OpenBib::Database::Statistics::Result::Titleusage;
+package OpenBib::Schema::Statistics::Result::Titleusage;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Statistics::Result::Titleusage
+OpenBib::Schema::Statistics::Result::Titleusage
 
 =cut
 
@@ -97,26 +97,21 @@ __PACKAGE__->add_columns(
 
 Type: belongs_to
 
-Related object: L<OpenBib::Database::Statistics::Result::Sessioninfo>
+Related object: L<OpenBib::Schema::Statistics::Result::Sessioninfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "sid",
-  "OpenBib::Database::Statistics::Result::Sessioninfo",
+  "OpenBib::Schema::Statistics::Result::Sessioninfo",
   { id => "sid" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
+  { join_type => "LEFT", on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-28 09:41:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YMBkWL7lM4NyGqSU4pIimA
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:29:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:G4vHWlOM0A1NpFlOyRdMow
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

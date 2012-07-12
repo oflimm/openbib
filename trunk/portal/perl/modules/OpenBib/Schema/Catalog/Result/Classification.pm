@@ -1,4 +1,4 @@
-package OpenBib::Database::Catalog::Result::Classification;
+package OpenBib::Schema::Catalog::Result::Classification;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Catalog::Result::Classification
+OpenBib::Schema::Catalog::Result::Classification
 
 =cut
 
@@ -53,13 +53,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::ClassificationField>
+Related object: L<OpenBib::Schema::Catalog::Result::ClassificationField>
 
 =cut
 
 __PACKAGE__->has_many(
   "classification_fields",
-  "OpenBib::Database::Catalog::Result::ClassificationField",
+  "OpenBib::Schema::Catalog::Result::ClassificationField",
   { "foreign.classificationid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -68,21 +68,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Catalog::Result::TitleClassification>
+Related object: L<OpenBib::Schema::Catalog::Result::TitleClassification>
 
 =cut
 
 __PACKAGE__->has_many(
   "title_classifications",
-  "OpenBib::Database::Catalog::Result::TitleClassification",
+  "OpenBib::Schema::Catalog::Result::TitleClassification",
   { "foreign.classificationid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-26 12:52:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qnpYXNabWhddXsNzh6AphQ
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:31:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sHBxaF1Xt5N2L7R3bR680g
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

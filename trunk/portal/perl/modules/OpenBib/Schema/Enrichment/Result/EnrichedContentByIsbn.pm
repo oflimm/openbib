@@ -1,4 +1,4 @@
-package OpenBib::Database::Enrichment::Result::EnrichedContentByIsbn;
+package OpenBib::Schema::Enrichment::Result::EnrichedContentByIsbn;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Enrichment::Result::EnrichedContentByIsbn
+OpenBib::Schema::Enrichment::Result::EnrichedContentByIsbn
 
 =cut
 
@@ -61,8 +61,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-06-06 13:07:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vLa3ghcZh/v2o6wC9tT6cQ
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:40
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3uPm/yEI8d/kHgTEKArRcw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

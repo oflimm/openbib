@@ -1,4 +1,4 @@
-package OpenBib::Database::Statistics::Result::Sessioninfo;
+package OpenBib::Schema::Statistics::Result::Sessioninfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Database::Statistics::Result::Sessioninfo
+OpenBib::Schema::Statistics::Result::Sessioninfo
 
 =cut
 
@@ -74,13 +74,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Statistics::Result::Eventlog>
+Related object: L<OpenBib::Schema::Statistics::Result::Eventlog>
 
 =cut
 
 __PACKAGE__->has_many(
   "eventlogs",
-  "OpenBib::Database::Statistics::Result::Eventlog",
+  "OpenBib::Schema::Statistics::Result::Eventlog",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -89,13 +89,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Statistics::Result::Eventlogjson>
+Related object: L<OpenBib::Schema::Statistics::Result::Eventlogjson>
 
 =cut
 
 __PACKAGE__->has_many(
   "eventlogjsons",
-  "OpenBib::Database::Statistics::Result::Eventlogjson",
+  "OpenBib::Schema::Statistics::Result::Eventlogjson",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -104,13 +104,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Statistics::Result::Searchfield>
+Related object: L<OpenBib::Schema::Statistics::Result::Searchfield>
 
 =cut
 
 __PACKAGE__->has_many(
   "searchfields",
-  "OpenBib::Database::Statistics::Result::Searchfield",
+  "OpenBib::Schema::Statistics::Result::Searchfield",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -119,13 +119,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Statistics::Result::Searchterm>
+Related object: L<OpenBib::Schema::Statistics::Result::Searchterm>
 
 =cut
 
 __PACKAGE__->has_many(
   "searchterms",
-  "OpenBib::Database::Statistics::Result::Searchterm",
+  "OpenBib::Schema::Statistics::Result::Searchterm",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -134,21 +134,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<OpenBib::Database::Statistics::Result::Titleusage>
+Related object: L<OpenBib::Schema::Statistics::Result::Titleusage>
 
 =cut
 
 __PACKAGE__->has_many(
   "titleusages",
-  "OpenBib::Database::Statistics::Result::Titleusage",
+  "OpenBib::Schema::Statistics::Result::Titleusage",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-06-28 09:41:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/3ryytIn02iztagmu4RpaQ
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:29:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zYoQ/llKkr6PMumsdrxPAw
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

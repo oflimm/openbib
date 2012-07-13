@@ -1512,26 +1512,14 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if ($self->{dbimodule} eq "Pg"){
-        # UTF8: {'pg_enable_utf8'    => 1}
-        eval {        
-            $self->{schema} = OpenBib::Schema::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            
-        };
+    # UTF8: {'pg_enable_utf8'    => 1}
+    eval {        
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
         
-        if ($@){
-            $logger->fatal("Unable to connect to database $self->{systemdbname}");
-        }
-    }
-    elsif ($self->{dbimodule} eq "mysql"){
-        eval {        
-            $self->{schema} = OpenBib::Schema::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-            
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect to database $self->{systemdbname}");
-        }
+    };
+    
+    if ($@){
+        $logger->fatal("Unable to connect to database $self->{systemdbname}");
     }
     
     return;

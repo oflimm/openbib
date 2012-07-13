@@ -213,29 +213,26 @@ sub cgiapp_init {
             my $baseloc    = $config->get('base_loc');
             $path =~s{^$baseloc/[^/]+}{$path_prefix};
 
-            # Personalisierte URIs
-            if ($self->param('personalized_loc')){
-                my $user = OpenBib::User->instance({sessionID => $session->{ID}});
-                if ($user->{ID}){
-                    my $loc = $self->param('personalized_loc');
-                    $logger->debug("Replacing $path_prefix/$loc with $path_prefix/user/$user->{ID}/$loc");
-                    my $old_loc = "$path_prefix/$loc";
-                    my $new_loc = "$path_prefix/user/$user->{ID}/$loc";
-                    $path=~s{^$old_loc}{^$new_loc};
-                }
+            my $user = OpenBib::User->instance({sessionID => $session->{ID}});
+            if ($user->{ID}){
+                my $loc = $self->param('personalized_loc');
+                $logger->debug("Replacing $path_prefix/$loc with $path_prefix/user/$user->{ID}/$loc");
+                my $old_loc = "$path_prefix/$loc";
+                my $new_loc = "$path_prefix/user/$user->{ID}/$loc";
+                $path=~s{^$old_loc}{^$new_loc};
+
+                $logger->debug("Corrected External Path: $path");
+                
+                my $dispatch_url = $path;
+                
+                if ($self->query->args()){
+                    $dispatch_url.="?".$self->query->args();
+                }   
+                
+                $logger->debug("Dispatching to $dispatch_url");
+                
+                return $self->redirect($dispatch_url,'303 See Other');
             }
-
-            $logger->debug("Corrected External Path: $path");
-
-            my $dispatch_url = $path;
-
-            if ($self->query->args()){
-                $dispatch_url.="?".$self->query->args();
-            }   
-            
-            $logger->debug("Dispatching to $dispatch_url");
-            
-            return $self->redirect($dispatch_url,'303 See Other');
         }
         else {
             $logger->debug("No additional negotiation necessary");

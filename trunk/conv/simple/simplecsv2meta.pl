@@ -37,20 +37,24 @@ use utf8;
 
 use Encode 'decode';
 use Getopt::Long;
+use Log::Log4perl qw(get_logger :levels);
 use Text::CSV_XS;
 use YAML::Syck;
 
 use OpenBib::Config;
+use OpenBib::Enrichment;
 use OpenBib::Conv::Common::Util;
 
 
-my $config = OpenBib::Config->instance;
+my $config    = new OpenBib::Config;
+my $enrichmnt = new OpenBib::Enrichment;
 
-my ($inputfile,$configfile);
+my ($inputfile,$configfile,$logfile);
 
 &GetOptions(
 	    "inputfile=s"          => \$inputfile,
             "configfile=s"         => \$configfile,
+            "logfile=s"            => \$logfile,
 	    );
 
 if (!$inputfile && !$configfile){
@@ -61,6 +65,25 @@ simplecsv2meta.pl - Aufrufsyntax
 HELP
 exit;
 }
+
+$logfile=($logfile)?$logfile:'/var/log/openbib/simplecsv2meta.log';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
 
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
@@ -91,12 +114,37 @@ open (MEX,     ">:encoding($outputencoding)","meta.holding");
 my $titid = 1;
 my $have_titid_ref = {};
 
+my $excluded_titles = 0;
+
 my @cols = @{$csv->getline ($in)};
 my $row = {};
 $csv->bind_columns (\@{$row}{@cols});
 
 while ($csv->getline ($in)){
-    print YAML::Dump($row);
+    $logger->debug(YAML::Dump($row));
+
+    if ($convconfig->{exclude}{by_availability}){
+        my $key_field = $convconfig->{exclude}{by_availability}{field};
+        my $content = $row->{$key_field};
+        
+        my @keys = ();
+        if (exists $convconfig->{category_split_chars}{$key_field} && $content=~/$convconfig->{category_split_chars}{$key_field}/){
+            @keys = split($convconfig->{category_split_chars}{$key_field},$content);
+        }
+        else {
+            $content=~s/\n/ /g;
+            push @keys, $content;
+        }
+        
+        my $databases_ref = $convconfig->{exclude}{by_availability}{databases};
+        
+        if ($enrichmnt->check_availability_by_isbn({isbn => \@keys, databases => $databases_ref })){
+            $logger->info("Titel mit ISBNs ".join(' ',@keys)." bereits in Datenbanken ".join(' ',@$databases_ref)." vorhanden!");
+            $excluded_titles++;
+            next;
+        }        
+    }
+
     if ($convconfig->{uniqueidfield}){
         my $id = $row->{$convconfig->{uniqueidfield}};
         if ($convconfig->{uniqueidmatch}){
@@ -104,12 +152,12 @@ while ($csv->getline ($in)){
             ($id)=$id=~m/$uniquematchregexp/;
         }
         unless ($id){
-            print STDERR  "KEINE ID\n";
+            $logger->error("KEINE ID");
             next;
         }
         
         if ($have_titid_ref->{$id}){
-            print STDERR  "Doppelte ID: $id\n";
+            $logger->error("Doppelte ID: $id");
 	    next;
         }
         printf TIT "0000:$id\n";
@@ -124,13 +172,12 @@ while ($csv->getline ($in)){
         #my $content = decode($convconfig->{encoding},$row->{$kateg});
 
         if ($content){
+            
             if ($convconfig->{filter}{$kateg}{filter_generic}){
                 foreach my $filter (@{$convconfig->{filter}{$kateg}{filter_generic}}){
                     my $from = $filter->{from};
                     my $to   = $filter->{to};
                     $content =~s/$from/$to/g;
-                    
-                    #                print STDERR "Filtering from $from to $to: New content $content\n";
                 }
             }
             
@@ -182,11 +229,7 @@ while ($csv->getline ($in)){
                     my $from = $filter->{from};
                     my $to   = $filter->{to};
                     
-#                    print STDERR "Filtering $content from $from to $to\n";
-                    
                     $content =~s/$from/$to/g;
-                    
-#                    print STDERR "New content $content\n";
                 }
             }
 
@@ -247,11 +290,7 @@ while ($csv->getline ($in)){
                     my $from = $filter->{from};
                     my $to   = $filter->{to};
                     
-#                    print STDERR "Filtering $content from $from to $to\n";
-                    
                     $content =~s/$from/$to/g;
-                    
-#                    print STDERR "New content $content\n";
                 }
             }
 
@@ -312,11 +351,7 @@ while ($csv->getline ($in)){
                     my $from = $filter->{from};
                     my $to   = $filter->{to};
                     
-#                    print STDERR "Filtering $content from $from to $to\n";
-                    
                     $content =~s/$from/$to/g;
-                    
-#                    print STDERR "New content $content\n";
                 }
             }
             
@@ -376,11 +411,7 @@ while ($csv->getline ($in)){
                     my $from = $filter->{from};
                     my $to   = $filter->{to};
                     
-#                    print STDERR "Filtering $content from $from to $to\n";
-                    
                     $content =~s/$from/$to/g;
-                    
-#                    print STDERR "New content $content\n";
                 }
             }
 
@@ -443,11 +474,7 @@ while ($csv->getline ($in)){
                     my $from = $filter->{from};
                     my $to   = $filter->{to};
                     
-#                    print STDERR "Filtering $content from $from to $to\n";
-                    
                     $content =~s/$from/$to/g;
-                    
-#                    print STDERR "New content $content\n";
                 }
             }
 
@@ -493,6 +520,8 @@ while ($csv->getline ($in)){
 
     print TIT "9999:\n";
 }
+
+$logger->info("Excluded titles: $excluded_titles");
 
 close(TIT);
 close(AUT);

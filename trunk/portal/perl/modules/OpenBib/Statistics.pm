@@ -938,25 +938,12 @@ sub connectDB {
     }
 
     eval {
-        # Verbindung zur SQL-Datenbank herstellen
-        $self->{dbh}
-            = OpenBib::Schema::DBI->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error_die($DBI::errstr);
-    };
-
-    if ($@){
-        $logger->fatal("Unable to connect to database $config->{statisticsdbname}");
-    }
-    
-    $self->{dbh}->{RaiseError} = 1;
-
-    eval {
         # UTF8: {'pg_enable_utf8'    => 1 |
-        $self->{schema} = OpenBib::Schema::Statistics->connect("DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::Statistics->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
     };
 
     if ($@){
-        $logger->fatal("Unable to connect schema to database $config->{statisticsdbname}: DBI:$config->{statisticsdbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}");
+        $logger->fatal("Unable to connect schema to database $config->{statisticsdbname}: DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}");
     }
 
     return;

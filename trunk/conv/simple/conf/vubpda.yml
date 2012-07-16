@@ -49,3 +49,5 @@ exclude:
      field: 'identifier'
      databases:
         - inst001
+        - ebooks
+        - freebooks

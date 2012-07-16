@@ -42,13 +42,14 @@ use YAML;
 use POSIX qw/strftime/;
 
 use OpenBib::Config;
-use OpenBib::Schema::Catalog;
-use OpenBib::Schema::Enrichment;
+use OpenBib::Enrichment;
+use OpenBib::Catalog;
 use OpenBib::Common::Util;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
-my $config = OpenBib::Config->instance;
+my $config     = OpenBib::Config->instance;
+my $enrichment = new OpenBib::Enrichment;
 
 my ($database,$help,$logfile,$incr);
 
@@ -97,63 +98,16 @@ else {
 # Haeufigkeit von ISBNs im KUG:
 # select isbn,count(dbname) as dbcount from all_isbn group by isbn order by dbcount desc limit 10
 
-my $enrich_schema;
-
-if ($config->{enrichmntdbimodule} eq "Pg"){
-    eval {
-        # UTF8: {'pg_enable_utf8'    => 1}
-        $enrich_schema = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-    };
-    
-    if ($@){
-        $logger->fatal("Unable to connect schema to Enrichmntment database");
-        exit;
-    }
-}
-elsif ($config->{enrichmntdbimodule} eq "mysql"){
-    eval {
-        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-        $enrich_schema = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-    };
-    
-    if ($@){
-        $logger->fatal("Unable to connect schema to Enrichmntment database");
-        exit;
-    }
-}
 
 my $last_insertion_date = 0; # wird fuer inkrementelles Update benoetigt
 
 foreach my $database (@databases){
     $logger->info("Getting ISBNs from database $database and adding to enrichmntdb");
 
-    my $schema;
-    
-    if ($config->{dbimodule} eq "Pg"){
-        eval {
-            # UTF8: {'pg_enable_utf8'    => 1}
-            $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
-        }
-    }
-    elsif ($config->{dbimodule} eq "mysql"){
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
-        }
-    }
+    my $catalog = new OpenBib::Catalog($database);
     
     if ($incr){
-        $last_insertion_date = $schema->resultset('Title')->get_column('tstamp_create')->max;
+        $last_insertion_date = $catalog->{schema}->resultset('Title')->get_column('tstamp_create')->max;
     }
     
     if (!$last_insertion_date && $incr){
@@ -163,19 +117,19 @@ foreach my $database (@databases){
     else {
         $logger->info("Bisherige Daten entfernen");
         
-        $enrich_schema->resultset('AllTitleByIsbn')->search_rs(
+        $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
             {
                 dbname => $database
             }
         )->delete;
 
-        $enrich_schema->resultset('AllTitleByBibkey')->search_rs(
+        $enrichment->{schema}->resultset('AllTitleByBibkey')->search_rs(
             {
                 dbname => $database
             }
         )->delete;
         
-        $enrich_schema->resultset('AllTitleByIssn')->search_rs(
+        $enrichment->{schema}->resultset('AllTitleByIssn')->search_rs(
             {
                 dbname => $database
             }
@@ -185,7 +139,7 @@ foreach my $database (@databases){
     my $all_isbns;
     
     if ($incr){
-        $all_isbns = $schema->resultset('Title')->search_rs(
+        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 -or => [
@@ -201,7 +155,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_isbns = $schema->resultset('Title')->search_rs(
+        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 -or => [
                     'title_fields.field' => '0540',
@@ -254,7 +208,7 @@ foreach my $database (@databases){
     }
 
     if (@$alltitlebyisbn_ref){
-        $enrich_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+        $enrichment->{schema}->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
     }
     
     $logger->info("$isbn_insertcount ISBN's inserted");
@@ -262,7 +216,7 @@ foreach my $database (@databases){
     $logger->info("Getting Bibkeys from database $database and adding to enrichmntdb");
     
     if ($incr){
-        $all_isbns = $schema->resultset('Title')->search_rs(
+        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 'title_fields.field' => '5050',
@@ -275,7 +229,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_isbns = $schema->resultset('Title')->search_rs(
+        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'title_fields.field' => '5050',
             },
@@ -308,7 +262,7 @@ foreach my $database (@databases){
     }
 
     if (@$alltitlebybibkey_ref){
-        $enrich_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+        $enrichment->{schema}->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
     }
     
     $logger->info("$bibkey_insertcount Bibkeys inserted");
@@ -316,7 +270,7 @@ foreach my $database (@databases){
     $logger->info("Getting ISSNs from database $database and adding to enrichmntdb");
 
     if ($incr){
-        $all_isbns = $schema->resultset('Title')->search_rs(
+        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 'title_fields.field' => '0543',
@@ -329,7 +283,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_isbns = $schema->resultset('Title')->search_rs(
+        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'title_fields.field' => '0543',
             },
@@ -373,7 +327,7 @@ foreach my $database (@databases){
     }
 
     if (@$alltitlebyissn_ref){
-        $enrich_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+        $enrichment->{schema}->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
     }
     
     $logger->info("$issn_insertcount ISSNs inserted");

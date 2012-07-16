@@ -1514,7 +1514,7 @@ sub connectDB {
 
     # UTF8: {'pg_enable_utf8'    => 1}
     eval {        
-        $self->{schema} = OpenBib::Schema::System->connect("DBI:$self->{systemdbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
         
     };
     

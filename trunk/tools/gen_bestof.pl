@@ -40,6 +40,7 @@ use Unicode::Collate;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::Catalog;
 use OpenBib::Schema::Catalog;
 use OpenBib::Schema::System;
 use OpenBib::Statistics;
@@ -85,15 +86,8 @@ my $user       = OpenBib::User->instance;
 my $statistics = OpenBib::Statistics->instance;
 
 # Verbindung zur SQL-Datenbank herstellen
-my $statisticsdbh;
-if ($config->{statisticsdbimodule} eq "Pg"){
-    $statisticsdbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1})
-        or $logger->error($DBI::errstr);
-}
-elsif ($config->{statisticsdbimodule} eq "mysql"){
-    $statisticsdbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]})
-        or $logger->error($DBI::errstr);
-}
+my $statisticsdbh = DBI->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1})
+    or $logger->error($DBI::errstr);
 
 if (!$type){
   $logger->fatal("Kein Type mit --type= ausgewaehlt");
@@ -114,35 +108,6 @@ if ($type == 1){
     foreach my $database (@databases){
         $logger->info("Generating Type 1 BestOf-Values for database $database");
 
-        my $schema;
-        
-        if ($config->{dbimodule} eq "Pg"){
-            eval {
-                # UTF8: {'pg_enable_utf8'    => 1}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
-        elsif ($config->{dbimodule} eq "mysql"){
-            eval {
-                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
-
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
-        
         my $bestof_ref=[];
 
         # DBI "select id, count(sid) as sidcount from titleusage where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20"
@@ -241,35 +206,12 @@ if ($type == 3){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $schema;
-
-        if ($config->{dbimodule} eq "Pg"){
-            eval {
-                # UTF8: {'pg_enable_utf8'    => 1}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
-        elsif ($config->{dbimodule} eq "mysql"){
-            eval {
-                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
+        my $catalog = new OpenBib::Catalog($database);
         
         my $bestof_ref=[];
 
         # DBI: "select subject.content , count(distinct sourceid) as scount from conn, subject where sourcetype=1 and targettype=4 and subject.category=1 and subject.id=conn.targetid group by targetid order by scount desc limit 200"
-        my $usage = $schema->resultset('Subject')->search_rs(
+        my $usage = $catalog->{schema}->resultset('Subject')->search_rs(
             {
                 'subject_fields.field' => 1,
             },
@@ -343,35 +285,12 @@ if ($type == 4){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $schema;
-        
-        if ($config->{dbimodule} eq "Pg"){
-            eval {
-                # UTF8: {'pg_enable_utf8'    => 1}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
-        elsif ($config->{dbimodule} eq "mysql"){
-            eval {
-                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
+        my $catalog = new OpenBib::Catalog($database);
 
         my $bestof_ref=[];
 
         # DBI: "select classification.content , count(distinct sourceid) as scount from conn, classification where sourcetype=1 and targettype=5 and classification.category=1 and classification.id=conn.targetid group by targetid order by scount desc limit 200"
-        my $usage = $schema->resultset('Classification')->search_rs(
+        my $usage = $catalog->{schema}->resultset('Classification')->search_rs(
             {
                 'classification_fields.field' => 1,
             },
@@ -443,35 +362,12 @@ if ($type == 5){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $schema;
-        
-        if ($config->{dbimodule} eq "Pg"){
-            eval {
-                # UTF8: {'pg_enable_utf8'    => 1}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
-        elsif ($config->{dbimodule} eq "mysql"){
-            eval {
-                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
+        my $catalog = new OpenBib::Catalog($database);
 
         my $bestof_ref=[];
 
         # DBI: "select corporatebody.content , count(distinct sourceid) as scount from conn, corporatebody where sourcetype=1 and targettype=3 and corporatebody.category=1 and corporatebody.id=conn.targetid group by targetid order by scount desc limit 200"
-        my $usage = $schema->resultset('Corporatebody')->search_rs(
+        my $usage = $catalog->{schema}->resultset('Corporatebody')->search_rs(
             {
                 'corporatebody_fields.field' => 1,
             },
@@ -542,35 +438,12 @@ if ($type == 6){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $schema;
-        
-        if ($config->{dbimodule} eq "Pg"){
-            eval {
-                # UTF8: {'pg_enable_utf8'    => 1}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
-        elsif ($config->{dbimodule} eq "mysql"){
-            eval {
-                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
+        my $catalog = new OpenBib::Catalog($database);
 
         my $bestof_ref=[];
 
         # DBI: "select person.content , count(distinct sourceid) as scount from conn, person where sourcetype=1 and targettype=2 and person.category=1 and person.id=conn.targetid group by targetid order by scount desc limit 200"
-        my $usage = $schema->resultset('Person')->search_rs(
+        my $usage = $catalog->{schema}->resultset('Person')->search_rs(
             {
                 'person_fields.field' => 1,
             },
@@ -636,29 +509,16 @@ if ($type == 7){
         @databases=$config->get_active_databases();
     }
 
-    my $schema;
-    
-    eval {
-        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-        $schema = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-    };
-    
-    if ($@){
-        $logger->fatal("Unable to connect schema to system database: DBI:$config->{systemdbimodule}:systemdbname=$database;host=$config->{systemdbhost};port=$config->{systemdbport}");
-        next;
-    }
-
     foreach my $database (@databases){
         $logger->info("Generating Type 7 BestOf-Values for database $database");
 
         my $maxcount=0;
 	my $mincount=999999999;
 
-        
         my $bestof_ref=[];
         
         # DBI: "select t.id,t.tag,count(tt.tagid) as scount from tags as t, tittag as tt where tt.titdb=? and tt.tagid=t.id group by tt.tagid"
-        my $usage = $schema->resultset('Tag')->search_rs(
+        my $usage = $user->{schema}->resultset('Tag')->search_rs(
             {
                 'tit_tags.dbname' => $database,
             },
@@ -826,35 +686,12 @@ if ($type == 9){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $schema;
-        
-        if ($config->{dbimodule} eq "Pg"){
-            eval {
-                # UTF8: {'pg_enable_utf8'    => 1}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
-        elsif ($config->{dbimodule} eq "mysql"){
-            eval {
-                # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-                $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-            };
-            
-            if ($@){
-                $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-                next;
-            }
-        }
+        my $catalog = new OpenBib::Catalog($database);
 
         my $bestof_ref=[];
 
         # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
-        my $usage = $schema->resultset('Title')->search_rs(
+        my $usage = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'title_fields.field' => 425,
             },
@@ -926,7 +763,7 @@ if ($type == 10){
         
         # Verbindung zur SQL-Datenbank herstellen
         my $enrichdbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+            = DBI->connect("DBI:Pg:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
 
         my $bk_ref = {};
@@ -980,7 +817,7 @@ if ($type == 11){
         
         # Verbindung zur SQL-Datenbank herstellen
         my $enrichdbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+            = DBI->connect("DBI:Pg:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
 
         my $bk_ref = {};
@@ -1025,7 +862,7 @@ if ($type == 11){
 if ($type == 12){
 
     my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+        = DBI->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     $logger->info("Generating Type 12 BestOf-Values");

@@ -4406,39 +4406,13 @@ sub connectDB {
     my $config = OpenBib::Config->instance;
 
     eval {
-        # Verbindung zur SQL-Datenbank herstellen
-        $self->{dbh}
-            = OpenBib::Schema::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error_die($DBI::errstr);
+        # UTF8: {'pg_enable_utf8'    => 1}
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+        
     };
-
+    
     if ($@){
         $logger->fatal("Unable to connect to database $config->{systemdbname}");
-    }
-    
-    $self->{dbh}->{RaiseError} = 1;
-
-    if ($config->{dbimodule} eq "Pg"){
-        eval {
-            # UTF8: {'pg_enable_utf8'    => 1}
-            $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect to database $config->{systemdbname}");
-        }
-    }
-    elsif ($config->{dbimodule} eq "mysql"){
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-            
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect to database $config->{systemdbname}");
-        }
     }
 
     return;

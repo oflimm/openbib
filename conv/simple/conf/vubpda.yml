@@ -43,3 +43,9 @@ title:
 filter:
   'releasedate_':
      filter_match: "^(\d\d\d\d)"
+
+exclude:
+  'by_availability':
+     field: 'identifier'
+     databases:
+        - inst001

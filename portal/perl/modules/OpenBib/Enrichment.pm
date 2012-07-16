@@ -221,6 +221,51 @@ sub get_all_holdings {
     return $all_isbn_ref;
 }
 
+sub check_availability_by_isbn {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $isbn_ref       = exists $arg_ref->{isbn}
+        ? $arg_ref->{isbn}             : [];
+
+    my $databases_ref  = exists $arg_ref->{databases}
+        ? $arg_ref->{databases}        : [];
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Checking ISBNs ".join(' ',@$isbn_ref)." in databases ".join(' ',@$databases_ref));
+    
+    return 0 unless ($isbn_ref && $databases_ref);
+
+    my $is_available =  0;
+
+    my $dbname_args = [];
+
+    foreach my $dbname (@$databases_ref){
+        push @$dbname_args, {
+            dbname => $dbname,
+        };
+    }
+    
+    foreach my $isbn (@$isbn_ref){
+        # Normierung auf ISBN13
+        my $isbn13 = OpenBib::Common::Util::to_isbn13($isbn);
+
+        my $title_count = $self->{schema}->resultset('AllTitleByIsbn')->search_rs(
+            {
+                isbn => $isbn13,
+                -or => $dbname_args,
+                    
+            }
+        )->count;
+
+        $is_available+=$title_count;
+    }
+
+    return $is_available;
+}
+
 sub normdata_to_bdb {
     my ($self,$arg_ref)=@_;
 

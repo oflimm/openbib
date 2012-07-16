@@ -33,24 +33,14 @@ my $dbdesc_dir      = "/opt/openbib/db";
 my $mysqlexe      = "/usr/bin/mysql -u $systemdbuser --password=$systemdbpasswd -f";
 my $mysqladminexe = "/usr/bin/mysqladmin -u $systemdbuser --password=$systemdbpasswd -f";
 
-if ($systemdbimodule eq "Pg"){
-    system("echo \"*:*:*:$systemdbuser:$systemdbpasswd\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-    system("/usr/bin/dropdb -U $systemdbuser $systemdbname");
-    system("/usr/bin/createdb -U $systemdbuser -E UTF-8 -O $systemdbuser $systemdbname");
+system("echo \"*:*:*:$systemdbuser:$systemdbpasswd\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
+system("/usr/bin/dropdb -U $systemdbuser $systemdbname");
+system("/usr/bin/createdb -U $systemdbuser -E UTF-8 -O $systemdbuser $systemdbname");
 
-    print STDERR "### Datendefinition einlesen\n";
+print STDERR "### Datendefinition einlesen\n";
 
-    system("/usr/bin/psql -U $systemdbuser -f '$dbdesc_dir/postgresql/system.sql' $systemdbname");
-    system("/usr/bin/psql -U $systemdbuser -f '$dbdesc_dir/postgresql/system_create_index.sql' $systemdbname");
-}
-elsif ($systemdbimodule eq "mysql"){
-    system("$mysqladminexe drop   $systemdbname");
-    system("$mysqladminexe create  $systemdbname");
-    
-    print STDERR "### Datendefinition einlesen\n";
-    
-    system("$mysqlexe  $systemdbname < $dbdesc_dir/mysql/system.mysql");
-}
+system("/usr/bin/psql -U $systemdbuser -f '$dbdesc_dir/postgresql/system.sql' $systemdbname");
+system("/usr/bin/psql -U $systemdbuser -f '$dbdesc_dir/postgresql/system_create_index.sql' $systemdbname");
 
 my $old_orgunits_ref = [
     {
@@ -110,12 +100,7 @@ my $oldconfigdbh = DBI->connect("DBI:mysql:dbname=config;host=$host;port=3306", 
 my $newschema;
         
 eval {
-    if ($systemdbimodule eq "Pg"){
-        $newschema = OpenBib::Schema::System->connect("DBI:$systemdbimodule:dbname=$systemdbname;host=$systemdbhost;port=$systemdbport", $systemdbuser, $systemdbpasswd);
-    }
-    elsif ($systemdbimodule eq "mysql"){
-        $newschema = OpenBib::Schema::System->connect("DBI:$systemdbimodule:dbname=$systemdbname;host=$systemdbhost;port=$systemdbport", $systemdbuser, $systemdbpasswd,,{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]})
-    }
+    $newschema = OpenBib::Schema::System->connect("DBI:$systemdbimodule:dbname=$systemdbname;host=$systemdbhost;port=$systemdbport", $systemdbuser, $systemdbpasswd);
 };
         
 if ($@){

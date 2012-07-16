@@ -393,7 +393,7 @@ sub connectDB {
     }
 
     eval {
-        # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
+        # UTF8: {'pg_enable_utf8'    => 1}
         $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
     };
 

@@ -230,7 +230,7 @@ convtab:
         index:
           'subject': 1
           'freesearch': 1
-      '0115':         # Aequivalente Bezeichnung
+      '0115':         # Assoziiert
         ft: 1
         string: 1
         index:
@@ -421,51 +421,71 @@ convtab:
           'mediatype': 1
       '0902':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
       '0907':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
       '0912':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
       '0917':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
       '0922':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
       '0927':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
       '0932':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
       '0937':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
       '0942':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
       '0947':
         index:
+          'freesearch': 1
+          'subject': 1
           'subjectstring': 1
         facet:
           'subject': 1
@@ -847,9 +867,13 @@ convtab:
           'source': 1
           'freesearch': 1
       '0700':
+        index:
+          'classificationstring': 1
         facet:
           'classification': 1
       '0710':
+        index:
+          'subjectstring': 1
         facet:
           'subject': 1
       '0720':         # Provenienz (Richter-Bibliothek)

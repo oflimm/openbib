@@ -489,7 +489,7 @@ while (my $line=<IN>){
         }
         
         # Verknupefungen
-        if ($titleid) {
+        if ($titleid && $id) {
             print OUTTITLEHOLDING "$titleid$id\n";
         }
         
@@ -762,7 +762,7 @@ while (my $line=<IN>){
                 
                 push @superids, $target_titleid;
                 
-                if (defined $listitemdata_superid{$target_titleid}){
+                if (defined $listitemdata_superid{$target_titleid} && $source_titleid && $target_titleid){
                     print OUTTITLETITLE "$field$source_titleid$target_titleid$supplement\n";
                 }
             }

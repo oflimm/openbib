@@ -208,6 +208,7 @@ sub identify_by_category_content {
     my $self    = shift;
     my $table   = shift;
     my $arg_ref = shift;
+    my $mode    = shift;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -243,15 +244,16 @@ sub identify_by_category_content {
 
     );
 
-    my $regexp_op = ($config->{dbimodule} eq "mysql")?"rlike":
-        ($config->{dbimodule} eq "Pg")?"~":"rlike";
-
+    my $first_criteria = 1;
+    my %title_a = ();
+    my %title_b = ();
+    
     foreach my $criteria_ref (@$arg_ref){        
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
         my $titles = $self->{schema}->resultset('TitleField')->search_rs(
             {
                 'field'   => $criteria_ref->{category},
-                'content' => { $regexp_op => $criteria_ref->{content} },
+                'content' => { '~' => $criteria_ref->{content} },
             },
             {
                 select   => ['titleid'],
@@ -264,7 +266,7 @@ sub identify_by_category_content {
             $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
                 {
                     $table_type{$table}{field} => $criteria_ref->{category},
-                    'content' => { $regexp_op => $criteria_ref->{content} },
+                    'content' => { '~' => $criteria_ref->{content} },
                 },
                 {
                     select   => ['me.titleid'],
@@ -274,11 +276,33 @@ sub identify_by_category_content {
             );
         }
 
-        foreach my $item ($titles->all){
-            my $thisid = $item->get_column('thisid');
-        
-            $self->{titleid}{$thisid} = 1;
+        if ($mode eq "all" && $first_criteria){
+            $first_criteria = 0;
+            foreach my $item ($titles->all){
+                my $thisid = $item->get_column('thisid');                
+                $title_a{$thisid} = 1;
+            }            
         }
+        elsif ($mode eq "all" && !$first_criteria){
+            foreach my $item ($titles->all){
+                my $thisid = $item->get_column('thisid');                
+                if ($title_a{$thisid} == 1){
+                    $title_b{$thisid} = 1;
+                }
+            }
+            %title_a = %title_b;
+        }
+        else {
+            foreach my $item ($titles->all){
+                my $thisid = $item->get_column('thisid');
+                
+                $self->{titleid}{$thisid} = 1;
+            }
+        }
+    }
+
+    if ($mode eq "all"){
+        $self->{titleid} = \%title_a;
     }
     
     my $count=0;

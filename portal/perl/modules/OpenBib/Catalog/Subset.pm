@@ -208,7 +208,7 @@ sub identify_by_category_content {
     my $self    = shift;
     my $table   = shift;
     my $arg_ref = shift;
-    my $mode    = shift;
+    my $mode    = shift || '';
     
     # Log4perl logger erzeugen
     my $logger = get_logger();

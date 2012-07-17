@@ -224,7 +224,13 @@ convtab:
         index:
           'subject': 1
           'freesearch': 1
-      '0115':         # Assoziiert
+      '0113':         # Uebergeordnete Bezeichnung
+        ft: 1
+        string: 1
+        index:
+          'subject': 1
+          'freesearch': 1
+      '0115':         # Aequivalente Bezeichnung
         ft: 1
         string: 1
         index:

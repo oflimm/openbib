@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2012-06-19 11:42+0200\n"
+"PO-Revision-Date: 2012-07-19 10:16+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team: \n"
-"Language: \n"
+"Language-Team: German <>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: ../templates/collection_html_simple:51
@@ -33,8 +33,8 @@ msgstr "${category}"
 #: ../templates/database/inst001/title_html_categories:319
 #: ../templates/database/inst001/title_html_categories:350
 #: ../templates/database/openlibrary/person_html:100
-#: ../templates/database/openlibrary/title_html_categories:207
-#: ../templates/database/openlibrary/title_html_categories:260
+#: ../templates/database/openlibrary/title_html_categories:205
+#: ../templates/database/openlibrary/title_html_categories:255
 #: ../templates/database/wikisource_de/search_showautset:69
 #: ../templates/library_html:101 ../templates/library_include:59
 #: ../templates/litlist_html_as_text:21 ../templates/litlist_html_full:221
@@ -46,8 +46,8 @@ msgstr "${category}"
 #: ../templates/profile/usb/title_html_categories:240
 #: ../templates/searchform_bottom_left:67 ../templates/subject_html:87
 #: ../templates/title_collection_form:69 ../templates/title_collection_form:78
-#: ../templates/title_html_categories:237
-#: ../templates/title_html_categories:268
+#: ../templates/title_html_categories:226
+#: ../templates/title_html_categories:257
 #: ../templates/views/richter/classification_html:86
 #: ../templates/views/richter/collection_html_as_text:38
 #: ../templates/views/richter/collection_html_full:220
@@ -89,7 +89,9 @@ msgid "%1 Titel"
 msgstr "%1 Titel"
 
 #. (titlecount,thisclassifications.size,subject.litlistcount.public)
-#: ../templates/info_53:55 ../templates/searchform_simple:316
+#: ../templates/info_53:55
+#: ../templates/profile/rheinlandbib/searchform_simple:494
+#: ../templates/searchform_simple:316
 #: ../templates/views/richter/searchform_simple:494
 msgid "%1 Titel in %2 Gruppen, %3 Literaturlisten"
 msgstr "%1 Titel in %2 Gruppen, %3 Literaturlisten"
@@ -130,15 +132,6 @@ msgstr ""
 #: ../templates/user_preferences_html:357 ../templates/user_tag_edit:55
 #: ../templates/views/richter/litlist_edit:82
 #: ../templates/views/richter/title_html:239
-#: ../templates/views/richter/user_preferences_html:166
-#: ../templates/views/richter/user_preferences_html:197
-#: ../templates/views/richter/user_preferences_html:213
-#: ../templates/views/richter/user_preferences_html:229
-#: ../templates/views/richter/user_preferences_html:249
-#: ../templates/views/richter/user_preferences_html:291
-#: ../templates/views/richter/user_tag_collection_html:30
-#: ../templates/views/richter/user_tag_edit:30
-#: ../templates/views/richter/user_tag_edit:47
 msgid "&Auml;ndern"
 msgstr "&Auml;ndern"
 
@@ -201,8 +194,6 @@ msgstr ""
 "Erscheinungsjahr"
 
 #: ../templates/user_navigation:33
-#: ../templates/views/richter/user_tag_collection_html:29
-#: ../templates/views/richter/user_tag_edit:29
 msgid "&Uuml;bersicht"
 msgstr "&Uuml;bersicht"
 
@@ -211,7 +202,11 @@ msgstr "&Uuml;bersicht"
 #: ../templates/mainnavigation:54
 #: ../templates/profile/mobile/views/richtermobile/mainnavigation:14
 #: ../templates/profile/mobile/views/richtermobile/mainnavigation:16
+#: ../templates/profile/rheinlandbib/mainnavigation:42
+#: ../templates/profile/rheinlandbib/mainnavigation:44
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:101
 #: ../templates/searchform_bottom_center:14 ../templates/subnavigation:42
+#: ../templates/views/richter/cloud_navigation:22
 #: ../templates/views/richter/mainnavigation:47
 #: ../templates/views/richter/mainnavigation:49
 #: ../templates/views/richter/subnavigation:61
@@ -239,8 +234,6 @@ msgstr "&ntilde; <i>suchen mit:</i> n"
 #: ../templates/views/richter/title_html:135
 #: ../templates/views/richter/title_html:164
 #: ../templates/views/richter/title_html:236
-#: ../templates/views/richter/user_litlist_collection_html:51
-#: ../templates/views/richter/user_litlist_collection_html:85
 msgid "&ouml;ffentlich"
 msgstr "&ouml;ffentlich"
 
@@ -320,6 +313,7 @@ msgstr ""
 "Boole'schen Suchoperatoren zur Verf&uuml;gung. Lediglich der\n"
 "Abk&uuml;rzungsoperator <b>*</b> ist erlaubt."
 
+#: ../templates/profile/rheinlandbib/searchform_simple:517
 #: ../templates/views/richter/searchform_simple:517
 msgid ""
 "<b>Einloggen</b> f&uuml;r Tagging,\n"
@@ -480,11 +474,10 @@ msgstr ""
 "Suchfeldes in den Suchoptionen'"
 
 #: ../templates/user_preferences_html:344
-#: ../templates/views/richter/user_preferences_html:245
 msgid "Abgleich zu BibSonomy"
 msgstr "Abgleich zu BibSonomy"
 
-#: ../templates/corporate_banner:7
+#: ../templates/corporate_banner:7 ../templates/corporate_banner~:7
 #: ../templates/views/richter/corporate_banner:7
 msgid "Abmelden"
 msgstr "Abmelden"
@@ -502,18 +495,17 @@ msgid "Abspeichern"
 msgstr "Abspeichern"
 
 #: ../templates/user_profile_html:67
-#: ../templates/views/richter/user_profile:67
 msgid "Abspeicherung eines neuen oder bestehenden Profils"
 msgstr "Abspeicherung eines neuen oder bestehenden Profils"
 
+#: ../templates/profile/rheinlandbib/searchform_query:119
 #: ../templates/profile/usb/searchform_query:119
 #: ../templates/searchform_query:119 ../templates/user_preferences_html:222
 #: ../templates/views/richter/searchform_query:119
-#: ../templates/views/richter/user_preferences_html:286
 msgid "Abstrakt/Inhalt"
 msgstr "Abstrakt/Inhalt"
 
-#: ../templates/admin_database_html:53
+#: ../templates/admin_database_html:59
 #: ../templates/admin_database_record_edit:68
 #: ../templates/admin_database_record_html:55
 #: ../templates/admin_database_rss_record_html:135
@@ -525,7 +517,7 @@ msgstr "Abstrakt/Inhalt"
 #: ../templates/admin_server:50 ../templates/admin_server:70
 #: ../templates/admin_showcat:39 ../templates/admin_showcat:60
 #: ../templates/admin_view_html:52 ../templates/admin_view_html:74
-#: ../templates/admin_view_record_edit:71 ../templates/database_record_html:55
+#: ../templates/admin_view_record_edit:62 ../templates/database_record_html:55
 #: ../templates/user_preferences_html:275
 #: ../templates/user_preferences_html:289
 #: ../templates/user_preferences_html:302
@@ -570,11 +562,17 @@ msgstr "Alle Eintr&auml;ge ausw&auml;hlen"
 msgid "Alle Fachgebiete"
 msgstr "Alle Fachgebiete"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:67
 #: ../templates/views/richter/searchform_simple:67
 msgid "Alle Formate"
 msgstr "Alle Formate"
 
 #: ../templates/databasechoice:75
+#: ../templates/profile/rheinlandbib/searchform_simple:162
+#: ../templates/profile/rheinlandbib/searchform_simple:253
+#: ../templates/profile/rheinlandbib/searchform_simple:346
+#: ../templates/profile/rheinlandbib/searchform_simple:440
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/searchform_profile:16
 #: ../templates/profile/usb/searchform_query:154
 #: ../templates/searchform_profile:16 ../templates/user_profile_edit:75
 #: ../templates/user_profile_html:91
@@ -582,8 +580,6 @@ msgstr "Alle Formate"
 #: ../templates/views/richter/searchform_simple:253
 #: ../templates/views/richter/searchform_simple:346
 #: ../templates/views/richter/searchform_simple:440
-#: ../templates/views/richter/user_profile:91
-#: ../templates/views/richter/user_profile_edit:74
 msgid "Alle Kataloge"
 msgstr "Alle Kataloge"
 
@@ -602,10 +598,10 @@ msgid "Alle Treffer"
 msgstr "Alle Treffer"
 
 #: ../templates/user_preferences_html:366
-#: ../templates/views/richter/user_preferences_html:258
 msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:60
 #: ../templates/searchform_simple:79
 #: ../templates/views/richter/searchform_simple:60
 msgid "Alles"
@@ -725,7 +721,6 @@ msgstr "Andere Titel"
 #: ../templates/litlist_include:48 ../templates/tag_include:42
 #: ../templates/user_tag_html:74 ../templates/views/richter/litlist_edit:131
 #: ../templates/views/richter/litlist_html:85
-#: ../templates/views/richter/user_tag_html:59
 msgid "Anfang"
 msgstr "Anfang"
 
@@ -734,7 +729,6 @@ msgid "Angebotene Arten an RSS-Feeds"
 msgstr "Angebotene Arten an RSS-Feeds"
 
 #: ../templates/user_litlist_collection_html:86
-#: ../templates/views/richter/user_litlist_collection_html:81
 msgid "Angelegt"
 msgstr "Angelegt"
 
@@ -747,7 +741,7 @@ msgstr "Anlegen einer neuen Literaturliste: "
 msgid "Anleitung"
 msgstr "Anleitung"
 
-#: ../templates/corporate_banner:9
+#: ../templates/corporate_banner:9 ../templates/corporate_banner~:9
 #: ../templates/views/richter/corporate_banner:9
 msgid "Anmelden"
 msgstr "Anmelden"
@@ -967,14 +961,12 @@ msgid "Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog"
 msgstr "Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog"
 
 #: ../templates/user_profile_html:73
-#: ../templates/views/richter/user_profile:73
 msgid "Anzeige des ausgew&auml;hlten Profils"
 msgstr "Anzeige des ausgew&auml;hlten Profils"
 
 #: ../templates/dbis_showsubjects:72 ../templates/ezb_showsubjects:70
 #: ../templates/litlist_collection_by_single_subject_include:16
 #: ../templates/user_tag_collection_html:45
-#: ../templates/views/richter/user_tag_collection_html:36
 msgid "Anzeige:"
 msgstr "Anzeige:"
 
@@ -1024,6 +1016,8 @@ msgstr "Aufrufe externer Seiten &uuml;ber Weiterleitungen aus OpenBib"
 msgid "Aufrufe in OpenBib"
 msgstr "Aufrufe in OpenBib"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:293
+#: ../templates/profile/rheinlandbib/searchform_simple:62
 #: ../templates/searchform_simple:81
 #: ../templates/views/richter/searchform_simple:293
 #: ../templates/views/richter/searchform_simple:62
@@ -1050,12 +1044,10 @@ msgid "Ausdrucken"
 msgstr "Ausdrucken"
 
 #: ../templates/user_preferences_html:100
-#: ../templates/views/richter/user_preferences_html:105
 msgid "Ausgeliehen"
 msgstr "Ausgeliehen"
 
 #: ../templates/user_profile_collection_html:69
-#: ../templates/views/richter/user_profile_collection:83
 msgid "Ausgew&auml;hlte Kataloge"
 msgstr "Ausgew&auml;hlte Kataloge"
 
@@ -1090,7 +1082,6 @@ msgid "Ausleihfrist"
 msgstr "Ausleihfrist"
 
 #: ../templates/user_preferences_html:65
-#: ../templates/views/richter/user_preferences_html:70
 msgid "Ausleihinformationen"
 msgstr "Ausleihinformationen"
 
@@ -1107,8 +1098,6 @@ msgid "Ausleihsystem"
 msgstr "Ausleihsystem"
 
 #: ../templates/databasechoice:124
-#: ../templates/views/richter/user_profile_edit:123
-#: ../templates/views/richter/user_profile_edit:67
 msgid "Auswählen"
 msgstr "Auswählen"
 
@@ -1118,11 +1107,12 @@ msgid "Autokonvertierung (cron)"
 msgstr "Autokonvertierung (cron)"
 
 #: ../templates/info_help:866 ../templates/info_help:91
-msgid "Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy"
-msgstr "Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy"
+msgid ""
+"Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy"
+msgstr ""
+"Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy"
 
 #: ../templates/user_preferences_html:251
-#: ../templates/views/richter/user_preferences_html:175
 msgid "Automatische Vorschl&auml;ge zur Suchanfrage"
 msgstr "Automatische Vorschl&auml;ge zur Suchanfrage"
 
@@ -1140,6 +1130,10 @@ msgstr ""
 msgid "Beginn"
 msgstr "Beginn"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:174
+#: ../templates/profile/rheinlandbib/searchform_simple:265
+#: ../templates/profile/rheinlandbib/searchform_simple:358
+#: ../templates/profile/rheinlandbib/searchform_simple:452
 #: ../templates/profile/usb/searchform_query:166
 #: ../templates/views/richter/searchform_simple:174
 #: ../templates/views/richter/searchform_simple:265
@@ -1151,14 +1145,14 @@ msgstr "Beginnen Sie eine neue Recherche"
 #: ../templates/collection_html_full:68 ../templates/corporatebody_html:94
 #: ../templates/database/inst001/title_html_categories:106
 #: ../templates/database/openlibrary/person_html:131
-#: ../templates/database/openlibrary/title_html_categories:23
+#: ../templates/database/openlibrary/title_html_categories:25
 #: ../templates/database/wikisource_de/search_showautset:78
 #: ../templates/litlist_html_full:36 ../templates/person_html:119
 #: ../templates/person_include:67
 #: ../templates/profile/mobile/views/richtermobile/title_html_categories:24
 #: ../templates/profile/usb/resource_title_html_categories:20
 #: ../templates/profile/usb/title_html_categories:20
-#: ../templates/subject_html:101 ../templates/title_html_categories:24
+#: ../templates/subject_html:101 ../templates/title_html_categories:25
 #: ../templates/views/richter/collection_html_full:68
 #: ../templates/views/richter/corporatebody_html:94
 #: ../templates/views/richter/litlist_html_full:36
@@ -1189,9 +1183,9 @@ msgstr ""
 "      Suchoptionen gilt eine <b>automatische\n"
 "      ODER-Verkn&uuml;pfung</b>:"
 
-#: ../templates/browse_title_html:50
+#: ../templates/browse_title_html:61
 #: ../templates/profile/mobile/views/richtermobile/browse_title_html:56
-#: ../templates/views/richter/browse_title_html:50
+#: ../templates/views/richter/browse_title_html:54
 msgid ""
 "Bei den Personennamen handelt es sich um Besitzeintr&auml;ge, die den\n"
 "Vorbesitzer der Richterschen B&uuml;cher ausweisen. Au&szlig;erdem\n"
@@ -1212,12 +1206,10 @@ msgstr ""
 "        Grundbuchstaben gesucht werden:"
 
 #: ../templates/user_preferences_html:285
-#: ../templates/views/richter/user_preferences_html:210
 msgid "Bei der Eingabe von Personen"
 msgstr "Bei der Eingabe von Personen"
 
 #: ../templates/user_preferences_html:299
-#: ../templates/views/richter/user_preferences_html:211
 msgid "Bei der Eingabe von Schlagworten"
 msgstr "Bei der Eingabe von Schlagworten"
 
@@ -1312,6 +1304,11 @@ msgstr "Bemerkungen"
 msgid "Benutzer"
 msgstr "Benutzer"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:156
+#: ../templates/profile/rheinlandbib/searchform_simple:247
+#: ../templates/profile/rheinlandbib/searchform_simple:340
+#: ../templates/profile/rheinlandbib/searchform_simple:434
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/searchform_profile:10
 #: ../templates/profile/usb/searchform_query:148
 #: ../templates/searchform_profile:10
 #: ../templates/views/richter/searchform_simple:156
@@ -1322,12 +1319,10 @@ msgid "Benutzerdefiniert"
 msgstr "Benutzerdefiniert"
 
 #: ../templates/user_navigation:53
-#: ../templates/views/richter/user_navigation:22
 msgid "Benutzerkonto"
 msgstr "Benutzerkonto"
 
 #: ../templates/user_preferences_html:47
-#: ../templates/views/richter/user_preferences_html:49
 msgid "Benutzername"
 msgstr "Benutzername"
 
@@ -1343,12 +1338,11 @@ msgstr "Bereits existierende Anmeldeziele"
 msgid "Bereits existierende Katalog-Profile"
 msgstr "Bereits existierende Katalog-Profile"
 
-#: ../templates/admin_database_html:71 ../templates/admin_showcat:57
+#: ../templates/admin_database_html:92 ../templates/admin_showcat:57
 msgid "Bereits existierende Kataloge"
 msgstr "Bereits existierende Kataloge"
 
 #: ../templates/user_litlist_collection_html:83
-#: ../templates/views/richter/user_litlist_collection_html:78
 msgid "Bereits existierende Literaturlisten"
 msgstr "Bereits existierende Literaturlisten"
 
@@ -1357,7 +1351,6 @@ msgid "Bereits existierende Organisationseinheiten"
 msgstr "Bereits existierende Organisationseinheiten"
 
 #: ../templates/user_profile_collection_html:65
-#: ../templates/views/richter/user_profile_collection:79
 msgid "Bereits existierende Profile"
 msgstr "Bereits existierende Profile"
 
@@ -1379,7 +1372,7 @@ msgstr "Bereits existierende Views"
 
 #: ../templates/admin_authentication:55 ../templates/admin_authentication:73
 #: ../templates/admin_authentication_record_edit:55
-#: ../templates/admin_database_html:53 ../templates/admin_database_html:74
+#: ../templates/admin_database_html:55 ../templates/admin_database_html:95
 #: ../templates/admin_database_record_edit:52
 #: ../templates/admin_database_record_html:49
 #: ../templates/admin_orgunit_html:50
@@ -1409,13 +1402,13 @@ msgstr "Beschreibung"
 #: ../templates/database/inst001/circset:99
 #: ../templates/database/inst001/mexset:3
 #: ../templates/database/inst001/title_html_categories:355
-#: ../templates/database/openlibrary/title_html_categories:265
+#: ../templates/database/openlibrary/title_html_categories:260
 #: ../templates/holding:16 ../templates/litlist_html_as_text:26
 #: ../templates/profile/mobile/views/richtermobile/holding:16
 #: ../templates/profile/mobile/views/richtermobile/title_html_categories:273
 #: ../templates/profile/usb/circulation:106
 #: ../templates/profile/usb/circulation:31 ../templates/profile/usb/holding:19
-#: ../templates/title_html_categories:273
+#: ../templates/title_html_categories:262
 #: ../templates/views/richter/collection_html_as_text:43
 #: ../templates/views/richter/litlist_html_as_text:26
 msgid "Besitzende Bibliothek"
@@ -1462,7 +1455,6 @@ msgstr "Bestellung nicht m&ouml;glich"
 
 #: ../templates/user_navigation:66 ../templates/user_navigation:68
 #: ../templates/user_preferences_html:125
-#: ../templates/views/richter/user_preferences_html:130
 msgid "Bestellungen"
 msgstr "Bestellungen"
 
@@ -1487,12 +1479,11 @@ msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Bewertungen/Rezensionen von Nutzern"
 
 #: ../templates/collection_html_full:56
-#: ../templates/database/openlibrary/title_html_images:27
+#: ../templates/database/openlibrary/title_html_images:32
 #: ../templates/litlist_html_full:24 ../templates/title_html_images:33
 #: ../templates/user_preferences_html:339
 #: ../templates/views/richter/collection_html_full:56
 #: ../templates/views/richter/litlist_html_full:24
-#: ../templates/views/richter/user_preferences_html:238
 msgid "BibSonomy"
 msgstr "BibSonomy"
 
@@ -1502,16 +1493,14 @@ msgid "BibSonomy Tags"
 msgstr "BibSonomy Tags"
 
 #: ../templates/user_preferences_html:353
-#: ../templates/views/richter/user_preferences_html:247
 msgid "BibSonomy-API-Key"
 msgstr "BibSonomy-API-Key"
 
 #: ../templates/user_preferences_html:348
-#: ../templates/views/richter/user_preferences_html:246
 msgid "BibSonomy-API-User"
 msgstr "BibSonomy-API-User"
 
-#: ../templates/admin_database_html:74 ../templates/admin_showcat:60
+#: ../templates/admin_database_html:95 ../templates/admin_showcat:60
 msgid "Bibinfo statt URL / vorhanden"
 msgstr "Bibinfo statt URL / vorhanden"
 
@@ -1551,8 +1540,6 @@ msgstr ""
 #: ../templates/views/richter/collection_html_actions:96
 #: ../templates/views/richter/title_html:195
 #: ../templates/views/richter/title_html:269
-#: ../templates/views/richter/user_tag_collection_html:87
-#: ../templates/views/richter/user_tag_edit:83
 msgid "Bisher haben Sie noch keine Tags vergeben."
 msgstr "Bisher haben Sie noch keine Tags vergeben."
 
@@ -1586,7 +1573,6 @@ msgid "Bitte geben Sie einen Suchbegriff ein."
 msgstr "Bitte geben Sie einen Suchbegriff ein."
 
 #: ../templates/user_preferences_html:89
-#: ../templates/views/richter/user_preferences_html:94
 msgid ""
 "Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
 "Auskunft der Bibliothek."
@@ -1599,26 +1585,57 @@ msgid "Browser"
 msgstr "Browser"
 
 #: ../templates/visible_categories_corporatebody:16
+#: ../templates/visible_categories_corporatebody~:16
 msgid "C0001"
 msgstr "Ansetzung"
 
-#: ../templates/visible_categories_corporatebody:17
+#: ../templates/visible_categories_corporatebody:18
+#: ../templates/visible_categories_corporatebody~:18
 msgid "C0102"
 msgstr "Verweisung"
 
-#: ../templates/visible_categories_corporatebody:18
+#: ../templates/visible_categories_corporatebody:20
+#: ../templates/visible_categories_corporatebody~:20
 msgid "C0103"
 msgstr "Abkürzung der Verweisform"
 
-#: ../templates/visible_categories_corporatebody:19
+#: ../templates/visible_categories_corporatebody:22
+#: ../templates/visible_categories_corporatebody~:22
 msgid "C0110"
 msgstr "Abkürzung der Ansetzung"
 
-#: ../templates/visible_categories_corporatebody:20
+#: ../templates/visible_categories_corporatebody:24
+#: ../templates/visible_categories_corporatebody~:24
+#: ../templates/visible_categories_corporatebody~:25
 msgid "C0111"
 msgstr "Früherer/Späterer Name"
 
+#: ../templates/visible_categories_corporatebody:17
+#: ../templates/visible_categories_corporatebody~:17
+msgid "C0800"
+msgstr "Ansetzung"
+
+#: ../templates/visible_categories_corporatebody:19
+#: ../templates/visible_categories_corporatebody~:19
+msgid "C0810"
+msgstr "Verweisung"
+
 #: ../templates/visible_categories_corporatebody:21
+#: ../templates/visible_categories_corporatebody~:21
+msgid "C0812"
+msgstr "Abkürzung der Verweisform"
+
+#: ../templates/visible_categories_corporatebody:25
+msgid "C0850"
+msgstr "Früherer/Späterer Name"
+
+#: ../templates/visible_categories_corporatebody:23
+#: ../templates/visible_categories_corporatebody~:23
+msgid "C0881"
+msgstr "Abkürzung der Ansetzung"
+
+#: ../templates/visible_categories_corporatebody:26
+#: ../templates/visible_categories_corporatebody~:26
 msgid "C5000"
 msgstr "Anzahl Titel"
 
@@ -1630,7 +1647,7 @@ msgstr "Chinesisch"
 
 #: ../templates/admin_authentication:53 ../templates/admin_authentication:72
 #: ../templates/admin_authentication_record_edit:54
-#: ../templates/admin_database_html:53 ../templates/admin_database_html:74
+#: ../templates/admin_database_html:54 ../templates/admin_database_html:95
 #: ../templates/admin_database_record_edit:51
 #: ../templates/admin_database_record_html:48 ../templates/admin_showcat:39
 #: ../templates/admin_showcat:60 ../templates/database_record_html:49
@@ -1744,9 +1761,9 @@ msgstr ""
 "vollkommen transparent. Sie k&ouml;nnen also ohne Umwege jeden URL direkt\n"
 "&uuml;ber Ihren Webbrowser bookmarken."
 
-#: ../templates/browse_title_html:47
+#: ../templates/browse_title_html:58
 #: ../templates/profile/mobile/views/richtermobile/browse_title_html:53
-#: ../templates/views/richter/browse_title_html:47
+#: ../templates/views/richter/browse_title_html:51
 msgid ""
 "Das Register der Provenienzen listet die Namen von Privatpersonen und "
 "Rezensionszeitschriften auf."
@@ -1801,7 +1818,6 @@ msgid "Datenbanktyp"
 msgstr "Datenbanktyp"
 
 #: ../templates/user_profile_html:76
-#: ../templates/views/richter/user_profile:76
 msgid ""
 "Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. "
 "Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden "
@@ -1835,7 +1851,7 @@ msgstr ""
 "%2G%3 lobale Suche auf alle\n"
 "vorhandenen Kataloge aus."
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1239
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1245
 #: ../modules/OpenBib/Handler/Apache/Search.pm:489
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
@@ -1875,8 +1891,6 @@ msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 msgstr "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 
 #: ../templates/user_profile_edit:63 ../templates/user_profile_html:84
-#: ../templates/views/richter/user_profile:84
-#: ../templates/views/richter/user_profile_edit:63
 msgid "Derzeit angezeigtes Profil"
 msgstr "Derzeit angezeigtes Profil"
 
@@ -1957,8 +1971,10 @@ msgid "Die Bestellung wurde erfolgreich durchgef&uuml;hrt."
 msgstr "Die Bestellung wurde erfolgreich durchgef&uuml;hrt."
 
 #: ../templates/views/richter/std_header:82
-msgid "Die Bibliothek Elise und Helene Richter - ein OpenBib Demonstrations-Portal"
-msgstr "Die Bibliothek Elise und Helene Richter - ein OpenBib Demonstrations-Portal"
+msgid ""
+"Die Bibliothek Elise und Helene Richter - ein OpenBib Demonstrations-Portal"
+msgstr ""
+"Die Bibliothek Elise und Helene Richter - ein OpenBib Demonstrations-Portal"
 
 #: ../templates/profile/mobile/views/richtermobile/info_portal:49
 #: ../templates/views/richter/info_portal:56
@@ -2247,8 +2263,10 @@ msgid "Digitale Bibliothek / Monographien (Fernleihe)"
 msgstr "Digitale Bibliothek / Monographien (Fernleihe)"
 
 #: ../templates/info_help:618
-msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
-msgstr "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgid ""
+"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgstr ""
+"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
 
 #: ../templates/externaljump:132
 msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
@@ -2325,12 +2343,10 @@ msgstr ""
 #: ../templates/views/richter/litlist_edit:16
 #: ../templates/views/richter/litlist_html:16
 #: ../templates/views/richter/titlist_item_html_short:22
-#: ../templates/views/richter/user_tag_html:15
 msgid "E-Book"
 msgstr "E-Book"
 
 #: ../templates/user_preferences_html:78 ../templates/user_role_edit:68
-#: ../templates/views/richter/user_preferences_html:83
 msgid "E-Mail"
 msgstr "E-Mail"
 
@@ -2368,8 +2384,6 @@ msgid "E4300"
 msgstr "Schlagwort (ext.)"
 
 #: ../templates/user_tag_collection_html:53 ../templates/user_tag_edit:61
-#: ../templates/views/richter/user_tag_collection_html:44
-#: ../templates/views/richter/user_tag_edit:53
 msgid "Eigene Tags"
 msgstr "Eigene Tags"
 
@@ -2384,7 +2398,6 @@ msgid "Eigenen Review l&ouml;schen"
 msgstr "Eigenen Review l&ouml;schen"
 
 #: ../templates/admin_searchprofile_record_edit:53
-#: ../templates/admin_view_record_edit:62
 msgid "Eigener Index"
 msgstr "Eigener Index"
 
@@ -2437,7 +2450,6 @@ msgid "Einfache Recherche"
 msgstr "Einfache Recherche"
 
 #: ../templates/user_preferences_html:149
-#: ../templates/views/richter/user_preferences_html:162
 msgid "Einfache Recherchemaske"
 msgstr "Einfache Recherchemaske"
 
@@ -2453,6 +2465,7 @@ msgstr "Einfache Suche"
 msgid "Eingabe neuer Tags"
 msgstr "Eingabe neuer Tags"
 
+#: ../templates/profile/rheinlandbib/searchform_query:138
 #: ../templates/profile/usb/searchform_query:138
 #: ../templates/searchform_query:140
 #: ../templates/views/richter/searchform_query:138
@@ -2460,6 +2473,8 @@ msgid "Eingrenzung auf Gesamttitel (Serien)"
 msgstr "Eingrenzung auf Gesamttitel (Serien)"
 
 #: ../templates/login:66 ../templates/login_circulation:81
+#: ../templates/profile/rheinlandbib/searchform_simple:517
+#: ../templates/profile/rheinlandbib/searchform_simple:558
 #: ../templates/profile/usb/login:104 ../templates/profile/usb/login:73
 #: ../templates/views/richter/login:64
 #: ../templates/views/richter/searchform_simple:517
@@ -2469,7 +2484,6 @@ msgstr "Einloggen"
 
 #: ../templates/user_preferences_html:140
 #: ../templates/views/richter/corporate_banner:6
-#: ../templates/views/richter/user_preferences_html:146
 msgid "Einstellungen"
 msgstr "Einstellungen"
 
@@ -2577,7 +2591,6 @@ msgstr "Empfehlungen"
 #: ../templates/litlist_include:62 ../templates/tag_include:56
 #: ../templates/user_tag_html:88 ../templates/views/richter/litlist_edit:145
 #: ../templates/views/richter/litlist_html:99
-#: ../templates/views/richter/user_tag_html:73
 msgid "Ende"
 msgstr "Ende"
 
@@ -2621,8 +2634,6 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/views/richter/drilldown_categorized:166
 #: ../templates/views/richter/titlist_item_html_short:189
 #: ../templates/views/richter/titlist_item_html_short:192
-#: ../templates/views/richter/user_litlist_collection_html:89
-#: ../templates/views/richter/user_profile_collection:97
 msgid "Entfernen"
 msgstr "Entfernen"
 
@@ -2655,8 +2666,10 @@ msgstr ""
 "Jahres"
 
 #: ../templates/admin_statistic_view_session_graph_html:63
-msgid "Entwicklung der Session-Zahl in den einzelnen Sichten nach Tagen eines Monats"
-msgstr "Entwicklung der Session-Zahl in den einzelnen Sichten nach Tagen eines Monats"
+msgid ""
+"Entwicklung der Session-Zahl in den einzelnen Sichten nach Tagen eines Monats"
+msgstr ""
+"Entwicklung der Session-Zahl in den einzelnen Sichten nach Tagen eines Monats"
 
 #: ../templates/collection_mail_success:45
 #: ../templates/mailpassword_success:46
@@ -2681,7 +2694,6 @@ msgstr ""
 "URL-Rewriting für die jeweiligen Hostnamen."
 
 #: ../templates/searchform_options:3 ../templates/user_preferences_html:237
-#: ../templates/views/richter/user_preferences_html:289
 msgid "Erscheinungsjahr"
 msgstr "Erscheinungsjahr"
 
@@ -2691,20 +2703,23 @@ msgstr "Erscheinungsjahre"
 
 #: ../templates/collection_html_as_text:47
 #: ../templates/database/inst001/title_html_categories:359
-#: ../templates/database/openlibrary/title_html_categories:269
+#: ../templates/database/openlibrary/title_html_categories:264
 #: ../templates/litlist_html_as_text:30
 #: ../templates/profile/mobile/views/richtermobile/title_html_categories:277
-#: ../templates/title_html_categories:277
+#: ../templates/title_html_categories:266
 #: ../templates/views/richter/collection_html_as_text:47
 #: ../templates/views/richter/litlist_html_as_text:30
 msgid "Erscheinungsverlauf  "
 msgstr "Erscheinungsverlauf  "
 
 #: ../templates/user_preferences_html:150
-#: ../templates/views/richter/user_preferences_html:166
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:174
+#: ../templates/profile/rheinlandbib/searchform_simple:265
+#: ../templates/profile/rheinlandbib/searchform_simple:358
+#: ../templates/profile/rheinlandbib/searchform_simple:452
 #: ../templates/searchform:37 ../templates/searchform_simple:161
 #: ../templates/searchform_simple:204 ../templates/searchform_simple:248
 #: ../templates/searchform_simple:293
@@ -2807,12 +2822,16 @@ msgstr "Es existiert kein View unter diesem Namen"
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:273
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:342
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:419
-msgid "Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"
-msgstr "Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"
+msgid ""
+"Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"
+msgstr ""
+"Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"
 
 #: ../templates/admin_database_rss_record_html:186
-msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
-msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgid ""
+"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgstr ""
+"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 
 #: ../templates/admin_database_rss_record_html:243
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort"
@@ -2866,15 +2885,17 @@ msgid "Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet."
 msgstr "Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet."
 
 #: ../modules/OpenBib/Handler/Apache/Registration.pm:236
-msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
-msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgid ""
+"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgstr ""
+"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:445
 #: ../modules/OpenBib/Handler/Apache/Search.pm:211
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
-#: ../modules/OpenBib/Handler/Apache.pm:730
+#: ../modules/OpenBib/Handler/Apache.pm:782
 #: ../modules/OpenBib/RecordList/Title.pm:325
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
@@ -2886,10 +2907,6 @@ msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
 #: ../templates/search_title_end:19
 msgid "Es wurden keine Treffer gefunden"
 msgstr "Es wurden keine Treffer gefunden"
-
-#: ../templates/views/richter/user_preferences_html:208
-msgid "Exakt?"
-msgstr "Exakt?"
 
 #: ../templates/admin_database_record_edit:101
 #: ../templates/admin_database_record_html:79
@@ -2951,7 +2968,7 @@ msgstr ""
 "      Zeichen <b>^</b> voran (z.B. ^frauenbildung*). Mit * k&ouml;nnen\n"
 "      Sie wie gewohnt den entsprechenden Begriff trunkieren."
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1232
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1238
 #: ../modules/OpenBib/Handler/Apache/Search.pm:484
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
@@ -2988,6 +3005,9 @@ msgstr "FTP"
 msgid "Fachgebiet"
 msgstr "Fachgebiet"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:254
+#: ../templates/profile/rheinlandbib/searchform_simple:347
+#: ../templates/profile/rheinlandbib/searchform_simple:441
 #: ../templates/profile/usb/searchform_query:155
 #: ../templates/views/richter/searchform_simple:254
 #: ../templates/views/richter/searchform_simple:347
@@ -3026,7 +3046,6 @@ msgstr ""
 "     Search Bild um den grünen Text 'Vollzugriff' ergänzt."
 
 #: ../templates/user_profile_html:67
-#: ../templates/views/richter/user_profile:67
 msgid "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
 msgstr "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
 
@@ -3071,7 +3090,7 @@ msgstr "Fernleihe"
 msgid "Film ohne Ton"
 msgstr "Film ohne Ton"
 
-#: ../templates/search_history:89
+#: ../templates/search_history:99
 msgid "Filter"
 msgstr "Filter"
 
@@ -3106,14 +3125,18 @@ msgid "Französisch"
 msgstr "Französisch"
 
 #: ../templates/admin_statistic_query_html:81
+#: ../templates/profile/rheinlandbib/searchform_query:69
 #: ../templates/profile/usb/searchform_query:69 ../templates/search_history:59
 #: ../templates/search_title_combined_html:20 ../templates/searchform_query:69
 #: ../templates/title_html:67 ../templates/user_preferences_html:168
 #: ../templates/views/richter/searchform_query:69
-#: ../templates/views/richter/user_preferences_html:276
 msgid "Freie Suche"
 msgstr "Freie Suche"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:182
+#: ../templates/profile/rheinlandbib/searchform_simple:274
+#: ../templates/profile/rheinlandbib/searchform_simple:367
+#: ../templates/profile/rheinlandbib/searchform_simple:461
 #: ../templates/views/richter/searchform_simple:182
 #: ../templates/views/richter/searchform_simple:274
 #: ../templates/views/richter/searchform_simple:367
@@ -3122,6 +3145,10 @@ msgid "Frühere Recherchen"
 msgstr "Frühere Recherchen"
 
 #. ("<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>")
+#: ../templates/profile/rheinlandbib/searchform_simple:196
+#: ../templates/profile/rheinlandbib/searchform_simple:289
+#: ../templates/profile/rheinlandbib/searchform_simple:382
+#: ../templates/profile/rheinlandbib/searchform_simple:476
 #: ../templates/searchform_simple:168 ../templates/searchform_simple:211
 #: ../templates/searchform_simple:255 ../templates/searchform_simple:300
 #: ../templates/views/richter/searchform_simple:196
@@ -3176,7 +3203,6 @@ msgid "Geben Sie hier einen oder mehrere Tags ein"
 msgstr "Geben Sie hier einen oder mehrere Tags ein"
 
 #: ../templates/user_preferences_html:70 ../templates/user_role_edit:57
-#: ../templates/views/richter/user_preferences_html:75
 msgid "Geburtsdatum"
 msgstr "Geburtsdatum"
 
@@ -3199,7 +3225,7 @@ msgid "Gesamtkonto-Verl&auml;ngerung"
 msgstr "Gesamtkonto-Verl&auml;ngerung"
 
 #: ../templates/collection_html_full:52
-#: ../templates/database/openlibrary/title_html_images:22
+#: ../templates/database/openlibrary/title_html_images:27
 #: ../templates/litlist_html_full:20 ../templates/title_html_images:28
 #: ../templates/views/richter/collection_html_full:52
 #: ../templates/views/richter/litlist_html_full:20
@@ -3237,12 +3263,10 @@ msgid "Grund:"
 msgstr "Grund:"
 
 #: ../templates/user_navigation:18 ../templates/user_navigation:20
-#: ../templates/views/richter/user_navigation:17
 msgid "Grundeinstellungen"
 msgstr "Grundeinstellungen"
 
 #: ../templates/user_preferences_html:96
-#: ../templates/views/richter/user_preferences_html:101
 msgid "Guthaben"
 msgstr "Guthaben"
 
@@ -3295,7 +3319,6 @@ msgid "Haftungsausschluss"
 msgstr "Haftungsausschluss"
 
 #: ../templates/user_preferences_html:173
-#: ../templates/views/richter/user_preferences_html:277
 msgid "Hauptsachtitel (HST)"
 msgstr "Hauptsachtitel (HST)"
 
@@ -3332,6 +3355,11 @@ msgstr ""
 "Hier sind auch Suchanfragen mit kombinierten UND- und ODER-Verkn&uuml;"
 "pfungen unter Verwendung von Klammern m&ouml;glich (siehe Beispiel 7)"
 
+#: ../templates/profile/rheinlandbib/searchform_query:141
+#: ../templates/profile/rheinlandbib/searchform_simple:147
+#: ../templates/profile/rheinlandbib/searchform_simple:238
+#: ../templates/profile/rheinlandbib/searchform_simple:331
+#: ../templates/profile/rheinlandbib/searchform_simple:425
 #: ../templates/profile/usb/searchform_query:164
 #: ../templates/searchform_query:143 ../templates/searchform_simple:158
 #: ../templates/searchform_simple:201 ../templates/searchform_simple:245
@@ -3526,18 +3554,18 @@ msgid "I0280"
 msgstr "Geo-Koordinaten"
 
 #: ../templates/admin_statistic_query_html:87
+#: ../templates/profile/rheinlandbib/searchform_query:99
 #: ../templates/profile/usb/searchform_query:99
 #: ../templates/searchform_query:99 ../templates/user_preferences_html:198
 #: ../templates/views/richter/searchform_query:99
-#: ../templates/views/richter/user_preferences_html:282
 msgid "ISBN"
 msgstr "ISBN"
 
 #: ../templates/admin_statistic_query_html:88
+#: ../templates/profile/rheinlandbib/searchform_query:104
 #: ../templates/profile/usb/searchform_query:104
 #: ../templates/searchform_query:104 ../templates/user_preferences_html:207
 #: ../templates/views/richter/searchform_query:104
-#: ../templates/views/richter/user_preferences_html:283
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -3725,9 +3753,9 @@ msgstr ""
 "     den Inhaltsverzeichnissen ist in OpenBib (derzeit) nicht\n"
 "     m&ouml;glich."
 
-#: ../templates/browse_title_html:62
+#: ../templates/browse_title_html:73
 #: ../templates/profile/mobile/views/richtermobile/browse_title_html:68
-#: ../templates/views/richter/browse_title_html:62
+#: ../templates/views/richter/browse_title_html:66
 msgid ""
 "Im Register werden sie unter dem Namen der Zeitschrift\n"
 "aufgef&uuml;hrt."
@@ -3762,7 +3790,7 @@ msgstr ""
 "      auf externen Seiten verlinken.  %1Beispiel%2"
 
 #: ../templates/collection_html_full:56
-#: ../templates/database/openlibrary/title_html_images:27
+#: ../templates/database/openlibrary/title_html_images:32
 #: ../templates/litlist_html_full:24 ../templates/title_html_images:33
 #: ../templates/views/richter/collection_html_full:56
 #: ../templates/views/richter/litlist_html_full:24
@@ -3770,7 +3798,7 @@ msgid "In BibSonomy vorhanden?"
 msgstr "In BibSonomy vorhanden?"
 
 #: ../templates/collection_html_full:52
-#: ../templates/database/openlibrary/title_html_images:22
+#: ../templates/database/openlibrary/title_html_images:27
 #: ../templates/litlist_html_full:20 ../templates/title_html_images:28
 #: ../templates/views/richter/collection_html_full:52
 #: ../templates/views/richter/litlist_html_full:20
@@ -3879,7 +3907,6 @@ msgstr ""
 "     spezialisiert ist."
 
 #: ../templates/user_preferences_html:323
-#: ../templates/views/richter/user_preferences_html:226
 msgid "In der Recherchemaske"
 msgstr "In der Recherchemaske"
 
@@ -3922,12 +3949,10 @@ msgstr ""
 "weitergereicht."
 
 #: ../templates/user_preferences_html:328
-#: ../templates/views/richter/user_preferences_html:227
 msgid "In der Trefferliste"
 msgstr "In der Trefferliste"
 
 #: ../templates/user_preferences_html:271
-#: ../templates/views/richter/user_preferences_html:209
 msgid "In der einfachen Recherche bzw. dem freien Suchfeld"
 msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 
@@ -3993,7 +4018,7 @@ msgstr ""
 msgid "Index-Suche"
 msgstr "Index-Suche"
 
-#: ../templates/admin_database_html:74 ../templates/admin_showcat:60
+#: ../templates/admin_database_html:95 ../templates/admin_showcat:60
 #: ../templates/profile/mobile/views/richtermobile/mainnavigation:4
 #: ../templates/profile/mobile/views/richtermobile/mainnavigation:6
 msgid "Info"
@@ -4003,6 +4028,9 @@ msgstr "Info"
 msgid "Information"
 msgstr "Information"
 
+#: ../templates/profile/rheinlandbib/mainnavigation:32
+#: ../templates/profile/rheinlandbib/mainnavigation:34
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:21
 #: ../templates/views/richter/mainnavigation:32
 #: ../templates/views/richter/mainnavigation:34
 #: ../templates/views/richter/subnavigation:21
@@ -4057,7 +4085,6 @@ msgstr "Inhalt"
 #: ../templates/views/richter/litlist_edit:17
 #: ../templates/views/richter/litlist_html:17
 #: ../templates/views/richter/titlist_item_html_short:23
-#: ../templates/views/richter/user_tag_html:16
 msgid "Inhaltsverzeichnis"
 msgstr "Inhaltsverzeichnis"
 
@@ -4065,6 +4092,7 @@ msgstr "Inhaltsverzeichnis"
 msgid "Initiale Suchen"
 msgstr "Initiale Suchen"
 
+#: ../templates/profile/rheinlandbib/searchform_query:84
 #: ../templates/profile/usb/searchform_query:84
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
@@ -4107,10 +4135,10 @@ msgstr "Inventarnummer"
 
 #: ../templates/collection_html_as_text:46
 #: ../templates/database/inst001/title_html_categories:358
-#: ../templates/database/openlibrary/title_html_categories:268
+#: ../templates/database/openlibrary/title_html_categories:263
 #: ../templates/litlist_html_as_text:29
 #: ../templates/profile/mobile/views/richtermobile/title_html_categories:276
-#: ../templates/title_html_categories:276
+#: ../templates/title_html_categories:265
 #: ../templates/views/richter/collection_html_as_text:46
 #: ../templates/views/richter/litlist_html_as_text:29
 msgid "Inventarnummer       "
@@ -4131,8 +4159,8 @@ msgid "Italienisch"
 msgstr "Italienisch"
 
 #: ../templates/admin_authentication_record_delete_confirm:54
-#: ../templates/admin_database_html:57 ../templates/admin_database_html:85
-#: ../templates/admin_database_html:86
+#: ../templates/admin_database_html:102 ../templates/admin_database_html:103
+#: ../templates/admin_database_html:77
 #: ../templates/admin_database_record_delete_confirm:54
 #: ../templates/admin_database_record_edit:106
 #: ../templates/admin_database_record_edit:122
@@ -4162,8 +4190,7 @@ msgstr "Italienisch"
 #: ../templates/admin_view_html:56 ../templates/admin_view_html:77
 #: ../templates/admin_view_record_delete_confirm:54
 #: ../templates/admin_view_record_edit:57
-#: ../templates/admin_view_record_edit:65
-#: ../templates/admin_view_record_edit:74 ../templates/database_record_html:55
+#: ../templates/admin_view_record_edit:65 ../templates/database_record_html:55
 #: ../templates/database_record_html:66 ../templates/litlist_edit:79
 #: ../templates/litlist_include:107 ../templates/searchform_options:4
 #: ../templates/title_html:782 ../templates/title_include:248
@@ -4172,12 +4199,14 @@ msgstr "Italienisch"
 msgid "Ja"
 msgstr "Ja"
 
-#: ../templates/admin_searchprofile_html:47
 #: ../templates/admin_statistic_access_html:47
 #: ../templates/admin_statistic_query_html:92
 #: ../templates/admin_statistic_request_html:47
 #: ../templates/admin_statistic_view_html:47 ../templates/cloud_navigation:32
 #: ../templates/cloud_navigation:34
+#: ../templates/profile/rheinlandbib/searchform_query:135
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:104
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:106
 #: ../templates/profile/usb/drilldown_categorized:150
 #: ../templates/profile/usb/searchform_query:135 ../templates/search_facet:167
 #: ../templates/search_history:69 ../templates/search_history:81
@@ -4185,7 +4214,8 @@ msgstr "Ja"
 #: ../templates/search_title_combined_html:42
 #: ../templates/searchform_query:137 ../templates/subnavigation:50
 #: ../templates/subnavigation:52 ../templates/title_html:77
-#: ../templates/title_html:89
+#: ../templates/title_html:89 ../templates/views/richter/cloud_navigation:29
+#: ../templates/views/richter/cloud_navigation:31
 #: ../templates/views/richter/drilldown_categorized:150
 #: ../templates/views/richter/searchform_query:135
 #: ../templates/views/richter/subnavigation:64
@@ -4223,16 +4253,18 @@ msgid "K&ouml;perschaft"
 msgstr "K&ouml;perschaft"
 
 #: ../templates/user_preferences_html:183
-#: ../templates/views/richter/user_preferences_html:279
 msgid "K&ouml;rperschaft"
 msgstr "K&ouml;rperschaft"
 
 #: ../templates/admin_statistic_query_html:84
 #: ../templates/cloud_corporatebody_html:50
 #: ../templates/cloud_corporatebody_html:65 ../templates/cloud_navigation:46
-#: ../templates/cloud_navigation:48 ../templates/subnavigation:60
-#: ../templates/subnavigation:62
-#: ../templates/views/richter/cloud_corporatebody_html:55
+#: ../templates/cloud_navigation:48
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:114
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:116
+#: ../templates/subnavigation:60 ../templates/subnavigation:62
+#: ../templates/views/richter/cloud_navigation:43
+#: ../templates/views/richter/cloud_navigation:45
 #: ../templates/views/richter/subnavigation:74
 #: ../templates/views/richter/subnavigation:76
 msgid "K&ouml;rperschaften"
@@ -4294,7 +4326,6 @@ msgstr "Katalog-Profile"
 #: ../templates/info_help:255 ../templates/info_help:69
 #: ../templates/mainnavigation:42 ../templates/mainnavigation:44
 #: ../templates/subnavigation:45 ../templates/subnavigation:47
-#: ../templates/views/richter/cloud_litlist_html:37
 msgid "Katalogauswahl"
 msgstr "Katalogauswahl"
 
@@ -4302,7 +4333,7 @@ msgstr "Katalogauswahl"
 msgid "Katalogauswahl der Organisationseinheit"
 msgstr "Katalogauswahl der Organisationseinheit"
 
-#: ../templates/admin_view_record_edit:87
+#: ../templates/admin_view_record_edit:78
 msgid "Katalogauswahl zu diesem View"
 msgstr "Katalogauswahl zu diesem View"
 
@@ -4318,7 +4349,6 @@ msgid "Kataloge dieser Spezial-Sicht"
 msgstr "Kataloge dieser Spezial-Sicht"
 
 #: ../templates/user_navigation:79 ../templates/user_navigation:81
-#: ../templates/views/richter/user_navigation:24
 msgid "Katalogprofile"
 msgstr "Katalogprofile"
 
@@ -4343,7 +4373,6 @@ msgstr "Kein Suchbegriff vorhanden"
 
 #: ../templates/litlist_edit:46 ../templates/litlist_html:56
 #: ../templates/user_preferences_html:255
-#: ../templates/views/richter/user_preferences_html:186
 msgid "Keine"
 msgstr "Keine"
 
@@ -4380,18 +4409,16 @@ msgid "Keine gültige Anfrage-ID"
 msgstr "Keine gültige Anfrage-ID"
 
 #: ../templates/admin_user_search_form:50
+#: ../templates/profile/rheinlandbib/searchform_simple:556
 #: ../templates/views/richter/searchform_simple:556
 msgid "Kennung"
 msgstr "Kennung"
 
 #: ../templates/user_delete_confirm:45 ../templates/user_preferences_html:50
-#: ../templates/views/richter/user_delete_confirm:45
-#: ../templates/views/richter/user_preferences_html:52
 msgid "Kennung l&ouml;schen"
 msgstr "Kennung l&ouml;schen"
 
 #: ../templates/user_delete_confirm:62
-#: ../templates/views/richter/user_delete_confirm:62
 msgid "Kennung soll wirklich gel&ouml;scht werden"
 msgstr "Kennung soll wirklich gel&ouml;scht werden"
 
@@ -4405,6 +4432,7 @@ msgid "Klienten"
 msgstr "Klienten"
 
 #: ../templates/admin_statistic_query_html:90
+#: ../templates/profile/rheinlandbib/searchform_query:114
 #: ../templates/profile/usb/searchform_query:114
 #: ../templates/searchform_query:114
 #: ../templates/views/richter/searchform_query:114
@@ -4465,7 +4493,6 @@ msgid "L&ouml;schen"
 msgstr "L&ouml;schen"
 
 #: ../templates/user_profile_html:73
-#: ../templates/views/richter/user_profile:73
 msgid "L&ouml;schung des ausgew&auml;hlten Profils"
 msgstr "L&ouml;schung des ausgew&auml;hlten Profils"
 
@@ -4491,7 +4518,6 @@ msgstr "Legen Sie Literaturlisten an und vergeben Sie Tags"
 #: ../templates/cloud_year_include:51
 #: ../templates/profile/mobile/views/richtermobile/cloud_year_html:109
 #: ../templates/profile/usb/cloud_year_include:49
-#: ../templates/views/richter/cloud_year_html:86
 msgid ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine\n"
 "Wolke der Erscheinungsjahre anbieten."
@@ -4514,9 +4540,6 @@ msgstr ""
 #: ../templates/profile/usb/cloud_corporatebody_include:51
 #: ../templates/profile/usb/cloud_person_include:38
 #: ../templates/profile/usb/cloud_subject_include:51
-#: ../templates/views/richter/cloud_corporatebody_html:88
-#: ../templates/views/richter/cloud_person_html:88
-#: ../templates/views/richter/cloud_subject_html:88
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe diese Kategorie anbieten."
@@ -4527,7 +4550,6 @@ msgstr ""
 #: ../templates/cloud_classification_html:98
 #: ../templates/cloud_classification_include:51
 #: ../templates/profile/usb/cloud_classification_include:50
-#: ../templates/views/richter/cloud_classification_html:87
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe dieser Kategorie anbieten."
@@ -4544,7 +4566,6 @@ msgstr ""
 "Nutzern vergebene Tags anbieten."
 
 #: ../templates/cloud_litlist_html:90
-#: ../templates/views/richter/cloud_litlist_html:77
 msgid ""
 "Leider k&ouml;nnen wir Ihnen keine Wolke der meist genutzten Literaturlisten "
 "anbieten."
@@ -4568,7 +4589,6 @@ msgstr "Letzte Artikel"
 
 #: ../templates/dbis_showsubjects:72 ../templates/ezb_showsubjects:70
 #: ../templates/user_tag_collection_html:45
-#: ../templates/views/richter/user_tag_collection_html:36
 msgid "Liste"
 msgstr "Liste"
 
@@ -4602,16 +4622,14 @@ msgstr "Literaturliste"
 #: ../templates/litlist_navigation:20 ../templates/searchform_bottom_center:17
 #: ../templates/title_html:372 ../templates/title_include:610
 #: ../templates/user_navigation:24 ../templates/user_navigation:26
-#: ../templates/views/richter/cloud_litlist_html:38
+#: ../templates/views/richter/cloud_navigation:77
+#: ../templates/views/richter/cloud_navigation:79
 #: ../templates/views/richter/title_html:340
-#: ../templates/views/richter/user_navigation:18
 msgid "Literaturlisten"
 msgstr "Literaturlisten"
 
 #: ../templates/user_preferences_html:256
 #: ../templates/user_preferences_html:268
-#: ../templates/views/richter/user_preferences_html:191
-#: ../templates/views/richter/user_preferences_html:202
 msgid "LiveSearch"
 msgstr "LiveSearch"
 
@@ -4633,10 +4651,10 @@ msgstr "Lokal"
 
 #: ../templates/collection_html_as_text:45
 #: ../templates/database/inst001/title_html_categories:357
-#: ../templates/database/openlibrary/title_html_categories:267
+#: ../templates/database/openlibrary/title_html_categories:262
 #: ../templates/litlist_html_as_text:28
 #: ../templates/profile/mobile/views/richtermobile/title_html_categories:275
-#: ../templates/title_html_categories:275
+#: ../templates/title_html_categories:264
 #: ../templates/views/richter/collection_html_as_text:45
 #: ../templates/views/richter/litlist_html_as_text:28
 msgid "Lokale Signatur      "
@@ -4654,7 +4672,6 @@ msgstr "Lokale Signatur      "
 #: ../templates/views/richter/collection_html_actions:47
 #: ../templates/views/richter/title_html:123
 #: ../templates/views/richter/title_html:136
-#: ../templates/views/richter/user_preferences_html:258
 msgid "Los"
 msgstr "Los"
 
@@ -4665,7 +4682,7 @@ msgstr "Los"
 #: ../templates/admin_library_record_edit:95
 #: ../templates/admin_orgunit_record_edit:90
 #: ../templates/admin_subject_record_edit:81
-#: ../templates/admin_view_record_edit:105 ../templates/title_html:753
+#: ../templates/admin_view_record_edit:96 ../templates/title_html:753
 #: ../templates/title_include:217 ../templates/views/richter/title_html:705
 msgid "Löschen"
 msgstr "Löschen"
@@ -4691,10 +4708,10 @@ msgstr "Mashups mit Sozialer Software und externen Diensten"
 msgid "MedPilot"
 msgstr "MedPilot"
 
+#: ../templates/profile/rheinlandbib/searchform_query:130
 #: ../templates/profile/usb/searchform_query:130
 #: ../templates/searchform_query:130 ../templates/user_preferences_html:232
 #: ../templates/views/richter/searchform_query:130
-#: ../templates/views/richter/user_preferences_html:288
 msgid "Medienart"
 msgstr "Medienart"
 
@@ -4751,12 +4768,12 @@ msgstr "Mehr"
 msgid "Mein KUG"
 msgstr "Mein KUG"
 
-#: ../templates/corporate_banner:6 ../templates/info_help:460
-#: ../templates/info_help:73
+#: ../templates/corporate_banner:6 ../templates/corporate_banner~:6
+#: ../templates/info_help:460 ../templates/info_help:73
 msgid "Mein OpenBib"
 msgstr "Mein OpenBib"
 
-#: ../templates/user_tag_html:47 ../templates/views/richter/user_tag_html:28
+#: ../templates/user_tag_html:47
 msgid "Meine Titel mit Tag"
 msgstr "Meine Titel mit Tag"
 
@@ -4780,6 +4797,8 @@ msgstr "Meldung"
 #: ../templates/collection_html_full:23 ../templates/collection_save_html:50
 #: ../templates/info_tutorials:68 ../templates/mainnavigation:62
 #: ../templates/mainnavigation:64
+#: ../templates/profile/rheinlandbib/mainnavigation:52
+#: ../templates/profile/rheinlandbib/mainnavigation:54
 #: ../templates/views/richter/collection_html_full:23
 #: ../templates/views/richter/collection_html_short:23
 #: ../templates/views/richter/collection_save_html:30
@@ -4798,7 +4817,6 @@ msgstr "Multimedia"
 #: ../templates/litlist_include:62 ../templates/tag_include:56
 #: ../templates/user_tag_html:88 ../templates/views/richter/litlist_edit:145
 #: ../templates/views/richter/litlist_html:99
-#: ../templates/views/richter/user_tag_html:73
 msgid "N&auml;chste Seite"
 msgstr "N&auml;chste Seite"
 
@@ -4807,18 +4825,34 @@ msgid "N&auml;chster Titel"
 msgstr "N&auml;chster Titel"
 
 #: ../templates/visible_categories_classification:17
+#: ../templates/visible_categories_classification~:17
 msgid "N0001"
 msgstr "Ansetzung"
 
-#: ../templates/visible_categories_classification:18
+#: ../templates/visible_categories_classification:19
+#: ../templates/visible_categories_classification~:18
 msgid "N0002"
 msgstr "Ansetzung"
 
-#: ../templates/visible_categories_classification:19
+#: ../templates/visible_categories_classification:21
+#: ../templates/visible_categories_classification~:19
 msgid "N0103"
 msgstr "Verweisform"
 
+#: ../templates/visible_categories_classification:18
+msgid "N0800"
+msgstr "Ansetzung"
+
 #: ../templates/visible_categories_classification:20
+msgid "N0801"
+msgstr "Klassenbeschreibung"
+
+#: ../templates/visible_categories_classification:22
+msgid "N0840"
+msgstr "Verweisform"
+
+#: ../templates/visible_categories_classification:23
+#: ../templates/visible_categories_classification~:20
 msgid "N5000"
 msgstr "Anzahl Titel"
 
@@ -4853,7 +4887,6 @@ msgstr ""
 "      Bibliothekskennzahl."
 
 #: ../templates/user_preferences_html:68 ../templates/user_role_edit:51
-#: ../templates/views/richter/user_preferences_html:73
 msgid "Nachname"
 msgstr "Nachname"
 
@@ -4864,12 +4897,10 @@ msgstr "Nachname"
 #: ../templates/collection_html_actions:55
 #: ../templates/database_collection_html:54 ../templates/title_html:176
 #: ../templates/title_html:194 ../templates/user_profile_collection_html:69
-#: ../templates/views/richter/user_profile_collection:83
 msgid "Name"
 msgstr "Name"
 
 #: ../templates/user_profile_collection_html:51
-#: ../templates/views/richter/user_profile_collection:66
 msgid "Names des Profils"
 msgstr "Names des Profils"
 
@@ -4922,8 +4953,8 @@ msgstr ""
 "eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
 
 #: ../templates/admin_authentication_record_delete_confirm:60
-#: ../templates/admin_database_html:58 ../templates/admin_database_html:85
-#: ../templates/admin_database_html:86
+#: ../templates/admin_database_html:102 ../templates/admin_database_html:103
+#: ../templates/admin_database_html:78
 #: ../templates/admin_database_record_delete_confirm:60
 #: ../templates/admin_database_record_edit:105
 #: ../templates/admin_database_record_edit:121
@@ -4953,8 +4984,7 @@ msgstr ""
 #: ../templates/admin_view_html:56 ../templates/admin_view_html:77
 #: ../templates/admin_view_record_delete_confirm:60
 #: ../templates/admin_view_record_edit:58
-#: ../templates/admin_view_record_edit:66
-#: ../templates/admin_view_record_edit:75 ../templates/database_record_html:55
+#: ../templates/admin_view_record_edit:66 ../templates/database_record_html:55
 #: ../templates/database_record_html:66 ../templates/litlist_edit:79
 #: ../templates/litlist_include:107 ../templates/searchform_options:4
 #: ../templates/title_html:783 ../templates/title_include:249
@@ -4963,7 +4993,7 @@ msgstr ""
 msgid "Nein"
 msgstr "Nein"
 
-#: ../templates/admin_authentication:56 ../templates/admin_database_html:59
+#: ../templates/admin_authentication:56 ../templates/admin_database_html:80
 #: ../templates/admin_database_rss_html:103
 #: ../templates/admin_database_rss_record_html:131
 #: ../templates/admin_database_rss_record_html:188
@@ -4977,8 +5007,6 @@ msgstr "Nein"
 #: ../templates/title_collection_form:86
 #: ../templates/user_litlist_collection_html:72
 #: ../templates/user_profile_collection_html:55
-#: ../templates/views/richter/user_litlist_collection_html:51
-#: ../templates/views/richter/user_profile_collection:67
 msgid "Neu"
 msgstr "Neu"
 
@@ -5024,7 +5052,6 @@ msgid "Neue Bewertung/Rezension"
 msgstr "Neue Bewertung/Rezension"
 
 #: ../templates/user_litlist_collection_html:46
-#: ../templates/views/richter/user_litlist_collection_html:47
 msgid "Neue Literaturliste anlegen"
 msgstr "Neue Literaturliste anlegen"
 
@@ -5036,6 +5063,10 @@ msgstr "Neue Organisationseinheit anlegen"
 msgid "Neue Sitzung beginnen?"
 msgstr "Neue Sitzung beginnen?"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:174
+#: ../templates/profile/rheinlandbib/searchform_simple:265
+#: ../templates/profile/rheinlandbib/searchform_simple:358
+#: ../templates/profile/rheinlandbib/searchform_simple:452
 #: ../templates/profile/usb/searchform_query:166
 #: ../templates/views/richter/searchform_simple:174
 #: ../templates/views/richter/searchform_simple:265
@@ -5065,7 +5096,7 @@ msgstr "Neuen Titel anlegen"
 msgid "Neuen View anlegen"
 msgstr "Neuen View anlegen"
 
-#: ../templates/user_tag_edit:54 ../templates/views/richter/user_tag_edit:46
+#: ../templates/user_tag_edit:54
 msgid "Neuer Tag-Name"
 msgstr "Neuer Tag-Name"
 
@@ -5087,7 +5118,6 @@ msgid "Neues Katalog-Profil anlegen"
 msgstr "Neues Katalog-Profil anlegen"
 
 #: ../templates/user_profile_collection_html:48
-#: ../templates/views/richter/user_profile_collection:63
 msgid "Neues Katalogprofil anlegen"
 msgstr "Neues Katalogprofil anlegen"
 
@@ -5109,12 +5139,12 @@ msgstr "Nichtkommerzielle Natur dieser Webseite"
 msgid "Niederländisch"
 msgstr "Niederländisch"
 
+#: ../templates/profile/rheinlandbib/searchform_query:94
 #: ../templates/profile/usb/searchform_query:94
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
 #: ../templates/searchform_query:94 ../templates/user_preferences_html:193
 #: ../templates/views/richter/searchform_query:94
-#: ../templates/views/richter/user_preferences_html:281
 msgid "Notation"
 msgstr "Notation"
 
@@ -5153,6 +5183,8 @@ msgstr "Nutzer suchen/bearbeiten"
 
 #: ../templates/cloud_navigation:68 ../templates/cloud_navigation:70
 #: ../templates/clouds_navigation:20
+#: ../templates/views/richter/cloud_navigation:65
+#: ../templates/views/richter/cloud_navigation:67
 msgid "Nutzer-Tags"
 msgstr "Nutzer-Tags"
 
@@ -5184,7 +5216,6 @@ msgid "OLWS Zugriffs-URL"
 msgstr "OLWS Zugriffs-URL"
 
 #: ../templates/user_preferences_html:114
-#: ../templates/views/richter/user_preferences_html:119
 msgid "Offene Geb&uuml;hren"
 msgstr "Offene Geb&uuml;hren"
 
@@ -5205,10 +5236,11 @@ msgstr "Offiziell"
 #: ../templates/profile/usb/litlist_collection_by_single_subject_recent_include:17
 #: ../templates/searchform_bottom_right:28
 #: ../templates/user_litlist_collection_html:89
-#: ../templates/views/richter/user_litlist_collection_html:84
 msgid "Offizielle Literaturliste des Instituts/Seminars"
 msgstr "Offizielle Literaturliste des Instituts/Seminars"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:387
+#: ../templates/profile/rheinlandbib/searchform_simple:63
 #: ../templates/searchform_simple:82
 #: ../templates/views/richter/searchform_simple:387
 #: ../templates/views/richter/searchform_simple:63
@@ -5249,120 +5281,166 @@ msgid "Organisationseinheiten dieses Profils"
 msgstr "Organisationseinheiten dieses Profils"
 
 #: ../templates/user_preferences_html:72 ../templates/user_role_edit:62
-#: ../templates/views/richter/user_preferences_html:77
 msgid "Ort"
 msgstr "Ort"
 
 #: ../templates/database/openlibrary/visible_categories_person:16
+#: ../templates/database/openlibrary/visible_categories_person~:16
 #: ../templates/visible_categories_person:16
+#: ../templates/visible_categories_person~:16
 msgid "P0001"
 msgstr "Ansetzung"
 
-#: ../templates/database/openlibrary/visible_categories_person:17
-#: ../templates/visible_categories_person:17
+#: ../templates/database/openlibrary/visible_categories_person:18
+#: ../templates/database/openlibrary/visible_categories_person~:17
+#: ../templates/visible_categories_person:18
+#: ../templates/visible_categories_person~:17
 msgid "P0102"
 msgstr "Verweisung"
 
-#: ../templates/visible_categories_person:20
+#: ../templates/visible_categories_person:22
+#: ../templates/visible_categories_person~:20
 msgid "P0200"
 msgstr "Lebensjahre"
 
-#: ../templates/visible_categories_person:21
+#: ../templates/visible_categories_person:23
+#: ../templates/visible_categories_person~:21
 msgid "P0201"
 msgstr "Beruf"
 
-#: ../templates/database/openlibrary/visible_categories_person:20
-#: ../templates/visible_categories_person:24
+#: ../templates/database/openlibrary/visible_categories_person:22
+#: ../templates/database/openlibrary/visible_categories_person~:20
+#: ../templates/visible_categories_person:26
+#: ../templates/visible_categories_person~:24
 msgid "P0300"
 msgstr "Nachname"
 
-#: ../templates/database/openlibrary/visible_categories_person:21
-#: ../templates/visible_categories_person:25
+#: ../templates/database/openlibrary/visible_categories_person:23
+#: ../templates/database/openlibrary/visible_categories_person~:21
+#: ../templates/visible_categories_person:27
+#: ../templates/visible_categories_person~:25
 msgid "P0301"
 msgstr "Vornamen"
 
-#: ../templates/database/openlibrary/visible_categories_person:22
-#: ../templates/visible_categories_person:26
+#: ../templates/database/openlibrary/visible_categories_person:24
+#: ../templates/database/openlibrary/visible_categories_person~:22
+#: ../templates/visible_categories_person:28
+#: ../templates/visible_categories_person~:26
 msgid "P0302"
 msgstr "Kurzbeschreibung"
 
-#: ../templates/database/openlibrary/visible_categories_person:23
-#: ../templates/visible_categories_person:27
+#: ../templates/database/openlibrary/visible_categories_person:25
+#: ../templates/database/openlibrary/visible_categories_person~:23
+#: ../templates/visible_categories_person:29
+#: ../templates/visible_categories_person~:27
 msgid "P0303"
 msgstr "Sonstiges"
 
-#: ../templates/database/openlibrary/visible_categories_person:24
-#: ../templates/visible_categories_person:28
+#: ../templates/database/openlibrary/visible_categories_person:26
+#: ../templates/database/openlibrary/visible_categories_person~:24
+#: ../templates/visible_categories_person:30
+#: ../templates/visible_categories_person~:28
 msgid "P0304"
 msgstr "Geburtsdatum"
 
-#: ../templates/database/openlibrary/visible_categories_person:25
-#: ../templates/visible_categories_person:29
+#: ../templates/database/openlibrary/visible_categories_person:27
+#: ../templates/database/openlibrary/visible_categories_person~:25
+#: ../templates/visible_categories_person:31
+#: ../templates/visible_categories_person~:29
 msgid "P0305"
 msgstr "Geburtsort"
 
-#: ../templates/database/openlibrary/visible_categories_person:26
-#: ../templates/visible_categories_person:30
+#: ../templates/database/openlibrary/visible_categories_person:28
+#: ../templates/database/openlibrary/visible_categories_person~:26
+#: ../templates/visible_categories_person:32
+#: ../templates/visible_categories_person~:30
 msgid "P0306"
 msgstr "Sterbedatum"
 
-#: ../templates/database/openlibrary/visible_categories_person:27
-#: ../templates/visible_categories_person:31
+#: ../templates/database/openlibrary/visible_categories_person:29
+#: ../templates/database/openlibrary/visible_categories_person~:27
+#: ../templates/visible_categories_person:33
+#: ../templates/visible_categories_person~:31
 msgid "P0307"
 msgstr "Sterbeort"
 
-#: ../templates/database/openlibrary/visible_categories_person:28
-#: ../templates/visible_categories_person:32
+#: ../templates/database/openlibrary/visible_categories_person:30
+#: ../templates/database/openlibrary/visible_categories_person~:28
+#: ../templates/visible_categories_person:34
+#: ../templates/visible_categories_person~:32
 msgid "P0308"
 msgstr "Bild"
 
-#: ../templates/database/openlibrary/visible_categories_person:29
-#: ../templates/visible_categories_person:33
+#: ../templates/database/openlibrary/visible_categories_person:31
+#: ../templates/database/openlibrary/visible_categories_person~:29
+#: ../templates/visible_categories_person:35
+#: ../templates/visible_categories_person~:33
 msgid "P0309"
 msgstr "Artikel in Wikipedia"
 
-#: ../templates/database/openlibrary/visible_categories_person:30
-#: ../templates/visible_categories_person:34
+#: ../templates/database/openlibrary/visible_categories_person:32
+#: ../templates/database/openlibrary/visible_categories_person~:30
+#: ../templates/visible_categories_person:36
+#: ../templates/visible_categories_person~:34
 msgid "P0310"
 msgstr "Zitate in Wikiquote"
 
-#: ../templates/database/openlibrary/visible_categories_person:31
-#: ../templates/visible_categories_person:35
+#: ../templates/database/openlibrary/visible_categories_person:33
+#: ../templates/database/openlibrary/visible_categories_person~:31
+#: ../templates/visible_categories_person:37
+#: ../templates/visible_categories_person~:35
 msgid "P0311"
 msgstr "Medien in Wikicommons"
 
-#: ../templates/database/openlibrary/visible_categories_person:32
-#: ../templates/visible_categories_person:36
+#: ../templates/database/openlibrary/visible_categories_person:34
+#: ../templates/database/openlibrary/visible_categories_person~:32
+#: ../templates/visible_categories_person:38
+#: ../templates/visible_categories_person~:36
 msgid "P0312"
 msgstr "PND"
 
-#: ../templates/database/openlibrary/visible_categories_person:33
-#: ../templates/visible_categories_person:37
+#: ../templates/database/openlibrary/visible_categories_person:35
+#: ../templates/database/openlibrary/visible_categories_person~:33
+#: ../templates/visible_categories_person:39
+#: ../templates/visible_categories_person~:37
 msgid "P0313"
 msgstr "Sonstiges"
 
-#: ../templates/database/openlibrary/visible_categories_person:34
-#: ../templates/visible_categories_person:38
+#: ../templates/database/openlibrary/visible_categories_person:36
+#: ../templates/database/openlibrary/visible_categories_person~:34
+#: ../templates/visible_categories_person:40
+#: ../templates/visible_categories_person~:38
 msgid "P0314"
 msgstr "Ort"
 
-#: ../templates/database/openlibrary/visible_categories_person:36
-#: ../templates/visible_categories_person:40
+#: ../templates/database/openlibrary/visible_categories_person:17
+#: ../templates/visible_categories_person:17
+msgid "P0800"
+msgstr "Ansetzung"
+
+#: ../templates/database/openlibrary/visible_categories_person:19
+#: ../templates/visible_categories_person:19
+msgid "P0830"
+msgstr "Verweisung"
+
+#: ../templates/database/openlibrary/visible_categories_person:38
+#: ../templates/database/openlibrary/visible_categories_person~:36
+#: ../templates/visible_categories_person:42
+#: ../templates/visible_categories_person~:40
 msgid "P5000"
 msgstr "Anzahl Titel"
 
 #: ../templates/login:65 ../templates/login_circulation:80
+#: ../templates/profile/rheinlandbib/searchform_simple:557
 #: ../templates/profile/usb/login:103 ../templates/profile/usb/login:72
 #: ../templates/registration:69 ../templates/user_preferences_html:56
 #: ../templates/views/richter/login:63
 #: ../templates/views/richter/registration:69
 #: ../templates/views/richter/searchform_simple:557
-#: ../templates/views/richter/user_preferences_html:58
 msgid "Passwort"
 msgstr "Passwort"
 
 #: ../templates/user_preferences_html:56
-#: ../templates/views/richter/user_preferences_html:58
 msgid "Passwort &auml;ndern"
 msgstr "Passwort &auml;ndern"
 
@@ -5399,12 +5477,16 @@ msgstr "Person/Körperschaft"
 #: ../templates/admin_statistic_query_html:83 ../templates/cloud_navigation:39
 #: ../templates/cloud_navigation:41 ../templates/cloud_person_html:50
 #: ../templates/cloud_person_html:65 ../templates/clouds_navigation:19
+#: ../templates/profile/rheinlandbib/searchform_query:79
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:109
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:111
 #: ../templates/profile/usb/searchform_query:79
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
 #: ../templates/searchform_query:79 ../templates/subnavigation:55
 #: ../templates/subnavigation:57
-#: ../templates/views/richter/cloud_person_html:55
+#: ../templates/views/richter/cloud_navigation:36
+#: ../templates/views/richter/cloud_navigation:38
 #: ../templates/views/richter/searchform_query:79
 #: ../templates/views/richter/subnavigation:69
 #: ../templates/views/richter/subnavigation:71
@@ -5423,7 +5505,6 @@ msgid "Personen-Information: %1 in Katalog %2"
 msgstr "Personen-Information: %1 in Katalog %2"
 
 #: ../templates/user_preferences_html:65 ../templates/user_role_edit:47
-#: ../templates/views/richter/user_preferences_html:70
 msgid "Personendaten"
 msgstr "Personendaten"
 
@@ -5468,7 +5549,6 @@ msgstr "Popularit&auml;ts-Funktionen"
 #: ../templates/views/richter/litlist_edit:18
 #: ../templates/views/richter/litlist_html:18
 #: ../templates/views/richter/titlist_item_html_short:24
-#: ../templates/views/richter/user_tag_html:17
 msgid "Popularität"
 msgstr "Popularität"
 
@@ -5490,17 +5570,14 @@ msgid "Profil"
 msgstr "Profil"
 
 #: ../templates/user_profile_html:73
-#: ../templates/views/richter/user_profile:73
 msgid "Profil anzeigen"
 msgstr "Profil anzeigen"
 
 #: ../templates/user_profile_html:73
-#: ../templates/views/richter/user_profile:73
 msgid "Profil l&ouml;schen"
 msgstr "Profil l&ouml;schen"
 
 #: ../templates/user_profile_html:67
-#: ../templates/views/richter/user_profile:67
 msgid "Profil speichern"
 msgstr "Profil speichern"
 
@@ -5511,13 +5588,13 @@ msgstr "Profil speichern"
 msgid "Profil-Name"
 msgstr "Profil-Name"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:163
 #: ../templates/searchform_profile:17
 #: ../templates/views/richter/searchform_simple:163
 msgid "Profile"
 msgstr "Profile"
 
 #: ../templates/user_profile_html:64
-#: ../templates/views/richter/user_profile:64
 msgid "Profilmanagement"
 msgstr "Profilmanagement"
 
@@ -5564,7 +5641,7 @@ msgstr "Quellen des Nutzers <i>%1</i> in BibSonomy"
 msgid "Quellen zum Tag <i>%1</i> in BibSonomy"
 msgstr "Quellen zum Tag <i>%1</i> in BibSonomy"
 
-#: ../templates/admin_database_html:74 ../templates/admin_navigation:35
+#: ../templates/admin_database_html:95 ../templates/admin_navigation:35
 #: ../templates/admin_navigation:37 ../templates/admin_navigation:75
 #: ../templates/admin_navigation:77 ../templates/admin_showcat:60
 #: ../templates/admin_view_html:74 ../templates/info_tutorials:69
@@ -5647,7 +5724,6 @@ msgid "Recherchearten"
 msgstr "Recherchearten"
 
 #: ../templates/user_preferences_html:144
-#: ../templates/views/richter/user_preferences_html:152
 msgid "Recherchemaske"
 msgstr "Recherchemaske"
 
@@ -5664,29 +5740,33 @@ msgstr ""
 "Recherchieren Sie fachspezifisch in einer Vielzahl von %1freien und\n"
 "lizenzierten Datenbanken%2"
 
-#. ("${alldbcount.allcount.chunk(-3)
 #. ("${alldbcount.all.chunk(-3)
+#. ("${alldbcount.allcount.chunk(-3)
+#: ../templates/profile/rheinlandbib/searchform_simple:126
 #: ../templates/searchform_simple:141
 #: ../templates/views/richter/searchform_simple:126
 msgid "Recherchieren Sie in %1 Titeln und %2 Katalogen"
 msgstr "Recherchieren Sie in %1 Titeln und %2 Katalogen"
 
-#. ("${alldbcount.articlecount.chunk(-3)
 #. ("${alldbcount.articles.chunk(-3)
+#. ("${alldbcount.articlecount.chunk(-3)
+#: ../templates/profile/rheinlandbib/searchform_simple:309
 #: ../templates/searchform_simple:229
 #: ../templates/views/richter/searchform_simple:309
 msgid "Recherchieren Sie nach %1 Aufs&auml;tzen in %2 Katalogen"
 msgstr "Recherchieren Sie nach %1 Aufs&auml;tzen in %2 Katalogen"
 
-#. ("${alldbcount.digitalcount.chunk(-3)
 #. ("${alldbcount.online.chunk(-3)
+#. ("${alldbcount.digitalcount.chunk(-3)
+#: ../templates/profile/rheinlandbib/searchform_simple:403
 #: ../templates/searchform_simple:274
 #: ../templates/views/richter/searchform_simple:403
 msgid "Recherchieren Sie nach %1 E-Medien mit Online-Zugriff in %2 Katalogen"
 msgstr "Recherchieren Sie nach %1 E-Medien mit Online-Zugriff in %2 Katalogen"
 
-#. ("${alldbcount.journalcount.chunk(-3)
 #. ("${alldbcount.serials.chunk(-3)
+#. ("${alldbcount.journalcount.chunk(-3)
+#: ../templates/profile/rheinlandbib/searchform_simple:216
 #: ../templates/searchform_simple:186
 #: ../templates/views/richter/searchform_simple:216
 msgid "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
@@ -5698,8 +5778,6 @@ msgstr "Rechnername"
 
 #: ../templates/user_preferences_html:257
 #: ../templates/user_preferences_html:319
-#: ../templates/views/richter/user_preferences_html:196
-#: ../templates/views/richter/user_preferences_html:220
 msgid "Rechtschreibvorschläge"
 msgstr "Rechtschreibvorschläge"
 
@@ -5710,14 +5788,16 @@ msgstr "Rechtschreibvorschläge"
 msgid "Register"
 msgstr "Register"
 
-#: ../templates/login:69 ../templates/profile/usb/login:107
-#: ../templates/profile/usb/login:76 ../templates/registration:71
-#: ../templates/views/richter/login:67
+#: ../templates/login:69
+#: ../templates/profile/rheinlandbib/searchform_simple:561
+#: ../templates/profile/usb/login:107 ../templates/profile/usb/login:76
+#: ../templates/registration:71 ../templates/views/richter/login:67
 #: ../templates/views/richter/registration:71
 #: ../templates/views/richter/searchform_simple:561
 msgid "Registrieren"
 msgstr "Registrieren"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:561
 #: ../templates/views/richter/searchform_simple:561
 msgid "Registriertes Passwort vergessen?"
 msgstr "Registriertes Passwort vergessen?"
@@ -5733,7 +5813,6 @@ msgstr "Rezension"
 
 #: ../templates/user_navigation:47 ../templates/user_navigation:49
 #: ../templates/user_review_collection_html:44
-#: ../templates/views/richter/user_navigation:20
 msgid "Rezensionen"
 msgstr "Rezensionen"
 
@@ -5767,60 +5846,119 @@ msgid "Russisch"
 msgstr "Russisch"
 
 #: ../templates/visible_categories_subject:16
+#: ../templates/visible_categories_subject~:16
 msgid "S0001"
 msgstr "Ansetzung"
 
-#: ../templates/visible_categories_subject:18
+#: ../templates/visible_categories_subject:20
+#: ../templates/visible_categories_subject~:18
 msgid "S0102"
 msgstr "Verweisung"
 
-#: ../templates/visible_categories_subject:23
+#: ../templates/visible_categories_subject:30
+#: ../templates/visible_categories_subject~:23
 msgid "S0105"
 msgstr "Definition"
 
-#: ../templates/visible_categories_subject:24
+#: ../templates/visible_categories_subject:32
+#: ../templates/visible_categories_subject~:24
 msgid "S0106"
 msgstr "Hinweise"
 
-#: ../templates/visible_categories_subject:25
+#: ../templates/visible_categories_subject:34
+#: ../templates/visible_categories_subject~:25
 msgid "S0107"
 msgstr "Quelle"
 
-#: ../templates/visible_categories_subject:26
+#: ../templates/visible_categories_subject:36
+#: ../templates/visible_categories_subject~:26
 msgid "S0108"
 msgstr "Systematikzuordnung"
 
-#: ../templates/visible_categories_subject:17
+#: ../templates/visible_categories_subject:18
+#: ../templates/visible_categories_subject~:17
 msgid "S0112"
 msgstr "Alternative Ansetzung"
 
-#: ../templates/visible_categories_subject:19
+#: ../templates/visible_categories_subject:22
+#: ../templates/visible_categories_subject~:19
 msgid "S0113"
 msgstr "Übergeordnet"
 
-#: ../templates/visible_categories_subject:20
+#: ../templates/visible_categories_subject:24
+#: ../templates/visible_categories_subject~:20
 msgid "S0115"
 msgstr "Assoziiert"
 
-#: ../templates/visible_categories_subject:21
+#: ../templates/visible_categories_subject:26
+#: ../templates/visible_categories_subject~:21
 msgid "S0117"
 msgstr "Früher"
 
-#: ../templates/visible_categories_subject:22
+#: ../templates/visible_categories_subject:28
+#: ../templates/visible_categories_subject~:22
 msgid "S0119"
 msgstr "Später"
 
+#: ../templates/visible_categories_subject:17
+msgid "S0800"
+msgstr "Ansetzung"
+
+#: ../templates/visible_categories_subject:31
+msgid "S0805"
+msgstr "Definition"
+
+#: ../templates/visible_categories_subject:33
+msgid "S0806"
+msgstr "Hinweise"
+
+#: ../templates/visible_categories_subject:35
+msgid "S0807"
+msgstr "Quelle"
+
+#: ../templates/visible_categories_subject:37
+msgid "S0810"
+msgstr "Systematikzuordnung"
+
+#: ../templates/visible_categories_subject:19
+msgid "S0820"
+msgstr "Alternative Ansetzung"
+
+#: ../templates/visible_categories_subject:21
+msgid "S0830"
+msgstr "Verweisung"
+
+#: ../templates/visible_categories_subject:23
+msgid "S0850"
+msgstr "Übergeordnet"
+
+#: ../templates/visible_categories_subject:25
+msgid "S0860"
+msgstr "Assoziiert"
+
 #: ../templates/visible_categories_subject:27
+msgid "S0870"
+msgstr "Früher"
+
+#: ../templates/visible_categories_subject:29
+msgid "S0880"
+msgstr "Später"
+
+#: ../templates/visible_categories_subject:38
+#: ../templates/visible_categories_subject~:27
 msgid "S5000"
 msgstr "Anzahl Titel"
 
 #: ../templates/cloud_navigation:53 ../templates/cloud_navigation:55
 #: ../templates/dbis_showdbinfo:80 ../templates/ezb_showjournalinfo:61
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:119
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:121
 #: ../templates/subnavigation:65 ../templates/subnavigation:67
 #: ../templates/user_preferences_html:188
+#: ../templates/views/richter/cloud_navigation:50
+#: ../templates/views/richter/cloud_navigation:52
 #: ../templates/views/richter/subnavigation:79
 #: ../templates/views/richter/subnavigation:81
-#: ../templates/views/richter/user_preferences_html:280
 msgid "Schlagwort"
 msgstr "Schlagwort"
 
@@ -5837,11 +5975,11 @@ msgstr "Schlagwort-Information: %1 in Katalog %2"
 #: ../templates/admin_statistic_query_html:85
 #: ../templates/cloud_subject_html:50 ../templates/cloud_subject_html:65
 #: ../templates/clouds_navigation:16
+#: ../templates/profile/rheinlandbib/searchform_query:89
 #: ../templates/profile/usb/searchform_query:89
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
 #: ../templates/searchform_query:89
-#: ../templates/views/richter/cloud_subject_html:55
 #: ../templates/views/richter/searchform_query:89
 msgid "Schlagworte"
 msgstr "Schlagworte"
@@ -5905,17 +6043,17 @@ msgstr ""
 msgid "Seit"
 msgstr "Seit"
 
-#: ../templates/common/navitembar:25 ../templates/ezb_showjournals:93
-#: ../templates/litlist_include:47
+#: ../templates/browse_title_html:88 ../templates/common/navitembar:25
+#: ../templates/ezb_showjournals:93 ../templates/litlist_include:47
 #: ../templates/profile/usb/search_title_combined_include:89
 #: ../templates/search_title_combined_html:124
 #: ../templates/search_title_combined_include:35
 #: ../templates/search_title_combined_include:63
 #: ../templates/search_title_item:56 ../templates/search_title_item:84
 #: ../templates/tag_include:41 ../templates/user_tag_html:73
+#: ../templates/views/richter/browse_title_html:81
 #: ../templates/views/richter/litlist_edit:130
 #: ../templates/views/richter/litlist_html:84
-#: ../templates/views/richter/user_tag_html:58
 msgid "Seite:"
 msgstr "Seite:"
 
@@ -5932,10 +6070,10 @@ msgid "Selbstregistrierung"
 msgstr "Selbstregistrierung"
 
 #: ../templates/admin_statistic_query_html:91
+#: ../templates/profile/rheinlandbib/searchform_query:124
 #: ../templates/profile/usb/searchform_query:124
 #: ../templates/searchform_query:124 ../templates/user_preferences_html:227
 #: ../templates/views/richter/searchform_query:124
-#: ../templates/views/richter/user_preferences_html:287
 msgid "Serie/Band/Quelle"
 msgstr "Serie/Band/Quelle"
 
@@ -5963,8 +6101,6 @@ msgstr "Sessions"
 #: ../templates/title_html:234 ../templates/user_litlist_collection_html:54
 #: ../templates/user_litlist_collection_html:86
 #: ../templates/views/richter/litlist_edit:62
-#: ../templates/views/richter/user_litlist_collection_html:50
-#: ../templates/views/richter/user_litlist_collection_html:81
 msgid "Sichtbarkeit"
 msgstr "Sichtbarkeit"
 
@@ -5992,7 +6128,7 @@ msgstr ""
 "aktuelle Version auf diesem System nicht eingefroren und in eine offiziell "
 "bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 
-#: ../modules/OpenBib/Handler/Apache.pm:479
+#: ../modules/OpenBib/Handler/Apache.pm:531
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:270
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:330
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:490
@@ -6084,7 +6220,7 @@ msgstr ""
 msgid "Sie haben keinen Profilnamen eingegeben!"
 msgstr "Sie haben keinen Profilnamen eingegeben!"
 
-#: ../templates/search_history:127
+#: ../templates/search_history:137
 msgid "Sie haben noch keine Suchanfragen gestellt."
 msgstr "Sie haben noch keine Suchanfragen gestellt."
 
@@ -6242,8 +6378,10 @@ msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:839
-msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
-msgstr "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgid ""
+"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgstr ""
+"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Authentication.pm:193
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
@@ -6251,8 +6389,10 @@ msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:185
 #: ../modules/OpenBib/Handler/Apache/Admin/Library.pm:208
-msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
-msgstr "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgid ""
+"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgstr ""
+"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Subject.pm:169
 msgid "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
@@ -6260,7 +6400,8 @@ msgstr "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:179
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
-msgstr "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
+msgstr ""
+"Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:216
 msgid ""
@@ -6309,7 +6450,7 @@ msgstr ""
 "        zwischen zwei Begriffen wird als Leerzeichen\n"
 "        interpretiert.. Daher geben Sie in das Titelfeld ein:"
 
-#: ../templates/admin_database_html:53
+#: ../templates/admin_database_html:57
 #: ../templates/admin_database_record_edit:61
 #: ../templates/admin_database_record_html:52 ../templates/admin_showcat:39
 #: ../templates/admin_showcat:60 ../templates/database_record_html:53
@@ -6320,6 +6461,7 @@ msgstr "Sigel"
 #: ../templates/database/inst001/circset:31
 #: ../templates/database/inst001/mexset:3 ../templates/holding:16
 #: ../templates/profile/mobile/views/richtermobile/holding:16
+#: ../templates/profile/rheinlandbib/searchform_query:109
 #: ../templates/profile/usb/circulation:31 ../templates/profile/usb/holding:19
 #: ../templates/profile/usb/searchform_query:109
 #: ../templates/searchform_query:109
@@ -6329,7 +6471,6 @@ msgstr "Sigel"
 #: ../templates/user_circulation_reservations_html:49
 #: ../templates/user_preferences_html:212
 #: ../templates/views/richter/searchform_query:109
-#: ../templates/views/richter/user_preferences_html:284
 msgid "Signatur"
 msgstr "Signatur"
 
@@ -6349,12 +6490,10 @@ msgstr ""
 "<b>Mein OpenBib</b> nutzen:"
 
 #: ../templates/user_preferences_html:97
-#: ../templates/views/richter/user_preferences_html:102
 msgid "Soll"
 msgstr "Soll"
 
 #: ../templates/user_delete_confirm:52
-#: ../templates/views/richter/user_delete_confirm:52
 msgid "Soll die Kennung wirklich gel&ouml;scht werden?"
 msgstr "Soll die Kennung wirklich gel&ouml;scht werden?"
 
@@ -6383,7 +6522,6 @@ msgid "Spanisch"
 msgstr "Spanisch"
 
 #: ../templates/user_preferences_html:80 ../templates/user_role_edit:70
-#: ../templates/views/richter/user_preferences_html:85
 msgid "Sperre"
 msgstr "Sperre"
 
@@ -6396,7 +6534,10 @@ msgid "Spezialisierte Portale"
 msgstr "Spezialisierte Portale"
 
 #. (l)
-#: ../templates/corporate_banner:4 ../templates/info_journaltocs:43
+#: ../templates/corporate_banner:4 ../templates/corporate_banner~:4
+#: ../templates/info_journaltocs:43
+#: ../templates/profile/rheinlandbib/searchform_simple:511
+#: ../templates/profile/rheinlandbib/searchform_simple:54
 #: ../templates/views/richter/corporate_banner:4
 #: ../templates/views/richter/searchform_simple:511
 #: ../templates/views/richter/searchform_simple:54
@@ -6436,10 +6577,10 @@ msgstr "Standort"
 
 #: ../templates/collection_html_as_text:44
 #: ../templates/database/inst001/title_html_categories:356
-#: ../templates/database/openlibrary/title_html_categories:266
+#: ../templates/database/openlibrary/title_html_categories:261
 #: ../templates/litlist_html_as_text:27
 #: ../templates/profile/mobile/views/richtermobile/title_html_categories:274
-#: ../templates/title_html_categories:274
+#: ../templates/title_html_categories:263
 #: ../templates/views/richter/collection_html_as_text:44
 #: ../templates/views/richter/litlist_html_as_text:27
 msgid "Standort             "
@@ -6485,7 +6626,6 @@ msgid "Stelle"
 msgstr "Stelle"
 
 #: ../templates/user_preferences_html:71 ../templates/user_role_edit:60
-#: ../templates/views/richter/user_preferences_html:76
 msgid "Strasse"
 msgstr "Strasse"
 
@@ -6493,13 +6633,14 @@ msgstr "Strasse"
 msgid "Such-Index"
 msgstr "Such-Index"
 
-#: ../templates/search_history:89
+#: ../templates/search_history:99
 msgid "Suchanfrage"
 msgstr "Suchanfrage"
 
 #: ../templates/cloud_navigation:87 ../templates/cloud_navigation:89
 #: ../templates/clouds_navigation:21 ../templates/searchform_bottom_center:18
-#: ../templates/views/richter/cloud_litlist_html:39
+#: ../templates/views/richter/cloud_navigation:84
+#: ../templates/views/richter/cloud_navigation:86
 msgid "Suchbegriffe"
 msgstr "Suchbegriffe"
 
@@ -6523,6 +6664,13 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/dbis_showsubjects:55 ../templates/ezb_searchjournals:87
 #: ../templates/ezb_showjournals:52 ../templates/ezb_showsubjects:53
 #: ../templates/mainnavigation:47 ../templates/mainnavigation:49
+#: ../templates/profile/rheinlandbib/mainnavigation:37
+#: ../templates/profile/rheinlandbib/mainnavigation:39
+#: ../templates/profile/rheinlandbib/searchform_query:141
+#: ../templates/profile/rheinlandbib/searchform_simple:147
+#: ../templates/profile/rheinlandbib/searchform_simple:238
+#: ../templates/profile/rheinlandbib/searchform_simple:331
+#: ../templates/profile/rheinlandbib/searchform_simple:425
 #: ../templates/profile/usb/searchform_query:164
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
@@ -6540,7 +6688,6 @@ msgid "Suchen"
 msgstr "Suchen"
 
 #: ../templates/user_preferences_html:161
-#: ../templates/views/richter/user_preferences_html:270
 msgid "Suchfelder"
 msgstr "Suchfelder"
 
@@ -6550,6 +6697,9 @@ msgid "Suchhilfe"
 msgstr "Suchhilfe"
 
 #: ../templates/mainnavigation:57 ../templates/mainnavigation:59
+#: ../templates/profile/rheinlandbib/mainnavigation:47
+#: ../templates/profile/rheinlandbib/mainnavigation:49
+#: ../templates/profile/rheinlandbib/searchform_query:141
 #: ../templates/search_history:37 ../templates/searchform_query:145
 #: ../templates/searchform_simple:161 ../templates/searchform_simple:204
 #: ../templates/searchform_simple:248 ../templates/searchform_simple:293
@@ -6564,7 +6714,7 @@ msgstr "Suchhhistorie"
 msgid "Suchlogik"
 msgstr "Suchlogik"
 
-#: ../templates/admin_navigation:85 ../templates/search_history:89
+#: ../templates/admin_navigation:85 ../templates/search_history:99
 msgid "Suchprofil"
 msgstr "Suchprofil"
 
@@ -6576,7 +6726,7 @@ msgstr "Suchprofil bearbeiten"
 msgid "Suchprofile"
 msgstr "Suchprofile"
 
-#: ../templates/admin_database_html:53
+#: ../templates/admin_database_html:56
 #: ../templates/admin_database_record_edit:54
 #: ../templates/admin_database_record_html:51 ../templates/admin_showcat:39
 #: ../templates/admin_showcat:60 ../templates/database_record_html:52
@@ -6586,12 +6736,15 @@ msgstr "System"
 #: ../templates/cloud_classification_html:50
 #: ../templates/cloud_classification_html:65 ../templates/cloud_navigation:60
 #: ../templates/cloud_navigation:62
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:124
+#: ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:126
 #: ../templates/profile/usb/drilldown_categorized:147
 #: ../templates/search_facet:164 ../templates/search_history:66
 #: ../templates/search_history:78 ../templates/search_title_combined_html:27
 #: ../templates/search_title_combined_html:39 ../templates/subnavigation:70
 #: ../templates/subnavigation:72 ../templates/title_html:74
-#: ../templates/title_html:86
+#: ../templates/title_html:86 ../templates/views/richter/cloud_navigation:57
+#: ../templates/views/richter/cloud_navigation:59
 #: ../templates/views/richter/drilldown_categorized:147
 #: ../templates/views/richter/subnavigation:84
 #: ../templates/views/richter/subnavigation:86
@@ -7460,7 +7613,6 @@ msgstr "Tagging"
 #: ../templates/cloud_tag_html:49 ../templates/title_html:416
 #: ../templates/title_include:654 ../templates/user_navigation:30
 #: ../templates/user_navigation:35 ../templates/views/richter/title_html:384
-#: ../templates/views/richter/user_navigation:19
 msgid "Tags"
 msgstr "Tags"
 
@@ -7534,11 +7686,12 @@ msgstr "Themengebiet(e) von DBIS zuordnen"
 #: ../templates/litlist_collection_by_subject_html:38
 #: ../templates/litlist_edit:40 ../templates/litlist_html:50
 #: ../templates/litlist_navigation:33 ../templates/litlist_navigation:35
+#: ../templates/profile/rheinlandbib/searchform_simple:481
+#: ../templates/profile/rheinlandbib/searchform_simple:64
 #: ../templates/searchform_simple:83
 #: ../templates/user_litlist_collection_html:86
 #: ../templates/views/richter/searchform_simple:481
 #: ../templates/views/richter/searchform_simple:64
-#: ../templates/views/richter/user_litlist_collection_html:81
 msgid "Themengebiete"
 msgstr "Themengebiete"
 
@@ -7557,19 +7710,16 @@ msgstr "Themengebiete"
 #: ../templates/views/richter/litlist_edit:118
 #: ../templates/views/richter/litlist_html:72
 #: ../templates/views/richter/title_html:699
-#: ../templates/views/richter/user_tag_html:46
 msgid "Titel"
 msgstr "Titel"
 
 #: ../templates/litlist_edit:67 ../templates/litlist_include:101
 #: ../templates/user_litlist_collection_html:49
 #: ../templates/views/richter/litlist_edit:59
-#: ../templates/views/richter/user_litlist_collection_html:50
 msgid "Titel der Liste"
 msgstr "Titel der Liste"
 
 #: ../templates/user_litlist_collection_html:86
-#: ../templates/views/richter/user_litlist_collection_html:81
 msgid "Titel der Literaturliste"
 msgstr "Titel der Literaturliste"
 
@@ -7628,7 +7778,6 @@ msgid "Titel-Information: %1 in Katalog %2"
 msgstr "Titel-Information: %1 in Katalog %2"
 
 #: ../templates/user_preferences_html:217
-#: ../templates/views/richter/user_preferences_html:285
 msgid "Titel-String"
 msgstr "Titel-String"
 
@@ -7650,11 +7799,11 @@ msgid "Titelaufnahme"
 msgstr "Titelaufnahme"
 
 #: ../templates/tag_include:26 ../templates/user_tag_html:58
-#: ../templates/views/richter/user_tag_html:43
 msgid "Titelliste"
 msgstr "Titelliste"
 
 #: ../templates/admin_statistic_query_html:82
+#: ../templates/profile/rheinlandbib/searchform_query:74
 #: ../templates/profile/usb/searchform_query:74
 #: ../templates/searchform_query:74
 #: ../templates/views/richter/searchform_query:74
@@ -7662,7 +7811,6 @@ msgid "Titelworte"
 msgstr "Titelworte"
 
 #: ../templates/user_litlist_collection_html:86
-#: ../templates/views/richter/user_litlist_collection_html:81
 msgid "Titelzahl"
 msgstr "Titelzahl"
 
@@ -7683,7 +7831,7 @@ msgstr "Top 20"
 #: ../templates/profile/mobile/views/richtermobile/search_title_combined_html:31
 #: ../templates/profile/usb/search_title_combined_include:48
 #: ../templates/search_classification:44 ../templates/search_corporatebody:44
-#: ../templates/search_history:89 ../templates/search_person:44
+#: ../templates/search_history:99 ../templates/search_person:44
 #: ../templates/search_subject:44 ../templates/search_title_combined_html:102
 #: ../templates/search_title_combined_include:32
 #: ../templates/search_title_item:53 ../templates/select_queries:65
@@ -7804,7 +7952,7 @@ msgstr ""
 msgid "URI ohne View"
 msgstr "URI ohne View"
 
-#: ../templates/admin_database_html:53
+#: ../templates/admin_database_html:58
 #: ../templates/admin_database_record_edit:62
 #: ../templates/admin_database_record_html:53 ../templates/admin_showcat:39
 #: ../templates/admin_showcat:60 ../templates/database_record_html:54
@@ -7896,9 +8044,9 @@ msgstr ""
 "        absteigend), Anzeige pro Katalog oder\n"
 "        katalog&uuml;bergreifend"
 
-#: ../templates/browse_title_html:56
+#: ../templates/browse_title_html:67
 #: ../templates/profile/mobile/views/richtermobile/browse_title_html:62
-#: ../templates/views/richter/browse_title_html:56
+#: ../templates/views/richter/browse_title_html:60
 msgid ""
 "Unter den noch in der USB K&ouml;ln vorhandenen Richterb&uuml;chern\n"
 "befinden sich auch einige Rezensionsexemplare. Sie sind durch\n"
@@ -7960,8 +8108,6 @@ msgstr ""
 "zukünftige Recherchen."
 
 #: ../templates/user_profile_edit:124 ../templates/user_profile_edit:68
-#: ../templates/views/richter/user_profile_edit:123
-#: ../templates/views/richter/user_profile_edit:67
 msgid "Ursprung"
 msgstr "Ursprung"
 
@@ -7975,7 +8121,6 @@ msgstr "Verf&uuml;gbar"
 
 #: ../templates/user_circulation_make_order:79
 #: ../templates/user_preferences_html:178
-#: ../templates/views/richter/user_preferences_html:278
 msgid "Verfasser"
 msgstr "Verfasser"
 
@@ -8094,11 +8239,10 @@ msgid "Volume (Jahr) der ersten Ausgabe"
 msgstr "Volume (Jahr) der ersten Ausgabe"
 
 #: ../templates/user_preferences_html:106
-#: ../templates/views/richter/user_preferences_html:111
 msgid "Vorgemerkt"
 msgstr "Vorgemerkt"
 
-#: ../templates/admin_searchprofile_html:63
+#: ../templates/admin_searchprofile_html:49
 msgid "Vorhandene Suchprofile"
 msgstr "Vorhandene Suchprofile"
 
@@ -8106,7 +8250,6 @@ msgstr "Vorhandene Suchprofile"
 #: ../templates/litlist_include:48 ../templates/tag_include:42
 #: ../templates/user_tag_html:74 ../templates/views/richter/litlist_edit:131
 #: ../templates/views/richter/litlist_html:85
-#: ../templates/views/richter/user_tag_html:59
 msgid "Vorherige Seite"
 msgstr "Vorherige Seite"
 
@@ -8136,12 +8279,10 @@ msgstr "Vormerkungsfrist"
 
 #: ../templates/admin_user_search_form:52
 #: ../templates/user_preferences_html:69 ../templates/user_role_edit:54
-#: ../templates/views/richter/user_preferences_html:74
 msgid "Vorname"
 msgstr "Vorname"
 
 #: ../templates/user_profile_html:69
-#: ../templates/views/richter/user_profile:69
 msgid "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
 msgstr "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
 
@@ -8174,7 +8315,7 @@ msgstr ""
 "einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der "
 "zugehörige Normdaten-Eintrag dargestellt."
 
-#: ../templates/search_history:89
+#: ../templates/search_history:99
 msgid "Wann"
 msgstr "Wann"
 
@@ -8452,29 +8593,23 @@ msgstr "Wir bieten verschiedene Besichtigungstouren an:"
 
 #: ../templates/dbis_showsubjects:72 ../templates/ezb_showsubjects:70
 #: ../templates/user_tag_collection_html:45
-#: ../templates/views/richter/user_tag_collection_html:36
 msgid "Wolke"
 msgstr "Wolke"
 
 #: ../templates/cloud_person_html:68
-#: ../templates/views/richter/cloud_person_html:58
 msgid "Wolke der h&auml;ufigsten Begriffe"
 msgstr "Wolke der h&auml;ufigsten Begriffe"
 
 #: ../templates/cloud_year_html:67
 #: ../templates/profile/mobile/views/richtermobile/cloud_year_html:80
-#: ../templates/views/richter/cloud_year_html:57
 msgid "Wolke der h&auml;ufigsten Erscheinungsjahre"
 msgstr "Wolke der h&auml;ufigsten Erscheinungsjahre"
 
 #: ../templates/cloud_corporatebody_html:68 ../templates/cloud_subject_html:68
-#: ../templates/views/richter/cloud_corporatebody_html:58
-#: ../templates/views/richter/cloud_subject_html:58
 msgid "Wolke der häufigsten Begriffe"
 msgstr "Wolke der häufigsten Begriffe"
 
 #: ../templates/cloud_litlist_html:60
-#: ../templates/views/richter/cloud_litlist_html:47
 msgid "Wolke der meist genutzten Literaturlisten"
 msgstr "Wolke der meist genutzten Literaturlisten"
 
@@ -8487,7 +8622,6 @@ msgstr "Wolke der von Nutzern vergebenen Tags"
 #: ../templates/cloud_subject_html:48 ../templates/cloud_tag_html:48
 #: ../templates/cloud_year_html:48 ../templates/info_help:934
 #: ../templates/info_help:96 ../templates/searchform_bottom_center:16
-#: ../templates/views/richter/cloud_litlist_html:30
 msgid "Wolken"
 msgstr "Wolken"
 
@@ -8523,6 +8657,8 @@ msgstr "Zahl Recherchen/Sessions"
 msgid "Zeitraum"
 msgstr "Zeitraum"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:200
+#: ../templates/profile/rheinlandbib/searchform_simple:61
 #: ../templates/searchform_simple:80
 #: ../templates/views/richter/searchform_simple:200
 #: ../templates/views/richter/searchform_simple:61
@@ -8554,7 +8690,7 @@ msgstr ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
 "Auflage usw.) in den Katalogen"
 
-#: ../templates/user_tag_edit:54 ../templates/views/richter/user_tag_edit:46
+#: ../templates/user_tag_edit:54
 msgid "Zu ersetzendes Tag"
 msgstr "Zu ersetzendes Tag"
 
@@ -8594,6 +8730,10 @@ msgstr "Zuletzt angelegte Tags"
 msgid "Zuletzt in der Zeitschrift ver&ouml;ffentlichte Artikel"
 msgstr "Zuletzt in der Zeitschrift ver&ouml;ffentlichte Artikel"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:188
+#: ../templates/profile/rheinlandbib/searchform_simple:280
+#: ../templates/profile/rheinlandbib/searchform_simple:373
+#: ../templates/profile/rheinlandbib/searchform_simple:467
 #: ../templates/views/richter/searchform_simple:188
 #: ../templates/views/richter/searchform_simple:280
 #: ../templates/views/richter/searchform_simple:373
@@ -8624,7 +8764,9 @@ msgid "absteigend"
 msgstr "absteigend"
 
 #: ../templates/admin_user_search_form:62 ../templates/mainnavigation:73
-#: ../templates/mainnavigation:75 ../templates/views/richter/mainnavigation:61
+#: ../templates/mainnavigation:75
+#: ../templates/profile/rheinlandbib/mainnavigation:56
+#: ../templates/views/richter/mainnavigation:61
 msgid "admin"
 msgstr "Administrator"
 
@@ -8691,6 +8833,11 @@ msgstr "im Gesch&auml;ftsgang"
 #: ../templates/dbis_searchdbs:79 ../templates/dbis_showdbs:48
 #: ../templates/dbis_showsubjects:50 ../templates/ezb_searchjournals:83
 #: ../templates/ezb_showjournals:48 ../templates/ezb_showsubjects:48
+#: ../templates/profile/rheinlandbib/searchform_query:139
+#: ../templates/profile/rheinlandbib/searchform_simple:148
+#: ../templates/profile/rheinlandbib/searchform_simple:239
+#: ../templates/profile/rheinlandbib/searchform_simple:332
+#: ../templates/profile/rheinlandbib/searchform_simple:426
 #: ../templates/profile/usb/searchform_query:141
 #: ../templates/searchform_query:141 ../templates/searchform_simple:159
 #: ../templates/searchform_simple:202 ../templates/searchform_simple:246
@@ -8703,7 +8850,6 @@ msgid "in:"
 msgstr "in:"
 
 #: ../templates/user_preferences_html:82 ../templates/user_role_edit:72
-#: ../templates/views/richter/user_preferences_html:87
 msgid "ja, seit"
 msgstr "ja, seit"
 
@@ -8728,6 +8874,7 @@ msgstr "Bibliothekar"
 msgid "meistgenutzte Titel"
 msgstr "meistgenutzte Titel"
 
+#: ../templates/profile/rheinlandbib/searchform_simple:524
 #: ../templates/profile/usb/login:61
 #: ../templates/views/richter/searchform_simple:524
 msgid "mit"
@@ -8748,7 +8895,6 @@ msgstr ""
 "      dem E-Book erworbenen Beschränkungen (nur vom Campus)."
 
 #: ../templates/user_preferences_html:82 ../templates/user_role_edit:72
-#: ../templates/views/richter/user_preferences_html:87
 msgid "mit Grund"
 msgstr "mit Grund"
 
@@ -8874,7 +9020,6 @@ msgid "nach Z&auml;hlung"
 msgstr "nach Z&auml;hlung"
 
 #: ../templates/user_preferences_html:84 ../templates/user_role_edit:74
-#: ../templates/views/richter/user_preferences_html:89
 msgid "nein"
 msgstr "nein"
 
@@ -8905,8 +9050,6 @@ msgstr "online im Hochschulnetz"
 #: ../templates/views/richter/title_html:135
 #: ../templates/views/richter/title_html:164
 #: ../templates/views/richter/title_html:236
-#: ../templates/views/richter/user_litlist_collection_html:51
-#: ../templates/views/richter/user_litlist_collection_html:87
 msgid "privat"
 msgstr "privat"
 
@@ -8946,7 +9089,6 @@ msgid "weitere OpenBib-Portale"
 msgstr "weitere OpenBib-Portale"
 
 #: ../templates/user_preferences_html:56
-#: ../templates/views/richter/user_preferences_html:58
 msgid "wiederholt"
 msgstr "wiederholt"
 
@@ -8967,7 +9109,7 @@ msgstr "wiederholt"
 #: ../templates/admin_subject_record_edit:176
 #: ../templates/admin_subject_record_edit:221
 #: ../templates/admin_subject_record_edit:75
-#: ../templates/admin_view_record_edit:97
+#: ../templates/admin_view_record_edit:88
 #: ../templates/admin_view_rss_record_edit:94
 #: ../templates/user_profile_edit:124 ../templates/user_profile_edit:68
 msgid "Ändern"
@@ -8995,3 +9137,5 @@ msgstr "Übernehmen"
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
 
+#~ msgid "Exakt?"
+#~ msgstr "Exakt?"

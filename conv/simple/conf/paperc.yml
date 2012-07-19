@@ -15,7 +15,7 @@ uniqueidfield: 'a001'
 
 # Personen
 pers:
-  'Contributor/PersonName': '0100:'        # Verfasser
+  'Contributor/PersonName': '0100'        # Verfasser
 
 # Koerperschaften
 corp:
@@ -28,10 +28,10 @@ subj:
 
 # Titel
 title:
-  'title/b203': '0331:'
-  'productidentifier/b244': '0540:'
-  'b003': '0425:'
-# 'Kurzbeschreibung': '0750:'
-  'productwebsite/f123': '0662:'
-  'publisher/b081': '0412:'
-  'b209': '0410:'
+  'title/b203': '0331'
+  'productidentifier/b244': '0540'
+  'b003': '0425'
+# 'Kurzbeschreibung': '0750'
+  'productwebsite/f123': '0662'
+  'publisher/b081': '0412'
+  'b209': '0410'

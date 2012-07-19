@@ -16,7 +16,7 @@ category_split_chars:
 
 # Personen
 pers:
-  'AU': '0100:'        # Verfasser
+  'AU': '0100'        # Verfasser
 
 # Koerperschaften
 corp:
@@ -26,19 +26,19 @@ sys:
 
 # Schlagworte
 subj:
-  'SW': '0710:'
+  'SW': '0710'
 
 # Titel
 title:
-  'TI': '0331:'
-  'EJ': '0425:'
-  'SO': '0412:'
-  'OR': '0410:'
-  'KO': '0433:'
-  'AS': '0403:'
-  'IS': '0540:'
+  'TI': '0331'
+  'EJ': '0425'
+  'SO': '0412'
+  'OR': '0410'
+  'KO': '0433'
+  'AS': '0403'
+  'IS': '0540'
 
 # Exemplare
 exempl:
-  'SI': '0014.001:'
+  'SI': '0014'
 

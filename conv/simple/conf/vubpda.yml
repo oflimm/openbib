@@ -21,7 +21,7 @@ category_split_chars:
 
 # Personen
 pers:
-  'person_all': '0100:'        # Verfasser
+  'person_all': '0100'        # Verfasser
 
 # Koerperschaften
 corp:
@@ -34,11 +34,11 @@ subj:
 
 # Titel
 title:
-  'title': '0331:'
-  'subtitle': '0370:'
-  'identifier': '0540:'
-  'releasedate_': '0425:'
-  'publisher': '0412:'
+  'title': '0331'
+  'subtitle': '0370'
+  'identifier': '0540'
+  'releasedate_': '0425'
+  'publisher': '0412'
 
 filter:
   'releasedate_':

@@ -194,21 +194,26 @@ sub load_name {
     my $subject_fields = $self->{schema}->resultset('Subject')->search(
         {
             'me.id'                 => $id,
-            'subject_fields.field'   => '0001',
+            'subject_fields.field'   => '0800',
         },
         {
             select => ['subject_fields.content'],
             as     => ['thiscontent'],
             join   => ['subject_fields'],
         }
-    )->single;
+    );
 
-    my $main_entry="Unbekannt";
-
-    if ($subject_fields){
-        $main_entry  =                    $subject_fields->get_column('thiscontent');
-    }
+    my $main_entry  = "Unbekannt";
     
+    my @mainentries = ();
+    foreach my $item ($subject_fields->all){
+        push @mainentries, $subject_fields->get_column('thiscontent')->single;
+    }
+
+    if (@mainentries){
+        $main_entry = join (' / ',@mainentries);
+    }
+
     if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);

@@ -13,8 +13,8 @@
 -%]
 [%# Ausgabekategorien %]
 [%- categories = [
-                 'P0001', # msg.maketext("P0001") Ansetzung
-	         'P0102', # msg.maketext("P0102") Verweisung
+                 'P0800', # msg.maketext("P0800") Ansetzung
+	         'P0830', # msg.maketext("P0830") Verweisung
 
                  # Erweiterungen Wikisource
 #	         'P0300', # msg.maketext("P0300") Nachname

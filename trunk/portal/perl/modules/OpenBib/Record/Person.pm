@@ -194,7 +194,7 @@ sub load_name {
     my $person_fields = $self->{schema}->resultset('Person')->search(
         {
             'me.id'                 => $id,
-            'person_fields.field'   => '0001',
+            'person_fields.field'   => '0800',
         },
         {
             select => ['person_fields.content'],

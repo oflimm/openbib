@@ -92,9 +92,11 @@ close(MEX);
 sub parse_record {
     my($t, $titset)= @_;
 
+    my $title_ref = {};
+
     my @ids= $titset->get_xpath($convconfig->{uniqueidfield});
 
-    print TIT "0000:".$ids[0]->first_child()->text()."\n";
+    $title_ref->{id} = $ids[0]->first_child()->text();
 
     foreach my $kateg (keys %{$convconfig->{title}}){
 
@@ -120,7 +122,12 @@ sub parse_record {
 
             if ($convconfig->{filter}{$kateg}{filter_add_year}){
                 my $new_content = filter_match($content,$convconfig->{filter}{$kateg}{filter_add_year}{regexp});
-                print TIT $convconfig->{filter}{$kateg}{filter_add_year}{category}.$new_content."\n";
+
+                push @{$title_ref->{$convconfig->{filter}{$kateg}{filter_add_year}{category}}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $new_content,
+                };
             }
 
             if ($content){
@@ -134,9 +141,14 @@ sub parse_record {
                 }
             }
         }
-        
+
+        my $mult = 1;
         foreach my $part (@parts){
-            print TIT $convconfig->{title}{$kateg}.$part."\n";
+            push @{$title_ref->{$convconfig->{title}{$kateg}}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $part,
+            };
         }
     }
     
@@ -173,20 +185,33 @@ sub parse_record {
                 }
             }
         }
-        
+
+        my $mult = 1;
         foreach my $part (@parts){
             my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($part);
             
             if ($new){
-                print AUT "0000:$person_id\n";
-                print AUT "0001:$part\n";
-                print AUT "9999:\n";
+                my $item_ref = {};
+                $item_ref->{id} = $person_id;
+                push @{$item_ref->{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $part,
+                };
                 
+                print AUT encode_json $item_ref, "\n";
             }
             
             my $new_category = $convconfig->{pers}{$kateg};
 
-            print TIT $new_category."IDN: $person_id\n";
+            push @{$title_ref->{$new_category}}, {
+                mult       => $mult,
+                subfield   => '',
+                id         => $person_id,
+                supplement => '',
+            };
+
+            $mult++;
         }
         # Autoren abarbeiten Ende
     }
@@ -196,7 +221,7 @@ sub parse_record {
         my @elements = $titset->get_xpath($kateg);
         
         my @parts = ();
-        
+
         foreach my $element (@elements){
             next unless (defined $element->first_child());
             my $content = konv($element->first_child()->text());
@@ -224,20 +249,33 @@ sub parse_record {
                 }
             }
         }
-        
+
+        my $mult = 1;
         foreach my $part (@parts){
             my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
             
             if ($new){
-                print KOR "0000:$corporatebody_id\n";
-                print KOR "0001:$part\n";
-                print KOR "9999:\n";
+                my $item_ref = {};
+                $item_ref->{id} = $corporatebody_id;
+                push @{$item_ref->{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $part,
+                };
                 
+                print KOR encode_json $item_ref, "\n";
             }
             
             my $new_category = $convconfig->{corp}{$kateg};
-            
-            print TIT $new_category."IDN: $corporatebody_id\n";
+
+            push @{$title_ref->{$new_category}}, {
+                mult       => $mult,
+                subfield   => '',
+                id         => $corporatebody_id,
+                supplement => '',
+            };
+
+            $mult++;
         }
     }
     # Koerperschaften abarbeiten Ende
@@ -275,20 +313,33 @@ sub parse_record {
                 }
             }
         }
-                
+
+        my $mult = 1;
         foreach my $part (@parts){
             my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
             
             if ($new){
-                print NOTATION "0000:$classification_id\n";
-                print NOTATION "0001:$part\n";
-                print NOTATION "9999:\n";
+                my $item_ref = {};
+                $item_ref->{id} = $classification_id;
+                push @{$item_ref->{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $part,
+                };
                 
+                print NOTATION encode_json $item_ref, "\n";
             }
             
             my $new_category = $convconfig->{sys}{$kateg};
-            
-            print TIT $new_category."IDN: $classification_id\n";
+
+            push @{$title_ref->{$new_category}}, {
+                mult       => $mult,
+                subfield   => '',
+                id         => $classification_id,
+                supplement => '',
+            };
+
+            $mult++;
         }
     }
     # Notationen abarbeiten Ende
@@ -326,25 +377,38 @@ sub parse_record {
                 }
             }
         }
-                
+
+        my $mult = 1;
         foreach my $part (@parts){
             my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
             
             if ($new){
-                print SWT "0000:$subject_id\n";
-                print SWT "0001:$part\n";
-                print SWT "9999:\n";
+                my $item_ref = {};
+                $item_ref->{id} = $subject_id;
+                push @{$item_ref->{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $part,
+                };
                 
+                print SWT encode_json $item_ref, "\n";
             }
             
             my $new_category = $convconfig->{subj}{$kateg};
-            
-            print TIT $new_category."IDN: $subject_id\n";
+
+            push @{$title_ref->{$new_category}}, {
+                mult       => $mult,
+                subfield   => '',
+                id         => $subject_id,
+                supplement => '',
+            };
+
+            $mult++;
         }
     }
     # Schlagworte abarbeiten Ende
 
-    print TIT "9999:\n";
+    print TIT encode_json $title_ref, "\n";
 
     $counter++;
 

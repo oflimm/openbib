@@ -39,6 +39,7 @@ use Encode 'decode';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use Text::CSV_XS;
+use JSON::XS;
 use YAML::Syck;
 
 use OpenBib::Config;
@@ -123,6 +124,8 @@ $csv->bind_columns (\@{$row}{@cols});
 while ($csv->getline ($in)){
     $logger->debug(YAML::Dump($row));
 
+    my $title_ref = {};
+    
     if ($convconfig->{exclude}{by_availability}){
         my $key_field = $convconfig->{exclude}{by_availability}{field};
         my $content = $row->{$key_field};
@@ -160,11 +163,12 @@ while ($csv->getline ($in)){
             $logger->error("Doppelte ID: $id");
 	    next;
         }
-        printf TIT "0000:$id\n";
+
+        $title_ref->{id} = $id;
         $have_titid_ref->{$id} = 1;
     }
     else {
-        printf TIT "0000:%d\n", $titid++;
+        $title_ref->{id} = $titid++;
     }
 
     foreach my $kateg (keys %{$convconfig->{title}}){
@@ -193,11 +197,10 @@ while ($csv->getline ($in)){
                 $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
             }
 
-            my $multiple = 0;
+            my $mult = 1;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-                $multiple = 1;
             }
             else {
                 $content=~s/\n/ /g;
@@ -208,11 +211,13 @@ while ($csv->getline ($in)){
                 $part=~s/uhttp:/http:/;
                 my $new_category = $convconfig->{title}{$kateg};
 
-                if ($multiple && $new_category=~/^(\d+):$/){
-                    $new_category=sprintf "%s.%03d:",$1,$multiple;
-                    $multiple++;
-                }
-                print TIT $new_category.$part."\n";
+                push @{$title_ref->{$new_category}}, {
+                    mult     => $mult,
+                    subfield => '',
+                    content  => $part,
+                };
+
+                $mult++;
             }
         }
     }
@@ -245,34 +250,40 @@ while ($csv->getline ($in)){
                 $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
             }
 
-            my $multiple = 0;
+            my $mult = 1;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-                $multiple = 1;
             }
             else {
                 push @parts, $content;
             }
-            
+
             foreach my $part (@parts){
                 my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($part);
                 
                 if ($new){
-                    print AUT "0000:$person_id\n";
-                    print AUT "0001:$part\n";
-                    print AUT "9999:\n";
-                    
+                    my $item_ref = {};
+                    $item_ref->{id} = $person_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+
+                    print AUT encode_json $item_ref, "\n";
                 }
 
                 my $new_category = $convconfig->{pers}{$kateg};
 
-                if ($multiple && $new_category=~/^(\d+):$/){
-                    $new_category=sprintf "%s.%03d:",$1,$multiple;
-                    $multiple++;
-                }
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $person_id,
+                    supplement => '',
+                };
 
-                print TIT $new_category."IDN: $person_id\n";
+                $mult++;
             }
         }
 
@@ -306,11 +317,10 @@ while ($csv->getline ($in)){
                 $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
             }
 
-            my $multiple = 0;
+            my $mult = 1;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-                $multiple = 1;                
             }
             else {
                 push @parts, $content;
@@ -320,20 +330,27 @@ while ($csv->getline ($in)){
                 my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                 
                 if ($new){
-                    print KOR "0000:$corporatebody_id\n";
-                    print KOR "0001:$part\n";
-                    print KOR "9999:\n";
-                    
+                    my $item_ref = {};
+                    $item_ref->{id} = $corporatebody_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+
+                    print KOR encode_json $item_ref, "\n";
                 }
 
                 my $new_category = $convconfig->{corp}{$kateg};
 
-                if ($multiple && $new_category=~/^(\d+):$/){
-                    $new_category=sprintf "%s.%03d:",$1,$multiple;
-                    $multiple++;
-                }
-                
-                print TIT $new_category."IDN: $corporatebody_id\n";
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $corporatebody_id,
+                    supplement => '',
+                };
+
+                $mult++;
             }
         }
     }
@@ -367,11 +384,10 @@ while ($csv->getline ($in)){
                 $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
             }
 
-            my $multiple = 0;
+            my $mult = 1;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-                $multiple = 1;
             }
             else {
                 push @parts, $content;
@@ -381,20 +397,27 @@ while ($csv->getline ($in)){
                 my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                 
                 if ($new){
-                    print NOTATION "0000:$classification_id\n";
-                    print NOTATION "0001:$part\n";
-                    print NOTATION "9999:\n";
-                    
+                    my $item_ref = {};
+                    $item_ref->{id} = $classification_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+
+                    print NOTATION encode_json $item_ref, "\n";
                 }
 
                 my $new_category = $convconfig->{sys}{$kateg};
 
-                if ($multiple && $new_category=~/^(\d+):$/){
-                    $new_category=sprintf "%s.%03d:",$1,$multiple;
-                    $multiple++;
-                }
-                
-                print TIT $new_category."IDN: $classification_id\n";
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $classification_id,
+                    supplement => '',
+                };
+
+                $mult++;
             }
         }
     }
@@ -427,11 +450,10 @@ while ($csv->getline ($in)){
                 $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
             }
             
-            my $multiple = 0;
+            my $mult = 1;
             my @parts = ();
             if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
                 @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-                $multiple = 1;
             }
             else {
                 push @parts, $content;
@@ -441,20 +463,27 @@ while ($csv->getline ($in)){
                 my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                 
                 if ($new){
-                    print SWT "0000:$subject_id\n";
-                    print SWT "0001:$part\n";
-                    print SWT "9999:\n";
-                    
+                    my $item_ref = {};
+                    $item_ref->{id} = $subject_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+
+                    print SWT encode_json $item_ref, "\n";
                 }
 
                 my $new_category = $convconfig->{subj}{$kateg};
 
-                if ($multiple && $new_category=~/^(\d+):$/){
-                    $new_category=sprintf "%s.%03d:",$1,$multiple;
-                    $multiple++;
-                }
-                
-                print TIT $new_category."IDN: $subject_id\n";
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $subject_id,
+                    supplement => '',
+                };
+
+                $mult++;
             }
             
         }
@@ -506,19 +535,31 @@ while ($csv->getline ($in)){
     }
 
     #print YAML::Dump(\%mex);
-    foreach my $part (keys %mex){        
-        print MEX "0000:$mexidn\n";
-        print MEX "0004:$titid\n";
+    foreach my $part (keys %mex){
+        my $item_ref = {};
+        $item_ref->{id} = $mexidn;
+        push @{$item_ref->{'0004'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $titid,
+        };
+
         foreach my $category (keys %{$mex{$part}}){
-            print MEX $category.$mex{$part}{$category}."\n";
+            push @{$item_ref->{$category}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $mex{$part}{$category},
+            };
         }
-        print MEX "9999:\n";
+        
         $mexidn++;
+        
+        print MEX encode_json $item_ref, "\n";
     }
 
     # Exemplare abarbeiten Ende
 
-    print TIT "9999:\n";
+    print TIT encode_json $title_ref, "\n";
 }
 
 $logger->info("Excluded titles: $excluded_titles");

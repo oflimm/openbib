@@ -6,7 +6,7 @@
 #
 #  Konverierung der einfach aufgebauter Daten in das Meta-Format
 #
-#  Dieses File ist (C) 1999-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1999-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,13 +37,8 @@ use DBI;
 use YAML::Syck;
 
 use OpenBib::Config;
+use OpenBib::Conv::Common::Util;
 
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
-
-@autdubbuf = ();
-@kordubbuf = ();
-@swtdubbuf = ();
-@notdubbuf = ();
 $mexidn  =  1;
 
 my $config = OpenBib::Config->instance;
@@ -86,8 +81,10 @@ while (my $line=<DAT>){
     # Ende erreicht
     if ($line=~/^$convconfig->{file}{rec_sep}/){
 
-        printf TIT "0000:%d\n", $titid;
-            
+        my $title_ref = {};
+
+        $title_ref->{id} = $titid;
+        
         foreach my $thisline (@buffer){
             my ($kateg,$content)=$thisline=~/^(.+?)$convconfig->{file}{sep_char}(.*?)$/;
             my $content = decode($convconfig->{encoding},$content);
@@ -95,7 +92,11 @@ while (my $line=<DAT>){
             if (exists $convconfig->{title}{$kateg}){
                 
                 if ($content){
-                    print TIT $convconfig->{title}{$kateg}.$content."\n";
+                    push @{$title_ref->{$convconfig->{title}{$kateg}}}, {
+                        mult     => 0,
+                        subfield => '',
+                        content  => $content,
+                    };
                 }
             }
             
@@ -108,21 +109,31 @@ while (my $line=<DAT>){
                 else {
                     push @parts, $content;
                 }
-                
+
+                my $mult = 1;
                 foreach my $part (@parts){
-                    my $autidn=get_autidn($part);
+                    my ($autidn,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
                     
-                    if ($autidn > 0){
-                        print AUT "0000:$autidn\n";
-                        print AUT "0001:$part\n";
-                        print AUT "9999:\n";
+                    if ($new){
+                        my $item_ref = {};
+                        $item_ref->{id} = $autidn;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
                         
+                        print AUT encode_json $item_ref, "\n";
                     }
-                    else {
-                        $autidn=(-1)*$autidn;
-                    }
-                    
-                    print TIT $convconfig->{pers}{$kateg}."IDN: $autidn\n";
+
+                    push @{$title_ref->{$convconfig->{pers}{$kateg}}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $autidn,
+                        supplement => '',
+                    };
+
+                    $mult++;
                 }
             }       
             # Autoren abarbeiten Ende
@@ -139,19 +150,28 @@ while (my $line=<DAT>){
                 
                 foreach my $part (@parts){
 
-                    my $koridn=get_koridn($part);
+                    my ($koridn,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                 
-                    if ($koridn > 0){
-                        print KOR "0000:$koridn\n";
-                        print KOR "0001:$part\n";
-                        print KOR "9999:\n";
+                    if ($new){
+                        my $item_ref = {};
+                        $item_ref->{id} = $koridn;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
                         
+                        print KOR encode_json $item_ref, "\n";
                     }
-                    else {
-                        $koridn=(-1)*$koridn;
-                    }
-                
-                    print TIT $convconfig->{corp}{$kateg}."IDN: $koridn\n";
+
+                    push @{$title_ref->{$convconfig->{corp}{$kateg}}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $koridn,
+                        supplement => '',
+                    };
+
+                    $mult++;
                 }
             }
             # Koerperschaften abarbeiten Ende
@@ -167,17 +187,28 @@ while (my $line=<DAT>){
                 }
                 
                 foreach my $part (@parts){
-                    my $notidn=get_notidn($part);
+                    my ($notidn,$new)=OpenBib::Conv::Common::Util::get_classification_id($part);
                     
-                    if ($notidn > 0){	  
-                        print NOTATION "0000:$notidn\n";
-                        print NOTATION "0001:$part\n";
-                        print NOTATION "9999:\n";
+                    if ($new){	  
+                        my $item_ref = {};
+                        $item_ref->{id} = $notidn;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print NOTATION encode_json $item_ref, "\n";
                     }
-                    else {
-                        $notidn=(-1)*$notidn;
-                    }
-                    print TIT $convconfig->{sys}{$kateg}."IDN: $notidn\n";
+
+                    push @{$title_ref->{$convconfig->{sys}{$kateg}}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $notidn,
+                        supplement => '',
+                    };
+
+                    $mult++;
                 }
             }
             # Schlagworte abarbeiten Ende
@@ -194,21 +225,34 @@ while (my $line=<DAT>){
                 }
                 
                 foreach my $part (@parts){
-                    my $swtidn=get_swtidn($part);
+                    my ($swtidn,$new)=OpenBib::Conv::Common::Util::get_subject_id($part);
                     
-                    if ($swtidn > 0){	  
-                        print SWT "0000:$swtidn\n";
-                        print SWT "0001:$part\n";
-                        print SWT "9999:\n";
+                    if ($new){
+                        my $item_ref = {};
+                        $item_ref->{id} = $swtidn;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print SWT encode_json $item_ref, "\n";
                     }
-                    else {
-                        $swtidn=(-1)*$swtidn;
-                    }
-                    print TIT $convconfig->{subj}{$kateg}."IDN: $swtidn\n";
+
+                    push @{$title_ref->{$convconfig->{subj}{$kateg}}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $swtidn,
+                        supplement => '',
+                    };
+
+                    $mult++;
                 }
             }
             # Schlagworte abarbeiten Ende
 
+            # Achtung: Es wird nur die 0014 = Signatur verarbeitet!!!!!
+            # Es darf maximal diese Definition unter exempl in der Konfigurationsdatei stehen
             elsif (exists $convconfig->{exempl}{$kateg} && $content){
                 my @parts = ();
                 if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
@@ -219,15 +263,28 @@ while (my $line=<DAT>){
                 }
                 
                 foreach my $part (@parts){
-                    print MEX "0000:$mexidn\n";
-                    print MEX "0004:$titid\n";
-                    print MEX $convconfig->{exempl}{$kateg}.$part."\n";
-                    print MEX "9999:\n";
+                    my $item_ref = {};
+                    $item_ref->{id} = $mexidn;
+
+                    push @{$item_ref->{'0004'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $titid,
+                    };
+
+                    push @{$convconfig->{exempl}{$kateg}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+
+                    print MEX encode_json $item_ref, "\n";
+
                     $mexidn++;
                 }
             }
         }
-        print TIT "9999:\n";
+        print encode_json "9999:\n";
         $titid++;
         @buffer=();
     }

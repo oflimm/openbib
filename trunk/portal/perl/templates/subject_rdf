@@ -10,10 +10,10 @@
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" >
   <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('subject_loc') %]/[% database %]/[% id %]">
 [%#    <owl:sameAs rdf:resource="http://dbpedia.org/page/Steampunk"/> %]
-[% FOREACH item IN normset.${"S0001"} %]
+[% FOREACH item IN normset.${"S0800"} %]
     <skos:prefLabel>[% item.content %]</skos:prefLabel>
 [% END %]
-[% FOREACH item IN normset.${"S0102"} %]
+[% FOREACH item IN normset.${"S0830"} %]
     <skos:related>[% item.content %]</skos:related>
 [%#    <skos:related rdf:resource="http://libris.kb.se/resource/auth/164863"/> %]
 [% END %] 

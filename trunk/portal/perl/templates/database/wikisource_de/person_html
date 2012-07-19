@@ -78,6 +78,18 @@ FOREACH category IN categories;
 
     SWITCH category;
 
+    CASE "P0308";
+        content    = "<a href=\"http://de.wikisource.org/wiki/Bild:${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P0309";
+        content    = "<a href=\"http://de.wikipedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P0310";
+        content    = "<a href=\"http://de.wikiquote.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P0311";
+        content    = "<a href=\"http://commons.wikimedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
     CASE "P5000";
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').personid.prefix;

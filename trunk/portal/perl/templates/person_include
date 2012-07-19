@@ -61,7 +61,7 @@ END;
 
     request_base = "page=1;num=20;srt=person_asc;jn=1;";
 
-    searchterm        = normset.${"P0001"}.first.content;
+    searchterm        = normset.${"P0800"}.first.content;
     searchprefix      = config.get('searchfield').personstring.prefix;
 
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");

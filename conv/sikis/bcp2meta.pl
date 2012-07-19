@@ -48,7 +48,7 @@ use utf8;
 use Encode;
 use Getopt::Long;
 use JSON::XS;
-use MLDBM qw(DB_File Storable);
+#use MLDBM qw(DB_File Storable);
 use Storable ();
 
 our ($bcppath,$used01buch,$usemcopynum,$blobencoding,$reducemem);
@@ -94,11 +94,11 @@ my %buchdaten    = ();
 my %titelbuchkey = ();
 
 if ($reducemem) {
-    tie %buchdaten,        'MLDBM', "./buchdaten.db"
-        or die "Could not tie buchdaten.\n";
+#    tie %buchdaten,        'MLDBM', "./buchdaten.db"
+#        or die "Could not tie buchdaten.\n";
 
-    tie %titelbuchkey,     'MLDBM', "./titelbuchkey.db"
-        or die "Could not tie titelbuchkey.\n";
+#    tie %titelbuchkey,     'MLDBM', "./titelbuchkey.db"
+#        or die "Could not tie titelbuchkey.\n";
 }
 
 #goto WEITER;

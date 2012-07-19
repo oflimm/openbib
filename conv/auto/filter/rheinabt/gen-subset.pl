@@ -77,7 +77,7 @@ my $logger = get_logger();
 
 my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
 $subset->identify_by_mark(["^Rh","^1K","^XK"]);
-$subset->identify_by_category_content('classification',([ { category => '0001', content => '^Rh' } ]));
+$subset->identify_by_category_content('classification',([ { category => '0800', content => '^Rh' } ]));
 $subset->write_set;
 
 sub print_help {

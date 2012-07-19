@@ -12,17 +12,17 @@ convtab:
       '4203': 1        # Wikipedia
       '4300': 1        # Fremde Schlagworte
     blacklist_person:
-      '0100': 1        # Aufnahmedatum
-#      '0101': 1        # Aenderungsdatum
+      '0002': 1        # Aufnahmedatum
+#      '0003': 1        # Aenderungsdatum
     blacklist_corporatebody:
-      '0100': 1        # Aufnahmedatum
-#      '0101': 1        # Aenderungsdatum
+      '0002': 1        # Aufnahmedatum
+#      '0003': 1        # Aenderungsdatum
     blacklist_classification:
-      '0100': 1        # Aufnahmedatum
-#      '0101': 1        # Aenderungsdatum
+      '0002': 1        # Aufnahmedatum
+#      '0003': 1        # Aenderungsdatum
     blacklist_subject:
-      '0100': 1        # Aufnahmedatum
-#      '0101': 1        # Aenderungsdatum
+      '0002': 1        # Aufnahmedatum
+#      '0003': 1        # Aenderungsdatum
     blacklist_title:
      #'0002': 1        # Aufnahmedatum
      #'0003': 1        # Aenderungsdatum        
@@ -125,46 +125,46 @@ convtab:
 # Katagorie gesammelt wird, der Hashwert des Recherchefeldes
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_person:
-      '0001':         # Ansetzung
+      '0800':         # Ansetzung
         ft: 1
         string: 1
         index:
           'person': 1
           'personstring': 1
           'freesearch': 1
-      '0102':         # Verweisform
+      '0830':         # Verweisform
         ft: 1
         string: 1
         index:
           'person': 1
           'freesearch': 1
     inverted_corporatebody:
-      '0001':         # Ansetzung
+      '0800':         # Ansetzung
         ft: 1
         string: 1
         index:
           'corporatebody': 1
           'corporatebodystring': 1
           'freesearch': 1
-      '0102':         # Verweisform
+      '0810':         # Verweisform
         ft: 1
         string: 1
         index:
           'corporatebody': 1
           'freesearch': 1
-      '0103':         # Abkuerzung der Verweisform
+      '0812':         # Abkuerzung der Verweisform
         ft: 1
         string: 1
         index:
           'corporatebody': 1
           'freesearch': 1
-      '0110':         # Abkuerzung der Ansetzung
+      '0881':         # Abkuerzung der Ansetzung
         ft: 1
         string: 1
         index:
           'corporatebody': 1
           'freesearch': 1
-      '0111':         # Frueherer/Spaeterer Name
+      '0850':         # Frueherer/Spaeterer Name
         ft: 1
         string: 1
         index:
@@ -179,64 +179,64 @@ convtab:
           'markstring': 1
           'freesearch': 1
     inverted_classification:
-      '0001':         # Ansetzung
+      '0800':         # Ansetzung
         ft: 1
         string: 1
         index:
           'classification': 1
           'classificationstring': 1
           'freesearch': 1
-      '0002':         # Ansetzung
+      '0801':         # Ansetzung
         ft: 1
         string: 1
         index:
           'classification': 1
           'freesearch': 1
-      '0102':         # Stichwort
+      '0830':         # Stichwort
         ft: 1
         string: 1
         index:
           'classification': 1
           'freesearch': 1
-      '0103':         # Verweisform
+      '0840':         # Verweisform
         ft: 1
         string: 1
         index:
           'classification': 1
           'freesearch': 1
     inverted_subject:
-      '0001':         # Ansetzung
+      '0800':         # Ansetzung
         ft: 1
         string: 1
         index:
           'subject': 1
           'subjectstring': 1
           'freesearch': 20
-      '0102':         # Verweisform
+      '0830':         # Verweisform
         ft: 1
         string: 1
         index:
           'subject': 1
           'freesearch': 1
-      '0105':         # Definition
+      '0805':         # Definition
         ft: 1
         string: 1
         index:
           'subject': 1
           'freesearch': 1
-      '0113':         # Uebergeordnete Bezeichnung
+      '0850':         # Uebergeordnete Bezeichnung
         ft: 1
         string: 1
         index:
           'subject': 1
           'freesearch': 1
-      '0115':         # Assoziiert
+      '0860':         # Assoziiert
         ft: 1
         string: 1
         index:
           'subject': 1
           'freesearch': 1
-      '0117':         # Frueher
+      '0870':         # Frueher
         ft: 1
         string: 1
         index:
@@ -687,7 +687,7 @@ convtab:
      #'4725': 1        # Temporaeres Schlagwort
   kapsel:
     inverted_classification:
-      '0001':         # Ansetzung
+      '0800':         # Ansetzung
         ft: 1
         string: 1
         index:
@@ -695,7 +695,7 @@ convtab:
           'classificationstring': 1
           'freesearch': 1
 
-      '0102':         # Verweisform
+      '0830':         # Verweisform
         ft: 1
         string: 1
         index:
@@ -704,14 +704,14 @@ convtab:
           'freesearch': 1
 
     inverted_subject:
-      '0001':         # Ansetzung
+      '0800':         # Ansetzung
         ft: 1
         string: 1
         index:
           'subject': 1
           'subjectstring': 1
           'freesearch': 20
-      '0103':         # Verweisform
+      '0831':         # Verweisform
         ft: 1
         string: 1
         index:

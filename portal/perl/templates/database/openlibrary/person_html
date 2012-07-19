@@ -17,7 +17,7 @@ dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata;   
 request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
 
-recordname = normset.${'P0001'}.first.content;
+recordname = normset.${'P0800'}.first.content;
 title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordname,dbdesc)
 
 -%]
@@ -125,7 +125,7 @@ END;
 
     request_base = "page=1;num=50;srt=person;srto=asc;dd=1;jn=1;";
 
-    searchterm        = normset.${"P0001"}.first.content;
+    searchterm        = normset.${"P0800"}.first.content;
     searchprefix      = config.get('searchfield').personstring.prefix;
 
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");

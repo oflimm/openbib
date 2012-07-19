@@ -17,7 +17,7 @@ dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata;   
 request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
 
-recordname = normset.${'S0001'}.first.content;
+recordname = normset.${'S0800'}.first.content;
 title      = msg.maketext("Schlagwort-Information: [_1] in Katalog [_2]",recordname,dbdesc)
 
 -%]
@@ -92,7 +92,13 @@ END;
 </table>
 
 [%
-    searchterm        = normset.${"S0001"}.first.content;
+
+    headings = [];
+    FOREACH item IN normset.${"S0800"};
+      headings.push(item.content);
+    END ;
+   
+    searchterm        = headings.join(' / ');
     searchprefix      = config.get('searchfield').subjectstring.prefix;
 
 

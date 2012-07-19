@@ -16,7 +16,7 @@ dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata ;   
 request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
 
-recordname = normset.${'C0001'}.first.content;
+recordname = normset.${'C0800'}.first.content;
 title      = msg.maketext("Körperschafts-Information: [_1] in Katalog [_2]",recordname,dbdesc)
 
 -%]
@@ -90,7 +90,7 @@ END;
 </table>
 
 [%
-    searchterm        = normset.${"C0001"}.first.content;
+    searchterm        = normset.${"C0800"}.first.content;
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
     globalurl         = "${path_prefix}/${config.get('search_loc')}?searchall=1;kor=%22${searchterm}%22";
 

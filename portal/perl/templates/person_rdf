@@ -12,11 +12,11 @@
 [%#    <owl:sameAs rdf:resource="http://dbpedia.org/resource/xxx"/>
     <rdf:seeAlso rdf:resource="http://en.wikipedia.org/wiki/xxx"/>
     <dbpedia:birthYear>1234</dbpedia:birthYear> %]
-[% FOREACH item IN normset.${"P0001"} %]
+[% FOREACH item IN normset.${"P0800"} %]
     <libris:key>[% item.content %]</libris:key>
     <foaf:name>[% item.content %]</foaf:name>
 [% END %]
-[% FOREACH item IN normset.${"P0102"} %]
+[% FOREACH item IN normset.${"P0830"} %]
     <foaf:name>[% item.content %]</foaf:name>
 [% END %]
     <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>

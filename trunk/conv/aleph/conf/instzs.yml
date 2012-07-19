@@ -20,13 +20,13 @@ person:
         'newcat': '0100' # SDN
         'mult': 0,
     '800':
-        'newcat': '0001' # Ansetzung
+        'newcat': '0800' # Ansetzung
         'mult': 0
     '820':
-        'newcat': '0102' # ansetzungsform nach einem weiteren regelwerk => verweisungsform
+        'newcat': '0830' # ansetzungsform nach einem weiteren regelwerk => verweisungsform
         'mult': 1
     '830':
-        'newcat': '0102' # verweisungsform 
+        'newcat': '0830' # verweisungsform 
         'mult': 1
 
 # Koerperschaften
@@ -38,149 +38,119 @@ corporatebody:
         'newcat': '0100' # SDN
         'mult': 0
     '800':
-        'newcat': '0001' # Ansetzung
+        'newcat': '0800' # Ansetzung
         'mult': 0
     '801':
-        'newcat': '0110' # Abkuerzung der Ansetzung
+        'newcat': '0881' # Abkuerzung der Ansetzung
         'mult': 0
     '810':
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '811':
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '812':                # 2. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '813':                # zusaetzliche angaben zur 2. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '814':                # 3. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '815':                # zusaetzliche angaben zur 3. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '816':                # 4. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '817':                # zusaetzliche angaben zur 4. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '818':                # 5. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '819':                # zusaetzliche angaben zur 5. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '820':                # 6. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '821':                # zusaetzliche angaben zur 6. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '822':                # 7. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '823':                # zusaetzliche angaben zur 7. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '824':                # 8. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '825':                # zusaetzliche angaben zur 8. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '826':                # 9. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '827':                # zusaetzliche angaben zur 9. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '828':                # 10. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '829':                # zusaetzliche angaben zur 10. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '830':                # 11. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '831':                # zusaetzliche angaben zur 11. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '832':                # 12. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '833':                # zusaetzliche angaben zur 12. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '834':                # 13. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '835':                # zusaetzliche angaben zur 13. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '836':                # 14. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '837':                # zusaetzliche angaben zur 14. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '838':                # 15. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '839':                # zusaetzliche angaben zur 15. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '840':                # 16. verweisungsform zum namen der koerperschaft
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '841':                # zusaetzliche angaben zur 16. verweisungsform
-        'newcat': '0102' # Verweisung
+        'newcat': '0810' # Verweisung
         'mult': 1
     '850':                # 1. frueherer, zeitweiser oder spaeterer name der koerperschaft
-        'newcat': '0111' # Frueher/Spaeter
+        'newcat': '0850' # Frueher/Spaeter
         'mult': 1
     '853':                # 2. frueherer, zeitweiser oder spaeterer name der koerperschaft
-        'newcat': '0111' # Frueher/Spaeter
+        'newcat': '0850' # Frueher/Spaeter
         'mult': 1
     '856':                # 3. frueherer, zeitweiser oder spaeterer name der koerperschaft
-        'newcat': '0111' # Frueher/Spaeter
-        'mult': 1
-
-# Systematik
-classification: 
-    '001':
-        'newcat': '0000' # ID
-        'mult': 0
-    '002':
-        'newcat': '0100' # SDN
-        'mult': 0
-    '800':            # hauptschlagwort
-        'newcat': '0001' # Ansetzung
-        'mult': 0
-    '820':            # alternativform zum hauptschlagwort
-        'newcat': '0102' # verweisungsform 
-        'mult': 1
-    '830':            # aequivalente bezeichnung
-        'newcat': '0102' # verweisungsform 
-        'mult': 1
-    '850':            # uebergeordnetes schlagwort
-        'newcat': '0113' # uebergeordnet
-        'mult': 1
-    '860':            # verwandtes schlagwort
-        'newcat': '0113' # assoziiert
-        'mult': 1
-    '870':            # schlagwort fuer eine fruehere benennung
-        'newcat': '0117' # frueher
-        'mult': 1
-    '880':            # schlagwort fuer eine spaetere benennung
-        'newcat': '0119' # spaeter
+        'newcat': '0850' # Frueher/Spaeter
         'mult': 1
 
 # Schlagworte
-subject:
+subject: 
     '001':
         'newcat': '0000' # ID
         'mult': 0
@@ -188,25 +158,25 @@ subject:
         'newcat': '0100' # SDN
         'mult': 0
     '800':            # hauptschlagwort
-        'newcat': '0001' # Ansetzung
-        'mult': 1
+        'newcat': '0800' # Ansetzung
+        'mult': 0
     '820':            # alternativform zum hauptschlagwort
-        'newcat': '0102' # verweisungsform 
+        'newcat': '0820' # verweisungsform 
         'mult': 1
     '830':            # aequivalente bezeichnung
-        'newcat': '0102' # verweisungsform 
+        'newcat': '0830' # verweisungsform 
         'mult': 1
     '850':            # uebergeordnetes schlagwort
-        'newcat': '0113' # uebergeordnet
+        'newcat': '0850' # uebergeordnet
         'mult': 1
     '860':            # verwandtes schlagwort
-        'newcat': '0113' # assoziiert
+        'newcat': '0860' # assoziiert
         'mult': 1
     '870':            # schlagwort fuer eine fruehere benennung
-        'newcat': '0117' # frueher
+        'newcat': '0870' # frueher
         'mult': 1
     '880':            # schlagwort fuer eine spaetere benennung
-        'newcat': '0119' # spaeter
+        'newcat': '0880' # spaeter
         'mult': 1
 
 # Titel

@@ -206,7 +206,7 @@ sub convert_buffer {
                 
                 if ($autidn > 0){
                     print AUT "0000:$autidn\n";
-                    print AUT "0001:$content\n";
+                    print AUT "0800:$content\n";
                     print AUT "9999:\n";
                     
                 }
@@ -231,7 +231,7 @@ sub convert_buffer {
                 
                 if ($koridn > 0){
                     print KOR "0000:$koridn\n";
-                    print KOR "0001:$content\n";
+                    print KOR "0800:$content\n";
                     print KOR "9999:\n";
                     
                 }
@@ -252,7 +252,7 @@ sub convert_buffer {
                 
                 if ($notidn > 0){
                     print NOTATION "0000:$notidn\n";
-                    print NOTATION "0001:$content\n";
+                    print NOTATION "0800:$content\n";
                     print NOTATION "9999:\n";
                     
                 }
@@ -271,7 +271,7 @@ sub convert_buffer {
                 
                 if ($swtidn > 0){	  
                     print SWT "0000:$swtidn\n";
-                    print SWT "0001:$content\n";
+                    print SWT "0800:$content\n";
                     print SWT "9999:\n";
                 }
                 else {

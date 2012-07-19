@@ -403,7 +403,7 @@ if (-e $titlefile){
                     
                     if ($autidn > 0){
                         print PEROUT "0000:$autidn\n";
-                        print PEROUT "0001:$content\n";
+                        print PEROUT "0800:$content\n";
                         print PEROUT "9999:\n";
                         
                     }
@@ -420,7 +420,7 @@ if (-e $titlefile){
                     
                     if ($koridn > 0){
                         print KOROUT "0000:$koridn\n";
-                        print KOROUT "0001:$content\n";
+                        print KOROUT "0800:$content\n";
                         print KOROUT "9999:\n";
                         
                     }
@@ -436,7 +436,7 @@ if (-e $titlefile){
                     
                     if ($swtidn > 0){
                         print KOROUT "0000:$swtidn\n";
-                        print KOROUT "0001:$content\n";
+                        print KOROUT "0800:$content\n";
                         print KOROUT "9999:\n";
                         
                     }

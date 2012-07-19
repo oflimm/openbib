@@ -52,15 +52,15 @@ my $dbpasswd  = $dbinfo->remotepassword;
 my $dbhost    = $dbinfo->host;
 my $dbname    = $dbinfo->remotepath;
 
-my $dbh=DBI->connect("DBI:mysql:dbname=$dbname;host=$dbhost;port=$port", $dbuser, $dbpasswd) or die "could not connect";
+my $dbh=DBI->connect("DBI:mysql:dbname=$dbname;host=$dbhost;port=$port", $dbuser, $dbpasswd, {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or die "could not connect";
 
 #########################################################################
 # Interpreten/Verfasser
 
 {
-    open(AUT,">:utf8", "unload.PER");
+    open(AUT,">:utf8", "meta.person");
 
-    my $sql_statement = "select * from artist";
+    my $sql_statement = "select * from artists";
     my $result=$dbh->prepare($sql_statement) or die "Error -- $DBI::errstr";
     
     $result->execute();
@@ -84,9 +84,9 @@ PERSET
 # Albenname/Koerperschaft
 
 {
-    open(KOR,">:utf8", "unload.KOE");
+    open(KOR,">:utf8", "meta.corporatebody");
     
-    my $sql_statement = "select * from album";
+    my $sql_statement = "select * from albums";
     my $result=$dbh->prepare($sql_statement) or die "Error -- $DBI::errstr";
     
     $result->execute();
@@ -110,9 +110,9 @@ KOESET
 # Genre/Notation
 
 {
-    open(NOTATION,">:utf8", "unload.SYS");
+    open(NOTATION,">:utf8", "meta.classification");
     
-    my $sql_statement = "select * from genre";
+    my $sql_statement = "select * from genres";
     my $result=$dbh->prepare($sql_statement) or die "Error -- $DBI::errstr";
     
     $result->execute();
@@ -137,9 +137,9 @@ SYSSET
 
 {
     my $titid=1;
-    open(TIT,">:utf8", "unload.TIT");
+    open(TIT,">:utf8", "meta.title");
     
-    my $sql_statement = "select tags.*,year.name as thisyear from tags left join year on tags.year=year.id";
+    my $sql_statement = "select tracks.*,years.name as thisyear from tracks left join years on tracks.year=years.id";
     my $result=$dbh->prepare($sql_statement) or die "Error -- $DBI::errstr";
     
     $result->execute();

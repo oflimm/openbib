@@ -36,6 +36,7 @@ use utf8;
 use DBI;
 use OpenBib::Config;
 use OpenBib::Schema::Catalog;
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 
@@ -583,10 +584,8 @@ sub write_set {
         open(PERSONOUT,"| gzip > $pooldir/$self->{destination}/meta.person.gz");
         
         while (<PERSON>){
-            
-            if (/^0000:(\S+)/){
-                $id=$1;
-            }
+            my $record_ref = decode_json $_;
+            my $id         = $record_ref->{id};
             
             if (defined $self->{personid}{$id} && $self->{personid}{$id} == 1){
                 print PERSONOUT $_;
@@ -603,10 +602,8 @@ sub write_set {
         open(CORPORATEBODYOUT,"| gzip > $pooldir/$self->{destination}/meta.corporatebody.gz");
         
         while (<CORPORATEBODY>){
-            
-            if (/^0000:(\S+)/){
-                $id=$1;
-            }
+            my $record_ref = decode_json $_;
+            my $id         = $record_ref->{id};
             
             if (defined $self->{corporatebodyid}{$id} && $self->{corporatebodyid}{$id} == 1){
                 print CORPORATEBODYOUT $_;
@@ -623,11 +620,9 @@ sub write_set {
         open(CLASSIFICATIONOUT,"| gzip > $pooldir/$self->{destination}/meta.classification.gz");
         
         while (<CLASSIFICATION>){
-            
-            if (/^0000:(\S+)/){
-                $id=$1;
-            }
-            
+            my $record_ref = decode_json $_;
+            my $id         = $record_ref->{id};
+
             if (defined $self->{classificationid}{$id} && $self->{classificationid}{$id} == 1){
                 print CLASSIFICATIONOUT $_;
             }
@@ -643,11 +638,9 @@ sub write_set {
         open(SUBJECTOUT,"| gzip > $pooldir/$self->{destination}/meta.subject.gz");
         
         while (<SUBJECT>){
-            
-            if (/^0000:(\S+)/){
-                $id=$1;
-            }
-            
+            my $record_ref = decode_json $_;
+            my $id         = $record_ref->{id};
+
             if (defined $self->{subjectid}{$id} && $self->{subjectid}{$id} == 1){
                 print SUBJECTOUT $_;
             }
@@ -663,11 +656,9 @@ sub write_set {
         open(TITLEOUT,"| gzip > $pooldir/$self->{destination}/meta.title.gz");
         
         while (<TITLE>){
-            
-            if (/^0000:(\S+)/){
-                $id=$1;
-            }
-            
+            my $record_ref = decode_json $_;
+            my $id         = $record_ref->{id};
+
             if (defined $self->{titleid}{$id} && $self->{titleid}{$id} == 1){
                 if (exists $self->{title_filter}){
                     &{$self->{title_filter}}($_,*TITLEOUT);
@@ -685,12 +676,9 @@ sub write_set {
         open(HOLDING,"gzip -dc $pooldir/$self->{source}/meta.holding.gz|");
         open(HOLDINGOUT,"| gzip > $pooldir/$self->{destination}/meta.holding.gz");
         
-        my $mexbuffer="";
-        
         while (<HOLDING>){
-            if (/^0000:(\d+)/){
-                $id=$1;
-            }
+            my $record_ref = decode_json $_;
+            my $id         = $record_ref->{id};
             
             if (defined $self->{holdingid}{$id} && $self->{holdingid}{$id} == 1){
                 print HOLDINGOUT $_;

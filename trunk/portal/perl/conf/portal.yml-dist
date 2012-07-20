@@ -13,33 +13,32 @@ loadbalancertargets:
   - localhost
 
 # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
-dbimodule: mysql
-#dbimodule: Pg
+dbimodule: Pg
 dbhost: localhost
-dbport: 3306
+dbport: 5432
 dbuser: root
 dbpasswd: StrengGeheim
 
 # Einstellungen fuer den Zugriff auf die System-Datenbank
-systemdbimodule: mysql
+systemdbimodule: Pg
 systemdbhost: localhost
-systemdbport: 3306
+systemdbport: 5433
 systemdbname: openbib_system
 systemdbuser: root
 systemdbpasswd: StrengGeheim
 
 # Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
-enrichmntdbimodule: mysql
+enrichmntdbimodule: Pg
 enrichmntdbhost: localhost
-enrichmntdbport: 3306
+enrichmntdbport: 5433
 enrichmntdbname: openbib_enrichmnt
 enrichmntdbuser: root
 enrichmntdbpasswd: StrengGeheim
 
 # Einstellungen fuer den Zugriff auf die Statistik-Datenbank
-statisticsdbimodule: mysql
+statisticsdbimodule: Pg
 statisticsdbhost: localhost
-statisticsdbport: 3306
+statisticsdbport: 5433
 statisticsdbname: openbib_statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
@@ -64,7 +63,7 @@ local_search_backend: xapian
 
 # Benutzer, Passwort und Default view fuer die Administration
 adminuser: admin
-adminpasswd: StrengGeheim
+adminpasswd: StrengGeheim..
 
 defaultview: openbib
 
@@ -2091,6 +2090,9 @@ searchfield:
   'mark': # Signatur
      'prefix': 'mark'
      'type': 'ft'
+  'publisher':
+     'prefix': 'publ'
+     'type': 'ft'
   'isbn':
      'prefix': 'isbn'
      'type': 'ft'
@@ -2153,6 +2155,9 @@ searchfield:
      'type': 'string'
   'markstring':
      'prefix': 'fmark'
+     'type': 'string' 
+  'publisherstring':
+     'prefix': 'fpubl'
      'type': 'string'
   'dbstring':
      'prefix': 'fdb'
@@ -2450,6 +2455,7 @@ xapian_search_prefix:
   'cnt': 'Y2'
   'src': 'Y3'
   'tag': 'Y4'
+  'publ': 'Y5'
 
   # String / Drilldowns
   'fsubj': 'D1'
@@ -2465,6 +2471,7 @@ xapian_search_prefix:
   'fsub': 'E2'
   'ftag': 'E3'
   'flitlist': 'E4'
+  'fpubl': 'E5'
 
   # Einzelne Kategorieinhalte
   't0531': 'T0531'
@@ -2521,6 +2528,8 @@ default_searchfields:
   'source':
     'active': 1
   'year':
+    'active': 1
+  'publisher':
     'active': 1
 
 search_defaultparams: 'page=1;num=20;srt=person;srto=asc;jn=1;'
@@ -2699,6 +2708,17 @@ tt_info_13_tname: info_13
 tt_info_elise_richter_tname: info_elise_richter
 tt_info_helene_richter_tname: info_helene_richter
 tt_info_portal_tname: info_portal
+tt_info_gaesdonck_tname: info_gaesdonck
+tt_info_koenigswinter_tname: info_koenigswinter
+tt_info_gleuel_tname: info_gleuel
+tt_info_kempen_tname: info_kempen
+tt_info_xanten_tname: info_xanten
+tt_info_kevelaer_tname: info_kevelaer
+tt_info_grevenbroich_tname: info_grevenbroich
+tt_info_wickrath_tname: info_wickrath
+tt_info_hennef_tname: info_hennef
+tt_info_rheinischeabteilung_tname: info_rheinischeabteilung
+
 tt_info_other_portals_tname: info_other_portals
 tt_info_impressum_tname: info_impressum
 tt_info_20_tname: info_20

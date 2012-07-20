@@ -354,6 +354,11 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0412':         # Verlag
+        string: 1
+        index:
+          'publisher': 1
+          'publisherstring': 1
       '0413':         # Drucker
         string: 1
         index:

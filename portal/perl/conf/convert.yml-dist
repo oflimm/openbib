@@ -81,11 +81,11 @@ convtab:
       '1679': 1        # Jahr Orginal
       '1710': 1        # MESH-Ketten
       '1751': 1        # Nicht mehr existent
-      '1800': 1        # Nebeneintragung 1. Person
-      '1802': 1        # Nebeneintragung 2. Koerperschaft
-      '1804': 1        # Nebeneintragung 1. EST
-      '1805': 1        # Nebeneintragung 1. Titelansetzung
-      '1806': 1        # Nebeneintragung 1. Titel in Mischform
+      #'1800': 1        # Nebeneintragung 1. Person
+      #'1802': 1        # Nebeneintragung 2. Koerperschaft
+      #'1804': 1        # Nebeneintragung 1. EST
+      #'1805': 1        # Nebeneintragung 1. Titelansetzung
+      #'1806': 1        # Nebeneintragung 1. Titel in Mischform
       '1814': 1        # Nicht mehr existent
       '1836': 1        # Nicht mehr existent
       '1848': 1        # Nicht mehr existent
@@ -297,6 +297,24 @@ convtab:
           'personstring': 1
         facet:
           'person': 1
+      '0110':
+        index:
+          'person': 1
+          'personstring': 1
+        facet:
+          'person': 1
+      '0111':
+        index:
+          'person': 1
+          'personstring': 1
+        facet:
+          'person': 1
+      '0112':
+        index:
+          'person': 1
+          'personstring': 1
+        facet:
+          'person': 1
       '0200':
         index:
           'corporatebodystring': 1
@@ -335,6 +353,13 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0340':         # PSTAnsetzung
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0341':         # PSTVorlage
         ft: 1
         string: 1
@@ -348,6 +373,13 @@ convtab:
           'titlestring': 40
           'freesearch': 40
       '0370':         # WST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0375':         # ZSTnorm
         ft: 1
         string: 1
         index:
@@ -387,7 +419,16 @@ convtab:
         index:
           'isbn': 1
           'freesearch': 1
+      '0541':         # ISBN falsch
+        string: 1
+        index:
+          'isbn': 1
+          'freesearch': 1
       '0543':         # ISSN
+        index:
+          'issn': 1
+          'freesearch': 1
+      '0544':         # ISSN falsch
         index:
           'issn': 1
           'freesearch': 1
@@ -396,9 +437,27 @@ convtab:
         index:
           'isbn': 1
           'freesearch': 1
+      '0585':         # ISSN Quelle
+        index:
+          'issn': 1
+          'freesearch': 1
       '0590':
         index:
           'source': 1
+          'freesearch': 1
+      '0670':         # TitelOrth
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0675':         # HSTmodern
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
           'freesearch': 1
       '0700':
         index:
@@ -498,6 +557,97 @@ convtab:
         index:
           'markstring': 1
           'mark': 1
+      '1550':         # ISSN_aut_r
+        index:
+          'issn': 1
+          'freesearch': 1
+      '1551':         # ISSN_dat_r
+        index:
+          'issn': 1
+          'freesearch': 1
+      '1552':         # ISSN_www_r
+        index:
+          'issn': 1
+          'freesearch': 1
+      '1553':         # ISSN_pnt_r
+        index:
+          'issn': 1
+          'freesearch': 1
+      '1567':         # ISSN_pnt_f
+        index:
+          'issn': 1
+          'freesearch': 1
+      '1586':         # ISBN_dat_o 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1587':         # ISBN_www_o 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1588':         # ISBN_pnt_o 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1589':         # ISBN_dat_r 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1590':         # ISBN_www_r 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1591':         # ISBN_pnt_r 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1592':         # ISBN_dat_f 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1593':         # ISBN_www_f 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1594':         # ISBN_pnt_f 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1800':         # Nebeneintragung 1. Person
+        ft: 1
+        string: 1
+        index:
+          'person': 1
+          'personstring': 1
+          'freesearch': 1
+      '1802':         # Nebeneintragung 2. Koerperschaft
+        ft: 1
+        string: 1
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '1804':         # Nebeneintragung 1. Titel EST
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '1805':         # Nebeneintragung 1. Titel Ansetzungsform
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '1806':         # Nebeneintragung 1. Titel in Mischform
+        ft: 1
+        string: 1
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '4100':         # BK
         index:
           't4100': 1
@@ -651,11 +801,11 @@ convtab:
       '1679': 1        # Jahr Orginal
       '1710': 1        # MESH-Ketten
       '1751': 1        # Nicht mehr existent
-      '1800': 1        # Nebeneintragung 1. Person
-      '1802': 1        # Nebeneintragung 2. Koerperschaft
-      '1804': 1        # Nebeneintragung 1. EST
-      '1805': 1        # Nebeneintragung 1. Titelansetzung
-      '1806': 1        # Nebeneintragung 1. Titel in Mischform
+      #'1800': 1        # Nebeneintragung 1. Person
+      #'1802': 1        # Nebeneintragung 2. Koerperschaft
+#      '1804': 1        # Nebeneintragung 1. EST
+#      '1805': 1        # Nebeneintragung 1. Titelansetzung
+#      '1806': 1        # Nebeneintragung 1. Titel in Mischform
       '1814': 1        # Nicht mehr existent
       '1836': 1        # Nicht mehr existent
       '1848': 1        # Nicht mehr existent

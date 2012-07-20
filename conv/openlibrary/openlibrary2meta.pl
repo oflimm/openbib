@@ -179,12 +179,25 @@ while (<OL>){
 
         if ($name){
             $name = konv($name);
-            print AUT "0000:$key\n";
-            print AUT "0001:$name\n";
+            
+            my $item_ref = {};
+            $item_ref->{id} = $key;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $name,
+            };
 
             if (exists $recordset->{alternate_names}){
+                my $mult = 1;
                 foreach my $alt_name (@{$recordset->{alternate_names}}){
-                    print AUT "0102:$alt_name\n" if ($alt_name);
+                    next unless ($alt_name);
+                    push @{$item_ref->{'0830'}}, {
+                        mult     => $mult,
+                        subfield => '',
+                        content  => $alt_name,
+                    };
+                    $mult++;
                 }
             }
 
@@ -201,24 +214,60 @@ while (<OL>){
                 $bio =~s{}{}g;
                 
                 if ($bio){
-                    print AUT "0302:$bio\n";
+                    push @{$item_ref->{'0302'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $bio,
+                    };
                 }
             }
+
+            push @{$item_ref->{'0304'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $recordset->{birth_date},
+            } if ($recordset->{birth_date});
+
             
-            print AUT "0304:$recordset->{birth_date}\n" if ($recordset->{birth_date});
-            print AUT "0306:$recordset->{death_date}\n" if ($recordset->{death_date});
+            push @{$item_ref->{'0306'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $recordset->{death_date},
+            } if ($recordset->{death_date});
 
             if (exists $recordset->{photos}){
+                my $mult = 1;
                 foreach my $photo_id (@{$recordset->{photos}}){
-                    print AUT "0308:$photo_id\n" if ($photo_id > 0);
+                    next unless ($photo_id > 0);
+                    push @{$item_ref->{'0308'}}, {
+                        mult     => $mult,
+                        subfield => '',
+                        content  => $photo_id,
+                    };
+                    $mult++;
                 }
             }
 
-            print AUT "0309:$recordset->{wikipedia}\n" if ($recordset->{wikipedia});
-            print AUT "0313:$recordset->{website}\n" if ($recordset->{website}); # Website
-            print AUT "0314:$recordset->{location}\n" if ($recordset->{location}); # Ort / Location
+            push @{$item_ref->{'0309'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $recordset->{wikipedia},
+            } if ($recordset->{wikipedia});
 
-            print AUT "9999:\n";
+            push @{$item_ref->{'0313'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $recordset->{website},
+            } if ($recordset->{website});
+
+
+            push @{$item_ref->{'0314'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $recordset->{location},
+            } if ($recordset->{location});
+
+            print AUT encode_json $item_ref, "\n";
 
             # ID merken fuer andere Personenfelder, die nicht mit der
             # Authors-ID verknuepft werden, sondern Verbatim vorliegen
@@ -290,8 +339,9 @@ $count = 1;
 
 while (<OL>){
     my ($ol_type,$ol_id,$ol_revision,$ol_date,$ol_data)=split("\t",$_);
-    
-    my $recordset=undef;    
+
+    my $recordset=undef;
+
     eval {
         $recordset = decode_json $ol_data;
     };
@@ -299,6 +349,8 @@ while (<OL>){
     my $key = $recordset->{key} ;
     $key =~s{^/books/}{};
 
+    my $title_ref = {};
+    
     $logger->debug(YAML::Dump($recordset));
 
     # Einschraenkung auf Titelaufnahmen mit Digitalisaten
@@ -335,14 +387,22 @@ while (<OL>){
         next;
     }
 
-    printf TIT "0000:%s\n", $key;
+    $title_ref->{id} = $key;
+
     $have_titid_ref->{$key} = 1;
 
     if (exists $recordset->{languages}){
+        my $mult=1;
         foreach my $item_ref (@{$recordset->{languages}}){
             my $lang = $item_ref->{key};
             $lang =~s{^/languages/}{};
-            print TIT "0015:$lang\n";
+
+            push @{$title_ref->{'0015'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $lang,
+            };
+            $mult++;
         }
     }
     
@@ -351,68 +411,137 @@ while (<OL>){
         if (exists $recordset->{title_prefix}){
             $title=konv($recordset->{title_prefix})." $title";
         }
-        
-        print TIT "0331:$title\n";
+
+        push @{$title_ref->{'0331'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $title,
+        };
     }
 
     if (exists $recordset->{subtitle}){
-        print TIT "0335:".konv($recordset->{subtitle})."\n";
+        push @{$title_ref->{'0335'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => konv($recordset->{subtitle}),
+        };
     }
 
     if (exists $recordset->{other_titles}){
+        my $mult=1;
         foreach my $item (@{$recordset->{other_titles}}){
-            print TIT "0370:".konv($item)."\n";
+            push @{$title_ref->{'0370'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => konv($item),
+            };
+            $mult++;
         }
     }
 
     if (exists $recordset->{by_statement}){
-        print TIT "0359:".konv($recordset->{by_statement})."\n";
+        push @{$title_ref->{'0359'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => konv($recordset->{by_statement}),
+        };
     }
 
     if (exists $recordset->{publishing_places}){
+        my $mult=1;
         foreach my $item (@{$recordset->{publishing_places}}){
-            print TIT "0410:".konv($item)."\n";
+            push @{$title_ref->{'0410'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => konv($item),
+            };
+            $mult++;
         }
     }
 
     if (exists $recordset->{series}){
+        my $mult=1;
         foreach my $item (@{$recordset->{series}}){
-            print TIT "0451:".konv($item)."\n";
+            push @{$title_ref->{'0451'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => konv($item),
+            };
+            $mult++;
         }
     }
 
     if (exists $recordset->{publishers}){
+        my $mult=1;
         foreach my $item (@{$recordset->{publishers}}){
-            print TIT "0412:".konv($item)."\n";
+            push @{$title_ref->{'0412'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => konv($item),
+            };
+            $mult++;
         }
     }
 
     if (exists $recordset->{edition_name}){
-        print TIT "0403:".konv($recordset->{edition_name})."\n";
+        push @{$title_ref->{'0403'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => konv($recordset->{edition_name}),
+        };
     }
 
     if (exists $recordset->{publish_date}){
-        print TIT "0425:".konv($recordset->{publish_date})."\n";
+        push @{$title_ref->{'0425'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => konv($recordset->{publish_date}),
+        };
     }
 
     if (exists $recordset->{pagination}){
-        print TIT "0433:".konv($recordset->{pagination})."\n";
+        push @{$title_ref->{'0433'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => konv($recordset->{pagination}),
+        };
     }
 
     if (exists $recordset->{ocaid}){
-        print TIT "0662:$recordset->{ocaid}\n";
+        push @{$title_ref->{'0662'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => 'http://archive.org/details/'.$recordset->{ocaid},
+        };
+        push @{$title_ref->{'2662'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $recordset->{ocaid},
+        };
     }
 
-    print TIT "0800:Digital\n";
+    push @{$title_ref->{'0800'}}, {
+        mult     => 1,
+        subfield => '',
+        content  => 'Digital',
+    };
 
     # Autoren abarbeiten Anfang
     if (exists $recordset->{authors}){
         my %processed = ();
+        my $mult=1;
         foreach my $author_ref (@{$recordset->{authors}}){
             my $key     = $author_ref->{key};
             $key =~s{/authors/}{};
-            
-            print TIT "0100:IDN: $key\n" if ($have_author{$key} == 1 && !$processed{$key});
+
+            push @{$title_ref->{'0100'}}, {
+                mult       => $mult,
+                subfield   => '',
+                id         => $key,
+                supplement => '',
+            } if ($have_author{$key} == 1 && !$processed{$key});
+            $mult++;
+
             $processed{$key} = 1;
         }
     }
@@ -421,7 +550,8 @@ while (<OL>){
     # Personen abarbeiten Anfang
     if (exists $recordset->{contributions}){
         my %processed = ();
-        
+
+        my $mult=1;
         foreach my $content (@{$recordset->{contributions}}){
             
             if ($content && !$processed{$content}){
@@ -431,18 +561,30 @@ while (<OL>){
                 my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                 
                 if ($new){
-                    print AUT "0000:$person_id\n";
-                    print AUT "0001:$content\n";
-                    print AUT "9999:\n";
-                    
+                    my $item_ref = {};
+                    $item_ref->{id} = $person_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content,
+                    };
+
+                    print AUT encode_json $item_ref, "\n";
                 }
                 
-                print TIT "0101:IDN: $person_id\n";
+                push @{$title_ref->{'0101'}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $person_id,
+                    supplement => '',
+                };
             }
         }
     }
     # Personen abarbeiten Ende
 
+    my $classification_mult=1;
+    
     # Notationen abarbeiten Anfang
     if (exists $recordset->{dewey_decimal_class}){
         my %processed = ();
@@ -454,13 +596,24 @@ while (<OL>){
                 my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
                 
                 if ($new){
-                    print NOTATION "0000:$classification_id\n";
-                    print NOTATION "0001:$content\n";
-                    print NOTATION "9999:\n";
-                    
+                    my $item_ref = {};
+                    $item_ref->{id} = $classification_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content,
+                    };
+
+                    print NOTATION encode_json $item_ref, "\n";
                 }
-                
-                print TIT "0700:IDN: $classification_id\n";
+
+                push @{$title_ref->{'0700'}}, {
+                    mult       => $classification_mult,
+                    subfield   => '',
+                    id         => $classification_id,
+                    supplement => '',
+                };
+                $classification_mult++;
             }
         }
     }
@@ -474,13 +627,24 @@ while (<OL>){
                 my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
                 
                 if ($new){
-                    print NOTATION "0000:$classification_id\n";
-                    print NOTATION "0001:$content\n";
-                    print NOTATION "9999:\n";
-                    
+                    my $item_ref = {};
+                    $item_ref->{id} = $classification_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content,
+                    };
+
+                    print NOTATION encode_json $item_ref, "\n";
                 }
                 
-                print TIT "0700:IDN: $classification_id\n";
+                push @{$title_ref->{'0700'}}, {
+                    mult       => $classification_mult,
+                    subfield   => '',
+                    id         => $classification_id,
+                    supplement => '',
+                };
+                $classification_mult++;
             }
         }
     }
@@ -490,6 +654,7 @@ while (<OL>){
     {
         my %processed = ();
 
+        my $subject_mult=1;
         # Schlagworte aus den Titeldaten
         if (exists $recordset->{subjects}){
             
@@ -504,12 +669,24 @@ while (<OL>){
                     my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
                     
                     if ($new){
-                        print SWT "0000:$subject_id\n";
-                        print SWT "0001:$content\n";
-                        print SWT "9999:\n";
+                        my $item_ref = {};
+                        $item_ref->{id} = $subject_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $content,
+                        };
+                        
+                        print SWT encode_json $item_ref, "\n";
                     }
                     
-                    print TIT "0710:IDN: $subject_id\n";
+                    push @{$title_ref->{'0710'}}, {
+                        mult       => $subject_mult,
+                        subfield   => '',
+                        id         => $subject_id,
+                        supplement => '',
+                    };
+                    $subject_mult++;
                 }
             }
         }
@@ -531,12 +708,24 @@ while (<OL>){
                     my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
                     
                     if ($new){
-                        print SWT "0000:$subject_id\n";
-                        print SWT "0001:$content\n";
-                        print SWT "9999:\n";
+                        my $item_ref = {};
+                        $item_ref->{id} = $subject_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $content,
+                        };
+                        
+                        print SWT encode_json $item_ref, "\n";
                     }
                     
-                    print TIT "0710:IDN: $subject_id\n";
+                    push @{$title_ref->{'0710'}}, {
+                        mult       => $subject_mult,
+                        subfield   => '',
+                        id         => $subject_id,
+                        supplement => '',
+                    };
+                    $subject_mult++;
                 }
             }
         }
@@ -544,7 +733,7 @@ while (<OL>){
         
     }
     # Schlagworte abarbeiten Ende
-    print TIT "9999:\n";
+    print TIT encode_json $title_ref, "\n";
     
     if ($count % 10000 == 0){
         $logger->info("$count done");
